@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700, light');
+
+// Color variables
+$white: #ffffff;
+$black: #000000;
+$primary: #28529f;
+$primary-light: #7690be;
+$secondary: #ea5d33;
+$success: #18da35;
+$info: #01b8ff;
+$warning: #ffc107;
+$danger: #f87566;
+$muted: #919191;
+$dark: #191919;
+$light-blue: #5673aa;
+$light-blue-07: rgba(86, 115, 170, 0.71);
+$gray: #f1f2f3;
+$icons-bg: #3d3d3d;
+$icons-avatar: #d8d8d8;
+$progress-orange: #ffb35d;
+$progress-danger: #ff5d5d;
+$bw5: #919191;
+
+// Font variables main and fallback
+$main-font: 'Montserrat';
+$fallback-font: 'sans-serif';
+
+// Transition variable
+$transition: all 0.3s ease-in-out;

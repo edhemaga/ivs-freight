@@ -1,0 +1,91 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="login-container container-fluid d-flex justify-content-center">
+      <div class="d-flex flex-column align-items-center">
+        <div class="login-logo">
+          <img src="../../../../../assets/img/logo/sign-in-logo.svg">
+        </div>
+        <div class="login-text d-flex flex-column align-items-center">
+          <p><span class="color_welcome_to">Welcome to</span> Truck Assist</p>
+          <p>To Sign in please enter your email and password</p>
+        </div>
+        <form
+          [formGroup]="loginForm"
+          class="d-flex flex-column align-items-center"
+          id="login"
+          tabindex="500"
+        >
+          <div class="pt-3 register-form">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-12">
+                  <div
+                    [ngClass]="inputText ? 'typing' : 'not-typing'"
+                    class="form-label-group input-icon email-field-wrapper {{
+                      manageInputValidation(loginForm.controls['email'])
+                    }}"
+                  >
+                    <input
+                      #name
+                      (keyup)="onEmailKeyUp($event)"
+                      appAutoFocus
+                      appInputFocus
+                      class="form-control input-control required email-input"
+                      formControlName="email"
+                      id="email"
+                      placeholder="Email"
+                      autocomplete="off"
+                    />
+                    <div (click)="clearEmailInput()" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+                    </div>
+                    <label class="required-label" for="email">Email</label>
+                    <!-- <app-required-label [formControl]="$any(loginForm).controls['email']"></app-required-label> -->
+                    <p *ngIf="loginForm.get('email')!.hasError('pattern')" class="m-0 required-notice invalid-length">
+                      Invalid</p>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div
+                    [ngClass]="passwordText ? 'typing' : 'not-typing'"
+                    class="form-label-group input-icon password-field-wrapper {{
+                      manageInputValidation(loginForm.controls['password'])
+                    }}"
+                  >
+                    <input
+                      #password
+                      (keyup)="onPasswordKeyUp($event)"
+                      appInputFocus
+                      class="form-control input-control required password-input"
+                      formControlName="password"
+                      id="password"
+                      placeholder="Password"
+                      type="{{ passwordType }}"
+                    />
+                    <div (click)="clearPasswordInput()" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+                    </div>
+                    <label class="required-label" for="password">Password</label>
+                    <!-- <app-required-label [formControl]="$any(loginForm).controls['password']"></app-required-label> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p id="forgot-password" routerLink="/login/forgot-password">Forgot Password?</p>
+          <button (click)="userLogin($event)" class="login-btn" [ngClass]="{'invalid-btn' : !loginForm.valid}"
+                  type="submit">
+            <p>LOG IN</p>
+          </button>
+          <p id="login-sign-up">
+            Don't have an account?<a href="https://truckassist.io/startfreetrial">Sign Up</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="copyright">
+      <p>Copyright © TruckAssist {{copyrightYear}}.</p>
+    </div>
+  </div>
+</div>

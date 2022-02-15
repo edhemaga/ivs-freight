@@ -1,0 +1,340 @@
+@import 'src/theme/variables';
+
+.login-container {
+  height: calc(100vh - 46px);
+  min-height: 750px;
+  background: $white;
+
+  .login-logo {
+    margin-top: 50px;
+
+    svg-icon {
+      width: 134px;
+    }
+  }
+
+  .login-text {
+    margin-top: 80px;
+
+    p:first-child {
+      font-size: 52px;
+      line-height: 39px;
+      font-weight: 900;
+      color: #5673AA;
+    }
+
+    p:nth-child(2) {
+      font-size: 26px;
+      line-height: 24px;
+      font-weight: 700;
+      color: #6C6C6C;
+      margin-top: 40px;
+    }
+  }
+
+  .color_welcome_to {
+    color: #6C6C6C;
+  }
+
+  form {
+    margin-top: 40px;
+    outline: none;
+    max-width: 622px;
+    width: 100%;
+    align-items: unset !important;
+
+    .register-form {
+      .col-12 .row .col-12:last-of-type {
+        .form-label-group {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    p#forgot-password {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 18px;
+      color: #889CC3;
+      cursor: pointer;
+      user-select: none;
+      transition: $transition;
+      margin: 10px auto;
+
+      &:hover {
+        font-size: 14px;
+        line-height: 18px;
+        color: #889CC3;
+        transition: $transition;
+      }
+    }
+
+    .login-btn {
+      background: #F9F9F9;
+
+      p {
+        color: #91A4C7;
+        margin: 0;
+      }
+
+      &:hover {
+        &:not(.invalid-btn) {
+          p {
+            color: $white;
+          }
+        }
+      }
+    }
+
+    button {
+      max-width: 320px;
+      width: 100%;
+      height: 50px;
+      border-radius: 3px;
+      background: rgba(145, 145, 145, 0.4);
+      border: none;
+      outline: none;
+      transition: all 0.3s ease-in-out;
+      margin: 40px auto auto auto;
+
+      p {
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 14px;
+        color: $white;
+        transition: $transition;
+      }
+
+      &.invalid-btn {
+        transition: 0.3s;
+        background: #F9F9F9;
+
+        p {
+          color: #B7B7B7;
+        }
+
+        &:hover {
+          background-color: #eeeeee;
+          transition: 0.3s;
+        }
+      }
+
+      &:hover {
+        transition: 0.3s;
+        background: #778FBB;
+      }
+    }
+
+    p#login-sign-up {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 18px;
+      color: $bw5;
+      cursor: default;
+      user-select: none;
+      margin: 20px auto;
+      transition: $transition;
+
+      a {
+        padding-left: 10px;
+        font-weight: bold;
+        color: $bw5;
+        text-decoration: none;
+        transition: $transition;
+        opacity: 0.7;
+
+        &:hover {
+          color: $light-blue;
+          opacity: 1;
+          transition: $transition;
+        }
+      }
+    }
+  }
+}
+
+.copyright {
+  background: $light-blue;
+  height: 46px;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    color: $white;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    margin: 0;
+  }
+}
+
+.email-field-wrapper,
+.password-field-wrapper {
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    &.typing {
+      .clear-button {
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        background: none;
+        display: flex;
+        align-items: center;
+        transition: all 0.2s ease-in;
+        cursor: pointer;
+      }
+
+      &.field-focused {
+        background-image: none !important;
+        outline: none !important;
+      }
+
+      &.touched-invalid {
+        background-image: none !important;
+
+        .clear-button {
+          position: relative;
+          left: -6px;
+          background-image: url("../../../../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
+          background-size: 18px 18px;
+          transition: all 0.2s ease-in;
+          background-repeat: no-repeat;
+
+          &:hover {
+            width: 22px;
+            height: 22px;
+            position: relative;
+            left: -6px;
+            background-image: url("../../../../../assets/img/form-validation/x-icon-background-hover.svg") !important;
+            background-size: 22px 22px;
+            transition: all 0.2s ease-in;
+            background-repeat: no-repeat;
+          }
+        }
+      }
+
+      .clear-button {
+        position: relative;
+        left: -6px;
+        background-image: url("../../../../../assets/img/form-validation/x-icon-background.svg") !important;
+        background-size: 18px 18px;
+        transition: all 0.2s ease-in;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+}
+
+.password-field-wrapper,
+.email-field-wrapper {
+  &.touched-valid {
+    .clear-button {
+      position: relative;
+      left: -6px;
+      background-image: url("../../../../../assets/img/form-validation/x-icon-valid-focus-in.svg") !important;
+      background-size: 18px 18px;
+      transition: all 0.2s ease-in;
+      background-repeat: no-repeat;
+
+      &:hover {
+        width: 22px;
+        height: 22px;
+        position: relative;
+        left: -6px;
+        background-image: url("../../../../../assets/img/form-validation/x-icon-valid-focus-in-hover.svg") !important;
+        background-size: 22px 22px;
+        transition: all 0.2s ease-in;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+}
+
+::ng-deep .tooltip {
+  .arrow::before {
+    display: none;
+  }
+}
+
+::ng-deep .tooltip-inner {
+  background-color: #fff;
+  color: #919191;
+  height: 17px;
+  display: flex;
+  align-items: center;
+  border-radius: 2px;
+  font-size: 10px;
+  font-weight: 600;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.16);
+}
+
+.email-input {
+  &:focus {
+    outline: none !important;
+  }
+ }
+
+.email-field-wrapper {
+  background-image: url('../../../../../assets/img/form-validation/mail-icon-default.svg');
+  background-repeat: no-repeat;
+  background-position: calc(100% - 6px) 6px;
+  transition: all 0.2s ease;
+
+  &.field-focused {
+    background-image: url('../../../../../assets/img/form-icons/mail/mail-focus.svg') !important;
+  }
+
+  &.touched-valid {
+    background-image: url('../../../../../assets/img/form-validation/mail-icon-blue.svg');
+    background-repeat: no-repeat;
+    background-position: calc(100% - 6px) 6px;
+    transition: all 0.2s ease;
+
+    &:focus {
+      background-image: url('../../../../../assets/img/form-validation/mail-icon-hover.svg');
+    }
+
+    &:hover {
+      background-image: url('../../../../../assets/img/form-validation/mail-icon-blue-hover.svg');
+    }
+  }
+
+  &.email-input {
+    background: none !important;
+    background-repeat: no-repeat;
+  }
+
+  &.touched-invalid {
+    background-image: url('../../../../../assets/img/form-validation/mail-icon-invalid-default.svg');
+  }
+
+}
+
+.password-field-wrapper {
+  background-image: url('../../../../../assets/img/form-validation/password-icon-default.svg') !important;
+  background-size: 15px 18px;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 6px) 4px;
+
+  &.touched-invalid {
+    background-image: url('../../../../../assets/img/form-validation/password-icon-invalid.svg');
+
+    &:hover {
+      background-image: url('../../../../../assets/img/form-validation/password-icon-hover-red.svg');
+      background-repeat: no-repeat;
+      background-position: calc(100% - 6px) 4px;
+    }
+  }
+
+  &.touched-valid {
+    background-image: url('../../../../../assets/img/form-validation/password-icon-blue-hover.svg');
+  }
+}
+
+
+

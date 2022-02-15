@@ -1,0 +1,15 @@
+@import 'src/theme/variables';
+
+* {
+  font-family: $main-font, $fallback-font;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.form-control:focus {
+  box-shadow: none !important;
+  outline: none;
+}
