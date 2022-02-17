@@ -1,0 +1,206 @@
+<div class="sign-up-container container-fluid d-flex flex-column justify-content-between">
+  <div class="container d-flex flex-column justify-content-center align-items-center">
+    <svg-icon id="register-logo" src="assets/img/logo/truck-assist-logo-icon.svg" alt="truck-assist-logo-icon"> </svg-icon>
+    <div class="sign-up-text d-flex flex-column align-items-center">
+      <p>Welcome to Truck Assist</p>
+      <p>Please fill out the form to sign up</p>
+    </div>
+    <form
+      (keydown)="keyDownFunction($event)"
+      [formGroup]="registerForm"
+      autocomplete="off"
+      class="d-flex flex-column"
+      id="login"
+      tabindex="500"
+    >
+      <div class="pt-3 register-form">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-6">
+              <div class="form-label-group">
+                <input
+                  appAutoFocus
+                  appInputFocus
+                  appInputrestriction="[A-Za-z]"
+                  class="form-control input-control required"
+                  formControlName="firstName"
+                  id="firstName"
+                  placeholder="First name"
+                />
+                <label class="required-label" for="firstName">First name</label>
+                <!-- <app-required-label
+                  [control]="registerForm.controls.firstName"
+                ></app-required-label> -->
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-label-group">
+                <input
+                  appInputFocus
+                  appInputrestriction="[A-Za-z]"
+                  class="form-control input-control required"
+                  formControlName="lastName"
+                  id="lastName"
+                  placeholder="Last name"
+                />
+                <label class="required-label" for="lastName">Last name</label>
+                <!-- <app-required-label [control]="registerForm.controls.lastName"></app-required-label> -->
+              </div>
+            </div>
+            <div class="col-9">
+              <div class="form-label-group">
+                <input
+                  appInputFocus
+                  appInputrestriction="[0-9A-Za-z\.\,\s]"
+                  class="form-control input-control required"
+                  formControlName="companyName"
+                  id="companyName"
+                  maxlength="30"
+                  placeholder="Company name"
+                />
+                <label class="required-label" for="companyName">Company name</label>
+                <!-- <app-required-label
+                  [control]="$any(registerForm).controls['companyName']"
+                ></app-required-label> -->
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-label-group">
+                <input
+                  appInputFocus
+                  class="form-control input-control required"
+                  formControlName="taxNumber"
+                  id="taxNumber"
+                  mask="00-0000000"
+                  placeholder="EIN"
+                />
+                <label class="required-label" for="taxNumber">EIN</label>
+                <!-- <app-required-label
+                  [control]="$any(registerForm).controls['taxNumber']"
+                ></app-required-label> -->
+              </div>
+            </div>
+            <div class="col-10">
+              <div
+                class="form-label-group input-icon address-field-wrapper {{
+                  manageInputValidation(registerForm.controls['address'])
+                }}"
+              >
+                <input
+                  #addressInput
+                  #placesRef="ngx-places"
+                  (onAddressChange)="handleAddressChange($event)"
+                  [options]="options"
+                  appInputFocus
+                  class="form-control input-control required"
+                  formControlName="address"
+                  id="address"
+                  ngx-google-places-autocomplete
+                  placeholder="Company Address, City, State Zip"
+                />
+                <label class="required-label" for="address">Company Address, City, State Zip</label>
+                <!-- <app-required-label [control]="registerForm.controls.address"></app-required-label> -->
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-label-group">
+                <input
+                  appInputFocus
+                  appInputrestriction="[A-Za-z0-9-]"
+                  class="form-control input-control"
+                  formControlName="addressUnit"
+                  id="addressUnit"
+                  maxlength="6"
+                  placeholder="Unit #"
+                />
+                <label for="addressUnit">Unit #</label>
+              </div>
+            </div>
+            <div class="col-5">
+              <div
+                class="form-label-group input-icon phone-field-wrapper {{
+                  manageInputValidation(registerForm.controls['phone'])
+                }}"
+              >
+                <input
+                  appInputFocus
+                  class="form-control input-control"
+                  formControlName="phone"
+                  id="phone"
+                  mask="(000) 000-0000"
+                  placeholder="Phone"
+                />
+                <label for="phone">Phone</label>
+              </div>
+            </div>
+            <div class="col-7">
+              <div
+                class="form-label-group input-icon email-field-wrapper {{
+                  manageInputValidation(registerForm.controls['phone'])
+                }}"
+              >
+                <input
+                  appInputFocus
+                  class="form-control input-control required email-input"
+                  formControlName="email"
+                  id="email"
+                  placeholder="Email"
+                />
+                <label class="required-label" for="email">Email</label>
+                <!-- <app-required-label [control]="registerForm.controls.email"></app-required-label> -->
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="form-label-group">
+                <input
+                  class="form-control input-control required"
+                  formControlName="password"
+                  id="password"
+                  placeholder="Password"
+                  type="{{ passwordType }}"
+                />
+                <label class="required-label" for="password">Password</label>
+                <!-- <app-required-label [control]="registerForm.controls.password"></app-required-label> -->
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-label-group">
+                <input
+                  class="form-control input-control required"
+                  formControlName="confirmPassword"
+                  id="confirm-password"
+                  placeholder="Password"
+                  type="{{ passwordType }}"
+                />
+                <label class="required-label" for="confirm-password">Confirm password</label>
+                <!-- <app-required-label
+                  [control]="registerForm.controls.confirmPassword"
+                ></app-required-label> -->
+                <p
+                  class="password-not-same-notice"
+                  *ngIf="registerForm?.errors?.notSame == true"
+                >
+                  Passwords not same
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button (click)="registerUser()" type="submit">
+        <p>Sign up</p>
+      </button>
+      <p>
+        By continuing, you are agreeing to our<span> Terms of Service</span> <br/>
+        and <span>Privacy Policy</span>
+      </p>
+      <p>Already have an account?<span routerLink="/login"> Login</span></p>
+    </form>
+  </div>
+  <div class="row">
+    <div class="copyright">
+      <p>Copyright © TruckAssist {{copyrightYear}}.</p>
+    </div>
+  </div>
+</div>

@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import {environment} from 'src/environments/environment';
 import {HttpClient} from "@angular/common/http";
-import {map} from "rxjs";
+import {BehaviorSubject, map, Observable} from "rxjs";
+import {SelectCompanyResponse} from "../../model/select-company";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  public currentUser!: Observable<any>;
+  private currentUserSubject!: BehaviorSubject<any>;
 
   constructor(
     private http: HttpClient,
@@ -42,6 +46,25 @@ export class AuthService {
       })
     );
   }
+
+  public onCompanySelect(companyId: any) {
+    return this.http.get(environment.API_ENDPOINT + `user/select/company/${companyId}`).pipe(
+      // @ts-ignore
+      map((res: SelectCompanyResponse) => {
+        localStorage.setItem('token', JSON.stringify(res.token));
+      })
+    );
+  }
+
+  /**
+   * Register user function
+   *
+   * @param data any
+   */
+  public registerUser(data: any) {
+    return this.http.post(environment.API_ENDPOINT + 'user/register', data);
+  }
+
 
 
 }

@@ -1,0 +1,155 @@
+@import 'src/theme/variables';
+
+$gray07: rgba(145, 145, 145, 0.7);
+
+.password-not-same-notice {
+  position: absolute;
+  font-size: 10px;
+  color: #ff5d5d;
+}
+
+*:not(i) {
+  font-family: $main-font;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.sign-up-container {
+  background-color: white;
+  height: 100vh;
+  min-height: 900px;
+
+  svg-icon#register-logo {
+    margin-top: 50px;
+    width: 134px;
+  }
+
+  .sign-up-text {
+    margin-top: 80px;
+
+    p {
+      font: 300 20px/24px Montserrat;
+      color: $app-main-gray;
+
+      &:first-of-type {
+        font: 700 32px/39px Montserrat;
+        color: $light-blue;
+      }
+    }
+  }
+
+  form {
+    max-width: 431px;
+    width: 100%;
+    outline: none;
+    margin-top: 40px;
+
+    .company-two-fields {
+      width: 100%;
+    }
+
+    .address-two-fields {
+      width: 100%;
+    }
+
+    button {
+      //margin-top: 50px;
+      //margin-bottom: 20px;
+      margin: 12px auto 22px;
+      max-width: 160px;
+      width: 100%;
+      height: 34px;
+      border-radius: 3px;
+      background: rgba(145, 145, 145, 0.4);
+      border: none;
+      outline: none;
+      transition: 0.3s;
+
+      p {
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 18px;
+        color: white;
+        transition: 0.3s;
+        margin: 0;
+      }
+
+      &:hover {
+        transition: 0.3s;
+        background: $light-blue;
+      }
+    }
+
+    p {
+      font: 400 14px/18px Montserrat;
+      text-align: center;
+      color: $gray07;
+      margin-bottom: 50px;
+
+      &:first-of-type {
+        margin-bottom: 12px;
+      }
+
+      span {
+        font: 600 14px/18px Montserrat;
+        cursor: pointer;
+        outline: none;
+
+        &:hover {
+          color: $light-blue;
+        }
+      }
+    }
+
+    #password-strenght-info {
+      height: 18px;
+      padding-left: 10px;
+    }
+  }
+
+  .copyright {
+    background: $light-blue;
+    height: 46px;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      color: white;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 18px;
+    }
+  }
+}
+
+.register-new-field {
+  svg-icon {
+    position: absolute;
+    right: 10px;
+    bottom: 4px;
+    transition: 0.2s;
+  }
+
+  &:hover {
+    svg-icon {
+      bottom: 8px;
+      transition: 0.2s;
+
+      svg {
+        path {
+          fill: $light-blue;
+        }
+
+        .a {
+          fill: $light-blue;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

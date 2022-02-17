@@ -191,7 +191,7 @@ form .form-control {
       &:focus {
         cursor: text;
         background-color: #FF6A6A;
-        color: #fff;
+        //color: #fff;
         background-image: url('../../assets/img/form-validation/x-icon.svg');
         background-repeat: no-repeat;
         background-position: right 6px bottom 8px;
@@ -275,7 +275,7 @@ form .form-control {
       &:focus {
         cursor: text;
         background-color: #778FBB;
-        color: #fff;
+        //color: #fff;
         background-image: url('../../assets/img/form-validation/check-icon.svg') !important;
         background-repeat: no-repeat !important;
         background-position: right 6px bottom 8px;
@@ -346,7 +346,7 @@ form .form-control {
       &:focus {
         cursor: text;
         background-color: #ff5d5d;
-        color: #fff;
+        //color: #fff;
         background-image: url('../../assets/img/form-validation/x-icon.svg');
         background-repeat: no-repeat;
         background-position: right 6px bottom 8px;
@@ -364,7 +364,7 @@ form .form-control {
     }
 
     &.ng-valid.ng-untouched.ng-dirty {
-      border-right: 3px solid #28529f;
+      //border-right: 3px solid #28529f;
 
       &.address-input,
       &.email-input,
@@ -376,7 +376,7 @@ form .form-control {
 
       &:focus {
         cursor: text;
-        background-color: #28529f;
+        //background-color: #28529f;
         color: #fff;
         transition: 0.3s;
       }

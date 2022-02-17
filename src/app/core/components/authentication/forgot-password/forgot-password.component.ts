@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {SharedService} from "../../../services/shared/shared.service";
-import {AuthService} from "../../../services/auth/auth.service";
-import * as moment from "moment";
+// import {AuthService} from "../../../services/auth/auth.service";
+import moment from "moment";
+// import {NotificationService} from "../../../services/notification/notification.service";
 
 @Component({
   selector: 'app-forgot-password',
@@ -10,6 +11,11 @@ import * as moment from "moment";
   styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordComponent implements OnInit {
+
+  get emailField() {
+    return this.forgotPasswordForm.get('email');
+  }
+
   @ViewChild('email') emailInput: any;
 
   email!: null;
@@ -22,8 +28,8 @@ export class ForgotPasswordComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private shared: SharedService,
-   // private authService: AuthService,
-   // private notification: NotificationService
+    // private authService: AuthService,
+    // private notification: NotificationService
   ) {
     this.createForm();
     this.copyrightYear = moment().year();
