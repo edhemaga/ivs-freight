@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import {FormGroup} from "@angular/forms";
+import { SpinnerService } from './spiner.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
 
-  constructor() { }
+  constructor(private notification: NotificationService,
+    private spinner: SpinnerService) { }
 
   /**
    * Marks all controls in a form group as touched
@@ -52,6 +54,11 @@ export class SharedService {
     if (formElement.pristine && formElement.invalid) {
       return 'untouched-invalid';
     }
+  }
+
+  public handleServerError() {
+    this.notification.error('Something went wrong. Please try again.', 'Error:');
+    this.spinner.show(false);
   }
 
 
