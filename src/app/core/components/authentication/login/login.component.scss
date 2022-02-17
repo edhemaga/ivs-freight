@@ -1,5 +1,14 @@
 @import 'src/theme/variables';
 
+* {
+  font-family: $main-font;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
 .login-container {
   height: calc(100vh - 46px);
   min-height: 750px;
@@ -74,7 +83,6 @@
 
       p {
         color: #91A4C7;
-        margin: 0;
       }
 
       &:hover {
@@ -166,7 +174,6 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 18px;
-    margin: 0;
   }
 }
 
@@ -191,7 +198,6 @@
 
       &.field-focused {
         background-image: none !important;
-        outline: none !important;
       }
 
       &.touched-invalid {
@@ -255,9 +261,9 @@
   }
 }
 
-::ng-deep .tooltip {
-  .arrow::before {
-    display: none;
+::ng-deep .tooltip-arrow {
+  &::before {
+    display: none !important;
   }
 }
 
@@ -335,6 +341,3 @@
     background-image: url('../../../../../assets/img/form-validation/password-icon-blue-hover.svg');
   }
 }
-
-
-

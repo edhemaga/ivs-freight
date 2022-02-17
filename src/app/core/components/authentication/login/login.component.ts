@@ -1,21 +1,32 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {SharedService} from "../../../services/shared/shared.service";
 import {AuthService} from "../../../services/auth/auth.service";
-import * as moment from "moment";
+import moment from "moment";
+import {NotificationService} from "../../../services/notification/notification.service";
+import {SpinnerService} from "../../../services/spinner/spinner.service";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
+
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
 
   @ViewChild('name') emailInput: any;
   @ViewChild('password') passwordInput: any;
 
-  loginForm!: FormGroup;
+  loginForm: FormGroup;
   passwordType = 'text';
   copyrightYear!: number;
   inputText!: false;
@@ -24,19 +35,19 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    //private notification: NotificationService,
+    private notification: NotificationService,
     private router: Router,
-    //private spinner: SpinnerService,
-    private shared: SharedService
+    private spinner: SpinnerService,
+    private shared: SharedService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.createForm();
-    this.copyrightYear = moment().year();
-
   }
 
   ngOnInit() {
-    //this.copyrightYear = moment().year();
+    this.copyrightYear = moment().year();
   }
+
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -59,14 +70,14 @@ export class LoginComponent implements OnInit {
       (res: any) => {
         localStorage.setItem('multiple_companies', JSON.stringify(res.userCompanies));
         const url = res.userCompanies.length <= 1 ? '/' : '/select-company';
-        // this.notification.success('Login is success', 'Success');
+        this.notification.success('Login is success', 'Success');
         setTimeout(() => {
           this.router.navigate([url]);
         }, 1000);
-        //this.spinner.show(false);
+        this.spinner.show(false);
       },
       (error: any) => {
-        //error ? this.shared.handleServerError() : null;
+        error ? this.shared.handleServerError() : null;
       }
     );
   }
@@ -79,7 +90,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: [
         '',
-        [Validators.required, Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)],
+        [Validators.required, Validators.email],
       ],
       password: ['', Validators.required],
     });
@@ -88,6 +99,7 @@ export class LoginComponent implements OnInit {
   public onEmailKeyUp(x: any) {
     this.inputText = x.key;
     x.key === 'Backspace' && !this.loginForm.get('email')?.value ? this.inputText = false : this.inputText = x.key;
+    this.changeDetectorRef.detectChanges();
   }
 
   public onPasswordKeyUp(x: any) {
@@ -95,9 +107,9 @@ export class LoginComponent implements OnInit {
     x.key === 'Backspace' && !this.loginForm.get('password')?.value ? this.passwordText = false : this.passwordText = x.key;
   }
 
-
   clearEmailInput() {
     this.loginForm.controls['email'].reset();
+    this.changeDetectorRef.detectChanges();
   }
 
   clearPasswordInput() {

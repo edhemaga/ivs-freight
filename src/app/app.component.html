@@ -1,1 +1,18 @@
-<router-outlet></router-outlet>
+<div *ngIf="userCompany && trialVisible && companySubscribed!=1" [class.expired-trial]="companyTrialExpired == 1"
+     class="trial-wrapper"
+     id="trial-wrapper">
+  {{ userCompany.trialRemainingDays > 0 ? userCompany.trialRemainingDays + ' days left in trial' : 'expired' }}
+</div>
+<div class="app-wrapper{{ fixedHeader ? ' fixed-header' : '' }}">
+  <router-outlet></router-outlet>
+</div>
+<!-- <div class="low-res-wrapper hidden">
+  <div class="low-res-logo">
+    <img src="assets/img/logo/sign-in-logo.svg"/>
+  </div>
+  <br/>
+  <h3>The screen size is too low for this app to run.</h3>
+  <br/>
+  <h4>Minimum screen width requirement: 1280px.</h4>
+</div> -->
+<!--<app-preloads></app-preloads>-->
