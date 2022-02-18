@@ -1,8 +1,8 @@
 import {takeUntil} from 'rxjs/operators';
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
-import {DashboardService} from '../core/services/dashboard.service';
-import {SharedService} from '../core/services/shared.service';
+import { DashboardService } from '../../../services/dashboard/dashboard.service';
+import { SharedService } from '../../../services/shared/shared.service';
 
 class DashboardStats {
   allTimeObject: any[];

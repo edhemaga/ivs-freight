@@ -1,1 +1,95 @@
-<p>dashboard-statistics works!</p>
+<div class="new_stat_holder">
+    <div class="stat_header d-flex">
+      <div appSelectionColor class="stat_header_item no-background" style="color: #919191B3;">Scorecards</div>
+      <div class="stat_header_item p-0 no-background">
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Appl</div>
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Driver</div>
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Truck</div>
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Trailer</div>
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Owner</div>
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">User</div>
+      </div>
+      <div class="stat_header_item p-0 no-background">
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Miles</div>
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Gallons</div>
+        <div appSelectionColor class="stat_inside_item size-72" style="color: #919191B3;">Fuel</div>
+      </div>
+      <div class="stat_header_item p-0 no-background">
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Insp</div>
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Acdnt</div>
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Viol.</div>
+      </div>
+      <div class="stat_header_item p-0 no-background">
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Shop</div>
+        <div appSelectionColor class="stat_inside_item size-72" style="color: #919191B3;">Repair</div>
+      </div>
+      <div class="stat_header_item p-0 no-background">
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Broker</div>
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Shipp.</div>
+        <div appSelectionColor class="stat_inside_item" style="color: #919191B3;">Load</div>
+        <div appSelectionColor class="stat_inside_item long_width" style="color: #919191B3;">Revenue</div>
+      </div>
+    </div>
+    <div class="stat_body">
+      <div *ngFor="let item of dataItems" class="stat_body_item d-flex">
+        <div class="stat_item_group">
+                  <span [ngSwitch]="item.name" class="stat_main_group">
+                      <span *ngSwitchCase="'todayObject'" appSelectionColor style="color: #fff;">Today</span>
+                      <span *ngSwitchCase="'wtdObject'" appSelectionColor style="color: #fff;">WTD</span>
+                      <span *ngSwitchCase="'mtdObject'" appSelectionColor style="color: #fff;">MTD</span>
+                      <span *ngSwitchCase="'ytdObject'" appSelectionColor style="color: #fff;">YTD</span>
+                      <span *ngSwitchDefault appSelectionColor style="color: #fff;">All time</span>
+                  </span>
+          <div *ngIf="item.name != 'todayObject' && item.name != 'allTimeObject'"
+               [ngStyle]="{ width: (dayOfPercentage[item.name] + '%') }"
+               class="percentage_item"></div>
+        </div>
+        <div class="other_groups d-flex">
+          <div class="group_item">0</div>
+          <div [innerHTML]="data[item.name] ? data[item.name]['drivers' + item.sufix] : 0" class="group_item"></div>
+          <div [innerHTML]="data[item.name] ? data[item.name]['trucks' + item.sufix] : 0" class="group_item"></div>
+          <div class="group_item average">
+            <span [innerHTML]="data[item.name] ? data[item.name]['trailers' + item.sufix] : 0" class="real_value"></span>
+            <span class="changed_value">
+                          <div class="avrg_items">0</div>
+                          <div class="avrg_items">Avg.</div>
+                      </span>
+          </div>
+          <div [innerHTML]="data[item.name] ? data[item.name]['owners' + item.sufix] : 0" class="group_item"></div>
+          <div class="group_item addition">
+            <span class="real_value">0</span>
+            <span class="changed_value">+1</span>
+          </div>
+        </div>
+        <div class="other_groups d-flex">
+          <div class="group_item">0</div>
+          <div class="group_item">0</div>
+          <div [innerHTML]="data[item.name] ? data[item.name]['fuelItem' + item.sufix] : 0"
+               class="group_item size-72"></div>
+        </div>
+        <div class="other_groups d-flex">
+          <div class="group_item">0</div>
+          <div [innerHTML]="data[item.name] ? data[item.name]['accidents' + item.sufix] : 0" class="group_item"></div>
+          <div class="group_item deduction">
+            <span class="real_value">0</span>
+            <span class="changed_value">-10</span>
+          </div>
+        </div>
+        <div class="other_groups d-flex">
+          <div [innerHTML]="data[item.name] ? data[item.name]['shop' + item.sufix] : 0" class="group_item"></div>
+          <div [innerHTML]="data[item.name] ? data[item.name]['repair' + item.sufix] : 0"
+               class="group_item size-72"></div>
+        </div>
+        <div class="other_groups d-flex">
+          <div [innerHTML]="data[item.name] ? data[item.name]['customers' + item.sufix] : 0" class="group_item"></div>
+          <div [innerHTML]="data[item.name] ? data[item.name]['shippers' + item.sufix] : 0" class="group_item"></div>
+          <div [innerHTML]="data[item.name] ? data[item.name]['load' + item.sufix] : 0" class="group_item"></div>
+          <div class="group_item long_width deduction">
+            <span [innerHTML]="data[item.name] ? (data[item.name]['revenue' + item.sufix] | currency) : 0"
+                  class="real_value"></span>
+            <span class="changed_value">-{{3678 | currency}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

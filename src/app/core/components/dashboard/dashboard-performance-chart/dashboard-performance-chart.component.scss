@@ -1,0 +1,344 @@
+.chart_holder {
+    .chart_header {
+      display: flex;
+  
+      .chart_white_part {
+        display: flex;
+        flex: 1;
+        align-items: center;
+  
+        padding: 4px 10px;
+  
+        background-color: #fff;
+        border-radius: 3px;
+  
+        &.with_counter {
+          padding: 4px !important;
+        }
+  
+        span {
+          margin-right: 5px;
+  
+          font-size: 16px;
+          font-weight: bold;
+          color: #919191;
+        }
+  
+        .load_counts_dash {
+          height: 24px;
+          min-width: 24px;
+          background-color: #9191914d;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 4px;
+  
+          border-radius: 3px;
+  
+          font-size: 14px;
+          font-weight: 700;
+          color: #fff;
+          user-select: none;
+        }
+      }
+  
+      .chart_select_holder {
+        min-width: 106px;
+        height: 32px;
+        margin-left: 5px;
+  
+        user-select: none;
+  
+        .ng-dropdown-panel.ng-select-bottom {
+          top: auto !important;
+        }
+  
+        .ng-select-container {
+          height: 32px;
+          background-color: #fff;
+          border-radius: 3px;
+  
+          .ng-value-container {
+            height: 32px;
+            display: flex;
+            align-items: center;
+            color: rgba(108, 108, 108, 0.7);
+          }
+  
+          &:hover {
+            background-color: #919191;
+  
+            .ng-value-container {
+              color: #fff;
+            }
+  
+            .ng-arrow-wrapper {
+              &:after {
+                color: #fff
+              }
+            }
+          }
+  
+          input {
+            height: 32px;
+          }
+  
+          .ng-clear-wrapper {
+            display: none;
+          }
+  
+          .ng-arrow-wrapper {
+            height: 32px;
+            top: 0;
+  
+            &:after {
+              top: 6px;
+            }
+          }
+  
+          &:after {
+            display: none;
+          }
+        }
+      }
+  
+      .vehicle_chart_legend {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        border-radius: 3px;
+        margin-left: 5px;
+        padding: 0 5px;
+  
+        .legend_item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 10px;
+  
+          &:last-child {
+            margin-bottom: 0;
+          }
+  
+          .legend_text {
+            flex: 1;
+            font-size: 10px;
+            color: #B7B7B7;
+          }
+  
+          .legend_color {
+            display: flex;
+            align-items: center;
+            width: 12px;
+            height: 12px;
+            margin-right: 8px;
+  
+            border-radius: 2px;
+  
+            &.legend_color {
+              svg-icon {
+                display: flex;
+              }
+  
+              &.vehicle_legend {
+                svg {
+                  g {
+                    circle:last-child {
+                      fill: #919191;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  
+    .chart_main_holder {
+      position: relative;
+      margin-top: 15px;
+      height: 300px;
+      background-color: #fff;
+      border-radius: 3px;
+      padding: 20px 10px 20px 10px;
+  
+  
+      &.no-back {
+        flex-direction: column;
+        background-color: transparent;
+        padding: 0;
+  
+        .chart_loading_chat_holder {
+          width: 100%;
+          background-color: #fff;
+          padding: 20px 10px 20px 10px;
+          border-radius: 3px;
+        }
+      }
+  
+      &.dotted_back {
+        background-image: url('../../../../../assets/img/chart-images/doted-line.png');
+        background-size: 15px auto;
+      }
+  
+      chart {
+        height: 254px;
+        flex: 1;
+  
+        canvas {
+          background-image: url('../../../../../assets/img/chart-images/doted-line.png');
+          background-size: 15px auto;
+        }
+      }
+  
+      &.vehicle-chart {
+        padding-bottom: 65px;
+        height: 621px;
+  
+        chart {
+          height: 400px;
+        }
+      }
+  
+      &.loading_chart {
+        height: 514px;
+  
+        chart {
+          height: 420px;
+  
+          canvas {
+            background-image: url('../../../../../assets/img/chart-images/doted-line.png');
+            background-size: 15px auto;
+          }
+        }
+      }
+  
+      .chart_bottom_results {
+        .chart_bottom_result_items {
+          flex: 1;
+          background-color: #fff;
+          border-radius: 3px;
+  
+          &:nth-child(2) {
+            margin-left: 2px;
+            margin-right: 1px;
+          }
+  
+          &:nth-child(3) {
+            margin-left: 1px;
+            margin-right: 2px;
+          }
+        }
+      }
+  
+      .chart_top_hold {
+        position: relative;
+  
+        &.white_one {
+          background-color: #fff;
+          border-radius: 3px;
+  
+  
+        }
+  
+        .inside_chart {
+          position: absolute;
+          left: 50%;
+          bottom: 30px;
+  
+          transform: translate(-50%, -0%);
+          text-align: center;
+  
+          .inside_title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #B7B7B7;
+          }
+  
+          .inside_value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #919191;
+  
+            &.main_value {
+              font-size: 42px;
+  
+              .total-sufix {
+                font-size: 22px;
+                margin-top: 3px;
+              }
+            }
+          }
+        }
+      }
+  
+      &.chat_invoce {
+        height: 430px;
+        padding: 20px 22px 15px 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+  
+        chart {
+          height: 335px;
+  
+          canvas {
+            background-image: url('../../../../../assets/img/chart-images/doted-line.png');
+            background-size: 15px auto;
+          }
+        }
+      }
+  
+      &.d-flex {
+        align-items: flex-end;
+      }
+  
+      .bottom_results {
+        margin-top: 5px;
+        padding-top: 10px;
+        justify-content: space-around;
+  
+        .results_item {
+          display: flex;
+          text-align: center;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          height: 127px;
+          padding: 10px 0;
+  
+          .result_top {
+            font-size: 16px;
+            font-weight: bold;
+            color: #B7B7B7;
+          }
+  
+          .result_middle {
+            font-size: 24px;
+            font-weight: 800;
+            color: rgb(36, 193, 161, 0.7);
+          }
+  
+          .result_bottom {
+            font-size: 18px;
+            color: #B7B7B7;
+  
+            .total-sufix {
+              font-size: 10px;
+              margin-top: 3px;
+            }
+          }
+  
+          .result_percentage {
+            display: flex;
+            align-items: center;
+            margin-top: 3px;
+            font-size: 16px;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
