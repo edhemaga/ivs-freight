@@ -1,0 +1,31 @@
+<svg height="14" id="mail" viewBox="0 0 21.001 14" width="21.001" xmlns="http://www.w3.org/2000/svg">
+  <g data-name="Group 1865" id="Group_1865" transform="translate(14.136 2.581)">
+    <g data-name="Group 1864" id="Group_1864">
+      <path d="M339.392,149.419l6.865,4.34V144.9Z" data-name="Path 1075" fill="#919191"
+            id="Path_1075" transform="translate(-339.392 -144.896)"/>
+    </g>
+  </g>
+  <g data-name="Group 1867" id="Group_1867" transform="translate(0 2.581)">
+    <g data-name="Group 1866" id="Group_1866">
+      <path d="M0,144.9v8.863l6.865-4.34Z" data-name="Path 1076" fill="#919191" id="Path_1076"
+            transform="translate(0 -144.896)"/>
+    </g>
+  </g>
+  <g data-name="Group 1869" id="Group_1869" transform="translate(0.038)">
+    <g data-name="Group 1868" id="Group_1868">
+      <path d="M20.611,80H2.233A1.284,1.284,0,0,0,.96,81.083l10.462,6.683,10.462-6.683A1.284,1.284,0,0,0,20.611,80Z"
+            data-name="Path 1077"
+            fill="#919191"
+            id="Path_1077" transform="translate(-0.96 -80)"/>
+    </g>
+  </g>
+  <g data-name="Group 1871" id="Group_1871" transform="translate(0.041 7.872)">
+    <g data-name="Group 1870" id="Group_1870">
+      <path
+        d="M13.7,277.921l-1.857,1.186a.676.676,0,0,1-.722,0L9.265,277.92l-8.241,5.054a1.282,1.282,0,0,0,1.271,1.074H20.673a1.282,1.282,0,0,0,1.271-1.074Z"
+        data-name="Path 1078"
+        fill="#919191"
+        id="Path_1078" transform="translate(-1.024 -277.92)"/>
+    </g>
+  </g>
+</svg>

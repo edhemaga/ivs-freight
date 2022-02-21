@@ -1,0 +1,11 @@
+<svg data-name="1" height="55" id="_1" viewBox="0 0 44 55" width="44" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M551.868,162.338a21.953,21.953,0,0,0-17.7,35.01c4.008,5.4,17.741,19.99,17.741,19.99s13.641-14.585,17.649-19.99a21.953,21.953,0,0,0-17.7-35.01Zm0,37.234a15.274,15.274,0,1,1,15.3-15.274A15.288,15.288,0,0,1,551.868,199.572Z"
+    data-name="Path 2805"
+    fill="#FF5D5D"
+    id="Path_2805" transform="translate(-529.868 -162.338)"/>
+  <path d="M15.4,0A15.4,15.4,0,1,1,0,15.4,15.4,15.4,0,0,1,15.4,0Z" data-name="Path 2808" fill="#fff"
+        id="Path_2808" transform="translate(6.6 6.6)"/>
+  <path d="M6.18-14V0H2.94V-11.4H.14V-14Z" data-name="Path 3000" fill="#FF5D5D" id="Path_3000"
+        transform="translate(18 29)"/>
+</svg>

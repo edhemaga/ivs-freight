@@ -1,0 +1,16 @@
+<svg height="23.002" viewBox="0 0 6.001 23.002" width="6.001" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.a {
+      fill: #6c6c6c;
+      stroke: rgba(0, 0, 0, 0);
+    }
+
+    .b {
+      fill: #919191;
+    }</style>
+  </defs>
+  <g transform="translate(-687.5 -372.499)">
+    <path class="a" d="M-7792,12702v-22h1v22Zm-4,0v-22h1v22Z" transform="translate(8484 -12307)"/>
+    <path class="b" d="M0,0H3V22H0Z" transform="translate(689 373)"/>
+  </g>
+</svg>

@@ -1,0 +1,14 @@
+<svg height="26" viewBox="0 0 26.003 26" width="26.003" xmlns="http://www.w3.org/2000/svg">
+  <g id="play-button" transform="translate(0 -0.002)">
+    <path
+      d="M18.981,13.808l-5.4-3.925a.651.651,0,0,0-1.034.525v7.848a.649.649,0,0,0,.356.581.656.656,0,0,0,.3.07.647.647,0,0,0,.382-.126l5.4-3.922a.646.646,0,0,0,0-1.05Z"
+      data-name="Path 12396"
+      fill="#fff"
+      id="Path_12396" transform="translate(-1.69 -1.314)"/>
+    <path
+      d="M13,0A13,13,0,1,0,26,13,13,13,0,0,0,13,0Zm0,23.831A10.83,10.83,0,1,1,23.831,13,10.829,10.829,0,0,1,13,23.833Z"
+      data-name="Path 12397"
+      fill="#fff"
+      id="Path_12397" transform="translate(0 0)"/>
+  </g>
+</svg>

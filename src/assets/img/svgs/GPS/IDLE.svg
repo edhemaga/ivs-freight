@@ -1,0 +1,14 @@
+<svg height="44" viewBox="0 0 46 44" width="46" xmlns="http://www.w3.org/2000/svg">
+  <g id="IDLE" transform="translate(-572 -1155)">
+    <path
+      d="M564.235,956.129a21.725,21.725,0,0,0-42.947-2.334c-1.316,6.555-2.952,26.41-2.952,26.41s19.748.376,26.372-.259A21.8,21.8,0,0,0,564.235,956.129Z"
+      data-name="Path 2989"
+      fill="#5673aa"
+      id="Path_2989" transform="translate(53.664 218.685)"/>
+    <path d="M703.859,377.981a18,18,0,1,1-24.584-6.588h0A18,18,0,0,1,703.859,377.981Z" data-name="Path 2991"
+          fill="#fff"
+          id="Path_2991" transform="translate(-92.273 790.021)"/>
+    <path d="M690.8,374.48a11,11,0,1,1-15.023-4.026h0A11,11,0,0,1,690.8,374.48Z" data-name="Path 2991" fill="#5673aa"
+          id="Path_2991-2" transform="translate(-85.273 797.021)"/>
+  </g>
+</svg>

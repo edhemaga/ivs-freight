@@ -6,6 +6,9 @@ import {InputRestrictionDirective} from "../../directives/input-restriction.dire
 import {InputErrorPipe} from "../../pipes/input-error.pipe";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgSelectModule} from '@ng-select/ng-select';
+import {AngularSvgIconModule} from "angular-svg-icon";
+import {AngularSvgIconPreloaderModule} from 'angular-svg-icon-preloader';
+
 @NgModule({
   declarations: [
     AutoFocusDirective,
@@ -17,7 +20,11 @@ import {NgSelectModule} from '@ng-select/ng-select';
     CommonModule,
     FormsModule,
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
-    NgSelectModule
+    NgSelectModule,
+    AngularSvgIconModule.forRoot(),
+    AngularSvgIconPreloaderModule.forRoot({
+      configUrl: '../../assets/imgPreloadJson/svgImages.json',
+    }),
   ],
   exports: [
     AutoFocusDirective,
@@ -26,7 +33,8 @@ import {NgSelectModule} from '@ng-select/ng-select';
     InputErrorPipe,
     FormsModule,
     ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule,
+    AngularSvgIconModule,
   ]
 })
 export class SharedModule { }

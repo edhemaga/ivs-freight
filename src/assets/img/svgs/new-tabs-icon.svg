@@ -1,0 +1,13 @@
+<svg data-name="Component 440 – 4" height="40" id="Component_440_4" viewBox="0 0 49 40" width="49"
+     xmlns="http://www.w3.org/2000/svg">
+  <g data-name="Group 2279" id="Group_2279" opacity="0.6" transform="translate(-134)">
+    <rect data-name="Rectangle 744" fill="#606060" height="40" id="Rectangle_744" rx="5" transform="translate(134)"
+          width="49"/>
+  </g>
+  <g data-name="Group 2978" id="Group_2978" opacity="0.8" transform="translate(-174 -209)">
+    <rect data-name="Rectangle 1730" fill="#fff" height="18" id="Rectangle_1730" rx="2" transform="translate(197 220)"
+          width="4"/>
+    <rect data-name="Rectangle 1731" fill="#fff" height="18" id="Rectangle_1731" rx="2"
+          transform="translate(208 227) rotate(90)" width="4"/>
+  </g>
+</svg>

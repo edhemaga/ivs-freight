@@ -1,4 +1,4 @@
-<div *ngIf="userCompany && trialVisible && companySubscribed!=1" [class.expired-trial]="companyTrialExpired == 1"
+<!--<div *ngIf="userCompany && trialVisible && companySubscribed!=1" [class.expired-trial]="companyTrialExpired == 1"
      class="trial-wrapper"
      id="trial-wrapper">
   {{ userCompany.trialRemainingDays > 0 ? userCompany.trialRemainingDays + ' days left in trial' : 'expired' }}
@@ -6,7 +6,7 @@
 <div class="app-wrapper{{ fixedHeader ? ' fixed-header' : '' }}">
   <router-outlet></router-outlet>
 </div>
-<!-- <div class="low-res-wrapper hidden">
+<div class="low-res-wrapper hidden">
   <div class="low-res-logo">
     <img src="assets/img/logo/sign-in-logo.svg"/>
   </div>
@@ -16,3 +16,51 @@
   <h4>Minimum screen width requirement: 1280px.</h4>
 </div> -->
 <!--<app-preloads></app-preloads>-->
+
+<!-- IZ starog projekta base.component.html -->
+<!-- <overlay-scrollbars> -->
+<app-header>
+
+</app-header>
+
+<!-- <app-sidebar (sideBarClose)="doSomething()" [isOpen]="isOpen"></app-sidebar>
+<app-note-sidebar></app-note-sidebar> -->
+
+<div [ngClass]="expanded ? 'expanded-container' : 'container app-content collapsed-container'">
+  <!-- <div *ngIf="expanded" class="table-header">
+    <app-extended-table-header></app-extended-table-header>
+  </div> -->
+  <div>
+    <section class="app-wrapper" id="top">
+      <router-outlet></router-outlet>
+      <div (click)="top()" *ngIf="showScrollButton" @scrollButtonAnimation id="scrollTop"></div>
+    </section>
+    <!-- <div *ngIf="toastMessages.length > 0" class="toastMessages">
+      <app-communicator-toast-message
+        (hoverReactionOnMessage)="hoverToastMessage($event)"
+        (noHoverReactionOnMessage)="noHoverToastMessage($event)"
+        (toastMessageClosed)="closeToastMessage($event)"
+        *ngFor="let message of toastMessages"
+        [toastMessage]="message"
+      >
+      </app-communicator-toast-message>
+    </div> -->
+  </div>
+</div>
+
+<div class="communicator-mini">
+  <!-- <app-communicator-mini></app-communicator-mini> -->
+</div>
+<!-- <app-gallery [visible]="isGalleryVisible"></app-gallery> -->
+
+<!-- Attachments -->
+<!-- <div [ngClass]="{ 'show-attachments-popup': showAttachments }" class="attachments-popup-container">
+  <div (click)="onHideAttachments()" class="close-attachments-popup">
+    <svg-icon
+      [svgStyle]="{ 'width.px': '10.30', 'height.px': '6' }"
+      src="../assets/img/attachments-popup/attachments-arrow.svg"
+    ></svg-icon>
+  </div>
+  <app-attachments-popup></app-attachments-popup>
+</div> -->
+<!-- </overlay-scrollbars> -->

@@ -1,0 +1,13 @@
+<svg height="16" viewBox="0 0 14.005 16" width="14.005" xmlns="http://www.w3.org/2000/svg">
+  <g id="trash" transform="translate(0 0)">
+    <path d="M32.663,107.6,32,96H44l-.663,11.6a1.5,1.5,0,0,1-1.5,1.407H34.16a1.5,1.5,0,0,1-1.5-1.406Z"
+          data-name="Path 7317"
+          fill="#919191"
+          id="Path_7317" transform="translate(-31 -93.004)"/>
+    <path
+      d="M0,2.5v-1A.5.5,0,0,1,.5,1H4.251L4.545.416A.741.741,0,0,1,5.214,0H8.787a.75.75,0,0,1,.672.416L9.753,1H13.5a.5.5,0,0,1,.5.5v1a.5.5,0,0,1-.5.5H.5A.5.5,0,0,1,0,2.5Z"
+      data-name="Path 7318"
+      fill="#b7b7b7"
+      id="Path_7318" transform="translate(0 0)"/>
+  </g>
+</svg>

@@ -32,3 +32,120 @@ $fallback-font: 'sans-serif';
 
 // Transition variable
 $transition: all 0.3s ease-in-out;
+
+//Scale size
+$scaleSize: 1.1;
+
+// Black&White pallete
+$bw1: #f9f9f9;
+$bw2: #eeeeee;
+$bw3: #d1d1d1;
+$bw4: #b7b7b7;
+$bw5: #919191;
+$bw6: #606060;
+$bw6-2: #6c6c6c;
+$bw7: #3d3d3d;
+$bw8: #dbdbdb;
+$bw-9: #dadada;
+
+// Box Shadow
+$box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+
+@mixin triangletop {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 6px solid $white;
+  //-webkit-filter: drop-shadow(0px -3px 2px rgba(0, 0, 0, 0.1));
+  -webkit-filter: drop-shadow(0px -2px 1px rgba(0, 0, 0, 0.1));
+  //filter: drop-shadow(0px -3px 2px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0px -2px 1px rgba(0, 0, 0, 0.1));
+  position: absolute;
+  top: -6px;
+  left: calc(50% - 10px);
+}
+
+// chips pallete
+$chip-0: #30c862;
+$chip-0-20: #30c86220;
+$chip-1: #ffad43;
+$chip-1-20: #ffad4320;
+$chip-2: #ff5d5d;
+$chip-2-20: #ff5d5d20;
+
+$input-color: #a7a7a7;
+
+// table pallete
+$row-hover: #dfdfdf;
+$row-select: #7f7f7f;
+$th-color: #b7b7b7;
+$tb-border: #cfcfcf;
+$th-start-date: #b93636;
+
+$trash-icon-color: #ff5d5d;
+
+// Truck type colors ///////////////////////////////////////////////////////////
+$semi-truck: #90BC6F;
+$semi-w-sleeper: #FFC061;
+$box-truck: #EF6E6E;
+$cargo-van: #78C7FC;
+$tow-truck: #90659B;
+$truck-hauler: #668888;
+$bus: #eed070;
+$motorcycle: #7081DB;
+$pars-vehicle: #78D1B5;
+////////////////////////////////////////////////////////////////////////////////
+
+// Trailer type colors /////////////////////////////////////////////////////////
+$reefer: #EF6E6E;
+$dry-van: #5673AA;
+$side-kit: #76A77D;
+$conestog: #484848;
+$dumper: #8FDEE1;
+$container: #FFBE7D;
+$tanker: #81CCFF;
+$trailer-hauler: #668888;
+$flat-bed: #AF88EA;
+$low-boy: #955FA2;
+$chassis: #547556;
+$step-deck: #F2DD75;
+////////////////////////////////////////////////////////////////////////////////
+
+// mixins
+@mixin border($direction, $width: 1px, $style: solid, $color: $gray-300) {
+  border-#{$direction}: $width $style $color;
+}
+
+@mixin downAnimation {
+  animation: dropdown 0.3s;
+}
+
+@keyframes dropdown {
+  0% {
+    margin-top: 20px;
+    visibility: hidden;
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    margin-top: 10px;
+    visibility: visible !important;
+  }
+}
+
+@mixin AnimationUp {
+  animation: dropup ease-out 0.15s;
+}
+
+@keyframes dropup {
+  0% {
+    margin-top: -19px;
+    visibility: hidden;
+    opacity: 0;
+  }
+  100% {
+    margin-top: inherit;
+    visibility: visible !important;
+  }
+}
