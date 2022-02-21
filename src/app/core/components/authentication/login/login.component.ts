@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.authService.userLogin(data).subscribe(
       (res: any) => {
         localStorage.setItem('multiple_companies', JSON.stringify(res.userCompanies));
-        const url = res.userCompanies.length <= 1 ? '/' : '/select-company';
+        const url = res.userCompanies.length <= 1 ? '/dashboard' : '/select-company';
         this.notification.success('Login is success', 'Success');
         setTimeout(() => {
           this.router.navigate([url]);
