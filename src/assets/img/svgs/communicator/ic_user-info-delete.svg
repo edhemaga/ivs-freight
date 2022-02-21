@@ -1,0 +1,43 @@
+<svg height="40" viewBox="0 0 96 40" width="96"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter filterUnits="userSpaceOnUse" height="40" id="Union_1" width="96" x="0" y="0">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur result="blur" stdDeviation="2"/>
+      <feFlood flood-opacity="0.149"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g data-name="Group 34320" id="Group_34320" transform="translate(-1634 -258)">
+    <g data-name="Group 8690" id="Group_8690" transform="translate(1171 89.301)">
+      <g filter="url(#Union_1)" transform="matrix(1, 0, 0, 1, 463, 168.7)">
+        <path d="M3,32.992H81a3,3,0,0,1,3,3v22a3,3,0,0,1-3,3H3a3,3,0,0,1-3-3v-22A3,3,0,0,1,3,32.992Z"
+              data-name="Union 1"
+              fill="#fff"
+              id="Union_1-2" transform="translate(6 -26.99)"/>
+      </g>
+    </g>
+    <rect data-name="Rectangle 5009" height="28" id="Rectangle_5009" opacity="0" transform="translate(1640 264)"
+          width="22"/>
+    <g data-name="Group 8691" id="Group_8691" transform="translate(1 -145)">
+      <g data-name="Group 8682" id="Group_8682">
+        <text fill="#ff5d5d" font-family="Montserrat-Regular, Montserrat" font-size="12" id="Delete"
+              opacity="0.7" transform="translate(1666 428)">
+          <tspan x="0" y="0">Delete</tspan>
+        </text>
+        <g id="trash" opacity="0.7" transform="translate(1646 415)">
+          <path d="M32.663,106.988,32,96H44l-.663,10.988a1.469,1.469,0,0,1-1.5,1.333H34.16a1.469,1.469,0,0,1-1.5-1.333Z"
+                data-name="Path 7317"
+                fill="#ff5d5d"
+                id="Path_7317" transform="translate(-31 -92.321)"/>
+          <path
+            d="M0,2.5v-1A.5.5,0,0,1,.5,1H4.251L4.545.416A.741.741,0,0,1,5.214,0H8.787a.75.75,0,0,1,.672.416L9.753,1H13.5a.5.5,0,0,1,.5.5v1a.5.5,0,0,1-.5.5H.5A.5.5,0,0,1,0,2.5Z"
+            data-name="Path 7318"
+            fill="#ff5d5d"
+            id="Path_7318" transform="translate(0 0)"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

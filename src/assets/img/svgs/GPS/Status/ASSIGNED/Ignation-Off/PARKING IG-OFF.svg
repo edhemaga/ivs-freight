@@ -1,0 +1,15 @@
+<svg height="33" viewBox="0 0 34.5 33" width="34.5" xmlns="http://www.w3.org/2000/svg">
+  <g id="STOP" transform="translate(-668 -1155)">
+    <path
+      d="M552.76,951.176a16.294,16.294,0,0,0-32.21-1.75c-.987,4.916-2.214,19.807-2.214,19.807s14.811.282,19.779-.194A16.348,16.348,0,0,0,552.76,951.176Z"
+      data-name="Path 2989"
+      fill="#6c6c6c"
+      id="Path_2989" transform="translate(149.664 218.685)"/>
+    <path d="M695.462,375.73a13.5,13.5,0,1,1-18.438-4.941h0A13.5,13.5,0,0,1,695.462,375.73Z" data-name="Path 2991"
+          fill="#fff"
+          id="Path_2991" transform="translate(2.227 789.021)"/>
+    <path d="M685.666,373.1a8.249,8.249,0,1,1-11.267-3.019h0A8.248,8.248,0,0,1,685.666,373.1Z" data-name="Path 2991"
+          fill="#e5e5e5"
+          id="Path_2991-2" transform="translate(7.477 794.271)"/>
+  </g>
+</svg>

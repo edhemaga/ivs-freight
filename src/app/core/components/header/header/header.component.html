@@ -1,0 +1,560 @@
+<div *ngIf="!loading" class="card main-head-card" id="sticky">
+  <div [ngClass]="{ 'add-z-index': isMapFullScreen }" class="header header-1">
+    <div class="container">
+      <nav
+        class="navbar header-nav navbar-expand-lg main-navbar justify-content-between{{
+          this.router.url == '/tools/routing/fullscreen' ? ' hidden' : ''
+        }}"
+      >
+        <a class="header-brand text-lg-left">
+          <img
+            alt="logo-new-image"
+            (click)="headerLogoClick()"
+            class="header-brand-img"
+            src="assets/img/logo/logo-new.svg"
+          />
+        </a>
+        <form id="header-search-form">
+          <div
+            [ngClass]="{ collapsed: searchCollapsed, expanded: !searchCollapsed }"
+            class="search-input-wrapper"
+          >
+            <input appInputFocus id="search-input" placeholder="Search Anything" type="search"/>
+            <span (click)="toggleSearch()" id="search-icon">
+              <svg-icon
+                class="menu-svg chat-svg"
+                src="assets/img/svgs/header/search.svg"
+              ></svg-icon>
+            </span>
+          </div>
+        </form>
+        <ul class="navbar-nav navbar-right align-items-center">
+          <li>
+            <a
+              *ngIf="!unreadMessage"
+              class="header-nav-link nav-link nav-link-lg openbtn"
+              href="javascript:void(0)"
+              placement="bottom"
+              routerLink="/communicator"
+            >
+              <svg-icon
+                [ngClass]="{ 'active-chat': router?.url?.includes('communicator') }"
+                class="menu-svg chat-svg"
+                src="../../../assets/img/svgs/header/new communicator.svg"
+              ></svg-icon>
+            </a>
+            <a
+              *ngIf="unreadMessage"
+              class="header-nav-link nav-link nav-link-lg openbtn"
+              href="javascript:void(0)"
+              placement="bottom"
+              routerLink="/communicator"
+            >
+              <svg-icon
+                [ngClass]="{ 'active-unread-chat': router?.url?.includes('communicator') }"
+                class="menu-svg unread-chat-svg"
+                src="../../../assets/img/svgs/header/new communicator.svg"
+              ></svg-icon>
+            </a>
+          </li>
+
+          <li>
+            <a
+              class="header-nav-link nav-link nav-link-lg openbtn gps-link"
+              href="javascript:void(0)"
+              placement="bottom"
+              routerLink="/tools/gpstracking"
+            >
+              <svg-icon
+                [ngClass]="{ 'gps-route-active': router.url === '/tools/gpstracking' }"
+                class="menu-svg chat-svg gps-svg"
+                src="../../../assets/img/svgs/header/new gps.svg"
+              ></svg-icon>
+            </a>
+          </li>
+
+          <li>
+            <a
+              [routerLinkActive]="'activated-route'"
+              class="header-nav-link nav-link nav-link-lg openbtn"
+              placement="bottom"
+              routerLink="/page-not-found"
+            >
+              <svg-icon
+                [ngClass]="{ 'gps-route-active': router.url === '/page-not-found' }"
+                class="menu-svg chat-svg"
+                src="assets/img/svgs/header/location.svg"
+              ></svg-icon>
+            </a>
+          </li>
+
+          <li>
+            <a
+              [routerLinkActive]="'activated-route'"
+              class="header-nav-link nav-link nav-link-lg openbtn"
+              placement="bottom"
+              routerLink="/statistic"
+            >
+              <svg-icon
+                [ngClass]="{ 'gps-route-active': router.url === '/statistic/load' }"
+                class="menu-svg chat-svg statistic-svg"
+                src="assets/img/svgs/header/statistic.svg"
+              ></svg-icon>
+            </a>
+          </li>
+
+          <!-- Drop down for options to add -->
+
+          <li class="drop-down-navigate li_conteiner">
+            <a class="header-nav-link nav-link dropdown-toggle addAll nav-link-lg openbtn">
+              <svg-icon
+                (click)="onDropOptions()"
+                [ngClass]="{ active_model_drop: showoptions }"
+                class="menu-svg chat-svg shade-svg"
+                src="assets/img/svgs/header/mutedplus.svg"
+              ></svg-icon>
+              <div class="d-none d-md-block d-lg-inline-block"></div>
+            </a>
+
+            <div [ngClass]="{ animate_drop_down: showoptions }" class="drop_plus_icon">
+              <!-- <ul id="acc-modal-ul" class="plus-drop">
+        <li
+          class="li-size"
+          *ngFor="let option of options; let i = index"
+          [ngClass]="{
+            borderTopleft: i == 0,
+            borderTopright: i == 9,
+            borderBototmleft: i == 8,
+            borderBottomright: i == 17,
+            shade: i < 5 || (i > 10 && i < 15),
+            shade1: i == 5 || i == 14,
+            shade2: i == 6 || i == 15,
+            shade3: i == 7 || i == 16,
+            shade4: i == 8 || i == 17
+          }"
+        >
+          <div class="text-option" (click)="openModal(i)">
+            {{ option.option }}
+          </div>
+        </li>
+      </ul>  -->
+
+              <ul class="plus-drop" id="acc-modal-ul">
+                <li
+                  *ngFor="let option of options; let i = index"
+                  [ngClass]="{
+                    borderTopleft: i == 0,
+                    borderTopright: i == 9,
+                    borderBototmleft: i == 8,
+                    borderBottomright: i == 17
+                  }"
+                  class="li-size"
+                >
+                  <div (click)="openModal(i, options)" class="text-option">
+                    {{ option.option }}
+                  </div>
+                </li>
+              </ul>
+
+              <ul class="plus-drop" id="acc-modal-ul">
+                <li
+                  *ngFor="let option of secondOptions; let i = index"
+                  [ngClass]="{
+                    borderTopleft: i == 0,
+                    borderTopright: i == 9,
+                    borderBototmleft: i == 8,
+                    borderBottomright: i == 17
+                  }"
+                  class="li-size"
+                >
+                  <div (click)="openModal(i, secondOptions)" class="text-option">
+                    {{ option.option }}
+                  </div>
+                </li>
+              </ul>
+              <ul class="plus-drop" id="acc-modal-ul">
+                <li
+                  *ngFor="let option of thirdOptions; let i = index"
+                  [ngClass]="{
+                    borderTopleft: i == 0,
+                    borderTopright: i == 9,
+                    borderBototmleft: i == 8,
+                    borderBottomright: i == 17
+                  }"
+                  class="li-size"
+                >
+                  <div (click)="openModal(i, thirdOptions)" class="text-option">
+                    {{ option.option }}
+                  </div>
+                </li>
+              </ul>
+
+              <ul class="plus-drop" id="acc-modal-ul">
+                <li
+                  *ngFor="let option of fourthOptions; let i = index"
+                  [ngClass]="{
+                    borderTopleft: i == 0,
+                    borderTopright: i == 9,
+                    borderBototmleft: i == 8,
+                    borderBottomright: i == 17
+                  }"
+                  class="li-size"
+                >
+                  <div (click)="openModal(i, fourthOptions)" class="text-option">
+                    {{ option.option }}
+                  </div>
+                </li>
+              </ul>
+
+              <ul class="plus-drop" id="acc-modal-ul">
+                <li
+                  *ngFor="let option of fiveOptions; let i = index"
+                  [ngClass]="{
+                    borderTopleft: i == 0,
+                    borderTopright: i == 9,
+                    borderBototmleft: i == 8,
+                    borderBottomright: i == 17
+                  }"
+                  class="li-size"
+                >
+                  <div (click)="openModal(i, fiveOptions)" class="text-option">
+                    {{ option.option }}
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <li>
+            <a
+              class="header-nav-link nav-link nav-link-lg openbtn"
+              href="javascript:void(0)"
+              placement="bottom"
+            >
+              <div style="position: relative; margin: 0;">
+                <svg-icon
+                  class="menu-svg chat-svg"
+                  src="assets/img/svgs/header/info.svg"
+                ></svg-icon>
+              </div>
+            </a>
+          </li>
+
+          <!-- Header Activity -->
+          <li>
+            <a
+              class="header-nav-link nav-link nav-link-lg openbtn"
+              href="javascript:void(0)"
+              placement="bottom"
+            >
+              <div
+                (click)="toggleActivity(t2)"
+                [autoClose]="'outside'"
+                [ngbPopover]="activityPopover"
+                [placement]="'bottom'"
+                [popoverClass]="'main_popover_activity'"
+                class="activity_popover"
+                style="position: relative; margin: 0;"
+                triggers="manual"
+              >
+                <svg-icon
+                  class="menu-svg activity_btn chat-svg"
+                  src="assets/img/svgs/header/notification_icon.svg"
+                ></svg-icon>
+              </div>
+            </a>
+          </li>
+
+          <li>
+            <a
+              [routerLinkActive]="'activated-route'"
+              class="header-nav-link nav-link nav-link-lg openbtn"
+              placement="bottom"
+              routerLink="/company/settings"
+            >
+              <svg-icon
+                [ngClass]="{ 'gps-route-active': router.url === '/company/settings' }"
+                class="menu-svg chat-svg"
+                src="assets/img/svgs/header/settings.svg"
+              ></svg-icon>
+            </a>
+          </li>
+
+          <!-- Drop down for options to add end -->
+          <li class="dropdown userInfo">
+            <div
+              (click)="onCloseDrop()"
+              [ngClass]="{ userInfoDropActive: userInfoDropDownOpened }"
+              class="nav-link dropdown-toggle userInfo-container"
+              data-toggle="dropdown"
+              placement="bottom"
+            >
+              <div
+                (click)="OnChange_color()"
+                class="d-flex align-items-center"
+                id="company-menu-dropdown"
+              >
+                <div class="d-flex flex-column" id="company-name">
+                  <p [ngClass]="{ blue_text: changecolor }" class="m-0 user-company">
+                    {{ userCompany?.name }}
+                  </p>
+                  <p [ngClass]="{ blue_text: changecolor }" class="m-0">
+                    {{ currentUser?.firstName }} {{ currentUser?.lastName }}
+                  </p>
+                </div>
+                <div class="user-avatar-status-container">
+                  <div *ngIf="!avatarError" class="user-avatar-container">
+                    <img
+                      alt="avatar-error-image"
+                      (error)="avatarError = true"
+                      [ngClass]="{ 'd-none': avatarError }"
+                      [src]="
+                        currentUser && currentUser.doc && currentUser.doc.avatar?.src
+                          ? currentUser.doc.avatar.src
+                          : null
+                      "
+                      class="cursor-pointer user-avatar"
+                    />
+                  </div>
+                  <svg-icon
+                    *ngIf="avatarError"
+                    [ngClass]="{ blue_svg: changecolor }"
+                    [svgStyle]="{ 'width.px': 36, 'height.px': 36 }"
+                    src="assets/img/svgs/main-avatar.svg"
+                  ></svg-icon>
+                  <div *ngIf="currentUserStatus" class="status-marker-container">
+                    <div
+                      [ngClass]="{
+                        'status-active': currentUserStatus === 'active',
+                        'status-online': currentUserStatus === 'online',
+                        'status-away': currentUserStatus === 'away',
+                        'status-busy': currentUserStatus === 'busy',
+                        'status-offline': currentUserStatus === 'offline'
+                      }"
+                      class="status-marker"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="element_in_between"></div>
+            </div>
+            <div class="dropdown-menu dropdown-menu-right" id="user_info_dropdown">
+              <div
+                (click)="updateProfile()"
+                class="menu-right-item d-flex align-items-center profile custom-style"
+              >
+                <svg-icon src="assets/img/svgs/editprofilewhite.svg"></svg-icon>
+                <span>Profile update</span>
+              </div>
+              <div (click)="changeMyStatus()" class="menu-right-item d-flex align-items-center">
+                <span class="user_activity_settings">
+                  Set yourself as <b>{{ changeStatusOption }}</b>
+                </span>
+              </div>
+              <div *ngIf="switchCompanyDropItems?.length" class="switch-company-container">
+                <div
+                  (click)="switchCompanyActive = !switchCompanyActive"
+                  class="switch-company-title"
+                >
+                  Switch Company
+                  <svg-icon
+                    [ngClass]="{ 'add-rotation': switchCompanyActive }"
+                    src="../../../assets/img/svgs/header/arrow-user.svg"
+                  ></svg-icon>
+                </div>
+                <div class="switch-company-dropdown">
+                  <div (click)="changeSelectedCompany(company)" *ngFor="let company of switchCompanyDropItems"
+                       class="company">
+                    {{ company?.companyName }}
+                  </div>
+                </div>
+              </div>
+              <div
+                (click)="logout()"
+                class="menu-right-item d-flex align-items-center logout logout-cutom-style"
+              >
+                <svg-icon src="assets/img/svgs/whitelogout.svg"></svg-icon>
+                <span>Logout</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- <app-sidebar [isOpen]="isOpen" (sideBarClose)="doSomething()"></app-sidebar>
+  <app-note-sidebar></app-note-sidebar> -->
+
+  <!--NORMAL HEADER NAVBAR-->
+  <div [ngClass]="{ 'add-z-index': isMapFullScreen }" class="navbar-full top-header">
+    <div
+      [ngClass]="{ new_navbar1: showtooloptions || showSafetyOptions || showAccountingOptions }"
+      class="new-navbar container"
+      id="navbar-container"
+    >
+      <ul class="magic-line-menu">
+        <li *ngFor="let item of menuItems; let i = index">
+          <a [routerLinkActive]="['is-active']" [routerLink]="item.route">{{ item.name }}</a>
+        </li>
+      </ul>
+      <!-- Accounting Dropdown -->
+
+      <ul class="accounting{{ showAccountingOptions ? ' tools-visible' : '' }}">
+        <li>
+          <div class="dropdown h-100 w-100">
+            <a
+              (click)="onDropAccountingOptions($event)"
+              class="dropbtn{{ isAccountingLinkActive ? ' active-item' : '' }}"
+              id="tool-link"
+            >
+              <span [ngClass]="{ blue_tools: isAccountingLinkActive }">
+                Accounting
+              </span>
+              <svg-icon
+                [ngClass]="{
+                  blue_arrow: isAccountingLinkActive,
+                  'add-rotation': showAccountingOptions
+                }"
+                class="ml-2"
+                src="assets/img/svgs/down-small.svg"
+              ></svg-icon>
+            </a>
+
+            <div
+              (click)="showAccountingOptions = false"
+              [ngClass]="{
+                'accounting-drop-animation': showAccountingOptions,
+                'active-item': isAccountingLinkActive
+              }"
+              class="accounting-dropdown"
+            >
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/accounting/payroll">Payroll</a>
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/accounting/ifta">IFTA</a>
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/accounting/fuel">Fuel</a>
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/accounting/ledger">Ledger</a>
+              <a
+                [routerLinkActive]="['is-active-sub']"
+                class="border-last-item-safety"
+                routerLink="/accounting/tax"
+              >Tax</a
+              >
+            </div>
+          </div>
+        </li>
+      </ul>
+      <!-- Safety Dropdown  -->
+      <!--  <app-navbar-dropdown></app-navbar-dropdown> -->
+      <ul class="safety{{ showSafetyOptions ? ' tools-visible' : '' }}">
+        <li>
+          <div class="dropdown h-100 w-100">
+            <a
+              (click)="onDropSafetyOptions($event)"
+              class="dropbtn{{ isActiveLinkSafety ? ' active-item' : '' }}"
+              id="tool-link"
+            >
+              <span [ngClass]="{ blue_tools: isActiveLinkSafety }">
+                Safety
+              </span>
+              <svg-icon
+                [ngClass]="{ blue_arrow: isActiveLinkSafety, 'add-rotation': showSafetyOptions }"
+                class="ml-2"
+                src="assets/img/svgs/down-small.svg"
+              ></svg-icon>
+            </a>
+
+            <div
+              (click)="showSafetyOptions = false"
+              [ngClass]="{
+                'safety-drop-animation': showSafetyOptions,
+                'active-item': isActiveLinkSafety
+              }"
+              class="safety-dropdown"
+            >
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/safety/violation">Violation</a>
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/safety/accident">Accident</a>
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/safety/log">Log</a>
+              <a
+                [routerLinkActive]="['is-active-sub']"
+                class="border-last-item-safety"
+                routerLink="/safety/scheduled-insurance"
+              >Scheduled Ins.</a
+              >
+            </div>
+          </div>
+        </li>
+      </ul>
+      <ul class="tools-dropdown-menu{{ showtooloptions ? ' tools-visible' : '' }}">
+        <li>
+          <div class="dropdown h-100 w-100">
+            <a
+              (click)="onDropToolOptions($event)"
+              class="dropbtn{{ isBlue ? ' active-item' : '' }}"
+              id="tool-link"
+            >
+              <span [ngClass]="{ blue_tools: isBlue }">
+                Tools
+              </span>
+              <svg-icon
+                [ngClass]="{ blue_arrow: isBlue }"
+                class="ml-2"
+                src="assets/img/svgs/down-small.svg"
+              ></svg-icon>
+            </a>
+            <div
+              [ngClass]="{ dropdown_content2: showtooloptions, 'active-item': isBlue }"
+              class="dropdown-content"
+            >
+              <a
+                [routerLinkActive]="['is-active-sub']"
+                class="borderTopleft"
+                routerLink="/tools/miles"
+              >Miles</a
+              >
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/tools/mvr">MVR</a>
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/tools/calendar">Calendar</a>
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/tools/routing">Routing</a>
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/tools/todo">To-do</a>
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/tools/statistics"
+              >Statistics</a
+              >
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/tools/contacts">Contacts</a>
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/tools/accounts">Accounts</a>
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/tools/reports">Reports</a>
+              <a
+                [routerLinkActive]="['is-active-sub']"
+                class="borderBototmleft"
+                routerLink="/page-not-found"
+              >1099</a
+              >
+              <a [routerLinkActive]="['is-active-sub']" routerLink="/tools/2290">2290</a>
+              <a
+                [routerLinkActive]="['is-active-sub']"
+                class="borderBottomright"
+                routerLink="/tools/factoring"
+              >Factoring</a
+              >
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!--Horizontal-menu-->
+  <div class="collapse navbar-collapse show" id="trucksNavbar">
+    <div class="horizontal-main clearfix">
+      <div class="horizontal-mainwrapper container clearfix">
+        <nav class="horizontalMenu clearfix"></nav>
+        <!--Menu HTML Code-->
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #activityPopover let-data="data">
+  <div class="activity_popover">
+    <!-- <app-header-activity></app-header-activity> -->
+  </div>
+</ng-template>

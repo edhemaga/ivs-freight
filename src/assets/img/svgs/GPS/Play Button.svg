@@ -1,0 +1,6 @@
+<svg height="24" viewBox="0 0 20 24" width="20" xmlns="http://www.w3.org/2000/svg">
+  <path d="M11.143,1.429a1,1,0,0,1,1.715,0L23.091,18.486A1,1,0,0,1,22.234,20H1.766a1,1,0,0,1-.857-1.514Z"
+        data-name="Play Button"
+        fill="#5673aa"
+        id="Play_Button" transform="translate(20) rotate(90)"/>
+</svg>

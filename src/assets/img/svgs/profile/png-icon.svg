@@ -1,0 +1,39 @@
+<svg height="42.911" viewBox="0 0 44.55 42.911" width="44.55"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter filterUnits="userSpaceOnUse" height="42.911" id="Path_4318" width="44.55" x="0" y="0">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur result="blur" stdDeviation="0.5"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g data-name="Group 8011" id="Group_8011" transform="translate(1.5 1.5)">
+    <g filter="url(#Path_4318)" transform="matrix(1, 0, 0, 1, -1.5, -1.5)">
+      <path
+        d="M122.43,48.76,93.269,56.65a2.451,2.451,0,0,1-3.008-1.728l-7.921-29.28a2.453,2.453,0,0,1,1.726-3.008l21.477-5.809,12.044,6.915,6.152,22.742a1.858,1.858,0,0,1-1.309,2.278"
+        data-name="Path 4318"
+        fill="#fff"
+        id="Path_4318-2" transform="translate(-80.75 -15.33)"/>
+    </g>
+    <path d="M108.424,25.819l7.685-2.079-12.044-6.916,2.079,7.685a1.858,1.858,0,0,0,2.28,1.309" data-name="Path 4319"
+          fill="#f9d96e"
+          id="Path_4319" transform="translate(-80.777 -16.825)"/>
+    <path
+      d="M96.916,45.494l-2.243.608.631,2.335-1.5.406L91.66,40.905c1.247-.337,2.491-.687,3.738-1.024a2.909,2.909,0,1,1,1.518,5.613M94.3,44.73l2.245-.608a1.457,1.457,0,1,0-.761-2.812l-2.245.608Z"
+      data-name="Path 4320"
+      fill="#f9d96e"
+      id="Path_4320" transform="translate(-81.617 -15.272)"/>
+    <path
+      d="M104.256,37.526l1.5-.4,2.15,7.948-.93.251,0,.012L101.353,41.1,102.8,46.45l-1.5.4-2.147-7.937,1.213-.328,5.22,3.868Z"
+      data-name="Path 4321"
+      fill="#f9d96e"
+      id="Path_4321" transform="translate(-81.109 -15.451)"/>
+    <path
+      d="M113.216,37.16a3.149,3.149,0,0,0-2.233-.247,2.8,2.8,0,0,0-1.941,3.663,2.6,2.6,0,0,0,3.451,1.915,2.74,2.74,0,0,0,1.62-1.12l-.381-1.406-2.03.55-.362-1.339,3.4-.92.9,3.345a4.1,4.1,0,0,1-2.777,2.284,3.962,3.962,0,0,1-5.291-2.913,4.18,4.18,0,0,1,3.033-5.431,4.332,4.332,0,0,1,3.276.415Z"
+      data-name="Path 4322"
+      fill="#f9d96e"
+      id="Path_4322" transform="translate(-80.552 -15.567)"/>
+  </g>
+</svg>

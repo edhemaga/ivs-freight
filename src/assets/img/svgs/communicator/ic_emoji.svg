@@ -1,0 +1,36 @@
+<svg height="20.645" viewBox="0 0 20.715 20.645" width="20.715" xmlns="http://www.w3.org/2000/svg">
+  <g data-name="Component 591 – 2" id="Component_591_2" transform="translate(0.05 0.05)">
+    <g data-name="Group 3387" id="Group_3387">
+      <g data-name="Group 3383" id="Group_3383">
+        <g data-name="Group 1644" id="Group_1644">
+          <path
+            d="M10.307,0A10.273,10.273,0,1,0,20.615,10.272,10.29,10.29,0,0,0,10.307,0Zm0,19.077a8.805,8.805,0,1,1,8.835-8.8A8.82,8.82,0,0,1,10.307,19.077Z"
+            data-name="Path 1024"
+            fill="#606060"
+            id="Path_1024" stroke="#606060" stroke-width="0.1"/>
+        </g>
+      </g>
+      <g data-name="Group 3384" id="Group_3384" transform="translate(5.156 7.371)">
+        <g data-name="Group 1646" id="Group_1646">
+          <ellipse cx="1.421" cy="1.421" data-name="Ellipse 410" fill="#606060" id="Ellipse_410" rx="1.421" ry="1.421"
+                   stroke="#606060" stroke-width="0.2"/>
+        </g>
+      </g>
+      <g data-name="Group 3385" id="Group_3385" transform="translate(12.523 7.371)">
+        <g data-name="Group 1648" id="Group_1648">
+          <ellipse cx="1.421" cy="1.421" data-name="Ellipse 411" fill="#606060" id="Ellipse_411" rx="1.421" ry="1.421"
+                   stroke="#606060" stroke-width="0.2"/>
+        </g>
+      </g>
+      <g data-name="Group 3386" id="Group_3386" transform="translate(7.391 12.497)">
+        <g data-name="Group 1650" id="Group_1650">
+          <path
+            d="M175.771,290.035a.71.71,0,0,0-.994-.144l-.04.032h0a2.86,2.86,0,0,1-3.373,0,.71.71,0,0,0-.929,1.075l.04.032a4.242,4.242,0,0,0,5.152,0A.71.71,0,0,0,175.771,290.035Z"
+            data-name="Path 1025"
+            fill="#606060"
+            id="Path_1025" stroke="#606060" stroke-width="0.2" transform="translate(-170.189 -289.75)"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

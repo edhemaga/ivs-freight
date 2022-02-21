@@ -1,0 +1,37 @@
+<svg height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+  <g id="align-left">
+    <g data-name="Group 2872" id="Group_2872" transform="translate(4 3.6)">
+      <g data-name="Group 2871" id="Group_2871">
+        <path d="M11.242,118H.632a.822.822,0,0,0,0,1.6h10.61a.822.822,0,0,0,0-1.6Z" data-name="Path 1600" fill="#6C6C6C"
+              id="Path_1600" transform="translate(0 -118)"/>
+      </g>
+    </g>
+    <g data-name="Group 2874" id="Group_2874">
+      <g data-name="Group 2873" id="Group_2873">
+        <path
+          d="M15.375,0H.625A.729.729,0,0,0,0,.8a.729.729,0,0,0,.625.8h14.75A.729.729,0,0,0,16,.8.729.729,0,0,0,15.375,0Z"
+          data-name="Path 1601"
+          fill="#6C6C6C"
+          id="Path_1601"/>
+      </g>
+    </g>
+    <g data-name="Group 2876" id="Group_2876" transform="translate(0 14.4)">
+      <g data-name="Group 2875" id="Group_2875">
+        <path d="M15.375,472H.625a.825.825,0,0,0,0,1.6h14.75a.825.825,0,0,0,0-1.6Z" data-name="Path 1602" fill="#6C6C6C"
+              id="Path_1602" transform="translate(0 -472)"/>
+      </g>
+    </g>
+    <g data-name="Group 2878" id="Group_2878" transform="translate(4.001 10.8)">
+      <g data-name="Group 2877" id="Group_2877">
+        <path d="M11.242,354H.632a.822.822,0,0,0,0,1.6h10.61a.822.822,0,0,0,0-1.6Z" data-name="Path 1603" fill="#6C6C6C"
+              id="Path_1603" transform="translate(0 -354)"/>
+      </g>
+    </g>
+    <g data-name="Group 2880" id="Group_2880" transform="translate(0 7.2)">
+      <g data-name="Group 2879" id="Group_2879">
+        <path d="M15.375,236H.625a.825.825,0,0,0,0,1.6h14.75a.825.825,0,0,0,0-1.6Z" data-name="Path 1604" fill="#6C6C6C"
+              id="Path_1604" transform="translate(0 -236)"/>
+      </g>
+    </g>
+  </g>
+</svg>

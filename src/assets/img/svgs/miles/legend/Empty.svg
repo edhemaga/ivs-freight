@@ -1,0 +1,15 @@
+<svg height="22.002" viewBox="0 0 5.001 22.002" width="5.001" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.a {
+      fill: #b7b7b7;
+    }
+
+    .b {
+      fill: #dadada;
+    }</style>
+  </defs>
+  <g transform="translate(-688 -372.999)">
+    <path class="a" d="M-7792,12702v-22h1v22Zm-4,0v-22h1v22Z" transform="translate(8484 -12307)"/>
+    <path class="b" d="M0,0H3V22H0Z" transform="translate(689 373)"/>
+  </g>
+</svg>

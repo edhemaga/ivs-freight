@@ -1,0 +1,16 @@
+<svg data-name="Component 694 – 1" height="12" id="Component_694_1" viewBox="0 0 12 12" width="12"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #606060;
+        opacity: 0.7;
+      }
+    </style>
+  </defs>
+  <path class="cls-1"
+        d="M531.9,410.189l3.656-3.657a1.373,1.373,0,0,0-1.943-1.941l-3.656,3.657-3.657-3.657a1.372,1.372,0,0,0-1.941,1.941l3.657,3.657-3.657,3.657a1.373,1.373,0,0,0,1.941,1.941l3.657-3.657,3.656,3.657a1.373,1.373,0,0,0,1.943-1.941Z"
+        data-name="Path 1940"
+        id="Path_1940"
+        transform="translate(-523.962 -404.189)"/>
+</svg>

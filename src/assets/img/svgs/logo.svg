@@ -1,0 +1,22 @@
+<svg height="123.803" viewBox="0 0 134.013 123.803" width="134.013" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.a {
+      fill: #606060;
+    }
+
+    .b {
+      fill: #161616;
+    }
+
+    .c {
+      fill: #28529f;
+    }</style>
+  </defs>
+  <g transform="translate(0.002 0.004)">
+    <path class="a" d="M5350.07-3208.94H5278.6l62.537,62.5-61.352,61.308h71.467l61.355-61.308Z"
+          transform="translate(-5278.605 3208.936)"/>
+    <path class="b" d="M5359.77-3125.65l36.291,35.174-42.651-28.81Z" transform="translate(-5297.237 3188.125)"/>
+    <path class="c" d="M5377.48-3111.35l35.136-35.1-62.541-62.481h-71.467l62.537,62.481.019.016.013-.016Z"
+          transform="translate(-5278.605 3208.936)"/>
+  </g>
+</svg>

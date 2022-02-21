@@ -1,0 +1,40 @@
+<svg height="22.558" viewBox="0 0 25 22.558" width="25" xmlns="http://www.w3.org/2000/svg">
+  <g id="cloud-moon-rain" transform="translate(-833.343 -579.164)">
+    <path
+      d="M857.848,588.781a4.9,4.9,0,0,1-5.768-3.8,4.828,4.828,0,0,1,2.4-5.181.288.288,0,0,0,.116-.394.293.293,0,0,0-.207-.146,6.43,6.43,0,0,0-1.151-.1,6.237,6.237,0,0,0-6.266,5.926,51.595,51.595,0,0,1,5.606,6.381c.221.021.435.064.66.064a6.323,6.323,0,0,0,4.889-2.29.283.283,0,0,0-.031-.4.292.292,0,0,0-.247-.062Z"
+      data-name="Path 10671"
+      fill="#fcc751"
+      id="Path_10671" opacity="0.6" transform="translate(0.145)"/>
+    <g data-name="Group 12373" id="Group_12373" opacity="0.7" transform="translate(834.027 597.04)">
+      <path
+        d="M849.022,597.13a.7.7,0,0,0-.947.258l-1.59,2.75a.684.684,0,0,0,.261.937.7.7,0,0,0,.947-.258h0l1.59-2.75A.684.684,0,0,0,849.022,597.13Z"
+        data-name="Path 10672"
+        fill="#cbebff"
+        id="Path_10672" stroke="rgba(0,0,0,0)" stroke-width="1" style="isolation: isolate"
+        transform="translate(-833.888 -597.04)"/>
+      <path
+        d="M844.9,597.13a.7.7,0,0,0-.947.258l-1.59,2.75a.684.684,0,0,0,.261.937.7.7,0,0,0,.947-.258h0l1.587-2.753a.683.683,0,0,0-.259-.934Z"
+        data-name="Path 10673"
+        fill="#cbebff"
+        id="Path_10673" stroke="rgba(0,0,0,0)" stroke-width="1" style="isolation: isolate"
+        transform="translate(-833.932 -597.04)"/>
+      <path
+        d="M840.772,597.13a.7.7,0,0,0-.947.258l-1.59,2.75a.684.684,0,0,0,.261.937.7.7,0,0,0,.947-.258h0l1.59-2.75a.684.684,0,0,0-.262-.937Z"
+        data-name="Path 10674"
+        fill="#cbebff"
+        id="Path_10674" stroke="rgba(0,0,0,0)" stroke-width="1" style="isolation: isolate"
+        transform="translate(-833.976 -597.04)"/>
+      <path
+        d="M836.647,597.13a.7.7,0,0,0-.947.258l-1.59,2.75a.684.684,0,0,0,.261.937.7.7,0,0,0,.947-.258h0l1.59-2.75a.684.684,0,0,0-.262-.937Z"
+        data-name="Path 10675"
+        fill="#cbebff"
+        id="Path_10675" stroke="rgba(0,0,0,0)" stroke-width="1" style="isolation: isolate"
+        transform="translate(-834.019 -597.04)"/>
+    </g>
+    <path
+      d="M851.4,592.227a3.456,3.456,0,0,1-3.471,3.441H836.805a3.435,3.435,0,0,1-.686-6.806c0-.021-.009-.047-.009-.069a4.169,4.169,0,0,1,7.543-2.406,12.369,12.369,0,0,1,7.743,5.844Z"
+      data-name="Path 10646"
+      fill="#cbebff"
+      id="Path_10646" transform="translate(0)"/>
+  </g>
+</svg>

@@ -1,0 +1,25 @@
+<svg height="23.998" viewBox="0 0 25 23.998" width="25" xmlns="http://www.w3.org/2000/svg">
+  <g id="Dislike" style="isolation: isolate">
+    <g data-name="Dislike" id="Dislike-2" opacity="0.7" style="mix-blend-mode: luminosity;isolation: isolate"
+       transform="translate(0 0.001)">
+      <g data-name="Group 3407" id="Group_3407" transform="translate(0 -0.001)">
+        <g data-name="Group 3406" id="Group_3406">
+          <path
+            d="M2.609,237.568A2.613,2.613,0,0,1,0,234.959v-8.35A2.613,2.613,0,0,1,2.609,224H5.74a2.59,2.59,0,0,1,1.566.528v13.04Z"
+            data-name="Path 1822"
+            fill="#b7b7b7"
+            id="Path_1822" transform="translate(0 -224)"/>
+        </g>
+      </g>
+      <g data-name="Group 3409" id="Group_3409" transform="translate(8.301 1.043)">
+        <g data-name="Group 3408" id="Group_3408">
+          <path
+            d="M187.366,19.275a2.313,2.313,0,0,1-.679,1.642,2.59,2.59,0,0,1,.668,1.992,2.7,2.7,0,0,1-2.722,2.365h-6.447a15,15,0,0,1,.831,4.174c0,2.263-1.924,4.174-3.131,4.174a3.283,3.283,0,0,1-1.892-.635.524.524,0,0,1-.2-.408V29.04l-3.006-6.51-.125-.064V11.284a6.84,6.84,0,0,1,2.609-.617h9.58a2.4,2.4,0,0,1,2.365,1.823,2.347,2.347,0,0,1-.189,1.567,2.337,2.337,0,0,1,1.045,3.131A2.336,2.336,0,0,1,187.366,19.275Z"
+            data-name="Path 1823"
+            fill="#b7b7b7"
+            id="Path_1823" transform="translate(-170.667 -10.667)"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
