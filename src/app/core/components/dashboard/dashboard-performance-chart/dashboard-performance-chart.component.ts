@@ -5,7 +5,7 @@ import { DashboardService } from '../../../services/dashboard/dashboard.service'
 @Component({
   selector: 'app-dashboard-performance-chart',
   templateUrl: './dashboard-performance-chart.component.html',
-  styleUrls: ['./dashboard-performance-chart.component.scss']
+  styleUrls: ['./dashboard-performance-chart.component.scss', '../dashboard.global.scss']
 })
 export class DashboardPerformanceChartComponent implements OnInit, OnDestroy {
 

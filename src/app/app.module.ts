@@ -10,6 +10,7 @@ import {SharedModule} from "./core/shared/shared/shared.module";
 import {ToastrModule} from "ngx-toastr";
 import {NgIdleModule} from "@ng-idle/core";
 import {HeaderComponent} from './core/components/header/header/header.component';
+import {GoogleMapsAPIWrapper} from '@agm/core';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,9 @@ import {HeaderComponent} from './core/components/header/header/header.component'
     }),
     NgIdleModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    GoogleMapsAPIWrapper
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })

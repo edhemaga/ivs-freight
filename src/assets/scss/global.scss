@@ -1,0 +1,87 @@
+.chart_custom_tooltip {
+    width: 122px;
+    padding: 2px 5px;
+  
+    background-color: #fff;
+    border-radius: 3px;
+  
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+  
+    font-size: 10px;
+    font-weight: bold;
+    color: #919191;
+  
+    .tooltip_holder {
+      display: flex;
+      justify-content: space-between;
+  
+      padding: 1px 0;
+    }
+  
+    .title {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      height: 22px;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      width: 100px;
+  
+      transform: translateX(-50%);
+      background: white;
+  
+      justify-content: center;
+      transition: $transition;
+  
+  
+      font-size: 10px;
+      font-weight: 700;
+      color: #DADADA;
+    }
+  
+  
+    .growLine {
+      color: #24C1A1;
+    }
+  }
+
+
+
+ 
+  .chart_main_holder {
+    chart {
+      canvas {
+        background-image: url('/assets/img/chart-images/doted-line.png');
+        background-size: 15px auto;
+      }
+    }
+
+    &.vehicle-chart {
+      chart {
+        height: 400px;
+      }
+    }
+
+    &.loading_chart {
+      chart {
+        height: 420px;
+
+        canvas {
+          background-image: url('/assets/img/chart-images/doted-line.png');
+          background-size: 15px auto;
+        }
+      }
+    }
+
+    &.chat_invoce {
+      chart {
+        height: 335px;
+
+        canvas {
+          background-image: url('/assets/img/chart-images/doted-line.png');
+          background-size: 15px auto;
+        }
+      }
+    }
+  }

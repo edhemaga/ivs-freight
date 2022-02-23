@@ -1,0 +1,289 @@
+<div class="dashboard_history_holder ml-0">
+  <div class="row weather_main_holder">
+    <div class="col-5 pr-0">
+      <div class="dashboar_hist_header weather_holder">
+        <div [class.flexone]="searchExpanded" class="custom_search">
+          <!-- (sendChangeStyle)="setExpanded($event)" -->
+          <!-- <app-custom-search
+            (handleAddress)="handleAddress($event)"
+            (sendChangeStyle)="setExpanded($event)"
+            [googleClass]="'dashboard_pac_container'"
+            [googleSearch]="true"
+            [gridNameTitle]="''"
+            [stateName]="''">
+          </app-custom-search> -->
+        </div>
+        <div *ngIf="!searchExpanded" class="dashb_white_part">
+                    <span
+                      appSelectionColor
+                      style="color: #919191b3;"
+                    >Weather</span>
+        </div>
+      </div>
+      <div class="favorite_city_list hover_overflow">
+        <div *ngFor="let favorite of forecastForAllFavoritesCities; let indx = index">
+          <div
+            (click)="openDailyReport(favorite, indx)"
+            [class.active]="favorite.location.city == forecastDataToday.location.city && favorite.location.region == forecastDataToday.location.region"
+            class="favorite_city_item">
+            <svg-icon *ngIf="favorite.currentConditions.icon == 'clear-day'" class="city_forecast"
+                      name="sun"></svg-icon>
+            <svg-icon *ngIf="favorite.currentConditions.icon == 'thunder-rain'" class="city_forecast"
+                      name="thunderstorm"></svg-icon>
+            <svg-icon *ngIf="favorite.currentConditions.icon == 'wind'" class="city_forecast" name="wind"></svg-icon>
+            <svg-icon *ngIf="favorite.currentConditions.icon == 'rain'" class="city_forecast"
+                      name="cloud-drizzle"></svg-icon>
+            <svg-icon *ngIf="favorite.currentConditions.icon == 'partly-cloudy-day'" class="city_forecast"
+                      name="part_cloudy"></svg-icon>
+            <svg-icon *ngIf="favorite.currentConditions.icon == 'cloudy'" class="city_forecast"
+                      name="cloudy"></svg-icon>
+            <svg-icon *ngIf="favorite.currentConditions.icon == 'showers-day'" class="city_forecast"
+                      name="cloud-rain"></svg-icon>
+
+            <svg-icon *ngIf="favorite.currentConditions.icon == 'clear-night'" class="city_forecast"
+                      name="moon-stars"></svg-icon>
+            <svg-icon *ngIf="favorite.currentConditions.icon == 'partly-cloudy-night'" class="city_forecast"
+                      name="cloud-moon"></svg-icon>
+            <div class="favorite_city_info">
+              <div
+                appSelectionColor
+                class="fav_city_location"
+                style="color: #919191;">{{favorite.location.city}}, {{favorite.location.region}}</div>
+              <div class="fav_city_sm_info d-flex">
+                                <span
+                                  appSelectionColor
+                                  class="bold_span"
+                                  style="color: #919191;"
+                                >{{favorite.currentConditions.temp}}&#176;</span>
+                <span
+                  appSelectionColor
+                  class="bold_span"
+                  style="color: #919191;">
+                                    <span
+                                      appSelectionColor
+                                      class="letter_span"
+                                      style="color: #919191;">L</span>
+                                    <span
+                                      appSelectionColor
+                                      class="normal_span"
+                                      style="color: #919191;">{{favorite.days[0]['tempmin'] | number: '1.0-0'}}&#176;</span>
+                                </span>
+                <span
+                  appSelectionColor
+                  class="bold_span"
+                  style="color: #919191;">
+                                    <span
+                                      appSelectionColor
+                                      class="letter_span"
+                                      style="color: #919191;">H</span>
+                                    <span
+                                      appSelectionColor
+                                      class="normal_span"
+                                      style="color: #919191;"
+                                    >{{favorite.days[0]['tempmax']  | number: '1.0-0'}}&#176;</span>
+                                </span>
+              </div>
+            </div>
+            <svg-icon (click)="removeFromFavorites(favorite, indx)" *ngIf="!favorite.isCompanyAddress" class="city_star"
+                      src="assets/img/svgs/weather/star.svg"></svg-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-7">
+      <div *ngIf="forecastDataToday.currentConditions" class="city_weather_info">
+        <div class="city_header_info d-flex">
+          <app-svg-morph [svgClass]="'daily_icon day_weather_icon'">
+            <svg-icon *ngIf="forecastDataToday.currentConditions.icon == 'clear-day'"
+                      class="daily_icon day_weather_icon" name="sun"></svg-icon>
+            <svg-icon *ngIf="forecastDataToday.currentConditions.icon == 'thunder-rain'"
+                      class="daily_icon day_weather_icon" name="thunderstorm"></svg-icon>
+            <svg-icon *ngIf="forecastDataToday.currentConditions.icon == 'wind'" class="daily_icon day_weather_icon"
+                      name="wind"></svg-icon>
+            <svg-icon *ngIf="forecastDataToday.currentConditions.icon == 'rain'" class="daily_icon day_weather_icon"
+                      name="cloud-drizzle"></svg-icon>
+            <svg-icon *ngIf="forecastDataToday.currentConditions.icon == 'partly-cloudy-day'"
+                      class="daily_icon day_weather_icon"
+                      name="part_cloudy"></svg-icon>
+            <svg-icon *ngIf="forecastDataToday.currentConditions.icon == 'cloudy'" class="daily_icon day_weather_icon"
+                      name="cloudy"></svg-icon>
+            <svg-icon *ngIf="forecastDataToday.currentConditions.icon == 'showers-day'"
+                      class="daily_icon day_weather_icon" name="cloud-rain"></svg-icon>
+            <svg-icon *ngIf="forecastDataToday.currentConditions.icon == 'clear-night'"
+                      class="daily_icon day_weather_icon" name="moon-stars"></svg-icon>
+            <svg-icon *ngIf="forecastDataToday.currentConditions.icon == 'partly-cloudy-night'"
+                      class="daily_icon day_weather_icon"
+                      name="cloud-moon"></svg-icon>
+          </app-svg-morph>
+          <div
+            [ngClass]="'daily_temp_width_' + forecastDataToday.currentConditions.temp.toString().length"
+            appSelectionColor
+            class="daily_temp_now"
+            style="color: #919191B3;"
+          >{{forecastDataToday.currentConditions.temp | number: '1.0-0'}}&#176;
+          </div>
+          <div class="city_temp_info">
+            <div
+              appSelectionColor
+              class="city_with_location"
+              style="color: #919191B3;"
+            >{{forecastDataToday.location.city}}, {{forecastDataToday.location.region}}</div>
+            <div class="city_weather_info_small d-flex">
+              <div class="weather_info_item d-flex humidity_icon">
+                <svg-icon
+                  [svgStyle]="{ 'width.px':9, 'height.px': 12 }"
+                  class="daily_icon"
+                  src="assets/img/svgs/weather/humidity.svg"
+                ></svg-icon>
+                <span
+                  appSelectionColor
+                  class="time_span"
+                  style="color: #B7B7B7B3;"
+                >{{forecastDataToday.currentConditions.humidity | number: '1.0-0'}}%</span>
+              </div>
+              <div class="weather_info_item d-flex">
+                <svg-icon class="daily_icon" src="assets/img/svgs/weather/clock.svg"></svg-icon>
+                <span
+                  appSelectionColor
+                  class="time_span"
+                  style="color: #B7B7B7B3;"
+                >{{forecastDataToday.currentConditions.datetimeEpoch | date : 'H:mm aaa'}}</span>
+              </div>
+              <div class="weather_info_item d-flex">
+                <svg-icon class="daily_icon" src="assets/img/svgs/weather/sunrise.svg"></svg-icon>
+                <span
+                  appSelectionColor
+                  class="time_span"
+                  style="color: #B7B7B7B3;"
+                >{{forecastDataToday.currentConditions.sunriseEpoch | date : 'H:mm aaa'}}</span>
+              </div>
+              <div class="weather_info_item d-flex">
+                <svg-icon class="daily_icon" src="assets/img/svgs/weather/sunset.svg"></svg-icon>
+                <span
+                  appSelectionColor
+                  class="time_span"
+                  style="color: #B7B7B7B3;"
+                >{{forecastDataToday.currentConditions.sunsetEpoch | date : 'H:mm aaa'}}</span>
+              </div>
+            </div>
+          </div>
+          <svg-icon (click)="addToFavorites()" *ngIf="!forecastDataToday.isCompanyAddress"
+                    [class.is_favorite]="forecastDataToday.isInFavorites" class="city_star"
+                    src="assets/img/svgs/weather/star.svg"></svg-icon>
+        </div>
+        <div class="city_seven_days_info">
+          <div class="d-flex seven_days_info_hold">
+            <app-dashboard-weather-bars [forecast]="forecastDataToday.days[0]"></app-dashboard-weather-bars>
+            <app-dashboard-weather-bars [forecast]="forecastDataToday.days[1]"></app-dashboard-weather-bars>
+            <app-dashboard-weather-bars [forecast]="forecastDataToday.days[2]"></app-dashboard-weather-bars>
+            <app-dashboard-weather-bars [forecast]="forecastDataToday.days[3]"></app-dashboard-weather-bars>
+            <app-dashboard-weather-bars [forecast]="forecastDataToday.days[4]"></app-dashboard-weather-bars>
+            <app-dashboard-weather-bars [forecast]="forecastDataToday.days[5]"></app-dashboard-weather-bars>
+            <app-dashboard-weather-bars [forecast]="forecastDataToday.days[6]"></app-dashboard-weather-bars>
+            <app-dashboard-weather-bars [forecast]="forecastDataToday.days[7]"></app-dashboard-weather-bars>
+          </div>
+          <div class="d-flex seven_days_info_hold mt-0">
+            <div class="city_day_info">
+              <div class="weather_with_time">
+                <app-dashboard-weather-info-weathers
+                  [forecast]="forecastDataToday.days[0]"></app-dashboard-weather-info-weathers>
+              </div>
+            </div>
+            <div class="city_day_info">
+              <div class="weather_with_time">
+                <app-dashboard-weather-info-weathers
+                  [forecast]="forecastDataToday.days[1]"></app-dashboard-weather-info-weathers>
+              </div>
+            </div>
+            <div class="city_day_info">
+              <div class="weather_with_time">
+                <app-dashboard-weather-info-weathers
+                  [forecast]="forecastDataToday.days[2]"></app-dashboard-weather-info-weathers>
+              </div>
+            </div>
+            <div class="city_day_info">
+              <div class="weather_with_time">
+                <app-dashboard-weather-info-weathers
+                  [forecast]="forecastDataToday.days[3]"></app-dashboard-weather-info-weathers>
+              </div>
+            </div>
+            <div class="city_day_info">
+              <div class="weather_with_time">
+                <app-dashboard-weather-info-weathers
+                  [forecast]="forecastDataToday.days[4]"></app-dashboard-weather-info-weathers>
+              </div>
+            </div>
+            <div class="city_day_info">
+              <div class="weather_with_time">
+                <app-dashboard-weather-info-weathers
+                  [forecast]="forecastDataToday.days[5]"></app-dashboard-weather-info-weathers>
+              </div>
+            </div>
+            <div class="city_day_info">
+              <div class="weather_with_time">
+                <app-dashboard-weather-info-weathers
+                  [forecast]="forecastDataToday.days[6]"></app-dashboard-weather-info-weathers>
+              </div>
+            </div>
+            <div class="city_day_info">
+              <div class="weather_with_time">
+                <app-dashboard-weather-info-weathers
+                  [forecast]="forecastDataToday.days[7]"></app-dashboard-weather-info-weathers>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="humidity_holder">
+              <svg-icon class="city_forecast" src="assets/img/svgs/weather/humidity.svg"></svg-icon>
+              <span
+                  style="color: #5673AA;"
+                  appSelectionColor
+                  class="humidity_span"
+              >Humidity</span>
+          </div>
+          <div class="humidity_items">
+              <div
+                  style="color: #919191B3;"
+                  appSelectionColor
+                  class="humidity_info"
+              >{{forecastDataToday.days[0].humidity | number: '1.0-0' }}%</div>
+              <div
+                  style="color: #919191B3;"
+                  appSelectionColor
+                  class="humidity_info"
+              >{{forecastDataToday.days[1].humidity | number: '1.0-0' }}%</div>
+              <div
+                  style="color: #919191B3;"
+                  appSelectionColor
+                  class="humidity_info"
+              >{{forecastDataToday.days[2].humidity | number: '1.0-0' }}%</div>
+              <div
+                  style="color: #919191B3;"
+                  appSelectionColor
+                  class="humidity_info"
+              >{{forecastDataToday.days[3].humidity | number: '1.0-0' }}%</div>
+              <div
+                  style="color: #919191B3;"
+                  appSelectionColor
+                  class="humidity_info"
+              >{{forecastDataToday.days[4].humidity | number: '1.0-0' }}%</div>
+              <div
+                  style="color: #919191B3;"
+                  appSelectionColor
+                  class="humidity_info"
+              >{{forecastDataToday.days[5].humidity | number: '1.0-0' }}%</div>
+              <div
+                  style="color: #919191B3;"
+                  appSelectionColor
+                  class="humidity_info"
+              >{{forecastDataToday.days[6].humidity | number: '1.0-0' }}%</div>
+              <div
+                  style="color: #919191B3;"
+                  appSelectionColor
+                  class="humidity_info"
+              >{{forecastDataToday.days[7].humidity | number: '1.0-0' }}%</div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

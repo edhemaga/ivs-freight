@@ -1,0 +1,31 @@
+<app-svg-morph [svgClass]="'city_forecast'">
+  <svg-icon *ngIf="forecast.icon == 'clear-day'" class="city_forecast" name="sun"></svg-icon>
+  <svg-icon *ngIf="forecast.icon == 'thunder-rain'" class="city_forecast" name="thunderstorm"></svg-icon>
+  <svg-icon *ngIf="forecast.icon == 'wind'" class="city_forecast" name="wind"></svg-icon>
+  <svg-icon *ngIf="forecast.icon == 'rain'" class="city_forecast" name="cloud-drizzle"></svg-icon>
+  <svg-icon *ngIf="forecast.icon == 'partly-cloudy-day'" class="city_forecast" name="part_cloudy"></svg-icon>
+  <svg-icon *ngIf="forecast.icon == 'cloudy'" class="city_forecast" name="cloudy"></svg-icon>
+  <svg-icon *ngIf="forecast.icon == 'showers-day'" class="city_forecast" name="cloud-rain"></svg-icon>
+
+  <svg-icon *ngIf="forecast.icon == 'clear-night'" class="city_forecast" name="moon-stars"></svg-icon>
+  <svg-icon *ngIf="forecast.icon == 'partly-cloudy-night'" class="city_forecast" name="cloud-moon"></svg-icon>
+</app-svg-morph>
+<div
+  appSelectionColor
+  class="weather_day_name"
+  style="color: #919191B3;"
+>
+  {{forecast.datetimeEpoch + '000' | date: 'EEEEEE'}}
+</div>
+<div
+  class="weather_day"
+>
+    <span
+      *ngIf="(todayDate | date: 'yyyy-MM-dd') != forecast.datetime"
+      appSelectionColor
+      style="color: #919191B3;">{{forecast.datetimeEpoch + '000' | date: 'MM/dd'}}</span>
+  <span
+    *ngIf="(todayDate | date: 'yyyy-MM-dd') == forecast.datetime"
+    appSelectionColor
+    style="color: #919191B3;">Today</span>
+</div>

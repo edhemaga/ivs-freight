@@ -1,0 +1,95 @@
+<div [ngClass]="{'container-fullscreean': fullScreenActive}" class="dashboard_history_holder ml-0">
+  <div class="dashboar_hist_header weather_holder">
+    <div class="dashb_white_part with_buttons">
+      <div class="d-flex align-items-center">
+                <span
+                  appSelectionColor
+                  style="color: #919191b3;"
+                >Map</span>
+        <div
+          (click)="chooseCategory(chart, indx)"
+          (mouseleave)="hoveredCategory = -1"
+          (mouseover)="hoveredCategory = indx"
+          *ngFor="let item of categoryList; let indx = index"
+          [ngStyle]="{'background-color': (item.active ? (item.color + (hoveredCategory == indx ? '' : 'b3')) : '' ) }"
+          class="chart_btns {{ item.name.toLowerCase() }}"
+        >{{item.name}}</div>
+      </div>
+      <div class="weather_map_buttons">
+        <!-- (click)="onTollRoads()" -->
+        <button
+          (click)="onTimeZone()"
+          appTaTooltip="{{ isTimeZoneActive ? '' : 'Time zones' }}"
+          class="toll-road"
+          position="bottom-right"
+        >
+          <svg-icon
+            [ngClass]="{ 'active-tool': isTimeZoneActive }"
+            src="../../assets/img/svgs/Routing/Time-zones-svg.svg"
+          ></svg-icon>
+        </button>
+        <button
+          (click)="onTollRoads()"
+          appTaTooltip="{{ isTollRoadsActive ? '' : 'Toll road' }}"
+          class="toll-road"
+          position="bottom-right"
+        >
+          <svg-icon
+            [ngClass]="{ 'active-tool-toll-road': isTollRoadsActive }"
+            src="../../assets/img/svgs/Routing/Toll-road-svg.svg"
+          ></svg-icon>
+        </button>
+        <button
+          (click)="activateDoppler()"
+          appTaTooltip="{{ isDopplerOn ? '' : 'Doppler radar' }}"
+          class="toll-road"
+          position="bottom-right"
+        >
+          <svg-icon
+            [ngClass]="{ 'active-tool': isDopplerOn }"
+            src="../../assets/img/svgs/Routing/Doppler-radar-svg.svg"
+          ></svg-icon>
+        </button>
+        <button
+          (click)="onRenderTrafficLayer()"
+          appTaTooltip="{{ trafficLayerShow ? '' : 'Traffic' }}"
+          class="toll-road"
+          position="bottom-right"
+        >
+          <svg-icon
+            [ngClass]="{ 'active-tool': trafficLayerShow }"
+            src="../../assets/img/svgs/Routing/Truffic-svg-v2.svg"
+          ></svg-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="{{ fullScreenActive ? 'weather_map_fullscreen' : 'weather_map_holder' }}">
+    <agm-map
+      (mapReady)="getMapInstance($event)"
+      [latitude]="35.860119"
+      [longitude]="-86.660156"
+      [ngStyle]="{'height': !fullScreenActive ? '430px' : '100%', 'width': '100%'}"
+      [restriction]="mapRestrictions"
+      [styles]="styles"
+      [zoom]="5"
+    ></agm-map>
+    <!-- <div class="doppler-legend" *ngIf="isDopplerOn">
+        <app-doppler-legend></app-doppler-legend>
+    </div> -->
+    <div class="legend-container">
+      <div class="doppler-conatiner">
+        <app-doppler-legend *ngIf="isDopplerOn"></app-doppler-legend>
+      </div>
+      <div [ngStyle]="{'margin-top': isDopplerOn ? '6px' : '0px'}" class="traffic-conatiner">
+        <app-traffic-legend *ngIf="trafficLayerShow"></app-traffic-legend>
+      </div>
+      <div [ngStyle]="{'margin-top': isDopplerOn || trafficLayerShow ? '6px' : '0px'}" class="timezone-conatiner">
+        <app-timezone-legend *ngIf="isTimeZoneActive"></app-timezone-legend>
+      </div>
+    </div>
+    <div class="map-control">
+      <app-map-control (mapMode)="onFullScreen($event)" [fullscreenOnly]="true"></app-map-control>
+    </div>
+  </div>
+</div>

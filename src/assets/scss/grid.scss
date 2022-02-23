@@ -1,0 +1,19 @@
+.grids .row > .col,
+.grids .row > [class^='col-'] {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  background-color: #f0f0f5;
+  border: 1px solid #e9f1f1;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1470px !important; // 1440 + padding-left(15px) + padding-right(15px)
+    /*padding: 0;*/
+  }
+}
+
+.toolbar-container-fullscreen {
+  max-width: calc(100% - 54px) !important;
+  padding: 0 !important;
+}

@@ -8,13 +8,18 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {AngularSvgIconModule} from "angular-svg-icon";
 import {AngularSvgIconPreloaderModule} from 'angular-svg-icon-preloader';
+import { SvgMorphComponent } from './svg-morph/svg-morph.component';
+import {AgmCoreModule} from '@agm/core';
+import { MapControlComponent } from './map-control/map-control.component';
 
 @NgModule({
   declarations: [
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
-    InputErrorPipe
+    InputErrorPipe,
+    SvgMorphComponent,
+    MapControlComponent
   ],
   imports: [
     CommonModule,
@@ -22,6 +27,10 @@ import {AngularSvgIconPreloaderModule} from 'angular-svg-icon-preloader';
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     NgSelectModule,
     AngularSvgIconModule.forRoot(),
+    AgmCoreModule.forRoot({
+        apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
+        libraries: ['geometry', 'places'],
+    }),
     AngularSvgIconPreloaderModule.forRoot({
       configUrl: '../../assets/imgPreloadJson/svgImages.json',
     }),
@@ -35,6 +44,9 @@ import {AngularSvgIconPreloaderModule} from 'angular-svg-icon-preloader';
     ReactiveFormsModule,
     NgSelectModule,
     AngularSvgIconModule,
+    SvgMorphComponent,
+    AgmCoreModule,
+    MapControlComponent
   ]
 })
 export class SharedModule { }
