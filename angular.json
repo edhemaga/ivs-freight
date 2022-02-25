@@ -40,6 +40,10 @@
               "./node_modules/popper.js/dist/popper.js",
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
               "src/assets/scripts/magicline.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "ngx-google-places-autocomplete",
+              "angular2-chartjs"
             ]
           },
           "configurations": {

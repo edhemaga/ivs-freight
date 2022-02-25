@@ -2,15 +2,13 @@ import {Injectable} from '@angular/core';
 import {Socket} from 'ngx-socket-io';
 import {environment} from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 
-export class UserSocket extends Socket {
+export class NotificationSocket extends Socket {
 
   constructor() {
     super({
-      url: `${environment.baseSocketUrl}/users`,
+      url: `${environment.baseSocketUrl}/notifications`,
       options: {
         // @ts-ignore
         withCredentials: false

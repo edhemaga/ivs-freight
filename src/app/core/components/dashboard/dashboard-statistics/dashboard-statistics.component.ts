@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-dashboard-statistics',
@@ -49,8 +49,7 @@ export class DashboardStatisticsComponent implements OnInit {
     const todayDay = d.getDay();
     const todayDate = d.getDate();
     const currentMonth = d.getMonth() + 1;
-    const weekPercentage = todayDay == 0 ? 0 : todayDay / 7 * 100;
-    this.dayOfPercentage.wtdObject = weekPercentage;
+    this.dayOfPercentage.wtdObject = todayDay == 0 ? 0 : todayDay / 7 * 100;
 
     const thisMonthDays = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
     this.dayOfPercentage.mtdObject = todayDate / thisMonthDays * 100;

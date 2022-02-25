@@ -1,0 +1,39 @@
+.payment-type {
+  &.col-12, &.col-6 {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+.btn-primary {
+  input {
+    display: none;
+  }
+}
+
+
+::ng-deep .tooltip {
+  .arrow::before {
+    display: none;
+  }
+}
+
+::ng-deep .tooltip-inner {
+  background-color: #fff;
+  color: #919191;
+  height: 17px;
+  display: flex;
+  align-items: center;
+  border-radius: 2px;
+  font-size: 10px;
+  font-weight: 600;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.16);
+}
+
+.form-label-group {
+  ng-select {
+    width: 100%;
+  }
+}
+
+
