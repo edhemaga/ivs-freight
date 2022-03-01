@@ -29,10 +29,10 @@ export class NavigationFooterComponent implements OnInit {
     {
       image: 'assets/img/svgs/navigation/ic_profile_user.svg',
       text: {
-        companyName: this.userCompany.name,
-        userName: this.currentUser.firstName.concat(
+        companyName: this.userCompany?.name,
+        userName: this.currentUser?.firstName.concat(
           ' ',
-          this.currentUser.lastName
+          this.currentUser?.lastName
         ),
       },
     },

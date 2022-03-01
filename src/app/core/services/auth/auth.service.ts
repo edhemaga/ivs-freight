@@ -44,7 +44,7 @@ export class AuthService {
           user.loggedUser.companyId,
           user.loggedUser.id
         );
-        this.currentUserSubject.next(user);
+       // this.currentUserSubject.next(user);
         return user;
       })
     );
