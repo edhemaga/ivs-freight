@@ -1,0 +1,27 @@
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+
+@Component({
+  selector: 'app-tab-switcher',
+  templateUrl: './tab-switcher.component.html',
+  styleUrls: ['./tab-switcher.component.scss']
+})
+export class TabSwitcherComponent implements OnInit {
+  @Input() tabs: any[];
+
+  activeTab: number;
+
+  @Output() switchClicked = new EventEmitter<any>();
+
+  constructor() {
+  }
+
+  ngOnInit(): void {
+    this.activeTab = this.tabs[0].id;
+  }
+
+  handleChange(event: any) {
+    this.switchClicked.emit(event);
+    this.activeTab = event.id;
+  }
+
+}

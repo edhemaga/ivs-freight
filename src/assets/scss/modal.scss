@@ -56,6 +56,18 @@
 
 .modal-small {
   .modal-footer {
+    border-top: none;
+    padding: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    background: #F9F9F9;
+    height: 36px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: space-around;
+
     button {
       margin: 0 !important;
       font-size: 14px;
@@ -91,6 +103,9 @@
   text-align: center;
   align-items: center;
   justify-content: space-around;
+  border-top: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
 
   button {
     margin: 0 !important;

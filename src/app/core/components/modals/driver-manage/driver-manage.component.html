@@ -1,21 +1,29 @@
 <div cdkDrag class="modal-container">
   <div cdkDragHandle class="modal-header">
-    <h5 class="modal-title">{{ modalTitle }}</h5>
-    <div class="multiple-choises-wrapper">
-      <div class="wrap choise-wrapper">
-        <div class="btn-group btn-group-toggle">
-          <label class="btn-primary">
-            <input (change)="checkIsOwner()" [(ngModel)]="isUserOwner" type="checkbox"/>
-            Is Owner
-          </label>
+    <div class="d-flex align-items-center">
+      <h5 class="modal-title">{{ modalTitle }}</h5>
+      <div class="multiple-choises-wrapper">
+        <div class="wrap choice-wrapper">
+          <div class="btn-group btn-group-toggle">
+            <label class="btn-primary">
+              <input (change)="checkIsOwner()" [(ngModel)]="isUserOwner" type="checkbox"/>
+              Is Owner
+            </label>
+          </div>
         </div>
       </div>
     </div>
-    <!-- <app-modal-close></app-modal-close> -->
+    <svg-icon
+      (click)="activeModal.dismiss('Modal close')"
+      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      class="modal-close-btn cursor-pointer"
+      src="assets/img/svgs/table/close.svg"
+    ></svg-icon>
   </div>
   <div class="modal-body">
-    <!-- <app-ta-tab-switch (switchClicked)="tabChange($event)" [tabs]="tabs"></app-ta-tab-switch>
-    <app-loading-modal *ngIf="!loaded" class="large"></app-loading-modal> -->
+    <app-tab-switcher (switchClicked)="tabChange($event)" [tabs]="tabs"></app-tab-switcher>
+
+    <!-- <app-loading-modal *ngIf="!loaded" class="large"></app-loading-modal> -->
     <form
       (keydown)="keyDownFunction($event)"
       *ngIf="loaded"
@@ -79,6 +87,14 @@
           </div>
           <div class="col-4">
             <div class="form-label-group">
+              <input
+                class="form-control input-control required"
+                formControlName="dateOfBirth"
+                id="dateOfBirth"
+                type="date"
+                placeholder="Nikolaaa"
+              >
+              <label class="required-label" for="dateOfBirth">DOB</label>
               <!-- <kendo-floatinglabel
                 class="required datepicker-label{{
                   driverForm.controls.dateOfBirth.value !== null &&
@@ -208,10 +224,10 @@
             </div>
           </div>
           <div *ngIf="driverForm.controls.isOwner.value" class="col-7">
-            <!-- <app-ta-switch
+            <app-status-switcher
               (switchClicked)="switchOwner($event)"
               [data]="ownerSwitchData"
-            ></app-ta-switch> -->
+            ></app-status-switcher>
           </div>
         </div>
         <div
@@ -260,7 +276,7 @@
               />
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
-              <label class="required-label" for="businessName">Bussines name</label>
+              <label class="required-label" for="businessName">Business name</label>
               <!-- <app-required-label [control]="driverForm.controls.businessName"></app-required-label> -->
             </div>
           </div>
@@ -486,9 +502,9 @@
           </div>
         </div>
         <div *ngIf="notifications.length > 0" class="row mb-28">
-          <div class="col-12">
-            <div class="fw500">Notifications</div>
-            <div class="multiple-choises-wrapper driver-notifications">
+          <div class="col-12 d-flex notifications-holder">
+            <p class="fw500">Notifications</p>
+            <div class="multiple-choices-wrapper driver-notifications">
               <div
                 *ngFor="let notification of notifications; let i = index"
                 class="btn-group btn-group-toggle"
@@ -509,7 +525,7 @@
         </div>
         <div class="row">
           <div class="col-2">
-            <div class="wrap choise-wrapper twic-choise">
+            <div class="wrap choice-wrapper twic-choice">
               <div class="btn-group btn-group-toggle">
                 <label class="btn-primary" ngbButtonLabel>
                   <input
@@ -526,7 +542,15 @@
           </div>
           <div class="col-4">
             <div class="form-label-group">
-              <kendo-floatinglabel
+              <input
+                class="form-control input-control required"
+                formControlName="expirationDate"
+                id="expirationDate"
+                type="date"
+                placeholder="Placeholder"
+              >
+              <label class="required-label" for="expirationDate">Expiration date</label>
+              <!-- <kendo-floatinglabel
                 class="{{
                   isRequiredField(driverForm.controls.expirationDate) ? 'required ' : ''
                 }}datepicker-label{{
@@ -548,7 +572,7 @@
                   formControlName="expirationDate"
                   placeholder=""
                 ></kendo-datepicker>
-              </kendo-floatinglabel>
+              </kendo-floatinglabel> -->
               <!-- <app-required-label [control]="driverForm.controls.expirationDate"></app-required-label> -->
             </div>
           </div>
@@ -572,8 +596,11 @@
   </div>
 
   <div class="modal-footer">
-    <button (click)="closeDriverEdit()" class="cancel-btn" type="button">Cancel</button>
-    <button (click)="saveDriver()" [ngClass]="{'invalid-btn' : !driverForm.valid}" class="save-btn" type="button">Save
+    <button (click)="closeDriverEdit()" class="cancel-btn" type="button">
+      <p class="m-0">Cancel</p>
+    </button>
+    <button (click)="saveDriver()" [ngClass]="{'invalid-btn' : !driverForm.valid}" class="save-btn" type="button">
+      <p class="m-0">Save</p>
     </button>
   </div>
 </div>

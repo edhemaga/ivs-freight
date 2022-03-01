@@ -15,6 +15,22 @@ import {HistoryDataComponent} from "../../components/shared/history-data/history
 import {DatePickerModule} from "@progress/kendo-angular-dateinputs";
 import {GooglePlaceModule} from "ngx-google-places-autocomplete";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {TabSwitcherComponent} from "../../components/switchers/tab-switcher/tab-switcher.component";
+import {SortableModule} from "@progress/kendo-angular-sortable";
+import {GridModule, PDFModule} from "@progress/kendo-angular-grid";
+import {DropDownsModule} from "@progress/kendo-angular-dropdowns";
+import {ButtonsModule} from "@progress/kendo-angular-buttons";
+import {SchedulerModule} from '@progress/kendo-angular-scheduler';
+import {InputsModule, SwitchModule} from "@progress/kendo-angular-inputs";
+import {DateInputsModule} from "@progress/kendo-angular-dateinputs";
+import {LayoutModule} from "@progress/kendo-angular-layout";
+import {ExcelExportModule} from "@progress/kendo-angular-excel-export";
+import {PDFExportModule} from "@progress/kendo-angular-pdf-export";
+import {LabelModule} from "@progress/kendo-angular-label";
+import {TextFieldModule} from "@angular/cdk/text-field";
+import {DragDropModule} from "@angular/cdk/drag-drop";
+import {StatusSwitcherComponent} from "../../components/switchers/status-switcher/status-switcher.component";
+import {TruckManageComponent} from "../../components/modals/truck-manage/truck-manage.component";
 
 @NgModule({
   declarations: [
@@ -24,7 +40,10 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     InputErrorPipe,
     DriverManageComponent,
     SortPipe,
-    HistoryDataComponent
+    HistoryDataComponent,
+    TabSwitcherComponent,
+    StatusSwitcherComponent,
+    TruckManageComponent
   ],
   imports: [
     CommonModule,
@@ -39,6 +58,21 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     DatePickerModule,
     GooglePlaceModule,
     NgbModule,
+    SortableModule,
+    GridModule,
+    PDFModule,
+    DropDownsModule,
+    ButtonsModule,
+    SchedulerModule,
+    InputsModule,
+    SwitchModule,
+    DateInputsModule,
+    LayoutModule,
+    ExcelExportModule,
+    PDFExportModule,
+    LabelModule,
+    TextFieldModule,
+    DragDropModule
   ],
   exports: [
     AutoFocusDirective,
@@ -49,7 +83,20 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     ReactiveFormsModule,
     NgSelectModule,
     AngularSvgIconModule,
-    SortPipe
+    SortPipe,
+    SortableModule,
+    GridModule,
+    PDFModule,
+    DropDownsModule,
+    ButtonsModule,
+    SchedulerModule,
+    InputsModule,
+    SwitchModule,
+    DateInputsModule,
+    LayoutModule,
+    ExcelExportModule,
+    PDFExportModule,
+    LabelModule,
   ],
   providers: [SortPipe]
 })

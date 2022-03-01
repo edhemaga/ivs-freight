@@ -136,7 +136,7 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
     private formBuilder: FormBuilder,
     private driverService: DriverService,
     private sharedService: SharedService,
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private spinner: SpinnerService,
     private notification: NotificationService,
     private metaDataService: MetaDataService,
