@@ -1,0 +1,38 @@
+<div class="dashboard_history_holder ms-0 inspection_main_holder">
+  <div class="dashboar_hist_header leader_board_holder">
+    <div class="dashb_white_part">
+            <span
+              class="d-flex"
+            >
+                <span
+                  appSelectionColor
+                  style="color: #919191b3;">Road Inspection</span>
+            </span>
+    </div>
+    <div class="switch_hold inspection_size">
+      <!-- (switchClicked)="switchType($event)" -->
+      <app-ta-switch [data]="switchData"></app-ta-switch>
+    </div>
+  </div>
+  <div class="inspection_holder">
+    <div class="inspection_items">
+      <div *ngFor="let inspection of inspections" [class.active]="inspection.active" class="inspection_item">
+        <svg-icon src="assets/img/svgs/inspections/{{inspection.image}}.svg"></svg-icon>
+        <div [innerHTML]="inspection.name" class="inspection_name"></div>
+      </div>
+    </div>
+    <div class="inspection_chart">
+      <div class="inspection_legend">
+        <div appSelectionColor class="inspection_leg_title" style="color: #919191;">Intervention Treshold <span
+          appSelectionColor style="color: #919191;">65%</span></div>
+        <div class="insp_legend_bar">
+          <div class="percentage_item"></div>
+          <div class="percentage_white">
+            <span appSelectionColor style="color: #FF5D5D;">87%</span>
+          </div>
+        </div>
+      </div>
+      <chart #chart [data]="data" [options]="options" [type]="type"></chart>
+    </div>
+  </div>
+</div>

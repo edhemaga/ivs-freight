@@ -5,6 +5,7 @@
       padding-top: 25px;
     }
   
+
     .time_reports {
       .stat_holder {
         margin-left: 5px;
@@ -2134,7 +2135,7 @@
     }
   }
   
-  .weather_main_holder {
+  //.weather_main_holder {
     .dashboar_hist_header {
       margin-bottom: 15px;
     }
@@ -2232,72 +2233,6 @@
         .seven_days_info_hold {
           justify-content: space-between;
           margin-top: 10px;
-        }
-  
-        .city_day_info {
-          width: 40px;
-          text-align: center;
-  
-          .max_temp {
-            font-size: 16px;
-            font-weight: bold;
-  
-            color: #FCC751;
-          }
-  
-          .temp_range {
-            position: relative;
-            height: 160px;
-  
-            background-color: #F9F9F9;
-            border-radius: 3px;
-  
-            .tmp_insde_range {
-              position: absolute;
-              bottom: 100%;
-              width: 100%;
-              height: 84px;
-  
-              background-color: rgba(145, 145, 145, 0.2);
-              border-radius: 3px;
-              transition: all 0.3s;
-            }
-          }
-  
-          .min_temp {
-            margin-top: 5px;
-  
-            font-size: 16px;
-            font-weight: bold;
-  
-            color: #5673AA;
-          }
-  
-          .weather_with_time {
-            margin-top: 10px;
-  
-            .city_forecast {
-              svg {
-                width: 22px;
-                height: 22px;
-              }
-            }
-  
-            .weather_day_name {
-              margin-top: 5px;
-              margin-bottom: 5px;
-  
-              font-size: 14px;
-              font-weight: bold;
-              color: #919191;
-              text-transform: uppercase;
-            }
-  
-            .weather_day {
-              font-size: 10px;
-              color: rgba(145, 145, 145, 0.7);
-            }
-          }
         }
   
         .humidity_holder {
@@ -2478,7 +2413,7 @@
         }
       }
     }
-  }
+  //}
   
   .morhp_picture {
     position: relative;
@@ -3391,3 +3326,70 @@
       }
     }
   }
+
+  .city_day_info {
+    width: 40px;
+    text-align: center;
+
+    .max_temp {
+      font-size: 16px;
+      font-weight: bold;
+
+      color: #FCC751;
+    }
+
+    .temp_range {
+      position: relative;
+      height: 160px;
+
+      background-color: #F9F9F9;
+      border-radius: 3px;
+
+      .tmp_insde_range {
+        position: absolute;
+        bottom: 100%;
+        width: 100%;
+        height: 84px;
+
+        background-color: rgba(145, 145, 145, 0.2);
+        border-radius: 3px;
+        transition: all 0.3s;
+      }
+    }
+
+    .min_temp {
+      margin-top: 5px;
+
+      font-size: 16px;
+      font-weight: bold;
+
+      color: #5673AA;
+    }
+
+    .weather_with_time {
+      margin-top: 10px;
+
+      .city_forecast {
+        svg {
+          width: 22px;
+          height: 22px;
+        }
+      }
+
+      .weather_day_name {
+        margin-top: 5px;
+        margin-bottom: 5px;
+
+        font-size: 14px;
+        font-weight: bold;
+        color: #919191;
+        text-transform: uppercase;
+      }
+
+      .weather_day {
+        font-size: 10px;
+        color: rgba(145, 145, 145, 0.7);
+      }
+    }
+  }
+

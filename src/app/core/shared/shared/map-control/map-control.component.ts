@@ -1,5 +1,5 @@
 import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
-import {RoutingFullscreenService} from 'src/app/core/services/routing-fullscreen.service';
+import { RoutingFullscreenService } from 'src/app/core/services/shared/routing-fullscreen.service';
 
 @Component({
   selector: 'app-map-control',

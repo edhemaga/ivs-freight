@@ -1,6 +1,7 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {imageMapType} from 'src/assets/utils/methods-global';
-import * as AppConst from '../../../const';
+import * as AppConst from 'src/app/const';
+declare var google: any;
 
 declare const geoXML3: any;
 

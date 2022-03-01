@@ -1,5 +1,5 @@
 import {takeUntil} from 'rxjs/operators';
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Subject} from 'rxjs';
 import { DashboardService } from '../../../services/dashboard/dashboard.service';
 import { SharedService } from '../../../services/shared/shared.service';
@@ -15,6 +15,7 @@ class DashboardStats {
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss', '../dashboard.global.scss'],
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit, OnDestroy {

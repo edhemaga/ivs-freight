@@ -510,22 +510,22 @@ export class HeaderComponent implements OnInit {
   }
 
   public handleMagicLine() {
-    const myMagicLine = new magicLine(document.querySelectorAll('.magic-line-menu'), {
-      mode: 'line',
-      animationCallback: (el: any, params: any) => {
-        // https://animejs.com/documentation/
-        anime({
-          targets: el,
-          left: params.left,
-          top: params.top,
-          width: params.width,
-          height: params.height,
-          easing: 'easeInOutQuad',
-          duration: 250,
-        });
-      },
-    });
-    myMagicLine.init();
+    // const myMagicLine = new magicLine(document.querySelectorAll('.magic-line-menu'), {
+    //   mode: 'line',
+    //   animationCallback: (el: any, params: any) => {
+    //     // https://animejs.com/documentation/
+    //     anime({
+    //       targets: el,
+    //       left: params.left,
+    //       top: params.top,
+    //       width: params.width,
+    //       height: params.height,
+    //       easing: 'easeInOutQuad',
+    //       duration: 250,
+    //     });
+    //   },
+    // });
+    // myMagicLine.init();
   }
 
 

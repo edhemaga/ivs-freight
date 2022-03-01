@@ -11,6 +11,9 @@ import {AngularSvgIconPreloaderModule} from 'angular-svg-icon-preloader';
 import { SvgMorphComponent } from './svg-morph/svg-morph.component';
 import {AgmCoreModule} from '@agm/core';
 import { MapControlComponent } from './map-control/map-control.component';
+import { TatooltipDirective } from '../../directives/tatooltip.directive';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { TaSwitchComponent } from './ta-switch/ta-switch.component';
 
 @NgModule({
   declarations: [
@@ -19,13 +22,16 @@ import { MapControlComponent } from './map-control/map-control.component';
     InputRestrictionDirective,
     InputErrorPipe,
     SvgMorphComponent,
-    MapControlComponent
+    MapControlComponent,
+    TatooltipDirective,
+    TaSwitchComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     NgSelectModule,
+    NgbModule,
     AngularSvgIconModule.forRoot(),
     AgmCoreModule.forRoot({
         apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
@@ -46,7 +52,10 @@ import { MapControlComponent } from './map-control/map-control.component';
     AngularSvgIconModule,
     SvgMorphComponent,
     AgmCoreModule,
-    MapControlComponent
+    MapControlComponent,
+    NgbModule,
+    TatooltipDirective,
+    TaSwitchComponent
   ]
 })
 export class SharedModule { }

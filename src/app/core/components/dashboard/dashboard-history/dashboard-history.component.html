@@ -1,0 +1,158 @@
+<div class="dashboard_history_holder ms-0">
+  <div class="dashboar_hist_header leader_board_holder">
+    <div class="dashb_white_part">
+            <span
+              appSelectionColor
+              style="color: #919191b3;"
+            >Top 100</span>
+    </div>
+    <div class="chart_select_holder">
+      <ng-select
+        (change)="getLeadBoardMainList()"
+        [(ngModel)]="selectedItem"
+        [clearable]="false"
+        [items]="itemList"
+        [searchable]="false"
+        bindLabel="name"
+        bindValue="type"
+      ></ng-select>
+    </div>
+    <div class="chart_select_holder">
+      <ng-select
+        (change)="getLeadBoardMainList()"
+        [(ngModel)]="selectedPeriod"
+        [items]="timeList"
+        [searchable]="false"
+        bindLabel="name"
+        bindValue="period"
+      ></ng-select>
+    </div>
+    <div class="switch_hold">
+      <app-ta-switch (switchClicked)="switchType($event)" [data]="switchData"></app-ta-switch>
+    </div>
+  </div>
+  <div class="leaderboard_main no-background">
+    <div class="d-flex lead_board_info_top_holder">
+      <div class="lead_board_info_top">
+        <div class="allOthersHolder">
+          <div class="others_title">Top 10</div>
+          <div class="others_info">
+            <div class="leader_amount">
+                            <span
+                              *ngIf="selectedType == 'revenue'"
+                              appSelectionColor
+                              style="color: #fff;"
+                            >{{allOthersData.revenueAllOthers ? (allOthersData.revenueAllOthers | currency) : (0 | currency) }}</span>
+              <span
+                *ngIf="selectedType == 'loads'"
+                appSelectionColor
+                style="color: #fff;"
+              >{{allOthersData.loadsAllOthers ? allOthersData.loadsAllOthers : 0}}</span>
+            </div>
+            <div class="leader_percentage">
+                            <span
+                              *ngIf="selectedType == 'revenue'"
+                              appSelectionColor
+                              style="color: #fff;"
+                            >{{allOthersData.percentOfRevenueAllOthers ? allOthersData.percentOfRevenueAllOthers : 0}}
+                              %</span>
+              <span
+                *ngIf="selectedType == 'loads'"
+                appSelectionColor
+                style="color: #fff;"
+              >{{allOthersData.percentOfLoadsAllOthers ? allOthersData.percentOfLoadsAllOthers : 0}}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lead_board_info_top">
+        <div class="allOthersHolder">
+          <div class="others_title">All Others</div>
+          <div class="others_info">
+            <div class="leader_amount">
+                            <span
+                              *ngIf="selectedType == 'revenue'"
+                              appSelectionColor
+                              style="color: #fff;"
+                            >{{allOthersData.revenueAllOthers ? (allOthersData.revenueAllOthers | currency) : (0 | currency) }}</span>
+              <span
+                *ngIf="selectedType == 'loads'"
+                appSelectionColor
+                style="color: #fff;"
+              >{{allOthersData.loadsAllOthers ? allOthersData.loadsAllOthers : 0}}</span>
+            </div>
+            <div class="leader_percentage">
+                            <span
+                              *ngIf="selectedType == 'revenue'"
+                              appSelectionColor
+                              style="color: #fff;"
+                            >{{allOthersData.percentOfRevenueAllOthers ? allOthersData.percentOfRevenueAllOthers : 0}}
+                              %</span>
+              <span
+                *ngIf="selectedType == 'loads'"
+                appSelectionColor
+                style="color: #fff;"
+              >{{allOthersData.percentOfLoadsAllOthers ? allOthersData.percentOfLoadsAllOthers : 0}}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="leaderboard_items_holder">
+      <div *ngFor="let item of leadboardData; let ind = index" class="leaderboard_item">
+        <div class="lead_board">
+          <div
+            appSelectionColor
+            class="leader_place"
+            style="color: #919191;"
+          >{{ind + 1}}</div>
+          <div
+            *ngIf="item.name"
+            appSelectionColor
+            class="leader_name"
+            style="color: #919191;"
+          >{{item.name}}</div>
+          <div
+            *ngIf="item.truckNumber"
+            appSelectionColor
+            class="leader_name"
+            style="color: #919191;"
+          >#{{item.truckNumber}}</div>
+          <div
+            *ngIf="item.fullName"
+            appSelectionColor
+            class="leader_name"
+            style="color: #919191;"
+          >{{item.fullName}}</div>
+        </div>
+        <div class="lead_board">
+          <div [class.load_amount]="selectedType == 'loads'" class="leader_amount">
+                        <span
+                          *ngIf="selectedType == 'revenue'"
+                          appSelectionColor
+                          style="color: #919191;"
+                        >{{item.revenue | currency}}</span>
+            <span
+              *ngIf="selectedType == 'loads'"
+              appSelectionColor
+              style="color: #919191;"
+            >{{item.loads}}</span>
+          </div>
+          <div class="leader_percentage">
+                        <span
+                          *ngIf="selectedType == 'revenue'"
+                          appSelectionColor
+                          style="color: #919191;"
+                        >{{item.percentOfRevenue}}%</span>
+            <span
+              *ngIf="selectedType == 'loads'"
+              appSelectionColor
+              style="color: #919191;"
+            >{{item.percentOfLoads}}%</span>
+          </div>
+        </div>
+        <div [ngStyle]="{width: (item.percentage <= 100 ? item.percentage : 100) + '%'}" class="percentage_item"></div>
+      </div>
+    </div>
+  </div>
+</div>

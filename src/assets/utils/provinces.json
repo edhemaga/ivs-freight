@@ -1,0 +1,42 @@
+[
+  {
+    "value": "Alberta",
+    "key": "AB"
+  },
+  {
+    "value": "British Columbia",
+    "key": "BC"
+  },
+  {
+    "value": "Manitoba",
+    "key": "MB"
+  },
+  {
+    "value": "New Brunswick",
+    "key": "NB"
+  },
+  {
+    "value": "Newfoundland and Labrador",
+    "key": "NL"
+  },
+  {
+    "value": "Nova Scotia",
+    "key": "NS"
+  },
+  {
+    "value": "Ontario",
+    "key": "ON"
+  },
+  {
+    "value": "Prince Edward Island",
+    "key": "PE"
+  },
+  {
+    "value": "Saskatchewan",
+    "key": "SK"
+  },
+  {
+    "value": "Yukon",
+    "key": "YT"
+  }
+]

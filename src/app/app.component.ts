@@ -11,6 +11,8 @@ import {CommunicatorUserService} from "./core/services/communication-user/commun
 import {animate, style, transition, trigger} from "@angular/animations";
 import {UserService} from "./core/services/user/user.service";
 
+/// <reference types="@types/googlemaps" />
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

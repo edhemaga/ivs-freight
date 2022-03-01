@@ -1,0 +1,162 @@
+<div class="dashboard_history_holder ms-0">
+  <div class="dashboar_hist_header leader_board_holder">
+    <div class="switch_hold switch_hold_left">
+      <app-ta-switch (switchClicked)="switchType($event)" [data]="pickDeliveryData"></app-ta-switch>
+    </div>
+    <div class="dashb_white_part with_stats">
+            <span
+              class="d-flex"
+            >
+                <span class="load_counts_dash">14</span>
+                <span
+                  appSelectionColor
+                  style="color: #919191b3;">by State</span>
+            </span>
+      <div class="info-button-state">
+        <svg-icon
+          class="menu-svg chat-svg"
+          src="assets/img/svgs/header/info.svg"
+        ></svg-icon>
+      </div>
+    </div>
+    <div class="chart_select_holder">
+
+      <!-- (change)="getLeadBoardMainList()" -->
+      <ng-select
+        [(ngModel)]="selectedPeriod"
+        [items]="timeList"
+        [searchable]="false"
+        bindLabel="name"
+        bindValue="period"
+      ></ng-select>
+    </div>
+    <div class="switch_hold">
+      <app-ta-switch (switchClicked)="switchType($event)" [data]="countRavenueData"></app-ta-switch>
+    </div>
+  </div>
+  <div class="d-flex">
+    <div class="leaderboard_main state_main_hold">
+      <div class="leaderboard_items_holder">
+        <div *ngFor="let item of leadboardData; let ind = index" class="leaderboard_item">
+          <div class="lead_board">
+            <div
+              appSelectionColor
+              class="leader_place"
+              style="color: #919191;"
+            >{{ind + 1}}</div>
+            <div
+              *ngIf="item.name"
+              appSelectionColor
+              class="leader_name"
+              style="color: #919191;"
+            >{{item.name}}</div>
+            <div
+              *ngIf="item.truckNumber"
+              appSelectionColor
+              class="leader_name"
+              style="color: #919191;"
+            >#{{item.truckNumber}}</div>
+            <div
+              *ngIf="item.fullName"
+              appSelectionColor
+              class="leader_name"
+              style="color: #919191;"
+            >{{item.fullName}}</div>
+          </div>
+          <div class="lead_board">
+            <div [class.load_amount]="selectedType == 'loads'" class="leader_amount">
+                            <span
+                              *ngIf="selectedType == 'revenue'"
+                              appSelectionColor
+                              style="color: #919191;"
+                            >{{item.revenue | currency}}</span>
+              <span
+                *ngIf="selectedType == 'loads'"
+                appSelectionColor
+                style="color: #919191;"
+              >{{item.loads}}</span>
+            </div>
+            <div class="leader_percentage">
+                            <span
+                              *ngIf="selectedType == 'revenue'"
+                              appSelectionColor
+                              style="color: #919191;"
+                            >{{item.percentOfRevenue}}%</span>
+              <span
+                *ngIf="selectedType == 'loads'"
+                appSelectionColor
+                style="color: #919191;"
+              >{{item.percentOfLoads}}%</span>
+            </div>
+          </div>
+          <div [ngStyle]="{width: (item.percentage <= 100 ? item.percentage : 100) + '%'}"
+               class="percentage_item"></div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex dash_state_tracking_holder">
+      <div class="dash_country_img">
+        <div class="countries">
+          <app-dashboard-state-usa [statesColor]="usaStates"></app-dashboard-state-usa>
+        </div>
+        <div class="dash_count_legend">
+          <div class="legend_item">
+                        <span
+                          [style.backgroundColor]="'#1D3667'"
+                          class="legend_color"
+                        ></span>
+            <span
+              appSelectionColor
+              class="legend_text"
+              style="color: #B7B7B7"
+            >20% - 100%</span>
+          </div>
+          <div class="legend_item">
+                        <span
+                          [style.backgroundColor]="'#375A9F'"
+                          class="legend_color"
+                        ></span>
+            <span
+              appSelectionColor
+              class="legend_text"
+              style="color: #B7B7B7"
+            >20% - 15%</span>
+          </div>
+          <div class="legend_item">
+                        <span
+                          [style.backgroundColor]="'#7691C4'"
+                          class="legend_color"
+                        ></span>
+            <span
+              appSelectionColor
+              class="legend_text"
+              style="color: #B7B7B7"
+            >15 - 10%</span>
+          </div>
+          <div class="legend_item">
+                        <span
+                          [style.backgroundColor]="'#AEC2EB'"
+                          class="legend_color"
+                        ></span>
+            <span
+              appSelectionColor
+              class="legend_text"
+              style="color: #B7B7B7"
+            >> 10%</span>
+          </div>
+          <div class="legend_item">
+                        <span
+                          [style.backgroundColor]="'#B7B7B7'"
+                          class="legend_color"
+                        ></span>
+            <span
+              appSelectionColor
+              class="legend_text"
+              style="color: #B7B7B7"
+            >no delivery</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="chart_holder">
+  <div class="chart_header">
+    <div class="chart_white_part with_counter">
+      <span class="load_counts_dash">{{mainData[0]['count']}}</span>
+      <span
+        appSelectionColor
+        style="color: #919191;"
+      >Invoice aging</span>
+    </div>
+  </div>
+  <div class="chart_main_holder chat_invoce no-back p-0">
+    <div class="chart_top_hold white_one">
+      <chart #chart [data]="data" [options]="options" [type]="type"></chart>
+      <div *ngIf="insideChart" class="inside_chart">
+        <div
+          appSelectionColor
+          class="inside_title"
+          style="color: #919191;"
+        >{{insideChart.title}}</div>
+        <div
+          [innerHtml]="insideChart.value | nFormatter"
+          [ngStyle]="{'color': insideChart.color}"
+          appSelectionColor
+          class="inside_value main_value"
+          style="color: #919191;"
+        ></div>
+        <div
+          appSelectionColor
+          class="inside_title"
+          style="color: #919191;"
+        >Count
+        </div>
+        <div
+          [ngStyle]="{'color': insideChart.color}"
+          appSelectionColor
+          class="inside_value"
+          style="color: #919191;"
+        >{{insideChart.count}}</div>
+      </div>
+    </div>
+    <div class="d-flex bottom_results chart_bottom_results">
+      <div *ngFor="let data of bottomData; let indx = index" class="chart_bottom_result_items">
+        <div class="results_item first_item">
+          <div
+            [style.color]="(chartCollors[indx]['normal'])"
+            appSelectionColor
+            class="result_top"
+          >{{data.title}}</div>
+          <div>
+            <div
+              [style.color]="'#919191'"
+              appSelectionColor
+              class="result_middle"
+            >{{data.count}}</div>
+            <div
+              [innerHtml]="data.value | nFormatter"
+              [style.color]="'#919191'"
+              appSelectionColor
+              class="result_bottom"
+            ></div>
+          </div>
+          <div
+            [style.color]="'#919191B3'"
+            appSelectionColor
+            class="result_percentage"
+          >
+            47%
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

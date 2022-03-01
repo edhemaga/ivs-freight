@@ -13,6 +13,16 @@ import { DashboardWeatherCitiesComponent } from './dashboard-weather/dashboard-w
 import { DashboardWeatherBarsComponent } from './dashboard-weather/dashboard-weather-info/dashboard-weather-bars/dashboard-weather-bars.component';
 import { DashboardWeatherInfoWeathersComponent } from './dashboard-weather/dashboard-weather-info/dashboard-weather-info-weathers/dashboard-weather-info-weathers.component';
 import { DashboardWeatherInfoComponent } from './dashboard-weather/dashboard-weather-info/dashboard-weather-info.component';
+import { DashboardStateTrackingComponent } from './dashboard-state-tracking/dashboard-state-tracking.component';
+import { DashboardHistoryComponent } from './dashboard-history/dashboard-history.component';
+import { DashboardStateUsaComponent } from './dashboard-state-tracking/dashboard-state-usa/dashboard-state-usa.component';
+import { DashboardFuelComponent } from './dashboard-fuel/dashboard-fuel.component';
+import { DashboardCalendarCustomComponent } from './dashboard-calendar-custom/dashboard-calendar-custom.component';
+import { DashboardRoadInspectionComponent } from './dashboard-road-inspection/dashboard-road-inspection.component';
+import { DashboardStatusesComponent } from './dashboard-statuses/dashboard-statuses.component';
+import { DashboardVehicleChartComponent } from './dashboard-vehicle-chart/dashboard-vehicle-chart.component';
+import { DashboardLoadingChartComponent } from './dashboard-loading-chart/dashboard-loading-chart.component';
+import { DashboardInvChartComponent } from './dashboard-inv-chart/dashboard-inv-chart.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +34,17 @@ import { DashboardWeatherInfoComponent } from './dashboard-weather/dashboard-wea
     DashboardWeatherBarsComponent,
     DashboardWeatherInfoWeathersComponent,
     DashboardWeatherInfoComponent,
-    DashboardWeatherMapComponent
+    DashboardWeatherMapComponent,
+    DashboardStateTrackingComponent,
+    DashboardHistoryComponent,
+    DashboardStateUsaComponent,
+    DashboardFuelComponent,
+    DashboardCalendarCustomComponent,
+    DashboardRoadInspectionComponent,
+    DashboardStatusesComponent,
+    DashboardVehicleChartComponent,
+    DashboardLoadingChartComponent,
+    DashboardInvChartComponent
   ],
   imports: [
     CommonModule,
