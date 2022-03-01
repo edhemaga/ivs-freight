@@ -1,7 +1,7 @@
 <div class="dashboard_history_holder ms-0">
   <div class="dashboar_hist_header leader_board_holder">
     <div class="switch_hold switch_hold_left">
-      <app-ta-switch (switchClicked)="switchType($event)" [data]="pickDeliveryData"></app-ta-switch>
+      <app-tab-switcher (switchClicked)="switchType($event)" [data]="pickDeliveryData"></app-tab-switcher>
     </div>
     <div class="dashb_white_part with_stats">
             <span
@@ -31,7 +31,7 @@
       ></ng-select>
     </div>
     <div class="switch_hold">
-      <app-ta-switch (switchClicked)="switchType($event)" [data]="countRavenueData"></app-ta-switch>
+      <app-tab-switcher (switchClicked)="switchType($event)" [data]="countRavenueData"></app-tab-switcher>
     </div>
   </div>
   <div class="d-flex">

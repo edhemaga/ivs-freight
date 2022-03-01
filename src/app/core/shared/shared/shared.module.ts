@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AutoFocusDirective} from "../../directives/auto-focus.directive";
 import {InputFocusDirective} from "../../directives/input-focus.directive";
@@ -13,7 +13,6 @@ import {AgmCoreModule} from '@agm/core';
 import { MapControlComponent } from './map-control/map-control.component';
 import { TatooltipDirective } from '../../directives/tatooltip.directive';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { TaSwitchComponent } from './ta-switch/ta-switch.component';
 import {DriverManageComponent} from "../../components/modals/driver-manage/driver-manage.component";
 import {SortPipe} from "../../pipes/sort.pipe";
 import {HistoryDataComponent} from "../../components/shared/history-data/history-data.component";
@@ -35,6 +34,7 @@ import {TextFieldModule} from "@angular/cdk/text-field";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {StatusSwitcherComponent} from "../../components/switchers/status-switcher/status-switcher.component";
 import {TruckManageComponent} from "../../components/modals/truck-manage/truck-manage.component";
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @NgModule({
   declarations: [
@@ -45,7 +45,6 @@ import {TruckManageComponent} from "../../components/modals/truck-manage/truck-m
     SvgMorphComponent,
     MapControlComponent,
     TatooltipDirective,
-    TaSwitchComponent,
     DriverManageComponent,
     SortPipe,
     HistoryDataComponent,
@@ -101,7 +100,6 @@ import {TruckManageComponent} from "../../components/modals/truck-manage/truck-m
     MapControlComponent,
     NgbModule,
     TatooltipDirective,
-    TaSwitchComponent,
     SortPipe,
     SortableModule,
     GridModule,
@@ -117,7 +115,8 @@ import {TruckManageComponent} from "../../components/modals/truck-manage/truck-m
     PDFExportModule,
     LabelModule,
   ],
-  providers: [SortPipe]
+  providers: [SortPipe],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {
 }

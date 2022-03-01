@@ -1,6 +1,6 @@
 import { DashboardWeatherMapComponent } from './dashboard-weather/dashboard-weather-map/dashboard-weather-map.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ChartModule} from 'angular2-chartjs';
 import {ReactiveFormsModule} from "@angular/forms";
@@ -52,7 +52,8 @@ import { DashboardInvChartComponent } from './dashboard-inv-chart/dashboard-inv-
     ReactiveFormsModule,
     SharedModule,
     ChartModule
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DashboardModule {
 }

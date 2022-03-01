@@ -1,106 +1,106 @@
-@keyframes vin-complete {
-  from {
-    color: green;
-  }
-  to {
-    color: green;
-  }
-}
+// @keyframes vin-complete {
+//   from {
+//     color: green;
+//   }
+//   to {
+//     color: green;
+//   }
+// }
 
-.vin-loading {
-  animation: vin-complete 1s linear;
+// .vin-loading {
+//   animation: vin-complete 1s linear;
 
-  &.mat-input-element,
-  .ng-has-value {
-    animation: vin-complete 1s linear;
-  }
-}
+//   &.mat-input-element,
+//   .ng-has-value {
+//     animation: vin-complete 1s linear;
+//   }
+// }
 
-.uppercase {
-  text-transform: uppercase;
-}
+// .uppercase {
+//   text-transform: uppercase;
+// }
 
-.form-label-group {
-  display: flex;
-  align-items: center;
-  transition: all 0.2s ease;
+// .form-label-group {
+//   display: flex;
+//   align-items: center;
+//   transition: all 0.2s ease;
 
-  &:hover {
-    &.typing {
-      .clear-button {
-        width: 18px;
-        height: 18px;
-        margin: 0;
-        background: none;
-        display: flex;
-        align-items: center;
-        transition: all 0.2s ease-in;
-        cursor: pointer;
-      }
+//   &:hover {
+//     &.typing {
+//       .clear-button {
+//         width: 18px;
+//         height: 18px;
+//         margin: 0;
+//         background: none;
+//         display: flex;
+//         align-items: center;
+//         transition: all 0.2s ease-in;
+//         cursor: pointer;
+//       }
 
-      &.field-focused {
-        background-image: none !important;
-      }
+//       &.field-focused {
+//         background-image: none !important;
+//       }
 
-      &.touched-invalid {
-        background-image: none !important;
+//       &.touched-invalid {
+//         background-image: none !important;
 
-        .clear-button {
-          position: relative;
-          left: -6px;
-          background-image: url("../../../assets/img/svgs/form-validation/x-icon-invalid-focus-in.svg") !important;
-          background-size: 18px 18px;
-          transition: all 0.2s ease-in;
-          background-repeat: no-repeat;
+//         .clear-button {
+//           position: relative;
+//           left: -6px;
+//           background-image: url("../../../assets/img/svgs/form-validation/x-icon-invalid-focus-in.svg") !important;
+//           background-size: 18px 18px;
+//           transition: all 0.2s ease-in;
+//           background-repeat: no-repeat;
 
-          &:hover {
-            width: 22px;
-            height: 22px;
-            position: relative;
-            left: -6px;
-            background-image: url("../../../assets/img/svgs/form-validation/x-icon-background-hover.svg") !important;
-            background-size: 22px 22px;
-            transition: all 0.2s ease-in;
-            background-repeat: no-repeat;
-          }
-        }
-      }
+//           &:hover {
+//             width: 22px;
+//             height: 22px;
+//             position: relative;
+//             left: -6px;
+//             background-image: url("../../../assets/img/svgs/form-validation/x-icon-background-hover.svg") !important;
+//             background-size: 22px 22px;
+//             transition: all 0.2s ease-in;
+//             background-repeat: no-repeat;
+//           }
+//         }
+//       }
 
-      .clear-button {
-        background-image: url("../../../assets/img/svgs/form-validation/x-icon-background.svg") !important;
-        background-size: 18px 18px;
-        transition: all 0.2s ease-in;
-        background-repeat: no-repeat;
-        position: absolute;
-        top: 4px;
-        right: 2px;
-      }
-    }
-  }
-}
+//       .clear-button {
+//         background-image: url("../../../assets/img/svgs/form-validation/x-icon-background.svg") !important;
+//         background-size: 18px 18px;
+//         transition: all 0.2s ease-in;
+//         background-repeat: no-repeat;
+//         position: absolute;
+//         top: 4px;
+//         right: 2px;
+//       }
+//     }
+//   }
+// }
 
-::ng-deep .tooltip {
-  .arrow::before {
-    display: none;
-  }
-}
+// ::ng-deep .tooltip {
+//   .arrow::before {
+//     display: none;
+//   }
+// }
 
-::ng-deep .tooltip-inner {
-  background-color: #fff;
-  color: #919191;
-  height: 17px;
-  display: flex;
-  align-items: center;
-  border-radius: 2px;
-  font-size: 10px;
-  font-weight: 600;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.16);
-}
+// ::ng-deep .tooltip-inner {
+//   background-color: #fff;
+//   color: #919191;
+//   height: 17px;
+//   display: flex;
+//   align-items: center;
+//   border-radius: 2px;
+//   font-size: 10px;
+//   font-weight: 600;
+//   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.16);
+// }
 
-.form-label-group {
-  ng-select {
-    width: 100%;
-  }
-}
+// .form-label-group {
+//   ng-select {
+//     width: 100%;
+//   }
+// }
 
 
