@@ -35,6 +35,7 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import {StatusSwitcherComponent} from "../../components/switchers/status-switcher/status-switcher.component";
 import {TruckManageComponent} from "../../components/modals/truck-manage/truck-manage.component";
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     HistoryDataComponent,
     TabSwitcherComponent,
     StatusSwitcherComponent,
-    TruckManageComponent
+    TruckManageComponent,
+    NFormatterPipe
   ],
   imports: [
     CommonModule,
@@ -114,8 +116,9 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     ExcelExportModule,
     PDFExportModule,
     LabelModule,
+    NFormatterPipe
   ],
-  providers: [SortPipe],
+  providers: [SortPipe, NFormatterPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {

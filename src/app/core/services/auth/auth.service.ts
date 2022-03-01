@@ -11,7 +11,7 @@ import {CommunicatorUserService} from "../communicator/communicator-user.service
 })
 export class AuthService {
   public currentUser!: Observable<any>;
-  private currentUserSubject!: BehaviorSubject<any>;
+  public currentUserSubject!: BehaviorSubject<any>;
 
   constructor(
     private http: HttpClient,
@@ -44,7 +44,7 @@ export class AuthService {
           user.loggedUser.companyId,
           user.loggedUser.id
         );
-        this.currentUserSubject.next(user);
+       // this.currentUserSubject.next(user);
         return user;
       })
     );

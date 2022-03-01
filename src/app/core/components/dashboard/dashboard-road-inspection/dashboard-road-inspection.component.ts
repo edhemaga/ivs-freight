@@ -136,8 +136,8 @@ export class DashboardRoadInspectionComponent implements OnInit {
             // if ( (index == 0 || index == (values.length - 1) && this.hoveredItemTip?.join('') == value.join(','))) { return "02/28/21"; }
             // else if (this.hoveredItemTip?.join('') == value.join(',')) { return value.join("/"); }
 
-            if (index == 0 || index == (values.length - 1) || this.hoveredItemTip?.join('') == value.join(',')) {
-              return value.join("/");
+            if (index == 0 || index == (values.length - 1) || this.hoveredItemTip?.join('') == values.join(',')) {
+              return values.join("/");
             }
           },
         },
