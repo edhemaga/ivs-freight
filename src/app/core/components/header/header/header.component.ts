@@ -8,6 +8,10 @@ import {UserService} from "../../../services/user/user.service";
 import {ChangePasswordComponent} from "../../authentication/change-password/change-password.component";
 import {CustomModalService} from "../../../services/modals/custom-modal.service";
 import {CommunicatorNotificationService} from "../../../services/communicator/communicator-notification.service";
+import {CommunicatorUserService} from "../../../services/communication-user/communicator-user.service";
+import {CommunicatorUserDataService} from "../../../services/communicator/communicator-user-data.service";
+import {NotificationService} from "../../../services/notification/notification.service";
+import {DriverManageComponent} from "../../modals/driver-manage/driver-manage.component";
 
 declare var magicLine;
 declare var anime;
@@ -125,9 +129,9 @@ export class HeaderComponent implements OnInit {
     private elementRef: ElementRef,
     private communicatorNotificationService: CommunicatorNotificationService,
     // private mapModeServise: RoutingFullscreenService,
-    //private communicatorUserService: CommunicatorUserService,
-    //private communicatorUserDataService: CommunicatorUserDataService,
-    //private notification: NotificationService
+    private communicatorUserService: CommunicatorUserService,
+    private communicatorUserDataService: CommunicatorUserDataService,
+    private notification: NotificationService
   ) {
     this.router.events.subscribe(() => {
       for (const path of this.paths) {
@@ -159,7 +163,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  /* get changeStatusOption() {
+  get changeStatusOption() {
     if (['online', 'active', 'away'].includes(this.communicatorUserService.user?.status)) {
       return 'busy';
     } else {
@@ -169,7 +173,7 @@ export class HeaderComponent implements OnInit {
         return 'online';
       }
     }
-  } */
+  }
 
   get userStatus() {
     return this.currentUserStatus;
@@ -207,14 +211,14 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-    /* this.communicatorNotificationService
+    this.communicatorNotificationService
       .onHasUnreadSubscriptionsChanged()
       .pipe(takeUntil(this.destroy$))
       .subscribe((hasUnread: boolean) => {
         this.unreadMessage = hasUnread;
-      }); */
+      });
 
-    //this.communicatorNotificationService.trackHasUnreadSubscriptions();
+    this.communicatorNotificationService.trackHasUnreadSubscriptions();
 
     /* this.mapModeServise.currentMapModeSpecial
       .pipe(takeUntil(this.destroy$))
@@ -242,11 +246,11 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-    /* this.communicatorUserDataService.chatUser
+    this.communicatorUserDataService.chatUser
       .pipe(takeUntil(this.destroy$))
       .subscribe((chatUser: any) => {
         setTimeout(() => (this.currentUserStatus = chatUser?.status));
-      }); */
+      });
   }
 
   ngAfterViewInit() {
@@ -258,7 +262,7 @@ export class HeaderComponent implements OnInit {
       .onCompanySelect(company.companyId)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        //this.notification.success(' Changing the company. ');
+        this.notification.success(' Changing the company. ');
         setTimeout(() => {
           window.location.reload();
         }, 1000);
@@ -268,7 +272,7 @@ export class HeaderComponent implements OnInit {
   public onCloseDrop() {
     this.counter = 0;
     this.showoptions = false;
-    //this.shared.notifyOther({option: 'call_child', value: true});
+    this.shared.notifyOther({option: 'call_child', value: true});
 
     this.userInfoDropDownOpened = !document.getElementById('user_info_dropdown').classList.contains('show');
   }
@@ -278,7 +282,7 @@ export class HeaderComponent implements OnInit {
     if (this.userInfoDropDownOpened) {
       this.counter = 0;
       this.showoptions = false;
-      // this.shared.notifyOther({option: 'call_child', value: true});
+      this.shared.notifyOther({option: 'call_child', value: true});
       this.userInfoDropDownOpened = false;
     }
   }
@@ -310,7 +314,7 @@ export class HeaderComponent implements OnInit {
   }
 
   /* Open model in drop down */
-  /* public openModal(index: number, options: any) {
+  public openModal(index: number, options: any) {
     const path = options[index].path;
     const data = {
       type: 'new',
@@ -321,7 +325,7 @@ export class HeaderComponent implements OnInit {
         this.customModalService.openModal(DriverManageComponent, {data}, null, {size: 'small'});
         break;
 
-      case 'truck':
+      /* case 'truck':
         this.customModalService.openModal(TruckManageComponent, {data}, null, {size: 'small'});
         break;
 
@@ -393,12 +397,12 @@ export class HeaderComponent implements OnInit {
         this.customModalService.openModal(ShipperManageComponent, {data}, null, {
           size: 'small',
         });
-        break;
+        break; */
 
       default:
         return;
     }
-  } */
+  }
 
   /**
    * Change password function
@@ -423,13 +427,13 @@ export class HeaderComponent implements OnInit {
    * Logout function
    */
   public logout() {
-    // localStorage.removeItem('currentUser');
-    // localStorage.removeItem('token');
-    // localStorage.removeItem('userCompany');
-    // this.communicatorNotificationService.disallowToastMessages()
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userCompany');
+    this.communicatorNotificationService.disallowToastMessages()
     localStorage.clear();
     this.router.navigate(['/login']);
-    // this.authService.logout();
+    this.authService.logout();
   }
 
   /* Option bar for models in nav*/
@@ -490,11 +494,11 @@ export class HeaderComponent implements OnInit {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    //this.communicatorNotificationService.untrackHasUnreadSubscriptions();
+    this.communicatorNotificationService.untrackHasUnreadSubscriptions();
   }
 
   changeMyStatus() {
-    // this.communicatorUserService.changeMyStatus(this.changeStatusOption);
+    this.communicatorUserService.changeMyStatus(this.changeStatusOption);
   }
 
   toggleActivity(tooltip: any): void {

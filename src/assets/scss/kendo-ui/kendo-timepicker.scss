@@ -1,0 +1,542 @@
+@import 'src/theme/variables';
+
+.k-widget.k-timepicker {
+  height: 26px;
+
+  .k-icon.k-i-clock {
+    &:before {
+      font-family: 'Font Awesome 5 Duotone', sans-serif;
+      content: '\f073';
+      color: #757575;
+    }
+
+    &:after {
+      font-family: 'Font Awesome 5 Duotone', sans-serif;
+      content: '\10f073';
+      position: absolute;
+      color: #757575;
+    }
+  }
+
+  .k-content {
+    background: unset !important;
+  }
+
+  .k-time-highlight {
+    background: #28529f !important;
+    color: white !important;
+  }
+
+  .kendo-timeselector {
+    .k-time-header .k-title {
+      color: #919191;
+    }
+  }
+}
+
+kendo-popup {
+  * {
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .custom-timepick {
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15) !important;
+
+    .k-time-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: auto 12px;
+      //padding: auto 12px;
+      line-height: 2em;
+    }
+
+    kendo-timeselector {
+      max-height: 205px;
+      height: 100%;
+
+      .k-time-header {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        background: white;
+        height: 20px;
+
+        span.k-title {
+          color: #919191;
+          font-size: 10px;
+          //color: white;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+        }
+
+        button.k-button.k-bare.k-time-now {
+          color: #919191;
+          font-size: 10px;
+          height: 100%;
+          border-width: 0;
+          line-height: inherit;
+          cursor: pointer;
+          //color: #ff6358;
+          background: transparent;
+
+          &:hover,
+          &:focus {
+            color: $light-blue !important;
+          }
+        }
+      }
+
+      .k-time-footer.k-action-buttons {
+        height: 23px;
+        margin: 0;
+        padding: 0;
+
+        * {
+          outline: none;
+          border: none;
+        }
+
+        button {
+          height: 100% !important;
+          font-size: 12px;
+          font-weight: 700;
+        }
+
+        .k-button.k-time-cancel {
+          background: #f9f9f9;
+          transition: 0.3s;
+          color: #919191;
+
+          &:hover {
+            transition: 0.3s;
+            background: #919191;
+            color: white;
+          }
+        }
+
+        .k-button.k-primary {
+          background: #f9f9f9;
+          transition: 0.3s;
+          color: rgba(86, 115, 170, 0.7);
+
+          &:hover {
+            transition: 0.3s;
+            background: #5673aa;
+            color: white;
+          }
+        }
+      }
+    }
+
+    kendo-timelist.k-time-list {
+      &:before {
+        background-color: #f3f3f3;
+      }
+
+      &:after {
+        background-color: #f3f3f3;
+      }
+    }
+
+    .k-time-list {
+      position: absolute;
+      display: flex;
+      z-index: 10;
+      outline: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      top: 0;
+
+      &::before {
+        display: block;
+        position: absolute;
+        content: ' ';
+        height: 0;
+        line-height: 0;
+        z-index: 1;
+        width: 200%;
+        left: -50%;
+        top: 0;
+        background: #f3f3f3 !important;
+        box-shadow: 0 0 3em 1.5em #f9f9f9;
+      }
+
+      &::after {
+        display: block;
+        position: absolute;
+        content: ' ';
+        height: 0;
+        line-height: 0;
+        z-index: 1;
+        width: 200%;
+        left: -50%;
+        bottom: 0;
+        background: #f3f3f3 !important;
+        box-shadow: 0 0 3em 1.5em #f9f9f9;
+      }
+
+      .k-item {
+        padding: 4px 8px;
+        min-height: calc(0.7em + 2px);
+        line-height: calc(0.7em + 2px);
+
+        &:hover {
+          color: #ff6358;
+        }
+      }
+    }
+
+    .k-content {
+      outline: 0;
+      border-color: rgba(0, 0, 0, 0.08);
+      color: #656565;
+      background-color: unset !important;
+      border-color: rgba(0, 0, 0, 0.08);
+      color: #656565;
+      background-color: #ffffff;
+      outline: 0;
+    }
+
+    .k-button {
+      background-clip: padding-box;
+      //border-radius: 2px;
+      padding: 4px 8px;
+      box-sizing: border-box;
+      //border-width: 1px;
+      //border-style: solid;
+      font-size: 14px;
+      line-height: 1.4285714286;
+      font-family: inherit;
+      text-align: center;
+      text-decoration: none;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+      cursor: pointer;
+      outline: none;
+      -webkit-appearance: none;
+      position: relative;
+      //border-color: rgba(0, 0, 0, 0.08);
+      color: #656565;
+      background-color: #f6f6f6;
+      background-image: linear-gradient(#f6f6f6, #f1f1f1);
+
+      &:disabled {
+        outline: none;
+        cursor: default;
+        opacity: 0.6;
+        filter: grayscale(0.1);
+        pointer-events: none;
+        box-shadow: none;
+      }
+
+      &::-moz-focus-inner {
+        padding: 0;
+        border: 0;
+        outline: 0;
+      }
+
+      &:hover {
+        text-decoration: none;
+        outline: 0;
+        border-color: rgba(0, 0, 0, 0.15);
+        color: #656565;
+        background-color: #ededed;
+        background-image: linear-gradient(#ededed, #e8e8e8);
+
+        &::before {
+          opacity: 0.08;
+        }
+      }
+
+      &:focus {
+        text-decoration: none;
+        outline: 0;
+      }
+
+      &::before {
+        border-radius: inherit;
+        content: '';
+        background: none;
+        opacity: 0;
+        display: none;
+        pointer-events: none;
+        position: absolute;
+        left: -1px;
+        right: -1px;
+        top: -1px;
+        bottom: -1px;
+        z-index: 0;
+        transition: opacity 0.2s ease-in-out;
+      }
+
+      &:active {
+        &::before {
+          opacity: 0.16;
+        }
+
+        border-color: rgba(0, 0, 0, 0.08);
+        color: #656565;
+        background-color: #f6f6f6;
+        background-image: none;
+        box-shadow: inset 0 2px 2px 0 rgba(0, 0, 0, 0.06);
+      }
+
+      &::after {
+        border-radius: 2px;
+        content: '';
+        opacity: 0;
+        display: none;
+        pointer-events: none;
+        position: absolute;
+        left: -1px;
+        right: -1px;
+        top: -1px;
+        bottom: -1px;
+        z-index: 0;
+        transition: opacity 0.2s ease-in-out;
+      }
+    }
+
+    .k-button.k-bare {
+      border-color: transparent !important;
+      color: inherit;
+      background: none !important;
+      box-shadow: none !important;
+      transition: color 0.2s ease-in-out;
+
+      &:hover {
+        color: inherit;
+
+        &:active {
+          color: inherit;
+        }
+      }
+
+      &:active {
+        color: inherit;
+      }
+
+      &::before {
+        display: block;
+      }
+
+      &::after {
+        display: block;
+      }
+
+      &:focus {
+        &::after {
+          box-shadow: inset 0 0 0 2px currentColor;
+          opacity: 0.12;
+        }
+      }
+    }
+
+    .k-action-buttons {
+      padding: 8px 8px;
+      border: none;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      align-content: flex-end;
+      justify-content: flex-end;
+      clear: both;
+
+      .k-button {
+        + {
+          .k-button {
+            margin-left: 0;
+            flex-shrink: 0;
+          }
+        }
+      }
+    }
+
+    .k-timeselector {
+      .k-action-buttons {
+        .k-button {
+          flex: 1 1 50%;
+        }
+      }
+    }
+
+    .k-timeselector .k-time-list-wrapper .k-time-list .k-item:hover,
+    .k-datetime-wrap .k-time-list-wrapper .k-time-list .k-item:hover {
+      background: rgba(0, 0, 0, 0.04);
+      color: $light-blue;
+    }
+
+    .k-time-list-wrapper {
+      display: inline-block;
+      overflow: hidden;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+      padding: 20px 0 0 0;
+      text-align: center;
+      min-width: 5em;
+      height: 155px;
+      flex: 1 1 auto;
+      background-color: white;
+
+      &:hover,
+      &.k-state-focused {
+        background: #f3f3f3;
+
+        .k-title {
+          color: $bw6-2;
+        }
+      }
+
+      .k-title {
+        text-align: center;
+        font-size: 8px;
+        position: absolute;
+        text-transform: capitalize;
+        font-weight: bold;
+        min-width: 100%;
+        height: 17px !important;
+        line-height: 17px;
+        margin-top: -19px;
+        z-index: 12;
+        background: #eeeeee !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-color: rgba(0, 0, 0, 0.08);
+        color: #656565;
+        opacity: 0.6;
+      }
+    }
+
+    .k-time-container {
+      position: absolute;
+      display: block;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      line-height: 1.4285714286;
+      left: 0;
+      right: 0;
+      top: 12px;
+      bottom: 20px;
+      padding-right: 100px;
+      padding-left: 100px;
+      margin-left: -100px;
+      margin-right: -117px;
+      background: transparent;
+      height: 133px;
+
+      > ul {
+        height: auto;
+        width: 5em;
+        margin: 0 !important;
+      }
+
+      .k-scrollable-placeholder {
+        position: absolute;
+        width: 1px;
+        top: 0;
+        right: 0;
+      }
+    }
+
+    .k-time-list-container {
+      display: flex;
+      position: relative;
+    }
+
+    .k-time-highlight {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 20px;
+      z-index: 1;
+      background: #dadada;
+      border: none;
+    }
+
+    .k-time-separator {
+      width: 0;
+      height: 100%;
+      align-self: center;
+      justify-content: center;
+      z-index: 11;
+      display: block !important;
+    }
+
+    .k-item {
+      cursor: default;
+    }
+
+    [tabindex='-1'] {
+      &:focus {
+        &:not(:focus-visible) {
+          outline: 0 !important;
+        }
+      }
+    }
+
+    ul {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      border-radius: 0;
+      margin: 0;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      overflow: visible;
+      text-transform: none;
+      -webkit-appearance: button;
+
+      &:focus {
+        outline: 1px dotted;
+        outline: 5px auto -webkit-focus-ring-color;
+      }
+
+      &::-moz-focus-inner {
+        padding: 0;
+        border-style: none;
+      }
+    }
+
+    [type='button'] {
+      -webkit-appearance: button;
+
+      &::-moz-focus-inner {
+        padding: 0;
+        border-style: none;
+      }
+    }
+  }
+
+  .custom-timepick.k-popup {
+    .k-item {
+      outline: none;
+    }
+
+    .k-action-buttons {
+      margin-top: 16px;
+    }
+  }
+}
+
+button:focus {
+  outline: none !important;
+}

@@ -1,0 +1,429 @@
+<!-- <div cdkDrag class="modal-container">
+  <div cdkDragHandle class="modal-header">
+    <h5 class="modal-title">{{ modalTitle }}</h5>
+    <div class="multiple-choises-wrapper" style="left: 110px;">
+      <div class="btn-group btn-group-toggle">
+        <label [ngClass]="{'company-owned' : !companyOwnedStateControl}" class="btn-primary" ngbButtonLabel>
+          <input
+            (change)="companyOwned()"
+            [(ngModel)]="companyOwnedStateControl"
+            ngbButton
+            type="checkbox"
+          >
+          Company owned
+        </label>
+      </div>
+    </div>
+    <app-modal-close></app-modal-close>
+  </div>
+  <div class="modal-body">
+    <app-loading-modal *ngIf="!loaded"></app-loading-modal>
+    <app-ta-tab-switch
+      (switchClicked)="tabChange($event)"
+      *ngIf="loaded"
+      [tabs]="tabs"
+    ></app-ta-tab-switch>
+
+    <form
+      (keydown)="keyDownFunction($event)"
+      *ngIf="loaded"
+      [formGroup]="truckForm"
+      class="form-container has-tabs tabs-2{{ ' tab-' + selectedTab }}"
+    >
+      <div *ngIf="inputData.data.type == 'edit'" class="form-group d-flex align-items-center absolute-status mt-lg-3">
+        <kendo-switch [checked]="truck?.status" formControlName="status"></kendo-switch>
+      </div>
+
+      <div class="single-tab-container">
+        <div class="row">
+          <div class="col-3">
+            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input
+                (keypress)="onUnitTyping($event)"
+                (paste)="onPaste($event, 'truckNumber', 6)"
+                [modalType]="inputData.data.type"
+                (keyup)="onKeyUpMethod($event)"
+                appAutoFocus
+                class="form-control input-control required"
+                formControlName="truckNumber"
+                id="truckNumber"
+                maxLength="6"
+                placeholder="Unit #"
+              />
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="truckNumber">Unit #</label>
+              <app-required-label [control]="truckForm.controls.truckNumber"></app-required-label>
+            </div>
+          </div>
+          <div class="col-9">
+            <div class="form-label-group">
+              <ng-select
+                (change)="onTruckTypeChange($event)"
+                [items]="truckTypes"
+                appendTo="body"
+                bindLabel="name"
+                class="no-padding-dropdown required-field"
+                formControlName="type"
+                id="truck-type-dropdown"
+                placeholder="Type"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <div class="truck-type-dropdown-item {{ item.class }}">
+                    <span class="type-image">
+                      <svg-icon src="assets/img/svgs/truck/gray-icons/{{ item.file }}"></svg-icon>
+                    </span>
+                    <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                  </div>
+                </ng-template>
+
+                <ng-template let-item="item" ng-label-tmp>
+                  <div class="value-label-container truck-type-dropdown-item {{ item.class }}">
+                    <span class="type-image">
+                      <svg-icon src="assets/img/svgs/truck/gray-icons/{{ item.file }}"></svg-icon>
+                    </span>
+                    <span>{{ item.name }}</span>
+                  </div>
+                </ng-template>
+
+              </ng-select>
+              <app-required-label [control]="truckForm.controls.type"></app-required-label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+
+              <input
+                #elementRef
+                (focus)="addFocus(elementRef)"
+                (keypress)="onVinTyping($event)"
+                (keyup)="vinAutoComplete($event)"
+                (paste)="onPaste($event, 'vin', 17)"
+                [ngClass]="{ 'vin-loading': isVinLoading }"
+                appInputFocus
+                class="form-control uppercase input-control required"
+                formControlName="vin"
+                id="vin"
+                maxLength="17"
+                minLength="17"
+                oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
+                placeholder="VIN"
+              />
+              <div class="icon-container">
+                <i class="input-loader"></i>
+              </div>
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="vin">VIN</label>
+              <app-required-label [control]="truckForm.controls.vin"></app-required-label>
+              <p *ngIf="truckForm.get('vin').hasError('minlength')" class="m-0 required-notice invalid-length">
+                Invalid</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-label-group">
+              <ng-select
+                [items]="truckMakers"
+                appendTo="body"
+                bindLabel="name"
+                class="required-field"
+                formControlName="make"
+                placeholder="Make"
+              >
+                <ng-template let-item="item" ng-option-tmp>
+                  <span class="make-image">
+                    <svg-icon src="assets/img/svgs/truck/makers/{{ item.file }}"></svg-icon>
+                  </span>
+                </ng-template>
+
+                <ng-template let-item="item" ng-label-tmp>
+                  <span class="value-label-container make-image">
+                    <svg-icon src="assets/img/svgs/truck/makers/{{ item.file }}"></svg-icon>
+                  </span>
+                </ng-template>
+              </ng-select>
+              <app-required-label [control]="truckForm.controls.make"></app-required-label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-label-group">
+              <input
+                (keypress)="onModelTyping($event)"
+                (paste)="onPaste($event, 'model', 22)"
+                [ngClass]="{ 'vin-loaded': isVinLoading }"
+                (keyup)="onKeyUpMethod($event)"
+                appInputFocus
+                class="form-control input-control"
+                formControlName="model"
+                id="model"
+                maxlength="22"
+                placeholder="Model"
+              />
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label for="model">Model</label>
+              <app-required-label [control]="truckForm.controls.model"></app-required-label>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-label-group">
+              <input
+                #elementRef
+                (blur)="removeFocus(elementRef)"
+                (focus)="addFocus(elementRef)"
+                (ngModelChange)="checkYear($event)"
+                (keyup)="onKeyUpMethod($event)"
+                [ngClass]="{ 'vin-loaded': isVinLoading }"
+                class="form-control input-control required"
+                formControlName="year"
+                id="year"
+                maxlength="4"
+                placeholder="Year"
+              />
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="year">Year</label>
+              <app-required-label [control]="truckForm.controls.year"></app-required-label>
+            </div>
+          </div>
+          <div class="col-4">
+
+            <div class="form-label-group">
+              <ng-select
+                (change)="onColorChange($event)"
+                [items]="colors"
+                appendTo="body"
+                bindLabel="key"
+                class="no-padding-dropdown"
+                formControlName="color"
+                id="colors-dropdown"
+                placeholder="Color"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <div class="color-dropdown-item {{ item.key.replace(' ', '-').toLowerCase() }}">
+                    <span [ngOptionHighlight]="search">{{ item.key }}</span>
+                  </div>
+                </ng-template>
+              </ng-select>
+              <app-required-label [control]="truckForm.controls.color"></app-required-label>
+            </div>
+
+          </div>
+        </div>
+
+        <div *ngIf="!companyOwnedStateControl" class="mb-0">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-label-group">
+                <ng-select
+                  (change)="changeOwner($event)"
+                  (clear)="onClose($event)"
+                  (close)="onClose($event)"
+                  (search)="onSearch($event)"
+                  [items]="owners"
+                  [searchFn]="customSearch"
+                  appendTo="body"
+                  bindLabel="ownerName"
+                  class="required-field has-add-new{{ (ownerSearchItems == 1) ? ' has-one-result' : '' }}"
+                  formControlName="owner"
+                  placeholder="Owner"
+                >
+                  <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                    <span [class]="{ 'd-none': !item.divisionFlag }">DC - </span>
+                    <span [ngOptionHighlight]="search">{{ item.ownerName }}</span>
+                  </ng-template>
+                </ng-select>
+                <app-required-label [control]="truckForm.controls.owner"></app-required-label>
+              </div>
+            </div>
+            <div *ngIf="!division" class="col-12 slider-wrapper truck-slider-wrapper">
+              <div class="note-label-wrapper">
+                <label class="note-label">Commission</label>
+              </div>
+              <ngx-slider
+                [options]="sliderOptions"
+                formControlName="commission"
+                thumbLabel
+              ></ngx-slider>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
+            <div (click)="openNote()" class="note-label-wrapper">
+              <span class="note-label">Note</span>
+              <svg-icon
+                class="down-icon"
+                src="assets/img/svgs/down-arrow.svg"
+              ></svg-icon>
+            </div>
+            <div class="example-full-width note-input{{ showNote ? ' note-visible' : ' note-hidden' }}">
+                <textarea
+                  #note
+                  cdkAutosizeMaxRows="5"
+                  cdkAutosizeMinRows="2"
+                  cdkTextareaAutosize
+                  class="input-custom-textarea form-textarea"
+                  formControlName="note"
+                  placeholder="Write a note."
+                ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="single-tab-container">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-label-group">
+              <ng-select
+                [items]="grossWeight"
+                appendTo="body"
+                bindLabel="value"
+                formControlName="truckGrossWeight"
+                id="truckGrossWeight"
+                placeholder="Gross Weight"
+              >
+              </ng-select>
+              <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                <span [ngOptionHighlight]="search">{{ item.value }}</span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-label-group">
+              <input
+                appInputFocus
+                class="form-control input-control"
+                formControlName="emptyWeight"
+                id="emptyWeight"
+                mask="separator.2"
+                maxlength="6"
+                min="0"
+                placeholder="Empty Weight"
+                thousandSeparator=","
+              />
+              <label for="emptyWeight">Empty Weight</label>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-label-group">
+              <ng-select
+                [items]="truckEngines"
+                appendTo="body"
+                bindLabel="value"
+                formControlName="engine"
+                placeholder="Engine type"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <span [ngOptionHighlight]="search">{{ item.value }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="col-4">
+            <div class="form-label-group">
+              <ng-select
+                [items]="tireSizes"
+                appendTo="body"
+                bindLabel="value"
+                formControlName="tireSize"
+                placeholder="Tire size"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <span [ngOptionHighlight]="search">{{ item.value }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="col-2">
+            <div class="form-label-group">
+              <input
+                appInputFocus
+                class="form-control input-control"
+                formControlName="axises"
+                id="axises"
+                mask="0"
+                placeholder="Axles"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label for="axises">Axles</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <div class="form-label-group">
+              <input
+                class="form-control input-control"
+                formControlName="insurancePolicyNumber"
+                id="insurancePolicyNumber"
+                placeholder="Insurance Policy"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label for="insurancePolicyNumber">Insurance Policy</label>
+            </div>
+          </div>
+
+          <div class="col-4">
+            <div class="form-label-group">
+              <input
+                appInputFocus
+                class="form-control input-control"
+                formControlName="mileage"
+                id="mileage"
+                mask="separator.2"
+                maxlength="8"
+                min="0"
+                placeholder="Mileage"
+                thousandSeparator=","
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label for="mileage">Mileage</label>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-label-group">
+              <input
+                (paste)="onPaste($event, 'ipasEzpass', 14)"
+                class="form-control input-control"
+                formControlName="ipasEzpass"
+                id="ipasEzpass"
+                maxlength="14"
+                min="0"
+                oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                placeholder="IPAS / EZPASS"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label for="ipasEzpass">IPAS / EZPASS</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button (click)="closeModal()" class="cancel-btn">
+      <p class="m-0">Cancel</p>
+    </button>
+    <button (click)="saveTruck()" [ngClass]="{'invalid-btn' : !truckForm.valid}" class="save-btn">
+      <p class="m-0">Save</p>
+    </button>
+  </div>
+</div> -->

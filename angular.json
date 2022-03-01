@@ -39,8 +39,11 @@
               "src/assets/scripts/magicline.js",
               "src/assets/scripts/geoxml3.js",
               "./node_modules/jquery/dist/jquery.min.js",
-              
               "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "ngx-google-places-autocomplete",
+              "angular2-chartjs"
             ]
           },
           "configurations": {

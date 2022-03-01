@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from 'src/environments/environment';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {SelectCompanyResponse} from "../../model/select-company";
+import {CommunicatorUserService} from "../communicator/communicator-user.service";
 
 
 @Injectable({
@@ -14,7 +15,9 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-  ) {}
+    private communicatorUserService: CommunicatorUserService
+  ) {
+  }
 
   /**
    * User login function
@@ -37,11 +40,11 @@ export class AuthService {
         localStorage.setItem('currentUser', JSON.stringify(user.loggedUser));
         localStorage.setItem('token', JSON.stringify(user.token));
         localStorage.setItem('userCompany', JSON.stringify(user.userCompany));
-       /*  this.communicatorUserService.requestChatUserData(
+        this.communicatorUserService.requestChatUserData(
           user.loggedUser.companyId,
           user.loggedUser.id
-        ); */
-        //this.currentUserSubject.next(user);
+        );
+        this.currentUserSubject.next(user);
         return user;
       })
     );
@@ -65,6 +68,16 @@ export class AuthService {
     return this.http.post(environment.API_ENDPOINT + 'user/register', data);
   }
 
+  /**
+   * Logout function
+   */
+  public logout() {
+    this.currentUserSubject.next(null);
+    this.communicatorUserService.changeMyStatus('offline');
+    this.communicatorUserService.removeChatUserData();
+    localStorage.clear();
+    return this.http.get(environment.API_ENDPOINT + 'user/logout');
+  }
 
 
 }

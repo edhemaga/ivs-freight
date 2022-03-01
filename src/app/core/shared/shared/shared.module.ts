@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {AutoFocusDirective} from "../../directives/auto-focus.directive";
 import {InputFocusDirective} from "../../directives/input-focus.directive";
 import {InputRestrictionDirective} from "../../directives/input-restriction.directive";
@@ -14,6 +14,27 @@ import { MapControlComponent } from './map-control/map-control.component';
 import { TatooltipDirective } from '../../directives/tatooltip.directive';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { TaSwitchComponent } from './ta-switch/ta-switch.component';
+import {DriverManageComponent} from "../../components/modals/driver-manage/driver-manage.component";
+import {SortPipe} from "../../pipes/sort.pipe";
+import {HistoryDataComponent} from "../../components/shared/history-data/history-data.component";
+import {DatePickerModule} from "@progress/kendo-angular-dateinputs";
+import {GooglePlaceModule} from "ngx-google-places-autocomplete";
+import {TabSwitcherComponent} from "../../components/switchers/tab-switcher/tab-switcher.component";
+import {SortableModule} from "@progress/kendo-angular-sortable";
+import {GridModule, PDFModule} from "@progress/kendo-angular-grid";
+import {DropDownsModule} from "@progress/kendo-angular-dropdowns";
+import {ButtonsModule} from "@progress/kendo-angular-buttons";
+import {SchedulerModule} from '@progress/kendo-angular-scheduler';
+import {InputsModule, SwitchModule} from "@progress/kendo-angular-inputs";
+import {DateInputsModule} from "@progress/kendo-angular-dateinputs";
+import {LayoutModule} from "@progress/kendo-angular-layout";
+import {ExcelExportModule} from "@progress/kendo-angular-excel-export";
+import {PDFExportModule} from "@progress/kendo-angular-pdf-export";
+import {LabelModule} from "@progress/kendo-angular-label";
+import {TextFieldModule} from "@angular/cdk/text-field";
+import {DragDropModule} from "@angular/cdk/drag-drop";
+import {StatusSwitcherComponent} from "../../components/switchers/status-switcher/status-switcher.component";
+import {TruckManageComponent} from "../../components/modals/truck-manage/truck-manage.component";
 
 @NgModule({
   declarations: [
@@ -24,7 +45,13 @@ import { TaSwitchComponent } from './ta-switch/ta-switch.component';
     SvgMorphComponent,
     MapControlComponent,
     TatooltipDirective,
-    TaSwitchComponent
+    TaSwitchComponent,
+    DriverManageComponent,
+    SortPipe,
+    HistoryDataComponent,
+    TabSwitcherComponent,
+    StatusSwitcherComponent,
+    TruckManageComponent
   ],
   imports: [
     CommonModule,
@@ -40,6 +67,25 @@ import { TaSwitchComponent } from './ta-switch/ta-switch.component';
     AngularSvgIconPreloaderModule.forRoot({
       configUrl: '../../assets/imgPreloadJson/svgImages.json',
     }),
+    NgxSliderModule,
+    DatePickerModule,
+    GooglePlaceModule,
+    NgbModule,
+    SortableModule,
+    GridModule,
+    PDFModule,
+    DropDownsModule,
+    ButtonsModule,
+    SchedulerModule,
+    InputsModule,
+    SwitchModule,
+    DateInputsModule,
+    LayoutModule,
+    ExcelExportModule,
+    PDFExportModule,
+    LabelModule,
+    TextFieldModule,
+    DragDropModule
   ],
   exports: [
     AutoFocusDirective,
@@ -55,7 +101,23 @@ import { TaSwitchComponent } from './ta-switch/ta-switch.component';
     MapControlComponent,
     NgbModule,
     TatooltipDirective,
-    TaSwitchComponent
-  ]
+    TaSwitchComponent,
+    SortPipe,
+    SortableModule,
+    GridModule,
+    PDFModule,
+    DropDownsModule,
+    ButtonsModule,
+    SchedulerModule,
+    InputsModule,
+    SwitchModule,
+    DateInputsModule,
+    LayoutModule,
+    ExcelExportModule,
+    PDFExportModule,
+    LabelModule,
+  ],
+  providers: [SortPipe]
 })
-export class SharedModule { }
+export class SharedModule {
+}

@@ -1,0 +1,36 @@
+<fieldset class="multiswitch ta-switch-wrapper">
+  <div
+    [ngClass]="{
+      routingStyle: changeToRoutingStyle,
+      'gps-style': changeToGpsStyle,
+      'side-bar-style': sideBarStyle,
+      'miles-style': customColorsMiles
+    }"
+    class="slide-container"
+  >
+    <ng-container *ngFor="let label of data; let i = index">
+      <input
+        *ngIf="label.checked"
+        checked
+        class="ta-radio-button"
+        id="{{ label.inputName ? label.inputName : 'account' }}{{ label.name }}-{{ i }}"
+        name="{{ label.inputName ? label.inputName : 'account' }}"
+        type="radio"
+      />
+      <input
+        (change)="handleChange($event)"
+        *ngIf="!label.checked"
+        class="ta-radio-button"
+        id="{{ label.inputName ? label.inputName : 'account' }}{{ label.name }}-{{ i }}"
+        name="{{ label.inputName ? label.inputName : 'account' }}"
+        type="radio"
+      />
+      <label
+        class="ta-radio-button{{ label.checked ? ' checked-label' : '' }}"
+        for="{{ label.inputName ? label.inputName : 'account' }}{{ label.name }}-{{ i }}"
+      >{{ label.name }}</label
+      >
+    </ng-container>
+    <a *ngIf="!checked" aria-hidden="true" class="slide"></a>
+  </div>
+</fieldset>

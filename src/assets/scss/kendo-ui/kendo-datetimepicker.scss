@@ -1,0 +1,1120 @@
+@import 'src/theme/variables';
+
+kendo-popup {
+  * {
+    font-family: $main-font;
+  }
+
+  &.k-animation-container {
+    position: absolute;
+    overflow: hidden;
+    z-index: 100;
+    border-radius: 0 0 2px 2px;
+    transition: none !important;
+    box-shadow: none;
+    margin-top: -29px;
+
+    &-shown {
+      overflow: visible;
+    }
+
+    .k-popup {
+      box-shadow: none;
+    }
+  }
+
+  &.k-animation-container-shown,
+  .k-animation-container > .k-popup {
+    box-shadow: none;
+  }
+
+  .datetime1 {
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 3px;
+
+    //w1
+    max-width: 230px;
+
+    &.k-popup {
+      background-clip: padding-box;
+      padding: 0 0;
+      box-sizing: border-box;
+      font-size: 14px;
+      line-height: 1.4285714286;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      color: #000;
+      background-color: $bw1;
+      border: none !important;
+
+      .k-item {
+        outline: none;
+      }
+
+      .k-calendar {
+        height: 100%;
+
+        .k-state-selected {
+          color: #ffffff;
+
+          .k-link {
+            border-color: $light-blue-07;
+            color: #ffffff;
+            background-color: $light-blue-07;
+          }
+        }
+      }
+
+      .k-action-buttons {
+        margin-top: 0;
+      }
+    }
+
+    &.k-datetime-container {
+      padding: 0;
+
+      .k-calendar {
+        border-width: 0;
+        width: 100% !important;
+        padding: 0;
+      }
+
+      .k-datetime-wrap {
+        width: 100%;
+        overflow: hidden;
+        border-radius: 3px;
+      }
+
+      .k-datetime-buttongroup {
+        padding: 0;
+      }
+
+      .k-datetime-selector {
+        display: flex;
+        transition: transform 0.2s;
+      }
+
+      .k-timeselector {
+        outline: none;
+      }
+
+      .k-time-list-container {
+        justify-content: center;
+        background: darkred;
+      }
+
+      .k-action-buttons .k-button {
+        flex: 1 1 50%;
+        border: none;
+      }
+
+      .k-datetime-calendar-wrap,
+      .k-datetime-time-wrap {
+        text-align: center;
+        flex: 0 0 230px;
+        max-width: 230px;
+
+        background: white;
+      }
+
+      .k-date-tab .k-datetime-buttongroup,
+      .k-date-tab .k-datetime-selector {
+        background-color: white;
+      }
+    }
+
+    .k-reset {
+      margin: 0;
+      padding: 0;
+      border-width: 0;
+      outline: 0;
+      text-decoration: none;
+      font: inherit;
+      list-style: none;
+    }
+
+    .k-link,
+    .k-link:hover {
+      color: inherit;
+      text-decoration: none;
+      outline: 0;
+      cursor: pointer;
+    }
+
+    .k-content {
+      border-color: rgba(0, 0, 0, 0.08);
+      color: #000;
+      background-color: white;
+      outline: 0;
+    }
+
+    .k-state-disabled {
+      outline: none;
+      cursor: default;
+      opacity: 0.7;
+      filter: grayscale(0.1);
+      pointer-events: none;
+      box-shadow: none;
+    }
+
+    .k-button {
+      background-clip: padding-box;
+      padding: 4px 8px;
+      box-sizing: border-box;
+      border-width: 1px;
+      border-style: solid;
+      font-size: 14px;
+      line-height: 1.4285714286;
+      font-family: inherit;
+      text-align: center;
+      text-decoration: none;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+      cursor: pointer;
+      outline: none;
+      -webkit-appearance: none;
+      position: relative;
+
+      &:disabled {
+        outline: none;
+        cursor: default;
+        pointer-events: none;
+        box-shadow: none;
+      }
+
+      &::-moz-focus-inner {
+        padding: 0;
+        border: 0;
+        outline: 0;
+      }
+
+      &:hover,
+      &:focus {
+        text-decoration: none;
+        outline: 0;
+      }
+    }
+
+    .k-button-group {
+      margin: 0;
+      padding: 0;
+      border-width: 0;
+      box-sizing: border-box;
+      color: inherit;
+      background-color: transparent;
+      list-style: none;
+      outline: 0;
+      white-space: nowrap;
+      display: inline-flex;
+      flex-direction: row;
+      vertical-align: middle;
+      position: relative;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      box-shadow: none;
+
+      &-stretched {
+        display: flex;
+        height: 26px;
+
+        .k-button {
+          height: 100%;
+          display: inline-block;
+          flex: 1 1 auto;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          border: none;
+          outline: none;
+          font-size: 12px;
+          font-weight: 700;
+
+          &:not(.k-state-active) {
+            color: $bw4;
+            background: $bw1;
+          }
+        }
+      }
+
+      .k-button {
+        border-radius: 0;
+
+        &:hover,
+        &:active,
+        &.k-state-active {
+          z-index: 2;
+        }
+      }
+    }
+
+    .k-calendar-header .k-button {
+      border-color: transparent !important;
+      color: inherit;
+      background: none !important;
+      box-shadow: none !important;
+      transition: color 0.2s ease-in-out;
+      font-weight: 400;
+      font-size: 12px;
+      padding: 0;
+
+      &::before {
+        display: none;
+      }
+
+      &:hover,
+      &:active,
+      &:hover:active {
+        color: inherit;
+      }
+    }
+
+    .k-button::before {
+      border-radius: inherit;
+      content: '';
+      background: none !important;
+      opacity: 0;
+      display: none;
+      pointer-events: none;
+      position: absolute;
+      left: -1px;
+      right: -1px;
+      top: -1px;
+      bottom: -1px;
+      z-index: 0;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .k-button::after {
+      border-radius: 2px;
+      content: '';
+      opacity: 0;
+      display: none;
+      pointer-events: none;
+      position: absolute;
+      left: -1px;
+      right: -1px;
+      top: -1px;
+      bottom: -1px;
+      z-index: 0;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .k-button:hover::before {
+      opacity: 0.08;
+    }
+
+    .k-button {
+      color: $bw5;
+      border: none !important;
+      opacity: 1;
+
+      &.k-time-cancel,
+      &.k-primary {
+        transition: 0.3s;
+
+        &:hover {
+          transition: 0.3s;
+          color: white;
+        }
+      }
+
+      &.k-time-cancel {
+        color: $bw6-2;
+        background: #ebebeb;
+
+        &:hover {
+          background: $bw5;
+        }
+      }
+
+      // #ref to 102
+      &.k-primary {
+        border: none;
+        color: $light-blue-07;
+        background: #ebebeb;
+
+        &:hover {
+          border-color: $light-blue;
+          color: white;
+          background-color: $light-blue;
+        }
+
+        &:active {
+          color: white;
+          background-color: $light-blue-07;
+        }
+
+        &:focus {
+          box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        &:active,
+        &.k-state-active {
+          //border-color: rgba(0, 0, 0, 0.08);
+          //color: #000;
+          //background-color: #f6f6f6;
+          //background-image: none;
+          //box-shadow: inset 0 2px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+      }
+
+      &:active::before,
+      &.k-state-active::before {
+        opacity: 0.16;
+      }
+    }
+
+    .k-button-group .k-button:active,
+    .k-button-group .k-button.k-state-active {
+      color: white;
+      background: $light-blue-07;
+
+      &:hover {
+        background: $light-blue;
+      }
+    }
+
+    .k-button-group .k-button:focus {
+    }
+
+    .k-action-buttons {
+      padding: 0;
+      border-width: 0;
+      border-style: solid;
+      border-color: inherit;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      align-content: flex-end;
+      justify-content: flex-end;
+      clear: both;
+    }
+
+    .k-action-buttons .k-button + .k-button {
+      margin-left: 0;
+      flex-shrink: 0;
+    }
+
+    .k-calendar {
+      background-clip: padding-box;
+      border-width: 1px;
+      border-style: solid;
+      box-sizing: border-box;
+      outline: 0;
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 1.4285714286;
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      border-color: rgba(0, 0, 0, 0.08);
+      color: #000;
+      background-color: unset;
+
+      .k-link {
+        outline: 0;
+        color: inherit;
+        text-decoration: none;
+        white-space: normal;
+        cursor: pointer;
+        overflow: hidden;
+      }
+
+      .k-calendar-header {
+        .k-today {
+          font-size: 12px;
+          font-weight: 700;
+          color: $light-blue-07;
+        }
+
+        .k-button {
+          color: inherit;
+          background: none;
+          font-weight: bold;
+
+          &::after {
+            display: block;
+          }
+
+          &:focus::after {
+            box-shadow: inset 0 0 0 2px currentColor;
+            opacity: 0.12;
+          }
+        }
+
+        .k-calendar-weekdays {
+          .k-calendar-tr {
+            th {
+              color: $bw6-2;
+            }
+          }
+        }
+      }
+
+      .k-weekend {
+        color: inherit;
+        background-color: transparent;
+      }
+
+      .k-calendar-view {
+        width: 17em;
+        height: 17.428571em;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        margin: auto;
+        padding: 0 4px;
+        gap: 16px;
+
+        table {
+          margin: 0;
+          border-width: 0;
+          border-color: inherit;
+          border-spacing: 0;
+          border-collapse: separate;
+          table-layout: fixed;
+          outline: 0;
+          position: relative;
+          z-index: 1;
+        }
+
+        .k-calendar-table {
+          margin: 0;
+          border-width: 0;
+          border-color: inherit;
+          border-spacing: 0;
+          border-collapse: separate;
+          table-layout: fixed;
+          outline: 0;
+          position: relative;
+          z-index: 1;
+
+          .k-calendar-thead .k-calendar-tr {
+            .k-calendar-th {
+              font-size: 12px;
+              font-weight: bold;
+              color: $th-color;
+              opacity: 1;
+            }
+          }
+        }
+
+        td {
+          border-width: 0;
+          padding: 0;
+          text-align: center;
+          border-style: solid;
+          border-color: inherit;
+          font-weight: normal;
+          cursor: default;
+        }
+
+        th {
+          border-width: 0;
+          padding: 0;
+          text-align: center;
+          border-style: solid;
+          border-color: inherit;
+          font-weight: normal;
+          cursor: default;
+          padding: 0.25em 0;
+          font-size: 12px;
+          line-height: 2;
+          text-transform: uppercase;
+          opacity: 0.6;
+        }
+
+        .k-calendar-td {
+          border-width: 0;
+          padding: 0;
+          text-align: center;
+          border-style: solid;
+          border-color: inherit;
+          font-weight: normal;
+          cursor: default;
+        }
+
+        .k-calendar-th {
+          border-width: 0;
+          padding: 0;
+          text-align: center;
+          border-style: solid;
+          border-color: inherit;
+          font-weight: normal;
+          cursor: default;
+          padding: 0.25em 0;
+          font-size: 12px;
+          line-height: 2;
+          text-transform: uppercase;
+          opacity: 0.6;
+        }
+
+        tbody {
+          th {
+            padding-left: 8px;
+            padding-right: 8px;
+            height: 2em;
+            font: inherit;
+            font-weight: bold;
+            text-transform: none;
+            text-align: left;
+          }
+        }
+
+        .k-calendar-tbody {
+          .k-calendar-th {
+            padding-left: 8px;
+            padding-right: 8px;
+            height: 2em;
+            font: inherit;
+            font-weight: bold;
+            text-transform: none;
+            text-align: left;
+          }
+        }
+      }
+
+      //
+      .k-content {
+        width: 100%;
+        margin: 0;
+        text-align: center;
+        flex: 1 1 auto;
+        position: relative;
+
+        > table {
+          table-layout: fixed;
+          margin-right: -17px;
+        }
+
+        > .k-calendar-table {
+          table-layout: fixed;
+          margin-right: 0;
+          width: 100%;
+        }
+
+        td {
+          border-radius: 2px;
+          border-color: transparent;
+        }
+
+        .k-calendar-td {
+          border-radius: 2px;
+          border-color: transparent;
+        }
+
+        .k-link {
+          border-radius: 2px;
+          padding: 0.5em 0.5em;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .k-weekend {
+          border-radius: 0;
+          opacity: 1;
+        }
+
+        .k-today {
+          color: $light-blue-07;
+        }
+      }
+
+      .k-calendar-content {
+        width: 100%;
+        margin: 0;
+        text-align: center;
+        flex: 1 1 auto;
+        position: relative;
+
+        > table {
+          table-layout: fixed;
+          margin-right: -17px;
+        }
+
+        > .k-calendar-table {
+          table-layout: fixed;
+          margin-right: -17px;
+        }
+
+        td {
+          border-radius: 2px;
+          border-color: transparent;
+        }
+
+        .k-calendar-td {
+          border-radius: 2px;
+          border-color: transparent;
+        }
+
+        .k-link {
+          border-radius: 2px;
+          padding: 0.5em 0.5em;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .k-weekend {
+          border-radius: 0;
+          opacity: 1;
+        }
+
+        .k-today {
+          color: $light-blue-07;
+        }
+      }
+
+      .k-calendar-monthview {
+        td {
+          width: 2.4285714286em;
+          height: 2.4285714286em;
+        }
+
+        .k-calendar-td {
+          //width: 2.4285714286em;
+          //height: 2.4285714286em;
+          width: 21px !important;
+          height: 21px !important;
+        }
+
+        .k-link {
+          //width: 2.4285714286em;
+          //height: 2.4285714286em;
+          width: 21px !important;
+          height: 21px !important;
+          margin: auto;
+          font-size: 12px;
+        }
+      }
+
+      .k-content.k-scrollable {
+        box-sizing: content-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        display: block;
+        padding-right: 100px;
+        padding-left: 100px;
+        margin-left: -100px;
+        margin-right: -117px;
+      }
+
+      .k-calendar-content.k-scrollable {
+        box-sizing: content-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        display: block;
+        padding-right: 100px;
+        padding-left: 100px;
+        margin-left: -100px;
+        margin-right: -117px;
+      }
+
+      .k-scrollable-placeholder {
+        position: absolute;
+        z-index: -1;
+        width: 1px;
+        top: 0;
+        right: 0;
+      }
+
+      .k-calendar-header {
+        .k-today {
+          &:hover {
+            color: $light-blue;
+          }
+
+          &:focus {
+            color: $light-blue-07;
+          }
+        }
+      }
+
+      td {
+        &:hover {
+          .k-link {
+            border-color: #ededed;
+            color: #000;
+            background-color: #ededed;
+          }
+        }
+      }
+
+      .k-calendar-td {
+        &:hover {
+          .k-link {
+            border-color: #ededed;
+            color: #000;
+            background-color: #ededed;
+          }
+        }
+      }
+    }
+
+    .k-calendar-infinite {
+      .k-calendar-header {
+        margin: 0;
+        padding: 0;
+      }
+
+      .k-calendar-view {
+        width: 17em;
+        height: 17.4285714286em;
+        gap: 0;
+        padding: 0 16px;
+        display: flex;
+        flex: 0 0 auto;
+        flex-direction: column;
+        overflow: hidden;
+        box-sizing: content-box;
+
+        &::after {
+          display: block;
+          position: absolute;
+          bottom: 0;
+          content: ' ';
+          height: 0;
+          line-height: 0;
+          z-index: 1;
+          width: 150%;
+          left: -25%;
+          box-shadow: 0 0 2.4285714286em 1.2142857143em white;
+        }
+
+        &.k-calendar-yearview {
+          width: 100%;
+          box-sizing: border-box;
+        }
+      }
+
+      box-sizing: content-box;
+      width: auto;
+      display: inline-flex;
+      vertical-align: bottom;
+
+      .k-calendar-monthview {
+        padding: 0 12px !important;
+        display: flex;
+        flex: 0 0 auto;
+        flex-direction: column;
+        overflow: hidden;
+        box-sizing: border-box !important;
+        max-width: 230px !important;
+
+        &::after {
+          display: block;
+          position: absolute;
+          bottom: 0;
+          content: ' ';
+          height: 0;
+          line-height: 0;
+          z-index: 1;
+          width: 150%;
+          left: -25%;
+          box-shadow: 0 0 2.4285714286em 1.2142857143em white;
+        }
+      }
+
+      .k-calendar-header {
+        //margin-left: -16px;
+        //margin-right: -16px;
+        //padding: 8px 16px;
+      }
+
+      .k-calendar-weekdays {
+        width: 100%;
+        flex: 0 0 auto;
+      }
+    }
+
+    .k-time-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 23px;
+
+      .k-title {
+        color: $bw6-2;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .k-button.k-bare.k-time-now {
+        color: $light-blue-07;
+        font-size: 12px;
+        font-weight: 700;
+
+        &:hover {
+          color: $light-blue;
+        }
+      }
+    }
+
+    .k-time-list-wrapper {
+      display: inline-block;
+      overflow: hidden;
+      box-sizing: content-box;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+      padding: 20px 0;
+      text-align: center;
+      min-width: 4em;
+      height: 200px;
+      flex: 1 1 auto;
+
+      .k-title {
+        display: block;
+        text-align: center;
+        font-size: 10px;
+        position: absolute;
+        text-transform: capitalize;
+        font-weight: bold;
+        min-width: 100%;
+        height: 1.5em;
+        line-height: 1.5em;
+        margin-top: -19px;
+        z-index: 12;
+      }
+
+      &.k-state-focused .k-title {
+        color: $bw6-2;
+      }
+    }
+
+    .k-time-container {
+      position: absolute;
+      display: block;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      line-height: 1.4285714286;
+      left: 0;
+      right: 0;
+      top: 20px;
+      bottom: 20px;
+      padding-right: 100px;
+      padding-left: 100px;
+      margin-left: -100px;
+      margin-right: -117px;
+
+      > ul {
+        height: auto;
+        width: calc(230px / 3);
+        margin: 0;
+      }
+    }
+
+    .k-time-list-container {
+      display: flex;
+      position: relative;
+    }
+
+    .k-time-list {
+      position: absolute;
+      display: flex;
+      z-index: 10;
+      outline: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      top: 0;
+
+      &::before {
+        display: block;
+        position: absolute;
+        content: ' ';
+        height: 0;
+        line-height: 0;
+        z-index: 1;
+        width: 200%;
+        left: -50%;
+        top: 0;
+      }
+
+      &::after {
+        display: block;
+        position: absolute;
+        content: ' ';
+        height: 0;
+        line-height: 0;
+        z-index: 1;
+        width: 200%;
+        left: -50%;
+        bottom: 0;
+      }
+
+      .k-item {
+        height: 22px;
+        min-height: unset;
+        padding: 0;
+        line-height: 22px;
+
+        &:hover {
+          span {
+            color: $light-blue;
+          }
+        }
+      }
+    }
+
+    .k-time-highlight {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 22px;
+      z-index: 1;
+      background-color: #dadada;
+      border: none;
+    }
+
+    .k-time-container {
+      background: transparent;
+      width: 100%;
+      box-sizing: content-box;
+
+      .k-scrollable-placeholder {
+        position: absolute;
+        width: 1px;
+        top: 0;
+        right: 0;
+      }
+    }
+
+    .k-time-separator {
+      width: 0;
+      height: 100%;
+      display: block !important;
+      align-self: center;
+      justify-content: center;
+      z-index: 11;
+    }
+
+    .k-time-list-wrapper {
+      background-color: $bw1;
+
+      .k-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 17px;
+        border-color: rgba(0, 0, 0, 0.08);
+        color: #000;
+        background-color: $bw2;
+        opacity: 0.6;
+      }
+
+      &:hover {
+        background: #f3f3f3;
+      }
+    }
+
+    .k-time-list {
+      &::before {
+        box-shadow: 0 0 3em 1.5em $bw1;
+      }
+
+      &::after {
+        box-shadow: 0 0 3em 1.5em $bw1;
+      }
+
+      .k-item {
+        cursor: default;
+
+        &:hover {
+          color: $light-blue-07;
+        }
+      }
+    }
+
+    [tabindex='-1']:focus:not(:focus-visible) {
+      outline: 0 !important;
+    }
+
+    ul {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: inherit;
+      text-align: -webkit-match-parent;
+    }
+
+    button {
+      border-radius: 0;
+      margin: 0;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      overflow: visible;
+      text-transform: none;
+
+      &:focus {
+        outline: 1px dotted;
+        outline: 5px auto -webkit-focus-ring-color;
+      }
+    }
+
+    button,
+    [type='button'] {
+      -webkit-appearance: button;
+    }
+
+    button::-moz-focus-inner,
+    [type='button']::-moz-focus-inner {
+      padding: 0;
+      border-style: none;
+    }
+
+    .k-link,
+    .k-link:hover {
+      color: inherit;
+      text-decoration: none;
+      outline: 0;
+      cursor: pointer;
+    }
+
+    .k-state-disabled {
+      outline: none;
+      cursor: default;
+      opacity: 0.6;
+      filter: grayscale(0.1);
+      pointer-events: none;
+      box-shadow: none;
+    }
+
+    .k-datetime-footer.k-action-buttons {
+      //max-height: 23px;
+      height: 23px;
+
+      button {
+        height: 100%;
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
+  }
+}

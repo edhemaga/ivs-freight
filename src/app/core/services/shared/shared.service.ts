@@ -2,10 +2,10 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "../notification/notification.service";
 import {Address} from "../../model/address";
-import { SpinnerService } from './spiner.service';
 import {Observable, Subject, tap} from "rxjs";
 import {environment} from "../../../../environments/environment";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {SpinnerService} from "../spinner/spinner.service";
 
 class OwnerData {
 }
@@ -58,11 +58,18 @@ export class SharedService {
   public emitTab: EventEmitter<number> = new EventEmitter();
   public reloadOwner: boolean;
   headers = {'Content-Type': 'application/json', Accept: 'application/json'};
+  private notify = new Subject<any>();
 
   constructor(public notification: NotificationService,
               private spinner: SpinnerService,
               public http: HttpClient
               ) { }
+
+  public notifyOther(data: any) {
+    if (data) {
+      this.notify.next(data);
+    }
+  }
 
   /**
    * Marks all controls in a form group as touched
@@ -115,6 +122,18 @@ export class SharedService {
    */
   public handleServerError() {
     this.notification.error('Something went wrong. Please try again.', 'Error:');
+    this.spinner.show(false);
+  }
+
+  /**
+   * It handles  error.
+   */
+  public handleError(error?: HttpErrorResponse) {
+    const message =
+      error && error.error && error.error.message
+        ? error.error.message
+        : 'Something went wrong. Please try again.';
+    this.notification.error(message, 'Error:');
     this.spinner.show(false);
   }
 
@@ -484,6 +503,12 @@ export class SharedService {
 
   getDriverOwnerData(ein: number): Observable<DriverOwnerData> {
     return this.http.get<DriverOwnerData>(environment.API_ENDPOINT + `ping/taxnumber/${ein}`);
+  }
+
+  public touchFormFields(formGroup: FormGroup) {
+    (Object as any).values(formGroup.controls).forEach((control: any) => {
+      control.markAsTouched();
+    });
   }
 
 }

@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {CommunicatorUserDataService} from './communicator-user-data.service';
 import {UserSocket} from "../../sockets/user-socket/user-socket.service";
 
-@Injectable()
+@Injectable({providedIn: 'root'})
+
 export class CommunicatorUserService {
 
   user?: any;
