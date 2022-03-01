@@ -1,0 +1,29 @@
+<div class="nav-header">
+  <div class="nav-header-top">
+    <svg-icon
+      class="nav-header-top-logo"
+      src="{{ isNavigationHovered | changeLogo }}"
+    ></svg-icon>
+  </div>
+  <div class="nav-header-bottom">
+    <svg-icon
+      class="nav-header-bottom-plus"
+      src="assets/img/svgs/navigation/ic_truckassist_plus.svg"
+    ></svg-icon>
+
+    <div class="nav-header-bottom-rightSide" *ngIf="isNavigationHovered">
+      <svg-icon
+        src="assets/img/svgs/navigation/ic_truckassist_search.svg"
+      ></svg-icon>
+
+      <svg-icon
+        class="nav-header-bottom-rightSide-notes"
+        src="assets/img/svgs/navigation/ic_truckassist_notes.svg"
+      ></svg-icon>
+
+      <svg-icon
+        src="assets/img/svgs/navigation/ic_truckassist_bell.svg"
+      ></svg-icon>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+.nav-item {
+  display: flex;
+  align-items: center;
+  width: 170px;
+  height: 28px;
+  font-weight: 500;
+  font-size: 14px;
+
+  .nav-item-name {
+    margin: 0px;
+    margin-left: 12px;
+    padding-top: 3px;
+  }
+
+  .nav-item-rightSide {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 146px;
+  }
+}

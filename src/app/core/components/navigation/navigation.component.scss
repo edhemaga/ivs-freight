@@ -1,0 +1,25 @@
+.navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+
+  height: 100vh;
+  width: 56px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 22px 17px;
+  background-color: #ffffff;
+  color: #b7b7b7;
+  box-shadow: 0 0 4px rgb(0,0,0,.16);
+
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    width: 200px;
+    transition: all 0.2s ease-in-out;
+  }
+}

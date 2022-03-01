@@ -1,0 +1,51 @@
+.nav-header {
+  height: 103px;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease-in-out;
+
+  .nav-header-top {
+    .nav-header-top-logo {
+      svg {
+        margin-left: -3px;
+      }
+    }
+  }
+
+  .nav-header-bottom {
+    margin-top: 16.2px;
+    display: flex;
+    align-items: center;
+
+    .nav-header-bottom-plus {
+      svg {
+        transition: all 0.3s ease-in-out;
+        margin-left: -10px;
+        path {
+          shape-rendering: geometricPrecision;
+          fill: url("#linear-gradient");
+        }
+        &:hover {
+          cursor: pointer;
+          #Ellipse_6368-2 {
+            fill: url("#linear-gradient");
+          }
+          path {
+            fill: #ffffff;
+          }
+        }
+      }
+    }
+
+    .nav-header-bottom-rightSide {
+      display: flex;
+      justify-content: space-between;
+      margin-left: 29px;
+
+      .nav-header-bottom-rightSide-notes{
+        margin: 0 6px;
+      }
+    }
+  }
+}

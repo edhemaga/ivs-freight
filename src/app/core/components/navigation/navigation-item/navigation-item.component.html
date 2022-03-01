@@ -1,0 +1,12 @@
+<div class="nav-item">
+  <svg-icon class="nav-item-img" src="{{ navItem.image }}"></svg-icon>
+
+  <div class="nav-item-rightSide">
+    <p *ngIf="isNavigationHovered" class="nav-item-name">{{ navItem.name }}</p>
+    <svg-icon
+      class="nav-item-arrow"
+      *ngIf="navItem.arrow && isNavigationHovered"
+      src="{{ navItem.arrow }}"
+    ></svg-icon>
+  </div>
+</div>

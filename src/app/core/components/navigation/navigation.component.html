@@ -1,0 +1,25 @@
+<div
+  class="navigation"
+  (mouseenter)="isNavigationHovered = true"
+  (mouseleave)="isNavigationHovered = false"
+>
+  <div class="navigation-top">
+    <app-navigation-header
+      [isNavigationHovered]="isNavigationHovered"
+    ></app-navigation-header>
+
+    <div class="navigation-items" *ngFor="let item of navigation">
+      <app-navigation-item
+        [navItem]="item"
+        [isNavigationHovered]="isNavigationHovered"
+      >
+      </app-navigation-item>
+    </div>
+  </div>
+
+  <div class="navigation-bottom">
+    <app-navigation-footer
+      [isNavigationHovered]="isNavigationHovered"
+    ></app-navigation-footer>
+  </div>
+</div>

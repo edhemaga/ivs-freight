@@ -1,0 +1,40 @@
+<div class="nav-footer">
+  <div class="nav-footer-item" *ngFor="let item of footerData; let ind = index">
+    <svg-icon
+      class="nav-footer-image"
+      [ngClass]="{ 'nav-footer-image-user': ind === 2 }"
+      src="{{ item.image }}"
+    ></svg-icon>
+    <p
+      class="nav-footer-text"
+      [ngClass]="{ 'nav-footer-text-info': ind === 0 }"
+      *ngIf="!checkIfUserTextData(item.text) && isNavigationHovered"
+    >
+      {{ item.text }}
+    </p>
+
+    <div
+      class="nav-footer-user"
+      *ngIf="checkIfUserTextData(item.text) && isNavigationHovered"
+    >
+      <p>{{ item.text.companyName }}</p>
+      <p>{{ item.text.userName }}</p>
+    </div>
+
+    <div
+      *ngIf="currentUserStatus && checkIfUserTextData(item.text)"
+      class="status-marker-container"
+    >
+      <div
+        [ngClass]="{
+          'status-active': currentUserStatus === 'active',
+          'status-online': currentUserStatus === 'online',
+          'status-away': currentUserStatus === 'away',
+          'status-busy': currentUserStatus === 'busy',
+          'status-offline': currentUserStatus === 'offline'
+        }"
+        class="status-marker"
+      ></div>
+    </div>
+  </div>
+</div>

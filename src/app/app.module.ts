@@ -11,11 +11,21 @@ import {ToastrModule} from "ngx-toastr";
 import {NgIdleModule} from "@ng-idle/core";
 import {HeaderComponent} from './core/components/header/header/header.component';
 import {GoogleMapsAPIWrapper} from '@agm/core';
+import { NavigationComponent } from './core/components/navigation/navigation.component';
+import { NavigationItemComponent } from './core/components/navigation/navigation-item/navigation-item.component';
+import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
+import { NavigationFooterComponent } from './core/components/navigation/navigation-footer/navigation-footer.component';
+import { ChangeLogoPipe } from './core/components/navigation/pipe/change-logo.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
+    NavigationComponent,
+    NavigationItemComponent,
+    NavigationHeaderComponent,
+    NavigationFooterComponent,
+    ChangeLogoPipe,
   ],
   imports: [
     BrowserModule,
