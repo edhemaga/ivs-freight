@@ -46,6 +46,49 @@
 
       .nav-header-bottom-rightSide-notes {
         margin: 0 6px;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+          svg {
+            #Ellipse_6375 {
+              fill: #f3f3f3 !important;
+            }
+            #Path_35327 {
+              fill: #b7b7b7 !important;
+            }
+
+            #Path_35328 {
+              fill: #b7b7b7 !important;
+            }
+          }
+        }
+      }
+
+      .nav-header-bottom-rightSide-search {
+        transition: all 0.2s ease-in-out;
+        &:hover {
+          svg {
+            #Ellipse_6374 {
+              fill: #f3f3f3 !important;
+            }
+            #Path_35329 {
+              fill: #b7b7b7 !important;
+            }
+          }
+        }
+      }
+
+      .nav-header-bottom-rightSide-bell {
+        transition: all 0.2s ease-in-out;
+        &:hover {
+          svg {
+            #Ellipse_6376 {
+              fill: #f3f3f3 !important;
+            }
+            #Path_35330 {
+              fill: #b7b7b7 !important;
+            }
+          }
+        }
       }
     }
   }

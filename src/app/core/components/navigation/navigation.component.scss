@@ -16,6 +16,14 @@
   color: #b7b7b7;
   box-shadow: 0 0 4px rgb(0, 0, 0, 0.16);
 
+  overflow: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+
   transition: all 0.2s ease-in-out;
 
   .navigation-top,

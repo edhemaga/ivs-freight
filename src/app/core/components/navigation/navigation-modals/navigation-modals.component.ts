@@ -17,6 +17,9 @@ import { NavigationModal } from '../model/navigation.model';
   styleUrls: ['./navigation-modals.component.scss'],
 })
 export class NavigationModalsComponent {
+
+  @Output() onModalPanelCloseEvent = new EventEmitter<boolean>();
+
   public generalNavigationData: NavigationModal[] = generalNavigationData;
   public toolsNavigationData: NavigationModal[] = toolsNavigationData;
   public repairNavigationData: NavigationModal[] = repairNavigationData;
@@ -24,7 +27,7 @@ export class NavigationModalsComponent {
   public safetyNavigationData: NavigationModal[] = safetyNavigationData;
   public accountingNavigationData: NavigationModal[] = accountingNavigationData;
 
-  @Output() onModalPanelCloseEvent = new EventEmitter<boolean>();
+  public changeTextHoverOnCloseModal: boolean = false;
 
   constructor( private customModalService: CustomModalService) {}
 

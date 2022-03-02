@@ -7,7 +7,6 @@
     ></svg-icon>
     <p
       class="nav-footer-text"
-      [ngClass]="{ 'nav-footer-text-info': ind === 0 }"
       *ngIf="!checkIfUserTextData(item.text) && isNavigationHovered"
     >
       {{ item.text }}

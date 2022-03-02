@@ -39,6 +39,20 @@
       font-weight: bold;
       margin-left: 6px;
     }
+
+    &:hover {
+      .modal-nav-close-svg {
+        svg {
+          path {
+            fill: #b7b7b7;
+          }
+
+          #Ellipse_6368-2 {
+            fill: #f3f3f3;
+          }
+        }
+      }
+    }
   }
 
   .modal-nav-content {

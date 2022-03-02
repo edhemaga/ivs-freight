@@ -1,11 +1,16 @@
 <div class="modal-nav-panel">
-  <div class="modal-nav-close">
+  <div
+    (mouseenter)="changeTextHoverOnCloseModal = true"
+    (mouseleave)="changeTextHoverOnCloseModal = false"
+    class="modal-nav-close"
+    (click)="onModalPanelClose()"
+  >
     <svg-icon
-      (click)="onModalPanelClose()"
+      
       class="modal-nav-close-svg"
       src="assets/img/svgs/navigation/ic_truckassist_closePlus.svg"
     ></svg-icon>
-    <p class="modal-nav-close-text">Add New</p>
+    <p class="modal-nav-close-text">{{changeTextHoverOnCloseModal ? 'Close' : 'Add New'}}</p>
   </div>
 
   <div class="modal-nav-content modal-nav-content-first">
