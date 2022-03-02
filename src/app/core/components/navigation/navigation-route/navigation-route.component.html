@@ -1,0 +1,12 @@
+<div class="nav-item" (click)="onRouteEvent()">
+  <svg-icon class="nav-item-img" src="{{ navRoute.image }}"></svg-icon>
+
+  <div class="nav-item-rightSide">
+    <p *ngIf="isNavigationHovered" class="nav-item-name">{{ navRoute.name }}</p>
+    <svg-icon
+      class="nav-item-arrow"
+      *ngIf="navRoute.arrow && isNavigationHovered"
+      src="{{ navRoute.arrow }}"
+    ></svg-icon>
+  </div>
+</div>

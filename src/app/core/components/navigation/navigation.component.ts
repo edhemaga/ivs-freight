@@ -9,4 +9,9 @@ import { navigationData } from './model/navigation-data';
 export class NavigationComponent {
   public navigation: Navigation[] = navigationData;
   public isNavigationHovered: boolean = false;
+
+
+  public onRouteEvent(navItem: Navigation) {
+    
+  }
 }

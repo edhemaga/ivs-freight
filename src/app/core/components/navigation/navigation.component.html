@@ -9,11 +9,12 @@
     ></app-navigation-header>
 
     <div class="navigation-items" *ngFor="let item of navigation">
-      <app-navigation-item
-        [navItem]="item"
+      <app-navigation-route
+        [navRoute]="item"
         [isNavigationHovered]="isNavigationHovered"
+        (onRouteEvent)="onRouteEvent($event)"
       >
-      </app-navigation-item>
+      </app-navigation-route>
     </div>
   </div>
 
