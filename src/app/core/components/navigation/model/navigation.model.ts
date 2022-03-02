@@ -9,5 +9,5 @@ export interface Navigation {
 
 export interface NavigationModal {
     name: string,
-    route: string
+    path: string
 }

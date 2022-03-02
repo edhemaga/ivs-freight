@@ -206,35 +206,35 @@ export const navigationData: Navigation[] = [
 export const generalNavigationData: NavigationModal[] = [
   {
     name: 'Load',
-    route: '/load',
+    path: 'load',
   },
   {
     name: 'Driver',
-    route: '/driver',
+    path: 'driver',
   },
   {
     name: 'Truck',
-    route: '/truck',
+    path: 'truck',
   },
   {
     name: 'Broker',
-    route: '/shipper',
+    path: 'shipper',
   },
   {
     name: 'Owner',
-    route: '/owner',
+    path: 'owner',
   },
   {
     name: 'User',
-    route: '/user',
+    path: 'user',
   },
   {
     name: 'Contact',
-    route: '/contact',
+    path: 'contact',
   },
   {
     name: 'Account',
-    route: '/account',
+    path: 'account',
   },
 ];
 // Tools Navigation Data
@@ -242,11 +242,11 @@ export const generalNavigationData: NavigationModal[] = [
 export const toolsNavigationData: NavigationModal[] = [
   {
     name: 'Event',
-    route: '/event',
+    path: 'event',
   },
   {
     name: 'Task',
-    route: '/task',
+    path: 'task',
   },
 ];
 
@@ -254,11 +254,11 @@ export const toolsNavigationData: NavigationModal[] = [
 export const repairNavigationData: NavigationModal[] = [
   {
     name: 'Order',
-    route: '/order',
+    path: 'order',
   },
   {
     name: 'Shop',
-    route: '/shop',
+    path: 'shop',
   },
 ];
 
@@ -266,11 +266,11 @@ export const repairNavigationData: NavigationModal[] = [
 export const fuelNavigationData: NavigationModal[] = [
   {
     name: 'Purchase',
-    route: '/purchase',
+    path: 'purchase',
   },
   {
     name: 'Stop',
-    route: '/stop',
+    path: 'stop',
   },
 ];
 
@@ -278,11 +278,11 @@ export const fuelNavigationData: NavigationModal[] = [
 export const safetyNavigationData: NavigationModal[] = [
   {
     name: 'Violation',
-    route: '/violation',
+    path: 'violation',
   },
   {
     name: 'Accident',
-    route: '/accident',
+    path: 'accident',
   },
 ];
 
@@ -290,18 +290,18 @@ export const safetyNavigationData: NavigationModal[] = [
 export const accountingNavigationData: NavigationModal[] = [
   {
     name: 'Credit',
-    route: '/credit',
+    path: 'credit',
   },
   {
     name: 'Bonus',
-    route: '/bonus',
+    path: 'bonus',
   },
   {
     name: 'Deduction',
-    route: '/deduction',
+    path: 'deduction',
   },
   {
     name: 'Fuel',
-    route: '/fuel',
+    path: 'fuel',
   },
 ];
