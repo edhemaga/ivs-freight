@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-navigation-header',
@@ -7,4 +7,9 @@ import { Component, Input } from '@angular/core';
 })
 export class NavigationHeaderComponent {
   @Input() isNavigationHovered: boolean = false;
+  @Output() onModalPanelOpenEvent = new EventEmitter<boolean>();
+
+  public onModalPanelOpen() {
+    this.onModalPanelOpenEvent.emit(true);
+  }
 }

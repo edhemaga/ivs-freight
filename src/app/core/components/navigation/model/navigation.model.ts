@@ -6,3 +6,8 @@ export interface Navigation {
     arrow?: string,
     isSubRouteActive?: boolean
 }
+
+export interface NavigationModal {
+    name: string,
+    route: string
+}

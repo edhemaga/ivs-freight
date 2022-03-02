@@ -13,15 +13,27 @@ interface Subroute {
 })
 export class NavigationComponent {
   public navigation: Navigation[] = navigationData;
+
   public isNavigationHovered: boolean = false;
+  public isModalPanelOpen: boolean = false;
 
   public onSubRouteEvent(subroute: Subroute) {
-    let index = this.navigation.findIndex((item) => item.id === subroute.routeId);
+    let index = this.navigation.findIndex(
+      (item) => item.id === subroute.routeId
+    );
     this.navigation[index].isSubRouteActive =
       !this.navigation[index].isSubRouteActive;
   }
 
   public identifySubRoute(index, item) {
     return item;
+  }
+
+  public onModalPanelOpenEvent(isOpen: boolean) {
+    this.isModalPanelOpen = isOpen;
+  }
+
+  public onModalPanelCloseEvent(isOpen: boolean) {
+    this.isModalPanelOpen = isOpen;
   }
 }

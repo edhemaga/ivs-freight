@@ -1,4 +1,4 @@
-import { Navigation } from './navigation.model';
+import { Navigation, NavigationModal } from './navigation.model';
 
 export const navigationData: Navigation[] = [
   {
@@ -198,5 +198,110 @@ export const navigationData: Navigation[] = [
     name: 'File Manager',
     image: 'assets/img/svgs/navigation/ic_file_manager.svg',
     route: '/filemanager',
+  },
+];
+
+// General Navigation Data
+
+export const generalNavigationData: NavigationModal[] = [
+  {
+    name: 'Load',
+    route: '/load',
+  },
+  {
+    name: 'Driver',
+    route: '/driver',
+  },
+  {
+    name: 'Truck',
+    route: '/truck',
+  },
+  {
+    name: 'Broker',
+    route: '/shipper',
+  },
+  {
+    name: 'Owner',
+    route: '/owner',
+  },
+  {
+    name: 'User',
+    route: '/user',
+  },
+  {
+    name: 'Contact',
+    route: '/contact',
+  },
+  {
+    name: 'Account',
+    route: '/account',
+  },
+];
+// Tools Navigation Data
+
+export const toolsNavigationData: NavigationModal[] = [
+  {
+    name: 'Event',
+    route: '/event',
+  },
+  {
+    name: 'Task',
+    route: '/task',
+  },
+];
+
+// Repair Navigation Data
+export const repairNavigationData: NavigationModal[] = [
+  {
+    name: 'Order',
+    route: '/order',
+  },
+  {
+    name: 'Shop',
+    route: '/shop',
+  },
+];
+
+// Fuel Navigation Data
+export const fuelNavigationData: NavigationModal[] = [
+  {
+    name: 'Purchase',
+    route: '/purchase',
+  },
+  {
+    name: 'Stop',
+    route: '/stop',
+  },
+];
+
+// Safety Navigation Data
+export const safetyNavigationData: NavigationModal[] = [
+  {
+    name: 'Violation',
+    route: '/violation',
+  },
+  {
+    name: 'Accident',
+    route: '/accident',
+  },
+];
+
+// Accounting Navigation Data
+export const accountingNavigationData: NavigationModal[] = [
+  {
+    name: 'Credit',
+    route: '/credit',
+  },
+  {
+    name: 'Bonus',
+    route: '/bonus',
+  },
+  {
+    name: 'Deduction',
+    route: '/deduction',
+  },
+  {
+    name: 'Fuel',
+    route: '/fuel',
   },
 ];

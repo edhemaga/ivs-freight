@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NavigationSubrouteCardComponent } from './navigation-card.component';
+import { NavigationSubrouteCardComponent } from './navigation-subroute-card.component';
 
 describe('NavigationSubrouteCardComponent', () => {
   let component: NavigationSubrouteCardComponent;

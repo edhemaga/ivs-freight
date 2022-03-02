@@ -6,10 +6,16 @@
   <div class="navigation-top">
     <app-navigation-header
       [isNavigationHovered]="isNavigationHovered"
+      (onModalPanelOpenEvent)="onModalPanelOpenEvent($event)"
     ></app-navigation-header>
 
+    <app-navigation-modals
+      (onModalPanelCloseEvent)="onModalPanelCloseEvent($event)"
+      *ngIf="isModalPanelOpen && isNavigationHovered"
+    ></app-navigation-modals>
+
     <div
-      class="navigation-items"
+      class="navigation-routes"
       *ngFor="let item of navigation; trackBy: identifySubRoute"
     >
       <app-navigation-route
@@ -24,6 +30,7 @@
         *ngIf="item.arrow"
         [isSubRouteActive]="item.isSubRouteActive"
         [isNavigationHovered]="isNavigationHovered"
+        [contentHeight]="item.route.length"
       >
         <app-navigation-route
           [navRoute]="item"
