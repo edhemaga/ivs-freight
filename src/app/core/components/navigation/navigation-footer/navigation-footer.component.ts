@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 interface FooterData {
   image: string;
@@ -10,12 +10,13 @@ interface FooterData {
   templateUrl: './navigation-footer.component.html',
   styleUrls: ['./navigation-footer.component.scss'],
 })
-export class NavigationFooterComponent implements OnInit {
+export class NavigationFooterComponent {
   @Input() isNavigationHovered: boolean = false;
+  @Output() onUserPanelOpenEvent = new EventEmitter<boolean>();
 
   private currentUser = JSON.parse(localStorage.getItem('currentUser'));
   private userCompany = JSON.parse(localStorage.getItem('userCompany'));
-  public currentUserStatus: string = 'online'
+  public currentUserStatus: string = 'online';
 
   public footerData: FooterData[] = [
     {
@@ -38,14 +39,17 @@ export class NavigationFooterComponent implements OnInit {
     },
   ];
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
   public checkIfUserTextData(text: any): boolean {
-    if(text.hasOwnProperty('companyName')) {
+    if (text.hasOwnProperty('companyName')) {
       return true;
     }
     return false;
+  }
+
+  public onUserPanelOpen(isUser: boolean) {
+    if (isUser) {
+      console.log(isUser)
+      this.onUserPanelOpenEvent.emit(true);
+    }
   }
 }

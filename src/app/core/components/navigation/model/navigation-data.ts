@@ -1,4 +1,4 @@
-import { Navigation, NavigationModal } from './navigation.model';
+import { Navigation, NavigationModal, NavigationUserPanel } from './navigation.model';
 
 export const navigationData: Navigation[] = [
   {
@@ -305,3 +305,32 @@ export const accountingNavigationData: NavigationModal[] = [
     path: 'fuel',
   },
 ];
+
+// User Navigation Data
+export const userNavigationData: NavigationUserPanel[] = [
+  {
+    name: 'Profile Update',
+    image: 'assets/img/svgs/navigation/ic_truckassist_pen.svg',
+    action: () => {}
+  },
+  {
+    name: 'Profile Update',
+    image: 'assets/img/svgs/navigation/ic_truckassist_pen.svg',
+    action: () => {}
+  },
+  {
+    name: 'Switch Company',
+    image: 'assets/img/svgs/navigation/ic_truckassist_company.svg',
+    action: () => {}
+  },
+  {
+    name: 'Help Center',
+    image: 'assets/img/svgs/navigation/ic_truckassist_help_center.svg',
+    action: () => {}
+  },
+  {
+    name: 'Logout',
+    image: 'assets/img/svgs/navigation/ic_truckassist_logout.svg',
+    action: () => {}
+  }
+]

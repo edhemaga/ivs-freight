@@ -17,10 +17,14 @@ export class NavigationRouteComponent {
 
   @Output() onSubRouteEvent = new EventEmitter<Subroute>();
 
+  public isNavItemHovered: boolean = false;
+  public isNavSubRouteActive: boolean = false;
+
   constructor(private router: Router) {}
 
   public onRouteEvent() {
     if (this.navRoute.arrow) {
+      this.isNavSubRouteActive = !this.isNavSubRouteActive;
       this.onSubRouteEvent.emit({
         routeId: this.navRoute.id,
         routes: this.navRoute.route,

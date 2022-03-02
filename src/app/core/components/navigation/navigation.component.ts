@@ -16,6 +16,7 @@ export class NavigationComponent {
 
   public isNavigationHovered: boolean = false;
   public isModalPanelOpen: boolean = false;
+  public isUserPanelOpen: boolean = false;
 
   public onSubRouteEvent(subroute: Subroute) {
     let index = this.navigation.findIndex(
@@ -29,11 +30,11 @@ export class NavigationComponent {
     return item;
   }
 
-  public onModalPanelOpenEvent(isOpen: boolean) {
-    this.isModalPanelOpen = isOpen;
-  }
-
-  public onModalPanelCloseEvent(isOpen: boolean) {
-    this.isModalPanelOpen = isOpen;
+  public onPanelEvent(isOpen: boolean, panel: string) {
+    if (panel === 'ModalPanel') {
+      this.isModalPanelOpen = isOpen;
+    } else {
+      this.isUserPanelOpen = isOpen;
+    }
   }
 }

@@ -1,12 +1,24 @@
 .subroutes {
-    height: 28px;
+  height: 28px;
+  width: 184px;
+  position: relative;
+  left: -9px;
 
-    .subroutes-item {
-        margin: 0;
-        margin-left: 42px;
-        font-size: 14px;
-        color: #B7B7B7;
-    }
+  transition: all 0.2s ease-in-out;
+  user-select: none;
+
+  .subroutes-item {
+    margin: 0;
+    margin-left: 52px;
+    font-size: 14px;
+    color: #b7b7b7;
+    position: relative;
+    top: 3px;
+  }
+
+  &:hover {
+    background-color: #f7f7f7;
+    color: #919191;
+    font-weight: 500;
+  }
 }
-
-

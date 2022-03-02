@@ -1,0 +1,41 @@
+<div class="user-panel" *ngIf="isUserPanelOpen && isNavigationHovered">
+  <div class="user-content" *ngFor="let item of userNavigationData">
+    <div class="user-content-hover"></div>
+
+    <svg-icon
+      [ngClass]="{ 'user-content-logout': item.name === 'Logout' }"
+      class="user-content-svg"
+      src="{{ item.image }}"
+    ></svg-icon>
+    <p
+      class="user-content-text"
+      [ngClass]="{ 'user-content-logout': item.name === 'Logout' }"
+    >
+      {{ item.name }}
+    </p>
+  </div>
+
+  <div class="panel-user" (click)="onUserPanelClose()">
+    <svg-icon
+      class="panel-image"
+      src="assets/img/svgs/navigation/ic_profile_user.svg"
+    ></svg-icon>
+    <div class="panel-name">
+      <p>{{ userCompany.name }}</p>
+      <p>{{ currentUser.firstName.concat(" ", currentUser.lastName) }}</p>
+    </div>
+
+    <div *ngIf="currentUserStatus" class="status-marker-container">
+      <div
+        [ngClass]="{
+          'status-active': currentUserStatus === 'active',
+          'status-online': currentUserStatus === 'online',
+          'status-away': currentUserStatus === 'away',
+          'status-busy': currentUserStatus === 'busy',
+          'status-offline': currentUserStatus === 'offline'
+        }"
+        class="status-marker"
+      ></div>
+    </div>
+  </div>
+</div>

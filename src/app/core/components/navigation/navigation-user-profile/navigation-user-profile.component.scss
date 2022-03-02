@@ -1,0 +1,145 @@
+.user-panel {
+  position: absolute;
+  bottom: 21px;
+  left: 8px;
+  z-index: 99;
+  width: 184px;
+  height: 202px;
+  padding: 7px 10px 3px 10px;
+  border-radius: 3px;
+  border-bottom-left-radius: 20px;
+  box-shadow: 0 0 4px rgb(0 0 0 / 16%);
+  background-color: #ffffff;
+  -webkit-user-select: none;
+  user-select: none;
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #b7b7b7;
+  }
+
+  .user-content {
+    display: flex;
+    align-items: center;
+    height: 28px;
+    width: 176px;
+    transition: all 0.2s ease-in-out;
+
+    .user-content-hover {
+      display: none;
+    }
+
+    .user-content-text {
+      margin-left: 12px;
+    }
+
+    .user-content-logout {
+      color: #ff8080;
+    }
+
+    &:hover {
+      .user-content-hover {
+        display: inline;
+        height: 28px;
+        width: 176px;
+        content: "";
+        background: #f7f7f7;
+        position: absolute;
+        z-index: -1;
+        left: 5px;
+      }
+
+      .user-content-svg {
+        svg {
+          path {
+            fill: #b7b7b7;
+          }
+        }
+      }
+
+      .user-content-logout {
+        color: #ff6a6a !important;
+
+        svg {
+          #person-to-portal {
+            fill: #ff6a6a !important;
+          }
+        }
+      }
+
+      .user-content-text {
+        color: #919191;
+      }
+    }
+  }
+
+  .panel-user {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    position: relative;
+    top: 14px;
+    right: 7px;
+
+    .panel-name {
+      p {
+        margin-left: 6px;
+        &:nth-child(1) {
+          font-weight: 600;
+        }
+        &:nth-child(2) {
+          font-size: 12px;
+          font-weight: 400;
+        }
+      }
+    }
+
+    .status-marker-container {
+      width: 14px;
+      height: 14px;
+      border-radius: 7px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      bottom: 2px;
+      left: 22px;
+      background: #ffffff;
+
+      .status-marker {
+        width: 12px;
+        height: 12px;
+        border-radius: 6px;
+        border: 0 solid #ffffff;
+        background: #ffffff;
+      }
+
+      .status-online {
+        border: 2px solid #24c1a1;
+        background: #ffffff !important;
+      }
+
+      .status-active {
+        border: 0 solid #ffffff;
+        background: #24c1a1 !important;
+      }
+
+      .status-away {
+        border: 0 solid #ffffff;
+        background: #ffae21 !important;
+      }
+
+      .status-busy {
+        border: 0 solid #ffffff;
+        background: #ff5d5d !important;
+      }
+
+      .status-offline {
+        border: 0 solid #ffffff;
+        background: #919191 !important;
+      }
+    }
+  }
+}

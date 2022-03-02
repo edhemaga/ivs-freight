@@ -1,10 +1,17 @@
-<div class="nav-item" (click)="onRouteEvent()">
+<div *ngIf="isNavItemHovered" class="nav-item-hover"></div>
+<div
+  class="nav-item"
+  (mouseenter)="isNavItemHovered = true"
+  (mouseleave)="isNavItemHovered = false"
+  (click)="onRouteEvent()"
+>
   <svg-icon class="nav-item-img" src="{{ navRoute.image }}"></svg-icon>
 
   <div class="nav-item-rightSide">
     <p *ngIf="isNavigationHovered" class="nav-item-name">{{ navRoute.name }}</p>
     <svg-icon
       class="nav-item-arrow"
+      [ngClass]="{'nav-item-arrow-rotate': isNavSubRouteActive}"
       *ngIf="navRoute.arrow && isNavigationHovered"
       src="{{ navRoute.arrow }}"
     ></svg-icon>

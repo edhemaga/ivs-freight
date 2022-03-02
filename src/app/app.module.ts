@@ -19,6 +19,7 @@ import { ChangeLogoPipe } from './core/components/navigation/pipe/change-logo.pi
 import { NavigationSubrouteComponent } from './core/components/navigation/navigation-subroute/navigation-subroute.component';
 import { NavigationSubrouteCardComponent } from './core/components/navigation/navigation-subroute-card/navigation-subroute-card.component';
 import { NavigationModalsComponent } from './core/components/navigation/navigation-modals/navigation-modals.component';
+import { NavigationUserProfileComponent } from './core/components/navigation/navigation-user-profile/navigation-user-profile.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { NavigationModalsComponent } from './core/components/navigation/navigati
     NavigationSubrouteComponent,
     NavigationSubrouteCardComponent,
     NavigationModalsComponent,
+    NavigationUserProfileComponent,
   ],
   imports: [
     BrowserModule,

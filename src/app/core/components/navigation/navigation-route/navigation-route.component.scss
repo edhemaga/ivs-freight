@@ -5,6 +5,8 @@
   height: 28px;
   font-weight: 500;
   font-size: 14px;
+  transition: all 0.2s ease-in-out;
+  user-select: none;
 
   .nav-item-name {
     margin: 0px;
@@ -17,5 +19,36 @@
     justify-content: space-between;
     align-items: center;
     width: 146px;
+
+    .nav-item-arrow-rotate {
+      transform: rotate(180deg);
+      transition: all 0.2s ease-in-out;
+    }
   }
+
+  &:hover {
+    color: #919191;
+    font-weight: 500;
+
+    .nav-item-img,
+    .nav-item-arrow {
+      svg {
+        path {
+          fill: #b7b7b7;
+        }
+      }
+    }
+  }
+}
+
+.nav-item-hover {
+  width: 184px;
+  height: 28px;
+  position: absolute;
+  left: 0px;
+  left: 8px;
+  content: "";
+  background-color: #f7f7f7;
+  z-index: -1;
+  border-radius: 3px;
 }
