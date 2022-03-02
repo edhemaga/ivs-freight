@@ -1,0 +1,7 @@
+<ng-container [ngSwitch]="mode">
+  <ng-container *ngSwitchCase="'subroutes'">
+    <div class="subroutes" *ngFor="let item of subroute.route">
+      <p class="subroutes-item" [routerLink]="item.route">{{ item.name }}</p>
+    </div>
+  </ng-container>
+</ng-container>

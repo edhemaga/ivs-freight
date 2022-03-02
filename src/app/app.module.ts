@@ -16,6 +16,8 @@ import { NavigationRouteComponent } from './core/components/navigation/navigatio
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 import { NavigationFooterComponent } from './core/components/navigation/navigation-footer/navigation-footer.component';
 import { ChangeLogoPipe } from './core/components/navigation/pipe/change-logo.pipe';
+import { NavigationSubrouteComponent } from './core/components/navigation/navigation-subroute/navigation-subroute.component';
+import { NavigationSubrouteCardComponent } from './core/components/navigation/navigation-card/navigation-card.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { ChangeLogoPipe } from './core/components/navigation/pipe/change-logo.pi
     NavigationHeaderComponent,
     NavigationFooterComponent,
     ChangeLogoPipe,
+    NavigationSubrouteComponent,
+    NavigationSubrouteCardComponent,
   ],
   imports: [
     BrowserModule,

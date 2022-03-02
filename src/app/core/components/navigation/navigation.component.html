@@ -8,13 +8,37 @@
       [isNavigationHovered]="isNavigationHovered"
     ></app-navigation-header>
 
-    <div class="navigation-items" *ngFor="let item of navigation">
+    <div
+      class="navigation-items"
+      *ngFor="let item of navigation; trackBy: identifySubRoute"
+    >
       <app-navigation-route
+        *ngIf="!item.arrow && !item.isSubRouteActive"
         [navRoute]="item"
         [isNavigationHovered]="isNavigationHovered"
-        (onRouteEvent)="onRouteEvent($event)"
+        (onSubRouteEvent)="onSubRouteEvent($event)"
       >
       </app-navigation-route>
+
+      <app-navigation-subroute-card
+        *ngIf="item.arrow"
+        [isSubRouteActive]="item.isSubRouteActive"
+        [isNavigationHovered]="isNavigationHovered"
+      >
+        <app-navigation-route
+          [navRoute]="item"
+          [isNavigationHovered]="isNavigationHovered"
+          (onSubRouteEvent)="onSubRouteEvent($event)"
+        >
+        </app-navigation-route>
+
+        <app-navigation-subroute
+          *ngIf="item.isSubRouteActive && isNavigationHovered"
+          [subroute]="item"
+          [mode]="'subroutes'"
+        >
+        </app-navigation-subroute>
+      </app-navigation-subroute-card>
     </div>
   </div>
 

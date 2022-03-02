@@ -2,6 +2,10 @@ import { Router } from '@angular/router';
 import { Navigation } from '../model/navigation.model';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
+interface Subroute {
+  routeId: number;
+  routes: [];
+}
 @Component({
   selector: 'app-navigation-route',
   templateUrl: './navigation-route.component.html',
@@ -11,13 +15,16 @@ export class NavigationRouteComponent {
   @Input() navRoute: Navigation;
   @Input() isNavigationHovered: boolean = false;
 
-  @Output() routeEmitter = new EventEmitter<Navigation>();
+  @Output() onSubRouteEvent = new EventEmitter<Subroute>();
 
   constructor(private router: Router) {}
 
   public onRouteEvent() {
     if (this.navRoute.arrow) {
-      this.routeEmitter.emit(this.navRoute);
+      this.onSubRouteEvent.emit({
+        routeId: this.navRoute.id,
+        routes: this.navRoute.route,
+      });
       return;
     }
     this.router.navigate([`${this.navRoute.route}`]);
