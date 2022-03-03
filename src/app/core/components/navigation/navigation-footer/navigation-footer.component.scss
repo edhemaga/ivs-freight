@@ -2,8 +2,11 @@
   width: 176px;
   display: flex;
   flex-direction: column;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
-  
+
   position: relative;
   left: 1px;
 
@@ -66,8 +69,8 @@
       background: #ffffff;
 
       .status-marker {
-        width: 12px;
-        height: 12px;
+        width: 10px;
+        height: 10px;
         border-radius: 6px;
         border: 0 solid #ffffff;
         background: #ffffff;
@@ -96,6 +99,52 @@
       .status-offline {
         border: 0 solid #ffffff;
         background: #919191 !important;
+      }
+    }
+
+    .nav-footer-hover {
+      width: 180px;
+      height: 28px;
+      position: absolute;
+      right: 4px;
+      content: "";
+      background-color: transparent;
+      border-radius: 3px;
+      z-index: -1;
+    }
+
+    .nav-footer-hover-user {
+      height: 40px;
+      right: 3px;
+      width: 184px;
+    }
+
+    &:hover {
+      .nav-footer-image {
+        svg {
+          // info
+          #Path_35324 {
+            fill: #b7b7b7;
+          }
+          // settings
+          #Path_35325 {
+            fill: #b7b7b7;
+          }
+
+          #Path_35326 {
+            fill: #b7b7b7;
+          }
+        }
+      }
+
+      .nav-footer-text,
+      .nav-footer-user-company,
+      .nav-footer-user-name {
+        color: #919191;
+      }
+
+      .nav-footer-hover {
+        background-color: #f7f7f7;
       }
     }
   }
