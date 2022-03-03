@@ -319,26 +319,26 @@ export const userNavigationData: NavigationUserPanel[] = [
   {
     name: 'Profile Update',
     image: 'assets/img/svgs/navigation/ic_truckassist_pen.svg',
-    action: () => {}
+    action: 'update'
   },
   {
-    name: 'Profile Update',
+    name: 'Set status',
     image: 'assets/img/svgs/navigation/ic_truckassist_pen.svg',
-    action: () => {}
+    action: 'status'
   },
   {
     name: 'Switch Company',
     image: 'assets/img/svgs/navigation/ic_truckassist_company.svg',
-    action: () => {}
+    action: 'company'
   },
   {
     name: 'Help Center',
     image: 'assets/img/svgs/navigation/ic_truckassist_help_center.svg',
-    action: () => {}
+    action: 'help'
   },
   {
     name: 'Logout',
     image: 'assets/img/svgs/navigation/ic_truckassist_logout.svg',
-    action: () => {}
+    action: 'logout'
   }
 ]

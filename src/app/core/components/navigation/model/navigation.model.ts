@@ -15,5 +15,5 @@ export interface NavigationModal {
 export interface NavigationUserPanel {
     name: string,
     image: string,
-    action: () => void
+    action: string
 }

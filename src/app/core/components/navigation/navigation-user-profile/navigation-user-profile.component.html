@@ -1,7 +1,10 @@
 <div class="user-panel" *ngIf="isUserPanelOpen && isNavigationHovered">
-  <div class="user-content" *ngFor="let item of userNavigationData; trackBy:identify">
+  <div
+    class="user-content"
+    *ngFor="let item of userNavigationData; trackBy: identify"
+    (click)="onAction(item)"
+  >
     <div class="user-content-hover"></div>
-
     <svg-icon
       [ngClass]="{ 'user-content-logout': item.name === 'Logout' }"
       class="user-content-svg"
@@ -22,7 +25,9 @@
     ></svg-icon>
     <div class="panel-name">
       <p class="nav-footer-user-company">{{ userCompany.name }}</p>
-      <p class="nav-footer-user-name">{{ currentUser.firstName.concat(" ", currentUser.lastName) }}</p>
+      <p class="nav-footer-user-name">
+        {{ currentUser.firstName.concat(" ", currentUser.lastName) }}
+      </p>
     </div>
 
     <div *ngIf="currentUserStatus" class="status-marker-container">

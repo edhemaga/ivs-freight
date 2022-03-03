@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { userNavigationData } from '../model/navigation-data';
 import { NavigationUserPanel } from '../model/navigation.model';
 
@@ -21,11 +22,30 @@ export class NavigationUserProfileComponent {
 
   public isItemHovered: boolean = false;
 
+  constructor(private authService: AuthService) {}
+
   public onUserPanelClose() {
     this.onUserPanelCloseEvent.emit(false);
   }
 
-  identify(index: number, item: NavigationUserPanel): string {
+  public identify(index: number, item: NavigationUserPanel): string {
     return item.name;
+  }
+
+  public onAction(data: NavigationUserPanel) {
+    switch (data.action) {
+      case 'update': {
+      }
+      case 'status': {
+      }
+      case 'company': {
+      }
+      case 'help': {
+      }
+      case 'logout': {
+        console.log('logout')
+        this.authService.logout();
+      }
+    }
   }
 }

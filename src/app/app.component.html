@@ -19,24 +19,31 @@
 
 <!-- IZ starog projekta base.component.html -->
 <!-- <overlay-scrollbars> -->
-<!-- <app-header>
 
-</app-header> -->
-<app-navigation>
-  
-</app-navigation>
+<app-navigation> </app-navigation>
 
 <!-- <app-sidebar (sideBarClose)="doSomething()" [isOpen]="isOpen"></app-sidebar>
 <app-note-sidebar></app-note-sidebar> -->
 
-<div [ngClass]="expanded ? 'expanded-container' : 'container app-content collapsed-container'">
+<div
+  [ngClass]="
+    expanded
+      ? 'expanded-container'
+      : 'container app-content collapsed-container'
+  "
+>
   <!-- <div *ngIf="expanded" class="table-header">
     <app-extended-table-header></app-extended-table-header>
   </div> -->
   <div>
     <section class="app-wrapper" id="top">
       <router-outlet></router-outlet>
-      <div (click)="top()" *ngIf="showScrollButton" @scrollButtonAnimation id="scrollTop"></div>
+      <div
+        (click)="top()"
+        *ngIf="showScrollButton"
+        @scrollButtonAnimation
+        id="scrollTop"
+      ></div>
     </section>
     <!-- <div *ngIf="toastMessages.length > 0" class="toastMessages">
       <app-communicator-toast-message
