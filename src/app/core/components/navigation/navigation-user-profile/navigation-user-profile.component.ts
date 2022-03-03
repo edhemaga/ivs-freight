@@ -24,7 +24,8 @@ export class NavigationUserProfileComponent {
   public onUserPanelClose() {
     this.onUserPanelCloseEvent.emit(false);
   }
-  ngOnInit() {
-    console.log(this.currentUser)
+
+  identify(index: number, item: NavigationUserPanel): string {
+    return item.name;
   }
 }

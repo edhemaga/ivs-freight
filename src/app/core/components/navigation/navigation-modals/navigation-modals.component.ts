@@ -125,4 +125,8 @@ export class NavigationModalsComponent {
         return;
     }
   }
+
+  identify(index: number, item: NavigationModal): string {
+    return item.name
+  }
 }

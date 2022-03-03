@@ -52,4 +52,8 @@ export class NavigationFooterComponent {
       this.onUserPanelOpenEvent.emit(true);
     }
   }
+
+  public identify(index: number, item: FooterData): string {
+    return item.image;
+  }
 }

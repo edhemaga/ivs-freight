@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-navigation-subroute',
   templateUrl: './navigation-subroute.component.html',
   styleUrls: ['./navigation-subroute.component.scss'],
 })
-export class NavigationSubrouteComponent implements OnInit {
+export class NavigationSubrouteComponent {
   @Input() subroute: {
     name: string;
     routes: [];
@@ -13,7 +13,8 @@ export class NavigationSubrouteComponent implements OnInit {
 
   @Input() mode: string = null;
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  identifySubroute(index: number, item: string): string {
+    return item;
+  }
+ 
 }

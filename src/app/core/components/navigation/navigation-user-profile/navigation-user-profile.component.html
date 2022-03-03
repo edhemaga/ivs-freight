@@ -1,5 +1,5 @@
 <div class="user-panel" *ngIf="isUserPanelOpen && isNavigationHovered">
-  <div class="user-content" *ngFor="let item of userNavigationData">
+  <div class="user-content" *ngFor="let item of userNavigationData; trackBy:identify">
     <div class="user-content-hover"></div>
 
     <svg-icon

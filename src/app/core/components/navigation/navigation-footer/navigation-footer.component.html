@@ -1,5 +1,5 @@
 <div class="nav-footer">
-  <div (click)="onUserPanelOpen(ind === 2)" class="nav-footer-item" *ngFor="let item of footerData; let ind = index">
+  <div (click)="onUserPanelOpen(ind === 2)" class="nav-footer-item" *ngFor="let item of footerData;trackBy:identify; let ind = index;">
     <svg-icon
       class="nav-footer-image"
       [ngClass]="{ 'nav-footer-image-user': ind === 2 }"

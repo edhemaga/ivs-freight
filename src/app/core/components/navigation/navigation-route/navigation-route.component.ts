@@ -14,11 +14,12 @@ interface Subroute {
 export class NavigationRouteComponent {
   @Input() navRoute: Navigation;
   @Input() isNavigationHovered: boolean = false;
+  @Input() isNavSubRouteActive: boolean = false;
 
   @Output() onSubRouteEvent = new EventEmitter<Subroute>();
 
   public isNavItemHovered: boolean = false;
-  public isNavSubRouteActive: boolean = false;
+ 
 
   constructor(private router: Router) {}
 

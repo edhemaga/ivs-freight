@@ -18,12 +18,23 @@ export class NavigationComponent {
   public isModalPanelOpen: boolean = false;
   public isUserPanelOpen: boolean = false;
 
+  public activeRoute: number = -1;
+
   public onSubRouteEvent(subroute: Subroute) {
     let index = this.navigation.findIndex(
       (item) => item.id === subroute.routeId
     );
-    this.navigation[index].isSubRouteActive =
-      !this.navigation[index].isSubRouteActive;
+
+    if (index === this.activeRoute) {
+      this.navigation[index].isSubRouteActive =
+        !this.navigation[index].isSubRouteActive;
+    }
+
+    if (index !== this.activeRoute) {
+      this.navigation.filter((nav) => (nav.isSubRouteActive = false));
+      this.activeRoute = index;
+      this.navigation[index].isSubRouteActive = true;
+    }
   }
 
   public identifySubRoute(index, item) {
