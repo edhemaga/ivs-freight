@@ -217,7 +217,15 @@ export const generalNavigationData: NavigationModal[] = [
     path: 'truck',
   },
   {
+    name: 'Trailer',
+    path: 'trailer',
+  },
+  {
     name: 'Broker',
+    path: 'broker',
+  },
+  {
+    name: 'Shipper',
     path: 'shipper',
   },
   {

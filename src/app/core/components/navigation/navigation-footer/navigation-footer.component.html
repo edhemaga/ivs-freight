@@ -16,8 +16,8 @@
       class="nav-footer-user"
       *ngIf="checkIfUserTextData(item.text) && isNavigationHovered"
     >
-      <p>{{ item.text.companyName }}</p>
-      <p>{{ item.text.userName }}</p>
+      <p class="nav-footer-user-company">{{ item.text.companyName }}</p>
+      <p class="nav-footer-user-name">{{ item.text.userName }}</p>
     </div>
 
     <div

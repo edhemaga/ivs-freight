@@ -1,15 +1,16 @@
 .subroutes {
   height: 28px;
-  width: 184px;
+  width: 178px;
   position: relative;
-  left: -9px;
+  left: -7px;
+  border-radius: 3px;
 
   transition: all 0.2s ease-in-out;
   user-select: none;
 
   .subroutes-item {
     margin: 0;
-    margin-left: 52px;
+    margin-left: 48px;
     font-size: 14px;
     color: #b7b7b7;
     position: relative;

@@ -4,9 +4,8 @@
   left: 8px;
   z-index: 99;
   width: 184px;
-  height: 492px;
+  height: auto;
   padding: 4px;
-  padding-bottom: 7px;
   border-radius: 3px;
   border-top-left-radius: 20px;
   box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.16);
@@ -28,8 +27,8 @@
           fill: #dadada;
         }
 
-        #Ellipse_6368-2 {
-          fill: #f9f9f9;
+        #Ellipse_6396  {
+          fill: #F9F9F9;
         }
       }
     }
@@ -47,7 +46,7 @@
             fill: #b7b7b7;
           }
 
-          #Ellipse_6368-2 {
+          #Ellipse_6396 {
             fill: #f3f3f3;
           }
         }
@@ -57,7 +56,7 @@
 
   .modal-nav-content {
     height: auto;
-    margin-top: 16px;
+    margin-top: 11px;
 
     .modal-nav-header {
       font-size: 10px;
