@@ -19,7 +19,7 @@
         <!-- (click)="onTollRoads()" -->
         <button
           (click)="onTimeZone()"
-          appTaTooltip="{{ isTimeZoneActive ? '' : 'Time zones' }}"
+          appTooltip="{{ isTimeZoneActive ? '' : 'Time zones' }}"
           class="toll-road"
           position="bottom-right"
         >
@@ -30,7 +30,7 @@
         </button>
         <button
           (click)="onTollRoads()"
-          appTaTooltip="{{ isTollRoadsActive ? '' : 'Toll road' }}"
+          appTooltip="{{ isTollRoadsActive ? '' : 'Toll road' }}"
           class="toll-road"
           position="bottom-right"
         >
@@ -41,7 +41,7 @@
         </button>
         <button
           (click)="activateDoppler()"
-          appTaTooltip="{{ isDopplerOn ? '' : 'Doppler radar' }}"
+          appTooltip="{{ isDopplerOn ? '' : 'Doppler radar' }}"
           class="toll-road"
           position="bottom-right"
         >
@@ -52,7 +52,7 @@
         </button>
         <button
           (click)="onRenderTrafficLayer()"
-          appTaTooltip="{{ trafficLayerShow ? '' : 'Traffic' }}"
+          appTooltip="{{ trafficLayerShow ? '' : 'Traffic' }}"
           class="toll-road"
           position="bottom-right"
         >

@@ -8,15 +8,14 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {AngularSvgIconModule} from "angular-svg-icon";
 import {AngularSvgIconPreloaderModule} from 'angular-svg-icon-preloader';
-import { SvgMorphComponent } from './svg-morph/svg-morph.component';
+import {SvgMorphComponent} from './svg-morph/svg-morph.component';
 import {AgmCoreModule} from '@agm/core';
-import { MapControlComponent } from './map-control/map-control.component';
-import { TatooltipDirective } from '../../directives/tatooltip.directive';
+import {MapControlComponent} from './map-control/map-control.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {DriverManageComponent} from "../../components/modals/driver-manage/driver-manage.component";
 import {SortPipe} from "../../pipes/sort.pipe";
 import {HistoryDataComponent} from "../../components/shared/history-data/history-data.component";
-import {DatePickerModule} from "@progress/kendo-angular-dateinputs";
+import {DateInputsModule, DatePickerModule} from "@progress/kendo-angular-dateinputs";
 import {GooglePlaceModule} from "ngx-google-places-autocomplete";
 import {TabSwitcherComponent} from "../../components/switchers/tab-switcher/tab-switcher.component";
 import {SortableModule} from "@progress/kendo-angular-sortable";
@@ -25,7 +24,6 @@ import {DropDownsModule} from "@progress/kendo-angular-dropdowns";
 import {ButtonsModule} from "@progress/kendo-angular-buttons";
 import {SchedulerModule} from '@progress/kendo-angular-scheduler';
 import {InputsModule, SwitchModule} from "@progress/kendo-angular-inputs";
-import {DateInputsModule} from "@progress/kendo-angular-dateinputs";
 import {LayoutModule} from "@progress/kendo-angular-layout";
 import {ExcelExportModule} from "@progress/kendo-angular-excel-export";
 import {PDFExportModule} from "@progress/kendo-angular-pdf-export";
@@ -34,34 +32,36 @@ import {TextFieldModule} from "@angular/cdk/text-field";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {StatusSwitcherComponent} from "../../components/switchers/status-switcher/status-switcher.component";
 import {TruckManageComponent} from "../../components/modals/truck-manage/truck-manage.component";
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import {NgxSliderModule} from '@angular-slider/ngx-slider';
+import {TrailerManageComponent} from "../../components/modals/trailer-manage/trailer-manage.component";
+import {TooltipDirective} from "../../directives/tooltip.directive";
 
 @NgModule({
   declarations: [
     AutoFocusDirective,
     InputFocusDirective,
+    TooltipDirective,
     InputRestrictionDirective,
     InputErrorPipe,
     SvgMorphComponent,
     MapControlComponent,
-    TatooltipDirective,
     DriverManageComponent,
     SortPipe,
     HistoryDataComponent,
     TabSwitcherComponent,
     StatusSwitcherComponent,
-    TruckManageComponent
+    TruckManageComponent,
+    TrailerManageComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     NgSelectModule,
-    NgbModule,
     AngularSvgIconModule.forRoot(),
     AgmCoreModule.forRoot({
-        apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
-        libraries: ['geometry', 'places'],
+      apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
+      libraries: ['geometry', 'places'],
     }),
     AngularSvgIconPreloaderModule.forRoot({
       configUrl: '../../assets/imgPreloadJson/svgImages.json',
@@ -84,12 +84,13 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     PDFExportModule,
     LabelModule,
     TextFieldModule,
-    DragDropModule
+    DragDropModule,
   ],
   exports: [
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
+    TooltipDirective,
     InputErrorPipe,
     FormsModule,
     ReactiveFormsModule,
@@ -99,7 +100,6 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     AgmCoreModule,
     MapControlComponent,
     NgbModule,
-    TatooltipDirective,
     SortPipe,
     SortableModule,
     GridModule,

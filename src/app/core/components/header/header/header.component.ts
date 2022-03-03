@@ -12,6 +12,7 @@ import {CommunicatorUserService} from "../../../services/communication-user/comm
 import {CommunicatorUserDataService} from "../../../services/communicator/communicator-user-data.service";
 import {NotificationService} from "../../../services/notification/notification.service";
 import {DriverManageComponent} from "../../modals/driver-manage/driver-manage.component";
+import {TruckManageComponent} from "../../modals/truck-manage/truck-manage.component";
 
 declare var magicLine;
 declare var anime;
@@ -246,11 +247,6 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-    this.communicatorUserDataService.chatUser
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((chatUser: any) => {
-        setTimeout(() => (this.currentUserStatus = chatUser?.status));
-      });
   }
 
   ngAfterViewInit() {
@@ -325,10 +321,11 @@ export class HeaderComponent implements OnInit {
         this.customModalService.openModal(DriverManageComponent, {data}, null, {size: 'small'});
         break;
 
-      /* case 'truck':
+      case 'truck':
         this.customModalService.openModal(TruckManageComponent, {data}, null, {size: 'small'});
         break;
 
+        /*
       case 'fuel':
         this.customModalService.openModal(FuelManageComponent, {data}, null, {size: 'small'});
         break;

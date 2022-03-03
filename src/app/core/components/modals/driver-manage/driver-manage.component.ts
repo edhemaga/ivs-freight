@@ -161,12 +161,6 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
     this.activeModal.close();
   }
 
-  formatLabel(value: number) {
-    if (value >= 2) {
-      return value + '%';
-    }
-  }
-
   getBanks(loadNewBank: boolean) {
     this.sharedService
       .getBankList()
@@ -215,7 +209,7 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
       type: ['single'],
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
-      phone: [null],
+      phone: ['', Validators.required],
       address: [null, Validators.required],
       addressUnit: [''],
       email: [
@@ -956,13 +950,12 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
 
   clearInput(x) {
     this.driverForm.controls[x.currentTarget.offsetParent.firstChild.id].reset();
+    this.inputText = false;
   }
 
   public onKeyUpMethod(x) {
     this.inputText = x.key;
     x.key === 'Backspace' && !this.driverForm.get(x.currentTarget.id).value ? this.inputText = false : this.inputText = x.key;
   }
-
-
 
 }

@@ -1,0 +1,21 @@
+@keyframes vin-complete {
+  from {
+    color: green;
+  }
+  to {
+    color: green;
+  }
+}
+
+.vin-loading {
+  animation: vin-complete 1s linear;
+
+  &.mat-input-element,
+  .ng-has-value {
+    animation: vin-complete 1s linear;
+  }
+}
+
+.uppercase {
+  text-transform: uppercase;
+}

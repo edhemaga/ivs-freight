@@ -92,53 +92,48 @@
                 formControlName="dateOfBirth"
                 id="dateOfBirth"
                 type="date"
-                placeholder="Nikolaaa"
               >
               <label class="required-label" for="dateOfBirth">DOB</label>
-              <!-- <kendo-floatinglabel
-                class="required datepicker-label{{
-                  driverForm.controls.dateOfBirth.value !== null &&
-                  driverForm.controls.dateOfBirth.value !== ''
-                    ? ' valid-label'
-                    : ''
-                }}"
-                text="DOB"
-              >
-                <kendo-datepicker
-                  [formatPlaceholder]="placeholder"
-                  [format]="format"
-                  [popupSettings]="{ popupClass: 'custom-datepick' }"
-                  formControlName="dateOfBirth"
-                  placeholder=""
-                  required
-                ></kendo-datepicker>
-              </kendo-floatinglabel> -->
-              <!-- <app-required-label [control]="driverForm.controls.dateOfBirth"></app-required-label> -->
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-4">
-            <div class="form-label-group input-icon phone-field-wrapper" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <div class="form-label-group input-icon phone-field-wrapper input-holder {{
+                      manageInputValidation(driverForm.controls.phone)
+                    }}"
+                 [ngClass]="inputText ? 'typing' : 'not-typing'">
               <input
                 #phone
                 appInputFocus
                 (keyup)="onKeyUpMethod($event)"
-                class="form-control input-control"
+                class="form-control input-control required phone-input"
                 formControlName="phone"
                 id="phone"
                 mask="(000) 000-0000"
                 placeholder="Phone"
               />
-              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-              </div>
-              <label for="phone">Phone</label>
-              <p *ngIf="driverForm.get('phone').hasError('pattern')"></p>
+
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/phone-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" ngbTooltip="Clear" placement="bottom-left"
+                class="clear-icon"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
+              <label class="required-label" for="phone">Phone</label>
+              <p class="m-0 required-notice invalid-length"
+                 *ngIf="driverForm.get('phone').errors">{{driverForm.get('phone').errors | inputError}} </p>
             </div>
           </div>
           <div class="col-8">
             <div
-              class="form-label-group input-icon email-field-wrapper {{
+              class="form-label-group input-icon email-field-wrapper input-holder {{
                 manageInputValidation(driverForm.controls.email)
               }}" [ngClass]="inputText ? 'typing' : 'not-typing'"
             >
@@ -148,16 +143,27 @@
                 (paste)="onPaste($event, 'email')"
                 appInputFocus
                 (keyup)="onKeyUpMethod($event)"
-                class="form-control input-control required email-input "
+                class="form-control input-control required email-input"
                 formControlName="email"
                 id="email"
                 oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
                 placeholder="Email"
               />
-              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-              </div>
+
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/mail-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" ngbTooltip="Clear" placement="bottom-left"
+                class="clear-icon"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
               <label class="required-label" for="email">Email</label>
-              <!-- <app-required-label [control]="driverForm.controls.email"></app-required-label> -->
+              <p class="m-0 required-notice invalid-length"
+                 *ngIf="driverForm.get('email').errors">{{driverForm.get('email').errors | inputError}} </p>
             </div>
           </div>
         </div>
@@ -336,7 +342,7 @@
                   <svg-icon
                     (click)="deleteBank(item.id)"
                     *ngIf="item.id !== 0 && item.protected !== null && item.protected !== 1"
-                    appTaTooltip="Delete"
+                    appTooltip="Delete"
                     class="delete-record-icon"
                     position="bottom-left"
                     src="assets/img/trash.svg"
@@ -371,7 +377,7 @@
                 <span
                   (click)="saveNewBank()"
                   *ngIf="newBank !== '' && newBank !== null"
-                  appTaTooltip="Save"
+                  appTooltip="Save"
                   class="save-new-record"
                   position="bottom-right"
                 >
@@ -379,7 +385,7 @@
                 </span>
                 <span
                   (click)="closeNewBank()"
-                  appTaTooltip="Cancel"
+                  appTooltip="Cancel"
                   class="close-new-record"
                   position="bottom-right"
                 >

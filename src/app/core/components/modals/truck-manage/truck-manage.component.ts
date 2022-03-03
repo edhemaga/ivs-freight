@@ -9,9 +9,9 @@ import {
 } from '@angular/core';
 import {DatePipe} from "@angular/common";
 import {Options} from '@angular-slider/ngx-slider';
-import {Subject, takeUntil} from "rxjs";
+import {forkJoin, Subject, takeUntil} from "rxjs";
 import {MetaData} from "../../../model/enums";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TruckData, TruckOwner} from "../../../model/truck";
 import {ManageCompany} from "../../../model/company";
 import {SharedService} from 'src/app/core/services/shared/shared.service';
@@ -21,13 +21,18 @@ import {CustomModalService} from "../../../services/modals/custom-modal.service"
 import {NotificationService} from "../../../services/notification/notification.service";
 import {MetaDataService} from "../../../services/shared/meta-data.service";
 import {OwnerData} from "../../../model/owner";
+import {HttpErrorResponse} from "@angular/common/http";
+import {checkSelectedText, pasteCheck} from "../../../utils/methods.globals";
+import {TruckService} from "../../../services/truck/truck.service";
+import {v4 as uuidv4} from 'uuid';
+import {Vin} from 'src/app/core/model/vin';
 
 @Component({
   selector: 'app-truck-manage',
   templateUrl: './truck-manage.component.html',
   styleUrls: ['./truck-manage.component.scss'],
   providers: [DatePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TruckManageComponent implements OnInit {
   @ViewChild('note') note: ElementRef;
@@ -68,7 +73,7 @@ export class TruckManageComponent implements OnInit {
     },
   ];
   loaded = false;
-  public fomratType = /^[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/? ]*$/;
+  public formatType = /^[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/? ]*$/;
   public numOfSpaces = 0;
   grossWeight: any;
   private destroy$: Subject<void> = new Subject<void>();
@@ -77,11 +82,10 @@ export class TruckManageComponent implements OnInit {
   constructor(
     private metadataService: MetaDataService,
     private shared: SharedService,
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
-    private ownerService: SharedService,
     private spinner: SpinnerService,
-    //private truckService: AppTruckService,
+    private truckService: TruckService,
     private customModalService: CustomModalService,
     private notification: NotificationService,
     private datePipe: DatePipe,
@@ -90,11 +94,18 @@ export class TruckManageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUserCompany();
-    //this.getTruckData();
-    //this.createForm();
+    this.createForm();
+    if (this.inputData.data.type === 'edit') {
+      this.modalTitle = 'Edit Truck';
+      this.getTruckData();
+    } else if (this.inputData.data.type === 'new') {
+      this.loaded = true;
+      this.modalTitle = 'Add Truck';
+    }
 
-    this.ownerService.newOwner
+    this.getUserCompany();
+
+    this.shared.newOwner
       .pipe(takeUntil(this.destroy$))
       .subscribe((owner: OwnerData) => {
         this.owners.push({
@@ -116,6 +127,7 @@ export class TruckManageComponent implements OnInit {
           return 0;
         });
       });
+
   }
 
   getUserCompany() {
@@ -160,7 +172,7 @@ export class TruckManageComponent implements OnInit {
     }
   }
 
-  /*getTruckData() {
+  getTruckData() {
     const tireSizes$ = this.metadataService.getMetaDataByDomainKey('tire', 'size');
     const truckEngines$ = this.metadataService.getMetaDataByDomainKey('truck', 'engine');
     const grossWeight = this.metadataService.getMetaDataByDomainKey('truck', 'gross_weight');
@@ -177,20 +189,21 @@ export class TruckManageComponent implements OnInit {
           MetaData[]
         ]) => {
           this.tireSizes = tireSizes;
-          this.truckMakers = AppConst.TRUCK_MAKERS;
-          this.truckTypes = AppConst.TRUCK_LIST;
+          //this.truckMakers = AppConst.TRUCK_MAKERS;
+          //this.truckTypes = AppConst.TRUCK_LIST;
           this.truckEngines = truckEngines;
+
+          // TODO check this not so clear implementation of sort, and why it's used
+          /*
           this.owners = owners.sort((owner) => {
             if (owner.divisionFlag > owner.divisionFlag) {
               return 1;
             }
-
             if (owner.divisionFlag < owner.divisionFlag) {
               return -1;
             }
-
             return 0;
-          });
+          }); */
           this.owners.unshift({
             divisionFlag: 0,
             id: 0,
@@ -202,7 +215,6 @@ export class TruckManageComponent implements OnInit {
           if (this.inputData.data.type === 'edit') {
             this.modalTitle = 'Edit Truck';
             this.truck = this.inputData.data.truck;
-            // Can be simplified with next line solution
             this.companyOwnedStateControl = (this.truck && this.truck.companyOwned === 1);
             const additionalData =
               this.truck && this.truck.doc && this.truck.doc.additionalData
@@ -248,6 +260,7 @@ export class TruckManageComponent implements OnInit {
             }
             this.shared.touchFormFields(this.truckForm);
           } else if (this.inputData.data.type === 'new') {
+            // TODO port 9876
             // this.loaded = true;
             this.modalTitle = 'Add Truck';
             this.companyOwnedStateControl = true;
@@ -288,7 +301,474 @@ export class TruckManageComponent implements OnInit {
           this.shared.handleError(error);
         }
       );
-  } */
+  }
+
+  formatLabel(value: number) {
+    if (value >= 2) {
+      return value + '%';
+    }
+  }
+
+  keyDownFunction(event: any) {
+    if (
+      event.keyCode === 13 &&
+      event.target.localName !== 'textarea' &&
+      event.path !== undefined &&
+      event.path !== null &&
+      event.path[3].className !== 'ng-select-container ng-has-value'
+    ) {
+      this.saveTruck();
+    }
+  }
+
+  createForm() {
+    this.loaded = true;
+    this.truckForm = this.formBuilder.group({
+      truckNumber: ['', Validators.required],
+      type: [null, Validators.required],
+      color: [null],
+      make: [null, Validators.required],
+      model: [''],
+      vin: ['', [Validators.required, Validators.minLength(17), Validators.maxLength(17)]],
+      note: [''],
+      owner: [null],
+      commission: [0],
+      mileage: [null],
+      ipasEzpass: [null],
+      axises: ['', Validators.maxLength(1)],
+      year: ['', Validators.required],
+      status: [true, Validators.required],
+      insurancePolicyNumber: [''],
+      emptyWeight: [null],
+      engine: [null],
+      companyOwned: [true],
+      tireSize: [null],
+      truckGrossWeight: []
+    });
+    this.transformInputData();
+  }
+
+  saveTruck() {
+    if (!this.shared.markInvalid(this.truckForm)) {
+      return false;
+    }
+    const truck = this.truckForm.value;
+
+    if (this.inputData.data.type === 'edit') {
+      const saveData: TruckData = {
+        companyOwned: this.companyOwnedStateControl ? 1 : 0,
+        ownerId:
+          (this.companyOwnedStateControl && this.userCompany)
+            ? this.userCompany.id
+            : truck.owner
+              ? truck.owner.id
+              : null,
+        truckNumber: truck.truckNumber,
+        divisionFlag: truck.owner && truck.owner.divisionFlag ? truck.owner.divisionFlag : 0,
+        vin: truck.vin,
+        commission: truck.commission,
+        status: truck.status ? 1 : 0,
+        doc: {
+          additionalData: {
+            axises: truck.axises,
+            color: truck.color,
+            emptyWeight: truck.emptyWeight,
+            engine: truck.engine,
+            insurancePolicyNumber: truck.insurancePolicyNumber,
+            make: truck.make,
+            mileage: truck.mileage,
+            ipasEzpass: truck.ipasEzpass,
+            model: truck.model,
+            note: truck.note,
+            tireSize: truck.tireSize,
+            type: truck.type,
+            year: truck.year,
+          },
+          licenseData:
+            this.truck && this.truck.doc && this.truck.doc.licenseData
+              ? this.truck.doc.licenseData
+              : [],
+          inspectionData:
+            this.truck && this.truck.doc && this.truck.doc.inspectionData
+              ? this.truck.doc.inspectionData
+              : [],
+          titleData:
+            this.truck && this.truck.doc && this.truck.doc.titleData
+              ? this.truck.doc.titleData
+              : [],
+          truckLeaseData:
+            this.truck && this.truck.doc && this.truck.doc.truckLeaseData
+              ? this.truck.doc.truckLeaseData
+              : [],
+          activityHistory:
+            this.truck && this.truck && this.truck.doc.activityHistory
+              ? this.truck.doc.activityHistory
+              : [],
+        },
+      };
+
+      if (saveData.doc.activityHistory.length) {
+        saveData.doc.activityHistory[saveData.doc.activityHistory.length - 1].endDate = new Date();
+        saveData.doc.activityHistory[
+        saveData.doc.activityHistory.length - 1
+          ].endDateShort = this.datePipe.transform(new Date(), 'shortDate');
+
+        saveData.doc.activityHistory.push({
+          id: uuidv4(),
+          startDate: new Date(),
+          startDateShort: this.datePipe.transform(new Date(), 'shortDate'),
+          endDate: null,
+          endDateShort: null,
+          header:
+            (this.companyOwnedStateControl && this.userCompany)
+              ? this.userCompany.name
+              : truck.owner
+                ? truck.owner.ownerName
+                : null,
+          ownerId:
+            (this.companyOwnedStateControl && this.userCompany)
+              ? this.userCompany.id
+              : truck.owner
+                ? truck.owner.id
+                : null,
+        });
+      }
+
+      this.spinner.show(true);
+      this.truckService.updateTruckData(saveData, this.truck.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (truckData) => {
+            this.notification.success('Truck has been updated.', 'Success:');
+            this.truck = truckData;
+            this.closeModal();
+            this.spinner.show(false);
+          },
+          (error: HttpErrorResponse) => {
+
+            console.log(error);
+            console.log('ERROR');
+            this.shared.handleError(error);
+          }
+        );
+    } else if (this.inputData.data.type === 'new') {
+      const saveData: TruckData = {
+        companyOwned: this.companyOwnedStateControl ? 1 : 0,
+        ownerId:
+          (this.companyOwnedStateControl && this.userCompany)
+            ? this.userCompany.id
+            : truck.owner
+              ? truck.owner.id
+              : null,
+        divisionFlag: truck.owner && truck.owner.divisionFlag ? truck.owner.divisionFlag : 0,
+        truckNumber: truck.truckNumber,
+        vin: truck.vin,
+        commission: truck.commission,
+        status: truck.status ? 1 : 0,
+        doc: {
+          additionalData: {
+            axises: truck.axises,
+            color: truck.color,
+            emptyWeight: truck.emptyWeight,
+            engine: truck.engine,
+            insurancePolicyNumber: truck.insurancePolicyNumber,
+            make: truck.make,
+            mileage: truck.mileage,
+            ipasEzpass: truck.ipasEzpass,
+            model: truck.model,
+            note: truck.note,
+            tireSize: truck.tireSize,
+            type: truck.type,
+            year: truck.year,
+          },
+          licenseData: [],
+          inspectionData: [],
+          titleData: [],
+          truckLeaseData: [],
+          activityHistory: [],
+        },
+      };
+
+      saveData.doc.activityHistory.push({
+        id: uuidv4(),
+        startDate: new Date(),
+        startDateShort: this.datePipe.transform(new Date(), 'shortDate'),
+        endDate: null,
+        endDateShort: null,
+        header:
+          (this.companyOwnedStateControl && this.userCompany)
+            ? this.userCompany.name
+            : truck.owner
+              ? truck.owner.ownerName
+              : null,
+        ownerId:
+          (this.companyOwnedStateControl && this.userCompany)
+            ? this.userCompany.id
+            : truck.owner
+              ? truck.owner.id
+              : null,
+      });
+
+      this.spinner.show(true);
+      this.truckService.addTruck(saveData)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          () => {
+            this.notification.success('Truck has been added.', 'Success:');
+            this.closeModal();
+            this.companyOwnedStateControl = false;
+            this.spinner.show(false);
+          },
+          (error: HttpErrorResponse) => {
+            this.shared.handleError(error);
+          }
+        );
+    }
+  }
+
+  vinAutoComplete(event: any) {
+    if (event.target.value.length === 17) {
+      this.spinner.showInputLoading(true);
+      this.isVinLoading = true;
+      this.truckService.getVinData(event.target.value)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (result: Vin[]) => {
+            const vinData = result && result.length ? result[0] : null;
+            if (vinData) {
+              const makeData = this.truckMakers.find((element) =>
+                vinData.Make.toLowerCase().includes(element.name.toLowerCase())
+              );
+              if (makeData) {
+                this.truckForm.controls.make.setValue(makeData.name);
+                this.truckForm.controls.year.setValue(vinData.ModelYear);
+              }
+            }
+            this.spinner.showInputLoading(false);
+            this.isVinLoading = false;
+          },
+          () => {
+            this.spinner.showInputLoading(false);
+          }
+        );
+    }
+
+    this.inputText = event.key;
+    event.key === 'Backspace' && !this.truckForm.get('vin').value ? this.inputText = false : this.inputText = event.key;
+  }
+
+  changeOwner(event) {
+    this.division = event.divisionFlag;
+    if (event.id === 0) {
+      this.openTruckOwnerModal();
+      this.truckForm.controls.owner.reset();
+    } else {
+      this.truckForm.controls.commission.setValue(this.division ? 0 : 12);
+      this.truckForm.controls.commission.setValidators(this.division ? null : Validators.required);
+      this.truckForm.controls.commission.updateValueAndValidity();
+    }
+  }
+
+  handleHeight(val: string) {
+    const lines = val.split(/\r|\r\n|\n/);
+    const count = lines.length;
+    this.textRows = count >= 4 ? 4 : count;
+  }
+
+  companyOwned() {
+    if (this.companyOwnedStateControl) {
+      this.truckForm.controls.commission.setValue(0);
+      this.truckForm.controls.owner.setValue(null);
+      this.truckForm.controls.owner.setValidators(null);
+    } else {
+      this.truckForm.controls.commission.setValue(12);
+      this.truckForm.controls.commission.setValidators(Validators.required);
+      this.truckForm.controls.owner.setValidators(Validators.required);
+    }
+    this.truckForm.controls.commission.updateValueAndValidity();
+    this.truckForm.controls.owner.updateValueAndValidity();
+  }
+
+  checkYear(event: any) {
+    if (event) {
+      const yearLength = event.length;
+      if (yearLength === 1 && event !== '1') {
+        if (event !== '2') {
+          this.truckForm.get('year').setValue('');
+        }
+      }
+    }
+  }
+
+  openNote() {
+    if (this.showNote === true) {
+      this.showNote = false;
+    } else {
+      this.showNote = true;
+      setTimeout(() => {
+        this.note.nativeElement.focus();
+      }, 250);
+    }
+  }
+
+  tabChange(event: any) {
+    this.selectedTab = event.id;
+  }
+
+  onPaste(event: any, inputID: string, caracterLimit?: number, index?: number) {
+    event.preventDefault();
+
+    if (index !== undefined) {
+      (document.getElementById(inputID + index) as HTMLInputElement).value = checkSelectedText(
+        inputID,
+        index
+      );
+    } else {
+      (document.getElementById(inputID) as HTMLInputElement).value = checkSelectedText(
+        inputID,
+        index
+      );
+    }
+
+    this.numOfSpaces = 0;
+
+    let notDefult = false;
+    if (inputID === 'trailerNumber') {
+      this.formatType = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/? ]*$/;
+    } else if (inputID === 'vin') {
+      this.formatType = /^[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/? ]*$/;
+      (document.getElementById(inputID) as HTMLInputElement).value += pasteCheck(
+        event.clipboardData.getData('Text'),
+        this.formatType,
+        true,
+        false,
+        false,
+        caracterLimit
+      );
+      notDefult = true;
+    } else if (inputID === 'ipasEzpass') {
+      this.formatType = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?A-Za-z ]*$/;
+      (document.getElementById(inputID) as HTMLInputElement).value += pasteCheck(
+        event.clipboardData.getData('Text'),
+        this.formatType,
+        false,
+        false,
+        false,
+        caracterLimit
+      );
+      notDefult = true;
+    } else {
+      this.formatType = /^[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/? ]*$/;
+    }
+    if (!notDefult) {
+      (document.getElementById(inputID) as HTMLInputElement).value += pasteCheck(
+        event.clipboardData.getData('Text'),
+        this.formatType,
+        true,
+        false,
+        false,
+        caracterLimit
+      );
+    }
+
+    this.truckForm.controls[inputID].patchValue(
+      (document.getElementById(inputID) as HTMLInputElement).value
+    );
+  }
+
+  openTruckOwnerModal() {
+    const data = {
+      type: 'new',
+      id: null,
+    };
+    /* this.customModalService.openModal(OwnerManageComponent, {data}, null, {
+      size: 'small',
+    }); */
+  }
+
+  onVinTyping(event: any) {
+    /* var k = event.charCode; */
+    const k = event.keyCode;
+    return (k > 64 && k < 91) || (k > 96 && k < 123) || (k >= 48 && k <= 57);
+  }
+
+  onUnitTyping(event) {
+    let k;
+    k = event.charCode;
+    console.log(k);
+    return (k > 64 && k < 91) || (k > 96 && k < 123) || k === 8 || k === 32 || (k >= 48 && k <= 57);
+  }
+
+  onModelTyping(event) {
+    let k;
+    k = event.charCode;
+    console.log(k);
+    if (k === 32) {
+      this.numOfSpaces++;
+    } else {
+      this.numOfSpaces = 0;
+    }
+    if (this.numOfSpaces < 2) {
+      return (
+        (k > 64 && k < 91) ||
+        (k > 96 && k < 123) ||
+        k === 8 ||
+        k === 32 ||
+        (k >= 48 && k <= 57) ||
+        k === 45
+      );
+    } else {
+      event.preventDefault();
+    }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  customSearch(term: string, item: any) {
+    term = term.toLocaleLowerCase();
+    return ((item.ownerName.toLocaleLowerCase().indexOf(term) > -1) || (item.id === 0));
+  }
+
+  onSearch(event: any) {
+    this.ownerSearchItems = event.items.length;
+  }
+
+  onClose(event: any) {
+    this.ownerSearchItems = 0;
+  }
+
+  addFocus(elementRef: HTMLElement) {
+    elementRef.classList.add('focused');
+  }
+
+  removeFocus(elementRef: HTMLElement) {
+    elementRef.classList.remove('focused');
+  }
+
+  private transformInputData() {
+    const data = {
+      model: 'upper',
+      vin: 'upper',
+      truckNumber: 'upper',
+    };
+    this.shared.handleInputValues(this.truckForm, data);
+  }
+
+  clearInput(x) {
+    this.truckForm.controls[x.currentTarget.offsetParent.firstChild.id].reset();
+  }
+
+  public onKeyUpMethod(x) {
+    this.inputText = x.key;
+    x.key === 'Backspace' && !this.truckForm.get(x.currentTarget.id).value ? this.inputText = false : this.inputText = x.key;
+  }
+
+  closeModal() {
+    this.activeModal.close();
+  }
 
 
 }

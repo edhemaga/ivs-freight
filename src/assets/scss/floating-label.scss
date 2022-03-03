@@ -79,7 +79,8 @@ form .form-control {
 
       &.address-input,
       &.email-input,
-      &.password-input {
+      &.password-input,
+      &.phone-input {
         background: none !important;
         background-repeat: no-repeat;
       }
@@ -93,7 +94,8 @@ form .form-control {
 
         &.address-input,
         &.email-input,
-        &.password-input {
+        &.password-input,
+        &.phone-input {
           background: none !important;
           background-repeat: no-repeat;
         }
@@ -111,7 +113,8 @@ form .form-control {
 
         &.address-input,
         &.email-input,
-        &.password-input {
+        &.password-input,
+        &.phone-input {
           background: none !important;
           background-repeat: no-repeat;
           outline: none !important;
@@ -125,7 +128,8 @@ form .form-control {
 
           &.address-input,
           &.email-input,
-          &.password-input {
+          &.password-input,
+          &.phone-input {
             background: none !important;
             background-repeat: no-repeat;
           }
@@ -141,7 +145,8 @@ form .form-control {
 
         &.address-input,
         &.email-input,
-        &.password-input {
+        &.password-input,
+        &.phone-input {
           background: none !important;
           background-repeat: no-repeat;
         }
@@ -158,7 +163,7 @@ form .form-control {
 
           &.address-input,
           &.email-input,
-          &.password-input {
+          &.password-input, &.phone-input {
             background: none !important;
             background-repeat: no-repeat;
           }
@@ -171,7 +176,8 @@ form .form-control {
 
             &.address-input,
             &.email-input,
-            &.password-input {
+            &.password-input,
+            &.phone-input {
               background: none !important;
               background-repeat: no-repeat;
             }

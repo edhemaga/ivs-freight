@@ -6,7 +6,7 @@
     (click)="onModalPanelClose()"
   >
     <svg-icon
-      
+
       class="modal-nav-close-svg"
       src="assets/img/svgs/navigation/ic_truckassist_closePlus.svg"
     ></svg-icon>
@@ -19,7 +19,6 @@
       <p
         *ngFor="let item of generalNavigationData"
         (click)="openModal(item)"
-        [routerLink]="item.path"
       >
         {{ item.name }}
       </p>

@@ -59,7 +59,7 @@
                   'd-none': !item.editStartDate || !status,
                   'custom-datepicker': true
                 }"
-                appTaTooltip="Cancel"
+                appTooltip="Cancel"
                 class="action-btn action-btn-left"
                 position="bottom-right"
                 tooltipBackground="#6C6C6C"
@@ -76,7 +76,7 @@
                   'd-none': !item.editStartDate || !status,
                   'custom-datepicker': true
                 }"
-                appTaTooltip="Save"
+                appTooltip="Save"
                 class="action-btn"
                 position="bottom-right"
                 tooltipBackground="#5673AA"
@@ -93,7 +93,7 @@
                 [class]="{
                   'd-none': !item.showStartDateAction || item.editStartDate || !status
                 }"
-                appTaTooltip="Edit"
+                appTooltip="Edit"
                 class="action-btn action-btn-left"
                 position="bottom-right"
                 tooltipBackground="#5673AA"
@@ -138,7 +138,7 @@
               <button
                 (click)="item.editEndDate = false"
                 [class]="{ 'd-none': !item.editEndDate || !status, 'custom-datepicker': true }"
-                appTaTooltip="Cancel"
+                appTooltip="Cancel"
                 class="action-btn close-btn"
                 position="bottom-right"
                 tooltipBackground="#6C6C6C"
@@ -152,7 +152,7 @@
               <button
                 (click)="saveData(i, j, false)"
                 [class]="{ 'd-none': !item.editEndDate || !status, 'custom-datepicker': true }"
-                appTaTooltip="Save"
+                appTooltip="Save"
                 class="action-btn"
                 position="bottom-right"
                 tooltipBackground="#5673AA"
@@ -168,7 +168,7 @@
                 [class]="{
                   'd-none': !item.showEndDateAction || item.editEndDate || !status
                 }"
-                appTaTooltip="Edit"
+                appTooltip="Edit"
                 class="action-btn"
                 position="bottom-right"
                 tooltipBackground="#5673AA"
@@ -193,7 +193,7 @@
                 item.editStartDate ||
                 !status
             }"
-            appTaTooltip="Delete"
+            appTooltip="Delete"
             class="action-btn remove-btn p-0 m-0"
             position="bottom-right"
             tooltipBackground="#FF5D5D"
