@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Navigation } from '../model/navigation.model';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
@@ -19,11 +19,10 @@ export class NavigationRouteComponent {
   @Output() onSubRouteEvent = new EventEmitter<Subroute>();
 
   public isNavItemHovered: boolean = false;
- 
 
-  constructor(private router: Router) {}
+  constructor(public router: Router) {}
 
-  public onRouteEvent() {
+  public onSubRouteAction() {
     if (this.navRoute.arrow) {
       this.isNavSubRouteActive = !this.isNavSubRouteActive;
       this.onSubRouteEvent.emit({
@@ -32,6 +31,12 @@ export class NavigationRouteComponent {
       });
       return;
     }
-    this.router.navigate([`${this.navRoute.route}`]);
+  }
+
+  public isActiveRoute(): boolean {
+    if (this.navRoute.arrow) {
+      return;
+    }
+    return this.router.url.includes(this.navRoute.route);
   }
 }

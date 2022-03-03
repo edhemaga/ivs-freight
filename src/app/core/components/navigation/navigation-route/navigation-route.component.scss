@@ -1,17 +1,12 @@
 .nav-item {
   display: flex;
   align-items: center;
-  width: 170px;
+  width: auto;
   height: 28px;
   font-weight: 500;
   font-size: 14px;
   transition: all 0.2s ease-in-out;
   user-select: none;
-
-  .nav-item-img {
-    position: relative;
-    top: 2px;
-  }
 
   .nav-item-name {
     margin: 0px;
@@ -19,15 +14,11 @@
     padding-top: 4px;
   }
 
-  
-
   .nav-item-rightSide {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 146px;
-    position: relative;
-    top: 1px;
 
     .nav-item-arrow {
       margin-right: 1px;
@@ -36,7 +27,7 @@
     .nav-item-arrow-first {
       margin-right: 2px !important;
     }
-  
+
     .nav-item-arrow-rotate {
       transform: rotate(180deg);
       transition: all 0.2s ease-in-out;
@@ -58,10 +49,84 @@
       }
     }
   }
+
+  // Custom Magic Line
+
+#line {
+  position: relative;
+  top: 0;
+  width: 100%;
+  height: 30px;
+  display: block;
+  z-index: -1;
+}
+
+#bar {
+  display: inline-block;
+  position: absolute;
+  width: 90px;
+  height: 28px;
+  background: #b7b7b7;
+  transition: left 0.7s ease-in-out;
+}
+
+@for $i from 1 through 13 {
+  .nav-item:nth-child(#{$i}){
+    &.current{
+      & ~ #line > #bar{
+        top: calc(28px * #{$i - 1});
+      }
+    }
+     &:hover{
+      & ~ #line > #bar{
+        top: calc(28px * #{$i - 1}) !important;
+      }
+    }
+  }
+} 
+}
+
+.nav-item-active {
+  color: #778fbb;
+  background-color: #f7f7f7;
+
+  .nav-item-img-active,
+  .nav-item-arrow-active {
+    svg {
+      path {
+        fill: #778fbb;
+      }
+    }
+  }
+
+  &:hover {
+    color: #5673aa !important;
+    font-weight: 500;
+
+    .nav-item-img,
+    .nav-item-arrow {
+      svg {
+        path {
+          fill: #5673aa !important;
+        }
+      }
+    }
+  }
+}
+
+.nav-item-active-box {
+  width: 35px;
+  height: 28px;
+  position: absolute;
+  left: 11px;
+  content: "";
+  background-color: #F7F7F7;
+  z-index: -1;
+  border-radius: 3px;
 }
 
 .nav-item-hover {
-  width: 180px;
+  width: 177px;
   height: 28px;
   position: absolute;
   left: 11px;
@@ -71,3 +136,4 @@
   z-index: -1;
   border-radius: 3px;
 }
+

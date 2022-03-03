@@ -1,19 +1,28 @@
-<div *ngIf="isNavItemHovered" class="nav-item-hover"></div>
+<!-- <div *ngIf="isNavItemHovered" class="nav-item-hover"></div> -->
 <div
   class="nav-item"
   (mouseenter)="isNavItemHovered = true"
   (mouseleave)="isNavItemHovered = false"
-  (click)="onRouteEvent()"
+  (click)="onSubRouteAction()"
+  [routerLink]="navRoute.route"
+  routerLinkActive="nav-item-active"
+  [routerLinkActiveOptions]="{exact: true}"
 >
-  <svg-icon class="nav-item-img" src="{{ navRoute.image }}"></svg-icon>
+  <div *ngIf="isActiveRoute()" class="nav-item-active-box"></div>
+  <svg-icon class="nav-item-img nav-item-img-active" src="{{ navRoute.image }}"></svg-icon>
 
   <div class="nav-item-rightSide">
-    <p *ngIf="isNavigationHovered" class="nav-item-name">{{ navRoute.name }}</p>
+    <p *ngIf="isNavigationHovered" class="nav-item-name nav-item-name-active">{{ navRoute.name }}</p>
     <svg-icon
-      class="nav-item-arrow"
+      class="nav-item-arrow nav-item-arrow-active"
       [ngClass]="{'nav-item-arrow-rotate': isNavSubRouteActive,  'nav-item-arrow-first': navRoute.id === 3}"
       *ngIf="navRoute.arrow && isNavigationHovered"
       src="{{ navRoute.arrow }}"
     ></svg-icon>
   </div>
+
+  <!-- <div id="line">
+    <span id="bar"></span>
+  </div> -->
 </div>
+
