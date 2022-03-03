@@ -1,9 +1,7 @@
+import { Router } from '@angular/router';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-
-interface FooterData {
-  image: string;
-  text: string | {};
-}
+import { FooterData } from '../model/navigation.model';
+import { footerData } from '../model/navigation-data';
 
 @Component({
   selector: 'app-navigation-footer',
@@ -18,26 +16,17 @@ export class NavigationFooterComponent {
   private userCompany = JSON.parse(localStorage.getItem('userCompany'));
   public currentUserStatus: string = 'online';
 
-  public footerData: FooterData[] = [
-    {
-      image: 'assets/img/svgs/navigation/ic_info.svg',
-      text: "What's New",
-    },
-    {
-      image: 'assets/img/svgs/navigation/ic_settings.svg',
-      text: 'Settings',
-    },
-    {
-      image: 'assets/img/svgs/navigation/ic_profile_user.svg',
-      text: {
-        companyName: this.userCompany?.name,
-        userName: this.currentUser?.firstName.concat(
-          ' ',
-          this.currentUser?.lastName
-        ),
-      },
-    },
-  ];
+  public footerData: FooterData[] = footerData;
+
+  constructor(private router: Router) {
+    this.footerData[2].text = {
+      companyName: this.userCompany?.name,
+      userName: this.currentUser?.firstName.concat(
+        ' ',
+        this.currentUser?.lastName
+      ),
+    };
+  }
 
   public checkIfUserTextData(text: any): boolean {
     if (text.hasOwnProperty('companyName')) {
@@ -48,12 +37,17 @@ export class NavigationFooterComponent {
 
   public onUserPanelOpen(isUser: boolean) {
     if (isUser) {
-      console.log(isUser)
+      console.log(isUser);
       this.onUserPanelOpenEvent.emit(true);
     }
   }
 
   public identify(index: number, item: FooterData): string {
     return item.image;
+  }
+
+  public isActiveRoute(item: FooterData): boolean {
+   
+    return this.router.url.includes(item.route);
   }
 }

@@ -1,4 +1,4 @@
-import { Navigation, NavigationModal, NavigationUserPanel } from './navigation.model';
+import { FooterData, Navigation, NavigationModal, NavigationUserPanel } from './navigation.model';
 
 export const navigationData: Navigation[] = [
   {
@@ -342,3 +342,27 @@ export const userNavigationData: NavigationUserPanel[] = [
     action: 'logout'
   }
 ]
+
+
+export const footerData: FooterData[] = [
+  {
+    id: 1,
+    image: 'assets/img/svgs/navigation/ic_info.svg',
+    text: "What's New",
+    route: '/new',
+  },
+  {
+    id: 2,
+    image: 'assets/img/svgs/navigation/ic_settings.svg',
+    text: 'Settings',
+    route: '/settings',
+  },
+  {
+    id: 3,
+    image: 'assets/img/svgs/navigation/ic_profile_user.svg',
+    text: {
+      companyName: '',
+      userName: ''
+    }
+  },
+];

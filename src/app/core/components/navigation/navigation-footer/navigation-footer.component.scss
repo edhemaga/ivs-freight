@@ -1,5 +1,4 @@
 .nav-footer {
-  width: 176px;
   display: flex;
   flex-direction: column;
   -webkit-user-select: none;
@@ -108,10 +107,10 @@
     }
 
     .nav-footer-hover {
-      width: 180px;
+      width: 178px;
       height: 28px;
       position: absolute;
-      right: 4px;
+      right: 0px;
       content: "";
       background-color: transparent;
       border-radius: 3px;
@@ -151,6 +150,69 @@
       .nav-footer-hover {
         background-color: #f7f7f7;
       }
+    }
+  }
+
+  .nav-footer-item-active {
+    color: #778fbb;
+    background-color: #f7f7f7;
+
+    .nav-footer-image {
+      svg {
+        // info
+        #Path_35324 {
+          fill: #778fbb;
+        }
+        // settings
+        #Path_35325 {
+          fill: #778fbb;
+        }
+
+        #Path_35326 {
+          fill: #778fbb;
+        }
+      }
+    }
+
+    .nav-footer-text {
+        color: #778fbb;
+    }
+
+    &:hover {
+      color: #5673aa !important;
+      font-weight: 500;
+
+      .nav-footer-image {
+        svg {
+          // info
+          #Path_35324 {
+            fill: #5673aa !important;
+          }
+          // settings
+          #Path_35325 {
+            fill: #5673aa !important;
+          } 
+
+          #Path_35326 {
+            fill: #5673aa !important;
+          }
+        }
+      }
+
+      .nav-footer-text {
+        color: #5673aa !important;
+    }
+    }
+
+    .nav-item-active-box {
+      width: 35px;
+      height: 28px;
+      position: absolute;
+      left: -7px;
+      content: "";
+      background-color: #f7f7f7;
+      z-index: -1;
+      border-radius: 3px;
     }
   }
 }

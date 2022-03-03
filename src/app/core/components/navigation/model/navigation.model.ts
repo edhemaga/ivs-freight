@@ -17,3 +17,10 @@ export interface NavigationUserPanel {
     image: string,
     action: string
 }
+
+export interface FooterData {
+    id: number;
+    image: string;
+    text: string | {};
+    route?: string;
+  }
