@@ -1,3 +1,4 @@
+import { TruckService } from './../../../services/truck/truck.service';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -23,7 +24,6 @@ import {MetaDataService} from "../../../services/shared/meta-data.service";
 import {OwnerData} from "../../../model/owner";
 import {HttpErrorResponse} from "@angular/common/http";
 import {checkSelectedText, pasteCheck} from "../../../utils/methods.globals";
-import {TruckService} from "../../../services/truck/truck.service";
 import {v4 as uuidv4} from 'uuid';
 import {Vin} from 'src/app/core/model/vin';
 
