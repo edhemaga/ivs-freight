@@ -11,7 +11,6 @@ import {AngularSvgIconPreloaderModule} from 'angular-svg-icon-preloader';
 import { SvgMorphComponent } from './svg-morph/svg-morph.component';
 import {AgmCoreModule} from '@agm/core';
 import { MapControlComponent } from './map-control/map-control.component';
-import { TatooltipDirective } from '../../directives/tatooltip.directive';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {DriverManageComponent} from "../../components/modals/driver-manage/driver-manage.component";
 import {SortPipe} from "../../pipes/sort.pipe";
@@ -36,6 +35,7 @@ import {StatusSwitcherComponent} from "../../components/switchers/status-switche
 import {TruckManageComponent} from "../../components/modals/truck-manage/truck-manage.component";
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
+import { TooltipDirective } from '../../directives/tooltip.directive';
 
 @NgModule({
   declarations: [
@@ -45,14 +45,14 @@ import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
     InputErrorPipe,
     SvgMorphComponent,
     MapControlComponent,
-    TatooltipDirective,
     DriverManageComponent,
     SortPipe,
     HistoryDataComponent,
     TabSwitcherComponent,
     StatusSwitcherComponent,
     TruckManageComponent,
-    NFormatterPipe
+    NFormatterPipe,
+    TooltipDirective
   ],
   imports: [
     CommonModule,
@@ -101,7 +101,6 @@ import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
     AgmCoreModule,
     MapControlComponent,
     NgbModule,
-    TatooltipDirective,
     SortPipe,
     SortableModule,
     GridModule,
@@ -116,7 +115,9 @@ import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
     ExcelExportModule,
     PDFExportModule,
     LabelModule,
-    NFormatterPipe
+    NFormatterPipe,
+    TabSwitcherComponent,
+    TooltipDirective
   ],
   providers: [SortPipe, NFormatterPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

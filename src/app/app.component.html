@@ -22,9 +22,9 @@
 <!-- <app-header>
 
 </app-header> -->
-<app-navigation>
-  
-</app-navigation>
+<div *ngIf="currentPage !== 'login'">
+  <app-navigation></app-navigation>
+</div>
 
 <!-- <app-sidebar (sideBarClose)="doSomething()" [isOpen]="isOpen"></app-sidebar>
 <app-note-sidebar></app-note-sidebar> -->
