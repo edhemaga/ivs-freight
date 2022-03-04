@@ -35,6 +35,8 @@ import {TruckManageComponent} from "../../components/modals/truck-manage/truck-m
 import {NgxSliderModule} from '@angular-slider/ngx-slider';
 import {TrailerManageComponent} from "../../components/modals/trailer-manage/trailer-manage.component";
 import {TooltipDirective} from "../../directives/tooltip.directive";
+import {NgxMaskModule} from "ngx-mask";
+import {EditProfileComponent} from "../../components/modals/edit-profile/edit-profile.component";
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import {TooltipDirective} from "../../directives/tooltip.directive";
     StatusSwitcherComponent,
     TruckManageComponent,
     TrailerManageComponent,
+    EditProfileComponent
   ],
   imports: [
     CommonModule,
@@ -85,6 +88,7 @@ import {TooltipDirective} from "../../directives/tooltip.directive";
     LabelModule,
     TextFieldModule,
     DragDropModule,
+    NgxMaskModule.forRoot()
   ],
   exports: [
     AutoFocusDirective,

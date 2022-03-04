@@ -395,7 +395,8 @@ form .form-control {
     &.address-input,
     &.email-input,
     &.password-input,
-    &.phone-input {
+    &.phone-input,
+    &.name-input {
       background: none !important;
     }
 
@@ -405,7 +406,7 @@ form .form-control {
     transition: background-image 0.3s;
 
     &:hover {
-      background-image: url('../../assets/img/form-validation/check-icon-blue.svg');
+      //background-image: url('../../assets/img/form-validation/check-icon-blue.svg');
       background-repeat: no-repeat;
       background-position: right 6px bottom 8px;
       transition: background-image 0.3s;

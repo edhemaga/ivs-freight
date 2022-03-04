@@ -146,7 +146,6 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
   ) { }
 
   ngOnInit(): void {
-    this.createForm();
     if (this.inputData.data.type === 'edit') {
       this.modalTitle = 'Edit Driver';
       this.getDriverData();
@@ -155,6 +154,7 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
       this.modalTitle = 'Add Driver';
       this.getBanks(false);
     }
+    this.createForm();
   }
 
   closeModal() {
@@ -207,8 +207,8 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
   createForm() {
     this.driverForm = this.formBuilder.group({
       type: ['single'],
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       phone: ['', Validators.required],
       address: [null, Validators.required],
       addressUnit: [''],

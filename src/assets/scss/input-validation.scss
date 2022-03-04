@@ -31,6 +31,28 @@
     transition: all .2s ease-in-out;
   }
 
+  .valid-icon {
+    visibility: hidden;
+    opacity: 0;
+    transition: all .2s ease-in-out;
+  }
+
+  &.not-typing {
+    .default-icon {
+      visibility: visible;
+      opacity: 1;
+      transition: all .2s ease-in-out;
+
+      svg {
+        transition: all .2s ease-in-out;
+      }
+
+      .a {
+        fill: #FF8080;
+      }
+    }
+  }
+
   &.typing {
     .default-icon {
       visibility: hidden;
@@ -39,6 +61,7 @@
     }
 
     &.touched-invalid {
+
       .default-icon {
         visibility: visible;
         opacity: 1;
@@ -51,12 +74,6 @@
         .a {
           fill: #FF8080;
         }
-      }
-
-      .clear-icon {
-        visibility: hidden;
-        opacity: 0;
-        transition: all .2s ease-in-out;
       }
 
       &:hover {
@@ -85,7 +102,8 @@
     }
 
     &.touched-valid {
-      .default-icon {
+      .default-icon,
+      .valid-icon {
         visibility: visible;
         opacity: 1;
         transition: all .2s ease-in-out;
@@ -106,10 +124,15 @@
       }
 
       &:hover {
-        .default-icon {
+        .default-icon,
+        .valid-icon {
           visibility: hidden;
           opacity: 0;
           transition: all .2s ease-in-out;
+        }
+
+        form .form-control.required.ng-valid.ng-dirty.ng-touched {
+          background-image: none !important;
         }
 
         .clear-icon {

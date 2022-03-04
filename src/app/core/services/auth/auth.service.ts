@@ -16,8 +16,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private communicatorUserService: CommunicatorUserService
-  ) {
-  }
+  ) {}
 
   /**
    * User login function
@@ -33,7 +32,7 @@ export class AuthService {
         localStorage.setItem('currentUser', JSON.stringify(user.loggedUser));
         localStorage.setItem('token', JSON.stringify(user.token));
         localStorage.setItem('userCompany', JSON.stringify(user.userCompany));
-       // this.currentUserSubject.next(user);
+        this.currentUserSubject.next(user);
         return user;
       })
     );
