@@ -23,11 +23,11 @@
 
   </div>
   <div class="modal-body">
-    <app-ta-tab-switch
+    <app-tab-switch
       (switchClicked)="tabChange($event)"
       [tabs]="tabs"
-    ></app-ta-tab-switch>
-    <app-loading-modal *ngIf="!loaded"></app-loading-modal>
+    ></app-tab-switch>
+    <!-- <app-loading-modal *ngIf="!loaded"></app-loading-modal> -->
     <form
       (keydown)="keyDownFunction($event)"
       *ngIf="loaded"
