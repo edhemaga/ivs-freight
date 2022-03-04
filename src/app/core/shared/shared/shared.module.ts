@@ -38,6 +38,7 @@ import {TrailerManageComponent} from "../../components/modals/trailer-manage/tra
 import {TooltipDirective} from "../../directives/tooltip.directive";
 import {NgxMaskModule} from "ngx-mask";
 import {EditProfileComponent} from "../../components/modals/edit-profile/edit-profile.component";
+import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 
 @NgModule({
   declarations: [
