@@ -3,7 +3,7 @@ import {BrowserModule, BrowserTransferStateModule} from '@angular/platform-brows
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {SharedModule} from "./core/shared/shared/shared.module";
@@ -11,6 +11,8 @@ import {ToastrModule} from "ngx-toastr";
 import {NgIdleModule} from "@ng-idle/core";
 import {HeaderComponent} from './core/components/header/header/header.component';
 import {GoogleMapsAPIWrapper} from '@agm/core';
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,17 @@ import {GoogleMapsAPIWrapper} from '@agm/core';
     NgIdleModule.forRoot()
   ],
   providers: [
-    GoogleMapsAPIWrapper
+    GoogleMapsAPIWrapper,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

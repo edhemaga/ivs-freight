@@ -19,9 +19,7 @@
 
 <!-- IZ starog projekta base.component.html -->
 <!-- <overlay-scrollbars> -->
-<app-header>
-
-</app-header>
+<div *ngIf="currentPage !== 'login'"> <app-header></app-header></div>
 
 <!-- <app-sidebar (sideBarClose)="doSomething()" [isOpen]="isOpen"></app-sidebar>
 <app-note-sidebar></app-note-sidebar> -->

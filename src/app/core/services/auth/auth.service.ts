@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {SelectCompanyResponse} from "../../model/select-company";
 import {CommunicatorUserService} from "../communicator/communicator-user.service";
+import { User } from '../../components/authentication/model/auth.model';
 
 
 @Injectable({
@@ -11,12 +12,16 @@ import {CommunicatorUserService} from "../communicator/communicator-user.service
 })
 export class AuthService {
   public currentUser!: Observable<any>;
-  public currentUserSubject!: BehaviorSubject<any>;
+  public currentUserSubject: BehaviorSubject<any>;
 
   constructor(
     private http: HttpClient,
     private communicatorUserService: CommunicatorUserService
   ) {
+    this.currentUserSubject = new BehaviorSubject<User>(
+      JSON.parse(localStorage.getItem('currentUser'))
+    );
+    this.currentUser = this.currentUserSubject.asObservable();
   }
 
   /**
@@ -44,10 +49,17 @@ export class AuthService {
           user.loggedUser.companyId,
           user.loggedUser.id
         );
-       // this.currentUserSubject.next(user);
+        this.currentUserSubject.next(user);
         return user;
       })
     );
+  }
+
+  /**
+   * Get current user value function
+   */
+   public get currentUserValue(): User {
+    return this.currentUserSubject.value;
   }
 
   public onCompanySelect(companyId: any) {
