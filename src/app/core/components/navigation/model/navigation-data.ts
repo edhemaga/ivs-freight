@@ -1,4 +1,9 @@
-import { FooterData, Navigation, NavigationModal, NavigationUserPanel } from './navigation.model';
+import {
+  FooterData,
+  Navigation,
+  NavigationModal,
+  NavigationUserPanel,
+} from './navigation.model';
 
 export const navigationData: Navigation[] = [
   {
@@ -205,42 +210,52 @@ export const navigationData: Navigation[] = [
 
 export const generalNavigationData: NavigationModal[] = [
   {
+    id: 1,
     name: 'Load',
     path: 'load',
   },
   {
+    id: 2,
     name: 'Driver',
     path: 'driver',
   },
   {
+    id: 3,
     name: 'Truck',
     path: 'truck',
   },
   {
+    id: 4,
     name: 'Trailer',
     path: 'trailer',
   },
   {
+    id: 5,
     name: 'Broker',
     path: 'broker',
   },
   {
+    id: 6,
     name: 'Shipper',
     path: 'shipper',
   },
   {
+    id: 7,
     name: 'Owner',
     path: 'owner',
   },
   {
+    id: 8,
     name: 'User',
     path: 'user',
   },
   {
+    id: 8,
     name: 'Contact',
     path: 'contact',
   },
   {
+    id: 10,
     name: 'Account',
     path: 'account',
   },
@@ -249,10 +264,12 @@ export const generalNavigationData: NavigationModal[] = [
 
 export const toolsNavigationData: NavigationModal[] = [
   {
+    id: 1,
     name: 'Event',
     path: 'event',
   },
   {
+    id: 2,
     name: 'Task',
     path: 'task',
   },
@@ -261,10 +278,12 @@ export const toolsNavigationData: NavigationModal[] = [
 // Repair Navigation Data
 export const repairNavigationData: NavigationModal[] = [
   {
+    id: 1,
     name: 'Order',
     path: 'order',
   },
   {
+    id: 2,
     name: 'Shop',
     path: 'shop',
   },
@@ -273,10 +292,12 @@ export const repairNavigationData: NavigationModal[] = [
 // Fuel Navigation Data
 export const fuelNavigationData: NavigationModal[] = [
   {
+    id: 1,
     name: 'Purchase',
     path: 'purchase',
   },
   {
+    id: 2,
     name: 'Stop',
     path: 'stop',
   },
@@ -285,10 +306,12 @@ export const fuelNavigationData: NavigationModal[] = [
 // Safety Navigation Data
 export const safetyNavigationData: NavigationModal[] = [
   {
+    id: 1,
     name: 'Violation',
     path: 'violation',
   },
   {
+    id: 2,
     name: 'Accident',
     path: 'accident',
   },
@@ -297,18 +320,22 @@ export const safetyNavigationData: NavigationModal[] = [
 // Accounting Navigation Data
 export const accountingNavigationData: NavigationModal[] = [
   {
+    id: 1,
     name: 'Credit',
     path: 'credit',
   },
   {
+    id: 2,
     name: 'Bonus',
     path: 'bonus',
   },
   {
+    id: 3,
     name: 'Deduction',
     path: 'deduction',
   },
   {
+    id: 4,
     name: 'Fuel',
     path: 'fuel',
   },
@@ -317,32 +344,36 @@ export const accountingNavigationData: NavigationModal[] = [
 // User Navigation Data
 export const userNavigationData: NavigationUserPanel[] = [
   {
+    id: 1,
     name: 'Profile Update',
     image: 'assets/img/svgs/navigation/ic_truckassist_pen.svg',
-    action: 'update'
+    action: 'update',
   },
   {
+    id: 2,
     name: 'Set status',
     image: 'assets/img/svgs/navigation/ic_truckassist_pen.svg',
-    action: 'status'
+    action: 'status',
   },
   {
+    id: 3,
     name: 'Switch Company',
     image: 'assets/img/svgs/navigation/ic_truckassist_company.svg',
-    action: 'company'
+    action: 'company',
   },
   {
+    id: 4,
     name: 'Help Center',
     image: 'assets/img/svgs/navigation/ic_truckassist_help_center.svg',
-    action: 'help'
+    action: 'help',
   },
   {
+    id: 5,
     name: 'Logout',
     image: 'assets/img/svgs/navigation/ic_truckassist_logout.svg',
-    action: 'logout'
-  }
-]
-
+    action: 'logout',
+  },
+];
 
 export const footerData: FooterData[] = [
   {
@@ -362,7 +393,7 @@ export const footerData: FooterData[] = [
     image: 'assets/img/svgs/navigation/ic_profile_user.svg',
     text: {
       companyName: '',
-      userName: ''
-    }
+      userName: '',
+    },
   },
 ];

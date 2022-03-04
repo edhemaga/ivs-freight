@@ -13,7 +13,7 @@
       (onModalPanelCloseEvent)="onPanelEvent($event, 'ModalPanel')"
       *ngIf="isModalPanelOpen && isNavigationHovered"
     ></app-navigation-modals>
-    
+
     <div class="navigation-routes-container">
       <div
         class="navigation-routes"
@@ -38,6 +38,7 @@
             [isNavigationHovered]="isNavigationHovered"
             (onSubRouteEvent)="onSubRouteEvent($event)"
             [isNavSubRouteActive]="item.isSubRouteActive"
+            [activateSubRoute]="activateSubRoute"
           >
           </app-navigation-route>
 
@@ -45,6 +46,7 @@
             *ngIf="item.isSubRouteActive && isNavigationHovered"
             [subroute]="item"
             [mode]="'subroutes'"
+            (subrouteEvent)="activateSubRoute = $event"
           >
           </app-navigation-subroute>
         </app-navigation-subroute-card>

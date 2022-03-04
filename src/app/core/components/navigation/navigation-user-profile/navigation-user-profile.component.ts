@@ -28,8 +28,8 @@ export class NavigationUserProfileComponent {
     this.onUserPanelCloseEvent.emit(false);
   }
 
-  public identify(index: number, item: NavigationUserPanel): string {
-    return item.name;
+  public identify(index: number, item: NavigationUserPanel): number {
+    return item.id;
   }
 
   public onAction(data: NavigationUserPanel) {
@@ -43,7 +43,7 @@ export class NavigationUserProfileComponent {
       case 'help': {
       }
       case 'logout': {
-        console.log('logout')
+        console.log('logout');
         this.authService.logout();
       }
     }

@@ -1,4 +1,11 @@
-import { Component, Input} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Navigation } from '@angular/router';
+import { NavigationSubRoute } from '../model/navigation.model';
+
+interface Subroute {
+  routeId: number;
+  routes: [];
+}
 
 @Component({
   selector: 'app-navigation-subroute',
@@ -6,15 +13,19 @@ import { Component, Input} from '@angular/core';
   styleUrls: ['./navigation-subroute.component.scss'],
 })
 export class NavigationSubrouteComponent {
-  @Input() subroute: {
-    name: string;
-    routes: [];
-  };
+
+  @Output() subrouteEvent = new EventEmitter<Subroute>();
+
+  @Input() subroute: Subroute;
 
   @Input() mode: string = null;
 
-  identifySubroute(index: number, item: string): string {
-    return item;
+  public identifySubroute(index: number, item: Subroute): number {
+    return item.routeId;
   }
- 
+
+  public isSubrouteActive(subroute: Subroute) {
+    console.log(subroute)
+    this.subrouteEvent.emit(subroute);
+  }
 }

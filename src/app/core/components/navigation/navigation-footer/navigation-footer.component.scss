@@ -5,7 +5,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-
+  width: 176px;
   position: relative;
   left: 1px;
 
@@ -108,9 +108,9 @@
 
     .nav-footer-hover {
       width: 178px;
-      height: 28px;
+      height: 30px;
       position: absolute;
-      right: 0px;
+      right: 5px;
       content: "";
       background-color: transparent;
       border-radius: 3px;
@@ -119,8 +119,9 @@
 
     .nav-footer-hover-user {
       height: 40px;
-      right: 3px;
-      width: 184px;
+      left: -10px;
+      width: 186px;
+      border-radius: 3px;
     }
 
     &:hover {
@@ -156,6 +157,8 @@
   .nav-footer-item-active {
     color: #778fbb;
     background-color: #f7f7f7;
+    width: 172px;
+    border-radius: 3px;
 
     .nav-footer-image {
       svg {
@@ -175,7 +178,7 @@
     }
 
     .nav-footer-text {
-        color: #778fbb;
+      color: #778fbb;
     }
 
     &:hover {
@@ -191,7 +194,7 @@
           // settings
           #Path_35325 {
             fill: #5673aa !important;
-          } 
+          }
 
           #Path_35326 {
             fill: #5673aa !important;
@@ -201,7 +204,7 @@
 
       .nav-footer-text {
         color: #5673aa !important;
-    }
+      }
     }
 
     .nav-item-active-box {

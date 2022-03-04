@@ -72,7 +72,7 @@ export class AuthService {
    * Logout function
    */
   public logout() {
-    this.currentUserSubject.next(null);
+  //  this.currentUserSubject.next(null);
     this.communicatorUserService.changeMyStatus('offline');
     this.communicatorUserService.removeChatUserData();
     localStorage.clear();

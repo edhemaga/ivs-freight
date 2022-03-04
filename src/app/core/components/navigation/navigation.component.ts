@@ -1,4 +1,4 @@
-import { Navigation } from './model/navigation.model';
+import { Navigation, NavigationSubRoute } from './model/navigation.model';
 import { Component } from '@angular/core';
 import { navigationData } from './model/navigation-data';
 
@@ -19,6 +19,7 @@ export class NavigationComponent {
   public isUserPanelOpen: boolean = false;
 
   public activeRoute: number = -1;
+  public activateSubRoute: NavigationSubRoute;
 
   public onSubRouteEvent(subroute: Subroute) {
     let index = this.navigation.findIndex(
@@ -37,8 +38,8 @@ export class NavigationComponent {
     }
   }
 
-  public identifySubRoute(index, item) {
-    return item;
+  public identifySubRoute(index, item): number {
+    return item.id;
   }
 
   public onPanelEvent(isOpen: boolean, panel: string) {

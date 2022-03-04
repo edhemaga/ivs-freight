@@ -11,6 +11,8 @@ export class NavigationSubrouteCardComponent {
   @Input() contentHeight: number = 0;
 
   getDynamicHeight() {
-    return this.isSubRouteActive && this.isNavigationHovered ? (this.contentHeight + 1) * 28 + 2 : 0;
+    return this.isSubRouteActive && this.isNavigationHovered
+      ? (this.contentHeight + 1) * 28 + 2
+      : 0;
   }
 }

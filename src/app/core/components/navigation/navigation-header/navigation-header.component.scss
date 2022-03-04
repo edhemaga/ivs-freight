@@ -4,6 +4,9 @@
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease-in-out;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 
   .nav-header-top {
@@ -42,7 +45,7 @@
     .nav-header-bottom-rightSide {
       display: flex;
       justify-content: space-between;
-      margin-left: 32px;
+      margin-left: 29px;
 
       .nav-header-bottom-rightSide-notes {
         margin: 0 6px;

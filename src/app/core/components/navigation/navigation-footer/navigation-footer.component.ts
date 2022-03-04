@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
 
@@ -8,7 +8,7 @@ import { footerData } from '../model/navigation-data';
   templateUrl: './navigation-footer.component.html',
   styleUrls: ['./navigation-footer.component.scss'],
 })
-export class NavigationFooterComponent {
+export class NavigationFooterComponent implements OnInit {
   @Input() isNavigationHovered: boolean = false;
   @Output() onUserPanelOpenEvent = new EventEmitter<boolean>();
 
@@ -18,7 +18,9 @@ export class NavigationFooterComponent {
 
   public footerData: FooterData[] = footerData;
 
-  constructor(private router: Router) {
+  constructor(private router: Router) {}
+
+  ngOnInit() {
     this.footerData[2].text = {
       companyName: this.userCompany?.name,
       userName: this.currentUser?.firstName.concat(
@@ -42,12 +44,11 @@ export class NavigationFooterComponent {
     }
   }
 
-  public identify(index: number, item: FooterData): string {
-    return item.image;
+  public identify(index: number, item: FooterData): number {
+    return item.id;
   }
 
   public isActiveRoute(item: FooterData): boolean {
-   
     return this.router.url.includes(item.route);
   }
 }

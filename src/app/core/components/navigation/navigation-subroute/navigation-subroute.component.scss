@@ -4,22 +4,24 @@
   position: relative;
   left: -7px;
   border-radius: 3px;
-
+  font-weight: 500;
   transition: all 0.2s ease-in-out;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
+  color: #b7b7b7;
 
   .subroutes-item {
     margin: 0;
     margin-left: 48px;
     font-size: 14px;
-    color: #b7b7b7;
     position: relative;
-    top: 3px;
+    top: 4px;
   }
 
   &:hover {
     background-color: #f7f7f7;
     color: #919191;
-    font-weight: 500;
   }
 }

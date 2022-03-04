@@ -1,16 +1,18 @@
 .user-panel {
   position: absolute;
-  bottom: 15px;
-  left: 9px;
+  bottom: 14px;
+  left: 6px;
   z-index: 99;
   width: 184px;
   height: 202px;
-  padding: 6px 10px 3px 10px;
+  padding: 2px 4px;
   border-radius: 3px;
   border-bottom-left-radius: 20px;
   box-shadow: 0 0 4px rgb(0 0 0 / 16%);
   background-color: #ffffff;
   -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 
   p {
@@ -23,9 +25,9 @@
   .user-content {
     display: flex;
     align-items: center;
-    height: 28px;
+    height: 30px;
     width: 176px;
-    margin-top: 2px;
+    padding: 4px 6px;
     transition: all 0.2s ease-in-out;
 
     .user-content-hover {
@@ -86,8 +88,8 @@
     align-items: center;
     height: 40px;
     position: relative;
-    top: 7px;
-    right: 7px;
+    top: 8px;
+    right: -1px;
 
     .panel-name {
       position: relative;

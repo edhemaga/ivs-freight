@@ -26,7 +26,7 @@
 
   .navigation-top,
   .navigation-bottom {
-    margin-left: 5px;
+    padding-left: 4px;
   }
 
   .navigation-routes-container {
@@ -34,11 +34,11 @@
 
     @media only screen and (max-width: 1800px) {
       height: 526.5px;
-      border-bottom: 2px solid #F7F7F7;
+      border-bottom: 2px solid #f7f7f7;
       overflow: hidden;
       overflow-y: scroll;
       scrollbar-width: none;
-    
+
       &::-webkit-scrollbar {
         width: 0px;
       }

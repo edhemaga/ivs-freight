@@ -11,6 +11,9 @@
   box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.16);
 
   background-color: #ffffff;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 
   p {
@@ -27,8 +30,8 @@
           fill: #dadada;
         }
 
-        #Ellipse_6396  {
-          fill: #F9F9F9;
+        #Ellipse_6396 {
+          fill: #f9f9f9;
         }
       }
     }
@@ -71,6 +74,7 @@
       -moz-column-gap: 6px;
       column-gap: 6px;
       font-size: 12px;
+      font-weight: 500;
       color: #b7b7b7;
 
       p {
@@ -80,7 +84,6 @@
 
         &:hover {
           color: #919191;
-          font-weight: 500;
           background-color: #f7f7f7;
           cursor: pointer;
         }

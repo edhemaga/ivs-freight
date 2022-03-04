@@ -1,4 +1,3 @@
-
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { DriverManageComponent } from '../../modals/driver-manage/driver-manage.component';
@@ -17,7 +16,6 @@ import { NavigationModal } from '../model/navigation.model';
   styleUrls: ['./navigation-modals.component.scss'],
 })
 export class NavigationModalsComponent {
-
   @Output() onModalPanelCloseEvent = new EventEmitter<boolean>();
 
   public generalNavigationData: NavigationModal[] = generalNavigationData;
@@ -29,14 +27,13 @@ export class NavigationModalsComponent {
 
   public changeTextHoverOnCloseModal: boolean = false;
 
-  constructor( private customModalService: CustomModalService) {}
+  constructor(private customModalService: CustomModalService) {}
 
   public onModalPanelClose() {
     this.onModalPanelCloseEvent.emit(false);
   }
 
   public openModal(navItem: NavigationModal) {
-    console.log(navItem)
     const path = navItem.path;
     const data = {
       type: 'new',
@@ -44,7 +41,12 @@ export class NavigationModalsComponent {
     };
     switch (path) {
       case 'driver':
-        this.customModalService.openModal(DriverManageComponent, {data}, null, {size: 'small'});
+        this.customModalService.openModal(
+          DriverManageComponent,
+          { data },
+          null,
+          { size: 'small' }
+        );
         break;
 
       /* case 'truck':
@@ -126,7 +128,7 @@ export class NavigationModalsComponent {
     }
   }
 
-  identify(index: number, item: NavigationModal): string {
-    return item.name
+  identify(index: number, item: NavigationModal): number {
+    return item.id;
   }
 }
