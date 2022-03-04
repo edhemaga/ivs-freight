@@ -10,6 +10,11 @@ export interface NavigationSubRoute {
   name: string;
   route: string;
 }
+
+export interface NavigationSubRoutes {
+  routeId: number;
+  routes: [];
+}
 export interface NavigationModal {
   id: number;
   name: string;

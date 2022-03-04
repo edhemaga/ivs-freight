@@ -5,7 +5,7 @@
   (mouseenter)="isNavItemHovered = true"
   (mouseleave)="isNavItemHovered = false"
   (click)="onSubRouteAction()"
-  [routerLink]="navRoute.route"
+  [routerLink]="disableActivationOfSubrouteName(navRoute)"
   routerLinkActive="nav-item-active"
   [routerLinkActiveOptions]="{ exact: true }"
 >

@@ -4,7 +4,7 @@
       class="subroutes"
       *ngFor="let item of subroute.route; trackBy: identifySubroute"
       [routerLink]="item.route"
-      (click)="isSubrouteActive(item)"
+      (click)="isSubrouteActive()"
     >
       <p class="subroutes-item">{{ item.name }}</p>
     </div>

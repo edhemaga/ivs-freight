@@ -36,9 +36,8 @@
           <app-navigation-route
             [navRoute]="item"
             [isNavigationHovered]="isNavigationHovered"
-            (onSubRouteEvent)="onSubRouteEvent($event)"
             [isNavSubRouteActive]="item.isSubRouteActive"
-            [activateSubRoute]="activateSubRoute"
+            (onSubRouteEvent)="onSubRouteEvent($event)"
           >
           </app-navigation-route>
 
@@ -46,7 +45,7 @@
             *ngIf="item.isSubRouteActive && isNavigationHovered"
             [subroute]="item"
             [mode]="'subroutes'"
-            (subrouteEvent)="activateSubRoute = $event"
+            (subrouteEvent)="onActivateSubRoute($event)"
           >
           </app-navigation-subroute>
         </app-navigation-subroute-card>
