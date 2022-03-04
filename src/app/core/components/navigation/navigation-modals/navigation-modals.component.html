@@ -3,7 +3,7 @@
     (mouseenter)="changeTextHoverOnCloseModal = true"
     (mouseleave)="changeTextHoverOnCloseModal = false"
     class="modal-nav-close"
-    (click)="onModalPanelClose()"
+    (click)="onAction('Close Panel')"
   >
     <svg-icon
       class="modal-nav-close-svg"
@@ -19,7 +19,7 @@
     <div class="modal-nav-routes">
       <p
         *ngFor="let item of generalNavigationData; truckBy: identity"
-        (click)="openModal(item)"
+        (click)="onAction('Open Modal', item)"
         [routerLink]="item.path"
       >
         {{ item.name }}
@@ -32,7 +32,7 @@
     <div class="modal-nav-routes">
       <p
         *ngFor="let item of toolsNavigationData; truckBy: identity"
-        (click)="openModal(item)"
+        (click)="onAction('Open Modal', item)"
         [routerLink]="item.path"
       >
         {{ item.name }}
@@ -45,7 +45,7 @@
     <div class="modal-nav-routes">
       <p
         *ngFor="let item of repairNavigationData; truckBy: identity"
-        (click)="openModal(item)"
+        (click)="onAction('Open Modal', item)"
         [routerLink]="item.path"
       >
         {{ item.name }}
@@ -58,7 +58,7 @@
     <div class="modal-nav-routes">
       <p
         *ngFor="let item of fuelNavigationData; truckBy: identity"
-        (click)="openModal(item)"
+        (click)="onAction('Open Modal', item)"
         [routerLink]="item.path"
       >
         {{ item.name }}
@@ -71,7 +71,7 @@
     <div class="modal-nav-routes">
       <p
         *ngFor="let item of safetyNavigationData; truckBy: identity"
-        (click)="openModal(item)"
+        (click)="onAction('Open Modal', item)"
         [routerLink]="item.path"
       >
         {{ item.name }}
@@ -84,7 +84,7 @@
     <div class="modal-nav-routes">
       <p
         *ngFor="let item of accountingNavigationData; truckBy: identity"
-        (click)="openModal(item)"
+        (click)="onAction('Open Modal', item)"
         [routerLink]="item.path"
       >
         {{ item.name }}

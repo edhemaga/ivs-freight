@@ -4,7 +4,7 @@ export interface Navigation {
   image: string;
   route: string | any;
   arrow?: string;
-  isSubRouteActive?: boolean;
+  isRouteActive?: boolean;
 }
 export interface NavigationSubRoute {
   name: string;
@@ -13,7 +13,7 @@ export interface NavigationSubRoute {
 
 export interface NavigationSubRoutes {
   routeId: number;
-  routes: [];
+  routes: [] | string;
 }
 export interface NavigationModal {
   id: number;
@@ -31,4 +31,5 @@ export interface FooterData {
   image: string;
   text: string | {};
   route?: string;
+  isRouteActive?: boolean
 }

@@ -1,39 +1,43 @@
 <div class="nav-footer">
   <div
-    (click)="onUserPanelOpen(ind === 2)"
-    class="nav-footer-item"
-    [routerLink]="item.route"
-    routerLinkActive="{{ind !== 2 ? 'nav-footer-item-active' : ''}}"
-    [routerLinkActiveOptions]="{ exact: true }"
     *ngFor="let item of footerData; trackBy: identify; let ind = index"
+    class="nav-footer-item"
+    [ngClass]="{'nav-footer-item-scaleWidth': !isNavigationHovered}"
+    (click)="onAction(ind, 'Open User Panel')"
+    [routerLink]="item.route"
+    routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
+    [routerLinkActiveOptions]="{ exact: true }"
   >
-    <div class="nav-footer-hover" [ngClass]="{'nav-footer-hover-user': ind === 2}"></div>
+    <div
+      class="nav-footer-hover"
+      [ngClass]="{ 'nav-footer-hover-user': ind === 2 }"
+    ></div>
 
     <div *ngIf="isActiveRoute(item)" class="nav-item-active-box"></div>
-    
+
     <svg-icon
       class="nav-footer-image"
       [ngClass]="{ 'nav-footer-image-user': ind === 2 }"
       src="{{ item.image }}"
     ></svg-icon>
-    
+
     <p
       class="nav-footer-text"
-      *ngIf="!checkIfUserTextData(item.text) && isNavigationHovered"
+      *ngIf="!isUserData(item.text) && isNavigationHovered"
     >
       {{ item.text }}
     </p>
 
     <div
       class="nav-footer-user"
-      *ngIf="checkIfUserTextData(item.text) && isNavigationHovered"
+      *ngIf="isUserData(item.text) && isNavigationHovered"
     >
       <p class="nav-footer-user-company">{{ item.text.companyName }}</p>
       <p class="nav-footer-user-name">{{ item.text.userName }}</p>
     </div>
 
     <div
-      *ngIf="currentUserStatus && checkIfUserTextData(item.text)"
+      *ngIf="currentUserStatus && isUserData(item.text)"
       class="status-marker-container"
     >
       <div

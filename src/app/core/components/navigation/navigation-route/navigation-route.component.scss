@@ -60,20 +60,30 @@
   .nav-item-img-active,
   .nav-item-arrow-active {
     svg {
-      path {
+      path,
+      #Path_35308,
+      #Path_35313,
+      #Path_35314,
+      #Path_35315,
+      #Path_35316 {
         fill: #778fbb;
       }
     }
   }
 
   &:hover {
-    color: #5673aa !important;
+    color: #5673aa;
 
     .nav-item-img,
     .nav-item-arrow {
       svg {
-        path {
-          fill: #5673aa !important;
+        path,
+        #Path_35308,
+        #Path_35313,
+        #Path_35314,
+        #Path_35315,
+        #Path_35316 {
+          fill: #5673aa;
         }
       }
     }

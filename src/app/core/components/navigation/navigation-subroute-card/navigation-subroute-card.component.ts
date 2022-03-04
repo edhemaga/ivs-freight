@@ -10,9 +10,9 @@ export class NavigationSubrouteCardComponent {
   @Input() isNavigationHovered: boolean = false;
   @Input() contentHeight: number = 0;
 
-  getDynamicHeight() {
+  public getDynamicHeight() {
     return this.isSubRouteActive && this.isNavigationHovered
-      ? (this.contentHeight + 1) * 28 + 2
+      ? (this.contentHeight + 1) * 28 + 8
       : 0;
   }
 }

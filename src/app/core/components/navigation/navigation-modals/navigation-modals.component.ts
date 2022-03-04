@@ -29,11 +29,20 @@ export class NavigationModalsComponent {
 
   constructor(private customModalService: CustomModalService) {}
 
-  public onModalPanelClose() {
-    this.onModalPanelCloseEvent.emit(false);
+  public onAction(action: string, item?: NavigationModal) {
+      switch(action) {
+        case 'Close Panel': {
+          this.onModalPanelCloseEvent.emit(false);
+        }
+        case 'Open Modal': {
+          this.openModal(item);
+        }
+        default: 
+          return;
+      }
   }
 
-  public openModal(navItem: NavigationModal) {
+  private openModal(navItem: NavigationModal) {
     const path = navItem.path;
     const data = {
       type: 'new',
@@ -128,7 +137,7 @@ export class NavigationModalsComponent {
     }
   }
 
-  identify(index: number, item: NavigationModal): number {
+  public identify(index: number, item: NavigationModal): number {
     return item.id;
   }
 }

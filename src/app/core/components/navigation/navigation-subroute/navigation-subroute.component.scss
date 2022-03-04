@@ -12,6 +12,10 @@
   user-select: none;
   color: #b7b7b7;
 
+  &:nth-child(1) {
+    margin-top: 2px;
+  }
+
   .subroutes-item {
     margin: 0;
     margin-left: 48px;
@@ -23,5 +27,14 @@
   &:hover {
     background-color: #f7f7f7;
     color: #919191;
+  }
+}
+
+.subroute-active {
+  color: #778fbb;
+  background-color: #f7f7f7;
+
+  &:hover {
+    color: #5673aa !important;
   }
 }

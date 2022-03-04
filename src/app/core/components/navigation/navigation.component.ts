@@ -1,4 +1,4 @@
-import { Navigation,  NavigationSubRoutes } from './model/navigation.model';
+import { Navigation, NavigationSubRoutes } from './model/navigation.model';
 import { Component } from '@angular/core';
 import { navigationData } from './model/navigation-data';
 
@@ -16,44 +16,53 @@ export class NavigationComponent {
 
   public activeRoute: number = -1;
 
-  public identifySubRoute(index, item): number {
-    return item.id;
-  }
-
   public onPanelEvent(isOpen: boolean, panel: string) {
-    if (panel === 'ModalPanel') {
-      this.isModalPanelOpen = isOpen;
-    } else {
-      this.isUserPanelOpen = isOpen;
+    switch (panel) {
+      case 'Modal Panel': {
+        this.isModalPanelOpen = isOpen;
+      }
+      case 'User Panel': {
+        this.isUserPanelOpen = isOpen;
+      }
+      default:
+        return;
     }
   }
 
-  public onActivateSubRoute(item: NavigationSubRoutes) {
-    this.navigation.filter((nav) => (nav.isSubRouteActive = false));
-    this.navigation.forEach( item => {
-      if(item.id === item.id) {
-        item.isSubRouteActive = item.isSubRouteActive
-      }
-      else {
-        item.isSubRouteActive = false;
-      }
-    })
-  }
-
-  public onSubRouteEvent(subroute: NavigationSubRoutes) {
-    let index = this.navigation.findIndex(
+  public onRouteEvent(subroute: NavigationSubRoutes) {
+    const index = this.navigation.findIndex(
       (item) => item.id === subroute.routeId
     );
 
-    if (index === this.activeRoute) {
-      this.navigation[index].isSubRouteActive =
-        !this.navigation[index].isSubRouteActive;
-    }
+    this.onActivateFooterRoute(false);
 
-    if (index !== this.activeRoute) {
-      this.navigation.filter((nav) => (nav.isSubRouteActive = false));
-      this.activeRoute = index;
-      this.navigation[index].isSubRouteActive = true;
+    if (subroute.routes.length) {
+      if (index === this.activeRoute) {
+        this.navigation[index].isRouteActive =
+          !this.navigation[index].isRouteActive;
+      }
+
+      if (index !== this.activeRoute) {
+        this.navigation.filter((nav) => (nav.isRouteActive = false));
+        this.activeRoute = index;
+        this.navigation[index].isRouteActive = true;
+      }
+    } else {
+      if (index) {
+        this.navigation.filter((nav) => (nav.isRouteActive = false));
+        this.navigation[index].isRouteActive =
+          !this.navigation[index].isRouteActive;
+      }
     }
+  }
+
+  public onActivateFooterRoute(type: boolean) {
+    if (type) {
+      this.navigation.filter((nav) => (nav.isRouteActive = false));
+    }
+  }
+
+  public identify(index, item): number {
+    return item.id;
   }
 }

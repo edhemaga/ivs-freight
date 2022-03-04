@@ -1,12 +1,7 @@
-import { Observable } from 'rxjs';
-import {
-  NavigationSubRoute,
-  NavigationSubRoutes,
-} from './../model/navigation.model';
+import { NavigationSubRoutes } from './../model/navigation.model';
 import { Router } from '@angular/router';
 import { Navigation } from '../model/navigation.model';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-
 
 @Component({
   selector: 'app-navigation-route',
@@ -14,44 +9,34 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
   styleUrls: ['./navigation-route.component.scss'],
 })
 export class NavigationRouteComponent {
-  @Input() navRoute: Navigation;
+  @Input() route: Navigation;
   @Input() isNavigationHovered: boolean = false;
-  @Input() isNavSubRouteActive: boolean = false;
 
-  @Output() onSubRouteEvent = new EventEmitter<NavigationSubRoutes>();
+  @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
 
   public isNavItemHovered: boolean = false;
 
   constructor(public router: Router) {}
 
-  public onSubRouteAction() {
-    if (this.navRoute.arrow) {
-      this.isNavSubRouteActive = !this.isNavSubRouteActive;
-      this.onSubRouteEvent.emit({
-        routeId: this.navRoute.id,
-        routes: this.navRoute.route,
-      });
-      return;
-    }
+  public onRouteAction() {
+    this.onRouteEvent.emit({
+      routeId: this.route.id,
+      routes: this.route.route,
+    });
   }
 
-  public isActiveRoute(): boolean {
-    if (this.navRoute.arrow) {
-        return;
-        // this.navRoute.id === this.activateSubRoute?.routeId;
+  public activateHeaderOfSubroutes() {
+    if(this.route.name === 'List' && this.route.isRouteActive) {
+      return true;
     }
-    return this.router.url.includes(this.navRoute.route);
-  }
-
-  public disableActivationOfSubrouteName(navRoute: Navigation): string {
-    if (
-      navRoute.name === 'List' ||
-      navRoute.name === 'Accounting' ||
-      navRoute.name === 'Safety' ||
-      navRoute.name === 'Tools'
-    ) {
-      return null;
+    else if(this.route.name === 'Accounting' && this.route.isRouteActive) {
+      return true;
     }
-    return navRoute.route;
+    else if(this.route.name === 'Safety' && this.route.isRouteActive) {
+      return true;
+    }
+    else if(this.route.name === 'Tools' && this.route.isRouteActive) {
+      return true;
+    }
   }
 }

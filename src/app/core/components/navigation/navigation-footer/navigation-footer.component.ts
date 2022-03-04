@@ -11,6 +11,7 @@ import { footerData } from '../model/navigation-data';
 export class NavigationFooterComponent implements OnInit {
   @Input() isNavigationHovered: boolean = false;
   @Output() onUserPanelOpenEvent = new EventEmitter<boolean>();
+  @Output() onActivateFooterRoutes = new EventEmitter<boolean>();
 
   private currentUser = JSON.parse(localStorage.getItem('currentUser'));
   private userCompany = JSON.parse(localStorage.getItem('userCompany'));
@@ -30,17 +31,32 @@ export class NavigationFooterComponent implements OnInit {
     };
   }
 
-  public checkIfUserTextData(text: any): boolean {
+  public isUserData(text: any): boolean {
     if (text.hasOwnProperty('companyName')) {
       return true;
     }
     return false;
   }
 
-  public onUserPanelOpen(isUser: boolean) {
-    if (isUser) {
-      console.log(isUser);
-      this.onUserPanelOpenEvent.emit(true);
+  public onAction(index: number, action: string) {
+    switch (action) {
+      case 'Open User Panel': {
+        if (index === 2) {
+          this.onUserPanelOpenEvent.emit(true);
+        } else {
+          this.isActiveRoute(this.footerData[index])
+          this.onActivateFooterRoutes.emit(true);
+        }
+      }
+      default: {
+        return;
+      }
+    }
+  }
+
+  public isActiveRoute(item: FooterData): boolean {
+    if(item.id !== 3) {
+      return this.router.url.includes(item.route);
     }
   }
 
@@ -48,7 +64,5 @@ export class NavigationFooterComponent implements OnInit {
     return item.id;
   }
 
-  public isActiveRoute(item: FooterData): boolean {
-    return this.router.url.includes(item.route);
-  }
+  
 }

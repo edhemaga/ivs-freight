@@ -11,19 +11,21 @@ export const navigationData: Navigation[] = [
     name: 'Dashboard',
     image: 'assets/img/svgs/navigation/ic_dashboard.svg',
     route: '/dashboard',
+    isRouteActive: false,
   },
   {
     id: 2,
     name: 'Dispatch',
     image: 'assets/img/svgs/navigation/ic_dispatch.svg',
     route: '/dispatch',
+    isRouteActive: false,
   },
   {
     id: 3,
     name: 'List',
     image: 'assets/img/svgs/navigation/ic_list.svg',
     arrow: 'assets/img/svgs/navigation/ic_arrow.svg',
-    isSubRouteActive: false,
+    isRouteActive: false,
     route: [
       {
         name: 'Load',
@@ -72,7 +74,7 @@ export const navigationData: Navigation[] = [
     name: 'Accounting',
     image: 'assets/img/svgs/navigation/ic_accounting.svg',
     arrow: 'assets/img/svgs/navigation/ic_arrow.svg',
-    isSubRouteActive: false,
+    isRouteActive: false,
     route: [
       {
         name: 'Payroll',
@@ -97,7 +99,7 @@ export const navigationData: Navigation[] = [
     name: 'Safety',
     image: 'assets/img/svgs/navigation/ic_safety.svg',
     arrow: 'assets/img/svgs/navigation/ic_arrow.svg',
-    isSubRouteActive: false,
+    isRouteActive: false,
     route: [
       {
         name: 'Violation',
@@ -122,7 +124,7 @@ export const navigationData: Navigation[] = [
     name: 'Tools',
     image: 'assets/img/svgs/navigation/ic_tools.svg',
     arrow: 'assets/img/svgs/navigation/ic_arrow.svg',
-    isSubRouteActive: false,
+    isRouteActive: false,
     route: [
       {
         name: 'Miles',
@@ -167,42 +169,49 @@ export const navigationData: Navigation[] = [
     name: 'Routing',
     image: 'assets/img/svgs/navigation/ic_routing.svg',
     route: '/routing',
+    isRouteActive: false,
   },
   {
     id: 8,
     name: 'Report',
     image: 'assets/img/svgs/navigation/ic_report.svg',
     route: '/report',
+    isRouteActive: false,
   },
   {
     id: 9,
     name: 'Statistic',
     image: 'assets/img/svgs/navigation/ic_statistic.svg',
     route: '/statistic',
+    isRouteActive: false,
   },
   {
     id: 10,
     name: 'Chat',
     image: 'assets/img/svgs/navigation/ic_chat.svg',
     route: '/chat',
+    isRouteActive: false,
   },
   {
     id: 11,
     name: 'GPS',
     image: 'assets/img/svgs/navigation/ic_gps.svg',
     route: '/gps',
+    isRouteActive: false,
   },
   {
     id: 12,
     name: 'Places',
     image: 'assets/img/svgs/navigation/ic_places.svg',
     route: '/places',
+    isRouteActive: false,
   },
   {
     id: 13,
     name: 'File Manager',
     image: 'assets/img/svgs/navigation/ic_file_manager.svg',
     route: '/filemanager',
+    isRouteActive: false,
   },
 ];
 
@@ -381,12 +390,14 @@ export const footerData: FooterData[] = [
     image: 'assets/img/svgs/navigation/ic_info.svg',
     text: "What's New",
     route: '/new',
+    isRouteActive: false,
   },
   {
     id: 2,
     image: 'assets/img/svgs/navigation/ic_settings.svg',
     text: 'Settings',
     route: '/settings',
+    isRouteActive: false,
   },
   {
     id: 3,

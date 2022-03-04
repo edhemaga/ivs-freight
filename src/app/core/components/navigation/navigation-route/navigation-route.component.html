@@ -2,32 +2,33 @@
 
 <div
   class="nav-item"
+  [ngClass]="{'nav-item-active': activateHeaderOfSubroutes()}"
   (mouseenter)="isNavItemHovered = true"
   (mouseleave)="isNavItemHovered = false"
-  (click)="onSubRouteAction()"
-  [routerLink]="disableActivationOfSubrouteName(navRoute)"
+  (click)="onRouteAction()"
+  [routerLink]="route.route"
   routerLinkActive="nav-item-active"
   [routerLinkActiveOptions]="{ exact: true }"
 >
-  <div *ngIf="isActiveRoute()" class="nav-item-active-box"></div>
+  <div *ngIf="route.isRouteActive" class="nav-item-active-box"></div>
   
   <svg-icon
     class="nav-item-img nav-item-img-active"
-    src="{{ navRoute.image }}"
+    src="{{ route.image }}"
   ></svg-icon>
 
   <div class="nav-item-rightSide">
     <p *ngIf="isNavigationHovered" class="nav-item-name nav-item-name-active">
-      {{ navRoute.name }}
+      {{ route.name }}
     </p>
     <svg-icon
       class="nav-item-arrow nav-item-arrow-active"
       [ngClass]="{
-        'nav-item-arrow-rotate': isNavSubRouteActive,
-        'nav-item-arrow-first': navRoute.id === 3
+        'nav-item-arrow-rotate': route.isRouteActive,
+        'nav-item-arrow-first': route.id === 3
       }"
-      *ngIf="navRoute.arrow && isNavigationHovered"
-      src="{{ navRoute.arrow }}"
+      *ngIf="route.arrow && isNavigationHovered"
+      src="{{ route.arrow }}"
     ></svg-icon>
   </div>
 </div>
