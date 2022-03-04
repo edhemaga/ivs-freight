@@ -74,7 +74,6 @@ export class AppComponent implements OnInit {
   private hoverId?: string = null;
   currentPage: any;
 
-
   constructor(
     private router: Router,
     public titleService: Title,
@@ -268,7 +267,7 @@ export class AppComponent implements OnInit {
   public getUserData() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.userService
-      .getUserByUsername(currentUser.username)
+      .getUserByUsername(currentUser?.username)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (user: any) => {
@@ -435,6 +434,5 @@ export class AppComponent implements OnInit {
       }
     });
   }
-
 
 }

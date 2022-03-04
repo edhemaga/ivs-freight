@@ -33,14 +33,17 @@ import {TextFieldModule} from "@angular/cdk/text-field";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {StatusSwitcherComponent} from "../../components/switchers/status-switcher/status-switcher.component";
 import {TruckManageComponent} from "../../components/modals/truck-manage/truck-manage.component";
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
-import { TooltipDirective } from '../../directives/tooltip.directive';
+import {NgxSliderModule} from '@angular-slider/ngx-slider';
+import {TrailerManageComponent} from "../../components/modals/trailer-manage/trailer-manage.component";
+import {TooltipDirective} from "../../directives/tooltip.directive";
+import {NgxMaskModule} from "ngx-mask";
+import {EditProfileComponent} from "../../components/modals/edit-profile/edit-profile.component";
 
 @NgModule({
   declarations: [
     AutoFocusDirective,
     InputFocusDirective,
+    TooltipDirective,
     InputRestrictionDirective,
     InputErrorPipe,
     SvgMorphComponent,
@@ -52,7 +55,9 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
     StatusSwitcherComponent,
     TruckManageComponent,
     NFormatterPipe,
-    TooltipDirective
+    TooltipDirective,
+    TrailerManageComponent,
+    EditProfileComponent
   ],
   imports: [
     CommonModule,
@@ -86,7 +91,8 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
     PDFExportModule,
     LabelModule,
     TextFieldModule,
-    DragDropModule
+    DragDropModule,
+    NgxMaskModule.forRoot()
   ],
   exports: [
     AutoFocusDirective,

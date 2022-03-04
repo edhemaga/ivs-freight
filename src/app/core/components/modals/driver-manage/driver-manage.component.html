@@ -22,7 +22,6 @@
   </div>
   <div class="modal-body">
     <app-tab-switcher (switchClicked)="tabChange($event)" [tabs]="tabs"></app-tab-switcher>
-
     <!-- <app-loading-modal *ngIf="!loaded" class="large"></app-loading-modal> -->
     <form
       (keydown)="keyDownFunction($event)"
@@ -44,45 +43,73 @@
       <div class="single-tab-container">
         <div class="row">
           <div class="col-4">
-            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder {{
+                      manageInputValidation(this.driverForm.controls.firstName)
+                    }}">
               <input
                 #name
+                (keyup)="onKeyUpMethod($event)"
                 (paste)="onPaste($event, 'firstName')"
                 [modalType]="inputData.data.type"
-                (keyup)="onKeyUpMethod($event)"
                 appAutoFocus
                 appInputFocus
                 appInputrestriction="[A-Za-z]"
-                class="form-control input-control required"
+                class="form-control input-control name-input required"
                 formControlName="firstName"
                 id="firstName"
                 onkeypress="return (event.charCode >= 64 && event.charCode <= 91) || (event.charCode >= 96 && event.charCode <= 123)"
                 placeholder="First name"
               />
-              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-              </div>
+
+              <svg-icon
+                class="valid-icon"
+                src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
               <label class="required-label" for="firstName">First name</label>
-              <!-- <app-required-label [control]="driverForm.controls.firstName"></app-required-label> -->
+              <p *ngIf="driverForm.get('firstName').errors"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('firstName').errors | inputError}} </p>
             </div>
           </div>
           <div class="col-4">
-            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder {{
+                      manageInputValidation(this.driverForm.controls.lastName)
+                    }}">
               <input
                 #lastName
-                (paste)="onPaste($event, 'lastName')"
                 (keyup)="onKeyUpMethod($event)"
+                (paste)="onPaste($event, 'lastName')"
                 appInputFocus
                 appInputrestriction="[A-Za-z]"
-                class="form-control input-control required"
+                class="form-control input-control name-input required"
                 formControlName="lastName"
                 id="lastName"
                 onkeypress="return (event.charCode >= 64 && event.charCode <= 91) || (event.charCode >= 96 && event.charCode <= 123)"
                 placeholder="Last name"
               />
-              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-              </div>
+
+              <svg-icon
+                class="valid-icon"
+                src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
               <label class="required-label" for="lastName">Last name</label>
-              <!-- <app-required-label [control]="driverForm.controls.lastName"></app-required-label> -->
+              <p *ngIf="driverForm.get('lastName').errors"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('lastName').errors | inputError}} </p>
             </div>
           </div>
           <div class="col-4">
@@ -99,14 +126,14 @@
         </div>
         <div class="row">
           <div class="col-4">
-            <div class="form-label-group input-icon phone-field-wrapper input-holder {{
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'"
+                 class="form-label-group input-icon phone-field-wrapper input-holder {{
                       manageInputValidation(driverForm.controls.phone)
-                    }}"
-                 [ngClass]="inputText ? 'typing' : 'not-typing'">
+                    }}">
               <input
                 #phone
-                appInputFocus
                 (keyup)="onKeyUpMethod($event)"
+                appInputFocus
                 class="form-control input-control required phone-input"
                 formControlName="phone"
                 id="phone"
@@ -121,28 +148,28 @@
               </svg-icon>
 
               <svg-icon
-                (click)="clearInput($event)" ngbTooltip="Clear" placement="bottom-left"
-                class="clear-icon"
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
                 src="../../../../../assets/img/form-validation/x-icon-cut.svg"
               ></svg-icon>
 
               <label class="required-label" for="phone">Phone</label>
-              <p class="m-0 required-notice invalid-length"
-                 *ngIf="driverForm.get('phone').errors">{{driverForm.get('phone').errors | inputError}} </p>
+              <p *ngIf="driverForm.get('phone').errors"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('phone').errors | inputError}} </p>
             </div>
           </div>
           <div class="col-8">
             <div
-              class="form-label-group input-icon email-field-wrapper input-holder {{
+              [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon email-field-wrapper input-holder {{
                 manageInputValidation(driverForm.controls.email)
-              }}" [ngClass]="inputText ? 'typing' : 'not-typing'"
+              }}"
             >
               <input
                 #email
                 (keypress)="onEmailTyping($event)"
+                (keyup)="onKeyUpMethod($event)"
                 (paste)="onPaste($event, 'email')"
                 appInputFocus
-                (keyup)="onKeyUpMethod($event)"
                 class="form-control input-control required email-input"
                 formControlName="email"
                 id="email"
@@ -157,29 +184,29 @@
               </svg-icon>
 
               <svg-icon
-                (click)="clearInput($event)" ngbTooltip="Clear" placement="bottom-left"
-                class="clear-icon"
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
                 src="../../../../../assets/img/form-validation/x-icon-cut.svg"
               ></svg-icon>
               <label class="required-label" for="email">Email</label>
-              <p class="m-0 required-notice invalid-length"
-                 *ngIf="driverForm.get('email').errors">{{driverForm.get('email').errors | inputError}} </p>
+              <p *ngIf="driverForm.get('email').errors"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('email').errors | inputError}} </p>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-10">
             <div
-              class="form-label-group input-icon address-field-wrapper {{
+              [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon address-field-wrapper {{
                 manageInputValidation(driverForm.controls.address)
-              }}" [ngClass]="inputText ? 'typing' : 'not-typing'"
+              }}"
             >
               <input
                 #placesRef="ngx-places"
+                (keyup)="onKeyUpMethod($event)"
                 (onAddressChange)="handleAddressChange($event)"
                 [options]="options"
                 appInputFocus
-                (keyup)="onKeyUpMethod($event)"
                 class="form-control input-control required address-input"
                 formControlName="address"
                 id="address"
@@ -189,17 +216,18 @@
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
               <label class="required-label" for="address">Address, City, State Zip</label>
-              <!-- app-required-label [control]="driverForm.controls.address"></app-required-label> -->
+              <p *ngIf="driverForm.get('address').errors"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('address').errors | inputError}} </p>
             </div>
           </div>
           <div class="col-2">
-            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group">
               <input
+                (keyup)="onKeyUpMethod($event)"
                 appInputFocus
                 appInputrestriction="[A-Za-z0-9-]"
                 class="form-control input-control"
                 formControlName="addressUnit"
-                (keyup)="onKeyUpMethod($event)"
                 id="addressUnit"
                 maxlength="6"
                 placeholder="Unit #"
@@ -212,21 +240,37 @@
         </div>
         <div class="row">
           <div class="col-5">
-            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'"
+                 class="form-label-group input-icon input-holder {{
+                      manageInputValidation(this.driverForm.controls.ssn)
+                    }}">
               <input
+                (keyup)="onKeyUpMethod($event)"
                 (paste)="onPaste($event, 'ssn')"
                 appInputFocus
                 class="form-control input-control required"
                 formControlName="ssn"
-                (keyup)="onKeyUpMethod($event)"
                 id="ssn"
                 mask="000-00-0000"
                 placeholder="SSN"
               />
-              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-              </div>
+
+              <svg-icon
+                class="valid-icon"
+                src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
               <label class="required-label" for="ssn">SSN</label>
-              <!-- <app-required-label [control]="driverForm.controls.ssn"></app-required-label> -->
+              <p *ngIf="driverForm.get('ssn').errors"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('ssn').errors | inputError}} </p>
+
             </div>
           </div>
           <div *ngIf="driverForm.controls.isOwner.value" class="col-7">
@@ -244,9 +288,9 @@
             <div class="form-label-group">
               <input
                 (input)="getBusinessName()"
+                (keyup)="onKeyUpMethod($event)"
                 (paste)="onPaste($event, 'taxId'); getBusinessName()"
                 [required]="ownerFieldsRequired"
-                (keyup)="onKeyUpMethod($event)"
                 appInputFocus
                 class="form-control input-control required"
                 formControlName="taxId"
@@ -262,7 +306,8 @@
               <label class="{{ ownerFieldsRequired ? 'required-label' : '' }}" for="taxId"
               >EIN</label
               >
-              <!-- <app-required-label [control]="driverForm.controls.taxId"></app-required-label> -->
+              <p *ngIf="driverForm.get('taxId').errors"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('taxId').errors | inputError}} </p>
             </div>
           </div>
           <div class="col-8">
@@ -270,9 +315,9 @@
               <input
                 (keydown)="onCheckBackSpace($event)"
                 (keypress)="onNameTyping($event)"
+                (keyup)="onKeyUpMethod($event)"
                 (paste)="onPaste($event, 'businessName')"
                 appInputFocus
-                (keyup)="onKeyUpMethod($event)"
                 appInputrestriction="[0-9A-Za-z\.\,\s]"
                 class="form-control input-control required"
                 formControlName="businessName"
@@ -283,7 +328,8 @@
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
               <label class="required-label" for="businessName">Business name</label>
-              <!-- <app-required-label [control]="driverForm.controls.businessName"></app-required-label> -->
+              <p *ngIf="driverForm.get('businessName').errors"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('businessName').errors | inputError}} </p>
             </div>
           </div>
         </div>
@@ -399,10 +445,10 @@
           <div class="col-8">
             <div class="form-label-group">
               <input
+                (keyup)="onKeyUpMethod($event)"
                 (paste)="onPaste($event, 'accountNumber')"
                 class="form-control input-control{{ bankInfoRequired ? ' required' : '' }}"
                 formControlName="accountNumber"
-                (keyup)="onKeyUpMethod($event)"
                 id="accountNumber"
                 maxlength="17"
                 minlength="4"
@@ -412,9 +458,10 @@
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
               <label class="{{ bankInfoRequired ? 'required-label' : '' }}" for="accountNumber"
-              >Account number</label
-              >
-              <!-- <app-required-label [control]="driverForm.controls.accountNumber"></app-required-label> -->
+              >Account number</label>
+
+              <p *ngIf="driverForm.get('accountNumber').errors"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('accountNumber').errors | inputError}} </p>
 
             </div>
           </div>
@@ -435,9 +482,10 @@
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
               <label class="{{ bankInfoRequired ? 'required-label' : '' }}" for="routingNumber"
-              >Routing number</label
-              >
-              <!-- <app-required-label [control]="driverForm.controls.routingNumber"></app-required-label> -->
+              >Routing number</label>
+              <p *ngIf="driverForm.get('routingNumber').errors"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('routingNumber').errors | inputError}} </p>
+
             </div>
           </div>
         </div>
@@ -552,42 +600,18 @@
                 class="form-control input-control required"
                 formControlName="expirationDate"
                 id="expirationDate"
-                type="date"
                 placeholder="Placeholder"
+                type="date"
               >
               <label class="required-label" for="expirationDate">Expiration date</label>
-              <!-- <kendo-floatinglabel
-                class="{{
-                  isRequiredField(driverForm.controls.expirationDate) ? 'required ' : ''
-                }}datepicker-label{{
-                  driverForm.controls.expirationDate.value !== null &&
-                  driverForm.controls.expirationDate.value !== ''
-                    ? ' valid-label'
-                    : ''
-                }}"
-                text="Exp. Date"
-              >
-                <kendo-datepicker
-                  [formatPlaceholder]="{
-                    year: 'yy',
-                    month: 'mm',
-                    day: 'dd'
-                  }"
-                  [format]="format"
-                  [popupSettings]="{ popupClass: 'custom-datepick' }"
-                  formControlName="expirationDate"
-                  placeholder=""
-                ></kendo-datepicker>
-              </kendo-floatinglabel> -->
-              <!-- <app-required-label [control]="driverForm.controls.expirationDate"></app-required-label> -->
             </div>
           </div>
           <div class="col-6">
             <div class="form-label-group">
               <input
+                (keyup)="onKeyUpMethod($event)"
                 class="form-control input-control"
                 formControlName="fuelCard"
-                (keyup)="onKeyUpMethod($event)"
                 id="fuelCard"
                 placeholder="Fuel Card #"
               />

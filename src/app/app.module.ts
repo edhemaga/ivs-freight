@@ -11,15 +11,21 @@ import {ToastrModule} from "ngx-toastr";
 import {NgIdleModule} from "@ng-idle/core";
 import {HeaderComponent} from './core/components/header/header/header.component';
 import {GoogleMapsAPIWrapper} from '@agm/core';
-import { NavigationComponent } from './core/components/navigation/navigation.component';
-import { NavigationRouteComponent } from './core/components/navigation/navigation-route/navigation-route.component';
-import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
-import { NavigationFooterComponent } from './core/components/navigation/navigation-footer/navigation-footer.component';
-import { ChangeLogoPipe } from './core/components/navigation/pipe/change-logo.pipe';
-import { NavigationSubrouteComponent } from './core/components/navigation/navigation-subroute/navigation-subroute.component';
-import { NavigationSubrouteCardComponent } from './core/components/navigation/navigation-subroute-card/navigation-subroute-card.component';
-import { NavigationModalsComponent } from './core/components/navigation/navigation-modals/navigation-modals.component';
-import { NavigationUserProfileComponent } from './core/components/navigation/navigation-user-profile/navigation-user-profile.component';
+import {NavigationComponent} from './core/components/navigation/navigation.component';
+import {NavigationRouteComponent} from './core/components/navigation/navigation-route/navigation-route.component';
+import {NavigationHeaderComponent} from './core/components/navigation/navigation-header/navigation-header.component';
+import {NavigationFooterComponent} from './core/components/navigation/navigation-footer/navigation-footer.component';
+import {ChangeLogoPipe} from './core/components/navigation/pipe/change-logo.pipe';
+import {
+  NavigationSubrouteComponent
+} from './core/components/navigation/navigation-subroute/navigation-subroute.component';
+import {
+  NavigationSubrouteCardComponent
+} from './core/components/navigation/navigation-subroute-card/navigation-subroute-card.component';
+import {NavigationModalsComponent} from './core/components/navigation/navigation-modals/navigation-modals.component';
+import {
+  NavigationUserProfileComponent
+} from './core/components/navigation/navigation-user-profile/navigation-user-profile.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +54,7 @@ import { NavigationUserProfileComponent } from './core/components/navigation/nav
       enableHtml: true,
       timeOut: 5000,
     }),
-    NgIdleModule.forRoot()
+    NgIdleModule.forRoot(),
   ],
   providers: [
     GoogleMapsAPIWrapper
