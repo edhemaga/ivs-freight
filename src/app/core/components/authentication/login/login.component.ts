@@ -77,6 +77,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
         this.spinner.show(false);
       },
       (error: any) => {
+        console.log("errorrr");
+        console.log(error);
         error ? this.shared.handleServerError() : null;
       }
     );

@@ -45,7 +45,7 @@
                class="percentage_item"></div>
         </div>
         <div class="other_groups d-flex">
-          <div class="group_item">0</div>
+          <div [innerHTML]="data[item.name] ? data[item.name]['applicants' + item.sufix] : 0" class="group_item">0</div>
           <div [innerHTML]="data[item.name] ? data[item.name]['drivers' + item.sufix] : 0" class="group_item"></div>
           <div [innerHTML]="data[item.name] ? data[item.name]['trucks' + item.sufix] : 0" class="group_item"></div>
           <div class="group_item average">
@@ -57,31 +57,31 @@
           </div>
           <div [innerHTML]="data[item.name] ? data[item.name]['owners' + item.sufix] : 0" class="group_item"></div>
           <div class="group_item addition">
-            <span class="real_value">0</span>
+            <span [innerHTML]="data[item.name] ? data[item.name]['users' + item.sufix] : 0" class="real_value">0</span>
             <span class="changed_value">+1</span>
           </div>
         </div>
         <div class="other_groups d-flex">
-          <div class="group_item">0</div>
-          <div class="group_item">0</div>
-          <div [innerHTML]="data[item.name] ? data[item.name]['fuelItem' + item.sufix] : 0"
+          <div [innerHTML]="data[item.name] ? data[item.name]['miles' + item.sufix] : 0" class="group_item"></div>
+          <div [innerHTML]="data[item.name] ? (data[item.name]['fuelGallon' + item.sufix] | nFormatter) : 0" class="group_item"></div>
+          <div [innerHTML]="data[item.name] ? (data[item.name]['fuelTotal' + item.sufix] | nFormatter) : 0"
                class="group_item size-72"></div>
         </div>
         <div class="other_groups d-flex">
-          <div class="group_item">0</div>
+          <div [innerHTML]="data[item.name] ? data[item.name]['inspections' + item.sufix] : 0" class="group_item">0</div>
           <div [innerHTML]="data[item.name] ? data[item.name]['accidents' + item.sufix] : 0" class="group_item"></div>
           <div class="group_item deduction">
-            <span class="real_value">0</span>
+            <span [innerHTML]="data[item.name] ? data[item.name]['inspections' + item.sufix] : 0" class="real_value"></span>
             <span class="changed_value">-10</span>
           </div>
         </div>
         <div class="other_groups d-flex">
           <div [innerHTML]="data[item.name] ? data[item.name]['shop' + item.sufix] : 0" class="group_item"></div>
-          <div [innerHTML]="data[item.name] ? data[item.name]['repair' + item.sufix] : 0"
+          <div [innerHTML]="data[item.name] ? (data[item.name]['repairTotal' + item.sufix] | nFormatter) : 0"
                class="group_item size-72"></div>
         </div>
         <div class="other_groups d-flex">
-          <div [innerHTML]="data[item.name] ? data[item.name]['customers' + item.sufix] : 0" class="group_item"></div>
+          <div [innerHTML]="data[item.name] ? data[item.name]['brokers' + item.sufix] : 0" class="group_item"></div>
           <div [innerHTML]="data[item.name] ? data[item.name]['shippers' + item.sufix] : 0" class="group_item"></div>
           <div [innerHTML]="data[item.name] ? data[item.name]['load' + item.sufix] : 0" class="group_item"></div>
           <div class="group_item long_width deduction">
