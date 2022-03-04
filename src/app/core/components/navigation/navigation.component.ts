@@ -33,7 +33,7 @@ export class NavigationComponent {
     const index = this.navigation.findIndex(
       (item) => item.id === subroute.routeId
     );
-
+    console.log("ROUTE EVENT")
     this.onActivateFooterRoute(false);
 
     if (subroute.routes.length) {

@@ -13,6 +13,31 @@ const routes: Routes = [
     loadChildren: () =>
       import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
+  {
+    path: 'report',
+    loadChildren: () =>
+      import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
+  },
+  {
+    path: 'statistic',
+    loadChildren: () =>
+      import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
+  },
+  {
+    path: 'filemanager',
+    loadChildren: () =>
+      import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
+  },
+  {
+    path: 'miles',
+    loadChildren: () =>
+      import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
+  },
+  {
+    path: 'settings',
+    loadChildren: () =>
+      import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
+  },
   {path: '**', redirectTo: ''}
 ];
 

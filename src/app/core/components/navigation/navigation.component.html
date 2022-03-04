@@ -48,6 +48,10 @@
           </app-navigation-subroute>
         </app-navigation-subroute-card>
       </div>
+      <li
+        *ngIf="isNavigationHovered"
+        [ngClass]="{ 'magic-line': navigation[12].id === 13 }"
+      ></li>
     </div>
   </div>
 

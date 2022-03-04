@@ -1,7 +1,7 @@
 import { NavigationSubRoutes } from './../model/navigation.model';
 import { Router } from '@angular/router';
 import { Navigation } from '../model/navigation.model';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-navigation-route',
@@ -26,17 +26,21 @@ export class NavigationRouteComponent {
   }
 
   public activateHeaderOfSubroutes() {
-    if(this.route.name === 'List' && this.route.isRouteActive) {
+    if (this.route.name === 'List' && this.route.isRouteActive) {
+      return true;
+    } else if (this.route.name === 'Accounting' && this.route.isRouteActive) {
+      return true;
+    } else if (this.route.name === 'Safety' && this.route.isRouteActive) {
+      return true;
+    } else if (this.route.name === 'Tools' && this.route.isRouteActive) {
       return true;
     }
-    else if(this.route.name === 'Accounting' && this.route.isRouteActive) {
-      return true;
+  }
+
+  public isActiveRouteOnReload(): boolean {
+    if (this.route.arrow) {
+      return;
     }
-    else if(this.route.name === 'Safety' && this.route.isRouteActive) {
-      return true;
-    }
-    else if(this.route.name === 'Tools' && this.route.isRouteActive) {
-      return true;
-    }
+    return this.router.url.includes(this.route.route);
   }
 }

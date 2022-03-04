@@ -1,8 +1,6 @@
-<div *ngIf="isNavItemHovered" class="nav-item-hover"></div>
-
 <div
   class="nav-item"
-  [ngClass]="{'nav-item-active': activateHeaderOfSubroutes()}"
+  [ngClass]="{ 'nav-item-active': activateHeaderOfSubroutes() }"
   (mouseenter)="isNavItemHovered = true"
   (mouseleave)="isNavItemHovered = false"
   (click)="onRouteAction()"
@@ -10,8 +8,12 @@
   routerLinkActive="nav-item-active"
   [routerLinkActiveOptions]="{ exact: true }"
 >
-  <div *ngIf="route.isRouteActive" class="nav-item-active-box"></div>
-  
+  <div
+    [ngClass]="{
+      'nav-item-active-box': route.isRouteActive || isActiveRouteOnReload()
+    }"
+  ></div>
+
   <svg-icon
     class="nav-item-img nav-item-img-active"
     src="{{ route.image }}"

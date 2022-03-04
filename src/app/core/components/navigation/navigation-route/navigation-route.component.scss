@@ -25,11 +25,11 @@
     width: 146px;
 
     .nav-item-arrow {
-      margin-right: 6px;
+      margin-right: 4px;
     }
 
     .nav-item-arrow-first {
-      margin-right: 7px !important;
+      margin-right: 5px !important;
     }
 
     .nav-item-arrow-rotate {
@@ -40,10 +40,12 @@
 
   &:hover {
     color: #919191;
+    transition: all 0.5s ease-in;
     .nav-item-img,
     .nav-item-arrow {
       svg {
         path {
+          transition: all 0.5s ease-in;
           fill: #b7b7b7;
         }
       }
@@ -73,7 +75,7 @@
 
   &:hover {
     color: #5673aa;
-
+    transition: all 0.5s ease-in;
     .nav-item-img,
     .nav-item-arrow {
       svg {
@@ -83,6 +85,7 @@
         #Path_35314,
         #Path_35315,
         #Path_35316 {
+          transition: all 0.5s ease-in;
           fill: #5673aa;
         }
       }
@@ -94,18 +97,7 @@
   width: 35px;
   height: 28px;
   position: absolute;
-  left: 10px;
-  content: "";
-  background-color: #f7f7f7;
-  z-index: -1;
-  border-radius: 3px;
-}
-
-.nav-item-hover {
-  width: 178px;
-  height: 28px;
-  position: absolute;
-  left: 10px;
+  left: -6px;
   content: "";
   background-color: #f7f7f7;
   z-index: -1;

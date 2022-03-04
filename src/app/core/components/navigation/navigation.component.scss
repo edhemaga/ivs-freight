@@ -31,6 +31,7 @@
 
   .navigation-routes-container {
     margin-top: -8px;
+    position: relative;
 
     @media only screen and (max-width: 1800px) {
       height: 526.5px;
@@ -47,7 +48,7 @@
 
   .navigation-routes {
     margin-left: 1px;
-    margin-top: 4px;
+    margin-bottom: 2px;
   }
 
   .subroute-card {
@@ -58,5 +59,74 @@
     position: absolute;
     left: 8px;
     z-index: -1;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  .magic-line {
+    position: absolute;
+    left: -6px;
+    top: 0px;
+    content: "";
+    width: 178px;
+    height: 28px;
+    background: #f7f7f7;
+    border-radius: 3px;
+    transition: transform 0.2s ease-in;
+    z-index: -1;
+  }
+
+  .navigation-routes:nth-child(1):hover ~ .magic-line {
+    transform: translateY(0px) !important;
+  }
+
+  .navigation-routes:nth-child(2):hover ~ .magic-line {
+    transform: translateY(31px) !important;
+  }
+
+  .navigation-routes:nth-child(3):hover ~ .magic-line {
+    transform: translateY(61px) !important;
+  }
+
+  .navigation-routes:nth-child(4):hover ~ .magic-line {
+    transform: translateY(91px) !important;
+  }
+
+  .navigation-routes:nth-child(5):hover ~ .magic-line {
+    transform: translateY(121px) !important;
+  }
+
+  .navigation-routes:nth-child(6):hover ~ .magic-line {
+    transform: translateY(151px) !important;
+  }
+
+  .navigation-routes:nth-child(7):hover ~ .magic-line {
+    transform: translateY(181px) !important;
+  }
+
+  .navigation-routes:nth-child(8):hover ~ .magic-line {
+    transform: translateY(211px) !important;
+  }
+
+  .navigation-routes:nth-child(9):hover ~ .magic-line {
+    transform: translateY(241px) !important;
+  }
+
+  .navigation-routes:nth-child(10):hover ~ .magic-line {
+    transform: translateY(271px) !important;
+  }
+
+  .navigation-routes:nth-child(11):hover ~ .magic-line {
+    transform: translateY(301px) !important;
+  }
+
+  .navigation-routes:nth-child(12):hover ~ .magic-line {
+    transform: translateY(331px) !important;
+  }
+
+  .navigation-routes:nth-child(13):hover ~ .magic-line {
+    transform: translateY(360px) !important;
   }
 }
