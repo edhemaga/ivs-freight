@@ -18,6 +18,7 @@
       <div
         class="navigation-routes"
         *ngFor="let item of navigation; trackBy: identify"
+        [ngClass]="{'magin-line-selected': item.isRouteActive || isActiveRouteOnReload(item.route)}"
       >
         <app-navigation-route
           *ngIf="!item.arrow"
@@ -48,10 +49,9 @@
           </app-navigation-subroute>
         </app-navigation-subroute-card>
       </div>
-      <li
-        *ngIf="isNavigationHovered"
-        [ngClass]="{ 'magic-line': navigation[12].id === 13 }"
-      ></li>
+
+      <!-- <div class="magin-line-selected"></div> -->
+      <div *ngIf="isNavigationHovered" class="magic-line"></div>
     </div>
   </div>
 

@@ -1,6 +1,7 @@
 import { Navigation, NavigationSubRoutes } from './model/navigation.model';
 import { Component } from '@angular/core';
 import { navigationData } from './model/navigation-data';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -15,6 +16,8 @@ export class NavigationComponent {
   public isUserPanelOpen: boolean = false;
 
   public activeRoute: number = -1;
+
+  constructor(private router: Router) {}
 
   public onPanelEvent(isOpen: boolean, panel: string) {
     switch (panel) {
@@ -33,7 +36,6 @@ export class NavigationComponent {
     const index = this.navigation.findIndex(
       (item) => item.id === subroute.routeId
     );
-    console.log("ROUTE EVENT")
     this.onActivateFooterRoute(false);
 
     if (subroute.routes.length) {
@@ -64,5 +66,9 @@ export class NavigationComponent {
 
   public identify(index, item): number {
     return item.id;
+  }
+
+  public isActiveRouteOnReload(route: string): boolean {
+    return this.router.url.includes(route);
   }
 }
