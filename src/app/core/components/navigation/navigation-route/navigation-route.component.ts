@@ -11,6 +11,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class NavigationRouteComponent {
   @Input() route: Navigation;
   @Input() isNavigationHovered: boolean = false;
+  @Input() isActiveSubroute: boolean = false;
 
   @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
 
@@ -23,6 +24,7 @@ export class NavigationRouteComponent {
       routeId: this.route.id,
       routes: this.route.route,
     });
+    console.log(this.route.name)
   }
 
   public activateHeaderOfSubroutes() {

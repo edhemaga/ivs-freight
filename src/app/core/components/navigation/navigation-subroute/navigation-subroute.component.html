@@ -1,12 +1,13 @@
-<ng-container [ngSwitch]="mode">
-  <ng-container *ngSwitchCase="'subroutes'">
-    <div
-      class="subroutes"
-      *ngFor="let item of subroute.route; trackBy: identifySubroute"
-      [routerLink]="item.route"
-      routerLinkActive="subroute-active"
-    >
-      <p class="subroutes-item">{{ item.name }}</p>
-    </div>
-  </ng-container>
-</ng-container>
+<div class="subroutes-container">
+  <div
+    *ngFor="let item of subroute.route; trackBy: identifySubroute"
+    class="subroutes"
+    [ngClass]="{ 'magic-line-selected': isActiveRouteOnReload(item.route)}"
+    [routerLink]="item.route"
+    routerLinkActive="subroute-active"
+  >
+    <p class="subroutes-item">{{ item.name }}</p>
+  </div>
+
+  <div *ngIf="isSubrouteActive || isSubrouteHeaderActive" class="magic-line"></div>
+</div>

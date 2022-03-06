@@ -19,17 +19,17 @@ const routes: Routes = [
       import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
-    path: 'statistic',
+    path: 'load',
     loadChildren: () =>
       import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
-    path: 'filemanager',
+    path: 'mvr',
     loadChildren: () =>
       import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
-    path: 'miles',
+    path: 'calendar',
     loadChildren: () =>
       import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },

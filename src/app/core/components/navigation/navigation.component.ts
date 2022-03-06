@@ -15,7 +15,9 @@ export class NavigationComponent {
   public isModalPanelOpen: boolean = false;
   public isUserPanelOpen: boolean = false;
 
-  public activeRoute: number = -1;
+  private isActiveSubrouteIndex: number = -1;
+  public isActiveSubroute: boolean = false;
+  public isActiveFooterRoute: boolean = false;
 
   constructor(private router: Router) {}
 
@@ -37,30 +39,39 @@ export class NavigationComponent {
       (item) => item.id === subroute.routeId
     );
     this.onActivateFooterRoute(false);
-
-    if (subroute.routes.length) {
-      if (index === this.activeRoute) {
+    console.log(index)
+    console.log(this.isActiveSubrouteIndex)
+    if (Array.isArray(subroute.routes)) {
+      if (index === this.isActiveSubrouteIndex) {
         this.navigation[index].isRouteActive =
           !this.navigation[index].isRouteActive;
       }
 
-      if (index !== this.activeRoute) {
-        this.navigation.filter((nav) => (nav.isRouteActive = false));
-        this.activeRoute = index;
+      if (index !== this.isActiveSubrouteIndex) {
+        this.navigation.forEach((nav) => (nav.isRouteActive = false));
+        this.isActiveSubroute = true;
+        this.isActiveSubrouteIndex = index;
         this.navigation[index].isRouteActive = true;
       }
     } else {
-      if (index) {
-        this.navigation.filter((nav) => (nav.isRouteActive = false));
-        this.navigation[index].isRouteActive =
-          !this.navigation[index].isRouteActive;
+      if (index > -1) {
+        this.navigation.forEach((nav) => (nav.isRouteActive = false));
+        this.isActiveSubroute = false;
+        this.isActiveSubrouteIndex = -1;
+        this.navigation[index].isRouteActive = true;
       }
     }
   }
 
   public onActivateFooterRoute(type: boolean) {
     if (type) {
+      this.isActiveSubrouteIndex = -1;
+      this.isActiveSubroute = false;
+      this.isActiveFooterRoute = true;
       this.navigation.filter((nav) => (nav.isRouteActive = false));
+    }
+    else {
+      this.isActiveFooterRoute = false;
     }
   }
 

@@ -14,16 +14,20 @@
       (onModalPanelCloseEvent)="onPanelEvent($event, 'Modal Panel')"
     ></app-navigation-modals>
 
-    <div class="navigation-routes-container">
+    <div class="navigation-routes-container" (mouseenter)="isActiveFooterRoute = false">
       <div
         class="navigation-routes"
         *ngFor="let item of navigation; trackBy: identify"
-        [ngClass]="{'magin-line-selected': item.isRouteActive || isActiveRouteOnReload(item.route)}"
+        [ngClass]="{
+          'magic-line-selected':
+            item.isRouteActive || isActiveRouteOnReload(item.route)
+        }"
       >
         <app-navigation-route
           *ngIf="!item.arrow"
           [route]="item"
           [isNavigationHovered]="isNavigationHovered"
+          [isActiveSubroute]="isActiveSubroute"
           (onRouteEvent)="onRouteEvent($event)"
         >
         </app-navigation-route>
@@ -37,6 +41,7 @@
           <app-navigation-route
             [route]="item"
             [isNavigationHovered]="isNavigationHovered"
+            [isActiveSubroute]="isActiveSubroute"
             (onRouteEvent)="onRouteEvent($event)"
           >
           </app-navigation-route>
@@ -44,14 +49,15 @@
           <app-navigation-subroute
             *ngIf="item.isRouteActive && isNavigationHovered"
             [subroute]="item"
-            [mode]="'subroutes'"
+            [isSubrouteHeaderActive]="isActiveSubroute"
           >
           </app-navigation-subroute>
         </app-navigation-subroute-card>
       </div>
-
-      <!-- <div class="magin-line-selected"></div> -->
-      <div *ngIf="isNavigationHovered" class="magic-line"></div>
+      <div
+        *ngIf="isNavigationHovered && !isActiveSubroute && !isActiveFooterRoute"
+        class="magic-line"
+      ></div>
     </div>
   </div>
 
