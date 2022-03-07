@@ -14,7 +14,11 @@
       (onModalPanelCloseEvent)="onPanelEvent($event)"
     ></app-navigation-modals>
 
-    <div class="navigation-routes-container" (mouseenter)="isActiveFooterRoute = false">
+    <div
+      class="navigation-routes-container"
+      (mouseenter)="onHoveredRoutesContainer(true)"
+      (mouseleave)="onHoveredRoutesContainer(false)"
+    >
       <div
         class="navigation-routes"
         *ngFor="let item of navigation; trackBy: identify"
@@ -55,7 +59,12 @@
         </app-navigation-subroute-card>
       </div>
       <div
-        *ngIf="isNavigationHovered && !isActiveSubroute && !isActiveFooterRoute"
+        *ngIf="
+          isNavigationHovered &&
+          !isActiveSubroute &&
+          !isActiveFooterRoute &&
+          !isActiveMagicLine
+        "
         class="magic-line"
       ></div>
     </div>

@@ -18,17 +18,14 @@ export class NavigationComponent {
   private isActiveSubrouteIndex: number = -1;
   public isActiveSubroute: boolean = false;
   public isActiveFooterRoute: boolean = false;
+  public isActiveMagicLine: boolean = false;
 
   constructor(private router: Router) {}
 
-  public onPanelEvent(panel: {type: boolean, name: string}) {
-    console.log(panel)
-  
-
-    if(panel.name.toLowerCase() === 'modal panel') {
+  public onPanelEvent(panel: { type: boolean; name: string }) {
+    if (panel.name.toLowerCase() === 'modal panel') {
       this.isModalPanelOpen = panel.type;
-    }
-    else if(panel.name.toLowerCase() === 'user panel') {
+    } else if (panel.name.toLowerCase() === 'user panel') {
       this.isUserPanelOpen = panel.type;
     }
   }
@@ -37,7 +34,7 @@ export class NavigationComponent {
     const index = this.navigation.findIndex(
       (item) => item.id === subroute.routeId
     );
-    
+
     this.onActivateFooterRoute(false);
 
     if (Array.isArray(subroute.routes)) {
@@ -45,12 +42,11 @@ export class NavigationComponent {
         this.navigation[index].isRouteActive =
           !this.navigation[index].isRouteActive;
 
-          if(!this.navigation[index].isRouteActive) {
-            this.isActiveSubroute = false;
-          }
-          else {
-            this.isActiveSubroute = true;
-          }
+        if (!this.navigation[index].isRouteActive) {
+          this.isActiveSubroute = false;
+        } else {
+          this.isActiveSubroute = true;
+        }
       }
 
       if (index !== this.isActiveSubrouteIndex) {
@@ -75,8 +71,7 @@ export class NavigationComponent {
       this.isActiveSubroute = false;
       this.isActiveFooterRoute = true;
       this.navigation.filter((nav) => (nav.isRouteActive = false));
-    }
-    else {
+    } else {
       this.isActiveFooterRoute = false;
     }
   }
@@ -87,5 +82,15 @@ export class NavigationComponent {
 
   public isActiveRouteOnReload(route: string): boolean {
     return this.router.url.includes(route);
+  }
+
+  public onHoveredRoutesContainer(type: boolean) {
+    if (type) {
+      this.isActiveFooterRoute = false;
+      this.isActiveMagicLine = false;
+    } else {
+      this.isActiveMagicLine = true;
+      this.isActiveFooterRoute = false;
+    }
   }
 }
