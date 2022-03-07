@@ -12,7 +12,7 @@ export class NavigationUserProfileComponent {
   @Input() isNavigationHovered: boolean = false;
   @Input() isUserPanelOpen: boolean = false;
 
-  @Output() onUserPanelCloseEvent = new EventEmitter<boolean>();
+  @Output() onUserPanelCloseEvent = new EventEmitter<{type: boolean, name: string}>();
 
   public userNavigationData: NavigationUserPanel[] = userNavigationData;
 
@@ -25,7 +25,7 @@ export class NavigationUserProfileComponent {
   constructor(private authService: AuthService) {}
 
   public onUserPanelClose() {
-    this.onUserPanelCloseEvent.emit(false);
+    this.onUserPanelCloseEvent.emit({type: false, name: 'User Panel'});
   }
 
   public onAction(data: NavigationUserPanel) {

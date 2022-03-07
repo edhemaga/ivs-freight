@@ -7,12 +7,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class NavigationHeaderComponent {
   @Input() isNavigationHovered: boolean = false;
-  @Output() onPanelOpenEvent = new EventEmitter<boolean>();
+  @Output() onModalPanelOpenEvent = new EventEmitter<{type: boolean, name: string}>();
 
   public onAction(type: string) {
     switch (type) {
       case 'Open Panel': {
-        this.onPanelOpenEvent.emit(true);
+        this.onModalPanelOpenEvent.emit({type: true, name: 'Modal Panel'});
       }
       case 'Search': {
         // TODO: search

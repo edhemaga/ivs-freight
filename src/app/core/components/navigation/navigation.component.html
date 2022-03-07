@@ -6,12 +6,12 @@
   <div class="navigation-top">
     <app-navigation-header
       [isNavigationHovered]="isNavigationHovered"
-      (onModalPanelOpenEvent)="onPanelEvent($event, 'Modal Panel')"
+      (onModalPanelOpenEvent)="onPanelEvent($event)"
     ></app-navigation-header>
 
     <app-navigation-modals
       *ngIf="isModalPanelOpen && isNavigationHovered"
-      (onModalPanelCloseEvent)="onPanelEvent($event, 'Modal Panel')"
+      (onModalPanelCloseEvent)="onPanelEvent($event)"
     ></app-navigation-modals>
 
     <div class="navigation-routes-container" (mouseenter)="isActiveFooterRoute = false">
@@ -64,14 +64,14 @@
   <div class="navigation-bottom">
     <app-navigation-footer
       [isNavigationHovered]="isNavigationHovered"
-      (onUserPanelOpenEvent)="onPanelEvent($event, 'User Panel')"
+      (onUserPanelOpenEvent)="onPanelEvent($event)"
       (onActivateFooterRoutes)="onActivateFooterRoute($event)"
     ></app-navigation-footer>
 
     <app-navigation-user-profile
       [isNavigationHovered]="isNavigationHovered"
       [isUserPanelOpen]="isUserPanelOpen"
-      (onUserPanelCloseEvent)="onPanelEvent($event, 'User Panel')"
+      (onUserPanelCloseEvent)="onPanelEvent($event)"
     >
     </app-navigation-user-profile>
   </div>

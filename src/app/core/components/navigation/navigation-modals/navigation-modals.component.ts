@@ -16,7 +16,7 @@ import { NavigationModal } from '../model/navigation.model';
   styleUrls: ['./navigation-modals.component.scss'],
 })
 export class NavigationModalsComponent {
-  @Output() onModalPanelCloseEvent = new EventEmitter<boolean>();
+  @Output() onModalPanelCloseEvent = new EventEmitter<{type: boolean, name: string}>();
 
   public generalNavigationData: NavigationModal[] = generalNavigationData;
   public toolsNavigationData: NavigationModal[] = toolsNavigationData;
@@ -32,7 +32,7 @@ export class NavigationModalsComponent {
   public onAction(action: string, item?: NavigationModal) {
       switch(action) {
         case 'Close Panel': {
-          this.onModalPanelCloseEvent.emit(false);
+          this.onModalPanelCloseEvent.emit({type: false, name: 'Modal Panel'});
         }
         case 'Open Modal': {
           this.openModal(item);

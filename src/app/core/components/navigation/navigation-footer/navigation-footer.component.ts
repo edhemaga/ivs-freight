@@ -10,7 +10,7 @@ import { footerData } from '../model/navigation-data';
 })
 export class NavigationFooterComponent implements OnInit {
   @Input() isNavigationHovered: boolean = false;
-  @Output() onUserPanelOpenEvent = new EventEmitter<boolean>();
+  @Output() onUserPanelOpenEvent = new EventEmitter<{type: boolean, name: string}>();
   @Output() onActivateFooterRoutes = new EventEmitter<boolean>();
 
   private currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -42,7 +42,7 @@ export class NavigationFooterComponent implements OnInit {
     switch (action) {
       case 'Open User Panel': {
         if (index === 2) {
-          this.onUserPanelOpenEvent.emit(true);
+          this.onUserPanelOpenEvent.emit({type: true, name: 'User Panel'});
         } else {
           this.isActiveRoute(this.footerData[index])
           this.onActivateFooterRoutes.emit(true);

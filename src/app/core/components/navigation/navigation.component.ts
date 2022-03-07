@@ -21,13 +21,13 @@ export class NavigationComponent {
 
   constructor(private router: Router) {}
 
-  public onPanelEvent(isOpen: boolean, panel: string) {
-    switch (panel) {
+  public onPanelEvent(panel: {type: boolean, name: string}) {
+    switch (panel.name) {
       case 'Modal Panel': {
-        this.isModalPanelOpen = isOpen;
+        this.isModalPanelOpen = panel.type;
       }
       case 'User Panel': {
-        this.isUserPanelOpen = isOpen;
+        this.isUserPanelOpen = panel.type;
       }
       default:
         return;
@@ -38,13 +38,20 @@ export class NavigationComponent {
     const index = this.navigation.findIndex(
       (item) => item.id === subroute.routeId
     );
+    
     this.onActivateFooterRoute(false);
-    console.log(index)
-    console.log(this.isActiveSubrouteIndex)
+
     if (Array.isArray(subroute.routes)) {
       if (index === this.isActiveSubrouteIndex) {
         this.navigation[index].isRouteActive =
           !this.navigation[index].isRouteActive;
+
+          if(!this.navigation[index].isRouteActive) {
+            this.isActiveSubroute = false;
+          }
+          else {
+            this.isActiveSubroute = true;
+          }
       }
 
       if (index !== this.isActiveSubrouteIndex) {
