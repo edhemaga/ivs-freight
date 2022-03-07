@@ -23,15 +23,13 @@ export class NavigationComponent {
 
   public onPanelEvent(panel: {type: boolean, name: string}) {
     console.log(panel)
-    switch (panel.name) {
-      case 'Modal Panel': {
-        this.isModalPanelOpen = panel.type;
-      }
-      case 'User Panel': {
-        this.isUserPanelOpen = panel.type;
-      }
-      default:
-        return;
+  
+
+    if(panel.name.toLowerCase() === 'modal panel') {
+      this.isModalPanelOpen = panel.type;
+    }
+    else if(panel.name.toLowerCase() === 'user panel') {
+      this.isUserPanelOpen = panel.type;
     }
   }
 
