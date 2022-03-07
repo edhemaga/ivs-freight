@@ -136,8 +136,4 @@ export class NavigationModalsComponent {
         return;
     }
   }
-
-  public identify(index: number, item: NavigationModal): number {
-    return item.id;
-  }
 }

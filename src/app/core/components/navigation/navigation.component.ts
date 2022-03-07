@@ -22,6 +22,7 @@ export class NavigationComponent {
   constructor(private router: Router) {}
 
   public onPanelEvent(panel: {type: boolean, name: string}) {
+    console.log(panel)
     switch (panel.name) {
       case 'Modal Panel': {
         this.isModalPanelOpen = panel.type;

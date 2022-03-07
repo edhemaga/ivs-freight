@@ -18,7 +18,7 @@
     <p class="modal-nav-header">General</p>
     <div class="modal-nav-routes">
       <p
-        *ngFor="let item of generalNavigationData; truckBy: identity"
+        *ngFor="let item of generalNavigationData"
         (click)="onAction('Open Modal', item)"
         [routerLink]="item.path"
       >
@@ -31,7 +31,7 @@
     <p class="modal-nav-header">Tools</p>
     <div class="modal-nav-routes">
       <p
-        *ngFor="let item of toolsNavigationData; truckBy: identity"
+        *ngFor="let item of toolsNavigationData"
         (click)="onAction('Open Modal', item)"
         [routerLink]="item.path"
       >
@@ -44,7 +44,7 @@
     <p class="modal-nav-header">Repair</p>
     <div class="modal-nav-routes">
       <p
-        *ngFor="let item of repairNavigationData; truckBy: identity"
+        *ngFor="let item of repairNavigationData"
         (click)="onAction('Open Modal', item)"
         [routerLink]="item.path"
       >
@@ -57,7 +57,7 @@
     <p class="modal-nav-header">Fuel</p>
     <div class="modal-nav-routes">
       <p
-        *ngFor="let item of fuelNavigationData; truckBy: identity"
+        *ngFor="let item of fuelNavigationData"
         (click)="onAction('Open Modal', item)"
         [routerLink]="item.path"
       >
@@ -70,7 +70,7 @@
     <p class="modal-nav-header">Safety</p>
     <div class="modal-nav-routes">
       <p
-        *ngFor="let item of safetyNavigationData; truckBy: identity"
+        *ngFor="let item of safetyNavigationData"
         (click)="onAction('Open Modal', item)"
         [routerLink]="item.path"
       >
@@ -83,7 +83,7 @@
     <p class="modal-nav-header">Accounting</p>
     <div class="modal-nav-routes">
       <p
-        *ngFor="let item of accountingNavigationData; truckBy: identity"
+        *ngFor="let item of accountingNavigationData"
         (click)="onAction('Open Modal', item)"
         [routerLink]="item.path"
       >
