@@ -68,6 +68,12 @@
               </svg-icon>
 
               <svg-icon
+                class="x-invalid-icon"
+                src="../../../../../assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
                 (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
                 placement="bottom-left"
                 src="../../../../../assets/img/form-validation/x-icon-cut.svg"
@@ -102,6 +108,12 @@
               </svg-icon>
 
               <svg-icon
+                class="x-invalid-icon"
+                src="../../../../../assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
                 (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
                 placement="bottom-left"
                 src="../../../../../assets/img/form-validation/x-icon-cut.svg"
@@ -113,13 +125,16 @@
             </div>
           </div>
           <div class="col-4">
-            <div class="form-label-group">
+            <div class="form-label-group input-icon input-holder {{
+                      manageInputValidation(this.driverForm.controls.dateOfBirth)
+                    }}">
               <input
                 class="form-control input-control required"
                 formControlName="dateOfBirth"
                 id="dateOfBirth"
                 type="date"
               >
+
               <label class="required-label" for="dateOfBirth">DOB</label>
               <p *ngIf="driverForm.get('dateOfBirth').errors"
                  class="m-0 required-notice invalid-length">{{driverForm.get('dateOfBirth').errors | inputError}} </p>
@@ -162,7 +177,8 @@
           </div>
           <div class="col-8">
             <div
-              [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon email-field-wrapper input-holder {{
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
+              class="form-label-group input-icon email-field-wrapper input-holder {{
                 manageInputValidation(driverForm.controls.email)
               }}"
             >
@@ -199,7 +215,8 @@
         <div class="row">
           <div class="col-10">
             <div
-              [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon address-field-wrapper {{
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
+              class="form-label-group input-icon input-holder address-field-wrapper {{
                 manageInputValidation(driverForm.controls.address)
               }}"
             >
@@ -215,8 +232,20 @@
                 ngx-google-places-autocomplete
                 placeholder="Address, City, State Zip"
               />
-              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-              </div>
+
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/address-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
+
               <label class="required-label" for="address">Address, City, State Zip</label>
               <p *ngIf="driverForm.get('address').errors"
                  class="m-0 required-notice invalid-length">{{driverForm.get('address').errors | inputError}} </p>

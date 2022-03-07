@@ -39,21 +39,39 @@
       <div class="single-tab-container">
         <div class="row">
           <div class="col-3">
-            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder {{
+                      manageInputValidation(this.truckForm.controls.truckNumber)
+                    }}">
               <input
                 (keypress)="onUnitTyping($event)"
                 (paste)="onPaste($event, 'truckNumber', 6)"
                 [modalType]="inputData.data.type"
                 (keyup)="onKeyUpMethod($event)"
                 appAutoFocus
-                class="form-control input-control required"
+                class="form-control input-control name-input required"
                 formControlName="truckNumber"
                 id="truckNumber"
                 maxLength="6"
                 placeholder="Unit #"
               />
-              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-              </div>
+              <svg-icon
+                class="valid-icon"
+                src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="../../../../../assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
               <label class="required-label" for="truckNumber">Unit #</label>
             </div>
           </div>
@@ -148,7 +166,9 @@
         </div>
         <div class="row">
           <div class="col-6">
-            <div class="form-label-group">
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder {{
+                      manageInputValidation(this.truckForm.controls.model)
+                    }}">
               <input
                 (keypress)="onModelTyping($event)"
                 (paste)="onPaste($event, 'model', 22)"
@@ -161,8 +181,25 @@
                 maxlength="22"
                 placeholder="Model"
               />
-              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-              </div>
+
+              <svg-icon
+                class="valid-icon"
+                src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="../../../../../assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
               <label for="model">Model</label>
             </div>
           </div>

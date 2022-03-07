@@ -10,8 +10,9 @@ export class JwtInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = JSON.parse(localStorage.getItem('token'));
+
     if (request.url.includes('/api/v2/')) {
-      if (token !== undefined && token !== '' && token !== null) {
+      if (token) {
         request = request.clone({
           setHeaders: {
             api_key: '1234',

@@ -324,7 +324,7 @@ export class TruckManageComponent implements OnInit {
   createForm() {
     this.loaded = true;
     this.truckForm = this.formBuilder.group({
-      truckNumber: ['', Validators.required],
+      truckNumber: [null, Validators.required],
       type: [null, Validators.required],
       color: [null],
       make: [null, Validators.required],
@@ -759,6 +759,7 @@ export class TruckManageComponent implements OnInit {
 
   clearInput(x) {
     this.truckForm.controls[x.currentTarget.offsetParent.firstChild.id].reset();
+    this.inputText = false;
   }
 
   public onKeyUpMethod(x) {
@@ -769,6 +770,11 @@ export class TruckManageComponent implements OnInit {
   closeModal() {
     this.activeModal.close();
   }
+
+  manageInputValidation(formElement: any) {
+    return this.shared.manageInputValidation(formElement);
+  }
+
 
 
 }

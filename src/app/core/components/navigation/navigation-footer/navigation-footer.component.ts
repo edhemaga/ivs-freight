@@ -33,10 +33,7 @@ export class NavigationFooterComponent implements OnInit {
   }
 
   public isUserData(text: any): boolean {
-    if (text.hasOwnProperty('companyName')) {
-      return true;
-    }
-    return false;
+    return text.hasOwnProperty('companyName');
   }
 
   public onAction(index: number, action: string) {
@@ -66,7 +63,7 @@ export class NavigationFooterComponent implements OnInit {
     // const reloadUrl = urlString[urlString.length - 1]
 
     // const index = this.footerData.findIndex(item => item.route?.includes(reloadUrl));
-  
+
     // if(index > -1) {
     //   this.router.navigate([`/${reloadUrl}`])
     //   this.onActivateFooterRoutes.emit(true)
@@ -80,5 +77,5 @@ export class NavigationFooterComponent implements OnInit {
     return item.id;
   }
 
-  
+
 }

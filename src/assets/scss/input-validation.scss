@@ -67,7 +67,6 @@
     }
 
     &.touched-invalid {
-
       .default-icon {
         visibility: hidden;
         opacity: 0;
@@ -75,10 +74,10 @@
 
         svg {
           transition: all .2s ease-in-out;
-        }
 
-        .a {
-          fill: #FF8080;
+          .a {
+            fill: #FF8080;
+          }
         }
       }
 
@@ -116,11 +115,17 @@
 
         svg {
           transition: all .2s ease-in-out;
-        }
 
-        .a {
-          fill: #91a4c7;
+          .a {
+            fill: #91a4c7;
+          }
         }
+      }
+
+      .x-invalid-icon {
+        visibility: hidden;
+        opacity: 0;
+        transition: all .2s ease-in-out;
       }
 
       .clear-icon {
@@ -176,6 +181,20 @@
       transition: all .2s ease-in-out;
     }
 
+    .x-invalid-icon {
+      visibility: visible;
+      opacity: 1;
+      transition: all .2s ease-in-out;
+
+      svg {
+        transition: all .2s ease-in-out;
+
+        .a {
+          fill: #FF8080 !important;
+        }
+      }
+    }
+
     .clear-icon {
       visibility: hidden;
       opacity: 0;
@@ -200,10 +219,10 @@
 
     svg {
       transition: all .2s ease-in-out;
-    }
 
-    .a {
-      fill: #fff;
+      .a {
+        fill: #fff;
+      }
     }
   }
 
@@ -241,3 +260,8 @@
     background: #e7e7e7;
   }
 }
+
+/* input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+} */
