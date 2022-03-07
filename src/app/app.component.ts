@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
   currentUser: any;
   showAttachments: boolean;
   private hoverId?: string = null;
-  currentPage: any;
+  currentPage: string = "login";
 
   constructor(
     private router: Router,
