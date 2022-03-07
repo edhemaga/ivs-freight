@@ -13,6 +13,26 @@ const routes: Routes = [
     loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'report',
+    loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'load',
+    loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'miles',
+    loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
+    canActivate: [AuthGuard],
+  },
   {path: '**', redirectTo: ''}
 ];
 

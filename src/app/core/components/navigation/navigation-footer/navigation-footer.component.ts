@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
 
@@ -29,6 +29,7 @@ export class NavigationFooterComponent implements OnInit {
         this.currentUser?.lastName
       ),
     };
+    this.isActiveFooterRouteOnReload(window.location.href)
   }
 
   public isUserData(text: any): boolean {
@@ -44,7 +45,7 @@ export class NavigationFooterComponent implements OnInit {
         if (index === 2) {
           this.onUserPanelOpenEvent.emit({type: true, name: 'User Panel'});
         } else {
-          this.isActiveRoute(this.footerData[index])
+          this.isActiveFooterRoute(this.footerData[index])
           this.onActivateFooterRoutes.emit(true);
         }
       }
@@ -54,9 +55,24 @@ export class NavigationFooterComponent implements OnInit {
     }
   }
 
-  public isActiveRoute(item: FooterData): boolean {
+  public isActiveFooterRoute(item: FooterData): boolean {
     if(item.id !== 3) {
       return this.router.url.includes(item.route);
+    }
+  }
+
+  private isActiveFooterRouteOnReload(url: string) {
+    const urlString = url.split('/')
+    const reloadUrl = urlString[urlString.length - 1]
+
+    const index = this.footerData.findIndex(item => item.route?.includes(reloadUrl));
+  
+    if(index > -1) {
+      this.router.navigate([`/${reloadUrl}`])
+      this.onActivateFooterRoutes.emit(true)
+    }
+    else {
+      this.onActivateFooterRoutes.emit(false)
     }
   }
 

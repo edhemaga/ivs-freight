@@ -2,17 +2,16 @@
 
 <div
   class="nav-item"
-  [ngClass]="{ 'nav-item-active': route.isRouteActive || isActiveRouteOnReload() }"
+  [ngClass]="{ 'nav-item-active': route.isRouteActive }"
   (mouseenter)="isNavItemHovered = true"
   (mouseleave)="isNavItemHovered = false"
-  (click)="onRouteAction()"
-  [routerLink]="checkIfSubroute(route)"
+  (click)="onRouteAction(route)"
   routerLinkActive=""
   [routerLinkActiveOptions]="{ exact: true }"
 >
   <div
     [ngClass]="{
-      'nav-item-active-box': route.isRouteActive || isActiveRouteOnReload()
+      'nav-item-active-box': route.isRouteActive
     }"
   ></div>
 

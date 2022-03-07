@@ -1,14 +1,15 @@
 import { NavigationSubRoutes } from './../model/navigation.model';
 import { Router } from '@angular/router';
 import { Navigation } from '../model/navigation.model';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-navigation-route',
   templateUrl: './navigation-route.component.html',
   styleUrls: ['./navigation-route.component.scss'],
 })
-export class NavigationRouteComponent {
+export class NavigationRouteComponent implements OnInit {
   @Input() route: Navigation;
   @Input() isNavigationHovered: boolean = false;
   @Input() isActiveSubroute: boolean = false;
@@ -19,28 +20,44 @@ export class NavigationRouteComponent {
 
   constructor(public router: Router) {}
 
-  public onRouteAction() {
-    this.onRouteEvent.emit({
-      routeId: this.route.id,
-      routes: this.route.route,
-    });
+  ngOnInit() {
+    this.isActiveRouteOnReload(window.location.href);
   }
 
-  public checkIfSubroute(route: Navigation) {
+
+  public onRouteAction(route: Navigation, flegId?: number) {
+    this.onRouteEvent.emit({
+      routeId: route.id,
+      routes: route.route,
+    });
+
     if (Array.isArray(route.route)) {
       if (route.isRouteActive) {
-        return this.router.url;
+        const subroute = route.route.find(item => item.flegId === flegId)
+        this.router.navigate([`${subroute.route}`]);
       }
-      return null;
     } else {
-      return this.route.route;
+      this.router.navigate([`${this.route.route}`]);
     }
   }
 
-  public isActiveRouteOnReload(): boolean {
-    if (this.route.arrow) {
-      return ;
+  private isActiveRouteOnReload(url: string) {
+    const urlString = url.split('/')
+    const reloadUrl = urlString[urlString.length - 1]
+  
+    if(Array.isArray(this.route.route)) {
+      const subroute = this.route.route.find(item => item.route.includes(reloadUrl))
+      if(subroute) {
+        if(this.route.id === subroute.flegId) {
+          this.route.isRouteActive = true;
+          this.onRouteAction(this.route, subroute.flegId)
+        }
+      }
     }
-    return this.router.url.includes(this.route.route);
+
+    if(this.route.route.includes(reloadUrl)) {
+      this.route.isRouteActive = true;
+      this.onRouteAction(this.route)
+    }
   }
 }
