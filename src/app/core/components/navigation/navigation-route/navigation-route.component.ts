@@ -24,7 +24,6 @@ export class NavigationRouteComponent {
       routeId: this.route.id,
       routes: this.route.route,
     });
-    console.log(this.route.name)
   }
 
   public activateHeaderOfSubroutes() {
