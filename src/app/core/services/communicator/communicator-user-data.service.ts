@@ -20,29 +20,4 @@ export class CommunicatorUserDataService {
     this.chatUserSubject = new BehaviorSubject<any>(user);
   }
 
-  get chatUser() {
-    return this.chatUserSubject;
-  }
-
-  requestChatUserData(companyId: number, userId: number) {
-    return this.http.get(`${environment.baseChatApiUrl}/company/${companyId}/users/${userId}/company`)
-      .pipe(map((res: any) => {
-        if (res.status === 'success' && res.data) {
-          localStorage.setItem('chatUser', JSON.stringify(res.data));
-          this.chatUserSubject.next(res.data);
-        }
-        return res;
-      }));
-  }
-
-  removeChatUserData() {
-    localStorage.removeItem('chatUser');
-    this.chatUserSubject.next(null);
-  }
-
-  changeChatUserData(chatUserData: any) {
-    localStorage.setItem('chatUser', JSON.stringify(chatUserData));
-    this.chatUserSubject.next(chatUserData);
-  }
-
 }

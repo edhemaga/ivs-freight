@@ -12,8 +12,6 @@ export const environment = {
     displayFormat: 'MM/dd/yy',
     inputFormat: 'MM/dd/yy',
   },
-  baseSocketUrl: 'https://chat.truckassist.io',
-  baseChatApiUrl: 'https://chat.truckassist.io/api/v1',
   messageLimit: 25
 };
 

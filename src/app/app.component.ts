@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
   currentUser: any;
   showAttachments: boolean;
   private hoverId?: string = null;
-
+  currentPage: any;
 
   constructor(
     private router: Router,
@@ -103,6 +103,7 @@ export class AppComponent implements OnInit {
         mergeMap((route: any) => route.data)
       )
       .subscribe((event: any) => {
+        this.currentPage = event.title.toLowerCase();
         this.titleService.setTitle("TruckAssist" + " | " + event.title);
         //const user = JSON.parse(localStorage.getItem('currentUser'));
         // TODO check also if user is on trial from User response (future).
@@ -266,7 +267,7 @@ export class AppComponent implements OnInit {
   public getUserData() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.userService
-      .getUserByUsername(currentUser.username)
+      .getUserByUsername(currentUser?.username)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (user: any) => {
@@ -433,6 +434,5 @@ export class AppComponent implements OnInit {
       }
     });
   }
-
 
 }

@@ -103,16 +103,16 @@ export class SharedService {
   }
 
   public manageInputValidation(formElement: any): any {
-    if (formElement.touched && formElement.valid) {
+    if (formElement.valid) {
       return 'touched-valid';
     }
-    if (formElement.touched && formElement.invalid) {
+    if (formElement.invalid) {
       return 'touched-invalid';
     }
-    if (formElement.pristine && formElement.valid) {
+    if (formElement.pristine || formElement.valid) {
       return 'untouched-valid';
     }
-    if (formElement.pristine && formElement.invalid) {
+    if (formElement.pristine || formElement.invalid) {
       return 'untouched-invalid';
     }
   }

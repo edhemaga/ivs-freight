@@ -1,0 +1,335 @@
+.tooltip {
+  font-size: 12px;
+  position: relative;
+}
+
+.tooltip.show {
+  opacity: 0.83;
+}
+
+/* fade animation*/
+.tooltip.fade:after,
+.tooltip.fade:before {
+  transform: translate(0, -10px);
+  transition: all 0.15s ease-in-out;
+}
+
+.tooltip.fade:hover:after,
+.tooltip.fade:hover:before {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.tooltip-inner {
+  padding: 4px 10px;
+  white-space: nowrap;
+  max-width: none;
+  border-radius: 3px;
+}
+
+.placeholder-delete .tooltip-inner {
+  background-color: #ff6666;
+}
+
+.placeholder-delete .arrow::before {
+  border-top-color: #ff6666;
+}
+
+.custom-popup-owners-for-flag {
+  .tooltip-inner {
+    color: #3b3b3b;
+    background-color: #fff;
+    transform: translateY(126%) translateX(-50%) !important;
+    width: 130px;
+    border-radius: 3px;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .arrow {
+    bottom: -18%;
+    transform: rotate(180deg);
+    left: calc(50% - -2.7rem);
+  }
+
+  .tooltip {
+    opacity: 0.93 !important;
+    width: 0;
+  }
+}
+
+.custom-popup-owners {
+  z-index: 999;
+
+  .tooltip-inner {
+    color: #3b3b3b;
+    background-color: #fff;
+    transform: translateY(132%);
+    z-index: 999;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .arrow {
+    bottom: -20%;
+    transform: rotate(180deg);
+  }
+
+  .tooltip {
+    transform: translate(0, -61px) !important;
+  }
+}
+
+.custom-popup-owners-year {
+  z-index: 999;
+
+  .tooltip-inner {
+    color: #3b3b3b;
+    background-color: #fff;
+    transform: translateY(132%);
+    z-index: 999;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .arrow {
+    bottom: -20%;
+    transform: rotate(180deg);
+  }
+
+  .tooltip {
+    transform: translate(70px, -61px) !important;
+  }
+}
+
+.custom-popup-owners-info {
+  .tooltip-inner {
+    color: #3b3b3b;
+    background-color: #fff;
+    transform: translateY(-100%) translateX(-10%);
+    width: 200px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    margin-top: 3px;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .tooltip {
+    opacity: 0.93;
+    width: 0;
+  }
+
+  .arrow {
+    display: none;
+  }
+
+  #phone-inside {
+    position: relative;
+    right: 26px;
+    bottom: 0;
+  }
+}
+
+.custom-popup-owners-info-at {
+  .tooltip-inner {
+    color: #3b3b3b;
+    background-color: #fff;
+    transform: translateY(-108%) translateX(-7%);
+    width: 270px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .tooltip {
+    opacity: 1;
+    width: 0;
+  }
+
+  .arrow {
+    display: none;
+  }
+}
+
+.custom-popup-owners-for-tag {
+  .tooltip-inner {
+    color: #3b3b3b;
+    background-color: #fff;
+    width: 100px;
+    border-radius: 3px;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2) !important;
+  }
+
+  .tooltip {
+    top: 5px !important;
+  }
+
+  .arrow {
+    bottom: -24%;
+  }
+}
+
+.align-items-flex-start {
+  justify-content: center;
+  align-items: center;
+}
+
+.align-items-flex-end {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-self: flex-end;
+  align-items: flex-start;
+}
+
+.label-add {
+  align-self: flex-start;
+}
+
+.fadeInLoad {
+  animation: fadeInLoad 0.25s;
+}
+
+@keyframes fadeInLoad {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  opacity: 1;
+  -webkit-transition: 0.25s;
+  -moz-transition: 0.25s;
+  -o-transition: 0.25s;
+  transition: 0.25s;
+}
+
+.thisText:hover .fadeIn {
+  opacity: 0;
+}
+
+.fadeInLoad {
+  animation-name: example;
+  animation-duration: 0.25s;
+}
+
+@keyframes example {
+  0% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.modal-dialog {
+  margin-top: 0;
+  max-width: 760px;
+}
+
+.modal.fade .modal-dialog {
+  animation-name: fade-in-scale-animation;
+  animation-duration: 0.5s;
+}
+
+@keyframes fade-in-scale-animation {
+  0% {
+    transform: scale(0.7);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.modal {
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0);
+  transition: 0.3s;
+
+  &.show .modal-dialog {
+    transition: 0.5s;
+    opacity: 0;
+    transform: scale(0.7);
+    margin-top: 0;
+  }
+
+  &.modal-animation {
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: 0.3s;
+  }
+
+  &.modal-animation .modal-dialog {
+    opacity: 1;
+    transform: scale(1);
+    margin-top: 0;
+  }
+
+  .modal-body {
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+// tooltip table icons
+.tooltip.tooltip-table-icons {
+  left: 12px !important;
+  opacity: 1;
+
+  .arrow {
+    display: none !important;
+  }
+
+  .tooltip-inner {
+    border-radius: 0 50px 50px 50px;
+    background: $app-main-blue;
+  }
+}
+
+.tooltip.show {
+  opacity: 1;
+  animation: fadeIn ease 0.5s !important;
+  -webkit-animation: fadeIn ease 0.5s !important;
+  -moz-animation: fadeIn ease 0.5s !important;
+  -o-animation: fadeIn ease 0.5s !important;
+  -ms-animation: fadeIn ease 0.5s !important;
+}
+
+.ta-tooltip {
+  position: absolute;
+  font-size: 12px;
+  text-align: center;
+  color: white;
+  line-height: 22px;
+  z-index: 999999 !important;
+  opacity: 0;
+  white-space: nowrap;
+  transform: scale(0.7);
+
+  &.ta-tooltip-show {
+    opacity: 0.85;
+    transform: scale(1);
+    padding: 0 12px;
+  }
+
+  &.ta-tooltip-bottom-right {
+    transform-origin: top left;
+    border-radius: 0 15px 15px 15px;
+  }
+
+  &.ta-tooltip-bottom-right-corner {
+    transform-origin: top left;
+    border-radius: 0 15px 15px 15px;
+  }
+
+  &.ta-tooltip-bottom-left {
+    transform-origin: top right;
+    border-radius: 15px 0 15px 15px;
+  }
+}

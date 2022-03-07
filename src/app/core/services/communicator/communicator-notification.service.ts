@@ -13,9 +13,6 @@ export class CommunicatorNotificationService {
               private notificationSocket: NotificationSocket
   ) {
     this.user = JSON.parse(localStorage.getItem('chatUser'));
-    this.communicatorUserDataService.chatUser.subscribe((user?: any) => {
-      this.user = user;
-    });
   }
 
   trackUnreadSubscriptions = () => {

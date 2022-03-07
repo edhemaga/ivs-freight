@@ -77,6 +77,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
         this.spinner.show(false);
       },
       (error: any) => {
+        console.log("errorrr");
+        console.log(error);
         error ? this.shared.handleServerError() : null;
       }
     );
@@ -109,10 +111,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   clearEmailInput() {
     this.loginForm.controls['email'].reset();
+    this.inputText = false;
     this.changeDetectorRef.detectChanges();
   }
 
   clearPasswordInput() {
     this.loginForm.controls['password'].reset();
+    this.passwordText = false;
+    this.changeDetectorRef.detectChanges();
   }
 }

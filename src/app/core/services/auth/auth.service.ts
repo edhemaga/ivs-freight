@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {SelectCompanyResponse} from "../../model/select-company";
 import {CommunicatorUserService} from "../communicator/communicator-user.service";
+import { User } from '../../components/authentication/model/auth.model';
 
 
 @Injectable({
@@ -11,12 +12,16 @@ import {CommunicatorUserService} from "../communicator/communicator-user.service
 })
 export class AuthService {
   public currentUser!: Observable<any>;
-  private currentUserSubject!: BehaviorSubject<any>;
+  public currentUserSubject: BehaviorSubject<any>;
 
   constructor(
     private http: HttpClient,
     private communicatorUserService: CommunicatorUserService
   ) {
+    this.currentUserSubject = new BehaviorSubject<User>(
+      JSON.parse(localStorage.getItem('currentUser'))
+    );
+    this.currentUser = this.currentUserSubject.asObservable();
   }
 
   /**
@@ -29,25 +34,21 @@ export class AuthService {
       map((user: any) => {
         const {userType, companyId} = user.loggedUser;
         if (userType && (userType === 'company_owner' || userType === 'admin')) {
-          this.http
-            .post(environment.baseChatApiUrl + '/access', {
-              companyId,
-              token: `Bearer ${user.token}`,
-            })
-            .subscribe(() => {
-            });
         }
         localStorage.setItem('currentUser', JSON.stringify(user.loggedUser));
         localStorage.setItem('token', JSON.stringify(user.token));
         localStorage.setItem('userCompany', JSON.stringify(user.userCompany));
-        this.communicatorUserService.requestChatUserData(
-          user.loggedUser.companyId,
-          user.loggedUser.id
-        );
        // this.currentUserSubject.next(user);
         return user;
       })
     );
+  }
+
+  /**
+   * Get current user value function
+   */
+   public get currentUserValue(): User {
+    return this.currentUserSubject.value;
   }
 
   public onCompanySelect(companyId: any) {
@@ -74,7 +75,6 @@ export class AuthService {
   public logout() {
   //  this.currentUserSubject.next(null);
     this.communicatorUserService.changeMyStatus('offline');
-    this.communicatorUserService.removeChatUserData();
     localStorage.clear();
     return this.http.get(environment.API_ENDPOINT + 'user/logout');
   }

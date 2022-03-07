@@ -146,7 +146,6 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
   ) { }
 
   ngOnInit(): void {
-    this.createForm();
     if (this.inputData.data.type === 'edit') {
       this.modalTitle = 'Edit Driver';
       this.getDriverData();
@@ -155,16 +154,11 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
       this.modalTitle = 'Add Driver';
       this.getBanks(false);
     }
+    this.createForm();
   }
 
   closeModal() {
     this.activeModal.close();
-  }
-
-  formatLabel(value: number) {
-    if (value >= 2) {
-      return value + '%';
-    }
   }
 
   getBanks(loadNewBank: boolean) {
@@ -213,9 +207,9 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
   createForm() {
     this.driverForm = this.formBuilder.group({
       type: ['single'],
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
-      phone: [null],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      phone: ['', Validators.required],
       address: [null, Validators.required],
       addressUnit: [''],
       email: [
@@ -956,13 +950,12 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
 
   clearInput(x) {
     this.driverForm.controls[x.currentTarget.offsetParent.firstChild.id].reset();
+    this.inputText = false;
   }
 
   public onKeyUpMethod(x) {
     this.inputText = x.key;
     x.key === 'Backspace' && !this.driverForm.get(x.currentTarget.id).value ? this.inputText = false : this.inputText = x.key;
   }
-
-
 
 }

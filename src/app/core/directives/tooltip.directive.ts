@@ -1,10 +1,10 @@
-import {Directive, ElementRef, HostListener, Input, OnDestroy, Renderer2} from '@angular/core';
+import {Directive, ElementRef, HostListener, Input, Renderer2} from '@angular/core';
 
 @Directive({
-  selector: '[appTaTooltip]',
+  selector: '[appTooltip]'
 })
-export class TatooltipDirective implements OnDestroy {
-  @Input('appTaTooltip') tooltipTitle: string;
+export class TooltipDirective {
+  @Input('appTooltip') tooltipTitle: string;
   @Input() position: string;
   @Input() main_id = '';
   @Input() delay = 500;
@@ -16,7 +16,7 @@ export class TatooltipDirective implements OnDestroy {
   @Input() tooltipColor = '#fff';
   @Input() zIndex = '101';
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {
+  constructor(public el: ElementRef, public renderer: Renderer2) {
   }
 
   public testPos() {
@@ -139,4 +139,5 @@ export class TatooltipDirective implements OnDestroy {
       this.hide();
     }
   }
+
 }

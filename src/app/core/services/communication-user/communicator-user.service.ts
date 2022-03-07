@@ -13,11 +13,6 @@ export class CommunicatorUserService {
     private communicatorUserDataService: CommunicationUserDataService,
     private userSocket: UserSocket
   ) {
-    // @ts-ignore
-    this.user = JSON.parse(localStorage.getItem('chatUser'));
-    this.communicatorUserDataService.chatUser.subscribe((user?: any) => {
-      this.user = user;
-    });
   }
 
   trackUserStatuses() {
@@ -34,12 +29,12 @@ export class CommunicatorUserService {
 
   changeMyStatus(status: string) {
     if (this.user) {
-      if (status !== 'offline') {
+      /* if (status !== 'offline') {
         this.communicatorUserDataService.changeChatUserData({
           ...this.user,
           status
         });
-      }
+      } */
       this.userSocket.emit('change-my-status', this.user.id, status);
     }
   }
@@ -50,18 +45,6 @@ export class CommunicatorUserService {
 
   onUserStatusChanged() {
     return this.userSocket.fromEvent<{ id: string, status: string, chats: any[] }>('user-status-changed');
-  }
-
-  requestChatUserData(companyId: number, userId: number) {
-    this.communicatorUserDataService.requestChatUserData(companyId, userId).subscribe((res: any) => {
-      if (res.status === 'success' && res.data) {
-        this.changeMyStatus('online');
-      }
-    });
-  }
-
-  removeChatUserData() {
-    this.communicatorUserDataService.removeChatUserData();
   }
 
 }

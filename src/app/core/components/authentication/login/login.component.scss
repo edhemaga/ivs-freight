@@ -177,90 +177,6 @@ p {
   }
 }
 
-.email-field-wrapper,
-.password-field-wrapper {
-  display: flex;
-  align-items: center;
-  transition: all 0.2s ease;
-
-  &:hover {
-    &.typing {
-      .clear-button {
-        width: 18px;
-        height: 18px;
-        margin: 0;
-        background: none;
-        display: flex;
-        align-items: center;
-        transition: all 0.2s ease-in;
-        cursor: pointer;
-      }
-
-      &.field-focused {
-        background-image: none !important;
-      }
-
-      &.touched-invalid {
-        background-image: none !important;
-
-        .clear-button {
-          position: relative;
-          left: -6px;
-          background-image: url("../../../../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
-          background-size: 18px 18px;
-          transition: all 0.2s ease-in;
-          background-repeat: no-repeat;
-
-          &:hover {
-            width: 22px;
-            height: 22px;
-            position: relative;
-            left: -6px;
-            background-image: url("../../../../../assets/img/form-validation/x-icon-background-hover.svg") !important;
-            background-size: 22px 22px;
-            transition: all 0.2s ease-in;
-            background-repeat: no-repeat;
-          }
-        }
-      }
-
-      .clear-button {
-        position: relative;
-        left: -6px;
-        background-image: url("../../../../../assets/img/form-validation/x-icon-background.svg") !important;
-        background-size: 18px 18px;
-        transition: all 0.2s ease-in;
-        background-repeat: no-repeat;
-      }
-    }
-  }
-}
-
-.password-field-wrapper,
-.email-field-wrapper {
-  &.touched-valid {
-    .clear-button {
-      position: relative;
-      left: -6px;
-      background-image: url("../../../../../assets/img/form-validation/x-icon-valid-focus-in.svg") !important;
-      background-size: 18px 18px;
-      transition: all 0.2s ease-in;
-      background-repeat: no-repeat;
-
-      &:hover {
-        width: 22px;
-        height: 22px;
-        position: relative;
-        left: -6px;
-        background-image: url("../../../../../assets/img/form-validation/x-icon-valid-focus-in-hover.svg") !important;
-        background-size: 22px 22px;
-        transition: all 0.2s ease-in;
-        background-repeat: no-repeat;
-      }
-    }
-  }
-}
-
 ::ng-deep .tooltip-arrow {
   &::before {
     display: none !important;
@@ -283,61 +199,12 @@ p {
   &:focus {
     outline: none !important;
   }
- }
-
-.email-field-wrapper {
-  background-image: url('../../../../../assets/img/form-validation/mail-icon-default.svg');
-  background-repeat: no-repeat;
-  background-position: calc(100% - 6px) 6px;
-  transition: all 0.2s ease;
-
-  &.field-focused {
-    background-image: url('../../../../../assets/img/form-icons/mail/mail-focus.svg') !important;
-  }
-
-  &.touched-valid {
-    background-image: url('../../../../../assets/img/form-validation/mail-icon-blue.svg');
-    background-repeat: no-repeat;
-    background-position: calc(100% - 6px) 6px;
-    transition: all 0.2s ease;
-
-    &:focus {
-      background-image: url('../../../../../assets/img/form-validation/mail-icon-hover.svg');
-    }
-
-    &:hover {
-      background-image: url('../../../../../assets/img/form-validation/mail-icon-blue-hover.svg');
-    }
-  }
-
-  &.email-input {
-    background: none !important;
-    background-repeat: no-repeat;
-  }
-
-  &.touched-invalid {
-    background-image: url('../../../../../assets/img/form-validation/mail-icon-invalid-default.svg');
-  }
-
 }
 
-.password-field-wrapper {
-  background-image: url('../../../../../assets/img/form-validation/password-icon-default.svg') !important;
-  background-size: 15px 18px;
-  background-repeat: no-repeat;
-  background-position: calc(100% - 6px) 4px;
+form .form-control.input-control:focus {
+  color: #b7b7b7 !important;
+}
 
-  &.touched-invalid {
-    background-image: url('../../../../../assets/img/form-validation/password-icon-invalid.svg');
-
-    &:hover {
-      background-image: url('../../../../../assets/img/form-validation/password-icon-hover-red.svg');
-      background-repeat: no-repeat;
-      background-position: calc(100% - 6px) 4px;
-    }
-  }
-
-  &.touched-valid {
-    background-image: url('../../../../../assets/img/form-validation/password-icon-blue-hover.svg');
-  }
+form .form-control.required.ng-invalid.ng-touched:focus {
+  color: #b7b7b7 !important;
 }

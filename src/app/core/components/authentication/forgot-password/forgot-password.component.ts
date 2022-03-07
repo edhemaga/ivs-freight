@@ -70,6 +70,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   clearEmailInput() {
     this.forgotPasswordForm.controls['email'].reset();
+    this.inputText = false;
   }
 
 }
