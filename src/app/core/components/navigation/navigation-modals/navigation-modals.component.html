@@ -20,7 +20,6 @@
       <p
         *ngFor="let item of generalNavigationData"
         (click)="onAction('Open Modal', item)"
-        [routerLink]="item.path"
       >
         {{ item.name }}
       </p>

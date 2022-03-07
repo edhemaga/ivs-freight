@@ -2,7 +2,7 @@ export interface Navigation {
   id: number;
   name: string;
   image: string;
-  route: any;
+  route?: any;
   arrow?: string;
   isRouteActive?: boolean;
 }

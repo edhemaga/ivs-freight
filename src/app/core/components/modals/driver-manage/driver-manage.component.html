@@ -121,6 +121,8 @@
                 type="date"
               >
               <label class="required-label" for="dateOfBirth">DOB</label>
+              <p *ngIf="driverForm.get('dateOfBirth').errors"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('dateOfBirth').errors | inputError}} </p>
             </div>
           </div>
         </div>
@@ -607,7 +609,9 @@
             </div>
           </div>
           <div class="col-6">
-            <div class="form-label-group">
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder {{
+                      manageInputValidation(this.driverForm.controls.fuelCard)
+                    }}">
               <input
                 (keyup)="onKeyUpMethod($event)"
                 class="form-control input-control"
@@ -615,8 +619,19 @@
                 id="fuelCard"
                 placeholder="Fuel Card #"
               />
-              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-              </div>
+
+              <svg-icon
+                class="valid-icon"
+                src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
               <label for="fuelCard">Fuel Card #</label>
             </div>
           </div>

@@ -29,20 +29,20 @@ p {
       font-size: 52px;
       line-height: 39px;
       font-weight: 900;
-      color: #5673AA;
+      color: $light-blue;
     }
 
     p:nth-child(2) {
       font-size: 26px;
       line-height: 24px;
       font-weight: 700;
-      color: #6C6C6C;
+      color: $bw6-2;
       margin-top: 40px;
     }
   }
 
   .color_welcome_to {
-    color: #6C6C6C;
+    color: $bw6-2;
   }
 
   form {
@@ -73,16 +73,16 @@ p {
       &:hover {
         font-size: 14px;
         line-height: 18px;
-        color: #889CC3;
+        color: $link-color;
         transition: $transition;
       }
     }
 
     .login-btn {
-      background: #F9F9F9;
+      background: $bw1;
 
       p {
-        color: #91A4C7;
+        color: $ceil-blue;
       }
 
       &:hover {
@@ -115,21 +115,21 @@ p {
 
       &.invalid-btn {
         transition: 0.3s;
-        background: #F9F9F9;
+        background: $bw1;
 
         p {
-          color: #B7B7B7;
+          color: $bw4;
         }
 
         &:hover {
-          background-color: #eeeeee;
+          background-color: $bw2;
           transition: 0.3s;
         }
       }
 
       &:hover {
         transition: 0.3s;
-        background: #778FBB;
+        background: $cerulean-frost;
       }
     }
 
@@ -184,15 +184,15 @@ p {
 }
 
 ::ng-deep .tooltip-inner {
-  background-color: #fff;
-  color: #919191;
+  background-color: $white;
+  color: $bw5;
   height: 17px;
   display: flex;
   align-items: center;
   border-radius: 2px;
   font-size: 10px;
   font-weight: 600;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.16);
+  box-shadow: $box-shadow;
 }
 
 .email-input {
@@ -202,9 +202,9 @@ p {
 }
 
 form .form-control.input-control:focus {
-  color: #b7b7b7 !important;
+  color: $bw4 !important;
 }
 
 form .form-control.required.ng-invalid.ng-touched:focus {
-  color: #b7b7b7 !important;
+  color: $bw4 !important;
 }

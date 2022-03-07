@@ -9,7 +9,6 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {SharedModule} from "./core/shared/shared/shared.module";
 import {ToastrModule} from "ngx-toastr";
 import {NgIdleModule} from "@ng-idle/core";
-import {HeaderComponent} from './core/components/header/header/header.component';
 import {GoogleMapsAPIWrapper} from '@agm/core';
 import { NavigationComponent } from './core/components/navigation/navigation.component';
 import { NavigationRouteComponent } from './core/components/navigation/navigation-route/navigation-route.component';
@@ -26,7 +25,6 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     NavigationComponent,
     NavigationRouteComponent,
     NavigationHeaderComponent,
