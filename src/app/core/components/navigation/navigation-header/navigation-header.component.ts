@@ -13,15 +13,19 @@ export class NavigationHeaderComponent {
     switch (type) {
       case 'Open Panel': {
         this.onModalPanelOpenEvent.emit({type: true, name: 'Modal Panel'});
+        break;
       }
       case 'Search': {
         // TODO: search
+        break;
       }
       case 'Notes': {
         // TODO: notes
+        break;
       }
       case 'Bell': {
         // TODO: bell
+        break;
       }
       default: {
         return;

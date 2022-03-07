@@ -1,3 +1,5 @@
+@import 'src/theme/variables';
+
 .user-panel {
   position: absolute;
   bottom: 14px;
@@ -6,10 +8,9 @@
   width: 184px;
   height: 202px;
   padding: 2px 4px;
-  border-radius: 3px;
-  border-bottom-left-radius: 20px;
-  box-shadow: 0 0 4px rgb(0 0 0 / 16%);
-  background-color: #ffffff;
+  border-radius: 3px 3px 3px 20px;
+  box-shadow: $box-shadow;
+  background-color: $white;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -19,7 +20,7 @@
     margin: 0;
     font-size: 14px;
     font-weight: 500;
-    color: #b7b7b7;
+    color: $bw4;
   }
 
   .user-content {
@@ -62,7 +63,7 @@
       .user-content-svg {
         svg {
           path {
-            fill: #b7b7b7;
+            fill: $bw4;
           }
         }
       }
@@ -126,38 +127,38 @@
       position: absolute;
       bottom: 1px;
       left: 23px;
-      background: #ffffff;
+      background: $white;
 
       .status-marker {
         width: 10px;
         height: 10px;
         border-radius: 6px;
-        border: 0 solid #ffffff;
-        background: #ffffff;
+        border: 0 solid $white;
+        background: $white;
       }
 
       .status-online {
         border: 2px solid #24c1a1;
-        background: #ffffff !important;
+        background: $white !important;
       }
 
       .status-active {
-        border: 0 solid #ffffff;
+        border: 0 solid $white;
         background: #24c1a1 !important;
       }
 
       .status-away {
-        border: 0 solid #ffffff;
+        border: 0 solid $white;
         background: #ffae21 !important;
       }
 
       .status-busy {
-        border: 0 solid #ffffff;
+        border: 0 solid $white;
         background: #ff5d5d !important;
       }
 
       .status-offline {
-        border: 0 solid #ffffff;
+        border: 0 solid $white;
         background: #919191 !important;
       }
     }

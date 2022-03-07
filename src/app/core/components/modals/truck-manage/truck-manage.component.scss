@@ -1,3 +1,5 @@
+@import 'src/theme/variables';
+
 @keyframes vin-complete {
   from {
     color: green;
@@ -32,7 +34,7 @@
   font-size: 11px !important;
   border-radius: 3px;
   padding: 0.1rem 0.45rem !important;
-  background-color: #dadada !important;
+  background-color: $bw-9 !important;
   transition: 0.25s;
   font-weight: 600;
   border: none;
@@ -108,15 +110,15 @@
 }
 
 ::ng-deep .tooltip-inner {
-  background-color: #fff;
-  color: #919191;
+  background-color: $white;
+  color: $muted;
   height: 17px;
   display: flex;
   align-items: center;
   border-radius: 2px;
   font-size: 10px;
   font-weight: 600;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.16);
+  box-shadow: $box-shadow;
 }
 
 .form-label-group {
@@ -131,35 +133,35 @@
   padding: 0 12px;
   border-bottom: none;
   height: 42px;
-  background-color: #f9f9f9;
-  color: #B7B7B7;
+  background-color: $bw1;
+  color: $bw4;
 }
 
 .save-btn {
-  background: #F9F9F9;
+  background: $bw1;
 
   p {
-    color: #91A4C7;
+    color: $ceil-blue;
   }
 
   &:hover {
     &:not(.invalid-btn) {
       p {
-        color: #fff;
+        color: $white;
       }
     }
   }
 
   &.invalid-btn {
     transition: 0.3s;
-    background: #F9F9F9;
+    background: $bw1;
 
     p {
-      color: #B7B7B7;
+      color: $bw4;
     }
 
     &:hover {
-      background-color: #eeeeee;
+      background-color: $bw2;
       transition: 0.3s;
     }
   }
@@ -167,7 +169,7 @@
 
 .cancel-btn {
   p {
-    color: #B7B7B7;
+    color: $bw4;
   }
 }
 
@@ -184,9 +186,9 @@
 
 
 .note-label-wrapper {
-  background-color: #F9F9F9;
+  background-color: $bw1;
   font-weight: 600;
-  color: #B7B7B7;
+  color: $bw4;
   margin: 0 -12px;
   padding: 0 12px;
   transition: 0.3s;
@@ -203,14 +205,14 @@ textarea.input-custom-textarea.form-textarea {
   padding: 0;
   margin-top: 6px;
   resize: none;
-  color: #B7B7B7;
+  color: $bw4;
   width: 100% !important;
   border: none !important;
   box-shadow: none !important;
   outline: none !important;
 
   &::placeholder {
-    color: #DADADA !important;
+    color: $bw-9 !important;
   }
 }
 
@@ -243,13 +245,13 @@ textarea.input-custom-textarea.form-textarea {
     margin-right: 6px;
 
     .btn.btn-primary:not(:disabled):not(.disabled) {
-      background-color: #91A4C7 !important;
+      background-color: $ceil-blue !important;
       transition: 0.25s;
       font-weight: 600;
     }
 
     .btn.btn-primary:not(:disabled):not(.disabled).active {
-      background-color: #dadada !important;
+      background-color: $bw-9 !important;
     }
 
     .btn.btn-primary:not(:disabled):not(.disabled):hover {

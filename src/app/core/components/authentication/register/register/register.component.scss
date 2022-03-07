@@ -56,8 +56,6 @@ p {
     }
 
     button {
-      //margin-top: 50px;
-      //margin-bottom: 20px;
       margin: 12px auto 22px;
       max-width: 160px;
       width: 100%;
@@ -72,7 +70,7 @@ p {
         font-weight: bold;
         font-size: 14px;
         line-height: 18px;
-        color: white;
+        color: $white;
         transition: 0.3s;
         margin: 0;
       }
