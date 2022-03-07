@@ -62,18 +62,18 @@ export class NavigationFooterComponent implements OnInit {
   }
 
   private isActiveFooterRouteOnReload(url: string) {
-    const urlString = url.split('/')
-    const reloadUrl = urlString[urlString.length - 1]
+    // const urlString = url.split('/')
+    // const reloadUrl = urlString[urlString.length - 1]
 
-    const index = this.footerData.findIndex(item => item.route?.includes(reloadUrl));
+    // const index = this.footerData.findIndex(item => item.route?.includes(reloadUrl));
   
-    if(index > -1) {
-      this.router.navigate([`/${reloadUrl}`])
-      this.onActivateFooterRoutes.emit(true)
-    }
-    else {
-      this.onActivateFooterRoutes.emit(false)
-    }
+    // if(index > -1) {
+    //   this.router.navigate([`/${reloadUrl}`])
+    //   this.onActivateFooterRoutes.emit(true)
+    // }
+    // else {
+    //   this.onActivateFooterRoutes.emit(false)
+    // }
   }
 
   public identify(index: number, item: FooterData): number {

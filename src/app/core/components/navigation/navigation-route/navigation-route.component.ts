@@ -42,22 +42,22 @@ export class NavigationRouteComponent implements OnInit {
   }
 
   private isActiveRouteOnReload(url: string) {
-    const urlString = url.split('/')
-    const reloadUrl = urlString[urlString.length - 1]
+    // const urlString = url.split('/')
+    // const reloadUrl = urlString[urlString.length - 1]
   
-    if(Array.isArray(this.route.route)) {
-      const subroute = this.route.route.find(item => item.route.includes(reloadUrl))
-      if(subroute) {
-        if(this.route.id === subroute.flegId) {
-          this.route.isRouteActive = true;
-          this.onRouteAction(this.route, subroute.flegId)
-        }
-      }
-    }
+    // if(Array.isArray(this.route.route)) {
+    //   const subroute = this.route.route.find(item => item.route.includes(reloadUrl))
+    //   if(subroute) {
+    //     if(this.route.id === subroute.flegId) {
+    //       this.route.isRouteActive = true;
+    //       this.onRouteAction(this.route, subroute.flegId)
+    //     }
+    //   }
+    // }
 
-    if(this.route.route.includes(reloadUrl)) {
-      this.route.isRouteActive = true;
-      this.onRouteAction(this.route)
-    }
+    // if(this.route.route.includes(reloadUrl)) {
+    //   this.route.isRouteActive = true;
+    //   this.onRouteAction(this.route)
+    // }
   }
 }
