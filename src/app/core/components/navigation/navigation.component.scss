@@ -76,7 +76,7 @@
   }
 
   .magic-line-selected {
-    
+    user-select: none;
   }
   
   .navigation-routes:nth-child(1):hover ~ .magic-line {
