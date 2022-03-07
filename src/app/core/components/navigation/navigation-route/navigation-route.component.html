@@ -2,12 +2,12 @@
 
 <div
   class="nav-item"
-  [ngClass]="{ 'nav-item-active': activateHeaderOfSubroutes() }"
+  [ngClass]="{ 'nav-item-active': route.isRouteActive || isActiveRouteOnReload() }"
   (mouseenter)="isNavItemHovered = true"
   (mouseleave)="isNavItemHovered = false"
   (click)="onRouteAction()"
-  [routerLink]="route.route"
-  routerLinkActive="nav-item-active"
+  [routerLink]="checkIfSubroute(route)"
+  routerLinkActive=""
   [routerLinkActiveOptions]="{ exact: true }"
 >
   <div
