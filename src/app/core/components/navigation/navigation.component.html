@@ -24,7 +24,9 @@
         *ngFor="let item of navigation; trackBy: identify"
         [ngClass]="{
           'magic-line-selected':
-            item.isRouteActive || isActiveRouteOnReload(item.route)
+            item.isRouteActive ||
+            item.isSubrouteActive ||
+            isActiveRouteOnReload(item.route)
         }"
       >
         <app-navigation-route
@@ -35,7 +37,7 @@
           (onRouteEvent)="onRouteEvent($event)"
         >
         </app-navigation-route>
-        
+
         <app-navigation-subroute-card
           *ngIf="item.arrow"
           [isRouteActive]="item.isRouteActive"

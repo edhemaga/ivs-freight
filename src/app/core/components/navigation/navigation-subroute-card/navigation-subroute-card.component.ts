@@ -9,7 +9,6 @@ export class NavigationSubrouteCardComponent {
   @Input() isRouteActive: boolean = false;
   @Input() isNavigationHovered: boolean = false;
   @Input() contentHeight: number = 0;
- 
 
   /**
    * 

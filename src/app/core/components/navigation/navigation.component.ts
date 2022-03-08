@@ -17,6 +17,7 @@ export class NavigationComponent {
 
   private isActiveSubrouteIndex: number = -1;
   public isActiveSubroute: boolean = false;
+  public activeSubrouteFleg: boolean = false;
 
   public isActiveFooterRoute: boolean = false;
   public isActiveMagicLine: boolean = false;
@@ -42,7 +43,7 @@ export class NavigationComponent {
     const index = this.navigation.findIndex(
       (item) => item.id === subroute.routeId
     );
-
+      console.log(subroute)
     this.onActivateFooterRoute(false);
 
     if (Array.isArray(subroute.routes)) {
@@ -59,21 +60,26 @@ export class NavigationComponent {
         
       if (subroute.activeRouteFlegId === this.navigation[index].id) {
         this.isActiveSubroute = true;
-        this.navigation[index].isRouteActive = true;
+        this.activeSubrouteFleg = true;
       }
 
       if (!this.navigation[index].isRouteActive) {
         this.isActiveSubroute = false;
+        this.navigation[index].isSubrouteActive = true;
       } else {
         this.isActiveSubroute = true;
+        this.navigation[index].isSubrouteActive = false;
       }
     }
 
     if (index !== this.isActiveSubrouteIndex) {
+      console.log("Reload")
       this.navigation.forEach((nav) => (nav.isRouteActive = false));
       this.isActiveSubroute = true;
+      this.activeSubrouteFleg = false;
       this.isActiveSubrouteIndex = index;
       this.navigation[index].isRouteActive = true;
+      this.navigation[index].isSubrouteActive = false;
     }
   }
 
@@ -84,8 +90,11 @@ export class NavigationComponent {
 
   private disableRoutes() {
     this.navigation.forEach((nav) => (nav.isRouteActive = false));
+    this.navigation.forEach((nav) => (nav.isSubrouteActive = false));
+    localStorage.removeItem('subroute_active');
     this.isActiveSubrouteIndex = -1;
     this.isActiveSubroute = false;
+    this.activeSubrouteFleg = false;
   }
 
   public onActivateFooterRoute(type: boolean) {

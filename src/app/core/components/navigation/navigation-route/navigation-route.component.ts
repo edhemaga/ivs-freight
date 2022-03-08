@@ -28,10 +28,11 @@ export class NavigationRouteComponent implements OnInit {
   }
 
   public onRouteAction() {
-    localStorage.removeItem('subroute_active');
+    
     this.onRouteEvent.emit({
       routeId: this.route.id,
       routes: this.route.route,
+      activeRouteFlegId: JSON.parse(localStorage.getItem('subroute_active'))
     });
 
     if (!Array.isArray(this.route.route)) {

@@ -5,6 +5,7 @@ export interface Navigation {
   route: any;
   arrow?: string;
   isRouteActive: boolean;
+  isSubrouteActive?: boolean;
 }
 export interface NavigationSubRoute {
   name: string;

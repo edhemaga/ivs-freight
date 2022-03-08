@@ -26,6 +26,7 @@ export const navigationData: Navigation[] = [
     image: 'assets/img/svgs/navigation/ic_list.svg',
     arrow: 'assets/img/svgs/navigation/ic_arrow.svg',
     isRouteActive: false,
+    isSubrouteActive: false,
     route: [
       {
         name: 'Load',
@@ -85,6 +86,7 @@ export const navigationData: Navigation[] = [
     image: 'assets/img/svgs/navigation/ic_accounting.svg',
     arrow: 'assets/img/svgs/navigation/ic_arrow.svg',
     isRouteActive: false,
+    isSubrouteActive: false,
     route: [
       {
         name: 'Payroll',
@@ -114,6 +116,7 @@ export const navigationData: Navigation[] = [
     image: 'assets/img/svgs/navigation/ic_safety.svg',
     arrow: 'assets/img/svgs/navigation/ic_arrow.svg',
     isRouteActive: false,
+    isSubrouteActive: false,
     route: [
       {
         name: 'Violation',
@@ -143,6 +146,7 @@ export const navigationData: Navigation[] = [
     image: 'assets/img/svgs/navigation/ic_tools.svg',
     arrow: 'assets/img/svgs/navigation/ic_arrow.svg',
     isRouteActive: false,
+    isSubrouteActive: false,
     route: [
       {
         name: 'Miles',

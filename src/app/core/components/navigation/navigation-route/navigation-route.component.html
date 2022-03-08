@@ -2,7 +2,7 @@
 
 <div
   class="nav-item"
-  [ngClass]="{ 'nav-item-active': route.isRouteActive}"
+  [ngClass]="{ 'nav-item-active': route.isRouteActive || route.isSubrouteActive}"
   (mouseenter)="isNavItemHovered = true"
   (mouseleave)="isNavItemHovered = false"
   (click)="onRouteAction()"
@@ -11,7 +11,7 @@
 >
   <div
     [ngClass]="{
-      'nav-item-active-box': route.isRouteActive
+      'nav-item-active-box': route.isRouteActive || route.isSubrouteActive 
     }"
   ></div>
 
@@ -27,7 +27,7 @@
     <svg-icon
       class="nav-item-arrow nav-item-arrow-active"
       [ngClass]="{
-        'nav-item-arrow-rotate': route.isRouteActive,
+        'nav-item-arrow-rotate': route.isRouteActive && !route.isSubrouteActive,
         'nav-item-arrow-first': route.id === 3
       }"
       *ngIf="route.arrow && isNavigationHovered"
