@@ -21,7 +21,7 @@
     >
       <div
         class="navigation-routes"
-        *ngFor="let item of navigation; trackBy: identify"
+        *ngFor="let item of navigation; let ind = index; trackBy: identify"
         [ngClass]="{
           'magic-line-selected':
             item.isRouteActive ||

@@ -51,6 +51,7 @@ export class NavigationUserProfileComponent {
       }
 
       case 'logout': {
+        localStorage.removeItem('subroute_active');
         this.authService.logout();
         this.router.navigate(['/login']);
         break;

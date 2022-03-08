@@ -48,7 +48,8 @@
 
   .navigation-routes {
     margin-left: 1px;
-    padding-bottom: 4px;
+    padding-bottom: 1px;
+    padding-top: 1px;
   }
 
   .subroute-card {
@@ -88,98 +89,98 @@
   }
 
   .navigation-routes:nth-child(2):hover ~ .magic-line {
-    transform: translateY(32px) !important;
+    transform: translateY(31px) !important;
   }
 
   .magic-line-selected:nth-child(2) ~ .magic-line {
-    transform: translateY(32px);
+    transform: translateY(31px);
   }
 
   .navigation-routes:nth-child(3):hover ~ .magic-line {
-    transform: translateY(65px) !important;
+    transform: translateY(62px) !important;
   }
 
   .magic-line-selected:nth-child(3) ~ .magic-line {
-    transform: translateY(65px);
+    transform: translateY(62px);
   }
 
   .navigation-routes:nth-child(4):hover ~ .magic-line {
-    transform: translateY(97px) !important;
+    transform: translateY(92px) !important;
   }
 
   .magic-line-selected:nth-child(4) ~ .magic-line {
-    transform: translateY(97px);
+    transform: translateY(92px);
   }
 
   .navigation-routes:nth-child(5):hover ~ .magic-line {
-    transform: translateY(129px) !important;
+    transform: translateY(122px) !important;
   }
 
   .magic-line-selected:nth-child(5) ~ .magic-line {
-    transform: translateY(129px);
+    transform: translateY(122px);
   }
 
   .navigation-routes:nth-child(6):hover ~ .magic-line {
-    transform: translateY(161px) !important;
+    transform: translateY(152px) !important;
   }
 
   .magic-line-selected:nth-child(6) ~ .magic-line {
-    transform: translateY(161px);
+    transform: translateY(152px);
   }
 
   .navigation-routes:nth-child(7):hover ~ .magic-line {
-    transform: translateY(193px) !important;
+    transform: translateY(182px) !important;
   }
 
   .magic-line-selected:nth-child(7) ~ .magic-line {
-    transform: translateY(193px);
+    transform: translateY(182px);
   }
 
   .navigation-routes:nth-child(8):hover ~ .magic-line {
-    transform: translateY(224px) !important;
+    transform: translateY(212px) !important;
   }
 
   .magic-line-selected:nth-child(8) ~ .magic-line {
-    transform: translateY(224px);
+    transform: translateY(212px);
   }
 
   .navigation-routes:nth-child(9):hover ~ .magic-line {
-    transform: translateY(256px) !important;
+    transform: translateY(242px) !important;
   }
 
   .magic-line-selected:nth-child(9) ~ .magic-line {
-    transform: translateY(256px);
+    transform: translateY(242px);
   }
 
   .navigation-routes:nth-child(10):hover ~ .magic-line {
-    transform: translateY(289px) !important;
+    transform: translateY(272px) !important;
   }
 
   .magic-line-selected:nth-child(10) ~ .magic-line {
-    transform: translateY(289px);
+    transform: translateY(272px);
   }
 
   .navigation-routes:nth-child(11):hover ~ .magic-line {
-    transform: translateY(321px) !important;
+    transform: translateY(302px) !important;
   }
 
   .magic-line-selected:nth-child(11) ~ .magic-line {
-    transform: translateY(321px);
+    transform: translateY(302px);
   }
 
   .navigation-routes:nth-child(12):hover ~ .magic-line {
-    transform: translateY(353px) !important;
+    transform: translateY(332px) !important;
   }
 
   .magic-line-selected:nth-child(12) ~ .magic-line {
-    transform: translateY(353px);
+    transform: translateY(332px);
   }
 
   .navigation-routes:nth-child(13):hover ~ .magic-line {
-    transform: translateY(385px) !important;
+    transform: translateY(362px) !important;
   }
 
   .magic-line-selected:nth-child(13) ~ .magic-line {
-    transform: translateY(385px);
+    transform: translateY(362px);
   }
 }
