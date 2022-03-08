@@ -43,6 +43,7 @@ export class NavigationFooterComponent implements OnInit {
           this.onUserPanelOpenEvent.emit({type: true, name: 'User Panel'});
         } else {
           this.isActiveFooterRoute(this.footerData[index])
+          localStorage.removeItem('subroute_active');
           this.onActivateFooterRoutes.emit(true);
         }
       }

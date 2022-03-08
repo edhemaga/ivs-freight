@@ -10,7 +10,7 @@ export const navigationData: Navigation[] = [
     id: 1,
     name: 'Dashboard',
     image: 'assets/img/svgs/navigation/ic_dashboard.svg',
-    route: '/dashboard',
+    route: 'dashboard',
     isRouteActive: false,
   },
   {
@@ -30,52 +30,52 @@ export const navigationData: Navigation[] = [
       {
         name: 'Load',
         route: '/load',
-        flegId: 3  // for active sub-route to know which sub-route list is active
+        activeRouteFlegId: 3  // for active sub-route to know which sub-route list is active
       },
       {
         name: 'Customer',
         route: '/customer',
-        flegId: 3
+        activeRouteFlegId: 3
       },
       {
         name: 'Driver',
         route: '/driver',
-        flegId: 3
+        activeRouteFlegId: 3
       },
       {
         name: 'Truck',
         route: '/truck',
-        flegId: 3
+        activeRouteFlegId: 3
       },
       {
         name: 'Trailer',
         route: '/trailer',
-        flegId: 3
+        activeRouteFlegId: 3
       },
       {
         name: 'Repair',
         route: '/repair',
-        flegId: 3
+        activeRouteFlegId: 3
       },
       {
         name: 'Fuel',
         route: '/fuel',
-        flegId: 3
+        activeRouteFlegId: 3
       },
       {
         name: 'Owner',
         route: '/owner',
-        flegId: 3
+        activeRouteFlegId: 3
       },
       {
         name: 'Account',
         route: '/account',
-        flegId: 3
+        activeRouteFlegId: 3
       },
       {
         name: 'Contact',
         route: '/contact',
-        flegId: 3
+        activeRouteFlegId: 3
       },
     ],
   },
@@ -89,22 +89,22 @@ export const navigationData: Navigation[] = [
       {
         name: 'Payroll',
         route: '/payroll',
-        flegId: 4
+        activeRouteFlegId: 4
       },
       {
         name: 'IFTA',
         route: '/ifta',
-        flegId: 4
+        activeRouteFlegId: 4
       },
       {
         name: 'Ledger',
         route: '/ledger',
-        flegId: 4
+        activeRouteFlegId: 4
       },
       {
         name: 'Tax',
         route: '/tax',
-        flegId: 4
+        activeRouteFlegId: 4
       },
     ],
   },
@@ -118,22 +118,22 @@ export const navigationData: Navigation[] = [
       {
         name: 'Violation',
         route: '/violation',
-        flegId: 5
+        activeRouteFlegId: 5
       },
       {
         name: 'Accident',
         route: '/accident',
-        flegId: 5
+        activeRouteFlegId: 5
       },
       {
         name: 'Log',
         route: '/log',
-        flegId: 5
+        activeRouteFlegId: 5
       },
       {
         name: 'Scheduled Ins.',
         route: '/scheduled',
-        flegId: 5
+        activeRouteFlegId: 5
       },
     ],
   },
@@ -147,47 +147,47 @@ export const navigationData: Navigation[] = [
       {
         name: 'Miles',
         route: '/miles',
-        flegId: 6
+        activeRouteFlegId: 6
       },
       {
         name: 'MVR',
         route: '/mvr',
-        flegId: 6
+        activeRouteFlegId: 6
       },
       {
         name: 'Calendar',
         route: '/calendar',
-        flegId: 6
+        activeRouteFlegId: 6
       },
       {
         name: 'To-Do',
         route: '/todo',
-        flegId: 6
+        activeRouteFlegId: 6
       },
       {
         name: '1099',
         route: '/1099',
-        flegId: 6
+        activeRouteFlegId: 6
       },
       {
         name: '2290',
         route: '/2290',
-        flegId: 6
+        activeRouteFlegId: 6
       },
       {
         name: 'Factoring',
         route: '/factoring',
-        flegId: 6
+        activeRouteFlegId: 6
       },
       {
         name: 'Fax',
         route: '/fax',
-        flegId: 6
+        activeRouteFlegId: 6
       },
       {
         name: 'SMS',
         route: '/sms',
-        flegId: 6
+        activeRouteFlegId: 6
       },
     ],
   },

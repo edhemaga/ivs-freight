@@ -33,6 +33,7 @@
         &:hover {
           cursor: pointer;
           #Ellipse_6368-2 {
+            shape-rendering: geometricPrecision;
             fill: url("#linear-gradient");
           }
           path {

@@ -48,7 +48,7 @@
 
   .navigation-routes {
     margin-left: 1px;
-    padding-bottom: 2px;
+    padding-bottom: 4px;
   }
 
   .subroute-card {
@@ -88,98 +88,98 @@
   }
 
   .navigation-routes:nth-child(2):hover ~ .magic-line {
-    transform: translateY(31px) !important;
+    transform: translateY(32px) !important;
   }
 
   .magic-line-selected:nth-child(2) ~ .magic-line {
-    transform: translateY(31px);
+    transform: translateY(32px);
   }
 
   .navigation-routes:nth-child(3):hover ~ .magic-line {
-    transform: translateY(61px) !important;
+    transform: translateY(65px) !important;
   }
 
   .magic-line-selected:nth-child(3) ~ .magic-line {
-    transform: translateY(61px);
+    transform: translateY(65px);
   }
 
   .navigation-routes:nth-child(4):hover ~ .magic-line {
-    transform: translateY(91px) !important;
+    transform: translateY(97px) !important;
   }
 
   .magic-line-selected:nth-child(4) ~ .magic-line {
-    transform: translateY(91px);
+    transform: translateY(97px);
   }
 
   .navigation-routes:nth-child(5):hover ~ .magic-line {
-    transform: translateY(121px) !important;
+    transform: translateY(129px) !important;
   }
 
   .magic-line-selected:nth-child(5) ~ .magic-line {
-    transform: translateY(121px);
+    transform: translateY(129px);
   }
 
   .navigation-routes:nth-child(6):hover ~ .magic-line {
-    transform: translateY(151px) !important;
+    transform: translateY(161px) !important;
   }
 
   .magic-line-selected:nth-child(6) ~ .magic-line {
-    transform: translateY(151px);
+    transform: translateY(161px);
   }
 
   .navigation-routes:nth-child(7):hover ~ .magic-line {
-    transform: translateY(181px) !important;
+    transform: translateY(193px) !important;
   }
 
   .magic-line-selected:nth-child(7) ~ .magic-line {
-    transform: translateY(181px);
+    transform: translateY(193px);
   }
 
   .navigation-routes:nth-child(8):hover ~ .magic-line {
-    transform: translateY(211px) !important;
+    transform: translateY(224px) !important;
   }
 
   .magic-line-selected:nth-child(8) ~ .magic-line {
-    transform: translateY(211px);
+    transform: translateY(224px);
   }
 
   .navigation-routes:nth-child(9):hover ~ .magic-line {
-    transform: translateY(241px) !important;
+    transform: translateY(256px) !important;
   }
 
   .magic-line-selected:nth-child(9) ~ .magic-line {
-    transform: translateY(241px);
+    transform: translateY(256px);
   }
 
   .navigation-routes:nth-child(10):hover ~ .magic-line {
-    transform: translateY(271px) !important;
+    transform: translateY(289px) !important;
   }
 
   .magic-line-selected:nth-child(10) ~ .magic-line {
-    transform: translateY(271px);
+    transform: translateY(289px);
   }
 
   .navigation-routes:nth-child(11):hover ~ .magic-line {
-    transform: translateY(301px) !important;
+    transform: translateY(321px) !important;
   }
 
   .magic-line-selected:nth-child(11) ~ .magic-line {
-    transform: translateY(301px);
+    transform: translateY(321px);
   }
 
   .navigation-routes:nth-child(12):hover ~ .magic-line {
-    transform: translateY(331px) !important;
+    transform: translateY(353px) !important;
   }
 
   .magic-line-selected:nth-child(12) ~ .magic-line {
-    transform: translateY(331px);
+    transform: translateY(353px);
   }
 
   .navigation-routes:nth-child(13):hover ~ .magic-line {
-    transform: translateY(360px) !important;
+    transform: translateY(385px) !important;
   }
 
   .magic-line-selected:nth-child(13) ~ .magic-line {
-    transform: translateY(360px);
+    transform: translateY(385px);
   }
 }

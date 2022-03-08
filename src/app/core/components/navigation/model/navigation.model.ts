@@ -14,6 +14,7 @@ export interface NavigationSubRoute {
 export interface NavigationSubRoutes {
   routeId: number;
   routes: string | [];
+  activeRouteFlegId?: number
 }
 export interface NavigationModal {
   id: number;

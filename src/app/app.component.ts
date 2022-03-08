@@ -103,7 +103,7 @@ export class AppComponent implements OnInit {
         mergeMap((route: any) => route.data)
       )
       .subscribe((event: any) => {
-        this.currentPage = event.title.toLowerCase();
+        this.currentPage = event?.title?.toLowerCase();
         this.titleService.setTitle("TruckAssist" + " | " + event.title);
         //const user = JSON.parse(localStorage.getItem('currentUser'));
         // TODO check also if user is on trial from User response (future).

@@ -35,10 +35,10 @@
           (onRouteEvent)="onRouteEvent($event)"
         >
         </app-navigation-route>
-
+        
         <app-navigation-subroute-card
           *ngIf="item.arrow"
-          [isSubRouteActive]="item.isRouteActive"
+          [isRouteActive]="item.isRouteActive"
           [isNavigationHovered]="isNavigationHovered"
           [contentHeight]="item.route.length"
         >
@@ -51,9 +51,10 @@
           </app-navigation-route>
 
           <app-navigation-subroute
-            *ngIf="item.isRouteActive && isNavigationHovered"
+            *ngIf="isNavigationHovered"
             [subroute]="item"
-            [isSubrouteHeaderActive]="isActiveSubroute"
+            [isActiveSubroute]="isActiveSubroute"
+            (onSubrouteActiveEvent)="onRouteEvent($event)"
           >
           </app-navigation-subroute>
         </app-navigation-subroute-card>
@@ -63,7 +64,7 @@
           isNavigationHovered &&
           !isActiveSubroute &&
           !isActiveFooterRoute &&
-          !isActiveMagicLine
+          isActiveMagicLine
         "
         class="magic-line"
       ></div>

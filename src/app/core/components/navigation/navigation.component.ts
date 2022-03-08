@@ -17,16 +17,24 @@ export class NavigationComponent {
 
   private isActiveSubrouteIndex: number = -1;
   public isActiveSubroute: boolean = false;
+
   public isActiveFooterRoute: boolean = false;
   public isActiveMagicLine: boolean = false;
 
   constructor(private router: Router) {}
 
   public onPanelEvent(panel: { type: boolean; name: string }) {
-    if (panel.name.toLowerCase() === 'modal panel') {
-      this.isModalPanelOpen = panel.type;
-    } else if (panel.name.toLowerCase() === 'user panel') {
-      this.isUserPanelOpen = panel.type;
+    switch (panel.name) {
+      case 'Modal Panel': {
+        this.isModalPanelOpen = panel.type;
+        break;
+      }
+      case 'User Panel': {
+        this.isUserPanelOpen = panel.type;
+        break;
+      }
+      default:
+        break;
     }
   }
 
@@ -38,59 +46,74 @@ export class NavigationComponent {
     this.onActivateFooterRoute(false);
 
     if (Array.isArray(subroute.routes)) {
-      if (index === this.isActiveSubrouteIndex) {
-        this.navigation[index].isRouteActive =
-          !this.navigation[index].isRouteActive;
+      console.log('FROM SUBROUTING NAV', subroute);
+      this.activationSubRoute(index, subroute);
+    } else if (index > -1) {
+      this.activationMainRoute(index);
+    }
+  }
 
-        if (!this.navigation[index].isRouteActive) {
-          this.isActiveSubroute = false;
-        } else {
-          this.isActiveSubroute = true;
-        }
-      }
-
-      if (index !== this.isActiveSubrouteIndex) {
-        this.navigation.forEach((nav) => (nav.isRouteActive = false));
+  private activationSubRoute(index: number, subroute: NavigationSubRoutes) {
+    if (index === this.isActiveSubrouteIndex) {
+      this.navigation[index].isRouteActive =
+        !this.navigation[index].isRouteActive;
+        
+      if (subroute.activeRouteFlegId === this.navigation[index].id) {
         this.isActiveSubroute = true;
-        this.isActiveSubrouteIndex = index;
         this.navigation[index].isRouteActive = true;
       }
-    } else {
-      if (index > -1) {
-        this.navigation.forEach((nav) => (nav.isRouteActive = false));
+
+      if (!this.navigation[index].isRouteActive) {
         this.isActiveSubroute = false;
-        this.isActiveSubrouteIndex = -1;
-        this.navigation[index].isRouteActive = true;
+      } else {
+        this.isActiveSubroute = true;
       }
     }
+
+    if (index !== this.isActiveSubrouteIndex) {
+      this.navigation.forEach((nav) => (nav.isRouteActive = false));
+      this.isActiveSubroute = true;
+      this.isActiveSubrouteIndex = index;
+      this.navigation[index].isRouteActive = true;
+      console.log(this.navigation[index]);
+    }
+    console.log(this.navigation[index]);
+  }
+
+  private activationMainRoute(index: number) {
+    this.disableRoutes();
+    this.navigation[index].isRouteActive = true;
+  }
+
+  private disableRoutes() {
+    this.navigation.forEach((nav) => (nav.isRouteActive = false));
+    this.isActiveSubrouteIndex = -1;
+    this.isActiveSubroute = false;
   }
 
   public onActivateFooterRoute(type: boolean) {
     if (type) {
-      this.isActiveSubrouteIndex = -1;
-      this.isActiveSubroute = false;
       this.isActiveFooterRoute = true;
-      this.navigation.filter((nav) => (nav.isRouteActive = false));
+      this.disableRoutes();
     } else {
       this.isActiveFooterRoute = false;
     }
   }
 
-  public identify(index, item): number {
-    return item.id;
+  public onHoveredRoutesContainer(type: boolean) {
+    if (type) {
+      this.onActivateFooterRoute(false);
+      this.isActiveMagicLine = true;
+    } else if (this.isActiveFooterRoute) {
+      this.isActiveMagicLine = false;
+    }
   }
 
   public isActiveRouteOnReload(route: string): boolean {
     return this.router.url.includes(route);
   }
 
-  public onHoveredRoutesContainer(type: boolean) {
-    if (type) {
-      this.isActiveFooterRoute = false;
-      this.isActiveMagicLine = false;
-    } else {
-      this.isActiveMagicLine = true;
-      this.isActiveFooterRoute = false;
-    }
+  public identify(index, item): number {
+    return item.id;
   }
 }
