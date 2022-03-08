@@ -26,23 +26,59 @@
 
   .navigation-top,
   .navigation-bottom {
-    padding-left: 4px;
+    padding-left: 5px;
+
+    @media only screen and (max-width: 1800px) {
+      overflow: visible;
+    }
   }
+  //------- ZOOM IN 110% & 125% for routing container
+
+  .wrapper-container {
+    @media only screen and (max-width: 1800px) {
+      position: absolute;
+      top: 115px;
+      left: 6px;
+
+      padding: 11px;
+      height: 600px;
+      width: 194px;
+
+      overflow-y: scroll;
+      scrollbar-width: 0px;
+
+      &::-webkit-scrollbar {
+        width: 0px;
+      }
+    }
+  }
+
+  .wrapper-container-nohover {
+    @media only screen and (max-width: 1800px) {
+      width: 50px;
+    }
+  }
+
+  .wrapper-line {
+    @media only screen and (max-width: 1800px) {
+      height: 2px;
+      width: 176px;
+      margin-left: -5px;
+      background-color: #b7b7b7;
+      position: absolute;
+      bottom: 111px;
+    }
+  }
+
+  //------- end
 
   .navigation-routes-container {
     margin-top: -8px;
     position: relative;
 
     @media only screen and (max-width: 1800px) {
-      height: 526.5px;
-      border-bottom: 2px solid #f7f7f7;
-      overflow: hidden;
-      overflow-y: scroll;
-      scrollbar-width: none;
-
-      &::-webkit-scrollbar {
-        width: 0px;
-      }
+      overflow: visible;
+      width: auto;
     }
   }
 
@@ -79,7 +115,7 @@
   .magic-line-selected {
     user-select: none;
   }
-  
+
   .navigation-routes:nth-child(1):hover ~ .magic-line {
     transform: translateY(0px) !important;
   }
