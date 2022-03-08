@@ -70,6 +70,7 @@
   .wrapper-line {
     display: none;
     @media only screen and (max-width: 1800px) {
+      display: inline;
       height: 2px;
       width: 176px;
       margin-left: -5px;
