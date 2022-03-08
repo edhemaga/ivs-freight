@@ -54,7 +54,6 @@ export class NavigationRouteComponent implements OnInit {
     const flegId = JSON.parse(localStorage.getItem('subroute_active'));
 
     if (flegId && this.route.id === flegId) {
-      console.log('FROM ROUTING ', this.route);
       this.onReloadSubroute(flegId);
     }
 

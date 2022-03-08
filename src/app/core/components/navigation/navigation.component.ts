@@ -46,7 +46,6 @@ export class NavigationComponent {
     this.onActivateFooterRoute(false);
 
     if (Array.isArray(subroute.routes)) {
-      console.log('FROM SUBROUTING NAV', subroute);
       this.activationSubRoute(index, subroute);
     } else if (index > -1) {
       this.activationMainRoute(index);
@@ -75,9 +74,7 @@ export class NavigationComponent {
       this.isActiveSubroute = true;
       this.isActiveSubrouteIndex = index;
       this.navigation[index].isRouteActive = true;
-      console.log(this.navigation[index]);
     }
-    console.log(this.navigation[index]);
   }
 
   private activationMainRoute(index: number) {

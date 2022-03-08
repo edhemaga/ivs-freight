@@ -20,11 +20,6 @@ export class NavigationSubrouteComponent {
   public onSubrouteAction(subroute: NavigationSubRoutes) {
     if (this.subroute.id === subroute.activeRouteFlegId) {
       localStorage.setItem('subroute_active', this.subroute.id.toString());
-      console.log({
-        routeId: this.subroute.id,
-        routes: this.subroute.route,
-        activeRouteFlegId: subroute.activeRouteFlegId,
-      });
       this.onSubrouteActiveEvent.emit({
         routeId: this.subroute.id,
         routes: this.subroute.route,
