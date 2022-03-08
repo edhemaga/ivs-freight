@@ -14,11 +14,12 @@
     -ms-user-select: none;
     user-select: none;
     color: #b7b7b7;
-
-    
     margin-bottom: 1px;
-    
-  
+
+    &:nth-child(1) {
+      margin-top: 2px;
+    }
+
     .subroutes-item {
       margin: 0;
       margin-left: 48px;
@@ -28,7 +29,7 @@
     }
 
     &:hover {
-      transition: all .5s ease-in;
+      transition: all 0.5s ease-in;
       color: #919191;
     }
   }
@@ -57,9 +58,12 @@
   }
 
   .magic-line-selected {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
   }
-  
+
   .subroutes:nth-child(1):hover ~ .magic-line {
     transform: translateY(0px) !important;
   }

@@ -43,7 +43,6 @@ export class NavigationComponent {
     const index = this.navigation.findIndex(
       (item) => item.id === subroute.routeId
     );
-    console.log(subroute);
     this.onActivateFooterRoute(false);
 
     if (Array.isArray(subroute.routes)) {
@@ -73,7 +72,7 @@ export class NavigationComponent {
     }
 
     if (index !== this.isActiveSubrouteIndex) {
-      console.log('Reload');
+
       this.navigation.forEach((nav) => (nav.isRouteActive = false));
       this.isActiveSubroute = true;
       this.activeSubrouteFleg = false;

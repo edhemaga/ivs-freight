@@ -2,7 +2,7 @@
   <div
     *ngFor="let item of subroute.route; trackBy: identifySubroute"
     class="subroutes"
-    [ngClass]="{ 'magic-line-selected': isActiveRouteOnReload(item.route)}"
+    [ngClass]="{ 'magic-line-selected': isActiveRouteOnReload(item.route) }"
     [routerLink]="item.route"
     routerLinkActive="subroute-active"
     (click)="onSubrouteAction(item)"

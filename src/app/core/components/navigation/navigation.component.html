@@ -13,7 +13,10 @@
       *ngIf="isModalPanelOpen && isNavigationHovered"
       (onModalPanelCloseEvent)="onPanelEvent($event)"
     ></app-navigation-modals>
-    <div class="wrapper-container" [ngClass]="{'wrapper-container-nohover': !isNavigationHovered}">
+    <div
+      class="wrapper-container"
+      [ngClass]="{ 'wrapper-container-nohover': !isNavigationHovered }"
+    >
       <div
         class="navigation-routes-container"
         (mouseenter)="onHoveredRoutesContainer(true)"

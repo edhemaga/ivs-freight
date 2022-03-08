@@ -2,7 +2,9 @@
 
 <div
   class="nav-item"
-  [ngClass]="{ 'nav-item-active': route.isRouteActive || route.isSubrouteActive}"
+  [ngClass]="{
+    'nav-item-active': route.isRouteActive || route.isSubrouteActive
+  }"
   (mouseenter)="isNavItemHovered = true"
   (mouseleave)="isNavItemHovered = false"
   (click)="onRouteAction()"
@@ -11,7 +13,7 @@
 >
   <div
     [ngClass]="{
-      'nav-item-active-box': route.isRouteActive || route.isSubrouteActive 
+      'nav-item-active-box': route.isRouteActive || route.isSubrouteActive
     }"
   ></div>
 

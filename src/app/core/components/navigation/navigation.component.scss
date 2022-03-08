@@ -68,6 +68,7 @@
   }
 
   .wrapper-line {
+    display: none;
     @media only screen and (max-width: 1800px) {
       height: 2px;
       width: 176px;
@@ -93,8 +94,13 @@
     position: relative;
 
     @media only screen and (max-width: 1800px) {
+      height: 526.5px;
       overflow: visible;
       width: auto;
+    }
+
+    @media only screen and (max-width: 1800px) {
+      height: auto;
     }
   }
 
@@ -129,6 +135,9 @@
   }
 
   .magic-line-selected {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
   }
 

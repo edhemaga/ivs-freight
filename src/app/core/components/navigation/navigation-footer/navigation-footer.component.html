@@ -2,7 +2,7 @@
   <div
     *ngFor="let item of footerData; trackBy: identify; let ind = index"
     class="nav-footer-item"
-    [ngClass]="{'nav-footer-item-scaleWidth': !isNavigationHovered}"
+    [ngClass]="{ 'nav-footer-item-scaleWidth': !isNavigationHovered }"
     (click)="onAction(ind, 'Open User Panel')"
     [routerLink]="item.route"
     routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
