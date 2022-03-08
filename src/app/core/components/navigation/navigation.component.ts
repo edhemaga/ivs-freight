@@ -43,7 +43,7 @@ export class NavigationComponent {
     const index = this.navigation.findIndex(
       (item) => item.id === subroute.routeId
     );
-      console.log(subroute)
+    console.log(subroute);
     this.onActivateFooterRoute(false);
 
     if (Array.isArray(subroute.routes)) {
@@ -57,7 +57,7 @@ export class NavigationComponent {
     if (index === this.isActiveSubrouteIndex) {
       this.navigation[index].isRouteActive =
         !this.navigation[index].isRouteActive;
-        
+
       if (subroute.activeRouteFlegId === this.navigation[index].id) {
         this.isActiveSubroute = true;
         this.activeSubrouteFleg = true;
@@ -73,13 +73,15 @@ export class NavigationComponent {
     }
 
     if (index !== this.isActiveSubrouteIndex) {
-      console.log("Reload")
+      console.log('Reload');
       this.navigation.forEach((nav) => (nav.isRouteActive = false));
       this.isActiveSubroute = true;
       this.activeSubrouteFleg = false;
+      if (this.isActiveSubrouteIndex != -1) {
+        this.navigation[this.isActiveSubrouteIndex].isSubrouteActive = false;
+      }
       this.isActiveSubrouteIndex = index;
       this.navigation[index].isRouteActive = true;
-      this.navigation[index].isSubrouteActive = false;
     }
   }
 
