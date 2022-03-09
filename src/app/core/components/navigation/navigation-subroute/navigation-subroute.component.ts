@@ -1,5 +1,9 @@
-import { Navigation, NavigationSubRoute } from './../model/navigation.model';
-import { Component, Input,} from '@angular/core';
+import {
+  Navigation,
+  NavigationSubRoute,
+  NavigationSubRoutes,
+} from './../model/navigation.model';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,24 +13,26 @@ import { Router } from '@angular/router';
 })
 export class NavigationSubrouteComponent {
   @Input() subroute: Navigation;
-  @Input() isSubrouteHeaderActive: boolean = false;
-  public isSubrouteActive: boolean = false;
+  @Output() onSubrouteActiveEvent = new EventEmitter<NavigationSubRoutes>();
 
   constructor(private router: Router) {}
+
+  public onSubrouteAction(subroute: NavigationSubRoutes) {
+    if (this.subroute.id === subroute.activeRouteFlegId) {
+      localStorage.setItem('subroute_active', this.subroute.id.toString());
+      this.onSubrouteActiveEvent.emit({
+        routeId: this.subroute.id,
+        routes: this.subroute.route,
+        activeRouteFlegId: subroute.activeRouteFlegId,
+      });
+    }
+  }
+
+  public isActiveRouteOnReload(route: string): boolean {
+    return this.router.url.includes(route);
+  }
 
   public identifySubroute(index: number, item: NavigationSubRoute): string {
     return item.name;
   }
-
-  public isActiveRouteOnReload(route: string): boolean {
-    if(this.router.url.includes(route)) {
-      this.isSubrouteActive = true;
-      return this.router.url.includes(route)
-    }
-    else {
-      this.isSubrouteActive = false;
-      return false;
-    }
-  }
-
 }

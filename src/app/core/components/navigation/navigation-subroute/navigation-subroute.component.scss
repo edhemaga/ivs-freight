@@ -14,6 +14,7 @@
     -ms-user-select: none;
     user-select: none;
     color: #b7b7b7;
+    margin-bottom: 1px;
 
     &:nth-child(1) {
       margin-top: 2px;
@@ -28,7 +29,7 @@
     }
 
     &:hover {
-      transition: all .5s ease-in;
+      transition: all 0.5s ease-in;
       color: #919191;
     }
   }
@@ -46,10 +47,10 @@
     display: inline-block;
     position: absolute;
     left: -7px;
-    top: 0px;
+    top: 1px;
     content: "";
     width: 178px;
-    height: 28px;
+    height: 27px;
     background: #f7f7f7;
     border-radius: 3px;
     transition: transform 0.2s ease-in;
@@ -57,9 +58,12 @@
   }
 
   .magic-line-selected {
-    
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
-  
+
   .subroutes:nth-child(1):hover ~ .magic-line {
     transform: translateY(0px) !important;
   }
@@ -69,74 +73,74 @@
   }
 
   .subroutes:nth-child(2):hover ~ .magic-line {
-    transform: translateY(28px) !important;
+    transform: translateY(29px) !important;
   }
 
   .magic-line-selected:nth-child(2) ~ .magic-line {
-    transform: translateY(28px);
+    transform: translateY(29px);
   }
 
   .subroutes:nth-child(3):hover ~ .magic-line {
-    transform: translateY(56px) !important;
+    transform: translateY(58px) !important;
   }
 
   .magic-line-selected:nth-child(3) ~ .magic-line {
-    transform: translateY(56px);
+    transform: translateY(58px);
   }
 
   .subroutes:nth-child(4):hover ~ .magic-line {
-    transform: translateY(84px) !important;
+    transform: translateY(87px) !important;
   }
 
   .magic-line-selected:nth-child(4) ~ .magic-line {
-    transform: translateY(84px);
+    transform: translateY(87px);
   }
 
   .subroutes:nth-child(5):hover ~ .magic-line {
-    transform: translateY(112px) !important;
+    transform: translateY(116px) !important;
   }
 
   .magic-line-selected:nth-child(5) ~ .magic-line {
-    transform: translateY(112px);
+    transform: translateY(116px);
   }
 
   .subroutes:nth-child(6):hover ~ .magic-line {
-    transform: translateY(140px) !important;
+    transform: translateY(145px) !important;
   }
 
   .magic-line-selected:nth-child(6) ~ .magic-line {
-    transform: translateY(140px);
+    transform: translateY(145px);
   }
 
   .subroutes:nth-child(7):hover ~ .magic-line {
-    transform: translateY(168px) !important;
+    transform: translateY(174px) !important;
   }
 
   .magic-line-selected:nth-child(7) ~ .magic-line {
-    transform: translateY(168px);
+    transform: translateY(174px);
   }
 
   .subroutes:nth-child(8):hover ~ .magic-line {
-    transform: translateY(196px) !important;
+    transform: translateY(203px) !important;
   }
 
   .magic-line-selected:nth-child(8) ~ .magic-line {
-    transform: translateY(196px);
+    transform: translateY(203px);
   }
 
   .subroutes:nth-child(9):hover ~ .magic-line {
-    transform: translateY(224px) !important;
+    transform: translateY(232px) !important;
   }
 
   .magic-line-selected:nth-child(9) ~ .magic-line {
-    transform: translateY(224px);
+    transform: translateY(232px);
   }
 
   .subroutes:nth-child(10):hover ~ .magic-line {
-    transform: translateY(252px) !important;
+    transform: translateY(261px) !important;
   }
 
   .magic-line-selected:nth-child(10) ~ .magic-line {
-    transform: translateY(252px);
+    transform: translateY(261px);
   }
 }

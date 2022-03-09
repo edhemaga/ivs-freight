@@ -9,7 +9,7 @@ const routes: Routes = [
     loadChildren: () => import('./core/components/authentication/auth.module').then((m) => m.AuthModule)
   },
   {
-    path: '',
+    path: 'dashboard',
     loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
     canActivate: [AuthGuard],
   },
@@ -29,12 +29,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'load',
+    path: 'customer',
     loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
     canActivate: [AuthGuard],
   },
   {
-    path: 'miles',
+    path: 'contact',
     loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
     canActivate: [AuthGuard],
   },

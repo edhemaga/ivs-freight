@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Output} from '@angular/core';
-import {CustomModalService} from 'src/app/core/services/modals/custom-modal.service';
-import {DriverManageComponent} from '../../modals/driver-manage/driver-manage.component';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { DriverManageComponent } from '../../modals/driver-manage/driver-manage.component';
 import {
   accountingNavigationData,
   fuelNavigationData,
@@ -9,9 +9,9 @@ import {
   safetyNavigationData,
   toolsNavigationData,
 } from '../model/navigation-data';
-import {NavigationModal} from '../model/navigation.model';
-import {TruckManageComponent} from "../../modals/truck-manage/truck-manage.component";
-import {TrailerManageComponent} from "../../modals/trailer-manage/trailer-manage.component";
+import { NavigationModal } from '../model/navigation.model';
+import { TruckManageComponent } from '../../modals/truck-manage/truck-manage.component';
+import { TrailerManageComponent } from '../../modals/trailer-manage/trailer-manage.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -19,7 +19,10 @@ import {TrailerManageComponent} from "../../modals/trailer-manage/trailer-manage
   styleUrls: ['./navigation-modals.component.scss'],
 })
 export class NavigationModalsComponent {
-  @Output() onModalPanelCloseEvent = new EventEmitter<{ type: boolean, name: string }>();
+  @Output() onModalPanelCloseEvent = new EventEmitter<{
+    type: boolean;
+    name: string;
+  }>();
 
   public generalNavigationData: NavigationModal[] = generalNavigationData;
   public toolsNavigationData: NavigationModal[] = toolsNavigationData;
@@ -30,13 +33,12 @@ export class NavigationModalsComponent {
 
   public changeTextHoverOnCloseModal: boolean = false;
 
-  constructor(private customModalService: CustomModalService) {
-  }
+  constructor(private customModalService: CustomModalService) {}
 
   public onAction(action: string, item?: NavigationModal) {
     switch (action) {
       case 'Close Panel': {
-        this.onModalPanelCloseEvent.emit({type: false, name: 'Modal Panel'});
+        this.onModalPanelCloseEvent.emit({ type: false, name: 'Modal Panel' });
         break;
       }
       case 'Open Modal': {
@@ -58,20 +60,30 @@ export class NavigationModalsComponent {
       case 'driver':
         this.customModalService.openModal(
           DriverManageComponent,
-          {data},
+          { data },
           null,
-          {size: 'small'}
+          { size: 'small' }
         );
         break;
 
       case 'truck':
-        this.customModalService.openModal(TruckManageComponent, {data}, null, {size: 'small'});
+        this.customModalService.openModal(
+          TruckManageComponent,
+          { data },
+          null,
+          { size: 'small' }
+        );
         break;
 
       case 'trailer':
-        this.customModalService.openModal(TrailerManageComponent, {data}, null, {
-          size: 'small',
-        });
+        this.customModalService.openModal(
+          TrailerManageComponent,
+          { data },
+          null,
+          {
+            size: 'small',
+          }
+        );
         break;
 
       /*

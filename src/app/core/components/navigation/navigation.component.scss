@@ -26,8 +26,69 @@
 
   .navigation-top,
   .navigation-bottom {
-    padding-left: 4px;
+    padding-left: 5px;
+
+    @media only screen and (max-width: 1800px) {
+      overflow: visible;
+    }
   }
+  //------- ZOOM IN 110% & 125% for routing container
+
+  .wrapper-container {
+    @media only screen and (max-width: 1800px) {
+      position: absolute;
+      top: 115px;
+      left: 6px;
+
+      padding: 11px;
+      height: 600px;
+      width: 194px;
+
+      overflow-y: scroll;
+      scrollbar-width: 0px;
+
+      &::-webkit-scrollbar {
+        width: 0px;
+      }
+    }
+
+    @media only screen and (max-width: 1600px) {
+      height: 500px;
+    }
+
+    @media only screen and (max-width: 1300px) {
+      height: 377px;
+    }
+  }
+
+  .wrapper-container-nohover {
+    @media only screen and (max-width: 1800px) {
+      width: 50px;
+    }
+  }
+
+  .wrapper-line {
+    display: none;
+    @media only screen and (max-width: 1800px) {
+      display: inline;
+      height: 2px;
+      width: 176px;
+      margin-left: -5px;
+      background-color: #b7b7b7;
+      position: absolute;
+      bottom: 111px;
+    }
+
+    @media only screen and (max-width: 1600px) {
+      bottom: 109px;
+    }
+
+    @media only screen and (max-width: 1300px) {
+      bottom: 107px;
+    }
+  }
+
+  //------- end
 
   .navigation-routes-container {
     margin-top: -8px;
@@ -35,20 +96,19 @@
 
     @media only screen and (max-width: 1800px) {
       height: 526.5px;
-      border-bottom: 2px solid #f7f7f7;
-      overflow: hidden;
-      overflow-y: scroll;
-      scrollbar-width: none;
+      overflow: visible;
+      width: auto;
+    }
 
-      &::-webkit-scrollbar {
-        width: 0px;
-      }
+    @media only screen and (max-width: 1800px) {
+      height: auto;
     }
   }
 
   .navigation-routes {
     margin-left: 1px;
-    padding-bottom: 2px;
+    padding-bottom: 1px;
+    padding-top: 1px;
   }
 
   .subroute-card {
@@ -76,9 +136,12 @@
   }
 
   .magic-line-selected {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
   }
-  
+
   .navigation-routes:nth-child(1):hover ~ .magic-line {
     transform: translateY(0px) !important;
   }
@@ -96,90 +159,90 @@
   }
 
   .navigation-routes:nth-child(3):hover ~ .magic-line {
-    transform: translateY(61px) !important;
+    transform: translateY(62px) !important;
   }
 
   .magic-line-selected:nth-child(3) ~ .magic-line {
-    transform: translateY(61px);
+    transform: translateY(62px);
   }
 
   .navigation-routes:nth-child(4):hover ~ .magic-line {
-    transform: translateY(91px) !important;
+    transform: translateY(92px) !important;
   }
 
   .magic-line-selected:nth-child(4) ~ .magic-line {
-    transform: translateY(91px);
+    transform: translateY(92px);
   }
 
   .navigation-routes:nth-child(5):hover ~ .magic-line {
-    transform: translateY(121px) !important;
+    transform: translateY(122px) !important;
   }
 
   .magic-line-selected:nth-child(5) ~ .magic-line {
-    transform: translateY(121px);
+    transform: translateY(122px);
   }
 
   .navigation-routes:nth-child(6):hover ~ .magic-line {
-    transform: translateY(151px) !important;
+    transform: translateY(152px) !important;
   }
 
   .magic-line-selected:nth-child(6) ~ .magic-line {
-    transform: translateY(151px);
+    transform: translateY(152px);
   }
 
   .navigation-routes:nth-child(7):hover ~ .magic-line {
-    transform: translateY(181px) !important;
+    transform: translateY(182px) !important;
   }
 
   .magic-line-selected:nth-child(7) ~ .magic-line {
-    transform: translateY(181px);
+    transform: translateY(182px);
   }
 
   .navigation-routes:nth-child(8):hover ~ .magic-line {
-    transform: translateY(211px) !important;
+    transform: translateY(212px) !important;
   }
 
   .magic-line-selected:nth-child(8) ~ .magic-line {
-    transform: translateY(211px);
+    transform: translateY(212px);
   }
 
   .navigation-routes:nth-child(9):hover ~ .magic-line {
-    transform: translateY(241px) !important;
+    transform: translateY(242px) !important;
   }
 
   .magic-line-selected:nth-child(9) ~ .magic-line {
-    transform: translateY(241px);
+    transform: translateY(242px);
   }
 
   .navigation-routes:nth-child(10):hover ~ .magic-line {
-    transform: translateY(271px) !important;
+    transform: translateY(272px) !important;
   }
 
   .magic-line-selected:nth-child(10) ~ .magic-line {
-    transform: translateY(271px);
+    transform: translateY(272px);
   }
 
   .navigation-routes:nth-child(11):hover ~ .magic-line {
-    transform: translateY(301px) !important;
+    transform: translateY(302px) !important;
   }
 
   .magic-line-selected:nth-child(11) ~ .magic-line {
-    transform: translateY(301px);
+    transform: translateY(302px);
   }
 
   .navigation-routes:nth-child(12):hover ~ .magic-line {
-    transform: translateY(331px) !important;
+    transform: translateY(332px) !important;
   }
 
   .magic-line-selected:nth-child(12) ~ .magic-line {
-    transform: translateY(331px);
+    transform: translateY(332px);
   }
 
   .navigation-routes:nth-child(13):hover ~ .magic-line {
-    transform: translateY(360px) !important;
+    transform: translateY(362px) !important;
   }
 
   .magic-line-selected:nth-child(13) ~ .magic-line {
-    transform: translateY(360px);
+    transform: translateY(362px);
   }
 }
