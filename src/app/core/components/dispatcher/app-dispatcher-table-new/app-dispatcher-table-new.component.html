@@ -1,0 +1,841 @@
+<div [class.multiple_dispatch_user]="headerTitle" class="multiple_with_toolbar">
+  <div
+    *ngIf="waitForResponse || (manualLock && (headerTitle == 'Team Board' || dispatcher == -1))"
+    @iconAnimation
+    [class.error]="errorBtn"
+    [class.goTop]="!gridIndex || gridIndex == -1"
+    class="loadingItem"
+  ></div>
+
+  <div class="d-flex">
+    <div class="dispatcher_table_list k-grid tbody_container">
+      <table
+        (cdkDropListDropped)="dropList($event)"
+        [cdkDropListData]="gridData"
+        [cdkDropListSortPredicate]="containerPredictPosition"
+        [ngClass]="isBoardLocked ? 'locked' : 'unlocked'"
+        cdkDropList
+        class="dispatchers_table"
+      >
+        <thead>
+        <tr class="k-grid-header">
+          <th class="k-header text-left truck-col custom-kendo-header">Truck#</th>
+          <th class="k-header text-left trailer-col custom-kendo-header">Trailer#</th>
+          <th class="k-header text-left driver-col custom-kendo-header">Driver</th>
+          <th class="k-header text-left email-phone-col custom-kendo-header">
+            <div
+              class="email_phone_hover"
+            >Phone or Email
+            </div>
+          </th>
+          <th class="k-header text-left destination-col custom-kendo-header">Location</th>
+          <th
+            (click)="handleSortItems()"
+            class="k-header text-left status-col custom-kendo-header"
+          >
+            Status
+            <button *ngIf="showSortItem" [ngClass]="sortDest" class="sort_button_item">
+              <svg-icon src="/assets/img/sort_item.svg"></svg-icon>
+            </button>
+          </th>
+          <th class="k-header text-left pickup-col custom-kendo-header">Pickup</th>
+          <th class="k-header text-left delivery-col custom-kendo-header">Delivery</th>
+          <th class="k-header text-left hos-col custom-kendo-header"></th>
+          <th class="k-header text-left dispatcher-col true-dispatcher custom-kendo-header"></th>
+          <th
+            class="k-header text-left dispatcher-col note-col header_note_col custom-kendo-header"
+          ></th>
+          <th class="k-header text-left dispatcher-col add-col custom-kendo-header"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of gridData; let rowIndex = index">
+          <!-- Truck Column -->
+          <td class="text-left drag-col truck-col">
+            <div
+              [@.disabled]="!signalMessageType"
+              [cdkDragData]="item"
+              [cdkDragDisabled]="rowIndex === gridData.length || isBoardLocked || item.isEmpty"
+              [cdkDragPreviewClass]="'dragged-row'"
+              [class.empty_row]="!item.truckNumber"
+              cdkDrag
+              cdkDragBoundary=".tbody_container"
+              cdkDragLockAxis="y"
+              cdkDragRootElement="tr"
+            >
+              <div
+                [class.empty_row]="!item.truckNumber"
+                cdkDragHandle
+                class="dispacher-card dispatch-box k-grid-ignore-click"
+              >
+                  <span
+                    *ngIf="item.truckNumber !== null"
+                    @userTextAnimations
+                    [class.hasColor]="item.truckColor"
+                    [class.otherOpacityAdded]="statusOpenedIndex > -1"
+                    [ngClass]="item.truckColor ? 'truck_' + item.truckColor.toLowerCase() : ''"
+                    class="drag-span"
+                  >
+                    <span
+                      [innerHtml]="item.truckNumber | taHighlight: highlightingWords"
+                      [ngStyle]="{ color: statusOpenedIndex > -1 ? '' : '#919191' }"
+                      appSelectionColor
+                      class="select_span"
+                    >
+                    </span>
+                    <div *ngIf="
+                      item.truckNumber !== null &&
+                      !isBoardLocked &&
+                      item.pickup === null &&
+                      item.delivery === null
+                    "
+                         [ngClass]="item.trailerColor && 'close_' + item.truckColor.toLowerCase()"
+                         class="dispatcher-close cursor-pointer"
+                    >
+                      <svg-icon
+                        (click)="updateTruck(undefined, item)"
+                        src="assets/img/dispatchboard-close-new.svg"
+                      >
+                      </svg-icon>
+                    </div>
+                  </span>
+              </div>
+              <button
+                (click)="showNextDropdown(rowIndex)"
+                *ngIf="item.truckNumber === null && !isBoardLocked && !item.enterNewAddress"
+                [class.active]="truckSelectOpened == rowIndex"
+                [ngClass]="item.id === null ? 'add-row' : ''"
+                class="btn-transparent dispatch-bottom-add"
+              >
+                <svg-icon
+                  appTooltip="Add Truck"
+                  class="icon-hover-blue-22 cursor-pointer d-flex"
+                  main_id="addTruck"
+                  position="bottom-right"
+                  src="assets/img/svgs/add-plus-icon.svg"
+                  tooltipBackground="#919191"
+                >
+                </svg-icon>
+              </button>
+              <ng-select
+                #truckDropdown
+                (change)="addTruck($event, item.id, truckDropdown, rowIndex)"
+                *ngIf="truckSelectOpened == rowIndex"
+                [clearable]="false"
+                [isOpen]="true"
+                [items]="loadTrucks"
+                [searchFn]="customSearchFn"
+                bindLabel="truckNumber"
+                bindValue="id"
+                class="dispatch-dropdown"
+              >
+                <ng-template let-item="item" ng-label-tmp>
+                  <span class="disp_selected">{{ item.truckNumber }}</span>
+                </ng-template>
+                <ng-template
+                  let-index="index"
+                  let-item="item"
+                  let-search="searchTerm"
+                  ng-option-tmp
+                >
+                  <span [ngOptionHighlight]="search">{{ item.truckNumber }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </td>
+
+          <!-- Trailer Column -->
+          <td class="text-left drag-col trailer-col">
+            <div
+              (cdkDropListDropped)="dropTrailer($event, rowIndex)"
+              (cdkDropListEntered)="cdkDropListEnteredTrailer($event)"
+              [cdkDropListConnectedTo]="rowIndex | cdkconnect : this.gridData.length : gridIndex : 'trailer'"
+              [cdkDropListData]="item"
+              [class.empty_row]="!item.trailerNumber"
+              cdkDropList
+              class="dispatch-list"
+              id="{{ rowIndex | cdkid : gridIndex : 'trailer'}}"
+            >
+              <div
+                (cdkDragStarted)="cdkDragStartedTrailer($event, rowIndex)"
+                [@.disabled]="!signalMessageType"
+                [cdkDragDisabled]="
+                    rowIndex === gridData.length ||
+                    item.trailerNumber === null ||
+                    isBoardLocked ||
+                    (item.pickup != null && item.delivery != null)
+                  "
+                [cdkDragPreviewClass]="'in-table-dragged-row'"
+                [class.empty_row]="!item.trailerNumber"
+                cdkDrag
+                cdkDragBoundary=".k-grid-container"
+                cdkDragLockAxis="y"
+                class="dispacher-card dispatch-box k-grid-ignore-click"
+              >
+                <div
+                  *cdkDragPlaceholder
+                  [ngClass]="'trailer_' + item.trailerColor.toLowerCase()"
+                  class="example-custom-placeholder"
+                ></div>
+                <span
+                  *ngIf="item.trailerNumber !== null"
+                  @userTextAnimations
+                  [class.hasColor]="item.trailerColor"
+                  [class.otherOpacityAdded]="statusOpenedIndex > -1"
+                  [ngClass]="item.trailerColor && 'trailer_' + item.trailerColor.toLowerCase()"
+                  class="drag-span"
+                >
+                    <span
+                      [innerHtml]="item.trailerNumber | taHighlight: highlightingWords"
+                      [ngStyle]="{ color: statusOpenedIndex > -1 ? '' : '#919191' }"
+                      appSelectionColor
+                      class="select_span"
+                    >
+                    </span>
+                    <div
+                      *ngIf="!isBoardLocked"
+                      [ngClass]="item.trailerColor && 'close_' + item.trailerColor.toLowerCase()"
+                      class="dispatcher-close cursor-pointer">
+                      <svg-icon
+                        (click)="updateTrailer(undefined, item)"
+                        src="assets/img/dispatchboard-close-new.svg"
+                      >
+                      </svg-icon>
+                    </div>
+
+                  </span>
+              </div>
+              <button
+                (click)="showNextTrailerDropdown(rowIndex)"
+                *ngIf="item.trailerNumber === null && !isBoardLocked"
+                [class.active]="trailerSelectOpened == rowIndex"
+                [ngClass]="item.id === null ? 'add-row' : ''"
+                class="btn-transparent dispatch-bottom-add"
+              >
+                <svg-icon
+                  appTooltip="Add Trailer"
+                  class="icon-hover-blue-22 cursor-pointer d-flex"
+                  main_id="addTrailer"
+                  position="bottom-right"
+                  src="assets/img/svgs/add-plus-icon.svg"
+                  tooltipBackground="#919191"
+                >
+                </svg-icon>
+              </button>
+              <ng-select
+                #trailerDropdown
+                (change)="addTrailer($event, item.id, null, null, trailerDropdown, rowIndex)"
+                *ngIf="trailerSelectOpened == rowIndex"
+                [clearable]="false"
+                [isOpen]="true"
+                [items]="loadTrailers"
+                [searchFn]="customSearchFn"
+                bindLabel="trailerNumber"
+                bindValue="id"
+                class="dispatch-dropdown"
+              >
+                <ng-template let-item="item" ng-label-tmp>
+                  <span>{{ item.trailerNumber }}</span>
+                </ng-template>
+                <ng-template
+                  let-index="index"
+                  let-item="item"
+                  let-search="searchTerm"
+                  ng-option-tmp
+                >
+                  <span [ngOptionHighlight]="search">{{ item.trailerNumber }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </td>
+
+          <!-- Driver Column -->
+          <td class="text-left drag-col driver-col list">
+            <div
+              (cdkDropListDropped)="dropDriver($event, rowIndex)"
+              [cdkDropListConnectedTo]="rowIndex | cdkconnect : this.gridData.length : gridIndex : 'driver'"
+              [cdkDropListData]="item"
+              [class.empty_row]="!item.driverName"
+              cdkDropList
+              class="dispatch-list"
+              id="{{ rowIndex | cdkid : gridIndex : 'driver'}}"
+            >
+              <div
+                (cdkDragStarted)="cdkDragStartedDriver($event, rowIndex)"
+                [@.disabled]="!signalMessageType"
+                [cdkDragDisabled]="
+                    rowIndex === gridData.length || item.driverName === null || isBoardLocked
+                  "
+                [cdkDragPreviewClass]="'in-table-dragged-row'"
+                [class.empty_row]="!item.driverName"
+                cdkDrag
+                cdkDragBoundary=".k-grid-container"
+                cdkDragLockAxis="y"
+                class="dispacher-card dispatch-box k-grid-ignore-click"
+              >
+                  <span
+                    *ngIf="item.driverName !== null"
+                    @userTextAnimations
+                    [class.statusOpened]="statusOpenedIndex > -1"
+                    class="drag-span no-color"
+                  >
+                    <span
+                      [innerHtml]="item.driverName | taHighlight: highlightingWords"
+                      [ngStyle]="{ color: statusOpenedIndex > -1 ? '' : '#919191' }"
+                      appSelectionColor
+                      class="select_span"
+                    >
+                    </span>
+
+                    <div *ngIf="!isBoardLocked" class="dispatcher-close cursor-pointer">
+                      <svg-icon
+                        (click)="updateDriver(undefined, item)"
+                        src="assets/img/dispatchboard-close-new.svg"
+                      >
+                      </svg-icon>
+                    </div>
+                  </span>
+                <div *cdkDragPlaceholder class="example-custom-placeholder"></div>
+              </div>
+              <button
+                (click)="showNextDriverDropdown(rowIndex)"
+                *ngIf="item.driverName === null && !isBoardLocked"
+                [class.active]="driverSelectOpened == rowIndex"
+                [ngClass]="item.id === null ? 'add-row' : ''"
+                class="btn-transparent dispatch-bottom-add"
+              >
+                <svg-icon
+                  appTooltip="Add Driver"
+                  class="driverItem icon-hover-blue-22 cursor-pointer d-flex"
+                  main_id="addDriver"
+                  position="bottom-right"
+                  src="assets/img/svgs/add-plus-icon.svg"
+                  tooltipBackground="#919191"
+                >
+                </svg-icon>
+              </button>
+              <ng-select
+                #driverDropdown
+                (blur)="blurDriver($event)"
+                (change)="addDriver($event, item.id, null, null, driverDropdown, rowIndex)"
+                *ngIf="driverSelectOpened == rowIndex"
+                [clearable]="false"
+                [isOpen]="true"
+                [items]="loadDrivers"
+                [searchFn]="customSearchFn"
+                bindLabel="name"
+                bindValue="id"
+                class="dispatch-dropdown"
+              >
+                <ng-template let-item="item" ng-label-tmp>
+                  <div class="dropdown-item-wrapper">
+                      <span class="ta-dropdown-item"
+                      >{{ item.driverFirstName + ' ' + item.driverLastName }}
+                      </span>
+                  </div>
+                </ng-template>
+
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <div class="dropdown-item-wrapper ta-list-items">
+                      <span [ngOptionHighlight]="search" class="ta-dropdown-item">{{
+                        item.driverFirstName + ' ' + item.driverLastName
+                        }}</span>
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
+          </td>
+
+          <!--Phone and E-mail-->
+          <td class="text-left email-phone-col">
+            <div *ngIf="item.id !== null && item.driverId !== null" class="phone-em-hold">
+              <div [class.statusOpened]="statusOpenedIndex > -1" class="phone-email-col d-flex">
+                <div [class.hidden]="item.isPhone" class="phone-text">
+                    <span
+                      (click)="copy($event)"
+                      [innerHtml]="
+                        (item.driverPhone
+                          ? (item.driverPhone | mask: '(000) 000-0000')
+                          : 'no phone'
+                        ) | taHighlight: highlightingWords
+                      "
+                      [ngStyle]="{ color: statusOpenedIndex > -1 ? '' : '#919191' }"
+                      appSelectionColor
+                      class="select_span"
+                    >
+                    </span>
+                </div>
+                <div class="phone-email-copy-text">COPIED</div>
+                <div [class.hidden]="!item.isPhone" class="email-text">
+                    <span
+                      (click)="copy($event)"
+                      [innerHtml]="
+                        (item.driverEmail ? item.driverEmail : 'no email')
+                          | taHighlight: highlightingWords
+                      "
+                      [ngStyle]="{ color: statusOpenedIndex > -1 ? '' : '#919191' }"
+                      appSelectionColor
+                      class="select_span"
+                    >
+                    </span>
+                </div>
+                <div class="phone-email-copy-text">COPIED</div>
+                <button
+                  (click)="hoverPhoneEmailMain(rowIndex)"
+                  appTooltip="Switch to {{ item.isPhone ? 'phone' : 'email' }}"
+                  class="button-switch-email-phone"
+                  position="bottom-right"
+                  tooltipBackground="#919191">
+                  <svg-icon src="assets/img/phone-email-switch.svg"></svg-icon>
+                </button>
+              </div>
+            </div>
+          </td>
+
+          <!-- Location -->
+          <td class="text-left destination-col">
+            <div
+              #t2="ngbPopover"
+              *ngIf="item.enterNewAddress"
+              [ngbPopover]="pacContainer"
+              [placement]="['bottom', 'top']"
+              autoClose="outside"
+              class="form-label-group input-icon table-address-field address-field-wrapper"
+              triggers="manual"
+            >
+              <input
+                #newLocationField
+                #placesRef="ngx-places"
+                (blur)="locationChangeBlur(rowIndex)"
+                (focus)="showPacContainer($event)"
+                (onAddressChange)="handleAddressChange($event)"
+                [(ngModel)]="stopLocationAddress"
+                [options]="addressOption"
+                appInputFocus
+                class="form-control input-control required"
+                ngx-google-places-autocomplete
+                placeholder="Address, City, State Zip"
+                required
+              />
+            </div>
+            <div *ngIf="item.location !== null && !item.enterNewAddress && !item.isEmpty" class="full-loc-hold">
+                <span
+                  *ngIf="item.location !== null && !item.enterNewAddress && !item.isEmpty"
+                  [class.statusOpened]="statusOpenedIndex > -1"
+                  class="full_location_name"
+                ><span
+                  [innerHtml]="item.location | taHighlight: highlightingWords"
+                  [ngStyle]="{ color: statusOpenedIndex > -1 ? '' : '#919191' }"
+                  appSelectionColor
+                ></span>
+                </span>
+            </div>
+          </td>
+
+          <!-- Status -->
+          <td class="text-left status-col">
+            <div
+              *ngIf="
+                  item.truckId !== null &&
+                  (item.driverId !== null || (item.pickup !== null && item.delivery !== null))
+                "
+              [class.go_over_all]="rowIndex == statusOpenedIndex"
+              class="positionRel status_holder main_status_switch_holder"
+            >
+              <app-ta-status-switch
+                (changeVal)="addStatus($event, item, rowIndex)"
+                (openIndex)="openIndex($event)"
+                [dataItems]="item"
+                [openedStatus]="statusOpenedIndex"
+                [statusDate]="item.statusDateTime"
+                [statusHeight]="32"
+                [statusId]="item.statusId"
+                [statusMainIndex]="rowIndex"
+                [statusTypes]="'dispatch'"
+                [withStatusAgo]="true"
+              >
+              </app-ta-status-switch>
+            </div>
+          </td>
+
+          <!-- Pickup -->
+          <td class="text-left pickup-col">
+            <div *ngIf="!item.isEmpty" class="customTabsDispatchHold left">
+              <div
+                (mouseleave)="pickDeliveryHovered[rowIndex] = false"
+                (mouseover)="pickDeliveryHovered[rowIndex] = true"
+                *ngIf="item.truckId && item.driverId"
+                [class.active]="loadOpenedIndx == rowIndex"
+                [class.hovered]="pickDeliveryHovered[rowIndex] && statusOpenedIndex == -1"
+                [class.statusOpened]="statusOpenedIndex > -1"
+                class="customTabsDispatch left pickup-data"
+              >
+                <div *ngIf="item.pickupNumber" class="load-count no-back">
+                  <svg-icon
+                    *ngIf="item.pickupNumber < 10"
+                    name="svg_num_box_{{ item.pickupNumber }}"
+                  ></svg-icon>
+                  <svg-icon
+                    *ngIf="item.pickupNumber > 9"
+                    name="svg_num_over"
+                  ></svg-icon>
+                </div>
+                <div *ngIf="item.pickup !== null" class="text-ellipsis dispatch-pickup-delivery">
+                  <app-load-routes
+                    (openedRoutes)="openedRoutes($event)"
+                    [dataId]="item.id"
+                    [itemIndx]="rowIndex">
+                    <span
+                      [ngStyle]="{ color: statusOpenedIndex > -1 ? '' : '#919191' }"
+                      appSelectionColor
+                      class="select_span"
+                    >
+                    <div class="pick-del-location">
+                      {{ item.pickupJson?.address?.city + ', ' + item.pickupJson?.address?.stateShortName | taHighlight: highlightingWords }}
+                    </div>
+
+                      <div class="time_info">
+                        <div>05/09/21</div>
+                        <div>7:10PM</div>
+                      </div>
+                    </span>
+                  </app-load-routes>
+                </div>
+              </div>
+            </div>
+          </td>
+
+          <!-- Delivery -->
+          <td class="text-left delivery-col">
+            <div *ngIf="!item.isEmpty" class="customTabsDispatchHold right">
+              <div
+                (mouseleave)="pickDeliveryHovered[rowIndex] = false"
+                (mouseover)="pickDeliveryHovered[rowIndex] = true"
+                *ngIf="item.truckId && item.driverId"
+                [class.active]="loadOpenedIndx == rowIndex"
+                [class.hovered]="pickDeliveryHovered[rowIndex] && statusOpenedIndex == -1"
+                [class.statusOpened]="statusOpenedIndex > -1"
+                class="customTabsDispatch right destination-data"
+              >
+                <div *ngIf="item.deliveryNumber" class="load-count no-back">
+                  <svg-icon
+                    *ngIf="item.deliveryNumber < 10"
+                    name="svg_num_box_{{ item.deliveryNumber }}"
+                  ></svg-icon>
+                  <svg-icon
+                    *ngIf="item.deliveryNumber > 9"
+                    name="svg_num_over"
+                  ></svg-icon>
+                </div>
+                <div *ngIf="item.delivery !== null" class="text-ellipsis dispatch-pickup-delivery with-line-heights">
+                    <span class="cursor-pointer">
+                      <span
+                        [ngStyle]="{ color: statusOpenedIndex > -1 ? '' : '#919191' }"
+                        appSelectionColor
+                        class="select_span"
+                      >
+                        <div class="pick-del-location">
+                          {{item.deliveryJson?.address?.city + ', ' + item.deliveryJson?.address?.stateShortName | taHighlight: highlightingWords}}
+                        </div>
+                        <div class="time_info">
+                          <div>05/09/21</div>
+                          <div>7:10PM</div>
+                        </div>
+                      </span>
+                    </span>
+                </div>
+              </div>
+            </div>
+          </td>
+
+          <!-- HOS -->
+          <td class="text-center hos-col hos-column-wrapper">
+            <div
+              #t1="ngbPopover"
+              (click)="toggleHos(t1, item.hosJson, item.id)"
+              (hidden)="saveHosData(item.hosJson, item.driverId, item.id)"
+              *ngIf="!item.isEmpty"
+              [class.statusOpened]="statusOpenedIndex > -1"
+              [ngClass]="
+                  (item.hosJson?.hos)[item.hosJson.hos.length - 1]?.flag === 'on'
+                    ? 'active-flag'
+                    : 'inactive-flag'
+                "
+              [ngbPopover]="hos"
+              autoClose="outside"
+              class="hos-column"
+              placement="bottom"
+              triggers="manual"
+            >
+                <span
+                  *ngIf="item.driverName !== null && !item.isEmpty"
+                  [ngClass]="
+                    (item.hosJson?.hos)[item.hosJson.hos.length - 1]?.flag === 'on'
+                      ? 'active_hos'
+                      : 'innactive_hos'
+                  "
+                  appTooltip="HOS"
+                  class="hos_span"
+                  position="bottom-right"
+                  tooltipBackground="#919191"
+                >
+                  <span>{{
+                    (item.hosJson !== null ? item.hosJson?.hos : []) | hosTime
+                    }}</span>
+                  <svg-icon
+                    name="{{
+                      (item.hosJson?.hos)[item.hosJson.hos.length - 1]?.flag === 'on'
+                        ? 'hosactive'
+                        : 'hosinactive'
+                    }}"
+                  ></svg-icon>
+                </span>
+            </div>
+          </td>
+
+          <!-- Dispacher -->
+          <td class="text-center dispatcher-col true-dispatcher">
+            <div *ngIf="!item.isEmpty" class="initials_wrapper_main_hold">
+              <div
+                (mouseleave)="showAvatar[rowIndex] = false"
+                (mouseover)="showAvatar[rowIndex] = true"
+                *ngIf="
+                    item.pickupJson && item.dispatcherId !== undefined && item.dispatcherId !== null
+                  "
+                [class.statusOpened]="statusOpenedIndex > -1"
+                class="dispatcher-initials-wrapper innactive_wrapper"
+              >
+                  <span *ngIf="!showAvatar[rowIndex]" @iconAnimation>{{
+                    item.dispatcherName | nameInitials
+                    }}</span>
+                <img
+                  alt="main-avatar"
+                  *ngIf="showAvatar[rowIndex]"
+                  @iconAnimation
+                  [src]="
+                      item.dispatcherAvatar
+                        ? item.dispatcherAvatar
+                        : 'assets/img/svgs/main-avatar.svg'
+                    "
+                />
+              </div>
+            </div>
+          </td>
+
+          <!-- Note -->
+          <td class="text-center dispatcher-col note-col">
+            <div class="d-flex">
+              <div
+                *ngIf="!item.isEmpty"
+                [class.active]="item.gps_expanded"
+                [class.statusOpened]="statusOpenedIndex > -1"
+                [ngStyle]="{ zIndex: gridData.length - rowIndex }"
+                class="dispatcher-gps-location"
+              >
+                <div class="gps_info dispatch_info_table">
+                  <app-dispatcher-gps-table
+                    (setResizeGps)="setResizeGps($event)"
+                    [gpsFlag]="item.gpsFlag"
+                    [gps]="item.gps"
+                    [gps_expanded]="item.gps_expanded"
+                    [rowIndex]="rowIndex"
+                    [truckId]="item.truckId"
+                  ></app-dispatcher-gps-table>
+                </div>
+              </div>
+              <div
+                *ngIf="!item.isEmpty"
+                [class.active]="!item.gps_expanded"
+                [class.statusOpened]="statusOpenedIndex > -1"
+                class="dispatch_note"
+              >
+                  <span *ngIf="item.truckId" class="note_holder_span">
+                    <app-dispatcher-note
+                      (saveNoteValue)="saveNote($event, item.id)"
+                      (setResizeGps)="setResizeGps($event)"
+                      [note]="item.note"
+                      [note_expanded]="!item.gps_expanded"
+                      [rowIndex]="rowIndex"
+                    ></app-dispatcher-note>
+                  </span>
+              </div>
+            </div>
+          </td>
+
+          <!-- Add load -->
+          <td class="text-center dispatcher-col add-col">
+            <div
+              *ngIf="
+                item.id !== null &&
+                item.status?.id !== 1 &&
+                item.driver !== null &&
+                item.truck !== null &&
+                item.truckId != null"
+              class="new_load_dispatch_hold">
+              <button
+                (click)="openAddLoad(item)"
+                appTooltip="Assign load"
+                class="btn-transparent new_load_dispatch"
+                position="bottom-right"
+                tooltipBackground="#919191"
+              >
+                <svg-icon class="icon-hover-blue-16" src="assets/img/svgs/just_plus.svg">
+                </svg-icon>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <tr *ngIf="gridData.length == 0" class="k-grid-norecords">
+          <td colspan="12">No records available.</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="k-grid-toolbar d-flex">
+        <div class="container toolbar-container item_dispatch_head">
+          <div class="board_infos">
+            <div appSelectionColor class="board_infos_count" style="color: #6c6c6c;">
+              {{ infoCount.truckNumber }}
+              <span
+                [innerHTML]="infoCount.truckNumber == 1 ? 'TRUCK' : 'TRUCKS'"
+                appSelectionColor
+                style="color: #6c6c6c;"
+              ></span>
+            </div>
+            <div appSelectionColor class="board_infos_count" style="color: #6c6c6c;">
+              {{ infoCount.trailerNumber }}
+              <span
+                [innerHTML]="infoCount.trailerNumber == 1 ? 'TRAILER' : 'TRAILERS'"
+                appSelectionColor
+                style="color: #6c6c6c;"
+              ></span>
+            </div>
+            <div appSelectionColor class="board_infos_count" style="color: #6c6c6c;">
+              {{ infoCount.driverNumber }}
+              <span
+                [innerHTML]="infoCount.driverNumber == 1 ? 'DRIVER' : 'DRIVERS'"
+                appSelectionColor
+                style="color: #6c6c6c;"
+              ></span>
+            </div>
+          </div>
+          <div appSelectionColor class="board_name" style="color: #6c6c6c;">
+            {{ dispatcherInfo.dispatcherFirstName }} {{ dispatcherInfo.dispatcherLastName }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Popover for HOS -->
+<ng-template #hos let-data="value.data.hos" let-id="value.id">
+  <div class="slider-wrapper">
+    <div class="time-ruler">
+      <div *ngFor="let item of [].constructor(23); let i = index" class="d-flex">
+        <div [ngClass]="i === 11 ? ' noon-mark' : ''" class="hour-mark"></div>
+      </div>
+    </div>
+    <div
+      #firstList="cdkDropList"
+      (cdkDropListDropped)="dropHosList($event, data, id)"
+      [cdkDropListConnectedTo]="[secondList]"
+      [cdkDropListData]="this.returnListData(data, 'off')"
+      cdkDropList
+      class="inactive-parent-wrapper"
+    >
+      <div *ngFor="let item of data; let i = index" class="item-container inactive-parent">
+        <div *ngIf="item?.flag === 'off'" class="individual-item">
+          <div>
+            <div
+              [ngClass]="item?.flag === 'off' ? 'inactive' : 'active'"
+              cdkDrag
+              cdkDragBoundary=".slider-wrapper"
+              cdkDragLockAxis="y"
+              cdkDragRootElement=".individual-item"
+              class="value-container"
+              id="{{ returnValueId(i) }}"
+            >
+              <span cdkDragHandle style="cursor: grab;">
+                {{ formatTime(item.start, item.end) }}
+              </span>
+            </div>
+            <ng5-slider
+              (userChange)="userChangeEnd($event, i, data)"
+              [(highValue)]="item.end"
+              [(value)]="item.start"
+              [ngClass]="i + ' inactive-wrapper-slider'"
+              [options]="options"
+            ></ng5-slider>
+          </div>
+          <div class="button-wrapper" id="{{ returnButtonId(i) }}">
+            <span
+              (click)="addHOS(data, 'on')"
+              *ngIf="data.length < 3 && !data[i + 1]"
+              class="add-item-button active-button"
+            ></span>
+            <span
+              (click)="removeHOS(data, i)"
+              *ngIf="data.length > 1 && data.length === i + 1"
+              class="remove-item"
+            ></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      #secondList="cdkDropList"
+      (cdkDropListDropped)="dropHosList($event, data, id)"
+      [cdkDropListConnectedTo]="[firstList]"
+      [cdkDropListData]="this.returnListData(data, 'on')"
+      cdkDropList
+      class="active-parent-wrapper"
+    >
+      <div *ngFor="let item of data; let i = index" class="item-container active-parent">
+        <div *ngIf="item?.flag === 'on'" class="individual-item">
+          <div>
+            <div
+              [ngClass]="item?.flag === 'off' ? 'inactive' : 'active'"
+              cdkDrag
+              cdkDragBoundary=".slider-wrapper"
+              cdkDragHandle
+              cdkDragLockAxis="y"
+              cdkDragRootElement=".individual-item"
+              class="value-container"
+              id="{{ returnValueId(i) }}"
+            >
+              <span cdkDragHandle style="cursor: grab;">
+                {{ formatTime(item.start, item.end) }}
+              </span>
+            </div>
+            <ng5-slider
+              (userChange)="userChangeEnd($event, i, data)"
+              [(highValue)]="item.end"
+              [(value)]="item.start"
+              [ngClass]="'active-wrapper-slider'"
+              [options]="options"
+            ></ng5-slider>
+          </div>
+          <div class="button-wrapper" id="{{ returnButtonId(i) }}">
+            <span
+              (click)="addHOS(data, 'off')"
+              *ngIf="data.length < 3 && !data[i + 1]"
+              class="add-item-button inactive-button"
+            ></span>
+            <span
+              (click)="removeHOS(data, i)"
+              *ngIf="data.length > 1 && data.length === i + 1"
+              class="remove-item"
+            ></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #pacContainer let-data="data">
+  <div class="pac_main_cont" id="pac_main_cont"></div>
+</ng-template>
+
+
+<app-no-results *ngIf="filteringData && !gridData.length"></app-no-results>
+<!-- <app-no-empty-status *ngIf="!filteringData && !gridData.length"></app-no-empty-status> -->

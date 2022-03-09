@@ -1,0 +1,23 @@
+<div cdkDrag class="modal-container">
+  <div cdkDragHandle class="modal-header">
+    <h5 class="modal-title">Delete</h5>
+    <div class="d-flex align-items-center">
+      <i (click)="closeDeleteModal()" class="fal fa-times cursor-pointer fs-24 icon-hover-primary"></i>
+    </div>
+  </div>
+  <div class="modal-body delete-modal">
+    <svg-icon src="assets/img/svgs/warning-delete.svg"></svg-icon>
+    <h3>Confirm the deletion</h3>
+    <p *ngIf="inputData.data.text == null && inputData.data.category !== undefined">Are you sure you want to delete {{
+      inputData.data.category }}?</p>
+    <p *ngIf="inputData.data.text !== null">{{ inputData.data.text }}</p>
+  </div>
+  <div class="modal-footer">
+    <button (click)="closeDeleteModal()" class="cancel-btn" type="button">
+      Cancel
+    </button>
+    <button (click)="deleteRecord()" class="delete-btn" type="button">
+      Delete
+    </button>
+  </div>
+</div>

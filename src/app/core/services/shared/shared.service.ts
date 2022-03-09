@@ -29,6 +29,13 @@ export class SharedService {
   public emitTogglePdf: EventEmitter<boolean> = new EventEmitter();
   public emitCloseNote: EventEmitter<boolean> = new EventEmitter();
   public emitMagicLine: EventEmitter<boolean> = new EventEmitter();
+  public emitOpenNote: EventEmitter<any> = new EventEmitter();
+  public emitDeleteAction: EventEmitter<any> = new EventEmitter();
+  public emitSortStatusUpdate: EventEmitter<any> = new EventEmitter();
+  public emitStatusUpdate: EventEmitter<any> = new EventEmitter();
+
+  public emitAllNoteOpened: EventEmitter<boolean> = new EventEmitter();
+  public emitUpdateNoteActiveList: EventEmitter<any[]> = new EventEmitter();
 
   public emitViewChange: EventEmitter<boolean> = new EventEmitter();
 

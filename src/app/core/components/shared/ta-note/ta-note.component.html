@@ -1,0 +1,60 @@
+<div
+  #t2="ngbPopover"
+  (click)="toggleNote(t2, note)"
+  [autoClose]="false"
+  [ngClass]="{
+    'note-normal-icon': note && !openedAll,
+    'note-note-empty': !note && !openedAll,
+    'note-all-expanded': openedAll
+  }"
+  [ngbPopover]="notePopover"
+  [placement]="'left-top'"
+  class="note-btn"
+  popoverClass="my-note-popover"
+  triggers="manual"
+></div>
+
+<!-- Popover for Note -->
+<ng-template #notePopover let-data="data">
+  <div class="kendo-editor-note-wrapper">
+    <div [class.expanded]="isExpanded" class="k-widget k-editor custom_editor custom_editor">
+      <div
+        (blur)="prepareForTextRange()"
+        (focus)="checkFocus($event)"
+        (input)="valueChange($event.target.innerHTML)"
+        @noteLongAnimation
+        [class.not_expanded]="!isExpanded"
+        [class.openedAll]="openedAll"
+        [innerHTML]="note | safeHtml"
+        class="editor"
+        contenteditable="true"
+        id="main_editor"
+      ></div>
+      <app-ta-note-container
+        [isExpanded]="isExpanded"
+        [range]="range"
+        [selectionTaken]="selectionTaken"
+        [value]="value"
+      ></app-ta-note-container>
+    </div>
+    <span
+      (click)="saveNote()"
+      *ngIf="buttonsExpanded"
+      appTooltip="Save"
+      class="save-note-check"
+      position="bottom-right"
+    >
+      <svg-icon [svgStyle]="{ 'width.px': '15', 'height.px': '12' }" name="note-check"></svg-icon>
+    </span>
+    <span
+      (click)="closeNote()"
+      *ngIf="buttonsExpanded"
+      appTooltip="Cancel"
+      class="save-note-check close_note"
+      position="bottom-right"
+      tooltipBackground="#707070"
+    >
+      <svg-icon [svgStyle]="{ 'width.px': '12', 'height.px': '12' }" name="note-close"> </svg-icon>
+    </span>
+  </div>
+</ng-template>

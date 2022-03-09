@@ -1,0 +1,272 @@
+<div class="container kendo-table-container p-0 mt-3 dispacher-table">
+  <div class="row">
+    <div class="grid-wrapper col-12">
+      <div class="kendo_top_grid">
+        <kendo-grid [ngClass]="isBoardLocked ? 'locked' : 'unlocked'">
+          <!-- Toolbar -->
+          <ng-template [position]="'top'" kendoGridToolbarTemplate>
+            <div class="container toolbar-container main_top_container">
+              <div class="d-flex top_toolbar_cont">
+                <div
+                  [ngClass]="{ legend_pop: legendActive }" class="dispatcher-drpdwn-wrap">
+                  <app-ta-select
+                    (changeVal)="changeDisparcher($event)"
+                    [clearable]="false"
+                    [hasAvatar]="true"
+                    [items]="dispatcherItems"
+                    [label1]="'dispatcherFirstName'"
+                    [label2]="'dispatcherLastName'"
+                    [searchable]="false"
+                    [selectValue]="selectedDispatcher"
+                    [width]="'180'"
+                  ></app-ta-select>
+
+                  <div
+                    #accordion
+                    [ngClass]="{ nav_size: legendActive }"
+                    class="type-accordion2 legend-side-menu"
+                  >
+                    <div class=" d-flex justify-content-between" id="accordion">
+                      <div
+                        [ngClass]="{ panel_click: truckTab }"
+                        class="panel panel-default tab-truck"
+                      >
+                        <div
+                          (click)="truckTrailer()"
+                          [ngClass]="{ heading_click: truckTab }"
+                          aria-controls="collapseOne"
+                          aria-expanded="false"
+                          class="panel-heading d-flex align-items-center justify-content-between"
+                          data-target="#collapseOne"
+                          data-toggle="collapse"
+                          id="headingOne"
+                        >
+                        <span class="panel-title">
+                          Truck Type
+                        </span>
+                          <span class="panel-arrow">
+                          <svg-icon
+                            [ngClass]="{ svg_rotate: truckTab }"
+                            [src]="'assets/img/svgs/down.svg'"
+                            [svgStyle]="{ 'width.px': '14', 'height.px': '8' }"
+                            class="arrow-down-up"
+                          ></svg-icon>
+                        </span>
+                        </div>
+
+                        <div
+                          aria-labelledby="headingOne"
+                          class="collapse"
+                          data-parent="#accordion"
+                          id="collapseOne"
+                        >
+                          <div class="panel-body">
+                            <div class="d-flex align-items-start">
+                            <span class="card-value w-100 font-12 p-0">
+                              <div *ngFor="let truck of truckList">
+                                <div
+                                  [ngClass]="truck.class"
+                                  class="truck-item-wrapper d-flex justify-content-start truck-icon"
+                                >
+                                  <div class="truck-text">{{ truck.name }}</div>
+                                  <div class="truck-image">
+                                    <svg-icon
+                                      [src]="'assets/img/svgs/truck/' + truck.file"
+                                    ></svg-icon>
+                                  </div>
+                                </div>
+                              </div>
+                            </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div [ngClass]="{ panel_click: trailerTab }" class="panel panel-default">
+                        <div
+                          (click)="trailerTruck()"
+                          [ngClass]="{ heading_click: trailerTab }"
+                          aria-controls="collapseTwo"
+                          aria-expanded="false"
+                          class="panel-heading d-flex align-items-center justify-content-between"
+                          data-target="#collapseTwo"
+                          data-toggle="collapse"
+                          id="headingTwo"
+                        >
+                        <span class="panel-title">
+                          Trailer Type
+                        </span>
+                          <span class="panel-arrow">
+                          <svg-icon
+                            [ngClass]="{ svg_rotate: trailerTab }"
+                            [src]="'assets/img/svgs/down.svg'"
+                            [svgStyle]="{ 'width.px': '14', 'height.px': '8' }"
+                            class="arrow-down-up"
+                          ></svg-icon>
+                        </span>
+                        </div>
+
+                        <div
+                          aria-labelledby="headingTwo"
+                          class="collapse"
+                          data-parent="#accordion"
+                          id="collapseTwo"
+                        >
+                          <div class="panel-body">
+                            <div class="d-flex align-items-start">
+                            <span class="card-value w-100 font-12 p-0">
+                              <div *ngFor="let trailer of trailerList">
+                                <div
+                                  [ngClass]="trailer.class"
+                                  class="truck-item-wrapper d-flex justify-content-start truck-icon"
+                                >
+                                  <div class="truck-text">{{ trailer.name }}</div>
+                                  <div class="truck-image">
+                                    <svg-icon
+                                      [src]="'assets/img/svgs/trailer/' + trailer.file"
+                                    ></svg-icon>
+                                  </div>
+                                </div>
+                              </div>
+                            </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="custom_search">
+                  <app-custom-search
+                    [gridNameTitle]="'Board'"
+                    [stateName]="''"
+                  >
+                  </app-custom-search>
+                </div>
+                <div class="dispatch-action-container">
+                  <button
+                    (click)="lockUnlockBoardAndStartTimer()"
+                    *ngIf="!manualLock || dispatcher != -1"
+                    [appTooltip]="isBoardLocked ? 'Unlock table' : 'Lock table'"
+                    [class.lockedBoardFromOtherUser]=""
+                    class="btn-transparent lock-unlock cursor-pointer"
+                    position="bottom-right"
+                  >
+                    <svg-icon
+                      *ngIf="isBoardLocked"
+                      [src]="'../../../assets/img/svgs/new_unlock.svg'"
+                      [svgStyle]="{ 'width.px': '15.75', 'height.px': '18' }"
+                    ></svg-icon>
+                    <svg-icon
+                      *ngIf="!isBoardLocked"
+                      [src]="'assets/img/svgs/table/unlock.svg'"
+                      [svgStyle]="{ 'width.px': '20', 'height.px': '18' }"
+                    ></svg-icon>
+                  </button>
+                  <button
+                    (click)="openSideNav()"
+                    appTooltip="Vehicle Legend"
+                    class="btn-transparent cursor-pointer"
+                    position="bottom-right"
+                  >
+                    <svg-icon
+                      [ngClass]="{ active: legendActive }"
+                      [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                      src="assets/img/svgs/legend_info.svg"
+                    >
+                    </svg-icon>
+                  </button>
+                </div>
+                <button
+                  (mouseenter)="loteEnter()"
+                  (mouseleave)="loteLeave()"
+                  *ngIf="dispatcher == -1"
+                  appTooltip="Live"
+                  class="btn-transparent open_load live_board"
+                  position="bottom-right"
+                >
+                  <!-- <svg-icon
+                    class="m-0"
+                    src="assets/img/svgs/live_board.svg"
+                    [svgStyle]="{ 'width.px': 22, 'height.px': 18 }"
+                  >
+                  </svg-icon> -->
+                  <ng-lottie
+                    [options]="lottieConfig">
+                  </ng-lottie>
+
+                </button>
+                <button
+                  (click)="openDispatchHistory()"
+                  appTooltip="History"
+                  class="btn-transparent open_load history_board"
+                  position="bottom-right"
+                >
+                  <svg-icon
+                    [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+                    class="icon-hover-blue-28 m-0 blue_icon"
+                    src="assets/img/svgs/dispatch_history.svg"
+                  >
+                  </svg-icon>
+                </button>
+                <button
+                  (click)="addLoad()"
+                  appTooltip="Add Dispatch"
+                  class="btn-transparent open_load"
+                  position="bottom-right"
+                >
+                  <svg-icon
+                    [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+                    class="icon-hover-blue-28 m-0 blue_icon"
+                    src="assets/img/svgs/just_plus.svg"
+                  >
+                  </svg-icon>
+                </button>
+              </div>
+            </div>
+          </ng-template>
+        </kendo-grid>
+      </div>
+      <!-- <div *ngIf="mainGridData['allSelected']">
+        <app-app-dispatcher-table-new
+          [dispatcher]="dispatcher"
+          [mainGridData]="mainGridData['allSelected'].data"
+          [infoCount]="mainGridData['allSelected'].infoCount"
+          [listLenght]="mainGridData['allSelected'].data.length"
+          [isBoardLocked]="isBoardLocked"
+          (innactiveLock)="innactiveLock($event)"
+          (formatGridData)="formatGridData($event)"
+          (formatUniqGridData)="formatUniqGridData($event)"
+          (updateUsersData)="updateUsersData()"
+          [openAllNotesText]="openAllNoteses"
+          [loadTrucks]="loadTrucks"
+          [loadTrailers]="loadTrailers"
+          [loadDrivers]="loadDrivers"
+          [manualLock]="manualLock"
+          [phoneEmailToggle]="phoneEmailToggle"
+          (hoverPhoneEmail)="hoverPhoneEmail()"
+          (openAllNoteses)="openAllNotes()"
+          [highlightingWords]="highlightingWords"
+        ></app-app-dispatcher-table-new>
+      </div> -->
+      <div class="dispatcher_table_list_holder">
+        <div *ngFor="let dispatcher of selectedDispatchers; let ind = index" class="dipsatch_groups">
+          <app-app-dispatcher-table-new
+            (hoverPhoneEmail)="hoverPhoneEmail()"
+            (updateUsersData)="updateUsersData()"
+            [dispatcherInfo]="dispatcher"
+            [dispatcher]="dispatcher.id"
+            [gridIndex]="ind"
+            [isBoardLocked]="isBoardLocked"
+            [loadDrivers]="loadDrivers"
+            [loadTrailers]="loadTrailers"
+            [loadTrucks]="loadTrucks"
+            [phoneEmailToggle]="phoneEmailToggle"
+          >
+          </app-app-dispatcher-table-new>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

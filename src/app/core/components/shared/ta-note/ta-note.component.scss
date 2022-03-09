@@ -1,0 +1,44 @@
+::ng-deep.my-note-popover {
+  margin-right: 4px;
+  box-shadow: none !important;
+
+  &::after {
+    display: none !important;
+  }
+
+  &.editor {
+    &::after {
+      display: none !important;
+    }
+  }
+}
+
+.note-btn {
+  width: 16px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.note-normal-icon,
+.note-note-empty,
+.note-all-expanded {
+  width: 16px;
+  height: 18px;
+  background-repeat: no-repeat;
+}
+
+.note-normal-icon {
+  background-image: url('../../../assets/img/table-svgs/svg/note/Note.svg');
+
+  &:hover {
+    background-image: url('../../../assets/img/table-svgs/svg/note/Note-hover.svg');
+  }
+}
+
+.note-note-empty {
+  background-image: url('../../../assets/img/table-svgs/svg/note/Note - Empty.svg');
+
+  &:hover {
+    background-image: url('../../../assets/img/table-svgs/svg/note/Note - Empty-hover.svg');
+  }
+}

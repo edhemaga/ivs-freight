@@ -1,0 +1,59 @@
+<div @pickupAnimation [class.hidden]="!isExpanded" class="editor_menu">
+  <div
+    (click)="executeEditor('bold')"
+    [class.active]="activeOptions.bold"
+    appTooltip="Bold"
+    class="editor_buttons bold_text"
+    position="bottom-right"
+    tooltipBackground="#919191">
+    <svg-icon
+      [svgStyle]="{ 'width.px': '11.47', 'height.px': '14' }"
+      name="note-b"></svg-icon>
+  </div>
+  <div
+    (click)="executeEditor('italic')"
+    [class.active]="activeOptions.italic"
+    appTooltip="Italic"
+    class="editor_buttons italic_text"
+    position="bottom-right"
+    tooltipBackground="#919191">
+    <svg-icon
+      [svgStyle]="{ 'width.px': '10', 'height.px': '14' }"
+      name="italic"></svg-icon>
+  </div>
+  <div
+    (click)="executeEditor('underline')"
+    [class.active]="activeOptions.underline"
+    appTooltip="Underline"
+    class="editor_buttons underline_text"
+    position="bottom-right"
+    tooltipBackground="#919191">
+    <svg-icon
+      [svgStyle]="{ 'width.px': '12.25', 'height.px': '14' }"
+      name="underline"></svg-icon>
+  </div>
+  <div (click)="showCollorPattern = !showCollorPattern"
+       [class.no_opacity]="showCollorPattern"
+       appTooltip="{{selectedColorName.name}}"
+       class="editor_buttons text_color"
+       position="bottom-right"
+       tooltipBackground="{{selectedColorName.color}}">
+    <!-- <span></span> -->
+    <span [ngStyle]="{'background-color': selectedPaternColor}" class="circle_span"></span>
+    <div *ngIf="showCollorPattern" class="colors_patter" id="colors_patter">
+      <div
+        (click)="executeEditor('foreColor', paternCol.color, indx)"
+        *ngFor="let paternCol of containerColors; let indx = index"
+        [style.backgroundColor]="paternCol.color">
+        <svg-icon
+          *ngIf="indx == 0"
+          [svgStyle]="{ 'width.px': '4', 'height.px': '7' }"
+          src="assets/img/svgs/left.svg"></svg-icon>
+      </div>
+      <!-- <div (click)="executeEditor('foreColor', '#158740')"></div>
+      <div (click)="executeEditor('foreColor', '#2B79C7')"></div>
+      <div (click)="executeEditor('foreColor', '#9F48B9')"></div>
+      <div (click)="executeEditor('foreColor', '#DB2222')"></div> -->
+    </div>
+  </div>
+</div>

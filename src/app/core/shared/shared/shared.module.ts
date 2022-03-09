@@ -39,6 +39,9 @@ import {TooltipDirective} from "../../directives/tooltip.directive";
 import {NgxMaskModule} from "ngx-mask";
 import {EditProfileComponent} from "../../components/modals/edit-profile/edit-profile.component";
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
+import { TaNoteContainerComponent } from '../../components/shared/ta-note/ta-note-container/ta-note-container.component';
+import { DeleteDialogComponent } from '../../components/shared/delete-dialog/delete-dialog.component';
+import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 
 @NgModule({
   declarations: [
@@ -51,6 +54,7 @@ import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
     MapControlComponent,
     DriverManageComponent,
     SortPipe,
+    SafeHtmlPipe,
     HistoryDataComponent,
     TabSwitcherComponent,
     StatusSwitcherComponent,
@@ -58,7 +62,9 @@ import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
     NFormatterPipe,
     TooltipDirective,
     TrailerManageComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    TaNoteContainerComponent,
+    DeleteDialogComponent
   ],
   imports: [
     CommonModule,
@@ -109,6 +115,7 @@ import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
     MapControlComponent,
     NgbModule,
     SortPipe,
+    SafeHtmlPipe,
     SortableModule,
     GridModule,
     PDFModule,
@@ -124,9 +131,12 @@ import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
     LabelModule,
     NFormatterPipe,
     TabSwitcherComponent,
-    TooltipDirective
+    TooltipDirective,
+    TaNoteContainerComponent,
+    DeleteDialogComponent,
+    DragDropModule
   ],
-  providers: [SortPipe, NFormatterPipe],
+  providers: [SortPipe, NFormatterPipe, SafeHtmlPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {
