@@ -40,7 +40,6 @@
               "./node_modules/jquery/dist/jquery.min.js",
               "node_modules/popper.js/dist/umd/popper.js",
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "src/assets/scripts/magicline.js",
               "src/assets/scripts/geoxml3.js"
             ],
             "allowedCommonJsDependencies": [
@@ -118,7 +117,6 @@
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/popper.js/dist/popper.js",
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "./src/assets/scripts/magicline.js",
               "./src/assets/scripts/geoxml3.js"
             ]
           }
