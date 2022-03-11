@@ -42,7 +42,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
 
   public currentUser: {} = JSON.parse(localStorage.getItem('currentUser'));
   public userCompany: {} = JSON.parse(localStorage.getItem('userCompany'));
-  public currentUserStatus: string = null;
+  public currentUserStatus: string = 'online';
 
   public isItemHovered: boolean = false;
 
@@ -59,13 +59,13 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.communicatorUserDataService.chatUser
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((chatUser: any) => {
-        setTimeout(() => {
-          this.currentUserStatus = chatUser?.status;
-        });
-      });
+    // this.communicatorUserDataService.chatUser
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((chatUser: any) => {
+    //     setTimeout(() => {
+    //       this.currentUserStatus = chatUser?.status;
+    //     });
+    //   });
   }
 
   public onUserPanelClose() {

@@ -28,7 +28,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
 
   private currentUser = JSON.parse(localStorage.getItem('currentUser'));
   private userCompany = JSON.parse(localStorage.getItem('userCompany'));
-  public currentUserStatus: string = null;
+  public currentUserStatus: string = 'online';
 
   public footerData: FooterData[] = footerData;
 
@@ -50,13 +50,13 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
 
     this.isActiveFooterRouteOnReload(window.location.href);
 
-    this.communicatorUserDataService.chatUser
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((chatUser: any) => {
-        setTimeout(() => {
-          this.currentUserStatus = chatUser?.status;
-        });
-      });
+    // this.communicatorUserDataService.chatUser
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((chatUser: any) => {
+    //     setTimeout(() => {
+    //       this.currentUserStatus = chatUser?.status;
+    //     });
+    //   });
   }
 
   public isUserData(text: any): boolean {
