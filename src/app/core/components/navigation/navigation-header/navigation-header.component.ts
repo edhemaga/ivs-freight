@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-
 @Component({
   selector: 'app-navigation-header',
   templateUrl: './navigation-header.component.html',
@@ -11,6 +10,8 @@ export class NavigationHeaderComponent {
     type: boolean;
     name: string;
   }>();
+
+  constructor() {}
 
   public onAction(type: string) {
     switch (type) {

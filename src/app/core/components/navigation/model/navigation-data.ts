@@ -10,7 +10,7 @@ export const navigationData: Navigation[] = [
     id: 1,
     name: 'Dashboard',
     image: 'assets/img/svgs/navigation/ic_dashboard.svg',
-    route: 'dashboard',
+    route: '/dashboard',
     isRouteActive: false,
   },
   {
@@ -58,9 +58,10 @@ export const navigationData: Navigation[] = [
         route: '/repair',
         activeRouteFlegId: 3
       },
+      // List Fuel route ?
       {
         name: 'Fuel',
-        route: '/fuel',
+        route: '/accounting/fuel',
         activeRouteFlegId: 3
       },
       {
@@ -90,22 +91,22 @@ export const navigationData: Navigation[] = [
     route: [
       {
         name: 'Payroll',
-        route: '/payroll',
+        route: '/accounting/payroll',
         activeRouteFlegId: 4
       },
       {
         name: 'IFTA',
-        route: '/ifta',
+        route: '/accounting/ifta',
         activeRouteFlegId: 4
       },
       {
         name: 'Ledger',
-        route: '/ledger',
+        route: '/accounting/ledger',
         activeRouteFlegId: 4
       },
       {
         name: 'Tax',
-        route: '/tax',
+        route: '/accounting/tax',
         activeRouteFlegId: 4
       },
     ],
@@ -120,22 +121,22 @@ export const navigationData: Navigation[] = [
     route: [
       {
         name: 'Violation',
-        route: '/violation',
+        route: '/safety/violation',
         activeRouteFlegId: 5
       },
       {
         name: 'Accident',
-        route: '/accident',
+        route: '/safety/accident',
         activeRouteFlegId: 5
       },
       {
         name: 'Log',
-        route: '/log',
+        route: '/safety/log',
         activeRouteFlegId: 5
       },
       {
         name: 'Scheduled Ins.',
-        route: '/scheduled',
+        route: '/safety/scheduled-insurance',
         activeRouteFlegId: 5
       },
     ],
@@ -150,47 +151,47 @@ export const navigationData: Navigation[] = [
     route: [
       {
         name: 'Miles',
-        route: '/miles',
+        route: '/tools/miles',
         activeRouteFlegId: 6
       },
       {
         name: 'MVR',
-        route: '/mvr',
+        route: '/tools/mvr',
         activeRouteFlegId: 6
       },
       {
         name: 'Calendar',
-        route: '/calendar',
+        route: '/tools/calendar',
         activeRouteFlegId: 6
       },
       {
         name: 'To-Do',
-        route: '/todo',
+        route: '/tools/todo',
         activeRouteFlegId: 6
       },
       {
         name: '1099',
-        route: '/1099',
+        route: '/tools/1099',
         activeRouteFlegId: 6
       },
       {
         name: '2290',
-        route: '/2290',
+        route: '/tools/2290',
         activeRouteFlegId: 6
       },
       {
         name: 'Factoring',
-        route: '/factoring',
+        route: '/tools/factoring',
         activeRouteFlegId: 6
       },
       {
         name: 'Fax',
-        route: '/fax',
+        route: '/tools/fax',
         activeRouteFlegId: 6
       },
       {
         name: 'SMS',
-        route: '/sms',
+        route: '/tools/sms',
         activeRouteFlegId: 6
       },
     ],
@@ -213,21 +214,21 @@ export const navigationData: Navigation[] = [
     id: 9,
     name: 'Statistic',
     image: 'assets/img/svgs/navigation/ic_statistic.svg',
-    route: '/statistic',
+    route: '/statistic/load',
     isRouteActive: false,
   },
   {
     id: 10,
     name: 'Chat',
     image: 'assets/img/svgs/navigation/ic_chat.svg',
-    route: '/chat',
+    route: '/communicator',
     isRouteActive: false,
   },
   {
     id: 11,
     name: 'GPS',
     image: 'assets/img/svgs/navigation/ic_gps.svg',
-    route: '/gps',
+    route: '/gpstracking',
     isRouteActive: false,
   },
   {
@@ -391,8 +392,8 @@ export const userNavigationData: NavigationUserPanel[] = [
   },
   {
     id: 2,
-    name: 'Set status',
-    image: 'assets/img/svgs/navigation/ic_truckassist_pen.svg',
+    name: 'User status',
+    image: 'assets/img/svgs/navigation/ic_truckassist_busy_status.svg',
     action: 'status',
   },
   {
@@ -415,19 +416,21 @@ export const userNavigationData: NavigationUserPanel[] = [
   },
 ];
 
+
 export const footerData: FooterData[] = [
+  // ROUTE WHAT'S NEW ?
   {
     id: 1,
     image: 'assets/img/svgs/navigation/ic_info.svg',
     text: "What's New",
-    route: '/new',
+    route: '/whatsnew',
     isRouteActive: false,
   },
   {
     id: 2,
     image: 'assets/img/svgs/navigation/ic_settings.svg',
     text: 'Settings',
-    route: '/settings',
+    route: '/company/settings',
     isRouteActive: false,
   },
   {

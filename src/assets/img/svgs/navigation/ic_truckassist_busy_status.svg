@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
   <g id="Chat" transform="translate(-92 -828)">
     <rect id="Rectangle_52465" data-name="Rectangle 52465" width="20" height="20" transform="translate(92 828)" fill="none"/>
-    <path id="pen" d="M10.211,3.285l4.5,4.5L4.938,17.559.926,18a.844.844,0,0,1-.931-.932l.446-4.015,9.77-9.769Zm7.284-.67L15.382.5a1.688,1.688,0,0,0-2.387,0L11.006,2.49l4.5,4.5L17.495,5a1.688,1.688,0,0,0,0-2.387Z" transform="translate(93.012 828.994)" fill="#b7b7b7"/>
+    <path id="minus-circle" d="M17,8a9,9,0,1,0,9,9A9,9,0,0,0,17,8ZM12.21,18.452a.437.437,0,0,1-.435-.435V15.984a.437.437,0,0,1,.435-.435H21.79a.437.437,0,0,1,.435.435v2.032a.437.437,0,0,1-.435.435Z" transform="translate(85 821)" fill="#ffbf6b"/>
   </g>
 </svg>

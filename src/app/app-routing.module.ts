@@ -29,12 +29,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'customer',
+    path: 'dispatch',
     loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
     canActivate: [AuthGuard],
   },
   {
-    path: 'contact',
+    path: 'company/settings',
     loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
     canActivate: [AuthGuard],
   },

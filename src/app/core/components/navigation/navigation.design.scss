@@ -1,0 +1,84 @@
+//------------ Colors constants
+$nav-background: #ffffff;
+
+$nav-svg: #b7b7b7;
+$nav-svg-hover: #919191;
+$nav-svg-active: #778fbb;
+
+$nav-text-color-lighter: #b7b7b7;
+$nav-text-color: #6c6c6c;
+$nav-text-color-darker: #919191;
+$nav-text-color-hover: #3c3c3c;
+
+$nav-active-lighter: #778fbb;
+$nav-active: #5673aa;
+
+$nav-hover-lightcolor: #f3f3f3;
+$nav-hover-color: #f7f7f7;
+$nav-hover-darker: #f9f9f9;
+
+$nav-important-light: #ff8080;
+$nav-important: #ff6a6a;
+$nav-important-hover: #ff5050;
+
+$nav-boxshadow: 0 0 4px rgb(0, 0, 0, 0.16);
+
+$nav-transition: all 0.3s ease-in-out;
+$nav-transition-5: all 0.5s ease-in-out;
+
+$nav-font-size-verysmall: 10px;
+$nav-font-size-small: 12px;
+$nav-font-size: 14px;
+
+$nav-font-regular: 400;
+$nav-font-medium: 500;
+$nav-font-semibold: 600;
+$nav-font-bold: 700;
+$nav-font-extrabold: 800;
+
+$wrapper-line: #b7b7b7;
+$magic-line-transition: all 0.2s ease-in;
+
+$user-busy-status: #ffbf6b;
+$user-busy-status-hover: #ffaf46;
+$user-active-status: #3bcbae;
+$user-active-status-hover: #0bbf9a;
+// ------------ end
+
+// ------------ Status User
+.status-marker-container {
+  width: 12px;
+  height: 12px;
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 1px;
+  left: 23px;
+  background: $nav-background;
+
+  .status-marker {
+    width: 10px;
+    height: 10px;
+    border-radius: 6px;
+    border: 0 solid $nav-background;
+    background: $nav-background;
+  }
+
+  .status-online {
+    border: 2px solid $user-active-status;
+    background: $nav-background !important;
+  }
+
+  .status-active {
+    border: 0 solid $nav-background;
+    background: $user-active-status !important;
+  }
+
+  .status-busy {
+    border: 2px solid $user-busy-status;
+    background: #ffffff !important;
+  }
+}
+// ------------ end

@@ -1,9 +1,11 @@
+@import "../navigation.design.scss";
+
 .nav-header {
   height: 103px;
   width: auto;
   display: flex;
   flex-direction: column;
-  transition: all 0.3s ease-in-out;
+  transition: $nav-transition;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -24,7 +26,7 @@
 
     .nav-header-bottom-plus {
       svg {
-        transition: all 0.3s ease-in-out;
+        transition: $nav-transition;
         margin-left: -10px;
         path {
           shape-rendering: geometricPrecision;
@@ -32,12 +34,13 @@
         }
         &:hover {
           cursor: pointer;
+          transition: $nav-transition;
           #Ellipse_6368-2 {
             shape-rendering: geometricPrecision;
             fill: url("#linear-gradient");
           }
           path {
-            fill: #ffffff;
+            fill: $nav-background;
           }
         }
       }
@@ -48,48 +51,48 @@
       justify-content: space-between;
       margin-left: 31px;
 
-      .nav-header-bottom-rightSide-notes {
-        margin: 0 6px;
-        transition: all 0.2s ease-in-out;
+      .nav-header-bottom-rightSide-search {
         &:hover {
+          transition: $nav-transition;
           svg {
-            #Ellipse_6375 {
-              fill: #f3f3f3 !important;
+            #Ellipse_6615 {
+              fill: $nav-hover-lightcolor !important;
             }
-            #Path_35327 {
-              fill: #b7b7b7 !important;
-            }
-
-            #Path_35328 {
-              fill: #b7b7b7 !important;
+            #Path_35719 {
+              fill: $nav-svg-hover !important;
             }
           }
         }
       }
 
-      .nav-header-bottom-rightSide-search {
-        transition: all 0.2s ease-in-out;
+      .nav-header-bottom-rightSide-notes {
+        margin: 0 6px;
         &:hover {
+          transition: $nav-transition;
           svg {
-            #Ellipse_6374 {
-              fill: #f3f3f3 !important;
+            #Ellipse_6614 {
+              fill: $nav-hover-lightcolor !important;
             }
-            #Path_35329 {
-              fill: #b7b7b7 !important;
+            #Path_35726 {
+              fill: $nav-svg-hover !important;
+            }
+
+            #Path_35727 {
+              fill: $nav-svg-hover !important;
             }
           }
         }
       }
 
       .nav-header-bottom-rightSide-bell {
-        transition: all 0.2s ease-in-out;
         &:hover {
+          transition: $nav-transition;
           svg {
-            #Ellipse_6376 {
-              fill: #f3f3f3 !important;
+            #Ellipse_6613 {
+              fill: $nav-hover-lightcolor !important;
             }
-            #Path_35330 {
-              fill: #b7b7b7 !important;
+            #Path_35724 {
+              fill: $nav-svg-hover !important;
             }
           }
         }

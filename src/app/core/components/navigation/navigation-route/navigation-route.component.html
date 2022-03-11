@@ -13,7 +13,8 @@
 >
   <div
     [ngClass]="{
-      'nav-item-active-box': route.isRouteActive || route.isSubrouteActive
+      'nav-item-active-box':
+        (route.isRouteActive || route.isSubrouteActive) && !isNavigationHovered
     }"
   ></div>
 

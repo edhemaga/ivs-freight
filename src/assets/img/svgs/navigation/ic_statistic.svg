@@ -1,10 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-  <g id="Group_70377" data-name="Group 70377" transform="translate(-18 -370)">
-    <g id="Statistic" transform="translate(-74 -420)">
-      <rect id="Rectangle_52464" data-name="Rectangle 52464" width="20" height="20" transform="translate(92 790)" fill="none"/>
-      <path id="Path_35318" data-name="Path 35318" d="M14.773,17.345a8.891,8.891,0,1,1-6.6-15.934.417.417,0,0,1,.466.361.507.507,0,0,1,0,.055v8.725l6.173,6.173a.4.4,0,0,1,.017.571.428.428,0,0,1-.055.049" transform="translate(92 790)" fill="#dadada"/>
-      <path id="Path_35319" data-name="Path 35319" d="M19,9.372H10.305V.677a.417.417,0,0,1,.413-.42.507.507,0,0,1,.055,0A10.168,10.168,0,0,1,19.415,8.9a.418.418,0,0,1-.36.467.544.544,0,0,1-.057,0" transform="translate(92 790)" fill="#dadada"/>
-      <path id="Path_35320" data-name="Path 35320" d="M19.4,11.507a10.257,10.257,0,0,1-1.991,4.8.417.417,0,0,1-.585.072.459.459,0,0,1-.041-.036l-5.3-5.3h7.5a.417.417,0,0,1,.42.413.507.507,0,0,1,0,.055" transform="translate(92 790)" fill="#dadada"/>
-    </g>
+  <g id="Statistic" transform="translate(-92 -790)">
+    <rect id="Rectangle_52464" data-name="Rectangle 52464" width="20" height="20" transform="translate(92 790)" fill="none"/>
+    <path id="Path_35318" data-name="Path 35318" d="M14.773,17.345a8.891,8.891,0,1,1-6.6-15.934.417.417,0,0,1,.466.361.507.507,0,0,1,0,.055v8.725l6.173,6.173a.4.4,0,0,1,.017.571.428.428,0,0,1-.055.049" transform="translate(92 790)" fill="#b7b7b7"/>
+    <path id="Path_35319" data-name="Path 35319" d="M19,9.372H10.305V.677a.417.417,0,0,1,.413-.42.507.507,0,0,1,.055,0A10.168,10.168,0,0,1,19.415,8.9a.418.418,0,0,1-.36.467.544.544,0,0,1-.057,0" transform="translate(92 790)" fill="#b7b7b7"/>
+    <path id="Path_35320" data-name="Path 35320" d="M19.4,11.507a10.257,10.257,0,0,1-1.991,4.8.417.417,0,0,1-.585.072.459.459,0,0,1-.041-.036l-5.3-5.3h7.5a.417.417,0,0,1,.42.413.507.507,0,0,1,0,.055" transform="translate(92 790)" fill="#b7b7b7"/>
   </g>
 </svg>
