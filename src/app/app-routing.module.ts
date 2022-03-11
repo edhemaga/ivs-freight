@@ -14,23 +14,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'dispatcher',
-    loadChildren: () => import('./core/components/dispatcher/dispatcher.module').then((m) => m.DispatcherModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'report',
-    loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'settings',
-    loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'dispatch',
-    loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
+    loadChildren: () => import('./core/components/dispatcher/dispatcher.module').then((m) => m.DispatcherModule),
     canActivate: [AuthGuard],
   },
   {

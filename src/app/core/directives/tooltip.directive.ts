@@ -14,7 +14,7 @@ export class TooltipDirective {
   offset = 5;
   @Input() tooltipBackground = '#28529f';
   @Input() tooltipColor = '#fff';
-  @Input() zIndex = '101';
+  @Input() zIndex = '2000';
   @Input() borderRadius: string;
   @Input() boxShadow: string;
   @Input() fontWeight: string;
@@ -104,6 +104,7 @@ export class TooltipDirective {
     this.renderer.setStyle(this.tooltip, 'box-shadow', this.boxShadow);
     this.renderer.setStyle(this.tooltip, 'font-weight', this.fontWeight);
     this.renderer.setStyle(this.tooltip, 'font-size', this.fontSize);
+    console.log("CREATED")
   }
 
   public setPosition() {
