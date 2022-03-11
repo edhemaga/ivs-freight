@@ -1,0 +1,67 @@
+@import "../settings.global.scss";
+
+.settings-general {
+  width: 100%;
+  max-height: 892px;
+  display: grid;
+  grid-template-rows: 32px 848px;
+  row-gap: 12px;
+
+  .settings-header {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .settings-company-name {
+      height: 100%;
+      flex: 1;
+      margin-right: 4px;
+      padding: 7px 12px;
+      color: $settings-color;
+      background-color: $settings-background;
+      font-weight: $settings-font-extrabold;
+      border-radius: $settings-borderRadius;
+    }
+
+    .settings-header-buttons {
+      width: 68px;
+      height: 100%;
+
+      .settings-edit-button {
+        margin-right: 4px;
+
+        &:hover {
+          transform: $transition;
+          cursor: pointer;
+          svg {
+            path {
+              fill: $settings-color;
+            }
+          }
+        }
+      }
+
+      .settings-plus-button {
+        &:hover {
+          transform: $transition;
+          cursor: pointer;
+          svg {
+            path {
+              fill: $settings-color-blue;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .settings-body {
+    width: 100%;
+    height: 100%;
+    background-color: $settings-background;
+    color: $settings-color-dark;
+    border-radius: $settings-borderRadius;
+  }
+}

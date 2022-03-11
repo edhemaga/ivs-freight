@@ -430,7 +430,7 @@ export const footerData: FooterData[] = [
     id: 2,
     image: 'assets/img/svgs/navigation/ic_settings.svg',
     text: 'Settings',
-    route: '/company/settings',
+    route: '/settings',
     isRouteActive: false,
   },
   {
