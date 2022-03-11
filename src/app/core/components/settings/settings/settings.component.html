@@ -1,0 +1,17 @@
+<div class="settings">
+  <div class="settings-col-1">
+    <app-settings-general></app-settings-general>
+  </div>
+  <div class="settings-col-2">
+    <app-settings-payroll></app-settings-payroll>
+  </div>
+  <div class="settings-col-3">
+    <app-settings-insurancepolicy></app-settings-insurancepolicy>
+  </div>
+  <div class="settings-col-4">
+    <app-settings-factoring></app-settings-factoring>
+  </div>
+
+  <app-settings-nodata *ngIf="!data"></app-settings-nodata>
+ 
+</div>

@@ -19,8 +19,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'company/settings',
-    loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
+    path: 'settings',
+    loadChildren: () => import('./core/components/settings/settings.module').then((m) => m.SettingsModule),
     canActivate: [AuthGuard],
   },
   {path: '**', redirectTo: ''}
