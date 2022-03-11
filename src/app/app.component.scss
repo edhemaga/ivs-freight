@@ -1,8 +1,13 @@
-.content {
+.content-page {
   min-height: 100vh;
   max-width: 1440px;
   margin-top: 18px;
   margin-left: 74px;
+}
+
+.login-page {
+  height: 100vh;
+  width: 100vw;
 }
 
 .content-scroll {

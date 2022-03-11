@@ -1,6 +1,9 @@
 <app-navigation *ngIf="currentPage !== 'login'"> </app-navigation>
 
-<div id="top" class="content">
+<div
+  id="top"
+  class="{{ currentPage === 'login' ? 'login-page' : 'content-page' }}"
+>
   <router-outlet></router-outlet>
 </div>
 
