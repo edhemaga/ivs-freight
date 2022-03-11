@@ -1,3 +1,6 @@
+import { NavigationUserProfileComponent } from './core/components/navigation/navigation-user-profile/navigation-user-profile.component';
+import { NavigationModalsComponent } from './core/components/navigation/navigation-modals/navigation-modals.component';
+import { NavigationFooterComponent } from './core/components/navigation/navigation-footer/navigation-footer.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {BrowserModule, BrowserTransferStateModule} from '@angular/platform-browser';
 
@@ -10,17 +13,16 @@ import {SharedModule} from "./core/shared/shared/shared.module";
 import {ToastrModule} from "ngx-toastr";
 import {NgIdleModule} from "@ng-idle/core";
 import {GoogleMapsAPIWrapper} from '@agm/core';
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+// ---- NAVIGATION
 import { NavigationComponent } from './core/components/navigation/navigation.component';
 import { NavigationRouteComponent } from './core/components/navigation/navigation-route/navigation-route.component';
-import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
-import { NavigationFooterComponent } from './core/components/navigation/navigation-footer/navigation-footer.component';
 import { ChangeLogoPipe } from './core/components/navigation/pipe/change-logo.pipe';
 import { NavigationSubrouteComponent } from './core/components/navigation/navigation-subroute/navigation-subroute.component';
 import { NavigationSubrouteCardComponent } from './core/components/navigation/navigation-subroute-card/navigation-subroute-card.component';
-import { NavigationModalsComponent } from './core/components/navigation/navigation-modals/navigation-modals.component';
-import { NavigationUserProfileComponent } from './core/components/navigation/navigation-user-profile/navigation-user-profile.component';
-import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
-import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import {NavigationUserCompanyComponent} from './core/components/navigation/navigation-user-company/navigation-user-company.component';
+import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
     NavigationSubrouteCardComponent,
     NavigationModalsComponent,
     NavigationUserProfileComponent,
+    NavigationUserCompanyComponent
   ],
   imports: [
     BrowserModule,

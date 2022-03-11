@@ -14,7 +14,11 @@ export class TooltipDirective {
   offset = 5;
   @Input() tooltipBackground = '#28529f';
   @Input() tooltipColor = '#fff';
-  @Input() zIndex = '101';
+  @Input() zIndex = '2000';
+  @Input() borderRadius: string;
+  @Input() boxShadow: string;
+  @Input() fontWeight: string;
+  @Input() fontSize: string;
 
   constructor(public el: ElementRef, public renderer: Renderer2) {
   }
@@ -96,6 +100,11 @@ export class TooltipDirective {
     this.renderer.setStyle(this.tooltip, 'transition', `${this.duration}ms`);
     this.renderer.setStyle(this.tooltip, 'transition-delay', `${this.delay}ms`);
     this.renderer.setStyle(this.tooltip, 'z-index', this.zIndex);
+    this.renderer.setStyle(this.tooltip, 'border-radius', this.borderRadius);
+    this.renderer.setStyle(this.tooltip, 'box-shadow', this.boxShadow);
+    this.renderer.setStyle(this.tooltip, 'font-weight', this.fontWeight);
+    this.renderer.setStyle(this.tooltip, 'font-size', this.fontSize);
+    console.log("CREATED")
   }
 
   public setPosition() {

@@ -1,12 +1,15 @@
+@import "../navigation.design.scss";
+
 .nav-item {
   display: flex;
   align-items: center;
   height: 28px;
   width: 176px;
-  font-weight: 500;
-  font-size: 14px;
+  font-weight: $nav-font-medium;
+  font-size: $nav-font-size;
+  color: $nav-text-color;
 
-  transition: all 0.2s ease-in-out;
+  transition: $nav-transition;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -34,19 +37,19 @@
 
     .nav-item-arrow-rotate {
       transform: rotate(180deg);
-      transition: all 0.2s ease-in-out;
+      transition: $nav-transition;
     }
   }
 
   &:hover {
-    color: #919191;
-    transition: all 0.5s ease-in;
+    color: $nav-text-color-hover;
+    transition: $nav-transition-5;
     .nav-item-img,
     .nav-item-arrow {
       svg {
         path {
-          transition: all 0.5s ease-in;
-          fill: #b7b7b7;
+          transition: $nav-transition-5;
+          fill: $nav-svg-hover;
         }
       }
     }
@@ -54,8 +57,7 @@
 }
 
 .nav-item-active {
-  color: #778fbb;
-  background-color: #f7f7f7;
+  color: $nav-active;
   border-radius: 3px;
   width: auto;
 
@@ -68,14 +70,14 @@
       #Path_35314,
       #Path_35315,
       #Path_35316 {
-        fill: #778fbb;
+        fill: $nav-svg-active;
       }
     }
   }
 
   &:hover {
-    color: #5673aa;
-    transition: all 0.5s ease-in;
+    color: $nav-active;
+    transition: $nav-transition-5;
     .nav-item-img,
     .nav-item-arrow {
       svg {
@@ -85,8 +87,7 @@
         #Path_35314,
         #Path_35315,
         #Path_35316 {
-          transition: all 0.5s ease-in;
-          fill: #5673aa;
+          fill: $nav-active;
         }
       }
     }
@@ -99,7 +100,7 @@
   position: absolute;
   left: -6px;
   content: "";
-  background-color: #f7f7f7;
+  background-color: $nav-hover-color;
   z-index: -1;
   border-radius: 3px;
 }
@@ -110,7 +111,7 @@
   position: absolute;
   left: -6px;
   content: "";
-  background-color: #f7f7f7;
+  background-color: $nav-hover-color;
   z-index: -1;
   border-radius: 3px;
 }

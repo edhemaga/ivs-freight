@@ -20,4 +20,8 @@ export class CommunicatorUserDataService {
     this.chatUserSubject = new BehaviorSubject<any>(user);
   }
 
+  get chatUser() {
+    return this.chatUserSubject;
+  }
+
 }
