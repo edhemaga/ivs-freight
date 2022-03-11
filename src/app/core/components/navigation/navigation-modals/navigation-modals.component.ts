@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { DriverManageComponent } from '../../modals/driver-manage/driver-manage.component';
+import { TrailerManageComponent } from '../../modals/trailer-manage/trailer-manage.component';
+import { TruckManageComponent } from '../../modals/truck-manage/truck-manage.component';
+
 import {
   accountingNavigationData,
   fuelNavigationData,
@@ -10,8 +13,6 @@ import {
   toolsNavigationData,
 } from '../model/navigation-data';
 import { NavigationModal } from '../model/navigation.model';
-import { TruckManageComponent } from '../../modals/truck-manage/truck-manage.component';
-import { TrailerManageComponent } from '../../modals/trailer-manage/trailer-manage.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -86,72 +87,69 @@ export class NavigationModalsComponent {
         );
         break;
 
-      /*
-    case 'fuel':
-      this.customModalService.openModal(FuelManageComponent, {data}, null, {size: 'small'});
-      break;
+      // case 'fuel':
+      //   this.customModalService.openModal(FuelManageComponent, { data }, null, { size: 'small' });
+      //   break;
 
-    case 'shop':
-      this.customModalService.openModal(RepairShopManageComponent, {data}, null, {
-        size: 'small',
-      });
-      break;
+      // case 'shop':
+      //   this.customModalService.openModal(RepairShopManageComponent, { data }, null, {
+      //     size: 'small',
+      //   });
+      //   break;
 
+      // case 'load':
+      //   this.customModalService.openModal(ManageLoadComponent, { data }, null, {
+      //     size: 'xxl',
+      //   });
+      //   break;
 
+      // case 'repair':
+      //   this.customModalService.openModal(MaintenanceManageComponent, { data }, null, {
+      //     size: 'large',
+      //   });
+      //   break;
 
-    case 'load':
-      this.customModalService.openModal(ManageLoadComponent, {data}, null, {
-        size: 'xxl',
-      });
-      break;
+      // case 'owner':
+      //   this.customModalService.openModal(OwnerManageComponent, { data }, null, {
+      //     size: 'small',
+      //   });
+      //   break;
 
-    case 'repair':
-      this.customModalService.openModal(MaintenanceManageComponent, {data}, null, {
-        size: 'large',
-      });
-      break;
+      // case 'user':
+      //   this.customModalService.openModal(CompanyUserManageComponent, { data }, null, {
+      //     size: 'small',
+      //   });
+      //   break;
 
-    case 'owner':
-      this.customModalService.openModal(OwnerManageComponent, {data}, null, {
-        size: 'small',
-      });
-      break;
+      // case 'account':
+      //   this.customModalService.openModal(AccountsManageComponent, { data }, null, {
+      //     size: 'small',
+      //   });
+      //   break;
 
-    case 'user':
-      this.customModalService.openModal(CompanyUserManageComponent, {data}, null, {
-        size: 'small',
-      });
-      break;
+      // case 'contact':
+      //   this.customModalService.openModal(ContactManageComponent, { data }, null, {
+      //     size: 'small',
+      //   });
+      //   break;
 
-    case 'account':
-      this.customModalService.openModal(AccountsManageComponent, {data}, null, {
-        size: 'small',
-      });
-      break;
+      // case 'task':
+      //   this.customModalService.openModal(TodoManageComponent, { data }, null, {
+      //     size: 'small',
+      //   });
+      //   break;
 
-    case 'contact':
-      this.customModalService.openModal(ContactManageComponent, {data}, null, {
-        size: 'small',
-      });
-      break;
+      // case 'broker':
+      //   this.customModalService.openModal(CustomerManageComponent, { data }, null, {
+      //     size: 'small',
+      //   });
+      //   break;
 
-    case 'task':
-      this.customModalService.openModal(TodoManageComponent, {data}, null, {
-        size: 'small',
-      });
-      break;
-
-    case 'broker':
-      this.customModalService.openModal(CustomerManageComponent, {data}, null, {
-        size: 'small',
-      });
-      break;
-
-    case 'shipper':
-      this.customModalService.openModal(ShipperManageComponent, {data}, null, {
-        size: 'small',
-      });
-      break; */
+      // case 'shipper':
+      //   this.customModalService.openModal(ShipperManageComponent, { data }, null, {
+      //     size: 'small',
+      //   });
+      //   break;
 
       default:
         return;

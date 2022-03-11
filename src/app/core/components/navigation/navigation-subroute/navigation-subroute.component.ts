@@ -15,6 +15,8 @@ export class NavigationSubrouteComponent {
   @Input() subroute: Navigation;
   @Output() onSubrouteActiveEvent = new EventEmitter<NavigationSubRoutes>();
 
+  public isMagicLineActive: boolean = false;
+
   constructor(private router: Router) {}
 
   public onSubrouteAction(subroute: NavigationSubRoutes) {
@@ -30,6 +32,10 @@ export class NavigationSubrouteComponent {
 
   public isActiveRouteOnReload(route: string): boolean {
     return this.router.url.includes(route);
+  }
+
+  public onHoverSubroteContainer(type: boolean) {
+    this.isMagicLineActive = type;
   }
 
   public identifySubroute(index: number, item: NavigationSubRoute): string {

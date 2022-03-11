@@ -1,16 +1,16 @@
-@import "src/theme/variables";
+@import "../navigation.design.scss";
 
 .user-panel {
   position: absolute;
-  bottom: 14px;
+  bottom: 10px;
   left: 7px;
   z-index: 99;
   width: 184px;
   height: 202px;
   padding: 2px 4px;
   border-radius: 3px 3px 3px 20px;
-  box-shadow: $box-shadow;
-  background-color: $white;
+  box-shadow: $nav-boxshadow;
+  background-color: $nav-background;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -18,9 +18,9 @@
 
   p {
     margin: 0;
-    font-size: 14px;
-    font-weight: 500;
-    color: $bw4;
+    font-size: $nav-font-size;
+    font-weight: $nav-font-medium;
+    color: $nav-text-color;
   }
 
   .user-content {
@@ -29,7 +29,7 @@
     height: 30px;
     width: 176px;
     padding: 4px 6px;
-    transition: all 0.2s ease-in-out;
+    transition: $nav-transition;
 
     .user-content-hover {
       display: none;
@@ -39,8 +39,13 @@
       margin-left: 12px;
     }
 
+    .user-content-svg {
+      position: relative;
+      bottom: 1px;
+    }
+
     .user-content-logout {
-      color: #ff8080;
+      color: $nav-important;
     }
 
     &:nth-child(1) {
@@ -53,7 +58,7 @@
         height: 28px;
         width: 176px;
         content: "";
-        background: #f7f7f7;
+        background: $nav-hover-color;
         position: absolute;
         z-index: -1;
         left: 4px;
@@ -63,23 +68,34 @@
       .user-content-svg {
         svg {
           path {
-            fill: $bw4;
+            fill: $nav-svg-hover;
           }
         }
       }
 
       .user-content-logout {
-        color: #ff6a6a !important;
+        color: $nav-important-hover !important;
 
         svg {
           #person-to-portal {
-            fill: #ff6a6a !important;
+            fill: $nav-important !important;
+          }
+        }
+      }
+
+      .user-content-status {
+        svg {
+          #minus-circle {
+            fill: $user-busy-status-hover !important;
+          }
+          #check-circle {
+            fill: $user-active-status-hover !important;
           }
         }
       }
 
       .user-content-text {
-        color: #919191;
+        color: $nav-text-color-hover;
       }
     }
   }
@@ -98,11 +114,11 @@
       p {
         margin-left: 6px;
         &:nth-child(1) {
-          font-weight: 600;
+          font-weight: $nav-font-semibold;
         }
         &:nth-child(2) {
-          font-size: 12px;
-          font-weight: 400;
+          font-size: $nav-font-size-small;
+          font-weight: $nav-font-regular;
         }
       }
 
@@ -114,52 +130,6 @@
       .nav-footer-user-name {
         position: relative;
         top: -1px;
-      }
-    }
-
-    .status-marker-container {
-      width: 12px;
-      height: 12px;
-      border-radius: 7px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      bottom: 1px;
-      left: 23px;
-      background: $white;
-
-      .status-marker {
-        width: 10px;
-        height: 10px;
-        border-radius: 6px;
-        border: 0 solid $white;
-        background: $white;
-      }
-
-      .status-online {
-        border: 2px solid #24c1a1;
-        background: $white !important;
-      }
-
-      .status-active {
-        border: 0 solid $white;
-        background: #24c1a1 !important;
-      }
-
-      .status-away {
-        border: 0 solid $white;
-        background: #ffae21 !important;
-      }
-
-      .status-busy {
-        border: 0 solid $white;
-        background: #ff5d5d !important;
-      }
-
-      .status-offline {
-        border: 0 solid $white;
-        background: #919191 !important;
       }
     }
   }

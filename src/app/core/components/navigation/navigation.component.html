@@ -1,7 +1,7 @@
 <div
   class="navigation"
-  (mouseenter)="isNavigationHovered = true"
-  (mouseleave)="isNavigationHovered = false"
+  (mouseenter)="onHoveredNavigation(true)"
+  (mouseleave)="onHoveredNavigation(false)"
 >
   <div class="navigation-top">
     <app-navigation-header
@@ -26,7 +26,7 @@
           class="navigation-routes"
           *ngFor="let item of navigation; let ind = index; trackBy: identify"
           [ngClass]="{
-            'magic-line-selected':
+            'new-magic-line-selected':
               item.isRouteActive ||
               item.isSubrouteActive ||
               isActiveRouteOnReload(item.route)
@@ -56,7 +56,7 @@
             </app-navigation-route>
 
             <app-navigation-subroute
-              *ngIf="isNavigationHovered"
+              *ngIf="isNavigationHovered && item.isRouteActive"
               [subroute]="item"
               [isActiveSubroute]="isActiveSubroute"
               (onSubrouteActiveEvent)="onRouteEvent($event)"
@@ -71,25 +71,33 @@
             !isActiveFooterRoute &&
             isActiveMagicLine
           "
-          class="magic-line"
+          class="new-magic-line"
         ></div>
       </div>
     </div>
     <hr *ngIf="isNavigationHovered && isActiveSubroute" class="wrapper-line" />
   </div>
 
-  <div class="navigation-bottom">
+  <div class="navigation-bottom" (mouseenter)="onHoveredRoutesContainer(false)">
     <app-navigation-footer
+      *ngIf="!isUserCompanyDetailsOpen"
       [isNavigationHovered]="isNavigationHovered"
       (onUserPanelOpenEvent)="onPanelEvent($event)"
       (onActivateFooterRoutes)="onActivateFooterRoute($event)"
     ></app-navigation-footer>
 
     <app-navigation-user-profile
+      *ngIf="!isUserCompanyDetailsOpen"
       [isNavigationHovered]="isNavigationHovered"
       [isUserPanelOpen]="isUserPanelOpen"
       (onUserPanelCloseEvent)="onPanelEvent($event)"
+      (onUserCompanyDetailsOpen)="onPanelEvent($event)"
     >
     </app-navigation-user-profile>
+
+    <app-navigation-user-company
+      *ngIf="isUserCompanyDetailsOpen && isNavigationHovered"
+      (onUserCompanyDetailsClose)="onPanelEvent($event)"
+    ></app-navigation-user-company>
   </div>
 </div>

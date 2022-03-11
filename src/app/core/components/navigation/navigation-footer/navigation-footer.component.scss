@@ -1,3 +1,5 @@
+@import "../navigation.design.scss";
+
 .nav-footer {
   display: flex;
   flex-direction: column;
@@ -10,11 +12,13 @@
   left: 1px;
 
   p {
+    color: $nav-text-color;
+    font-weight: $nav-font-medium;
+    font-size: $nav-font-size;
+
     margin: 0;
-    font-size: 14px;
     margin-left: 12px;
-    color: #b7b7b7;
-    font-weight: 500;
+
     position: relative;
     top: 1px;
   }
@@ -45,11 +49,11 @@
       p {
         margin-left: 6px;
         &:nth-child(1) {
-          font-weight: 600;
+          font-weight: $nav-font-semibold;
         }
         &:nth-child(2) {
-          font-size: 12px;
-          font-weight: 400;
+          font-size: $nav-font-size-small;
+          font-weight: $nav-font-regular;
         }
       }
 
@@ -65,49 +69,8 @@
     }
 
     .status-marker-container {
-      width: 12px;
-      height: 12px;
-      border-radius: 7px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
       bottom: -5px;
       left: 17px;
-      background: #ffffff;
-
-      .status-marker {
-        width: 10px;
-        height: 10px;
-        border-radius: 6px;
-        border: 0 solid #ffffff;
-        background: #ffffff;
-      }
-
-      .status-online {
-        border: 2px solid #24c1a1;
-        background: #ffffff !important;
-      }
-
-      .status-active {
-        border: 0 solid #ffffff;
-        background: #24c1a1 !important;
-      }
-
-      .status-away {
-        border: 0 solid #ffffff;
-        background: #ffae21 !important;
-      }
-
-      .status-busy {
-        border: 0 solid #ffffff;
-        background: #ff5d5d !important;
-      }
-
-      .status-offline {
-        border: 0 solid #ffffff;
-        background: #919191 !important;
-      }
     }
 
     .nav-footer-hover {
@@ -123,25 +86,26 @@
 
     .nav-footer-hover-user {
       height: 40px;
-      left: -10px;
+      left: -11px;
       width: 186px;
       border-radius: 3px;
     }
 
     &:hover {
       .nav-footer-image {
+        transition: $nav-transition;
         svg {
           // info
           #Path_35324 {
-            fill: #b7b7b7;
+            fill: $nav-svg-hover;
           }
           // settings
           #Path_35325 {
-            fill: #b7b7b7;
+            fill: $nav-svg-hover;
           }
 
           #Path_35326 {
-            fill: #b7b7b7;
+            fill: $nav-svg-hover;
           }
         }
       }
@@ -149,65 +113,69 @@
       .nav-footer-text,
       .nav-footer-user-company,
       .nav-footer-user-name {
-        color: #919191;
+        transition: $nav-transition;
+        color: $nav-text-color-hover;
       }
 
       .nav-footer-hover {
-        background-color: #f7f7f7;
+        transition: $nav-transition;
+        background-color: $nav-hover-color;
       }
     }
   }
 
   .nav-footer-item-active {
-    color: #778fbb;
-    background-color: #f7f7f7;
-    width: 172px;
+    color: $nav-active;
+    background-color: $nav-hover-color;
+    width: 171px;
     border-radius: 3px;
 
     .nav-footer-image {
       svg {
         // info
         #Path_35324 {
-          fill: #778fbb;
+          fill: $nav-svg-active;
         }
         // settings
         #Path_35325 {
-          fill: #778fbb;
+          fill: $nav-svg-active;
         }
 
         #Path_35326 {
-          fill: #778fbb;
+          fill: $nav-svg-active;
         }
       }
     }
 
     .nav-footer-text {
-      color: #778fbb;
+      color: $nav-active;
     }
 
     &:hover {
-      color: #5673aa !important;
+      color: $nav-active !important;
       font-weight: 500;
 
       .nav-footer-image {
+        transition: $nav-transition;
         svg {
           // info
           #Path_35324 {
-            fill: #5673aa !important;
+            fill: $nav-active !important;
           }
           // settings
           #Path_35325 {
-            fill: #5673aa !important;
+            fill: $nav-active !important;
           }
 
           #Path_35326 {
-            fill: #5673aa !important;
+            fill: $nav-active !important;
           }
         }
       }
 
       .nav-footer-text {
-        color: #5673aa !important;
+        transition: $nav-transition;
+        color: $nav-active !important;
       }
     }
 
@@ -217,7 +185,7 @@
       position: absolute;
       left: -7px;
       content: "";
-      background-color: #f7f7f7;
+      background-color: $nav-hover-color;
       z-index: -1;
       border-radius: 3px;
     }

@@ -1,8 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-  <g id="Group_70381" data-name="Group 70381" transform="translate(-17.5 -497.5)">
-    <g id="Chat" transform="translate(-74 -330)">
-      <rect id="Rectangle_52465" data-name="Rectangle 52465" width="20" height="20" transform="translate(92 828)" fill="none" stroke="rgba(0,0,0,0)" stroke-width="1"/>
-      <path id="folder" d="M16.313,34.25H9.563L7.313,32H1.688A1.688,1.688,0,0,0,0,33.688V36.5H18v-.562A1.688,1.688,0,0,0,16.313,34.25ZM0,46.063A1.688,1.688,0,0,0,1.688,47.75H16.313A1.688,1.688,0,0,0,18,46.063V37.625H0Z" transform="translate(93 798.125)" fill="#dadada" stroke="rgba(0,0,0,0)" stroke-width="1"/>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="Chat" transform="translate(-92 -828)">
+    <rect id="Rectangle_52465" data-name="Rectangle 52465" width="20" height="20" transform="translate(92 828)" fill="none"/>
+    <path id="folder" d="M16.313,34.25H9.563L7.313,32H1.688A1.688,1.688,0,0,0,0,33.688V36.5H18v-.562A1.688,1.688,0,0,0,16.313,34.25ZM0,46.063A1.688,1.688,0,0,0,1.688,47.75H16.313A1.688,1.688,0,0,0,18,46.063V37.625H0Z" transform="translate(93 798.125)" fill="#b7b7b7"/>
   </g>
 </svg>

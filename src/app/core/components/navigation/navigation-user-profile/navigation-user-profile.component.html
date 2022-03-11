@@ -6,15 +6,37 @@
   >
     <div class="user-content-hover"></div>
     <svg-icon
-      [ngClass]="{ 'user-content-logout': item.name === 'Logout' }"
+      [ngClass]="{
+        'user-content-logout': item.name === 'Logout',
+        'user-content-status': item.name === 'User status'
+      }"
       class="user-content-svg"
-      src="{{ item.image }}"
+      src="{{
+        item.name === 'User status'
+          ? currentUserStatus === 'online'
+            ? item.image
+            : 'assets/img/svgs/navigation/ic_truckassist_active_status.svg'
+          : item.image
+      }}"
     ></svg-icon>
     <p
+      *ngIf="item.name !== 'User status'"
       class="user-content-text"
       [ngClass]="{ 'user-content-logout': item.name === 'Logout' }"
     >
       {{ item.name }}
+    </p>
+    <p
+      *ngIf="item.name === 'User status' && currentUserStatus === 'online'"
+      class="user-content-text user-content-text-status"
+    >
+      Set <b>Busy</b> Status
+    </p>
+    <p
+      *ngIf="item.name === 'User status' && currentUserStatus === 'busy'"
+      class="user-content-text user-content-text-status"
+    >
+      Set <b>Active</b> Status
     </p>
   </div>
 

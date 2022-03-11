@@ -20,6 +20,7 @@ export class NavigationComponent {
   public activeSubrouteFleg: boolean = false;
 
   public isActiveFooterRoute: boolean = false;
+  public isUserCompanyDetailsOpen: boolean = false;
   public isActiveMagicLine: boolean = false;
 
   constructor(private router: Router) {}
@@ -32,6 +33,10 @@ export class NavigationComponent {
       }
       case 'User Panel': {
         this.isUserPanelOpen = panel.type;
+        break;
+      }
+      case 'User Company Details': {
+        this.isUserCompanyDetailsOpen = panel.type;
         break;
       }
       default:
@@ -72,7 +77,6 @@ export class NavigationComponent {
     }
 
     if (index !== this.isActiveSubrouteIndex) {
-
       this.navigation.forEach((nav) => (nav.isRouteActive = false));
       this.isActiveSubroute = true;
       this.activeSubrouteFleg = false;
@@ -82,11 +86,13 @@ export class NavigationComponent {
       this.isActiveSubrouteIndex = index;
       this.navigation[index].isRouteActive = true;
     }
+    this.isActiveFooterRoute = false;
   }
 
   private activationMainRoute(index: number) {
     this.disableRoutes();
     this.navigation[index].isRouteActive = true;
+    this.isActiveFooterRoute = false;
   }
 
   private disableRoutes() {
@@ -111,7 +117,28 @@ export class NavigationComponent {
     if (type) {
       this.onActivateFooterRoute(false);
       this.isActiveMagicLine = true;
-    } else if (this.isActiveFooterRoute) {
+    } else {
+      const index = this.navigation.findIndex(
+        (item) => item.isRouteActive || item.isSubrouteActive
+      );
+      if (index === -1) {
+        this.isActiveMagicLine = false;
+      }
+    }
+  }
+
+  public onHoveredNavigation(type: boolean) {
+    if (type) {
+      this.isNavigationHovered = true;
+
+      const index = this.navigation.findIndex(
+        (item) => item.isRouteActive || item.isSubrouteActive
+      );
+      if (index > -1) {
+        this.isActiveMagicLine = true;
+      }
+    } else {
+      this.isNavigationHovered = false;
       this.isActiveMagicLine = false;
     }
   }
