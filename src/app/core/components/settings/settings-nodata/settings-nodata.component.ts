@@ -17,5 +17,7 @@ export class SettingsNodataComponent implements OnInit {
 
   public goToSettings() {
     this.settingsService.noDataSubject$.next(true);
+    const body = document.querySelector('body');
+    body.style.overflow = 'visible';
   }
 }

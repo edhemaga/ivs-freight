@@ -5,9 +5,8 @@
   class="{{ currentPage === 'login' ? 'login-page' : 'content-page' }}"
 >
   <router-outlet></router-outlet>
-</div>
 
-<div
+  <div
   *ngIf="showScrollButton"
   @scrollButtonAnimation
   class="content-scroll"
@@ -17,6 +16,9 @@
     src="assets/img/svgs/app-scroll-button/ic_truckassist_arrow_top.svg"
   ></svg-icon>
 </div>
+</div>
+
+
 
 <div class="low-res-wrapper">
   <div class="low-res-logo">
