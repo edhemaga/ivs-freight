@@ -1,47 +1,57 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {AutoFocusDirective} from "../../directives/auto-focus.directive";
-import {InputFocusDirective} from "../../directives/input-focus.directive";
-import {InputRestrictionDirective} from "../../directives/input-restriction.directive";
-import {InputErrorPipe} from "../../pipes/input-error.pipe";
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NgSelectModule} from '@ng-select/ng-select';
-import {AngularSvgIconModule} from "angular-svg-icon";
-import {AngularSvgIconPreloaderModule} from 'angular-svg-icon-preloader';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { AutoFocusDirective } from "../../directives/auto-focus.directive";
+import { InputFocusDirective } from "../../directives/input-focus.directive";
+import { InputRestrictionDirective } from "../../directives/input-restriction.directive";
+import { InputErrorPipe } from "../../pipes/input-error.pipe";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { AngularSvgIconModule } from "angular-svg-icon";
+import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 import { SvgMorphComponent } from './svg-morph/svg-morph.component';
-import {AgmCoreModule} from '@agm/core';
+import { AgmCoreModule } from '@agm/core';
 import { MapControlComponent } from './map-control/map-control.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {DriverManageComponent} from "../../components/modals/driver-manage/driver-manage.component";
-import {SortPipe} from "../../pipes/sort.pipe";
-import {HistoryDataComponent} from "../../components/shared/history-data/history-data.component";
-import {DatePickerModule} from "@progress/kendo-angular-dateinputs";
-import {GooglePlaceModule} from "ngx-google-places-autocomplete";
-import {TabSwitcherComponent} from "../../components/switchers/tab-switcher/tab-switcher.component";
-import {SortableModule} from "@progress/kendo-angular-sortable";
-import {GridModule, PDFModule} from "@progress/kendo-angular-grid";
-import {DropDownsModule} from "@progress/kendo-angular-dropdowns";
-import {ButtonsModule} from "@progress/kendo-angular-buttons";
-import {SchedulerModule} from '@progress/kendo-angular-scheduler';
-import {InputsModule, SwitchModule} from "@progress/kendo-angular-inputs";
-import {DateInputsModule} from "@progress/kendo-angular-dateinputs";
-import {LayoutModule} from "@progress/kendo-angular-layout";
-import {ExcelExportModule} from "@progress/kendo-angular-excel-export";
-import {PDFExportModule} from "@progress/kendo-angular-pdf-export";
-import {LabelModule} from "@progress/kendo-angular-label";
-import {TextFieldModule} from "@angular/cdk/text-field";
-import {DragDropModule} from "@angular/cdk/drag-drop";
-import {StatusSwitcherComponent} from "../../components/switchers/status-switcher/status-switcher.component";
-import {TruckManageComponent} from "../../components/modals/truck-manage/truck-manage.component";
-import {NgxSliderModule} from '@angular-slider/ngx-slider';
-import {TrailerManageComponent} from "../../components/modals/trailer-manage/trailer-manage.component";
-import {TooltipDirective} from "../../directives/tooltip.directive";
-import {NgxMaskModule} from "ngx-mask";
-import {EditProfileComponent} from "../../components/modals/edit-profile/edit-profile.component";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DriverManageComponent } from "../../components/modals/driver-manage/driver-manage.component";
+import { SortPipe } from "../../pipes/sort.pipe";
+import { HistoryDataComponent } from "../../components/shared/history-data/history-data.component";
+import { DatePickerModule } from "@progress/kendo-angular-dateinputs";
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import { TabSwitcherComponent } from "../../components/switchers/tab-switcher/tab-switcher.component";
+import { SortableModule } from "@progress/kendo-angular-sortable";
+import { GridModule, PDFModule } from "@progress/kendo-angular-grid";
+import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
+import { ButtonsModule } from "@progress/kendo-angular-buttons";
+import { SchedulerModule } from '@progress/kendo-angular-scheduler';
+import { InputsModule, SwitchModule } from "@progress/kendo-angular-inputs";
+import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
+import { LayoutModule } from "@progress/kendo-angular-layout";
+import { ExcelExportModule } from "@progress/kendo-angular-excel-export";
+import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
+import { LabelModule } from "@progress/kendo-angular-label";
+import { TextFieldModule } from "@angular/cdk/text-field";
+import { DragDropModule } from "@angular/cdk/drag-drop";
+import { StatusSwitcherComponent } from "../../components/switchers/status-switcher/status-switcher.component";
+import { TruckManageComponent } from "../../components/modals/truck-manage/truck-manage.component";
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { TrailerManageComponent } from "../../components/modals/trailer-manage/trailer-manage.component";
+import { TooltipDirective } from "../../directives/tooltip.directive";
+import { NgxMaskModule } from "ngx-mask";
+import { EditProfileComponent } from "../../components/modals/edit-profile/edit-profile.component";
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 import { TaNoteContainerComponent } from '../../components/shared/ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from '../../components/shared/delete-dialog/delete-dialog.component';
 import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
+import { TaSelectComponent } from '../../components/shared/ta-select/ta-select.component';
+import { TaStatusSelectComponent } from '../../components/shared/ta-status-select/ta-status-select.component';
+import { TaStatusSwitchComponent } from '../../components/shared/ta-status-switch/ta-status-switch.component';
+import { StatusPipePipe } from '../../pipes/status-pipe.pipe';
+import { CdkConnectPipe } from '../../pipes/cdkconnect.pipe';
+import { CdkIdPipe } from '../../pipes/cdkid.pipe';
+import { HighlightSearchPipe } from '../../pipes/highlight-search.pipe';
+import { HosTimePipe } from '../../pipes/hostime';
+import { NameInitialsPipe } from '../../pipes/nameinitials';
+import { Ng5SliderModule } from 'ng5-slider';
 
 @NgModule({
   declarations: [
@@ -55,6 +65,12 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
     DriverManageComponent,
     SortPipe,
     SafeHtmlPipe,
+    StatusPipePipe,
+    HighlightSearchPipe,
+    NameInitialsPipe,
+    HosTimePipe,
+    CdkIdPipe,
+    CdkConnectPipe,
     HistoryDataComponent,
     TabSwitcherComponent,
     StatusSwitcherComponent,
@@ -64,18 +80,21 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
     TrailerManageComponent,
     EditProfileComponent,
     TaNoteContainerComponent,
+    TaStatusSwitchComponent,
+    TaStatusSelectComponent,
+    TaSelectComponent,
     DeleteDialogComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
+    ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
     NgSelectModule,
     NgbModule,
     AngularSvgIconModule.forRoot(),
     AgmCoreModule.forRoot({
-        apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
-        libraries: ['geometry', 'places'],
+      apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
+      libraries: ['geometry', 'places'],
     }),
     AngularSvgIconPreloaderModule.forRoot({
       configUrl: '../../assets/imgPreloadJson/svgImages.json',
@@ -99,7 +118,8 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
     LabelModule,
     TextFieldModule,
     DragDropModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    Ng5SliderModule
   ],
   exports: [
     AutoFocusDirective,
@@ -116,6 +136,12 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
     NgbModule,
     SortPipe,
     SafeHtmlPipe,
+    StatusPipePipe,
+    HighlightSearchPipe,
+    NameInitialsPipe,
+    HosTimePipe,
+    CdkIdPipe,
+    CdkConnectPipe,
     SortableModule,
     GridModule,
     PDFModule,
@@ -133,10 +159,15 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
     TabSwitcherComponent,
     TooltipDirective,
     TaNoteContainerComponent,
+    TaStatusSwitchComponent,
+    TaStatusSelectComponent,
+    TaSelectComponent,
     DeleteDialogComponent,
-    DragDropModule
+    DragDropModule,
+    NgxMaskModule,
+    Ng5SliderModule
   ],
-  providers: [SortPipe, NFormatterPipe, SafeHtmlPipe],
+  providers: [SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {

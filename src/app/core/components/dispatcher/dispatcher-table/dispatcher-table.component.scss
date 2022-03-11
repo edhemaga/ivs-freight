@@ -1,4 +1,4 @@
-@import "../../../../../../theme/variables.scss";
+@import "../../../../../theme/variables.scss";
 
 .dispacher-table,
 .dragged-row,
@@ -1072,6 +1072,7 @@
   }
 
   .email-phone-col {
+    position: relative;
     width: 149px !important;
     min-width: 149px !important;
     max-width: 149px !important;
@@ -1339,21 +1340,21 @@ kendo-grid .toolbar-container {
     position: absolute;
     width: 100%;
     color: rgba(145, 145, 145, 1);
+  }
 
-    .select_span {
-      line-height: 14px;
-      min-width: 100px;
-      display: inline-block;
+  .select_span {
+    line-height: 14px;
+    min-width: 100px;
+    display: inline-block;
 
-      .time_info {
-        display: flex;
-        justify-content: space-between;
+    .time_info {
+      display: flex;
+      justify-content: space-between;
 
-        div {
-          font-size: 10px;
-          font-weight: 700;
-          color: #b7b7b7;
-        }
+      div {
+        font-size: 10px;
+        font-weight: 700;
+        color: #b7b7b7;
       }
     }
   }

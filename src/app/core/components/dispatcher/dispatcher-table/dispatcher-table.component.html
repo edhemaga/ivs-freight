@@ -228,28 +228,6 @@
           </ng-template>
         </kendo-grid>
       </div>
-      <!-- <div *ngIf="mainGridData['allSelected']">
-        <app-app-dispatcher-table-new
-          [dispatcher]="dispatcher"
-          [mainGridData]="mainGridData['allSelected'].data"
-          [infoCount]="mainGridData['allSelected'].infoCount"
-          [listLenght]="mainGridData['allSelected'].data.length"
-          [isBoardLocked]="isBoardLocked"
-          (innactiveLock)="innactiveLock($event)"
-          (formatGridData)="formatGridData($event)"
-          (formatUniqGridData)="formatUniqGridData($event)"
-          (updateUsersData)="updateUsersData()"
-          [openAllNotesText]="openAllNoteses"
-          [loadTrucks]="loadTrucks"
-          [loadTrailers]="loadTrailers"
-          [loadDrivers]="loadDrivers"
-          [manualLock]="manualLock"
-          [phoneEmailToggle]="phoneEmailToggle"
-          (hoverPhoneEmail)="hoverPhoneEmail()"
-          (openAllNoteses)="openAllNotes()"
-          [highlightingWords]="highlightingWords"
-        ></app-app-dispatcher-table-new>
-      </div> -->
       <div class="dispatcher_table_list_holder">
         <div *ngFor="let dispatcher of selectedDispatchers; let ind = index" class="dipsatch_groups">
           <app-app-dispatcher-table-new

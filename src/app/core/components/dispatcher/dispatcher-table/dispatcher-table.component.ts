@@ -1,12 +1,10 @@
-import {DispatcherHistoryComponent} from './../../dispatcher-history/dispatcher-history.component';
+import { DispatcherQuery } from './../state/dispatcher.query';
 import {takeUntil} from 'rxjs/operators';
 /// <reference types="@types/googlemaps" />
 import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation,} from '@angular/core';
 import {Subject} from 'rxjs';
-import {AppAddLoadTableComponent} from './../../app-add-load-table/app-add-load-table.component';
 //import {ManageLoadComponent} from 'src/app/load/manage-load/manage-load.component';
 import * as AppConst from 'src/app/const';
-import {AppDispatcherTableNewComponent} from './../../app-dispatcher-table-new/app-dispatcher-table-new.component';
 import {ToastrService} from 'ngx-toastr';
 import {HttpClient} from '@angular/common/http';
 // import { AppSignalRService } from './../../../core/services/app-signalr.service';
@@ -20,15 +18,19 @@ import { AppIdleService } from 'src/app/core/services/dispatchboard/app-idle.ser
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { DispatchSortService } from 'src/app/core/services/dispatchboard/dispatchsort.service';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
+import { AppDispatcherTableNewComponent } from '../app-dispatcher-table-new/app-dispatcher-table-new.component';
+import { AppAddLoadTableComponent } from '../app-add-load-table/app-add-load-table.component';
+import { DispatcherHistoryComponent } from '../dispatcher-history/dispatcher-history.component';
 
 declare var google: any;
 
 @Component({
   selector: 'app-dispatcher-table',
   templateUrl: './dispatcher-table.component.html',
-  styleUrls: ['./dispatcher-table.component.scss'],
+  styleUrls: ["../dispatcher.global.scss", './dispatcher-table.component.scss'],
   encapsulation: ViewEncapsulation.None,
   providers: [AppIdleService],
+  
 })
 export class DispatcherTableComponent implements OnInit, OnDestroy {
   @ViewChild(AppDispatcherTableNewComponent, {static: false})
@@ -99,7 +101,8 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     private shared: SharedService,
     private http: HttpClient,
     private signalrService: SignalRService,
-    private gpsDataService: AppDispatchSignalrService
+    private gpsDataService: AppDispatchSignalrService,
+    private dispatcherQuery: DispatcherQuery
   ) {
   }
 
@@ -122,7 +125,13 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
 
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.setUserInactivityListener();
-    this.getDispatcherData();
+
+    this.dispatcherQuery.dispatchersList$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(result => {
+      this.getDispatcherData(result);
+    });
+
     this.loadService.editDispatchBoard.pipe(takeUntil(this.destroy$)).subscribe(() => {
       // this.getDispatcherData();
     });
@@ -264,12 +273,8 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
       });
   }
 
-  getDispatcherData() {
-    this.loadService
-      .getDispatchers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((resultData: any) => {
-        this.dispatcherItems = resultData;
+  getDispatcherData(result?) {
+        this.dispatcherItems = result;
         const user = JSON.parse(localStorage.getItem('currentUser'));
         this.dispatcherItems.unshift({
           id: -1,
@@ -303,7 +308,6 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
         }
 
         this.refreshDispatchBoard(null);
-      });
   }
 
   openAddLoad(id: any) {

@@ -1,0 +1,34 @@
+<ng-select
+  #multiSelect
+  (blur)="onBlur($event)"
+  (change)="change($event, multiSelect)"
+  (focus)="onFocus($event)"
+  [(ngModel)]="selectValue.id"
+  [clearable]="false"
+  [hideSelected]="true"
+  [items]="items"
+  [searchFn]="customSearchFn"
+  bindLabel="{{ label1 + label2 }}"
+  bindValue="id"
+  class="ta-select-wrapper"
+  placeholder="{{ placeholder }}"
+>
+  <ng-template let-item="item" ng-label-tmp>
+    <div class="dropdown-item-wrapper">
+      <span *ngIf="item['id'] != 0 && item['id'] != -1"
+            [ngStyle]="item.dispatcherAvatar && { 'background-image': 'url(' + item.dispatcherAvatar + ')' }"
+            class="dropdown-avatar"></span>
+      <span class="ta-dropdown-item"> {{ item[label1] + ' ' + item[label2] }} </span>
+    </div>
+  </ng-template>
+  <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+    <div class="dropdown-item-wrapper ta-list-items">
+      <span *ngIf="item['id'] != 0 && item['id'] != -1"
+            [ngStyle]="item.dispatcherAvatar && { 'background-image': 'url(' + item.dispatcherAvatar + ')' }"
+            class="dropdown-avatar"></span>
+      <span
+        [ngClass]="{'ta-dropdown-item': true, 'select_other_disp': item['id'] == 0 || item['id'] == -1, 'select_disp_all': item['id'] == 0}"
+        [ngOptionHighlight]="search" class="ta-dropdown-item">{{ item[label1] + ' ' + item[label2] }}</span>
+    </div>
+  </ng-template>
+</ng-select>

@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { DashboardStore } from "./dashboard.store";
-import { DashboardStats } from "./dashboard.model";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
 import { SharedService } from "src/app/core/services/shared/shared.service";

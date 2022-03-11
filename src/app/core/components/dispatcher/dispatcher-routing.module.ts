@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {DispatcherTableComponent} from './dispatcher-table/dispatcher-table/dispatcher-table.component';
+import { DispatcherTableComponent } from './dispatcher-table/dispatcher-table.component';
 
 const routes: Routes = [
   {

@@ -10,6 +10,7 @@ import moment from "moment";
 import {CommunicatorUserService} from "./core/services/communication-user/communicator-user.service";
 import {animate, style, transition, trigger} from "@angular/animations";
 import {UserService} from "./core/services/user/user.service";
+import { GlobalStoreService } from './core/services/global-store.service';
 
 /// <reference types="@types/googlemaps" />
 
@@ -84,7 +85,8 @@ export class AppComponent implements OnInit {
     private communicatorUserService: CommunicatorUserService,
     private idle: Idle,
     private renderer: Renderer2,
-    public userService: UserService
+    public userService: UserService,
+    private globalStoreService: GlobalStoreService
   ) {
   }
 
@@ -112,6 +114,7 @@ export class AppComponent implements OnInit {
 
     if (localStorage.getItem('userCompany') != null) {
       this.getCompanySubscription();
+      this.globalStoreService.getAllStoreValues();
     }
 
     this.lowResMode = (window.innerWidth < 1261);

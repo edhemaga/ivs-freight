@@ -35,7 +35,7 @@
     "@fullcalendar/resource-timeline": "^5.3.1",
     "@fullcalendar/rrule": "^5.3.1",
     "@fullcalendar/timegrid": "^5.3.1",
-    "@ng-bootstrap/ng-bootstrap": "^12.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "@ng-idle/core": "^11.1.0",
     "@ng-select/ng-select": "^8.1.1",
     "@popperjs/core": "^2.11.2",

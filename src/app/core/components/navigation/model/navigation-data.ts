@@ -17,7 +17,7 @@ export const navigationData: Navigation[] = [
     id: 2,
     name: 'Dispatch',
     image: 'assets/img/svgs/navigation/ic_dispatch.svg',
-    route: '/dispatch',
+    route: '/dispatcher',
     isRouteActive: false,
   },
   {
