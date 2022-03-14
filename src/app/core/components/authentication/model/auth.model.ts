@@ -24,7 +24,7 @@ export class Contact {
       this.state = state;
       this.email = email;
     }
-  }
+}
 
 export class User {
     user: UserObject;
@@ -66,4 +66,4 @@ export class User {
       this.gender = gender;
       this.username = username;
     }
-  }
+}

@@ -475,7 +475,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
       );
     } else {
       this.selectedDispatchers = this.dispatcherItems
-        .filter((item) => item.id != 0)
+        .filter((item) => item.id != 0) 
         .sort((a, b) => {
           return a['id'] < b['id'] ? 1 : -1;
         });
