@@ -29,6 +29,8 @@
 
     .nav-item-arrow {
       margin-right: 4px;
+      transform: rotate(0deg);
+      transition: $nav-transition;
     }
 
     .nav-item-arrow-first {
@@ -38,6 +40,13 @@
     .nav-item-arrow-rotate {
       transform: rotate(180deg);
       transition: $nav-transition;
+    }
+
+    &.show {
+      animation: fadeIn 0.2s;
+    }
+    &.hide {
+      animation: fadeOut 0.15s;
     }
   }
 
@@ -59,7 +68,6 @@
 .nav-item-active {
   color: $nav-active;
   border-radius: 3px;
-  width: auto;
 
   .nav-item-img-active,
   .nav-item-arrow-active {

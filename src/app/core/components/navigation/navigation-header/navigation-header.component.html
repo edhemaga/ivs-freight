@@ -21,7 +21,11 @@
       (click)="onAction('Open Panel')"
     ></svg-icon>
 
-    <div class="nav-header-bottom-rightSide" *ngIf="isNavigationHovered">
+    <div
+      *ngIf="isNavigationHovered"
+      class="nav-header-bottom-rightSide"
+      [ngClass]="isNavigationHovered ? 'show' : 'hide'"
+    >
       <svg-icon
         class="nav-header-bottom-rightSide-search"
         src="assets/img/svgs/navigation/ic_truckassist_search.svg"
