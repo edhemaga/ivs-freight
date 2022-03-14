@@ -1,7 +1,6 @@
 @import "../navigation.design.scss";
 
 .nav-header {
-  height: 103px;
   width: auto;
   display: flex;
   flex-direction: column;
@@ -21,82 +20,92 @@
 
   .nav-header-bottom {
     margin-top: 16px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
 
-    .nav-header-bottom-plus {
-      svg {
+    position: relative;
+    right: 11px;
+  }
+
+  .nav-header-bottom-plus {
+    svg {
+      transition: $nav-transition;
+      path {
+        shape-rendering: geometricPrecision;
+        fill: url("#linear-gradient");
+      }
+      &:hover {
+        cursor: pointer;
         transition: $nav-transition;
-        margin-left: -10px;
-        path {
+        #Ellipse_6368-2 {
           shape-rendering: geometricPrecision;
           fill: url("#linear-gradient");
         }
-        &:hover {
-          cursor: pointer;
-          transition: $nav-transition;
-          #Ellipse_6368-2 {
-            shape-rendering: geometricPrecision;
-            fill: url("#linear-gradient");
+        path {
+          fill: $nav-background;
+        }
+      }
+    }
+  }
+
+  .nav-header-bottom-rightSide {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 32.5px;
+
+    .nav-header-bottom-rightSide-search {
+      &:hover {
+        transition: $nav-transition;
+        svg {
+          #Ellipse_6615 {
+            fill: $nav-hover-lightcolor !important;
           }
-          path {
-            fill: $nav-background;
+          #Path_35719 {
+            fill: $nav-svg-hover !important;
           }
         }
       }
     }
 
-    .nav-header-bottom-rightSide {
-      display: flex;
-      justify-content: space-between;
-      margin-left: 31px;
+    .nav-header-bottom-rightSide-notes {
+      margin: 0 6px;
+      &:hover {
+        transition: $nav-transition;
+        svg {
+          #Ellipse_6614 {
+            fill: $nav-hover-lightcolor !important;
+          }
+          #Path_35726 {
+            fill: $nav-svg-hover !important;
+          }
 
-      .nav-header-bottom-rightSide-search {
-        &:hover {
-          transition: $nav-transition;
-          svg {
-            #Ellipse_6615 {
-              fill: $nav-hover-lightcolor !important;
-            }
-            #Path_35719 {
-              fill: $nav-svg-hover !important;
-            }
+          #Path_35727 {
+            fill: $nav-svg-hover !important;
           }
         }
       }
+    }
 
-      .nav-header-bottom-rightSide-notes {
-        margin: 0 6px;
-        &:hover {
-          transition: $nav-transition;
-          svg {
-            #Ellipse_6614 {
-              fill: $nav-hover-lightcolor !important;
-            }
-            #Path_35726 {
-              fill: $nav-svg-hover !important;
-            }
-
-            #Path_35727 {
-              fill: $nav-svg-hover !important;
-            }
+    .nav-header-bottom-rightSide-bell {
+      &:hover {
+        transition: $nav-transition;
+        svg {
+          #Ellipse_6613 {
+            fill: $nav-hover-lightcolor !important;
+          }
+          #Path_35724 {
+            fill: $nav-svg-hover !important;
           }
         }
       }
+    }
 
-      .nav-header-bottom-rightSide-bell {
-        &:hover {
-          transition: $nav-transition;
-          svg {
-            #Ellipse_6613 {
-              fill: $nav-hover-lightcolor !important;
-            }
-            #Path_35724 {
-              fill: $nav-svg-hover !important;
-            }
-          }
-        }
-      }
+    &.show {
+      animation: fadeIn 0.2s;
+    }
+    &.hide {
+      animation: fadeOut 0.15s;
     }
   }
 }

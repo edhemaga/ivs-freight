@@ -24,6 +24,8 @@ $nav-important-hover: #ff5050;
 $nav-boxshadow: 0 0 4px rgb(0, 0, 0, 0.16);
 
 $nav-transition: all 0.3s ease-in-out;
+$nav-transition-015: all 0.15s ease-in-out;
+$nav-transition-2: all 0.2s ease-in-out;
 $nav-transition-5: all 0.5s ease-in-out;
 
 $nav-font-size-verysmall: 10px;
@@ -43,6 +45,42 @@ $user-busy-status: #ffbf6b;
 $user-busy-status-hover: #ffaf46;
 $user-active-status: #3bcbae;
 $user-active-status-hover: #0bbf9a;
+
+// Navigation Animations
+@keyframes fadeIn {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0px);
+    opacity: 1;
+    transition: $nav-transition-2;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100px);
+    opacity: 0;
+    transition: $nav-transition-015;
+  }
+}
+
+@keyframes showMagicLine {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transition: $nav-transition-2;
+  }
+}
+
 // ------------ end
 
 // ------------ Status User
@@ -54,7 +92,7 @@ $user-active-status-hover: #0bbf9a;
   justify-content: center;
   align-items: center;
   position: absolute;
-  bottom: 1px;
+  bottom: 2px;
   left: 23px;
   background: $nav-background;
 
