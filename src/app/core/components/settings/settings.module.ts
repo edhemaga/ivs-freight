@@ -8,6 +8,7 @@ import { SettingsPayrollComponent } from './settings-payroll/settings-payroll.co
 import { SettingsFactoringComponent } from './settings-factoring/settings-factoring.component';
 import { SharedModule } from '../../shared/shared/shared.module';
 import { SettingsNodataComponent } from './settings-nodata/settings-nodata.component';
+import { GeneralPersonalDataComponent } from './settings-general/general-personal-data/general-personal-data.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { SettingsNodataComponent } from './settings-nodata/settings-nodata.compo
     SettingsInsurancepolicyComponent,
     SettingsGeneralComponent,
     SettingsFactoringComponent,
-    SettingsNodataComponent
+    SettingsNodataComponent,
+    GeneralPersonalDataComponent
   ],
 })
 export class SettingsModule {}
