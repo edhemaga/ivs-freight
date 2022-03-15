@@ -5,8 +5,8 @@
   [ngClass]="{
     'nav-item-active': route.isRouteActive || route.isSubrouteActive
   }"
-  (mouseenter)="isNavItemHovered = true"
-  (mouseleave)="isNavItemHovered = false"
+  (mouseenter)="onNavItemHover(true)"
+  (mouseleave)="onNavItemHover(false)"
   (click)="onRouteAction()"
   routerLinkActive=""
   [routerLinkActiveOptions]="{ exact: true }"
@@ -23,7 +23,10 @@
     src="{{ route.image }}"
   ></svg-icon>
 
-  <div class="nav-item-rightSide">
+  <div
+    class="nav-item-rightSide"
+    [ngClass]="isNavigationHovered ? 'show' : 'hide'"
+  >
     <p *ngIf="isNavigationHovered" class="nav-item-name nav-item-name-active">
       {{ route.name }}
     </p>
