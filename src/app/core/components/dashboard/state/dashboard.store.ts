@@ -8,7 +8,7 @@ export interface DashboardState extends EntityState<IDashboard, string> {}
 export function createInitialState(): DashboardState {
     return {
         statistic: {
-            todayObject: [],
+            todayObject: null,
             mtdObject: [],
             ytdObject: [], 
             allTimeObject: []

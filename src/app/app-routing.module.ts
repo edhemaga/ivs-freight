@@ -1,3 +1,5 @@
+import { DispatcherResolverService } from './core/components/dispatcher/state/dispatcher-resolver.service';
+import { DashboardResolverService } from './core/components/dashboard/state/dashboard-resolver.service';
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import { AuthGuard } from './core/guards/authentication.guard';
@@ -12,18 +14,20 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: () => import('./core/components/dashboard/dashboard.module').then((m) => m.DashboardModule),
     canActivate: [AuthGuard],
+    resolve: { dashboard: DashboardResolverService }
   },
   {
-    path: 'dispatch',
+    path: 'dispatcher',
     loadChildren: () => import('./core/components/dispatcher/dispatcher.module').then((m) => m.DispatcherModule),
     canActivate: [AuthGuard],
+    resolve: {dispatcher: DispatcherResolverService}
   },
   {
     path: 'settings',
     loadChildren: () => import('./core/components/settings/settings.module').then((m) => m.SettingsModule),
     canActivate: [AuthGuard],
   },
-  {path: '**', redirectTo: ''}
+  {path: '**', redirectTo: 'dashboard'}
 ];
 
 @NgModule({

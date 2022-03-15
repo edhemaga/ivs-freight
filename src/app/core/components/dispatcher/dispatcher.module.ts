@@ -1,6 +1,6 @@
-import { SharedModule } from './../../shared/shared/shared.module';
-import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import { SharedModule } from './../../shared/shared/shared.module';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {AppAddLoadTableComponent} from './app-add-load-table/app-add-load-table.component';
 import {DispatchRoutingModule} from './dispatcher-routing.module';
 import {AppDispatcherTableNewComponent} from './app-dispatcher-table-new/app-dispatcher-table-new.component';
@@ -21,6 +21,7 @@ export function playerFactory() {
   imports: [CommonModule, DispatchRoutingModule, SharedModule, AgmSnazzyInfoWindowModule, LottieModule.forRoot({player: playerFactory})],
   entryComponents: [],
   exports: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DispatcherModule {
 }

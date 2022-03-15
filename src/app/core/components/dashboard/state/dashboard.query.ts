@@ -13,4 +13,8 @@ export class DashboardQuery extends QueryEntity<DashboardState> {
   constructor(protected store: DashboardStore) {
     super(store);
   }
+
+  get dashboardStatistics(){
+    return this.getValue().statistic;
+  }
 }

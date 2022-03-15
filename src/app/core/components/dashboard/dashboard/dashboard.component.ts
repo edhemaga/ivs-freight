@@ -6,6 +6,7 @@ import { SharedService } from '../../../services/shared/shared.service';
 import { DashboardStats } from '../state/dashboard.model';
 import { DashboardStoreService } from '../state/dashboard.service';
 import { DashboardQuery } from '../state/dashboard.query';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -163,17 +164,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
       private dashboardStoreService: DashboardStoreService, 
       private dashboardQuery: DashboardQuery, 
       private dashboardService: DashboardService, 
-      private sharedService: SharedService
+      private sharedService: SharedService,
+      private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.dashboardStoreService.addStats();
-    this.dashboardStats = this.dashboardQuery.selectDashboardStatistic$;
-    this.dashboardQuery.selectDashboardStatistic$
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(result => {
-      this.dashboardStats = result;
-    });
+    //this.dashboardStoreService.addStats();
+    this.dashboardStats = this.route.snapshot.data['dashboard'];
+    console.log(this.route.snapshot.data);
+    // this.dashboardQuery.selectDashboardStatistic$
+    // .pipe(takeUntil(this.destroy$))
+    // .subscribe(result => {
+    //   this.dashboardStats = result;
+    // });
     
     //this.getStats();
   }

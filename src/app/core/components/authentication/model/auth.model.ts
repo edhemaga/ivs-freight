@@ -30,13 +30,12 @@ export class User {
     user: UserObject;
     contact: Contact;
     token: string;
-    userToken: string;
   
     constructor(user: UserObject, contact: Contact) {
       this.user = user;
       this.contact = contact;
     }
-  }
+}
 
   export class UserObject {
     id: number;

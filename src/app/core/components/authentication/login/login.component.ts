@@ -1,3 +1,4 @@
+import { AuthStoreService } from './../state/auth.service';
 import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private authStoreService: AuthStoreService,
     private notification: NotificationService,
     private router: Router,
     private spinner: SpinnerService,
@@ -66,7 +68,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       return false;
     }
     const data = this.loginForm.value;
-    this.authService.userLogin(data).subscribe(
+    this.authStoreService.userLogin(data).subscribe(
       (res: any) => {
         localStorage.setItem('multiple_companies', JSON.stringify(res.userCompanies));
         const url = res.userCompanies.length <= 1 ? '/dashboard' : '/select-company';

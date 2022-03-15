@@ -8,14 +8,13 @@ import { SharedService } from "src/app/core/services/shared/shared.service";
 export class DispatcherStoreService {
     constructor(private dispatcherStore: DispatcherStore, private http: HttpClient, private sharedService: SharedService) { }
     getDispatcherList() {
-        this.http.get(environment.API_ENDPOINT + 'select/dispatcher/list').subscribe(result => {
-            this.dispatcherStore.update((store) => ({
-                ...store,
-                dispatchers: result
-            })
-            ), (error: any) => {
-                this.sharedService.handleServerError();
-            }
-        });
+        return this.http.get(environment.API_ENDPOINT + 'select/dispatcher/list');
+    }
+
+    set dispatcherList(list){
+        this.dispatcherStore.update((store) => ({
+            ...store,
+            dispatchers: list
+        }));
     }
 }
