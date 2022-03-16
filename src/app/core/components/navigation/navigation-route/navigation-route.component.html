@@ -3,7 +3,8 @@
 <div
   class="nav-item"
   [ngClass]="{
-    'nav-item-active': route.isRouteActive || route.isSubrouteActive
+    'nav-item-active': route.isRouteActive || route.isSubrouteActive,
+    'nav-width': isNavigationHovered
   }"
   (mouseenter)="onNavItemHover(true)"
   (mouseleave)="onNavItemHover(false)"

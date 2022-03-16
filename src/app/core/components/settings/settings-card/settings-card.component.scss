@@ -1,0 +1,70 @@
+@import "../settings.global.scss";
+.settings-card {
+  width: 100%;
+  height: auto;
+  padding-bottom: 0px;
+  cursor: pointer;
+
+  .settings-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+
+    p {
+      font-size: 14px;
+      color: $settings-color-dark;
+      font-weight: $settings-font-extrabold;
+    }
+
+    .settings-card-arrow {
+      transform: rotate(0deg);
+      transition: $settings-transition;
+
+      &.rotate {
+        transform: rotate(180deg);
+        transition: $settings-transition;
+      }
+    }
+
+    &.closed {
+      margin-bottom: 6px;
+    }
+
+    &.last-item {
+      margin-bottom: 0px !important;
+    }
+
+    .settings-card-header-leftSide {
+      display: flex;
+      align-items: center;
+
+      .settings-header-count {
+        width: 22px;
+        height: 22px;
+        background: $settings-count;
+        text-align: center;
+        border-radius: 3px;
+        margin-right: 4px;
+        font-weight: $settings-font-extrabold;
+      }
+    }
+  }
+
+  .settings-card-body {
+    margin-bottom: 12px;
+
+    &.no-line {
+      margin-bottom: 0px !important;
+    }
+  }
+
+  .settings-line {
+    margin: 0;
+    height: 2px;
+    width: 100%;
+    border-radius: 1px;
+    background-color: $settings-line;
+    margin-bottom: 6px;
+  }
+}

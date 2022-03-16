@@ -1,0 +1,208 @@
+<div cdkDrag class="modal-container">
+  <div cdkDragHandle class="modal-header">
+    <div class="d-flex align-items-center">
+      <h5 class="modal-title">{{ modalTitle }}</h5>
+    </div>
+    <svg-icon
+      (click)="activeModal.dismiss('Modal close')"
+      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      class="modal-close-btn cursor-pointer"
+      src="assets/img/svgs/table/close.svg"
+    ></svg-icon>
+  </div>
+  <div class="modal-body">
+    <app-tab-switcher
+      (switchClicked)="tabChange($event)"
+      [tabs]="tabs"
+    ></app-tab-switcher>
+
+    <form
+      *ngIf="loadedModal"
+      [formGroup]="companyForm"
+      class="form-container has-tabs tabs-2{{ ' tab-' + selectedTab }}"
+    >
+      <div class="single-tab-container">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-label-group input-icon input-holder {{
+              manageInputValidation(this.companyForm.controls.companyName)
+            }}">
+              <input
+                id="companyName"
+                class="form-control input-control company-input"
+                placeholder="Company Name"
+                formControlName="companyName"
+                (paste)="onPaste($event, 'companyName')"
+                (keypress)="keyPress($event)"
+                appInputrestriction="[A-Za-z]"
+                appInputFocus
+                appAutoFocus
+                style="text-transform:uppercase"
+              />
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                src="assets/img/form-validation/x-icon-cut.svg"
+                (click)="clearInput('companyName')"
+                class="clear-icon"
+              ></svg-icon>
+              <label for="companyName">Company Name</label>
+              <p
+                *ngIf="companyForm.get('companyName').errors"
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("companyName").errors | inputError }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div class="form-label-group input-icon input-holder {{
+              manageInputValidation(this.companyForm.controls.usdot)
+            }}">
+              <input
+                id="usdot"
+                class="form-control input-control"
+                placeholder="USDOT"
+                formControlName="usdot"
+                (paste)="onPaste($event, 'usdot')"
+                (keypress)="keyPress($event)"
+                appInputrestriction="[A-Za-z]"
+                appInputFocus
+                style="text-transform:uppercase"
+              />
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                src="assets/img/form-validation/x-icon-cut.svg"
+                (click)="clearInput('usdot')"
+                class="clear-icon"
+              ></svg-icon>
+              <label for="usdot">USDOT</label>
+              <p
+                *ngIf="companyForm.get('companyName').errors"
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("companyName").errors | inputError }}
+              </p>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-label-group input-icon input-holder {{
+              manageInputValidation(this.companyForm.controls.ein)
+            }}">
+              <input
+                id="ein"
+                class="form-control input-control"
+                mask="00-0000000"
+                placeholder="EIN"
+                formControlName="ein"
+                (paste)="onPaste($event, 'ein')"
+                (keypress)="keyPress($event)"
+                appInputFocus
+              />
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                src="assets/img/form-validation/x-icon-cut.svg"
+                (click)="clearInput('ein')"
+                class="clear-icon"
+              ></svg-icon>
+              <label for="ein">EIN</label>
+              <p
+                *ngIf="companyForm.get('companyName').errors"
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("companyName").errors | inputError }}
+              </p>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-label-group input-icon input-holder {{
+              manageInputValidation(this.companyForm.controls.mc)
+            }}">
+              <input
+                id="mc"
+                class="form-control input-control"
+                mask="00-0000000"
+                placeholder="MC"
+                formControlName="mc"
+                (paste)="onPaste($event, 'mc')"
+                (keypress)="keyPress($event)"
+                appInputFocus
+              />
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                src="assets/img/form-validation/x-icon-cut.svg"
+                (click)="clearInput('mc')"
+                class="clear-icon"
+              ></svg-icon>
+              <label for="mc">MC</label>
+              <p
+                *ngIf="companyForm.get('companyName').errors"
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("companyName").errors | inputError }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button (click)="closeCompanyEdit()" class="cancel-btn" type="button">
+      <p class="m-0">Cancel</p>
+    </button>
+    <button (click)="saveCompany()" class="save-btn" type="button">
+      <p class="m-0">Save</p>
+    </button>
+  </div>
+</div>

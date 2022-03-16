@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   height: 28px;
-  width: 176px;
+  width: auto;
   font-weight: $nav-font-medium;
   font-size: $nav-font-size;
   color: $nav-text-color;
@@ -100,6 +100,10 @@
       }
     }
   }
+}
+
+.nav-width {
+  width: 176px;
 }
 
 .nav-item-active-box {

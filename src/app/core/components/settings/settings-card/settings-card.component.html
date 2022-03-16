@@ -1,0 +1,22 @@
+<div class="settings-card">
+  <div
+    class="settings-card-header"
+    [ngClass]="{ 'closed': !isCardOpen, 'last-item': !hasLine && !isCardOpen }"
+    (click)="onAction()"
+  >
+    <div class="settings-card-header-leftSide">
+      <div *ngIf="cardCount" class="settings-header-count">{{ cardCount }}</div>
+      <p>{{ cardName }}</p>
+    </div>
+
+    <svg-icon
+      class="settings-card-arrow"
+      [ngClass]="{ rotate: isCardOpen }"
+      src="assets/img/svgs/settings-company/settings-arrow.svg"
+    ></svg-icon>
+  </div>
+  <div *ngIf="isCardOpen" class="settings-card-body" [ngClass]="{'no-line': !hasLine}">
+    <ng-content></ng-content>
+  </div>
+  <hr *ngIf="hasLine" class="settings-line" />
+</div>

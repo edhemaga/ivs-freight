@@ -8,12 +8,184 @@
       <svg-icon
         src="assets/img/svgs/settings-company/settings-edit.svg"
         class="settings-edit-button"
+        (click)="
+          onAction({ modalName: 'basic', type: true, action: 'edit-basic' })
+        "
       ></svg-icon>
       <svg-icon
         src="assets/img/svgs/settings-company/settings-plus.svg"
         class="settings-plus-button"
+        (click)="onAction({ modalName: 'basic', type: true, action: 'new' })"
       ></svg-icon>
     </div>
   </div>
-  <div class="settings-body">SETTINGS BODY</div>
+  <div class="settings-body">
+    <!-- Basic Details and LOGO  -->
+    <div class="basic-details">
+      <!-- Header -->
+      <div class="basic-header">
+        <div class="basic-header-logo-top">
+          <div class="basic-logo-text">This logo will be used on invoices</div>
+          <svg-icon
+            class="basic-logo-edit"
+            src="assets/img/svgs/settings-company/settings-edit.svg"
+          ></svg-icon>
+        </div>
+        <svg-icon class="basic-logo" src="{{ generalData.logo }}"></svg-icon>
+      </div>
+      <!-- Middle -->
+      <div class="basic-middle">
+        <div class="basic-data">
+          <svg-icon
+            class="basic-data-svg"
+            src="assets/img/svgs/settings-company/settings-address.svg"
+          ></svg-icon>
+          <p>{{ generalData.address }}</p>
+        </div>
+        <div class="basic-multipleinfo">
+          <div class="basic-data">
+            <svg-icon
+              class="basic-data-svg"
+              src="assets/img/svgs/settings-company/settings-phone.svg"
+            ></svg-icon>
+            <p>{{ generalData.phone }}</p>
+          </div>
+          <div class="basic-data">
+            <svg-icon
+              class="basic-data-svg"
+              src="assets/img/svgs/settings-company/settings-email.svg"
+            ></svg-icon>
+            <p>{{ generalData.email }}</p>
+          </div>
+          <div class="basic-data">
+            <svg-icon
+              class="basic-data-svg"
+              src="assets/img/svgs/settings-company/settings-fax.svg"
+            ></svg-icon>
+            <p>{{ generalData.fax }}</p>
+          </div>
+          <div class="basic-data">
+            <svg-icon
+              class="basic-data-svg"
+              src="assets/img/svgs/settings-company/settings-webUrl.svg"
+            ></svg-icon>
+            <p>{{ generalData.webUrl }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="basic-bottom">
+        <div class="basic-bottom-card">
+          <p class="bottom-card-left">USDOT</p>
+          <p class="bottom-card-right">2797832</p>
+        </div>
+        <div class="basic-bottom-card">
+          <p class="bottom-card-left">EIN</p>
+          <p class="bottom-card-right">47-5010621</p>
+        </div>
+        <div class="basic-bottom-card">
+          <p class="bottom-card-left">MC</p>
+          <p class="bottom-card-right">934185</p>
+        </div>
+      </div>
+
+      <hr class="settings-line" />
+    </div>
+    <!-- Additional Details -->
+    <app-settings-card [cardName]="'Additional Details'">
+      <div class="details">
+        <div
+          class="details-data"
+          *ngFor="let item of generalData.additionalDetails"
+        >
+          <p class="details-name">{{ item.name }}</p>
+          <p class="details-value">{{ item.value }}</p>
+        </div>
+      </div>
+    </app-settings-card>
+
+    <!-- Bank Account -->
+    <app-settings-card [cardName]="'Bank Account'">
+      <div class="details">
+        <div
+          class="details-data"
+          *ngFor="let item of generalData.bankAccount; let ind = index"
+        >
+          <p class="details-name bank">{{ item.name }}</p>
+
+          <svg-icon
+            *ngIf="ind === 0"
+            class="details-svg"
+            src="{{ item.value }}"
+          ></svg-icon>
+
+          <p *ngIf="ind === 1" class="details-value">
+            {{ item.value }}
+          </p>
+
+          <div *ngIf="ind === 2" class="details-eye">
+            <p class="hidden-text-eye">
+              {{ accountText ? accountText : hiddenText(item.value, 4) }}
+            </p>
+            <svg-icon
+              (click)="showHideValue(item.value)"
+              class="hidden-svg-eye"
+              src="{{
+                isAccountVisible
+                  ? 'assets/img/svgs/settings-company/settings-eye-visible.svg'
+                  : 'assets/img/svgs/settings-company/settings-eye-hidden.svg'
+              }}"
+            ></svg-icon>
+          </div>
+        </div>
+      </div>
+    </app-settings-card>
+
+    <!-- Bank Card -->
+    <app-settings-card
+      [cardName]="'Bank Card'"
+      [cardCount]="generalData.bankCard.length"
+    >
+      <div class="bankcard">
+        <div class="bankcard-header">
+          <p *ngFor="let item of bankCardHeaders">{{ item }}</p>
+        </div>
+        <div
+          *ngFor="let item of generalData.bankCard; let ind = index"
+          class="bankcard-data"
+          [ngClass]="{'first': ind === 0}"
+        >
+          <p class="bankcard-nickname">{{ item.nickName }}</p>
+          <div class="bankcard-card">
+            <svg-icon
+              class="bankcard-svg"
+              src="{{ item.cardPicture }}"
+            ></svg-icon>
+            <p class="bankcard-value">{{ item.cardNumber }}</p>
+          </div>
+          <div class="bankcard-cvc">{{ item.cvc }}</div>
+          <div class="bankcard-exp">{{ item.expiration }}</div>
+        </div>
+      </div>
+    </app-settings-card>
+
+    <!-- Load Format & Customer Billing -->
+    <app-settings-card [cardName]="'Load Format & Customer Billing'">
+      <div class="details">
+        <div class="details-data" *ngFor="let item of generalData.loadFormat">
+          <p class="details-name">{{ item.name }}</p>
+          <p class="details-value">{{ item.value }}</p>
+        </div>
+      </div>
+    </app-settings-card>
+
+    <!-- Expiration -->
+    <app-settings-card [cardName]="'Expiration'" [hasLine]="false">
+      <div class="details">
+        <div class="details-data" *ngFor="let item of generalData.mvr">
+          <p class="details-name">{{ item.name }}</p>
+          <p class="details-value">{{ item.value }}</p>
+        </div>
+      </div>
+    </app-settings-card>
+  </div>
 </div>
