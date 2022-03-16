@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { GeneralPersonalDataComponent } from './general-personal-data.component';
+import { SettingsCardComponent } from './settings-card.component';
 
-describe('GeneralPersonalDataComponent', () => {
-  let component: GeneralPersonalDataComponent;
-  let fixture: ComponentFixture<GeneralPersonalDataComponent>;
+describe('SettingsCardComponent', () => {
+  let component: SettingsCardComponent;
+  let fixture: ComponentFixture<SettingsCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GeneralPersonalDataComponent ]
+      declarations: [ SettingsCardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GeneralPersonalDataComponent);
+    fixture = TestBed.createComponent(SettingsCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

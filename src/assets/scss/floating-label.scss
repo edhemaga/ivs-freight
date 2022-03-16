@@ -1,4 +1,4 @@
-@import 'src/theme/variables';
+@import "src/theme/variables";
 
 :root {
   --input-padding-x: 6px;
@@ -8,32 +8,32 @@
 .form-label-group {
   .required-notice,
   .required-notice.invalid-length {
-    color: #FF8080;
+    color: #ff8080;
   }
 
   .required-notice.invalid-length {
-    color: #FF8080;
+    color: #ff8080;
   }
 
   input {
     &:hover {
       ~ .required-notice,
       ~ .required-notice.invalid-length {
-        color: #FF6A6A;
+        color: #ff6a6a;
       }
 
       ~ .required-notice {
-        color: #FF6A6A;
+        color: #ff6a6a;
       }
     }
 
     &:focus {
       ~ .required-notice.invalid-length {
-        color: #FF6A6A;
+        color: #ff6a6a;
       }
 
       ~ .required-notice {
-        color: #FF6A6A !important;
+        color: #ff6a6a !important;
       }
     }
   }
@@ -55,7 +55,7 @@ form .form-control {
 
     &:hover {
       cursor: text;
-      background-color: #EEEEEE;
+      background-color: #eeeeee;
       color: #919191;
       transition: 0.3s;
     }
@@ -72,7 +72,7 @@ form .form-control {
     &.ng-invalid.ng-touched {
       //border-right: 3px solid #ff5d5d;
       cursor: text;
-      background-image: url('../../assets/img/form-validation/x-icon-light-red.svg') !important;
+      background-image: url("../../assets/img/form-validation/x-icon-light-red.svg") !important;
       background-repeat: no-repeat;
       background-position: right 6px bottom 8px;
       transition: background-image 0.3s;
@@ -81,14 +81,15 @@ form .form-control {
       &.email-input,
       &.password-input,
       &.phone-input,
-      &.name-input {
+      &.name-input,
+      &.company-input {
         background: none !important;
         background-repeat: no-repeat;
       }
 
       &:hover {
         cursor: text;
-        background-image: url('../../assets/img/form-validation/x-icon-red.svg') !important;
+        background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
         background-repeat: no-repeat;
         background-position: right 6px bottom 8px;
         transition: background-image 0.3s;
@@ -97,7 +98,8 @@ form .form-control {
         &.email-input,
         &.password-input,
         &.phone-input,
-        &.name-input {
+        &.name-input,
+        &.company-input {
           background: none !important;
           background-repeat: no-repeat;
         }
@@ -107,7 +109,7 @@ form .form-control {
         cursor: text;
         background-color: #ff5d5d;
         color: #fff;
-        background-image: url('../../assets/img/form-validation/x-icon.svg');
+        background-image: url("../../assets/img/form-validation/x-icon.svg");
         background-repeat: no-repeat;
         background-position: right 6px bottom 8px;
         transition: background-image 0.3s;
@@ -117,14 +119,15 @@ form .form-control {
         &.email-input,
         &.password-input,
         &.phone-input,
-        &.name-input {
+        &.name-input,
+        &.company-input {
           background: none !important;
           background-repeat: no-repeat;
           outline: none !important;
         }
 
         &:hover {
-          background-image: url('../../assets/img/form-validation/x-icon.svg') !important;
+          background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
           background-repeat: no-repeat !important;
           background-position: right 6px bottom 8px;
           transition: background-image 0.3s;
@@ -133,16 +136,16 @@ form .form-control {
           &.email-input,
           &.password-input,
           &.phone-input,
-          &.name-input {
+          &.name-input,
+          &.company-input {
             background: none !important;
             background-repeat: no-repeat;
           }
-
         }
       }
 
       &.focused {
-        background-image: url('../../assets/img/form-validation/x-icon.svg');
+        background-image: url("../../assets/img/form-validation/x-icon.svg");
         background-repeat: no-repeat;
         background-position: right 6px bottom 8px;
         transition: background-image 0.3s;
@@ -151,17 +154,17 @@ form .form-control {
         &.email-input,
         &.password-input,
         &.phone-input,
-        &.name-input {
+        &.name-input,
+        &.company-input {
           background: none !important;
           background-repeat: no-repeat;
         }
-
 
         &:focus {
           cursor: text;
           background-color: #ff5d5d;
           color: #fff;
-          background-image: url('../../assets/img/form-validation/x-icon.svg');
+          background-image: url("../../assets/img/form-validation/x-icon.svg");
           background-repeat: no-repeat;
           background-position: right 6px bottom 8px;
           transition: background-image 0.3s;
@@ -170,13 +173,14 @@ form .form-control {
           &.email-input,
           &.password-input,
           &.phone-input,
-          &.name-input {
+          &.name-input,
+          &.company-input {
             background: none !important;
             background-repeat: no-repeat;
           }
 
           &:hover {
-            background-image: url('../../assets/img/form-validation/x-icon.svg') !important;
+            background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
             background-repeat: no-repeat;
             background-position: right 6px bottom 8px;
             transition: background-image 0.3s;
@@ -185,17 +189,17 @@ form .form-control {
             &.email-input,
             &.password-input,
             &.phone-input,
-            &.name-input {
+            &.name-input,
+            &.company-input {
               background: none !important;
               background-repeat: no-repeat;
             }
-
           }
         }
 
         &:hover {
           cursor: text;
-          background-image: url('../../assets/img/form-validation/x-icon-red.svg') !important;
+          background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
           background-repeat: no-repeat;
           background-position: right 6px bottom 8px;
           transition: background-image 0.3s;
@@ -204,9 +208,9 @@ form .form-control {
 
       &:focus {
         cursor: text;
-        background-color: #FF6A6A;
+        background-color: #ff6a6a;
         //color: #fff;
-        background-image: url('../../assets/img/form-validation/x-icon.svg');
+        background-image: url("../../assets/img/form-validation/x-icon.svg");
         background-repeat: no-repeat;
         background-position: right 6px bottom 8px;
         transition: background-image 0.3s;
@@ -230,7 +234,8 @@ form .form-control {
       &.email-input,
       &.password-input,
       &.phone-input,
-      &.name-input {
+      &.name-input,
+      &.company-input {
         background: none !important;
         background-repeat: no-repeat;
       }
@@ -289,9 +294,9 @@ form .form-control {
 
       &:focus {
         cursor: text;
-        background-color: #778FBB;
+        background-color: #778fbb;
         //color: #fff;
-        background-image: url('../../assets/img/form-validation/check-icon.svg') !important;
+        background-image: url("../../assets/img/form-validation/check-icon.svg") !important;
         background-repeat: no-repeat !important;
         background-position: right 6px bottom 8px;
         transition: background-image 0.3s;
@@ -300,7 +305,8 @@ form .form-control {
         &.email-input,
         &.password-input,
         &.phone-input,
-        &.name-input {
+        &.name-input,
+        &.company-input {
           background: none !important;
           background-repeat: no-repeat;
         }
@@ -363,7 +369,7 @@ form .form-control {
         cursor: text;
         background-color: #ff5d5d;
         //color: #fff;
-        background-image: url('../../assets/img/form-validation/x-icon.svg');
+        background-image: url("../../assets/img/form-validation/x-icon.svg");
         background-repeat: no-repeat;
         background-position: right 6px bottom 8px;
         transition: background-image 0.3s;
@@ -372,11 +378,11 @@ form .form-control {
         &.email-input,
         &.password-input,
         &.phone-input,
-        &.name-input {
+        &.name-input,
+        &.company-input {
           background: none !important;
           background-repeat: no-repeat;
         }
-
       }
     }
 
@@ -387,7 +393,8 @@ form .form-control {
       &.email-input,
       &.password-input,
       &.phone-input,
-      &.name-input {
+      &.name-input,
+      &.company-input {
         background: none !important;
         background-repeat: no-repeat;
       }
@@ -408,11 +415,12 @@ form .form-control {
     &.email-input,
     &.password-input,
     &.phone-input,
-    &.name-input {
+    &.name-input,
+    &.company-input {
       background: none !important;
     }
 
-    background-image: url('../../assets/img/form-validation/check-icon-light-blue.svg');
+    background-image: url("../../assets/img/form-validation/check-icon-light-blue.svg");
     background-repeat: no-repeat;
     background-position: right 6px bottom 8px;
     transition: background-image 0.3s;
@@ -478,9 +486,8 @@ form .form-control {
 
 form .form-control {
   &.required.ng-invalid.ng-dirty.ng-touched {
-
     &:hover {
-      background-image: url('../../assets/img/form-validation/x-icon-red.svg');
+      background-image: url("../../assets/img/form-validation/x-icon-red.svg");
       background-repeat: no-repeat;
       background-position: right 6px bottom 8px;
       transition: background-image 0.3s;
@@ -490,7 +497,7 @@ form .form-control {
 
 form .form-control {
   &.ng-dirty.ng-invalid.ng-touched.ng-has-value {
-    background-image: url('../../assets/img/form-validation/x-icon.svg');
+    background-image: url("../../assets/img/form-validation/x-icon.svg");
     background-repeat: no-repeat;
     background-position: right 6px bottom 8px;
     transition: background-image 0.3s;
@@ -499,7 +506,8 @@ form .form-control {
     &.email-input,
     &.password-input,
     &.phone-input,
-    &.name-input {
+    &.name-input,
+    &.company-input {
       background: none !important;
       background-repeat: no-repeat;
     }
@@ -509,7 +517,8 @@ form .form-control {
       &.email-input,
       &.password-input,
       &.phone-input,
-      &.name-input {
+      &.name-input,
+      &.company-input {
         background: none !important;
         background-repeat: no-repeat;
       }
@@ -520,14 +529,15 @@ form .form-control {
       &.email-input,
       &.password-input,
       &.phone-input,
-      &.name-input {
+      &.name-input,
+      &.company-input {
         background: none !important;
         background-repeat: no-repeat;
       }
     }
 
     &:hover {
-      background-image: url('../../assets/img/form-validation/x-icon.svg');
+      background-image: url("../../assets/img/form-validation/x-icon.svg");
       background-repeat: no-repeat;
       background-position: right 6px bottom 8px;
       transition: background-image 0.3s;
@@ -539,13 +549,13 @@ form {
   .ng-select {
     .ng-clear-wrapper {
       .ng-clear {
-        color: #DADADA;
+        color: #dadada;
       }
     }
   }
 
   .ng-select-container {
-    background-color: #F3F3F3;
+    background-color: #f3f3f3;
     border-radius: 2px;
     height: 26px;
     overflow: visible !important;
@@ -658,7 +668,7 @@ form {
 
       &:hover {
         cursor: text;
-        background-image: url('../../assets/img/form-validation/x-icon-red.svg') !important;
+        background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
         background-repeat: no-repeat;
         background-position: right 25px bottom 8px;
         transition: background-image 0.3s;
@@ -668,13 +678,13 @@ form {
         cursor: text;
         background-color: #ff5d5d;
         color: #fff;
-        background-image: url('../../assets/img/form-validation/x-icon.svg');
+        background-image: url("../../assets/img/form-validation/x-icon.svg");
         background-repeat: no-repeat;
         background-position: right 25px bottom 8px;
         transition: background-image 0.3s;
 
         &:hover {
-          background-image: url('../../assets/img/form-validation/x-icon.svg') !important;
+          background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
           background-repeat: no-repeat;
           background-position: right 25px bottom 8px;
           transition: background-image 0.3s;
@@ -703,7 +713,7 @@ form {
     &.ng-select-opened,
     &.ng-select-focused {
       .ng-select-container {
-        background-color: #778FBB;
+        background-color: #778fbb;
 
         input {
           &::-moz-selection {
@@ -758,7 +768,10 @@ form {
   color: #b7b7b7 !important;
 }
 
-.ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder {
+.ng-select.ng-select-focused
+  .ng-select-container
+  .ng-value-container
+  .ng-placeholder {
   color: #919191 !important;
 }
 
@@ -768,7 +781,7 @@ form {
   width: 100%;
   margin-bottom: 0;
   line-height: 20px;
-  color: #B7B7B7;
+  color: #b7b7b7;
   border: 1px solid transparent;
   border-radius: 3px;
   //transition: all 0.1s ease -in -out;
@@ -784,9 +797,9 @@ form {
   color: #919191;
 
   &:after {
-    content: '*';
+    content: "*";
     font-size: 0.9rem;
-    color: #FF8080;
+    color: #ff8080;
     margin-left: 4px;
   }
 }
@@ -873,13 +886,13 @@ form .form-control.input-control {
   font-weight: 400;
 
   &.password-field-wrapper {
-    background-image: url('../../assets/img/form-icons/password/key.svg');
+    background-image: url("../../assets/img/form-icons/password/key.svg");
     background-size: 18px 12px;
     background-repeat: no-repeat;
     background-position: calc(100% - 6px) 6px;
 
     &.field-focused {
-      background-image: url('../../assets/img/form-icons/password/focus-password.svg') !important;
+      background-image: url("../../assets/img/form-icons/password/focus-password.svg") !important;
     }
   }
 }

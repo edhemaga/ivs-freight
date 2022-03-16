@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { SettingsStoreService } from '../state/settings.service';
 
 @Component({
   selector: 'app-settings-payroll',
   templateUrl: './settings-payroll.component.html',
   styleUrls: ['./settings-payroll.component.scss']
 })
-export class SettingsPayrollComponent implements OnInit {
+export class SettingsPayrollComponent {
 
-  constructor() { }
+  constructor(private settingsStoreService: SettingsStoreService) { }
 
-  ngOnInit() {
+  public onAction(modal: {modalName: string, type: boolean, action: string}) {
+    this.settingsStoreService.modalSubject$.next(modal);
   }
 
 }

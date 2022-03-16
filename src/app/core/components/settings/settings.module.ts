@@ -1,3 +1,5 @@
+import { SettingsCardComponent } from './settings-card/settings-card.component';
+import { SettingsFactoringModalComponent } from './settings-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { SettingsGeneralComponent } from './settings-general/settings-general.component';
 import { SettingsInsurancepolicyComponent } from './settings-insurancepolicy/settings-insurancepolicy.component';
 import { NgModule } from '@angular/core';
@@ -8,11 +10,17 @@ import { SettingsPayrollComponent } from './settings-payroll/settings-payroll.co
 import { SettingsFactoringComponent } from './settings-factoring/settings-factoring.component';
 import { SharedModule } from '../../shared/shared/shared.module';
 import { SettingsNodataComponent } from './settings-nodata/settings-nodata.component';
-import { GeneralPersonalDataComponent } from './settings-general/general-personal-data/general-personal-data.component';
-
+import { SettingsInsurancePolicyModalComponent } from './settings-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
+import { SettingsBasicModalComponent } from './settings-modals/settings-basic-modal/settings-basic-modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [CommonModule, SettingsRoutingModule, SharedModule],
+  imports: [
+    CommonModule,
+    SettingsRoutingModule,
+    SharedModule,
+    ReactiveFormsModule,
+  ],
   declarations: [
     SettingsComponent,
     SettingsPayrollComponent,
@@ -20,7 +28,12 @@ import { GeneralPersonalDataComponent } from './settings-general/general-persona
     SettingsGeneralComponent,
     SettingsFactoringComponent,
     SettingsNodataComponent,
-    GeneralPersonalDataComponent
+    SettingsCardComponent,
+
+    // Modals
+    SettingsBasicModalComponent,
+    SettingsInsurancePolicyModalComponent,
+    SettingsFactoringModalComponent,
   ],
 })
 export class SettingsModule {}

@@ -134,6 +134,7 @@ import { Ng5SliderModule } from 'ng5-slider';
     AgmCoreModule,
     MapControlComponent,
     NgbModule,
+    GooglePlaceModule,
     SortPipe,
     SafeHtmlPipe,
     StatusPipePipe,
