@@ -1,0 +1,71 @@
+<div class="toolbar-container">
+  <!-- TABS -->
+  <div [ngClass]="{ 'tab-regular': true, 'tab-active': false }">
+    <div class="tab">
+      <div class="data-count">23</div>
+      <div class="tab-title">Active</div>
+    </div>
+  </div>
+
+  <!-- VIEW MODE SELECT -->
+  <div class="view-mode-container">
+    <div class="mode" [ngClass]="{ 'mode-active': true }">List</div>
+    <div class="mode">Card</div>
+  </div>
+
+  <!-- SEARCH -->
+  <app-truckassist-search></app-truckassist-search>
+
+  <!-- LOCATION FILTER -->
+  <div class="location-filter-container">
+    <svg-icon
+      [svgStyle]="{ 'width.px': 17, 'height.px': 20 }"
+      [src]="'assets/svg/truckassist-table/location-icon.svg'"
+    ></svg-icon>
+  </div>
+
+  <!-- TABLE ACTIONS -->
+  <div class="table-actions">
+    <div class="actions-container">
+      <!-- Activation -->
+      <div>
+        <svg-icon
+          [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+          [src]="'assets/svg/truckassist-table/activation-icon.svg'"
+        ></svg-icon>
+      </div>
+
+      <!-- Delete -->
+      <div>
+        <svg-icon
+          [svgStyle]="{ 'width.px': 16, 'height.px': 18 }"
+          [src]="'assets/svg/truckassist-table/trash-icon.svg'"
+        ></svg-icon>
+      </div>
+
+      <!-- Print -->
+      <div>
+        <svg-icon
+          [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+          [src]="'assets/svg/truckassist-table/print-icon.svg'"
+        ></svg-icon>
+      </div>
+
+      <!-- Options -->
+      <div>
+        <svg-icon
+          [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+          [src]="'assets/svg/truckassist-table/burger-icon.svg'"
+        ></svg-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPEN MODAL BUTTON -->
+  <div class="modal-open-container">
+    <svg-icon
+      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      [src]="'assets/svg/truckassist-table/plus-icon.svg'"
+    ></svg-icon>
+  </div>
+</div>

@@ -23,6 +23,10 @@ const routes: Routes = [
     loadChildren: () => import('./core/components/settings/settings.module').then((m) => m.SettingsModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'driver',
+    loadChildren: () => import('./core/components/driver/driver.module').then((m) => m.DriverModule),
+  },
   {path: '**', redirectTo: ''}
 ];
 
