@@ -7,7 +7,6 @@ import { SettingsStoreService } from '../state/settings.service';
   styleUrls: ['./settings-insurancepolicy.component.scss'],
 })
 export class SettingsInsurancepolicyComponent {
-
   public insuranceData = {
     generalLiability: {
       insurerName: 'Lloyds of London',
@@ -17,34 +16,34 @@ export class SettingsInsurancepolicyComponent {
         {
           id: 1,
           name: 'Each Occurrence',
-          value: '$1,000.000'
+          value: '$1,000.000',
         },
         {
           id: 2,
           name: 'Dmg. to Rented Pr.',
-          value: '$2,000.000'
+          value: '$2,000.000',
         },
         {
           id: 3,
           name: 'Medical Expiration',
-          value: '$500.000'
+          value: '$500.000',
         },
         {
           id: 4,
           name: 'Pers. and Adv. Injury',
-          value: '$100.000'
+          value: '$100.000',
         },
         {
           id: 5,
           name: 'General Aggregate',
-          value: '$300.000'
+          value: '$300.000',
         },
         {
           id: 6,
           name: 'Products - Comp / OP',
-          value: '$800.000'
-        }
-      ]
+          value: '$800.000',
+        },
+      ],
     },
     automobileLiability: {
       insurerName: 'Unique Insurance Co',
@@ -54,24 +53,24 @@ export class SettingsInsurancepolicyComponent {
         {
           id: 1,
           name: 'Combined Single',
-          value: '$1,000.000'
+          value: '$1,000.000',
         },
         {
           id: 2,
           name: 'Combined Single',
-          value: '$2,000.000'
+          value: '$2,000.000',
         },
         {
           id: 3,
           name: 'Boldly Injury (Person)',
-          value: '$100.000'
+          value: '$100.000',
         },
         {
           id: 4,
           name: 'Boldly Injury (Accident)',
-          value: '$100.000'
-        }
-      ]
+          value: '$100.000',
+        },
+      ],
     },
     motorTruckCargo: {
       insurerName: 'Unique Insurance Co',
@@ -81,14 +80,14 @@ export class SettingsInsurancepolicyComponent {
         {
           id: 1,
           name: 'Single Conveyance',
-          value: '$100.000'
+          value: '$100.000',
         },
         {
           id: 2,
           name: 'Deductable',
-          value: '$300.000'
+          value: '$300.000',
         },
-      ]
+      ],
     },
     physicalDamage: {
       insurerName: 'Unique Insurance Co',
@@ -98,14 +97,14 @@ export class SettingsInsurancepolicyComponent {
         {
           id: 1,
           name: 'Comprehensive & Collision',
-          value: '$100.000'
+          value: '$100.000',
         },
         {
           id: 2,
           name: 'Deductable',
-          value: '$300.000'
+          value: '$300.000',
         },
-      ]
+      ],
     },
     trailerInterchange: {
       insurerName: 'Unique Insurance Co',
@@ -115,11 +114,11 @@ export class SettingsInsurancepolicyComponent {
         {
           id: 1,
           name: 'Value',
-          value: '$100.000'
+          value: '$100.000',
         },
-      ]
-    }
-  }
+      ],
+    },
+  };
 
   constructor(private settingsStoreService: SettingsStoreService) {}
 
@@ -127,7 +126,5 @@ export class SettingsInsurancepolicyComponent {
     this.settingsStoreService.modalSubject$.next(modal);
   }
 
-  public onShowDetails() {
-    
-  }
+  public onShowDetails() {}
 }

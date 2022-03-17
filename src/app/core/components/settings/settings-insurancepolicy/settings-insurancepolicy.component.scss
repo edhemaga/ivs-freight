@@ -51,6 +51,10 @@
     padding: 12px;
     padding-top: 8px;
 
+    &.gradient {
+      background-image: linear-gradient(180deg, #f1f1f1, #ffffff);
+    }
+
     .producer-details {
       display: flex;
       flex-direction: column;
@@ -67,6 +71,8 @@
         }
 
         .producer-actions {
+          position: relative;
+          bottom: 1px;
           .action-attachment {
             position: relative;
             bottom: 1px;
