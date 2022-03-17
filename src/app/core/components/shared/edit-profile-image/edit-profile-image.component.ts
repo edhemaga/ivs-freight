@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {CroppieDirective} from "angular-croppie-module";
+/* import {CroppieDirective} from "angular-croppie-module"; */
 import {Options} from 'ng5-slider';
-import Croppie from 'croppie';
+/* import Croppie from 'croppie'; */
 
 @Component({
   selector: 'app-edit-profile-image',
@@ -17,7 +17,7 @@ export class EditProfileImageComponent {
   // croppie
   public croppedImage = '';
   @ViewChild('croppie')
-  public croppieDirective: CroppieDirective | any;
+  /* public croppieDirective: CroppieDirective | any;
   public croppieOptions: Croppie.CroppieOptions = {
     enableExif: true,
     viewport: {
@@ -29,7 +29,7 @@ export class EditProfileImageComponent {
       width: 315,
       height: 150,
     },
-  };
+  }; */
   // dropzone
   public showDropzone = true;
   public uploadedImageFile: any = null;
@@ -61,11 +61,11 @@ export class EditProfileImageComponent {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      this.croppieDirective.croppie.bind({
+     /*  this.croppieDirective.croppie.bind({
         url: reader.result as string,
         points: [188, 101, 260, 191],
         zoom: this.scale,
-      });
+      }); */
       this.showDropzone = false;
     };
   }
@@ -76,16 +76,16 @@ export class EditProfileImageComponent {
 
   public zooming(event: any) {
     this.scale = event ? event : 0.1;
-    this.croppieDirective.croppie.setZoom(this.scale);
+   /*  this.croppieDirective.croppie.setZoom(this.scale); */
   }
 
   public saveImage() {
-    this.croppieDirective.croppie.result('base64').then((base64) => {
+    /* this.croppieDirective.croppie.result('base64').then((base64) => {
       this.croppedImage = base64;
       this.avatarError = false;
       this.saveAvatar.emit(base64);
       this.showDropzone = true;
-    });
+    }); */
   }
 
   public onRemove() {
