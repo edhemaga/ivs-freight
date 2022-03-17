@@ -1,0 +1,120 @@
+
+.driver-container {
+  width: 100%;
+  height: 26px;
+  background: #eeeeee;
+  border-radius: 3px;
+  color: rgba(108, 108, 108, 0.7);
+  margin-bottom: 28px;
+  text-align: left;
+  vertical-align: middle;
+  line-height: 26px;
+  padding-left: 6px;
+  font-size: 14px;
+  position: relative;
+
+  .driver-container-label {
+    color: #6C6C6C;
+    font-size: 10px;
+    font-weight: 600;
+    position: absolute;
+    top: -22px;
+    left: 6px;
+  }
+}
+
+.add_category {
+  position: relative;
+  display: inline-block;
+  color: rgba(86, 115, 170, 0.7);
+  font-weight: 600;
+
+  cursor: pointer;
+
+  &:hover {
+    color: #5673aa;
+  }
+}
+
+.whiteInput {
+  justify-content: flex-end;
+  width: 115px;
+
+  label.required-label {
+    opacity: 1;
+    top: -16px;
+    right: 0;
+    left: 0;
+    font-size: 11px;
+    text-align: right;
+
+    &:after {
+      display: none !important;
+    }
+  }
+
+  .subtotalSpan {
+    align-self: center;
+    font-weight: bold;
+    color: #919191;
+    text-align: right;
+  }
+}
+
+.remove_category {
+  height: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container {
+  ::ng-deep {
+    ng-select {
+      .ng-clear-wrapper {
+        display: none !important;
+      }
+    }
+
+    .k-floating-label-container .k-datepicker.ng-invalid.ng-touched .k-icon,
+    .k-floating-label-container .k-timepicker.ng-invalid.ng-touched .k-icon {
+      background-color: #ff5d5d !important;
+    }
+
+    .k-floating-label-container .k-datepicker.ng-invalid.ng-touched .k-picker-wrap,
+    .k-floating-label-container .k-timepicker.ng-invalid.ng-touched .k-picker-wrap {
+      border-right: none !important;
+    }
+  }
+}
+
+.fuel_items_hold {
+  display: flex;
+  justify-content: space-between;
+
+  .fuelTotal {
+    font-size: 12px;
+    font-weight: 600;
+
+    span {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+}
+
+.delete_cat {
+  position: relative;
+
+  svg-icon {
+    &:hover {
+      path {
+        fill: #5673aa;
+      }
+    }
+  }
+}
+
+.max_100 {
+  width: 107px;
+}

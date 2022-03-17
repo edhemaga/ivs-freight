@@ -33,6 +33,7 @@ export class SharedService {
   public emitDeleteAction: EventEmitter<any> = new EventEmitter();
   public emitSortStatusUpdate: EventEmitter<any> = new EventEmitter();
   public emitStatusUpdate: EventEmitter<any> = new EventEmitter();
+  public emitCustomerAdd: EventEmitter<boolean> = new EventEmitter();
 
   public emitAllNoteOpened: EventEmitter<boolean> = new EventEmitter();
   public emitUpdateNoteActiveList: EventEmitter<any[]> = new EventEmitter();
@@ -66,6 +67,9 @@ export class SharedService {
   public reloadOwner: boolean;
   headers = {'Content-Type': 'application/json', Accept: 'application/json'};
   private notify = new Subject<any>();
+  public emitShipperClose: EventEmitter<boolean> = new EventEmitter();
+  public emitShipperChange: EventEmitter<boolean> = new EventEmitter();
+  public emitDeleteFiles: EventEmitter<any[]> = new EventEmitter();
 
   constructor(public notification: NotificationService,
               private spinner: SpinnerService,
@@ -516,6 +520,14 @@ export class SharedService {
     (Object as any).values(formGroup.controls).forEach((control: any) => {
       control.markAsTouched();
     });
+  }
+
+  /**
+   * It checkes files and returnes array with new files.
+   * @param files any
+   */
+  getNewFiles(files: any) {
+    return files.filter((item: any) => item.url == null);
   }
 
 }

@@ -1,0 +1,332 @@
+<div cdkDrag class="modal-container">
+  <div cdkDragHandle class="modal-header">
+    <h5 class="modal-title" style="user-select: none;">{{ modalTitle }}</h5>
+    <!-- <app-modal-close></app-modal-close> -->
+  </div>
+  <div class="modal-body">
+    <!-- <app-loading-modal *ngIf="!loaded"></app-loading-modal> -->
+    <form
+      (keydown)="keyDownFunction($event)"
+      [formGroup]="taskForm"
+      class="form-container"
+    >
+      <div class="row">
+        <div class="col-12" style="margin-bottom: 22px;">
+          <app-tab-switcher
+            (switchClicked)="categorySwitch($event)"
+            [tabs]="todoSwitchData"
+          ></app-tab-switcher>
+        </div>
+        <div class="col-12">
+          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input
+              [modalType]="inputData.data.type"
+              appAutoFocus
+              appInputrestriction="[0-9A-Za-z\.\,\s]"
+              class="form-control input-control required"
+              formControlName="name"
+              id="name"
+              maxlength="45"
+              placeholder="Title"
+              (keyup)="onKeyUpMethod($event)"
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
+            />
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label class="required-label" for="name" style="user-select: none;">Title</label>
+            <app-required-label [control]="taskForm.controls.name"></app-required-label>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input
+              [ngClass]="{ required: touchableDescription !== '' }"
+              appInputFocus
+              class="form-control input-control"
+              formControlName="description"
+              id="description"
+              maxlength="160"
+              placeholder="Description"
+              (keyup)="onKeyUpMethod($event)"
+            />
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label for="name" style="user-select: none;">Description</label>
+          </div>
+        </div>
+      </div>
+      <!--Hyperlink-->
+      <div class="row">
+        <div class="col-8">
+          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input
+              [ngClass]="{ required: touchableHyperlink !== '' }"
+              appInputFocus
+              class="form-control input-control"
+              formControlName="url"
+              id="url"
+              placeholder="Hyperlink"
+              (keyup)="onKeyUpMethod($event)"
+            />
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label for="url" style="user-select: none;">Hyperlink</label>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-label-group">
+            <input type="date"
+                   formControlName="deadLine"
+                   [ngClass]="{ 'valid-label': taskForm.controls.deadLine.value }"
+                   class="required datepicker-label"
+                   style="user-select: none;"
+                   text="Deadline"
+            >
+            <app-required-label [control]="taskForm.controls.deadLine"></app-required-label>
+          </div>
+        </div>
+      </div>
+      <!--Assign task-->
+      <div class="row">
+        <div class="col-12 assign-task">
+          <div class="form-label-group" style="user-select: none;">
+            <ng-select
+              [closeOnSelect]="false"
+              [dropdownPosition]="'bottom'"
+              [hideSelected]="true"
+              [items]="allUsers"
+              [multiple]="true"
+              appendTo="body"
+              bindLabel="userFullName"
+              formControlName="assignData"
+              placeholder="Assign task"
+            >
+              <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                <span [ngOptionHighlight]="search">{{ item.userFullName }}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+
+      <!--Comments-->
+      <div *ngIf="this.inputData.data.type === 'edit'" class="row">
+        <div [ngClass]="{ 'comment-wrapper-bigger': addNewComment }" class="col-12 comment-wrapper">
+          <div (click)="openComments()" class="note-label-wrapper">
+            <span class="note-label" style="user-select: none;"
+            ><span class="comments-length" style="user-select: none;">{{ comments.length }}</span
+            >Comments</span
+            >
+            <span class="note-toggle-icon">
+              <i [ngClass]="!showComments ? 'fas fa-plus' : 'fas fa-minus'"></i>
+            </span>
+          </div>
+          <div
+            #scrollMe
+            [ngStyle]="{ 'overflow-y': comments.length > 4 ? 'scroll' : 'unset' }"
+            [scrollTop]="scrollMe?.scrollHeight"
+            class="comments"
+          >
+            <div formArrayName="comments">
+              <div
+                *ngFor="let c of comments; let i = index"
+                [formGroupName]="i"
+                class="p-0 m-0 card-body {{ showComments ? ' note-visible' : ' note-hidden' }}"
+              >
+                <div class="single-comment d-flex" style="margin-bottom: 2px;">
+                  <div class="comment-text d-flex flex-column">
+                    <div class="comment-text-info d-flex justify-content-between">
+                      <div class="comment-user d-flex">
+                        <div class="comment-avatar">
+                          <img
+                            [ngClass]="{
+                              'comment-avatar-default': !returnUserForComment(c)?.doc?.avatar?.src
+                            }"
+                            alt="Todo-user-image"
+                            class="img-fluid"
+                            src="{{
+                              returnUserForComment(c)?.doc?.avatar?.src
+                                ? returnUserForComment(c)?.doc?.avatar?.src
+                                : 'assets/img/svgs/comment-avatar.svg'
+                            }}"
+                            style="user-select: none;"
+                          />
+                        </div>
+                        <p class="comment-userName" style="user-select: none;">
+                          {{ returnUserForComment(c)?.userFullName }}
+                        </p>
+                      </div>
+                      <div class="comment-date d-flex">
+                        <p style="user-select: none;">
+                          {{ c.createdAt | date: 'shortDate' }}
+                          {{ c.createdAt | date: 'shortTime' }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="comment-desc">
+                      <p
+                        *ngIf="!toggledEditComment[i]?.isEditComment"
+                        appSelectionColor
+                        style="color: #919191;"
+                      >
+                        {{ c.commentText }}
+                      </p>
+                      <div *ngIf="toggledEditComment[i]?.isEditComment" class="d-flex">
+                        <textarea
+                          [(ngModel)]="c.commentText"
+                          appSelectionColor
+                          cdkAutosizeMaxRows="2"
+                          cdkAutosizeMinRows="1"
+                          cdkTextareaAutosize
+                          class="comment-textarea form-textarea"
+                          formControlName="commentText"
+                          maxlength="100"
+                          style="color: #919191;"
+                        ></textarea>
+                        <div class="d-flex create-comment-new-icons">
+                          <svg-icon
+                            (click)="updateComment(getComments.at(i), i)"
+                            [appTaTooltip]="'Save'"
+                            [svgStyle]="{ 'width.px': 20, 'height.px': 20, 'margin-left.px': 5 }"
+                            [tooltipBackground]="'#5673AA'"
+                            class="create-comment-new-icons-update"
+                            position="bottom-right"
+                            src="/assets/img/svgs/todo/checkmark-filled.svg"
+                          >
+                          </svg-icon>
+                          <svg-icon
+                            (click)="toggleEditComment(i)"
+                            [appTaTooltip]="'Cancel'"
+                            [svgStyle]="{ 'width.px': 20, 'height.px': 20, 'margin-left.px': 5 }"
+                            [tooltipBackground]="'#FF5D5D'"
+                            class="create-comment-new-icons-close"
+                            position="bottom-right"
+                            src="/assets/img/svgs/todo/close-filled.svg"
+                          >
+                          </svg-icon>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="!toggledEditComment[i]?.isEditComment" class="comment-actions">
+                    <svg-icon
+                      (click)="toggleEditComment(i)"
+                      [appTaTooltip]="'Edit'"
+                      [tooltipBackground]="'#6c6c6c'"
+                      class="cursor-pointer"
+                      position="bottom-right"
+                      src="/assets/img/svgs/edit-comment.svg"
+                      style="height: 20px;"
+                    >
+                    </svg-icon>
+                    <svg-icon
+                      (click)="deleteComment(c.id, i)"
+                      [appTaTooltip]="'Delete'"
+                      [tooltipBackground]="'#FF5D5D'"
+                      class="ml-2 cursor-pointer"
+                      position="bottom-right"
+                      src="/assets/img/svgs/delete-comment.svg"
+                      style="height: 20px;"
+                    >
+                    </svg-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="showComments && !addNewComment"
+            class="add-comment-text d-flex align-items-center"
+          >
+            <p (click)="toggleCreateComment()" style="user-select: none;">Add new comment</p>
+          </div>
+
+          <div *ngIf="showComments && addNewComment" class="create-comment-new cnmargin d-flex">
+            <div class="d-flex flex-grow-1 align-items-end">
+              <textarea
+                #comment
+                [formControl]="commentControl"
+                cdkAutosizeMaxRows="2"
+                cdkAutosizeMinRows="1"
+                cdkTextareaAutosize
+                class="comment-textarea form-textarea"
+                maxlength="112"
+              ></textarea>
+              <div class="d-flex create-comment-new-icons">
+                <svg-icon
+                  (click)="createComment()"
+                  [appTaTooltip]="'Create'"
+                  [svgStyle]="{ 'width.px': 16, 'height.px': 16, 'margin-left.px': 6 }"
+                  [tooltipBackground]="'#5673AA'"
+                  class="create-comment-new-icons-create"
+                  position="bottom-right"
+                  src="/assets/img/svgs/todo/checkmark-filled.svg"
+                >
+                </svg-icon>
+                <svg-icon
+                  (click)="toggleCreateComment()"
+                  [appTaTooltip]="'Cancel'"
+                  [svgStyle]="{ 'width.px': 16, 'height.px': 16, 'margin-left.px': 6 }"
+                  [tooltipBackground]="'#FF5D5D'"
+                  class="create-comment-new-icons-close"
+                  position="bottom-right"
+                  src="/assets/img/svgs/todo/close-filled.svg"
+                >
+                </svg-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Attachments -->
+      <app-attachments
+        (filesChanged)="setFiles($event)"
+        [attachments]="attachments"
+        [numberOfAttachments]="files.length"
+        page="todo"
+      ></app-attachments>
+
+      <!--Note-->
+      <div class="row">
+        <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
+          <div (click)="openNote()" class="note-label-wrapper">
+            <span class="note-label" style="user-select: none;">Note</span>
+            <svg-icon class="down-icon" src="assets/img/svgs/down-arrow.svg"></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              showNote ? ' note-visible note' : ' note-hidden'
+            }}"
+          >
+            <textarea
+              #note
+              cdkAutosizeMaxRows="2"
+              cdkAutosizeMinRows="1"
+              cdkTextareaAutosize
+              class="input-custom-textarea form-textarea"
+              formControlName="note"
+              placeholder="Write a note."
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="cancel-btn" style="user-select: none;" type="button">
+      <p class="m-0">Cancel</p>
+    </button>
+    <button
+      (click)="manageTask(false)"
+      class="save-btn"
+      ngbAutofocus
+      style="user-select: none;"
+      type="button"
+      [ngClass]="{'invalid-btn' : !taskForm.valid}"
+    >
+      <p class="m-0">Save</p>
+    </button>
+  </div>
+</div>

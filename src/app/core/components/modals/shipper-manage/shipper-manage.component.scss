@@ -1,19 +1,5 @@
 @import 'src/theme/variables';
 
-* {
-  font-family: $main-font, $fallback-font;
-}
-
-p {
-  margin: 0;
-  padding: 0;
-}
-
-.form-control:focus {
-  box-shadow: none !important;
-  outline: none;
-}
-
 .payment-type {
   &.col-12, &.col-6 {
     padding-left: 6px;
@@ -236,3 +222,5 @@ textarea.input-custom-textarea.form-textarea {
 .choice-wrapper.twic-choice label {
   width: 66px;
 }
+
+

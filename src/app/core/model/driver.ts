@@ -123,7 +123,7 @@ export interface AdditionalData {
 }
 
 export interface Avatar {
-  id: number;
+  id: string;
   src: string;
 }
 

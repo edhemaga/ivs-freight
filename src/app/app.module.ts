@@ -36,7 +36,7 @@ import { NavigationHeaderComponent } from './core/components/navigation/navigati
     NavigationSubrouteCardComponent,
     NavigationModalsComponent,
     NavigationUserProfileComponent,
-    NavigationUserCompanyComponent
+    NavigationUserCompanyComponent,
   ],
   imports: [
     BrowserModule,

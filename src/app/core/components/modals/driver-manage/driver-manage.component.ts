@@ -25,6 +25,7 @@ import {DriverService} from "../../../services/driver/driver.service";
 import {checkSelectedText, emailCheck, pasteCheck} from "../../../utils/methods.globals";
 import {v4 as uuidv4} from 'uuid';
 import {MetaDataService} from "../../../services/shared/meta-data.service";
+import {ClonerService} from "../../../services/cloner.service";
 
 @Component({
   selector: 'app-driver-manage',
@@ -108,6 +109,10 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
     },
     {
       id: 2,
+      name: 'Pay',
+    },
+    {
+      id: 3,
       name: 'Additional',
     },
   ];
@@ -131,6 +136,7 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
     year: 'YY', month: 'MM', day: 'DD'
   };
   inputText: false;
+  showUploadZone = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -142,7 +148,8 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
     private metaDataService: MetaDataService,
     private shared: SharedService,
     private customModalService: CustomModalService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    public clonerService: ClonerService
   ) { }
 
   ngOnInit(): void {
@@ -409,7 +416,6 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
   }
 
   saveDriver() {
-    console.log(this.driverForm.getRawValue());
     if (!this.shared.markInvalid(this.driverForm)) {
       return false;
     }
@@ -534,107 +540,8 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
         );
     } else {
       // Update Driver Data
-      const saveData: DriverData = {
-        firstName: driverFormData.firstName ? driverFormData.firstName : null,
-        lastName: driverFormData.lastName ? driverFormData.lastName : null,
-        ssn: driverFormData.ssn ? driverFormData.ssn.toString().replace('-', '') : null,
-        linkCompany: 0,
-        status: driverFormData.status ? driverFormData.status : null,
-        bankId: driverFormData.bankData ? driverFormData.bankData.id : null,
-        accountNumber: driverFormData.accountNumber ? driverFormData.accountNumber : null,
-        routingNumber: driverFormData.routingNumber ? driverFormData.routingNumber : null,
-        isOwner: driverFormData.isOwner ? 1 : 0,
-        taxNumber: driverFormData.taxId && driverFormData.isBusinessOwner && driverFormData.isOwner
-          ? driverFormData.taxId
-          : null,
-        businessName: driverFormData.businessName && driverFormData.isBusinessOwner && driverFormData.isOwner
-          ? driverFormData.businessName
-          : null,
-        paymentType: driverFormData.paymentType && driverFormData.paymentType
-          ? driverFormData.paymentType.id
-          : null,
-        emptyMiles: driverFormData.emptyMiles,
-        loadedMiles: driverFormData.loadedMiles,
-        commission: driverFormData.commission,
-        commissionOwner: driverFormData.commissionOwner,
-        twic: this.isTwicChecked ? 1 : 0,
-        expirationDate: driverFormData.expirationDate,
-        dateOfBirth: driverFormData.dateOfBirth ? driverFormData.dateOfBirth : null,
-        fuelCards: [
-          {
-            fuelCardNumber: driverFormData.fuelCard ? driverFormData.fuelCard : "",
-            cardBrand: ' ',
-          },
-        ],
-        doc: {
-          additionalData: {
-            avatar: this.driver && this.driver.doc && this.driver.doc.additionalData
-              ? this.driver.doc.additionalData.avatar
-              : null,
-            phone: driverFormData.phone ? driverFormData.phone : null,
-            email: driverFormData.email ? driverFormData.email : null,
-            address: this.address ? this.address : null,
-            type: driverFormData.type ? driverFormData.type : null,
-            note: driverFormData.note ? driverFormData.note : null,
-            notifications: this.getNotifications(),
-            birthDateShort: this.datePipe.transform(
-              this.driverForm.controls.dateOfBirth.value,
-              'shortDate'
-            ),
-            bankData: {
-              id: driverFormData.bankData ? driverFormData.bankData.id : null,
-              bankLogo: driverFormData.bankData ? driverFormData.bankData.bankLogo : null,
-              bankLogoWide: driverFormData.bankData ? driverFormData.bankData.bankLogoWide : null,
-              bankName: driverFormData.bankData ? driverFormData.bankData.bankName : null,
-              accountNumber: driverFormData.accountNumber
-                ? driverFormData.accountNumber.toString()
-                : null,
-              routingNumber: driverFormData.routingNumber
-                ? driverFormData.routingNumber.toString()
-                : null,
-            },
-            businessData: {
-              isOwner: driverFormData.isOwner ? 1 : 0,
-              isBusinessOwner: driverFormData.isBusinessOwner ? 1 : 0,
-              taxId: driverFormData.taxId && driverFormData.isBusinessOwner && driverFormData.isOwner
-                ? driverFormData.taxId
-                : null,
-              businessName: driverFormData.businessName &&
-              driverFormData.isBusinessOwner &&
-              driverFormData.isOwner
-                ? driverFormData.businessName
-                : null,
-            },
-            paymentType: driverFormData.paymentType && driverFormData.paymentType.id
-              ? driverFormData.paymentType
-              : null,
-          },
-          licenseData: this.driver && this.driver.doc && this.driver.doc.licenseData
-            ? this.driver.doc.licenseData
-            : [],
-          medicalData: this.driver && this.driver.doc && this.driver.doc.medicalData
-            ? this.driver.doc.medicalData
-            : [],
-          mvrData: this.driver && this.driver.doc && this.driver.doc.mvrData
-            ? this.driver.doc.mvrData
-            : [],
-          testData: this.driver && this.driver.doc && this.driver.doc.testData
-            ? this.driver.doc.testData
-            : [],
-          workData: this.driver && this.driver.doc && this.driver.doc.workData
-            ? this.driver.doc.workData
-            : [],
-        },
-        driverData: undefined
-      };
-      saveData.additionalData = saveData.doc?.additionalData;
-      saveData.licenseData = saveData.doc?.licenseData;
-      saveData.testData = saveData.doc?.testData;
-      saveData.medicalData = saveData.doc?.medicalData;
-      saveData.workData = saveData.doc?.workData;
-      saveData.mvrData = saveData.doc?.mvrData;
       this.driverService
-        .updateDriverData(saveData, this.inputData.data.id)
+        .updateDriverData(driverFormData, this.inputData.data.id)
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           (driverData: DriverData) => {
@@ -651,6 +558,7 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
           }
         );
     }
+    this.checkABA(driverFormData.routingNumber);
   }
 
   employmentEndDate() {
@@ -936,6 +844,7 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
     }
   }
 
+  // TODO find why this method is used in project and do we need it
   private transformInputData() {
     const data = {
       firstName: 'capitalize',
@@ -956,6 +865,63 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
   public onKeyUpMethod(x) {
     this.inputText = x.key;
     x.key === 'Backspace' && !this.driverForm.get(x.currentTarget.id).value ? this.inputText = false : this.inputText = x.key;
+  }
+
+ checkABA(s) {
+
+    let i, n, t;
+
+    // First, remove any non-numeric characters.
+
+    t = "";
+    for (i = 0; i < s.length; i++) {
+      let c = parseInt(s.charAt(i), 10);
+      if (c >= 0 && c <= 9)
+        t = t + c;
+    }
+
+    // Check the length, it should be nine digits.
+
+    if (t.length != 9)
+      return false;
+
+    // Now run through each digit and calculate the total.
+    n = 0;
+    for (i = 0; i < t.length; i += 3) {
+      n += parseInt(t.charAt(i),     10) * 3
+        +  parseInt(t.charAt(i + 1), 10) * 7
+        +  parseInt(t.charAt(i + 2), 10);
+    }
+    // If the resulting sum is an even multiple of ten (but not zero),
+    // the aba routing number is good.
+    return n != 0 && n % 10 == 0;
+  }
+
+  public callCancel() {
+    this.showUploadZone = false;
+  }
+
+  public callSaveAvatar(event: any) {
+    const newAvatar = event;
+
+    const saveData: DriverData = this.clonerService.deepClone<DriverData>(this.driver);
+    saveData.doc.additionalData.avatar = {
+      id: uuidv4(),
+      src: newAvatar,
+    };
+
+    this.driverService
+      .updateDriverData(saveData, this.driver.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => {
+          this.notification.success(`Driver Avatar has been updated.`, 'Success:');
+          this.showUploadZone = false;
+        },
+        (error: HttpErrorResponse) => {
+          this.shared.handleError(error);
+        }
+      );
   }
 
 }

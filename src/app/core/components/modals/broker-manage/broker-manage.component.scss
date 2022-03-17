@@ -265,4 +265,24 @@ textarea.input-custom-textarea.form-textarea {
   }
 }
 
+.removeItem {
+  position: relative;
+  left: 9px;
+  top: 1.3px;
+}
 
+.biling-address {
+  height: 28px;
+}
+
+.contactEmail {
+  width: 278px;
+}
+
+.text-underline {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5673AAb3;
+  text-decoration: none !important;
+  cursor: pointer;
+}

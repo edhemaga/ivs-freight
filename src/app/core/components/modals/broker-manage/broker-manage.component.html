@@ -1,0 +1,382 @@
+<div cdkDrag class="modal-container">
+  <div cdkDragHandle class="modal-header">
+    <h5 class="modal-title">{{ modalTitle }}</h5>
+    <svg-icon
+      (click)="activeModal.dismiss('Modal close')"
+      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      class="modal-close-btn cursor-pointer"
+      src="assets/img/svgs/table/close.svg"
+    ></svg-icon>
+  </div>
+  <div class="modal-body add-customer-modal static-element">
+    <!-- <app-loading-modal *ngIf="!loaded" class='large'></app-loading-modal> -->
+    <form (keydown)="keyDownFunction($event)" *ngIf="loaded" [formGroup]="customerForm" class="form-container">
+
+      <div class="row">
+        <div class="col-12">
+          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input
+              (keydown)="onCheckBackSpace($event)"
+              (keypress)="onNameTyping($event)"
+              (paste)="onPaste($event, 'name')"
+              [modalType]="inputData.data.type"
+              (keyup)="onKeyUpMethod($event)"
+              appAutoFocus
+              appInputFocus
+              class="form-control input-control required"
+              formControlName="name"
+              id="name"
+              placeholder="Customer name"
+            >
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label class="required-label" for="name">Business name</label>
+            <app-required-label [control]="customerForm.controls.name"></app-required-label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-9">
+          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input
+              (keydown)="onCheckBackSpace($event)"
+              (keypress)="onNameTyping($event)"
+              (paste)="onPaste($event, 'DBA')"
+              appInputFocus
+              class="form-control input-control"
+              formControlName="dbaName"
+              id="dbaName"
+              placeholder="DBA name"
+              (keyup)="onKeyUpMethod($event)"
+            >
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <!-- Dodati na lable ako je potrebano da se unosi DBA -->
+            <!-- class="required-label" -->
+            <label for="dbaName">DBA name</label>
+          </div>
+        </div>
+        <div *ngIf="mcVisible" class="col-3">
+          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input
+              (keydown)="onCheckBackSpace($event)"
+              (keypress)="onNameTyping($event)"
+              (paste)="onPaste($event, 'mcNumber', 8)"
+              class="form-control input-control"
+              formControlName="mcNumber"
+              id="mcNumber"
+              maxlength="8"
+              oninput="this.value = this.value.replace(/[^A-Za-z0-9-,.;'&/.() ]|^ /g,'')"
+              placeholder="MC/FF#"
+              (keyup)="onKeyUpMethod($event)"
+            >
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label for="mcNumber">MC/FF#</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <div
+            class="form-label-group input-icon phone-field-wrapper {{ manageInputValidation(customerForm.controls.phone) }} "
+            [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input
+              appInputFocus
+              class="form-control input-control"
+              formControlName="phone"
+              id="phone"
+              mask="(000) 000-0000"
+              placeholder="Phone"
+              (keyup)="onKeyUpMethod($event)"
+            >
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label for="phone">Phone</label>
+          </div>
+        </div>
+        <div class="col-8">
+          <div
+            class="form-label-group input-icon email-field-wrapper  {{ manageInputValidation(customerForm.controls.email) }}"
+            [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input
+              (keydown)="onCheckBackSpace($event)"
+              (keypress)="onEmailTyping($event)"
+              (paste)="onPaste($event, 'email')"
+              appInputFocus
+              class="form-control input-control email-input"
+              formControlName="email"
+              id="email"
+              oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
+              placeholder="Email"
+              (keyup)="onKeyUpMethod($event)"
+            >
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label for="email">Email</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <app-ta-switch (switchClicked)="tabChange($event)" [data]="customerSwitchOptions[0].data"></app-ta-switch>
+        </div>
+      </div>
+      <div class="row pt-4">
+        <!-- PO box input -->
+        <div *ngIf="addressTab !== 'Physical Address'" [ngClass]="{'col-4': addressTab !== 'Physical Address'}">
+          <div
+            class="form-label-group input-icon address-field-wrapper {{ manageInputValidation(customerForm.controls.poBox) }}"
+            [ngClass]="inputText ? 'typing' : 'not-typing'"
+          >
+            <input
+              (keydown)="onCheckBackSpace($event)"
+              (keypress)="onPoBoxBillingTyping($event)"
+              (paste)="onPaste($event, 'poBox')"
+              class="form-control input-control required"
+              formControlName="poBox"
+              id="poBox"
+              oninput="this.value = this.value.replace(/[^A-Za-z0-9-,.;'&/.() ]|^ /g,'')"
+              placeholder="PO Box"
+              (keyup)="onKeyUpMethod($event)"
+            >
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label class="required-label" for="poBox">PO Box</label>
+            <app-required-label [control]="customerForm.controls.poBox"></app-required-label>
+          </div>
+        </div>
+        <div [ngClass]="{'col-8': addressTab !== 'Physical Address', 'col-10': addressTab === 'Physical Address'}">
+          <div
+            class="form-label-group input-icon address-field-wrapper {{ manageInputValidation(customerForm.controls.address) }}"
+            [ngClass]="inputText ? 'typing' : 'not-typing'"
+          >
+            <input
+              #placesRef="ngx-places"
+              (keydown)="addressKeyDown($event)"
+              (onAddressChange)="handleAddressChange($event)"
+              [options]="addressTab === 'Physical Address' ? options : optionsPoBox"
+              appInputFocus
+              class="form-control input-control required address-input"
+              formControlName="address"
+              id="address"
+              ngx-google-places-autocomplete
+              placeholder="{{addressPlaceHolder}}"
+              (keyup)="onKeyUpMethod($event)"
+            >
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label class="required-label" for="address">{{addressPlaceHolder}}</label>
+            <app-required-label [control]="customerForm.controls.address"></app-required-label>
+          </div>
+        </div>
+        <div *ngIf="addressTab === 'Physical Address'" class="col-2">
+          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input
+              (keydown)="onCheckBackSpace($event)"
+              (keypress)="onNameTyping($event)"
+              class="form-control input-control"
+              formControlName="addressUnit"
+              id="addressUnit"
+              maxlength="6"
+              oninput="this.value = this.value.replace(/[^A-Za-z0-9-,.;'&/.() ]|^ /g,'')"
+              placeholder="Unit#"
+            >
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label for="addressUnit">Unit#</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="btn-group btn-group-toggle">
+            <label class="btn-primary" ngbButtonLabel>
+              <input (change)="billingAddress(customerForm.controls.billingContactCheck.value)" [checked]="false"
+                     formControlName="billingContactCheck" ngbButton
+                     type="checkbox">
+              Billing address is same as main address
+            </label>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="openBillingAddress" class="row pt-4">
+        <div class="col-12">
+          <app-ta-switch (switchClicked)="tabChange($event)" [data]="customerSwitchOptions[1].data"></app-ta-switch>
+        </div>
+      </div>
+      <!-- Biling Address -->
+      <div *ngIf="openBillingAddress" class="row mt-4 biling-address">
+        <div *ngIf="bilingAddressTab !== 'Physical Address'" class="col-4">
+          <div
+            class="form-label-group input-icon address-field-wrapper {{ manageInputValidation(customerForm.controls.poBoxBilling) }}"
+            [ngClass]="inputText ? 'typing' : 'not-typing'"
+          >
+            <input
+              (keydown)="onCheckBackSpace($event)"
+              (keypress)="onPoBoxBillingTyping($event)"
+              (paste)="onPaste($event, 'poBoxBilling')"
+              class="form-control input-control required"
+              formControlName="poBoxBilling"
+              id="poBoxBilling"
+              oninput="this.value = this.value.replace(/[^A-Za-z0-9-,.;'&/.() ]|^ /g,'')"
+              placeholder="PO Box"
+              (keyup)="onKeyUpMethod($event)"
+            >
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label class="required-label" for="poBoxBilling">PO Box</label>
+            <app-required-label [control]="customerForm.controls.poBoxBilling"></app-required-label>
+          </div>
+        </div>
+        <div
+          [ngClass]="{'col-8': bilingAddressTab !== 'Physical Address', 'col' : bilingAddressTab === 'Physical Address'}">
+          <div
+            class="form-label-group input-icon address-field-wrapper {{ manageInputValidation(customerForm.controls.billingAddress) }}"
+            [ngClass]="inputText ? 'typing' : 'not-typing'"
+          >
+            <input
+              #placesRef="ngx-places"
+              (onAddressChange)="handleBillingAddressChange($event)"
+              [options]="bilingAddressTab === 'Physical Address' ? options : optionsPoBox"
+              appInputFocus
+              class="form-control input-control required"
+              formControlName="billingAddress"
+              id="billingAddress"
+              ngx-google-places-autocomplete
+              placeholder="{{billingPlaceHolder}}"
+              (keyup)="onKeyUpMethod($event)"
+            >
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label class="required-label" for="billingAddress">{{billingPlaceHolder}}</label>
+            <app-required-label [control]="customerForm.controls.billingAddress"></app-required-label>
+          </div>
+        </div>
+        <div *ngIf="bilingAddressTab === 'Physical Address'" class="col-2">
+          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input
+              class="form-control input-control"
+              formControlName="billingAddressUnit"
+              id="billingAddressUnit"
+              maxlength="6"
+              placeholder="Unit#"
+              (keyup)="onKeyUpMethod($event)"
+            >
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label for="billingAddressUnit">Unit#</label>
+          </div>
+        </div>
+      </div>
+      <div formArrayName="contactPersons">
+        <div *ngFor="let item of contactPersonsFormGroup.controls; let i = index">
+          <div [formGroupName]="i">
+            <div class="row">
+              <div class="col-12">
+                <hr>
+              </div>
+              <div class="col-12">
+                <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+                  <input
+                    (keydown)="onCheckBackSpace($event)"
+                    (keypress)="onContactNameTyping($event)"
+                    (paste)="onPaste($event, 'contactName', undefined, i)"
+                    class="form-control input-control"
+                    formControlName="contactName"
+                    id="contactName"
+                    oninput="this.value = this.value.replace(/[^A-Za-z0-9-,.;'&/.() ]|^ /g,'')"
+                    placeholder="Contact name"
+                    (keyup)="onKeyUpMethod($event)"
+                  >
+                  <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+                  </div>
+                  <label for="contactName{{i}}">Contact name</label>
+                </div>
+              </div>
+              <div class="col-4">
+                <div
+                  class="form-label-group input-icon phone-field-wrapper no-padding-input {{ manageInputValidation(customerForm.controls.contactPersons['controls'][i].controls.contactPhone) }}"
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
+                >
+                  <input
+                    appInputFocus
+                    class="form-control input-control"
+                    formControlName="contactPhone"
+                    id="contactPhone{{i}}"
+                    mask="(000) 000-0000"
+                    placeholder="Phone"
+                  >
+                  <label for="contactPhone{{i}}">Phone</label>
+                </div>
+              </div>
+              <div class="col-7">
+                <div
+                  class="form-label-group input-icon email-field-wrapper no-padding-input contactEmail {{ manageInputValidation(customerForm.controls.contactPersons['controls'][i].controls.contactEmail) }}"
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
+                >
+                  <input
+                    (keydown)="onCheckBackSpace($event)"
+                    (keypress)="onEmailTyping($event)"
+                    (paste)="onPaste($event, 'contactEmail', undefined,  i)"
+                    appInputFocus
+                    class="form-control input-control contactEmail email-input"
+                    formControlName="contactEmail"
+                    id="contactEmail{{i}}"
+                    oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
+                    placeholder="Email"
+                  >
+                  <label for="contactEmail{{i}}">Email</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <a (click)="removeContact(i)" class="text-black-50 removeItem">×</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div (click)="addNewContactPerson()" *ngIf="contactPersonsFormGroup.controls.length < 2"
+           class="text-underline mt-2">{{ contactPersonsList.controls.length === 0 ? 'Add contact' : 'Add additional contact' }}
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
+          <div (click)="openNote()" class="note-label-wrapper">
+            <span class="note-label">Note</span>
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div class="example-full-width note-input{{ showNote ? ' note-visible' : ' note-hidden' }}">
+            <textarea
+              #note
+              cdkAutosizeMaxRows="5"
+              cdkAutosizeMinRows="2"
+              cdkTextareaAutosize
+              class="input-custom-textarea form-textarea"
+              formControlName="mainNote"
+              placeholder="Write a note."
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button (click)="closeCustomerEdit()" class="cancel-btn" type="button">
+      <p class="m-0">Cancel</p>
+    </button>
+    <button
+      (click)="updateCustomer()"
+      class="save-btn"
+      ngbAutofocus
+      type="button"
+      [ngClass]="{'invalid-btn' : !customerForm.valid}"
+    >
+      <p class="m-0">Save</p>
+    </button>
+  </div>
+</div>

@@ -10,6 +10,7 @@ export class UserSocket extends Socket {
 
   constructor() {
     super({
+      url: '',
       // url: `${environment.baseSocketUrl}/users`,
       options: {
         // @ts-ignore
