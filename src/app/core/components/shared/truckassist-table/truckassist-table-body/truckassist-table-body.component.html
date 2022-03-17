@@ -3,6 +3,12 @@
     <tr
       [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
       *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
+      [ngClass]="{
+        'regular-row': !row.isSelected,
+        'selected-row': row.isSelected,
+        'muted-row':
+          !row.active && !row['status'] && !options.disabledMutedStyle
+      }"
     >
       <div class="columns-container">
         <td *ngFor="let column of columns">

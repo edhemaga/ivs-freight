@@ -5,6 +5,8 @@ import {
   ViewEncapsulation,
   OnChanges,
   SimpleChanges,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 
 @Component({
@@ -14,6 +16,7 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export class TruckassistTableToolbarComponent implements OnInit, OnChanges {
+  @Output() toolBarAction: EventEmitter<any> = new EventEmitter();
   @Input() options: any;
 
   constructor() {}
@@ -24,8 +27,11 @@ export class TruckassistTableToolbarComponent implements OnInit, OnChanges {
     if (!changes?.options?.firstChange && changes?.options) {
       this.options = changes.options.currentValue;
     }
-    
-    console.log('Toolbar Options');
-    console.log(this.options);
+  }
+
+  onToolBarAction(actionType: string){
+    this.toolBarAction.emit({
+      action: actionType
+    })
   }
 }

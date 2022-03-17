@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
+import { DriverManageComponent } from '../../modals/driver-manage/driver-manage.component';
 
 @Component({
   selector: 'app-driver-table',
@@ -14,7 +16,7 @@ export class DriverTableComponent implements OnInit {
   selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor() {}
+  constructor(private customModalService: CustomModalService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -491,10 +493,27 @@ export class DriverTableComponent implements OnInit {
       },
     ];
 
-    for (let i = 0; i < numberOfCopy; i++) {
+    for (let i = 0; i < 999; i++) {
       data.push(data[i]);
     }
 
     return data;
+  }
+
+  onToolBarAction(event: any) {
+    if (event.action === 'open-modal') {
+      this.customModalService.openModal(
+        DriverManageComponent,
+        {
+          data: {
+            type: 'new',
+          },
+        },
+        null,
+        {
+          size: 'small',
+        }
+      );
+    }
   }
 }

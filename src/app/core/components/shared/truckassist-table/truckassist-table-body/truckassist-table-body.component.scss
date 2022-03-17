@@ -10,12 +10,11 @@ table {
       border-radius: 3px;
       padding: 2px;
       display: flex;
-      
+
       .columns-container {
         width: 100%;
         height: 100%;
         border-radius: 2px;
-        background: #91a4c720;
         display: flex;
 
         td {
@@ -136,4 +135,13 @@ table {
 /* Global Style */
 .set-center {
   justify-content: center;
+}
+
+/* Ng Class */
+.regular-row {
+  &:hover {
+    .columns-container {
+      background: #F7F7F7;
+    }
+  }
 }
