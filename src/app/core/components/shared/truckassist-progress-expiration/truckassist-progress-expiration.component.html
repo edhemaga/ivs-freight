@@ -15,7 +15,10 @@
       [ngClass]="{ 'd-none': expire !== expire }"
       class="progress-text"
     >
-      <span>in {{ progresDay }} {{ progresDay > 1 ? "days" : "day" }}</span>
+      <span *ngIf="expiresSettings" class="expires">Expires</span>
+      <span [ngClass]="{ 'expires-bold': expiresSettings }"
+        >in {{ progresDay }} {{ progresDay > 1 ? "days" : "day" }}</span
+      >
     </span>
 
     <!-- EXPIRED -->
@@ -26,6 +29,14 @@
     <!-- EXPIRED AGO -->
     <span *ngIf="negative" class="progress-text">
       <span>{{ progresDay }} days ago</span>
+    </span>
+
+    <!-- EXPIRED DATE PREVIEW -->
+    <span
+      *ngIf="expire !== 0 && !negative && expiresSettings"
+      class="progress-text"
+    >
+      <span>{{ expireDate }}</span>
     </span>
   </div>
 </div>

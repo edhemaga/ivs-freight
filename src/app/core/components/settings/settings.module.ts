@@ -13,6 +13,7 @@ import { SettingsNodataComponent } from './settings-nodata/settings-nodata.compo
 import { SettingsInsurancePolicyModalComponent } from './settings-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
 import { SettingsBasicModalComponent } from './settings-modals/settings-basic-modal/settings-basic-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TruckassistProgressExpirationModule } from '../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     SettingsRoutingModule,
     SharedModule,
     ReactiveFormsModule,
+    TruckassistProgressExpirationModule
   ],
   declarations: [
     SettingsComponent,
