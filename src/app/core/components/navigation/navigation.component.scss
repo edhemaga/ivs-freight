@@ -20,11 +20,11 @@
   font-size: $nav-font-size;
   font-weight: $nav-font-medium;
 
-  box-shadow: $nav-boxshadow;
   transition: $nav-transition;
 
   &:hover {
     width: 200px;
+    box-shadow: $nav-boxshadow;
     transition: $nav-transition;
     cursor: pointer;
   }
@@ -138,6 +138,10 @@
     border-radius: 3px;
     transition: $magic-line-transition;
     z-index: -1;
+
+    &.show {
+      animation: showMagicLine 1s;
+    }
   }
 
   .new-magic-line-selected {
@@ -148,19 +152,19 @@
   }
 
   .navigation-routes:nth-child(1):hover ~ .new-magic-line {
-    transform: translateY(0px) !important;
+    transform: translateY(1px) !important;
   }
 
   .new-magic-line-selected:nth-child(1) ~ .new-magic-line {
-    transform: translateY(0px);
+    transform: translateY(1px);
   }
 
   .navigation-routes:nth-child(2):hover ~ .new-magic-line {
-    transform: translateY(31px) !important;
+    transform: translateY(32px) !important;
   }
 
   .new-magic-line-selected:nth-child(2) ~ .new-magic-line {
-    transform: translateY(31px);
+    transform: translateY(32px);
   }
 
   .navigation-routes:nth-child(3):hover ~ .new-magic-line {

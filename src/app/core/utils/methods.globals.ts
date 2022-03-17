@@ -883,3 +883,23 @@ export function getRepairTypesData() {
 
   return types;
 }
+
+// Function for checking number of spaces
+
+export function checkNumberOfSpaces(k: number, numOfSpaces: number) {
+  if (numOfSpaces < 2) {
+    return (
+      (k > 64 && k < 91) ||
+      (k > 96 && k <= 121) ||
+      (k >= 48 && k <= 57) ||
+      k == 8 ||
+      k == 32 ||
+      (k >= 42 && k <= 46) ||
+      k === 64 ||
+      k === 61 ||
+      (k >= 35 && k <= 38)
+    );
+  } else {
+    event.preventDefault();
+  }
+}

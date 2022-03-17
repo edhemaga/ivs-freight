@@ -52,6 +52,15 @@ import { HighlightSearchPipe } from '../../pipes/highlight-search.pipe';
 import { HosTimePipe } from '../../pipes/hostime';
 import { NameInitialsPipe } from '../../pipes/nameinitials';
 import { Ng5SliderModule } from 'ng5-slider';
+import {TodoManageComponent} from "../../components/modals/todo-manage/todo-manage.component";
+import {BrokerManageComponent} from "../../components/modals/broker-manage/broker-manage.component";
+import {ShipperManageComponent} from "../../components/modals/shipper-manage/shipper-manage.component";
+import {RepairShopManageComponent} from "../../components/modals/repair-shop-manage/repair-shop-manage.component";
+import {OwnerManageComponent} from "../../components/modals/owner-manage/owner-manage.component";
+import {FuelManageComponent} from "../../components/modals/fuel-manage/fuel-manage.component";
+import {ContactManageComponent} from "../../components/modals/contact-manage/contact-manage.component";
+import {CompanyUserManageComponent} from "../../components/modals/company-user-manage/company-user-manage.component";
+import {EditProfileImageComponent} from "../../components/shared/edit-profile-image/edit-profile-image.component";
 
 @NgModule({
   declarations: [
@@ -83,7 +92,18 @@ import { Ng5SliderModule } from 'ng5-slider';
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
     TaSelectComponent,
-    DeleteDialogComponent
+    DeleteDialogComponent,
+    TodoManageComponent,
+    BrokerManageComponent,
+    ShipperManageComponent,
+    RepairShopManageComponent,
+    OwnerManageComponent,
+    FuelManageComponent,
+    ContactManageComponent,
+    CompanyUserManageComponent,
+    EditProfileImageComponent,
+    EditProfileImageComponent,
+    EditProfileImageComponent
   ],
   imports: [
     CommonModule,
@@ -134,6 +154,7 @@ import { Ng5SliderModule } from 'ng5-slider';
     AgmCoreModule,
     MapControlComponent,
     NgbModule,
+    GooglePlaceModule,
     SortPipe,
     SafeHtmlPipe,
     StatusPipePipe,

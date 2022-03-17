@@ -13,8 +13,8 @@ export class GlobalStoreService {
   ) {}
 
   getAllStoreValues(){
-    this.dashboardStoreService.addStats();
-    this.dispatcherStoreService.getDispatcherList();
+    // this.dashboardStoreService.addStats();
+    // this.dispatcherStoreService.getDispatcherList();
   }
 
 }

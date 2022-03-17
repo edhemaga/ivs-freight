@@ -1,3 +1,4 @@
+import { AuthQuery } from './../components/authentication/state/auth.query';
 import {Injectable} from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
@@ -9,13 +10,15 @@ export class AuthGuard implements CanActivate {
     private router: Router,
     private authenticationService: AuthService,
     private notification: NotificationService,
+    private authQuery: AuthQuery
   ) {
   }
 
   canActivate() {
-    const currentUser = this.authenticationService.currentUserValue;
+    //const currentUser = this.authenticationService.currentUserValue;
+    const currentUser = this.authQuery.loggedUserMainInfo;
     const token = JSON.parse(localStorage.getItem('token'));
-    if (token && currentUser) {
+    if (token && currentUser.token) {
       // TODO HANDLE ROLES SOMETIMES
       return true;
     }

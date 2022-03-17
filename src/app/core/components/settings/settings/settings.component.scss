@@ -9,6 +9,7 @@
   grid-template-columns: 480px 290px 340px 294px;
   column-gap: 12px;
   font-size: $settings-fontsize;
+  user-select: none;
 
   .settings-col-1 {
     grid-column: 1 / 2;

@@ -8,7 +8,7 @@ import { SettingsStore } from './settings.store';
 @Injectable({ providedIn: 'root' })
 export class SettingsStoreService {
 
-  public noDataSubject$ = new BehaviorSubject<boolean>(false);
+  public modalSubject$ = new BehaviorSubject<{modalName: string, type: boolean, action: string}>({modalName: null, type: false, action: null});
 
   constructor(private settingsStore: SettingsStore, private http: HttpClient) {}
 

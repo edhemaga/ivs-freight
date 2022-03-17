@@ -1,8 +1,11 @@
-<div class="nav-footer">
+<div class="nav-footer" [ngClass]="{ 'nav-footer-width': isNavigationHovered }">
   <div
     *ngFor="let item of footerData; trackBy: identify; let ind = index"
     class="nav-footer-item"
-    [ngClass]="{ 'nav-footer-item-scaleWidth': !isNavigationHovered }"
+    [ngClass]="{
+      'nav-footer-item-scaleWidth': !isNavigationHovered,
+      show: isNavigationHovered
+    }"
     (click)="onAction(ind, 'Open User Panel')"
     [routerLink]="item.route"
     routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
@@ -20,22 +23,25 @@
       [ngClass]="{ 'nav-footer-image-user': ind === 2 }"
       src="{{ item.image }}"
     ></svg-icon>
-
-    <p
-      class="nav-footer-text"
-      *ngIf="!isUserData(item.text) && isNavigationHovered"
-    >
-      {{ item.text }}
-    </p>
-
     <div
-      class="nav-footer-user"
-      *ngIf="isUserData(item.text) && isNavigationHovered"
+      class="nav-footer-rightSide"
+      [ngClass]="isNavigationHovered ? 'show' : 'hide'"
     >
-      <p class="nav-footer-user-company">{{ item.text.companyName }}</p>
-      <p class="nav-footer-user-name">{{ item.text.userName }}</p>
-    </div>
+      <p
+        class="nav-footer-text"
+        *ngIf="!isUserData(item.text) && isNavigationHovered"
+      >
+        {{ item.text }}
+      </p>
 
+      <div
+        class="nav-footer-user"
+        *ngIf="isUserData(item.text) && isNavigationHovered"
+      >
+        <p class="nav-footer-user-company">{{ item.text.companyName }}</p>
+        <p class="nav-footer-user-name">{{ item.text.userName }}</p>
+      </div>
+    </div>
     <div
       *ngIf="currentUserStatus && isUserData(item.text)"
       class="status-marker-container"

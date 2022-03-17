@@ -1,4 +1,9 @@
 $settings-background: #ffffff;
+
+$settings-white-dark: #b7b7b7;
+$settings-white-dark-2: #dadada;
+$settings-count: #F7F7F7;
+$settings-line: #F3F3F3;
 $settings-borderRadius: 3px;
 $settings-padding: 12px;
 
@@ -10,6 +15,8 @@ $settings-color-dark: #6c6c6c;
 $settings-color-blue: #5673aa;
 $settings-color-red-dark: #ff5050;
 
+$settings-font-medium: 500;
+$settings-font-semibold: 600;
 $settings-font-extrabold: 800;
 
 $settings-fontsize: 14px;
@@ -17,6 +24,8 @@ $settings-fontsize: 14px;
 $transition: all 0.3s ease-in-out;
 
 $settings-box-shadow: 0 0 4px rgb(0,0,0,.16);
+
+$settings-transition: all 0.3s ease-in-out;
 
 // Default settings
 p {

@@ -1,0 +1,112 @@
+<div cdkDrag class="modal-container">
+  <div cdkDragHandle class="modal-header">
+    <h5 class="modal-title">{{ modalTitle }}</h5>
+    <svg-icon
+      (click)="activeModal.dismiss('Modal close')"
+      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      class="modal-close-btn cursor-pointer"
+      src="assets/img/svgs/table/close.svg"
+    ></svg-icon>
+  </div>
+  <div class="modal-body">
+    <!-- <app-loading-modal *ngIf="!loaded"></app-loading-modal> -->
+    <form *ngIf="loaded" [formGroup]="contactForm" class="form-container">
+      <div class="row">
+        <div class="col-7">
+          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input (keydown)="onCheckBackSpace($event)" (keypress)="onNameTyping($event)"
+                   (paste)="onPaste($event, 'name', 23)" [modalType]="inputData.data.type"
+                   (keyup)="onKeyUpMethod($event)"
+                   appAutoFocus appInputFocus
+                   class="form-control input-control required" formControlName="name" id="name" maxlength="23"
+                   placeholder="Name">
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label class="required-label" for="name">Name</label>
+          </div>
+        </div>
+        <div class="col-5">
+          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <ng-select [items]="createdLabels"
+                       appendTo="body"
+                       bindLabel="labelName"
+                       bindValue="labelId"
+                       class="label-select"
+                       formControlName="labelId"
+                       placeholder="Select label">
+              <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                <span [ngOptionHighlight]="search" [ngStyle]="{ color: item.labelColor }">{{ item.labelName }}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <div
+            class="form-label-group input-icon phone-field-wrapper {{ manageInputValidation(contactForm.controls.phone) }}"
+            [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input appInputFocus class="form-control input-control required" formControlName="phone" id="phone"
+                   mask="(000) 000-0000" placeholder="Phone" (keyup)="onKeyUpMethod($event)">
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label class="required-label" for="phone">Phone</label>
+          </div>
+        </div>
+        <div class="col-8">
+          <div
+            class="form-label-group input-icon email-field-wrapper {{ manageInputValidation(contactForm.controls.email) }}"
+            [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input (keydown)="onCheckBackSpace($event)" (keypress)="onEmailTyping($event)"
+                   (paste)="onPaste($event, 'email')"
+                   appInputFocus class="form-control input-control required email-input"
+                   formControlName="email" id="email" oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
+                   placeholder="Email">
+            <label class="required-label" for="email">Email</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-10">
+          <div
+            class="form-label-group input-icon address-field-wrapper {{ manageInputValidation(contactForm.controls.address) }}"
+            [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)" [options]="options"
+                   appInputFocus class="form-control input-control required" formControlName="address" id="address"
+                   ngx-google-places-autocomplete placeholder="Address, City, State Zip"
+                   (keyup)="onKeyUpMethod($event)">
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label class="required-label" for="address">Address, City, State Zip</label>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+            <input appInputFocus appInputrestriction="[A-Za-z0-9-]" class="form-control input-control"
+                   formControlName="address_unit" id="address_unit" maxlength="6" placeholder="Unit #" (keyup)="onKeyUpMethod($event)">
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
+            <label for="address_unit">Unit #</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
+          <div (click)="openNote()" class="note-label-wrapper">
+            <span class="note-label">Note</span>
+            <svg-icon class="down-icon" src="assets/img/svgs/down-arrow.svg"></svg-icon>
+          </div>
+          <div class="example-full-width note-input{{ showNote ? ' note-visible' : ' note-hidden' }}">
+            <textarea #note cdkAutosizeMaxRows="5" cdkAutosizeMinRows="2" cdkTextareaAutosize
+                      class="input-custom-textarea form-textarea"
+                      formControlName="note" placeholder="Write a note."></textarea>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button (click)="closeAddressEditModal()" class="cancel-btn" type="button">Cancel</button>
+    <button (click)="manageContact()" class="save-btn"  [ngClass]="{'invalid-btn' : !contactForm.valid}" ngbAutofocus type="button">Save</button>
+  </div>
+</div>

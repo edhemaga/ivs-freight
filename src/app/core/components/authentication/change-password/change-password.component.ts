@@ -45,7 +45,7 @@ export class ChangePasswordComponent implements OnInit {
 
 
   constructor(
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private spinner: SpinnerService,
     private notification: NotificationService,

@@ -22,4 +22,15 @@ export class DashboardStoreService {
         }
       );
   }
+
+  getDashboardStats(){
+    return this.http.get(environment.API_ENDPOINT + 'dashboard/totals');
+  }
+
+  set dashStats(response){
+    this.dashboardStore.update((store) => ({
+      ...store,
+      statistic: response
+    }));
+  }
 }

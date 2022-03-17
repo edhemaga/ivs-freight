@@ -2,9 +2,8 @@
 
 .settings-general {
   width: 100%;
-  max-height: 892px;
   display: grid;
-  grid-template-rows: 32px 848px;
+  grid-template-rows: 32px auto;
   row-gap: 12px;
 
   .settings-header {
@@ -63,5 +62,221 @@
     background-color: $settings-background;
     color: $settings-color-dark;
     border-radius: $settings-borderRadius;
+    padding: 12px;
+
+    // Common class for multiple data
+    .details {
+      display: grid;
+      grid-template-columns: repeat(2, 153px) 148px;
+      row-gap: 12px;
+
+      .details-data {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .details-name {
+          font-size: 12px;
+          color: $settings-color-dark;
+          font-weight: $settings-font-semibold;
+
+          &.bank {
+            margin-bottom: 10px;
+          }
+        }
+
+        .details-value {
+          font-size: 14px;
+        }
+
+        .details-eye {
+          display: flex;
+          align-items: center;
+
+          .hidden-text-eye {
+            margin-right: 6px;
+          }
+
+          .hidden-svg-eye {
+            position: relative;
+            bottom: 2px;
+          }
+        }
+      }
+    }
+
+    // Only for basic & logo card
+    .basic-details {
+      width: 100%;
+      height: 256px;
+      margin-bottom: 15px;
+
+      .basic-header {
+        width: 100%;
+        height: 111px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 11px;
+
+        .basic-header-logo-top {
+          display: flex;
+          justify-content: flex-end;
+          height: 22px;
+          width: 100%;
+          margin-bottom: 8px;
+
+          .basic-logo-text {
+            font-size: 10px;
+            font-style: italic;
+            color: $settings-white-dark;
+            position: relative;
+            bottom: 1px;
+          }
+
+          .basic-logo-edit {
+            width: 22px;
+            height: 22px;
+            display: none;
+            margin-left: 6px;
+            svg {
+              width: 100%;
+              height: 100%;
+              #Rectangle_3879 {
+                fill: $settings-line;
+              }
+              #Path_7775 {
+                fill: $settings-white-dark-2;
+              }
+              #Path_7776 {
+                fill: $settings-white-dark-2;
+              }
+            }
+
+            &:hover {
+              transition: $settings-transition;
+              cursor: pointer;
+              svg {
+                #Rectangle_3879 {
+                  fill: $settings-color;
+                }
+                #Path_7775 {
+                  fill: $settings-background;
+                }
+                #Path_7776 {
+                  fill: $settings-background;
+                }
+              }
+            }
+          }
+
+          &:hover {
+            .basic-logo-edit {
+              transition: $settings-transition;
+              display: inline-block;
+            }
+          }
+        }
+
+        .basic-logo {
+          max-width: 456px;
+          max-height: 110px;
+        }
+      }
+
+      .basic-middle {
+        .basic-data {
+          display: flex;
+          align-items: center;
+
+          .basic-data-svg {
+            margin-right: 6px;
+            position: relative;
+            bottom: 1px;
+          }
+        }
+
+        .basic-multipleinfo {
+          display: grid;
+          grid-template-columns: 162px 292px;
+          row-gap: 12px;
+          margin: 12px 0px;
+        }
+      }
+
+      .basic-bottom {
+        display: grid;
+        grid-template-columns: repeat(3, 144px);
+        -moz-column-gap: 12px;
+        column-gap: 12px;
+
+        margin-bottom: 12px;
+
+        .basic-bottom-card {
+          background-color: $settings-count;
+          color: $settings-color-dark;
+          border-radius: 3px;
+          height: 30px;
+          padding: 0px 6px;
+
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .bottom-card-left {
+            font-size: 12px;
+            font-weight: $settings-font-semibold;
+            color: $settings-color-dark;
+          }
+
+          .bottom-card-right {
+            font-size: 18px;
+            font-weight: $settings-font-medium;
+            color: $settings-color-dark;
+          }
+        }
+      }
+
+      .settings-line {
+        margin: 0;
+        height: 2px;
+        width: 100%;
+        border-radius: 1px;
+        background-color: $settings-line;
+      }
+    }
+
+    // Only for bankcard card
+    .bankcard {
+      .bankcard-header {
+        font-size: 12px;
+        font-weight: 600;
+        text-align: left;
+        display: grid;
+        grid-template-columns: 135px 205px 72px 44px;
+        margin-bottom: 12px;
+
+        p {
+          align-self: flex-start;
+        }
+      }
+
+      .bankcard-data {
+        display: grid;
+        grid-template-columns: 135px 205px 72px 44px;
+
+        &.first {
+          margin-bottom: 12px;
+        }
+
+        .bankcard-card {
+          display: flex;
+          align-items: center;
+
+          .bankcard-svg {
+            margin-right: 6px;
+          }
+        }
+      }
+    }
   }
 }

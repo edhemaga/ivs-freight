@@ -7,7 +7,8 @@ export class NotificationSocket extends Socket {
 
   constructor() {
     super({
-     //  url: `${environment.baseSocketUrl}/notifications`,
+      url: "",
+      //  url: `${environment.baseSocketUrl}/notifications`,
       options: {
         // @ts-ignore
         withCredentials: false

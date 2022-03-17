@@ -9,6 +9,10 @@ import { QueryEntity } from '@datorama/akita';
 export class DispatcherQuery extends QueryEntity<DispatcherState> {
   dispatchersList$ = this.select('dispatchers');
 
+  get dispatchersList(){
+    return this.getValue().dispatchers;
+  }
+
   constructor(protected store: DispatcherStore) {
     super(store);
   }
