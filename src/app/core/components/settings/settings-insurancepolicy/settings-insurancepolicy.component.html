@@ -70,27 +70,40 @@
     </app-settings-card>
     <!-- Automobile Liability -->
     <app-settings-card
-    [cardTemplate]="'insuranceTemplate'"
-    [cardName]="'Automobile Liability'"
-    [data]="insuranceData.automobileLiability"
-  >
-  </app-settings-card>
+      [cardTemplate]="'insuranceTemplate'"
+      [cardName]="'Automobile Liability'"
+      [data]="insuranceData.automobileLiability"
+    >
+    </app-settings-card>
     <!-- Motor Truck Cargo / Reefer Breakdown -->
     <app-settings-card
-    [cardTemplate]="'insuranceTemplate'"
-    [cardName]="'Motor Truck Cargo / Reefer Breakdown'"
-    [data]="insuranceData.motorTruckCargo"
-  >
-  </app-settings-card>
+      [cardTemplate]="'insuranceTemplate'"
+      [cardName]="'Motor Truck Cargo / Reefer Breakdown'"
+      [data]="insuranceData.motorTruckCargo"
+    >
+    </app-settings-card>
     <!-- Physical Damage -->
     <app-settings-card
-    [cardTemplate]="'insuranceTemplate'"
-    [cardName]="'Physical Damage'"
-    [data]="insuranceData.physicalDamage"
-  >
-  </app-settings-card>
+      [cardTemplate]="'insuranceTemplate'"
+      [cardName]="'Physical Damage'"
+      [data]="insuranceData.physicalDamage"
+    >
+    </app-settings-card>
     <!-- Trailer Interchange -->
-  
+    <app-settings-card
+      [cardTemplate]="'insuranceTemplate'"
+      [cardName]="'Trailer Interchange'"
+      [data]="insuranceData.trailerInterchange"
+    >
+    </app-settings-card>
     <!-- Expires..... -->
+    <app-truckassist-progress-expiration
+      [expireDate]="'03/31/2023'"
+      [status]="'03/01/2021'"
+      [startDate]="'03/12/2020'"
+      [expiresSettings]="true"
+    ></app-truckassist-progress-expiration>
+
+    <p class="show-details" (click)="onShowDetails()">Show Details</p>
   </div>
 </div>

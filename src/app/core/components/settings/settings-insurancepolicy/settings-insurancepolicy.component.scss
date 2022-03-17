@@ -140,5 +140,18 @@
         margin-bottom: 6px;
       }
     }
+
+    .show-details {
+      color: $settings-color-lightBlue;
+      font-size: 12px;
+      font-weight: $settings-font-bold;
+      margin-top: 12px;
+
+      &:hover {
+        transition: $settings-transition;
+        color: $settings-color-blue;
+        cursor: pointer;
+      }
+    }
   }
 }

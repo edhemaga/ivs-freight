@@ -106,6 +106,18 @@ export class SettingsInsurancepolicyComponent {
           value: '$300.000'
         },
       ]
+    },
+    trailerInterchange: {
+      insurerName: 'Unique Insurance Co',
+      rating: 'NR',
+      numberOfPolicy: 'KBG5675678-01',
+      fields: [
+        {
+          id: 1,
+          name: 'Value',
+          value: '$100.000'
+        },
+      ]
     }
   }
 
@@ -113,5 +125,9 @@ export class SettingsInsurancepolicyComponent {
 
   public onAction(modal: { modalName: string; type: boolean; action: string }) {
     this.settingsStoreService.modalSubject$.next(modal);
+  }
+
+  public onShowDetails() {
+    
   }
 }
