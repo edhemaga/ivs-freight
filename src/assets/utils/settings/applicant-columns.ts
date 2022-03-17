@@ -1,5 +1,3 @@
-import {TableColumnDefinition} from 'src/app/shared/truckassist-table/models/truckassist-table';
-
 // APPLICANT TABLE COLUMNS DEFINITION
 export function getApplicantColumnsDefinition() {
   return [
@@ -356,5 +354,5 @@ export function getApplicantColumnsDefinition() {
       export: false,
       resizable: false,
     },
-  ] as TableColumnDefinition[];
+  ] as any[];
 }

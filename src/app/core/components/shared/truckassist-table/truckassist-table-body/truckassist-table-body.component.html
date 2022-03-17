@@ -1,1 +1,107 @@
-<p>truckassist-table-body works!</p>
+<table>
+  <tbody>
+    <tr
+      [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
+      *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
+    >
+      <div class="columns-container">
+        <td *ngFor="let column of columns">
+          <!-- CHECKBOX TEMPLATE-->
+          <div
+            *ngIf="!column.hidden && column.ngTemplate === 'checkbox'"
+            [ngStyle]="{ width: column.width + 'px' }"
+            class="td-content set-center"
+          >
+            <input
+              (change)="onSelectItem(row, i)"
+              [checked]="row.isSelected"
+              class="table-checkbox"
+              id="checkbox{{ i }}"
+              type="checkbox"
+            />
+            <label class="table-checkbox-label" for="checkbox{{ i }}"></label>
+          </div>
+
+          <!--AVATAR COLUMN-->
+          <div
+            *ngIf="!column.hidden && column.ngTemplate === 'avatar'"
+            [ngStyle]="{ width: column.width + 'px' }"
+            class="td-content"
+          >
+            <div class="avatar-container">
+              <img
+                alt="avatar"
+                [src]="
+                  row.avatar ? row.avatar : 'assets/img/svgs/table/profile.svg'
+                "
+                class="avatar"
+              />
+              <img
+                alt="avatar"
+                *ngIf="row.isOwner"
+                class="avatar-owner"
+                src="../../../../assets/img/table-svgs/owner-badge-new.svg"
+              />
+            </div>
+            <span (click)="goToDetails(column, row)" class="table-avatar-name"
+              >{{ row.firstName }} {{ row.lastName }}</span
+            >
+          </div>
+
+          <!-- TEXT COLUMN -->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'text'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <span class="table-text">{{
+              row[column.field] ? row[column.field] : ""
+            }}</span>
+          </div>
+
+          <!-- STATE TEXT COLUMN -->
+          <div
+            *ngIf="!column.hidden && column.ngTemplate === 'textState'"
+            [ngStyle]="{ width: column.width + 'px' }"
+            class="td-content"
+          >
+            <span
+              *ngIf="row?.licenseData"
+              class="table-text table-text-state"
+              >{{ row[column.field] ? row[column.field] : "" }}</span
+            >
+          </div>
+
+          <!-- PROGRESS COLUMN TEMPLATE -->
+          <div
+            class="td-content"
+            [ngStyle]="{ width: column.width + 'px' }"
+            *ngIf="!column.hidden && column.ngTemplate === 'progress'"
+          >
+            <app-truckassist-progress-expiration
+              *ngIf="row[column.field] && row[column.field]['start']"
+              [startDate]="
+                row[column.field]['start']
+                  ? (row[column.field]['start'] | date: 'shortDate')
+                  : undefined
+              "
+              [expireDate]="
+                row[column.field]['end']
+                  ? (row[column.field]['end'] | date: 'shortDate')
+                  : (row[column.field]['start']
+                    | getExpireData
+                    | date: 'shortDate')
+              "
+              [startDate]="
+                row[column.field]['start']
+                  ? (row[column.field]['start'] | date: 'shortDate')
+                  : undefined
+              "
+              [status]="row['status']"
+            ></app-truckassist-progress-expiration>
+          </div>
+        </td>
+      </div>
+    </tr>
+  </tbody>
+</table>

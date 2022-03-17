@@ -1,4 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewEncapsulation,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 
 @Component({
   selector: 'app-truckassist-table-toolbar',
@@ -6,11 +13,19 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./truckassist-table-toolbar.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TruckassistTableToolbarComponent implements OnInit {
+export class TruckassistTableToolbarComponent implements OnInit, OnChanges {
+  @Input() options: any;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (!changes?.options?.firstChange && changes?.options) {
+      this.options = changes.options.currentValue;
+    }
+    
+    console.log('Toolbar Options');
+    console.log(this.options);
   }
-
 }

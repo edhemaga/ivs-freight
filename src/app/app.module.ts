@@ -26,7 +26,6 @@ import { NavigationSubrouteComponent } from './core/components/navigation/naviga
 import { NavigationSubrouteCardComponent } from './core/components/navigation/navigation-subroute-card/navigation-subroute-card.component';
 import { NavigationUserCompanyComponent } from './core/components/navigation/navigation-user-company/navigation-user-company.component';
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
-import { TruckassistSearchComponent } from './core/components/shared/truckassist-search/truckassist-search.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +69,7 @@ import { TruckassistSearchComponent } from './core/components/shared/truckassist
       multi: true,
     },
   ],
+  exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
 })
