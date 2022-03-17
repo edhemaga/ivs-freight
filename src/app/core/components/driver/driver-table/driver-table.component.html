@@ -1,0 +1,13 @@
+<app-truckassist-table-toolbar
+  (toolBarAction)="onToolBarAction($event)"
+  [options]="tableOptions"
+></app-truckassist-table-toolbar>
+
+<app-truckassist-table-head></app-truckassist-table-head>
+
+<app-truckassist-table-body
+  [viewData]="viewData"
+  [columns]="columns"
+  [options]="tableOptions"
+  [selectedTab]="selectedTab"
+></app-truckassist-table-body>

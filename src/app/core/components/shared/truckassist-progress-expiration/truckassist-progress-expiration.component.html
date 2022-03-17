@@ -1,0 +1,31 @@
+<div class="table-progress-cotnainer">
+  <div class="table-progress">
+    <div
+      [class]="'bg-' + progressbarColor"
+      [ngClass]="{ 'progres-default': !progressbarColor }"
+      [ngStyle]="{ width: calculatedProgress + '%' }"
+      class="table-progress-bar"
+    ></div>
+  </div>
+
+  <div class="table-progress-panel">
+    <!-- EXPIRES IN -->
+    <span
+      *ngIf="!negative && expire >= 1"
+      [ngClass]="{ 'd-none': expire !== expire }"
+      class="progress-text"
+    >
+      <span>in {{ progresDay }} {{ progresDay > 1 ? "days" : "day" }}</span>
+    </span>
+
+    <!-- EXPIRED -->
+    <span *ngIf="expire === 0" class="progress-text">
+      <span *ngIf="timeDifference === 0">Expired</span>
+    </span>
+
+    <!-- EXPIRED AGO -->
+    <span *ngIf="negative" class="progress-text">
+      <span>{{ progresDay }} days ago</span>
+    </span>
+  </div>
+</div>

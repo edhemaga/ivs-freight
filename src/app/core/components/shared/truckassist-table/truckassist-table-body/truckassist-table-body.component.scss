@@ -1,0 +1,147 @@
+table {
+  width: calc(100% - 22px);
+  height: fit-content;
+
+  tbody {
+    tr {
+      width: 100%;
+      height: 32px;
+      background: white;
+      border-radius: 3px;
+      padding: 2px;
+      display: flex;
+
+      .columns-container {
+        width: 100%;
+        height: 100%;
+        border-radius: 2px;
+        display: flex;
+
+        td {
+          width: fit-content;
+          padding: 0;
+
+          .td-content {
+            display: flex;
+            height: 100%;
+            align-items: center;
+
+            // CHECKBOX TEMPLATE
+            .table-checkbox {
+              display: none;
+            }
+
+            .table-checkbox-label {
+              width: 14px;
+              height: 14px;
+              background-color: #dadada;
+              margin-bottom: 0;
+              border-radius: 1px;
+              cursor: pointer;
+
+              &:hover {
+                background-color: #b7b7b7;
+              }
+            }
+
+            .table-checkbox:checked + .table-checkbox-label {
+              background-color: #91a4c7;
+              background-image: url("../../../../../../assets/svg/truckassist-table/check-new.svg");
+              background-repeat: no-repeat;
+              background-position: center;
+              transition: background-color 0.25s;
+
+              &:hover {
+                background-color: #5673aa;
+              }
+            }
+
+            // AVATAR COLUMN
+            .avatar-container {
+              width: 20px;
+              height: 24px;
+              margin-right: 6px;
+              display: flex;
+              cursor: pointer;
+
+              &:hover {
+                transform: scale(1.8);
+                transition: 0.2s;
+              }
+
+              .avatar {
+                user-select: none;
+                width: 20px;
+                height: 24px;
+                border-radius: 2px;
+              }
+
+              .avatar-owner {
+                user-select: none;
+                width: 12px;
+                height: 12px;
+                margin-left: -8px;
+                margin-top: 15px;
+              }
+            }
+
+            .table-avatar-name {
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              color: #b7b7b7;
+              font-size: 14px;
+              font-weight: bold;
+              align-items: center;
+              cursor: pointer;
+
+              &:hover {
+                color: #5673aa;
+                transition: 0.25s;
+              }
+
+              &::selection {
+                color: #b7b7b7;
+                background: rgba(145, 145, 145, 0.2);
+              }
+            }
+
+            // REGURAL TEXT
+            .table-text {
+              font-size: 14px;
+              font-weight: 400;
+              color: #b7b7b7;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              width: 100%;
+
+              &::selection {
+                color: #b7b7b7;
+                background: rgba(145, 145, 145, 0.2);
+              }
+            }
+
+            .table-text-state {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Global Style */
+.set-center {
+  justify-content: center;
+}
+
+/* Ng Class */
+.regular-row {
+  &:hover {
+    .columns-container {
+      background: #F7F7F7;
+    }
+  }
+}
