@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { SettingsStoreService } from '../state/settings.service';
 
 @Component({
@@ -7,13 +7,60 @@ import { SettingsStoreService } from '../state/settings.service';
   styleUrls: ['./settings-general.component.scss'],
 })
 export class SettingsGeneralComponent {
+  public companyBasicMiddleData = [
+    {
+      id: 1,
+      name: 'Address',
+      svg: 'assets/img/svgs/settings-company/settings-address.svg',
+      value: '5462 N East River Rd apt 611, Chicago, IL 60656, USA',
+    },
+    {
+      id: 2,
+      name: 'Phone',
+      svg: 'assets/img/svgs/settings-company/settings-phone.svg',
+      value: '(123) 456-7890',
+    },
+    {
+      id: 3,
+      name: 'Email',
+      svg: 'assets/img/svgs/settings-company/settings-email.svg',
+      value: 'contact@windsor-brokers.com',
+    },
+    {
+      id: 4,
+      name: 'Fax',
+      svg: 'assets/img/svgs/settings-company/settings-fax.svg',
+      value: '(123) 456-7890',
+    },
+    {
+      id: 5,
+      name: 'webUrl',
+      svg: 'assets/img/svgs/settings-company/settings-webUrl.svg',
+      value: 'https://windsor-brokers.com',
+    },
+  ];
+
+  public companyBasicBottomData = [
+    {
+      id: 1,
+      name: 'USDOT',
+      value: '2797832',
+    },
+    {
+      id: 2,
+      name: 'EIN',
+      value: '47-5010621',
+    },
+    {
+      id: 3,
+      name: 'MC',
+      value: '934185',
+    },
+  ];
+
   public generalData = {
     logo: 'assets/img/svgs/settings-company/settings-companyLogo.svg',
-    address: '5462 N East River Rd apt 611, Chicago, IL 60656, USA ',
-    phone: '(123) 456-7890',
-    fax: '(123) 456-7890',
-    email: 'contact@windsor-brokers.com',
-    webUrl: 'https://windsor-brokers.com',
+
     additionalDetails: [
       {
         id: 1,
@@ -133,39 +180,9 @@ export class SettingsGeneralComponent {
     ],
   };
 
-  // Bank Account
-  public isAccountVisible: boolean = false;
-  public accountText: string = null;
-
-  // Bank Card
-  public bankCardHeaders = ['Nickname', 'Card #', 'CVC', 'Exp.'];
-
   constructor(private settingsStoreService: SettingsStoreService) {}
 
   public onAction(modal: { modalName: string; type: boolean; action: string }) {
     this.settingsStoreService.modalSubject$.next(modal);
-  }
-
-  public hiddenText(value: any, numberOfCharacterToHide: number): string {
-    const lastFourCharaters = value.substring(
-      value.length - numberOfCharacterToHide
-    );
-    let hiddenCharacter = '';
-
-    for (let i = 0; i < numberOfCharacterToHide; i++) {
-      hiddenCharacter += '*';
-    }
-
-    return hiddenCharacter + lastFourCharaters;
-  }
-  public showHideValue(value: string) {
-    this.isAccountVisible = !this.isAccountVisible;
-
-    if (!this.isAccountVisible) {
-      this.accountText = this.hiddenText(value, 4);
-      return;
-    }
-
-    this.accountText = value;
   }
 }

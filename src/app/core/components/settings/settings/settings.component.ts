@@ -42,6 +42,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         { size: 'small' }
       );
     } else if (type && modalName === 'insurance-policy') {
+      console.log(modalName)
       this.customModalService.openModal(
         SettingsInsurancePolicyModalComponent,
         null,

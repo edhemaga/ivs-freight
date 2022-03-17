@@ -2,9 +2,8 @@
 
 .settings-payroll {
   width: 100%;
-  max-height: 956px;
   display: grid;
-  grid-template-rows: 32px 912px;
+  grid-template-rows: 32px auto;
   row-gap: 12px;
 
   .settings-header {
@@ -49,5 +48,6 @@
     background-color: $settings-background;
     color: $settings-color-dark;
     border-radius: $settings-borderRadius;
+    padding: 12px;
   }
 }
