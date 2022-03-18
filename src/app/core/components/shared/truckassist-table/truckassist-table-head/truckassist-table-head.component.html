@@ -1,1 +1,41 @@
-<p>truckassist-table-head works!</p>
+<table>
+  <thead>
+    <tr>
+      <th
+        *ngFor="let column of columns; let i = index"
+        [ngStyle]="{
+          width: column.width + 'px',
+          'margin-left': column.ngTemplate === 'attachments' ? 'auto' : 'unset'
+        }"
+        [ngClass]="{
+          'set-center': column.ngTemplate === 'checkbox'
+        }"
+      >
+        <!-- Selected Row Count -->
+        <div
+          *ngIf="column.ngTemplate === 'checkbox'"
+          class="selected-rows-count"
+        ></div>
+
+        <!-- Title -->
+        <div
+          *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
+          class="th-title"
+        >
+          {{ column.name }}
+        </div>
+
+        <!-- Icons -->
+        <!-- <div
+          *ngIf="column.name === ''"
+          class="icons"
+          [svgStyle]="{
+            'width.px': column.headIconStyle.width,
+            'height.px': column.headIconStyle.height
+          }"
+          [src]="column.headIconStyle.imgPath"
+        ></div> -->
+      </th>
+    </tr>
+  </thead>
+</table>

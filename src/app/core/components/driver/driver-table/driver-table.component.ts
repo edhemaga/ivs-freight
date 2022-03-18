@@ -493,7 +493,7 @@ export class DriverTableComponent implements OnInit {
       },
     ];
 
-    for (let i = 0; i < 999; i++) {
+    for (let i = 0; i < numberOfCopy; i++) {
       data.push(data[i]);
     }
 

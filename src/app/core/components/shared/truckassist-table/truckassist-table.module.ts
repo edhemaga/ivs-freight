@@ -7,13 +7,15 @@ import { TruckassistSearchModule } from '../truckassist-search/truckassist-searc
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TruckassistProgressExpirationModule } from '../truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { GetExpireDataPipe } from 'src/app/core/pipes/get-expire-data.pipe';
+import { TableDropdownComponent } from '../table-dropdown/table-dropdown.component';
 
 @NgModule({
   declarations: [
     TruckassistTableBodyComponent,
     TruckassistTableHeadComponent,
     TruckassistTableToolbarComponent,
-    GetExpireDataPipe
+    GetExpireDataPipe,
+    TableDropdownComponent,
   ],
   imports: [
     CommonModule,
@@ -25,7 +27,8 @@ import { GetExpireDataPipe } from 'src/app/core/pipes/get-expire-data.pipe';
     TruckassistTableBodyComponent,
     TruckassistTableHeadComponent,
     TruckassistTableToolbarComponent,
-    GetExpireDataPipe
+    GetExpireDataPipe,
+    TableDropdownComponent
   ],
 })
 export class TruckassistTableModule {}

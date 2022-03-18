@@ -18,8 +18,8 @@ import { Subject } from 'rxjs';
   selector: 'app-truckassist-table-body',
   templateUrl: './truckassist-table-body.component.html',
   styleUrls: ['./truckassist-table-body.component.scss'],
-  encapsulation: ViewEncapsulation.None,changeDetection: ChangeDetectionStrategy.OnPush,
-  
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableBodyComponent
   implements OnInit, OnChanges, OnDestroy

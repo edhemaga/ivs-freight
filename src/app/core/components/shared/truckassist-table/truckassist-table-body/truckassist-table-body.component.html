@@ -11,7 +11,13 @@
       }"
     >
       <div class="columns-container">
-        <td *ngFor="let column of columns">
+        <td
+          *ngFor="let column of columns"
+          [ngStyle]="{
+            'margin-left':
+              column.ngTemplate === 'attachments' ? 'auto' : 'unset'
+          }"
+        >
           <!-- CHECKBOX TEMPLATE-->
           <div
             *ngIf="!column.hidden && column.ngTemplate === 'checkbox'"
@@ -105,6 +111,42 @@
               "
               [status]="row['status']"
             ></app-truckassist-progress-expiration>
+          </div>
+
+          <!-- ATTACHMENTS COLUMN TEMPLATE -->
+          <div
+            *ngIf="!column.hidden && column.ngTemplate === 'attachments'"
+            [ngStyle]="{ width: column.width + 'px' }"
+            class="td-content"
+          >
+            <div (click)="onShowAttachments(row)" class="attachments-btn">
+              <div class="attachments-svg"></div>
+            </div>
+          </div>
+
+          <!-- NOTE COLUMN TEMPLATE -->
+          <div
+            *ngIf="!column.hidden && column.ngTemplate === 'note'"
+            [ngStyle]="{ width: column.width + 'px' }"
+            class="td-content"
+          >
+            <!--  <app-ta-note
+              (saveNoteValue)="saveNote($event, row)"
+              [note]="row.additionalData?.note ? row.additionalData?.note : ''"
+            ></app-ta-note> -->
+          </div>
+
+          <!-- ACTIONS COLUMN TEMPLATE -->
+          <div
+            class="td-content set-center"
+            *ngIf="!column.hidden && column.ngTemplate === 'actions'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <app-table-dropdown
+              (dropDownActions)="onDropAction($event)"
+              [id]="row.id"
+              [options]="options"
+            ></app-table-dropdown>
           </div>
         </td>
       </div>

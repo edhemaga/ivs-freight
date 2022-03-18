@@ -1,0 +1,34 @@
+table {
+  width: 100%;
+  thead {
+    tr {
+      height: 31px;
+      display: flex;
+      padding: 2px;
+      th {
+        display: flex;
+        align-items: center;
+
+        /* Selected Row Count */
+        .selected-rows-count {
+          width: 14px;
+          height: 14px;
+          background: #DADADA;
+          border-radius: 2px;
+        }
+
+        /* Titles */
+        .th-title{
+            font-size: 16px;
+            font-weight: bold;
+            color: #B7B7B7;
+        }
+      }
+    }
+  }
+}
+
+/* Global Styles */
+.set-center{
+    justify-content: center;
+}

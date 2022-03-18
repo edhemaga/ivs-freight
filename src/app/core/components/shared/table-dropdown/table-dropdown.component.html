@@ -1,0 +1,21 @@
+<!-- #t2="ngbPopover"
+(click)="toggleDropdown(t2)"
+[autoClose]="true"
+[ngbPopover]="notePopover"
+[placement]="'left-top'" -->
+
+<div
+
+  class="table-dropdown-container"
+  popoverClass="my-table-dropdown-container-popover"
+  triggers="manual"
+></div>
+
+<ng-template #notePopover let-data="data">
+  <div class="table-dropdown">
+    <div (click)="onAction(action)" *ngFor="let action of data" class="table-dropdown-content">
+      <div [class]="action.svg" class="action-svg"></div>
+      <div [class]="action.textColor" class="action-text">{{ action.title }}</div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,8 @@
+<svg height="14" viewBox="0 0 14 14" width="14" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(-3 -3)">
+    <path d="M.7,0H13.3c.387,0,.7.224.7.5v2c0,.276-.313.5-.7.5H.7C.313,3,0,2.776,0,2.5V.5C0,.224.313,0,.7,0Z"
+          fill="#b7b7b7" transform="translate(3 8.5)"/>
+    <path d="M.7,0H13.3c.387,0,.7.224.7.5v2c0,.276-.313.5-.7.5H.7C.313,3,0,2.776,0,2.5V.5C0,.224.313,0,.7,0Z"
+          fill="#b7b7b7" transform="translate(8.5 17) rotate(-90)"/>
+  </g>
+</svg>

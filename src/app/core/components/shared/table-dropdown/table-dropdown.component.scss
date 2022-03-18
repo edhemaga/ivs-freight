@@ -1,0 +1,13 @@
+/* ../../../assets/img/table-svgs/svg/dropdown/dropdown.svg */
+.table-dropdown-container {
+  width: 30px;
+  height: 28px;
+  background-image: url("../../../../../assets/svg/truckassist-table/dropdown/dropdown.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+
+  &:hover {
+    background-image: url("../../../../../assets/svg/truckassist-table/dropdown/dropdown-hover.svg");
+  }
+}
