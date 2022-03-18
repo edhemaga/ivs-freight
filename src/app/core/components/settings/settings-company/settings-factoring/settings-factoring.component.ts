@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SettingsStoreService } from '../../state/settings.service';
 
 @Component({
   selector: 'app-settings-factoring',
@@ -10,10 +11,12 @@ export class SettingsFactoringComponent {
     id: 1,
   };
 
+  constructor(private settingsStoreService: SettingsStoreService) {}
+
   public onAction(modal: { modalName: string; type: boolean; action: string }) {
     switch(modal.action) {
       case 'edit': {
-
+        this.settingsStoreService.modalSubject$.next(modal)
         break;
       }
       default: {

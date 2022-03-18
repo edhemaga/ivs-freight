@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+
 import { SettingsBasicModalComponent } from './company-modals/settings-basic-modal/settings-basic-modal.component';
 import { SettingsInsurancePolicyModalComponent } from './company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
 import { SettingsFactoringModalComponent } from './company-modals/settings-factoring-modal/settings-factoring-modal.component';
