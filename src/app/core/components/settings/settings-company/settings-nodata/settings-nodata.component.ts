@@ -14,7 +14,7 @@ export class SettingsNodataComponent implements OnInit {
     body.style.overflow = 'hidden';
   }
 
-  public goToSettings() {
+  public openModal() {
     this.settingsService.modalSubject$.next({
       modalName: 'basic',
       type: true,

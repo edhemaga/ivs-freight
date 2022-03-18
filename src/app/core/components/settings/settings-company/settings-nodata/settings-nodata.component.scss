@@ -1,4 +1,4 @@
-@import "../settings.global.scss";
+@import "../../settings.global.scss";
 
 .no-settings {
   position: fixed;
@@ -14,7 +14,7 @@
   .settings-edit-button {
     display: inline-block;
     position: absolute;
-    top: 13px;
+    top: 57px;
     left: 481px;
     border: 5px solid rgba(86, 115, 170, 0.3);
     border-radius: 3px;
@@ -33,7 +33,7 @@
   .no-settings-text {
     display: inline-block;
     position: absolute;
-    top: 58px;
+    top: 103px;
     left: 410px;
     height: 27px;
     width: 193px;
