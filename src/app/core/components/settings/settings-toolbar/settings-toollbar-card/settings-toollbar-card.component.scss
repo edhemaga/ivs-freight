@@ -1,0 +1,65 @@
+@import "../../settings.global.scss";
+
+.settings-toolbar-card {
+  height: 32px;
+  width: 100%;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  padding: 7px 6px;
+  background-color: $settings-background;
+  
+  &.card-toolbar-first {
+    background-color: transparent;
+    padding: 0px;
+  }
+
+  &.active {
+    background-color: $settings-color !important;
+
+    .toolbar-card-svg {
+      svg {
+        path {
+          fill: $settings-color-eeee !important;
+        }
+      }
+    }
+
+    .toolbar-card-name {
+      color: $settings-background !important;
+    }
+  }
+
+  .toolbar-card-count {
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    background-color: $settings-line;
+    color: $settings-color;
+    font-weight: $settings-font-extrabold;
+    margin-right: 4px;
+    border-radius: 3px;
+  }
+
+  .toolbar-card-svg {
+    margin-right: 4px;
+    position: relative;
+    bottom: 1px;
+  }
+
+  .toolbar-card-name {
+    font-weight: $settings-font-extrabold;
+    color: $settings-color;
+    font-size: 14px;
+
+    &.card-toolbar-first-name {
+      font-size: 26px;
+      font-weight: $settings-font-black;
+    }
+  }
+
+  &:hover {
+    transition: $settings-transition;
+    cursor: pointer;
+  }
+}

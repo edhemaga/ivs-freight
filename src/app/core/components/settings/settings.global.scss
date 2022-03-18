@@ -1,9 +1,11 @@
-$settings-background: #ffffff;
+// Constants
 
+$settings-background: #ffffff;
 $settings-white-dark: #b7b7b7;
 $settings-white-dark-2: #dadada;
 $settings-count: #f7f7f7;
 $settings-line: #f3f3f3;
+$settings-color-eeee: #EEEEEE;
 $settings-borderRadius: 3px;
 $settings-padding: 12px;
 
@@ -21,6 +23,7 @@ $settings-font-medium: 500;
 $settings-font-semibold: 600;
 $settings-font-bold: 700;
 $settings-font-extrabold: 800;
+$settings-font-black: 900;
 
 $settings-fontsize: 14px;
 
@@ -33,6 +36,20 @@ $settings-transition: all 0.3s ease-in-out;
 // Default settings
 p {
   margin: 0;
+}
+
+.settings {
+  width: 1440px;
+  display: grid;
+  grid-template-rows: 32px 1fr;
+  row-gap: 12px;
+
+  .settings-col-1 {
+    grid-template-rows: 1 / 2;
+  }
+  .settings-col-2 {
+    grid-template-rows: 2 / -1;
+  }
 }
 
 // Progress bar
