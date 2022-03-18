@@ -1,8 +1,6 @@
 <div cdkDrag class="modal-container">
   <div cdkDragHandle class="modal-header">
-    <div class="d-flex align-items-center">
-      <h5 class="modal-title">{{ modalTitle }}</h5>
-    </div>
+    <h5 class="modal-title">{{ modalTitle }}</h5>
     <svg-icon
       (click)="activeModal.dismiss('Modal close')"
       [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
@@ -15,30 +13,41 @@
       (switchClicked)="tabChange($event)"
       [tabs]="tabs"
     ></app-tab-switcher>
-
     <form
-      *ngIf="loadedModal"
+      (keydown)="saveFormOnKeyboardEnter($event)"
       [formGroup]="companyForm"
-      class="form-container has-tabs tabs-2{{ ' tab-' + selectedTab }}"
+      class="form-container has-tabs tabs-3{{ ' tab-' + selectedTab }}"
     >
       <div class="single-tab-container">
         <div class="row">
           <div class="col-12">
-            <div class="form-label-group input-icon input-holder {{
-              manageInputValidation(this.companyForm.controls.companyName)
-            }}">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('name'))
+              }}"
+            >
               <input
-                id="companyName"
-                class="form-control input-control company-input"
-                placeholder="Company Name"
-                formControlName="companyName"
-                (paste)="onPaste($event, 'companyName')"
-                (keypress)="keyPress($event)"
-                appInputrestriction="[A-Za-z]"
-                appInputFocus
+                id="name"
+                class="form-control input-control"
+                style="text-transform: uppercase"
+                formControlName="name"
+                placeholder="Company name"
+                maxlength="30"
                 appAutoFocus
-                style="text-transform:uppercase"
+                appInputFocus
+                (keypress)="keyPress($event, 'name', 'text')"
+                (paste)="onPaste($event, 'name')"
               />
+              <label for="name">Company name</label>
+              <p
+                *ngIf="
+                  companyForm.get('name').errors &&
+                  companyForm.get('name').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("name").errors | inputError }}
+              </p>
 
               <svg-icon
                 class="valid-icon"
@@ -53,36 +62,42 @@
               </svg-icon>
 
               <svg-icon
-                src="assets/img/form-validation/x-icon-cut.svg"
-                (click)="clearInput('companyName')"
+                (click)="clearInput('name')"
                 class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
               ></svg-icon>
-              <label for="companyName">Company Name</label>
-              <p
-                *ngIf="companyForm.get('companyName').errors"
-                class="m-0 required-notice invalid-length"
-              >
-                {{ companyForm.get("companyName").errors | inputError }}
-              </p>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-4">
-            <div class="form-label-group input-icon input-holder {{
-              manageInputValidation(this.companyForm.controls.usdot)
-            }}">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.controls.usdot)
+              }}"
+            >
               <input
                 id="usdot"
                 class="form-control input-control"
-                placeholder="USDOT"
                 formControlName="usdot"
-                (paste)="onPaste($event, 'usdot')"
-                (keypress)="keyPress($event)"
-                appInputrestriction="[A-Za-z]"
+                placeholder="USDOT"
+                maxlength="8"
                 appInputFocus
-                style="text-transform:uppercase"
+                (keypress)="keyPress($event, 'usdot', 'number')"
+                (paste)="onPaste($event, 'usdot', 9)"
               />
+              <label for="usdot">USDOT</label>
+              <p
+                *ngIf="
+                  companyForm.get('usdot').errors &&
+                  companyForm.get('usdot').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("usdot").errors | inputError }}
+              </p>
 
               <svg-icon
                 class="valid-icon"
@@ -97,33 +112,41 @@
               </svg-icon>
 
               <svg-icon
-                src="assets/img/form-validation/x-icon-cut.svg"
                 (click)="clearInput('usdot')"
                 class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
               ></svg-icon>
-              <label for="usdot">USDOT</label>
-              <p
-                *ngIf="companyForm.get('companyName').errors"
-                class="m-0 required-notice invalid-length"
-              >
-                {{ companyForm.get("companyName").errors | inputError }}
-              </p>
             </div>
           </div>
+
           <div class="col-4">
-            <div class="form-label-group input-icon input-holder {{
-              manageInputValidation(this.companyForm.controls.ein)
-            }}">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.controls.ein)
+              }}"
+            >
               <input
                 id="ein"
                 class="form-control input-control"
-                mask="00-0000000"
-                placeholder="EIN"
                 formControlName="ein"
-                (paste)="onPaste($event, 'ein')"
-                (keypress)="keyPress($event)"
+                placeholder="EIN"
+                mask="00-0000000"
                 appInputFocus
+                (keypress)="keyPress($event, 'ein', 'number')"
+                (paste)="onPaste($event, 'ein', 10)"
               />
+              <label for="ein">EIN</label>
+              <p
+                *ngIf="
+                  companyForm.get('ein').errors &&
+                  companyForm.get('ein').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("ein").errors | inputError }}
+              </p>
 
               <svg-icon
                 class="valid-icon"
@@ -138,33 +161,41 @@
               </svg-icon>
 
               <svg-icon
-                src="assets/img/form-validation/x-icon-cut.svg"
                 (click)="clearInput('ein')"
                 class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
               ></svg-icon>
-              <label for="ein">EIN</label>
-              <p
-                *ngIf="companyForm.get('companyName').errors"
-                class="m-0 required-notice invalid-length"
-              >
-                {{ companyForm.get("companyName").errors | inputError }}
-              </p>
             </div>
           </div>
+
           <div class="col-4">
-            <div class="form-label-group input-icon input-holder {{
-              manageInputValidation(this.companyForm.controls.mc)
-            }}">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.controls.mc)
+              }}"
+            >
               <input
                 id="mc"
                 class="form-control input-control"
-                mask="00-0000000"
-                placeholder="MC"
                 formControlName="mc"
-                (paste)="onPaste($event, 'mc')"
-                (keypress)="keyPress($event)"
+                placeholder="MC"
+                maxlength="8"
                 appInputFocus
+                (keypress)="keyPress($event, 'mc', 'number')"
+                (paste)="onPaste($event, 'mc', 8)"
               />
+              <label for="mc">MC</label>
+
+              <p
+                *ngIf="
+                  companyForm.get('mc').errors && companyForm.get('mc').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("mc").errors | inputError }}
+              </p>
 
               <svg-icon
                 class="valid-icon"
@@ -179,30 +210,246 @@
               </svg-icon>
 
               <svg-icon
-                src="assets/img/form-validation/x-icon-cut.svg"
                 (click)="clearInput('mc')"
                 class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
               ></svg-icon>
-              <label for="mc">MC</label>
-              <p
-                *ngIf="companyForm.get('companyName').errors"
-                class="m-0 required-notice invalid-length"
-              >
-                {{ companyForm.get("companyName").errors | inputError }}
-              </p>
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-4">
+            <div
+              class="form-label-group input-icon input-holder phone-field-wrapper {{
+                manageInputValidation(companyForm.controls.phone)
+              }}"
+            >
+              <input
+                id="phone"
+                class="form-control input-control phone-input"
+                formControlName="phone"
+                placeholder="Phone"
+                mask="(000) 000-0000"
+                appInputFocus
+                (keypress)="keyPress($event, 'phone', 'number')"
+              />
+              <label for="phone">Phone</label>
+              <p
+                *ngIf="
+                  companyForm.get('phone').errors &&
+                  companyForm.get('phone').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("phone").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('phone')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="col-8">
+            <div
+              class="form-label-group input-icon input-holder email-field-wrapper {{
+                manageInputValidation(companyForm.controls.email)
+              }}"
+            >
+              <input
+                id="email"
+                class="form-control input-control email-input"
+                formControlName="email"
+                placeholder="Email"
+                appInputFocus
+                (keypress)="onEmailTyping($event)"
+                (paste)="onPaste($event, 'email')"
+                oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
+              />
+              <label for="email">Email</label>
+              <p
+                *ngIf="
+                  companyForm.get('email').errors &&
+                  companyForm.get('email').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("email").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('email')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div
+              class="form-label-group input-icon input-holder phone-field-wrapper {{
+                manageInputValidation(companyForm.controls.fax)
+              }}"
+            >
+              <input
+                id="fax"
+                class="form-control input-control"
+                formControlName="fax"
+                placeholder="Fax"
+                mask="(000) 000-0000"
+                appInputFocus
+              />
+              <label for="fax">Fax</label>
+              <p
+                *ngIf="
+                  companyForm.get('fax').errors &&
+                  companyForm.get('fax').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("fax").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('fax')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="col-8">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(companyForm.controls.webUrl)
+              }}"
+            >
+              <input
+                id="webUrl"
+                class="form-control input-control"
+                formControlName="webUrl"
+                placeholder="Web url"
+                appInputFocus
+              />
+              <label for="webUrl">Web url</label>
+              <p
+                *ngIf="
+                  companyForm.get('fax').errors &&
+                  companyForm.get('fax').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("fax").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('fax')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="form-label-group">
+              <ng-select
+                [items]="timeZones"
+                appendTo="body"
+                bindLabel="name"
+                formControlName="timeZone"
+                placeholder="Time zone"
+              >
+                <ng-template
+                  let-item="item"
+                  let-search="searchTerm"
+                  ng-option-tmp
+                >
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-label-group">
+              <ng-select
+                [items]="currencies"
+                appendTo="body"
+                bindLabel="name"
+                formControlName="currency"
+                placeholder="Currency"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+         
+        </div>
       </div>
     </form>
-  </div>
-
-  <div class="modal-footer">
-    <button (click)="closeCompanyEdit()" class="cancel-btn" type="button">
-      <p class="m-0">Cancel</p>
-    </button>
-    <button (click)="saveCompany()" class="save-btn" type="button">
-      <p class="m-0">Save</p>
-    </button>
   </div>
 </div>
