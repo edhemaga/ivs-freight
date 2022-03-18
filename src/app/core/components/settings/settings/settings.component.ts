@@ -1,5 +1,5 @@
 import { Subject, takeUntil } from 'rxjs';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { SettingsStoreService } from '../state/settings.service';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { SettingsBasicModalComponent } from '../settings-modals/settings-basic-modal/settings-basic-modal.component';
@@ -10,6 +10,7 @@ import { SettingsFactoringModalComponent } from '../settings-modals/settings-fac
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SettingsComponent implements OnInit, OnDestroy {
   public isModalOpen: boolean = false; // TODO: FILL DATA WITH REAL DATA, IF NO DATA, SHOW NO_DATA_COMPONENT !!!
@@ -42,6 +43,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         { size: 'small' }
       );
     } else if (type && modalName === 'insurance-policy') {
+      console.log(modalName)
       this.customModalService.openModal(
         SettingsInsurancePolicyModalComponent,
         null,

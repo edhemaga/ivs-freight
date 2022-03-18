@@ -8,10 +8,105 @@
       <svg-icon
         src="assets/img/svgs/settings-company/settings-edit.svg"
         class="settings-edit-button"
+        (click)="
+          onAction({ modalName: 'insurance-policy', type: true, action: 'new' })
+        "
       ></svg-icon>
     </div>
   </div>
-  <div class="settings-body">
-    <svg-icon src="assets/img/svgs/settings-company/settings-insurancepolicy.svg"></svg-icon>
+  <div class="settings-body" [ngClass]="{ gradient: !insuranceData }">
+    <svg-icon
+      *ngIf="!insuranceData"
+      src="assets/img/svgs/settings-company/settings-insurancepolicy.svg"
+    ></svg-icon>
+
+    <div *ngIf="insuranceData">
+      <div class="producer-details">
+        <div class="producer-details-top">
+          <p class="producer-name">Knightbrook Ins Co.</p>
+          <div class="producer-actions">
+            <svg-icon
+              class="action-attachment"
+              src="assets/img/svgs/settings-company/settings-attachment.svg"
+            ></svg-icon>
+            <svg-icon
+              class="action-notes"
+              src="assets/img/svgs/settings-company/settings-notes.svg"
+            ></svg-icon>
+            <svg-icon
+              class="action-dots"
+              src="assets/img/svgs/settings-company/settings-dots.svg"
+            ></svg-icon>
+          </div>
+        </div>
+        <div class="producer-details-bottom">
+          <div class="details-bottom-info">
+            <svg-icon
+              src="assets/img/svgs/settings-company/settings-phone.svg"
+            ></svg-icon>
+            <p>(123) 456-7890</p>
+          </div>
+          <div class="details-bottom-info">
+            <svg-icon
+              src="assets/img/svgs/settings-company/settings-email.svg"
+            ></svg-icon>
+            <p>contact@windsor-brokers.com</p>
+          </div>
+          <div class="details-bottom-info">
+            <svg-icon
+              class="details-bottom-address-svg"
+              src="assets/img/svgs/settings-company/settings-address.svg"
+            ></svg-icon>
+            <p>5462 N East River Rd apt 611 Chicago, IL 60656</p>
+          </div>
+        </div>
+
+        <hr class="settings-line" />
+      </div>
+      <!-- Commercial General Liability -->
+      <app-settings-card
+        [cardTemplate]="'insuranceTemplate'"
+        [cardName]="'Commercial General Liability'"
+        [data]="insuranceData.generalLiability"
+      >
+      </app-settings-card>
+      <!-- Automobile Liability -->
+      <app-settings-card
+        [cardTemplate]="'insuranceTemplate'"
+        [cardName]="'Automobile Liability'"
+        [data]="insuranceData.automobileLiability"
+      >
+      </app-settings-card>
+      <!-- Motor Truck Cargo / Reefer Breakdown -->
+      <app-settings-card
+        [cardTemplate]="'insuranceTemplate'"
+        [cardName]="'Motor Truck Cargo / Reefer Breakdown'"
+        [data]="insuranceData.motorTruckCargo"
+      >
+      </app-settings-card>
+      <!-- Physical Damage -->
+      <app-settings-card
+        [cardTemplate]="'insuranceTemplate'"
+        [cardName]="'Physical Damage'"
+        [data]="insuranceData.physicalDamage"
+      >
+      </app-settings-card>
+      <!-- Trailer Interchange -->
+      <app-settings-card
+        [cardTemplate]="'insuranceTemplate'"
+        [cardName]="'Trailer Interchange'"
+        [data]="insuranceData.trailerInterchange"
+      >
+      </app-settings-card>
+      <!-- Expires..... -->
+      <app-truckassist-progress-expiration
+        [expireDate]="'03/31/2023'"
+        [status]="'03/01/2021'"
+        [startDate]="'03/12/2020'"
+        [expiresSettings]="true"
+      ></app-truckassist-progress-expiration>
+
+      <p class="show-details" (click)="onShowDetails()">Show Details</p>
+    </div>
   </div>
 </div>

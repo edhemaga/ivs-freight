@@ -8,9 +8,93 @@
       <svg-icon
         src="assets/img/svgs/settings-company/settings-edit.svg"
         class="settings-edit-button"
-        (click)="onAction({modalName: 'basic', type: true, action: 'edit-payroll'})"
+        (click)="
+          onAction({ modalName: 'basic', type: true, action: 'edit-payroll' })
+        "
       ></svg-icon>
     </div>
   </div>
-  <div class="settings-body">SETTINGS BODY</div>
+  <div class="settings-body">
+    <!-- Driver & Owner -->
+    <app-settings-card
+      [cardTemplate]="'payrollTemplate'"
+      [cardName]="'Driver & Owner'"
+      [cardStatus]="'Weekly'"
+      [data]="payrollData.driverOwner"
+    >
+    </app-settings-card>
+
+    <!-- Accounting -->
+    <app-settings-card
+      [cardTemplate]="'payrollTemplate'"
+      [cardName]="'Accounting'"
+      [cardStatus]="'Bi-Weekly'"
+      [data]="payrollData.accounting"
+    >
+    </app-settings-card>
+
+    <!-- Company Owner -->
+    <app-settings-card
+      [cardTemplate]="'payrollTemplate'"
+      [cardName]="'Company Owner'"
+      [cardStatus]="'Monthly'"
+      [data]="payrollData.companyOwner"
+    >
+    </app-settings-card>
+
+    <!-- Dispatch -->
+    <app-settings-card
+      [cardTemplate]="'payrollTemplate'"
+      [cardName]="'Dispatch'"
+      [cardStatus]="'Monthly'"
+      [data]="payrollData.dispatch"
+    >
+    </app-settings-card>
+
+    <!-- Manager -->
+    <app-settings-card
+      [cardTemplate]="'payrollTemplate'"
+      [cardName]="'Manager'"
+      [cardStatus]="'Monthly'"
+      [data]="payrollData.manager"
+    >
+    </app-settings-card>
+
+    <!-- Recruiting -->
+    <app-settings-card
+      [cardTemplate]="'payrollTemplate'"
+      [cardName]="'Recruiting'"
+      [cardStatus]="'Semi-Monthly'"
+      [data]="payrollData.recruiting"
+    >
+    </app-settings-card>
+
+    <!-- Repair -->
+    <app-settings-card
+      [cardTemplate]="'payrollTemplate'"
+      [cardName]="'Repair'"
+      [cardStatus]="'Semi-Monthly'"
+      [data]="payrollData.repair"
+    >
+    </app-settings-card>
+
+    <!-- Safety -->
+    <app-settings-card
+      [cardTemplate]="'payrollTemplate'"
+      [cardName]="'Safety'"
+      [cardStatus]="'Semi-Monthly'"
+      [data]="payrollData.safety"
+    >
+    </app-settings-card>
+
+    <!-- Other -->
+    <app-settings-card
+      [cardTemplate]="'payrollTemplate'"
+      [cardName]="'Other'"
+      [cardStatus]="'Semi-Monthly'"
+      [hasLine]="false"
+      [data]="payrollData.other"
+    >
+    </app-settings-card>
+  </div>
 </div>

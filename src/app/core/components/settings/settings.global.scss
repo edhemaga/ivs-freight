@@ -2,8 +2,8 @@ $settings-background: #ffffff;
 
 $settings-white-dark: #b7b7b7;
 $settings-white-dark-2: #dadada;
-$settings-count: #F7F7F7;
-$settings-line: #F3F3F3;
+$settings-count: #f7f7f7;
+$settings-line: #f3f3f3;
 $settings-borderRadius: 3px;
 $settings-padding: 12px;
 
@@ -11,23 +11,49 @@ $settings-nodata: #ffbf6b;
 
 $settings-color: #919191;
 $settings-color-dark: #6c6c6c;
+$settings-color-black: #3c3c3c;
 
+$settings-color-lightBlue: #778fbb;
 $settings-color-blue: #5673aa;
 $settings-color-red-dark: #ff5050;
 
 $settings-font-medium: 500;
 $settings-font-semibold: 600;
+$settings-font-bold: 700;
 $settings-font-extrabold: 800;
 
 $settings-fontsize: 14px;
 
 $transition: all 0.3s ease-in-out;
 
-$settings-box-shadow: 0 0 4px rgb(0,0,0,.16);
+$settings-box-shadow: 0 0 4px rgb(0, 0, 0, 0.16);
 
 $settings-transition: all 0.3s ease-in-out;
 
 // Default settings
 p {
-    margin: 0;
+  margin: 0;
+}
+
+// Progress bar
+.table-progress-cotnainer {
+  display: flex !important;
+  flex-direction: column !important;
+
+  .table-progress {
+    order: 1 !important;
+    width: 100% !important;
+    height: 8px !important;
+  }
+
+  .table-progress-panel {
+    order: -1 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    color: #6c6c6c !important;
+
+    .progress-text {
+      margin: 2px 0px !important;
+    }
+  }
 }
