@@ -14,6 +14,8 @@ import { SettingsInsurancePolicyModalComponent } from './settings-modals/setting
 import { SettingsBasicModalComponent } from './settings-modals/settings-basic-modal/settings-basic-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TruckassistProgressExpirationModule } from '../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
+import { SettingsToolbarComponent } from './settings-toolbar/settings-toolbar.component';
+import { SettingsToollbarCardComponent } from './settings-toolbar/settings-toollbar-card/settings-toollbar-card.component';
 
 @NgModule({
   imports: [
@@ -31,6 +33,8 @@ import { TruckassistProgressExpirationModule } from '../shared/truckassist-progr
     SettingsFactoringComponent,
     SettingsNodataComponent,
     SettingsCardComponent,
+    SettingsToolbarComponent,
+    SettingsToollbarCardComponent,
 
     // Modals
     SettingsBasicModalComponent,

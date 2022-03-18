@@ -1,0 +1,15 @@
+<div
+  class="settings-toolbar-card"
+  [ngClass]="{'card-toolbar-first' : cardId === 1}"
+  routerLink="{{ route }}"
+  routerLinkActive="active"
+  [routerLinkActiveOptions]="{ exact: true }"
+>
+  <div *ngIf="cardCount" class="toolbar-card-count">{{ cardCount }}</div>
+  <svg-icon
+    *ngIf="cardSvg"
+    class="toolbar-card-svg"
+    src="{{ cardSvg }}"
+  ></svg-icon>
+  <p class="toolbar-card-name" [ngClass]="{'card-toolbar-first-name': cardId === 1}">{{ cardName }}</p>
+</div>

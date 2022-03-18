@@ -7,6 +7,8 @@
 
   display: grid;
   grid-template-columns: 480px 290px 340px 294px;
+  grid-template-rows: 32px auto;
+  row-gap: 12px;
   column-gap: 12px;
   font-size: $settings-fontsize;
   user-select: none;

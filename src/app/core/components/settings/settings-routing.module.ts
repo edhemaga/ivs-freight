@@ -3,10 +3,36 @@ import { RouterModule, Routes } from '@angular/router';
 import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'company', pathMatch: 'full' },
   {
-    path: '',
+    path: 'company',
     component: SettingsComponent,
-    data: { title: 'Settings' },
+    data: { title: 'Company' },
+  },
+  {
+    path: 'location',
+    component: SettingsComponent,
+    data: { title: 'Location' },
+  },
+  {
+    path: 'document',
+    component: SettingsComponent,
+    data: { title: 'Document' },
+  },
+  {
+    path: 'billing',
+    component: SettingsComponent,
+    data: { title: 'Billing' },
+  },
+  {
+    path: 'user',
+    component: SettingsComponent,
+    data: { title: 'User' },
+  },
+  {
+    path: 'integration',
+    component: SettingsComponent,
+    data: { title: 'Integration' },
   },
 ];
 
