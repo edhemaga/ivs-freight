@@ -1,38 +1,63 @@
+import { SettingsLocationModule } from './settings-location/settings-location.module';
+import { SettingsComponent } from './settings.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'company', pathMatch: 'full' },
   {
-    path: 'company',
+    path: '',
     component: SettingsComponent,
-    data: { title: 'Company' },
-  },
-  {
-    path: 'location',
-    component: SettingsComponent,
-    data: { title: 'Location' },
-  },
-  {
-    path: 'document',
-    component: SettingsComponent,
-    data: { title: 'Document' },
-  },
-  {
-    path: 'billing',
-    component: SettingsComponent,
-    data: { title: 'Billing' },
-  },
-  {
-    path: 'user',
-    component: SettingsComponent,
-    data: { title: 'User' },
-  },
-  {
-    path: 'integration',
-    component: SettingsComponent,
-    data: { title: 'Integration' },
+    children: [
+      { path: '', redirectTo: 'company', pathMatch: 'full' },
+      {
+        path: 'company',
+        loadChildren: () =>
+          import('./settings-company/settings-company.module').then(
+            (m) => m.SettingsCompanyModule
+          ),
+        data: { title: 'Company' },
+      },
+      {
+        path: 'location',
+        loadChildren: () =>
+          import('./settings-location/settings-location.module').then(
+            (m) => m.SettingsLocationModule
+          ),
+        data: { title: 'Location' },
+      },
+      {
+        path: 'document',
+        loadChildren: () =>
+          import('./settings-document/settings-document.module').then(
+            (m) => m.SettingsDocumentModule
+          ),
+        data: { title: 'Document' },
+      },
+      {
+        path: 'billing',
+        loadChildren: () =>
+          import('./settings-billing/settings-billing.module').then(
+            (m) => m.SettingsBillingModule
+          ),
+        data: { title: 'Billing' },
+      },
+      {
+        path: 'user',
+        loadChildren: () =>
+          import('./settings-user/settings-user.module').then(
+            (m) => m.SettingsUserModule
+          ),
+        data: { title: 'User' },
+      },
+      {
+        path: 'integration',
+        loadChildren: () =>
+          import('./settings-integration/settings-integration.module').then(
+            (m) => m.SettingsIntegrationModule
+          ),
+        data: { title: 'Integration' },
+      },
+    ],
   },
 ];
 

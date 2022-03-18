@@ -8,7 +8,7 @@
   align-items: center;
   padding: 7px 6px;
   background-color: $settings-background;
-
+  
   &.card-toolbar-first {
     background-color: transparent;
     padding: 0px;
@@ -38,7 +38,6 @@
     color: $settings-color;
     font-weight: $settings-font-extrabold;
     margin-right: 4px;
-    padding: 2px;
     border-radius: 3px;
   }
 
@@ -51,6 +50,7 @@
   .toolbar-card-name {
     font-weight: $settings-font-extrabold;
     color: $settings-color;
+    font-size: 14px;
 
     &.card-toolbar-first-name {
       font-size: 26px;

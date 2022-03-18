@@ -1,6 +1,6 @@
 <div
   class="settings-toolbar-card"
-  [ngClass]="{'card-toolbar-first' : cardId === 1}"
+  [ngClass]="{ 'card-toolbar-first': cardId === 1 }"
   routerLink="{{ route }}"
   routerLinkActive="active"
   [routerLinkActiveOptions]="{ exact: true }"
@@ -11,5 +11,10 @@
     class="toolbar-card-svg"
     src="{{ cardSvg }}"
   ></svg-icon>
-  <p class="toolbar-card-name" [ngClass]="{'card-toolbar-first-name': cardId === 1}">{{ cardName }}</p>
+  <p
+    class="toolbar-card-name"
+    [ngClass]="{ 'card-toolbar-first-name': cardId === 1 }"
+  >
+    {{ cardName }}
+  </p>
 </div>
