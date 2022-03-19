@@ -13,6 +13,7 @@ import {
   emailChack,
   pasteCheck,
 } from 'src/assets/utils/methods-global';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -91,10 +92,13 @@ export class SettingsBasicModalComponent implements OnInit {
   // COMPANY FORM
   public companyForm: FormGroup;
 
+  // Address
+  public addressOptions = {
+    componentRestrictions: { country: ['US', 'CA'] },
+  };
+
   // Drop Zone Logo
   public showDropZone: boolean = false;
-  public isLogoFileUpload: boolean = false;
-  public logoFile: any = null;
 
   // Input Validation
   public formatType = /^[!^()_\\[\]{};':"\\|<>\/?]*$/; // default format Type
@@ -128,6 +132,7 @@ export class SettingsBasicModalComponent implements OnInit {
       scac: [null],
       timeZone: [null],
       currency: [null],
+      companyLogo: [null],
     });
   }
 
@@ -137,6 +142,15 @@ export class SettingsBasicModalComponent implements OnInit {
 
   public saveCompany() {
     // TODO: WAIT BACKEND
+    // if (!this.sharedService.markInvalid(this.companyForm)) {
+    //   return false;
+    // }
+    console.log(this.companyForm.getRawValue());
+  }
+
+  public closeCompanyModal() {
+    this.companyForm.reset();
+    this.activeModal.close();
   }
 
   public saveFormOnKeyboardEnter(event: any) {
@@ -157,8 +171,12 @@ export class SettingsBasicModalComponent implements OnInit {
     this.companyForm.get(formControl).setValue(null);
   }
 
-  public logoUrl = 'assets/img/logo-placeholder.svg';
-  
+  //-------------- Address
+  public handleAddressChange(address: any) {
+    this.companyForm
+      .get('address')
+      .setValue(this.sharedService.selectAddress(this.companyForm, address));
+  }
 
   //-------------- DROP ZONE FOR LOGO
   public openDropZone() {
@@ -171,66 +189,14 @@ export class SettingsBasicModalComponent implements OnInit {
     }
   }
 
-  public onDropFile(files: FileList) {
-    this.addAttachments(files);
-  }
-
-  public onDropBackground(event: boolean) {
-    this.isLogoFileUpload = event;
-  }
-
-  public cancelEditLogo() {
-
-  }
- 
-  public saveLogoCompany() {
- 
-  }
-
-  private async addAttachments(files: any) {
-    for (let index = 0; index < files.length; index++) {
-      const file = files.item(index);
-      await this.addAttachment(file);
-    }
-  }
-
-  private async addAttachment(file: any) {
-    try {
-      const base64Content = await this.getBase64(file);
-      const fileNameArray = file.name.split('.');
-
-      if (
-        ['svg', 'png', 'jpeg'].includes(fileNameArray[fileNameArray.length - 1])
-      ) {
-        const fileData = {
-          fileName: file.name,
-          base64Content,
-        };
-
-        this.logoFile = {
-          ...fileData,
-          extension: fileNameArray[fileNameArray.length - 1],
-          guid: null,
-          size: file.size,
-        };
-      } else {
-        throw new Error();
-      }
-    } catch (err) {
-      console.error(`Can't upload ${file.name}`);
-    }
-  }
-
-  private getBase64(file: any) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
+  public saveLogoCompany(logoImage: string) {
+    this.companyForm.get('companyLogo').setValue({
+      id: uuidv4(),
+      src: logoImage,
     });
   }
 
-  // INPUT VALIDATIONS METHODS
+  //------------- INPUT VALIDATIONS METHODS
 
   public manageInputValidation(formElement: any) {
     return this.sharedService.manageInputValidation(formElement);
@@ -276,8 +242,16 @@ export class SettingsBasicModalComponent implements OnInit {
       } else if (keyboardEvent.keyCode !== 32) {
         this.numberOfSpaces = 0;
       }
-    } else if (typeOfInput === 'number') {
+    } else if (typeOfInput === 'number' && elementId !== 'addressUnit') {
       return keyboardEvent.keyCode >= 48 && keyboardEvent.keyCode <= 57;
+    } else if (typeOfInput === 'number' && elementId === 'addressUnit') {
+      return (
+        (keyboardEvent.keyCode > 64 && keyboardEvent.keyCode < 91) ||
+        (keyboardEvent.keyCode > 96 && keyboardEvent.keyCode < 123) ||
+        keyboardEvent.keyCode == 8 ||
+        keyboardEvent.keyCode == 32 ||
+        (keyboardEvent.keyCode >= 48 && keyboardEvent.keyCode <= 57)
+      );
     }
   }
 

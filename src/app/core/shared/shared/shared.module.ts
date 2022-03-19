@@ -61,7 +61,10 @@ import {FuelManageComponent} from "../../components/modals/fuel-manage/fuel-mana
 import {ContactManageComponent} from "../../components/modals/contact-manage/contact-manage.component";
 import {CompanyUserManageComponent} from "../../components/modals/company-user-manage/company-user-manage.component";
 import {EditProfileImageComponent} from "../../components/shared/edit-profile-image/edit-profile-image.component";
-
+import { LogoChangeComponent } from '../../components/shared/logo-change/logo-change.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { CroppieModule } from 'angular-croppie-module';
+import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
 @NgModule({
   declarations: [
     AutoFocusDirective,
@@ -103,7 +106,9 @@ import {EditProfileImageComponent} from "../../components/shared/edit-profile-im
     CompanyUserManageComponent,
     EditProfileImageComponent,
     EditProfileImageComponent,
-    EditProfileImageComponent
+    EditProfileImageComponent,
+    LogoChangeComponent,
+    DragDropFileDirective
   ],
   imports: [
     CommonModule,
@@ -139,7 +144,9 @@ import {EditProfileImageComponent} from "../../components/shared/edit-profile-im
     TextFieldModule,
     DragDropModule,
     NgxMaskModule.forRoot(),
-    Ng5SliderModule
+    Ng5SliderModule,
+    NgxDropzoneModule,
+    CroppieModule
   ],
   exports: [
     AutoFocusDirective,
@@ -186,7 +193,11 @@ import {EditProfileImageComponent} from "../../components/shared/edit-profile-im
     DeleteDialogComponent,
     DragDropModule,
     NgxMaskModule,
-    Ng5SliderModule
+    Ng5SliderModule,
+    LogoChangeComponent,
+    NgxDropzoneModule,
+    CroppieModule,
+    DragDropFileDirective
   ],
   providers: [SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

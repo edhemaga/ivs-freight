@@ -1,0 +1,41 @@
+<div class="edit-image-container">
+  <div [hidden]="showDropzone" class="d-fex">
+    <div class="d-flex">
+      <img
+        alt="cropped-image"
+        #croppie="croppie"  [croppieOptions]="croppieOptions" (update)="handleUpdate($event)"
+      />
+    </div>
+    <div class="d-flex justify-content-between">
+      <div class="d-flex mt-3 mb-2 c-slider">
+        <ng5-slider
+          (valueChange)="zooming($event)"
+          [(value)]="slideInit"
+          [options]="options"
+        ></ng5-slider>
+      </div>
+      <div class="d-flex buttons-container">
+        <a (click)="saveImage()" class="save-check save">
+          <svg-icon src="assets/img/svgs/company-info/savelogo.svg"></svg-icon>
+        </a>
+        <a (click)="onRemove()" class="save-check cancel">
+          <svg-icon src="assets/img/svgs/company-info/cancellogo.svg"></svg-icon>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div [hidden]="!showDropzone">
+    <div
+      (change)="onSelect($event)"
+      [accept]="'image/gif, image/jpeg, image/png'"
+      [multiple]="false"
+      class="image-upload-area"
+      id="image-upload-wrapper"
+      ngx-dropzone
+    >
+      <div class="image-attach-icon drag-image-text">Drag image here or click to add</div>
+      <div class="d-flex flex-column image-upload-holder"></div>
+    </div>
+  </div>
+</div>
