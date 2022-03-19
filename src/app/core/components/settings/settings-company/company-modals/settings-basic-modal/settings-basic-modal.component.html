@@ -75,7 +75,7 @@
           <div class="col-4">
             <div
               class="form-label-group input-icon input-holder {{
-                manageInputValidation(this.companyForm.controls.usdot)
+                manageInputValidation(this.companyForm.get('usdot'))
               }}"
             >
               <input
@@ -124,7 +124,7 @@
           <div class="col-4">
             <div
               class="form-label-group input-icon input-holder {{
-                manageInputValidation(this.companyForm.controls.ein)
+                manageInputValidation(this.companyForm.get('ein'))
               }}"
             >
               <input
@@ -173,7 +173,7 @@
           <div class="col-4">
             <div
               class="form-label-group input-icon input-holder {{
-                manageInputValidation(this.companyForm.controls.mc)
+                manageInputValidation(this.companyForm.get('mc'))
               }}"
             >
               <input
@@ -223,7 +223,7 @@
           <div class="col-4">
             <div
               class="form-label-group input-icon input-holder phone-field-wrapper {{
-                manageInputValidation(companyForm.controls.phone)
+                manageInputValidation(this.companyForm.get('phone'))
               }}"
             >
               <input
@@ -270,7 +270,7 @@
           <div class="col-8">
             <div
               class="form-label-group input-icon input-holder email-field-wrapper {{
-                manageInputValidation(companyForm.controls.email)
+                manageInputValidation(this.companyForm.get('email'))
               }}"
             >
               <input
@@ -320,7 +320,7 @@
           <div class="col-4">
             <div
               class="form-label-group input-icon input-holder phone-field-wrapper {{
-                manageInputValidation(companyForm.controls.fax)
+                manageInputValidation(this.companyForm.get('fax'))
               }}"
             >
               <input
@@ -366,7 +366,7 @@
           <div class="col-8">
             <div
               class="form-label-group input-icon input-holder {{
-                manageInputValidation(companyForm.controls.webUrl)
+                manageInputValidation(this.companyForm.get('webUrl'))
               }}"
             >
               <input
@@ -410,6 +410,293 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-10">
+            <div
+              class="form-label-group input-icon input-holder address-field-wrapper {{
+                manageInputValidation(this.companyForm.get('address'))
+              }}"
+            >
+              <input
+                #placesRef="ngx-places"
+                ngx-google-places-autocomplete
+                id="address"
+                class="form-control input-control required"
+                formControlName="address"
+                placeholder="Address, City, State Zip"
+                appInputFocus
+                [options]="addressOptions"
+                (onAddressChange)="handleAddressChange($event)"
+              />
+              <label class="required-label" for="address"
+                >Address, City, State Zip</label
+              >
+              <p
+                *ngIf="
+                  companyForm.get('address').errors &&
+                  companyForm.get('address').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("address").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('address')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="col-2">
+            <div
+              class="form-label-group  input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('addressUnit'))
+              }}"
+            >
+              <input
+                id="addressUnit"
+                class="form-control input-control"
+                formControlName="addressUnit"
+                placeholder="Unit #"
+                maxlength="6"
+                appInputFocus
+                (keypress)="keyPress($event, 'addressUnit', 'number')"
+              />
+              <label for="addressUnit">Unit #</label>
+              <p
+                *ngIf="
+                  companyForm.get('addressUnit').errors &&
+                  companyForm.get('addressUnit').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("addressUnit").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('addressUnit')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('irp'))
+              }}"
+            >
+              <input
+                id="irp"
+                class="form-control input-control"
+                formControlName="irp"
+                placeholder="IRP #"
+                maxlength="10"
+                appInputFocus
+                (keypress)="keyPress($event, 'irp', 'number')"
+              />
+              <label for="irp">IRP #</label>
+              <p
+                *ngIf="
+                  companyForm.get('irp').errors &&
+                  companyForm.get('irp').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("irp").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('irp')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="col-3">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('ifta'))
+              }}"
+            >
+              <input
+                id="ifta"
+                class="form-control input-control"
+                formControlName="ifta"
+                placeholder="IFTA #"
+                maxlength="14"
+                (keypress)="keyPress($event, 'ifta', 'number')"
+              />
+              <label for="ifta">IFTA #</label>
+              <p
+                *ngIf="
+                  companyForm.get('ifta').errors &&
+                  companyForm.get('ifta').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("ifta").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('ifta')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="col-3">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('toll'))
+              }}"
+            >
+              <input
+                id="toll"
+                class="form-control input-control"
+                formControlName="toll"
+                placeholder="Toll"
+                maxlength="14"
+                (keypress)="keyPress($event, 'toll', 'number')"
+              />
+              <label for="toll">Toll</label>
+              <p
+                *ngIf="
+                  companyForm.get('toll').errors &&
+                  companyForm.get('toll').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("toll").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('toll')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="col-3">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('scac'))
+              }}"
+            >
+              <input
+                id="scac"
+                class="form-control input-control"
+                formControlName="scac"
+                placeholder="SCAC"
+                maxlength="14"
+                (keypress)="keyPress($event, 'scac', 'number')"
+              />
+              <label for="scac">SCAC</label>
+              <p
+                *ngIf="
+                  companyForm.get('scac').errors &&
+                  companyForm.get('scac').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("scac").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('scac')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-8">
             <div class="form-label-group">
               <ng-select
@@ -438,18 +725,54 @@
                 formControlName="currency"
                 placeholder="Currency"
               >
-                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                <ng-template
+                  let-item="item"
+                  let-search="searchTerm"
+                  ng-option-tmp
+                >
                   <span [ngOptionHighlight]="search">{{ item.name }}</span>
                 </ng-template>
               </ng-select>
             </div>
           </div>
         </div>
-
         <div class="row">
-         
+          <div
+            class="col-12 dropzone-wrapper {{
+              showDropZone ? ' visible-dropzone' : ' hidden-dropzone'
+            }}"
+          >
+            <div (click)="openDropZone()" class="dropzone-label-wrapper">
+              <span>Logo</span>
+              <svg-icon
+                class="down-icon"
+                src="assets/img/svgs/down-arrow.svg"
+              ></svg-icon>
+            </div>
+            <div
+              class=" {{
+                showDropZone ? ' dropzone-visible' : ' dropzone-hidden'
+              }}"
+            >
+              <!-- Logo Upload -->
+              <div class="upload-logo-wrapper d-flex flex-row">
+                <app-logo-change
+                  (saveAvatar)="saveLogoCompany($event)"
+                  [src]="''"
+                ></app-logo-change>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </form>
+  </div>
+  <div class="modal-footer">
+    <button (click)="closeCompanyModal()" class="cancel-btn" type="button">
+      Cancel
+    </button>
+    <button (click)="saveCompany()" class="save-btn" ngbAutofocus type="button">
+      Save
+    </button>
   </div>
 </div>

@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: 130px 107px 127px 141px 110px 96px 120px 581px;
     column-gap: 4px;
+    user-select: none;
 
     .settings-col-1 {
         grid-column: 1 / 2;
