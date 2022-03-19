@@ -438,18 +438,75 @@
                 formControlName="currency"
                 placeholder="Currency"
               >
-                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                <ng-template
+                  let-item="item"
+                  let-search="searchTerm"
+                  ng-option-tmp
+                >
                   <span [ngOptionHighlight]="search">{{ item.name }}</span>
                 </ng-template>
               </ng-select>
             </div>
           </div>
         </div>
-
         <div class="row">
-         
+          <div
+            class="col-12 dropzone-wrapper {{
+              showDropZone ? ' visible-dropzone' : ' hidden-dropzone'
+            }}"
+          >
+            <div (click)="openDropZone()" class="dropzone-label-wrapper">
+              <span>Logo</span>
+              <svg-icon
+                class="down-icon"
+                src="assets/img/svgs/down-arrow.svg"
+              ></svg-icon>
+            </div>
+            <div
+              class=" {{
+                showDropZone ? ' dropzone-visible' : ' dropzone-hidden'
+              }}"
+            >
+              <!-- Drop Zone -->
+              <!-- <div
+                *ngIf="!isLogoFileUpload"
+                #dropZone
+                (onDropBackground)="onDropBackground($event)"
+                (onDropFile)="onDropFile($event)"
+                appDragDropFile
+              >
+                <p class="drop-zone-text">Drop file here or click to add</p>
+              </div> -->
+              <!-- Logo Upload -->
+              <!-- <div
+                class="upload-logo-wrapper d-flex flex-row"
+              >
+                <app-logo-change
+                  (cancel)="cancelEditLogo($event)"
+                  (saveAvatar)="saveLogoCompany($event)"
+                  [src]="
+                    avatar?.value?.src && editLogoActive
+                      ? avatar?.value?.src
+                      : ''
+                  "
+                ></app-logo-change>
+              </div> -->
+            </div>
+          </div>
         </div>
       </div>
     </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      (click)="activeModal.dismiss('Modal close')"
+      class="cancel-btn"
+      type="button"
+    >
+      Cancel
+    </button>
+    <button (click)="saveCompany()" class="save-btn" ngbAutofocus type="button">
+      Save
+    </button>
   </div>
 </div>

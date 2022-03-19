@@ -1,15 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
-import { checkSelectedText, emailChack, pasteCheck } from 'src/assets/utils/methods-global';
+import {
+  checkSelectedText,
+  emailChack,
+  pasteCheck,
+} from 'src/assets/utils/methods-global';
 
 @Component({
   selector: 'app-settings-basic-modal',
   templateUrl: './settings-basic-modal.component.html',
   styleUrls: ['./settings-basic-modal.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SettingsBasicModalComponent implements OnInit {
+  @ViewChild('dropZone') dropZoneRef: ElementRef;
+
   public modalTitle: string = 'Company';
   public selectedTab: number = 1;
   public tabs: {}[] = [
@@ -27,40 +40,39 @@ export class SettingsBasicModalComponent implements OnInit {
     },
   ];
 
-  public companyForm: FormGroup;
-
   public timeZones = [
     {
       id: 1,
       name: '(UTC-10) Hawaii Standard Time',
-      offset: -10
+      offset: -10,
     },
     {
       id: 2,
       name: '(UTC-9) Alaska Standard Time',
-      offset: -9
+      offset: -9,
     },
     {
       id: 3,
       name: '(UTC-8) Pacific Standard Time',
-      offset: -8
+      offset: -8,
     },
     {
       id: 4,
       name: '(UTC-7) Mountain Standard Time',
-      offset: -7
+      offset: -7,
     },
     {
       id: 5,
       name: '(UTC-6) Central Standard Time',
-      offset: -6
+      offset: -6,
     },
     {
       id: 6,
       name: '(UTC-5) Eastern Standard Time',
-      offset: -5
-    }
+      offset: -5,
+    },
   ];
+
   public currencies = [
     {
       id: 1,
@@ -76,60 +88,15 @@ export class SettingsBasicModalComponent implements OnInit {
     },
   ];
 
-  // export const PAY_PERIODS = [
-  //   {
-  //     id: 'weekly',
-  //     name: 'Weekly',
-  //   },
-  //   {
-  //     id: 'bi-weekly',
-  //     name: 'Bi-weekly',
-  //   },
-  //   {
-  //     id: 'semi-monthly',
-  //     name: 'Semi Monthly'
-  //   },
-  //   {
-  //     id: 'monthly',
-  //     name: 'Monthly',
-  //   },
-  // ];
+  // COMPANY FORM
+  public companyForm: FormGroup;
 
-  // export const DAYS = [
-  //   {
-  //     id: 'monday',
-  //     name: 'Monday',
-  //   },
-  //   {
-  //     id: 'tuesday',
-  //     name: 'Tuesday',
-  //   },
-  //   {
-  //     id: 'wednesday',
-  //     name: 'Wednesday',
-  //   },
-  //   {
-  //     id: 'thursday',
-  //     name: 'Thursday',
-  //   },
-  //   {
-  //     id: 'friday',
-  //     name: 'Friday',
-  //   },
-  //   {
-  //     id: 'saturday',
-  //     name: 'Saturday',
-  //   },
-  //   {
-  //     id: 'sunday',
-  //     name: 'Sunday',
-  //   },
-  // ];
-  
-  public logoUrl = 'assets/img/logo-placeholder.svg';
-  public showUploadZone = false;
-  public editLogoActive = false;
+  // Drop Zone Logo
+  public showDropZone: boolean = false;
+  public isLogoFileUpload: boolean = false;
+  public logoFile: any = null;
 
+  // Input Validation
   public formatType = /^[!^()_\\[\]{};':"\\|<>\/?]*$/; // default format Type
   public numberOfSpaces = 0;
 
@@ -168,10 +135,8 @@ export class SettingsBasicModalComponent implements OnInit {
     this.selectedTab = event.id;
   }
 
-  public saveCompany() {}
-
-  public closeCompanyEdit() {
-    this.activeModal.close();
+  public saveCompany() {
+    // TODO: WAIT BACKEND
   }
 
   public saveFormOnKeyboardEnter(event: any) {
@@ -192,20 +157,80 @@ export class SettingsBasicModalComponent implements OnInit {
     this.companyForm.get(formControl).setValue(null);
   }
 
+  public logoUrl = 'assets/img/logo-placeholder.svg';
+  
 
-  public callCancel(event: any) {
-    this.editLogoActive = false;
-    this.showUploadZone = true;
+  //-------------- DROP ZONE FOR LOGO
+  public openDropZone() {
+    this.showDropZone = !this.showDropZone;
+    if (this.showDropZone) {
+      const timeout = setTimeout(() => {
+        this.dropZoneRef.nativeElement.focus();
+        clearTimeout(timeout);
+      }, 250);
+    }
   }
 
-  editLogo(): void {
-    this.editLogoActive = true;
-    this.showUploadZone = false;
+  public onDropFile(files: FileList) {
+    this.addAttachments(files);
   }
 
+  public onDropBackground(event: boolean) {
+    this.isLogoFileUpload = event;
+  }
 
+  public cancelEditLogo() {
 
-  // INPUT VALIDATIONS METHODS  
+  }
+ 
+  public saveLogoCompany() {
+ 
+  }
+
+  private async addAttachments(files: any) {
+    for (let index = 0; index < files.length; index++) {
+      const file = files.item(index);
+      await this.addAttachment(file);
+    }
+  }
+
+  private async addAttachment(file: any) {
+    try {
+      const base64Content = await this.getBase64(file);
+      const fileNameArray = file.name.split('.');
+
+      if (
+        ['svg', 'png', 'jpeg'].includes(fileNameArray[fileNameArray.length - 1])
+      ) {
+        const fileData = {
+          fileName: file.name,
+          base64Content,
+        };
+
+        this.logoFile = {
+          ...fileData,
+          extension: fileNameArray[fileNameArray.length - 1],
+          guid: null,
+          size: file.size,
+        };
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      console.error(`Can't upload ${file.name}`);
+    }
+  }
+
+  private getBase64(file: any) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
+  // INPUT VALIDATIONS METHODS
 
   public manageInputValidation(formElement: any) {
     return this.sharedService.manageInputValidation(formElement);
@@ -299,3 +324,53 @@ export class SettingsBasicModalComponent implements OnInit {
     }
   }
 }
+
+// export const PAY_PERIODS = [
+//   {
+//     id: 'weekly',
+//     name: 'Weekly',
+//   },
+//   {
+//     id: 'bi-weekly',
+//     name: 'Bi-weekly',
+//   },
+//   {
+//     id: 'semi-monthly',
+//     name: 'Semi Monthly'
+//   },
+//   {
+//     id: 'monthly',
+//     name: 'Monthly',
+//   },
+// ];
+
+// export const DAYS = [
+//   {
+//     id: 'monday',
+//     name: 'Monday',
+//   },
+//   {
+//     id: 'tuesday',
+//     name: 'Tuesday',
+//   },
+//   {
+//     id: 'wednesday',
+//     name: 'Wednesday',
+//   },
+//   {
+//     id: 'thursday',
+//     name: 'Thursday',
+//   },
+//   {
+//     id: 'friday',
+//     name: 'Friday',
+//   },
+//   {
+//     id: 'saturday',
+//     name: 'Saturday',
+//   },
+//   {
+//     id: 'sunday',
+//     name: 'Sunday',
+//   },
+// ];
