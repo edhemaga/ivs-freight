@@ -373,9 +373,10 @@ export function getDriverColumnsDefinition() {
       hidden: false,
       width: 18,
       headIconStyle: {
-        width: 18,
-        height: 18,
-        imgPath: '../../svg/truckassist-table/attachment/attachment-regular.png'
+        width: 19,
+        height: 19,
+        imgPath:
+          'assets/svg/truckassist-table/attachment/attachemnt-regular-svgIcon.svg',
       },
       filter: '',
       isNumeric: false,
@@ -400,7 +401,8 @@ export function getDriverColumnsDefinition() {
       width: 40,
       headIconStyle: {
         width: 16,
-        height: 18
+        height: 18,
+        imgPath: '',
       },
       filter: '',
       isNumeric: false,
@@ -421,6 +423,11 @@ export function getDriverColumnsDefinition() {
       title: '',
       field: 'action',
       name: '',
+      headIconStyle: {
+        width: 22,
+        height: 6,
+        imgPath: '',
+      },
       hidden: false,
       width: 42,
       filter: '',

@@ -1,14 +1,22 @@
 <div class="toolbar-container">
   <!-- TABS -->
-  <div [ngClass]="{ 'tab-regular': true, 'tab-active': false }">
+  <div
+    *ngFor="let data of tableData"
+    class="tab-container"
+    [ngClass]="{
+      'tab-inactive': selectedTab !== data.field,
+      'tab-active': selectedTab === data.field
+    }"
+    (click)="onSelectTab(data)"
+  >
     <div class="tab">
-      <div class="data-count">23</div>
-      <div class="tab-title">Active</div>
+      <div class="data-count">{{ data.length }}</div>
+      <div class="tab-title">{{ data.title }}</div>
     </div>
   </div>
 
   <!-- VIEW MODE SELECT -->
-  <div class="view-mode-container">
+  <div class="view-mode-container" *ngIf="!options.toolbarActions.hideViewMode">
     <div class="mode" [ngClass]="{ 'mode-active': true }">List</div>
     <div class="mode">Card</div>
   </div>

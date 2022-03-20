@@ -13,15 +13,20 @@ table {
         .selected-rows-count {
           width: 14px;
           height: 14px;
-          background: #DADADA;
+          background: #dadada;
           border-radius: 2px;
         }
 
         /* Titles */
-        .th-title{
-            font-size: 16px;
-            font-weight: bold;
-            color: #B7B7B7;
+        .th-title {
+          font-size: 16px;
+          font-weight: bold;
+          color: #b7b7b7;
+
+          &::selection {
+            color: #b7b7b7;
+            background: #b7b7b720;
+          }
         }
       }
     }
@@ -29,6 +34,6 @@ table {
 }
 
 /* Global Styles */
-.set-center{
-    justify-content: center;
+.set-center {
+  justify-content: center;
 }

@@ -37,7 +37,6 @@ export class TruckassistTableBodyComponent
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('NgOnChanges Truckassist Table Body Component');
     if (!changes?.viewData?.firstChange && changes?.viewData) {
       this.viewData = changes.viewData.currentValue;
     }
@@ -58,11 +57,6 @@ export class TruckassistTableBodyComponent
     ) {
       this.selectedTab = changes.selectedTab.currentValue;
     }
-
-    console.log(this.viewData);
-    console.log(this.columns);
-    console.log(this.selectedTab);
-    console.log(this.options);
   }
 
   trackByFn(index) {

@@ -1,6 +1,19 @@
-<div class="search-container">
-  <svg-icon
-    [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
-    [src]="'assets/svg/truckassist-search/search-icon.svg'"
-  ></svg-icon>
+<div class="search-container" [ngClass]="{ 'search-input-active': openSearch }">
+  <!-- Icon -->
+  <div class="icon-container" (click)="openSearch = !openSearch">
+    <svg-icon
+      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      [src]="'assets/svg/truckassist-search/search-icon.svg'"
+    ></svg-icon>
+  </div>
+
+  <!-- Serach Input -->
+  <div class="search-input">
+    <input
+      type="text"
+      *ngIf="openSearch"
+      (keypress)="onTyping()"
+      [(ngModel)]="searchText"
+    />
+  </div>
 </div>

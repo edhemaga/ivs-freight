@@ -29,11 +29,10 @@ export class TruckassistTableHeadComponent implements OnInit, OnChanges {
   constructor() {}
 
   ngOnInit(): void {
-    this.setVisibleColumns()
+    this.setVisibleColumns();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('Table Head ngOnChanges')
     if (changes?.columns && !changes?.columns?.firstChange) {
       this.columns = changes.columns.currentValue;
 
@@ -55,8 +54,6 @@ export class TruckassistTableHeadComponent implements OnInit, OnChanges {
     ) {
       this.viewData = changes.viewData.currentValue;
     }
-    console.log('Columns');
-    console.log(this.columns);
   }
 
   setVisibleColumns(){

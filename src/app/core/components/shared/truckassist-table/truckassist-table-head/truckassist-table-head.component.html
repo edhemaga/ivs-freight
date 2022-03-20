@@ -8,7 +8,7 @@
           'margin-left': column.ngTemplate === 'attachments' ? 'auto' : 'unset'
         }"
         [ngClass]="{
-          'set-center': column.ngTemplate === 'checkbox'
+          'set-center': column.ngTemplate === 'checkbox' || column.setCenter
         }"
       >
         <!-- Selected Row Count -->
@@ -26,15 +26,15 @@
         </div>
 
         <!-- Icons -->
-        <!-- <div
-          *ngIf="column.name === ''"
-          class="icons"
-          [svgStyle]="{
-            'width.px': column.headIconStyle.width,
-            'height.px': column.headIconStyle.height
-          }"
-          [src]="column.headIconStyle.imgPath"
-        ></div> -->
+        <div *ngIf="column.name === '' && column?.headIconStyle" class="icons">
+          <svg-icon
+            [svgStyle]="{
+              'width.px': column.headIconStyle.width,
+              'height.px': column.headIconStyle.height
+            }"
+            [src]="column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''"
+          ></svg-icon>
+        </div>
       </th>
     </tr>
   </thead>

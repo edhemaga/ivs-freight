@@ -11,9 +11,10 @@ import { DriverManageComponent } from '../../modals/driver-manage/driver-manage.
 })
 export class DriverTableComponent implements OnInit {
   public tableOptions: any = {};
-  viewData: any[] = [];
-  columns: any[] = [];
-  selectedTab = 'active';
+  public tableData: any[] = [];
+  public viewData: any[] = [];
+  public columns: any[] = [];
+  public selectedTab = 'active';
   resetColumns: boolean;
 
   constructor(private customModalService: CustomModalService) {}
@@ -30,6 +31,7 @@ export class DriverTableComponent implements OnInit {
       toolbarActions: {
         hideImport: false,
         hideExport: false,
+        hideViewMode: true,
         hideLockUnlock: false,
         hideAddNew: false,
         hideColumns: false,
@@ -84,11 +86,12 @@ export class DriverTableComponent implements OnInit {
   }
 
   sendDriverData() {
-    const data: any[] = [
+    this.tableData = [
       {
         title: 'Applicants',
         field: 'applicants',
-        data: this.getDumyData(2),
+        length: 8,
+        data: this.getDumyData(8),
         extended: true,
         gridNameTitle: 'Applicant',
         stateName: 'applicants',
@@ -97,6 +100,7 @@ export class DriverTableComponent implements OnInit {
       {
         title: 'Active',
         field: 'active',
+        length: 5,
         data: this.getDumyData(5),
         extended: false,
         gridNameTitle: 'Driver',
@@ -106,6 +110,7 @@ export class DriverTableComponent implements OnInit {
       {
         title: 'Inactive',
         field: 'inactive',
+        length: 10,
         data: this.getDumyData(10),
         extended: false,
         gridNameTitle: 'Driver',
@@ -114,15 +119,9 @@ export class DriverTableComponent implements OnInit {
       },
     ];
 
-    const td = data.find((t) => t.field === this.selectedTab);
+    const td = this.tableData.find((t) => t.field === this.selectedTab);
 
-    this.viewData = td.data;
-    this.columns = td.gridColumns;
-
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
-    });
+    this.setDriverData(td);
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
@@ -141,13 +140,47 @@ export class DriverTableComponent implements OnInit {
     }
   }
 
+  setDriverData(td: any) {
+    this.viewData = td.data;
+    this.columns = td.gridColumns;
+
+    this.viewData = this.viewData.map((data) => {
+      data.isSelected = false;
+      return data;
+    });
+
+    console.log('setDriverData');
+
+    console.log(this.viewData);
+    console.log(this.columns);
+  }
+
   getDumyData(numberOfCopy: number) {
     let data: any[] = [
       {
         id: 336,
         companyId: 1,
+        fullName: 'Test Test',
         driverUserId: 625,
+        dob: '03/12/84',
         ownerId: null,
+        app: 2,
+        mvr: 12,
+        psp: 8,
+        ssnApplicant: 3,
+        rev: true,
+        sph: 11,
+        medical: {
+          id: 'bea0931e-3ea3-40f0-8bc4-dda705eed52d',
+          end: '2022-08-22T05:00:00Z',
+          start: '2020-08-22T05:00:00Z',
+        },
+        cdl: {
+          id: 'bea0931e-3ea3-40f0-8bc4-dda705eed52d',
+          end: '2022-08-22T05:00:00Z',
+          start: '2020-08-22T05:00:00Z',
+        },
+        email: 'angelo.T@gmail.com',
         ssn: '439-33-3808',
         dateOfBirth: null,
         password: null,
@@ -514,6 +547,9 @@ export class DriverTableComponent implements OnInit {
           size: 'small',
         }
       );
+    } else if (event.action === 'tab-selected') {
+      this.selectedTab = event.tabData.field;
+      this.setDriverData(event.tabData);
     }
   }
 }
