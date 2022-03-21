@@ -1,1 +1,223 @@
+@import "../../../settings.global.scss";
 
+.add-form-array {
+  display: flex;
+  align-items: center;
+  margin: 12px 0px;
+
+  .form-array-text {
+    margin-left: 4px;
+    font-weight: $settings-font-semibold;
+    color: $settings-white-dark;
+  }
+
+  &:hover {
+    transition: $transition;
+    cursor: pointer;
+
+    .form-array-add {
+      svg {
+        #Rectangle_22881 {
+          fill: #778fbb;
+        }
+
+        #Line_3184 {
+          stroke: $settings-background;
+        }
+
+        #Line_3185 {
+          stroke: $settings-background;
+        }
+      }
+    }
+
+    .form-array-text {
+      color: #778fbb;
+    }
+  }
+}
+
+.department-phone-add {
+  margin-left: 2px;
+  svg {
+    #Rectangle_22881 {
+      fill: #f3f3f3;
+    }
+
+    #Line_3184 {
+      stroke: #dadada;
+    }
+
+    #Line_3185 {
+      stroke: #dadada;
+    }
+  }
+
+  &:hover {
+    transition: $transition;
+    cursor: pointer;
+    svg {
+      #Rectangle_22881 {
+        fill: #778fbb;
+      }
+
+      #Line_3184 {
+        stroke: $settings-background;
+      }
+
+      #Line_3185 {
+        stroke: $settings-background;
+      }
+    }
+  }
+}
+
+.additional-buttons {
+  display: flex;
+  align-items: center;
+  position: relative;
+  bottom: 15px;
+
+  .additional-button-confirm {
+    margin-left: 12px;
+    margin-right: 6px;
+
+    &:hover {
+      transition: $transition;
+      cursor: pointer;
+      svg {
+        #Rectangle_20156 {
+          fill: #5673aa;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+    }
+  }
+
+  .additional-button-cancel {
+    &:hover {
+      transition: $transition;
+      cursor: pointer;
+      svg {
+        #Rectangle_20157 {
+          fill: #ff5050;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+    }
+  }
+}
+
+.form-array-card {
+  width: 100%;
+  height: 58px;
+  background-color: #f9f9f9;
+  color: #b7b7b7;
+  display: flex;
+  flex-direction: column;
+  margin: 0px;
+  margin-top: 12px;
+  padding: 4px 6px;
+  border-radius: 3px;
+  user-select: none;
+
+  .form-array-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 7px;
+
+    .form-array-card-name {
+      font-weight: $settings-font-semibold;
+    }
+
+    .form-array-card-buttons {
+      display: none;
+      .form-array-card-edit,
+      .form-array-card-delete {
+        svg {
+          width: 22px;
+          height: 22px;
+          cursor: pointer;
+          #Rectangle_3879,
+          #Rectangle_4965 {
+            fill: transparent;
+          }
+
+          #Path_7775,
+          #Path_7776,
+          #Path_7317,
+          #Path_7318 {
+            fill: #dadada !important;
+          }
+        }
+
+        &:hover {
+          svg {
+            #Path_7775,
+            #Path_7776 {
+              fill: #b7b7b7 !important;
+            }
+            #Path_7317,
+            #Path_7318 {
+              fill: #ff6a6a !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .form-array-card-bottom {
+    display: grid;
+    grid-template-columns: 148px 102px 194px;
+    grid-template-rows: 18px;
+
+    .card-bottom-col-1,
+    .card-bottom-col-2,
+    .card-bottom-col-3 {
+      display: flex;
+      align-items: center;
+
+      p {
+        margin-left: 6px;
+      }
+
+      svg {
+        position: relative;
+        bottom: 1.5px;
+        #Path_35729,
+        #Union_596,
+        #Path_35732 {
+          fill: #dadada;
+        }
+      }
+
+      .card-bottom-email {
+        position: relative;
+        bottom: 2px;
+      }
+    }
+  }
+
+  &:hover {
+    color: #919191 !important;
+    transition: $transition;
+
+    .form-array-card-buttons {
+      display: block;
+    }
+
+    .card-bottom-col-1,
+    .card-bottom-col-2,
+    .card-bottom-col-3 {
+      svg {
+        #Path_35729,
+        #Union_596,
+        #Path_35732 {
+          fill: #b7b7b7 !important;
+        }
+      }
+    }
+  }
+}

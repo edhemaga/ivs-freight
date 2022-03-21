@@ -87,15 +87,15 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
   }
 
   private isActiveFooterRouteOnReload(url: string) {
+   
     const urlString = url.split('/');
     const reloadUrl =
       urlString[urlString.length - 2] + '/' + urlString[urlString.length - 1];
 
-    const index = this.footerData.findIndex((item) =>
-      item.route?.includes(reloadUrl)
-    );
+    
+    const hasSettingsInRoute = urlString.includes('settings');
 
-    if (index > -1) {
+    if (hasSettingsInRoute) {
       this.router.navigate([`/${reloadUrl}`]);
       this.onActivateFooterRoutes.emit(true);
     } else {

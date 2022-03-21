@@ -1,0 +1,13 @@
+<div
+  class="ta-counter"
+  [ngStyle]="{
+    'color': countColor,
+    'background-color': countBackground,
+    'font-weight': countFontWeight,
+    'height': countHeight,
+    'width': countWidth,
+    'border-radius': countBorderRadius
+  }"
+>
+  <p [ngStyle]="{'bottom': countTextBottomPosition}">{{ count }}</p>
+</div>

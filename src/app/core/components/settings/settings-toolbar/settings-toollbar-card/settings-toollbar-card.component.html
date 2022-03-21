@@ -5,7 +5,14 @@
   routerLinkActive="active"
   [routerLinkActiveOptions]="{ exact: true }"
 >
-  <div *ngIf="cardCount" class="toolbar-card-count">{{ cardCount }}</div>
+  <app-ta-counter
+    *ngIf="cardCount"
+    [count]="cardCount"
+    [countColor]="'#919191'"
+    [countBackground]="'#F3F3F3'"
+    [countHeight]="'24px'"
+    [countWidth]="'24px'"
+  ></app-ta-counter>
   <svg-icon
     *ngIf="cardSvg"
     class="toolbar-card-svg"

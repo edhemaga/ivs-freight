@@ -18,6 +18,7 @@
       [formGroup]="companyForm"
       class="form-container has-tabs tabs-3{{ ' tab-' + selectedTab }}"
     >
+      <!-- Basic TAB -->
       <div class="single-tab-container">
         <div class="row">
           <div class="col-12">
@@ -750,6 +751,7 @@
               ></svg-icon>
             </div>
             <div
+              #dropZone
               class=" {{
                 showDropZone ? ' dropzone-visible' : ' dropzone-hidden'
               }}"
@@ -762,6 +764,263 @@
                 ></app-logo-change>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <!-- Additional TAB -->
+      <div class="single-tab-container">
+        <div
+          class="col-12 note-wrapper{{
+            departmentContactZone ? ' visible-note' : ' hidden-note'
+          }}"
+        >
+          <div
+            (click)="openZone('department-contact')"
+            class="note-label-wrapper"
+          >
+            <div style="display: flex; align-items: center">
+              <app-ta-counter
+                [count]="departmentContacts.length"
+                [countColor]="'#B7B7B7'"
+                [countBackground]="'#F3F3F3'"
+                [countHeight]="'24px'"
+                [countWidth]="'24px'"
+                [countTextBottomPosition]="'3px'"
+              ></app-ta-counter>
+              <span class="note-label">Department Contact</span>
+            </div>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              departmentContactZone ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <!-- Add Department Contact Initial -->
+            <div
+              #departmentContactZone
+              *ngIf="!departmentContactFields"
+              class="add-form-array"
+              (click)="addFormArray('departmnet-contact')"
+            >
+              <svg-icon
+                class="form-array-add"
+                src="assets/img/svgs/settings-company/settings-add.svg"
+              ></svg-icon>
+
+              <div class="form-array-text">Department Contact</div>
+            </div>
+
+            <!-- Form Array Card -->
+            <div
+              *ngIf="
+                departmentContactFields &&
+                departmentContacts.length &&
+                showDepartmentCards
+              "
+              formArrayName="departmentContacts"
+            >
+              <div
+                class="form-array-card"
+                *ngFor="
+                  let department of departmentContacts.controls;
+                  trackBy: identifyDepartment;
+                  let ind = index
+                "
+              >
+                <div class="form-array-card-top">
+                  <!-- department.value.departmentName -->
+                  <div class="form-array-card-name">Accounting</div>
+                  <div class="form-array-card-buttons">
+                    <svg-icon
+                      class="form-array-card-edit"
+                      src="assets/img/svgs/settings-company/settings-edit.svg"
+                      (click)="editDepartmentContact(department, ind)"
+                    ></svg-icon>
+                    <svg-icon
+                      class="form-array-card-delete"
+                      src="assets/img/svgs/settings-company/settings-trash.svg"
+                      (click)="deleteDepartmentContact(ind)"
+                    ></svg-icon>
+                  </div>
+                </div>
+                <div class="form-array-card-bottom">
+                  <div class="card-bottom-col-1">
+                    <svg-icon
+                      src="assets/img/svgs/settings-company/settings-phone.svg"
+                    ></svg-icon>
+                    <p>{{ department.value.departmentPhone }}</p>
+                  </div>
+
+                  <div class="card-bottom-col-2">
+                    <svg-icon
+                      src="assets/img/svgs/settings-company/settings-phone-extension.svg"
+                    ></svg-icon>
+                    <p>300</p>
+                  </div>
+                  <div class="card-bottom-col-3">
+                    <svg-icon
+                      src="assets/img/svgs/settings-company/settings-email.svg"
+                    ></svg-icon>
+                    <p class="card-bottom-email">
+                      {{ department.value.departmentEmail }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form *ngIf="departmentContactFields" [formGroup]="departmentAdditionalForm">
+              <div class="row">
+                <div class="col-12" style="margin: 28px 0px">
+                  <ng-select
+                    [items]="departments"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="departmentName"
+                    placeholder="Department"
+                    class="required-field"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+
+                <div class="col-5 d-flex">
+                  <div
+                    class="form-label-group input-icon input-holder phone-field-wrapper {{
+                      manageInputValidation(
+                        this.departmentAdditionalForm.get('departmentPhone')
+                      )
+                    }}"
+                  >
+                    <input
+                      id="departmentPhone"
+                      class="form-control input-control phone-input required"
+                      formControlName="departmentPhone"
+                      placeholder="Phone"
+                      mask="(000) 000-0000"
+                      appInputFocus
+                      (keypress)="keyPress($event, 'phone', 'number')"
+                    />
+                    <label class="required-label" for="departmentPhone"
+                      >Phone</label
+                    >
+                    <p
+                      *ngIf="
+                        this.departmentAdditionalForm.get('departmentPhone').errors &&
+                        this.departmentAdditionalForm.get('departmentPhone').touched
+                      "
+                      class="m-0 required-notice invalid-length"
+                    >
+                      {{
+                        this.departmentAdditionalForm.get("departmentPhone").errors
+                          | inputError
+                      }}
+                    </p>
+
+                    <svg-icon
+                      class="valid-icon"
+                      src="assets/img/form-validation/check-icon-light-blue.svg"
+                    >
+                    </svg-icon>
+
+                    <svg-icon
+                      class="x-invalid-icon"
+                      src="assets/img/form-validation/x-icon-light-red.svg"
+                    >
+                    </svg-icon>
+
+                    <svg-icon
+                      (click)="clearInput('departmentPhone', true)"
+                      class="clear-icon"
+                      ngbTooltip="Clear"
+                      placement="bottom-left"
+                      src="assets/img/form-validation/x-icon-cut.svg"
+                    ></svg-icon>
+                  </div>
+                  <svg-icon
+                    class="department-phone-add"
+                    src="assets/img/svgs/settings-company/settings-add.svg"
+                  ></svg-icon>
+                </div>
+                <div class="col-7 d-flex">
+                  <div
+                    class="form-label-group input-icon input-holder email-field-wrapper {{
+                      manageInputValidation(
+                        this.departmentAdditionalForm.get('departmentEmail')
+                      )
+                    }}"
+                  >
+                    <input
+                      id="departmentEmail"
+                      class="form-control input-control email-input required"
+                      formControlName="departmentEmail"
+                      placeholder="Email"
+                      appInputFocus
+                      (keypress)="onEmailTyping($event)"
+                      (paste)="onPaste($event, 'email')"
+                      oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
+                    />
+                    <label class="required-label" for="departmentEmail"
+                      >Email</label
+                    >
+                    <p
+                      *ngIf="
+                        this.departmentAdditionalForm.get('departmentEmail').errors &&
+                        this.departmentAdditionalForm.get('departmentEmail').touched
+                      "
+                      class="m-0 required-notice invalid-length"
+                    >
+                      {{
+                        this.departmentAdditionalForm.get("departmentEmail").errors
+                          | inputError
+                      }}
+                    </p>
+
+                    <svg-icon
+                      class="valid-icon"
+                      src="assets/img/form-validation/check-icon-light-blue.svg"
+                    >
+                    </svg-icon>
+
+                    <svg-icon
+                      class="x-invalid-icon"
+                      src="assets/img/form-validation/x-icon-light-red.svg"
+                    >
+                    </svg-icon>
+
+                    <svg-icon
+                      (click)="clearInput('departmentEmail', true)"
+                      class="clear-icon"
+                      ngbTooltip="Clear"
+                      placement="bottom-left"
+                      src="assets/img/form-validation/x-icon-cut.svg"
+                    ></svg-icon>
+                  </div>
+                  <div class="additional-buttons">
+                    <svg-icon
+                      (click)="addDepartmentContacts(this.departmentAdditionalForm)"
+                      class="additional-button-confirm"
+                      src="assets/img/svgs/settings-company/settings-confirm.svg"
+                    ></svg-icon>
+                    <svg-icon
+                      (click)="cancelDepartmentContacts()"
+                      class="additional-button-cancel"
+                      src="assets/img/svgs/settings-company/settings-cancel.svg"
+                    ></svg-icon>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>

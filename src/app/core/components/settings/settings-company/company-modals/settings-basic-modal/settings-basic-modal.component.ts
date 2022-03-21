@@ -5,7 +5,7 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import {
@@ -23,6 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class SettingsBasicModalComponent implements OnInit {
   @ViewChild('dropZone') dropZoneRef: ElementRef;
+  @ViewChild('departmentContactZone') departmentContactZoneRef: ElementRef;
 
   public modalTitle: string = 'Company';
   public selectedTab: number = 1;
@@ -89,8 +90,93 @@ export class SettingsBasicModalComponent implements OnInit {
     },
   ];
 
+  public departments = [
+    {
+      id: 1,
+      name: 'Accounting',
+    },
+    {
+      id: 2,
+      name: 'Dispatch',
+    },
+    {
+      id: 3,
+      name: 'Manager',
+    },
+    {
+      id: 4,
+      name: 'Recruiting',
+    },
+    {
+      id: 5,
+      name: 'Repair',
+    },
+    {
+      id: 6,
+      name: 'Safety',
+    },
+    {
+      id: 7,
+      name: 'Other',
+    },
+  ];
+
+  public pay_period = [
+    {
+      id: 'weekly',
+      name: 'Weekly',
+    },
+    {
+      id: 'bi-weekly',
+      name: 'Bi-weekly',
+    },
+    {
+      id: 'semi-monthly',
+      name: 'Semi Monthly',
+    },
+    {
+      id: 'monthly',
+      name: 'Monthly',
+    },
+  ];
+
+  public days = [
+    {
+      id: 'monday',
+      name: 'Monday',
+    },
+    {
+      id: 'tuesday',
+      name: 'Tuesday',
+    },
+    {
+      id: 'wednesday',
+      name: 'Wednesday',
+    },
+    {
+      id: 'thursday',
+      name: 'Thursday',
+    },
+    {
+      id: 'friday',
+      name: 'Friday',
+    },
+    {
+      id: 'saturday',
+      name: 'Saturday',
+    },
+    {
+      id: 'sunday',
+      name: 'Sunday',
+    },
+  ];
+
   // COMPANY FORM
   public companyForm: FormGroup;
+
+  // Additional Custom Forms
+  public departmentAdditionalForm: FormGroup;
+  public bankAccountadditionalForm: FormGroup;
 
   // Address
   public addressOptions = {
@@ -99,6 +185,12 @@ export class SettingsBasicModalComponent implements OnInit {
 
   // Drop Zone Logo
   public showDropZone: boolean = false;
+
+  // Department Contact
+  public departmentContactZone: boolean = false;
+  public departmentContactFields: boolean = false;
+  public showDepartmentCards: boolean = false;
+  public isEditModeDepartmentCardIndex: number = -1;
 
   // Input Validation
   public formatType = /^[!^()_\\[\]{};':"\\|<>\/?]*$/; // default format Type
@@ -112,6 +204,7 @@ export class SettingsBasicModalComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+    this.createDepartmentAdditionalForm();
   }
 
   private createForm() {
@@ -133,7 +226,81 @@ export class SettingsBasicModalComponent implements OnInit {
       timeZone: [null],
       currency: [null],
       companyLogo: [null],
+      departmentContacts: this.formBuilder.array([]),
     });
+  }
+
+  // ------ ------ ------ ------ DEPARTMENT ADDITIONAL CUSTOM FORM METHODS
+  public createDepartmentAdditionalForm() {
+    this.departmentAdditionalForm = this.formBuilder.group({
+      departmentName: [null, [Validators.required]],
+      departmentPhone: [null, [Validators.required]],
+      departmentEmail: [null, [Validators.required, Validators.email]],
+    });
+  }
+
+  public addDepartmentContacts(department: FormGroup) {
+    if (this.isEditModeDepartmentCardIndex === -1) {
+      this.departmentContacts.push(
+        this.formBuilder.group({
+          departmentName: [department.value.departmentName],
+          departmentPhone: [department.value.departmentPhone],
+          departmentEmail: [department.value.departmentEmail],
+        })
+      );
+
+      if (this.departmentContacts.length === 1) {
+        this.showDepartmentCards = true;
+      }
+    } else {
+      this.departmentContacts
+        .at(this.isEditModeDepartmentCardIndex)
+        .patchValue({
+          departmentName: [department.value.departmentName],
+          departmentPhone: [department.value.departmentPhone],
+          departmentEmail: [department.value.departmentEmail],
+        });
+    }
+    this.isEditModeDepartmentCardIndex = -1;
+    this.departmentAdditionalForm.reset();
+  }
+
+  public editDepartmentContact(department: FormGroup, index: number) {
+    this.departmentAdditionalForm.setValue({
+      departmentName: department.value.departmentName,
+      departmentPhone: department.value.departmentPhone,
+      departmentEmail: department.value.departmentEmail,
+    });
+    this.isEditModeDepartmentCardIndex = index;
+  }
+
+  public deleteDepartmentContact(index: number) {
+    this.departmentContacts.removeAt(index);
+  }
+
+  get departmentContacts(): FormArray {
+    return this.companyForm.get('departmentContacts') as FormArray;
+  }
+
+  public identifyDepartment(index, item) {
+    return item.value.departmentEmail;
+  }
+
+  public cancelDepartmentContacts() {
+    this.departmentAdditionalForm.reset();
+  }
+
+  //  ------ ------ ------ ------ ------ END
+
+  public addFormArray(formControl: string) {
+    switch (formControl) {
+      case 'departmnet-contact': {
+        this.departmentContactFields = !this.departmentContactFields;
+        break;
+      }
+      default:
+        break;
+    }
   }
 
   public tabChange(event: any) {
@@ -145,7 +312,6 @@ export class SettingsBasicModalComponent implements OnInit {
     // if (!this.sharedService.markInvalid(this.companyForm)) {
     //   return false;
     // }
-    console.log(this.companyForm.getRawValue());
   }
 
   public closeCompanyModal() {
@@ -167,8 +333,26 @@ export class SettingsBasicModalComponent implements OnInit {
     }
   }
 
-  public clearInput(formControl: string) {
-    this.companyForm.get(formControl).setValue(null);
+  public clearInput(formControl: string, isFormArray: boolean = false) {
+    if (!isFormArray) {
+      this.companyForm.get(formControl).setValue(null);
+    } else {
+      this.departmentContacts.get(formControl).setValue(null);
+    }
+  }
+
+  //-------------- ZONE PART (OPEN / CLOSE)
+  public openZone(typeZone: string) {
+    switch (typeZone) {
+      case 'department-contact': {
+        this.departmentContactZone = !this.departmentContactZone;
+        const timeout = setTimeout(() => {
+          this.departmentContactZoneRef.nativeElement.focus();
+          clearTimeout(timeout);
+        }, 250);
+        break;
+      }
+    }
   }
 
   //-------------- Address
@@ -298,53 +482,3 @@ export class SettingsBasicModalComponent implements OnInit {
     }
   }
 }
-
-// export const PAY_PERIODS = [
-//   {
-//     id: 'weekly',
-//     name: 'Weekly',
-//   },
-//   {
-//     id: 'bi-weekly',
-//     name: 'Bi-weekly',
-//   },
-//   {
-//     id: 'semi-monthly',
-//     name: 'Semi Monthly'
-//   },
-//   {
-//     id: 'monthly',
-//     name: 'Monthly',
-//   },
-// ];
-
-// export const DAYS = [
-//   {
-//     id: 'monday',
-//     name: 'Monday',
-//   },
-//   {
-//     id: 'tuesday',
-//     name: 'Tuesday',
-//   },
-//   {
-//     id: 'wednesday',
-//     name: 'Wednesday',
-//   },
-//   {
-//     id: 'thursday',
-//     name: 'Thursday',
-//   },
-//   {
-//     id: 'friday',
-//     name: 'Friday',
-//   },
-//   {
-//     id: 'saturday',
-//     name: 'Saturday',
-//   },
-//   {
-//     id: 'sunday',
-//     name: 'Sunday',
-//   },
-// ];
