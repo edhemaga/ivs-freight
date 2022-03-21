@@ -1,0 +1,26 @@
+@import "../settings.global.scss";
+
+.settings-company {
+  position: relative;
+  display: grid;
+  grid-template-columns: 480px 290px 340px 294px;
+  column-gap: 12px;
+  font-size: $settings-fontsize;
+  user-select: none;
+
+  .settings-company-col-1 {
+    grid-column: 1 / 2;
+  }
+
+  .settings-company-col-2 {
+    grid-column: 2 / 3;
+  }
+
+  .settings-company-col-3 {
+    grid-column: 3 / 4;
+  }
+
+  .settings-company-col-4 {
+    grid-column: 4 / -1;
+  }
+}

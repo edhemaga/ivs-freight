@@ -1,0 +1,778 @@
+<div cdkDrag class="modal-container">
+  <div cdkDragHandle class="modal-header">
+    <h5 class="modal-title">{{ modalTitle }}</h5>
+    <svg-icon
+      (click)="activeModal.dismiss('Modal close')"
+      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      class="modal-close-btn cursor-pointer"
+      src="assets/img/svgs/table/close.svg"
+    ></svg-icon>
+  </div>
+  <div class="modal-body">
+    <app-tab-switcher
+      (switchClicked)="tabChange($event)"
+      [tabs]="tabs"
+    ></app-tab-switcher>
+    <form
+      (keydown)="saveFormOnKeyboardEnter($event)"
+      [formGroup]="companyForm"
+      class="form-container has-tabs tabs-3{{ ' tab-' + selectedTab }}"
+    >
+      <div class="single-tab-container">
+        <div class="row">
+          <div class="col-12">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('name'))
+              }}"
+            >
+              <input
+                id="name"
+                class="form-control input-control"
+                style="text-transform: uppercase"
+                formControlName="name"
+                placeholder="Company name"
+                maxlength="30"
+                appAutoFocus
+                appInputFocus
+                (keypress)="keyPress($event, 'name', 'text')"
+                (paste)="onPaste($event, 'name')"
+              />
+              <label for="name">Company name</label>
+              <p
+                *ngIf="
+                  companyForm.get('name').errors &&
+                  companyForm.get('name').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("name").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('name')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('usdot'))
+              }}"
+            >
+              <input
+                id="usdot"
+                class="form-control input-control"
+                formControlName="usdot"
+                placeholder="USDOT"
+                maxlength="8"
+                appInputFocus
+                (keypress)="keyPress($event, 'usdot', 'number')"
+                (paste)="onPaste($event, 'usdot', 9)"
+              />
+              <label for="usdot">USDOT</label>
+              <p
+                *ngIf="
+                  companyForm.get('usdot').errors &&
+                  companyForm.get('usdot').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("usdot").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('usdot')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+
+          <div class="col-4">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('ein'))
+              }}"
+            >
+              <input
+                id="ein"
+                class="form-control input-control"
+                formControlName="ein"
+                placeholder="EIN"
+                mask="00-0000000"
+                appInputFocus
+                (keypress)="keyPress($event, 'ein', 'number')"
+                (paste)="onPaste($event, 'ein', 10)"
+              />
+              <label for="ein">EIN</label>
+              <p
+                *ngIf="
+                  companyForm.get('ein').errors &&
+                  companyForm.get('ein').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("ein").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('ein')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+
+          <div class="col-4">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('mc'))
+              }}"
+            >
+              <input
+                id="mc"
+                class="form-control input-control"
+                formControlName="mc"
+                placeholder="MC"
+                maxlength="8"
+                appInputFocus
+                (keypress)="keyPress($event, 'mc', 'number')"
+                (paste)="onPaste($event, 'mc', 8)"
+              />
+              <label for="mc">MC</label>
+
+              <p
+                *ngIf="
+                  companyForm.get('mc').errors && companyForm.get('mc').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("mc").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('mc')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div
+              class="form-label-group input-icon input-holder phone-field-wrapper {{
+                manageInputValidation(this.companyForm.get('phone'))
+              }}"
+            >
+              <input
+                id="phone"
+                class="form-control input-control phone-input"
+                formControlName="phone"
+                placeholder="Phone"
+                mask="(000) 000-0000"
+                appInputFocus
+                (keypress)="keyPress($event, 'phone', 'number')"
+              />
+              <label for="phone">Phone</label>
+              <p
+                *ngIf="
+                  companyForm.get('phone').errors &&
+                  companyForm.get('phone').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("phone").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('phone')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="col-8">
+            <div
+              class="form-label-group input-icon input-holder email-field-wrapper {{
+                manageInputValidation(this.companyForm.get('email'))
+              }}"
+            >
+              <input
+                id="email"
+                class="form-control input-control email-input"
+                formControlName="email"
+                placeholder="Email"
+                appInputFocus
+                (keypress)="onEmailTyping($event)"
+                (paste)="onPaste($event, 'email')"
+                oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
+              />
+              <label for="email">Email</label>
+              <p
+                *ngIf="
+                  companyForm.get('email').errors &&
+                  companyForm.get('email').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("email").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('email')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div
+              class="form-label-group input-icon input-holder phone-field-wrapper {{
+                manageInputValidation(this.companyForm.get('fax'))
+              }}"
+            >
+              <input
+                id="fax"
+                class="form-control input-control"
+                formControlName="fax"
+                placeholder="Fax"
+                mask="(000) 000-0000"
+                appInputFocus
+              />
+              <label for="fax">Fax</label>
+              <p
+                *ngIf="
+                  companyForm.get('fax').errors &&
+                  companyForm.get('fax').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("fax").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('fax')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="col-8">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('webUrl'))
+              }}"
+            >
+              <input
+                id="webUrl"
+                class="form-control input-control"
+                formControlName="webUrl"
+                placeholder="Web url"
+                appInputFocus
+              />
+              <label for="webUrl">Web url</label>
+              <p
+                *ngIf="
+                  companyForm.get('fax').errors &&
+                  companyForm.get('fax').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("fax").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('fax')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div
+              class="form-label-group input-icon input-holder address-field-wrapper {{
+                manageInputValidation(this.companyForm.get('address'))
+              }}"
+            >
+              <input
+                #placesRef="ngx-places"
+                ngx-google-places-autocomplete
+                id="address"
+                class="form-control input-control required"
+                formControlName="address"
+                placeholder="Address, City, State Zip"
+                appInputFocus
+                [options]="addressOptions"
+                (onAddressChange)="handleAddressChange($event)"
+              />
+              <label class="required-label" for="address"
+                >Address, City, State Zip</label
+              >
+              <p
+                *ngIf="
+                  companyForm.get('address').errors &&
+                  companyForm.get('address').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("address").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('address')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="col-2">
+            <div
+              class="form-label-group  input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('addressUnit'))
+              }}"
+            >
+              <input
+                id="addressUnit"
+                class="form-control input-control"
+                formControlName="addressUnit"
+                placeholder="Unit #"
+                maxlength="6"
+                appInputFocus
+                (keypress)="keyPress($event, 'addressUnit', 'number')"
+              />
+              <label for="addressUnit">Unit #</label>
+              <p
+                *ngIf="
+                  companyForm.get('addressUnit').errors &&
+                  companyForm.get('addressUnit').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("addressUnit").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('addressUnit')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('irp'))
+              }}"
+            >
+              <input
+                id="irp"
+                class="form-control input-control"
+                formControlName="irp"
+                placeholder="IRP #"
+                maxlength="10"
+                appInputFocus
+                (keypress)="keyPress($event, 'irp', 'number')"
+              />
+              <label for="irp">IRP #</label>
+              <p
+                *ngIf="
+                  companyForm.get('irp').errors &&
+                  companyForm.get('irp').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("irp").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('irp')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="col-3">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('ifta'))
+              }}"
+            >
+              <input
+                id="ifta"
+                class="form-control input-control"
+                formControlName="ifta"
+                placeholder="IFTA #"
+                maxlength="14"
+                (keypress)="keyPress($event, 'ifta', 'number')"
+              />
+              <label for="ifta">IFTA #</label>
+              <p
+                *ngIf="
+                  companyForm.get('ifta').errors &&
+                  companyForm.get('ifta').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("ifta").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('ifta')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="col-3">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('toll'))
+              }}"
+            >
+              <input
+                id="toll"
+                class="form-control input-control"
+                formControlName="toll"
+                placeholder="Toll"
+                maxlength="14"
+                (keypress)="keyPress($event, 'toll', 'number')"
+              />
+              <label for="toll">Toll</label>
+              <p
+                *ngIf="
+                  companyForm.get('toll').errors &&
+                  companyForm.get('toll').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("toll").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('toll')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="col-3">
+            <div
+              class="form-label-group input-icon input-holder {{
+                manageInputValidation(this.companyForm.get('scac'))
+              }}"
+            >
+              <input
+                id="scac"
+                class="form-control input-control"
+                formControlName="scac"
+                placeholder="SCAC"
+                maxlength="14"
+                (keypress)="keyPress($event, 'scac', 'number')"
+              />
+              <label for="scac">SCAC</label>
+              <p
+                *ngIf="
+                  companyForm.get('scac').errors &&
+                  companyForm.get('scac').touched
+                "
+                class="m-0 required-notice invalid-length"
+              >
+                {{ companyForm.get("scac").errors | inputError }}
+              </p>
+
+              <svg-icon
+                class="valid-icon"
+                src="assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput('scac')"
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+                src="assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="form-label-group">
+              <ng-select
+                [items]="timeZones"
+                appendTo="body"
+                bindLabel="name"
+                formControlName="timeZone"
+                placeholder="Time zone"
+              >
+                <ng-template
+                  let-item="item"
+                  let-search="searchTerm"
+                  ng-option-tmp
+                >
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-label-group">
+              <ng-select
+                [items]="currencies"
+                appendTo="body"
+                bindLabel="name"
+                formControlName="currency"
+                placeholder="Currency"
+              >
+                <ng-template
+                  let-item="item"
+                  let-search="searchTerm"
+                  ng-option-tmp
+                >
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-12 dropzone-wrapper {{
+              showDropZone ? ' visible-dropzone' : ' hidden-dropzone'
+            }}"
+          >
+            <div (click)="openDropZone()" class="dropzone-label-wrapper">
+              <span>Logo</span>
+              <svg-icon
+                class="down-icon"
+                src="assets/img/svgs/down-arrow.svg"
+              ></svg-icon>
+            </div>
+            <div
+              class=" {{
+                showDropZone ? ' dropzone-visible' : ' dropzone-hidden'
+              }}"
+            >
+              <!-- Logo Upload -->
+              <div class="upload-logo-wrapper d-flex flex-row">
+                <app-logo-change
+                  (saveAvatar)="saveLogoCompany($event)"
+                  [src]="''"
+                ></app-logo-change>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button (click)="closeCompanyModal()" class="cancel-btn" type="button">
+      Cancel
+    </button>
+    <button (click)="saveCompany()" class="save-btn" ngbAutofocus type="button">
+      Save
+    </button>
+  </div>
+</div>

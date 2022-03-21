@@ -54,7 +54,7 @@ import { NavigationHeaderComponent } from './core/components/navigation/navigati
       enableHtml: true,
       timeOut: 5000,
     }),
-    NgIdleModule.forRoot(),
+    NgIdleModule.forRoot()
   ],
   providers: [
     GoogleMapsAPIWrapper,

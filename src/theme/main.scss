@@ -127,6 +127,19 @@ p {
   cursor: pointer;
   height: 32px;
   line-height: 32px;
+  user-select: none;
+}
+
+.dropzone-label-wrapper {
+  background-color: $bw1;
+  font-weight: 700;
+  color: #B7B7B7;
+  margin: 0 -16px;
+  padding: 6px 18px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  height: 30px;
+  user-select: none;
 }
 
 textarea.input-custom-textarea.form-textarea {
@@ -156,6 +169,20 @@ textarea.input-custom-textarea.form-textarea {
   transition: 0.3s;
 }
 
+.dropzone-visible {
+  height: auto;
+  transition: all 0.3s ease-in-out;
+  padding-top: 12px;
+  position: relative;
+  right: 5px;
+}
+
+.dropzone-hidden {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
 .modal-body div[class^=col] {
   padding-left: 6px;
   padding-right: 6px;
@@ -180,21 +207,26 @@ textarea.input-custom-textarea.form-textarea {
   outline: 0;
 }
 
-.note-label-wrapper {
+.note-label-wrapper,
+.dropzone-label-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.note-wrapper.hidden-note .down-icon {
+.note-wrapper.hidden-note .down-icon,
+.dropzone-wrapper.hidden-dropzone .down-icon {
   transform: rotate(0deg);
   transition: 0.3s all;
 }
 
-.note-wrapper.visible-note .down-icon {
+.note-wrapper.visible-note .down-icon,
+.dropzone-wrapper.visible-dropzone .down-icon {
   transform: rotate(180deg);
   transition: 0.3s all;
 }
+
+
 
 .notifications-holder {
   margin-bottom: 28px;

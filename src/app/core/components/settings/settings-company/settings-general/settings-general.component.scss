@@ -1,0 +1,209 @@
+@import "../../settings.global.scss";
+
+.settings-general {
+  width: 100%;
+  display: grid;
+  grid-template-rows: 32px auto;
+  row-gap: 12px;
+
+  .settings-header {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .settings-company-name {
+      height: 100%;
+      flex: 1;
+      margin-right: 4px;
+      padding: 7px 12px;
+      color: $settings-color;
+      background-color: $settings-background;
+      font-weight: $settings-font-extrabold;
+      border-radius: $settings-borderRadius;
+    }
+
+    .settings-header-buttons {
+      width: 68px;
+      height: 100%;
+
+      .settings-edit-button {
+        margin-right: 4px;
+
+        &:hover {
+          transform: $transition;
+          cursor: pointer;
+          svg {
+            path {
+              fill: $settings-color;
+            }
+          }
+        }
+      }
+
+      .settings-plus-button {
+        &:hover {
+          transform: $transition;
+          cursor: pointer;
+          svg {
+            path {
+              fill: $settings-color-blue;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .settings-body {
+    width: 100%;
+    height: 100%;
+    background-color: $settings-background;
+    color: $settings-color-dark;
+    border-radius: $settings-borderRadius;
+    padding: 12px;
+
+    // Basic Info & Logo
+    .basic-details {
+      width: 100%;
+      height: 256px;
+      margin-bottom: 15px;
+
+      .basic-header {
+        width: 100%;
+        height: 111px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 11px;
+
+        .basic-header-logo-top {
+          display: flex;
+          justify-content: flex-end;
+          height: 22px;
+          width: 100%;
+          margin-bottom: 8px;
+
+          .basic-logo-text {
+            font-size: 10px;
+            font-style: italic;
+            color: $settings-white-dark;
+            position: relative;
+            bottom: 1px;
+          }
+
+          .basic-logo-edit {
+            width: 22px;
+            height: 22px;
+            display: none;
+            margin-left: 6px;
+            svg {
+              width: 100%;
+              height: 100%;
+              #Rectangle_3879 {
+                fill: $settings-line;
+              }
+              #Path_7775 {
+                fill: $settings-white-dark-2;
+              }
+              #Path_7776 {
+                fill: $settings-white-dark-2;
+              }
+            }
+
+            &:hover {
+              transition: $settings-transition;
+              cursor: pointer;
+              svg {
+                #Rectangle_3879 {
+                  fill: $settings-color;
+                }
+                #Path_7775 {
+                  fill: $settings-background;
+                }
+                #Path_7776 {
+                  fill: $settings-background;
+                }
+              }
+            }
+          }
+
+          &:hover {
+            .basic-logo-edit {
+              transition: $settings-transition;
+              display: inline-block;
+            }
+          }
+        }
+
+        .basic-logo {
+          max-width: 456px;
+          max-height: 110px;
+        }
+      }
+
+      .basic-middle {
+        display: grid;
+        grid-template-columns: 162px 292px;
+        row-gap: 12px;
+        margin: 12px 0px;
+
+        .basic-data {
+          display: flex;
+          align-items: center;
+
+          &:nth-child(1) {
+            grid-column: 1 / -1;
+          }
+
+          .basic-data-svg {
+            margin-right: 6px;
+            position: relative;
+            bottom: 1px;
+          }
+        }
+      }
+
+      .basic-bottom {
+        display: grid;
+        grid-template-columns: repeat(3, 144px);
+        -moz-column-gap: 12px;
+        column-gap: 12px;
+
+        margin-bottom: 12px;
+
+        .basic-bottom-card {
+          background-color: $settings-count;
+          color: $settings-color-dark;
+          border-radius: 3px;
+          height: 30px;
+          padding: 0px 6px;
+
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .bottom-card-left {
+            font-size: 12px;
+            font-weight: $settings-font-semibold;
+            color: $settings-color-dark;
+          }
+
+          .bottom-card-right {
+            font-size: 18px;
+            font-weight: $settings-font-medium;
+            color: $settings-color-dark;
+          }
+        }
+      }
+
+      .settings-line {
+        margin: 0;
+        height: 2px;
+        width: 100%;
+        border-radius: 1px;
+        background-color: $settings-line;
+      }
+    }
+  }
+}
