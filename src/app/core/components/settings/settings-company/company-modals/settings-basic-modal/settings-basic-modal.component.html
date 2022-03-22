@@ -18,7 +18,7 @@
       [formGroup]="companyForm"
       class="form-container has-tabs tabs-3{{ ' tab-' + selectedTab }}"
     >
-      <!-- Basic TAB -->
+      <!------------------ Basic TAB --------------------------->
       <div class="single-tab-container">
         <div class="row">
           <div class="col-12">
@@ -510,8 +510,8 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-3">
+        <div class="custom-row-basic">
+          <div class="col-irp">
             <div
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('irp'))
@@ -558,7 +558,7 @@
               ></svg-icon>
             </div>
           </div>
-          <div class="col-3">
+          <div class="col-ifta">
             <div
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('ifta'))
@@ -604,7 +604,7 @@
               ></svg-icon>
             </div>
           </div>
-          <div class="col-3">
+          <div class="col-toll">
             <div
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('toll'))
@@ -650,7 +650,7 @@
               ></svg-icon>
             </div>
           </div>
-          <div class="col-3">
+          <div class="col-scac">
             <div
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('scac'))
@@ -767,8 +767,9 @@
           </div>
         </div>
       </div>
-      <!-- Additional TAB -->
+      <!------------------------- Additional TAB -------------------------------->
       <div class="single-tab-container">
+        <!------------------------- Department Contacts -------------------------->
         <div
           class="col-12 note-wrapper{{
             departmentContactZone ? ' visible-note' : ' hidden-note'
@@ -778,9 +779,9 @@
             (click)="openZone('department-contact')"
             class="note-label-wrapper"
           >
-            <div style="display: flex; align-items: center">
+            <div class="d-flex align-items-center">
               <app-ta-counter
-                [count]="departmentContacts.length"
+                [count]="getDepartmentContacts.length"
                 [countColor]="'#B7B7B7'"
                 [countBackground]="'#F3F3F3'"
                 [countHeight]="'24px'"
@@ -802,7 +803,6 @@
           >
             <!-- Add Department Contact Initial -->
             <div
-              #departmentContactZone
               *ngIf="!departmentContactFields"
               class="add-form-array"
               (click)="addFormArray('departmnet-contact')"
@@ -819,7 +819,7 @@
             <div
               *ngIf="
                 departmentContactFields &&
-                departmentContacts.length &&
+                getDepartmentContacts.length &&
                 showDepartmentCards
               "
               formArrayName="departmentContacts"
@@ -827,7 +827,7 @@
               <div
                 class="form-array-card"
                 *ngFor="
-                  let department of departmentContacts.controls;
+                  let department of getDepartmentContacts.controls;
                   trackBy: identifyDepartment;
                   let ind = index
                 "
@@ -873,7 +873,10 @@
                 </div>
               </div>
             </div>
-            <form *ngIf="departmentContactFields" [formGroup]="departmentAdditionalForm">
+            <form
+              *ngIf="departmentContactFields"
+              [formGroup]="departmentAdditionalForm"
+            >
               <div class="row">
                 <div class="col-12" style="margin: 28px 0px">
                   <ng-select
@@ -916,14 +919,16 @@
                     >
                     <p
                       *ngIf="
-                        this.departmentAdditionalForm.get('departmentPhone').errors &&
-                        this.departmentAdditionalForm.get('departmentPhone').touched
+                        this.departmentAdditionalForm.get('departmentPhone')
+                          .errors &&
+                        this.departmentAdditionalForm.get('departmentPhone')
+                          .touched
                       "
                       class="m-0 required-notice invalid-length"
                     >
                       {{
-                        this.departmentAdditionalForm.get("departmentPhone").errors
-                          | inputError
+                        this.departmentAdditionalForm.get("departmentPhone")
+                          .errors | inputError
                       }}
                     </p>
 
@@ -940,7 +945,7 @@
                     </svg-icon>
 
                     <svg-icon
-                      (click)="clearInput('departmentPhone', true)"
+                      (click)="clearInput('departmentPhone')"
                       class="clear-icon"
                       ngbTooltip="Clear"
                       placement="bottom-left"
@@ -975,13 +980,212 @@
                     >
                     <p
                       *ngIf="
-                        this.departmentAdditionalForm.get('departmentEmail').errors &&
-                        this.departmentAdditionalForm.get('departmentEmail').touched
+                        this.departmentAdditionalForm.get('departmentEmail')
+                          .errors &&
+                        this.departmentAdditionalForm.get('departmentEmail')
+                          .touched
                       "
                       class="m-0 required-notice invalid-length"
                     >
                       {{
-                        this.departmentAdditionalForm.get("departmentEmail").errors
+                        this.departmentAdditionalForm.get("departmentEmail")
+                          .errors | inputError
+                      }}
+                    </p>
+
+                    <svg-icon
+                      class="valid-icon"
+                      src="assets/img/form-validation/check-icon-light-blue.svg"
+                    >
+                    </svg-icon>
+
+                    <svg-icon
+                      class="x-invalid-icon"
+                      src="assets/img/form-validation/x-icon-light-red.svg"
+                    >
+                    </svg-icon>
+
+                    <svg-icon
+                      (click)="clearInput('departmentEmail')"
+                      class="clear-icon"
+                      ngbTooltip="Clear"
+                      placement="bottom-left"
+                      src="assets/img/form-validation/x-icon-cut.svg"
+                    ></svg-icon>
+                  </div>
+                  <div class="additional-buttons">
+                    <svg-icon
+                      (click)="
+                        addDepartmentContacts(this.departmentAdditionalForm)
+                      "
+                      class="additional-button-confirm"
+                      src="assets/img/svgs/settings-company/settings-confirm.svg"
+                    ></svg-icon>
+                    <svg-icon
+                      (click)="cancelDepartmentContacts()"
+                      class="additional-button-cancel"
+                      src="assets/img/svgs/settings-company/settings-cancel.svg"
+                    ></svg-icon>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!------------------Bank account ------------------->
+        <div
+          class="col-12 note-wrapper{{
+            bankAccountZone ? ' visible-note' : ' hidden-note'
+          }}"
+          style="margin-top: 6px"
+        >
+          <div (click)="openZone('bankaccount')" class="note-label-wrapper">
+            <div class="d-flex align-items-center">
+              <app-ta-counter
+                [count]="getBankAccounts.length"
+                [countColor]="'#B7B7B7'"
+                [countBackground]="'#F3F3F3'"
+                [countHeight]="'24px'"
+                [countWidth]="'24px'"
+                [countTextBottomPosition]="'3px'"
+              ></app-ta-counter>
+              <span class="note-label">Bank Account</span>
+            </div>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              bankAccountZone ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <!-- Add BankAccount Initial -->
+            <div
+              *ngIf="!bankAccountFields"
+              class="add-form-array"
+              (click)="addFormArray('bankaccount')"
+            >
+              <svg-icon
+                class="form-array-add"
+                src="assets/img/svgs/settings-company/settings-add.svg"
+              ></svg-icon>
+
+              <div class="form-array-text">Add Bank Account</div>
+            </div>
+
+            <!-- Form Array Card -->
+            <div
+              *ngIf="
+                bankAccountFields &&
+                getBankAccounts.length &&
+                showBankAccountsCards
+              "
+              formArrayName="bankAccounts"
+            >
+              <div
+                class="form-array-card"
+                *ngFor="
+                  let bankAccount of getBankAccounts.controls;
+                  trackBy: identifyBankAccount;
+                  let ind = index
+                "
+              >
+                <div class="form-array-card-top">
+                  <!-- department.value.departmentName -->
+                  <div class="form-array-card-name form-array-bank-name">
+                    <p>Bank Of America</p>
+                    <svg-icon
+                      class="bankstatus-svg"
+                      src="{{ bankAccountStatus[0].svg }}"
+                    ></svg-icon>
+                  </div>
+                  <div class="form-array-card-buttons">
+                    <svg-icon
+                      class="form-array-card-edit"
+                      src="assets/img/svgs/settings-company/settings-edit.svg"
+                      (click)="editBankAccount(bankAccount, ind)"
+                    ></svg-icon>
+                    <svg-icon
+                      class="form-array-card-delete"
+                      src="assets/img/svgs/settings-company/settings-trash.svg"
+                      (click)="deleteBankAccount(ind)"
+                    ></svg-icon>
+                  </div>
+                </div>
+                <div class="form-array-bank-bottom">
+                  <div class="card-bottom-col-1">
+                    <p class="card-bottom-col-1-first">Routing</p>
+                    <p>{{ bankAccount.value.routing }}</p>
+                  </div>
+                  <div class="card-bottom-col-2">
+                    <p class="card-bottom-col-1-first">Account</p>
+                    <div class="d-flex justify-content-between">
+                      <p>{{ bankAccount.value.account }}</p>
+                      <svg-icon
+                        src="assets/img/svgs/settings-company/settings-eye-hidden.svg"
+                      ></svg-icon>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form
+              *ngIf="bankAccountFields"
+              [formGroup]="bankAccountadditionalForm"
+            >
+              <div class="row">
+                <div class="col-12" style="margin: 28px 0px">
+                  <ng-select
+                    [items]="departments"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="bankName"
+                    placeholder="Bank Name"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+
+                <div class="col-5">
+                  <div
+                    class="form-label-group input-icon input-holder {{
+                      manageInputValidation(
+                        this.bankAccountadditionalForm.get('routing')
+                      )
+                    }}"
+                  >
+                    <input
+                      id="routing"
+                      class="form-control input-control required"
+                      formControlName="routing"
+                      placeholder="Routing #"
+                      maxlength="9"
+                      minlength="9"
+                      appInputFocus
+                      (keypress)="keyPress($event, 'routing', 'number')"
+                      (paste)="onPaste($event, 'routing')"
+                    />
+                    <label class="required-label" for="routing"
+                      >Routing #</label
+                    >
+                    <p
+                      *ngIf="
+                        this.bankAccountadditionalForm.get('routing').errors &&
+                        this.bankAccountadditionalForm.get('routing').touched
+                      "
+                      class="m-0 required-notice invalid-length"
+                    >
+                      {{
+                        this.bankAccountadditionalForm.get("routing").errors
                           | inputError
                       }}
                     </p>
@@ -999,7 +1203,63 @@
                     </svg-icon>
 
                     <svg-icon
-                      (click)="clearInput('departmentEmail', true)"
+                      (click)="clearInput('routing')"
+                      class="clear-icon"
+                      ngbTooltip="Clear"
+                      placement="bottom-left"
+                      src="assets/img/form-validation/x-icon-cut.svg"
+                    ></svg-icon>
+                  </div>
+                </div>
+                <div class="col-7 d-flex">
+                  <div
+                    class="form-label-group input-icon input-holder {{
+                      manageInputValidation(
+                        this.bankAccountadditionalForm.get('account')
+                      )
+                    }}"
+                  >
+                    <input
+                      id="account"
+                      class="form-control input-control required"
+                      formControlName="account"
+                      placeholder="Account #"
+                      appInputFocus
+                      maxlength="17"
+                      minlength="4"
+                      (keypress)="onEmailTyping($event)"
+                      (paste)="onPaste($event, 'account')"
+                    />
+                    <label class="required-label" for="account"
+                      >Account #</label
+                    >
+                    <p
+                      *ngIf="
+                        this.bankAccountadditionalForm.get('account').errors &&
+                        this.bankAccountadditionalForm.get('account').touched
+                      "
+                      class="m-0 required-notice invalid-length"
+                    >
+                      {{
+                        this.bankAccountadditionalForm.get("account").errors
+                          | inputError
+                      }}
+                    </p>
+
+                    <svg-icon
+                      class="valid-icon"
+                      src="assets/img/form-validation/check-icon-light-blue.svg"
+                    >
+                    </svg-icon>
+
+                    <svg-icon
+                      class="x-invalid-icon"
+                      src="assets/img/form-validation/x-icon-light-red.svg"
+                    >
+                    </svg-icon>
+
+                    <svg-icon
+                      (click)="clearInput('account')"
                       class="clear-icon"
                       ngbTooltip="Clear"
                       placement="bottom-left"
@@ -1008,12 +1268,12 @@
                   </div>
                   <div class="additional-buttons">
                     <svg-icon
-                      (click)="addDepartmentContacts(this.departmentAdditionalForm)"
+                      (click)="addBankAccount(this.bankAccountadditionalForm)"
                       class="additional-button-confirm"
                       src="assets/img/svgs/settings-company/settings-confirm.svg"
                     ></svg-icon>
                     <svg-icon
-                      (click)="cancelDepartmentContacts()"
+                      (click)="cancelBankAccount()"
                       class="additional-button-cancel"
                       src="assets/img/svgs/settings-company/settings-cancel.svg"
                     ></svg-icon>
@@ -1021,6 +1281,1709 @@
                 </div>
               </div>
             </form>
+          </div>
+        </div>
+        <!------------------ Load Format & Customer Billing -------------------->
+
+        <div
+          class="col-12 note-wrapper{{
+            loadFormatCustomerBillingZone ? ' visible-note' : ' hidden-note'
+          }}"
+          style="margin-top: 6px"
+        >
+          <div
+            (click)="openZone('loadFormatCustomerBillingZone')"
+            class="note-label-wrapper"
+            style="margin-bottom: 25px"
+          >
+            <span class="note-label">Load Format and Customer Billing</span>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              loadFormatCustomerBillingZone ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <div class="custom-row-load-billing">
+              <div class="col-prefix">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(this.companyForm.get('loadPrefix'))
+                  }}"
+                >
+                  <input
+                    id="loadPrefix"
+                    class="form-control input-control required"
+                    formControlName="loadPrefix"
+                    placeholder="Prefix"
+                    appInputFocus
+                    maxlength="3"
+                    (keypress)="onEmailTyping($event)"
+                    (paste)="onPaste($event, 'loadPrefix')"
+                  />
+                  <label for="loadPrefix">Prefix</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('loadPrefix').errors &&
+                      this.companyForm.get('loadPrefix').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{ this.companyForm.get("loadPrefix").errors | inputError }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('loadPrefix')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+              <div class="col-starting">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(this.companyForm.get('loadStarting'))
+                  }}"
+                >
+                  <input
+                    id="loadStarting"
+                    class="form-control input-control required"
+                    formControlName="loadStarting"
+                    placeholder="Starting #"
+                    appInputFocus
+                    maxlength="3"
+                    (keypress)="onEmailTyping($event)"
+                    (paste)="onPaste($event, 'loadStarting')"
+                  />
+                  <label for="loadStarting">Starting #</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('loadStarting').errors &&
+                      this.companyForm.get('loadStarting').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("loadStarting").errors | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('loadStarting')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+              <div class="col-suffix">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(this.companyForm.get('loadSuffix'))
+                  }}"
+                >
+                  <input
+                    id="loadSuffix"
+                    class="form-control input-control required"
+                    formControlName="loadSuffix"
+                    placeholder="Suffix"
+                    appInputFocus
+                    maxlength="3"
+                    (keypress)="onEmailTyping($event)"
+                    (paste)="onPaste($event, 'loadSuffix')"
+                  />
+                  <label for="loadSuffix">Suffix</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('loadSuffix').errors &&
+                      this.companyForm.get('loadSuffix').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{ this.companyForm.get("loadSuffix").errors | inputError }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('loadSuffix')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+              <div class="col-autoinvoicing">
+                <div class="settings-checkbox">
+                  <input
+                    class="settings-checkbox-check"
+                    type="checkbox"
+                    name="checkbox"
+                    id="checkbox-autoinvoicing"
+                    formControlName="autoIvoicing"
+                  />
+                  <label
+                    for="checkbox-autoinvoicing"
+                    class="settings-checkbox-text"
+                    >Auto Invoicing</label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-7 d-flex">
+                <p class="settings-switcher-text">Preferred Load Type</p>
+                <div class="settings-switcher">
+                  <input
+                    formControlName="prefferedLoadType"
+                    type="radio"
+                    id="ftl"
+                    value="FTL"
+                  />
+                  <label for="ftl" class="settings-switcher-left"> FTL </label>
+                  <input
+                    formControlName="prefferedLoadType"
+                    type="radio"
+                    id="ltl"
+                    value="LTL"
+                  />
+                  <label for="ltl" class="settings-switcher-right"> LTL </label>
+                </div>
+              </div>
+              <div class="col-5 factor-default">
+                <div class="settings-checkbox">
+                  <input
+                    class="settings-checkbox-check"
+                    type="checkbox"
+                    name="checkbox"
+                    id="checkbox-factor"
+                    formControlName="factorByDefault"
+                  />
+                  <label for="checkbox-factor" class="settings-checkbox-text"
+                    >Factor by Default</label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 30px">
+              <div class="col-6">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('customerPayTerm')
+                    )
+                  }}"
+                >
+                  <input
+                    id="customerPayTerm"
+                    class="form-control input-control"
+                    formControlName="customerPayTerm"
+                    placeholder="Customer Pay Term"
+                    maxlength="3"
+                    appInputFocus
+                    (keypress)="keyPress($event, 'customerPayTerm', 'number')"
+                    (paste)="onPaste($event, 'customerPayTerm')"
+                  />
+                  <label for="customerPayTerm">Customer Pay Term</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('customerPayTerm').errors &&
+                      this.companyForm.get('customerPayTerm').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("customerPayTerm").errors
+                        | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('customerPayTerm')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+              <div class="col-6">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('customerPayTerm')
+                    )
+                  }}"
+                >
+                  <input
+                    id="customerCredit"
+                    class="form-control input-control customer-credit"
+                    formControlName="customerCredit"
+                    placeholder="Customer Creadit"
+                    maxlength="15"
+                    appInputFocus
+                    (keypress)="keyPress($event, 'customerCredit', 'number')"
+                    (paste)="onPaste($event, 'customerCredit')"
+                  />
+                  <label for="customerCredit">Customer Credit</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('customerCredit').errors &&
+                      this.companyForm.get('customerCredit').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("customerCredit").errors | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('customerCredit')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!------------------  Expiration  -------------------------------------->
+        <div
+          class="col-12 note-wrapper{{
+            expirationZone ? ' visible-note' : ' hidden-note'
+          }}"
+        >
+          <div (click)="openZone('expirationZone')" class="note-label-wrapper">
+            <span class="note-label">Expiration</span>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              expirationZone ? ' note-visible' : ' note-hidden'
+            }}"
+            style="margin-bottom: 6px"
+          >
+            <div class="row" style="padding-top: 25px; height: 40px">
+              <div class="col-4">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(this.companyForm.get('expirationMvr'))
+                  }}"
+                >
+                  <input
+                    id="expirationMvr"
+                    class="form-control input-control expiration-months"
+                    formControlName="expirationMvr"
+                    placeholder="MVR"
+                    appInputFocus
+                    (keypress)="keyPress($event, 'expirationMvr', 'number')"
+                    (paste)="onPaste($event, 'expirationMvr')"
+                  />
+                  <label for="expirationMvr">MVR</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('expirationMvr').errors &&
+                      this.companyForm.get('expirationMvr').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("expirationMvr").errors | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('expirationMvr')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+              <div class="col-4">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('expirationTruckInspection')
+                    )
+                  }}"
+                >
+                  <input
+                    id="expirationTruckInspection"
+                    class="form-control input-control expiration-months"
+                    formControlName="expirationTruckInspection"
+                    placeholder="Truck Inspection"
+                    appInputFocus
+                    (keypress)="
+                      keyPress($event, 'expirationTruckInspection', 'number')
+                    "
+                    (paste)="onPaste($event, 'expirationTruckInspection')"
+                  />
+                  <label for="expirationTruckInspection"
+                    >Truck Inspection</label
+                  >
+                  <p
+                    *ngIf="
+                      this.companyForm.get('expirationTruckInspection')
+                        .errors &&
+                      this.companyForm.get('expirationTruckInspection').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("expirationTruckInspection").errors
+                        | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('expirationTruckInspection')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+              <div class="col-4">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('expirationTrailerInspection')
+                    )
+                  }}"
+                >
+                  <input
+                    id="expirationTrailerInspection"
+                    class="form-control input-control expiration-months"
+                    formControlName="expirationTrailerInspection"
+                    placeholder="Trailer Inspection"
+                    appInputFocus
+                    (keypress)="
+                      keyPress($event, 'expirationTrailerInspection', 'number')
+                    "
+                    (paste)="onPaste($event, 'expirationTrailerInspection')"
+                  />
+                  <label for="expirationTrailerInspection"
+                    >Trailer Inspection</label
+                  >
+                  <p
+                    *ngIf="
+                      this.companyForm.get('expirationTrailerInspection')
+                        .errors &&
+                      this.companyForm.get('expirationTrailerInspection')
+                        .touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("expirationTrailerInspection").errors
+                        | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('expirationTrailerInspection')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!------------------------------ Payroll ---------------------------------------->
+      <div class="single-tab-container">
+        <!------------------------- Driver & Owner -------------------------->
+        <div
+          class="col-12 note-wrapper{{
+            driverOwnerZone ? ' visible-note' : ' hidden-note'
+          }}"
+        >
+          <div
+            (click)="openZone('driver-owner')"
+            class="note-label-wrapper"
+            style="margin-bottom: 22px"
+          >
+            <span class="note-label">Driver & Owner</span>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              driverOwnerZone ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <div class="row">
+              <div class="col-6">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="driverOwnerPayPeriod"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="days"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="driverOwnerEndingIn"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('driverOwnerDefaultEmptyMile')
+                    )
+                  }}"
+                >
+                  <input
+                    id="driverOwnerDefaultEmptyMile"
+                    class="form-control input-control customer-credit"
+                    formControlName="driverOwnerDefaultEmptyMile"
+                    placeholder="Default Empty Mile"
+                    maxlength="15"
+                    appInputFocus
+                    (keypress)="
+                      keyPress($event, 'driverOwnerDefaultEmptyMile', 'number')
+                    "
+                    (paste)="onPaste($event, 'driverOwnerDefaultEmptyMile')"
+                  />
+                  <label for="driverOwnerDefaultEmptyMile"
+                    >Default Empty Mile</label
+                  >
+                  <p
+                    *ngIf="
+                      this.companyForm.get('driverOwnerDefaultEmptyMile')
+                        .errors &&
+                      this.companyForm.get('driverOwnerDefaultEmptyMile')
+                        .touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("driverOwnerDefaultEmptyMile").errors
+                        | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('driverOwnerDefaultEmptyMile')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+              <div class="col-6">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('driverOwnerDefaultLoadedMile')
+                    )
+                  }}"
+                >
+                  <input
+                    id="driverOwnerDefaultLoadedMile"
+                    class="form-control input-control customer-credit"
+                    formControlName="driverOwnerDefaultLoadedMile"
+                    placeholder="Default Loaded Mile"
+                    maxlength="15"
+                    appInputFocus
+                    (keypress)="
+                      keyPress($event, 'driverOwnerDefaultLoadedMile', 'number')
+                    "
+                    (paste)="onPaste($event, 'driverOwnerDefaultLoadedMile')"
+                  />
+                  <label for="driverOwnerDefaultLoadedMile"
+                    >Default Loaded Mile</label
+                  >
+                  <p
+                    *ngIf="
+                      this.companyForm.get('driverOwnerDefaultLoadedMile')
+                        .errors &&
+                      this.companyForm.get('driverOwnerDefaultLoadedMile')
+                        .touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("driverOwnerDefaultLoadedMile")
+                        .errors | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('driverOwnerDefaultLoadedMile')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="settings-checkbox loaded-empty-miles">
+                  <input
+                    class="settings-checkbox-check"
+                    type="checkbox"
+                    name="checkbox"
+                    id="checkbox-loaded-empty-miles"
+                    formControlName="sameRateForLoadedAndEmptyMiles"
+                  />
+                  <label
+                    for="checkbox-loaded-empty-miles"
+                    class="settings-checkbox-text"
+                    >Loaded and empty miles have same rate</label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="custom-slider-wrapper custom-slider-wrapper-first">
+                  <p class="custom-slider-text">Default Driver Commission</p>
+                  <ngx-slider
+                    [options]="driverSliderOptions"
+                    formControlName="driverCommission"
+                  ></ngx-slider>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="custom-slider-wrapper">
+                  <p class="custom-slider-text">Default Owner Commission</p>
+                  <ngx-slider
+                    [options]="ownerSliderOptions"
+                    formControlName="ownerCommision"
+                  ></ngx-slider>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!---------------- Accounting ------------------------>
+        <div
+          class="col-12 note-wrapper{{
+            accountingZone ? ' visible-note' : ' hidden-note'
+          }}"
+          style="margin-top: 28px"
+        >
+          <div
+            (click)="openZone('accounting')"
+            class="note-label-wrapper"
+            style="margin-bottom: 22px"
+          >
+            <span class="note-label">Accounting</span>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              accountingZone ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <div class="row">
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="accountingPayPeriod"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="accountingEndingIn"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('accountingDefaultBase')
+                    )
+                  }}"
+                >
+                  <input
+                    id="accountingDefaultBase"
+                    class="form-control input-control customer-credit"
+                    formControlName="accountingDefaultBase"
+                    placeholder="Default Base"
+                    maxlength="15"
+                    appInputFocus
+                    (keypress)="
+                      keyPress($event, 'accountingDefaultBase', 'number')
+                    "
+                    (paste)="onPaste($event, 'accountingDefaultBase')"
+                  />
+                  <label for="accountingDefaultBase">Default Base</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('accountingDefaultBase').errors &&
+                      this.companyForm.get('accountingDefaultBase').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("accountingDefaultBase").errors
+                        | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('accountingDefaultBase')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!------------------------ Company Owner ------------------------>
+        <div
+          class="col-12 note-wrapper{{
+            companyOwnerZone ? ' visible-note' : ' hidden-note'
+          }}"
+        >
+          <div
+            (click)="openZone('company-owner')"
+            class="note-label-wrapper"
+            style="margin-bottom: 22px"
+          >
+            <span class="note-label">Company Owner</span>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              companyOwnerZone ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <div class="row">
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="companyOwnerPayPeriod"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="companyOwnerEndingIn"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('companyOwnerDefaultBase')
+                    )
+                  }}"
+                >
+                  <input
+                    id="companyOwnerDefaultBase"
+                    class="form-control input-control customer-credit"
+                    formControlName="companyOwnerDefaultBase"
+                    placeholder="Default Base"
+                    maxlength="15"
+                    appInputFocus
+                    (keypress)="
+                      keyPress($event, 'companyOwnerDefaultBase', 'number')
+                    "
+                    (paste)="onPaste($event, 'companyOwnerDefaultBase')"
+                  />
+                  <label for="companyOwnerDefaultBase">Default Base</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('companyOwnerDefaultBase').errors &&
+                      this.companyForm.get('companyOwnerDefaultBase').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("companyOwnerDefaultBase").errors
+                        | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('companyOwnerDefaultBase')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!----------------- Dispatch  --------------------------->
+        <div
+        class="col-12 note-wrapper{{
+          dispatchZone ? ' visible-note' : ' hidden-note'
+        }}"
+      >
+        <div
+          (click)="openZone('dispatch')"
+          class="note-label-wrapper"
+          style="margin-bottom: 22px"
+        >
+          <span class="note-label">Dispatch</span>
+
+          <svg-icon
+            class="down-icon"
+            src="assets/img/svgs/down-arrow.svg"
+          ></svg-icon>
+        </div>
+        <div
+          class="example-full-width note-input{{
+            dispatchZone ? ' note-visible' : ' note-hidden'
+          }}"
+        >
+          <div class="row">
+            <div class="col-6">
+              <div class="form-label-group">
+                <ng-select
+                  [items]="pay_period"
+                  appendTo="body"
+                  bindLabel="name"
+                  formControlName="dispatchPayPeriod"
+                >
+                  <ng-template
+                    let-item="item"
+                    let-search="searchTerm"
+                    ng-option-tmp
+                  >
+                    <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-label-group">
+                <ng-select
+                  [items]="pay_period"
+                  appendTo="body"
+                  bindLabel="name"
+                  formControlName="dispatchEndingIn"
+                >
+                  <ng-template
+                    let-item="item"
+                    let-search="searchTerm"
+                    ng-option-tmp
+                  >
+                    <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-6">
+              <div
+                class="form-label-group input-icon input-holder {{
+                  manageInputValidation(
+                    this.companyForm.get('dispatchDefaultBase')
+                  )
+                }}"
+              >
+                <input
+                  id="dispatchDefaultBase"
+                  class="form-control input-control customer-credit"
+                  formControlName="dispatchDefaultBase"
+                  placeholder="Default Base"
+                  maxlength="15"
+                  appInputFocus
+                  (keypress)="
+                    keyPress($event, 'dispatchDefaultBase', 'number')
+                  "
+                  (paste)="onPaste($event, 'dispatchDefaultBase')"
+                />
+                <label for="dispatchDefaultBase">Default Base</label>
+                <p
+                  *ngIf="
+                    this.companyForm.get('dispatchDefaultBase').errors &&
+                    this.companyForm.get('dispatchDefaultBase').touched
+                  "
+                  class="m-0 required-notice invalid-length"
+                >
+                  {{
+                    this.companyForm.get("dispatchDefaultBase").errors
+                      | inputError
+                  }}
+                </p>
+
+                <svg-icon
+                  class="valid-icon"
+                  src="assets/img/form-validation/check-icon-light-blue.svg"
+                >
+                </svg-icon>
+
+                <svg-icon
+                  class="x-invalid-icon"
+                  src="assets/img/form-validation/x-icon-light-red.svg"
+                >
+                </svg-icon>
+
+                <svg-icon
+                  (click)="clearInput('dispatchDefaultBase')"
+                  class="clear-icon"
+                  ngbTooltip="Clear"
+                  placement="bottom-left"
+                  src="assets/img/form-validation/x-icon-cut.svg"
+                ></svg-icon>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="custom-slider-wrapper custom-slider-wrapper-first custom-slider-dispatch-manager">
+                <p class="custom-slider-text">Default Commission</p>
+                <ngx-slider
+                  [options]="dispatchSliderOptions"
+                  formControlName="dispatchDefaultCommission"
+                ></ngx-slider>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <!----------------- Manager ----------------------------->
+        <div
+        class="col-12 note-wrapper{{
+          managerZone ? ' visible-note' : ' hidden-note'
+        }}"
+      >
+        <div
+          (click)="openZone('manager')"
+          class="note-label-wrapper"
+          style="margin-bottom: 22px"
+        >
+          <span class="note-label">Manager</span>
+
+          <svg-icon
+            class="down-icon"
+            src="assets/img/svgs/down-arrow.svg"
+          ></svg-icon>
+        </div>
+        <div
+          class="example-full-width note-input{{
+            managerZone ? ' note-visible' : ' note-hidden'
+          }}"
+        >
+          <div class="row">
+            <div class="col-6">
+              <div class="form-label-group">
+                <ng-select
+                  [items]="pay_period"
+                  appendTo="body"
+                  bindLabel="name"
+                  formControlName="managerPayPeriod"
+                >
+                  <ng-template
+                    let-item="item"
+                    let-search="searchTerm"
+                    ng-option-tmp
+                  >
+                    <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-label-group">
+                <ng-select
+                  [items]="pay_period"
+                  appendTo="body"
+                  bindLabel="name"
+                  formControlName="managerEndingIn"
+                >
+                  <ng-template
+                    let-item="item"
+                    let-search="searchTerm"
+                    ng-option-tmp
+                  >
+                    <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-6">
+              <div
+                class="form-label-group input-icon input-holder {{
+                  manageInputValidation(
+                    this.companyForm.get('managerDefaultBase')
+                  )
+                }}"
+              >
+                <input
+                  id="managerDefaultBase"
+                  class="form-control input-control customer-credit"
+                  formControlName="managerDefaultBase"
+                  placeholder="Default Base"
+                  maxlength="15"
+                  appInputFocus
+                  (keypress)="
+                    keyPress($event, 'managerDefaultBase', 'number')
+                  "
+                  (paste)="onPaste($event, 'managerDefaultBase')"
+                />
+                <label for="managerDefaultBase">Default Base</label>
+                <p
+                  *ngIf="
+                    this.companyForm.get('managerDefaultBase').errors &&
+                    this.companyForm.get('managerDefaultBase').touched
+                  "
+                  class="m-0 required-notice invalid-length"
+                >
+                  {{
+                    this.companyForm.get("managerDefaultBase").errors
+                      | inputError
+                  }}
+                </p>
+
+                <svg-icon
+                  class="valid-icon"
+                  src="assets/img/form-validation/check-icon-light-blue.svg"
+                >
+                </svg-icon>
+
+                <svg-icon
+                  class="x-invalid-icon"
+                  src="assets/img/form-validation/x-icon-light-red.svg"
+                >
+                </svg-icon>
+
+                <svg-icon
+                  (click)="clearInput('managerDefaultBase')"
+                  class="clear-icon"
+                  ngbTooltip="Clear"
+                  placement="bottom-left"
+                  src="assets/img/form-validation/x-icon-cut.svg"
+                ></svg-icon>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="custom-slider-wrapper custom-slider-dispatch-manager">
+                <p class="custom-slider-text">Default Commission</p>
+                <ngx-slider
+                  [options]="managerSliderOptions"
+                  formControlName="managerDefaultCommission"
+                ></ngx-slider>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <!----------------- Recruiting -------------------------->
+        <div
+          class="col-12 note-wrapper{{
+            recruitingZone ? ' visible-note' : ' hidden-note'
+          }}"
+        >
+          <div
+            (click)="openZone('recruiting')"
+            class="note-label-wrapper"
+            style="margin-bottom: 22px"
+          >
+            <span class="note-label">Recruiting</span>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              recruitingZone ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <div class="row">
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="recruitingPayPeriod"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="recruitingEndingIn"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('recruitingDefaultBase')
+                    )
+                  }}"
+                >
+                  <input
+                    id="recruitingDefaultBase"
+                    class="form-control input-control customer-credit"
+                    formControlName="recruitingDefaultBase"
+                    placeholder="Default Base"
+                    maxlength="15"
+                    appInputFocus
+                    (keypress)="
+                      keyPress($event, 'recruitingDefaultBase', 'number')
+                    "
+                    (paste)="onPaste($event, 'recruitingDefaultBase')"
+                  />
+                  <label for="recruitingDefaultBase">Default Base</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('recruitingDefaultBase').errors &&
+                      this.companyForm.get('recruitingDefaultBase').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("recruitingDefaultBase").errors
+                        | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('recruitingDefaultBase')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!----------------- Repair -------------------------->
+        <div
+          class="col-12 note-wrapper{{
+            repairZone ? ' visible-note' : ' hidden-note'
+          }}"
+        >
+          <div
+            (click)="openZone('repair')"
+            class="note-label-wrapper"
+            style="margin-bottom: 22px"
+          >
+            <span class="note-label">Repair</span>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              repairZone ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <div class="row">
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="repairPayPeriod"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="repairEndingIn"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('repairDefaultBase')
+                    )
+                  }}"
+                >
+                  <input
+                    id="repairDefaultBase"
+                    class="form-control input-control customer-credit"
+                    formControlName="repairDefaultBase"
+                    placeholder="Default Base"
+                    maxlength="15"
+                    appInputFocus
+                    (keypress)="keyPress($event, 'repairDefaultBase', 'number')"
+                    (paste)="onPaste($event, 'repairDefaultBase')"
+                  />
+                  <label for="repairDefaultBase">Default Base</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('repairDefaultBase').errors &&
+                      this.companyForm.get('repairDefaultBase').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("repairDefaultBase").errors
+                        | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('repairDefaultBase')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!----------------- Safety -------------------------->
+        <div
+          class="col-12 note-wrapper{{
+            safetyZone ? ' visible-note' : ' hidden-note'
+          }}"
+        >
+          <div
+            (click)="openZone('safety')"
+            class="note-label-wrapper"
+            style="margin-bottom: 22px"
+          >
+            <span class="note-label">Safety</span>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              safetyZone ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <div class="row">
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="safetyPayPeriod"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="safetyEndingIn"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('safetyDefaultBase')
+                    )
+                  }}"
+                >
+                  <input
+                    id="safetyDefaultBase"
+                    class="form-control input-control customer-credit"
+                    formControlName="safetyDefaultBase"
+                    placeholder="Default Base"
+                    maxlength="15"
+                    appInputFocus
+                    (keypress)="keyPress($event, 'safetyDefaultBase', 'number')"
+                    (paste)="onPaste($event, 'safetyDefaultBase')"
+                  />
+                  <label for="safetyDefaultBase">Default Base</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('safetyDefaultBase').errors &&
+                      this.companyForm.get('safetyDefaultBase').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("safetyDefaultBase").errors
+                        | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('safetyDefaultBase')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!----------------- Other -------------------------->
+        <div
+          class="col-12 note-wrapper{{
+            otherZone ? ' visible-note' : ' hidden-note'
+          }}"
+        >
+          <div
+            (click)="openZone('payroll-other')"
+            class="note-label-wrapper"
+            style="margin-bottom: 22px"
+          >
+            <span class="note-label">Other</span>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              otherZone ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <div class="row">
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="otherPayPeriod"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="otherEndingIn"
+                  >
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('otherDefaultBase')
+                    )
+                  }}"
+                >
+                  <input
+                    id="otherDefaultBase"
+                    class="form-control input-control customer-credit"
+                    formControlName="otherDefaultBase"
+                    placeholder="Default Base"
+                    maxlength="15"
+                    appInputFocus
+                    (keypress)="keyPress($event, 'otherDefaultBase', 'number')"
+                    (paste)="onPaste($event, 'otherDefaultBase')"
+                  />
+                  <label for="otherDefaultBase">Default Base</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('otherDefaultBase').errors &&
+                      this.companyForm.get('otherDefaultBase').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("otherDefaultBase").errors
+                        | inputError
+                    }}
+                  </p>
+
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
+
+                  <svg-icon
+                    (click)="clearInput('otherDefaultBase')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -200,7 +200,8 @@ import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counte
     NgxDropzoneModule,
     CroppieModule,
     DragDropFileDirective,
-    TaCounterComponent
+    TaCounterComponent,
+    NgxSliderModule
   ],
   providers: [SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

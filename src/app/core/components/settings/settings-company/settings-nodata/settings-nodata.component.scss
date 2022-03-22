@@ -13,9 +13,10 @@
 
   .settings-edit-button {
     display: inline-block;
-    position: absolute;
-    top: 57px;
-    left: 481px;
+    position: relative;
+    top: 56px;
+    left: 482px;
+
     border: 5px solid rgba(86, 115, 170, 0.3);
     border-radius: 3px;
 
@@ -32,9 +33,9 @@
 
   .no-settings-text {
     display: inline-block;
-    position: absolute;
-    top: 103px;
-    left: 410px;
+    position: relative;
+    top: 95px;
+    left: 363px;
     height: 27px;
     width: 193px;
     color: $settings-color-dark;

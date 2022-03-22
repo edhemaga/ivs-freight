@@ -1,5 +1,16 @@
 @import "../../../settings.global.scss";
 
+// Override global note-visible style
+.note-visible {
+  max-height: none !important;
+}
+
+.hidden-note {
+  height: 30px !important;
+  margin-bottom: 6px !important;
+}
+
+// Add Department, Add BankAccount....
 .add-form-array {
   display: flex;
   align-items: center;
@@ -37,6 +48,7 @@
   }
 }
 
+// Phone extension (+300)
 .department-phone-add {
   margin-left: 2px;
   svg {
@@ -72,6 +84,7 @@
   }
 }
 
+// Confitm & Clear buttons
 .additional-buttons {
   display: flex;
   align-items: center;
@@ -108,6 +121,7 @@
   }
 }
 
+// Form Array Dynamic Cards
 .form-array-card {
   width: 100%;
   height: 58px;
@@ -119,6 +133,9 @@
   margin-top: 12px;
   padding: 4px 6px;
   border-radius: 3px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 
   .form-array-card-top {
@@ -129,6 +146,16 @@
 
     .form-array-card-name {
       font-weight: $settings-font-semibold;
+    }
+
+    .form-array-bank-name {
+      display: flex;
+    }
+
+    .bankstatus-svg {
+      margin-left: 6px;
+      position: relative;
+      bottom: 1px;
     }
 
     .form-array-card-buttons {
@@ -200,6 +227,23 @@
     }
   }
 
+  .form-array-bank-bottom {
+    display: grid;
+    grid-template-columns: 188px 256px;
+    grid-template-rows: 18px;
+
+    .card-bottom-col-1,
+    .card-bottom-col-2 {
+      display: flex;
+      align-items: center;
+
+      .card-bottom-col-1-first {
+        font-weight: $settings-font-semibold;
+        margin-right: 6px;
+      }
+    }
+  }
+
   &:hover {
     color: #919191 !important;
     transition: $transition;
@@ -220,4 +264,274 @@
       }
     }
   }
+}
+
+// Custom row for irp, ifta, toll, scac on company basic modal
+.custom-row-basic {
+  display: grid;
+  grid-template-columns: 90px 130px 110px 90px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+
+  .col-irp {
+    grid-column: 1 / 2;
+  }
+  .col-ifra {
+    grid-column: 2 / 3;
+  }
+  .col-toll {
+    grid-column: 3 / 4;
+  }
+  .coll-scac {
+    grid-column: 4 / -1;
+  }
+
+  // Override global style
+  div {
+    padding: 0px !important;
+  }
+}
+
+// Additional load format and customer billing
+.custom-row-load-billing {
+  display: grid;
+  grid-template-columns: repeat(3, 94px) 1fr;
+  grid-template-rows: 40px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 19px;
+
+  // Override global style
+  div {
+    padding: 0px !important;
+  }
+}
+
+// Custom checkbox for settings
+.settings-checkbox {
+  display: flex;
+  align-items: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: relative;
+  bottom: 1px;
+
+  .settings-checkbox-check[type="checkbox"] {
+    visibility: hidden;
+  }
+
+  label {
+    cursor: pointer;
+    position: absolute;
+    top: 3px;
+    right: -2px;
+  }
+
+  input[type="checkbox"] + label:before {
+    background-color: #dadada;
+    content: " ";
+    display: inline-block;
+    height: 14px;
+    width: 14px;
+    border-radius: 3px;
+    position: absolute;
+    left: -18px;
+    top: 3px;
+    cursor: pointer;
+  }
+  input[type="checkbox"]:checked + label:before {
+    background: #6c6c6c;
+    content: " ";
+  }
+
+  .settings-checkbox-text {
+    color: #b7b7b7;
+    font-weight: $settings-font-medium;
+    margin-left: 6px;
+    font-size: 14px;
+  }
+}
+// Checbkox custom positioning
+.factor-default {
+  position: relative;
+  right: -2px;
+  bottom: 1.5px;
+  width: 140px;
+}
+.loaded-empty-miles {
+  position: relative;
+  bottom: 11px;
+  right: 140px;
+
+  .settings-checkbox label {
+    cursor: pointer;
+    position: absolute;
+    top: -3px;
+    right: 40px;
+  }
+}
+
+// Custom Settings Switcher
+.settings-switcher-text {
+  color: #b7b7b7;
+  font-weight: 500;
+  font-size: 14px;
+}
+.settings-switcher {
+  width: 83px;
+  height: 26px;
+  color: #dadada;
+  background-color: #f3f3f3;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 3px;
+  padding: 2px;
+  position: relative;
+  user-select: none;
+  margin-left: 6px;
+  position: relative;
+  bottom: 2px;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  .settings-switcher-left,
+  .settings-switcher-right {
+    width: 38px;
+    height: 22px;
+    text-align: center;
+    position: absolute;
+    top: 2px;
+    padding: 2px 8px;
+    cursor: pointer;
+  }
+
+  .settings-switcher-right {
+    right: 2px;
+  }
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  input:checked + label {
+    color: #536bc2;
+    background: #ffffff;
+    border-radius: 3px;
+    transition: $transition;
+  }
+
+  input:checked + label:hover {
+    color: #3551b7;
+    background: #ffffff;
+    border-radius: 3px;
+    transition: $transition;
+  }
+
+  input + label:hover {
+    color: #b7b7b7;
+    background: #ffffff;
+    border-radius: 3px;
+    transition: $transition;
+  }
+}
+
+// Custom Placeholder Icons
+.customer-credit {
+  background-image: url("../../../../../../../assets/img/svgs/settings-company/settings-dolar.svg");
+  background-position: calc(100% - 3px) center;
+  background-repeat: no-repeat;
+  background-size: 18px 19px;
+
+  &:focus:not(:placeholder-shown) {
+    background-image: none;
+  }
+}
+.expiration-months {
+  background-image: url("../../../../../../../assets/img/svgs/settings-company/settings-months.svg");
+  background-position: calc(100% - 7px) center;
+  background-repeat: no-repeat;
+  background-size: 55px 19px;
+
+  &:focus:not(:placeholder-shown) {
+    background-image: none;
+  }
+}
+
+// NGX-SLIDER CUSTOm
+.custom-slider-wrapper {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  .custom-slider-text {
+    font-size: 10px;
+    font-weight: 600;
+    color: #b7b7b7;
+    margin-bottom: 9px;
+  }
+
+  .ngx-slider {
+    margin: 0 !important;
+
+    // FULL LINE
+    .ngx-slider-bar {
+      height: 6px;
+      background: #eeeeee !important;
+    }
+
+    // ACTIVE LINE
+    .ngx-slider-selection {
+      background-color: #bbc7dd !important;
+    }
+
+    // Number
+    .ngx-slider-bubble {
+      cursor: pointer;
+      color: #b7b7b7 !important;
+      font-size: 12px !important;
+      box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
+      background-color: #ffffff;
+      font-weight: bold !important;
+      position: absolute;
+      top: -7.5px;
+      width: 44px;
+      height: 20px;
+      padding: 1px 5px;
+      z-index: 1;
+
+      &::after {
+        content: "%";
+      }
+    }
+
+    // Pointer
+    .ngx-slider-pointer {
+      width: 44px;
+      height: 22px;
+      background-color: transparent !important;
+
+      border-radius: 2px !important;
+      top: -8.5px;
+
+      &::after {
+        content: none !important;
+      }
+    }
+  }
+}
+.custom-slider-wrapper-first {
+  .ngx-slider {
+    .ngx-slider-bubble {
+      &::after {
+        content: ".0%" !important;
+      }
+    }
+  }
+}
+.custom-slider-dispatch-manager {
+  position: relative;
+  bottom: 19px;
 }

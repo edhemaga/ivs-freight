@@ -94,7 +94,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
 
     
     const hasSettingsInRoute = urlString.includes('settings');
-
+    console.log(hasSettingsInRoute)
     if (hasSettingsInRoute) {
       this.router.navigate([`/${reloadUrl}`]);
       this.onActivateFooterRoutes.emit(true);
