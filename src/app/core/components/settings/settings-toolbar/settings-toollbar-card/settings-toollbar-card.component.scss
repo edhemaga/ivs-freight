@@ -8,10 +8,16 @@
   align-items: center;
   padding: 7px 6px;
   background-color: $settings-background;
-  
+
   &.card-toolbar-first {
     background-color: transparent;
     padding: 0px;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    pointer-events: none !important;
+    cursor: none !important;
   }
 
   &.active {
@@ -28,17 +34,6 @@
     .toolbar-card-name {
       color: $settings-background !important;
     }
-  }
-
-  .toolbar-card-count {
-    width: 24px;
-    height: 24px;
-    text-align: center;
-    background-color: $settings-line;
-    color: $settings-color;
-    font-weight: $settings-font-extrabold;
-    margin-right: 4px;
-    border-radius: 3px;
   }
 
   .toolbar-card-svg {

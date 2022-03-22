@@ -20,6 +20,8 @@
     .settings-card-arrow {
       transform: rotate(0deg);
       transition: $settings-transition;
+      position: relative;
+      top: 1px;
 
       &.rotate {
         transform: rotate(180deg);
@@ -53,6 +55,8 @@
     .settings-card-header-rightSide {
       display: flex;
       align-items: center;
+      position: relative;
+      bottom: 2px;
 
       .settings-card-status {
         height: 20px;

@@ -65,6 +65,7 @@ import { LogoChangeComponent } from '../../components/shared/logo-change/logo-ch
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CroppieModule } from 'angular-croppie-module';
 import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
+import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counter.component';
 @NgModule({
   declarations: [
     AutoFocusDirective,
@@ -108,7 +109,8 @@ import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
     EditProfileImageComponent,
     EditProfileImageComponent,
     LogoChangeComponent,
-    DragDropFileDirective
+    DragDropFileDirective,
+    TaCounterComponent
   ],
   imports: [
     CommonModule,
@@ -197,7 +199,9 @@ import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
     LogoChangeComponent,
     NgxDropzoneModule,
     CroppieModule,
-    DragDropFileDirective
+    DragDropFileDirective,
+    TaCounterComponent,
+    NgxSliderModule
   ],
   providers: [SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

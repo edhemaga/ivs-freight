@@ -8,9 +8,7 @@
     (click)="isCardOpen = !isCardOpen"
   >
     <div class="settings-card-header-leftSide">
-      <div *ngIf="cardCount" class="settings-header-count">
-        {{ cardCount }}
-      </div>
+      <app-ta-counter *ngIf="cardCount" [cardCount]="cardCount"></app-ta-counter>
       <p class="settings-card-header-name">{{ cardName }}</p>
     </div>
 

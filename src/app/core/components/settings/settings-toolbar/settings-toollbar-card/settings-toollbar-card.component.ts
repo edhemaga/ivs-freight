@@ -12,4 +12,6 @@ export class SettingsToollbarCardComponent {
   @Input() cardSvg: boolean;
   @Input() cardBackground: boolean;
   @Input() route: string;
+
+  
 }
