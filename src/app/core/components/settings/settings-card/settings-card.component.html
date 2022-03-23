@@ -8,7 +8,16 @@
     (click)="isCardOpen = !isCardOpen"
   >
     <div class="settings-card-header-leftSide">
-      <app-ta-counter *ngIf="cardCount" [cardCount]="cardCount"></app-ta-counter>
+      <app-ta-counter
+        *ngIf="cardCount"
+        [count]="cardCount"
+        [countColor]="'#6C6C6C'"
+        [countBackground]="'#F7F7F7'"
+        [countHeight]="'24px'"
+        [countWidth]="'24px'"
+        [countTextBottomPosition]="'-2px'"
+      >
+      </app-ta-counter>
       <p class="settings-card-header-name">{{ cardName }}</p>
     </div>
 
@@ -25,6 +34,7 @@
   </div>
   <div
     *ngIf="isCardOpen"
+    #cardBody
     class="settings-card-body"
     [ngClass]="{ 'no-line': !hasLine }"
   >
@@ -119,6 +129,50 @@
               <div class="insurance-field-value">{{ item.value }}</div>
             </div>
           </div>
+        </div>
+      </div>
+      <div *ngSwitchCase="'parkingTemplate'">
+        <div class="parking-template-data">
+          <div class="parking-template-item">
+            <p class="parking-template-number">{{ data.parking_slot }}</p>
+            <p class="parking-template-text">Parking Slot</p>
+          </div>
+          <div class="parking-template-item">
+            <p class="parking-template-number">{{ data.parking_slot_full }}</p>
+            <p class="parking-template-text">Full Parking Slot</p>
+          </div>
+          <div class="parking-template-item">
+            <svg-icon
+              class="parking-template-svg"
+              [ngClass]="{ disabled: !data.security_camera }"
+              src="assets/img/svgs/settings-company/settings-security-camera.svg"
+            ></svg-icon>
+            <p
+              class="parking-template-text"
+              [ngClass]="{ 'cross-out': !data.security_camera }"
+            >
+              Security Camera
+            </p>
+          </div>
+          <div class="parking-template-item">
+            <svg-icon
+              class="parking-template-svg"
+              [ngClass]="{ disabled: !data.gate }"
+              src="assets/img/svgs/settings-company/settings-security-gate.svg"
+            ></svg-icon>
+            <p
+              class="parking-template-text"
+              [ngClass]="{ 'cross-out': !data.gate }"
+            >
+              Gate
+            </p>
+          </div>
+          <app-truckassist-progress-expiration
+            [expireDate]="'03/31/2023'"
+            [status]="'03/01/2021'"
+            [startDate]="'03/12/2020'"
+            [expiresSettings]="true"
+          ></app-truckassist-progress-expiration>
         </div>
       </div>
     </div>

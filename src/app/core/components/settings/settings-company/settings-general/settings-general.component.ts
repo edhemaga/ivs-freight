@@ -183,6 +183,6 @@ export class SettingsGeneralComponent {
   constructor(private settingsStoreService: SettingsStoreService) {}
 
   public onAction(modal: { modalName: string; type: boolean; action: string }) {
-    this.settingsStoreService.modalSubject$.next(modal);
+    this.settingsStoreService.onModalAction(modal.type, modal.modalName, modal.action);
   }
 }

@@ -16,7 +16,7 @@ export class SettingsFactoringComponent {
   public onAction(modal: { modalName: string; type: boolean; action: string }) {
     switch(modal.action) {
       case 'edit': {
-        this.settingsStoreService.modalSubject$.next(modal)
+        this.settingsStoreService.onModalAction(modal.type, modal.modalName, modal.action);
         break;
       }
       default: {

@@ -12,5 +12,5 @@
     <app-settings-factoring></app-settings-factoring>
   </div>
 
-  <app-settings-nodata *ngIf="!isModalOpen"></app-settings-nodata>
+  <app-settings-nodata *ngIf="!(isModalOpen$ | async)"></app-settings-nodata>
 </div>
