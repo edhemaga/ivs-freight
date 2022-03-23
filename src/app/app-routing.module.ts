@@ -65,10 +65,44 @@ const routes: Routes = [
         (m) => m.CustomerModule
       ),
   },
+  {
+    path: 'load',
+    loadChildren: () =>
+      import('./core/components/load/load.module').then((m) => m.LoadModule),
+  },
+  {
+    path: 'repair',
+    loadChildren: () =>
+      import('./core/components/repair/repair.module').then(
+        (m) => m.RepairModule
+      ),
+  },
+  {
+    path: 'fuel',
+    loadChildren: () =>
+      import('./core/components/fuel/fuel.module').then((m) => m.FuelModule),
+  },
+  {
+    path: 'owner',
+    loadChildren: () =>
+      import('./core/components/owner/owner.module').then((m) => m.OwnerModule),
+  },
+  {
+    path: 'account',
+    loadChildren: () =>
+      import('./core/components/account/account.module').then(
+        (m) => m.AccountModule
+      ),
+  },
+  {
+    path: 'contact',
+    loadChildren: () =>
+      import('./core/components/contacts/contacts.module').then(
+        (m) => m.ContactsModule
+      ),
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];
-
-/* Customer */
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
