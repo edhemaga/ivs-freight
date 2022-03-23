@@ -6,49 +6,7 @@
   grid-template-rows: 32px auto;
   row-gap: 12px;
 
-  .settings-header {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    .settings-name {
-      height: 100%;
-      flex: 1;
-      margin-right: 4px;
-      padding: 7px 12px;
-      color: $settings-color;
-      background-color: $settings-background;
-      font-weight: $settings-font-extrabold;
-      border-radius: $settings-borderRadius;
-    }
-
-    .settings-header-button {
-      width: 32px;
-      height: 100%;
-
-      .settings-edit-button {
-        &:hover {
-          transform: $transition;
-          cursor: pointer;
-          svg {
-            path {
-              fill: $settings-color-dark;
-            }
-          }
-        }
-      }
-    }
-  }
-
   .settings-body {
-    width: 100%;
-    height: 100%;
-    color: $settings-color-dark;
-    background-color: $settings-background;
-    border-radius: $settings-borderRadius;
-    padding: 12px;
     padding-top: 8px;
 
     &.gradient {
@@ -67,7 +25,7 @@
         .producer-name {
           font-size: 18px;
           font-weight: $settings-font-medium;
-          color: $settings-color-dark;
+          color: $settings-gray-dark;
         }
 
         .producer-actions {
@@ -81,7 +39,7 @@
               cursor: pointer;
               svg {
                 path {
-                  fill: $settings-color;
+                  fill: $settings-gray;
                 }
               }
             }
@@ -96,7 +54,7 @@
               cursor: pointer;
               svg {
                 path {
-                  fill: $settings-color;
+                  fill: $settings-gray;
                 }
               }
             }
@@ -108,7 +66,7 @@
               cursor: pointer;
               svg {
                 path {
-                  fill: $settings-color;
+                  fill: $settings-gray;
                 }
               }
             }
@@ -138,24 +96,19 @@
       }
 
       .settings-line {
-        margin: 0;
-        height: 2px;
-        width: 100%;
-        border-radius: 1px;
-        background-color: $settings-line;
         margin-bottom: 6px;
       }
     }
 
     .show-details {
-      color: $settings-color-lightBlue;
+      color: $settings-blue-light;
       font-size: 12px;
       font-weight: $settings-font-bold;
       margin-top: 12px;
 
       &:hover {
         transition: $settings-transition;
-        color: $settings-color-blue;
+        color: $settings-blue;
         cursor: pointer;
       }
     }

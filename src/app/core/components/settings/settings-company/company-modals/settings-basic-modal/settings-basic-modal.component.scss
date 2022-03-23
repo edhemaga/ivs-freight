@@ -23,7 +23,7 @@
   }
 
   &:hover {
-    transition: $transition;
+    transition: $settings-transition;
     cursor: pointer;
 
     .form-array-add {
@@ -66,7 +66,7 @@
   }
 
   &:hover {
-    transition: $transition;
+    transition: $settings-transition;
     cursor: pointer;
     svg {
       #Rectangle_22881 {
@@ -96,7 +96,7 @@
     margin-right: 6px;
 
     &:hover {
-      transition: $transition;
+      transition: $settings-transition;
       cursor: pointer;
       svg {
         #Rectangle_20156 {
@@ -109,7 +109,7 @@
 
   .additional-button-cancel {
     &:hover {
-      transition: $transition;
+      transition: $settings-transition;
       cursor: pointer;
       svg {
         #Rectangle_20157 {
@@ -246,7 +246,7 @@
 
   &:hover {
     color: #919191 !important;
-    transition: $transition;
+    transition: $settings-transition;
 
     .form-array-card-buttons {
       display: block;
@@ -421,21 +421,21 @@
     color: #536bc2;
     background: #ffffff;
     border-radius: 3px;
-    transition: $transition;
+    transition: $settings-transition;
   }
 
   input:checked + label:hover {
     color: #3551b7;
     background: #ffffff;
     border-radius: 3px;
-    transition: $transition;
+    transition: $settings-transition;
   }
 
   input + label:hover {
     color: #b7b7b7;
     background: #ffffff;
     border-radius: 3px;
-    transition: $transition;
+    transition: $settings-transition;
   }
 }
 
