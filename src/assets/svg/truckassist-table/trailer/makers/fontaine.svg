@@ -1,0 +1,33 @@
+<svg height="12.749" viewBox="0 0 100 12.749" width="100" xmlns="http://www.w3.org/2000/svg">
+  <g data-name="Group 11803" id="Group_11803" transform="translate(-2830 16311.001)">
+    <path d="M225.958,393.529H222.7v9.308l-6.274-9.309h-4.976v12.748h3.259v-9.437l6.361,9.437h4.889Z"
+          data-name="Path 7664"
+          fill="#cc4366"
+          id="Path_7664" transform="translate(2645.836 -16704.529)"/>
+    <path d="M417.975,393.529h-3.259v9.308l-6.274-9.309h-4.976v12.748h3.259v-9.437l6.361,9.437h4.889Z"
+          data-name="Path 7665"
+          fill="#cc4366"
+          id="Path_7665" transform="translate(2498.954 -16704.529)"/>
+    <path d="M288.734,393.529h-12.4v2.988h4.509v9.76H284.1v-9.76h4.63Z" data-name="Path 7666" fill="#cc4366"
+          id="Path_7666" transform="translate(2596.353 -16704.529)"/>
+    <rect data-name="Rectangle 4864" fill="#cc4366" height="12.748" id="Rectangle_4864"
+          transform="translate(2898.567 -16311)" width="3.259"/>
+    <path d="M480.119,396.517v-2.988H468.353v12.748h11.766v-2.988h-8.507v-2.158h8v-2.606h-8v-2.008Z"
+          data-name="Path 7667"
+          fill="#cc4366"
+          id="Path_7667" transform="translate(2449.881 -16704.529)"/>
+    <path d="M107.445,396.517v-2.988H96.3v12.748h3.259v-4.4h7.514V398.89H99.556v-2.374Z" data-name="Path 7668"
+          fill="#cc4366"
+          id="Path_7668" transform="translate(2733.703 -16704.529)"/>
+    <path
+      d="M157.4,393.529h-8.5c-1.711,0-3.1,1.657-3.1,3.7v5.345c0,2.044,1.387,3.7,3.1,3.7h8.5c1.711,0,3.1-1.657,3.1-3.7v-5.345C160.5,395.186,159.111,393.529,157.4,393.529Zm-.347,7.793a1.828,1.828,0,0,1-1.645,1.967h-4.516a1.828,1.828,0,0,1-1.646-1.967v-2.839a1.828,1.828,0,0,1,1.646-1.967h4.516a1.828,1.828,0,0,1,1.645,1.967Z"
+      data-name="Path 7669"
+      fill="#cc4366"
+      id="Path_7669" transform="translate(2696.262 -16704.529)"/>
+    <path
+      d="M324.778,393.529h-4.236l-5.972,12.748h3.6l1.131-2.415h6.726l1.131,2.415h3.6Zm-4.256,7.718,2.138-4.565,2.138,4.565Z"
+      data-name="Path 7670"
+      fill="#cc4366"
+      id="Path_7670" transform="translate(2567.12 -16704.529)"/>
+  </g>
+</svg>

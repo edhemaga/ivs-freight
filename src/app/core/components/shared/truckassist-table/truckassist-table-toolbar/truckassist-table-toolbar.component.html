@@ -25,7 +25,7 @@
   <app-truckassist-search></app-truckassist-search>
 
   <!-- LOCATION FILTER -->
-  <div class="location-filter-container">
+  <div class="location-filter-container" *ngIf="!options.toolbarActions.hideLocationFilter">
     <svg-icon
       [svgStyle]="{ 'width.px': 17, 'height.px': 20 }"
       [src]="'assets/svg/truckassist-table/location-icon.svg'"
