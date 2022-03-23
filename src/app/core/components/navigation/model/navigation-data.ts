@@ -61,7 +61,7 @@ export const navigationData: Navigation[] = [
       // List Fuel route ?
       {
         name: 'Fuel',
-        route: '/accounting/fuel',
+        route: '/fuel',
         activeRouteFlegId: 3
       },
       {
