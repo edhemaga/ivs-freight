@@ -17,6 +17,7 @@ import { SettingsFactoringModalComponent } from './company-modals/settings-facto
 import { SettingsNodataComponent } from './settings-nodata/settings-nodata.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SettingsCardModule } from '../settings-card/settings-card.module';
+import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { SettingsCardModule } from '../settings-card/settings-card.module';
     SharedModule,
     SettingsCompanyRoutes,
     SharedModule,
-    SettingsCardModule
+    SettingsCardModule,
+    TruckassistProgressExpirationModule
   ],
   declarations: [
     SettingsCompanyComponent,
