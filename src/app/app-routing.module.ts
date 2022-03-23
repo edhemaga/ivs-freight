@@ -58,8 +58,17 @@ const routes: Routes = [
         (m) => m.TrailerModule
       ),
   },
+  {
+    path: 'customer',
+    loadChildren: () =>
+      import('./core/components/customer/customer.module').then(
+        (m) => m.CustomerModule
+      ),
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];
+
+/* Customer */
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
