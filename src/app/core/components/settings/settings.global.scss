@@ -19,6 +19,7 @@ $settings-gray-black: #3c3c3c;
 
 $settings-blue-light: #778fbb;
 $settings-blue: #5673aa;
+$settings-blue-dark: #6d82c7;
 
 $settings-red-dark: #ff5050;
 
@@ -102,6 +103,18 @@ p {
     width: 68px;
     height: 100%;
 
+    .settings-plus-button {
+      svg {
+        path {
+          fill: $settings-blue-dark;
+        }
+      }
+      &:hover {
+        transform: $settings-transition;
+        cursor: pointer;
+      }
+    }
+
     .settings-edit-button {
       margin-right: 4px;
 
@@ -144,6 +157,18 @@ p {
         }
       }
     }
+
+    .settings-plus-button {
+      svg {
+        path {
+          fill: $settings-blue-dark;
+        }
+      }
+      &:hover {
+        transform: $settings-transition;
+        cursor: pointer;
+      }
+    }
   }
 }
 // Settings Body
@@ -154,7 +179,7 @@ p {
   color: $settings-gray-dark;
   border-radius: $settings-borderRadius;
   padding: 12px;
-
+  padding-top: 8px;
 
   .settings-line {
     margin: 0;
