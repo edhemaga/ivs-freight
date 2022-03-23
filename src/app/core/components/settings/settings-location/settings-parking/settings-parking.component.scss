@@ -1,0 +1,78 @@
+@import "../../settings.global.scss";
+
+.settings-parking {
+  width: 100%;
+  display: grid;
+  grid-template-rows: 32px auto;
+  row-gap: 12px;
+
+  .settings-name {
+    padding: 7px 4px;
+  }
+
+  .parking-details {
+    display: flex;
+    flex-direction: column;
+
+    .parking-details-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .parking-name {
+        font-size: 18px;
+        font-weight: $settings-font-semibold;
+        color: $settings-gray-dark;
+        text-transform: uppercase;
+      }
+
+      .parking-actions {
+        position: relative;
+        bottom: 1px;
+        left: 6px;
+
+        .action-dots {
+          &:hover {
+            transition: $settings-transition;
+            cursor: pointer;
+            svg {
+              path {
+                fill: $settings-gray;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .parking-details-bottom {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 12px;
+
+      .details-bottom-info {
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+
+        p {
+          margin-left: 6px;
+        }
+
+        .details-bottom-address-svg {
+          position: relative;
+          bottom: 11px;
+        }
+
+        .details-bottom-address-text {
+          width: 196px;
+          white-space: pre-wrap;
+        }
+      }
+    }
+
+    .settings-line {
+      margin-bottom: 6px;
+    }
+  }
+}
