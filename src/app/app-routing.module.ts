@@ -51,6 +51,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./core/components/truck/truck.module').then((m) => m.TruckModule),
   },
+  {
+    path: 'trailer',
+    loadChildren: () =>
+      import('./core/components/trailer/trailer.module').then(
+        (m) => m.TrailerModule
+      ),
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];
 

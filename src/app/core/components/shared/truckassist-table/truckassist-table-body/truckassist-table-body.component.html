@@ -80,6 +80,33 @@
             }}</span>
           </div>
 
+          <!-- COLOR COLUMN -->
+          <div
+            class="td-content set-center"
+            *ngIf="!column.hidden && column.ngTemplate === 'color'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <div
+              [ngStyle]="{ background: row[column.field] }"
+              [ngClass]="{ 'add-box-shadow': row[column.field] === '#F9F9F9' }"
+              class="table-color"
+            ></div>
+          </div>
+
+          <!-- SVG COLUMN -->
+          <div
+            class="td-content set-center"
+            *ngIf="!column.hidden && column.ngTemplate === 'svg'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <div class="truckassist-icon" [class]="row.svgClass">
+              <svg-icon
+                [src]="column.imageHover.url + row[column.field]"
+                [svgStyle]="{ 'width.px': '57', 'height.px': '22' }"
+              ></svg-icon>
+            </div>
+          </div>
+
           <!-- APPLICANT DONE CHECKBOX COLUMN -->
           <div
             class="td-content set-center"

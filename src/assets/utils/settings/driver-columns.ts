@@ -134,8 +134,7 @@ export function getDriverColumnsDefinition() {
       disabled: false,
       export: true,
       resizable: true,
-
-      class: 'custom-font',
+      class: 'custom-font', 
     },
     {
       ngTemplate: 'text',

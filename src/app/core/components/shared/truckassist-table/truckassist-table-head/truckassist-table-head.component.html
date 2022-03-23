@@ -5,7 +5,8 @@
         *ngFor="let column of columns; let i = index"
         [ngStyle]="{
           width: column.width + 'px',
-          'margin-left': column.ngTemplate === 'attachments' ? 'auto' : 'unset'
+          'margin-left': column.ngTemplate === 'attachments' ? 'auto' : 'unset',
+          'justify-content': column?.headAlign ? column?.headAlign : ''
         }"
         [ngClass]="{
           'set-center': column.ngTemplate === 'checkbox' || column.setCenter
@@ -32,7 +33,9 @@
               'width.px': column.headIconStyle.width,
               'height.px': column.headIconStyle.height
             }"
-            [src]="column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''"
+            [src]="
+              column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''
+            "
           ></svg-icon>
         </div>
       </th>
