@@ -314,6 +314,7 @@ export function getTrailerColumnDefinition() {
       ngTemplate: 'attachments',
       title: '',
       field: 'additionalData.files',
+      moveRight: true,
       name: '',
       headIconStyle: {
         width: 19,

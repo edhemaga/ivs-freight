@@ -1,3 +1,4 @@
+/* Table Body */
 table {
   width: 100%;
   height: fit-content;
@@ -25,6 +26,17 @@ table {
             display: flex;
             height: 100%;
             align-items: center;
+            
+            // NO TEMPLATE
+            .no-template{
+              color: red;
+              font-size: 14px;
+              font-weight: bold;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              width: 100%;
+            }
 
             // CHECKBOX TEMPLATE
             .table-checkbox {
@@ -257,6 +269,36 @@ table {
         }
       }
     }
+  }
+}
+/* Show More */
+.show-more-container {
+  width: 100%;
+  height: 18px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+
+  .showing,
+  .show-more {
+    width: fit-content;
+    height: 100%;
+    font-size: 14px;
+    color: #919191;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .showing {
+    justify-self: flex-start;
+    font-weight: 400;
+  }
+
+  .show-more {
+    justify-self: flex-end;
+    font-weight: bold;
+    margin-left: auto;
   }
 }
 
