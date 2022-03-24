@@ -80,6 +80,38 @@
             <span class="table-name-link">{{ row[column.field] }}</span>
           </div>
 
+          <!-- CUSTOMER NAME COLUMN -->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'customer-name'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <div class="customer-name-container">
+              <svg-icon
+                *ngIf="row.ban && !row.dnu"
+                [src]="'assets/svg/truckassist-table/customer/banner-icon.svg'"
+                [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+              ></svg-icon>
+              <svg-icon
+                *ngIf="!row.ban && row.dnu"
+                [src]="
+                  'assets/svg/truckassist-table/customer/do-not-use-icon.svg'
+                "
+                [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+              ></svg-icon>
+              <span class="customer-name">{{ row[column.field] }}</span>
+            </div>
+          </div>
+
+          <!-- RATING  COLUMN-->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'rating'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw>
+          </div>
+
           <!-- TEXT COLUMN -->
           <div
             class="td-content"
