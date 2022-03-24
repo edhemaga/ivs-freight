@@ -40,15 +40,20 @@
           }
         }
 
-        .expires {
+        .expires-settings {
           margin-right: 3px;
           color: #6C6C6C;
+          font-weight: 600;
         }
 
-        .expires-bold {
+        .expires-settings-bold {
           font-weight: bold;
           color: #6C6C6C;
         }
+      }
+
+      .progress-days-to-go {
+        color: #6C6C6C;
       }
     }
   }

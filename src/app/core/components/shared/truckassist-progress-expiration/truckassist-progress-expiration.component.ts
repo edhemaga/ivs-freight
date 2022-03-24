@@ -12,7 +12,8 @@ export class TruckassistProgressExpirationComponent implements OnInit {
   @Input() expireDate: any;
   @Input() status: any;
   @Input() startDate: any;
-  @Input() expiresSettings: boolean = false;
+  @Input() expiresSettings: string = null;
+  @Input() customText: string = "Expires"
   totalDays: any;
   expire: any;
   negative = false;

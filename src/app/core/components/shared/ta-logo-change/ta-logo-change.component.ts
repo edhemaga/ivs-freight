@@ -1,14 +1,21 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation,} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import * as Croppie from 'croppie';
-import {CroppieDirective} from 'angular-croppie-module';
-import {Options} from 'ng5-slider';
+import { CroppieDirective } from 'angular-croppie-module';
+import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
-  selector: 'app-logo-change',
-  templateUrl: './logo-change.component.html',
-  styleUrls: ['./logo-change.component.scss']
+  selector: 'app-ta-logo-change',
+  templateUrl: './ta-logo-change.component.html',
+  styleUrls: ['./ta-logo-change.component.scss']
 })
-export class LogoChangeComponent implements OnInit, AfterViewInit {
+export class TaLogoChangeComponent implements OnInit {
   @Input() src: string;
   @Output()
   saveAvatar: EventEmitter<string> = new EventEmitter<string>();
@@ -35,11 +42,11 @@ export class LogoChangeComponent implements OnInit, AfterViewInit {
   public uploadedImageFile: any = null;
   public files: File[] = [];
   // slider
-  public slideInit = 0.75;
-  public options: Options = {
-    floor: 0,
+  public slideInit = 0.5;
+  public logoOptions: Options = {
+    floor: 0.1,
     ceil: 1.5,
-    step: 0.0001,
+    step: 0.1,
     animate: false,
     showSelectionBar: true,
     hideLimitLabels: true,
@@ -48,11 +55,9 @@ export class LogoChangeComponent implements OnInit, AfterViewInit {
   avatarError = false;
   showUploadZone = true;
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public ngAfterViewInit() {
     if (this.src) {
@@ -101,7 +106,6 @@ export class LogoChangeComponent implements OnInit, AfterViewInit {
   }
 
   public onRemove() {
-
     if (this.src) {
       this.cancel.emit();
       this.showDropzone = false;
@@ -115,4 +119,5 @@ export class LogoChangeComponent implements OnInit, AfterViewInit {
   public editProfileImage() {
     this.showUploadZone = true;
   }
+
 }

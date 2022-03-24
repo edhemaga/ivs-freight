@@ -3,23 +3,28 @@
     <div class="d-flex">
       <img
         alt="cropped-image"
-        #croppie="croppie"  [croppieOptions]="croppieOptions" (update)="handleUpdate($event)"
+        #croppie="croppie"
+        [croppieOptions]="croppieOptions"
+        (update)="handleUpdate($event)"
       />
     </div>
     <div class="d-flex justify-content-between">
-      <div class="d-flex mt-3 mb-2 c-slider">
-        <ng5-slider
-          (valueChange)="zooming($event)"
-          [(value)]="slideInit"
-          [options]="options"
-        ></ng5-slider>
-      </div>
+      <app-ta-ngx-slider
+        *ngIf="files.length"
+        [sliderTemplate]="'logo-change'"
+        [sliderOptions]="logoOptions"
+        [startedValue]="slideInit"
+        (onUserValueChange)="zooming($event)"
+      ></app-ta-ngx-slider>
+
       <div class="d-flex buttons-container">
         <a (click)="saveImage()" class="save-check save">
           <svg-icon src="assets/img/svgs/company-info/savelogo.svg"></svg-icon>
         </a>
         <a (click)="onRemove()" class="save-check cancel">
-          <svg-icon src="assets/img/svgs/company-info/cancellogo.svg"></svg-icon>
+          <svg-icon
+            src="assets/img/svgs/company-info/cancellogo.svg"
+          ></svg-icon>
         </a>
       </div>
     </div>
