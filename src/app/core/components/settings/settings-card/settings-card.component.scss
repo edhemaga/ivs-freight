@@ -228,7 +228,7 @@
     // Parking Template
     .parking-template-data {
       display: grid;
-      grid-template-columns: 162px 160px;
+      grid-template-columns: 170px 152px;
       grid-row-gap: 6px;
       row-gap: 6px;
       padding-left: 4px;
@@ -262,6 +262,26 @@
             }
           }
         }
+      }
+    }
+
+    // Office Template
+    .office-template-data {
+      display: grid;
+      grid-template-columns: 170px 152px;
+      row-gap: 11px;
+
+      .office-template-item {
+        display: flex;
+        align-items: center;
+
+        .office-template-value {
+          margin-left: 6px;
+        }
+      }
+
+      .office-template-email {
+        grid-column: 1 / -1;
       }
     }
 

@@ -85,6 +85,10 @@
           align-items: center;
           margin-top: 12px;
 
+          &.first {
+            margin-top: 7px;
+          }
+          
           p {
             margin-left: 6px;
           }

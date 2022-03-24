@@ -461,77 +461,77 @@
   }
 }
 
-// NGX-SLIDER CUSTOm
-.custom-slider-wrapper {
-  margin-top: 18px;
-  display: flex;
-  flex-direction: column;
-  .custom-slider-text {
-    font-size: 10px;
-    font-weight: 600;
-    color: #b7b7b7;
-    margin-bottom: 9px;
-  }
+// // NGX-SLIDER CUSTOM
+// .custom-slider-wrapper {
+//   margin-top: 18px;
+//   display: flex;
+//   flex-direction: column;
+//   .custom-slider-text {
+//     font-size: 10px;
+//     font-weight: 600;
+//     color: #b7b7b7;
+//     margin-bottom: 9px;
+//   }
 
-  .ngx-slider {
-    margin: 0 !important;
+//   .ngx-slider {
+//     margin: 0 !important;
 
-    // FULL LINE
-    .ngx-slider-bar {
-      height: 6px;
-      background: #eeeeee !important;
-    }
+//     // FULL LINE
+//     .ngx-slider-bar {
+//       height: 6px;
+//       background: #eeeeee !important;
+//     }
 
-    // ACTIVE LINE
-    .ngx-slider-selection {
-      background-color: #bbc7dd !important;
-    }
+//     // ACTIVE LINE
+//     .ngx-slider-selection {
+//       background-color: #bbc7dd !important;
+//     }
 
-    // Number
-    .ngx-slider-bubble {
-      cursor: pointer;
-      color: #b7b7b7 !important;
-      font-size: 12px !important;
-      box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
-      background-color: #ffffff;
-      font-weight: bold !important;
-      position: absolute;
-      top: -7.5px;
-      width: 44px;
-      height: 20px;
-      padding: 1px 5px;
-      z-index: 1;
+//     // Number
+//     .ngx-slider-bubble {
+//       cursor: pointer;
+//       color: #b7b7b7 !important;
+//       font-size: 12px !important;
+//       box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
+//       background-color: #ffffff;
+//       font-weight: bold !important;
+//       position: absolute;
+//       top: -7.5px;
+//       width: 44px;
+//       height: 20px;
+//       padding: 1px 5px;
+//       z-index: 1;
 
-      &::after {
-        content: "%";
-      }
-    }
+//       &::after {
+//         content: "%";
+//       }
+//     }
 
-    // Pointer
-    .ngx-slider-pointer {
-      width: 44px;
-      height: 22px;
-      background-color: transparent !important;
+//     // Pointer
+//     .ngx-slider-pointer {
+//       width: 44px;
+//       height: 22px;
+//       background-color: transparent !important;
 
-      border-radius: 2px !important;
-      top: -8.5px;
+//       border-radius: 2px !important;
+//       top: -8.5px;
 
-      &::after {
-        content: none !important;
-      }
-    }
-  }
-}
-.custom-slider-wrapper-first {
-  .ngx-slider {
-    .ngx-slider-bubble {
-      &::after {
-        content: ".0%" !important;
-      }
-    }
-  }
-}
-.custom-slider-dispatch-manager {
-  position: relative;
-  bottom: 19px;
-}
+//       &::after {
+//         content: none !important;
+//       }
+//     }
+//   }
+// }
+// .custom-slider-wrapper-first {
+//   .ngx-slider {
+//     .ngx-slider-bubble {
+//       &::after {
+//         content: ".0%" !important;
+//       }
+//     }
+//   }
+// }
+// .custom-slider-dispatch-manager {
+//   position: relative;
+//   bottom: 19px;
+// }

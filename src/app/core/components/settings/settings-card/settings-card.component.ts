@@ -35,6 +35,7 @@ export class SettingsCardComponent {
 
     return hiddenCharacter + lastFourCharaters;
   }
+
   public showHideValue(value: string) {
     this.isAccountVisible = !this.isAccountVisible;
     if (this.isAccountVisible) {

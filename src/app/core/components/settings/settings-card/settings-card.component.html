@@ -131,6 +131,7 @@
           </div>
         </div>
       </div>
+      <!-- Parking Template -->
       <div *ngSwitchCase="'parkingTemplate'">
         <div class="parking-template-data">
           <div class="parking-template-item">
@@ -167,12 +168,32 @@
               Gate
             </p>
           </div>
-          <app-truckassist-progress-expiration
-            [expireDate]="'03/31/2023'"
-            [status]="'03/01/2021'"
-            [startDate]="'03/12/2020'"
-            [expiresSettings]="true"
-          ></app-truckassist-progress-expiration>
+        </div>
+      </div>
+      <!-- Office Template -->
+      <div *ngSwitchCase="'officeTemplate'">
+        <div class="office-template-data">
+          <div class="office-template-item">
+            <svg-icon
+              class="office-template-svg"
+              src="assets/img/svgs/settings-company/settings-phone.svg"
+            ></svg-icon>
+            <p class="office-template-value">{{ data.phone }}</p>
+          </div>
+          <div class="office-template-item">
+            <svg-icon
+              class="office-template-svg"
+              src="assets/img/svgs/settings-company/settings-phone-extension.svg"
+            ></svg-icon>
+            <p class="office-template-value">{{ data.phone_ext }}</p>
+          </div>
+          <div class="office-template-item office-template-email">
+            <svg-icon
+              class="office-template-svg"
+              src="assets/img/svgs/settings-company/settings-email.svg"
+            ></svg-icon>
+            <p class="office-template-value">{{ data.email }}</p>
+          </div>
         </div>
       </div>
     </div>
