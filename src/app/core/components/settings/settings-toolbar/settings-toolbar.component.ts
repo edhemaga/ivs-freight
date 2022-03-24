@@ -72,4 +72,8 @@ export class SettingsToolbarComponent {
       route: null
     },
   ];
+
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
 }

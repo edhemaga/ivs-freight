@@ -1,5 +1,5 @@
 <div class="settings-toolbar">
-  <div class="settings-col-{{ item.id }}" *ngFor="let item of settingsToolbar">
+  <div class="settings-col-{{ item.id }}" *ngFor="let item of settingsToolbar; trackBy: identity">
     <app-settings-toollbar-card
       [cardId]="item.id"
       [cardName]="item.name"
