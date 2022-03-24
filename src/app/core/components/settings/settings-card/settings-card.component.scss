@@ -67,6 +67,9 @@
         font-size: 12px;
         font-weight: bold;
         margin-right: 8px;
+
+        position: relative;
+        top: 1px;
       }
     }
   }
@@ -285,11 +288,66 @@
       }
     }
 
+    // Repair Shop Template
+    .repair-shop-template-data {
+      display: grid;
+      grid-template-columns: 170px 150px;
+      row-gap: 11px;
+      padding-left: 3.5px;
+      margin-bottom: 12px;
+
+      .repair-shop-template-item {
+        display: flex;
+        align-items: center;
+
+        .repair-shop-template-text {
+          margin-left: 6px;
+
+          &.cross-out {
+            text-decoration: line-through;
+            color: $settings-white-dark;
+          }
+        }
+        .repair-shop-template-svg {
+          &.disabled {
+            svg {
+              path {
+                fill: $settings-white-dark-2;
+              }
+            }
+          }
+        }
+      }
+
+      &.no-line {
+        margin-bottom: 0px !important;
+      }
+    }
+
+    // Terminal Template
+    .terminal-template-data {
+      display: grid;
+      grid-template-columns: 170px 152px;
+      row-gap: 11px;
+
+      .terminal-template-item {
+        display: flex;
+        align-items: center;
+
+        .terminal-template-value {
+          margin-left: 6px;
+        }
+      }
+
+      .terminal-template-email {
+        grid-column: 1 / -1;
+      }
+    }
+
     &.no-line {
       margin-bottom: 0px !important;
     }
   }
-
   .settings-line {
     margin: 0;
     height: 2px;

@@ -18,18 +18,21 @@ export class SettingsOfficeComponent implements OnInit {
       departments: [
         {
           name: 'Accounting Department',
+          check: true,
           phone: '(987) 654-3210',
           phone_ext: '530',
           email: 'contact@windsor-brokers.com'
         },
         {
           name: 'Dispatch Department',
+          check: true,
           phone: '(987) 654-3210',
           phone_ext: '530',
           email: 'contact@windsor-brokers.com'
         },
         {
           name: 'Safety Department',
+          check: true,
           phone: '(987) 654-3210',
           phone_ext: '530',
           email: 'contact@windsor-brokers.com'
@@ -49,18 +52,21 @@ export class SettingsOfficeComponent implements OnInit {
       departments: [
         {
           name: 'Accounting Department',
+          check: true,
           phone: '(987) 654-3210',
           phone_ext: '530',
           email: 'contact@windsor-brokers.com'
         },
         {
           name: 'Dispatch Department',
+          check: false,
           phone: '(987) 654-3210',
           phone_ext: '530',
           email: 'contact@windsor-brokers.com'
         },
         {
           name: 'Safety Department',
+          check: true,
           phone: '(987) 654-3210',
           phone_ext: '530',
           email: 'contact@windsor-brokers.com'
@@ -78,7 +84,11 @@ export class SettingsOfficeComponent implements OnInit {
   }
   public onAction(data: { modalName: string, type: boolean, action: string }) {}
 
-  public identity(index: number, item: any): number {
+  public identityOfficeData(index: number, item: any): number {
+    return item.id;
+  }
+
+  public identityCardData(index: number, item: any): number {
     return item.id;
   }
 

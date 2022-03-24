@@ -20,7 +20,7 @@
       ></svg-icon>
     </div>
   </div>
-  <div class="settings-body" *ngFor="let item of officeData; trackBy: identity">
+  <div class="settings-body" *ngFor="let item of officeData; trackBy: identityOfficeData">
     <div class="office-details">
       <div class="office-details-top">
         <div class="d-flex align-items-center">
@@ -71,10 +71,12 @@
     </div>
 
     <app-settings-card
-      *ngFor="let department of item.departments"
+      *ngFor="let department of item.departments; let ind = index; trackBy: identityCardData"
       [cardTemplate]="'officeTemplate'"
+      [hasCard]="department.check"
       [cardName]="department.name"
       [data]="department"
+      [hasLine]="ind !== item.departments.length - 1"
     >
     </app-settings-card>
 

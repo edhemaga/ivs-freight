@@ -185,4 +185,12 @@ export class SettingsGeneralComponent {
   public onAction(modal: { modalName: string; type: boolean; action: string }) {
     this.settingsStoreService.onModalAction(modal.type, modal.modalName, modal.action);
   }
+
+  public identityCompanyBasicMiddle(index: number, item: any): number {
+    return item.id;
+  }
+
+  public identityCompanyBasicBottom(index: number, item: any): number {
+    return item.id;
+  }
 }

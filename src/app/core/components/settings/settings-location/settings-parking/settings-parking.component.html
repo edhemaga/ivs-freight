@@ -76,6 +76,7 @@
       [cardTemplate]="'parkingTemplate'"
       [cardName]="'Parking Slot'"
       [cardCount]="calculateParkingSlots(item)"
+      [hasLine]="item.rent"
       [data]="{
         parking_slot: item.parking_slot,
         parking_slot_full: item.parking_slot_full,

@@ -12,6 +12,7 @@ export class SettingsCardComponent {
   @Input() cardCount: string = null;
   @Input() cardStatus: string = null;
   @Input() hasLine: boolean = true;
+  @Input() hasCard: boolean = true;
   @Input() data: any;
 
   public isCardOpen: boolean = false;
@@ -32,7 +33,6 @@ export class SettingsCardComponent {
     for (let i = 0; i < numberOfCharacterToHide; i++) {
       hiddenCharacter += '*';
     }
-
     return hiddenCharacter + lastFourCharaters;
   }
 
@@ -48,7 +48,41 @@ export class SettingsCardComponent {
       this.accountText = this.hiddenPassword(value, 4);
       return;
     }
-
     this.accountText = value;
   }
+
+  public onCardOpen() {
+    if(this.data?.name !== 'Fuel Station') {
+      this.isCardOpen = !this.isCardOpen
+    }
+  }
+
+  public identityRepairShop(index: number, item: any): number {
+    return item.id;
+  }
+
+  public identityCommonData(index: number, item: any): number {
+    return item.id;
+  }
+
+  public identityBankAccount(index: number, item: any): number {
+    return item.id;
+  }
+
+  public identityBankCardHeader(index: number, item: any): number {
+    return item.id;
+  }
+
+  public identityBankCard(index: number, item: any): number {
+    return item.id;
+  }
+  
+  public identityPayrollData(index: number, item: any): number {
+    return item.id;
+  }
+
+  public identityInsurancePolicy(index: number, item: any): number {
+    return item.id;
+  }
+  
 }
