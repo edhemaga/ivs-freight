@@ -61,11 +61,12 @@ import {FuelManageComponent} from "../../components/modals/fuel-manage/fuel-mana
 import {ContactManageComponent} from "../../components/modals/contact-manage/contact-manage.component";
 import {CompanyUserManageComponent} from "../../components/modals/company-user-manage/company-user-manage.component";
 import {EditProfileImageComponent} from "../../components/shared/edit-profile-image/edit-profile-image.component";
-import { LogoChangeComponent } from '../../components/shared/logo-change/logo-change.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CroppieModule } from 'angular-croppie-module';
 import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
 import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counter.component';
+import { TaNgxSliderComponent } from '../../components/shared/ta-ngx-slider/ta-ngx-slider.component';
+import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta-logo-change.component';
 @NgModule({
   declarations: [
     AutoFocusDirective,
@@ -108,9 +109,10 @@ import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counte
     EditProfileImageComponent,
     EditProfileImageComponent,
     EditProfileImageComponent,
-    LogoChangeComponent,
     DragDropFileDirective,
-    TaCounterComponent
+    TaCounterComponent,
+    TaNgxSliderComponent,
+    TaLogoChangeComponent
   ],
   imports: [
     CommonModule,
@@ -196,12 +198,13 @@ import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counte
     DragDropModule,
     NgxMaskModule,
     Ng5SliderModule,
-    LogoChangeComponent,
     NgxDropzoneModule,
     CroppieModule,
     DragDropFileDirective,
     TaCounterComponent,
-    NgxSliderModule
+    NgxSliderModule,
+    TaNgxSliderComponent,
+    TaLogoChangeComponent
   ],
   providers: [SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

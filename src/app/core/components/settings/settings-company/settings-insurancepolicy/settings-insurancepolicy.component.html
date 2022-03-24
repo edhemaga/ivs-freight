@@ -9,7 +9,7 @@
         src="assets/img/svgs/settings-company/settings-edit.svg"
         class="settings-edit-button"
         (click)="
-          onAction({ modalName: 'insurance-policy', type: true, action: 'new' })
+          onAction({ type: true, modalName: 'insurance-policy', action: 'new' })
         "
       ></svg-icon>
     </div>
@@ -40,7 +40,7 @@
           </div>
         </div>
         <div class="producer-details-bottom">
-          <div class="details-bottom-info">
+          <div class="details-bottom-info first">
             <svg-icon
               src="assets/img/svgs/settings-company/settings-phone.svg"
             ></svg-icon>
@@ -101,9 +101,8 @@
       <!-- Expires..... -->
       <app-truckassist-progress-expiration
         [expireDate]="'03/31/2023'"
-        [status]="'03/01/2021'"
-        [startDate]="'03/12/2020'"
-        [expiresSettings]="true"
+        [startDate]="'03/12/2023'"
+        [expiresSettings]="'settings-insurance-policy'"
       ></app-truckassist-progress-expiration>
 
       <p class="show-details" (click)="onShowDetails()">Show Details</p>

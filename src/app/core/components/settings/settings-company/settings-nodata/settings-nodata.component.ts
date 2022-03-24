@@ -15,9 +15,9 @@ export class SettingsNodataComponent implements OnInit {
   }
 
   public openModal() {
-    this.settingsService.modalSubject$.next({
-      modalName: 'basic',
+    this.settingsService.onModalAction({
       type: true,
+      modalName: 'basic',
       action: 'new',
     });
     const body = document.querySelector('body');

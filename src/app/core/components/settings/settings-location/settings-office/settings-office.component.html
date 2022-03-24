@@ -1,0 +1,98 @@
+<div class="settings-office">
+  <div class="settings-header">
+    <div class="settings-name d-flex align-items-center">
+      <app-ta-counter
+        [count]="'2'"
+        [countColor]="'#919191'"
+        [countBackground]="'#F3F3F3'"
+        [countHeight]="'24px'"
+        [countWidth]="'24px'"
+        [countTextBottomPosition]="'-2px'"
+      ></app-ta-counter>
+      <p>Office</p>
+    </div>
+
+    <div class="settings-header-button">
+      <svg-icon
+        src="assets/img/svgs/settings-company/settings-plus.svg"
+        class="settings-plus-button"
+        (click)="onAction({ type: true, modalName: 'office', action: 'add' })"
+      ></svg-icon>
+    </div>
+  </div>
+  <div
+    class="settings-body"
+    *ngFor="let item of officeData; trackBy: identityOfficeData"
+  >
+    <div class="office-details">
+      <div class="office-details-top">
+        <div class="d-flex align-items-center">
+          <p class="office-name">{{ item.name }}</p>
+          <svg-icon
+            class="office-svg"
+            *ngIf="item.companyOwned"
+            src="{{ item.companyOwned }}"
+            [appTooltip]="'Company Owned'"
+            position="bottom-right"
+            tooltipBackground="#6C6C6C"
+            tooltipColor="#FFFFFF"
+            zIndex="900"
+            [borderRadius]="'2px'"
+            [fontWeight]="'bold'"
+            [fontSize]="'11px'"
+          ></svg-icon>
+        </div>
+        <div class="office-actions">
+          <svg-icon
+            class="action-dots"
+            src="assets/img/svgs/settings-company/settings-dots.svg"
+          ></svg-icon>
+        </div>
+      </div>
+      <div class="office-details-bottom">
+        <div class="details-bottom-info first">
+          <svg-icon
+            src="assets/img/svgs/settings-company/settings-phone.svg"
+          ></svg-icon>
+          <p>{{ item.phone }}</p>
+        </div>
+        <div class="details-bottom-info" *ngIf="item.email">
+          <svg-icon
+            src="assets/img/svgs/settings-company/settings-email.svg"
+          ></svg-icon>
+          <p>{{ item.email }}</p>
+        </div>
+        <div class="details-bottom-info">
+          <svg-icon
+            class="details-bottom-address-svg"
+            src="assets/img/svgs/settings-company/settings-address.svg"
+          ></svg-icon>
+          <p class="details-bottom-address-text">{{ item.address }}</p>
+        </div>
+      </div>
+      <hr class="settings-line" />
+    </div>
+
+    <app-settings-card
+      *ngFor="
+        let department of item.departments;
+        let ind = index;
+        trackBy: identityCardData
+      "
+      [cardTemplate]="'officeTemplate'"
+      [hasCard]="department.check"
+      [cardName]="department.name"
+      [data]="department"
+      [hasLine]="ind !== item.departments.length - 1"
+    >
+    </app-settings-card>
+
+    <app-truckassist-progress-expiration
+      *ngIf="item.rent"
+      [expireDate]="'03/25/2023'"
+      [startDate]="'03/12/2023'"
+      [expiresSettings]="'settings-parking'"
+      [customText]="generateTextForProgressBar(item)"
+    ></app-truckassist-progress-expiration>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div [ngSwitch]="sliderTemplate">
+  <div *ngSwitchCase="'commission'">
+    <div class="custom-slider-commission {{ customClass }}">
+      <p class="custom-slider-text">{{ sliderName }}</p>
+      <ngx-slider
+        [options]="sliderOptions"
+        [(value)]="startedValue"
+        (userChangeEnd)="getValue($event)"
+      ></ngx-slider>
+    </div>
+  </div>
+  <div *ngSwitchCase="'logo-change'">
+    <div class="custom-slider-logo-change">
+      <ngx-slider
+        [options]="sliderOptions"
+        [(value)]="startedValue"
+        (valueChange)="zooming($event)"
+      ></ngx-slider>
+    </div>
+  </div>
+</div>

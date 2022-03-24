@@ -8,7 +8,9 @@
       <svg-icon
         src="assets/img/svgs/settings-company/settings-edit.svg"
         class="settings-edit-button"
-        (click)="onAction({ modalName: 'factoring', type: true, action: 'edit' })"
+        (click)="
+          onAction({ type: true, modalName: 'factoring', action: 'edit' })
+        "
       ></svg-icon>
       <svg-icon
         src="assets/img/svgs/settings-company/settings-trash.svg"

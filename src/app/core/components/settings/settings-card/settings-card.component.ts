@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-settings-card',
@@ -6,11 +6,13 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./settings-card.component.scss'],
 })
 export class SettingsCardComponent {
+  @ViewChild('cardBody') cardBodyRef: ElementRef;
   @Input() cardTemplate: string = null;
   @Input() cardName: string = null;
   @Input() cardCount: string = null;
   @Input() cardStatus: string = null;
   @Input() hasLine: boolean = true;
+  @Input() hasCard: boolean = true;
   @Input() data: any;
 
   public isCardOpen: boolean = false;
@@ -31,17 +33,56 @@ export class SettingsCardComponent {
     for (let i = 0; i < numberOfCharacterToHide; i++) {
       hiddenCharacter += '*';
     }
-
     return hiddenCharacter + lastFourCharaters;
   }
+
   public showHideValue(value: string) {
     this.isAccountVisible = !this.isAccountVisible;
-
+    if (this.isAccountVisible) {
+      const timeout = setTimeout(() => {
+        this.cardBodyRef.nativeElement.focus();
+        clearTimeout(timeout);
+      }, 250);
+    }
     if (!this.isAccountVisible) {
       this.accountText = this.hiddenPassword(value, 4);
       return;
     }
-
     this.accountText = value;
   }
+
+  public onCardOpen() {
+    if(this.data?.name !== 'Fuel Station') {
+      this.isCardOpen = !this.isCardOpen
+    }
+  }
+
+  public identityRepairShop(index: number, item: any): number {
+    return item.id;
+  }
+
+  public identityCommonData(index: number, item: any): number {
+    return item.id;
+  }
+
+  public identityBankAccount(index: number, item: any): number {
+    return item.id;
+  }
+
+  public identityBankCardHeader(index: number, item: any): number {
+    return item.id;
+  }
+
+  public identityBankCard(index: number, item: any): number {
+    return item.id;
+  }
+  
+  public identityPayrollData(index: number, item: any): number {
+    return item.id;
+  }
+
+  public identityInsurancePolicy(index: number, item: any): number {
+    return item.id;
+  }
+  
 }

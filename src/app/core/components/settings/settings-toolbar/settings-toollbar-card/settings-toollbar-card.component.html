@@ -1,4 +1,5 @@
 <div
+  id="settings-toolbar"
   class="settings-toolbar-card"
   [ngClass]="{ 'card-toolbar-first': cardId === 1 }"
   routerLink="{{ route }}"
@@ -8,8 +9,8 @@
   <app-ta-counter
     *ngIf="cardCount"
     [count]="cardCount"
-    [countColor]="'#919191'"
-    [countBackground]="'#F3F3F3'"
+    [countColor]="routeColor.color"
+    [countBackground]="routeColor.background"
     [countHeight]="'24px'"
     [countWidth]="'24px'"
   ></app-ta-counter>
