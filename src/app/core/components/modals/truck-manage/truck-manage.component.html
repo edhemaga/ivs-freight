@@ -20,6 +20,8 @@
       src="assets/img/svgs/table/close.svg"
     ></svg-icon>
   </div>
+  <div class="divider">
+  </div>
   <div class="modal-body">
     <!-- <app-loading-modal *ngIf="!loaded"></app-loading-modal> -->
     <app-tab-switcher
@@ -200,7 +202,7 @@
                 src="../../../../../assets/img/form-validation/x-icon-cut.svg"
               ></svg-icon>
 
-              <label for="model">Model</label>
+              <label class="required-label" for="model">Model</label>
             </div>
           </div>
           <div class="col-2">
@@ -249,7 +251,7 @@
 
         <div *ngIf="!companyOwnedStateControl" class="mb-0">
           <div class="row">
-            <div class="col-12">
+            <div class="col-6">
               <div class="form-label-group">
                 <ng-select
                   (change)="changeOwner($event)"
@@ -263,16 +265,17 @@
                   class="required-field has-add-new{{ (ownerSearchItems == 1) ? ' has-one-result' : '' }}"
                   formControlName="owner"
                   placeholder="Owner"
-                >
+                  >
                   <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
                     <span [class]="{ 'd-none': !item.divisionFlag }">DC - </span>
                     <span [ngOptionHighlight]="search">{{ item.ownerName }}</span>
                   </ng-template>
                 </ng-select>
+
               </div>
             </div>
-            <div *ngIf="!division" class="col-12 slider-wrapper truck-slider-wrapper">
-              <div class="note-label-wrapper">
+            <div *ngIf="!division" class="col-6 slider-wrapper truck-slider-wrapper">
+              <div class="comission-label-wrapper">
                 <label class="note-label">Commission</label>
               </div>
               <ngx-slider

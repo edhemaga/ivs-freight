@@ -8,7 +8,14 @@
       src="assets/img/svgs/table/close.svg"
     ></svg-icon>
   </div>
+
+  <div class="divider">
+  </div>
+
   <div class="modal-body add-customer-modal static-element">
+    <div class="col-12">
+      <app-tab-switcher (switchClicked)="tabChange($event)" [tabs]="tabs"></app-tab-switcher>
+    </div>
     <!-- <app-loading-modal *ngIf="!loaded" class='large'></app-loading-modal> -->
     <form (keydown)="keyDownFunction($event)" *ngIf="loaded" [formGroup]="customerForm" class="form-container">
 
@@ -92,7 +99,7 @@
             >
             <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
             </div>
-            <label for="phone">Phone</label>
+            <label class="required-label" for="phone">Phone</label>
           </div>
         </div>
         <div class="col-8">
@@ -117,11 +124,7 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <app-ta-switch (switchClicked)="tabChange($event)" [data]="customerSwitchOptions[0].data"></app-ta-switch>
-        </div>
-      </div>
+
       <div class="row pt-4">
         <!-- PO box input -->
         <div *ngIf="addressTab !== 'Physical Address'" [ngClass]="{'col-4': addressTab !== 'Physical Address'}">
@@ -202,7 +205,8 @@
       </div>
       <div *ngIf="openBillingAddress" class="row pt-4">
         <div class="col-12">
-          <app-ta-switch (switchClicked)="tabChange($event)" [data]="customerSwitchOptions[1].data"></app-ta-switch>
+          <app-tab-switcher (switchClicked)="tabChange($event)"
+                            [tabs]="customerSwitchOptions[1].data"></app-tab-switcher>
         </div>
       </div>
       <!-- Biling Address -->
@@ -307,12 +311,12 @@
                     mask="(000) 000-0000"
                     placeholder="Phone"
                   >
-                  <label for="contactPhone{{i}}">Phone</label>
+                  <label class="required-label" for="contactPhone{{i}}">Phone</label>
                 </div>
               </div>
               <div class="col-7">
                 <div
-                  class="form-label-group input-icon email-field-wrapper no-padding-input contactEmail {{ manageInputValidation(customerForm.controls.contactPersons['controls'][i].controls.contactEmail) }}"
+                  class="form-label-group input-icon email-field-wrapper no-padding-input contactEmail input-holder {{ manageInputValidation(customerForm.controls.contactPersons['controls'][i].controls.contactEmail) }}"
                   [ngClass]="inputText ? 'typing' : 'not-typing'"
                 >
                   <input

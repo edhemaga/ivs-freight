@@ -79,6 +79,7 @@ p {
 
 .modal-title {
   margin-right: 12px;
+  color: #6C6C6C;
 }
 
 .save-btn {
@@ -120,7 +121,7 @@ p {
 .note-label-wrapper {
   background-color: $bw1;
   font-weight: 600;
-  color: #B7B7B7;
+  color: #6C6C6C;
   margin: 0 -12px;
   padding: 0 12px;
   transition: 0.3s;
@@ -195,16 +196,10 @@ textarea.input-custom-textarea.form-textarea {
 }
 
 .modal-content {
-  border: none;
+  border: none !important;
   top: 75px;
-  background-color: transparent;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  pointer-events: auto;
-  background-clip: padding-box;
-  outline: 0;
+  background-color: transparent !important;
+
 }
 
 .note-label-wrapper,

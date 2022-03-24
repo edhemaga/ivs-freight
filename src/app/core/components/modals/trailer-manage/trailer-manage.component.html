@@ -1,7 +1,8 @@
 <div cdkDrag class="modal-container">
   <div cdkDragHandle class="modal-header">
+    <div class="d-flex align-items-center">
     <h5 class="modal-title">{{ modalTitle }}</h5>
-    <div class="multiple-choises-wrapper" style="left: 115px;">
+    <div class="multiple-choises-wrapper">
       <div class="btn-group btn-group-toggle">
         <label class="btn-primary" ngbButtonLabel>
           <input
@@ -14,6 +15,7 @@
         </label>
       </div>
     </div>
+    </div>
     <svg-icon
       (click)="activeModal.dismiss('Modal close')"
       [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
@@ -22,11 +24,13 @@
     ></svg-icon>
 
   </div>
+  <div class="divider">
+  </div>
   <div class="modal-body">
-    <app-tab-switch
+    <app-tab-switcher
       (switchClicked)="tabChange($event)"
       [tabs]="tabs"
-    ></app-tab-switch>
+    ></app-tab-switcher>
     <!-- <app-loading-modal *ngIf="!loaded"></app-loading-modal> -->
     <form
       (keydown)="keyDownFunction($event)"
@@ -57,9 +61,6 @@
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
               <label class="required-label" for="trailerNumber">Unit#</label>
-              <app-required-label
-                [control]="trailerForm.controls.trailerNumber"
-              ></app-required-label>
             </div>
           </div>
           <div class="col-9">
@@ -72,7 +73,7 @@
                 class="no-padding-dropdown required-field"
                 formControlName="type"
                 id="trailer-type-dropdown"
-                placeholder="Type"
+                placeholder="Trailer type"
               >
                 <ng-template let-item="item" ng-option-tmp>
                   <div class="trailer-type-dropdown-item {{ item.class }}">
@@ -92,7 +93,6 @@
                   </div>
                 </ng-template>
               </ng-select>
-              <app-required-label [control]="trailerForm.controls.type"></app-required-label>
             </div>
           </div>
         </div>
@@ -167,7 +167,7 @@
             </div>
           </div>
 
-          <div class="col-4">
+          <div class="col-3">
             <div class="form-label-group">
               <ng-select
                 (change)="onColorChange($event)"
@@ -189,7 +189,7 @@
             </div>
           </div>
 
-          <div class="col-2">
+          <div class="col-3">
             <div class="form-label-group">
               <input
                 (ngModelChange)="checkYear($event)"
@@ -255,6 +255,7 @@
           </div>
         </div>
 
+
         <div class="row">
           <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
             <div (click)="openNote()" class="note-label-wrapper">
@@ -281,7 +282,7 @@
 
       <div class="single-tab-container">
         <div class="row">
-          <div [ngClass]="f.type.value?.name === 'Reefer' ? 'col-2' : 'col-6'">
+          <div class="col-2">
             <div class="form-label-group">
               <input
                 appInputFocus
@@ -294,18 +295,34 @@
               />
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
-              <label class="required-label" for="axises">Axles</label>
+              <label  for="axises">Axles</label>
               <app-required-label [control]="trailerForm.controls.axises"></app-required-label>
             </div>
           </div>
-          <div [ngClass]="f.type.value?.name === 'Reefer' ? 'col-5' : 'col-6'">
+          <div class="col-6">
+          <div class="form-label-group">
+            <ng-select
+              [items]="suspension"
+              appendTo="body"
+              bindLabel="value"
+              formControlName="suspension"
+              placeholder="Suspension"
+            >
+              <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                <span [ngOptionHighlight]="search">{{ item.value }}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+          </div>
+
+          <div class="col-4">
             <div class="form-label-group">
               <ng-select
                 [items]="tireSizes"
                 appendTo="body"
                 bindLabel="value"
                 formControlName="tireSize"
-                placeholder="Tire size"
+                placeholder="Tire Size"
               >
                 <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
                   <span [ngOptionHighlight]="search">{{ item.value }}</span>
@@ -313,6 +330,63 @@
               </ng-select>
             </div>
           </div>
+        </div>
+          <div class="row">
+          <div class="col-6">
+            <div class="form-label-group">
+              <ng-select
+                [items]="emptyWeight"
+                appendTo="body"
+                bindLabel="value"
+                formControlName="emptyWeight"
+                placeholder="Empty weight"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <span [ngOptionHighlight]="search">{{ item.value }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+            <div class="col-6">
+              <div class="form-label-group">
+                <ng-select
+                  [items]="mileage"
+                  appendTo="body"
+                  bindLabel="value"
+                  formControlName="mileage"
+                  placeholder="Mileage"
+                >
+                  <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                    <span [ngOptionHighlight]="search">{{ item.value }}</span>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-5">
+            <div class="form-label-group">
+              <ng-select
+                [items]="insurancePolicy"
+                appendTo="body"
+                bindLabel="value"
+                formControlName="insurancePolicy"
+                placeholder="Insurance Policy"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <span [ngOptionHighlight]="search">{{ item.value }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
           <div *ngIf="f.type.value?.name === 'Reefer'" class="col-5">
             <div class="form-label-group">
               <ng-select
@@ -332,7 +406,7 @@
               ></app-required-label>
             </div>
           </div>
-        </div>
+
       </div>
     </form>
   </div>

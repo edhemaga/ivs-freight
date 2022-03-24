@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import { AutoFocusDirective } from "../../directives/auto-focus.directive";
 import { InputFocusDirective } from "../../directives/input-focus.directive";
 import { InputRestrictionDirective } from "../../directives/input-restriction.directive";
@@ -66,6 +66,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CroppieModule } from 'angular-croppie-module';
 import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
 import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counter.component';
+import {AccountManageComponent} from "../../components/modals/account-manage/account-manage.component";
 @NgModule({
   declarations: [
     AutoFocusDirective,
@@ -110,7 +111,8 @@ import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counte
     EditProfileImageComponent,
     LogoChangeComponent,
     DragDropFileDirective,
-    TaCounterComponent
+    TaCounterComponent,
+    AccountManageComponent
   ],
   imports: [
     CommonModule,
@@ -203,7 +205,7 @@ import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counte
     TaCounterComponent,
     NgxSliderModule
   ],
-  providers: [SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
+  providers: [DatePipe, SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {

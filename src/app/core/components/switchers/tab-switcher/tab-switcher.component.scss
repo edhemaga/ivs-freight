@@ -81,7 +81,7 @@
 
 /* 3 options, 3rd selected */
 .multiswitch label:nth-last-child(6) ~ input:nth-child(5):checked ~ a {
-  left: calc(66.6667%);
+  left: calc(66.6667% - 2px);
 }
 
 /* 4 options, 2nd selected */

@@ -1,6 +1,17 @@
 <div cdkDrag class="modal-container">
   <div cdkDragHandle class="modal-header">
     <h5 class="modal-title">{{ modalTitle }}</h5>
+
+    <svg-icon
+      (click)="closeModal()"
+      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      class="modal-close-btn cursor-pointer"
+      src="assets/img/svgs/table/close.svg"
+    ></svg-icon>
+  </div>
+
+
+  <div class="divider">
   </div>
   <div class="modal-body add-company-user static-element">
     <!-- <app-loading-modal *ngIf="loading" class="large"></app-loading-modal> -->
@@ -186,7 +197,7 @@
 
         <div class="row">
           <div [ngClass]="{ 'col-4': !disableUserType }" *ngIf="!disableUserType">
-            <div class="form-label-group" >
+            <div class="form-label-group">
               <ng-select
                 *ngIf="!disableUserType"
                 [disabled]="disableUserType"

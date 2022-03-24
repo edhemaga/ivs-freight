@@ -27,6 +27,7 @@ export class SettingsBasicModalComponent implements OnInit {
 
   public modalTitle: string = 'Company';
   public selectedTab: number = 1;
+  inputText: false;
   public tabs: {}[] = [
     {
       id: 1,
@@ -595,7 +596,7 @@ export class SettingsBasicModalComponent implements OnInit {
         this.otherZone = !this.otherZone;
         break;
       }
-     
+
       default: {
         break;
       }
@@ -674,11 +675,11 @@ export class SettingsBasicModalComponent implements OnInit {
       } else if (keyboardEvent.keyCode !== 32) {
         this.numberOfSpaces = 0;
       }
-    } 
-    
+    }
+
     if (typeOfInput === 'number' && elementId !== 'addressUnit') {
       return keyboardEvent.keyCode >= 48 && keyboardEvent.keyCode <= 57;
-    } 
+    }
 
     if (typeOfInput === 'number' && elementId === 'addressUnit') {
       return (
@@ -736,5 +737,9 @@ export class SettingsBasicModalComponent implements OnInit {
         true
       );
     }
+  }
+  public onKeyUpMethod(x) {
+    this.inputText = x.key;
+    x.key === 'Backspace' && !this.companyForm.get(x.currentTarget.id).value ? this.inputText = false : this.inputText = x.key;
   }
 }

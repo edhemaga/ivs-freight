@@ -1,8 +1,8 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {Subscription} from 'rxjs';
+import {NotificationService} from 'src/app/core/services/notification/notification.service';
 import {checkSelectedText, pasteCheck} from "../../../utils/methods.globals";
 import {emailChack} from "../../../../../assets/utils/methods-global";
 import {SpinnerService} from "../../../services/spinner/spinner.service";
@@ -69,6 +69,16 @@ export class BrokerManageComponent implements OnInit {
   numOfSpaces = 0;
   formatType = /^[!^()_\\[\]{};':"\\|<>\/?]*$/;
   inputText: false;
+  tabs = [
+    {
+      id: 1,
+      name: 'Basic',
+    },
+    {
+      id: 2,
+      name: 'Additional',
+    },
+  ];
 
   constructor(
     private formBuilder: FormBuilder,

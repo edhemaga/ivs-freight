@@ -18,6 +18,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {Vin} from "../../../model/vin";
 import {v4 as uuidv4} from 'uuid';
 import {checkSelectedText, pasteCheck} from "../../../utils/methods.globals";
+import * as AppConst from 'src/app/const';
 
 @Component({
   selector: 'app-trailer-manage',
@@ -47,6 +48,11 @@ export class TrailerManageComponent implements OnInit {
   selectedColor = '';
   selectedTrailerType = '';
   ownerSearchItems = 0;
+  suspension = '';
+  emptyWeight = '';
+  mileage = '';
+  insurancePolicy = '';
+
   tabs = [
     {
       id: 1,
@@ -145,6 +151,7 @@ export class TrailerManageComponent implements OnInit {
     const trailerColors$ = this.metadataService.getColorList();
     this.loading = true;
 
+
     forkJoin([tireSizes$, trailerLengths$, owners$, trailerColors$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(
@@ -156,9 +163,9 @@ export class TrailerManageComponent implements OnInit {
         ]) => {
           this.tireSizes = tireSizes;
           this.trailerLength = trailerLengths;
-          //this.trailerMakers = AppConst.TRAILER_MAKERS;
-          //this.trailerTypes = AppConst.TRAILER_LIST;
-          //this.reeferUnits = AppConst.REEFERUNITS;
+          this.trailerMakers = AppConst.TRAILER_MAKERS;
+          this.trailerTypes = AppConst.TRAILER_LIST;
+          this.reeferUnits = AppConst.REEFERUNITS;
           this.owners = owners.sort((owner) => {
             if (owner.divisionFlag > owner.divisionFlag) {
               return 1;
@@ -297,6 +304,10 @@ export class TrailerManageComponent implements OnInit {
       vin: ['', Validators.required],
       companyOwned: [true],
       reeferUnit: [null],
+      mileage: [null],
+      insurancePolicy: [null],
+      emptyWeight: [null],
+      suspension: [null]
     });
     this.transformInputData();
   }
