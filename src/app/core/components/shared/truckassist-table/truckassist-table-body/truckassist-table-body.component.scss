@@ -217,6 +217,42 @@ table {
                 background-repeat: no-repeat;
               }
             }
+
+            // COLOR
+            .table-color {
+              width: 22px;
+              height: 22px;
+              border-radius: 3px;
+            }
+
+            .add-box-shadow {
+              box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+            }
+
+            // SVG COLUMN
+            .truckassist-icon {
+              cursor: pointer;
+              svg-icon {
+                svg {
+                  path {
+                    fill: #dadada;
+                  }
+                  circle {
+                    fill: #dadada;
+                  }
+                }
+              }
+            }
+
+            .side-kit-icon {
+              svg-icon {
+                svg {
+                  rect {
+                    fill: white;
+                  }
+                }
+              }
+            }
           }
         }
       }
