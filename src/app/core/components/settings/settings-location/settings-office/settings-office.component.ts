@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
 
 @Component({
   selector: 'app-settings-office',
   templateUrl: './settings-office.component.html',
-  styleUrls: ['./settings-office.component.scss'],
+  styleUrls: ['./settings-office.component.scss']
 })
 export class SettingsOfficeComponent implements OnInit {
   public officeData = [

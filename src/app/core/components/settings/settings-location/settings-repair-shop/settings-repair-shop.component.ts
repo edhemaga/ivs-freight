@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
 
 @Component({
   selector: 'app-settings-repair-shop',
   templateUrl: './settings-repair-shop.component.html',
-  styleUrls: ['./settings-repair-shop.component.scss'],
+  styleUrls: ['./settings-repair-shop.component.scss']
 })
 export class SettingsRepairShopComponent implements OnInit {
   public repairShopData = [
