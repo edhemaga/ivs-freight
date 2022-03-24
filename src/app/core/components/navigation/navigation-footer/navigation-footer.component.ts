@@ -87,20 +87,21 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
   }
 
   private isActiveFooterRouteOnReload(url: string) {
-   
-    const urlString = url.split('/');
-    const reloadUrl =
-      urlString[urlString.length - 2] + '/' + urlString[urlString.length - 1];
+    const timeout = setTimeout(() => {
+      const urlString = url.split('/');
+      const reloadUrl =
+        urlString[urlString.length - 2] + '/' + urlString[urlString.length - 1];
 
-    
-    const hasSettingsInRoute = urlString.includes('settings');
-    console.log(hasSettingsInRoute)
-    if (hasSettingsInRoute) {
-      this.router.navigate([`/${reloadUrl}`]);
-      this.onActivateFooterRoutes.emit(true);
-    } else {
-      this.onActivateFooterRoutes.emit(false);
-    }
+      const hasSettingsInRoute = urlString.includes('settings');
+      console.log(hasSettingsInRoute);
+      if (hasSettingsInRoute) {
+        this.router.navigate([`/${reloadUrl}`]);
+        this.onActivateFooterRoutes.emit(true);
+      } else {
+        this.onActivateFooterRoutes.emit(false);
+      }
+      clearTimeout(timeout);
+    }, 50);
   }
 
   public identify(index: number, item: FooterData): number {
