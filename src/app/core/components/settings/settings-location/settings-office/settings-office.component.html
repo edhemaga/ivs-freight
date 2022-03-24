@@ -83,7 +83,7 @@
       [hasCard]="department.check"
       [cardName]="department.name"
       [data]="department"
-      [hasLine]="ind !== item.departments.length - 1"
+      [hasLine]="!(ind === item.departments.length - 1 && !item.rent)"
     >
     </app-settings-card>
 
