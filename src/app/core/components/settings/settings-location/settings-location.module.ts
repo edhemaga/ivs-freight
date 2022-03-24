@@ -9,6 +9,7 @@ import { SettingsTerminalComponent } from './settings-terminal/settings-terminal
 import { SharedModule } from 'src/app/core/shared/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SettingsCardModule } from '../settings-card/settings-card.module';
+import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { SettingsCardModule } from '../settings-card/settings-card.module';
     ReactiveFormsModule,
     SettingsLocationRoutes,
     SharedModule,
-    SettingsCardModule
+    SettingsCardModule,
+    TruckassistProgressExpirationModule
   ],
   declarations: [
     SettingsLocationComponent,

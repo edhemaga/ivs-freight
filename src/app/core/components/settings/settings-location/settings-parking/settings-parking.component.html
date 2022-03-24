@@ -29,8 +29,17 @@
         <div class="d-flex align-items-center">
           <p class="parking-name">{{ item.name }}</p>
           <svg-icon
-            src="settings-card-header-company-owned"
-            src="{{ cardCompanySvg }}"
+            class="parking-svg"
+            *ngIf="item.companyOwned"
+            src="{{ item.companyOwned }}"
+            [appTooltip]="'Company Owned'"
+            position="bottom-right"
+            tooltipBackground="#6C6C6C"
+            tooltipColor="#FFFFFF"
+            zIndex="900"
+            [borderRadius]="'2px'"
+            [fontWeight]="'bold'"
+            [fontSize]="'11px'"
           ></svg-icon>
         </div>
         <div class="parking-actions">
@@ -41,13 +50,13 @@
         </div>
       </div>
       <div class="parking-details-bottom">
-        <div class="details-bottom-info">
+        <div class="details-bottom-info first" *ngIf="item.phone">
           <svg-icon
             src="assets/img/svgs/settings-company/settings-phone.svg"
           ></svg-icon>
           <p>{{ item.phone }}</p>
         </div>
-        <div class="details-bottom-info">
+        <div class="details-bottom-info" *ngIf="item.email">
           <svg-icon
             src="assets/img/svgs/settings-company/settings-email.svg"
           ></svg-icon>
@@ -78,5 +87,13 @@
       }"
     >
     </app-settings-card>
+
+    <app-truckassist-progress-expiration
+      *ngIf="item.rent"
+      [expireDate]="'03/25/2023'"
+      [startDate]="'03/12/2023'"
+      [expiresSettings]="'settings-parking'"
+      [customText]="generateTextForProgressBar(item)"
+    ></app-truckassist-progress-expiration>
   </div>
 </div>
