@@ -368,6 +368,7 @@ export function getDriverColumnsDefinition() {
       ngTemplate: 'attachments',
       title: '',
       field: 'additionalData.files',
+      moveRight: true,
       name: '',
       hidden: false,
       width: 18,

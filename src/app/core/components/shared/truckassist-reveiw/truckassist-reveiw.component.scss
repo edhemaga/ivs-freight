@@ -1,0 +1,64 @@
+.reveiw-container {
+    width: 102px;
+    height: 26px;
+    display: flex;
+  
+    .like-icon,
+    .dislike-icon {
+      cursor: pointer;
+      &:hover {
+        svg {
+          path {
+            fill: #dadada;
+            transition: 0.25s;
+          }
+        }
+      }
+    }
+  
+    .like-icon,
+    .dislike-count {
+      margin-right: 6px;
+    }
+  
+    .like-count {
+      margin-right: 2px;
+    }
+  
+    .count-container {
+      width: fit-content;
+      display: flex;
+      .like-count,
+      .dislike-count {
+        cursor: pointer;
+        width: 26px;
+        height: 26px;
+        border-radius: 2px;
+        background: #f3f3f3;
+        color: #919191;
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  
+    /* Add If Eeveiw Exists*/
+    .has-reveiw {
+      .like-count,
+      .dislike-count {
+        background: #b7b7b770 !important;
+        color: white !important;
+      }
+  
+      &:hover {
+        .like-count,
+        .dislike-count {
+          background: #b7b7b7 !important;
+          transition: 0.25s;
+        }
+      }
+    }
+  }
+  

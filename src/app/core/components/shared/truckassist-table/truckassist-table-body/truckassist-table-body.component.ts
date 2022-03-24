@@ -31,6 +31,10 @@ export class TruckassistTableBodyComponent
   @Input() selectedTab: string;
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
+  showItemDrop: number = -1;
+  loadingPassword: number = -1;
+  showPassword: any[] = [];
+  decryptedPassword: any[] = [];
 
   constructor(private router: Router) {}
 
@@ -100,6 +104,12 @@ export class TruckassistTableBodyComponent
 
   onShowAttachments(data: any) {
     alert('Treba da se odradi servis i componenta za Attachments');
+  }
+
+  onShowItemDrop(index: number) {}
+
+  onShowPassword(index: number) {
+    this.loadingPassword = index;
   }
 
   ngOnDestroy(): void {

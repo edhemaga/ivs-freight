@@ -14,11 +14,19 @@
         <td
           *ngFor="let column of columns"
           [ngStyle]="{
-            'margin-left':
-              column.ngTemplate === 'attachments' ? 'auto' : 'unset'
+            'margin-left': column.moveRight ? 'auto' : 'unset'
           }"
         >
-          <!-- CHECKBOX TEMPLATE-->
+          <!-- NO TEMPLATE -->
+          <div
+            *ngIf="!column.hidden && column.ngTemplate === ''"
+            [ngStyle]="{ width: column.width + 'px' }"
+            class="td-content"
+          >
+            <div class="no-template">NO TEMPLATE</div>
+          </div>
+
+          <!-- CHECKBOX TEMPLATE -->
           <div
             *ngIf="!column.hidden && column.ngTemplate === 'checkbox'"
             [ngStyle]="{ width: column.width + 'px' }"
@@ -34,7 +42,7 @@
             <label class="table-checkbox-label" for="checkbox{{ i }}"></label>
           </div>
 
-          <!--AVATAR COLUMN-->
+          <!--AVATAR COLUMN -->
           <div
             *ngIf="!column.hidden && column.ngTemplate === 'avatar'"
             [ngStyle]="{ width: column.width + 'px' }"
@@ -60,13 +68,208 @@
             >
           </div>
 
-          <!-- NAME LINK COLUMN-->
+          <!-- NAME LINK COLUMN -->
           <div
             class="td-content"
             *ngIf="!column.hidden && column.ngTemplate === 'nameLink'"
             [ngStyle]="{ width: column.width + 'px' }"
           >
             <span class="table-name-link">{{ row[column.field] }}</span>
+          </div>
+
+          <!-- CUSTOMER NAME COLUMN -->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'customer-name'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <div class="customer-name-container">
+              <svg-icon
+                *ngIf="row.ban && !row.dnu"
+                [src]="'assets/svg/truckassist-table/customer/banner-icon.svg'"
+                [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+              ></svg-icon>
+              <svg-icon
+                *ngIf="!row.ban && row.dnu"
+                [src]="
+                  'assets/svg/truckassist-table/customer/do-not-use-icon.svg'
+                "
+                [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+              ></svg-icon>
+              <span class="customer-name">{{ row[column.field] }}</span>
+            </div>
+          </div>
+
+          <!-- RATING  COLUMN-->
+          <div
+            class="td-content set-center"
+            *ngIf="!column.hidden && column.ngTemplate === 'rating'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw>
+          </div>
+
+          <!-- ITEM DROP COLUMN -->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'item-drop'"
+            [ngStyle]="{ width: column.width + 'px' }"
+            (click)="onShowItemDrop(i)"
+          >
+            <!-- [innerHtml]="row[column.field] | taHighlight: highlightingWords" -->
+            <span class="table-item" [innerHtml]="row[column.field]"></span>
+
+            <div class="item-drop-container" *ngIf="showItemDrop === i">
+              <div class="item-title">
+                <span class="count">#</span>
+                <span class="item-name">Item</span>
+                <span class="qty">Qty</span>
+                <span class="price">Price</span>
+                <span class="total">$4,866.23</span>
+              </div>
+              <div class="items-container">
+                <div
+                  class="item-container"
+                  *ngFor="let item of row.fuelItems; let k = index"
+                >
+                  <span class="count">{{ k + 1 }}</span>
+                  <span class="item-name">{{ item.category }}</span>
+                  <span class="qty">{{ item.qty }} gal.</span>
+                  <span class="price">${{ item.price }}</span>
+                  <span class="total">${{ item.subtotal }}</span>
+                  <div class="total-item-background"></div>
+                </div>
+                <div class="total-background"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TOTAL  COLUMN-->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'total'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
+            highlightingWords) : '' " -->
+            <span
+              class="table-total"
+              [innerHtml]="row[column.field] ? row[column.field] : ''"
+            ></span>
+          </div>
+
+          <!-- SERVICE COLUMN-->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'service'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <div class="service-container set-center">
+              <div
+                class="img-style img-margin"
+                [class]="row.doc.types[0].checked ? 'truck-active' : 'truck'"
+              ></div>
+              <div
+                class="img-style img-margin"
+                [class]="
+                  row.doc.types[1].checked ? 'trailer-active' : 'trailer'
+                "
+              ></div>
+              <div
+                class="img-style img-margin"
+                [class]="row.doc.types[2].checked ? 'mobile-active' : 'mobile'"
+              ></div>
+              <div
+                class="img-style img-margin"
+                [class]="row.doc.types[3].checked ? 'shop-active' : 'shop'"
+              ></div>
+              <div
+                class="img-style img-margin"
+                [class]="row.doc.types[4].checked ? 'towing-active' : 'towing'"
+              ></div>
+              <div
+                class="img-style img-margin"
+                [class]="row.doc.types[5].checked ? 'parts-active' : 'parts'"
+              ></div>
+              <div
+                class="img-style img-margin"
+                [class]="row.doc.types[6].checked ? 'tire-active' : 'tire'"
+              ></div>
+              <div
+                class="img-style"
+                [class]="row.doc.types[7].checked ? 'dealer-active' : 'dealer'"
+              ></div>
+            </div>
+          </div>
+
+          <!-- PPG COLUMN-->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'ppg'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <!-- [innerHtml]="'$0' | taHighlight: highlightingWords" -->
+            <span class="table-text" [innerHtml]="'$0'"></span>
+          </div>
+
+          <!-- URL COLUMN -->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'url'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <a
+              class="table-url"
+              href="{{ row[column.field] }}"
+              [innerHtml]="row[column.field] ? row[column.field] : ''"
+            ></a>
+          </div>
+
+          <!-- PASSWORD COLUMN -->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'password'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <svg-icon
+              class="table-password-icon"
+              [ngClass]="{
+                'table-active-password': showPassword[i]
+              }"
+              (click)="onShowPassword(i)"
+              src="/assets/svg/truckassist-table/password-icon.svg"
+            ></svg-icon>
+
+            <span
+              *ngIf="loadingPassword !== i"
+              [ngClass]="{
+                'crypted-password': !showPassword[i],
+                'decrypted-password': showPassword[i]
+              }"
+              >{{ showPassword[i] ? decryptedPassword[i] : "∗∗∗∗∗" }}</span
+            >
+
+            <svg-icon
+              class="password-spiner"
+              *ngIf="loadingPassword === i"
+              src="/assets/svg/truckassist-table/loading-spinner.svg"
+            ></svg-icon>
+          </div>
+
+          <!-- LABLE COLUMN -->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'label'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <div
+              class="table-lable"
+              [ngStyle]="{ background: row.labelColor }"
+            ></div>
+            <span
+              class="table-lable-text"
+              [innerHtml]="row.labelName ? row.labelName : ''"
+            ></span>
           </div>
 
           <!-- TEXT COLUMN -->
@@ -224,3 +427,8 @@
     </tr>
   </tbody>
 </table>
+
+<div class="show-more-container">
+  <div class="showing">6 of 6 Showing</div>
+  <div class="show-more">Show More</div>
+</div>
