@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SettingsStoreService } from '../../state/settings.service';
 
 @Component({
   selector: 'app-settings-parking',
@@ -30,7 +31,8 @@ export class SettingsParkingComponent implements OnInit {
       address: '5462 N East River Rd apt 611 Chicago, IL 60656',
       parking_slot: 12,
       parking_slot_full: 47,
-      companyOwned: 'assets/img/svgs/settings-company/settings-company-owned.svg',
+      companyOwned:
+        'assets/img/svgs/settings-company/settings-company-owned.svg',
       gate: true,
       security_camera: true,
       rent: '',
@@ -54,21 +56,23 @@ export class SettingsParkingComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  constructor(private settingsStoreService: SettingsStoreService) {}
 
   ngOnInit() {}
 
-  public onAction(data: { modalName: string; type: boolean; action: string }) {}
+  public onAction(data: { type: boolean; modalName: string; action: string }) {
+    this.settingsStoreService.onModalAction(data);
+  }
 
   public identity(index: number, item: any): number {
     return item.id;
   }
 
   public calculateParkingSlots(item: any): string {
-    return (item.parking_slot + item.parking_slot_full).toString()
+    return (item.parking_slot + item.parking_slot_full).toString();
   }
 
   public generateTextForProgressBar(data: any): string {
-    return data.pay_period + ' Rent ' + `- ${data.rent}`
+    return data.pay_period + ' Rent ' + `- ${data.rent}`;
   }
 }

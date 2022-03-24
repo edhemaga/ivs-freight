@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SettingsStoreService } from '../../state/settings.service';
 
 @Component({
   selector: 'app-settings-terminal',
@@ -61,8 +62,8 @@ export class SettingsTerminalComponent implements OnInit {
         {
           id: 6,
           name: 'Fuel Station',
-          check: true
-        }
+          check: true,
+        },
       ],
     },
     {
@@ -118,16 +119,18 @@ export class SettingsTerminalComponent implements OnInit {
         {
           id: 6,
           name: 'Fuel Station',
-          check: false
-        }
+          check: false,
+        },
       ],
     },
   ];
 
-  constructor() {}
+  constructor(private settingsStoreService: SettingsStoreService) {}
 
   ngOnInit() {}
-  public onAction(data: { modalName: string; type: boolean; action: string }) {}
+  public onAction(data: { type: boolean; modalName: string; action: string }) {
+    this.settingsStoreService.onModalAction(data);
+  }
 
   public identityTerminalData(index: number, item: any): number {
     return item.id;

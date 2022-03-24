@@ -27,7 +27,7 @@ import { TruckassistProgressExpirationModule } from '../../shared/truckassist-pr
     SettingsCompanyRoutes,
     SharedModule,
     SettingsCardModule,
-    TruckassistProgressExpirationModule
+    TruckassistProgressExpirationModule,
   ],
   declarations: [
     SettingsCompanyComponent,

@@ -16,11 +16,14 @@
       <svg-icon
         src="assets/img/svgs/settings-company/settings-plus.svg"
         class="settings-plus-button"
-        (click)="onAction({ modalName: 'parking', type: true, action: 'add' })"
+        (click)="onAction({ type: true, modalName: 'office', action: 'add' })"
       ></svg-icon>
     </div>
   </div>
-  <div class="settings-body" *ngFor="let item of officeData; trackBy: identityOfficeData">
+  <div
+    class="settings-body"
+    *ngFor="let item of officeData; trackBy: identityOfficeData"
+  >
     <div class="office-details">
       <div class="office-details-top">
         <div class="d-flex align-items-center">
@@ -71,7 +74,11 @@
     </div>
 
     <app-settings-card
-      *ngFor="let department of item.departments; let ind = index; trackBy: identityCardData"
+      *ngFor="
+        let department of item.departments;
+        let ind = index;
+        trackBy: identityCardData
+      "
       [cardTemplate]="'officeTemplate'"
       [hasCard]="department.check"
       [cardName]="department.name"

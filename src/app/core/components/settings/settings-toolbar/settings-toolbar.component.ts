@@ -13,7 +13,7 @@ export class SettingsToolbarComponent {
       count: null,
       svg: null,
       background: '#FFFFFF',
-      route: null
+      route: null,
     },
     {
       id: 2,
@@ -21,7 +21,7 @@ export class SettingsToolbarComponent {
       count: null,
       svg: 'assets/img/svgs/settings-company/settings-company.svg',
       background: '#FFFFFF',
-      route: '/settings/company'
+      route: '/settings/company',
     },
     {
       id: 3,
@@ -29,7 +29,7 @@ export class SettingsToolbarComponent {
       count: 7,
       svg: 'assets/img/svgs/settings-company/settings-location.svg',
       background: '#FFFFFF',
-      route: '/settings/location'
+      route: '/settings/location',
     },
     {
       id: 4,
@@ -37,7 +37,7 @@ export class SettingsToolbarComponent {
       count: 9,
       svg: 'assets/img/svgs/settings-company/settings-document.svg',
       background: '#FFFFFF',
-      route: '/settings/document'
+      route: '/settings/document',
     },
     {
       id: 5,
@@ -45,7 +45,7 @@ export class SettingsToolbarComponent {
       count: 10,
       svg: 'assets/img/svgs/settings-company/settings-billing.svg',
       background: '#FFFFFF',
-      route: '/settings/billing'
+      route: '/settings/billing',
     },
     {
       id: 6,
@@ -53,7 +53,7 @@ export class SettingsToolbarComponent {
       count: 15,
       svg: 'assets/img/svgs/settings-company/settings-user.svg',
       background: '#FFFFFF',
-      route: '/settings/user'
+      route: '/settings/user',
     },
     {
       id: 7,
@@ -61,7 +61,7 @@ export class SettingsToolbarComponent {
       count: null,
       svg: 'assets/img/svgs/settings-company/settings-integration.svg',
       background: '#FFFFFF',
-      route: '/settings/integration'
+      route: '/settings/integration',
     },
     {
       id: 8,
@@ -69,7 +69,7 @@ export class SettingsToolbarComponent {
       count: null,
       svg: null,
       background: '#FFFFFF',
-      route: null
+      route: null,
     },
   ];
 

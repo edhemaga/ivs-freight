@@ -10,6 +10,10 @@ import { SharedModule } from 'src/app/core/shared/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SettingsCardModule } from '../settings-card/settings-card.module';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
+import { SettingsParkingModalComponent } from './location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsOfficeModalComponent } from './location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsRepairshopModalComponent } from './location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from './location-modals/settings-terminal-modal/settings-terminal-modal.component';
 
 @NgModule({
   imports: [
@@ -26,6 +30,12 @@ import { TruckassistProgressExpirationModule } from '../../shared/truckassist-pr
     SettingsOfficeComponent,
     SettingsRepairShopComponent,
     SettingsTerminalComponent,
+
+    // Modals
+    SettingsParkingModalComponent,
+    SettingsOfficeModalComponent,
+    SettingsRepairshopModalComponent,
+    SettingsTerminalModalComponent
   ],
 })
 export class SettingsLocationModule {}

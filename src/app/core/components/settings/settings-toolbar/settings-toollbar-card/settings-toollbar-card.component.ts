@@ -31,27 +31,27 @@ export class SettingsToollbarCardComponent implements OnInit, OnDestroy {
     this.onReloadRoute(window.location.pathname);
 
     this.router.events
-    .pipe(
-      filter((route) => route instanceof NavigationEnd),
-      takeUntil(this.destroy$)
-    )
-    .subscribe((route: NavigationEnd) => {
-      if (this.route?.includes(route.urlAfterRedirects)) {
-        this.routeColor = {
-          color: '#ffffff',
-          background: '#AAAAAA',
-        };
-      } else {
-        this.routeColor = {
-          color: '#919191',
-          background: '#F3F3F3',
-        };
-      }
-    });
+      .pipe(
+        filter((route) => route instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((route: NavigationEnd) => {
+        if (this.route?.includes(route.urlAfterRedirects)) {
+          this.routeColor = {
+            color: '#ffffff',
+            background: '#AAAAAA',
+          };
+        } else {
+          this.routeColor = {
+            color: '#919191',
+            background: '#F3F3F3',
+          };
+        }
+      });
   }
 
   private onReloadRoute(reload_route: any) {
-    if(reload_route.includes(this.route)) {
+    if (reload_route.includes(this.route)) {
       this.routeColor = {
         color: '#ffffff',
         background: '#AAAAAA',

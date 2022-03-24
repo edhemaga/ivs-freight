@@ -9,7 +9,7 @@
         src="assets/img/svgs/settings-company/settings-edit.svg"
         class="settings-edit-button"
         (click)="
-          onAction({ modalName: 'basic', type: true, action: 'edit-basic' })
+          onAction({ type: true, modalName: 'basic', action: 'edit-basic' })
         "
       ></svg-icon>
       <svg-icon
@@ -37,7 +37,11 @@
       <div class="basic-middle">
         <div
           class="basic-data"
-          *ngFor="let item of companyBasicMiddleData; let ind = index; trackBy: identityCompanyBasicMiddle"
+          *ngFor="
+            let item of companyBasicMiddleData;
+            let ind = index;
+            trackBy: identityCompanyBasicMiddle
+          "
         >
           <svg-icon class="basic-data-svg" src="{{ item.svg }}"></svg-icon>
           <p>{{ item.value }}</p>
@@ -47,7 +51,10 @@
       <div class="basic-bottom">
         <div
           class="basic-bottom-card"
-          *ngFor="let item of companyBasicBottomData; trackBy: identityCompanyBasicBottom"
+          *ngFor="
+            let item of companyBasicBottomData;
+            trackBy: identityCompanyBasicBottom
+          "
         >
           <p class="bottom-card-left">{{ item.name }}</p>
           <p class="bottom-card-right">{{ item.value }}</p>
