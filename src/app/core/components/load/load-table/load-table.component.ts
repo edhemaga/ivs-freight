@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { getLoadColumnDefinition } from 'src/assets/utils/settings/load-columns';
-import { DriverManageComponent } from '../../modals/driver-manage/driver-manage.component';
 
 @Component({
   selector: 'app-load-table',
@@ -117,11 +116,6 @@ export class LoadTableComponent implements OnInit {
       data.isSelected = false;
       return data;
     });
-
-    console.log('setLoadData');
-
-    console.log(this.viewData);
-    console.log(this.columns);
   }
 
   getDumyData(numberOfCopy: number) {
