@@ -48,7 +48,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
       ),
     };
 
-    this.isActiveFooterRouteOnReload(window.location.href);
+    this.isActiveFooterRouteOnReload(window.location.pathname);
 
     // this.communicatorUserDataService.chatUser
     //   .pipe(takeUntil(this.destroy$))
@@ -86,16 +86,13 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     }
   }
 
-  private isActiveFooterRouteOnReload(url: string) {
+  private isActiveFooterRouteOnReload(pathname: string) {
     const timeout = setTimeout(() => {
-      const urlString = url.split('/');
-      const reloadUrl =
-        urlString[urlString.length - 2] + '/' + urlString[urlString.length - 1];
 
-      const hasSettingsInRoute = urlString.includes('settings');
-      console.log(hasSettingsInRoute);
+      const hasSettingsInRoute = pathname.includes('settings');
+
       if (hasSettingsInRoute) {
-        this.router.navigate([`/${reloadUrl}`]);
+        this.router.navigate([`/${pathname}`]);
         this.onActivateFooterRoutes.emit(true);
       } else {
         this.onActivateFooterRoutes.emit(false);

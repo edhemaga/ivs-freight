@@ -22,7 +22,7 @@ export class NavigationRouteComponent implements OnInit {
 
   ngOnInit() {
     this.timeout = setTimeout(() => {
-      this.isActiveRouteOnReload(window.location.href);
+      this.isActiveRouteOnReload(window.location.pathname);
       clearTimeout(this.timeout);
     }, 1000);
   }
@@ -47,9 +47,7 @@ export class NavigationRouteComponent implements OnInit {
     });
   }
 
-  private isActiveRouteOnReload(url: string) {
-    const urlString = url.split('/');
-    const reloadUrl = urlString[urlString.length - 1];
+  private isActiveRouteOnReload(pathname: string) {
 
     const flegId = JSON.parse(localStorage.getItem('subroute_active'));
 
@@ -59,7 +57,7 @@ export class NavigationRouteComponent implements OnInit {
 
     if (
       !Array.isArray(this.route.route) &&
-      this.route.route.includes(reloadUrl)
+      this.route.route.includes(pathname)
     ) {
       this.onRouteAction();
     }
