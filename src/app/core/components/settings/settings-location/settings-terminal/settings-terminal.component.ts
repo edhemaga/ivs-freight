@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
 
 @Component({
   selector: 'app-settings-terminal',
   templateUrl: './settings-terminal.component.html',
-  styleUrls: ['./settings-terminal.component.scss'],
+  styleUrls: ['./settings-terminal.component.scss']
 })
 export class SettingsTerminalComponent implements OnInit {
   public terminalData = [

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
 
 @Component({
   selector: 'app-settings-parking',
   templateUrl: './settings-parking.component.html',
-  styleUrls: ['./settings-parking.component.scss'],
+  styleUrls: ['./settings-parking.component.scss']
+  
 })
 export class SettingsParkingComponent implements OnInit {
   public parkingData = [

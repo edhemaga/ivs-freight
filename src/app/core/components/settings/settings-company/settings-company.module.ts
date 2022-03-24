@@ -16,8 +16,8 @@ import { SettingsInsurancePolicyModalComponent } from './company-modals/settings
 import { SettingsFactoringModalComponent } from './company-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { SettingsNodataComponent } from './settings-nodata/settings-nodata.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SettingsCardModule } from '../settings-card/settings-card.module';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
+import { SettingsSharedModule } from '../settings-shared/settings-shared.module';
 
 @NgModule({
   imports: [
@@ -26,7 +26,7 @@ import { TruckassistProgressExpirationModule } from '../../shared/truckassist-pr
     SharedModule,
     SettingsCompanyRoutes,
     SharedModule,
-    SettingsCardModule,
+    SettingsSharedModule,
     TruckassistProgressExpirationModule,
   ],
   declarations: [

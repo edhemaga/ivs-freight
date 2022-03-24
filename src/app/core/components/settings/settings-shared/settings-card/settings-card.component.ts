@@ -1,9 +1,9 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-settings-card',
   templateUrl: './settings-card.component.html',
-  styleUrls: ['./settings-card.component.scss'],
+  styleUrls: ['./settings-card.component.scss']
 })
 export class SettingsCardComponent {
   @ViewChild('cardBody') cardBodyRef: ElementRef;

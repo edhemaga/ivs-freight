@@ -8,12 +8,12 @@ import { SettingsOfficeComponent } from './settings-office/settings-office.compo
 import { SettingsTerminalComponent } from './settings-terminal/settings-terminal.component';
 import { SharedModule } from 'src/app/core/shared/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SettingsCardModule } from '../settings-card/settings-card.module';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { SettingsParkingModalComponent } from './location-modals/settings-parking-modal/settings-parking-modal.component';
 import { SettingsOfficeModalComponent } from './location-modals/settings-office-modal/settings-office-modal.component';
 import { SettingsRepairshopModalComponent } from './location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsTerminalModalComponent } from './location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { SettingsSharedModule } from '../settings-shared/settings-shared.module';
 
 @NgModule({
   imports: [
@@ -21,7 +21,7 @@ import { SettingsTerminalModalComponent } from './location-modals/settings-termi
     ReactiveFormsModule,
     SettingsLocationRoutes,
     SharedModule,
-    SettingsCardModule,
+    SettingsSharedModule,
     TruckassistProgressExpirationModule
   ],
   declarations: [
