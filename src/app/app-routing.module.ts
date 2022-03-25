@@ -101,6 +101,22 @@ const routes: Routes = [
         (m) => m.ContactsModule
       ),
   },
+  {
+    path: 'safety/violation',
+    loadChildren: () =>
+      import('./core/components/safety/violation/violation.module').then(
+        (m) => m.ViolationModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'safety/accident',
+    loadChildren: () =>
+      import('./core/components/safety/accident/accident.module').then(
+        (m) => m.AccidentModule
+      ),
+    canActivate: [AuthGuard],
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];
 
