@@ -67,11 +67,13 @@
       >
       </app-settings-card>
       <!-- Expires..... -->
-      <app-truckassist-progress-expiration
-        [expireDate]="'03/31/2023'"
-        [startDate]="'03/12/2023'"
-        [expiresSettings]="'settings-insurance-policy'"
-      ></app-truckassist-progress-expiration>
+      <div class="settings-progress-container">
+        <app-truckassist-progress-expiration
+          [expireDate]="'03/31/2023'"
+          [startDate]="'03/12/2023'"
+          [expiresSettings]="'settings-insurance-policy'"
+        ></app-truckassist-progress-expiration>
+      </div>
 
       <p class="show-details" (click)="onShowDetails()">Show Details</p>
     </div>
