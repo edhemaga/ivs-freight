@@ -96,11 +96,6 @@ export class ContactsTableComponent implements OnInit {
       data.isSelected = false;
       return data;
     });
-
-    console.log('setContactData');
-
-    console.log(this.viewData);
-    console.log(this.columns);
   }
 
   getDumyData(numberOfCopy: number) {

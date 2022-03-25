@@ -42,7 +42,36 @@
             <label class="table-checkbox-label" for="checkbox{{ i }}"></label>
           </div>
 
-          <!--AVATAR COLUMN -->
+          <!-- USER CHECKBOX TEMPLATE -->
+          <div
+            *ngIf="!column.hidden && column.ngTemplate === 'user-checkbox'"
+            [ngStyle]="{ width: column.width + 'px' }"
+            class="td-content set-center"
+          >
+            <!-- IF USER IS OWNER -->
+            <svg-icon
+              *ngIf="row.userType === 'Owner'"
+              [src]="'assets/svg/truckassist-table/user-owner-icon.svg'"
+              [svgStyle]="{ 'width.px': '14', 'height.px': '14' }"
+            ></svg-icon>
+
+            <!-- IF USER IS NOT OWNER -->
+            <input
+              *ngIf="row.userType !== 'Owner'"
+              (change)="onSelectItem(row, i)"
+              [checked]="row.isSelected"
+              class="table-checkbox"
+              id="checkbox{{ i }}"
+              type="checkbox"
+            />
+            <label
+              *ngIf="row.userType !== 'Owner'"
+              class="table-checkbox-label"
+              for="checkbox{{ i }}"
+            ></label>
+          </div>
+
+          <!-- AVATAR COLUMN -->
           <div
             *ngIf="!column.hidden && column.ngTemplate === 'avatar'"
             [ngStyle]="{ width: column.width + 'px' }"
@@ -52,7 +81,9 @@
               <img
                 alt="avatar"
                 [src]="
-                  row.avatar ? row.avatar : 'assets/img/svgs/table/profile.svg'
+                  row.avatar
+                    ? row.avatar
+                    : 'assets/img/svgs/table/profile.svg/profile.svg'
                 "
                 class="avatar"
               />
@@ -66,6 +97,35 @@
             <span (click)="goToDetails(column, row)" class="table-avatar-name"
               >{{ row.firstName }} {{ row.lastName }}</span
             >
+          </div>
+
+          <!-- USER AVATAR COLUMN -->
+          <div
+            *ngIf="!column.hidden && column.ngTemplate === 'user-avatar'"
+            [ngStyle]="{ width: column.width + 'px' }"
+            class="td-content"
+          >
+            <div class="user-avatar-container">
+              <img
+                alt="avatar"
+                [src]="
+                  row?.avatar?.src
+                    ? row?.avatar?.src
+                    : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                "
+                class="avatar"
+              />
+            </div>
+            <span class="table-avatar-name">{{ row.userFullName }}</span>
+          </div>
+
+          <!-- USER STATUS COLUMN -->
+          <div
+            class="td-content set-center"
+            *ngIf="!column.hidden && column.ngTemplate === 'user-status'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <div class="user-status-container">{{ row[column.field] }}</div>
           </div>
 
           <!-- NAME LINK COLUMN -->
@@ -279,6 +339,17 @@
             [ngStyle]="{ width: column.width + 'px' }"
           >
             <span class="table-text">{{
+              row[column.field] ? row[column.field] : ""
+            }}</span>
+          </div>
+
+          <!-- SEMI BOLD TEXT COLUMN -->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'semi-bold-text'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <span class="semi-bold-table-text">{{
               row[column.field] ? row[column.field] : ""
             }}</span>
           </div>

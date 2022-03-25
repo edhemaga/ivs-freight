@@ -118,6 +118,41 @@ table {
               }
             }
 
+            // USER AVATAR COLUMN
+            .user-avatar-container {
+              cursor: pointer;
+              width: 20px;
+              height: 20px;
+              margin-right: 6px;
+              display: flex;
+
+              &:hover {
+                transform: scale(1.8);
+                transition: 0.2s;
+              }
+
+              .avatar {
+                user-select: none;
+                width: 20px;
+                height: 20px;
+                border-radius: 50px;
+              }
+            }
+
+            // USER STATUS COLUMN
+            .user-status-container{
+              width: 64px;
+              height: 20px;
+              border-radius: 2px;
+              background: #B7B7B720;
+              color: #B7B7B7;
+              font-size: 12px;
+              font-weight: bold;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+
             // NAME LINK
             .table-name-link {
               font-size: 14px;
@@ -178,6 +213,22 @@ table {
 
             .table-text-state {
               font-weight: bold;
+            }
+
+            // SEMI BOLD TEXT COLUMN
+            .semi-bold-table-text{
+              font-size: 14px;
+              font-weight: 600;
+              color: #b7b7b7;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              width: 100%;
+
+              &::selection {
+                color: #b7b7b7;
+                background: rgba(145, 145, 145, 0.2);
+              }
             }
 
             // ATTACHMENTS COLUMN TEMPLATE
@@ -644,6 +695,10 @@ table {
     display: flex;
     justify-content: center;
     align-items: center;
+    &::selection {
+      color: #919191;
+      background: #91919120;
+    }
   }
 
   .showing {
