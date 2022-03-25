@@ -3,7 +3,7 @@
     <h5 class="modal-title">{{ modalTitle }}</h5>
     <svg-icon
       (click)="activeModal.dismiss('Modal close')"
-      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      [svgStyle]="{ 'width.px': 22, 'height.px': 22 }"
       class="modal-close-btn cursor-pointer"
       src="assets/img/svgs/table/close.svg"
     ></svg-icon>
@@ -370,9 +370,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button (click)="closeCustomerEdit()" class="cancel-btn" type="button">
-      <p class="m-0">Cancel</p>
-    </button>
+
     <button
       (click)="updateCustomer()"
       class="save-btn"

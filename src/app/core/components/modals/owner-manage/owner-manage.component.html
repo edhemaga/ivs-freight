@@ -588,9 +588,7 @@
   </div>
 
   <div class="modal-footer">
-    <button (click)="closeOwnerAddModal()" class="cancel-btn" type="button">
-      <p class="m-0">Cancel</p>
-    </button>
+
     <button (click)="manageOwner()" class="save-btn" [ngClass]="{'invalid-btn' : !ownerForm.valid}" ngbAutofocus
             type="button">
       <p class="m-0">Save</p>

@@ -1,0 +1,17 @@
+@import 'src/theme/variables';
+
+.modal-small {
+  .modal-footer {
+    border-top: none;
+    padding: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    background: $white;
+    height: 36px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}

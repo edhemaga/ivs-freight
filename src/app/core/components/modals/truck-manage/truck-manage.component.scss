@@ -161,7 +161,7 @@
     background: $bw1;
 
     p {
-      color: $bw4;
+      color: $bw5;
     }
 
     &:hover {
@@ -271,4 +271,20 @@ textarea.input-custom-textarea.form-textarea {
     }
   }
 }
+
+  .modal-footer {
+    border-top: none;
+    padding: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    background: #fff;
+    height: 36px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+
 

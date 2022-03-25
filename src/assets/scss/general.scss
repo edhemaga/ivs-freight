@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 body {
-  font-size: 14px;
+  font-size: 18px;
   color: #606060;
   font-family: 'Montserrat', sans-serif !important;
   background: #eeeeee !important;
@@ -44,7 +44,7 @@ ngx-slider.ngx-slider {
   }
 
   .ngx-slider-selection {
-    background-color: #BBC7DD;
+    background-color: #97A8DC;
     visibility: visible;
   }
 
@@ -69,7 +69,7 @@ ngx-slider.ngx-slider {
   }
 
   .ngx-slider-model-value {
-    color: #91A4C7;
+    color: #536BC2;
     font-weight: 500;
     font-size: 14px;
     letter-spacing: 0;

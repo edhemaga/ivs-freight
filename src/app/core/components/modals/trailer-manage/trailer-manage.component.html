@@ -2,19 +2,6 @@
   <div cdkDragHandle class="modal-header">
     <div class="d-flex align-items-center">
     <h5 class="modal-title">{{ modalTitle }}</h5>
-    <div class="multiple-choises-wrapper">
-      <div class="btn-group btn-group-toggle">
-        <label class="btn-primary" ngbButtonLabel>
-          <input
-            (change)="companyOwned()"
-            [(ngModel)]="companyOwnedStateControl"
-            ngbButton
-            type="checkbox"
-          >
-          Company owned
-        </label>
-      </div>
-    </div>
     </div>
     <svg-icon
       (click)="activeModal.dismiss('Modal close')"
@@ -411,11 +398,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button (click)="closeModal()" class="cancel-btn" type="button">
-      <p class="m-0">
-        Cancel
-      </p>
-    </button>
+
     <button (click)="saveTrailer()" [ngClass]="{'invalid-btn' : !trailerForm.valid}" class="save-btn" ngbAutofocus
             type="button">
       <p class="m-0">Save</p>

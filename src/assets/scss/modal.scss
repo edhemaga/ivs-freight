@@ -70,7 +70,8 @@
     justify-content: space-around;
 
     button {
-      margin: 0 !important;
+      margin-right: 10px !important;
+      margin-top: -10px !important;
       font-size: 14px;
       font-weight: bold;
       border: none;
@@ -83,7 +84,7 @@
       vertical-align: middle;
       text-align: center;
       justify-content: center;
-      width: 236px;
+      width: 150px;
     }
   }
 
@@ -110,6 +111,8 @@
 
   button {
     margin: 0 !important;
+    margin-right: 10px !important;
+    margin-top: -10px !important;
     font-size: 14px;
     font-weight: bold;
     border: none;
@@ -118,7 +121,7 @@
     transition: 0.3s;
     height: 32px;
     display: flex;
-    align-items: center;
+    align-items: end;
     vertical-align: middle;
     text-align: center;
     justify-content: center;

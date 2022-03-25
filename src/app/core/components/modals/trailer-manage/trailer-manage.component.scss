@@ -136,12 +136,16 @@
   background-color: $bw1;
   color: $bw4;
 }
+.modal-footer{
+  justify-content: flex-end;
+  background: #fff;
+}
 
 .save-btn {
-  background: $bw1;
+  background: $bc1;
 
   p {
-    color: $ceil-blue;
+    color: $bw1;
   }
 
   &:hover {
@@ -157,7 +161,7 @@
     background: $bw1;
 
     p {
-      color: $bw4;
+      color: $bw5;
     }
 
     &:hover {
