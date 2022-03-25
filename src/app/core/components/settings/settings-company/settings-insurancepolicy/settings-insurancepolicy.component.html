@@ -9,7 +9,7 @@
         src="assets/img/svgs/settings-company/settings-edit.svg"
         class="settings-edit-button"
         (click)="
-          onAction({ modalName: 'insurance-policy', type: true, action: 'new' })
+          onAction({ type: true, modalName: 'insurance-policy', action: 'new' })
         "
       ></svg-icon>
     </div>
@@ -21,48 +21,16 @@
     ></svg-icon>
 
     <div *ngIf="insuranceData">
-      <div class="producer-details">
-        <div class="producer-details-top">
-          <p class="producer-name">Knightbrook Ins Co.</p>
-          <div class="producer-actions">
-            <svg-icon
-              class="action-attachment"
-              src="assets/img/svgs/settings-company/settings-attachment.svg"
-            ></svg-icon>
-            <svg-icon
-              class="action-notes"
-              src="assets/img/svgs/settings-company/settings-notes.svg"
-            ></svg-icon>
-            <svg-icon
-              class="action-dots"
-              src="assets/img/svgs/settings-company/settings-dots.svg"
-            ></svg-icon>
-          </div>
-        </div>
-        <div class="producer-details-bottom">
-          <div class="details-bottom-info">
-            <svg-icon
-              src="assets/img/svgs/settings-company/settings-phone.svg"
-            ></svg-icon>
-            <p>(123) 456-7890</p>
-          </div>
-          <div class="details-bottom-info">
-            <svg-icon
-              src="assets/img/svgs/settings-company/settings-email.svg"
-            ></svg-icon>
-            <p>contact@windsor-brokers.com</p>
-          </div>
-          <div class="details-bottom-info">
-            <svg-icon
-              class="details-bottom-address-svg"
-              src="assets/img/svgs/settings-company/settings-address.svg"
-            ></svg-icon>
-            <p>5462 N East River Rd apt 611 Chicago, IL 60656</p>
-          </div>
-        </div>
+      <app-settings-tab-placeholder
+        [name]="'Knightbrook Ins Co.'"
+        [phone]="'(123) 456-7890'"
+        [email]="'contact@windsor-brokers.com'"
+        [address]="'5462 N East River Rd apt 611 Chicago, IL 60656'"
+        [hasAttachment]="true"
+        [hasNote]="true"
+      >
+      </app-settings-tab-placeholder>
 
-        <hr class="settings-line" />
-      </div>
       <!-- Commercial General Liability -->
       <app-settings-card
         [cardTemplate]="'insuranceTemplate'"
@@ -99,12 +67,13 @@
       >
       </app-settings-card>
       <!-- Expires..... -->
-      <app-truckassist-progress-expiration
-        [expireDate]="'03/31/2023'"
-        [status]="'03/01/2021'"
-        [startDate]="'03/12/2020'"
-        [expiresSettings]="true"
-      ></app-truckassist-progress-expiration>
+      <div class="settings-progress-container">
+        <app-truckassist-progress-expiration
+          [expireDate]="'03/31/2023'"
+          [startDate]="'03/12/2023'"
+          [expiresSettings]="'settings-insurance-policy'"
+        ></app-truckassist-progress-expiration>
+      </div>
 
       <p class="show-details" (click)="onShowDetails()">Show Details</p>
     </div>

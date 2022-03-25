@@ -1,0 +1,88 @@
+.edit-image-container {
+    width: 456px;
+    min-height: 144px;
+    transition: all 0.3s ease-in-out;
+  
+    .image-upload-area {
+      border: none;
+      width: 100%;
+      height: 144px;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      background-image: url("../../../../../assets/img/image-upload/ic_dropbox-container.svg") !important;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+  
+    ::ng-deep.croppie-container {
+      * {
+        user-select: none !important;
+      }
+  
+      .cr-boundary {
+        border-radius: 4px !important;
+        height: 143px !important;
+      }
+  
+      .cr-viewport {
+        border: 2px dashed #E5E5E5 !important;
+        border-spacing: 8px;
+        border-radius: 3px !important;
+        width: 100% !important;
+        height: 143px !important;
+  
+        &:focus {
+          outline: none !important;
+        }
+      }
+  
+      .cr-slider-wrap {
+        display: none !important;
+      }
+    }
+  }
+  
+  .buttons-container {
+    margin-top: 5px;
+  
+    .save-check {
+      cursor: pointer;
+  
+      svg-icon {
+        svg {
+          width: 22px;
+          height: 22px;
+        }
+      }
+  
+      transition: all 0.3s ease-in-out;
+      border: 0 !important;
+  
+      &.save {
+        &:hover {
+          svg {
+            #Rectangle_20156 {
+              fill: #5673aa;
+              transition: all 0.3s ease-in-out;
+            }
+          }
+        }
+      }
+  
+      &.cancel {
+        margin-left: 6px;
+  
+        &:hover {
+          svg {
+            #Rectangle_20157 {
+              fill: #ff5050;
+              transition: all 0.3s ease-in-out;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  

@@ -512,7 +512,6 @@ export class SettingsBasicModalComponent implements OnInit {
     // if (!this.sharedService.markInvalid(this.companyForm)) {
     //   return false;
     // }
-    console.log(this.companyForm.value)
   }
 
   public closeCompanyModal() {

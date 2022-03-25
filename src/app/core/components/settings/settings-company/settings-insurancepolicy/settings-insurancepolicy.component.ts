@@ -122,8 +122,8 @@ export class SettingsInsurancepolicyComponent {
 
   constructor(private settingsStoreService: SettingsStoreService) {}
 
-  public onAction(modal: { modalName: string; type: boolean; action: string }) {
-    this.settingsStoreService.modalSubject$.next(modal);
+  public onAction(modal: { type: boolean; modalName: string; action: string }) {
+    this.settingsStoreService.onModalAction(modal);
   }
 
   public onShowDetails() {}

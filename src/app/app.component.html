@@ -7,18 +7,16 @@
   <router-outlet></router-outlet>
 
   <div
-  *ngIf="showScrollButton || currentPage !== 'login'"
-  @scrollButtonAnimation
-  class="content-scroll"
-  (click)="top()"
->
-  <svg-icon
-    src="assets/img/svgs/app-scroll-button/ic_truckassist_arrow_top.svg"
-  ></svg-icon>
+    *ngIf="showScrollButton && currentPage !== 'login'"
+    @scrollButtonAnimation
+    class="content-scroll"
+    (click)="top()"
+  >
+    <svg-icon
+      src="assets/img/svgs/app-scroll-button/ic_truckassist_arrow_top.svg"
+    ></svg-icon>
+  </div>
 </div>
-</div>
-
-
 
 <div class="low-res-wrapper">
   <div class="low-res-logo">

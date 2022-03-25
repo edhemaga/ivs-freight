@@ -39,8 +39,8 @@ export function getDriverColumnsDefinition() {
         src: 'additionalData.avatar.src',
       },
       link: {
-        routerLinkStart: '/drivers/edit/',
-        routerLinkEnd: '/basic',
+        routerLinkStart: '/driver/',
+        routerLinkEnd: '/details',
       },
       progress: null,
       hoverTemplate: null,
@@ -368,6 +368,7 @@ export function getDriverColumnsDefinition() {
       ngTemplate: 'attachments',
       title: '',
       field: 'additionalData.files',
+      moveRight: true,
       name: '',
       hidden: false,
       width: 18,

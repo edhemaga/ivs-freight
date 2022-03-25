@@ -13,10 +13,10 @@ export class SettingsFactoringComponent {
 
   constructor(private settingsStoreService: SettingsStoreService) {}
 
-  public onAction(modal: { modalName: string; type: boolean; action: string }) {
-    switch(modal.action) {
+  public onAction(modal: { type: boolean; modalName: string; action: string }) {
+    switch (modal.action) {
       case 'edit': {
-        this.settingsStoreService.modalSubject$.next(modal)
+        this.settingsStoreService.onModalAction(modal);
         break;
       }
       default: {

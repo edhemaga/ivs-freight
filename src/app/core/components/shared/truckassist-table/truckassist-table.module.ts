@@ -8,6 +8,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TruckassistProgressExpirationModule } from '../truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { GetExpireDataPipe } from 'src/app/core/pipes/get-expire-data.pipe';
 import { TableDropdownComponent } from '../table-dropdown/table-dropdown.component';
+import { TruckassistReveiwModule } from '../truckassist-reveiw/truckassist-reveiw.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { TableDropdownComponent } from '../table-dropdown/table-dropdown.compone
     TruckassistSearchModule,
     AngularSvgIconModule,
     TruckassistProgressExpirationModule,
+    TruckassistReveiwModule
   ],
   exports: [
     TruckassistTableBodyComponent,

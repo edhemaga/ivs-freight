@@ -21,12 +21,12 @@
   }
 
   &.active {
-    background-color: $settings-color !important;
+    background-color: $settings-gray !important;
 
     .toolbar-card-svg {
       svg {
         path {
-          fill: $settings-color-eeee !important;
+          fill: $settings-background !important;
         }
       }
     }
@@ -44,7 +44,7 @@
 
   .toolbar-card-name {
     font-weight: $settings-font-extrabold;
-    color: $settings-color;
+    color: $settings-gray;
     font-size: 14px;
 
     &.card-toolbar-first-name {

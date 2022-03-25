@@ -17,13 +17,13 @@ export class CommunicatorUserService {
 
   trackUserStatuses() {
     if (this.user) {
-      this.userSocket.emit('track-user-statuses', this.user.id, this.user.companyId);
+      // this.userSocket.emit('track-user-statuses', this.user.id, this.user.companyId);
     }
   }
 
   leaveUserStatuses() {
     if (this.user) {
-      this.userSocket.emit('leave-user-statuses', this.user.id, this.user.companyId);
+      // this.userSocket.emit('leave-user-statuses', this.user.id, this.user.companyId);
     }
   }
 
@@ -35,16 +35,16 @@ export class CommunicatorUserService {
           status
         });
       } */
-      this.userSocket.emit('change-my-status', this.user.id, status);
+      // this.userSocket.emit('change-my-status', this.user.id, status);
     }
   }
 
   onChangeMyStatus() {
-    return this.userSocket.fromEvent<string>('my-status-changed');
+    // return this.userSocket.fromEvent<string>('my-status-changed');
   }
 
   onUserStatusChanged() {
-    return this.userSocket.fromEvent<{ id: string, status: string, chats: any[] }>('user-status-changed');
+    // return this.userSocket.fromEvent<{ id: string, status: string, chats: any[] }>('user-status-changed');
   }
 
 }

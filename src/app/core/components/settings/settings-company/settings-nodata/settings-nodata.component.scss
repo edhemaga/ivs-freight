@@ -11,7 +11,7 @@
   background-color: rgba($color: #000000, $alpha: 0.2);
   overflow: hidden;
 
-  .settings-edit-button {
+  .no-settings-edit-button {
     display: inline-block;
     position: relative;
     top: 56px;
@@ -21,11 +21,11 @@
     border-radius: 3px;
 
     &:hover {
-      transform: $transition;
+      transform: $settings-transition;
       cursor: pointer;
       svg {
         path {
-          fill: $settings-color;
+          fill: $settings-gray;
         }
       }
     }
@@ -38,7 +38,7 @@
     left: 363px;
     height: 27px;
     width: 193px;
-    color: $settings-color-dark;
+    color: $settings-gray-dark;
     background-color: $settings-nodata;
     box-shadow: $settings-box-shadow;
     border-radius: 3px;

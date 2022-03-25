@@ -5,7 +5,7 @@
         *ngFor="let column of columns; let i = index"
         [ngStyle]="{
           width: column.width + 'px',
-          'margin-left': column.ngTemplate === 'attachments' ? 'auto' : 'unset',
+          'margin-left': column.moveRight ? 'auto' : 'unset',
           'justify-content': column?.headAlign ? column?.headAlign : ''
         }"
         [ngClass]="{

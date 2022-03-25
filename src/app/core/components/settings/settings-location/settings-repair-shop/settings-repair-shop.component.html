@@ -1,0 +1,57 @@
+<div class="settings-repair-shop">
+  <div class="settings-header">
+    <div class="settings-name d-flex align-items-center">
+      <app-ta-counter
+        [count]="'4'"
+        [countColor]="'#919191'"
+        [countBackground]="'#F3F3F3'"
+        [countHeight]="'24px'"
+        [countWidth]="'24px'"
+        [countTextBottomPosition]="'-2px'"
+      ></app-ta-counter>
+      <p>Repair Shop</p>
+    </div>
+
+    <div class="settings-header-button">
+      <svg-icon
+        src="assets/img/svgs/settings-company/settings-plus.svg"
+        class="settings-plus-button"
+        (click)="
+          onAction({ type: true, modalName: 'repairshop', action: 'add' })
+        "
+      ></svg-icon>
+    </div>
+  </div>
+  <div
+    class="settings-body"
+    *ngFor="let item of repairShopData; trackBy: identity"
+  >
+    <app-settings-tab-placeholder
+      [name]="item.name"
+      [companyOwnedSVG]="item.companyOwned"
+      [phone]="item.phone"
+      [email]="item.email"
+      [address]="item.address"
+    >
+    </app-settings-tab-placeholder>
+    
+    <app-settings-card
+      [cardTemplate]="'repairShopTemplate'"
+      [cardName]="'Service'"
+      [cardCount]="getActiveServices(item.services).length"
+      [hasLine]="item.rent"
+      [data]="item.services"
+    >
+    </app-settings-card>
+<div class="settings-progress-container">
+  <app-truckassist-progress-expiration
+  *ngIf="item.rent"
+  [expireDate]="'03/25/2023'"
+  [startDate]="'03/12/2023'"
+  [expiresSettings]="'settings-parking'"
+  [customText]="generateTextForProgressBar(item)"
+></app-truckassist-progress-expiration>
+</div>
+
+  </div>
+</div>

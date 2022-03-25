@@ -758,10 +758,10 @@
             >
               <!-- Logo Upload -->
               <div class="upload-logo-wrapper d-flex flex-row">
-                <app-logo-change
+                <app-ta-logo-change
                   (saveAvatar)="saveLogoCompany($event)"
                   [src]="''"
-                ></app-logo-change>
+                ></app-ta-logo-change>
               </div>
             </div>
           </div>
@@ -2009,22 +2009,27 @@
             </div>
             <div class="row">
               <div class="col-6">
-                <div class="custom-slider-wrapper custom-slider-wrapper-first">
-                  <p class="custom-slider-text">Default Driver Commission</p>
-                  <ngx-slider
-                    [options]="driverSliderOptions"
-                    formControlName="driverCommission"
-                  ></ngx-slider>
-                </div>
+                <app-ta-ngx-slider
+                  [sliderName]="'Default Driver Commission'"
+                  [sliderOptions]="driverSliderOptions"
+                  [startedValue]="
+                    this.companyForm.get('driverCommission').value
+                  "
+                  [customClass]="'custom-slider-commission-driver'"
+                  (onUserValueChange)="
+                    this.companyForm.get('driverCommission').setValue($event)
+                  "
+                ></app-ta-ngx-slider>
               </div>
               <div class="col-6">
-                <div class="custom-slider-wrapper">
-                  <p class="custom-slider-text">Default Owner Commission</p>
-                  <ngx-slider
-                    [options]="ownerSliderOptions"
-                    formControlName="ownerCommision"
-                  ></ngx-slider>
-                </div>
+                <app-ta-ngx-slider
+                  [sliderName]="'Default Owner Commission'"
+                  [sliderOptions]="ownerSliderOptions"
+                  [startedValue]="this.companyForm.get('ownerCommision').value"
+                  (onUserValueChange)="
+                    this.companyForm.get('ownerCommision').setValue($event)
+                  "
+                ></app-ta-ngx-slider>
               </div>
             </div>
           </div>
@@ -2268,258 +2273,274 @@
         </div>
         <!----------------- Dispatch  --------------------------->
         <div
-        class="col-12 note-wrapper{{
-          dispatchZone ? ' visible-note' : ' hidden-note'
-        }}"
-      >
-        <div
-          (click)="openZone('dispatch')"
-          class="note-label-wrapper"
-          style="margin-bottom: 22px"
-        >
-          <span class="note-label">Dispatch</span>
-
-          <svg-icon
-            class="down-icon"
-            src="assets/img/svgs/down-arrow.svg"
-          ></svg-icon>
-        </div>
-        <div
-          class="example-full-width note-input{{
-            dispatchZone ? ' note-visible' : ' note-hidden'
+          class="col-12 note-wrapper{{
+            dispatchZone ? ' visible-note' : ' hidden-note'
           }}"
         >
-          <div class="row">
-            <div class="col-6">
-              <div class="form-label-group">
-                <ng-select
-                  [items]="pay_period"
-                  appendTo="body"
-                  bindLabel="name"
-                  formControlName="dispatchPayPeriod"
-                >
-                  <ng-template
-                    let-item="item"
-                    let-search="searchTerm"
-                    ng-option-tmp
+          <div
+            (click)="openZone('dispatch')"
+            class="note-label-wrapper"
+            style="margin-bottom: 22px"
+          >
+            <span class="note-label">Dispatch</span>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              dispatchZone ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <div class="row">
+              <div class="col-6">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="dispatchPayPeriod"
                   >
-                    <span [ngOptionHighlight]="search">{{ item.name }}</span>
-                  </ng-template>
-                </ng-select>
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
               </div>
-            </div>
-            <div class="col-4">
-              <div class="form-label-group">
-                <ng-select
-                  [items]="pay_period"
-                  appendTo="body"
-                  bindLabel="name"
-                  formControlName="dispatchEndingIn"
-                >
-                  <ng-template
-                    let-item="item"
-                    let-search="searchTerm"
-                    ng-option-tmp
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="dispatchEndingIn"
                   >
-                    <span [ngOptionHighlight]="search">{{ item.name }}</span>
-                  </ng-template>
-                </ng-select>
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
               </div>
-            </div>
-            <div class="col-6">
-              <div
-                class="form-label-group input-icon input-holder {{
-                  manageInputValidation(
-                    this.companyForm.get('dispatchDefaultBase')
-                  )
-                }}"
-              >
-                <input
-                  id="dispatchDefaultBase"
-                  class="form-control input-control customer-credit"
-                  formControlName="dispatchDefaultBase"
-                  placeholder="Default Base"
-                  maxlength="15"
-                  appInputFocus
-                  (keypress)="
-                    keyPress($event, 'dispatchDefaultBase', 'number')
-                  "
-                  (paste)="onPaste($event, 'dispatchDefaultBase')"
-                />
-                <label for="dispatchDefaultBase">Default Base</label>
-                <p
-                  *ngIf="
-                    this.companyForm.get('dispatchDefaultBase').errors &&
-                    this.companyForm.get('dispatchDefaultBase').touched
-                  "
-                  class="m-0 required-notice invalid-length"
+              <div class="col-6">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('dispatchDefaultBase')
+                    )
+                  }}"
                 >
-                  {{
-                    this.companyForm.get("dispatchDefaultBase").errors
-                      | inputError
-                  }}
-                </p>
+                  <input
+                    id="dispatchDefaultBase"
+                    class="form-control input-control customer-credit"
+                    formControlName="dispatchDefaultBase"
+                    placeholder="Default Base"
+                    maxlength="15"
+                    appInputFocus
+                    (keypress)="
+                      keyPress($event, 'dispatchDefaultBase', 'number')
+                    "
+                    (paste)="onPaste($event, 'dispatchDefaultBase')"
+                  />
+                  <label for="dispatchDefaultBase">Default Base</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('dispatchDefaultBase').errors &&
+                      this.companyForm.get('dispatchDefaultBase').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("dispatchDefaultBase").errors
+                        | inputError
+                    }}
+                  </p>
 
-                <svg-icon
-                  class="valid-icon"
-                  src="assets/img/form-validation/check-icon-light-blue.svg"
-                >
-                </svg-icon>
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
 
-                <svg-icon
-                  class="x-invalid-icon"
-                  src="assets/img/form-validation/x-icon-light-red.svg"
-                >
-                </svg-icon>
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
 
-                <svg-icon
-                  (click)="clearInput('dispatchDefaultBase')"
-                  class="clear-icon"
-                  ngbTooltip="Clear"
-                  placement="bottom-left"
-                  src="assets/img/form-validation/x-icon-cut.svg"
-                ></svg-icon>
+                  <svg-icon
+                    (click)="clearInput('dispatchDefaultBase')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
               </div>
-            </div>
-            <div class="col-6">
-              <div class="custom-slider-wrapper custom-slider-wrapper-first custom-slider-dispatch-manager">
-                <p class="custom-slider-text">Default Commission</p>
-                <ngx-slider
-                  [options]="dispatchSliderOptions"
-                  formControlName="dispatchDefaultCommission"
-                ></ngx-slider>
+              <div class="col-6">
+                <app-ta-ngx-slider
+                  [sliderName]="'Default Commission'"
+                  [sliderOptions]="dispatchSliderOptions"
+                  [startedValue]="
+                    this.companyForm.get('dispatchDefaultCommission').value
+                  "
+                  [customClass]="
+                    'custom-slider-commission-driver custom-slider-dispatch-manager'
+                  "
+                  (onUserValueChange)="
+                    this.companyForm
+                      .get('dispatchDefaultCommission')
+                      .setValue($event)
+                  "
+                ></app-ta-ngx-slider>
               </div>
             </div>
           </div>
         </div>
-      </div>
         <!----------------- Manager ----------------------------->
         <div
-        class="col-12 note-wrapper{{
-          managerZone ? ' visible-note' : ' hidden-note'
-        }}"
-      >
-        <div
-          (click)="openZone('manager')"
-          class="note-label-wrapper"
-          style="margin-bottom: 22px"
-        >
-          <span class="note-label">Manager</span>
-
-          <svg-icon
-            class="down-icon"
-            src="assets/img/svgs/down-arrow.svg"
-          ></svg-icon>
-        </div>
-        <div
-          class="example-full-width note-input{{
-            managerZone ? ' note-visible' : ' note-hidden'
+          class="col-12 note-wrapper{{
+            managerZone ? ' visible-note' : ' hidden-note'
           }}"
         >
-          <div class="row">
-            <div class="col-6">
-              <div class="form-label-group">
-                <ng-select
-                  [items]="pay_period"
-                  appendTo="body"
-                  bindLabel="name"
-                  formControlName="managerPayPeriod"
-                >
-                  <ng-template
-                    let-item="item"
-                    let-search="searchTerm"
-                    ng-option-tmp
+          <div
+            (click)="openZone('manager')"
+            class="note-label-wrapper"
+            style="margin-bottom: 22px"
+          >
+            <span class="note-label">Manager</span>
+
+            <svg-icon
+              class="down-icon"
+              src="assets/img/svgs/down-arrow.svg"
+            ></svg-icon>
+          </div>
+          <div
+            class="example-full-width note-input{{
+              managerZone ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <div class="row">
+              <div class="col-6">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="managerPayPeriod"
                   >
-                    <span [ngOptionHighlight]="search">{{ item.name }}</span>
-                  </ng-template>
-                </ng-select>
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
               </div>
-            </div>
-            <div class="col-4">
-              <div class="form-label-group">
-                <ng-select
-                  [items]="pay_period"
-                  appendTo="body"
-                  bindLabel="name"
-                  formControlName="managerEndingIn"
-                >
-                  <ng-template
-                    let-item="item"
-                    let-search="searchTerm"
-                    ng-option-tmp
+              <div class="col-4">
+                <div class="form-label-group">
+                  <ng-select
+                    [items]="pay_period"
+                    appendTo="body"
+                    bindLabel="name"
+                    formControlName="managerEndingIn"
                   >
-                    <span [ngOptionHighlight]="search">{{ item.name }}</span>
-                  </ng-template>
-                </ng-select>
+                    <ng-template
+                      let-item="item"
+                      let-search="searchTerm"
+                      ng-option-tmp
+                    >
+                      <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
               </div>
-            </div>
-            <div class="col-6">
-              <div
-                class="form-label-group input-icon input-holder {{
-                  manageInputValidation(
-                    this.companyForm.get('managerDefaultBase')
-                  )
-                }}"
-              >
-                <input
-                  id="managerDefaultBase"
-                  class="form-control input-control customer-credit"
-                  formControlName="managerDefaultBase"
-                  placeholder="Default Base"
-                  maxlength="15"
-                  appInputFocus
-                  (keypress)="
-                    keyPress($event, 'managerDefaultBase', 'number')
-                  "
-                  (paste)="onPaste($event, 'managerDefaultBase')"
-                />
-                <label for="managerDefaultBase">Default Base</label>
-                <p
-                  *ngIf="
-                    this.companyForm.get('managerDefaultBase').errors &&
-                    this.companyForm.get('managerDefaultBase').touched
-                  "
-                  class="m-0 required-notice invalid-length"
+              <div class="col-6">
+                <div
+                  class="form-label-group input-icon input-holder {{
+                    manageInputValidation(
+                      this.companyForm.get('managerDefaultBase')
+                    )
+                  }}"
                 >
-                  {{
-                    this.companyForm.get("managerDefaultBase").errors
-                      | inputError
-                  }}
-                </p>
+                  <input
+                    id="managerDefaultBase"
+                    class="form-control input-control customer-credit"
+                    formControlName="managerDefaultBase"
+                    placeholder="Default Base"
+                    maxlength="15"
+                    appInputFocus
+                    (keypress)="
+                      keyPress($event, 'managerDefaultBase', 'number')
+                    "
+                    (paste)="onPaste($event, 'managerDefaultBase')"
+                  />
+                  <label for="managerDefaultBase">Default Base</label>
+                  <p
+                    *ngIf="
+                      this.companyForm.get('managerDefaultBase').errors &&
+                      this.companyForm.get('managerDefaultBase').touched
+                    "
+                    class="m-0 required-notice invalid-length"
+                  >
+                    {{
+                      this.companyForm.get("managerDefaultBase").errors
+                        | inputError
+                    }}
+                  </p>
 
-                <svg-icon
-                  class="valid-icon"
-                  src="assets/img/form-validation/check-icon-light-blue.svg"
-                >
-                </svg-icon>
+                  <svg-icon
+                    class="valid-icon"
+                    src="assets/img/form-validation/check-icon-light-blue.svg"
+                  >
+                  </svg-icon>
 
-                <svg-icon
-                  class="x-invalid-icon"
-                  src="assets/img/form-validation/x-icon-light-red.svg"
-                >
-                </svg-icon>
+                  <svg-icon
+                    class="x-invalid-icon"
+                    src="assets/img/form-validation/x-icon-light-red.svg"
+                  >
+                  </svg-icon>
 
-                <svg-icon
-                  (click)="clearInput('managerDefaultBase')"
-                  class="clear-icon"
-                  ngbTooltip="Clear"
-                  placement="bottom-left"
-                  src="assets/img/form-validation/x-icon-cut.svg"
-                ></svg-icon>
+                  <svg-icon
+                    (click)="clearInput('managerDefaultBase')"
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="bottom-left"
+                    src="assets/img/form-validation/x-icon-cut.svg"
+                  ></svg-icon>
+                </div>
               </div>
-            </div>
-            <div class="col-6">
-              <div class="custom-slider-wrapper custom-slider-dispatch-manager">
-                <p class="custom-slider-text">Default Commission</p>
-                <ngx-slider
-                  [options]="managerSliderOptions"
-                  formControlName="managerDefaultCommission"
-                ></ngx-slider>
+              <div class="col-6">
+                <app-ta-ngx-slider
+                  [sliderName]="'Default Commission'"
+                  [sliderOptions]="managerSliderOptions"
+                  [startedValue]="
+                    this.companyForm.get('managerDefaultCommission').value
+                  "
+                  [customClass]="
+                    'custom-slider-commission-driver custom-slider-dispatch-manager'
+                  "
+                  (onUserValueChange)="
+                    this.companyForm
+                      .get('managerDefaultCommission')
+                      .setValue($event)
+                  "
+                ></app-ta-ngx-slider>
               </div>
             </div>
           </div>
         </div>
-      </div>
         <!----------------- Recruiting -------------------------->
         <div
           class="col-12 note-wrapper{{
