@@ -11,13 +11,14 @@ import {DispatcherGpsTableComponent} from './dispatcher-gps-table/dispatcher-gps
 import {DispatcherNoteComponent} from './dispatcher-note/dispatcher-note.component';
 import {DispatcherHistoryComponent} from './dispatcher-history/dispatcher-history.component';
 import { DispatcherTableComponent } from './dispatcher-table/dispatcher-table.component';
+import { DispatcherDropdownComponent } from './dispatcher-dropdown/dispatcher-dropdown.component';
 
 export function playerFactory() {
   return player;
 }
 
 @NgModule({
-  declarations: [DispatcherTableComponent, AppAddLoadTableComponent, AppDispatcherTableNewComponent, DispatcherGpsTableComponent, DispatcherNoteComponent, DispatcherHistoryComponent],
+  declarations: [DispatcherTableComponent, AppAddLoadTableComponent, AppDispatcherTableNewComponent, DispatcherGpsTableComponent, DispatcherNoteComponent, DispatcherHistoryComponent, DispatcherDropdownComponent],
   imports: [CommonModule, DispatchRoutingModule, SharedModule, AgmSnazzyInfoWindowModule, LottieModule.forRoot({player: playerFactory})],
   entryComponents: [],
   exports: [],
