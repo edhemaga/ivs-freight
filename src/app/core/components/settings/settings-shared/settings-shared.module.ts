@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SettingsCardComponent } from './settings-card/settings-card.component';
 import { SharedModule } from 'src/app/core/shared/shared/shared.module';
+import { SettingsTabPlaceholderComponent } from './settings-tab-placeholder/settings-tab-placeholder.component';
 
 
 @NgModule({
@@ -12,10 +13,12 @@ import { SharedModule } from 'src/app/core/shared/shared/shared.module';
     TruckassistProgressExpirationModule
   ],
   declarations: [
-    SettingsCardComponent
+    SettingsCardComponent,
+    SettingsTabPlaceholderComponent
   ],
   exports: [
-    SettingsCardComponent
+    SettingsCardComponent,
+    SettingsTabPlaceholderComponent
   ]
 })
 export class SettingsSharedModule { }

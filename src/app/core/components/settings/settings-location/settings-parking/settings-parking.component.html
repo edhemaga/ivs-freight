@@ -24,54 +24,15 @@
     class="settings-body"
     *ngFor="let item of parkingData; trackBy: identity"
   >
-    <div class="parking-details">
-      <div class="parking-details-top">
-        <div class="d-flex align-items-center">
-          <p class="parking-name">{{ item.name }}</p>
-          <svg-icon
-            class="parking-svg"
-            *ngIf="item.companyOwned"
-            src="{{ item.companyOwned }}"
-            [appTooltip]="'Company Owned'"
-            position="bottom-right"
-            tooltipBackground="#6C6C6C"
-            tooltipColor="#FFFFFF"
-            zIndex="900"
-            [borderRadius]="'2px'"
-            [fontWeight]="'bold'"
-            [fontSize]="'11px'"
-          ></svg-icon>
-        </div>
-        <div class="parking-actions">
-          <svg-icon
-            class="action-dots"
-            src="assets/img/svgs/settings-company/settings-dots.svg"
-          ></svg-icon>
-        </div>
-      </div>
-      <div class="parking-details-bottom">
-        <div class="details-bottom-info first" *ngIf="item.phone">
-          <svg-icon
-            src="assets/img/svgs/settings-company/settings-phone.svg"
-          ></svg-icon>
-          <p>{{ item.phone }}</p>
-        </div>
-        <div class="details-bottom-info" *ngIf="item.email">
-          <svg-icon
-            src="assets/img/svgs/settings-company/settings-email.svg"
-          ></svg-icon>
-          <p>{{ item.email }}</p>
-        </div>
-        <div class="details-bottom-info">
-          <svg-icon
-            class="details-bottom-address-svg"
-            src="assets/img/svgs/settings-company/settings-address.svg"
-          ></svg-icon>
-          <p class="details-bottom-address-text">{{ item.address }}</p>
-        </div>
-      </div>
-      <hr class="settings-line" />
-    </div>
+    <app-settings-tab-placeholder
+      [name]="item.name"
+      [companyOwnedSVG]="item.companyOwned"
+      [phone]="item.phone"
+      [email]="item.email"
+      [address]="item.address"
+    >
+    </app-settings-tab-placeholder>
+    
     <app-settings-card
       [cardTemplate]="'parkingTemplate'"
       [cardName]="'Parking Slot'"

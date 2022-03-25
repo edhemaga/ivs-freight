@@ -24,31 +24,14 @@
       src="assets/img/svgs/settings-company/settings-factoring.svg"
     ></svg-icon>
 
-    <div *ngIf="factoringData">
-      <div class="factoring-details">
-        <p class="factoring-name">TRIUMPH BUSINESS CAPITA…</p>
-        <div class="factoring-info first">
-          <svg-icon
-            src="assets/img/svgs/settings-company/settings-phone.svg"
-          ></svg-icon>
-          <p>(123) 456-7890</p>
-        </div>
-        <div class="factoring-info">
-          <svg-icon
-            src="assets/img/svgs/settings-company/settings-email.svg"
-          ></svg-icon>
-          <p>contact@windsor-brokers.com</p>
-        </div>
-        <div class="factoring-info">
-          <svg-icon
-            class="factoring-address-svg"
-            src="assets/img/svgs/settings-company/settings-address.svg"
-          ></svg-icon>
-          <p>5462 N East River Rd apt 611 Chicago, IL 60656</p>
-        </div>
-
-        <hr class="settings-line" />
-      </div>
-    </div>
+    <app-settings-tab-placeholder
+      *ngIf="factoringData"
+      [name]="'TRIUMPH BUSINESS CAPITA…'"
+      [phone]="'(123) 456-7890'"
+      [email]="'contact@windsor-brokers.com'"
+      [address]="'5462 N East River Rd apt 611 Chicago, IL 60656'"
+      [hasDots]="false"
+    >
+    </app-settings-tab-placeholder>
   </div>
 </div>
