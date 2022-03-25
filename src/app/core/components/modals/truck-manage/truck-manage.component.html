@@ -2,16 +2,7 @@
   <div cdkDragHandle class="modal-header">
     <div class="d-flex align-items-center">
       <h5 class="modal-title">{{ modalTitle }}</h5>
-      <div class="multiple-choises-wrapper">
-        <div class="wrap choice-wrapper">
-          <div class="btn-group btn-group-toggle">
-            <label class="btn-primary">
-              <input (change)="companyOwned()" [(ngModel)]="companyOwnedStateControl" type="checkbox"/>
-              Company owned
-            </label>
-          </div>
-        </div>
-      </div>
+
     </div>
     <svg-icon
       (click)="activeModal.dismiss('Modal close')"
@@ -19,6 +10,8 @@
       class="modal-close-btn cursor-pointer"
       src="assets/img/svgs/table/close.svg"
     ></svg-icon>
+  </div>
+  <div class="divider">
   </div>
   <div class="modal-body">
     <!-- <app-loading-modal *ngIf="!loaded"></app-loading-modal> -->
@@ -200,7 +193,7 @@
                 src="../../../../../assets/img/form-validation/x-icon-cut.svg"
               ></svg-icon>
 
-              <label for="model">Model</label>
+              <label class="required-label" for="model">Model</label>
             </div>
           </div>
           <div class="col-2">
@@ -247,9 +240,9 @@
           </div>
         </div>
 
-        <div *ngIf="!companyOwnedStateControl" class="mb-0">
+        <div class="mb-0">
           <div class="row">
-            <div class="col-12">
+            <div class="col-6">
               <div class="form-label-group">
                 <ng-select
                   (change)="changeOwner($event)"
@@ -260,19 +253,20 @@
                   [searchFn]="customSearch"
                   appendTo="body"
                   bindLabel="ownerName"
-                  class="required-field has-add-new{{ (ownerSearchItems == 1) ? ' has-one-result' : '' }}"
+                  class="required-field"
                   formControlName="owner"
                   placeholder="Owner"
-                >
+                  >
                   <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
                     <span [class]="{ 'd-none': !item.divisionFlag }">DC - </span>
                     <span [ngOptionHighlight]="search">{{ item.ownerName }}</span>
                   </ng-template>
                 </ng-select>
+
               </div>
             </div>
-            <div *ngIf="!division" class="col-12 slider-wrapper truck-slider-wrapper">
-              <div class="note-label-wrapper">
+            <div *ngIf="!division" class="col-6 slider-wrapper truck-slider-wrapper">
+              <div class="comission-label-wrapper">
                 <label class="note-label">Commission</label>
               </div>
               <ngx-slider
@@ -450,9 +444,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button class="cancel-btn">
-      <p class="m-0" (click)="closeModal()">Cancel</p>
-    </button>
+
     <button (click)="saveTruck()" [ngClass]="{'invalid-btn' : !truckForm.valid}" class="save-btn">
       <p class="m-0">Save</p>
     </button>

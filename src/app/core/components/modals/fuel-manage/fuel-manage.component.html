@@ -8,6 +8,8 @@
       src="assets/img/svgs/table/close.svg"
     ></svg-icon>
   </div>
+  <div class="divider">
+  </div>
   <div class="modal-body">
     <form [formGroup]="fuelForm" class="form-container">
       <div class="row">
@@ -250,9 +252,6 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button (click)="closeModal()" class="cancel-btn" type="button">
-      <p class="m-0">Cancel</p>
-    </button>
     <button (click)="saveFuel()" class="save-btn" type="button">
       <p class="m-0">Save</p>
     </button>

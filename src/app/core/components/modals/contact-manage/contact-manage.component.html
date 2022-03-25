@@ -8,6 +8,9 @@
       src="assets/img/svgs/table/close.svg"
     ></svg-icon>
   </div>
+  <div class="divider">
+  </div>
+
   <div class="modal-body">
     <!-- <app-loading-modal *ngIf="!loaded"></app-loading-modal> -->
     <form *ngIf="loaded" [formGroup]="contactForm" class="form-container">
@@ -44,24 +47,50 @@
       <div class="row">
         <div class="col-4">
           <div
-            class="form-label-group input-icon phone-field-wrapper {{ manageInputValidation(contactForm.controls.phone) }}"
+            class="form-label-group input-icon phone-field-wrapper input-holder {{ manageInputValidation(contactForm.controls.phone) }}"
             [ngClass]="inputText ? 'typing' : 'not-typing'">
-            <input appInputFocus class="form-control input-control required" formControlName="phone" id="phone"
+            <input appInputFocus class="form-control input-control required phone-input" formControlName="phone" id="phone"
                    mask="(000) 000-0000" placeholder="Phone" (keyup)="onKeyUpMethod($event)">
+
+            <svg-icon
+              class="default-icon"
+              src="../../../../../assets/img/form-validation/phone-icon-default.svg"
+            >
+            </svg-icon>
+
+            <svg-icon
+              (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+              placement="bottom-left"
+              src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+            ></svg-icon>
             <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
             </div>
             <label class="required-label" for="phone">Phone</label>
+
           </div>
         </div>
         <div class="col-8">
           <div
-            class="form-label-group input-icon email-field-wrapper {{ manageInputValidation(contactForm.controls.email) }}"
+            class="form-label-group input-icon email-field-wrapper input-holder {{ manageInputValidation(contactForm.controls.email) }}"
             [ngClass]="inputText ? 'typing' : 'not-typing'">
             <input (keydown)="onCheckBackSpace($event)" (keypress)="onEmailTyping($event)"
                    (paste)="onPaste($event, 'email')"
                    appInputFocus class="form-control input-control required email-input"
                    formControlName="email" id="email" oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
                    placeholder="Email">
+            <svg-icon
+              class="default-icon"
+              src="../../../../../assets/img/form-validation/mail-icon-default.svg"
+            >
+            </svg-icon>
+
+            <svg-icon
+              (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+              placement="bottom-left"
+              src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+            ></svg-icon>
+            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+            </div>
             <label class="required-label" for="email">Email</label>
           </div>
         </div>
@@ -69,12 +98,23 @@
       <div class="row">
         <div class="col-10">
           <div
-            class="form-label-group input-icon address-field-wrapper {{ manageInputValidation(contactForm.controls.address) }}"
+            class="form-label-group input-icon address-field-wrapper input-holder {{ manageInputValidation(contactForm.controls.address) }}"
             [ngClass]="inputText ? 'typing' : 'not-typing'">
             <input #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)" [options]="options"
-                   appInputFocus class="form-control input-control required" formControlName="address" id="address"
+                   appInputFocus class="form-control input-control required address-input" formControlName="address" id="address"
                    ngx-google-places-autocomplete placeholder="Address, City, State Zip"
                    (keyup)="onKeyUpMethod($event)">
+            <svg-icon
+              class="default-icon"
+              src="../../../../../assets/img/form-validation/address-icon-default.svg"
+            >
+            </svg-icon>
+
+            <svg-icon
+              (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+              placement="top"
+              src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+            ></svg-icon>
             <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
             </div>
             <label class="required-label" for="address">Address, City, State Zip</label>

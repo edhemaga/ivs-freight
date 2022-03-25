@@ -8,6 +8,8 @@
       src="assets/img/svgs/table/close.svg"
     ></svg-icon>
   </div>
+  <div class="divider">
+  </div>
   <div class="modal-body">
     <app-tab-switcher
       (switchClicked)="tabChange($event)"
@@ -223,97 +225,68 @@
         <div class="row">
           <div class="col-4">
             <div
-              class="form-label-group input-icon input-holder phone-field-wrapper {{
-                manageInputValidation(this.companyForm.get('phone'))
-              }}"
-            >
+              class="form-label-group input-icon phone-field-wrapper input-holder"
+              [ngClass]="inputText ? 'typing' : 'not-typing'">
               <input
-                id="phone"
-                class="form-control input-control phone-input"
-                formControlName="phone"
-                placeholder="Phone"
-                mask="(000) 000-0000"
                 appInputFocus
-                (keypress)="keyPress($event, 'phone', 'number')"
-              />
-              <label for="phone">Phone</label>
-              <p
-                *ngIf="
-                  companyForm.get('phone').errors &&
-                  companyForm.get('phone').touched
-                "
-                class="m-0 required-notice invalid-length"
+                class="form-control input-control required phone-input"
+                formControlName="phone"
+                id="phone"
+                mask="(000) 000-0000"
+                placeholder="Phone"
+                (keyup)="onKeyUpMethod($event)"
               >
-                {{ companyForm.get("phone").errors | inputError }}
-              </p>
-
               <svg-icon
-                class="valid-icon"
-                src="assets/img/form-validation/check-icon-light-blue.svg"
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/phone-icon-default.svg"
               >
               </svg-icon>
 
               <svg-icon
-                class="x-invalid-icon"
-                src="assets/img/form-validation/x-icon-light-red.svg"
-              >
-              </svg-icon>
-
-              <svg-icon
-                (click)="clearInput('phone')"
-                class="clear-icon"
-                ngbTooltip="Clear"
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
                 placement="bottom-left"
-                src="assets/img/form-validation/x-icon-cut.svg"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
               ></svg-icon>
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label  for="phone">Phone</label>
+              <p *ngIf="companyForm.get('phone').errors  && companyForm.get('phone').touched"
+                 class="m-0 required-notice invalid-length">{{companyForm.get('phone').errors | inputError}} </p>
+
+
             </div>
           </div>
           <div class="col-8">
             <div
-              class="form-label-group input-icon input-holder email-field-wrapper {{
-                manageInputValidation(this.companyForm.get('email'))
-              }}"
-            >
+              class="form-label-group input-icon email-field-wrapper input-holder {{ manageInputValidation(companyForm.controls.email) }}"
+              [ngClass]="inputText ? 'typing' : 'not-typing'">
               <input
-                id="email"
-                class="form-control input-control email-input"
-                formControlName="email"
-                placeholder="Email"
-                appInputFocus
                 (keypress)="onEmailTyping($event)"
                 (paste)="onPaste($event, 'email')"
+                appInputFocus
+                class="form-control input-control required email-input"
+                formControlName="email"
+                id="email"
                 oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
-              />
-              <label for="email">Email</label>
-              <p
-                *ngIf="
-                  companyForm.get('email').errors &&
-                  companyForm.get('email').touched
-                "
-                class="m-0 required-notice invalid-length"
+                placeholder="Email"
+                (keyup)="onKeyUpMethod($event)"
               >
-                {{ companyForm.get("email").errors | inputError }}
-              </p>
-
               <svg-icon
-                class="valid-icon"
-                src="assets/img/form-validation/check-icon-light-blue.svg"
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/mail-icon-default.svg"
               >
               </svg-icon>
 
               <svg-icon
-                class="x-invalid-icon"
-                src="assets/img/form-validation/x-icon-light-red.svg"
-              >
-              </svg-icon>
-
-              <svg-icon
-                (click)="clearInput('email')"
-                class="clear-icon"
-                ngbTooltip="Clear"
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
                 placement="bottom-left"
-                src="assets/img/form-validation/x-icon-cut.svg"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
               ></svg-icon>
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label for="email">Email</label>
+              <p *ngIf="companyForm.get('email').errors  && companyForm.get('email').touched"
+                 class="m-0 required-notice invalid-length">{{companyForm.get('email').errors | inputError}} </p>
             </div>
           </div>
         </div>
@@ -326,42 +299,24 @@
             >
               <input
                 id="fax"
-                class="form-control input-control"
+                class="form-control required phone-input"
                 formControlName="fax"
                 placeholder="Fax"
                 mask="(000) 000-0000"
                 appInputFocus
               />
-              <label for="fax">Fax</label>
-              <p
-                *ngIf="
-                  companyForm.get('fax').errors &&
-                  companyForm.get('fax').touched
-                "
-                class="m-0 required-notice invalid-length"
-              >
-                {{ companyForm.get("fax").errors | inputError }}
-              </p>
-
               <svg-icon
-                class="valid-icon"
-                src="assets/img/form-validation/check-icon-light-blue.svg"
+                class="default-icon"
+                src="../../../../../assets/img/form-icons/fax/fax-default.svg"
               >
               </svg-icon>
 
-              <svg-icon
-                class="x-invalid-icon"
-                src="assets/img/form-validation/x-icon-light-red.svg"
-              >
-              </svg-icon>
 
-              <svg-icon
-                (click)="clearInput('fax')"
-                class="clear-icon"
-                ngbTooltip="Clear"
-                placement="bottom-left"
-                src="assets/img/form-validation/x-icon-cut.svg"
-              ></svg-icon>
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label  for="fax">Fax</label>
+              <p *ngIf="companyForm.get('fax').errors  && companyForm.get('fax').touched"
+                 class="m-0 required-notice invalid-length">{{companyForm.get('fax').errors | inputError}} </p>
             </div>
           </div>
           <div class="col-8">
@@ -377,16 +332,21 @@
                 placeholder="Web url"
                 appInputFocus
               />
-              <label for="webUrl">Web url</label>
-              <p
-                *ngIf="
-                  companyForm.get('fax').errors &&
-                  companyForm.get('fax').touched
-                "
-                class="m-0 required-notice invalid-length"
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-icons/link/link-default.svg"
               >
-                {{ companyForm.get("fax").errors | inputError }}
-              </p>
+              </svg-icon>
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label for="webUrl">Web url</label>
+              <p *ngIf="companyForm.get('webUrl').errors && companyForm.get('webUrl').touched"
+                 class="m-0 required-notice invalid-length">{{companyForm.get('webUrl').errors | inputError}} </p>
 
               <svg-icon
                 class="valid-icon"
@@ -401,7 +361,7 @@
               </svg-icon>
 
               <svg-icon
-                (click)="clearInput('fax')"
+                (click)="clearInput('webUrl')"
                 class="clear-icon"
                 ngbTooltip="Clear"
                 placement="bottom-left"
@@ -413,53 +373,39 @@
         <div class="row">
           <div class="col-10">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group input-icon input-holder address-field-wrapper {{
-                manageInputValidation(this.companyForm.get('address'))
+                manageInputValidation(companyForm.controls.address)
               }}"
             >
               <input
                 #placesRef="ngx-places"
-                ngx-google-places-autocomplete
-                id="address"
-                class="form-control input-control required"
-                formControlName="address"
-                placeholder="Address, City, State Zip"
-                appInputFocus
-                [options]="addressOptions"
+                (keyup)="onKeyUpMethod($event)"
                 (onAddressChange)="handleAddressChange($event)"
+
+                appInputFocus
+                class="form-control input-control required address-input"
+                formControlName="address"
+                id="address"
+                ngx-google-places-autocomplete
+                placeholder="Address, City, State Zip"
               />
-              <label class="required-label" for="address"
-                >Address, City, State Zip</label
-              >
-              <p
-                *ngIf="
-                  companyForm.get('address').errors &&
-                  companyForm.get('address').touched
-                "
-                class="m-0 required-notice invalid-length"
-              >
-                {{ companyForm.get("address").errors | inputError }}
-              </p>
 
               <svg-icon
-                class="valid-icon"
-                src="assets/img/form-validation/check-icon-light-blue.svg"
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/address-icon-default.svg"
               >
               </svg-icon>
 
               <svg-icon
-                class="x-invalid-icon"
-                src="assets/img/form-validation/x-icon-light-red.svg"
-              >
-              </svg-icon>
-
-              <svg-icon
-                (click)="clearInput('address')"
-                class="clear-icon"
-                ngbTooltip="Clear"
-                placement="bottom-left"
-                src="assets/img/form-validation/x-icon-cut.svg"
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="top"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
               ></svg-icon>
+
+              <label  for="address">Address, City, State Zip</label>
+              <p *ngIf="companyForm.get('address').errors && companyForm.get('address').touched"
+                 class="m-0 required-notice invalid-length">{{companyForm.get('address').errors | inputError}} </p>
             </div>
           </div>
           <div class="col-2">
@@ -3011,11 +2957,8 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button (click)="closeCompanyModal()" class="cancel-btn" type="button">
-      Cancel
-    </button>
-    <button (click)="saveCompany()" class="save-btn" ngbAutofocus type="button">
-      Save
+    <button (click)="saveCompany()" [ngClass]="{'invalid-btn' : !companyForm.valid}" class="save-btn" type="button">
+      <p class="m-0">Save</p>
     </button>
   </div>
 </div>

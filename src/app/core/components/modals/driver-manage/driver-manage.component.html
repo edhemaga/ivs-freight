@@ -2,16 +2,6 @@
   <div cdkDragHandle class="modal-header">
     <div class="d-flex align-items-center">
       <h5 class="modal-title">{{ modalTitle }}</h5>
-      <div class="multiple-choises-wrapper">
-        <div class="wrap choice-wrapper">
-          <div class="btn-group btn-group-toggle">
-            <label class="btn-primary">
-              <input (change)="checkIsOwner()" [(ngModel)]="isUserOwner" type="checkbox"/>
-              Is Owner
-            </label>
-          </div>
-        </div>
-      </div>
     </div>
     <svg-icon
       (click)="activeModal.dismiss('Modal close')"
@@ -20,6 +10,9 @@
       src="assets/img/svgs/table/close.svg"
     ></svg-icon>
   </div>
+  <div class="divider">
+  </div>
+
   <div class="modal-body">
     <app-tab-switcher (switchClicked)="tabChange($event)" [tabs]="tabs"></app-tab-switcher>
     <!-- <app-loading-modal *ngIf="!loaded" class="large"></app-loading-modal> -->
@@ -694,9 +687,6 @@
   </div>
 
   <div class="modal-footer">
-    <button (click)="closeDriverEdit()" class="cancel-btn" type="button">
-      <p class="m-0">Cancel</p>
-    </button>
     <button (click)="saveDriver()" [ngClass]="{'invalid-btn' : !driverForm.valid}" class="save-btn" type="button">
       <p class="m-0">Save</p>
     </button>
