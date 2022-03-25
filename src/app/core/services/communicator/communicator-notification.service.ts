@@ -91,6 +91,6 @@ export class CommunicatorNotificationService {
   }
 
   onHasUnreadSubscriptionsChanged = () => {
-    return this.notificationSocket.fromEvent<boolean>('has-unread');
+    // return this.notificationSocket.fromEvent<boolean>('has-unread');
   }
 }

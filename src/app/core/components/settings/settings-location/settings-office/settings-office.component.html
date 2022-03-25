@@ -46,8 +46,8 @@
       [hasLine]="!(ind === item.departments.length - 1 && !item.rent)"
     >
     </app-settings-card>
-
-    <app-truckassist-progress-expiration
+<div class="settings-progress-container">
+  <app-truckassist-progress-expiration
       *ngIf="item.rent"
       [expireDate]="'03/25/2023'"
       [startDate]="'03/12/2023'"
@@ -55,4 +55,6 @@
       [customText]="generateTextForProgressBar(item)"
     ></app-truckassist-progress-expiration>
   </div>
+</div>
+  
 </div>

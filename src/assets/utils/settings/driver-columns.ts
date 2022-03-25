@@ -39,8 +39,8 @@ export function getDriverColumnsDefinition() {
         src: 'additionalData.avatar.src',
       },
       link: {
-        routerLinkStart: '/drivers/edit/',
-        routerLinkEnd: '/basic',
+        routerLinkStart: '/driver/',
+        routerLinkEnd: '/details',
       },
       progress: null,
       hoverTemplate: null,
