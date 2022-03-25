@@ -140,17 +140,22 @@ table {
             }
 
             // USER STATUS COLUMN
-            .user-status-container{
+            .user-status-container {
               width: 64px;
               height: 20px;
               border-radius: 2px;
-              background: #B7B7B720;
-              color: #B7B7B7;
+              background: #b7b7b720;
+              color: #b7b7b7;
               font-size: 12px;
               font-weight: bold;
               display: flex;
               justify-content: center;
               align-items: center;
+
+              &::selection {
+                color: #b7b7b7;
+                background: #b7b7b720;
+              }
             }
 
             // NAME LINK
@@ -216,7 +221,7 @@ table {
             }
 
             // SEMI BOLD TEXT COLUMN
-            .semi-bold-table-text{
+            .semi-bold-table-text {
               font-size: 14px;
               font-weight: 600;
               color: #b7b7b7;
@@ -228,6 +233,56 @@ table {
               &::selection {
                 color: #b7b7b7;
                 background: rgba(145, 145, 145, 0.2);
+              }
+            }
+
+            // PICKUP COLUMN
+            .pickup-and-delivery-container {
+              display: flex;
+
+              .picup-count,
+              .delivery-count {
+                width: 22px;
+                height: 22px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 2px;
+                font-size: 14px;
+                font-weight: bold;
+                margin-right: 6px;
+              }
+
+              .picup-count {
+                background: #e1f7f3;
+                color: #3bcbae;
+                &::selection {
+                  color: #3bcbae;
+                  background: #3bcbae20;
+                }
+              }
+
+              .delivery-count {
+                background: #ffe4e4;
+                color: #ff8080;
+                &::selection {
+                  color: #ff8080;
+                  background: #ff808020;
+                }
+              }
+
+              .loaction {
+                height: 100%;
+                width: fit-content;
+                display: flex;
+                align-self: center;
+                color: #b7b7b7;
+                font-size: 14px;
+                font-weight: 400;
+                &::selection {
+                  color: #b7b7b7;
+                  background: #b7b7b720;
+                }
               }
             }
 

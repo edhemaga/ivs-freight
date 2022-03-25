@@ -381,6 +381,30 @@
             </div>
           </div>
 
+          <!-- PICKUP COLUMN -->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'pickup'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <div class="pickup-and-delivery-container">
+              <div class="picup-count">{{ row.pickupCount }}</div>
+              <div class="loaction">{{ row[column.field] }}</div>
+            </div>
+          </div>
+
+          <!-- PICKUP COLUMN -->
+          <div
+            class="td-content"
+            *ngIf="!column.hidden && column.ngTemplate === 'delivery'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <div class="pickup-and-delivery-container">
+              <div class="delivery-count">{{ row.deliveryCount }}</div>
+              <div class="loaction">{{ row[column.field] }}</div>
+            </div>
+          </div>
+
           <!-- APPLICANT DONE CHECKBOX COLUMN -->
           <div
             class="td-content set-center"
