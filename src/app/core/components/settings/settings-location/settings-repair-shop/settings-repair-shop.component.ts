@@ -12,7 +12,7 @@ export class SettingsRepairShopComponent implements OnInit {
       id: 1,
       name: 'IVS REPAIR SHOP',
       phone: '(123) 456-7890',
-      email: '',
+      email: 'contact@windsor-brokers.com',
       address: '5462 N East River Rd apt 611 Chicago, IL 60656',
       companyOwned:
         'assets/img/svgs/settings-company/settings-company-owned.svg',

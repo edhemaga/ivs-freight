@@ -7,45 +7,10 @@
   row-gap: 12px;
 
   .settings-body {
-    padding-right: 8px;
+    padding-right: 6px;
 
     &.gradient {
       background-image: linear-gradient(180deg, #f1f1f1, #ffffff);
-    }
-
-    .factoring-details {
-      display: flex;
-      flex-direction: column;
-
-      .factoring-name {
-        font-size: 18px;
-        font-weight: $settings-font-medium;
-        color: $settings-gray-dark;
-      }
-
-      .factoring-info {
-        display: flex;
-        align-items: center;
-        margin-top: 5px;
-
-        &.first {
-          margin-top: 7px;
-        }
-
-        p {
-          margin-left: 6px;
-        }
-
-        .factoring-address-svg {
-          position: relative;
-          bottom: 11px;
-        }
-      }
-    }
-
-    .settings-line {
-      margin-bottom: 6px;
-      margin-top: 12px;
     }
   }
 }
