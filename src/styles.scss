@@ -40,7 +40,7 @@ $truckassist-fe-theme: mat.define-light-theme((
 @import './assets/scss/floating-label';
 @import './assets/scss/global';
 @import './assets/scss/general';
-html, body { height: 100%; }
+// html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Importing Bootstrap SCSS file. */

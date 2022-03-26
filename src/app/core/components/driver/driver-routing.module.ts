@@ -1,4 +1,3 @@
-import { DriverDetailsComponent } from './driver-details/driver-details.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DriverTableComponent } from './driver-table/driver-table.component';
@@ -11,8 +10,11 @@ const routes: Routes = [
   },
   {
     path: ':id/details',
-    component: DriverDetailsComponent,
-    data: {title: 'Driver Details'}
+    loadChildren: () =>
+      import('./driver-details/driver-details.module').then(
+        (m) => m.DriverDetailsModule
+      ),
+    data: { title: 'Driver Details' },
   }
 ];
 
