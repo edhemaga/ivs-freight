@@ -5,6 +5,7 @@ import {
   Output,
   OnInit,
   OnDestroy,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
@@ -17,6 +18,7 @@ import { Router } from '@angular/router';
   selector: 'app-navigation-footer',
   templateUrl: './navigation-footer.component.html',
   styleUrls: ['./navigation-footer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationFooterComponent implements OnInit, OnDestroy {
   @Input() isNavigationHovered: boolean = false;
@@ -101,7 +103,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     }, 50);
   }
 
-  public identify(index: number, item: FooterData): number {
+  public identity(index: number, item: FooterData): number {
     return item.id;
   }
 

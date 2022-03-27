@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import { Navigation } from './../model/navigation.model';
+import {ChangeDetectionStrategy, Component, EventEmitter, Output} from '@angular/core';
 import {CustomModalService} from 'src/app/core/services/modals/custom-modal.service';
 import {DriverManageComponent} from '../../modals/driver-manage/driver-manage.component';
 import {TrailerManageComponent} from '../../modals/trailer-manage/trailer-manage.component';
@@ -28,6 +29,7 @@ import {TodoManageComponent} from "../../modals/todo-manage/todo-manage.componen
   selector: 'app-navigation-modals',
   templateUrl: './navigation-modals.component.html',
   styleUrls: ['./navigation-modals.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationModalsComponent {
   @Output() onModalPanelCloseEvent = new EventEmitter<{
@@ -171,5 +173,9 @@ export class NavigationModalsComponent {
       default:
         return;
     }
+  }
+
+  public identity(index: number, item: NavigationModal): number {
+    return item.id;
   }
 }

@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -23,6 +24,7 @@ import { CommunicatorUserDataService } from 'src/app/core/services/communicator/
   selector: 'app-navigation-user-profile',
   templateUrl: './navigation-user-profile.component.html',
   styleUrls: ['./navigation-user-profile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   @Input() isNavigationHovered: boolean = false;
@@ -121,7 +123,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  public identify(index: number, item: NavigationUserPanel): number {
+  public identity(index: number, item: NavigationUserPanel): number {
     return item.id;
   }
 
