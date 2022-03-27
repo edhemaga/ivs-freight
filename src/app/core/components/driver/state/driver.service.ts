@@ -377,7 +377,7 @@ export class DriverService {
     isSelected: false,
   });
 
-  public getDrivers(): Observable<any> {
+  public getDrivers(): Observable<DriversState> {
     return this.fakeObservable;
   }
 }

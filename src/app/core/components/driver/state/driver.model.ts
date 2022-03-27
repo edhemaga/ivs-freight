@@ -1,7 +1,3 @@
-// export interface IDrivers {
-//   drivers: Driver[];
-// }
-
 export interface Driver {
   id: number;
   companyId: number;

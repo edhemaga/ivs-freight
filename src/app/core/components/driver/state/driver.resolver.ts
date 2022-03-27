@@ -4,27 +4,28 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { DriversQuery } from './driver.query';
 import { DriverService } from './driver.service';
-import { DriversStore } from './driver.store';
+import { DriversState, DriversStore } from './driver.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DriverResolver implements Resolve<any> {
+export class DriverResolver implements Resolve<DriversState> {
   constructor(
     private driverService: DriverService,
     private driversStore: DriversStore,
     private driversQuery: DriversQuery
   ) {}
-  resolve(route: ActivatedRouteSnapshot): Observable<any> {
-    // if (!this.driversQuery.getAll().length) {
-    //   return this.driverService.getDrivers().pipe(
-    //     catchError((error) => {
-    //       return of('No drivers data...');
-    //     }),
-    //     tap((entities) => this.driversStore.set({ entities: entities }))
-    //   );
-    // }
-    return this.driverService.getDrivers();
+  resolve(route: ActivatedRouteSnapshot): Observable<DriversState> | Observable<any> {
+    if (!this.driversQuery.getAll().length) {
+      console.log("RESOLVER DRIVER")
+      return this.driverService.getDrivers().pipe(
+        catchError((error) => {
+          return of('No drivers data...');
+        }),
+        tap((entities) => this.driversStore.set({ entities: entities }))
+      );
+    }
+    // return this.driverService.getDrivers();
   }
 }
 

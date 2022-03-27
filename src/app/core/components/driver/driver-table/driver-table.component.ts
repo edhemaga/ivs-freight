@@ -7,6 +7,8 @@ import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applica
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 import { DriverManageComponent } from '../../modals/driver-manage/driver-manage.component';
 import { DriversQuery } from '../state/driver.query';
+import { DriversState } from '../state/driver.store';
+import { data } from 'jquery';
 
 @Component({
   selector: 'app-driver-table',
@@ -21,7 +23,7 @@ export class DriverTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  public drivers: Driver[] = [];
+  public drivers: DriversState[] = [];
 
   constructor(
     private customModalService: CustomModalService,
@@ -152,24 +154,19 @@ export class DriverTableComponent implements OnInit {
     this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
+    this.viewData = this.viewData.map((data: DriversState) => {
+      return {
+        ...data,
+        isSelected: false
+      }
     });
-
-    console.log('setDriverData');
-
-    console.log(this.viewData);
-    console.log(this.columns);
   }
 
   getDumyData(numberOfCopy: number) {
     this.drivers = this.driversQuery.getAll();
-    console.log("TABLE DATAAAA ", this.drivers)
     for (let i = 0; i < numberOfCopy; i++) {
       this.drivers.push(this.drivers[i]);
     }
-    console.log("TABLE DATAAAA ", this.drivers)
     return this.drivers;
   }
 
