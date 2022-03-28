@@ -13,5 +13,6 @@ const storage = persistState();
 
 const providers = [{ provide: 'persistStorage', useValue: storage }];
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+platformBrowserDynamic(providers)
+  .bootstrapModule(AppModule)
+  .catch((err) => console.error(err));
