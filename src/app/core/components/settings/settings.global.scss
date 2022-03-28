@@ -99,12 +99,14 @@ p {
     background-color: $settings-background;
     font-weight: $settings-font-extrabold;
     border-radius: $settings-borderRadius;
+    user-select: none;
   }
 
   // Multiple buttons (edit, delete)
   .settings-header-buttons {
     width: 68px;
     height: 100%;
+    user-select: none;
 
     .settings-plus-button {
       svg {

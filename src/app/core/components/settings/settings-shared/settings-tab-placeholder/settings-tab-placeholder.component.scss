@@ -14,6 +14,11 @@
       font-weight: $settings-font-semibold;
       color: $settings-gray-dark;
       text-transform: uppercase;
+
+      &::selection {
+        color: $settings-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
     }
 
     .tab-placeholder-svg {
@@ -26,6 +31,7 @@
       position: relative;
       bottom: 1px;
       left: 6px;
+      user-select: none;
 
       .action-attachment {
         position: relative;
@@ -85,6 +91,10 @@
 
       p {
         margin-left: 6px;
+        &::selection {
+          color: $settings-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
       }
 
       .tab-placeholder-item-address-svg {
