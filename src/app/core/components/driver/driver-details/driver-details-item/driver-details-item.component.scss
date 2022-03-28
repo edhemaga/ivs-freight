@@ -1,0 +1,120 @@
+@import "../driver-details.component.scss";
+
+.driver-body {
+  p {
+    margin: 0px;
+  }
+
+  // CDL TEMPLATE
+  .driver-cdl-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .driver-cdl-number {
+      color: $color-gray-dark;
+      font-size: $font-size18;
+      font-weight: $font-medium;
+      position: relative;
+      top: 1px;
+    }
+
+    .driver-cdl-buttons {
+      display: flex;
+      align-items: center;
+      position: relative;
+      left: 5px;
+
+      .driver-cdl-attachments,
+      .driver-cdl-note,
+      .driver-cdl-dots {
+        &:hover {
+          cursor: pointer;
+
+          svg {
+            #Path_35717,
+            #Path_31272,
+            #Path_31273,
+            #Path_31274,
+            #Path_26379 {
+              fill: $color-gray;
+            }
+          }
+        }
+      }
+
+      .driver-cdl-note {
+        margin: 0px 8px;
+        margin-right: 3px;
+      }
+    }
+  }
+
+  .driver-cdl-bottom {
+    display: flex;
+    flex-direction: column;
+
+    .driver-cdl-bottom-row-1 {
+      display: grid;
+      grid-template-columns: 51px 73px 112px;
+    }
+
+    .driver-cdl-bottom-row-2 {
+      display: grid;
+      grid-template-columns: 124px 112px;
+      margin: 8px 0px;
+    }
+
+    .driver-cdl-bottom-row-3 {
+      margin-bottom: 8px;
+    }
+
+    .driver-cdl-bottom-row-4 {
+      height: 236px;
+      width: 100%;
+      background-color: cadetblue;
+    }
+
+    .driver-cdl-bottom-row-5 {
+      margin-top: 8px;
+    }
+
+    .driver-cdl-bottom-item {
+      display: flex;
+      flex-direction: column;
+
+      .driver-cdl-item-name {
+        font-size: $font-size12;
+        font-weight: $font-semibold;
+        color: $color-gray-dark;
+      }
+
+      .driver-cdl-item-value {
+        color: $color-gray-dark;
+        font-size: $font-size14;
+        &.none {
+          color: $color-gray-light;
+        }
+      }
+
+      &.item-row-expanded {
+        grid-column: 1 / -1;
+
+        &:nth-child(2) {
+          margin-top: 8px;
+        }
+      }
+    }
+  }
+  .show-details {
+    font-size: $font-size12;
+    font-weight: $font-bold;
+    color: $color-blue-light;
+
+    &:hover {
+      transition: $transition;
+      cursor: pointer;
+      color: $color-blue;
+    }
+  }
+}

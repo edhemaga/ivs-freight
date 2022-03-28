@@ -1,0 +1,130 @@
+<div class="driver-details-component">
+  <div [ngSwitch]="data.template">
+    <div *ngSwitchCase="'general'">DRIVER FULL DETAILS</div>
+    <div *ngSwitchDefault>
+      <div class="driver-header">
+        <p class="driver-header-name">{{ data.name }}</p>
+        <svg-icon
+          class="driver-header-button"
+          src="assets/img/svgs/driver/ic_driver-plus.svg"
+        ></svg-icon>
+      </div>
+    </div>
+  </div>
+  <div [ngSwitch]="data.template">
+    <!---------------------- GENERAL TEMPLATE ------------------>
+    <div *ngSwitchCase="'general'">DRIVER FULL BODY</div>
+    <!---------------------- CDL TEMPLATE ------------------>
+    <div *ngSwitchCase="'cdl'">
+      <div class="driver-body" *ngFor="let cdl of data.data; trackBy: identity">
+        <div class="driver-cdl-top">
+          <p class="driver-cdl-number">
+            {{ cdl.number }}
+          </p>
+          <div class="driver-cdl-buttons">
+            <svg-icon
+              class="driver-cdl-attachments"
+              src="assets/img/svgs/driver/ic_driver-attachments.svg"
+              (click)="onAction({ template: 'cdl', action: 'attachments' })"
+            ></svg-icon>
+            <svg-icon
+              class="driver-cdl-note"
+              src="assets/img/svgs/driver/ic_driver-note.svg"
+              (click)="onAction({ template: 'cdl', action: 'notes' })"
+            ></svg-icon>
+            <svg-icon
+              class="driver-cdl-dots"
+              src="assets/img/svgs/driver/ic_driver-dots.svg"
+              (click)="onAction({ template: 'cdl', action: 'dots' })"
+            ></svg-icon>
+          </div>
+        </div>
+        <div class="driver-cdl-bottom">
+          <div class="driver-cdl-bottom-row-1">
+            <div class="driver-cdl-bottom-item">
+              <p class="driver-cdl-item-name">State</p>
+              <p class="driver-cdl-item-value">
+                {{ cdl.state.key }}
+              </p>
+            </div>
+            <div class="driver-cdl-bottom-item">
+              <p class="driver-cdl-item-name">Class</p>
+              <p class="driver-cdl-item-value">
+                {{ cdl.class.value }}
+              </p>
+            </div>
+            <div class="driver-cdl-bottom-item">
+              <p class="driver-cdl-item-name">Issued</p>
+              <p class="driver-cdl-item-value">04/04/04</p>
+            </div>
+          </div>
+          <div class="driver-cdl-bottom-row-2">
+            <div class="driver-cdl-bottom-item" [ngClass]="{'item-row-expanded': cdl.showDetails}">
+              <p class="driver-cdl-item-name">Restrictions</p>
+              <p
+                class="driver-cdl-item-value"
+                [ngClass]="{ none: !cdl.restrictions }"
+              >
+                {{ cdl.restrictions ? cdl.restrictions : "None" }}
+              </p>
+            </div>
+            <div class="driver-cdl-bottom-item" [ngClass]="{'item-row-expanded': cdl.showDetails}">
+              <p class="driver-cdl-item-name">Endorsments</p>
+              <p class="driver-cdl-item-value" *ngIf="!cdl.showDetails">
+                {{ formatTextPreview(cdl.endorsements, cdl.showDetails) }}
+              </p>
+            </div>
+          </div>
+          <div class="driver-cdl-bottom-row-3">
+            <div class="driver-cdl-bottom-item">
+              <p class="driver-cdl-item-name">Expiration</p>
+              <div class="driver-details-progress-container">
+                <app-truckassist-progress-expiration
+                  [expireDate]="formatDate(cdl.endDate)"
+                  [startDate]="formatDate(cdl.startDate)"
+                  [expiresSettings]="'details'"
+                ></app-truckassist-progress-expiration>
+              </div>
+            </div>
+          </div>
+          <div
+            class="driver-cdl-hidden"
+            [@showHideDetails]="cdl.showDetails ? 'true' : 'false'"
+          >
+            <div class="driver-cdl-bottom-row-4">PDF</div>
+            <div class="driver-cdl-bottom-row-5">
+              <div class="driver-cdl-bottom-item">
+                <p class="driver-cdl-item-name">Note</p>
+                <p class="driver-cdl-item-value">
+                  <textarea
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"
+                    class="input-custom-textarea form-textarea"
+                    placeholder="Write something"
+                  ></textarea>
+                </p>
+              </div>
+            </div>
+          </div>
+          <a class="show-details" (click)="onShowDetails(cdl)">{{
+            cdl.showDetails ? "Hide Details" : "Show Details"
+          }}</a>
+        </div>
+      </div>
+    </div>
+    <!---------------------- DRUG & ALCOHOL TEMPLATE ------------------>
+    <div *ngSwitchCase="'drugAlcohol'">
+      <div class="driver-body">DRUG & ALCOHOL BODY</div>
+    </div>
+    <!---------------------- MEDICAL TEMPLATE ------------------>
+    <div *ngSwitchCase="'medical'">
+      <div class="driver-body">MEDICAL BODY</div>
+    </div>
+    <!---------------------- MVR TEMPLATE ------------------>
+    <div *ngSwitchCase="'mvr'">
+      <div class="driver-body">MVR BODY</div>
+    </div>
+  </div>
+</div>

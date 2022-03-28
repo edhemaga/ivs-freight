@@ -1,3 +1,6 @@
-<p>
-  driver-details works!
-</p>
+<div class="driver-details">
+  <app-driver-details-item
+    *ngFor="let item of driverDetailsConfig; trackBy: identity"
+    [data]="item"
+  ></app-driver-details-item>
+</div>

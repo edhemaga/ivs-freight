@@ -1,0 +1,104 @@
+// Constants
+$color-white: #ffffff;
+
+$color-gray-light: #B7B7B7;
+$color-gray: #919191;
+$color-gray-dark: #6C6C6C;
+
+$color-blue-light: #778FBB;
+$color-blue: #5673AA;
+
+$font-size12: 12px;
+$font-size14: 14px;
+$font-size18: 18px;
+
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+$font-extrabold: 800;
+
+$border-radius: 3px;
+
+$transition: all 0.3s ease-in-out;
+
+.driver-details {
+  display: grid;
+  grid-template-columns: 352px repeat(4, 260px);
+  column-gap: 12px;
+
+  p {
+    margin: 0px;
+  }
+}
+
+// Common Class
+.driver-details-component {
+  display: grid;
+  grid-template-rows: 32px auto;
+  row-gap: 12px;
+
+  .driver-header {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 224px 32px;
+    column-gap: 4px;
+
+    .driver-header-name {
+      background-color: $color-white;
+      padding: 6px 12px;
+      width: 100%;
+      height: 32px;
+      border-radius: $border-radius;
+
+      font-size: $font-size14;
+      font-weight: $font-extrabold;
+      color: $color-gray;
+      user-select: none;
+    }
+
+    .driver-header-button {
+      width: 100%;
+      height: 100%;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .driver-body {
+    background-color: $color-white;
+    padding: 7px 12px;
+    display: grid;
+    grid-template-rows: 22px auto;
+    row-gap: 12px;
+    border-radius: $border-radius;
+    margin-bottom: 8px;
+  }
+}
+
+// Progress bar details
+.driver-details-progress-container  {
+  .table-progress-cotnainer {
+    display: flex !important;
+    flex-direction: column !important;
+  
+    .table-progress {
+      order: 1 !important;
+      width: 100% !important;
+      height: 8px !important;
+    }
+  
+    .table-progress-panel {
+      order: -1 !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      color: #6c6c6c !important;
+  
+      .progress-text {
+        margin: 2px 0px !important;
+      }
+    }
+  }
+}

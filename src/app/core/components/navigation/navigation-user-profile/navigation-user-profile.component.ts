@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Inject,
   Input,
   OnDestroy,
   OnInit,
@@ -18,6 +19,7 @@ import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { CommunicatorUserService } from 'src/app/core/services/communicator/communicator-user.service';
 import { CommunicatorUserDataService } from 'src/app/core/services/communicator/communicator-user-data.service';
 import { NavigationService } from '../services/navigation.service';
+import { PersistState } from '@datorama/akita';
 
 @Component({
   selector: 'app-navigation-user-profile',
@@ -47,7 +49,8 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private communicatorUserService: CommunicatorUserService,
     private communicatorUserDataService: CommunicatorUserDataService,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    @Inject('persistStorage') private persistStorage: PersistState
   ) {}
 
   ngOnInit() {
@@ -107,6 +110,8 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         break;
       }
       case 'logout': {
+        this.persistStorage.clearStore();
+        this.persistStorage.destroy();
         this.authService.logout();
         this.router.navigate(['/login']);
         break;
