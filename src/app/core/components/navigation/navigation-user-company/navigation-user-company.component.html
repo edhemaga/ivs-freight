@@ -6,7 +6,7 @@
     ></svg-icon>
     <p class="user-company-header-text">Switch Company</p>
   </div>
-  <div class="user-company-content" *ngFor="let item of userCompanyDummyData">
+  <div class="user-company-content" *ngFor="let item of userCompanyDummyData; trackBy: identity">
     <p
       [ngClass]="{ 'user-company-text-active': item.active }"
       class="user-company-text"

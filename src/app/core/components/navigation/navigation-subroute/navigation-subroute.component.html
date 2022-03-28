@@ -1,6 +1,6 @@
 <div class="subroutes-container">
   <div
-    *ngFor="let item of subroute.route; trackBy: identifySubroute"
+    *ngFor="let item of subroute.route; trackBy: identity"
     class="subroutes"
     [ngClass]="{
       'new-magic-line-selected': isActiveRouteOnReload(item.route)

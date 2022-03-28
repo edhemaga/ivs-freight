@@ -1,6 +1,6 @@
 <div class="nav-footer" [ngClass]="{ 'nav-footer-width': isNavigationHovered }">
   <div
-    *ngFor="let item of footerData; trackBy: identify; let ind = index"
+    *ngFor="let item of footerData; trackBy: identity; let ind = index"
     class="nav-footer-item"
     [ngClass]="{
       'nav-footer-item-scaleWidth': !isNavigationHovered,

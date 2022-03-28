@@ -1,5 +1,5 @@
 import { Navigation, NavigationSubRoutes } from './model/navigation.model';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { navigationData } from './model/navigation-data';
 import { Router } from '@angular/router';
 
@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationComponent {
   public navigation: Navigation[] = navigationData;
@@ -147,7 +148,7 @@ export class NavigationComponent {
     return this.router.url.includes(route);
   }
 
-  public identify(index, item): number {
+  public identity(index, item): number {
     return item.id;
   }
 }

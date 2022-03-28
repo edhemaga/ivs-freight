@@ -9,6 +9,7 @@ import {
   selector: 'app-navigation-user-company',
   templateUrl: './navigation-user-company.component.html',
   styleUrls: ['./navigation-user-company.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationUserCompanyComponent {
   @Output() onUserCompanyDetailsClose = new EventEmitter<{
@@ -44,5 +45,9 @@ export class NavigationUserCompanyComponent {
       type: false,
       name: 'User Company Details',
     });
+  }
+
+  public identity(index: number, item: any): number {
+    return item.id;
   }
 }
