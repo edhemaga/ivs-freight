@@ -1,7 +1,6 @@
 <div class="driver-details">
-  <app-driver-details-general></app-driver-details-general>
-  <app-driver-details-cdl></app-driver-details-cdl>
-  <app-driver-details-drugAlcohol></app-driver-details-drugAlcohol>
-  <app-driver-details-medical></app-driver-details-medical>
-  <app-driver-details-mvr></app-driver-details-mvr>
+  <app-driver-details-item
+    *ngFor="let item of driverDetailsConfig; trackBy: identity"
+    [data]="item"
+  ></app-driver-details-item>
 </div>

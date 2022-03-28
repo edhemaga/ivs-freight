@@ -11,13 +11,15 @@
   <div class="table-progress-panel">
     <!-- EXPIRES IN -->
     <span
-      *ngIf="!negative && expire >= 1"
+      *ngIf="!negative && expire >= 1 && expiresSettings !== 'details'"
       [ngClass]="{ 'd-none': expire !== expire }"
       class="progress-text"
     >
-      <span *ngIf="expiresSettings" class="expires-settings">{{
-        customText
-      }}</span>
+      <span
+        *ngIf="expiresSettings === 'settings-insurance-policy'"
+        class="expires-settings"
+        >{{ customText }}</span
+      >
       <span
         *ngIf="expiresSettings !== 'settings-parking'"
         [ngClass]="{ 'expires-settings-bold': expiresSettings }"
@@ -35,6 +37,14 @@
       <span>{{ progresDay }} days ago</span>
     </span>
 
+    <!-- DAYS -->
+    <span
+      *ngIf="!negative && expiresSettings === 'details'"
+      class="progress-days"
+    >
+      <span>{{ days }} days</span>
+    </span>
+
     <!-- DAYS TO GO -->
     <span
       *ngIf="!negative && expiresSettings === 'settings-parking'"
@@ -48,7 +58,8 @@
       *ngIf="
         expire !== 0 &&
         !negative &&
-        expiresSettings === 'settings-insurance-policy'
+        (expiresSettings === 'settings-insurance-policy' ||
+          expiresSettings === 'details')
       "
       class="progress-text"
     >

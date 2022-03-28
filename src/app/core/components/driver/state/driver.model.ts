@@ -23,9 +23,9 @@ export interface Driver {
   phone: string;
   additionalData: Additional;
   workData: Work;
-  licenseData: License;
-  medicalData: Medical;
-  mvrData: MVR;
+  licenseData: License[];
+  medicalData: Medical[];
+  mvrData: MVR[];
   bankId?: any;
   accountNumber?: any;
   routingNumber?: any;

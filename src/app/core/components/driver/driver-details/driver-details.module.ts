@@ -1,22 +1,20 @@
+import { SharedModule } from 'src/app/core/shared/shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DriverDetailsComponent } from './driver-details.component';
 import { DriverDetailsRoutes } from './driver-details.routing';
-import { DriverDetailsGeneralComponent } from './driver-details-general/driver-details-general.component';
-import { DriverDetailsCdlComponent } from './driver-details-cdl/driver-details-cdl.component';
-import { DriverDetailsDrugAlcoholComponent } from './driver-details-drugAlcohol/driver-details-drugAlcohol.component';
-import { DriverDetailsMedicalComponent } from './driver-details-medical/driver-details-medical.component';
-import { DriverDetailsMvrComponent } from './driver-details-mvr/driver-details-mvr.component';
+import { DriverDetailsItemComponent } from './driver-details-item/driver-details-item.component';
+import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 @NgModule({
-  declarations: [
-    DriverDetailsComponent,
-    DriverDetailsGeneralComponent,
-    DriverDetailsCdlComponent,
-    DriverDetailsDrugAlcoholComponent,
-    DriverDetailsMedicalComponent,
-    DriverDetailsMvrComponent
+  declarations: [DriverDetailsComponent, DriverDetailsItemComponent],
+  imports: [
+    CommonModule,
+    DriverDetailsRoutes,
+    SharedModule,
+    TruckassistProgressExpirationModule,
+    TextFieldModule
   ],
-  imports: [CommonModule, DriverDetailsRoutes],
 })
 export class DriverDetailsModule {}
