@@ -25,6 +25,7 @@
         <div class="row">
           <div class="col-12">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('name'))
               }}"
@@ -59,6 +60,7 @@
               </svg-icon>
 
               <svg-icon
+                *ngIf="companyForm.get('name').errors"
                 class="x-invalid-icon"
                 src="assets/img/form-validation/x-icon-light-red.svg"
               >
@@ -77,6 +79,7 @@
         <div class="row">
           <div class="col-4">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('usdot'))
               }}"
@@ -126,6 +129,7 @@
 
           <div class="col-4">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('ein'))
               }}"
@@ -175,6 +179,7 @@
 
           <div class="col-4">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('mc'))
               }}"
@@ -258,8 +263,9 @@
           </div>
           <div class="col-8">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group input-icon email-field-wrapper input-holder {{ manageInputValidation(companyForm.controls.email) }}"
-              [ngClass]="inputText ? 'typing' : 'not-typing'">
+              >
               <input
                 (keypress)="onEmailTyping($event)"
                 (paste)="onPaste($event, 'email')"
@@ -293,6 +299,7 @@
         <div class="row">
           <div class="col-4">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group input-icon input-holder phone-field-wrapper {{
                 manageInputValidation(this.companyForm.get('fax'))
               }}"
@@ -321,13 +328,14 @@
           </div>
           <div class="col-8">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('webUrl'))
               }}"
             >
               <input
                 id="webUrl"
-                class="form-control input-control"
+                class="form-control input-control name-input"
                 formControlName="webUrl"
                 placeholder="Web url"
                 appInputFocus
@@ -410,6 +418,7 @@
           </div>
           <div class="col-2">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group  input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('addressUnit'))
               }}"
@@ -459,6 +468,7 @@
         <div class="custom-row-basic">
           <div class="col-irp">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('irp'))
               }}"
@@ -506,6 +516,7 @@
           </div>
           <div class="col-ifta">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('ifta'))
               }}"
@@ -552,6 +563,7 @@
           </div>
           <div class="col-toll">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('toll'))
               }}"
@@ -598,6 +610,7 @@
           </div>
           <div class="col-scac">
             <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
               class="form-label-group input-icon input-holder {{
                 manageInputValidation(this.companyForm.get('scac'))
               }}"
@@ -845,6 +858,7 @@
 
                 <div class="col-5 d-flex">
                   <div
+                    [ngClass]="inputText ? 'typing' : 'not-typing'"
                     class="form-label-group input-icon input-holder phone-field-wrapper {{
                       manageInputValidation(
                         this.departmentAdditionalForm.get('departmentPhone')
@@ -905,6 +919,7 @@
                 </div>
                 <div class="col-7 d-flex">
                   <div
+                    [ngClass]="inputText ? 'typing' : 'not-typing'"
                     class="form-label-group input-icon input-holder email-field-wrapper {{
                       manageInputValidation(
                         this.departmentAdditionalForm.get('departmentEmail')
@@ -1103,6 +1118,7 @@
 
                 <div class="col-5">
                   <div
+                    [ngClass]="inputText ? 'typing' : 'not-typing'"
                     class="form-label-group input-icon input-holder {{
                       manageInputValidation(
                         this.bankAccountadditionalForm.get('routing')
@@ -1159,6 +1175,7 @@
                 </div>
                 <div class="col-7 d-flex">
                   <div
+                    [ngClass]="inputText ? 'typing' : 'not-typing'"
                     class="form-label-group input-icon input-holder {{
                       manageInputValidation(
                         this.bankAccountadditionalForm.get('account')
@@ -1257,6 +1274,7 @@
             <div class="custom-row-load-billing">
               <div class="col-prefix">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(this.companyForm.get('loadPrefix'))
                   }}"
@@ -1305,6 +1323,7 @@
               </div>
               <div class="col-starting">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(this.companyForm.get('loadStarting'))
                   }}"
@@ -1355,6 +1374,7 @@
               </div>
               <div class="col-suffix">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(this.companyForm.get('loadSuffix'))
                   }}"
@@ -1456,6 +1476,7 @@
             <div class="row" style="margin-top: 30px">
               <div class="col-6">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('customerPayTerm')
@@ -1509,6 +1530,7 @@
               </div>
               <div class="col-6">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('customerPayTerm')
@@ -1586,6 +1608,7 @@
             <div class="row" style="padding-top: 25px; height: 40px">
               <div class="col-4">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(this.companyForm.get('expirationMvr'))
                   }}"
@@ -1635,6 +1658,7 @@
               </div>
               <div class="col-4">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('expirationTruckInspection')
@@ -1692,6 +1716,7 @@
               </div>
               <div class="col-4">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('expirationTrailerInspection')
@@ -1818,6 +1843,7 @@
             <div class="row">
               <div class="col-6">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('driverOwnerDefaultEmptyMile')
@@ -1877,6 +1903,7 @@
               </div>
               <div class="col-6">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('driverOwnerDefaultLoadedMile')
@@ -2043,6 +2070,7 @@
               </div>
               <div class="col-4">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('accountingDefaultBase')
@@ -2161,6 +2189,7 @@
               </div>
               <div class="col-4">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('companyOwnerDefaultBase')
@@ -2279,6 +2308,7 @@
               </div>
               <div class="col-6">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('dispatchDefaultBase')
@@ -2414,6 +2444,7 @@
               </div>
               <div class="col-6">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('managerDefaultBase')
@@ -2549,6 +2580,7 @@
               </div>
               <div class="col-4">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('recruitingDefaultBase')
@@ -2667,6 +2699,7 @@
               </div>
               <div class="col-4">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('repairDefaultBase')
@@ -2783,6 +2816,7 @@
               </div>
               <div class="col-4">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('safetyDefaultBase')
@@ -2899,6 +2933,7 @@
               </div>
               <div class="col-4">
                 <div
+                  [ngClass]="inputText ? 'typing' : 'not-typing'"
                   class="form-label-group input-icon input-holder {{
                     manageInputValidation(
                       this.companyForm.get('otherDefaultBase')

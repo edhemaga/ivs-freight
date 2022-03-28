@@ -81,6 +81,7 @@
                 placeholder="Phone"
                 (keyup)="onKeyUpMethod($event)"
               >
+
               <svg-icon
                 class="default-icon"
                 src="../../../../../assets/img/form-validation/phone-icon-default.svg"
@@ -97,7 +98,6 @@
               <label class="required-label" for="phone">Phone</label>
               <p *ngIf="ownerForm.get('phone').errors  && ownerForm.get('phone').touched"
                  class="m-0 required-notice invalid-length">{{ownerForm.get('phone').errors | inputError}} </p>
-
             </div>
           </div>
           <div class="col-8">

@@ -285,6 +285,18 @@ textarea.input-custom-textarea.form-textarea {
     align-items: center;
     justify-content: flex-end;
   }
+.note-label-wrapper {
+  background-color: #FFFFFF;
+  font-weight: 600;
+  color: #6C6C6C;
+  margin: 0 -12px;
+  padding: 0 12px;
+  transition: 0.3s;
+  cursor: pointer;
+  height: 32px;
+  line-height: 32px;
+  user-select: none;
+}
 
 
 

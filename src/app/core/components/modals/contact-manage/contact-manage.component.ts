@@ -32,6 +32,7 @@ export class ContactManageComponent implements OnInit {
   public formatType = /^[!@#$%^&*`()_+\-=\[\]{};':"\\|,.<>\/?0-9]*$/;
   public numOfSpaces = 0;
   inputText: false;
+  shareContactVisible: boolean;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -316,6 +317,10 @@ export class ContactManageComponent implements OnInit {
   public onKeyUpMethod(x) {
     this.inputText = x.key;
     x.key === 'Backspace' && !this.contactForm.get(x.currentTarget.id).value ? this.inputText = false : this.inputText = x.key;
+  }
+
+  checkShareContact() {
+    this.shareContactVisible = !this.shareContactVisible;
   }
 
 }

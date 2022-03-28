@@ -69,7 +69,7 @@ export class OwnerManageComponent implements OnInit {
     private metaDataService: MetaDataService,
     private spinner: SpinnerService,
     private notification: NotificationService,
-    public  activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     //private ownerService: AppSharedService
   ) {
     this.initForm();
@@ -190,7 +190,7 @@ export class OwnerManageComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (resp: any) => {
-          if(resp) {
+          if (resp) {
             this.closeNewBank();
             this.getBanks(true);
           }

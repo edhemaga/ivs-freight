@@ -34,7 +34,7 @@
       <div class="single-tab-container">
         <div class="row">
           <div class="col-6">
-            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder {{
+            <div [ngClass]="driverForm.get('firstName').dirty ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder {{
                       manageInputValidation(this.driverForm.controls.firstName)
                     }}">
               <input
@@ -76,7 +76,7 @@
             </div>
           </div>
           <div class="col-6">
-            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder {{
+            <div [ngClass]="driverForm.get('lastName').touched ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder {{
                       manageInputValidation(this.driverForm.controls.lastName)
                     }}">
               <input
@@ -93,12 +93,14 @@
               />
 
               <svg-icon
+                *ngIf="!driverForm.get('lastName').errors && driverForm.get('lastName').touched"
                 class="valid-icon"
                 src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
               >
               </svg-icon>
 
               <svg-icon
+                *ngIf="driverForm.get('lastName').errors && driverForm.get('lastName').touched"
                 class="x-invalid-icon"
                 src="../../../../../assets/img/form-validation/x-icon-light-red.svg"
               >

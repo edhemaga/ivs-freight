@@ -49,7 +49,8 @@
           <div
             class="form-label-group input-icon phone-field-wrapper input-holder {{ manageInputValidation(contactForm.controls.phone) }}"
             [ngClass]="inputText ? 'typing' : 'not-typing'">
-            <input appInputFocus class="form-control input-control required phone-input" formControlName="phone" id="phone"
+            <input appInputFocus class="form-control input-control required phone-input" formControlName="phone"
+                   id="phone"
                    mask="(000) 000-0000" placeholder="Phone" (keyup)="onKeyUpMethod($event)">
 
             <svg-icon
@@ -101,7 +102,8 @@
             class="form-label-group input-icon address-field-wrapper input-holder {{ manageInputValidation(contactForm.controls.address) }}"
             [ngClass]="inputText ? 'typing' : 'not-typing'">
             <input #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)" [options]="options"
-                   appInputFocus class="form-control input-control required address-input" formControlName="address" id="address"
+                   appInputFocus class="form-control input-control required address-input" formControlName="address"
+                   id="address"
                    ngx-google-places-autocomplete placeholder="Address, City, State Zip"
                    (keyup)="onKeyUpMethod($event)">
             <svg-icon
@@ -123,12 +125,44 @@
         <div class="col-2">
           <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
             <input appInputFocus appInputrestriction="[A-Za-z0-9-]" class="form-control input-control"
-                   formControlName="address_unit" id="address_unit" maxlength="6" placeholder="Unit #" (keyup)="onKeyUpMethod($event)">
+                   formControlName="address_unit" id="address_unit" maxlength="6" placeholder="Unit #"
+                   (keyup)="onKeyUpMethod($event)">
             <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
             </div>
             <label for="address_unit">Unit #</label>
           </div>
         </div>
+      </div>
+      <div class="divider">
+      </div>
+      <div class="td-content set-center">
+        <div class="checkbox-holder">
+          <input
+            class="table-checkbox"
+            id="checkbox"
+            type="checkbox"
+            (change)="checkShareContact()"
+          />
+          <label class="table-checkbox-label" for="checkbox"></label>
+
+          <span class="note-label-wrapper">Share Contact</span>
+        </div>
+      </div>
+        <div class="form-label-group" *ngIf="shareContactVisible" [ngClass]="inputText ? 'typing' : 'not-typing'">
+          <ng-select [items]="createdLabels"
+                     appendTo="body"
+                     bindLabel="department"
+                     bindValue="departmentId"
+                     formControlName="departmentId"
+                     placeholder="All Departments">
+            <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+              <span [ngStyle]="{ department: item.department }">{{ item.department }}</span>
+              <svg-icon class="down-icon" src="assets/img/svgs/down-arrow.svg"></svg-icon>
+            </ng-template>
+          </ng-select>
+        </div>
+
+      <div class="divider">
       </div>
       <div class="row">
         <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
@@ -146,7 +180,9 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button (click)="closeAddressEditModal()" class="cancel-btn" type="button">Cancel</button>
-    <button (click)="manageContact()" class="save-btn"  [ngClass]="{'invalid-btn' : !contactForm.valid}" ngbAutofocus type="button">Save</button>
+
+    <button (click)="manageContact()" class="save-btn" [ngClass]="{'invalid-btn' : !contactForm.valid}" ngbAutofocus
+            type="button">Save
+    </button>
   </div>
 </div>
