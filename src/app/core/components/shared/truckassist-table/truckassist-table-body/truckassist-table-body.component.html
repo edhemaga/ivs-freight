@@ -137,6 +137,81 @@
             <span class="table-name-link">{{ row[column.field] }}</span>
           </div>
 
+          <!-- OOS COLUMN -->
+          <div
+            class="td-content set-center"
+            *ngIf="!column.hidden && column.ngTemplate === 'oos'"
+            [ngStyle]="{ width: column.width + 'px' }"
+          >
+            <div class="oos-container">
+              <div [ngClass]="{ 'oos-active': row.oos[0].active }">
+                {{ row.oos[0].value }}
+              </div>
+              <div [ngClass]="{ 'oos-active': row.oos[1].active }">
+                {{ row.oos[1].value }}
+              </div>
+              <div [ngClass]="{ 'oos-active': row.oos[2].active }">
+                {{ row.oos[2].value }}
+              </div>
+            </div>
+          </div>
+
+          <!-- VIOLATION STATE COLUMN -->
+          <div
+            class="td-content set-center"
+            *ngIf="!column.hidden && column.ngTemplate === 'violation-state'"
+            [ngStyle]="{
+              width: column.width + 'px'
+            }"
+          >
+            <div class="violation-state-container">{{ row[column.field] }}</div>
+          </div>
+
+          <!-- LVL COLUMN -->
+          <div
+            class="td-content set-center"
+            *ngIf="!column.hidden && column.ngTemplate === 'lvl'"
+            [ngStyle]="{
+              width: column.width + 'px'
+            }"
+          >
+            <div class="lvl-container">{{ row[column.field] }}</div>
+          </div>
+
+          <!-- CITATION COLUMN -->
+          <div
+            class="td-content set-center"
+            *ngIf="!column.hidden && column.ngTemplate === 'citation'"
+            [ngStyle]="{
+              width: column.width + 'px'
+            }"
+          >
+            <div
+              class="citation-table"
+              [ngClass]="{ 'citation-table-active': row.citation > 0 }"
+            >
+              {{ row.citation ? row.citation : "0" }}
+            </div>
+          </div>
+
+          <!-- VL COLUMN -->
+          <div
+            class="td-content set-center"
+            *ngIf="!column.hidden && column.ngTemplate === 'violation-count'"
+            [ngStyle]="{
+              width: column.width + 'px'
+            }"
+          >
+            <div
+              [ngClass]="{
+                'active-vl-count': row[column.field] > 0,
+                'zero-vl-count': row[column.field] <= 0
+              }"
+            >
+              {{ row[column.field] ? row[column.field] : "0" }}
+            </div>
+          </div>
+
           <!-- CUSTOMER NAME COLUMN -->
           <div
             class="td-content"

@@ -68,6 +68,89 @@ table {
               }
             }
 
+            // OOS COLUMN
+            .oos-container {
+              width: 92px;
+              height: 28px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              div {
+                width: 28px;
+                height: 28px;
+                border-radius: 2px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                font-weight: 900;
+                color: #dadada;
+              }
+
+              .oos-active {
+                background: #5673aa !important;
+                color: white !important;
+              }
+            }
+
+            // CITATION COLUMN
+            .citation-table {
+              width: 36px;
+              height: 24px;
+              background-repeat: no-repeat;
+              background-position: center;
+              background-image: url("../../../../../../assets/svg/truckassist-table/citation-icon.svg");
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-size: 16px;
+              font-weight: 400;
+              color: white;
+            }
+
+            .citation-table-active {
+              font-weight: 800;
+            }
+
+            // LVL COLUMN
+            .lvl-container {
+              width: fit-content;
+              height: 19px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              color: #919191;
+              font-size: 16px;
+              font-weight: 400;
+            }
+
+            // VIOLATION STATE COLUMN 
+            .violation-state-container{
+              width: fit-content;
+              height: 28px;
+              font-size: 16px;
+              font-weight: bold;
+              color: #919191;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+
+            // VL COLUMN
+            .active-vl-count,
+            .zero-vl-count {
+              color: #919191;
+              font-size: 16px;
+            }
+
+            .active-vl-count {
+              font-weight: bold;
+            }
+
+            .zero-vl-count {
+              font-weight: 400;
+            }
+
             // AVATAR COLUMN
             .avatar-container {
               width: 20px;
