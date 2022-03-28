@@ -1,7 +1,7 @@
 <div class="user-panel" *ngIf="isUserPanelOpen && isNavigationHovered">
   <div
     class="user-content"
-    *ngFor="let item of userNavigationData; trackBy: identify"
+    *ngFor="let item of userNavigationData; trackBy: identity"
     (click)="onAction(item)"
   >
     <div class="user-content-hover"></div>

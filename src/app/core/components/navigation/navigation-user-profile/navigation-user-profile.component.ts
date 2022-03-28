@@ -1,10 +1,9 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output,
 } from '@angular/core';
 import { userNavigationData } from '../model/navigation-data';
 import { NavigationUserPanel } from '../model/navigation.model';
@@ -18,25 +17,17 @@ import { CustomModalService } from 'src/app/core/services/modals/custom-modal.se
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { CommunicatorUserService } from 'src/app/core/services/communicator/communicator-user.service';
 import { CommunicatorUserDataService } from 'src/app/core/services/communicator/communicator-user-data.service';
+import { NavigationService } from '../services/navigation.service';
 
 @Component({
   selector: 'app-navigation-user-profile',
   templateUrl: './navigation-user-profile.component.html',
   styleUrls: ['./navigation-user-profile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   @Input() isNavigationHovered: boolean = false;
   @Input() isUserPanelOpen: boolean = false;
-
-  @Output() onUserPanelCloseEvent: EventEmitter<{}> = new EventEmitter<{
-    type: boolean;
-    name: string;
-  }>();
-
-  @Output() onUserCompanyDetailsOpen = new EventEmitter<{
-    type: boolean;
-    name: string;
-  }>();
 
   public userNavigationData: NavigationUserPanel[] = userNavigationData;
 
@@ -55,7 +46,8 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     private customModalService: CustomModalService,
     private sharedService: SharedService,
     private communicatorUserService: CommunicatorUserService,
-    private communicatorUserDataService: CommunicatorUserDataService
+    private communicatorUserDataService: CommunicatorUserDataService,
+    private navigationService: NavigationService
   ) {}
 
   ngOnInit() {
@@ -69,7 +61,10 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   }
 
   public onUserPanelClose() {
-    this.onUserPanelCloseEvent.emit({ type: false, name: 'User Panel' });
+    this.navigationService.onDropdownActivation({
+      name: 'User Panel',
+      type: false,
+    });
   }
 
   public onAction(data: NavigationUserPanel) {
@@ -102,9 +97,9 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         break;
       }
       case 'company': {
-        this.onUserCompanyDetailsOpen.emit({
-          type: true,
+        this.navigationService.onDropdownActivation({
           name: 'User Company Details',
+          type: true,
         });
         break;
       }
@@ -121,7 +116,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  public identify(index: number, item: NavigationUserPanel): number {
+  public identity(index: number, item: NavigationUserPanel): number {
     return item.id;
   }
 

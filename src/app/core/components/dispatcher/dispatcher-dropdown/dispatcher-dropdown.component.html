@@ -1,0 +1,38 @@
+<div class="dispatchboard-custom-holder">
+    <ng-select
+    #multiSelect
+    [searchable]="true"
+    [(ngModel)]="selectValue.id"
+    bindLabel="id"
+    (change)="change($event, multiSelect)"
+    [items]="items"
+    [clearable]="false"
+    bindValue="id"
+    [hideSelected]="true"
+    >
+    <ng-template let-item="item" ng-label-tmp>
+        <svg-icon
+            class="dropdown-indicator"
+            src="assets/img/svgs/navigation/ic_arrow.svg"
+        ></svg-icon>
+        <div class="drop_item"
+            [ngClass]="{ 'all_boards': item.id == 0, 'team_boards': item.id == -1 }"
+        >
+            <div class="user_avatar" *ngIf="item.dispatcherAvatar" 
+            [ngStyle]="item.dispatcherAvatar && { 'background-image': 'url(' + item.dispatcherAvatar + ')' }"
+            ></div>
+            <span>{{item.dispatcherFirstName}} {{item.dispatcherLastName}}</span>
+        </div>
+    </ng-template>
+    <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+        <div class="drop_item"
+            [ngClass]="{ 'all_boards': item.id == 0, 'team_boards': item.id == -1 }"
+        >
+            <div class="user_avatar" *ngIf="item.dispatcherAvatar" 
+            [ngStyle]="item.dispatcherAvatar && { 'background-image': 'url(' + item.dispatcherAvatar + ')' }"
+            ></div>
+            <span>{{item.dispatcherFirstName}} {{item.dispatcherLastName}}</span>
+        </div>
+    </ng-template>
+    </ng-select>
+</div>

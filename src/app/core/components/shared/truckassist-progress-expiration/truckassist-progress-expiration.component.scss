@@ -1,97 +1,102 @@
 .table-progress-cotnainer {
+  display: flex;
+
+  /* PROGRESS EXPIRATION */
+  .table-progress {
+    background: #e5e5e5;
+    border-radius: 3px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    height: 20px;
+    width: 24px;
     display: flex;
-  
-    /* PROGRESS EXPIRATION */
-    .table-progress {
-      background: #e5e5e5;
-      border-radius: 3px;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-      height: 20px;
-      width: 24px;
+    overflow: hidden;
+    line-height: 0;
+    font-size: 14px;
+
+    .table-progress-bar {
+      text-align: left;
       display: flex;
-      overflow: hidden;
-      line-height: 0;
+      flex-direction: column;
+      justify-content: center;
+      white-space: nowrap;
+    }
+  }
+
+  .table-progress-panel {
+    .progress-text {
+      /* margin: 4px 0 0 4px; */
+      margin: 2px 0 0 4px;
       font-size: 14px;
-  
-      .table-progress-bar {
-        text-align: left;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        white-space: nowrap;
+      font-weight: 500;
+      color: #b7b7b7;
+      display: flex;
+
+      span {
+        &::selection {
+          color: #b7b7b7;
+          background: rgba(145, 145, 145, 0.2);
+        }
+      }
+
+      .expires-settings {
+        margin-right: 3px;
+        color: #6c6c6c;
+        font-weight: 600;
+      }
+
+      .expires-settings-bold {
+        font-weight: bold;
+        color: #6c6c6c;
       }
     }
-  
-    .table-progress-panel {
-      .progress-text {
-        /* margin: 4px 0 0 4px; */
-        margin: 2px 0 0 4px;
-        font-size: 14px;
-        font-weight: 500;
-        color: #b7b7b7;
-        display: flex;
-  
-        span {
-          &::selection {
-            color: #b7b7b7;
-            background: rgba(145, 145, 145, 0.2);
-          }
-        }
 
-        .expires-settings {
-          margin-right: 3px;
-          color: #6C6C6C;
-          font-weight: 600;
+    .progress-days-to-go {
+      color: #6c6c6c;
+      span {
+        &::selection {
+          color: #b7b7b7;
+          background: rgba(145, 145, 145, 0.2);
         }
-
-        .expires-settings-bold {
-          font-weight: bold;
-          color: #6C6C6C;
-        }
-      }
-
-      .progress-days-to-go {
-        color: #6C6C6C;
       }
     }
   }
-  
-  /* CLASS TO ADD */
-  .progres-default {
-    background: #919191;
-  }
-  
-  .bg-progress-muted {
-    background: #b7b7b7;
-  }
-  
-  .bg-progress-sliver {
-    background: #919191;
-  }
-  
-  .bg-progress-orange {
-    background: #ffbd4a;
-  }
-  
-  .bg-progress-danger {
-    background: #f87566;
-  }
-  
-  .bg-progress-1 {
-    background: #919191;
-  }
-  
-  .bg-progress-2 {
-    background: #ffbd4a;
-  }
-  
-  .bg-progress-3 {
-    background: #f87566;
-  }
-  
-  .bg-progress-4 {
-    background: #000000;
-  }
-  
+}
+
+/* CLASS TO ADD */
+.progres-default {
+  background: #919191;
+}
+
+.bg-progress-muted {
+  background: #b7b7b7;
+}
+
+.bg-progress-sliver {
+  background: #919191;
+}
+
+.bg-progress-orange {
+  background: #ffbd4a;
+}
+
+.bg-progress-danger {
+  background: #f87566;
+}
+
+.bg-progress-1 {
+  background: #919191;
+}
+
+.bg-progress-2 {
+  background: #ffbd4a;
+}
+
+.bg-progress-3 {
+  background: #f87566;
+}
+
+.bg-progress-4 {
+  background: #000000;
+}

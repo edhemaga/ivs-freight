@@ -8,6 +8,10 @@
       src="assets/img/svgs/table/close.svg"
     ></svg-icon>
   </div>
+
+  <div class="divider">
+  </div>
+
   <div class="modal-body">
     <app-tab-switcher
       (switchClicked)="tabChange($event)"
@@ -40,7 +44,7 @@
               >
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
-              <label for="businessName">Business name</label>
+              <label  class="required-label" for="businessName">Business name</label>
             </div>
           </div>
           <div class="col-3">
@@ -57,33 +61,48 @@
               >
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
-              <label for="taxId">EIN</label>
+              <label class="required-label" for="taxId">EIN</label>
+              <p *ngIf="ownerForm.get('taxId').errors  && ownerForm.get('taxId').touched"
+                 class="m-0 required-notice invalid-length">{{ownerForm.get('taxId').errors | inputError}} </p>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-4">
             <div
-              class="form-label-group input-icon phone-field-wrapper"
+              class="form-label-group input-icon phone-field-wrapper input-holder"
               [ngClass]="inputText ? 'typing' : 'not-typing'">
               <input
                 appInputFocus
-                class="form-control input-control required"
+                class="form-control input-control required phone-input"
                 formControlName="phone"
                 id="phone"
                 mask="(000) 000-0000"
                 placeholder="Phone"
                 (keyup)="onKeyUpMethod($event)"
               >
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/phone-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
               <label class="required-label" for="phone">Phone</label>
-              <app-required-label [control]="ownerForm.controls.phone"></app-required-label>
+              <p *ngIf="ownerForm.get('phone').errors  && ownerForm.get('phone').touched"
+                 class="m-0 required-notice invalid-length">{{ownerForm.get('phone').errors | inputError}} </p>
+
             </div>
           </div>
           <div class="col-8">
             <div
-              class="form-label-group input-icon email-field-wrapper {{ manageInputValidation(ownerForm.controls.email) }}"
+              class="form-label-group input-icon email-field-wrapper input-holder {{ manageInputValidation(ownerForm.controls.email) }}"
               [ngClass]="inputText ? 'typing' : 'not-typing'">
               <input
                 (keypress)="onEmailTyping($event)"
@@ -96,34 +115,62 @@
                 placeholder="Email"
                 (keyup)="onKeyUpMethod($event)"
               >
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/mail-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
               <label class="required-label" for="email">Email</label>
-              <app-required-label [control]="ownerForm.controls.email"></app-required-label>
+              <p *ngIf="ownerForm.get('email').errors  && ownerForm.get('email').touched"
+                 class="m-0 required-notice invalid-length">{{ownerForm.get('email').errors | inputError}} </p>
+
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-10">
             <div
-              class="form-label-group input-icon address-field-wrapper {{ manageInputValidation(ownerForm.controls.address) }}"
-              [ngClass]="inputText ? 'typing' : 'not-typing'">
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
+              class="form-label-group input-icon input-holder address-field-wrapper {{
+                manageInputValidation(ownerForm.controls.address)
+              }}"
+            >
               <input
                 #placesRef="ngx-places"
+                (keyup)="onKeyUpMethod($event)"
                 (onAddressChange)="handleAddressChange($event)"
                 [options]="options"
                 appInputFocus
-                class="form-control input-control required"
+                class="form-control input-control required address-input"
                 formControlName="address"
                 id="address"
                 ngx-google-places-autocomplete
                 placeholder="Address, City, State Zip"
-                (keyup)="onKeyUpMethod($event)"
+              />
+
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/address-icon-default.svg"
               >
-              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-              </div>
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="top"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
               <label class="required-label" for="address">Address, City, State Zip</label>
-              <app-required-label [control]="$any(ownerForm).controls['address']"></app-required-label>
+              <p *ngIf="ownerForm.get('address').errors && ownerForm.get('address').touched"
+                 class="m-0 required-notice invalid-length">{{ownerForm.get('address').errors | inputError}} </p>
             </div>
           </div>
           <div class="col-2">
@@ -269,7 +316,7 @@
               >
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
-              <label for="firstName">First name</label>
+              <label class="required-label" for="firstName">First name</label>
             </div>
           </div>
           <div class="col-4">
@@ -286,7 +333,7 @@
               >
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
-              <label for="lastName">Last name</label>
+              <label class="required-label" for="lastName">Last name</label>
             </div>
           </div>
           <div class="col-4">
@@ -304,34 +351,45 @@
               >
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
-              <label for="ssnId">SSN</label>
+              <label class="required-label" for="ssnId">SSN</label>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-4">
             <div
-              class="form-label-group input-icon phone-field-wrapper {{ manageInputValidation(ownerForm.controls.phone) }}"
-              [ngClass]="inputText ? 'typing' : 'not-typing'"
-            >
+              class="form-label-group input-icon phone-field-wrapper input-holder {{ manageInputValidation(ownerForm.controls.phone) }}"
+              [ngClass]="inputText ? 'typing' : 'not-typing'">
               <input
                 appInputFocus
-                class="form-control input-control required"
+                class="form-control input-control required phone-input"
                 formControlName="phone"
                 id="phone"
                 mask="(000) 000-0000"
                 placeholder="Phone"
                 (keyup)="onKeyUpMethod($event)"
               >
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/phone-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
               <label class="required-label" for="phone">Phone</label>
-              <app-required-label [control]="ownerForm.controls.phone"></app-required-label>
+              <p *ngIf="ownerForm.get('phone').errors  && ownerForm.get('phone').touched"
+                 class="m-0 required-notice invalid-length">{{ownerForm.get('phone').errors | inputError}} </p>
             </div>
           </div>
           <div class="col-8">
             <div
-              class="form-label-group input-icon email-field-wrapper {{ manageInputValidation(ownerForm.controls.email) }}"
+              class="form-label-group input-icon email-field-wrapper input-holder {{ manageInputValidation(ownerForm.controls.email) }}"
               [ngClass]="inputText ? 'typing' : 'not-typing'">
               <input
                 (keypress)="onEmailTyping($event)"
@@ -344,17 +402,30 @@
                 placeholder="Email"
                 (keyup)="onKeyUpMethod($event)"
               >
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/mail-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
               <label class="required-label" for="email">Email</label>
-              <app-required-label [control]="ownerForm.controls.email"></app-required-label>
+
+              <p *ngIf="ownerForm.get('email').errors  && ownerForm.get('email').touched"
+                 class="m-0 required-notice invalid-length">{{ownerForm.get('email').errors | inputError}} </p>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-10">
             <div
-              class="form-label-group input-icon address-field-wrapper {{ manageInputValidation(ownerForm.controls.address) }}"
+              class="form-label-group input-icon address-field-wrapper input-holder {{ manageInputValidation(ownerForm.controls.address) }}"
               [ngClass]="inputText ? 'typing' : 'not-typing'"
             >
               <input
@@ -362,17 +433,28 @@
                 (onAddressChange)="handleAddressChange($event)"
                 [options]="options"
                 appInputFocus
-                class="form-control input-control required"
+                class="form-control input-control required email-input"
                 formControlName="address"
                 id="address"
                 ngx-google-places-autocomplete
                 placeholder="Address, City, State Zip"
                 (keyup)="onKeyUpMethod($event)"
               >
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/address-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="top"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
               <label class="required-label" for="address">Address, City, State Zip</label>
-              <app-required-label [control]="ownerForm.controls.address"></app-required-label>
+
             </div>
           </div>
           <div class="col-2">
@@ -506,9 +588,7 @@
   </div>
 
   <div class="modal-footer">
-    <button (click)="closeOwnerAddModal()" class="cancel-btn" type="button">
-      <p class="m-0">Cancel</p>
-    </button>
+
     <button (click)="manageOwner()" class="save-btn" [ngClass]="{'invalid-btn' : !ownerForm.valid}" ngbAutofocus
             type="button">
       <p class="m-0">Save</p>

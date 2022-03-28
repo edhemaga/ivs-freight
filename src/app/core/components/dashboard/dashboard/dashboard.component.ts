@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
@@ -165,7 +166,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       private dashboardQuery: DashboardQuery, 
       private dashboardService: DashboardService, 
       private sharedService: SharedService,
-      private route: ActivatedRoute
+      private route: ActivatedRoute,
+      private http: HttpClient
   ) {}
 
   ngOnInit() {

@@ -1,7 +1,6 @@
 @import "../../settings.global.scss";
 .settings-card {
   width: 100%;
-  height: auto;
   padding-bottom: 0px;
   cursor: pointer;
 
@@ -9,7 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
+    user-select: none;
 
     p {
       font-size: 14px;
@@ -27,10 +26,6 @@
         transform: rotate(180deg);
         transition: $settings-transition;
       }
-    }
-
-    &.closed {
-      margin-bottom: 6px;
     }
 
     &.last-item {
@@ -61,7 +56,7 @@
       .settings-card-status {
         height: 20px;
         background: #f7f7f7;
-        padding: 2.5px 6px;
+        padding: 1.5px 6px;
         text-align: center;
         border-radius: 3px;
         font-size: 12px;
@@ -75,8 +70,7 @@
   }
 
   .settings-card-body {
-    margin-bottom: 12px;
-
+   
     // Common template
     .settings-template {
       display: grid;
@@ -92,6 +86,7 @@
           font-size: 12px;
           color: $settings-gray-dark;
           font-weight: $settings-font-semibold;
+          user-select: none;
 
           &.bank {
             margin-bottom: 10px;
@@ -100,6 +95,11 @@
 
         .settings-template-value {
           font-size: 14px;
+
+          &::selection {
+            color: $settings-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
         }
 
         .settings-template-eye {
@@ -108,11 +108,17 @@
 
           .hidden-text-eye {
             margin-right: 6px;
+
+            &::selection {
+              color: $settings-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
+            }
           }
 
           .hidden-svg-eye {
             position: relative;
             bottom: 2px;
+            user-select: none;
           }
         }
       }
@@ -127,6 +133,7 @@
         display: grid;
         grid-template-columns: 135px 205px 72px 44px;
         margin-bottom: 12px;
+        user-select: none;
 
         p {
           align-self: flex-start;
@@ -149,6 +156,16 @@
             margin-right: 6px;
           }
         }
+
+        .bankcard-template-nickname,
+        .bankcard-template-value,
+        .bankcard-template-cvc,
+        .bankcard-template-exp {
+          &::selection {
+            color: $settings-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
+        }
       }
     }
 
@@ -163,11 +180,19 @@
         .payroll-template-name {
           font-weight: $settings-font-medium;
           color: $settings-gray-dark;
+          &::selection {
+            color: $settings-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
         }
 
         .payroll-template-value {
           font-weight: $settings-font-semibold;
           color: $settings-gray-dark;
+          &::selection {
+            color: $settings-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
         }
       }
     }
@@ -191,6 +216,11 @@
             color: $settings-gray-dark;
             margin-right: 12px;
             text-transform: uppercase;
+
+            &::selection {
+              color: $settings-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
+            }
           }
 
           .insurer-rating {
@@ -203,12 +233,17 @@
             color: $settings-white-dark;
             text-align: center;
             padding: 2.5px 6px;
+            user-select: none;
           }
         }
 
         .insurer-numberOfPolicy {
           font-weight: $settings-font-bold;
           color: $settings-gray-dark;
+          &::selection {
+            color: $settings-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
         }
       }
 
@@ -221,8 +256,18 @@
           justify-content: space-between;
           margin-top: 12px;
 
+          .insurance-field-name {
+            &::selection {
+              color: $settings-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
+            }
+          }
           .insurance-field-value {
             font-weight: $settings-font-semibold;
+            &::selection {
+              color: $settings-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
+            }
           }
         }
       }
@@ -244,11 +289,16 @@
           font-size: 17px;
           font-weight: $settings-font-semibold;
           color: $settings-gray-dark;
+          user-select: none;
         }
 
         .parking-template-text {
           color: $settings-gray-dark;
           margin-left: 7px;
+          &::selection {
+            color: $settings-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
 
           &.cross-out {
             text-decoration: line-through;
@@ -257,6 +307,7 @@
         }
 
         .parking-template-svg {
+          user-select: none;
           &.disabled {
             svg {
               path {
@@ -280,6 +331,10 @@
 
         .office-template-value {
           margin-left: 6px;
+          &::selection {
+            color: $settings-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
         }
       }
 
@@ -302,6 +357,10 @@
 
         .repair-shop-template-text {
           margin-left: 6px;
+          &::selection {
+            color: $settings-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
 
           &.cross-out {
             text-decoration: line-through;
@@ -309,6 +368,7 @@
           }
         }
         .repair-shop-template-svg {
+          user-select: none;
           &.disabled {
             svg {
               path {
@@ -336,6 +396,10 @@
 
         .terminal-template-value {
           margin-left: 6px;
+          &::selection {
+            color: $settings-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
         }
       }
 
@@ -349,12 +413,11 @@
     }
   }
   .settings-line {
-    margin: 0;
+    content: "";
     height: 2px;
-    width: 100%;
+    margin: 6px 0px;
     border-radius: 1px;
-    background-color: $settings-white-light-2;
-    margin-bottom: 6px;
+    background-color: #f3f3f3;
   }
 
   &:hover {

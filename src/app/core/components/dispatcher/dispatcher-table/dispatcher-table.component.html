@@ -9,18 +9,11 @@
               <div class="d-flex top_toolbar_cont">
                 <div
                   [ngClass]="{ legend_pop: legendActive }" class="dispatcher-drpdwn-wrap">
-                  <app-ta-select
-                    (changeVal)="changeDisparcher($event)"
-                    [clearable]="false"
-                    [hasAvatar]="true"
+                  <app-dispatcher-dropdown
                     [items]="dispatcherItems"
-                    [label1]="'dispatcherFirstName'"
-                    [label2]="'dispatcherLastName'"
-                    [searchable]="false"
                     [selectValue]="selectedDispatcher"
-                    [width]="'180'"
-                  ></app-ta-select>
-
+                    (changeVal)="changeDisparcher($event)"
+                  ></app-dispatcher-dropdown>
                   <div
                     #accordion
                     [ngClass]="{ nav_size: legendActive }"

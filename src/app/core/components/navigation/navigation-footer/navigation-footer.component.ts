@@ -5,25 +5,24 @@ import {
   Output,
   OnInit,
   OnDestroy,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { CommunicatorUserDataService } from 'src/app/core/services/communicator/communicator-user-data.service';
 import { Router } from '@angular/router';
+import { NavigationService } from '../services/navigation.service';
 
 @Component({
   selector: 'app-navigation-footer',
   templateUrl: './navigation-footer.component.html',
   styleUrls: ['./navigation-footer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationFooterComponent implements OnInit, OnDestroy {
   @Input() isNavigationHovered: boolean = false;
-  @Output() onUserPanelOpenEvent = new EventEmitter<{
-    type: boolean;
-    name: string;
-  }>();
+
   @Output() onActivateFooterRoutes = new EventEmitter<boolean>();
 
   private currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -36,7 +35,8 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private communicatorUserDataService: CommunicatorUserDataService
+    private communicatorUserDataService: CommunicatorUserDataService,
+    private navigationService: NavigationService
   ) {}
 
   ngOnInit() {
@@ -67,7 +67,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'Open User Panel': {
         if (index === 2) {
-          this.onUserPanelOpenEvent.emit({ type: true, name: 'User Panel' });
+          this.navigationService.onDropdownActivation({name: 'User Panel' , type: true})
         } else {
           this.isActiveFooterRoute(this.footerData[index]);
           localStorage.removeItem('subroute_active');
@@ -88,7 +88,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
 
   private isActiveFooterRouteOnReload(pathname: string) {
     const timeout = setTimeout(() => {
-
       const hasSettingsInRoute = pathname.includes('settings');
 
       if (hasSettingsInRoute) {
@@ -101,7 +100,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     }, 50);
   }
 
-  public identify(index: number, item: FooterData): number {
+  public identity(index: number, item: FooterData): number {
     return item.id;
   }
 

@@ -15,11 +15,11 @@ export class TaNgxSliderComponent {
 
   @Output() onUserValueChange: EventEmitter<any> = new EventEmitter<any>();
 
-  public getValue(changes: ChangeContext) {
+  public userChangeEnd(changes: ChangeContext) {
     this.onUserValueChange.emit(changes.value);
   }
 
-  public zooming(event) {
+  public valueChange(event) {
     this.onUserValueChange.emit(event)
   }
 }

@@ -5,7 +5,7 @@
       <ngx-slider
         [options]="sliderOptions"
         [(value)]="startedValue"
-        (userChangeEnd)="getValue($event)"
+        (userChangeEnd)="userChangeEnd($event)"
       ></ngx-slider>
     </div>
   </div>
@@ -14,7 +14,7 @@
       <ngx-slider
         [options]="sliderOptions"
         [(value)]="startedValue"
-        (valueChange)="zooming($event)"
+        (valueChange)="valueChange($event)"
       ></ngx-slider>
     </div>
   </div>

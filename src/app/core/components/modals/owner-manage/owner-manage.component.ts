@@ -86,7 +86,7 @@ export class OwnerManageComponent implements OnInit {
   ngOnInit() {
     if (this.inputData.data.type === 'new') {
       this.ownerForm.get('type').setValue(this.tab.name);
-      this.modalTitle = 'New owner';
+      this.modalTitle = 'Add owner';
       this.tabChange(this.tab);
       this.loaded = true;
     } else if (this.inputData.data.type === 'edit') {

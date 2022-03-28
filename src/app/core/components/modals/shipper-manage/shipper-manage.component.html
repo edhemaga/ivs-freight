@@ -8,8 +8,14 @@
       src="assets/img/svgs/table/close.svg"
     ></svg-icon>
   </div>
+  <div class="divider">
+  </div>
   <div class="modal-body manage-customer-modal static-element">
     <!-- <app-loading-modal *ngIf="!loaded" class='large'></app-loading-modal> -->
+    <app-tab-switcher
+      (switchClicked)="tabChange($event)"
+      [tabs]="tabs"
+    ></app-tab-switcher>
     <form
       (keydown)="keyDownFunction($event)"
       *ngIf="loaded"
@@ -44,24 +50,37 @@
         <div class="row">
           <div class="col-4">
             <div
-              class="form-label-group input-icon phone-field-wrapper {{ manageInputValidation(shipperForm.controls.phone) }}"  [ngClass]="inputText ? 'typing' : 'not-typing'">
+              class="form-label-group input-icon phone-field-wrapper input-holder {{ manageInputValidation(shipperForm.controls.phone) }}"  [ngClass]="inputText ? 'typing' : 'not-typing'">
               <input
                 appInputFocus
-                class="form-control input-control"
+                class="form-control input-control phone-input"
                 formControlName="phone"
                 id="phone"
                 mask="(000) 000-0000"
                 placeholder="Phone"
                 (keyup)="onKeyUpMethod($event)"
               >
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/phone-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
-              <label for="phone">Phone</label>
+              <label class="required-label" for="phone">Phone</label>
+              <p *ngIf="shipperForm.get('phone').errors  && shipperForm.get('phone').touched"
+                 class="m-0 required-notice invalid-length">{{shipperForm.get('phone').errors | inputError}} </p>
             </div>
           </div>
           <div class="col-8">
             <div
-              class="form-label-group input-icon email-field-wrapper {{ manageInputValidation(shipperForm.controls.email) }}" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              class="form-label-group input-icon email-field-wrapper input-holder {{ manageInputValidation(shipperForm.controls.email) }}" [ngClass]="inputText ? 'typing' : 'not-typing'">
               <input
                 (keydown)="onCheckBackSpace($event)"
                 (keypress)="onEmailTyping($event)"
@@ -74,9 +93,23 @@
                 placeholder="Email"
                 (keyup)="onKeyUpMethod($event)"
               >
+              <svg-icon
+              class="default-icon"
+              src="../../../../../assets/img/form-validation/mail-icon-default.svg"
+            >
+            </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
-              <label for="email">Email</label>
+              <label class="required-label" for="email">Email</label>
+              <p *ngIf="shipperForm.get('email').errors  && shipperForm.get('email').touched"
+                 class="m-0 required-notice invalid-length">{{shipperForm.get('email').errors | inputError}} </p>
             </div>
           </div>
         </div>
@@ -84,24 +117,35 @@
         <div class="row">
           <div class="col-10">
             <div
-              class="form-label-group input-icon address-field-wrapper {{ manageInputValidation(shipperForm.controls.address) }}" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              class="form-label-group input-icon address-field-wrapper input-holder {{ manageInputValidation(shipperForm.controls.address) }}" [ngClass]="inputText ? 'typing' : 'not-typing'">
               <input
                 #placesRef="ngx-places"
                 (keydown)="addressKeyDown()"
                 (onAddressChange)="handleAddressChange($event)"
                 [options]="options"
                 appInputFocus
-                class="form-control input-control required"
+                class="form-control input-control required address-input"
                 formControlName="address"
                 id="address"
                 ngx-google-places-autocomplete
                 oninput="this.value = this.value.replace(/[^A-Za-z0-9-,.;'&/.() ]|^ /g,'')"
                 placeholder="Address, City, State Zip"
                 (keyup)="onKeyUpMethod($event)"
-              >
-              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-              </div>
+              ><svg-icon
+              class="default-icon"
+              src="../../../../../assets/img/form-validation/address-icon-default.svg"
+            >
+            </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="top"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
               <label class="required-label" for="address">Address, City, State Zip</label>
+              <p *ngIf="shipperForm.get('address').errors && shipperForm.get('address').touched"
+                 class="m-0 required-notice invalid-length">{{shipperForm.get('address').errors | inputError}} </p>
               <!-- <app-required-label [control]="shipperForm.controls.address"></app-required-label> -->
             </div>
           </div>
@@ -244,20 +288,34 @@
                 </div>
                 <div class="col-4">
                   <div
-                    class="form-label-group input-icon phone-field-wrapper no-padding-input {{ manageInputValidation(shipperForm.controls.phone) }}"
+                    class="form-label-group input-icon phone-field-wrapper"
                     [ngClass]="inputText ? 'typing' : 'not-typing'">
                     <input
                       appInputFocus
-                      class="form-control input-control"
+                      class="form-control input-control required phone-input"
                       formControlName="phone"
-                      id="phone{{i}}"
+                      id="phone"
                       mask="(000) 000-0000"
                       placeholder="Phone"
                       (keyup)="onKeyUpMethod($event)"
                     >
+                    <svg-icon
+                      class="default-icon"
+                      src="../../../../../assets/img/form-validation/phone-icon-default.svg"
+                    >
+                    </svg-icon>
+
+                    <svg-icon
+                      (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                      placement="bottom-left"
+                      src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+                    ></svg-icon>
                     <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
                     </div>
-                    <label for="phone{{i}}">Phone</label>
+                    <label class="required-label" for="phone">Phone</label>
+                    <p *ngIf="shipperForm.get('phone').errors  && shipperForm.get('phone').touched"
+                       class="m-0 required-notice invalid-length">{{shipperForm.get('phone').errors | inputError}} </p>
+
                   </div>
                 </div>
                 <div class="col-7">
@@ -277,9 +335,23 @@
                       placeholder="Email"
                       (keyup)="onKeyUpMethod($event)"
                     >
+                    <svg-icon
+                      class="default-icon"
+                      src="../../../../../assets/img/form-validation/mail-icon-default.svg"
+                    >
+                    </svg-icon>
+
+                    <svg-icon
+                      (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                      placement="bottom-left"
+                      src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+                    ></svg-icon>
+
                     <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
                     </div>
-                    <label for="email{{i}}">Email</label>
+                    <label class="required-label" for="email">Email</label>
+                    <p *ngIf="shipperForm.get('email').errors  && shipperForm.get('email').touched"
+                       class="m-0 required-notice invalid-length">{{shipperForm.get('email').errors | inputError}} </p>
                   </div>
                 </div>
                 <div class="col-1">
@@ -302,9 +374,6 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button (click)="closeShipperEdit()" class="cancel-btn" type="button">
-      <p class="m-0">Cancel</p>
-    </button>
     <button class="save-btn" [ngClass]="{'invalid-btn' : !shipperForm.valid}">
       <p class="m-0">Save</p>
     </button>
