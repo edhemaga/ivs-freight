@@ -1,12 +1,12 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ViolationComponent } from './violation.component';
+import { ViolationTableComponent } from './violation-table/violation-table.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ViolationComponent,
+    component: ViolationTableComponent,
     data: { title: 'Violation' },
   },
 ];
