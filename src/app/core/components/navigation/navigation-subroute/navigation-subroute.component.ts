@@ -3,14 +3,20 @@ import {
   NavigationSubRoute,
   NavigationSubRoutes,
 } from './../model/navigation.model';
-import { Component, Input, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  Input,
+  EventEmitter,
+  Output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation-subroute',
   templateUrl: './navigation-subroute.component.html',
   styleUrls: ['./navigation-subroute.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationSubrouteComponent {
   @Input() subroute: Navigation;

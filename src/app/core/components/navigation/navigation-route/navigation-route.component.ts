@@ -48,7 +48,6 @@ export class NavigationRouteComponent implements OnInit {
   }
 
   private isActiveRouteOnReload(pathname: string) {
-
     const flegId = JSON.parse(localStorage.getItem('subroute_active'));
 
     if (flegId && this.route.id === flegId) {
@@ -64,16 +63,14 @@ export class NavigationRouteComponent implements OnInit {
   }
 
   public onNavItemHover(type: boolean) {
-    if(type) {
-      if([3,4,5,6].includes(this.route.id) && this.route.isRouteActive) {
-        this.isNavItemHovered = false
+    if (type) {
+      if ([3, 4, 5, 6].includes(this.route.id) && this.route.isRouteActive) {
+        this.isNavItemHovered = false;
+      } else {
+        this.isNavItemHovered = true;
       }
-      else {
-        this.isNavItemHovered = true
-      }
-    }
-    else {
-      this.isNavItemHovered = false
+    } else {
+      this.isNavItemHovered = false;
     }
   }
 }
