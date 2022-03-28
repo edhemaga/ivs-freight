@@ -1,4 +1,4 @@
-<div class="modal-nav-panel">
+<div class="modal-nav-panel" *ngIf="isNavigationHoveredAndPanelOpen">
   <div
     (mouseenter)="changeTextHoverOnCloseModal = true"
     (mouseleave)="changeTextHoverOnCloseModal = false"

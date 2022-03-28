@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-navigation-subroute-card',
@@ -6,8 +6,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./navigation-subroute-card.component.scss'],
 })
 export class NavigationSubrouteCardComponent {
-  @Input() isRouteActive: boolean = false;
-  @Input() isNavigationHovered: boolean = false;
+  @Input() isNavigationCardActive: boolean = false;
   @Input() contentHeight: number = 0;
 
   /**
@@ -16,7 +15,7 @@ export class NavigationSubrouteCardComponent {
    * 1 - header of subroutes
    */
   public getDynamicHeight() {
-    return this.isRouteActive && this.isNavigationHovered
+    return this.isNavigationCardActive
       ? (this.contentHeight + 1) * 29 + 5
       : 0;
   }

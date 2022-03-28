@@ -1,4 +1,7 @@
-<div *ngIf="isNavItemHovered && isActiveSubroute" class="nav-item-hover"></div>
+<div
+  *ngIf="isNavItemHovered && isActiveSubroute && !route.isRouteActive"
+  class="nav-item-hover"
+></div>
 
 <div
   class="nav-item"

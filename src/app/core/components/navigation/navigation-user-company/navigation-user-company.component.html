@@ -1,4 +1,4 @@
-<div class="user-company">
+<div class="user-company" *ngIf="isNavigationHoveredAndPanelOpen">
   <div class="user-company-header" (click)="onAction()">
     <svg-icon
       class="user-company-header-svg"
@@ -6,7 +6,10 @@
     ></svg-icon>
     <p class="user-company-header-text">Switch Company</p>
   </div>
-  <div class="user-company-content" *ngFor="let item of userCompanyDummyData; trackBy: identity">
+  <div
+    class="user-company-content"
+    *ngFor="let item of userCompanyDummyData; trackBy: identity"
+  >
     <p
       [ngClass]="{ 'user-company-text-active': item.active }"
       class="user-company-text"
