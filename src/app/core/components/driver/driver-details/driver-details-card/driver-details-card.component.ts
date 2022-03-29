@@ -18,6 +18,9 @@ export class DriverDetailsCardComponent implements OnInit {
 
   public isCardOpen: boolean = true;
 
+  public isAccountVisible: boolean = false;
+  public accountText: string = null;
+
   constructor() { }
 
   ngOnInit() {
@@ -25,6 +28,28 @@ export class DriverDetailsCardComponent implements OnInit {
 
   public onCardOpen() {
     this.isCardOpen = !this.isCardOpen;
+  }
+
+  public hiddenPassword(value: any, numberOfCharacterToHide: number): string {
+    const lastFourCharaters = value.substring(
+      value.length - numberOfCharacterToHide
+    );
+    let hiddenCharacter = '';
+
+    for (let i = 0; i < numberOfCharacterToHide; i++) {
+      hiddenCharacter += "*";
+    }
+    return hiddenCharacter + lastFourCharaters;
+  }
+
+  public showHideValue(value: string) {
+    this.isAccountVisible = !this.isAccountVisible;
+    
+    if (!this.isAccountVisible) {
+      this.accountText = this.hiddenPassword(value, 4);
+      return;
+    }
+    this.accountText = value;
   }
 
 }

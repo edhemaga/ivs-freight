@@ -93,6 +93,12 @@
         .common-template-item-value {
           font-size: $font-size14;
           color: $color-gray-dark;
+
+          .hidden-svg-eye {
+              margin-left: 6px;
+              position: relative;
+              bottom: 1px;
+          }
         }
       }
     }

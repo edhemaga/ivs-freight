@@ -104,7 +104,18 @@
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Account</div>
-            <div class="common-template-item-value">{{ data.account }}</div>
+            <div class="common-template-item-value d-flex">
+              <p>{{ accountText ? accountText : hiddenPassword(data.account, 4) }}</p>
+              <svg-icon
+                (click)="showHideValue(data.account)"
+                class="hidden-svg-eye"
+                src="{{
+                  isAccountVisible
+                    ? 'assets/img/svgs/settings-company/settings-eye-visible.svg'
+                    : 'assets/img/svgs/settings-company/settings-eye-hidden.svg'
+                }}"
+              ></svg-icon>
+            </div>
           </div>
         </div>
       </div>
