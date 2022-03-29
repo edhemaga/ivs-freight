@@ -3,15 +3,19 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
-  NgZone,
   OnDestroy,
   OnInit,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import moment from 'moment';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
+import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { driver_details_animation } from '../driver-details.animation';
+import { DriverCdlModalComponent } from '../driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from '../driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from '../driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from '../driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 
 @Component({
   selector: 'app-driver-details-item',
@@ -23,16 +27,67 @@ import { driver_details_animation } from '../driver-details.animation';
 })
 export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-
   @Input() data: any = null;
 
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private _ngZone: NgZone) {}
+  constructor(private customModalService: CustomModalService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.data);
+  }
 
-  public onAction(data: { template: string; action: string }) {
+  public onModalAction() {
+    console.log(this.data.template)
+    const data = {
+      type: 'new',
+      vehicle: 'truck',
+    };
+
+    switch (this.data.template) {
+      case 'cdl': {
+        this.customModalService.openModal(
+          DriverCdlModalComponent,
+          { data },
+          null,
+          { size: 'small' }
+        );
+        break;
+      }
+      case 'drugAlcohol': {
+        this.customModalService.openModal(
+          DriverDrugAlcoholModalComponent,
+          { data },
+          null,
+          { size: 'small' }
+        );
+        break;
+      }
+      case 'medical': {
+        this.customModalService.openModal(
+          DriverMedicalModalComponent,
+          { data },
+          null,
+          { size: 'small' }
+        );
+        break;
+      }
+      case 'mvr': {
+        this.customModalService.openModal(
+          DriverMvrModalComponent,
+          { data },
+          null,
+          { size: 'small' }
+        );
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public onButtonAction(data: { template: string; action: string }) {
     switch (data.template) {
       case 'cdl': {
         if (data.action === 'attachments') {
@@ -47,27 +102,27 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  public triggerResize() {
-    // Wait for changes to be applied, then trigger textarea resize.
-    this._ngZone.onStable
-      .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(() => this.autosize.resizeToFitContent(true));
-  }
-
-  public onShowDetails(cdl: any) {
-    cdl.showDetails = !cdl.showDetails;
+  public onShowDetails(componentData: any) {
+    componentData.showDetails = !componentData.showDetails;
   }
 
   public formatDate(date: string) {
     return moment(date).format('MM/DD/YY');
   }
 
-  public formatTextPreview(endorsement: any, type: boolean) {
+  public formatText(data: any, type: boolean, numOfCharacters: string) {
     if (!type) {
-      return endorsement.map((data) => data.endorsementName?.charAt(0));
+      return data.map((item) =>
+        item.endorsementName?.substring(0, numOfCharacters)
+      );
     }
-    console.log(endorsement.map((data) => data.endorsementName))
-    return endorsement.map((data) => data.endorsementName);
+    return data.map(
+      (item) =>
+        `<span class='first-character'>${item.endorsementName?.substring(
+          0,
+          numOfCharacters
+        )}</span>` + item.endorsementName.substring(numOfCharacters)
+    );
   }
 
   public identity(index: number, item: any): number {

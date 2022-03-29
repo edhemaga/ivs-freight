@@ -15,17 +15,17 @@ export class DriverResolver implements Resolve<DriversState> {
     private driversStore: DriversStore,
     private driversQuery: DriversQuery
   ) {}
-  resolve(route: ActivatedRouteSnapshot): Observable<DriversState> | Observable<any> {
-    if (!this.driversQuery.getAll().length) {
-      console.log("RESOLVER DRIVER")
-      return this.driverService.getDrivers().pipe(
-        catchError((error) => {
-          return of('No drivers data...');
-        }),
-        tap((entities) => this.driversStore.set({ entities: entities }))
-      );
-    }
+  resolve(
+    route: ActivatedRouteSnapshot
+  ): Observable<DriversState> | Observable<any> {
+    console.log('RESOLVER DRIVER');
+    return this.driverService.getDrivers().pipe(
+      catchError((error) => {
+        return of('No drivers data...');
+      }),
+      tap((entities) => this.driversStore.set({ entities: entities }))
+    );
+
     // return this.driverService.getDrivers();
   }
 }
-

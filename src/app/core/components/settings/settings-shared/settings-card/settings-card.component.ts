@@ -32,7 +32,7 @@ export class SettingsCardComponent {
     let hiddenCharacter = '';
 
     for (let i = 0; i < numberOfCharacterToHide; i++) {
-      hiddenCharacter += '*';
+      hiddenCharacter += "*";
     }
     return hiddenCharacter + lastFourCharaters;
   }

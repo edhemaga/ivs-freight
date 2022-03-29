@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DriversQuery } from '../state/driver.query';
 import { switchMap } from 'rxjs/operators';
@@ -9,7 +14,7 @@ import { Driver } from '../state/driver.model';
   selector: 'app-driver-details',
   templateUrl: './driver-details.component.html',
   styleUrls: ['./driver-details.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DriverDetailsComponent implements OnInit, OnDestroy {
   public driverDetailsConfig: any[] = [];
@@ -41,31 +46,57 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   }
 
   private setDetailsConfig(reasponse: Driver) {
-    const cdlData = reasponse.licenseData.map(data => {
+    const cdlData = reasponse.licenseData.map((data) => {
       return {
         ...data,
-        showDetails: false
-      }
-    })
-    const medicalData = reasponse.medicalData.map(data => {
-      return {
-        ...data,
-        showDetails: false
-      }
+        showDetails: false,
+      };
     });
-    const mvrData = reasponse.mvrData.map(data => {
+    const medicalData = reasponse.medicalData.map((data) => {
       return {
         ...data,
-        showDetails: false
-      }
+        showDetails: false,
+      };
     });
-    
+    const mvrData = reasponse.mvrData.map((data) => {
+      return {
+        ...data,
+        showDetails: false,
+      };
+    });
+
     this.driverDetailsConfig = [
       {
         id: 0,
         name: 'General',
         template: 'general',
-        data: [],
+        data: {
+          reasponse,
+          assignedTo: {
+            truck: '36545',
+            trailer: 'R45784',
+          },
+          additionalInfo: {
+            dob: reasponse.dob,
+            ssn: reasponse.ssn,
+            company: 'KSKA FREIGHT, INC',
+            ein: '12-3456789',
+          },
+          employmentHistory: {},
+          bankInfo: {
+            routing: '052001633',
+            account: '0000000006213',
+          },
+          cards: {
+            twicExp: '04/12/24',
+            fuelCard: '485-71-8131',
+          },
+          emergencyContact: {
+            brother: 'Marko Markovic',
+            phone: '(479) 347-7270',
+          },
+          note: 'How to pursue pleasure rationally encounter consequences that are extremely painful.',
+        },
       },
       {
         id: 1,
@@ -92,9 +123,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         data: mvrData,
       },
     ];
-    console.log('CDL ', cdlData);
-    console.log('MEDICAL ', medicalData);
-    console.log('MVR ', mvrData);
   }
 
   public identity(index: number, item: any): number {

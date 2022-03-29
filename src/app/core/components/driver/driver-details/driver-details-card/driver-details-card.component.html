@@ -1,0 +1,165 @@
+<div class="driver-details-card">
+  <div
+    class="driver-card-header"
+    [ngClass]="{ 'card-mb': !isCardOpen }"
+    (click)="onCardOpen()"
+  >
+    <div class="driver-card-header-leftSide">
+      <app-ta-counter
+        *ngIf="cardCount"
+        [count]="cardCount"
+        [countColor]="'#919191'"
+        [countBackground]="'#F7F7F7'"
+        [countHeight]="'24px'"
+        [countWidth]="'24px'"
+      ></app-ta-counter>
+      <p
+        class="driver-card-header-name"
+        [ngClass]="{ 'header-name-ml': cardCount }"
+      >
+        {{ cardName }}
+      </p>
+
+      <svg-icon
+        *ngIf="cardImg"
+        src="assets/img/svgs/driver/ic_driver-bank.svg"
+      ></svg-icon>
+    </div>
+
+    <svg-icon
+      class="driver-card-arrow"
+      [ngClass]="{ rotate: isCardOpen }"
+      src="assets/img/svgs/settings-company/settings-arrow.svg"
+    ></svg-icon>
+  </div>
+
+  <div
+    [@openCloseBodyCard]="isCardOpen ? 'true' : 'false'"
+    class="driver-card-body"
+    [ngClass]="{ 'no-line': !hasLine }"
+  >
+    <div [ngSwitch]="cardTemplate">
+      <!----------------- Assigned To  -------------------->
+      <div *ngSwitchCase="'assignedTo'">
+        <div class="assignTo">
+          <div class="assignTo-item">
+            <svg-icon
+              class="assignTo-vehicle"
+              src="assets/img/svgs/driver/ic_driver-truck.svg"
+            ></svg-icon>
+            <p class="assignTo-value">{{ data.truck }}</p>
+          </div>
+          <div class="assignTo-item">
+            <svg-icon
+              class="assignTo-vehicle"
+              src="assets/img/svgs/driver/ic_driver-trailer.svg"
+            ></svg-icon>
+            <p class="assignTo-value">{{ data.trailer }}</p>
+          </div>
+        </div>
+      </div>
+      <!----------------- Additional Info  -------------------->
+      <div *ngSwitchCase="'additionalInfo'">
+        <div class="common-template">
+          <div class="common-template-item">
+            <div class="common-template-item-name">DOB</div>
+            <div class="common-template-item-value">{{ data.dob }}</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">SSN</div>
+            <div class="common-template-item-value">{{ data.ssn }}</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Company</div>
+            <div class="common-template-item-value">{{ data.company }}</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">EIN</div>
+            <div class="common-template-item-value">{{ data.ein }}</div>
+          </div>
+        </div>
+      </div>
+      <!----------------- Employment History  -------------------->
+      <div *ngSwitchCase="'employmentHistory'">
+        <div class="employmentHistory">Wait Backend</div>
+      </div>
+      <div *ngSwitchCase="'commissionPay'">
+        <div class="common-template">
+          <div class="common-template-item">
+            <div class="common-template-item-name">Solo Commission</div>
+            <div class="common-template-item-value">{{ data.commission }}</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Team Commission</div>
+            <div class="common-template-item-value">{{ data.commission }}</div>
+          </div>
+        </div>
+      </div>
+      <!----------------- Bank Info  -------------------->
+      <div *ngSwitchCase="'bankInfo'">
+        <div class="common-template">
+          <div class="common-template-item">
+            <div class="common-template-item-name">Routing</div>
+            <div class="common-template-item-value">{{ data.routing }}</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Account</div>
+            <div class="common-template-item-value d-flex">
+              <p>{{ accountText ? accountText : hiddenPassword(data.account, 4) }}</p>
+              <svg-icon
+                (click)="showHideValue(data.account)"
+                class="hidden-svg-eye"
+                src="{{
+                  isAccountVisible
+                    ? 'assets/img/svgs/settings-company/settings-eye-visible.svg'
+                    : 'assets/img/svgs/settings-company/settings-eye-hidden.svg'
+                }}"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!----------------- Dutty Location  -------------------->
+      <div *ngSwitchCase="'duttyLocation'">
+        <div class="duttyLocation">Wait Design</div>
+      </div>
+      <!----------------- Cards  -------------------->
+      <div *ngSwitchCase="'cards'">
+        <div class="common-template">
+          <div class="common-template-item">
+            <div class="common-template-item-name">TWIC Exp.</div>
+            <div class="common-template-item-value">{{ data.twicExp }}</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Fuel Card</div>
+            <div class="common-template-item-value">{{ data.fuelCard }}</div>
+          </div>
+        </div>
+      </div>
+      <!----------------- Emergency Contact  -------------------->
+      <div *ngSwitchCase="'emergencyContact'">
+        <div class="common-template">
+          <div class="common-template-item">
+            <div class="common-template-item-name">Brother</div>
+            <div class="common-template-item-value">{{ data.brother }}</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Phone</div>
+            <div class="common-template-item-value">{{ data.phone }}</div>
+          </div>
+        </div>
+      </div>
+      <!----------------- Note  -------------------->
+      <div *ngSwitchCase="'note'">
+        <div class="note">
+          <p class="note-item">{{ data }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="hasLine"
+    class="driver-card-line"
+    [ngClass]="{ 'line-mt': !isCardOpen }"
+  ></div>
+</div>
