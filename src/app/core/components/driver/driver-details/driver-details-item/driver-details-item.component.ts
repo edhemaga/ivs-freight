@@ -3,14 +3,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
-  NgZone,
   OnDestroy,
   OnInit,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import moment from 'moment';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { driver_details_animation } from '../driver-details.animation';
 
 @Component({
@@ -23,16 +22,17 @@ import { driver_details_animation } from '../driver-details.animation';
 })
 export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-
   @Input() data: any = null;
 
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private _ngZone: NgZone) {}
+  constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.data);
+  }
 
-  public onAction(data: { template: string; action: string }) {
+  public onButtonAction(data: { template: string; action: string }) {
     switch (data.template) {
       case 'cdl': {
         if (data.action === 'attachments') {
@@ -47,27 +47,27 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  public triggerResize() {
-    // Wait for changes to be applied, then trigger textarea resize.
-    this._ngZone.onStable
-      .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(() => this.autosize.resizeToFitContent(true));
-  }
-
-  public onShowDetails(cdl: any) {
-    cdl.showDetails = !cdl.showDetails;
+  public onShowDetails(componentData: any) {
+    componentData.showDetails = !componentData.showDetails;
   }
 
   public formatDate(date: string) {
     return moment(date).format('MM/DD/YY');
   }
 
-  public formatTextPreview(endorsement: any, type: boolean) {
+  public formatText(data: any, type: boolean, numOfCharacters: string) {
     if (!type) {
-      return endorsement.map((data) => data.endorsementName?.charAt(0));
+      return data.map((item) =>
+        item.endorsementName?.substring(0, numOfCharacters)
+      );
     }
-    console.log(endorsement.map((data) => data.endorsementName))
-    return endorsement.map((data) => data.endorsementName);
+    return data.map(
+      (item) =>
+        `<span class='first-character'>${item.endorsementName?.substring(
+          0,
+          numOfCharacters
+        )}</span>` + item.endorsementName.substring(numOfCharacters)
+    );
   }
 
   public identity(index: number, item: any): number {
