@@ -13,9 +13,17 @@
         [countHeight]="'24px'"
         [countWidth]="'24px'"
       ></app-ta-counter>
-      <p class="driver-card-header-name" [ngClass]="{'header-name-ml': cardCount}">{{ cardName }}</p>
+      <p
+        class="driver-card-header-name"
+        [ngClass]="{ 'header-name-ml': cardCount }"
+      >
+        {{ cardName }}
+      </p>
 
-      <svg-icon *ngIf="cardImg" src="assets/img/svgs/driver/ic_driver-bank.svg"></svg-icon>
+      <svg-icon
+        *ngIf="cardImg"
+        src="assets/img/svgs/driver/ic_driver-bank.svg"
+      ></svg-icon>
     </div>
 
     <svg-icon
@@ -31,6 +39,7 @@
     [ngClass]="{ 'no-line': !hasLine }"
   >
     <div [ngSwitch]="cardTemplate">
+      <!----------------- Assigned To  -------------------->
       <div *ngSwitchCase="'assignedTo'">
         <div class="assignTo">
           <div class="assignTo-item">
@@ -49,6 +58,7 @@
           </div>
         </div>
       </div>
+      <!----------------- Additional Info  -------------------->
       <div *ngSwitchCase="'additionalInfo'">
         <div class="common-template">
           <div class="common-template-item">
@@ -69,6 +79,7 @@
           </div>
         </div>
       </div>
+      <!----------------- Employment History  -------------------->
       <div *ngSwitchCase="'employmentHistory'">
         <div class="employmentHistory">Wait Backend</div>
       </div>
@@ -84,6 +95,7 @@
           </div>
         </div>
       </div>
+      <!----------------- Bank Info  -------------------->
       <div *ngSwitchCase="'bankInfo'">
         <div class="common-template">
           <div class="common-template-item">
@@ -96,11 +108,11 @@
           </div>
         </div>
       </div>
+      <!----------------- Dutty Location  -------------------->
       <div *ngSwitchCase="'duttyLocation'">
-        <div class="duttyLocation">
-          Wait Design
-        </div>
+        <div class="duttyLocation">Wait Design</div>
       </div>
+      <!----------------- Cards  -------------------->
       <div *ngSwitchCase="'cards'">
         <div class="common-template">
           <div class="common-template-item">
@@ -113,6 +125,7 @@
           </div>
         </div>
       </div>
+      <!----------------- Emergency Contact  -------------------->
       <div *ngSwitchCase="'emergencyContact'">
         <div class="common-template">
           <div class="common-template-item">
@@ -125,6 +138,7 @@
           </div>
         </div>
       </div>
+      <!----------------- Note  -------------------->
       <div *ngSwitchCase="'note'">
         <div class="note">
           <p class="note-item">{{ data }}</p>

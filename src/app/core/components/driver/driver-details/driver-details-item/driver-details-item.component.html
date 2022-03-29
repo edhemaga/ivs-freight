@@ -24,6 +24,7 @@
         <svg-icon
           class="driver-toolbar-button"
           src="assets/img/svgs/driver/ic_driver-plus.svg"
+          (click)="onModalAction()"
         ></svg-icon>
       </div>
     </div>
@@ -238,8 +239,8 @@
               <p class="driver-item-name">Expiration</p>
               <div class="driver-details-progress-container">
                 <app-truckassist-progress-expiration
-                  [expireDate]="formatDate(cdl.endDate)"
-                  [startDate]="formatDate(cdl.startDate)"
+                  [expireDate]="'04/04/25'"
+                  [startDate]="formatDate(cdl.endDate)"
                   [expiresSettings]="'details'"
                 ></app-truckassist-progress-expiration>
               </div>
@@ -350,7 +351,7 @@
               <p class="driver-item-name">Expiration</p>
               <div class="driver-details-progress-container">
                 <app-truckassist-progress-expiration
-                  [expireDate]="formatDate(medical.startDate)"
+                  [expireDate]="'04/04/25'"
                   [startDate]="formatDate(medical.startDate)"
                   [expiresSettings]="'details'"
                 ></app-truckassist-progress-expiration>
@@ -400,7 +401,7 @@
               <p class="driver-item-name">Expiration</p>
               <div class="driver-details-progress-container">
                 <app-truckassist-progress-expiration
-                  [expireDate]="formatDate(mvr.startDate)"
+                  [expireDate]="'04/04/25'"
                   [startDate]="formatDate(mvr.startDate)"
                   [expiresSettings]="'details'"
                 ></app-truckassist-progress-expiration>

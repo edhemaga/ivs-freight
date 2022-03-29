@@ -10,7 +10,12 @@ import {
 } from '@angular/core';
 import moment from 'moment';
 import { Subject } from 'rxjs';
+import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { driver_details_animation } from '../driver-details.animation';
+import { DriverCdlModalComponent } from '../driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from '../driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from '../driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from '../driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 
 @Component({
   selector: 'app-driver-details-item',
@@ -26,10 +31,60 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor() {}
+  constructor(private customModalService: CustomModalService) {}
 
   ngOnInit() {
     console.log(this.data);
+  }
+
+  public onModalAction() {
+    console.log(this.data.template)
+    const data = {
+      type: 'new',
+      vehicle: 'truck',
+    };
+
+    switch (this.data.template) {
+      case 'cdl': {
+        this.customModalService.openModal(
+          DriverCdlModalComponent,
+          { data },
+          null,
+          { size: 'small' }
+        );
+        break;
+      }
+      case 'drugAlcohol': {
+        this.customModalService.openModal(
+          DriverDrugAlcoholModalComponent,
+          { data },
+          null,
+          { size: 'small' }
+        );
+        break;
+      }
+      case 'medical': {
+        this.customModalService.openModal(
+          DriverMedicalModalComponent,
+          { data },
+          null,
+          { size: 'small' }
+        );
+        break;
+      }
+      case 'mvr': {
+        this.customModalService.openModal(
+          DriverMvrModalComponent,
+          { data },
+          null,
+          { size: 'small' }
+        );
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   public onButtonAction(data: { template: string; action: string }) {
