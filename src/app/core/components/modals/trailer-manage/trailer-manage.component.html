@@ -1,7 +1,7 @@
 <div cdkDrag class="modal-container">
   <div cdkDragHandle class="modal-header">
     <div class="d-flex align-items-center">
-    <h5 class="modal-title">{{ modalTitle }}</h5>
+      <h5 class="modal-title">{{ modalTitle }}</h5>
     </div>
     <svg-icon
       (click)="activeModal.dismiss('Modal close')"
@@ -130,7 +130,7 @@
                 </span>
                 </ng-template>
               </ng-select>
-              <app-required-label [control]="trailerForm.controls.make"></app-required-label>
+              <!-- <app-required-label [control]="trailerForm.controls.make"></app-required-label> -->
             </div>
           </div>
         </div>
@@ -214,32 +214,47 @@
           </div>
         </div>
 
-        <div *ngIf="!companyOwnedStateControl" class="mb-0">
-          <div class="row">
-            <div class="col-12">
-              <div class="form-label-group">
-                <ng-select
-                  (change)="changeOwner($event)"
-                  (clear)="onClose($event)"
-                  (close)="onClose($event)"
-                  (search)="onSearch($event)"
-                  [items]="owners"
-                  [searchFn]="customSearch"
-                  appendTo="body"
-                  bindLabel="ownerName"
-                  class="required-field has-add-new{{ (ownerSearchItems == 1) ? ' has-one-result' : '' }}"
-                  formControlName="owner"
-                  placeholder="Owner"
-                >
-                  <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
-                    <span [class]="{ 'd-none': !item.divisionFlag }">DC - </span>
-                    <span [ngOptionHighlight]="search">{{ item.ownerName }}</span>
-                  </ng-template>
-                </ng-select>
-                <app-required-label [control]="trailerForm.controls.owner"></app-required-label>
-              </div>
-            </div>
+
+        <div class="divider">
+        </div>
+
+        <div class="td-content set-center">
+          <div class="checkbox-holder">
+            <input
+              class="table-checkbox"
+              id="checkbox"
+              type="checkbox"
+              (change)="checkShareBox()"
+            />
+            <label class="table-checkbox-label" for="checkbox"></label>
+
+            <span class="checkbox-label-wrapper">Company Owned</span>
           </div>
+        </div>
+        <div class="form-label-group" *ngIf="!shareCheckBoxVisible" [ngClass]="inputText ? 'typing' : 'not-typing'">
+
+            <div class="form-label-group input-icon input-holder trailer-holder">
+              <ng-select
+
+                [items]="owners"
+                [searchFn]="customSearch"
+                appendTo="body"
+                bindLabel="ownerName"
+                class="form-control input-control required"
+                formControlName="owner"
+                placeholder="Owner"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <span [class]="{ 'd-none': !item.divisionFlag }">DC - </span>
+                  <span [ngOptionHighlight]="search">{{ item.ownerName }}</span>
+                </ng-template>
+              </ng-select>
+
+
+            </div>
+
+        </div>
+        <div class="divider">
         </div>
 
 
@@ -282,24 +297,24 @@
               />
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
-              <label  for="axises">Axles</label>
+              <label for="axises">Axles</label>
               <app-required-label [control]="trailerForm.controls.axises"></app-required-label>
             </div>
           </div>
           <div class="col-6">
-          <div class="form-label-group">
-            <ng-select
-              [items]="suspension"
-              appendTo="body"
-              bindLabel="value"
-              formControlName="suspension"
-              placeholder="Suspension"
-            >
-              <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
-                <span [ngOptionHighlight]="search">{{ item.value }}</span>
-              </ng-template>
-            </ng-select>
-          </div>
+            <div class="form-label-group">
+              <ng-select
+                [items]="suspension"
+                appendTo="body"
+                bindLabel="value"
+                formControlName="suspension"
+                placeholder="Suspension"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <span [ngOptionHighlight]="search">{{ item.value }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
           </div>
 
           <div class="col-4">
@@ -318,7 +333,7 @@
             </div>
           </div>
         </div>
-          <div class="row">
+        <div class="row">
           <div class="col-6">
             <div class="form-label-group">
               <ng-select
@@ -334,21 +349,21 @@
               </ng-select>
             </div>
           </div>
-            <div class="col-6">
-              <div class="form-label-group">
-                <ng-select
-                  [items]="mileage"
-                  appendTo="body"
-                  bindLabel="value"
-                  formControlName="mileage"
-                  placeholder="Mileage"
-                >
-                  <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
-                    <span [ngOptionHighlight]="search">{{ item.value }}</span>
-                  </ng-template>
-                </ng-select>
-              </div>
+          <div class="col-6">
+            <div class="form-label-group">
+              <ng-select
+                [items]="mileage"
+                appendTo="body"
+                bindLabel="value"
+                formControlName="mileage"
+                placeholder="Mileage"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <span [ngOptionHighlight]="search">{{ item.value }}</span>
+                </ng-template>
+              </ng-select>
             </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-5">
@@ -369,30 +384,25 @@
         </div>
 
 
-
-
-
-
-
-          <div *ngIf="f.type.value?.name === 'Reefer'" class="col-5">
-            <div class="form-label-group">
-              <ng-select
-                [items]="reeferUnits"
-                appInputFocus
-                appendTo="body"
-                bindLabel="name"
-                formControlName="reeferUnit"
-                placeholder="Reefer unit"
-              >
-                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
-                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
-                </ng-template>
-              </ng-select>
-              <app-required-label
-                [control]="trailerForm.controls.reeferUnit"
-              ></app-required-label>
-            </div>
+        <div *ngIf="f.type.value?.name === 'Reefer'" class="col-5">
+          <div class="form-label-group">
+            <ng-select
+              [items]="reeferUnits"
+              appInputFocus
+              appendTo="body"
+              bindLabel="name"
+              formControlName="reeferUnit"
+              placeholder="Reefer unit"
+            >
+              <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                <span [ngOptionHighlight]="search">{{ item.name }}</span>
+              </ng-template>
+            </ng-select>
+            <app-required-label
+              [control]="trailerForm.controls.reeferUnit"
+            ></app-required-label>
           </div>
+        </div>
 
       </div>
     </form>

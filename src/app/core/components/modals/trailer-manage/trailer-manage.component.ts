@@ -69,6 +69,7 @@ export class TrailerManageComponent implements OnInit {
   private destroy$: Subject<void> = new Subject<void>();
 
   inputText: false;
+  shareCheckBoxVisible: boolean;
 
   constructor(
     private metadataService: MetaDataService,
@@ -715,5 +716,7 @@ export class TrailerManageComponent implements OnInit {
     this.inputText = x.key;
     x.key === 'Backspace' && !this.trailerForm.get(x.currentTarget.id).value ? this.inputText = false : this.inputText = x.key;
   }
-
+  checkShareBox() {
+    this.shareCheckBoxVisible = !this.shareCheckBoxVisible;
+  }
 }

@@ -135,6 +135,7 @@
       </div>
       <div class="divider">
       </div>
+
       <div class="td-content set-center">
         <div class="checkbox-holder">
           <input
@@ -145,7 +146,7 @@
           />
           <label class="table-checkbox-label" for="checkbox"></label>
 
-          <span class="note-label-wrapper">Share Contact</span>
+          <span class="contact-label-wrapper">Share Contact</span>
         </div>
       </div>
         <div class="form-label-group" *ngIf="shareContactVisible" [ngClass]="inputText ? 'typing' : 'not-typing'">
@@ -153,11 +154,11 @@
                      appendTo="body"
                      bindLabel="department"
                      bindValue="departmentId"
-                     formControlName="departmentId"
-                     placeholder="All Departments">
+
+                     >
             <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
               <span [ngStyle]="{ department: item.department }">{{ item.department }}</span>
-              <svg-icon class="down-icon" src="assets/img/svgs/down-arrow.svg"></svg-icon>
+
             </ng-template>
           </ng-select>
         </div>

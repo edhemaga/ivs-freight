@@ -44,7 +44,7 @@
               >
               <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
               </div>
-              <label  class="required-label" for="businessName">Business name</label>
+              <label class="required-label" for="businessName">Business name</label>
             </div>
           </div>
           <div class="col-3">
@@ -295,6 +295,32 @@
                 number</label>
               <app-required-label *ngIf="bankInfoRequired"
                                   [control]="ownerForm.controls.routingNumber"></app-required-label>
+            </div>
+          </div>
+        </div>
+        <div class="divider">
+        </div>
+
+
+        <div class="row">
+          <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
+            <div (click)="openNote()" class="note-label-wrapper">
+              <span class="note-label">Note</span>
+              <svg-icon
+                class="down-icon"
+                src="assets/img/svgs/down-arrow.svg"
+              ></svg-icon>
+            </div>
+            <div class="example-full-width note-input{{ showNote ? ' note-visible' : ' note-hidden' }}">
+              <textarea
+                #note
+                cdkAutosizeMaxRows="5"
+                cdkAutosizeMinRows="2"
+                cdkTextareaAutosize
+                class="input-custom-textarea form-textarea"
+                formControlName="note"
+                placeholder="Write a note."
+              ></textarea>
             </div>
           </div>
         </div>
@@ -580,6 +606,32 @@
                 number</label>
               <app-required-label *ngIf="bankInfoRequired"
                                   [control]="ownerForm.controls.routingNumber"></app-required-label>
+            </div>
+          </div>
+        </div>
+        <div class="divider">
+        </div>
+
+
+        <div class="row">
+          <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
+            <div (click)="openNote()" class="note-label-wrapper">
+              <span class="note-label">Note</span>
+              <svg-icon
+                class="down-icon"
+                src="assets/img/svgs/down-arrow.svg"
+              ></svg-icon>
+            </div>
+            <div class="example-full-width note-input{{ showNote ? ' note-visible' : ' note-hidden' }}">
+              <textarea
+                #note
+                cdkAutosizeMaxRows="5"
+                cdkAutosizeMinRows="2"
+                cdkTextareaAutosize
+                class="input-custom-textarea form-textarea"
+                formControlName="note"
+                placeholder="Write a note."
+              ></textarea>
             </div>
           </div>
         </div>

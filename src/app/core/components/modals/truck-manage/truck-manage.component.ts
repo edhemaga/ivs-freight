@@ -78,6 +78,7 @@ export class TruckManageComponent implements OnInit {
   grossWeight: any;
   private destroy$: Subject<void> = new Subject<void>();
   inputText: false;
+  shareContactVisible: boolean;
 
   constructor(
     private metadataService: MetaDataService,
@@ -775,6 +776,8 @@ export class TruckManageComponent implements OnInit {
     return this.shared.manageInputValidation(formElement);
   }
 
-
+  checkShareContact() {
+    this.shareContactVisible = !this.shareContactVisible;
+  }
 
 }

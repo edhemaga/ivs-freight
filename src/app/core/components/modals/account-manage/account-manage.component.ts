@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NotificationService} from 'src/app/core/services/notification/notification.service';
@@ -13,6 +13,7 @@ import {checkSelectedText, emailChack, pasteCheck} from 'src/assets/utils/method
   selector: 'app-account-manage',
   templateUrl: './account-manage.component.html',
   styleUrls: ['./account-manage.component.scss'],
+
 })
 export class AccountManageComponent implements OnInit {
 

@@ -254,30 +254,24 @@
         </div>
 
         <div class="mb-0">
-          <div class="td-content set-center"
-            >
-            <input
-              class="table-checkbox"
-              id="checkbox"
-              type="checkbox"
-            />
-            <svg-icon
-              [src]="'../../../../../assets/svg/truckassist-table/check-new.svg'"
-              [svgStyle]="{ 'width.px': '14', 'height.px': '14' }"
-            ></svg-icon>
-            <label class="table-checkbox-label" for="checkbox">
-              <span class="note-label-wrapper">Company Owned</span>
-            </label>
+          <div class="td-content set-center">
+            <div class="checkbox-holder">
+              <input
+                class="table-checkbox"
+                id="checkbox"
+                type="checkbox"
+                (change)="checkShareContact()"
+              />
+              <label class="table-checkbox-label" for="checkbox"></label>
 
+              <span class="note-label-wrapper">Company Owned</span>
+            </div>
           </div>
-          <div class="row">
+          <div class="row" *ngIf="!shareContactVisible" >
             <div class="col-6">
-              <div class="form-label-group input-icon input-holder">
+              <div class="form-label-group input-icon input-holder" >
                 <ng-select
-                  (change)="changeOwner($event)"
-                  (clear)="onClose($event)"
-                  (close)="onClose($event)"
-                  (search)="onSearch($event)"
+
                   [items]="owners"
                   [searchFn]="customSearch"
                   appendTo="body"
@@ -294,7 +288,7 @@
 
               </div>
             </div>
-            <div *ngIf="!division" class="col-6 slider-wrapper">
+            <div  class="col-6 slider-wrapper"  >
               <div class="comission-label-wrapper">
                 <label class="note-label">Commission</label>
               </div>
