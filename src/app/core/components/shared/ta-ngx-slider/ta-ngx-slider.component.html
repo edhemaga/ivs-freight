@@ -18,4 +18,11 @@
       ></ngx-slider>
     </div>
   </div>
+  <div *ngSwitchCase="'hos-change'">
+    <ngx-slider
+        [options]="sliderOptions"
+        [(value)]="startedValue"
+        (userChangeEnd)="getValue($event)"
+      ></ngx-slider>
+  </div>
 </div>

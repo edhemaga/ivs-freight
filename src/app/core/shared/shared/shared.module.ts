@@ -67,6 +67,7 @@ import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
 import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counter.component';
 import { TaNgxSliderComponent } from '../../components/shared/ta-ngx-slider/ta-ngx-slider.component';
 import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta-logo-change.component';
+import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-icon-new.component';
 @NgModule({
   declarations: [
     AutoFocusDirective,
@@ -112,7 +113,8 @@ import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta
     DragDropFileDirective,
     TaCounterComponent,
     TaNgxSliderComponent,
-    TaLogoChangeComponent
+    TaLogoChangeComponent,
+    SvgIconNewComponent
   ],
   imports: [
     CommonModule,
@@ -204,7 +206,8 @@ import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta
     TaCounterComponent,
     NgxSliderModule,
     TaNgxSliderComponent,
-    TaLogoChangeComponent
+    TaLogoChangeComponent,
+    SvgIconNewComponent
   ],
   providers: [SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
