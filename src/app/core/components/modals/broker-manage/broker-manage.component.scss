@@ -136,6 +136,11 @@
   background-color: $bw1;
   color: $bw4;
 }
+.modal-footer{
+  justify-content: flex-end;
+  background: #fff;
+}
+
 
 .save-btn {
   background: $bw1;
@@ -157,7 +162,7 @@
     background: $bw1;
 
     p {
-      color: $bw4;
+      color: $bw5;
     }
 
     &:hover {
@@ -186,9 +191,7 @@
 
 
 .note-label-wrapper {
-  background-color: $bw1;
   font-weight: 600;
-  color: $bw4;
   margin: 0 -12px;
   padding: 0 12px;
   transition: 0.3s;

@@ -1,20 +1,14 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  EventEmitter,
-  Output,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { NavigationService } from '../services/navigation.service';
 
 @Component({
   selector: 'app-navigation-user-company',
   templateUrl: './navigation-user-company.component.html',
   styleUrls: ['./navigation-user-company.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationUserCompanyComponent {
-  @Output() onUserCompanyDetailsClose = new EventEmitter<{
-    type: boolean;
-    name: string;
-  }>();
+  @Input() isNavigationHoveredAndPanelOpen: boolean = false;
 
   public userCompanyDummyData: {}[] = [
     {
@@ -39,10 +33,16 @@ export class NavigationUserCompanyComponent {
     },
   ];
 
+  constructor(private navigationService: NavigationService) {}
+
   public onAction() {
-    this.onUserCompanyDetailsClose.emit({
-      type: false,
+    this.navigationService.onDropdownActivation({
       name: 'User Company Details',
+      type: false,
     });
+  }
+
+  public identity(index: number, item: any): number {
+    return item.id;
   }
 }

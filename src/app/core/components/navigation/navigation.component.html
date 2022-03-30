@@ -6,12 +6,12 @@
   <div class="navigation-top">
     <app-navigation-header
       [isNavigationHovered]="isNavigationHovered"
-      (onModalPanelOpenEvent)="onPanelEvent($event)"
     ></app-navigation-header>
 
     <app-navigation-modals
-      *ngIf="isModalPanelOpen && isNavigationHovered"
-      (onModalPanelCloseEvent)="onPanelEvent($event)"
+      [isNavigationHoveredAndPanelOpen]="
+        isModalPanelOpen && isNavigationHovered
+      "
     ></app-navigation-modals>
     <div
       class="wrapper-container"
@@ -24,7 +24,7 @@
       >
         <div
           class="navigation-routes"
-          *ngFor="let item of navigation; let ind = index; trackBy: identify"
+          *ngFor="let item of navigation; let ind = index; trackBy: identity"
           [ngClass]="{
             'new-magic-line-selected':
               item.isRouteActive ||
@@ -43,8 +43,13 @@
 
           <app-navigation-subroute-card
             *ngIf="item.arrow"
-            [isRouteActive]="item.isRouteActive"
-            [isNavigationHovered]="isNavigationHovered"
+            [isNavigationCardActive]="
+              item.isRouteActive &&
+              isNavigationHovered &&
+              !isModalPanelOpen &&
+              !isUserPanelOpen &&
+              !isUserCompanyDetailsOpen
+            "
             [contentHeight]="item.route.length"
           >
             <app-navigation-route
@@ -56,7 +61,13 @@
             </app-navigation-route>
 
             <app-navigation-subroute
-              *ngIf="isNavigationHovered && item.isRouteActive"
+              *ngIf="
+                isNavigationHovered &&
+                item.isRouteActive &&
+                !isModalPanelOpen &&
+                !isUserPanelOpen &&
+                !isUserCompanyDetailsOpen
+              "
               [subroute]="item"
               [isActiveSubroute]="isActiveSubroute"
               (onSubrouteActiveEvent)="onRouteEvent($event)"
@@ -81,24 +92,20 @@
 
   <div class="navigation-bottom" (mouseenter)="onHoveredRoutesContainer(false)">
     <app-navigation-footer
-      *ngIf="!isUserCompanyDetailsOpen"
-      [isNavigationHovered]="isNavigationHovered"
-      (onUserPanelOpenEvent)="onPanelEvent($event)"
+      [isNavigationHovered]="isNavigationHovered && !isUserCompanyDetailsOpen"
       (onActivateFooterRoutes)="onActivateFooterRoute($event)"
     ></app-navigation-footer>
 
     <app-navigation-user-profile
-      *ngIf="!isUserCompanyDetailsOpen"
-      [isNavigationHovered]="isNavigationHovered"
+      [isNavigationHovered]="isNavigationHovered && !isUserCompanyDetailsOpen"
       [isUserPanelOpen]="isUserPanelOpen"
-      (onUserPanelCloseEvent)="onPanelEvent($event)"
-      (onUserCompanyDetailsOpen)="onPanelEvent($event)"
     >
     </app-navigation-user-profile>
 
     <app-navigation-user-company
-      *ngIf="isUserCompanyDetailsOpen && isNavigationHovered"
-      (onUserCompanyDetailsClose)="onPanelEvent($event)"
+      [isNavigationHoveredAndPanelOpen]="
+        isUserCompanyDetailsOpen && isNavigationHovered
+      "
     ></app-navigation-user-company>
   </div>
 </div>

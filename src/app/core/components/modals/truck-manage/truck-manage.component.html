@@ -2,16 +2,7 @@
   <div cdkDragHandle class="modal-header">
     <div class="d-flex align-items-center">
       <h5 class="modal-title">{{ modalTitle }}</h5>
-      <div class="multiple-choises-wrapper">
-        <div class="wrap choice-wrapper">
-          <div class="btn-group btn-group-toggle">
-            <label class="btn-primary">
-              <input (change)="companyOwned()" [(ngModel)]="companyOwnedStateControl" type="checkbox"/>
-              Company owned
-            </label>
-          </div>
-        </div>
-      </div>
+
     </div>
     <svg-icon
       (click)="activeModal.dismiss('Modal close')"
@@ -19,6 +10,8 @@
       class="modal-close-btn cursor-pointer"
       src="assets/img/svgs/table/close.svg"
     ></svg-icon>
+  </div>
+  <div class="divider">
   </div>
   <div class="modal-body">
     <!-- <app-loading-modal *ngIf="!loaded"></app-loading-modal> -->
@@ -76,13 +69,16 @@
             </div>
           </div>
           <div class="col-9">
-            <div class="form-label-group">
+            <div class="form-label-group input-icon input-holder" [ngClass]="inputText ? 'typing' : 'not-typing'">
               <ng-select
+
                 (change)="onTruckTypeChange($event)"
                 [items]="truckTypes"
+                (keyup)="onKeyUpMethod($event)"
+                appAutoFocus
                 appendTo="body"
                 bindLabel="name"
-                class="no-padding-dropdown required-field"
+                class="form-control input-control required"
                 formControlName="type"
                 id="truck-type-dropdown"
                 placeholder="Type"
@@ -96,12 +92,12 @@
                   </div>
                 </ng-template>
 
-                <ng-template let-item="item" ng-label-tmp>
-                  <div class="value-label-container truck-type-dropdown-item {{ item.class }}">
+                <ng-template let-item="item" ng-label-tmp >
+                  <div class="value-label-container truck-type-dropdown-item required-label{{ item.class }}">
                     <span class="type-image">
                       <svg-icon src="assets/img/svgs/truck/gray-icons/{{ item.file }}"></svg-icon>
                     </span>
-                    <span>{{ item.name }}</span>
+                    <span >{{ item.name }}</span>
                   </div>
                 </ng-template>
 
@@ -140,7 +136,7 @@
             </div>
           </div>
           <div class="col-6">
-            <div class="form-label-group">
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder">
               <ng-select
                 [items]="truckMakers"
                 appendTo="body"
@@ -149,17 +145,25 @@
                 formControlName="make"
                 placeholder="Make"
               >
-                <ng-template let-item="item" ng-option-tmp>
-                  <span class="make-image">
-                    <svg-icon src="assets/img/svgs/truck/makers/{{ item.file }}"></svg-icon>
-                  </span>
-                </ng-template>
+                <svg-icon
+                  class="valid-icon"
+                  src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
+                >
+                </svg-icon>
 
-                <ng-template let-item="item" ng-label-tmp>
-                  <span class="value-label-container make-image">
-                    <svg-icon src="assets/img/svgs/truck/makers/{{ item.file }}"></svg-icon>
-                  </span>
-                </ng-template>
+                <svg-icon
+                  class="x-invalid-icon"
+                  src="../../../../../assets/img/form-validation/x-icon-light-red.svg"
+                >
+                </svg-icon>
+
+                <svg-icon
+                  (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                  placement="bottom-left"
+                  src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+                ></svg-icon>
+
+                <label class="required-label" for="model">Make</label>
               </ng-select>
             </div>
           </div>
@@ -200,7 +204,7 @@
                 src="../../../../../assets/img/form-validation/x-icon-cut.svg"
               ></svg-icon>
 
-              <label for="model">Model</label>
+              <label class="required-label" for="model">Model</label>
             </div>
           </div>
           <div class="col-2">
@@ -246,33 +250,46 @@
 
           </div>
         </div>
+        <div class="divider">
+        </div>
 
-        <div *ngIf="!companyOwnedStateControl" class="mb-0">
-          <div class="row">
-            <div class="col-12">
-              <div class="form-label-group">
+        <div class="mb-0">
+          <div class="td-content set-center">
+            <div class="checkbox-holder">
+              <input
+                class="table-checkbox"
+                id="checkbox"
+                type="checkbox"
+                (change)="checkShareContact()"
+              />
+              <label class="table-checkbox-label" for="checkbox"></label>
+
+              <span class="note-label-wrapper">Company Owned</span>
+            </div>
+          </div>
+          <div class="row" *ngIf="!shareContactVisible" >
+            <div class="col-6">
+              <div class="form-label-group input-icon input-holder" >
                 <ng-select
-                  (change)="changeOwner($event)"
-                  (clear)="onClose($event)"
-                  (close)="onClose($event)"
-                  (search)="onSearch($event)"
+
                   [items]="owners"
                   [searchFn]="customSearch"
                   appendTo="body"
                   bindLabel="ownerName"
-                  class="required-field has-add-new{{ (ownerSearchItems == 1) ? ' has-one-result' : '' }}"
+                  class="form-control input-control required"
                   formControlName="owner"
                   placeholder="Owner"
-                >
+                  >
                   <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
                     <span [class]="{ 'd-none': !item.divisionFlag }">DC - </span>
                     <span [ngOptionHighlight]="search">{{ item.ownerName }}</span>
                   </ng-template>
                 </ng-select>
+
               </div>
             </div>
-            <div *ngIf="!division" class="col-12 slider-wrapper truck-slider-wrapper">
-              <div class="note-label-wrapper">
+            <div  class="col-6 slider-wrapper"  >
+              <div class="comission-label-wrapper">
                 <label class="note-label">Commission</label>
               </div>
               <ngx-slider
@@ -282,6 +299,8 @@
               ></ngx-slider>
             </div>
           </div>
+        </div>
+        <div class="divider">
         </div>
         <div class="row">
           <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
@@ -321,6 +340,7 @@
               </ng-select>
               <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
                 <span [ngOptionHighlight]="search">{{ item.value }}</span>
+                <svg-icon class="down-icon" src="assets/img/svgs/down-arrow.svg"></svg-icon>
               </ng-template>
             </div>
           </div>
@@ -450,9 +470,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button class="cancel-btn">
-      <p class="m-0" (click)="closeModal()">Cancel</p>
-    </button>
+
     <button (click)="saveTruck()" [ngClass]="{'invalid-btn' : !truckForm.valid}" class="save-btn">
       <p class="m-0">Save</p>
     </button>

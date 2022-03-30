@@ -68,6 +68,89 @@ table {
               }
             }
 
+            // OOS COLUMN
+            .oos-container {
+              width: 92px;
+              height: 28px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              div {
+                width: 28px;
+                height: 28px;
+                border-radius: 2px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                font-weight: 900;
+                color: #dadada;
+              }
+
+              .oos-active {
+                background: #5673aa !important;
+                color: white !important;
+              }
+            }
+
+            // CITATION COLUMN
+            .citation-table {
+              width: 36px;
+              height: 24px;
+              background-repeat: no-repeat;
+              background-position: center;
+              background-image: url("../../../../../../assets/svg/truckassist-table/citation-icon.svg");
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-size: 16px;
+              font-weight: 400;
+              color: white;
+            }
+
+            .citation-table-active {
+              font-weight: 800;
+            }
+
+            // LVL COLUMN
+            .lvl-container {
+              width: fit-content;
+              height: 19px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              color: #919191;
+              font-size: 16px;
+              font-weight: 400;
+            }
+
+            // VIOLATION STATE COLUMN 
+            .violation-state-container{
+              width: fit-content;
+              height: 28px;
+              font-size: 16px;
+              font-weight: bold;
+              color: #919191;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+
+            // VL COLUMN
+            .active-vl-count,
+            .zero-vl-count {
+              color: #919191;
+              font-size: 16px;
+            }
+
+            .active-vl-count {
+              font-weight: bold;
+            }
+
+            .zero-vl-count {
+              font-weight: 400;
+            }
+
             // AVATAR COLUMN
             .avatar-container {
               width: 20px;
@@ -115,6 +198,46 @@ table {
               &::selection {
                 color: #b7b7b7;
                 background: rgba(145, 145, 145, 0.2);
+              }
+            }
+
+            // USER AVATAR COLUMN
+            .user-avatar-container {
+              cursor: pointer;
+              width: 20px;
+              height: 20px;
+              margin-right: 6px;
+              display: flex;
+
+              &:hover {
+                transform: scale(1.8);
+                transition: 0.2s;
+              }
+
+              .avatar {
+                user-select: none;
+                width: 20px;
+                height: 20px;
+                border-radius: 50px;
+              }
+            }
+
+            // USER STATUS COLUMN
+            .user-status-container {
+              width: 64px;
+              height: 20px;
+              border-radius: 2px;
+              background: #b7b7b720;
+              color: #b7b7b7;
+              font-size: 12px;
+              font-weight: bold;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              &::selection {
+                color: #b7b7b7;
+                background: #b7b7b720;
               }
             }
 
@@ -178,6 +301,72 @@ table {
 
             .table-text-state {
               font-weight: bold;
+            }
+
+            // SEMI BOLD TEXT COLUMN
+            .semi-bold-table-text {
+              font-size: 14px;
+              font-weight: 600;
+              color: #b7b7b7;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              width: 100%;
+
+              &::selection {
+                color: #b7b7b7;
+                background: rgba(145, 145, 145, 0.2);
+              }
+            }
+
+            // PICKUP COLUMN
+            .pickup-and-delivery-container {
+              display: flex;
+
+              .picup-count,
+              .delivery-count {
+                width: 22px;
+                height: 22px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 2px;
+                font-size: 14px;
+                font-weight: bold;
+                margin-right: 6px;
+              }
+
+              .picup-count {
+                background: #e1f7f3;
+                color: #3bcbae;
+                &::selection {
+                  color: #3bcbae;
+                  background: #3bcbae20;
+                }
+              }
+
+              .delivery-count {
+                background: #ffe4e4;
+                color: #ff8080;
+                &::selection {
+                  color: #ff8080;
+                  background: #ff808020;
+                }
+              }
+
+              .loaction {
+                height: 100%;
+                width: fit-content;
+                display: flex;
+                align-self: center;
+                color: #b7b7b7;
+                font-size: 14px;
+                font-weight: 400;
+                &::selection {
+                  color: #b7b7b7;
+                  background: #b7b7b720;
+                }
+              }
             }
 
             // ATTACHMENTS COLUMN TEMPLATE
@@ -644,6 +833,10 @@ table {
     display: flex;
     justify-content: center;
     align-items: center;
+    &::selection {
+      color: #919191;
+      background: #91919120;
+    }
   }
 
   .showing {

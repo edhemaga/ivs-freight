@@ -1,12 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {DatePipe} from "@angular/common";
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Address} from "../../../model/address";
@@ -34,7 +26,7 @@ import {ClonerService} from "../../../services/cloner.service";
   providers: [DatePipe],
   encapsulation: ViewEncapsulation.None
 })
-export class DriverManageComponent implements OnInit, OnDestroy  {
+export class DriverManageComponent implements OnInit, OnDestroy {
 
   @ViewChild('note') note: ElementRef;
   @Input() inputData: any;
@@ -54,6 +46,7 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
   ownerFieldsRequired = false;
   isUserOwner = false;
   isTwicChecked = false;
+  shareCheckBoxVisible: boolean;
   soleActive = true;
   selectedTab = 1;
   public driverName: any;
@@ -150,7 +143,8 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
     private customModalService: CustomModalService,
     private datePipe: DatePipe,
     public clonerService: ClonerService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     if (this.inputData.data.type === 'edit') {
@@ -762,7 +756,7 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (resp: any) => {
-          if(resp) {
+          if (resp) {
             this.closeNewBank();
             this.getBanks(true);
           }
@@ -867,7 +861,7 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
     x.key === 'Backspace' && !this.driverForm.get(x.currentTarget.id).value ? this.inputText = false : this.inputText = x.key;
   }
 
- checkABA(s) {
+  checkABA(s) {
 
     let i, n, t;
 
@@ -888,9 +882,9 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
     // Now run through each digit and calculate the total.
     n = 0;
     for (i = 0; i < t.length; i += 3) {
-      n += parseInt(t.charAt(i),     10) * 3
-        +  parseInt(t.charAt(i + 1), 10) * 7
-        +  parseInt(t.charAt(i + 2), 10);
+      n += parseInt(t.charAt(i), 10) * 3
+        + parseInt(t.charAt(i + 1), 10) * 7
+        + parseInt(t.charAt(i + 2), 10);
     }
     // If the resulting sum is an even multiple of ten (but not zero),
     // the aba routing number is good.
@@ -924,4 +918,7 @@ export class DriverManageComponent implements OnInit, OnDestroy  {
       );
   }
 
+  checkShareBox() {
+    this.shareCheckBoxVisible = !this.shareCheckBoxVisible;
+  }
 }

@@ -16,6 +16,7 @@
       font-size: 12px;
       font-weight: $settings-font-bold;
       margin-top: 12px;
+      user-select: none;
 
       &:hover {
         transition: $settings-transition;

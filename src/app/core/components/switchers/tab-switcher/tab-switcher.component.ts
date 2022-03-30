@@ -16,7 +16,9 @@ export class TabSwitcherComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activeTab = this.tabs[0].id;
+    if(this.tabs) {
+      this.activeTab = this.tabs[0].id;
+    }
   }
 
   handleChange(event: any) {

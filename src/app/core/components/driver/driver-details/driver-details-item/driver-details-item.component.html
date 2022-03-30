@@ -1,0 +1,440 @@
+<div class="driver-component">
+  <div [ngSwitch]="data.template">
+    <!---------------------- GENERAL TEMPLATE HEADER ------------------>
+    <div *ngSwitchCase="'general'">
+      <div class="driver-toolbar-general">
+        <div class="driver-toolbar-dropdown">
+          <svg-icon
+            routerLink="/driver"
+            class="driver-toolbar-back"
+            src="assets/img/svgs/driver/ic_driver-backarrow.svg"
+          ></svg-icon>
+          <p>Driver Details - waiting dropdown...</p>
+        </div>
+        <svg-icon
+          class="driver-toolbar-horizarrow"
+          src="assets/img/svgs/driver/ic_driver-horizontal-dots.svg"
+        ></svg-icon>
+      </div>
+    </div>
+    <!---------------------- COMMON TEMPLATE HEADER ------------------>
+    <div *ngSwitchDefault>
+      <div class="driver-toolbar">
+        <p class="driver-toolbar-name">{{ data.name }}</p>
+        <svg-icon
+          class="driver-toolbar-button"
+          src="assets/img/svgs/driver/ic_driver-plus.svg"
+          (click)="onModalAction()"
+        ></svg-icon>
+      </div>
+    </div>
+  </div>
+  <div [ngSwitch]="data.template">
+    <!---------------------- GENERAL TEMPLATE ------------------>
+    <div *ngSwitchCase="'general'">
+      <div class="driver-body">
+        <div class="driver-switcher">
+          <svg-icon
+            class="driver-switcher-larrow"
+            src="assets/img/svgs/driver/ic_driver-left-arrow.svg"
+          ></svg-icon>
+          <p class="driver-switcher-name">{{ data.data.reasponse.fullName }}</p>
+          <svg-icon
+            class="driver-switcher-rarrow"
+            src="assets/img/svgs/driver/ic_driver-right-arrow.svg"
+          ></svg-icon>
+        </div>
+        <div class="driver-personal">
+          <div class="driver-avatar">
+            <img
+              class="driver-avatar-svg"
+              src="{{
+                data.data.reasponse.avatar
+                  ? data.data.reasponse.avatar
+                  : 'assets/img/svgs/driver/ic_driver-avatar.svg'
+              }}"
+              alt="Driver Image"
+            />
+            <svg-icon
+              class="driver-avatar-owner"
+              src="assets/img/svgs/driver/ic_driver-owner.svg"
+            ></svg-icon>
+          </div>
+          <div class="driver-information">
+            <div class="information-item">
+              <svg-icon
+                class="information-svg"
+                src="assets/img/svgs/driver/ic_driver-phone.svg"
+              ></svg-icon>
+              <p class="information-value">
+                {{ data.data.reasponse.additionalData?.phone }}
+              </p>
+            </div>
+            <div class="information-item information-item-email">
+              <svg-icon
+                class="information-svg"
+                src="assets/img/svgs/driver/ic_driver-email.svg"
+              ></svg-icon>
+              <p class="information-value information-email-value">
+                {{ data.data.reasponse.additionalData?.email }}
+              </p>
+            </div>
+            <div class="information-item information-email">
+              <svg-icon
+                class="information-svg information-address-svg"
+                src="assets/img/svgs/driver/ic_driver-address.svg"
+              ></svg-icon>
+              <p class="information-value">
+                {{ data.data.reasponse.additionalData?.address.address }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="driver-cards">
+        <!-- assignedTo -->
+        <app-driver-details-card
+          [cardTemplate]="'assignedTo'"
+          [cardName]="'Assigned to'"
+          [data]="data.data.assignedTo"
+        ></app-driver-details-card>
+        <!-- additionalInfo -->
+        <app-driver-details-card
+          [cardTemplate]="'additionalInfo'"
+          [cardName]="'Additional Info'"
+          [data]="data.data.additionalInfo"
+        ></app-driver-details-card>
+        <!-- employmentHistory -->
+        <app-driver-details-card
+          [cardTemplate]="'employmentHistory'"
+          [cardName]="'Employment History'"
+          [data]="data.data.additionalInfo"
+        ></app-driver-details-card>
+        <!-- commissionPay -->
+        <app-driver-details-card
+          [cardTemplate]="'commissionPay'"
+          [cardName]="'Commission Pay'"
+          [data]="data.data.reasponse"
+        ></app-driver-details-card>
+        <!-- bankInfo -->
+        <app-driver-details-card
+          [cardTemplate]="'bankInfo'"
+          [cardName]="'Bank Info'"
+          [cardImg]="true"
+          [data]="data.data.bankInfo"
+        ></app-driver-details-card>
+        <!-- duttyLocation -->
+        <app-driver-details-card
+          [cardTemplate]="'duttyLocation'"
+          [cardName]="'Off Duty Location'"
+          [cardCount]="'3'"
+          [data]="null"
+        ></app-driver-details-card>
+        <!-- cards -->
+        <app-driver-details-card
+          [cardTemplate]="'cards'"
+          [cardName]="'Cards'"
+          [data]="data.data.cards"
+        ></app-driver-details-card>
+        <!-- emergencyContact -->
+        <app-driver-details-card
+          [cardTemplate]="'emergencyContact'"
+          [cardName]="'Emergency Contact'"
+          [data]="data.data.emergencyContact"
+        ></app-driver-details-card>
+        <!-- note -->
+        <app-driver-details-card
+          [cardTemplate]="'note'"
+          [cardName]="'Note'"
+          [data]="data.data.note"
+          [hasLine]="false"
+        ></app-driver-details-card>
+      </div>
+    </div>
+    <!---------------------- CDL TEMPLATE ------------------>
+    <div *ngSwitchCase="'cdl'">
+      <div class="driver-body" *ngFor="let cdl of data.data; trackBy: identity">
+        <div class="driver-card-top">
+          <p class="driver-card-name">
+            {{ cdl.number }}
+          </p>
+          <div class="driver-card-buttons">
+            <svg-icon
+              class="driver-card-attachments"
+              src="assets/img/svgs/driver/ic_driver-attachments.svg"
+              (click)="
+                onButtonAction({ template: 'cdl', action: 'attachments' })
+              "
+            ></svg-icon>
+            <svg-icon
+              class="driver-card-note"
+              src="assets/img/svgs/driver/ic_driver-note.svg"
+              (click)="onButtonAction({ template: 'cdl', action: 'notes' })"
+            ></svg-icon>
+            <svg-icon
+              class="driver-card-dots"
+              src="assets/img/svgs/driver/ic_driver-dots.svg"
+              (click)="onButtonAction({ template: 'cdl', action: 'dots' })"
+            ></svg-icon>
+          </div>
+        </div>
+        <div class="driver-card-bottom">
+          <div class="driver-row-1">
+            <div class="driver-item">
+              <p class="driver-item-name">State</p>
+              <p class="driver-item-value">
+                {{ cdl.state.key }}
+              </p>
+            </div>
+            <div class="driver-item">
+              <p class="driver-item-name">Class</p>
+              <p class="driver-item-value">
+                {{ cdl.class.value }}
+              </p>
+            </div>
+            <div class="driver-item">
+              <p class="driver-item-name">Issued</p>
+              <p class="driver-item-value">04/04/04</p>
+            </div>
+          </div>
+          <div class="driver-row-2">
+            <div
+              class="driver-item"
+              [ngClass]="{ 'item-row-expanded': cdl.showDetails }"
+            >
+              <p class="driver-item-name">Restrictions</p>
+              <p
+                class="driver-item-value"
+                [ngClass]="{
+                  'break-word': cdl.showDetails,
+                  none: !cdl.restrictions
+                }"
+                [innerHtml]="
+                  formatText(cdl.restrictions, cdl.showDetails, 2)
+                    | renderMultipleItems: cdl.showDetails
+                "
+              ></p>
+            </div>
+            <div
+              class="driver-item"
+              [ngClass]="{ 'item-row-expanded': cdl.showDetails }"
+            >
+              <p class="driver-item-name">Endorsments</p>
+              <span
+                class="driver-item-value"
+                [ngClass]="{
+                  'break-word': cdl.showDetails,
+                  none: !cdl.restrictions
+                }"
+                [innerHtml]="
+                  formatText(cdl.endorsements, cdl.showDetails, 1)
+                    | renderMultipleItems: cdl.showDetails
+                "
+              >
+              </span>
+            </div>
+          </div>
+          <div class="driver-row-3">
+            <div class="driver-item">
+              <p class="driver-item-name">Expiration</p>
+              <div class="driver-details-progress-container">
+                <app-truckassist-progress-expiration
+                  [expireDate]="'04/04/25'"
+                  [startDate]="formatDate(cdl.endDate)"
+                  [expiresSettings]="'details'"
+                ></app-truckassist-progress-expiration>
+              </div>
+            </div>
+          </div>
+          <div
+            class="driver-hidden"
+            [@showHideDetails]="cdl.showDetails ? 'true' : 'false'"
+          >
+            <div class="driver-row-4">PDF</div>
+            <div class="driver-row-5">
+              <div class="driver-item">
+                <p class="driver-item-name">Note</p>
+                <p class="driver-item-value">
+                  <textarea
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"
+                    class="input-custom-textarea form-textarea"
+                    placeholder="Write something"
+                    style="margin: 0"
+                  ></textarea>
+                </p>
+              </div>
+            </div>
+          </div>
+          <a class="show-details" (click)="onShowDetails(cdl)">{{
+            cdl.showDetails ? "Hide Details" : "Show Details"
+          }}</a>
+        </div>
+      </div>
+    </div>
+    <!---------------------- DRUG & ALCOHOL TEMPLATE ------------------>
+    <div *ngSwitchCase="'drugAlcohol'">
+      <div class="driver-body">
+        <div class="driver-card-top">
+          <p class="driver-card-name">Drug Test</p>
+          <div class="driver-card-buttons">
+            <svg-icon
+              class="driver-card-attachments"
+              src="assets/img/svgs/driver/ic_driver-attachments.svg"
+              (click)="
+                onButtonAction({ template: 'cdl', action: 'attachments' })
+              "
+            ></svg-icon>
+            <svg-icon
+              class="driver-card-note"
+              src="assets/img/svgs/driver/ic_driver-note.svg"
+              (click)="onButtonAction({ template: 'cdl', action: 'notes' })"
+            ></svg-icon>
+            <svg-icon
+              class="driver-card-dots"
+              src="assets/img/svgs/driver/ic_driver-dots.svg"
+              (click)="onButtonAction({ template: 'cdl', action: 'dots' })"
+            ></svg-icon>
+          </div>
+        </div>
+        <div class="driver-card-bottom">
+          <div class="driver-row-6">
+            <div class="driver-item">
+              <p class="driver-item-name">Reason</p>
+              <p class="driver-item-value">Resonable suspicion</p>
+            </div>
+            <div class="driver-item">
+              <p class="driver-item-name">Issued</p>
+              <p class="driver-item-value">04/04/04</p>
+            </div>
+          </div>
+          <a class="show-details">Show Details</a>
+        </div>
+      </div>
+    </div>
+    <!---------------------- MEDICAL TEMPLATE ------------------>
+    <div *ngSwitchCase="'medical'">
+      <div
+        class="driver-body driver-body-v2"
+        *ngFor="let medical of data.data; trackBy: identity"
+      >
+        <div class="driver-card-top">
+          <div class="driver-expiration">
+            <p class="driver-expiration-name">Issued</p>
+            <p class="driver-expiration-value">04/04/04</p>
+          </div>
+          <div class="driver-card-buttons">
+            <svg-icon
+              class="driver-card-attachments"
+              src="assets/img/svgs/driver/ic_driver-attachments.svg"
+              (click)="
+                onButtonAction({ template: 'medical', action: 'attachments' })
+              "
+            ></svg-icon>
+            <svg-icon
+              class="driver-card-note"
+              src="assets/img/svgs/driver/ic_driver-note.svg"
+              (click)="onButtonAction({ template: 'medical', action: 'notes' })"
+            ></svg-icon>
+            <svg-icon
+              class="driver-card-dots"
+              src="assets/img/svgs/driver/ic_driver-dots.svg"
+              (click)="onButtonAction({ template: 'medical', action: 'dots' })"
+            ></svg-icon>
+          </div>
+        </div>
+        <div class="driver-card-bottom">
+          <div class="driver-row-3">
+            <div class="driver-item">
+              <p class="driver-item-name">Expiration</p>
+              <div class="driver-details-progress-container">
+                <app-truckassist-progress-expiration
+                  [expireDate]="'04/04/25'"
+                  [startDate]="formatDate(medical.startDate)"
+                  [expiresSettings]="'details'"
+                ></app-truckassist-progress-expiration>
+              </div>
+            </div>
+          </div>
+          <a class="show-details" (click)="onShowDetails(medical)">{{
+            medical.showDetails ? "Hide Details" : "Show Details"
+          }}</a>
+        </div>
+      </div>
+    </div>
+    <!---------------------- MVR TEMPLATE ------------------>
+    <div *ngSwitchCase="'mvr'">
+      <div
+        class="driver-body driver-body-v2"
+        *ngFor="let mvr of data.data; trackBy: identity"
+      >
+        <div class="driver-card-top">
+          <div class="driver-expiration">
+            <p class="driver-expiration-name">Issued</p>
+            <p class="driver-expiration-value">04/04/04</p>
+          </div>
+          <div class="driver-card-buttons">
+            <svg-icon
+              class="driver-card-attachments"
+              src="assets/img/svgs/driver/ic_driver-attachments.svg"
+              (click)="
+                onButtonAction({ template: 'mvr', action: 'attachments' })
+              "
+            ></svg-icon>
+            <svg-icon
+              class="driver-card-note"
+              src="assets/img/svgs/driver/ic_driver-note.svg"
+              (click)="onButtonAction({ template: 'mvr', action: 'notes' })"
+            ></svg-icon>
+            <svg-icon
+              class="driver-card-dots"
+              src="assets/img/svgs/driver/ic_driver-dots.svg"
+              (click)="onButtonAction({ template: 'mvr', action: 'dots' })"
+            ></svg-icon>
+          </div>
+        </div>
+        <div class="driver-card-bottom">
+          <div class="driver-row-3">
+            <div class="driver-item">
+              <p class="driver-item-name">Expiration</p>
+              <div class="driver-details-progress-container">
+                <app-truckassist-progress-expiration
+                  [expireDate]="'04/04/25'"
+                  [startDate]="formatDate(mvr.startDate)"
+                  [expiresSettings]="'details'"
+                ></app-truckassist-progress-expiration>
+              </div>
+            </div>
+          </div>
+          <div
+            class="driver-hidden"
+            [@showHideDetails]="mvr.showDetails ? 'true' : 'false'"
+          >
+            <div class="driver-row-7">PDF</div>
+            <div class="driver-row-5">
+              <div class="driver-item">
+                <p class="driver-item-name">Note</p>
+                <p class="driver-item-value">
+                  <textarea
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"
+                    class="input-custom-textarea form-textarea"
+                    placeholder="Write something"
+                    style="margin: 0"
+                  ></textarea>
+                </p>
+              </div>
+            </div>
+          </div>
+          <a class="show-details" (click)="onShowDetails(mvr)">{{
+            mvr.showDetails ? "Hide Details" : "Show Details"
+          }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

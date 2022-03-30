@@ -94,17 +94,19 @@ p {
     height: 100%;
     flex: 1;
     margin-right: 4px;
-    padding: 7px 12px;
+    padding: 6px 12px;
     color: $settings-gray;
     background-color: $settings-background;
     font-weight: $settings-font-extrabold;
     border-radius: $settings-borderRadius;
+    user-select: none;
   }
 
   // Multiple buttons (edit, delete)
   .settings-header-buttons {
     width: 68px;
     height: 100%;
+    user-select: none;
 
     .settings-plus-button {
       svg {

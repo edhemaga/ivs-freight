@@ -1,29 +1,85 @@
 import { Navigation, NavigationSubRoutes } from './model/navigation.model';
-import { Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { navigationData } from './model/navigation-data';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { NavigationService } from './services/navigation.service';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnInit, OnDestroy {
   public navigation: Navigation[] = navigationData;
 
   public isNavigationHovered: boolean = false;
+
   public isModalPanelOpen: boolean = false;
   public isUserPanelOpen: boolean = false;
+  public isUserCompanyDetailsOpen: boolean = false;
 
   private isActiveSubrouteIndex: number = -1;
   public isActiveSubroute: boolean = false;
   public activeSubrouteFleg: boolean = false;
 
   public isActiveFooterRoute: boolean = false;
-  public isUserCompanyDetailsOpen: boolean = false;
+
   public isActiveMagicLine: boolean = false;
 
-  constructor(private router: Router) {}
+  private destroy$: Subject<void> = new Subject<void>();
+
+  constructor(
+    private router: Router,
+    private navigationService: NavigationService
+  ) {}
+
+  ngOnInit(): void {
+    this.navigationService.navigationDropdownActivation$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        switch (data.name) {
+          case 'Modal Panel': {
+            if (data.type) {
+              this.isModalPanelOpen = data.type;
+              this.isUserPanelOpen = false;
+              this.isUserCompanyDetailsOpen = false;
+            } else {
+              this.isModalPanelOpen = data.type;
+            }
+            break;
+          }
+          case 'User Panel': {
+            if (data.type) {
+              this.isModalPanelOpen = false;
+              this.isUserPanelOpen = data.type;
+              this.isUserCompanyDetailsOpen = false;
+            } else {
+              this.isUserPanelOpen = data.type;
+            }
+            break;
+          }
+          case 'User Company Details': {
+            if (data.type) {
+              this.isModalPanelOpen = false;
+              this.isUserPanelOpen = false;
+              this.isUserCompanyDetailsOpen = data.type;
+            } else {
+              this.isUserCompanyDetailsOpen = data.type;
+            }
+            break;
+          }
+          default:
+            break;
+        }
+      });
+  }
 
   public onPanelEvent(panel: { type: boolean; name: string }) {
     switch (panel.name) {
@@ -49,6 +105,9 @@ export class NavigationComponent {
       (item) => item.id === subroute.routeId
     );
     this.onActivateFooterRoute(false);
+    this.isModalPanelOpen = false;
+    this.isUserPanelOpen = false;
+    this.isUserCompanyDetailsOpen = false;
 
     if (Array.isArray(subroute.routes)) {
       this.activationSubRoute(index, subroute);
@@ -147,7 +206,12 @@ export class NavigationComponent {
     return this.router.url.includes(route);
   }
 
-  public identify(index, item): number {
+  public identity(index, item): number {
     return item.id;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

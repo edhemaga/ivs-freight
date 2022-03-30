@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import { AutoFocusDirective } from "../../directives/auto-focus.directive";
 import { InputFocusDirective } from "../../directives/input-focus.directive";
 import { InputRestrictionDirective } from "../../directives/input-restriction.directive";
@@ -65,6 +65,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CroppieModule } from 'angular-croppie-module';
 import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
 import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counter.component';
+import {AccountManageComponent} from "../../components/modals/account-manage/account-manage.component";
 import { TaNgxSliderComponent } from '../../components/shared/ta-ngx-slider/ta-ngx-slider.component';
 import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta-logo-change.component';
 import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-icon-new.component';
@@ -114,6 +115,7 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
+    AccountManageComponent,
     SvgIconNewComponent
   ],
   imports: [
@@ -209,7 +211,7 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     TaLogoChangeComponent,
     SvgIconNewComponent
   ],
-  providers: [SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
+  providers: [DatePipe, SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {

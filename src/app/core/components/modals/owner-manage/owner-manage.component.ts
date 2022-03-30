@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {OwnerData} from "../../../model/owner";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Enums} from "../../../model/enums";
@@ -19,7 +19,7 @@ import {HttpErrorResponse} from "@angular/common/http";
   styleUrls: ['./owner-manage.component.scss']
 })
 export class OwnerManageComponent implements OnInit {
-
+  @ViewChild('note') note: ElementRef;
   @Input() inputData: any;
   public lang = 'en';
   public phoneList: any;
@@ -55,6 +55,7 @@ export class OwnerManageComponent implements OnInit {
     },
   ];
   loaded = false;
+  showNote = false;
   public isBusiness = true;
   public firstWords: boolean;
   public formatType = /^[!@#$%^&*()_+\[\]{};':"\\|,.<>\/?A-Za-z ]*$/;
@@ -69,7 +70,7 @@ export class OwnerManageComponent implements OnInit {
     private metaDataService: MetaDataService,
     private spinner: SpinnerService,
     private notification: NotificationService,
-    public  activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     //private ownerService: AppSharedService
   ) {
     this.initForm();
@@ -86,7 +87,7 @@ export class OwnerManageComponent implements OnInit {
   ngOnInit() {
     if (this.inputData.data.type === 'new') {
       this.ownerForm.get('type').setValue(this.tab.name);
-      this.modalTitle = 'New owner';
+      this.modalTitle = 'Add owner';
       this.tabChange(this.tab);
       this.loaded = true;
     } else if (this.inputData.data.type === 'edit') {
@@ -190,7 +191,7 @@ export class OwnerManageComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (resp: any) => {
-          if(resp) {
+          if (resp) {
             this.closeNewBank();
             this.getBanks(true);
           }
@@ -449,6 +450,7 @@ export class OwnerManageComponent implements OnInit {
       phone: [null],
       address: [null, Validators.required],
       addressUnit: '',
+      note: [''],
     });
     this.requiredBankInfo(false);
     setTimeout(() => {
@@ -753,5 +755,15 @@ export class OwnerManageComponent implements OnInit {
   public onKeyUpMethod(x) {
     this.inputText = x.key;
     x.key === 'Backspace' && !this.ownerForm.get(x.currentTarget.id).value ? this.inputText = false : this.inputText = x.key;
+  }
+  public openNote() {
+    if (this.showNote === true) {
+      this.showNote = false;
+    } else {
+      this.showNote = true;
+      setTimeout(() => {
+        this.note.nativeElement.focus();
+      }, 250);
+    }
   }
 }

@@ -1,12 +1,13 @@
 import { Component, ElementRef, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import { settings_card_animation } from '../settings-animation/settings-card.animation';
 
 @Component({
   selector: 'app-settings-card',
   templateUrl: './settings-card.component.html',
-  styleUrls: ['./settings-card.component.scss']
+  styleUrls: ['./settings-card.component.scss'],
+  animations: [settings_card_animation('openCloseBodyCard')]
 })
 export class SettingsCardComponent {
-  @ViewChild('cardBody') cardBodyRef: ElementRef;
   @Input() cardTemplate: string = null;
   @Input() cardName: string = null;
   @Input() cardCount: string = null;
@@ -31,19 +32,14 @@ export class SettingsCardComponent {
     let hiddenCharacter = '';
 
     for (let i = 0; i < numberOfCharacterToHide; i++) {
-      hiddenCharacter += '*';
+      hiddenCharacter += "*";
     }
     return hiddenCharacter + lastFourCharaters;
   }
 
   public showHideValue(value: string) {
     this.isAccountVisible = !this.isAccountVisible;
-    if (this.isAccountVisible) {
-      const timeout = setTimeout(() => {
-        this.cardBodyRef.nativeElement.focus();
-        clearTimeout(timeout);
-      }, 250);
-    }
+    
     if (!this.isAccountVisible) {
       this.accountText = this.hiddenPassword(value, 4);
       return;

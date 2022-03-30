@@ -1,0 +1,39 @@
+@import "../driver-details.component.scss";
+
+// Medical Template
+// MVR Template
+.driver-body-v2 {
+  grid-template-rows: 39px auto !important;
+
+  .driver-expiration {
+    display: flex;
+    flex-direction: column;
+
+    .driver-expiration-name {
+      font-size: $font-size12;
+      font-weight: $font-semibold;
+      color: $color-gray-dark;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .driver-expiration-value {
+      font-size: $font-size12;
+      color: $color-gray-dark;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+    }
+  }
+
+  .driver-card-buttons {
+    bottom: 9px !important;
+  }
+}

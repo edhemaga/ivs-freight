@@ -5,6 +5,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/authentication.guard';
 import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
+import { DriverResolver } from './core/components/driver/state/driver.resolver';
+
 const routes: Routes = [
   // Auth Routes
   {
@@ -46,11 +48,14 @@ const routes: Routes = [
       import('./core/components/driver/driver.module').then(
         (m) => m.DriverModule
       ),
+    canActivate: [AuthGuard],
+    resolve: { driver: DriverResolver },
   },
   {
     path: 'truck',
     loadChildren: () =>
       import('./core/components/truck/truck.module').then((m) => m.TruckModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'trailer',
@@ -58,6 +63,7 @@ const routes: Routes = [
       import('./core/components/trailer/trailer.module').then(
         (m) => m.TrailerModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'customer',
@@ -65,11 +71,13 @@ const routes: Routes = [
       import('./core/components/customer/customer.module').then(
         (m) => m.CustomerModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'load',
     loadChildren: () =>
       import('./core/components/load/load.module').then((m) => m.LoadModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'repair',
@@ -77,16 +85,19 @@ const routes: Routes = [
       import('./core/components/repair/repair.module').then(
         (m) => m.RepairModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'fuel',
     loadChildren: () =>
       import('./core/components/fuel/fuel.module').then((m) => m.FuelModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'owner',
     loadChildren: () =>
       import('./core/components/owner/owner.module').then((m) => m.OwnerModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'account',
@@ -94,6 +105,7 @@ const routes: Routes = [
       import('./core/components/account/account.module').then(
         (m) => m.AccountModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'contact',
@@ -101,6 +113,23 @@ const routes: Routes = [
       import('./core/components/contacts/contacts.module').then(
         (m) => m.ContactsModule
       ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'safety/violation',
+    loadChildren: () =>
+      import('./core/components/safety/violation/violation.module').then(
+        (m) => m.ViolationModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'safety/accident',
+    loadChildren: () =>
+      import('./core/components/safety/accident/accident.module').then(
+        (m) => m.AccidentModule
+      ),
+    canActivate: [AuthGuard],
   },
   {
     path: "catalog",

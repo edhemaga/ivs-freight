@@ -2,16 +2,6 @@
   <div cdkDragHandle class="modal-header">
     <div class="d-flex align-items-center">
       <h5 class="modal-title">{{ modalTitle }}</h5>
-      <div class="multiple-choises-wrapper">
-        <div class="wrap choice-wrapper">
-          <div class="btn-group btn-group-toggle">
-            <label class="btn-primary">
-              <input (change)="checkIsOwner()" [(ngModel)]="isUserOwner" type="checkbox"/>
-              Is Owner
-            </label>
-          </div>
-        </div>
-      </div>
     </div>
     <svg-icon
       (click)="activeModal.dismiss('Modal close')"
@@ -20,6 +10,9 @@
       src="assets/img/svgs/table/close.svg"
     ></svg-icon>
   </div>
+  <div class="divider">
+  </div>
+
   <div class="modal-body">
     <app-tab-switcher (switchClicked)="tabChange($event)" [tabs]="tabs"></app-tab-switcher>
     <!-- <app-loading-modal *ngIf="!loaded" class="large"></app-loading-modal> -->
@@ -41,7 +34,8 @@
       <div class="single-tab-container">
         <div class="row">
           <div class="col-6">
-            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder {{
+            <div [ngClass]="driverForm.get('firstName').dirty ? 'typing' : 'not-typing'"
+                 class="form-label-group input-icon input-holder {{
                       manageInputValidation(this.driverForm.controls.firstName)
                     }}">
               <input
@@ -83,7 +77,8 @@
             </div>
           </div>
           <div class="col-6">
-            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder {{
+            <div [ngClass]="driverForm.get('lastName').touched ? 'typing' : 'not-typing'"
+                 class="form-label-group input-icon input-holder {{
                       manageInputValidation(this.driverForm.controls.lastName)
                     }}">
               <input
@@ -100,12 +95,14 @@
               />
 
               <svg-icon
+                *ngIf="!driverForm.get('lastName').errors && driverForm.get('lastName').touched"
                 class="valid-icon"
                 src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
               >
               </svg-icon>
 
               <svg-icon
+                *ngIf="driverForm.get('lastName').errors && driverForm.get('lastName').touched"
                 class="x-invalid-icon"
                 src="../../../../../assets/img/form-validation/x-icon-light-red.svg"
               >
@@ -251,7 +248,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-3">
+          <div class="col-4">
             <div class="form-label-group input-icon input-holder {{
                       manageInputValidation(this.driverForm.controls.dateOfBirth)
                     }}">
@@ -268,7 +265,7 @@
             </div>
           </div>
 
-          <div class="col-3">
+          <div class="col-8">
             <div [ngClass]="inputText ? 'typing' : 'not-typing'"
                  class="form-label-group input-icon input-holder {{
                       manageInputValidation(this.driverForm.controls.ssn)
@@ -302,17 +299,23 @@
 
             </div>
           </div>
-          <div class="col-6">
-            <app-status-switcher
-              (switchClicked)="switchOwner($event)"
-              [data]="ownerSwitchData"
-            ></app-status-switcher>
+
+        </div>
+        <div class="td-content set-center">
+          <div class="checkbox-holder">
+            <input
+              class="table-checkbox"
+              id="checkbox"
+              type="checkbox"
+              (change)="checkShareBox()"
+            />
+            <label class="table-checkbox-label" for="checkbox"></label>
+
+            <span class="checkbox-name-label-wrapper">Owner</span>
           </div>
         </div>
-        <div
-          *ngIf="driverForm.controls.isBusinessOwner.value && driverForm.controls.isOwner.value"
-          class="row"
-        >
+
+        <div class="row">
           <div class="col-4">
             <div class="form-label-group">
               <input
@@ -398,112 +401,103 @@
 
       <!-- Srednji tab -->
       <div class="single-tab-container">
+          <div class="divider"></div>
         <div class="row">
-          <div class="col-12">
-              <div *ngIf="!newBankVisible" class="form-label-group">
-                <ng-select
-                  (change)="onBankChange($event)"
-                  (clear)="onClose($event)"
-                  (close)="onClose($event)"
-                  (search)="onSearch($event)"
-                  [items]="bankData"
-                  [searchFn]="customSearch"
-                  appendTo="body"
-                  bindLabel="bankName"
-                  class="bank-name-select has-add-new{{
+
+          <div class="td-content set-center">
+            <div class="checkbox-holder">
+              <input
+                class="table-checkbox"
+                type="checkbox"
+                (change)="checkShareBox()"
+              />
+              <label class="table-checkbox-label" for="checkbox"></label>
+
+              <span class="checkbox-name-label-wrapper">Owner</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-5">
+            <div *ngIf="!newBankVisible" class="form-label-group">
+              <ng-select
+                (change)="onBankChange($event)"
+                (clear)="onClose($event)"
+                (close)="onClose($event)"
+                (search)="onSearch($event)"
+                [items]="bankData"
+                [searchFn]="customSearch"
+                appendTo="body"
+                bindLabel="bankName"
+                class="bank-name-select has-add-new{{
                   bankSearchItems == 1 ? ' has-one-result' : ''
                 }}"
-                  formControlName="bankData"
-                  placeholder="Bank name"
-                >
-                  <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                formControlName="bankData"
+                placeholder="Bank name"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
                   <span *ngIf="item.bankLogo !== null" class="bank-image dropdown-image">
                     <svg-icon
                       src="assets/img/svgs/bank-logos/{{ item.bankLogoWide }}.svg"
                     ></svg-icon>
                   </span>
-                    <span *ngIf="item.bankLogo == null" [ngOptionHighlight]="search">{{
-                      item.bankName
-                      }}</span>
-                    <svg-icon
-                      (click)="deleteBank(item.id)"
-                      *ngIf="item.id !== 0 && item.protected !== null && item.protected !== 1"
-                      appTooltip="Delete"
-                      class="delete-record-icon"
-                      position="bottom-left"
-                      src="assets/img/trash.svg"
-                    ></svg-icon>
-                  </ng-template>
+                  <span *ngIf="item.bankLogo == null" [ngOptionHighlight]="search">{{
+                    item.bankName
+                    }}</span>
+                  <svg-icon
+                    (click)="deleteBank(item.id)"
+                    *ngIf="item.id !== 0 && item.protected !== null && item.protected !== 1"
+                    appTooltip="Delete"
+                    class="delete-record-icon"
+                    position="bottom-left"
+                    src="assets/img/trash.svg"
+                  ></svg-icon>
+                </ng-template>
 
-                  <ng-template let-item="item" ng-label-tmp>
+                <ng-template let-item="item" ng-label-tmp>
                   <span *ngIf="item.bankLogo !== null" class="value-label-container bank-image">
                     <svg-icon
                       src="assets/img/svgs/bank-logos/{{ item.bankLogoWide }}.svg"
                     ></svg-icon>
                   </span>
-                    <span *ngIf="item.bankLogo == null" class="value-label-container bank-image">
+                  <span *ngIf="item.bankLogo == null" class="value-label-container bank-image">
                     {{ item.bankName }}
                   </span>
-                  </ng-template>
-                </ng-select>
-              </div>
+                </ng-template>
+              </ng-select>
+            </div>
 
-              <div *ngIf="newBankVisible" class="add-new-form add-new-bank">
-                <div class="form-label-group">
-                  <input
-                    (keypress)="onBankKeyPress($event)"
-                    [(ngModel)]="newBank"
-                    [ngModelOptions]="{ standalone: true }"
-                    appInputFocus
-                    class="form-control input-control"
-                    id="newBank"
-                    placeholder="New bank"
-                  />
-                  <label for="newBank">New bank</label>
-                  <span
-                    (click)="saveNewBank()"
-                    *ngIf="newBank !== '' && newBank !== null"
-                    appTooltip="Save"
-                    class="save-new-record"
-                    position="bottom-right"
-                  >
-                  <svg-icon src="assets/img/svgs/add-save.svg"></svg-icon>
-                </span>
-                  <span
-                    (click)="closeNewBank()"
-                    appTooltip="Cancel"
-                    class="close-new-record"
-                    position="bottom-right"
-                  >
-                  <svg-icon src="assets/img/svgs/add-cancel.svg"></svg-icon>
-                </span>
-                </div>
-              </div>
-
-          </div>
-
-          <div class="row">
-            <div class="col-8">
+            <div *ngIf="newBankVisible" class="add-new-form add-new-bank">
               <div class="form-label-group">
                 <input
-                  (keyup)="onKeyUpMethod($event)"
-                  (paste)="onPaste($event, 'accountNumber')"
-                  class="form-control input-control{{ bankInfoRequired ? ' required' : '' }}"
-                  formControlName="accountNumber"
-                  id="accountNumber"
-                  maxlength="17"
-                  minlength="4"
-                  onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                  placeholder="Account number"
+                  (keypress)="onBankKeyPress($event)"
+                  [(ngModel)]="newBank"
+                  [ngModelOptions]="{ standalone: true }"
+                  appInputFocus
+                  class="form-control input-control"
+                  id="newBank"
+                  placeholder="New bank"
                 />
-                <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-                </div>
-                <label class="{{ bankInfoRequired ? 'required-label' : '' }}" for="accountNumber"
-                >Account number</label>
-
-                <p *ngIf="driverForm.get('accountNumber').errors && driverForm.get('accountNumber').touched"
-                   class="m-0 required-notice invalid-length">{{driverForm.get('accountNumber').errors | inputError}} </p>
-
+                <label for="newBank">New bank</label>
+                <span
+                  (click)="saveNewBank()"
+                  *ngIf="newBank !== '' && newBank !== null"
+                  appTooltip="Save"
+                  class="save-new-record"
+                  position="bottom-right"
+                >
+                  <svg-icon src="assets/img/svgs/add-save.svg"></svg-icon>
+                </span>
+                <span
+                  (click)="closeNewBank()"
+                  appTooltip="Cancel"
+                  class="close-new-record"
+                  position="bottom-right"
+                >
+                  <svg-icon src="assets/img/svgs/add-cancel.svg"></svg-icon>
+                </span>
               </div>
             </div>
             <div class="col-4">
@@ -526,6 +520,32 @@
                 >Routing number</label>
                 <p *ngIf="driverForm.get('routingNumber').errors && driverForm.get('routingNumber').touched"
                    class="m-0 required-notice invalid-length">{{driverForm.get('routingNumber').errors | inputError}} </p>
+
+              </div>
+            </div>
+
+
+
+            <div class="col-4">
+              <div class="form-label-group">
+                <input
+                  (keyup)="onKeyUpMethod($event)"
+                  (paste)="onPaste($event, 'accountNumber')"
+                  class="form-control input-control{{ bankInfoRequired ? ' required' : '' }}"
+                  formControlName="accountNumber"
+                  id="accountNumber"
+                  maxlength="17"
+                  minlength="4"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                  placeholder="Account number"
+                />
+                <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+                </div>
+                <label class="{{ bankInfoRequired ? 'required-label' : '' }}" for="accountNumber"
+                >Account number</label>
+
+                <p *ngIf="driverForm.get('accountNumber').errors && driverForm.get('accountNumber').touched"
+                   class="m-0 required-notice invalid-length">{{driverForm.get('accountNumber').errors | inputError}} </p>
 
               </div>
             </div>
@@ -694,9 +714,6 @@
   </div>
 
   <div class="modal-footer">
-    <button (click)="closeDriverEdit()" class="cancel-btn" type="button">
-      <p class="m-0">Cancel</p>
-    </button>
     <button (click)="saveDriver()" [ngClass]="{'invalid-btn' : !driverForm.valid}" class="save-btn" type="button">
       <p class="m-0">Save</p>
     </button>

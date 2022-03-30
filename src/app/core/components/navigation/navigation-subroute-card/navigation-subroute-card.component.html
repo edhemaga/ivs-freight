@@ -2,7 +2,7 @@
   <div class="parent">
     <div
       [style.height.px]="getDynamicHeight()"
-      [ngClass]="{ 'subroute-card': isRouteActive && isNavigationHovered }"
+      [ngClass]="{ 'subroute-card': isNavigationCardActive }"
     ></div>
   </div>
   <ng-content></ng-content>
