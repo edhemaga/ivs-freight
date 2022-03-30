@@ -205,7 +205,7 @@
             <div
               [ngClass]="{
                 'active-vl-count': row[column.field] > 0,
-                'zero-vl-count': row[column.field] <= 0
+                'zero-vl-count': !row[column.field]
               }"
             >
               {{ row[column.field] ? row[column.field] : "0" }}

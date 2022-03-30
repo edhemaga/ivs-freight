@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getViolationsColums } from 'src/assets/utils/settings/safety-columns';
 
 @Component({
@@ -7,7 +8,7 @@ import { getViolationsColums } from 'src/assets/utils/settings/safety-columns';
   templateUrl: './violation-table.component.html',
   styleUrls: ['./violation-table.component.scss'],
 })
-export class ViolationTableComponent implements OnInit {
+export class ViolationTableComponent implements OnInit, OnDestroy {
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -15,7 +16,7 @@ export class ViolationTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService) {}
+  constructor(private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -524,4 +525,6 @@ export class ViolationTableComponent implements OnInit {
       this.setViolationData(event.tabData);
     }
   }
+
+  ngOnDestroy(): void {}
 }
