@@ -133,7 +133,6 @@ import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta
     NgxSliderModule,
     DatePickerModule,
     GooglePlaceModule,
-    NgbModule,
     SortableModule,
     GridModule,
     PDFModule,

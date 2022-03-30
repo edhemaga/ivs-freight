@@ -48,6 +48,8 @@ export class RepairTableComponent implements OnInit {
         {
           title: 'Edit',
           name: 'edit',
+          class: 'regular-text',
+          contentType: 'edit',
         },
         {
           title: 'Delete',
@@ -56,6 +58,8 @@ export class RepairTableComponent implements OnInit {
           text: !this.selectedTab
             ? 'Are you sure you want to delete repair shop(s)?'
             : 'Are you sure you want to delete repair(s)',
+          class: 'delete-text',
+          contentType: 'delete',
         },
       ],
       export: true,

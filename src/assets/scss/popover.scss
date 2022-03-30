@@ -1,0 +1,143 @@
+// Table Dropdown Popup
+.table-dropdown-popover {
+  .popover-body {
+    .table-dropdown {
+      width: fit-content;
+      height: auto;
+      border-radius: 3px;
+      background: white;
+      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+      padding: 2px;
+
+      .table-dropdown-content {
+        cursor: pointer;
+        width: 100%;
+        min-width: 110px;
+        height: 26px;
+        border-radius: 2px;
+        display: flex;
+
+        .dropdown-content-icon,
+        .dropdown-content-text {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .dropdown-content-icon {
+          width: 26px;
+          height: 26px;
+
+          div {
+            background-repeat: no-repeat;
+            background-position: center;
+          }
+
+          // ICONS
+          .edit {
+            width: 16px;
+            height: 16px;
+            background-image: url("../../assets/png/table-dropdown/edit.png");
+          }
+
+          .add {
+            width: 14px;
+            height: 14px;
+            background-image: url("../../assets/png/table-dropdown/add.png");
+          }
+
+          .activate {
+            width: 16px;
+            height: 16px;
+            background-image: url("../../assets/png/table-dropdown/activate.png");
+            background-size: 16px 16px;
+          }
+
+          .reset {
+            width: 16px;
+            height: 16px;
+            background-image: url("../../assets/png/table-dropdown/reset.png");
+            background-size: 16px 16px;
+          }
+
+          .delete {
+            width: 14px;
+            height: 16px;
+            background-image: url("../../assets/png/table-dropdown/delete.png");
+          }
+        }
+
+        .dropdown-content-text {
+          font-size: 12px;
+          font-weight: 400;
+          padding-right: 4px;
+        }
+      }
+
+      .regular-text {
+        &:hover {
+          background: #f7f7f7;
+          transition: 0.25s;
+
+          .dropdown-content-text {
+            color: #919191;
+          }
+
+          .dropdown-content-icon {
+            // ICONS
+            .edit {
+              background-image: url("../../assets/png/table-dropdown/edit-hover.png") !important;
+            }
+
+            .add {
+              background-image: url("../../assets/png/table-dropdown/add-hover.png") !important;
+            }
+
+            .activate {
+              background-image: url("../../assets/png/table-dropdown/activate-hover.png") !important;
+            }
+
+            .reset {
+              background-image: url("../../assets/png/table-dropdown/reset-hover.png") !important;
+            }
+          }
+        }
+
+        .dropdown-content-text {
+          color: #b7b7b7;
+        }
+      }
+
+      .delete-text {
+        &:hover {
+          background: #f7f7f7;
+          transition: 0.25s;
+
+          .dropdown-content-text {
+            color: #ff5d5d;
+          }
+
+          .dropdown-content-icon {
+            // ICONS
+            .delete {
+              background-image: url("../../assets/png/table-dropdown/delete-hover.png") !important;
+            }
+          }
+        }
+
+        .dropdown-content-text {
+          color: #ff8d8d;
+        }
+      }
+    }
+  }
+}
+
+// Global
+.popover {
+  border: none !important;
+  .popover-body {
+    padding: 0 !important;
+    color: unset !important;
+  }
+}

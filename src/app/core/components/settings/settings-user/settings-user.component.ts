@@ -41,20 +41,28 @@ export class SettingsUserComponent implements OnInit {
         {
           title: 'Edit',
           name: 'edit',
+          class: 'regular-text',
+          contentType: 'edit',
         },
         {
           title: 'Reset Password',
           name: 'reset-password',
+          class: 'regular-text',
+          contentType: 'reset',
         },
         {
           title: 'Deactivate',
           name: 'deactivate',
+          class: 'regular-text',
+          contentType: 'activate',
         },
         {
           title: 'Delete',
           name: 'delete',
           type: 'users',
           text: 'Are you sure you want to delete user(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
         },
       ],
       export: true,

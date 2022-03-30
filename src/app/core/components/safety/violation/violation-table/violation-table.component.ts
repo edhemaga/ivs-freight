@@ -42,12 +42,16 @@ export class ViolationTableComponent implements OnInit, OnDestroy {
         {
           title: 'Edit',
           name: 'edit-violation',
+          class: 'regular-text',
+          contentType: 'edit',
         },
         {
           title: 'Delete',
           name: 'delete',
           type: 'violations',
           text: 'Are you sure you want to delete violation?',
+          class: 'delete-text',
+          contentType: 'delete',
         },
       ],
       export: true,

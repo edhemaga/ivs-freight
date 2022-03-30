@@ -44,6 +44,8 @@ export class CustomerTableComponent implements OnInit {
         {
           title: 'Edit',
           name: 'edit-cutomer-or-shipper',
+          class: 'regular-text',
+          contentType: 'edit',
         },
         {
           title: 'Delete',
@@ -53,6 +55,8 @@ export class CustomerTableComponent implements OnInit {
             this.selectedTab === 'active'
               ? 'Are you sure you want to delete customer(s)?'
               : 'Are you sure you want to delete shipper(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
         },
       ],
       export: true,
