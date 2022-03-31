@@ -9,6 +9,8 @@ import { TruckassistProgressExpirationModule } from '../truckassist-progress-exp
 import { GetExpireDataPipe } from 'src/app/core/pipes/get-expire-data.pipe';
 import { TableDropdownComponent } from '../table-dropdown/table-dropdown.component';
 import { TruckassistReveiwModule } from '../truckassist-reveiw/truckassist-reveiw.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaNoteModule } from '../ta-note/ta-note.module';
 
 @NgModule({
   declarations: [
@@ -16,14 +18,16 @@ import { TruckassistReveiwModule } from '../truckassist-reveiw/truckassist-revei
     TruckassistTableHeadComponent,
     TruckassistTableToolbarComponent,
     GetExpireDataPipe,
-    TableDropdownComponent,
+    TableDropdownComponent
   ],
   imports: [
     CommonModule,
     TruckassistSearchModule,
     AngularSvgIconModule,
     TruckassistProgressExpirationModule,
-    TruckassistReveiwModule
+    TruckassistReveiwModule,
+    NgbModule,
+    TaNoteModule
   ],
   exports: [
     TruckassistTableBodyComponent,

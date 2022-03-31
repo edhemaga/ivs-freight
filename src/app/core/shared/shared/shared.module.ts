@@ -41,7 +41,6 @@ import { EditProfileComponent } from "../../components/modals/edit-profile/edit-
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 import { TaNoteContainerComponent } from '../../components/shared/ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from '../../components/shared/delete-dialog/delete-dialog.component';
-import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 import { TaSelectComponent } from '../../components/shared/ta-select/ta-select.component';
 import { TaStatusSelectComponent } from '../../components/shared/ta-status-select/ta-status-select.component';
 import { TaStatusSwitchComponent } from '../../components/shared/ta-status-switch/ta-status-switch.component';
@@ -80,7 +79,6 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     MapControlComponent,
     DriverManageComponent,
     SortPipe,
-    SafeHtmlPipe,
     StatusPipePipe,
     HighlightSearchPipe,
     NameInitialsPipe,
@@ -135,7 +133,6 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     NgxSliderModule,
     DatePickerModule,
     GooglePlaceModule,
-    NgbModule,
     SortableModule,
     GridModule,
     PDFModule,
@@ -171,7 +168,6 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     NgbModule,
     GooglePlaceModule,
     SortPipe,
-    SafeHtmlPipe,
     StatusPipePipe,
     HighlightSearchPipe,
     NameInitialsPipe,
@@ -211,7 +207,7 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     TaLogoChangeComponent,
     SvgIconNewComponent
   ],
-  providers: [DatePipe, SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
+  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {

@@ -5,7 +5,20 @@
   margin-top: 22px;
   user-select: none;
 
-  /* TABS */
+  // LIST NAME
+  .list-name{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: 32px;
+    color: #919191;
+    font-size: 26px;
+    font-weight: 900;
+    margin-right: 12px;
+  }
+
+  // TABS
   .tab-container {
     display: flex;
     background: #ffffff;
@@ -51,7 +64,7 @@
     }
   }
 
-  /* VIEW MODE SELECT */
+  // VIEW MODE SELECT
   .view-mode-container {
     width: fit-content;
     height: 32px;
@@ -80,7 +93,7 @@
     }
   }
 
-  /* TABLE ACTIONS */
+  // TABLE ACTIONS
   .table-actions {
     height: 32px;
     background: white;
@@ -106,7 +119,7 @@
     }
   }
 
-  /* LOCATION FILTER */ /* OPEN MODAL BUTTON */
+  // LOCATION FILTER AND OPEN MODAL BUTTON
   .location-filter-container,
   .modal-open-container {
     width: 32px;
