@@ -1,13 +1,68 @@
 <div class="files-container">
-  <div class="files-preview" *ngIf="files.length">
+  <!------------- Single PDF, DOCUMENT file template --------------->
+  <div
+    class="file-preview"
+    *ngIf="['single-pdf', 'single-document'].includes(fileType) && files.length"
+  >
     <app-ta-file
       *ngFor="let file of files; trackBy: identity"
       [file]="file"
       [customClassName]="customClassName"
+      (fileActionEmitter)="onFileActionEvent($event)"
     ></app-ta-file>
   </div>
 
-  <!-- Image DropZone .jpg, .png, .gif -->
+  <!------------- Multiple PDF, DOCUMENT file template ------------->
+  <div
+    class="files-preview"
+    *ngIf="
+      ['multiple-pdf', 'multiple-document'].includes(fileType) && files.length
+    "
+  >
+    <!-- Counter For Multiple Files -->
+    <p class="files-count">{{ files.length }} Attachments</p>
+
+    <!-- File Rendering -->
+    <div class="carousel-files">
+      <div
+        class="carousel-slide"
+        *ngFor="let file of files; let ind = index; trackBy: identity"
+      >
+        <app-ta-file
+          *ngIf="ind === currentSlide"
+          [file]="file"
+          [customClassName]="customClassName"
+          (fileActionEmitter)="onFileActionEvent($event)"
+        ></app-ta-file>
+      </div>
+    </div>
+
+    <!-- Carousel Button Tabs -->
+
+    <div class="carousel-tabs-control">
+      <div
+        *ngFor="let item of files; let ind = index; trackBy: identity"
+        class="carousel-tab"
+        [ngClass]="{ 'active-tab': currentSlide === ind }"
+      ></div>
+    </div>
+
+    <!-- Carousel Buttons Left & Right -->
+    <svg-icon
+      class="carousel-buttons-control prev"
+      src="assets/img/image-upload/ic_carousel-leftarrow.svg"
+      (click)="onPreviousClick()"
+    ></svg-icon>
+    <svg-icon
+      class="carousel-buttons-control next"
+      src="assets/img/image-upload/ic_carousel-rightarrow.svg"
+      (click)="onNextClick()"
+    ></svg-icon>
+  </div>
+
+  <!-------------------------- DROPZONES -------------------------->
+
+  <!-- Image DropZone .jpg, .jpeg, .png, .gif -->
   <div
     *ngIf="
       ['single-image', 'multiple-image'].includes(fileType) && !files.length

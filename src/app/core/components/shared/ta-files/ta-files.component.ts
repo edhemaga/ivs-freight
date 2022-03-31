@@ -4,7 +4,6 @@ import {
   Component,
   Input,
 } from '@angular/core';
-
 @Component({
   selector: 'app-ta-files',
   templateUrl: './ta-files.component.html',
@@ -16,7 +15,9 @@ export class TaFilesComponent {
 
   // Convention: name-component or page - single/multiple - type of upload (pdf, image, document)
   // example: driver-details-single-pdf
-  @Input() customClassName: string = null;  
+  @Input() customClassName: string = null;
+
+  public currentSlide = 0;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
@@ -82,6 +83,33 @@ export class TaFilesComponent {
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
+  }
+
+  public onFileActionEvent(fileAction: any) {
+    switch (fileAction.action) {
+      case 'delete': {
+        const indexFile = this.files.findIndex(
+          (file) => file.fileName === fileAction.fileName
+        );
+        if (indexFile !== -1) {
+          this.files.splice(indexFile, 1);
+        }
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public onPreviousClick() {
+    const previous = this.currentSlide - 1;
+    this.currentSlide = previous < 0 ? this.files.length - 1 : previous;
+  }
+
+  public onNextClick() {
+    const next = this.currentSlide + 1;
+    this.currentSlide = next === this.files.length ? 0 : next;
   }
 
   // TruckBy ngFor files changes
