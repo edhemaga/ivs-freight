@@ -1,0 +1,375 @@
+[
+    {
+        "path": "assets/img/arrows/ft-arrow.svg",
+        "name": "ft-arrow.svg"
+    },
+    {
+        "path": "assets/img/arrows/drop-arrow.svg",
+        "name": "drop-arrow.svg"
+    },
+    {
+        "path": "assets/img/signs/plus.svg",
+        "name": "plus.svg"
+    },
+    {
+        "path": "assets/img/signs/info.svg",
+        "name": "info.svg"
+    },
+    {
+        "path": "assets/img/dashboard/truck.svg",
+        "name": "truck.svg"
+    },
+    {
+        "path": "assets/img/dashboard/crush-truck.svg",
+        "name": "crush-truck.svg"
+    },
+    {
+        "path": "assets/img/dashboard/hos-complain.svg",
+        "name": "hos-complain.svg"
+    },
+    {
+        "path": "assets/img/dashboard/vecihle-repear.svg",
+        "name": "vecihle-repear.svg"
+    },
+    {
+        "path": "assets/img/dashboard/sals-alc.svg",
+        "name": "sals-alc.svg"
+    },
+    {
+        "path": "assets/img/dashboard/hazmat.svg",
+        "name": "hazmat.svg"
+    },
+    {
+        "path": "assets/img/dashboard/drivers-licence.svg",
+        "name": "drivers-licence.svg"
+    },
+    {
+        "path": "assets/img/dashboard/caution.svg",
+        "name": "caution.svg"
+    },
+    {
+        "path": "assets/img/signs/search.svg",
+        "name": "search.svg"
+    },
+    {
+        "path": "assets/img/signs/star.svg",
+        "name": "star.svg"
+    },
+    {
+        "path": "assets/img/signs/settings.svg",
+        "name": "settings.svg"
+    },
+    {
+        "path": "assets/img/form-icons/address/address-default.svg",
+        "name": "address-default.svg"
+    },
+    {
+        "path": "assets/img/form-icons/address/address-focus.svg",
+        "name": "address-focus.svg"
+    },
+    {
+        "path": "assets/img/form-icons/address/address-invalid.svg",
+        "name": "address-invalid.svg"
+    },
+    {
+        "path": "assets/img/form-icons/address/address-valid.svg",
+        "name": "address-valid.svg"
+    },
+
+    {
+        "path": "assets/img/form-icons/card/card-default.svg",
+        "name": "card-default.svg"
+    },
+    {
+        "path": "assets/img/form-icons/card/card-focus.svg",
+        "name": "card-focus.svg"
+    },
+    {
+        "path": "assets/img/form-icons/card/card-invalid.svg",
+        "name": "card-invalid.svg"
+    },
+    {
+        "path": "assets/img/form-icons/card/card-valid.svg",
+        "name": "card-valid.svg"
+    },
+
+    {
+        "path": "assets/img/form-icons/fax/fax-default.svg",
+        "name": "fax-default.svg"
+    },
+    {
+        "path": "assets/img/form-icons/fax/fax-focus.svg",
+        "name": "fax-focus.svg"
+    },
+    {
+        "path": "assets/img/form-icons/fax/fax-invalid.svg",
+        "name": "fax-invalid.svg"
+    },
+    {
+        "path": "assets/img/form-icons/fax/fax-valid.svg",
+        "name": "fax-valid.svg"
+    },
+    
+    {
+        "path": "assets/img/form-icons/link/link-default.svg",
+        "name": "link-default.svg"
+    },
+    {
+        "path": "assets/img/form-icons/link/link-focus.svg",
+        "name": "link-focus.svg"
+    },
+    {
+        "path": "assets/img/form-icons/link/link-invalid.svg",
+        "name": "link-invalid.svg"
+    },
+    {
+        "path": "assets/img/form-icons/link/link-valid.svg",
+        "name": "link-valid.svg"
+    },
+    {
+        "path": "assets/img/form-icons/mail/mail-default.svg",
+        "name": "mail-default.svg"
+    },
+    {
+        "path": "assets/img/form-icons/mail/mail-focus.svg",
+        "name": "mail-focus.svg"
+    },
+    {
+        "path": "assets/img/form-icons/mail/mail-invalid.svg",
+        "name": "mail-invalid.svg"
+    },
+    {
+        "path": "assets/img/form-icons/mail/mail-valid.svg",
+        "name": "mail-valid.svg"
+    },
+    {
+        "path": "assets/img/form-icons/password/focus-password.svg",
+        "name": "focus-password.svg"
+    },
+    {
+        "path": "assets/img/form-icons/password/key.svg",
+        "name": "key.svg"
+    },
+    {
+        "path": "assets/img/form-validation/address-focus-white.svg",
+        "name": "address-focus-white.svg"
+    },
+    {
+        "path": "assets/img/form-validation/calendar-focused-white.svg",
+        "name": "calendar-focused-white.svg"
+    },
+    {
+        "path": "assets/img/form-validation/check-icon.svg",
+        "name": "check-icon.svg"
+    },
+    {
+        "path": "assets/img/form-validation/mail-icon-default.svg",
+        "name": "mail-icon-default.svg"
+    },
+    {
+        "path": "assets/img/form-validation/password-icon-blue-hover.svg",
+        "name": "password-icon-blue-hover.svg"
+    },
+    {
+        "path": "assets/img/form-validation/phone-icon-default.svg",
+        "name": "phone-icon-default.svg"
+    },
+    {
+        "path": "assets/img/form-validation/x-icon.svg",
+        "name": "x-icon.svg"
+    },
+    {
+        "path": "assets/img/form-validation/x-icon-cut.svg",
+        "name": "x-icon-cut.svg"
+    },
+    {
+        "path": "assets/img/form-validation/x-icon-light-red.svg",
+        "name": "x-icon-light-red.svg"
+    },
+    {
+        "path": "assets/img/image-upload/box.svg",
+        "name": "box.svg"
+    },
+    {
+        "path": "assets/img/image-upload/cloud-large.svg",
+        "name": "cloud-large.svg"
+    },
+    {
+        "path": "assets/img/image-upload/files-box.svg",
+        "name": "files-box.svg"
+    },
+    {
+        "path": "assets/img/image-upload/ic_dropbox-container.svg",
+        "name": "ic_dropbox-container.svg"
+    },
+    {
+        "path": "assets/img/image-upload/icon-doc.svg",
+        "name": "icon-doc.svg"
+    },
+    {
+        "path": "assets/img/image-upload/icon-jpg.svg",
+        "name": "icon-jpg.svg"
+    },
+    {
+        "path": "assets/img/image-upload/icon-pdf.svg",
+        "name": "icon-pdf.svg"
+    },
+    {
+        "path": "assets/img/image-upload/icon-png.svg",
+        "name": "icon-png.svg"
+    },
+    {
+        "path": "assets/img/image-upload/large-gear.svg",
+        "name": "large-gear.svg"
+    },
+    {
+        "path": "assets/img/image-upload/left-cloud-up-1.svg",
+        "name": "left-cloud-up-1.svg"
+    },
+    {
+        "path": "assets/img/image-upload/left-cloud-up-2.svg",
+        "name": "left-cloud-up-2.svg"
+    },
+    {
+        "path": "assets/img/image-upload/line-up-1.svg",
+        "name": "line-up-1.svg"
+    },
+    {
+        "path": "assets/img/image-upload/line-up-2.svg",
+        "name": "line-up-2.svg"
+    },
+    {
+        "path": "assets/img/image-upload/right-cloud.svg",
+        "name": "right-cloud.svg"
+    },
+    {
+        "path": "assets/img/image-upload/small-gear.svg",
+        "name": "small-gear.svg"
+    },
+    {
+        "path": "assets/img/logo/logo-new.svg",
+        "name": "logo-new.svg"
+    },
+    {
+        "path": "assets/img/logo/sign-in-logo.svg",
+        "name": "sign-in-logo.svg"
+    },
+    {
+        "path": "assets/img/logo/truck-assist-logo-icon.svg",
+        "name": "truck-assist-logo-icon.svg"
+    },
+    {
+        "path": "assets/img/shared/dispatchboard-close-new.svg",
+        "name": "dispatchboard-close-new.svg"
+    },
+    {
+        "path": "assets/img/shared/hos_active_hours.svg",
+        "name": "hos_active_hours.svg"
+    },
+    {
+        "path": "assets/img/shared/hos_innactive_hours.svg",
+        "name": "hos_innactive_hours.svg"
+    },
+    {
+        "path": "assets/img/shared/italic.svg",
+        "name": "italic.svg"
+    },
+    {
+        "path": "assets/img/shared/note_b.svg",
+        "name": "note_b.svg"
+    },
+    {
+        "path": "assets/img/shared/note_small_check.svg",
+        "name": "note_small_check.svg"
+    },
+    {
+        "path": "assets/img/shared/note_small_close.svg",
+        "name": "note_small_close.svg"
+    },
+    {
+        "path": "assets/img/shared/phone-email-switch.svg",
+        "name": "phone-email-switch.svg"
+    },
+    {
+        "path": "assets/img/shared/underline.svg",
+        "name": "underline.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_1.svg",
+        "name": "svg_num_1.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_2.svg",
+        "name": "svg_num_2.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_3.svg",
+        "name": "svg_num_3.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_4.svg",
+        "name": "svg_num_4.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_5.svg",
+        "name": "svg_num_5.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_6.svg",
+        "name": "svg_num_6.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_7.svg",
+        "name": "svg_num_7.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_8.svg",
+        "name": "svg_num_8.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_9.svg",
+        "name": "svg_num_9.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_box_1.svg",
+        "name": "svg_num_box_1.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_box_2.svg",
+        "name": "svg_num_box_2.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_box_3.svg",
+        "name": "svg_num_box_3.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_box_4.svg",
+        "name": "svg_num_box_4.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_box_5.svg",
+        "name": "svg_num_box_5.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_box_6.svg",
+        "name": "svg_num_box_6.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_box_7.svg",
+        "name": "svg_num_box_7.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_box_8.svg",
+        "name": "svg_num_box_8.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_box_9.svg",
+        "name": "svg_num_box_9.svg"
+    },
+    {
+        "path": "assets/img/svg_numbers/svg_num_over.svg",
+        "name": "svg_num_over.svg"
+    }
+]
+
+

@@ -26,6 +26,7 @@ import { NavigationSubrouteComponent } from './core/components/navigation/naviga
 import { NavigationSubrouteCardComponent } from './core/components/navigation/navigation-subroute-card/navigation-subroute-card.component';
 import { NavigationUserCompanyComponent } from './core/components/navigation/navigation-user-company/navigation-user-company.component';
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
+import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { NavigationHeaderComponent } from './core/components/navigation/navigati
     NavigationModalsComponent,
     NavigationUserProfileComponent,
     NavigationUserCompanyComponent,
+    SvgDefinitionsComponent,
   ],
   imports: [
     BrowserModule,

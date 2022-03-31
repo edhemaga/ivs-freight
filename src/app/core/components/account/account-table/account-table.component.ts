@@ -41,12 +41,16 @@ export class AccountTableComponent implements OnInit {
         {
           title: 'Edit',
           name: 'edit-account',
+          class: 'regular-text',
+          contentType: 'edit',
         },
         {
           title: 'Delete',
           name: 'delete-account',
           type: 'account',
           text: 'Are you sure you want to delete account(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
         },
       ],
       export: true,
@@ -96,11 +100,6 @@ export class AccountTableComponent implements OnInit {
       data.isSelected = false;
       return data;
     });
-
-    console.log('setAccountData');
-
-    console.log(this.viewData);
-    console.log(this.columns);
   }
 
   getDumyData(numberOfCopy: number) {

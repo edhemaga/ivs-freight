@@ -41,12 +41,16 @@ export class AccidentTableComponent implements OnInit {
         {
           title: 'Edit',
           name: 'edit-accident',
+          class: 'regular-text',
+          contentType: 'edit',
         },
         {
           title: 'Delete',
           name: 'delete',
           type: 'safety',
           text: 'Are you sure you want to delete accident?',
+          class: 'delete-text',
+          contentType: 'delete',
         },
       ],
       export: true,

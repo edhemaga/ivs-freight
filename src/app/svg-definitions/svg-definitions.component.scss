@@ -1,0 +1,23 @@
+.message{
+    text-align: center;
+    padding: 10px 0;
+    background-color: #cccccc;
+}
+.message ~ svg{
+    display: none;
+}
+
+.svg-wrap{
+    display: inline-block;
+    width: 20%;
+    padding: 20px;
+    box-sizing: border-box;
+
+    vertical-align: center;
+
+    svg{
+        margin-right: 10px;
+        width: 30px;
+        height: 30px;
+    }
+}

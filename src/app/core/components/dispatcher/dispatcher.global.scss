@@ -66,6 +66,15 @@
         background-color: #f9f9f9 !important;
       }
     }
+
+    .ng-arrow-wrapper{
+      width: 50px;
+      height: 32px !important;
+      position: absolute !important;
+      left: auto !important;
+      right: 0;
+    }
+
   
     @keyframes growDown {
       0% {
@@ -117,7 +126,6 @@
     .ng-select-container .ng-arrow-wrapper {
       height: 100%;
       bottom: 0 !important;
-      left: 5px !important;
   
       &::after {
         right: 10px !important;
@@ -2381,6 +2389,7 @@
       height: 32px !important;
     }
 
+  
     .ng-dropdown-panel.ng-select-bottom {
       width: 100% !important;
       margin-top: 0 !important;

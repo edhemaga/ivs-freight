@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "svg:preview": "node src/app/svg-definitions/svg-converter.js"
   },
   "private": true,
   "dependencies": {

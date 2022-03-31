@@ -41,12 +41,16 @@ export class FuelTableComponent implements OnInit {
         {
           title: 'Edit',
           name: 'edit',
+          class: 'regular-text',
+          contentType: 'edit',
         },
         {
           title: 'Delete',
           name: 'delete',
           type: 'fuel',
           text: 'Are you sure you want to delete fuel(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
         },
       ],
       export: true,

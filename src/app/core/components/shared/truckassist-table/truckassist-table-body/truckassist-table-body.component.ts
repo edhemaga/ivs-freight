@@ -68,7 +68,6 @@ export class TruckassistTableBodyComponent
   }
 
   goToDetails(route: any, row: any) {
-    console.log(route, row)
     const link =
       route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
     this.router.navigate([link]);

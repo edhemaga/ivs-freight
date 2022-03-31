@@ -41,12 +41,16 @@ export class LoadTableComponent implements OnInit {
         {
           title: 'Edit',
           name: 'edit-load',
+          class: 'regular-text',
+          contentType: 'edit',
         },
         {
           title: 'Delete',
           name: 'delete',
           type: 'load',
           text: 'Are you sure you want to delete load(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
         },
       ],
       export: true,

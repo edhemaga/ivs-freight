@@ -205,7 +205,7 @@
             <div
               [ngClass]="{
                 'active-vl-count': row[column.field] > 0,
-                'zero-vl-count': row[column.field] <= 0
+                'zero-vl-count': !row[column.field]
               }"
             >
               {{ row[column.field] ? row[column.field] : "0" }}
@@ -572,12 +572,12 @@
           <div
             *ngIf="!column.hidden && column.ngTemplate === 'note'"
             [ngStyle]="{ width: column.width + 'px' }"
-            class="td-content"
+            class="td-content set-center"
           >
-            <!--  <app-ta-note
+             <app-ta-note
               (saveNoteValue)="saveNote($event, row)"
               [note]="row.additionalData?.note ? row.additionalData?.note : ''"
-            ></app-ta-note> -->
+            ></app-ta-note>
           </div>
 
           <!-- ACTIONS COLUMN TEMPLATE -->
@@ -589,7 +589,7 @@
             <app-table-dropdown
               (dropDownActions)="onDropAction($event)"
               [id]="row.id"
-              [options]="options"
+              [options]="options.actions"
             ></app-table-dropdown>
           </div>
         </td>

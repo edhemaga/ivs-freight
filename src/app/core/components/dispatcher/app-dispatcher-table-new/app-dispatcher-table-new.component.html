@@ -107,15 +107,15 @@
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
               >
-                <svg-icon
+                <app-svg-icon-new
                   appTooltip="Add Truck"
                   class="icon-hover-blue-22 cursor-pointer d-flex"
                   main_id="addTruck"
                   position="bottom-right"
-                  src="assets/img/svgs/add-plus-icon.svg"
+                  name="plus_sign"
                   tooltipBackground="#919191"
                 >
-                </svg-icon>
+                </app-svg-icon-new>
               </button>
               <ng-select
                 #truckDropdown
@@ -212,15 +212,15 @@
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
               >
-                <svg-icon
+                <app-svg-icon-new
                   appTooltip="Add Trailer"
                   class="icon-hover-blue-22 cursor-pointer d-flex"
                   main_id="addTrailer"
                   position="bottom-right"
-                  src="assets/img/svgs/add-plus-icon.svg"
+                  name="plus_sign"
                   tooltipBackground="#919191"
                 >
-                </svg-icon>
+                </app-svg-icon-new>
               </button>
               <ng-select
                 #trailerDropdown
@@ -304,15 +304,15 @@
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
               >
-                <svg-icon
+                <app-svg-icon-new
                   appTooltip="Add Driver"
                   class="driverItem icon-hover-blue-22 cursor-pointer d-flex"
                   main_id="addDriver"
                   position="bottom-right"
-                  src="assets/img/svgs/add-plus-icon.svg"
+                  name="plus_sign"
                   tooltipBackground="#919191"
                 >
-                </svg-icon>
+                </app-svg-icon-new>
               </button>
               <ng-select
                 #driverDropdown
@@ -766,6 +766,14 @@
               [ngClass]="i + ' inactive-wrapper-slider'"
               [options]="options"
             ></ng5-slider>
+
+            <!-- <app-ta-ngx-slider
+            [sliderTemplate]="'hos-change'"
+            [sliderOptions]="options"
+            [startedValue]="item.start" 
+            [customClass]="i + ' inactive-wrapper-slider'"
+            (onUserValueChange)="userChangeEnd($event, i, data)"
+          ></app-ta-ngx-slider> -->
           </div>
           <div class="button-wrapper" id="{{ returnButtonId(i) }}">
             <span

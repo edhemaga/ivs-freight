@@ -8,12 +8,13 @@
             <div class="container toolbar-container main_top_container">
               <div class="d-flex top_toolbar_cont">
                 <div
-                  [ngClass]="{ legend_pop: legendActive }" class="dispatcher-drpdwn-wrap">
+                  class="dispatcher-drpdwn-wrap">
                   <app-dispatcher-dropdown
                     [items]="dispatcherItems"
                     [selectValue]="selectedDispatcher"
                     (changeVal)="changeDisparcher($event)"
                   ></app-dispatcher-dropdown>
+                </div>
                   <div
                     #accordion
                     [ngClass]="{ nav_size: legendActive }"
@@ -128,8 +129,6 @@
                       </div>
                     </div>
                   </div>
-
-                </div>
                 <div class="custom_search">
                   <app-custom-search
                     [gridNameTitle]="'Board'"

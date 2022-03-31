@@ -1653,26 +1653,14 @@ kendo-grid .toolbar-container {
 }
 
 .type-accordion2 {
+  width: 0;
   opacity: 0;
-  margin-left: 186px;
-  // border-radius: 3px;
+  margin-left: 6px;
   border-radius: 0 3px 3px 0;
   position: relative;
-  // position: fixed;
-  // left: 0;
-  // left: -190px;
-  top: -32px;
-  // top: 150px;
-  // width: 0px;
-  // height: 0px;
-  width: 386px !important;
-  // height: auto !important;
   line-height: 32px;
   height: 32px;
-  // box-shadow: $box-shadow;
-  // overflow: hidden;
   z-index: 10;
-  // background: #f3f3f3;
   user-select: none;
   transition: all 0.2s ease-in-out !important;
 

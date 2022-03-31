@@ -3,6 +3,8 @@ import { DashboardResolverService } from './core/components/dashboard/state/dash
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/authentication.guard';
+import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
+
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
 
 const routes: Routes = [
@@ -128,6 +130,10 @@ const routes: Routes = [
         (m) => m.AccidentModule
       ),
     canActivate: [AuthGuard],
+  },
+  {
+    path: "catalog",
+    component: SvgDefinitionsComponent
   },
   { path: '**', redirectTo: 'dashboard' },
 ];
