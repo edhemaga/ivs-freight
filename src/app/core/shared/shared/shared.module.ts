@@ -68,6 +68,9 @@ import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counte
 import {AccountManageComponent} from "../../components/modals/account-manage/account-manage.component";
 import { TaNgxSliderComponent } from '../../components/shared/ta-ngx-slider/ta-ngx-slider.component';
 import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta-logo-change.component';
+import { TaFilesComponent } from '../../components/shared/ta-files/ta-files.component';
+import { TaFileComponent } from '../../components/shared/ta-files/ta-file/ta-file.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 @NgModule({
   declarations: [
     AutoFocusDirective,
@@ -114,7 +117,9 @@ import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
-    AccountManageComponent
+    AccountManageComponent,
+    TaFilesComponent,
+    TaFileComponent
   ],
   imports: [
     CommonModule,
@@ -152,7 +157,8 @@ import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta
     NgxMaskModule.forRoot(),
     Ng5SliderModule,
     NgxDropzoneModule,
-    CroppieModule
+    CroppieModule,
+    PdfViewerModule
   ],
   exports: [
     AutoFocusDirective,
@@ -206,7 +212,10 @@ import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta
     TaCounterComponent,
     NgxSliderModule,
     TaNgxSliderComponent,
-    TaLogoChangeComponent
+    TaLogoChangeComponent,
+    TaFilesComponent,
+    TaFileComponent,
+    PdfViewerModule
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

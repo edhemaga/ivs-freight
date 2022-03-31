@@ -1,0 +1,30 @@
+.files-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  //---------------- Files preview ----------------
+  .files-preview {
+    width: 100%;
+    height: 100%;
+  }
+
+  //---------------- Single Dropzone ----------------
+  .single-dropzone {
+    width: 100%;
+    height: 100%;
+
+    .single-label {
+      height: 100%;
+      width: 100%;
+      background-image: url("../../../../../assets/img/image-upload/ic_dropbox-container.svg") !important;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-position: center;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+  }
+}

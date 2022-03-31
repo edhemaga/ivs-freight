@@ -250,7 +250,13 @@
             class="driver-hidden"
             [@showHideDetails]="cdl.showDetails ? 'true' : 'false'"
           >
-            <div class="driver-row-4">PDF</div>
+            <div class="driver-row-4">
+              <app-ta-files
+                [files]="[]"
+                [fileType]="'single-pdf'"
+                [customClassName]="'driver-details-single-pdf'"
+              ></app-ta-files>
+            </div>
             <div class="driver-row-5">
               <div class="driver-item">
                 <p class="driver-item-name">Note</p>

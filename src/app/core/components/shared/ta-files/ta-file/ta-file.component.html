@@ -1,0 +1,23 @@
+<div class="{{ customClassName }}">
+  <pdf-viewer
+    [src]="file.url"
+    [(page)]="activePage"
+    [render-text]="false"
+    [show-all]="false"
+    [autoresize]="false"
+    [original-size]="true"
+    [fit-to-page]="true"
+    [stick-to-page]="true"
+    (after-load-complete)="afterLoadComplete($event)"
+    style="display: block"
+  ></pdf-viewer>
+
+  <div class="document-info">
+    <div class="document-type {{file.extension}}">
+      <p>{{file.extension | uppercase}}</p>
+    </div>
+    <div class="document-number-of-pages">
+      <p>{{numberOfFilePages}}</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="files-container">
+  <div class="files-preview" *ngIf="files.length">
+    <app-ta-file
+      *ngFor="let file of files; trackBy: identity"
+      [file]="file"
+      [customClassName]="customClassName"
+    ></app-ta-file>
+  </div>
+
+  <!-- Image DropZone .jpg, .png, .gif -->
+  <div
+    *ngIf="
+      ['single-image', 'multiple-image'].includes(fileType) && !files.length
+    "
+    class="single-dropzone"
+  >
+    <div
+      id="image-upload-wrapper"
+      class="image-upload-area"
+      ngx-dropzone
+      [accept]="'image/jpeg, image/jpg, image/png, image/gif'"
+      [multiple]="['multiple-image'].includes(fileType)"
+      (change)="onImageUpload($event)"
+    >
+      <div class="d-flex flex-column image-dropzone-holder"></div>
+    </div>
+  </div>
+
+  <!-- Pdf DropZone -->
+  <div
+    *ngIf="['single-pdf', 'multiple-pdf'].includes(fileType) && !files.length"
+    class="single-dropzone"
+  >
+    <label for="pdf" class="single-label"></label>
+    <input
+      id="pdf"
+      type="file"
+      [accept]="'application/pdf'"
+      [multiple]="['multiple-pdf'].includes(fileType)"
+      (change)="onFileUpload($event.target.files)"
+    />
+  </div>
+
+  <!-- Document DropZone .doc, .xls, text/plain -->
+  <div
+    *ngIf="
+      ['single-document', 'multiple-document'].includes(fileType) &&
+      !files.length
+    "
+    class="single-dropzone"
+  >
+    <label for="document" class="single-label"></label>
+    <input
+      id="document"
+      type="file"
+      [accept]="'application/msword, application/vnd.ms-excel, text/plain'"
+      [multiple]="['multiple-document'].includes(fileType)"
+      (change)="onFileUpload($event.target.files)"
+    />
+  </div>
+</div>
