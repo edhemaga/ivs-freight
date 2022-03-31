@@ -54,9 +54,6 @@ export class TableDropdownComponent implements OnInit, OnChanges {
         this.dropContent.push(this.options[i]);
       }
     }
-
-    console.log('Drop Content');
-    console.log(this.dropContent);
   }
 
   onAction(action: any) {

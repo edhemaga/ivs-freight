@@ -100,11 +100,6 @@ export class AccountTableComponent implements OnInit {
       data.isSelected = false;
       return data;
     });
-
-    console.log('setAccountData');
-
-    console.log(this.viewData);
-    console.log(this.columns);
   }
 
   getDumyData(numberOfCopy: number) {

@@ -110,11 +110,6 @@ export class OwnerTableComponent implements OnInit {
       data.isSelected = false;
       return data;
     });
-
-    console.log('setOwnerData');
-
-    console.log(this.viewData);
-    console.log(this.columns);
   }
 
   getDumyData(numberOfCopy: number) {

@@ -572,12 +572,12 @@
           <div
             *ngIf="!column.hidden && column.ngTemplate === 'note'"
             [ngStyle]="{ width: column.width + 'px' }"
-            class="td-content"
+            class="td-content set-center"
           >
-            <!--  <app-ta-note
+             <app-ta-note
               (saveNoteValue)="saveNote($event, row)"
               [note]="row.additionalData?.note ? row.additionalData?.note : ''"
-            ></app-ta-note> -->
+            ></app-ta-note>
           </div>
 
           <!-- ACTIONS COLUMN TEMPLATE -->

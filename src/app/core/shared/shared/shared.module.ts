@@ -41,7 +41,6 @@ import { EditProfileComponent } from "../../components/modals/edit-profile/edit-
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 import { TaNoteContainerComponent } from '../../components/shared/ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from '../../components/shared/delete-dialog/delete-dialog.component';
-import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 import { TaSelectComponent } from '../../components/shared/ta-select/ta-select.component';
 import { TaStatusSelectComponent } from '../../components/shared/ta-status-select/ta-status-select.component';
 import { TaStatusSwitchComponent } from '../../components/shared/ta-status-switch/ta-status-switch.component';
@@ -79,7 +78,6 @@ import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta
     MapControlComponent,
     DriverManageComponent,
     SortPipe,
-    SafeHtmlPipe,
     StatusPipePipe,
     HighlightSearchPipe,
     NameInitialsPipe,
@@ -168,7 +166,6 @@ import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta
     NgbModule,
     GooglePlaceModule,
     SortPipe,
-    SafeHtmlPipe,
     StatusPipePipe,
     HighlightSearchPipe,
     NameInitialsPipe,
@@ -207,7 +204,7 @@ import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta
     TaNgxSliderComponent,
     TaLogoChangeComponent
   ],
-  providers: [DatePipe, SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
+  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {
