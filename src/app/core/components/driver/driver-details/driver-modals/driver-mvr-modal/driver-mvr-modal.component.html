@@ -1,3 +1,97 @@
-<p>
-  driver-mvr-modal works!
-</p>
+<div cdkDrag class="modal-container">
+  <div cdkDragHandle class="modal-header">
+    <h5 class="modal-title">{{ modalTitle }}</h5>
+    <div class="d-flex align-items-center">
+      <svg-icon
+        (click)="closeModal()"
+        [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+        class="modal-close-btn cursor-pointer"
+        src="assets/img/svgs/table/close.svg"
+      ></svg-icon>
+    </div>
+  </div>
+  <div class="divider">
+  </div>
+  <div class="modal-body">
+
+    <form (keydown)="keyDownFunction($event)" *ngIf="loaded" [formGroup]="mvrForm" class="form-container">
+      <div class="row">
+        <div class="col-12">
+          <div class="form-label-group">
+            <input
+              class="form-control input-control required"
+              id="dateOfBirth"
+              type="date"
+            >
+
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+  <div class="row">
+    <div
+      class="col-12 dropzone-wrapper {{
+              showDropZone ? ' visible-dropzone' : ' hidden-dropzone'
+            }}"
+    >
+      <div (click)="openDropZone()" class="dropzone-label-wrapper">
+        <div class="d-flex">
+          <app-ta-counter></app-ta-counter>
+          <span>Documents</span>
+        </div>
+        <svg-icon
+          class="down-icon"
+          src="assets/img/svgs/down-arrow.svg"
+        ></svg-icon>
+      </div>
+      <div
+        #dropZone
+        class=" {{
+                showDropZone ? ' dropzone-visible' : ' dropzone-hidden'
+              }}"
+      >
+        <!-- Logo Upload -->
+        <div class="upload-logo-wrapper d-flex flex-row">
+          <app-ta-logo-change
+            (saveAvatar)="saveDriverDoc($event)"
+            [src]="''"
+          ></app-ta-logo-change>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+
+  <div class="row">
+    <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
+      <div (click)="openNote()" class="note-label-wrapper">
+        <span class="note-label">Note</span>
+        <svg-icon
+          class="down-icon"
+          src="assets/img/svgs/down-arrow.svg"
+        ></svg-icon>
+      </div>
+      <div class="example-full-width note-input{{ showNote ? ' note-visible' : ' note-hidden' }}">
+              <textarea
+                #note
+                cdkAutosizeMaxRows="5"
+                cdkAutosizeMinRows="2"
+                cdkTextareaAutosize
+                class="input-custom-textarea form-textarea"
+                formControlName="note"
+                placeholder="Write a note."
+              ></textarea>
+      </div>
+    </div>
+  </div>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button (click)="saveMedical(false)" [ngClass]="{'invalid-btn' : !mvrForm.valid}" class="save-btn" ngbAutofocus
+            type="button">Save
+    </button>
+  </div>
+</div>

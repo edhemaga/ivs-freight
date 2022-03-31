@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Subject} from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomModalService {
   private modalIdentifierChange = new Subject<any>();
@@ -69,5 +69,6 @@ export class CustomModalService {
   public dismissModal(): any {
     this.modalService.dismissAll();
   }
+
 
 }
