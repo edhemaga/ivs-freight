@@ -1,0 +1,43 @@
+<div class="file-container {{ customClassName }}">
+  <pdf-viewer
+    [src]="file.url"
+    [(page)]="activePage"
+    [render-text]="false"
+    [show-all]="false"
+    [autoresize]="false"
+    [original-size]="true"
+    [fit-to-page]="true"
+    [stick-to-page]="true"
+    (after-load-complete)="afterLoadComplete($event)"
+    style="display: block"
+  ></pdf-viewer>
+
+  <!-- File Action Buttons -->
+  <div class="file-action-buttons">
+    <svg-icon
+      class="file-action-download"
+      src="assets/img/image-upload/ic_file-download.svg"
+      (click)="onFileAction('download')"
+    ></svg-icon>
+    <svg-icon
+      class="file-action-edit"
+      src="assets/img/image-upload/ic_file-edit.svg"
+      (click)="onFileAction('edit')"
+    ></svg-icon>
+    <svg-icon
+      class="file-action-delete"
+      src="assets/img/image-upload/ic_file-delete.svg"
+      (click)="onFileAction('delete')"
+    ></svg-icon>
+  </div>
+
+  <!-- File Info -->
+  <div class="file-info">
+    <div class="file-type {{ file.extension }}">
+      <p>{{ file.extension | uppercase }}</p>
+    </div>
+    <div class="file-number-of-pages">
+      <p>{{ numberOfFilePages }}</p>
+    </div>
+  </div>
+</div>

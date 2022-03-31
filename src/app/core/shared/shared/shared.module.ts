@@ -67,7 +67,13 @@ import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counte
 import {AccountManageComponent} from "../../components/modals/account-manage/account-manage.component";
 import { TaNgxSliderComponent } from '../../components/shared/ta-ngx-slider/ta-ngx-slider.component';
 import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta-logo-change.component';
+
+import { TaFilesComponent } from '../../components/shared/ta-files/ta-files.component';
+import { TaFileComponent } from '../../components/shared/ta-files/ta-file/ta-file.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+
 import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-icon-new.component';
+
 @NgModule({
   declarations: [
     AutoFocusDirective,
@@ -114,6 +120,8 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     TaNgxSliderComponent,
     TaLogoChangeComponent,
     AccountManageComponent,
+    TaFilesComponent,
+    TaFileComponent,
     SvgIconNewComponent
   ],
   imports: [
@@ -151,7 +159,8 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     NgxMaskModule.forRoot(),
     Ng5SliderModule,
     NgxDropzoneModule,
-    CroppieModule
+    CroppieModule,
+    PdfViewerModule
   ],
   exports: [
     AutoFocusDirective,
@@ -205,7 +214,11 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     NgxSliderModule,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
+    TaFilesComponent,
+    TaFileComponent,
+    PdfViewerModule,
     SvgIconNewComponent
+
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
