@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   Component,
   Input,
@@ -5,7 +6,11 @@ import {
   ViewEncapsulation,
   OnChanges,
   SimpleChanges,
+  Output,
+  EventEmitter,
+  OnDestroy,
 } from '@angular/core';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 const rotate: { [key: string]: any } = {
   asc: '',
@@ -19,14 +24,17 @@ const rotate: { [key: string]: any } = {
   styleUrls: ['./truckassist-table-head.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TruckassistTableHeadComponent implements OnInit, OnChanges {
+export class TruckassistTableHeadComponent
+  implements OnInit, OnChanges, OnDestroy
+{
   @Input() columns: any[];
   @Input() options: any;
   @Input() viewData: any[];
+  @Output() headActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
-  locked: boolean = true;
+  locked: boolean = false;
 
-  constructor() {}
+  constructor(private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.setVisibleColumns();
@@ -56,7 +64,7 @@ export class TruckassistTableHeadComponent implements OnInit, OnChanges {
     }
   }
 
-  setVisibleColumns(){
+  setVisibleColumns() {
     let columns = [];
 
     this.columns.map((column) => {
@@ -68,10 +76,22 @@ export class TruckassistTableHeadComponent implements OnInit, OnChanges {
     this.columns = columns;
   }
 
+  onReorder(event: CdkDragDrop<any>) {
+    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+
+    this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+  }
+
   public sortHeaderClick(column: any): void {
-    if (column.field && column.sortable && this.locked && this.viewData.length > 1) {
+    if (
+      column.field &&
+      column.sortable &&
+      this.locked &&
+      this.viewData.length > 1
+    ) {
       this.options.config.sortBy = column.field;
-      this.options.config.sortDirection = rotate[this.options.config.sortDirection];
+      this.options.config.sortDirection =
+        rotate[this.options.config.sortDirection];
 
       this.columns
         .filter((a) => a.sortDirection && a.field !== column.field)
@@ -84,7 +104,8 @@ export class TruckassistTableHeadComponent implements OnInit, OnChanges {
 
       const directionSort = column.sortDirection
         ? column.sortName +
-          (column.sortDirection[0]?.toUpperCase() + column.sortDirection?.substr(1).toLowerCase())
+          (column.sortDirection[0]?.toUpperCase() +
+            column.sortDirection?.substr(1).toLowerCase())
         : '';
 
       /* this.headActions.emit({ action: 'sort', direction: directionSort }); */
@@ -116,5 +137,9 @@ export class TruckassistTableHeadComponent implements OnInit, OnChanges {
       viewData: this.viewData,
       mySelection: this.mySelection,
     }); */
+  }
+
+  ngOnDestroy(): void {
+    this.tableService.sendColumnsOrder({});
   }
 }

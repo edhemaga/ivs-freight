@@ -125,7 +125,7 @@ export class DriverTableComponent implements OnInit {
         title: 'Active',
         field: 'active',
         length: 5,
-        data: this.getDumyData(6),
+        data: this.getDumyData(5),
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
