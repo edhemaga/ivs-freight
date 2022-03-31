@@ -1,15 +1,25 @@
 <table>
   <thead>
-    <tr>
+    <tr
+      cdkDropListOrientation="horizontal"
+      cdkDropList
+      (cdkDropListDropped)="onReorder($event)"
+      class="tr"
+    >
       <th
         *ngFor="let column of columns; let i = index"
+        cdkDrag
+        [cdkDragDisabled]="locked"
+        cdkDragBoundary="tr"
+        [cdkDragPreviewClass]="'cdk-drag-preview'"
         [ngStyle]="{
           width: column.width + 'px',
           'margin-left': column.moveRight ? 'auto' : 'unset',
           'justify-content': column?.headAlign ? column?.headAlign : ''
         }"
         [ngClass]="{
-          'set-center': column.ngTemplate === 'checkbox' || column.setCenter
+          'set-center': column.ngTemplate === 'checkbox' || column.setCenter,
+          'column-unlocket': !locked
         }"
       >
         <!-- Selected Row Count -->
@@ -38,6 +48,8 @@
             "
           ></svg-icon>
         </div>
+
+       <!--  <div class="resise-btn" *ngIf="column.resizable && !locked"></div> -->
       </th>
     </tr>
   </thead>

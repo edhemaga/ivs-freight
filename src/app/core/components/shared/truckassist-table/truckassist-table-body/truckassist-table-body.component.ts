@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -13,6 +14,7 @@ import {
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
   selector: 'app-truckassist-table-body',
@@ -36,9 +38,26 @@ export class TruckassistTableBodyComponent
   showPassword: any[] = [];
   decryptedPassword: any[] = [];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private tableService: TruckassistTableService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.tableService.currentColumnsOrder
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        console.log('Columns Order table head');
+        console.log(response);
+        if (response.columnsOrder) {
+          console.log('Uslo da uradi set columnsOrder')
+          this.columns = response.columnsOrder;
+
+          this.changeDetectorRef.detectChanges();
+        }
+      });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {

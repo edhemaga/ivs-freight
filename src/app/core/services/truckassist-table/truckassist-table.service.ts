@@ -5,14 +5,14 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class TruckassistTableService {
-  /* List Name */
-  /* private listName = new BehaviorSubject<string>('');
-  public currentListName = this.listName.asObservable(); */
+  /* Columns Order */
+  private columnsOrder = new BehaviorSubject<string>('');
+  public currentColumnsOrder = this.columnsOrder.asObservable();
 
   constructor() {}
 
-  /*List Name */
- /*  public sendListName(name: string) {
-    this.listName.next(name);
-  } */
+  /* Columns Order*/
+  public sendColumnsOrder(columnsOrder: any) {
+    this.columnsOrder.next(columnsOrder);
+  }
 }

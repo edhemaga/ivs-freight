@@ -11,6 +11,7 @@ import { TableDropdownComponent } from '../table-dropdown/table-dropdown.compone
 import { TruckassistReveiwModule } from '../truckassist-reveiw/truckassist-reveiw.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaNoteModule } from '../ta-note/ta-note.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { TaNoteModule } from '../ta-note/ta-note.module';
     TruckassistProgressExpirationModule,
     TruckassistReveiwModule,
     NgbModule,
-    TaNoteModule
+    TaNoteModule,
+    DragDropModule
   ],
   exports: [
     TruckassistTableBodyComponent,
