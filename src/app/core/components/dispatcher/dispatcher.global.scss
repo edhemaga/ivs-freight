@@ -1831,7 +1831,7 @@
     }
   
     .phone-email-icon {
-      background-image: url('../../../../assets/img/svgs/mail-white.svg');
+      // background-image: url('../../../../assets/img/svgs/mail-white.svg');
       background-position: center;
       background-size: 18px 14px;
       background-repeat: no-repeat;
@@ -1842,7 +1842,7 @@
     }
   
     .phone-email-icon.phone-icon {
-      background-image: url('../../../../assets/img/svgs/phone.svg') !important;
+      // background-image: url('../../../../assets/img/svgs/phone.svg') !important;
       background-size: 18px;
     }
   }
@@ -2241,7 +2241,7 @@
             height: 22px;
             border-radius: 3px;
   
-            background-image: url('../../../../assets/img/svgs/right.svg');
+            // background-image: url('../../../../assets/img/svgs/right.svg');
             background-repeat: no-repeat;
             background-position: calc(100% - 3px) center;
             background-size: 6px auto;
@@ -2342,7 +2342,7 @@
   
               &:not(.circle_span)::before {
                 content: '';
-                background-image: url('../../../../assets/img/svgs/note_arrow.svg');
+                // background-image: url('../../../../assets/img/svgs/note_arrow.svg');
                 background-repeat: no-repeat;
                 background-position: center;
                 position: absolute;

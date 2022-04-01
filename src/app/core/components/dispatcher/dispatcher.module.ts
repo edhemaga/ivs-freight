@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import { SharedModule } from './../../shared/shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {AppAddLoadTableComponent} from './app-add-load-table/app-add-load-table.component';
 import {DispatchRoutingModule} from './dispatcher-routing.module';

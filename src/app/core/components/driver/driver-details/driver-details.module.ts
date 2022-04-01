@@ -1,5 +1,5 @@
 import { DriverDrugAlcoholModalComponent } from './driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { SharedModule } from 'src/app/core/shared/shared/shared.module';
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DriverDetailsComponent } from './driver-details.component';

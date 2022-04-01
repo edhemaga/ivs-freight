@@ -7,7 +7,6 @@ import {
   getRepairTrailerColumnDefinition,
   getRepairTruckColumnDefinition,
 } from 'src/assets/utils/settings/repair-columns';
-import { DriverManageComponent } from '../../modals/driver-manage/driver-manage.component';
 
 @Component({
   selector: 'app-repair-table',

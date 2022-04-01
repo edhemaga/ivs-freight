@@ -8,16 +8,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularSvgIconModule } from "angular-svg-icon";
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
-import { SvgMorphComponent } from './svg-morph/svg-morph.component';
 import { AgmCoreModule } from '@agm/core';
-import { MapControlComponent } from './map-control/map-control.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DriverManageComponent } from "../../components/modals/driver-manage/driver-manage.component";
 import { SortPipe } from "../../pipes/sort.pipe";
-import { HistoryDataComponent } from "../../components/shared/history-data/history-data.component";
+import { HistoryDataComponent } from "./history-data/history-data.component";
 import { DatePickerModule } from "@progress/kendo-angular-dateinputs";
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
-import { TabSwitcherComponent } from "../../components/switchers/tab-switcher/tab-switcher.component";
+import { TabSwitcherComponent } from "../switchers/tab-switcher/tab-switcher.component";
 import { SortableModule } from "@progress/kendo-angular-sortable";
 import { GridModule, PDFModule } from "@progress/kendo-angular-grid";
 import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
@@ -31,19 +28,16 @@ import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { LabelModule } from "@progress/kendo-angular-label";
 import { TextFieldModule } from "@angular/cdk/text-field";
 import { DragDropModule } from "@angular/cdk/drag-drop";
-import { StatusSwitcherComponent } from "../../components/switchers/status-switcher/status-switcher.component";
-import { TruckManageComponent } from "../../components/modals/truck-manage/truck-manage.component";
+import { StatusSwitcherComponent } from "../switchers/status-switcher/status-switcher.component";
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { TrailerManageComponent } from "../../components/modals/trailer-manage/trailer-manage.component";
 import { TooltipDirective } from "../../directives/tooltip.directive";
 import { NgxMaskModule } from "ngx-mask";
-import { EditProfileComponent } from "../../components/modals/edit-profile/edit-profile.component";
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
-import { TaNoteContainerComponent } from '../../components/shared/ta-note/ta-note-container/ta-note-container.component';
-import { DeleteDialogComponent } from '../../components/shared/delete-dialog/delete-dialog.component';
-import { TaSelectComponent } from '../../components/shared/ta-select/ta-select.component';
-import { TaStatusSelectComponent } from '../../components/shared/ta-status-select/ta-status-select.component';
-import { TaStatusSwitchComponent } from '../../components/shared/ta-status-switch/ta-status-switch.component';
+import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { TaSelectComponent } from './ta-select/ta-select.component';
+import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
+import { TaStatusSwitchComponent } from './ta-status-switch/ta-status-switch.component';
 import { StatusPipePipe } from '../../pipes/status-pipe.pipe';
 import { CdkConnectPipe } from '../../pipes/cdkconnect.pipe';
 import { CdkIdPipe } from '../../pipes/cdkid.pipe';
@@ -51,25 +45,16 @@ import { HighlightSearchPipe } from '../../pipes/highlight-search.pipe';
 import { HosTimePipe } from '../../pipes/hostime';
 import { NameInitialsPipe } from '../../pipes/nameinitials';
 import { Ng5SliderModule } from 'ng5-slider';
-import {TodoManageComponent} from "../../components/modals/todo-manage/todo-manage.component";
-import {BrokerManageComponent} from "../../components/modals/broker-manage/broker-manage.component";
-import {ShipperManageComponent} from "../../components/modals/shipper-manage/shipper-manage.component";
-import {RepairShopManageComponent} from "../../components/modals/repair-shop-manage/repair-shop-manage.component";
-import {OwnerManageComponent} from "../../components/modals/owner-manage/owner-manage.component";
-import {FuelManageComponent} from "../../components/modals/fuel-manage/fuel-manage.component";
-import {ContactManageComponent} from "../../components/modals/contact-manage/contact-manage.component";
-import {CompanyUserManageComponent} from "../../components/modals/company-user-manage/company-user-manage.component";
-import {EditProfileImageComponent} from "../../components/shared/edit-profile-image/edit-profile-image.component";
+import {EditProfileImageComponent} from "./edit-profile-image/edit-profile-image.component";
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CroppieModule } from 'angular-croppie-module';
 import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
-import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counter.component';
-import {AccountManageComponent} from "../../components/modals/account-manage/account-manage.component";
-import { TaNgxSliderComponent } from '../../components/shared/ta-ngx-slider/ta-ngx-slider.component';
-import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta-logo-change.component';
+import { TaCounterComponent } from './ta-counter/ta-counter.component';
+import { TaNgxSliderComponent } from './ta-ngx-slider/ta-ngx-slider.component';
+import { TaLogoChangeComponent } from './ta-logo-change/ta-logo-change.component';
 
-import { TaFilesComponent } from '../../components/shared/ta-files/ta-files.component';
-import { TaFileComponent } from '../../components/shared/ta-files/ta-file/ta-file.component';
+import { TaFilesComponent } from './ta-files/ta-files.component';
+import { TaFileComponent } from './ta-files/ta-file/ta-file.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-icon-new.component';
@@ -81,9 +66,6 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     TooltipDirective,
     InputRestrictionDirective,
     InputErrorPipe,
-    SvgMorphComponent,
-    MapControlComponent,
-    DriverManageComponent,
     SortPipe,
     StatusPipePipe,
     HighlightSearchPipe,
@@ -94,24 +76,13 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     HistoryDataComponent,
     TabSwitcherComponent,
     StatusSwitcherComponent,
-    TruckManageComponent,
     NFormatterPipe,
     TooltipDirective,
-    TrailerManageComponent,
-    EditProfileComponent,
     TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
     TaSelectComponent,
     DeleteDialogComponent,
-    TodoManageComponent,
-    BrokerManageComponent,
-    ShipperManageComponent,
-    RepairShopManageComponent,
-    OwnerManageComponent,
-    FuelManageComponent,
-    ContactManageComponent,
-    CompanyUserManageComponent,
     EditProfileImageComponent,
     EditProfileImageComponent,
     EditProfileImageComponent,
@@ -119,7 +90,6 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
-    AccountManageComponent,
     TaFilesComponent,
     TaFileComponent,
     SvgIconNewComponent
@@ -171,9 +141,7 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     ReactiveFormsModule,
     NgSelectModule,
     AngularSvgIconModule,
-    SvgMorphComponent,
     AgmCoreModule,
-    MapControlComponent,
     NgbModule,
     GooglePlaceModule,
     SortPipe,

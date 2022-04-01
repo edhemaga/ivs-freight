@@ -8,7 +8,6 @@ import { FILE_TABLES } from 'src/app/const';
 import { DateFormatter } from 'src/app/core/helpers/dateFormatter';
 import {DriverData, MvrData } from 'src/app/core/model/driver';
 import { ClonerService } from 'src/app/core/services/cloner.service';
-import { DriverService } from 'src/app/core/services/driver/driver.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
@@ -40,7 +39,6 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private driverService: DriverService,
     private notification: NotificationService,
     private activeModal: NgbActiveModal,
     private shared: SharedService,
@@ -151,75 +149,75 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     this.spinner.show(true);
 
     const newFiles = this.shared.getNewFiles(this.files);
-    if (newFiles.length > 0) {
-      this.storageService
-        .uploadFiles(
-          this.driver.guid,
-          FILE_TABLES.DRIVER,
-          this.driver.id,
-          this.files,
-          'mvr',
-          mvr.id.toString()
-        )
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          (resp: any) => {
-            const tempMVRAttachments = [];
-            resp.success.forEach((element) => {
-              tempMVRAttachments.push(element);
-            });
-            mvr.attachments = tempMVRAttachments;
-            this.notification.success(`Attachments successfully uploaded.`, ' ');
-            this.driverService
-              .updateDriverData(saveData, this.inputData.data.driver.id)
-              .pipe(takeUntil(this.destroy$))
-              .subscribe(
-                () => {
-                  this.shared.emitRefreshAfterUpdate.emit();
-                  if (this.inputData.data.type === 'edit') {
-                    this.notification.success(`Mvr has been updated.`, 'Success:');
-                  } else {
-                    this.notification.success(`Mvr has been added.`, 'Success:');
-                    this.mvrForm.reset();
-                    this.mvrForm.controls.startDate.setValue('');
-                  }
-                  if (!keepModal) {
-                    this.closeModal();
-                  }
-                  this.spinner.show(false);
-                },
-                (error: HttpErrorResponse) => {
-                  this.shared.handleError(error);
-                }
-              );
-          },
-          (error: HttpErrorResponse) => {
-            this.shared.handleError(error);
-          }
-        );
-    } else {
-      this.driverService
-        .updateDriverData(saveData, this.inputData.data.driver.id)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          () => {
-            if (this.inputData.data.type === 'edit') {
-              this.notification.success(`Mvr has been updated.`, 'Success:');
-            } else {
-              this.notification.success(`Mvr has been added.`, 'Success:');
-              this.mvrForm.reset();
-              this.mvrForm.controls.startDate.setValue('');
-            }
-            if (!keepModal) {
-              this.closeModal();
-            }
-            this.spinner.show(false);
-          },
-          (error: HttpErrorResponse) => {
-            this.shared.handleError(error);
-          }
-        );
-    }
+    // if (newFiles.length > 0) {
+    //   this.storageService
+    //     .uploadFiles(
+    //       this.driver.guid,
+    //       FILE_TABLES.DRIVER,
+    //       this.driver.id,
+    //       this.files,
+    //       'mvr',
+    //       mvr.id.toString()
+    //     )
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe(
+    //       (resp: any) => {
+    //         const tempMVRAttachments = [];
+    //         resp.success.forEach((element) => {
+    //           tempMVRAttachments.push(element);
+    //         });
+    //         mvr.attachments = tempMVRAttachments;
+    //         this.notification.success(`Attachments successfully uploaded.`, ' ');
+    //         this.driverService
+    //           .updateDriverData(saveData, this.inputData.data.driver.id)
+    //           .pipe(takeUntil(this.destroy$))
+    //           .subscribe(
+    //             () => {
+    //               this.shared.emitRefreshAfterUpdate.emit();
+    //               if (this.inputData.data.type === 'edit') {
+    //                 this.notification.success(`Mvr has been updated.`, 'Success:');
+    //               } else {
+    //                 this.notification.success(`Mvr has been added.`, 'Success:');
+    //                 this.mvrForm.reset();
+    //                 this.mvrForm.controls.startDate.setValue('');
+    //               }
+    //               if (!keepModal) {
+    //                 this.closeModal();
+    //               }
+    //               this.spinner.show(false);
+    //             },
+    //             (error: HttpErrorResponse) => {
+    //               this.shared.handleError(error);
+    //             }
+    //           );
+    //       },
+    //       (error: HttpErrorResponse) => {
+    //         this.shared.handleError(error);
+    //       }
+    //     );
+    // } else {
+    //   this.driverService
+    //     .updateDriverData(saveData, this.inputData.data.driver.id)
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe(
+    //       () => {
+    //         if (this.inputData.data.type === 'edit') {
+    //           this.notification.success(`Mvr has been updated.`, 'Success:');
+    //         } else {
+    //           this.notification.success(`Mvr has been added.`, 'Success:');
+    //           this.mvrForm.reset();
+    //           this.mvrForm.controls.startDate.setValue('');
+    //         }
+    //         if (!keepModal) {
+    //           this.closeModal();
+    //         }
+    //         this.spinner.show(false);
+    //       },
+    //       (error: HttpErrorResponse) => {
+    //         this.shared.handleError(error);
+    //       }
+    //     );
+    // }
   }
 
   keyDownFunction(event: any) {
