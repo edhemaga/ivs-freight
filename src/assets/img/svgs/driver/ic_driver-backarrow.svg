@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="32" viewBox="0 0 20 32">
-  <g id="Group_76875" data-name="Group 76875" transform="translate(-78 -22)">
-    <rect id="Rectangle_56525" data-name="Rectangle 56525" width="20" height="32" rx="3" transform="translate(78 22)" fill="#919191"/>
-    <g id="Group_70456" data-name="Group 70456" transform="translate(76 22)">
-      <path id="chevron-down" d="M5.534.186.193,5.319a.617.617,0,0,0,0,.9l.623.6a.678.678,0,0,0,.932,0L6,2.747l4.252,4.068a.678.678,0,0,0,.932,0l.623-.6a.617.617,0,0,0,0-.9L6.466.186A.679.679,0,0,0,5.534.186Z" transform="translate(8 22) rotate(-90)" fill="#fff"/>
-    </g>
-  </g>
-</svg>

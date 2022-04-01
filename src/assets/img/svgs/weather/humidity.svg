@@ -1,9 +1,0 @@
-<svg height="15" viewBox="0 0 12 15" width="12" xmlns="http://www.w3.org/2000/svg">
-  <g id="humidity" opacity="0.3" transform="translate(0 0)">
-    <path
-      d="M7,.647A1.091,1.091,0,0,0,5,.647C3.409,5.267,0,6.524,0,9.782,0,12.665,2.684,15,6,15s6-2.335,6-5.218C12,6.509,8.6,5.291,7,.647Z"
-      data-name="Path 10640"
-      fill="#5673aa"
-      id="Path_10640" transform="translate(0 0)"/>
-  </g>
-</svg>

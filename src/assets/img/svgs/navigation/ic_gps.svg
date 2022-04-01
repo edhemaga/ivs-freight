@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-  <g id="GPS" transform="translate(-92 -860)">
-    <rect id="Rectangle_52466" data-name="Rectangle 52466" width="20" height="20" transform="translate(92 860)" fill="none"/>
-    <path id="Path_35322" data-name="Path 35322" d="M10,1a9,9,0,1,0,9,9,9,9,0,0,0-9-9m.24,14.48-.77-4.05a1.129,1.129,0,0,0-.9-.91L4.52,9.75a.552.552,0,0,1-.447-.568c0-.018,0-.037.006-.055A.555.555,0,0,1,4.45,8.66l9.21-3.04a.525.525,0,0,1,.35,0,.586.586,0,0,1,.195.111l0,0a.583.583,0,0,1,.172.606l-3.04,9.21a.57.57,0,0,1-1.1-.07" transform="translate(92 860)" fill="#b7b7b7"/>
-  </g>
-</svg>
