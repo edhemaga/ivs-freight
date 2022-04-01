@@ -58,33 +58,47 @@ export class DriverTableComponent implements OnInit {
         {
           title: 'Edit Driver',
           name: 'edit',
+          class: 'regular-text',
+          contentType: 'edit',
         },
         {
           title: 'Add CDL',
           name: 'new-licence',
+          class: 'regular-text',
+          contentType: 'add',
         },
         {
           title: 'Add Medical',
           name: 'new-medical',
+          class: 'regular-text',
+          contentType: 'add',
         },
         {
           title: 'Add MVR',
           name: 'new-mvr',
+          class: 'regular-text',
+          contentType: 'add',
         },
         {
           title: 'Add Test',
           name: 'new-drug',
+          class: 'regular-text',
+          contentType: 'add',
         },
         {
           title: 'Activate',
           reverseTitle: 'Deactivate',
           name: 'activate-item',
+          class: 'regular-text',
+          contentType: 'activate',
         },
         {
           title: 'Delete',
           name: 'delete-item',
           type: 'driver',
           text: 'Are you sure you want to delete driver(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
         },
       ],
       export: true,
@@ -111,7 +125,7 @@ export class DriverTableComponent implements OnInit {
         title: 'Active',
         field: 'active',
         length: 5,
-        data: this.getDumyData(6),
+        data: this.getDumyData(5),
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -157,8 +171,8 @@ export class DriverTableComponent implements OnInit {
     this.viewData = this.viewData.map((data: DriversState) => {
       return {
         ...data,
-        isSelected: false
-      }
+        isSelected: false,
+      };
     });
   }
 

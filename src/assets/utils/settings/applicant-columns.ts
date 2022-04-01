@@ -304,6 +304,7 @@ export function getApplicantColumnsDefinition() {
       name: '',
       hidden: false,
       width: 18,
+      moveRight: true,
       headIconStyle: {
         width: 19,
         height: 19,

@@ -250,7 +250,13 @@
             class="driver-hidden"
             [@showHideDetails]="cdl.showDetails ? 'true' : 'false'"
           >
-            <div class="driver-row-4">PDF</div>
+            <div class="driver-row-4">
+              <app-ta-files
+                [files]="[]"
+                [fileType]="'single-pdf'"
+                [customClassName]="'driver-details-single-pdf'"
+              ></app-ta-files>
+            </div>
             <div class="driver-row-5">
               <div class="driver-item">
                 <p class="driver-item-name">Note</p>
@@ -412,7 +418,29 @@
             class="driver-hidden"
             [@showHideDetails]="mvr.showDetails ? 'true' : 'false'"
           >
-            <div class="driver-row-7">PDF</div>
+            <div class="driver-row-7">
+              <app-ta-files
+                [files]="[
+                  {
+                    fileName: 'truckassist0',
+                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                    extension: 'pdf'
+                  },
+                  {
+                    fileName: 'truckassist1',
+                    url: 'https://s2.q4cdn.com/498544986/files/doc_downloads/test.pdf',
+                    extension: 'pdf'
+                  },
+                  {
+                    fileName: 'truckassist2',
+                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                    extension: 'pdf'
+                  }
+                ]"
+                [fileType]="'multiple-pdf'"
+                [customClassName]="'driver-details-multiple-pdf'"
+              ></app-ta-files>
+            </div>
             <div class="driver-row-5">
               <div class="driver-item">
                 <p class="driver-item-name">Note</p>

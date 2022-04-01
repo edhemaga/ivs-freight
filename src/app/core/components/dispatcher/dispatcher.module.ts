@@ -12,6 +12,7 @@ import {DispatcherNoteComponent} from './dispatcher-note/dispatcher-note.compone
 import {DispatcherHistoryComponent} from './dispatcher-history/dispatcher-history.component';
 import { DispatcherTableComponent } from './dispatcher-table/dispatcher-table.component';
 import { DispatcherDropdownComponent } from './dispatcher-dropdown/dispatcher-dropdown.component';
+import { PipesModule } from '../../pipes/pipes.module';
 
 export function playerFactory() {
   return player;
@@ -19,7 +20,7 @@ export function playerFactory() {
 
 @NgModule({
   declarations: [DispatcherTableComponent, AppAddLoadTableComponent, AppDispatcherTableNewComponent, DispatcherGpsTableComponent, DispatcherNoteComponent, DispatcherHistoryComponent, DispatcherDropdownComponent],
-  imports: [CommonModule, DispatchRoutingModule, SharedModule, AgmSnazzyInfoWindowModule, LottieModule.forRoot({player: playerFactory})],
+  imports: [CommonModule, DispatchRoutingModule, SharedModule, AgmSnazzyInfoWindowModule, LottieModule.forRoot({player: playerFactory}), PipesModule],
   entryComponents: [],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

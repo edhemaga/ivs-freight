@@ -4,7 +4,8 @@
 // MVR Template
 .driver-body-v2 {
   grid-template-rows: 39px auto !important;
-
+  grid-template-columns: 236px;
+  
   .driver-expiration {
     display: flex;
     flex-direction: column;

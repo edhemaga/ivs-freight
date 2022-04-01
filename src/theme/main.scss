@@ -132,9 +132,9 @@ p {
 }
 
 .dropzone-label-wrapper {
-  background-color: $bw1;
+  background-color: #FFFFFF;
   font-weight: 700;
-  color: #B7B7B7;
+  color: #6C6C6C;
   margin: 0 -16px;
   padding: 6px 18px;
   transition: all 0.3s ease-in-out;
@@ -142,6 +142,7 @@ p {
   height: 30px;
   user-select: none;
 }
+
 
 textarea.input-custom-textarea.form-textarea {
   font-size: 12px;

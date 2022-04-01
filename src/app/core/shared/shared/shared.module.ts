@@ -41,7 +41,6 @@ import { EditProfileComponent } from "../../components/modals/edit-profile/edit-
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 import { TaNoteContainerComponent } from '../../components/shared/ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from '../../components/shared/delete-dialog/delete-dialog.component';
-import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 import { TaSelectComponent } from '../../components/shared/ta-select/ta-select.component';
 import { TaStatusSelectComponent } from '../../components/shared/ta-status-select/ta-status-select.component';
 import { TaStatusSwitchComponent } from '../../components/shared/ta-status-switch/ta-status-switch.component';
@@ -68,7 +67,13 @@ import { TaCounterComponent } from '../../components/shared/ta-counter/ta-counte
 import {AccountManageComponent} from "../../components/modals/account-manage/account-manage.component";
 import { TaNgxSliderComponent } from '../../components/shared/ta-ngx-slider/ta-ngx-slider.component';
 import { TaLogoChangeComponent } from '../../components/shared/ta-logo-change/ta-logo-change.component';
+
+import { TaFilesComponent } from '../../components/shared/ta-files/ta-files.component';
+import { TaFileComponent } from '../../components/shared/ta-files/ta-file/ta-file.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+
 import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-icon-new.component';
+
 @NgModule({
   declarations: [
     AutoFocusDirective,
@@ -80,7 +85,6 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     MapControlComponent,
     DriverManageComponent,
     SortPipe,
-    SafeHtmlPipe,
     StatusPipePipe,
     HighlightSearchPipe,
     NameInitialsPipe,
@@ -116,6 +120,8 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     TaNgxSliderComponent,
     TaLogoChangeComponent,
     AccountManageComponent,
+    TaFilesComponent,
+    TaFileComponent,
     SvgIconNewComponent
   ],
   imports: [
@@ -135,7 +141,6 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     NgxSliderModule,
     DatePickerModule,
     GooglePlaceModule,
-    NgbModule,
     SortableModule,
     GridModule,
     PDFModule,
@@ -154,7 +159,8 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     NgxMaskModule.forRoot(),
     Ng5SliderModule,
     NgxDropzoneModule,
-    CroppieModule
+    CroppieModule,
+    PdfViewerModule
   ],
   exports: [
     AutoFocusDirective,
@@ -171,7 +177,6 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     NgbModule,
     GooglePlaceModule,
     SortPipe,
-    SafeHtmlPipe,
     StatusPipePipe,
     HighlightSearchPipe,
     NameInitialsPipe,
@@ -209,9 +214,13 @@ import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-ic
     NgxSliderModule,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
+    TaFilesComponent,
+    TaFileComponent,
+    PdfViewerModule,
     SvgIconNewComponent
+
   ],
-  providers: [DatePipe, SortPipe, NFormatterPipe, SafeHtmlPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
+  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {

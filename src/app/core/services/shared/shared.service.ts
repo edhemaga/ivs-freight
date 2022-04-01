@@ -39,7 +39,7 @@ export class SharedService {
   public emitUpdateNoteActiveList: EventEmitter<any[]> = new EventEmitter();
 
   public emitViewChange: EventEmitter<boolean> = new EventEmitter();
-
+  public emitRefreshAfterUpdate: EventEmitter<any[]> = new EventEmitter();
   // Owner
   public createOwner = new Subject<OwnerData>();
   public editOwnerSubject = new Subject<void>();

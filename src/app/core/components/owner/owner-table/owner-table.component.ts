@@ -41,12 +41,16 @@ export class OwnerTableComponent implements OnInit {
         {
           title: 'Edit',
           name: 'edit-owner',
+          class: 'regular-text',
+          contentType: 'edit',
         },
         {
           title: 'Delete',
           name: 'delete-owner',
           type: 'owner',
           text: 'Are you sure you want to delete owner(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
         },
       ],
       export: true,
@@ -106,11 +110,6 @@ export class OwnerTableComponent implements OnInit {
       data.isSelected = false;
       return data;
     });
-
-    console.log('setOwnerData');
-
-    console.log(this.viewData);
-    console.log(this.columns);
   }
 
   getDumyData(numberOfCopy: number) {
