@@ -3,7 +3,6 @@ import {environment} from 'src/environments/environment';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {SelectCompanyResponse} from "../../model/select-company";
-import {CommunicatorUserService} from "../communicator/communicator-user.service";
 import { User } from '../../components/authentication/model/auth.model';
 
 
@@ -15,8 +14,7 @@ export class AuthService {
   public currentUserSubject: BehaviorSubject<any>;
 
   constructor(
-    private http: HttpClient,
-    private communicatorUserService: CommunicatorUserService
+    private http: HttpClient
   ) {
     this.currentUserSubject = new BehaviorSubject<User>(
       JSON.parse(localStorage.getItem('currentUser'))
@@ -73,8 +71,6 @@ export class AuthService {
    * Logout function
    */
   public logout() {
-  //  this.currentUserSubject.next(null);
-    this.communicatorUserService.changeMyStatus('offline');
     localStorage.clear();
     return this.http.get(environment.API_ENDPOINT + 'user/logout');
   }

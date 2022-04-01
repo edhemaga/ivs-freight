@@ -16,8 +16,6 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
-import { CommunicatorUserService } from 'src/app/core/services/communicator/communicator-user.service';
-import { CommunicatorUserDataService } from 'src/app/core/services/communicator/communicator-user-data.service';
 import { NavigationService } from '../services/navigation.service';
 import { PersistState } from '@datorama/akita';
 
@@ -47,8 +45,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private customModalService: CustomModalService,
     private sharedService: SharedService,
-    private communicatorUserService: CommunicatorUserService,
-    private communicatorUserDataService: CommunicatorUserDataService,
     private navigationService: NavigationService,
     @Inject('persistStorage') private persistStorage: PersistState
   ) {}
@@ -126,23 +122,24 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   }
 
   private changeMyStatus() {
-    this.communicatorUserService.changeMyStatus(this.changeStatusOption);
+    // this.communicatorUserService.changeMyStatus(this.changeStatusOption);
   }
 
   private get changeStatusOption() {
-    if (
-      ['online', 'active', 'away'].includes(
-        this.communicatorUserService.user?.status
-      )
-    ) {
-      return 'busy';
-    } else {
-      if (this.isUserInChat()) {
-        return 'active';
-      } else {
-        return 'online';
-      }
-    }
+    // if (
+    //   ['online', 'active', 'away'].includes(
+    //     this.communicatorUserService.user?.status
+    //   )
+    // ) {
+    //   return 'busy';
+    // } else {
+    //   if (this.isUserInChat()) {
+    //     return 'active';
+    //   } else {
+    //     return 'online';
+    //   }
+    // }
+    return 'online'
   }
 
   private isUserInChat() {
