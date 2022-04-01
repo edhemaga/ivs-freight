@@ -76,6 +76,7 @@
     "chartjs-plugin-doughnutlabel": "^2.0.3",
     "croppie": "^2.6.5",
     "evoweb-geoxml3": "^1.0.0",
+    "glob": "^7.2.0",
     "gsap": "npm:@gsap/shockingly@^3.6.1",
     "jquery": "^3.6.0",
     "lottie-web": "^5.7.8",
