@@ -20,28 +20,34 @@
 
   .nav-header-bottom {
     margin-top: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
-
+    justify-content: space-between;
     position: relative;
-    right: 11px;
+    right: 4px;
   }
 
   .nav-header-bottom-plus {
+    background: $nav-background;
+    border-radius: 50%;
+    padding: 8px;
+    width: 32px;
+    height: 32px;
+    box-shadow: 0 0 4px rgb(0 0 0 / 20%);
+    position: relative;
     svg {
+      position: relative;
+      left: 50%;
+      bottom: 4px;
+      transform: translate(-50%, 3%);
+    }
+
+    &:hover {
+      cursor: pointer;
       transition: $nav-transition;
-      path {
-        shape-rendering: geometricPrecision;
-        fill: url("#linear-gradient");
-      }
-      &:hover {
-        cursor: pointer;
-        transition: $nav-transition;
-        #Ellipse_6368-2 {
-          shape-rendering: geometricPrecision;
-          fill: url("#linear-gradient");
-        }
+      background-image: linear-gradient(#6d82c7, #3551b7);
+      svg {
         path {
           fill: $nav-background;
         }
@@ -52,15 +58,26 @@
   .nav-header-bottom-rightSide {
     display: flex;
     justify-content: space-between;
-    margin-left: 32.5px;
+    position: absolute;
+    right: -5px;
 
     .nav-header-bottom-rightSide-search {
+      background: #f9f9f9;
+      border-radius: 50%;
+      padding: 7px;
+      position: relative;
+      width: 32px;
+      height: 32px;
+      svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
       &:hover {
         transition: $nav-transition;
+        background-color: #f3f3f3;
         svg {
-          #Ellipse_6615 {
-            fill: $nav-hover-lightcolor !important;
-          }
           #Path_35719 {
             fill: $nav-svg-hover !important;
           }
@@ -70,12 +87,23 @@
 
     .nav-header-bottom-rightSide-notes {
       margin: 0 6px;
+      background: #f9f9f9;
+      border-radius: 50%;
+      padding: 7px;
+      position: relative;
+      width: 32px;
+      height: 32px;
+      svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
       &:hover {
         transition: $nav-transition;
+        background-color: #f3f3f3;
         svg {
-          #Ellipse_6614 {
-            fill: $nav-hover-lightcolor !important;
-          }
           #Path_35726 {
             fill: $nav-svg-hover !important;
           }
@@ -88,12 +116,22 @@
     }
 
     .nav-header-bottom-rightSide-bell {
+      background: #f9f9f9;
+      border-radius: 50%;
+      padding: 7px;
+      position: relative;
+      width: 32px;
+      height: 32px;
+      svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
       &:hover {
         transition: $nav-transition;
+        background-color: #f3f3f3;
         svg {
-          #Ellipse_6613 {
-            fill: $nav-hover-lightcolor !important;
-          }
           #Path_35724 {
             fill: $nav-svg-hover !important;
           }
@@ -102,10 +140,10 @@
     }
 
     &.show {
-      animation: fadeIn 0.2s;
+      animation: fadeIn;
     }
     &.hide {
-      animation: fadeOut 0.15s;
+      animation: fadeOut;
     }
   }
 }

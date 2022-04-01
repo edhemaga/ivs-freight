@@ -27,13 +27,19 @@
     margin-bottom: 6px;
 
     .user-company-header-svg {
+      transition: all 0.3s ease-in-out;
+      height: 32px;
+      width: 32px;
+      background: $nav-hover-darker;
+      border-radius: 50%;
+
       svg {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         path {
           fill: $nav-svg;
-        }
-
-        #Ellipse_6396 {
-          fill: $nav-hover-darker;
         }
       }
     }
@@ -47,13 +53,10 @@
     &:hover {
       .user-company-header-svg {
         transition: $nav-transition;
+        background-color: $nav-hover-lightcolor;
         svg {
           path {
             fill: $nav-svg-hover;
-          }
-
-          #Ellipse_6396 {
-            fill: $nav-hover-lightcolor;
           }
         }
       }

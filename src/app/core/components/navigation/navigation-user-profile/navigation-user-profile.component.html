@@ -15,7 +15,7 @@
         item.name === 'User status'
           ? currentUserStatus === 'online'
             ? item.image
-            : 'assets/img/svgs/navigation/ic_truckassist_active_status.svg'
+            : 'assets/svg/common/ic_active-status.svg'
           : item.image
       }}"
     ></svg-icon>
@@ -43,7 +43,7 @@
   <div class="panel-user" (click)="onUserPanelClose()">
     <svg-icon
       class="panel-image"
-      src="assets/img/svgs/navigation/ic_profile_user.svg"
+      src="assets/svg/common/ic_profile.svg"
     ></svg-icon>
     <div class="panel-name">
       <p class="nav-footer-user-company">{{ userCompany.name }}</p>
