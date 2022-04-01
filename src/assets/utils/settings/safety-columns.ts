@@ -286,7 +286,7 @@ export function getAccidentColumns() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       hidden: false,
@@ -314,7 +314,7 @@ export function getAccidentColumns() {
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'doc.additionalData.note',
       name: '',
       hidden: false,
@@ -334,7 +334,7 @@ export function getAccidentColumns() {
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,
@@ -772,7 +772,7 @@ export function getViolationsColums() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       moveRight: true,
@@ -800,7 +800,7 @@ export function getViolationsColums() {
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'doc.additionalData.note',
       name: '',
       hidden: false,
@@ -821,7 +821,7 @@ export function getViolationsColums() {
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,

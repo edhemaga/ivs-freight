@@ -9,7 +9,10 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
+  ChangeDetectorRef,
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 const rotate: { [key: string]: any } = {
@@ -27,17 +30,42 @@ const rotate: { [key: string]: any } = {
 export class TruckassistTableHeadComponent
   implements OnInit, OnChanges, OnDestroy
 {
+  private destroy$: Subject<void> = new Subject<void>();
   @Input() columns: any[];
   @Input() options: any;
   @Input() viewData: any[];
   @Output() headActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
   locked: boolean = false;
+  rezaizeing: boolean = false;
 
-  constructor(private tableService: TruckassistTableService) {}
+  constructor(
+    private tableService: TruckassistTableService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.setVisibleColumns();
+
+    // Unlock Table
+    this.tableService.currentUnlockTable
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response.toaggleUnlockTable) {
+          this.locked = !this.locked;
+        }
+      });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn.subscribe((response: any) => {
+      if (response.length) {
+        this.columns = response;
+
+        this.setVisibleColumns();
+
+        this.changeDetectorRef.detectChanges();
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -76,13 +104,8 @@ export class TruckassistTableHeadComponent
     this.columns = columns;
   }
 
-  onReorder(event: CdkDragDrop<any>) {
-    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
-
-    this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
-  }
-
-  public sortHeaderClick(column: any): void {
+  // Sort
+  sortHeaderClick(column: any): void {
     if (
       column.field &&
       column.sortable &&
@@ -112,12 +135,25 @@ export class TruckassistTableHeadComponent
     }
   }
 
-  onDeselect() {
-    this.toggleSelect(false);
+  // Reorder
+  onReorder(event: CdkDragDrop<any>) {
+    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+
+    this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
   }
 
+  // Rezaize
+  onRezaize() {
+    this.rezaizeing = false;
+  }
+
+  // Select
   onSelect() {
     this.toggleSelect(true);
+  }
+
+  onDeselect() {
+    this.toggleSelect(false);
   }
 
   toggleSelect(selected: boolean) {
@@ -141,5 +177,8 @@ export class TruckassistTableHeadComponent
 
   ngOnDestroy(): void {
     this.tableService.sendColumnsOrder({});
+
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -262,7 +262,7 @@ export function getAccountingFuelColumnDefinition() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       moveRight: true,
@@ -290,7 +290,7 @@ export function getAccountingFuelColumnDefinition() {
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,

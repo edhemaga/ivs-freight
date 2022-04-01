@@ -9,7 +9,7 @@
       <th
         *ngFor="let column of columns; let i = index"
         cdkDrag
-        [cdkDragDisabled]="locked"
+        [cdkDragDisabled]="locked || rezaizeing"
         cdkDragBoundary="tr"
         [cdkDragPreviewClass]="'cdk-drag-preview'"
         [ngStyle]="{
@@ -49,7 +49,13 @@
           ></svg-icon>
         </div>
 
-       <!--  <div class="resise-btn" *ngIf="column.resizable && !locked"></div> -->
+        <div
+          (mouseover)="rezaizeing = true"
+          (mouseleave)="rezaizeing = false"
+          (click)="onRezaize()"
+          class="resise-btn"
+          *ngIf="column.resizable && !locked"
+        ></div>
       </th>
     </tr>
   </thead>

@@ -16,11 +16,12 @@
           [ngStyle]="{
             'margin-left': column.moveRight ? 'auto' : 'unset'
           }"
+          [ngClass]="{'column-insert-animation': !column.hidden}"
         >
           <!-- NO TEMPLATE -->
           <div
             *ngIf="!column.hidden && column.ngTemplate === ''"
-            [ngStyle]="{ width: column.width + 'px' }"
+            [ngStyle]="{ width: column.width + 'px'}"
             class="td-content"
           >
             <div class="no-template">NO TEMPLATE</div>

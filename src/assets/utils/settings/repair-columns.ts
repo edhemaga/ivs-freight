@@ -175,7 +175,7 @@ export function getRepairTruckColumnDefinition() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       moveRight: true,
@@ -203,7 +203,7 @@ export function getRepairTruckColumnDefinition() {
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'additionalData.note',
       name: '',
       hidden: false,
@@ -224,7 +224,7 @@ export function getRepairTruckColumnDefinition() {
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,
@@ -443,7 +443,7 @@ export function getRepairTrailerColumnDefinition() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       moveRight: true,
@@ -471,7 +471,7 @@ export function getRepairTrailerColumnDefinition() {
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'additionalData.note',
       name: '',
       hidden: false,
@@ -492,7 +492,7 @@ export function getRepairTrailerColumnDefinition() {
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,
@@ -719,7 +719,7 @@ export function getRepairsShopColumnDefinition() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       moveRight: true,
@@ -747,7 +747,7 @@ export function getRepairsShopColumnDefinition() {
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'doc.additionalData.note',
       name: '',
       hidden: false,
@@ -768,7 +768,7 @@ export function getRepairsShopColumnDefinition() {
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,

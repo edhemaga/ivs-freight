@@ -45,18 +45,25 @@ export class TruckassistTableBodyComponent
   ) {}
 
   ngOnInit(): void {
+    // Columns Reorder
     this.tableService.currentColumnsOrder
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
-        console.log('Columns Order table head');
-        console.log(response);
         if (response.columnsOrder) {
-          console.log('Uslo da uradi set columnsOrder')
           this.columns = response.columnsOrder;
 
           this.changeDetectorRef.detectChanges();
         }
       });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn.subscribe((response: any) => {
+      if (response.length) {
+        this.columns = response;
+
+        this.changeDetectorRef.detectChanges();
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

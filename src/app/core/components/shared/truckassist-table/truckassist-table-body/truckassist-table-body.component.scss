@@ -26,6 +26,7 @@ table {
             display: flex;
             height: 100%;
             align-items: center;
+            transform: scale(0);
 
             // NO TEMPLATE
             .no-template {
@@ -144,8 +145,8 @@ table {
               }
             }
 
-            // VIOLATION STATE COLUMN 
-            .violation-state-container{
+            // VIOLATION STATE COLUMN
+            .violation-state-container {
               width: fit-content;
               height: 28px;
               font-size: 16px;
@@ -892,5 +893,12 @@ table {
     .columns-container {
       background: #f7f7f7;
     }
+  }
+}
+
+.column-insert-animation {
+  .td-content {
+    transform: scale(1) !important;
+    transition: 1s;
   }
 }

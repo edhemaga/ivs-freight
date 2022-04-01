@@ -35,6 +35,10 @@ table {
           height: 18px;
           background: #AAAAAA;
           border-radius: 1px;
+          cursor: ew-resize;
+          margin-left: auto;
+          position: relative;
+          z-index: 100;
         }
       }
 
