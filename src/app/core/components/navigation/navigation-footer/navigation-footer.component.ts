@@ -10,7 +10,6 @@ import {
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
 import { Subject } from 'rxjs';
-import { CommunicatorUserDataService } from 'src/app/core/services/communicator/communicator-user-data.service';
 import { Router } from '@angular/router';
 import { NavigationService } from '../services/navigation.service';
 
@@ -35,7 +34,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private communicatorUserDataService: CommunicatorUserDataService,
     private navigationService: NavigationService
   ) {}
 
