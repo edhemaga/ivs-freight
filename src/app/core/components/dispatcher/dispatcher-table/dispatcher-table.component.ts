@@ -274,7 +274,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   }
 
   getDispatcherData(result?) {
-        this.dispatcherItems = result;
+        this.dispatcherItems = [...result];
         const user = JSON.parse(localStorage.getItem('currentUser'));
         this.dispatcherItems.unshift({
           id: -1,
@@ -510,7 +510,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     this.phoneEmailToggle = this.phoneEmailToggle == 'Email' ? 'Phone' : 'Email';
   }
 
-  openDispatchHistory(item: any) {
+  openDispatchHistory() {
     this.customModalService.openModal(DispatcherHistoryComponent, {dispatchersList: this.dispatcherItems}, null);
   }
 
