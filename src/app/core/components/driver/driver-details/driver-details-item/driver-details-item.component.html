@@ -7,13 +7,13 @@
           <svg-icon
             routerLink="/driver"
             class="driver-toolbar-back"
-            src="assets/img/svgs/driver/ic_driver-backarrow.svg"
+            src="assets/svg/common/ic_arrow-left.svg"
           ></svg-icon>
           <p>Driver Details - waiting dropdown...</p>
         </div>
         <svg-icon
           class="driver-toolbar-horizarrow"
-          src="assets/img/svgs/driver/ic_driver-horizontal-dots.svg"
+          src="assets/svg/common/ic_horizontal-dots.svg"
         ></svg-icon>
       </div>
     </div>
@@ -21,11 +21,13 @@
     <div *ngSwitchDefault>
       <div class="driver-toolbar">
         <p class="driver-toolbar-name">{{ data.name }}</p>
-        <svg-icon
-          class="driver-toolbar-button"
-          src="assets/img/svgs/driver/ic_driver-plus.svg"
-          (click)="onModalAction()"
-        ></svg-icon>
+        <div class="driver-toolbar-button">
+          <svg-icon
+            class="driver-toolbar-plus"
+            src="assets/svg/common/ic_plus.svg"
+            (click)="onModalAction()"
+          ></svg-icon>
+        </div>
       </div>
     </div>
   </div>
@@ -36,12 +38,12 @@
         <div class="driver-switcher">
           <svg-icon
             class="driver-switcher-larrow"
-            src="assets/img/svgs/driver/ic_driver-left-arrow.svg"
+            src="assets/svg/common/ic_arrow-right.svg"
           ></svg-icon>
           <p class="driver-switcher-name">{{ data.data.reasponse.fullName }}</p>
           <svg-icon
             class="driver-switcher-rarrow"
-            src="assets/img/svgs/driver/ic_driver-right-arrow.svg"
+            src="assets/svg/common/ic_arrow-right.svg"
           ></svg-icon>
         </div>
         <div class="driver-personal">
@@ -51,20 +53,20 @@
               src="{{
                 data.data.reasponse.avatar
                   ? data.data.reasponse.avatar
-                  : 'assets/img/svgs/driver/ic_driver-avatar.svg'
+                  : 'assets/svg/common/ic_noimage-avatar.svg'
               }}"
               alt="Driver Image"
             />
             <svg-icon
               class="driver-avatar-owner"
-              src="assets/img/svgs/driver/ic_driver-owner.svg"
+              src="assets/svg/common/ic_driver-owner.svg"
             ></svg-icon>
           </div>
           <div class="driver-information">
             <div class="information-item">
               <svg-icon
                 class="information-svg"
-                src="assets/img/svgs/driver/ic_driver-phone.svg"
+                src="assets/svg/common/ic_phone.svg"
               ></svg-icon>
               <p class="information-value">
                 {{ data.data.reasponse.additionalData?.phone }}
@@ -73,7 +75,7 @@
             <div class="information-item information-item-email">
               <svg-icon
                 class="information-svg"
-                src="assets/img/svgs/driver/ic_driver-email.svg"
+                src="assets/svg/common/ic_email.svg"
               ></svg-icon>
               <p class="information-value information-email-value">
                 {{ data.data.reasponse.additionalData?.email }}
@@ -82,7 +84,7 @@
             <div class="information-item information-email">
               <svg-icon
                 class="information-svg information-address-svg"
-                src="assets/img/svgs/driver/ic_driver-address.svg"
+                src="assets/svg/common/ic_address.svg"
               ></svg-icon>
               <p class="information-value">
                 {{ data.data.reasponse.additionalData?.address.address }}
@@ -161,19 +163,19 @@
           <div class="driver-card-buttons">
             <svg-icon
               class="driver-card-attachments"
-              src="assets/img/svgs/driver/ic_driver-attachments.svg"
+              src="assets/svg/common/ic_attachment.svg"
               (click)="
                 onButtonAction({ template: 'cdl', action: 'attachments' })
               "
             ></svg-icon>
             <svg-icon
               class="driver-card-note"
-              src="assets/img/svgs/driver/ic_driver-note.svg"
+              src="assets/svg/common/ic_note.svg"
               (click)="onButtonAction({ template: 'cdl', action: 'notes' })"
             ></svg-icon>
             <svg-icon
               class="driver-card-dots"
-              src="assets/img/svgs/driver/ic_driver-dots.svg"
+              src="assets/svg/common/ic_dots.svg"
               (click)="onButtonAction({ template: 'cdl', action: 'dots' })"
             ></svg-icon>
           </div>
@@ -288,19 +290,19 @@
           <div class="driver-card-buttons">
             <svg-icon
               class="driver-card-attachments"
-              src="assets/img/svgs/driver/ic_driver-attachments.svg"
+              src="assets/svg/common/ic_attachment.svg"
               (click)="
                 onButtonAction({ template: 'cdl', action: 'attachments' })
               "
             ></svg-icon>
             <svg-icon
               class="driver-card-note"
-              src="assets/img/svgs/driver/ic_driver-note.svg"
+              src="assets/svg/common/ic_note.svg"
               (click)="onButtonAction({ template: 'cdl', action: 'notes' })"
             ></svg-icon>
             <svg-icon
               class="driver-card-dots"
-              src="assets/img/svgs/driver/ic_driver-dots.svg"
+              src="assets/svg/common/ic_dots.svg"
               (click)="onButtonAction({ template: 'cdl', action: 'dots' })"
             ></svg-icon>
           </div>
@@ -334,19 +336,19 @@
           <div class="driver-card-buttons">
             <svg-icon
               class="driver-card-attachments"
-              src="assets/img/svgs/driver/ic_driver-attachments.svg"
+              src="assets/svg/common/ic_attachment.svg"
               (click)="
                 onButtonAction({ template: 'medical', action: 'attachments' })
               "
             ></svg-icon>
             <svg-icon
               class="driver-card-note"
-              src="assets/img/svgs/driver/ic_driver-note.svg"
+              src="assets/svg/common/ic_note.svg"
               (click)="onButtonAction({ template: 'medical', action: 'notes' })"
             ></svg-icon>
             <svg-icon
               class="driver-card-dots"
-              src="assets/img/svgs/driver/ic_driver-dots.svg"
+              src="assets/svg/common/ic_dots.svg"
               (click)="onButtonAction({ template: 'medical', action: 'dots' })"
             ></svg-icon>
           </div>
@@ -384,19 +386,19 @@
           <div class="driver-card-buttons">
             <svg-icon
               class="driver-card-attachments"
-              src="assets/img/svgs/driver/ic_driver-attachments.svg"
+              src="assets/svg/common/ic_attachment.svg"
               (click)="
                 onButtonAction({ template: 'mvr', action: 'attachments' })
               "
             ></svg-icon>
             <svg-icon
               class="driver-card-note"
-              src="assets/img/svgs/driver/ic_driver-note.svg"
+              src="assets/svg/common/ic_note.svg"
               (click)="onButtonAction({ template: 'mvr', action: 'notes' })"
             ></svg-icon>
             <svg-icon
               class="driver-card-dots"
-              src="assets/img/svgs/driver/ic_driver-dots.svg"
+              src="assets/svg/common/ic_dots.svg"
               (click)="onButtonAction({ template: 'mvr', action: 'dots' })"
             ></svg-icon>
           </div>

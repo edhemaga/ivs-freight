@@ -5,23 +5,27 @@
     </div>
 
     <div class="settings-header-buttons">
-      <svg-icon
-        src="assets/img/svgs/settings-company/settings-edit.svg"
-        class="settings-edit-button"
-        (click)="
-          onAction({ type: true, modalName: 'factoring', action: 'edit' })
-        "
-      ></svg-icon>
-      <svg-icon
-        src="assets/img/svgs/settings-company/settings-trash.svg"
-        class="settings-trash-button"
-      ></svg-icon>
+      <div class="settings-header-button">
+        <svg-icon
+          src="assets/svg/common/ic_pen.svg"
+          class="settings-edit-button"
+          (click)="
+            onAction({ type: true, modalName: 'factoring', action: 'edit' })
+          "
+        ></svg-icon>
+      </div>
+      <div class="settings-header-button">
+        <svg-icon
+          src="assets/svg/common/ic_trash.svg"
+          class="settings-trash-button"
+        ></svg-icon>
+      </div>
     </div>
   </div>
   <div class="settings-body" [ngClass]="{ gradient: !factoringData }">
     <svg-icon
       *ngIf="!factoringData"
-      src="assets/img/svgs/settings-company/settings-factoring.svg"
+      src="assets/svg/common/ic_factoring.svg"
     ></svg-icon>
 
     <app-settings-tab-placeholder

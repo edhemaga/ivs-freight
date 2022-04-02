@@ -5,7 +5,7 @@
       src="{{ isNavigationHovered | changeLogo }}"
     ></svg-icon>
   </div>
-  <div class="nav-header-bottom">
+  <div class="nav-header-bottom" [ngClass]="{'expand-width': isNavigationHovered}">
     <svg-icon
       class="nav-header-bottom-plus"
       src="assets/svg/common/ic_plus.svg"

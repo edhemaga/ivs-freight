@@ -6,7 +6,7 @@
 
     <div class="settings-header-button">
       <svg-icon
-        src="assets/img/svgs/settings-company/settings-edit.svg"
+        src="assets/svg/common/ic_pen.svg"
         class="settings-edit-button"
         (click)="
           onAction({ type: true, modalName: 'insurance-policy', action: 'new' })
@@ -17,7 +17,7 @@
   <div class="settings-body" [ngClass]="{ gradient: !insuranceData }">
     <svg-icon
       *ngIf="!insuranceData"
-      src="assets/img/svgs/settings-company/settings-insurancepolicy.svg"
+      src="assets/svg/common/ic_insurancepolicy.svg"
     ></svg-icon>
 
     <div *ngIf="insuranceData">

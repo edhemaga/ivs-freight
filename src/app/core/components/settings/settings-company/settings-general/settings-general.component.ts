@@ -11,31 +11,31 @@ export class SettingsGeneralComponent {
     {
       id: 1,
       name: 'Address',
-      svg: 'assets/img/svgs/settings-company/settings-address.svg',
+      svg: 'assets/svg/common/ic_address.svg',
       value: '5462 N East River Rd apt 611, Chicago, IL 60656, USA',
     },
     {
       id: 2,
       name: 'Phone',
-      svg: 'assets/img/svgs/settings-company/settings-phone.svg',
+      svg: 'assets/svg/common/ic_phone.svg',
       value: '(123) 456-7890',
     },
     {
       id: 3,
       name: 'Email',
-      svg: 'assets/img/svgs/settings-company/settings-email.svg',
+      svg: 'assets/svg/common/ic_email.svg',
       value: 'contact@windsor-brokers.com',
     },
     {
       id: 4,
       name: 'Fax',
-      svg: 'assets/img/svgs/settings-company/settings-fax.svg',
+      svg: 'assets/svg/common/ic_fax.svg',
       value: '(123) 456-7890',
     },
     {
       id: 5,
       name: 'webUrl',
-      svg: 'assets/img/svgs/settings-company/settings-webUrl.svg',
+      svg: 'assets/svg/common/ic_web.svg',
       value: 'https://windsor-brokers.com',
     },
   ];
@@ -59,7 +59,7 @@ export class SettingsGeneralComponent {
   ];
 
   public generalData = {
-    logo: 'assets/img/svgs/settings-company/settings-companyLogo.svg',
+    logo: 'assets/svg/common/ic_company_logo_dummy.svg',
 
     additionalDetails: [
       {
@@ -98,7 +98,7 @@ export class SettingsGeneralComponent {
         id: 1,
         name: 'Bank Name',
         value:
-          'assets/img/svgs/settings-company/settings-bankaccount-dummy.svg',
+          'assets/svg/common/ic_bankAccount_dummy.svg',
       },
       {
         id: 2,
@@ -116,7 +116,7 @@ export class SettingsGeneralComponent {
         id: 1,
         nickName: 'Main Card',
         cardNumber: '********1633',
-        cardPicture: 'assets/img/svgs/settings-company/settings_visa.svg',
+        cardPicture: 'assets/svg/common/ic_visa.svg',
         cvc: '***',
         expiration: '04/24',
       },
@@ -124,7 +124,7 @@ export class SettingsGeneralComponent {
         id: 1,
         nickName: 'Do Not Use',
         cardNumber: '********5687',
-        cardPicture: 'assets/img/svgs/settings-company/settings_visa2.svg',
+        cardPicture: 'assets/svg/common/ic_visa2.svg',
         cvc: '***',
         expiration: '04/24',
       },
