@@ -57,7 +57,6 @@ import { TaFilesComponent } from './ta-files/ta-files.component';
 import { TaFileComponent } from './ta-files/ta-file/ta-file.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
-import { SvgIconNewComponent } from 'src/app/svg-definitions/svg-icon-new/svg-icon-new.component';
 import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions.component';
 
 @NgModule({
@@ -93,7 +92,6 @@ import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions
     TaLogoChangeComponent,
     TaFilesComponent,
     TaFileComponent,
-    SvgIconNewComponent,
     SvgDefinitionsComponent
   ],
   imports: [
@@ -187,7 +185,6 @@ import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions
     TaFilesComponent,
     TaFileComponent,
     PdfViewerModule,
-    SvgIconNewComponent,
     SvgDefinitionsComponent
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
