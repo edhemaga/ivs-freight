@@ -1,0 +1,649 @@
+<div cdkDrag class="modal-container">
+  <div cdkDragHandle class="modal-header">
+    <h5 class="modal-title">{{ modalTitle }}</h5>
+    <svg-icon
+      (click)="activeModal.dismiss('Modal close')"
+      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      class="modal-close-btn cursor-pointer"
+      src="assets/img/svgs/table/close.svg"
+    ></svg-icon>
+  </div>
+
+  <div class="divider">
+  </div>
+
+  <div class="modal-body">
+    <app-tab-switcher
+      (switchClicked)="tabChange($event)"
+      *ngIf="inputData.data.type !== 'edit'"
+      [tabs]="tabs"
+    >
+    </app-tab-switcher>
+
+    <form
+      (keydown)="keyDownFunction($event)"
+      [formGroup]="ownerForm"
+      class="form-container has-tabs tabs-2{{ ' tab-' + tab.id }}{{ inputData.data.type == 'edit' ? ' tabs-hidden' : '' }}"
+    >
+      <div class="single-tab-container">
+        <div class="row">
+          <div class="col-9">
+            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input
+                (keydown)="onCheckBackSpace($event)"
+                (keypress)="onBusinessTyping($event)"
+                (paste)="onPaste($event, 'businessName')"
+                [modalType]="inputData.data.type"
+                appAutoFocus
+                appInputFocus
+                class="form-control input-control"
+                formControlName="businessName"
+                id="businessName"
+                placeholder="Business name"
+                (keyup)="onKeyUpMethod($event)"
+              >
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="businessName">Business name</label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-label-group input-icon " [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input
+                (ngModelChange)="typeSsn($event)"
+                appInputFocus
+                class="form-control input-control required"
+                formControlName="taxId"
+                id="taxId"
+                mask="00-0000000"
+                placeholder="EIN"
+                (keyup)="onKeyUpMethod($event)"
+              >
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="taxId">EIN</label>
+              <p *ngIf="ownerForm.get('taxId').errors  && ownerForm.get('taxId').touched"
+                 class="m-0 required-notice invalid-length">{{ownerForm.get('taxId').errors | inputError}} </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div
+              class="form-label-group input-icon phone-field-wrapper input-holder"
+              [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input
+                appInputFocus
+                class="form-control input-control required phone-input"
+                formControlName="phone"
+                id="phone"
+                mask="(000) 000-0000"
+                placeholder="Phone"
+                (keyup)="onKeyUpMethod($event)"
+              >
+
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/phone-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="phone">Phone</label>
+              <p *ngIf="ownerForm.get('phone').errors  && ownerForm.get('phone').touched"
+                 class="m-0 required-notice invalid-length">{{ownerForm.get('phone').errors | inputError}} </p>
+            </div>
+          </div>
+          <div class="col-8">
+            <div
+              class="form-label-group input-icon email-field-wrapper input-holder {{ manageInputValidation(ownerForm.controls.email) }}"
+              [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input
+                (keypress)="onEmailTyping($event)"
+                (paste)="onPaste($event, 'email')"
+                appInputFocus
+                class="form-control input-control required email-input"
+                formControlName="email"
+                id="email"
+                oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
+                placeholder="Email"
+                (keyup)="onKeyUpMethod($event)"
+              >
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/mail-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="email">Email</label>
+              <p *ngIf="ownerForm.get('email').errors  && ownerForm.get('email').touched"
+                 class="m-0 required-notice invalid-length">{{ownerForm.get('email').errors | inputError}} </p>
+
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
+              class="form-label-group input-icon input-holder address-field-wrapper {{
+                manageInputValidation(ownerForm.controls.address)
+              }}"
+            >
+              <input
+                #placesRef="ngx-places"
+                (keyup)="onKeyUpMethod($event)"
+                (onAddressChange)="handleAddressChange($event)"
+                [options]="options"
+                appInputFocus
+                class="form-control input-control required address-input"
+                formControlName="address"
+                id="address"
+                ngx-google-places-autocomplete
+                placeholder="Address, City, State Zip"
+              />
+
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/address-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="top"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
+              <label class="required-label" for="address">Address, City, State Zip</label>
+              <p *ngIf="ownerForm.get('address').errors && ownerForm.get('address').touched"
+                 class="m-0 required-notice invalid-length">{{ownerForm.get('address').errors | inputError}} </p>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <!-- appInputrestriction="[A-Za-z0-9-]" -->
+              <input
+                (keypress)="onUnitTyping($event)"
+                (paste)="onPaste($event, 'addressUnit', 6)"
+                appInputFocus
+                class="form-control input-control required"
+                formControlName="addressUnit"
+                id="addressUnit"
+                maxlength="6"
+                placeholder="Unit #"
+                (keyup)="onKeyUpMethod($event)"
+              >
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label for="addressUnit">Unit #</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div *ngIf="!newBankVisible" class="form-label-group">
+              <ng-select
+                (change)="onBankChange($event)"
+                (clear)="onClose($event)"
+                (close)="onClose($event)"
+                (search)="onSearch($event)"
+                [items]="bankData"
+                [searchFn]="customSearch"
+                appendTo="body"
+                bindLabel="bankName"
+                class="bank-name-select has-add-new{{ (bankSearchItems == 1) ? ' has-one-result' : '' }}"
+                formControlName="bank"
+                placeholder="Bank name"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                <span *ngIf="item.bankLogo" class="bank-image dropdown-image">
+                  <svg-icon src="assets/img/svgs/bank-logos/{{ item.bankLogoWide }}.svg"></svg-icon>
+                </span>
+                  <span *ngIf="!item.bankLogo" [ngOptionHighlight]="search">{{ item.bankName }}</span>
+                  <svg-icon (click)="deleteBank(item.id)"
+                            *ngIf="item.id !== 0 && item.protected !== null && item.protected !== 1"
+                            appTaTooltip="Delete" class="delete-record-icon" position="bottom-left"
+                            src="assets/img/trash.svg"></svg-icon>
+                </ng-template>
+
+                <ng-template let-item="item" ng-label-tmp>
+                <span *ngIf="item.bankLogo" class="value-label-container bank-image">
+                  <svg-icon src="assets/img/svgs/bank-logos/{{ item.bankLogoWide }}.svg"></svg-icon>
+                </span>
+                  <span *ngIf="!item.bankLogo" class="value-label-container bank-image">
+                  {{ item.bankName }}
+                </span>
+                </ng-template>
+              </ng-select>
+            </div>
+
+            <div *ngIf="newBankVisible" class="add-new-form add-new-bank">
+              <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+                <input
+                  (keypress)="onBankKeyPress($event)"
+                  [(ngModel)]="newBank"
+                  [ngModelOptions]="{standalone: true}"
+                  appInputFocus
+                  class="form-control input-control"
+                  id="newBank"
+                  placeholder="New bank"
+                  (keyup)="onKeyUpMethod($event)"
+                >
+                <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+                </div>
+                <label for="newBank">New bank</label>
+                <span (click)="saveNewBank()" *ngIf="newBank !== '' && newBank !== null" appTaTooltip="Save"
+                      class="save-new-record" position="bottom-right">
+                <svg-icon src="assets/img/svgs/add-save.svg"></svg-icon>
+              </span>
+                <span (click)="closeNewBank()" appTaTooltip="Cancel" class="close-new-record" position="bottom-right">
+                <svg-icon src="assets/img/svgs/add-cancel.svg"></svg-icon>
+              </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input (keydown)="onCheckBackSpace($event)" (keypress)="onAccountAndRoutingTyping($event)"
+                     (paste)="onPaste($event, 'accountNumber', 17)"
+                     [required]="bankInfoRequired" class="form-control input-control required"
+                     formControlName="accountNumber"
+                     id="accountNumber"
+                     maxlength="17"
+                     minlength="4"
+                     placeholder="Account number"
+                     (keyup)="onKeyUpMethod($event)"
+              >
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="{{ bankInfoRequired ? 'required-label': '' }}" for="accountNumber">Account
+                number</label>
+              <app-required-label *ngIf="bankInfoRequired"
+                                  [control]="ownerForm.controls.accountNumber"></app-required-label>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input (keydown)="onCheckBackSpace($event)" (keypress)="onAccountAndRoutingTyping($event)"
+                     (paste)="onPaste($event, 'routingNumber', 9)"
+                     [required]="bankInfoRequired" class="form-control input-control required"
+                     formControlName="routingNumber" id="routingNumber"
+                     maxlength="9"
+                     minlength="9"
+                     placeholder="Routing number"
+                     (keyup)="onKeyUpMethod($event)"
+              >
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="{{ bankInfoRequired ? 'required-label': '' }}" for="routingNumber">Routing
+                number</label>
+              <app-required-label *ngIf="bankInfoRequired"
+                                  [control]="ownerForm.controls.routingNumber"></app-required-label>
+            </div>
+          </div>
+        </div>
+        <div class="divider">
+        </div>
+
+
+        <div class="row">
+          <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
+            <div (click)="openNote()" class="note-label-wrapper">
+              <span class="note-label">Note</span>
+              <svg-icon
+                class="down-icon"
+                src="assets/img/svgs/down-arrow.svg"
+              ></svg-icon>
+            </div>
+            <div class="example-full-width note-input{{ showNote ? ' note-visible' : ' note-hidden' }}">
+              <textarea
+                #note
+                cdkAutosizeMaxRows="5"
+                cdkAutosizeMinRows="2"
+                cdkTextareaAutosize
+                class="input-custom-textarea form-textarea"
+                formControlName="note"
+                placeholder="Write a note."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="single-tab-container">
+        <div class="row">
+          <div class="col-4">
+            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input
+                (paste)="onPaste($event, 'firstName')"
+                appInputFocus
+                appInputrestriction="[A-Za-z]"
+                class="form-control input-control"
+                formControlName="firstName"
+                id="firstName"
+                placeholder="First name"
+                (keyup)="onKeyUpMethod($event)"
+              >
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="firstName">First name</label>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input
+                (paste)="onPaste($event, 'lastName')"
+                appInputFocus
+                appInputrestriction="[A-Za-z]"
+                class="form-control input-control"
+                formControlName="lastName"
+                id="lastName"
+                placeholder="Last name"
+                (keyup)="onKeyUpMethod($event)"
+              >
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="lastName">Last name</label>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input
+                (ngModelChange)="typeSsn($event)"
+                (paste)="onPaste($event, 'ssnId', 11)"
+                appInputFocus
+                class="form-control input-control"
+                formControlName="ssn"
+                id="ssnId"
+                mask="000-00-0000"
+                placeholder="SSN"
+                (keyup)="onKeyUpMethod($event)"
+              >
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="ssnId">SSN</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div
+              class="form-label-group input-icon phone-field-wrapper input-holder {{ manageInputValidation(ownerForm.controls.phone) }}"
+              [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input
+                appInputFocus
+                class="form-control input-control required phone-input"
+                formControlName="phone"
+                id="phone"
+                mask="(000) 000-0000"
+                placeholder="Phone"
+                (keyup)="onKeyUpMethod($event)"
+              >
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/phone-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="phone">Phone</label>
+              <p *ngIf="ownerForm.get('phone').errors  && ownerForm.get('phone').touched"
+                 class="m-0 required-notice invalid-length">{{ownerForm.get('phone').errors | inputError}} </p>
+            </div>
+          </div>
+          <div class="col-8">
+            <div
+              class="form-label-group input-icon email-field-wrapper input-holder {{ manageInputValidation(ownerForm.controls.email) }}"
+              [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input
+                (keypress)="onEmailTyping($event)"
+                (paste)="onPaste($event, 'email')"
+                appInputFocus
+                class="form-control input-control required email-input"
+                formControlName="email"
+                id="email"
+                oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
+                placeholder="Email"
+                (keyup)="onKeyUpMethod($event)"
+              >
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/mail-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="email">Email</label>
+
+              <p *ngIf="ownerForm.get('email').errors  && ownerForm.get('email').touched"
+                 class="m-0 required-notice invalid-length">{{ownerForm.get('email').errors | inputError}} </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div
+              class="form-label-group input-icon address-field-wrapper input-holder {{ manageInputValidation(ownerForm.controls.address) }}"
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
+            >
+              <input
+                #placesRef="ngx-places"
+                (onAddressChange)="handleAddressChange($event)"
+                [options]="options"
+                appInputFocus
+                class="form-control input-control required email-input"
+                formControlName="address"
+                id="address"
+                ngx-google-places-autocomplete
+                placeholder="Address, City, State Zip"
+                (keyup)="onKeyUpMethod($event)"
+              >
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/address-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="top"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="address">Address, City, State Zip</label>
+
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input
+                (paste)="onPaste($event, 'addressUnit')"
+                appInputFocus
+                appInputrestriction="[0-9-]"
+                class="form-control input-control required"
+                formControlName="addressUnit"
+                id="addressUnit"
+                maxlength="6"
+                placeholder="Unit #"
+                (keyup)="onKeyUpMethod($event)"
+              >
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label for="addressUnit">Unit #</label>
+            </div>
+          </div>
+        </div>
+        <div class="row top-revert">
+          <div class="col-12">
+
+            <div *ngIf="!newBankVisible" class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <ng-select
+                (change)="onBankChange($event)"
+                (clear)="onClose($event)"
+                (close)="onClose($event)"
+                (search)="onSearch($event)"
+                [items]="bankData"
+                [searchFn]="customSearch"
+                appendTo="body"
+                bindLabel="bankName"
+                class="bank-name-select has-add-new{{ (bankSearchItems == 1) ? ' has-one-result' : '' }}"
+                formControlName="bank"
+                placeholder="Bank name"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                <span *ngIf="item.bankLogo !== null" class="bank-image dropdown-image">
+                  <svg-icon src="assets/img/svgs/bank-logos/{{ item.bankLogoWide }}.svg"></svg-icon>
+                </span>
+                  <span *ngIf="item.bankLogo == null" [ngOptionHighlight]="search">{{ item.bankName }}</span>
+                  <svg-icon (click)="deleteBank(item.id)"
+                            *ngIf="item.id !== 0 && item.protected !== null && item.protected !== 1"
+                            appTaTooltip="Delete" class="delete-record-icon" position="bottom-left"
+                            src="assets/img/trash.svg"></svg-icon>
+                </ng-template>
+
+                <ng-template let-item="item" ng-label-tmp>
+                <span *ngIf="item.bankLogo !== null" class="value-label-container bank-image">
+                  <svg-icon src="assets/img/svgs/bank-logos/{{ item.bankLogoWide }}.svg"></svg-icon>
+                </span>
+                  <span *ngIf="item.bankLogo == null" class="value-label-container bank-image">
+                  {{ item.bankName }}
+                </span>
+                </ng-template>
+              </ng-select>
+            </div>
+
+            <div *ngIf="newBankVisible" class="add-new-form add-new-bank">
+              <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+                <input
+                  (keypress)="onBankKeyPress($event)"
+                  [(ngModel)]="newBank"
+                  [ngModelOptions]="{standalone: true}"
+                  appInputFocus
+                  class="form-control input-control"
+                  id="newBank"
+                  placeholder="New bank"
+                  (keyup)="onKeyUpMethod($event)"
+                >
+                <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+                </div>
+                <label for="newBank">New bank</label>
+                <span (click)="saveNewBank()" *ngIf="newBank !== '' && newBank !== null" appTaTooltip="Save"
+                      class="save-new-record" position="bottom-right">
+                <svg-icon src="assets/img/svgs/add-save.svg"></svg-icon>
+              </span>
+                <span (click)="closeNewBank()" appTaTooltip="Cancel" class="close-new-record" position="bottom-right">
+                <svg-icon src="assets/img/svgs/add-cancel.svg"></svg-icon>
+              </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input (keydown)="onCheckBackSpace($event)" (keypress)="onAccountAndRoutingTyping($event)"
+                     (paste)="onPaste($event, 'accountNumber', 17)"
+                     [required]="bankInfoRequired" class="form-control input-control required"
+                     formControlName="accountNumber"
+                     id="accountNumber"
+                     maxlength="17"
+                     minlength="4"
+                     placeholder="Account number"
+                     (keyup)="onKeyUpMethod($event)"
+              >
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="{{ bankInfoRequired ? 'required-label': '' }}" for="accountNumber">Account
+                number</label>
+              <app-required-label *ngIf="bankInfoRequired"
+                                  [control]="ownerForm.controls.accountNumber"></app-required-label>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+              <input (keydown)="onCheckBackSpace($event)" (keypress)="onAccountAndRoutingTyping($event)"
+                     (paste)="onPaste($event, 'routingNumber', 9)"
+                     [required]="bankInfoRequired" class="form-control input-control required"
+                     formControlName="routingNumber" id="routingNumber"
+                     maxlength="9"
+                     minlength="9"
+                     placeholder="Routing number"
+                     (keyup)="onKeyUpMethod($event)"
+              >
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="{{ bankInfoRequired ? 'required-label': '' }}" for="routingNumber">Routing
+                number</label>
+              <app-required-label *ngIf="bankInfoRequired"
+                                  [control]="ownerForm.controls.routingNumber"></app-required-label>
+            </div>
+          </div>
+        </div>
+        <div class="divider">
+        </div>
+
+
+        <div class="row">
+          <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
+            <div (click)="openNote()" class="note-label-wrapper">
+              <span class="note-label">Note</span>
+              <svg-icon
+                class="down-icon"
+                src="assets/img/svgs/down-arrow.svg"
+              ></svg-icon>
+            </div>
+            <div class="example-full-width note-input{{ showNote ? ' note-visible' : ' note-hidden' }}">
+              <textarea
+                #note
+                cdkAutosizeMaxRows="5"
+                cdkAutosizeMinRows="2"
+                cdkTextareaAutosize
+                class="input-custom-textarea form-textarea"
+                formControlName="note"
+                placeholder="Write a note."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+
+    <button (click)="manageOwner()" class="save-btn" [ngClass]="{'invalid-btn' : !ownerForm.valid}" ngbAutofocus
+            type="button">
+      <p class="m-0">Save</p>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,719 @@
+<div cdkDrag class="modal-container">
+  <div cdkDragHandle class="modal-header">
+    <div class="d-flex align-items-center">
+      <h5 class="modal-title">{{ modalTitle }}</h5>
+    </div>
+    <svg-icon
+      (click)="activeModal.dismiss('Modal close')"
+      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      class="modal-close-btn cursor-pointer"
+      src="assets/img/svgs/table/close.svg"
+    ></svg-icon>
+  </div>
+  <div class="divider">
+  </div>
+
+  <div class="modal-body">
+    <app-tab-switcher (switchClicked)="tabChange($event)" [tabs]="tabs"></app-tab-switcher>
+    <!-- <app-loading-modal *ngIf="!loaded" class="large"></app-loading-modal> -->
+    <form
+      [formGroup]="driverForm"
+      class="form-container has-tabs tabs-3{{ ' tab-' + selectedTab }}"
+    >
+      <div
+        *ngIf="inputData.data.type == 'edit'"
+        class="form-group d-flex align-items-center mt-0 mt-lg-3 absolute-status"
+      >
+        <kendo-switch
+          [checked]="driver?.status"
+          class="switch-grey"
+          formControlName="status"
+        ></kendo-switch>
+      </div>
+
+      <div class="single-tab-container">
+        <div class="row">
+          <div class="col-6">
+            <div [ngClass]="driverForm.get('firstName').dirty ? 'typing' : 'not-typing'"
+                 class="form-label-group input-icon input-holder {{
+                      manageInputValidation(this.driverForm.controls.firstName)
+                    }}">
+              <input
+                #name
+                (keyup)="onKeyUpMethod($event)"
+                (paste)="onPaste($event, 'firstName')"
+                [modalType]="inputData.data.type"
+                appAutoFocus
+                appInputFocus
+                appInputrestriction="[A-Za-z]"
+                class="form-control input-control name-input required"
+                formControlName="firstName"
+                id="firstName"
+                onkeypress="return (event.charCode >= 64 && event.charCode <= 91) || (event.charCode >= 96 && event.charCode <= 123)"
+                placeholder="First name"
+              />
+
+              <svg-icon
+                class="valid-icon"
+                src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                class="x-invalid-icon"
+                src="../../../../../assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
+              <label class="required-label" for="firstName">First name</label>
+              <p *ngIf="driverForm.get('firstName').errors && driverForm.get('firstName').touched"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('firstName').errors | inputError}} </p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div [ngClass]="driverForm.get('lastName').touched ? 'typing' : 'not-typing'"
+                 class="form-label-group input-icon input-holder {{
+                      manageInputValidation(this.driverForm.controls.lastName)
+                    }}">
+              <input
+                #lastName
+                (keyup)="onKeyUpMethod($event)"
+                (paste)="onPaste($event, 'lastName')"
+                appInputFocus
+                appInputrestriction="[A-Za-z]"
+                class="form-control input-control name-input required"
+                formControlName="lastName"
+                id="lastName"
+                onkeypress="return (event.charCode >= 64 && event.charCode <= 91) || (event.charCode >= 96 && event.charCode <= 123)"
+                placeholder="Last name"
+              />
+
+              <svg-icon
+                *ngIf="!driverForm.get('lastName').errors && driverForm.get('lastName').touched"
+                class="valid-icon"
+                src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                *ngIf="driverForm.get('lastName').errors && driverForm.get('lastName').touched"
+                class="x-invalid-icon"
+                src="../../../../../assets/img/form-validation/x-icon-light-red.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
+              <label class="required-label" for="lastName">Last name</label>
+              <p *ngIf="driverForm.get('lastName').errors  && driverForm.get('lastName').touched"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('lastName').errors | inputError}} </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'"
+                 class="form-label-group input-icon phone-field-wrapper input-holder {{
+                      manageInputValidation(driverForm.controls.phone)
+                    }}">
+              <input
+                #phone
+                (keyup)="onKeyUpMethod($event)"
+                appInputFocus
+                class="form-control input-control required phone-input"
+                formControlName="phone"
+                id="phone"
+                mask="(000) 000-0000"
+                placeholder="Phone"
+              />
+
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/phone-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
+              <label class="required-label" for="phone">Phone</label>
+              <p *ngIf="driverForm.get('phone').errors  && driverForm.get('phone').touched"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('phone').errors | inputError}} </p>
+            </div>
+          </div>
+          <div class="col-8">
+            <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
+              class="form-label-group input-icon email-field-wrapper input-holder {{
+                manageInputValidation(driverForm.controls.email)
+              }}"
+            >
+              <input
+                #email
+                (keypress)="onEmailTyping($event)"
+                (keyup)="onKeyUpMethod($event)"
+                (paste)="onPaste($event, 'email')"
+                appInputFocus
+                class="form-control input-control required email-input"
+                formControlName="email"
+                id="email"
+                oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
+                placeholder="Email"
+              />
+
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/mail-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+              <label class="required-label" for="email">Email</label>
+              <p *ngIf="driverForm.get('email').errors  && driverForm.get('email').touched"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('email').errors | inputError}} </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div
+              [ngClass]="inputText ? 'typing' : 'not-typing'"
+              class="form-label-group input-icon input-holder address-field-wrapper {{
+                manageInputValidation(driverForm.controls.address)
+              }}"
+            >
+              <input
+                #placesRef="ngx-places"
+                (keyup)="onKeyUpMethod($event)"
+                (onAddressChange)="handleAddressChange($event)"
+                [options]="options"
+                appInputFocus
+                class="form-control input-control required address-input"
+                formControlName="address"
+                id="address"
+                ngx-google-places-autocomplete
+                placeholder="Address, City, State Zip"
+              />
+
+              <svg-icon
+                class="default-icon"
+                src="../../../../../assets/img/form-validation/address-icon-default.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="top"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
+              <label class="required-label" for="address">Address, City, State Zip</label>
+              <p *ngIf="driverForm.get('address').errors && driverForm.get('address').touched"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('address').errors | inputError}} </p>
+            </div>
+          </div>
+          <div class="col-2">
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group">
+              <input
+                (keyup)="onKeyUpMethod($event)"
+                appInputFocus
+                appInputrestriction="[A-Za-z0-9-]"
+                class="form-control input-control"
+                formControlName="addressUnit"
+                id="addressUnit"
+                maxlength="6"
+                placeholder="Unit #"
+              />
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label for="addressUnit">Unit #</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div class="form-label-group input-icon input-holder {{
+                      manageInputValidation(this.driverForm.controls.dateOfBirth)
+                    }}">
+              <input
+                class="form-control input-control required"
+                formControlName="dateOfBirth"
+                id="dateOfBirth"
+                type="date"
+              >
+
+              <label class="required-label" for="dateOfBirth">DOB</label>
+              <p *ngIf="driverForm.get('dateOfBirth').errors  && driverForm.get('dateOfBirth').touched"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('dateOfBirth').errors | inputError}} </p>
+            </div>
+          </div>
+
+          <div class="col-8">
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'"
+                 class="form-label-group input-icon input-holder {{
+                      manageInputValidation(this.driverForm.controls.ssn)
+                    }}">
+              <input
+                (keyup)="onKeyUpMethod($event)"
+                (paste)="onPaste($event, 'ssn')"
+                appInputFocus
+                class="form-control input-control required"
+                formControlName="ssn"
+                id="ssn"
+                mask="000-00-0000"
+                placeholder="SSN"
+              />
+
+              <svg-icon
+                class="valid-icon"
+                src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
+              <label class="required-label" for="ssn">SSN</label>
+              <p *ngIf="driverForm.get('ssn').errors && driverForm.get('ssn').touched"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('ssn').errors | inputError}} </p>
+
+            </div>
+          </div>
+
+        </div>
+        <div class="td-content set-center">
+          <div class="checkbox-holder">
+            <input
+              class="table-checkbox"
+              id="checkbox"
+              type="checkbox"
+              (change)="checkShareBox()"
+            />
+            <label class="table-checkbox-label" for="checkbox"></label>
+
+            <span class="checkbox-name-label-wrapper">Owner</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <div class="form-label-group">
+              <input
+                (input)="getBusinessName()"
+                (keyup)="onKeyUpMethod($event)"
+                (paste)="onPaste($event, 'taxId'); getBusinessName()"
+                [required]="ownerFieldsRequired"
+                appInputFocus
+                class="form-control input-control required"
+                formControlName="taxId"
+                id="taxId"
+                mask="00-0000000"
+                placeholder="EIN"
+              />
+              <div class="icon-container">
+                <i class="input-loader"></i>
+              </div>
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="{{ ownerFieldsRequired ? 'required-label' : '' }}" for="taxId"
+              >EIN</label
+              >
+              <p *ngIf="driverForm.get('taxId').errors  && driverForm.get('taxId').touched"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('taxId').errors | inputError}} </p>
+            </div>
+          </div>
+          <div class="col-8">
+            <div class="form-label-group">
+              <input
+                (keydown)="onCheckBackSpace($event)"
+                (keypress)="onNameTyping($event)"
+                (keyup)="onKeyUpMethod($event)"
+                (paste)="onPaste($event, 'businessName')"
+                appInputFocus
+                appInputrestriction="[0-9A-Za-z\.\,\s]"
+                class="form-control input-control required"
+                formControlName="businessName"
+                id="businessName"
+                oninput="this.value = this.value.replace(/[^A-Za-z0-9-,.;'&/.() ]|^ /g,'')"
+                placeholder="Business name"
+              />
+              <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+              </div>
+              <label class="required-label" for="businessName">Business name</label>
+              <p *ngIf="driverForm.get('businessName').errors && driverForm.get('businessName').touched"
+                 class="m-0 required-notice invalid-length">{{driverForm.get('businessName').errors | inputError}} </p>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-10">
+          <div class="col-12 note-wrapper {{ showNote ? ' visible-note' : ' hidden-note' }}">
+            <div class="note-label-wrapper">
+              <span class="note-label">Off duty location</span>
+              <svg-icon class="down-icon" src="assets/img/svgs/down-arrow.svg"></svg-icon>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
+            <div (click)="openNote()" class="note-label-wrapper">
+              <span class="note-label">Note</span>
+              <svg-icon class="down-icon" src="assets/img/svgs/down-arrow.svg"></svg-icon>
+            </div>
+            <div
+              class="example-full-width note-input{{ showNote ? ' note-visible' : ' note-hidden' }}"
+            >
+              <textarea
+                #note
+                cdkAutosizeMaxRows="5"
+                cdkAutosizeMinRows="2"
+                cdkTextareaAutosize
+                class="input-custom-textarea form-textarea"
+                formControlName="note"
+                placeholder="Write a note."
+                rows="5"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Srednji tab -->
+      <div class="single-tab-container">
+        <div class="divider"></div>
+        <div class="row">
+
+          <div class="td-content set-center">
+            <div class="checkbox-holder">
+              <input
+                class="table-checkbox"
+                type="checkbox"
+                (change)="checkShareBox()"
+              />
+              <label class="table-checkbox-label" for="checkbox"></label>
+
+              <span class="checkbox-name-label-wrapper">Owner</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-5">
+            <div *ngIf="!newBankVisible" class="form-label-group">
+              <ng-select
+                (change)="onBankChange($event)"
+                (clear)="onClose($event)"
+                (close)="onClose($event)"
+                (search)="onSearch($event)"
+                [items]="bankData"
+                [searchFn]="customSearch"
+                appendTo="body"
+                bindLabel="bankName"
+                class="bank-name-select has-add-new{{
+                  bankSearchItems == 1 ? ' has-one-result' : ''
+                }}"
+                formControlName="bankData"
+                placeholder="Bank name"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <span *ngIf="item.bankLogo !== null" class="bank-image dropdown-image">
+                    <svg-icon
+                      src="assets/img/svgs/bank-logos/{{ item.bankLogoWide }}.svg"
+                    ></svg-icon>
+                  </span>
+                  <span *ngIf="item.bankLogo == null" [ngOptionHighlight]="search">{{
+                    item.bankName
+                    }}</span>
+                  <svg-icon
+                    (click)="deleteBank(item.id)"
+                    *ngIf="item.id !== 0 && item.protected !== null && item.protected !== 1"
+                    appTooltip="Delete"
+                    class="delete-record-icon"
+                    position="bottom-left"
+                    src="assets/img/trash.svg"
+                  ></svg-icon>
+                </ng-template>
+
+                <ng-template let-item="item" ng-label-tmp>
+                  <span *ngIf="item.bankLogo !== null" class="value-label-container bank-image">
+                    <svg-icon
+                      src="assets/img/svgs/bank-logos/{{ item.bankLogoWide }}.svg"
+                    ></svg-icon>
+                  </span>
+                  <span *ngIf="item.bankLogo == null" class="value-label-container bank-image">
+                    {{ item.bankName }}
+                  </span>
+                </ng-template>
+              </ng-select>
+            </div>
+
+            <div *ngIf="newBankVisible" class="add-new-form add-new-bank">
+              <div class="form-label-group">
+                <input
+                  (keypress)="onBankKeyPress($event)"
+                  [(ngModel)]="newBank"
+                  [ngModelOptions]="{ standalone: true }"
+                  appInputFocus
+                  class="form-control input-control"
+                  id="newBank"
+                  placeholder="New bank"
+                />
+                <label for="newBank">New bank</label>
+                <span
+                  (click)="saveNewBank()"
+                  *ngIf="newBank !== '' && newBank !== null"
+                  appTooltip="Save"
+                  class="save-new-record"
+                  position="bottom-right"
+                >
+                  <svg-icon src="assets/img/svgs/add-save.svg"></svg-icon>
+                </span>
+                <span
+                  (click)="closeNewBank()"
+                  appTooltip="Cancel"
+                  class="close-new-record"
+                  position="bottom-right"
+                >
+                  <svg-icon src="assets/img/svgs/add-cancel.svg"></svg-icon>
+                </span>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-label-group">
+                <input
+                  (paste)="onPaste($event, 'routingNumber')"
+                  [required]="bankInfoRequired"
+                  appInputFocus
+                  class="form-control input-control{{ bankInfoRequired ? ' required' : '' }}"
+                  formControlName="routingNumber"
+                  id="routingNumber"
+                  maxlength="9"
+                  minlength="9"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                  placeholder="Routing number"
+                />
+                <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+                </div>
+                <label class="{{ bankInfoRequired ? 'required-label' : '' }}" for="routingNumber"
+                >Routing number</label>
+                <p *ngIf="driverForm.get('routingNumber').errors && driverForm.get('routingNumber').touched"
+                   class="m-0 required-notice invalid-length">{{driverForm.get('routingNumber').errors | inputError}} </p>
+
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div class="form-label-group">
+                <input
+                  (keyup)="onKeyUpMethod($event)"
+                  (paste)="onPaste($event, 'accountNumber')"
+                  class="form-control input-control{{ bankInfoRequired ? ' required' : '' }}"
+                  formControlName="accountNumber"
+                  id="accountNumber"
+                  maxlength="17"
+                  minlength="4"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                  placeholder="Account number"
+                />
+                <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
+                </div>
+                <label class="{{ bankInfoRequired ? 'required-label' : '' }}" for="accountNumber"
+                >Account number</label>
+
+                <p *ngIf="driverForm.get('accountNumber').errors && driverForm.get('accountNumber').touched"
+                   class="m-0 required-notice invalid-length">{{driverForm.get('accountNumber').errors | inputError}} </p>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div
+              class="{{
+              driverForm.controls.paymentType.value !== null
+                ? 'payment-type col-6'
+                : 'payment-type col-12'
+            }}"
+            >
+              <div class="form-label-group">
+                <ng-select
+                  [items]="paymentTypes"
+                  appendTo="body"
+                  bindLabel="name"
+                  formControlName="paymentType"
+                  placeholder="Pay Type"
+                >
+                  <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                    <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+            <div
+              *ngIf="
+              driverForm.controls.paymentType.value !== null &&
+              driverForm.controls.paymentType.value.id == 'mile'
+            "
+              class="col-3"
+            >
+              <div class="form-label-group">
+                <input
+                  class="form-control input-control"
+                  formControlName="loadedMiles"
+                  id="loadedMiles"
+                  placeholder="Loaded"
+                />
+                <label for="loadedMiles">Loaded</label>
+              </div>
+            </div>
+            <div
+              *ngIf="
+              driverForm.controls.paymentType.value !== null &&
+              driverForm.controls.paymentType.value.id == 'mile'
+            "
+              class="col-3"
+            >
+              <div class="form-label-group">
+                <input
+                  class="form-control input-control"
+                  formControlName="emptyMiles"
+                  id="emptyMiles"
+                  placeholder="Empty"
+                />
+                <label for="emptyMiles">Empty Miles</label>
+              </div>
+            </div>
+            <div
+              *ngIf="
+              driverForm.controls.paymentType.value !== null &&
+              driverForm.controls.paymentType.value.id == 'commission'
+            "
+              class="col-6 slider-wrapper"
+            >
+              <ngx-slider [options]="sliderOptions" formControlName="commission"></ngx-slider>
+            </div>
+          </div>
+
+          <div *ngIf="notifications.length > 0" class="row mb-28">
+            <div class="col-12 d-flex notifications-holder">
+              <p class="fw500">Notifications</p>
+              <div class="multiple-choices-wrapper driver-notifications">
+                <div
+                  *ngFor="let notification of notifications; let i = index"
+                  class="btn-group btn-group-toggle"
+                >
+                  <label class="btn-primary" ngbButtonLabel>
+                    <input
+                      [(ngModel)]="notification.checked"
+                      [ngModelOptions]="{ standalone: true }"
+                      appInputFocus
+                      ngbButton
+                      type="checkbox"
+                    />
+                    {{ notification.name }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="single-tab-container">
+        <div class="row">
+          <div class="col-2">
+            <div class="wrap choice-wrapper twic-choice">
+              <div class="btn-group btn-group-toggle">
+                <label class="btn-primary" ngbButtonLabel>
+                  <input
+                    (change)="checkTwic()"
+                    [(ngModel)]="isTwicChecked"
+                    [ngModelOptions]="{ standalone: true }"
+                    ngbButton
+                    type="checkbox"
+                  />
+                  TWIC
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-label-group">
+              <input
+                class="form-control input-control required"
+                formControlName="expirationDate"
+                id="expirationDate"
+                placeholder="Placeholder"
+                type="date"
+              >
+              <label class="required-label" for="expirationDate">Expiration date</label>
+            </div>
+          </div>
+          <div class="col-6">
+            <div [ngClass]="inputText ? 'typing' : 'not-typing'" class="form-label-group input-icon input-holder {{
+                      manageInputValidation(this.driverForm.controls.fuelCard)
+                    }}">
+              <input
+                (keyup)="onKeyUpMethod($event)"
+                class="form-control input-control"
+                formControlName="fuelCard"
+                id="fuelCard"
+                placeholder="Fuel Card #"
+              />
+
+              <svg-icon
+                class="valid-icon"
+                src="../../../../../assets/img/form-validation/check-icon-light-blue.svg"
+              >
+              </svg-icon>
+
+              <svg-icon
+                (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+                placement="bottom-left"
+                src="../../../../../assets/img/form-validation/x-icon-cut.svg"
+              ></svg-icon>
+
+              <label for="fuelCard">Fuel Card #</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <app-edit-profile-image
+            (cancel)="callCancel()"
+            (saveAvatar)="callSaveAvatar($event)"
+          >
+          </app-edit-profile-image>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button (click)="saveDriver()" [ngClass]="{'invalid-btn' : !driverForm.valid}" class="save-btn" type="button">
+      <p class="m-0">Save</p>
+    </button>
+  </div>
+</div>

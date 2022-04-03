@@ -1,0 +1,365 @@
+<div cdkDrag class="modal-container">
+  <div cdkDragHandle class="modal-header">
+    <h5 class="modal-title">{{ modalTitle }}</h5>
+
+    <svg-icon
+      (click)="closeModal()"
+      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      class="modal-close-btn cursor-pointer"
+      src="assets/img/svgs/table/close.svg"
+    ></svg-icon>
+  </div>
+
+
+  <div class="divider">
+  </div>
+  <div class="modal-body add-company-user static-element">
+    <!-- <app-loading-modal *ngIf="loading" class="large"></app-loading-modal> -->
+    <form
+      (keydown)="keyDownFunction($event)"
+      *ngIf="!loading"
+      [formGroup]="usersForm"
+      class="form-container"
+    >
+      <ng-container *ngIf="inputData.data.type == 'new'">
+        <div class="row">
+          <div class="col-4" *ngIf="!disableUserType">
+            <div class="form-label-group">
+              <ng-select
+                [items]="userTypes"
+                appendTo="body"
+                bindLabel="name"
+                class="required-field"
+                formControlName="userType"
+                placeholder="User type"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-label-group">
+              <!-- appInputrestriction="[A-Za-z]" -->
+              <input
+                (keypress)="onNameTyping($event)"
+                (paste)="onPaste($event, 'firstName')"
+                appInputFocus
+                class="form-control input-control required"
+                formControlName="firstName"
+                id="firstName"
+                placeholder="First name"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div
+                (click)="clearInput($event)"
+                class="clear-button"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+              ></div>
+              <label class="required-label" for="firstName">First name</label>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-label-group">
+              <!-- appInputrestriction="[A-Za-z]" -->
+              <input
+                (keypress)="onNameTyping($event)"
+                (paste)="onPaste($event, 'lastName')"
+                appInputFocus
+                class="form-control input-control required"
+                formControlName="lastName"
+                id="lastName"
+                placeholder="Last name"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div
+                (click)="clearInput($event)"
+                class="clear-button"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+              ></div>
+              <label class="required-label" for="lastName">Last name</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div
+              class="form-label-group input-icon phone-field-wrapper {{
+                manageInputValidation(usersForm.controls.phone)
+              }}"
+            >
+              <input
+                appInputFocus
+                class="form-control input-control required"
+                formControlName="phone"
+                id="phone"
+                mask="(000) 000-0000"
+                placeholder="Phone"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div
+                (click)="clearInput($event)"
+                class="clear-button"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+              ></div>
+              <label for="phone">Phone</label>
+            </div>
+          </div>
+          <div class="col-8">
+            <div
+              class="form-label-group input-icon email-field-wrapper {{
+                manageInputValidation(usersForm.controls.email)
+              }}"
+            >
+              <input
+                (keypress)="onEmailTyping($event)"
+                (paste)="onPaste($event, 'email')"
+                appInputFocus
+                class="form-control input-control required email-input"
+                formControlName="email"
+                id="email"
+                oninput="this.value = this.value.replace(/[ ]|^ /g,'')"
+                placeholder="Email"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div
+                (click)="clearInput($event)"
+                class="clear-button"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+              ></div>
+              <label class="required-label" for="email">Email</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div
+              class="form-label-group input-icon address-field-wrapper {{
+                manageInputValidation(usersForm.controls.address)
+              }}"
+            >
+              <input
+                #placesRef="ngx-places"
+                (onAddressChange)="handleAddressChange($event)"
+                [options]="options"
+                appInputFocus
+                class="form-control input-control required"
+                formControlName="address"
+                id="address"
+                ngx-google-places-autocomplete
+                placeholder="Address, City, State Zip"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div
+                (click)="clearInput($event)"
+                class="clear-button"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+              ></div>
+              <label for="address">Address, City, State Zip</label>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-label-group">
+              <input
+                appInputFocus
+                appInputrestriction="[A-Za-z0-9-]"
+                class="form-control input-control"
+                formControlName="addressUnit"
+                id="addressUnit"
+                maxlength="6"
+                placeholder="Unit #"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div
+                (click)="clearInput($event)"
+                class="clear-button"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+              ></div>
+              <label for="addressUnit">Unit #</label>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="inputData.data.type == 'edit'">
+        <div class="form-group d-flex align-items-center mt-0 mt-lg-3 absolute-status">
+          <kendo-switch
+            [checked]="usersForm.controls.enabled.value"
+            formControlName="enabled"
+          ></kendo-switch>
+        </div>
+
+        <div class="row">
+          <div [ngClass]="{ 'col-4': !disableUserType }" *ngIf="!disableUserType">
+            <div class="form-label-group">
+              <ng-select
+                *ngIf="!disableUserType"
+                [disabled]="disableUserType"
+                [items]="userTypes"
+                [modalType]="inputData.data.type"
+                appAutoFocus
+                appendTo="body"
+                bindLabel="name"
+                class="required-field"
+                formControlName="userType"
+                placeholder="User type"
+              >
+                <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+          <div *ngIf="disableUserType" class="col-4">
+            <div class="user-type-label">
+              Owner
+            </div>
+          </div>
+          <!-- <div [ngClass]="{'col-4': !disableUserType, 'col-6': disableUserType}"> -->
+          <div class="col-4">
+            <div class="form-label-group">
+              <input
+                appInputFocus
+                appInputrestriction="[A-Za-z]"
+                class="form-control input-control required"
+                formControlName="firstName"
+                id="firstName"
+                placeholder="First name"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div
+                (click)="clearInput($event)"
+                class="clear-button"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+              ></div>
+              <label class="required-label" for="firstName">First name</label>
+            </div>
+          </div>
+          <!--  <div [ngClass]="{ 'col-4': !disableUserType, 'col-6': disableUserType }"> -->
+          <div class="col-4">
+            <div class="form-label-group">
+              <input
+                appInputFocus
+                appInputrestriction="[A-Za-z]"
+                class="form-control input-control required"
+                formControlName="lastName"
+                id="lastName"
+                placeholder="Last name"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div
+                (click)="clearInput($event)"
+                class="clear-button"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+              ></div>
+              <label class="required-label" for="lastName">Last name</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div
+              class="form-label-group input-icon phone-field-wrapper {{
+                manageInputValidation(usersForm.controls.phone)
+              }}"
+            >
+              <input
+                appInputFocus
+                class="form-control input-control required"
+                formControlName="phone"
+                id="phone"
+                mask="(000) 000-0000"
+                placeholder="Phone"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div
+                (click)="clearInput($event)"
+                class="clear-button"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+              ></div>
+              <label for="phone">Phone</label>
+            </div>
+          </div>
+          <div class="col-8">
+            <div class="email-value-label">
+              {{ this.usersForm.controls.email.value }}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div
+              class="form-label-group input-icon address-field-wrapper {{
+                manageInputValidation(usersForm.controls.address)
+              }}"
+            >
+              <input
+                #placesRef="ngx-places"
+                (onAddressChange)="handleAddressChange($event)"
+                [options]="options"
+                appInputFocus
+                class="form-control input-control required"
+                formControlName="address"
+                id="address"
+                ngx-google-places-autocomplete
+                placeholder="Address, City, State Zip"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div
+                (click)="clearInput($event)"
+                class="clear-button"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+              ></div>
+              <label for="address">Address, City, State Zip</label>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-label-group">
+              <input
+                appInputFocusH
+                appInputrestriction="[A-Za-z0-9-]"
+                class="form-control input-control"
+                formControlName="addressUnit"
+                id="addressUnit"
+                maxlength="6"
+                placeholder="Unit #"
+                (keyup)="onKeyUpMethod($event)"
+              />
+              <div
+                (click)="clearInput($event)"
+                class="clear-button"
+                ngbTooltip="Clear"
+                placement="bottom-left"
+              ></div>
+              <label for="addressUnit">Unit #</label>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button (click)="closeModal()" class="cancel-btn" type="button">
+      <p class="m-0">Cancel</p>
+    </button>
+    <button
+      (click)="saveUser()"
+      class="save-btn"
+      [ngClass]="{ 'invalid-btn': !usersForm.valid }"
+      ngbAutofocus
+      type="button"
+    >
+      <p class="m-0">Save</p>
+    </button>
+  </div>
+</div>
