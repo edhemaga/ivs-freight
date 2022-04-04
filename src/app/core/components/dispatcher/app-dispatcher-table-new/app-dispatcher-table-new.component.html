@@ -19,8 +19,8 @@
       >
         <thead>
         <tr class="k-grid-header">
-          <th class="k-header text-left truck-col custom-kendo-header">Truck#</th>
-          <th class="k-header text-left trailer-col custom-kendo-header">Trailer#</th>
+          <th class="k-header text-left truck-col custom-kendo-header">Truck</th>
+          <th class="k-header text-left trailer-col custom-kendo-header">Trailer</th>
           <th class="k-header text-left driver-col custom-kendo-header">Driver</th>
           <th class="k-header text-left email-phone-col custom-kendo-header">
             <div
@@ -44,7 +44,9 @@
           <th class="k-header text-left dispatcher-col true-dispatcher custom-kendo-header"></th>
           <th
             class="k-header text-left dispatcher-col note-col header_note_col custom-kendo-header"
-          ></th>
+          >Note</th>
+          <th class="k-header text-left dispatcher-col add-col custom-kendo-header"></th>
+          <th class="k-header text-left dispatcher-col add-col custom-kendo-header"></th>
           <th class="k-header text-left dispatcher-col add-col custom-kendo-header"></th>
         </tr>
         </thead>
@@ -94,7 +96,7 @@
                     >
                       <svg-icon
                         (click)="updateTruck(undefined, item)"
-                        src="assets/img/shared/dispatchboard-close-new.svg"
+                        src="assets/svg/dispatchboard/close.svg"
                       >
                       </svg-icon>
                     </div>
@@ -107,15 +109,15 @@
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
               >
-                <app-svg-icon-new
+                <svg-icon
                   appTooltip="Add Truck"
                   class="icon-hover-blue-22 cursor-pointer d-flex"
                   main_id="addTruck"
                   position="bottom-right"
-                  name="plus_sign"
+                  src="assets/svg/dispatchboard/add.svg"
                   tooltipBackground="#919191"
                 >
-                </app-svg-icon-new>
+                </svg-icon>
               </button>
               <ng-select
                 #truckDropdown
@@ -198,7 +200,7 @@
                       class="dispatcher-close cursor-pointer">
                       <svg-icon
                         (click)="updateTrailer(undefined, item)"
-                        src="assets/img/shared/dispatchboard-close-new.svg"
+                        src="assets/svg/dispatchboard/close.svg"
                       >
                       </svg-icon>
                     </div>
@@ -212,15 +214,15 @@
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
               >
-                <app-svg-icon-new
+                <svg-icon
                   appTooltip="Add Trailer"
                   class="icon-hover-blue-22 cursor-pointer d-flex"
                   main_id="addTrailer"
                   position="bottom-right"
-                  name="plus_sign"
+                  src="assets/svg/dispatchboard/add.svg"
                   tooltipBackground="#919191"
                 >
-                </app-svg-icon-new>
+                </svg-icon>
               </button>
               <ng-select
                 #trailerDropdown
@@ -290,7 +292,7 @@
                     <div *ngIf="!isBoardLocked" class="dispatcher-close cursor-pointer">
                       <svg-icon
                         (click)="updateDriver(undefined, item)"
-                        src="assets/img/shared/dispatchboard-close-new.svg"
+                        src="assets/img/dispatchboard/close_x.svg"
                       >
                       </svg-icon>
                     </div>
@@ -304,15 +306,15 @@
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
               >
-                <app-svg-icon-new
+                <svg-icon
                   appTooltip="Add Driver"
                   class="driverItem icon-hover-blue-22 cursor-pointer d-flex"
                   main_id="addDriver"
                   position="bottom-right"
-                  name="plus_sign"
+                  src="assets/svg/dispatchboard/add.svg"
                   tooltipBackground="#919191"
                 >
-                </app-svg-icon-new>
+                </svg-icon>
               </button>
               <ng-select
                 #driverDropdown
@@ -386,7 +388,7 @@
                   class="button-switch-email-phone"
                   position="bottom-right"
                   tooltipBackground="#919191">
-                  <svg-icon src="../../../../../assets/img/shared/phone-email-switch.svg"></svg-icon>
+                  <svg-icon src="assets/svg/dispatchboard/switch.svg"></svg-icon>
                 </button>
               </div>
             </div>
@@ -679,7 +681,55 @@
                 position="bottom-right"
                 tooltipBackground="#919191"
               >
-                <svg-icon class="icon-hover-blue-16" src="assets/img/svgs/just_plus.svg">
+                <svg-icon class="icon-hover-blue-16" src="assets/svg/common/ic_plus.svg">
+                </svg-icon>
+              </button>
+            </div>
+          </td>
+
+
+          <!-- Add load -->
+          <td class="text-center dispatcher-col add-col">
+            <div
+              *ngIf="
+                item.id !== null &&
+                item.status?.id !== 1 &&
+                item.driver !== null &&
+                item.truck !== null &&
+                item.truckId != null"
+              class="new_load_dispatch_hold">
+              <button
+                (click)="openAddLoad(item)"
+                appTooltip="Assign load"
+                class="btn-transparent new_load_dispatch"
+                position="bottom-right"
+                tooltipBackground="#919191"
+              >
+              <svg-icon class="icon-hover-blue-16" src="assets/svg/dispatchboard/parking.svg">
+                </svg-icon>
+              </button>
+            </div>
+          </td>
+
+
+          <!-- Add load -->
+          <td class="text-center dispatcher-col add-col">
+            <div
+              *ngIf="
+                item.id !== null &&
+                item.status?.id !== 1 &&
+                item.driver !== null &&
+                item.truck !== null &&
+                item.truckId != null"
+              class="new_load_dispatch_hold">
+              <button
+                (click)="openAddLoad(item)"
+                appTooltip="Vacation"
+                class="btn-transparent new_load_dispatch"
+                position="bottom-right"
+                tooltipBackground="#919191"
+              >
+                <svg-icon class="icon-hover-blue-16" src="assets/svg/dispatchboard/vacation.svg">
                 </svg-icon>
               </button>
             </div>
@@ -687,7 +737,7 @@
         </tr>
 
         <tr *ngIf="gridData.length == 0" class="k-grid-norecords">
-          <td colspan="12">No records available.</td>
+          <td colspan="15">No records available.</td>
         </tr>
         </tbody>
       </table>
