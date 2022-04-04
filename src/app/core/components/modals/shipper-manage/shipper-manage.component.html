@@ -1,4 +1,4 @@
-<div cdkDrag class="modal-container">
+<!-- <div cdkDrag class="modal-container">
   <div cdkDragHandle class="modal-header">
     <h5 class="modal-title">{{ modalTitle }}</h5>
     <svg-icon
@@ -10,9 +10,9 @@
   </div>
   <div class="divider">
   </div>
-  <div class="modal-body manage-customer-modal static-element">
+  <div class="modal-body manage-customer-modal static-element"> -->
     <!-- <app-loading-modal *ngIf="!loaded" class='large'></app-loading-modal> -->
-    <app-tab-switcher
+    <!-- <app-tab-switcher
       (switchClicked)="tabChange($event)"
       [tabs]="tabs"
     ></app-tab-switcher>
@@ -145,9 +145,9 @@
 
               <label class="required-label" for="address">Address, City, State Zip</label>
               <p *ngIf="shipperForm.get('address').errors && shipperForm.get('address').touched"
-                 class="m-0 required-notice invalid-length">{{shipperForm.get('address').errors | inputError}} </p>
+                 class="m-0 required-notice invalid-length">{{shipperForm.get('address').errors | inputError}} </p> -->
               <!-- <app-required-label [control]="shipperForm.controls.address"></app-required-label> -->
-            </div>
+            <!-- </div>
           </div>
           <div class="col-2">
             <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
@@ -212,7 +212,7 @@
                 <app-required-label [control]="shipperForm.controls.toReceivedHours"></app-required-label>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- <div class="col-4">
             <div class="form-label-group no-padding-input">
               <input
@@ -235,7 +235,7 @@
               </label>
             </div>
           </div> -->
-        </div>
+        <!-- </div>
 
         <div class="row mt-3">
           <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
@@ -268,9 +268,9 @@
                   <hr>
                 </div>
                 <div class="col-12">
-                  <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+                  <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'"> -->
                     <!-- appInputrestriction="[A-Za-z]" -->
-                    <input
+                    <!-- <input
                       (keydown)="onCheckBackSpace($event)"
                       (keypress)="onContactNameTyping($event)"
                       (paste)="onPaste($event, 'name', i)"
@@ -361,7 +361,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!--
         <br>
         <a
@@ -371,11 +371,11 @@
         (click)="addNewContactPerson()"
         >{{ contactPersonsList.controls.length === 0 ? 'Add contact' : 'Add additional contact' }}</a
       > -->
-    </form>
+    <!-- </form>
   </div>
   <div class="modal-footer">
     <button class="save-btn" [ngClass]="{'invalid-btn' : !shipperForm.valid}">
       <p class="m-0">Save</p>
     </button>
   </div>
-</div>
+</div> -->

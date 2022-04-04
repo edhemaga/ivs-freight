@@ -1,4 +1,4 @@
-<div cdkDrag class="modal-container">
+<!-- <div cdkDrag class="modal-container">
   <div cdkDragHandle class="modal-header">
     <h5 class="modal-title" style="user-select: none;">{{ modalTitle }}</h5>
     <svg-icon
@@ -6,14 +6,14 @@
       [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
       class="modal-close-btn cursor-pointer"
       src="assets/img/svgs/table/close.svg"
-    ></svg-icon>
+    ></svg-icon> -->
     <!-- <app-modal-close></app-modal-close> -->
-  </div>
+  <!-- </div>
   <div class="divider">
   </div>
-  <div class="modal-body">
+  <div class="modal-body"> -->
     <!-- <app-loading-modal *ngIf="!loaded"></app-loading-modal> -->
-    <form
+    <!-- <form
       (keydown)="keyDownFunction($event)"
       [formGroup]="taskForm"
       class="form-container"
@@ -62,9 +62,9 @@
             <label for="name" style="user-select: none;">Description</label>
           </div>
         </div>
-      </div>
+      </div> -->
       <!--Hyperlink-->
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-8">
           <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
             <input
@@ -93,9 +93,9 @@
             <app-required-label [control]="taskForm.controls.deadLine"></app-required-label>
           </div>
         </div>
-      </div>
+      </div> -->
       <!--Assign task-->
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-12 assign-task">
           <div class="form-label-group" style="user-select: none;">
             <ng-select
@@ -115,10 +115,10 @@
             </ng-select>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!--Comments-->
-      <div *ngIf="this.inputData.data.type === 'edit'" class="row">
+      <!-- <div *ngIf="this.inputData.data.type === 'edit'" class="row">
         <div [ngClass]="{ 'comment-wrapper-bigger': addNewComment }" class="col-12 comment-wrapper">
           <div (click)="openComments()" class="note-label-wrapper">
             <span class="note-label" style="user-select: none;"
@@ -286,18 +286,18 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Attachments -->
-      <app-attachments
+      <!-- <app-attachments
         (filesChanged)="setFiles($event)"
         [attachments]="attachments"
         [numberOfAttachments]="files.length"
         page="todo"
-      ></app-attachments>
+      ></app-attachments> -->
 
       <!--Note-->
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
           <div (click)="openNote()" class="note-label-wrapper">
             <span class="note-label" style="user-select: none;">Note</span>
@@ -337,4 +337,4 @@
       <p class="m-0">Save</p>
     </button>
   </div>
-</div>
+</div> -->

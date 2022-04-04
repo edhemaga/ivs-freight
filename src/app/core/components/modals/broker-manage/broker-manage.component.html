@@ -1,4 +1,4 @@
-<div cdkDrag class="modal-container">
+<!-- <div cdkDrag class="modal-container">
   <div cdkDragHandle class="modal-header">
     <h5 class="modal-title">{{ modalTitle }}</h5>
     <svg-icon
@@ -15,9 +15,9 @@
   <div class="modal-body add-customer-modal static-element">
     <div class="col-12">
       <app-tab-switcher (switchClicked)="tabChange($event)" [tabs]="tabs"></app-tab-switcher>
-    </div>
+    </div> -->
     <!-- <app-loading-modal *ngIf="!loaded" class='large'></app-loading-modal> -->
-    <form (keydown)="keyDownFunction($event)" *ngIf="loaded" [formGroup]="customerForm" class="form-container">
+    <!-- <form (keydown)="keyDownFunction($event)" *ngIf="loaded" [formGroup]="customerForm" class="form-container">
 
       <div class="row">
         <div class="col-12">
@@ -57,10 +57,10 @@
               (keyup)="onKeyUpMethod($event)"
             >
             <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-            </div>
+            </div> -->
             <!-- Dodati na lable ako je potrebano da se unosi DBA -->
             <!-- class="required-label" -->
-            <label for="dbaName">DBA name</label>
+            <!-- <label for="dbaName">DBA name</label>
           </div>
         </div>
         <div *ngIf="mcVisible" class="col-3">
@@ -125,9 +125,9 @@
         </div>
       </div>
 
-      <div class="row pt-4">
+      <div class="row pt-4"> -->
         <!-- PO box input -->
-        <div *ngIf="addressTab !== 'Physical Address'" [ngClass]="{'col-4': addressTab !== 'Physical Address'}">
+        <!-- <div *ngIf="addressTab !== 'Physical Address'" [ngClass]="{'col-4': addressTab !== 'Physical Address'}">
           <div
             class="form-label-group input-icon address-field-wrapper {{ manageInputValidation(customerForm.controls.poBox) }}"
             [ngClass]="inputText ? 'typing' : 'not-typing'"
@@ -208,9 +208,9 @@
           <app-tab-switcher (switchClicked)="tabChange($event)"
                             [tabs]="customerSwitchOptions[1].data"></app-tab-switcher>
         </div>
-      </div>
+      </div> -->
       <!-- Biling Address -->
-      <div *ngIf="openBillingAddress" class="row mt-4 biling-address">
+      <!-- <div *ngIf="openBillingAddress" class="row mt-4 biling-address">
         <div *ngIf="bilingAddressTab !== 'Physical Address'" class="col-4">
           <div
             class="form-label-group input-icon address-field-wrapper {{ manageInputValidation(customerForm.controls.poBoxBilling) }}"
@@ -381,4 +381,4 @@
       <p class="m-0">Save</p>
     </button>
   </div>
-</div>
+</div> -->
