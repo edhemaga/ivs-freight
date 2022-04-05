@@ -12,7 +12,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SharedModule } from './core/shared/shared/shared.module';
+import { SharedModule } from './core/components/shared/shared.module';
 import { ToastrModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
@@ -26,7 +26,6 @@ import { NavigationSubrouteComponent } from './core/components/navigation/naviga
 import { NavigationSubrouteCardComponent } from './core/components/navigation/navigation-subroute-card/navigation-subroute-card.component';
 import { NavigationUserCompanyComponent } from './core/components/navigation/navigation-user-company/navigation-user-company.component';
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
-import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
 @NgModule({
   declarations: [
@@ -40,8 +39,7 @@ import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.compo
     NavigationSubrouteCardComponent,
     NavigationModalsComponent,
     NavigationUserProfileComponent,
-    NavigationUserCompanyComponent,
-    SvgDefinitionsComponent,
+    NavigationUserCompanyComponent
   ],
   imports: [
     BrowserModule,

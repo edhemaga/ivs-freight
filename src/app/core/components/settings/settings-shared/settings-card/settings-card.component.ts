@@ -53,32 +53,8 @@ export class SettingsCardComponent {
     }
   }
 
-  public identityRepairShop(index: number, item: any): number {
+  public identity(index: number, item: any): number {
     return item.id;
   }
 
-  public identityCommonData(index: number, item: any): number {
-    return item.id;
-  }
-
-  public identityBankAccount(index: number, item: any): number {
-    return item.id;
-  }
-
-  public identityBankCardHeader(index: number, item: any): number {
-    return item.id;
-  }
-
-  public identityBankCard(index: number, item: any): number {
-    return item.id;
-  }
-  
-  public identityPayrollData(index: number, item: any): number {
-    return item.id;
-  }
-
-  public identityInsurancePolicy(index: number, item: any): number {
-    return item.id;
-  }
-  
 }

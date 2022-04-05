@@ -72,7 +72,7 @@ form .form-control {
     &.ng-invalid.ng-touched {
       //border-right: 3px solid #ff5d5d;
       cursor: text;
-      background-image: url("../../assets/img/form-validation/x-icon-light-red.svg") !important;
+      // background-image: url("../../assets/img/form-validation/x-icon-light-red.svg") !important;
       background-repeat: no-repeat;
       background-position: right 6px bottom 8px;
       transition: background-image 0.3s;
@@ -89,7 +89,7 @@ form .form-control {
 
       &:hover {
         cursor: text;
-        background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
+        // background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
         background-repeat: no-repeat;
         background-position: right 6px bottom 8px;
         transition: background-image 0.3s;
@@ -109,7 +109,7 @@ form .form-control {
         cursor: text;
         background-color: #ff5d5d;
         color: #fff;
-        background-image: url("../../assets/img/form-validation/x-icon.svg");
+        // background-image: url("../../assets/img/form-validation/x-icon.svg");
         background-repeat: no-repeat;
         background-position: right 6px bottom 8px;
         transition: background-image 0.3s;
@@ -127,7 +127,7 @@ form .form-control {
         }
 
         &:hover {
-          background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
+          // background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
           background-repeat: no-repeat !important;
           background-position: right 6px bottom 8px;
           transition: background-image 0.3s;
@@ -145,7 +145,7 @@ form .form-control {
       }
 
       &.focused {
-        background-image: url("../../assets/img/form-validation/x-icon.svg");
+        // background-image: url("../../assets/img/form-validation/x-icon.svg");
         background-repeat: no-repeat;
         background-position: right 6px bottom 8px;
         transition: background-image 0.3s;
@@ -164,7 +164,7 @@ form .form-control {
           cursor: text;
           background-color: #ff5d5d;
           color: #fff;
-          background-image: url("../../assets/img/form-validation/x-icon.svg");
+          // background-image: url("../../assets/img/form-validation/x-icon.svg");
           background-repeat: no-repeat;
           background-position: right 6px bottom 8px;
           transition: background-image 0.3s;
@@ -180,7 +180,7 @@ form .form-control {
           }
 
           &:hover {
-            background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
+            // background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
             background-repeat: no-repeat;
             background-position: right 6px bottom 8px;
             transition: background-image 0.3s;
@@ -199,7 +199,7 @@ form .form-control {
 
         &:hover {
           cursor: text;
-          background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
+          // background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
           background-repeat: no-repeat;
           background-position: right 6px bottom 8px;
           transition: background-image 0.3s;
@@ -210,7 +210,7 @@ form .form-control {
         cursor: text;
         background-color: #ff6a6a;
         //color: #fff;
-        background-image: url("../../assets/img/form-validation/x-icon.svg");
+        // background-image: url("../../assets/img/form-validation/x-icon.svg");
         background-repeat: no-repeat;
         background-position: right 6px bottom 8px;
         transition: background-image 0.3s;
@@ -263,7 +263,7 @@ form .form-control {
             .clear-button {
               position: relative;
               left: -6px;
-              background-image: url("../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
+              // background-image: url("../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
               background-size: 18px 18px;
               transition: all 0.2s ease-in;
               background-repeat: no-repeat;
@@ -273,7 +273,7 @@ form .form-control {
                 height: 22px;
                 position: relative;
                 left: -6px;
-                background-image: url("../../assets/img/form-validation/x-icon-background-hover.svg") !important;
+                // background-image: url("../../assets/img/form-validation/x-icon-background-hover.svg") !important;
                 background-size: 22px 22px;
                 transition: all 0.2s ease-in;
                 background-repeat: no-repeat;
@@ -284,7 +284,7 @@ form .form-control {
           .clear-button {
             position: relative;
             left: -6px;
-            background-image: url("../../assets/img/form-validation/x-icon-background.svg") !important;
+            // background-image: url("../../assets/img/form-validation/x-icon-background.svg") !important;
             background-size: 18px 18px;
             transition: all 0.2s ease-in;
             background-repeat: no-repeat;
@@ -296,7 +296,7 @@ form .form-control {
         cursor: text;
         background-color: #778fbb;
         //color: #fff;
-        background-image: url("../../assets/img/form-validation/check-icon.svg") !important;
+        // background-image: url("../../assets/img/form-validation/check-icon.svg") !important;
         background-repeat: no-repeat !important;
         background-position: right 6px bottom 8px;
         transition: background-image 0.3s;
@@ -333,7 +333,7 @@ form .form-control {
             .clear-button {
               position: relative;
               left: -6px;
-              background-image: url("../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
+              // background-image: url("../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
               background-size: 18px 18px;
               transition: all 0.2s ease-in;
               background-repeat: no-repeat;
@@ -343,7 +343,7 @@ form .form-control {
                 height: 22px;
                 position: relative;
                 left: -6px;
-                background-image: url("../../assets/img/form-validation/x-icon-background-hover.svg") !important;
+                // background-image: url("../../assets/img/form-validation/x-icon-background-hover.svg") !important;
                 background-size: 22px 22px;
                 transition: all 0.2s ease-in;
                 background-repeat: no-repeat;
@@ -354,7 +354,7 @@ form .form-control {
           .clear-button {
             position: relative;
             left: -6px;
-            background-image: url("../../assets/img/form-validation/x-icon-background.svg") !important;
+            // background-image: url("../../assets/img/form-validation/x-icon-background.svg") !important;
             background-size: 18px 18px;
             transition: all 0.2s ease-in;
             background-repeat: no-repeat;
@@ -369,7 +369,7 @@ form .form-control {
         cursor: text;
         background-color: #ff5d5d;
         //color: #fff;
-        background-image: url("../../assets/img/form-validation/x-icon.svg");
+        // background-image: url("../../assets/img/form-validation/x-icon.svg");
         background-repeat: no-repeat;
         background-position: right 6px bottom 8px;
         transition: background-image 0.3s;
@@ -420,7 +420,7 @@ form .form-control {
       background: none !important;
     }
 
-    background-image: url("../../assets/img/form-validation/check-icon-light-blue.svg");
+    // background-image: url("../../assets/img/form-validation/check-icon-light-blue.svg");
     background-repeat: no-repeat;
     background-position: right 6px bottom 8px;
     transition: background-image 0.3s;
@@ -453,7 +453,7 @@ form .form-control {
           .clear-button {
             position: relative;
             left: -6px;
-            background-image: url("../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
+            // background-image: url("../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
             background-size: 18px 18px;
             transition: all 0.2s ease-in;
             background-repeat: no-repeat;
@@ -463,7 +463,7 @@ form .form-control {
               height: 22px;
               position: relative;
               left: -6px;
-              background-image: url("../../assets/img/form-validation/x-icon-background-hover.svg") !important;
+              // background-image: url("../../assets/img/form-validation/x-icon-background-hover.svg") !important;
               background-size: 22px 22px;
               transition: all 0.2s ease-in;
               background-repeat: no-repeat;
@@ -474,7 +474,7 @@ form .form-control {
         .clear-button {
           position: relative;
           left: -6px;
-          background-image: url("../../assets/img/form-validation/x-icon-background.svg") !important;
+          // background-image: url("../../assets/img/form-validation/x-icon-background.svg") !important;
           background-size: 18px 18px;
           transition: all 0.2s ease-in;
           background-repeat: no-repeat;
@@ -487,7 +487,7 @@ form .form-control {
 form .form-control {
   &.required.ng-invalid.ng-dirty.ng-touched {
     &:hover {
-      background-image: url("../../assets/img/form-validation/x-icon-red.svg");
+      // background-image: url("../../assets/img/form-validation/x-icon-red.svg");
       background-repeat: no-repeat;
       background-position: right 6px bottom 8px;
       transition: background-image 0.3s;
@@ -497,7 +497,7 @@ form .form-control {
 
 form .form-control {
   &.ng-dirty.ng-invalid.ng-touched.ng-has-value {
-    background-image: url("../../assets/img/form-validation/x-icon.svg");
+    // background-image: url("../../assets/img/form-validation/x-icon.svg");
     background-repeat: no-repeat;
     background-position: right 6px bottom 8px;
     transition: background-image 0.3s;
@@ -537,7 +537,7 @@ form .form-control {
     }
 
     &:hover {
-      background-image: url("../../assets/img/form-validation/x-icon.svg");
+      // background-image: url("../../assets/img/form-validation/x-icon.svg");
       background-repeat: no-repeat;
       background-position: right 6px bottom 8px;
       transition: background-image 0.3s;
@@ -661,14 +661,14 @@ form {
   .required-field.ng-invalid.ng-touched {
     .ng-select-container {
       cursor: text;
-      background-image: url("../../assets/img/form-validation/x-icon-light-red.svg") !important;
+      // background-image: url("../../assets/img/form-validation/x-icon-light-red.svg") !important;
       background-repeat: no-repeat;
       background-position: right 25px bottom 8px;
       transition: background-image 0.3s;
 
       &:hover {
         cursor: text;
-        background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
+        // background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
         background-repeat: no-repeat;
         background-position: right 25px bottom 8px;
         transition: background-image 0.3s;
@@ -678,13 +678,13 @@ form {
         cursor: text;
         background-color: #ff5d5d;
         color: #fff;
-        background-image: url("../../assets/img/form-validation/x-icon.svg");
+        // background-image: url("../../assets/img/form-validation/x-icon.svg");
         background-repeat: no-repeat;
         background-position: right 25px bottom 8px;
         transition: background-image 0.3s;
 
         &:hover {
-          background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
+          // background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
           background-repeat: no-repeat;
           background-position: right 25px bottom 8px;
           transition: background-image 0.3s;
@@ -886,13 +886,13 @@ form .form-control.input-control {
   font-weight: 400;
 
   &.password-field-wrapper {
-    background-image: url("../../assets/img/form-icons/password/key.svg");
+    // background-image: url("../../assets/img/form-icons/password/key.svg");
     background-size: 18px 12px;
     background-repeat: no-repeat;
     background-position: calc(100% - 6px) 6px;
 
     &.field-focused {
-      background-image: url("../../assets/img/form-icons/password/focus-password.svg") !important;
+      // background-image: url("../../assets/img/form-icons/password/focus-password.svg") !important;
     }
   }
 }

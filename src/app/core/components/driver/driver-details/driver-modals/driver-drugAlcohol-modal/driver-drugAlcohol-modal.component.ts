@@ -7,7 +7,6 @@ import { FILE_TABLES } from 'src/app/const';
 import {DriverData, TestData } from 'src/app/core/model/driver';
 import { MetaData } from 'src/app/core/model/enums';
 import { ClonerService } from 'src/app/core/services/cloner.service';
-import { DriverService } from 'src/app/core/services/driver/driver.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { MetaDataService } from 'src/app/core/services/shared/meta-data.service';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
@@ -53,7 +52,6 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private driverService: DriverService,
     private activeModal: NgbActiveModal,
     private notification: NotificationService,
     private shared: SharedService,
@@ -189,73 +187,73 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     this.spinner.show(true);
 
     const newFiles = this.shared.getNewFiles(this.files);
-    if (newFiles.length > 0) {
-      this.storageService
-        .uploadFiles(
-          this.driver.guid,
-          FILE_TABLES.DRIVER,
-          this.driver.id,
-          this.files,
-          'drug-alcohol',
-          test.id.toString()
-        )
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          (resp: any) => {
-            const tempDrugAttachments = [];
-            resp.success.forEach((element) => {
-              tempDrugAttachments.push(element);
-            });
-            test.attachments = tempDrugAttachments;
-            this.notification.success(`Attachments successfully uploaded.`, ' ');
-            this.driverService
-              .updateDriverData(saveData, this.driver.id)
-              .pipe(takeUntil(this.destroy$))
-              .subscribe(
-                (result: any) => {
-                  if (result) {
-                    this.shared.emitRefreshAfterUpdate.emit();
-                    if (this.inputData.data.type === 'edit') {
-                      this.notification.success('Test has been updated.', 'Success:');
-                    } else {
-                      this.notification.success('Test has been added.', 'Success:');
-                    }
-                    if (!keepModal) {
-                      this.resetModalData();
-                    }
-                    this.spinner.show(false);
-                  }
-                },
-                (error: HttpErrorResponse) => {
-                  this.shared.handleError(error);
-                }
-              );
-          },
-          (error: HttpErrorResponse) => {
-            this.shared.handleError(error);
-          }
-        );
-    } else {
-      this.driverService
-        .updateDriverData(saveData, this.driver.id)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          (result: any) => {
-            if (this.inputData.data.type === 'edit') {
-              this.notification.success('Test has been updated.', 'Success:');
-            } else {
-              this.notification.success('Test has been added.', 'Success:');
-            }
-            if (!keepModal) {
-              this.resetModalData();
-            }
-            this.spinner.show(false);
-          },
-          (error: HttpErrorResponse) => {
-            this.shared.handleError(error);
-          }
-        );
-    }
+    // if (newFiles.length > 0) {
+    //   this.storageService
+    //     .uploadFiles(
+    //       this.driver.guid,
+    //       FILE_TABLES.DRIVER,
+    //       this.driver.id,
+    //       this.files,
+    //       'drug-alcohol',
+    //       test.id.toString()
+    //     )
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe(
+    //       (resp: any) => {
+    //         const tempDrugAttachments = [];
+    //         resp.success.forEach((element) => {
+    //           tempDrugAttachments.push(element);
+    //         });
+    //         test.attachments = tempDrugAttachments;
+    //         this.notification.success(`Attachments successfully uploaded.`, ' ');
+    //         this.driverService
+    //           .updateDriverData(saveData, this.driver.id)
+    //           .pipe(takeUntil(this.destroy$))
+    //           .subscribe(
+    //             (result: any) => {
+    //               if (result) {
+    //                 this.shared.emitRefreshAfterUpdate.emit();
+    //                 if (this.inputData.data.type === 'edit') {
+    //                   this.notification.success('Test has been updated.', 'Success:');
+    //                 } else {
+    //                   this.notification.success('Test has been added.', 'Success:');
+    //                 }
+    //                 if (!keepModal) {
+    //                   this.resetModalData();
+    //                 }
+    //                 this.spinner.show(false);
+    //               }
+    //             },
+    //             (error: HttpErrorResponse) => {
+    //               this.shared.handleError(error);
+    //             }
+    //           );
+    //       },
+    //       (error: HttpErrorResponse) => {
+    //         this.shared.handleError(error);
+    //       }
+    //     );
+    // } else {
+    //   this.driverService
+    //     .updateDriverData(saveData, this.driver.id)
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe(
+    //       (result: any) => {
+    //         if (this.inputData.data.type === 'edit') {
+    //           this.notification.success('Test has been updated.', 'Success:');
+    //         } else {
+    //           this.notification.success('Test has been added.', 'Success:');
+    //         }
+    //         if (!keepModal) {
+    //           this.resetModalData();
+    //         }
+    //         this.spinner.show(false);
+    //       },
+    //       (error: HttpErrorResponse) => {
+    //         this.shared.handleError(error);
+    //       }
+    //     );
+    // }
   }
 
   resetModalData() {

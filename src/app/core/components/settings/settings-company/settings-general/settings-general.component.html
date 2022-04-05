@@ -5,18 +5,22 @@
     </div>
 
     <div class="settings-header-buttons">
-      <svg-icon
-        src="assets/img/svgs/settings-company/settings-edit.svg"
-        class="settings-edit-button"
-        (click)="
-          onAction({ type: true, modalName: 'basic', action: 'edit-basic' })
-        "
-      ></svg-icon>
-      <svg-icon
-        src="assets/img/svgs/settings-company/settings-plus.svg"
-        class="settings-plus-button"
-        (click)="onAction({ modalName: 'basic', type: true, action: 'new' })"
-      ></svg-icon>
+      <div class="settings-header-button">
+        <svg-icon
+          src="assets/svg/common/ic_pen.svg"
+          class="settings-edit-button"
+          (click)="
+            onAction({ type: true, modalName: 'basic', action: 'edit-basic' })
+          "
+        ></svg-icon>
+      </div>
+      <div class="settings-header-button">
+        <svg-icon
+          src="assets/svg/common/ic_plus.svg"
+          class="settings-plus-button"
+          (click)="onAction({ modalName: 'basic', type: true, action: 'new' })"
+        ></svg-icon>
+      </div>
     </div>
   </div>
 
@@ -28,7 +32,7 @@
           <div class="basic-logo-text">This logo will be used on invoices</div>
           <svg-icon
             class="basic-logo-edit"
-            src="assets/img/svgs/settings-company/settings-edit.svg"
+            src="assets/svg/common/ic_pen.svg"
           ></svg-icon>
         </div>
         <svg-icon class="basic-logo" src="{{ generalData.logo }}"></svg-icon>

@@ -9,22 +9,22 @@ export const navigationData: Navigation[] = [
   {
     id: 1,
     name: 'Dashboard',
-    image: 'assets/img/svgs/navigation/ic_dashboard.svg',
+    image: 'assets/svg/common/ic_dashboard.svg',
     route: '/dashboard',
     isRouteActive: false,
   },
   {
     id: 2,
     name: 'Dispatch',
-    image: 'assets/img/svgs/navigation/ic_dispatch.svg',
+    image: 'assets/svg/common/ic_dispatch.svg',
     route: '/dispatcher',
     isRouteActive: false,
   },
   {
     id: 3,
     name: 'List',
-    image: 'assets/img/svgs/navigation/ic_list.svg',
-    arrow: 'assets/img/svgs/navigation/ic_arrow.svg',
+    image: 'assets/svg/common/ic_list.svg',
+    arrow: 'assets/svg/common/ic_arrow-down.svg',
     isRouteActive: false,
     isSubrouteActive: false,
     route: [
@@ -84,8 +84,8 @@ export const navigationData: Navigation[] = [
   {
     id: 4,
     name: 'Accounting',
-    image: 'assets/img/svgs/navigation/ic_accounting.svg',
-    arrow: 'assets/img/svgs/navigation/ic_arrow.svg',
+    image: 'assets/svg/common/ic_accounting.svg',
+    arrow: 'assets/svg/common/ic_arrow-down.svg',
     isRouteActive: false,
     isSubrouteActive: false,
     route: [
@@ -114,8 +114,8 @@ export const navigationData: Navigation[] = [
   {
     id: 5,
     name: 'Safety',
-    image: 'assets/img/svgs/navigation/ic_safety.svg',
-    arrow: 'assets/img/svgs/navigation/ic_arrow.svg',
+    image: 'assets/svg/common/ic_safety.svg',
+    arrow: 'assets/svg/common/ic_arrow-down.svg',
     isRouteActive: false,
     isSubrouteActive: false,
     route: [
@@ -144,8 +144,8 @@ export const navigationData: Navigation[] = [
   {
     id: 6,
     name: 'Tools',
-    image: 'assets/img/svgs/navigation/ic_tools.svg',
-    arrow: 'assets/img/svgs/navigation/ic_arrow.svg',
+    image: 'assets/svg/common/ic_tools.svg',
+    arrow: 'assets/svg/common/ic_arrow-down.svg',
     isRouteActive: false,
     isSubrouteActive: false,
     route: [
@@ -199,49 +199,49 @@ export const navigationData: Navigation[] = [
   {
     id: 7,
     name: 'Routing',
-    image: 'assets/img/svgs/navigation/ic_routing.svg',
+    image: 'assets/svg/common/ic_routing.svg',
     route: '/routing',
     isRouteActive: false,
   },
   {
     id: 8,
     name: 'Report',
-    image: 'assets/img/svgs/navigation/ic_report.svg',
+    image: 'assets/svg/common/ic_report.svg',
     route: '/report',
     isRouteActive: false,
   },
   {
     id: 9,
     name: 'Statistic',
-    image: 'assets/img/svgs/navigation/ic_statistic.svg',
+    image: 'assets/svg/common/ic_statistic.svg',
     route: '/statistic/load',
     isRouteActive: false,
   },
   {
     id: 10,
     name: 'Chat',
-    image: 'assets/img/svgs/navigation/ic_chat.svg',
+    image: 'assets/svg/common/ic_chat.svg',
     route: '/communicator',
     isRouteActive: false,
   },
   {
     id: 11,
     name: 'GPS',
-    image: 'assets/img/svgs/navigation/ic_gps.svg',
+    image: 'assets/svg/common/ic_gps.svg',
     route: '/gpstracking',
     isRouteActive: false,
   },
   {
     id: 12,
     name: 'Places',
-    image: 'assets/img/svgs/navigation/ic_places.svg',
+    image: 'assets/svg/common/ic_places.svg',
     route: '/places',
     isRouteActive: false,
   },
   {
     id: 13,
     name: 'File Manager',
-    image: 'assets/img/svgs/navigation/ic_file_manager.svg',
+    image: 'assets/svg/common/ic_filemanager.svg',
     route: '/filemanager',
     isRouteActive: false,
   },
@@ -387,31 +387,31 @@ export const userNavigationData: NavigationUserPanel[] = [
   {
     id: 1,
     name: 'Profile Update',
-    image: 'assets/img/svgs/navigation/ic_truckassist_pen.svg',
+    image: 'assets/svg/common/ic_pen.svg',
     action: 'update',
   },
   {
     id: 2,
     name: 'User status',
-    image: 'assets/img/svgs/navigation/ic_truckassist_busy_status.svg',
+    image: 'assets/svg/common/ic_disable-status.svg',
     action: 'status',
   },
   {
     id: 3,
     name: 'Switch Company',
-    image: 'assets/img/svgs/navigation/ic_truckassist_company.svg',
+    image: 'assets/svg/common/ic_company.svg',
     action: 'company',
   },
   {
     id: 4,
     name: 'Help Center',
-    image: 'assets/img/svgs/navigation/ic_truckassist_help_center.svg',
+    image: 'assets/svg/common/ic_helpcenter.svg',
     action: 'help',
   },
   {
     id: 5,
     name: 'Logout',
-    image: 'assets/img/svgs/navigation/ic_truckassist_logout.svg',
+    image: 'assets/svg/common/ic_logout.svg',
     action: 'logout',
   },
 ];
@@ -421,21 +421,21 @@ export const footerData: FooterData[] = [
   // ROUTE WHAT'S NEW ?
   {
     id: 1,
-    image: 'assets/img/svgs/navigation/ic_info.svg',
+    image: 'assets/svg/common/ic_info.svg',
     text: "What's New",
     route: '/whatsnew',
     isRouteActive: false,
   },
   {
     id: 2,
-    image: 'assets/img/svgs/navigation/ic_settings.svg',
+    image: 'assets/svg/common/ic_settings.svg',
     text: 'Settings',
     route: '/settings',
     isRouteActive: false,
   },
   {
     id: 3,
-    image: 'assets/img/svgs/navigation/ic_profile_user.svg',
+    image: 'assets/svg/common/ic_profile.svg',
     text: {
       companyName: '',
       userName: '',

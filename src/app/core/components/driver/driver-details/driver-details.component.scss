@@ -9,6 +9,8 @@ $color-gray-dark: #6c6c6c;
 
 $color-blue-light: #778fbb;
 $color-blue: #5673aa;
+$settings-blue-dark: #6d82c7;
+$settings-blue-hover: #3551b7;
 
 $font-size12: 12px;
 $font-size14: 14px;
@@ -112,11 +114,31 @@ $transition: all 0.3s ease-in-out;
     }
 
     .driver-toolbar-button {
-      width: 100%;
-      height: 100%;
+      width: 32px;
+      height: 32px;
+      background: $color-white;
+      border-radius: 3px;
+      position: relative;
 
-      &:hover {
-        cursor: pointer;
+      .driver-toolbar-plus {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        svg {
+          path {
+            fill: $settings-blue-dark;
+          }
+        }
+        &:hover {
+          transform: $transition;
+          cursor: pointer;
+          svg {
+            path {
+              fill: $settings-blue-hover;
+            }
+          }
+        }
       }
     }
   }
@@ -330,13 +352,13 @@ $transition: all 0.3s ease-in-out;
     .driver-switcher {
       display: grid;
       grid-template-columns: 18px 1fr 18px;
+      align-items: center;
 
       .driver-switcher-name {
         font-size: $font-size20;
         font-weight: $font-bold;
         color: $color-gray-dark;
         position: relative;
-        top: -2px;
       }
 
       .driver-switcher-larrow,
@@ -354,12 +376,15 @@ $transition: all 0.3s ease-in-out;
 
       .driver-switcher-larrow {
         position: relative;
-        right: 2px;
+        right: 13px;
+        top: 1px;
+        transform: rotate(180deg);
       }
 
       .driver-switcher-rarrow {
         position: relative;
         left: 13px;
+        bottom: 3px;
       }
     }
 

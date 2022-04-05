@@ -3,23 +3,24 @@ $nav-background: #ffffff;
 
 $nav-svg: #b7b7b7;
 $nav-svg-hover: #919191;
-$nav-svg-active: #778fbb;
+$nav-svg-active: #6d82c7;
 
+$nav-text-color-dadada: #dadada;
 $nav-text-color-lighter: #b7b7b7;
 $nav-text-color: #6c6c6c;
 $nav-text-color-darker: #919191;
 $nav-text-color-hover: #3c3c3c;
 
-$nav-active-lighter: #778fbb;
-$nav-active: #5673aa;
+$nav-active-lighter: #536bc2;
+$nav-active: #3551b7;
 
 $nav-hover-lightcolor: #f3f3f3;
 $nav-hover-color: #f7f7f7;
 $nav-hover-darker: #f9f9f9;
 
 $nav-important-light: #ff8080;
-$nav-important: #ff6a6a;
-$nav-important-hover: #ff5050;
+$nav-important: #ef5350;
+$nav-important-hover: #f44336;
 
 $nav-boxshadow: 0 0 4px rgb(0, 0, 0, 0.16);
 
@@ -41,39 +42,30 @@ $nav-font-extrabold: 800;
 $wrapper-line: #b7b7b7;
 $magic-line-transition: all 0.2s ease-in;
 
-$user-busy-status: #ffbf6b;
-$user-busy-status-hover: #ffaf46;
-$user-active-status: #3bcbae;
-$user-active-status-hover: #0bbf9a;
+$user-busy-status: #ffb74d;
+$user-busy-status-hover: #ffa726;
+$user-active-status: #4db6a2;
+$user-active-status-hover: #26a690;
 
 // Navigation Animations
 @keyframes fadeIn {
   0% {
-    transform: translateX(-100px);
+    transform: translateX(-80px);
     opacity: 0;
+    transition: $nav-transition;
   }
   100% {
     transform: translateX(0px);
     opacity: 1;
-    transition: $nav-transition-2;
+    transition: $nav-transition;
   }
 }
 
-@keyframes fadeOut {
-  0% {
-    transform: translateX(0px);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(-100px);
-    opacity: 0;
-    transition: $nav-transition-015;
-  }
-}
 
 @keyframes showMagicLine {
   0% {
     opacity: 0;
+    transition: $nav-transition-2;
   }
   100% {
     opacity: 1;
@@ -105,7 +97,7 @@ $user-active-status-hover: #0bbf9a;
   }
 
   .status-online {
-    border: 2px solid $user-active-status;
+    border: 3px solid $user-active-status;
     background: $nav-background !important;
   }
 

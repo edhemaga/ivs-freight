@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
-import { DriverManageComponent } from '../../modals/driver-manage/driver-manage.component';
 import { DriversQuery } from '../state/driver.query';
 import { DriversState } from '../state/driver.store';
 import { data } from 'jquery';
@@ -186,18 +185,18 @@ export class DriverTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      this.customModalService.openModal(
-        DriverManageComponent,
-        {
-          data: {
-            type: 'new',
-          },
-        },
-        null,
-        {
-          size: 'small',
-        }
-      );
+      // this.customModalService.openModal(
+      //   DriverManageComponent,
+      //   {
+      //     data: {
+      //       type: 'new',
+      //     },
+      //   },
+      //   null,
+      //   {
+      //     size: 'small',
+      //   }
+      // );
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setDriverData(event.tabData);

@@ -3,11 +3,9 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, mergeMap, Subject, takeUntil } from 'rxjs';
 import { SharedService } from './core/services/shared/shared.service';
-import { RoutingFullScreenService } from './core/services/routing-full-screen/routing-full-screen.service';
 import { Idle } from '@ng-idle/core';
 import moment from 'moment';
 import { UserService } from './core/services/user/user.service';
-import { GlobalStoreService } from './core/services/global-store.service';
 import { scrollButtonAnimation } from './app.component.animation';
 
 /// <reference types="@types/googlemaps" />
@@ -50,11 +48,9 @@ export class AppComponent implements OnInit {
     public titleService: Title,
     private activatedRoute: ActivatedRoute,
     private sharedService: SharedService,
-    private mapModeService: RoutingFullScreenService,
     private idle: Idle,
     private renderer: Renderer2,
-    public userService: UserService,
-    private globalStoreService: GlobalStoreService
+    public userService: UserService
   ) {}
 
   ngOnInit() {
@@ -78,7 +74,6 @@ export class AppComponent implements OnInit {
 
     if (localStorage.getItem('userCompany') != null) {
       this.getCompanySubscription();
-      this.globalStoreService.getAllStoreValues();
     }
 
     this.lowResMode = window.innerWidth < 1261;
@@ -88,11 +83,11 @@ export class AppComponent implements OnInit {
     document.addEventListener('scroll', this.scroll, true);
     window.addEventListener('resize', this.resize, true);
 
-    this.mapModeService.currentMapMode
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((mapMode: boolean) => {
-        this.trialVisible = !mapMode;
-      });
+    // this.mapModeService.currentMapMode
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((mapMode: boolean) => {
+    //     this.trialVisible = !mapMode;
+    //   });
 
     this.getUserData();
     window.onscroll = () => {

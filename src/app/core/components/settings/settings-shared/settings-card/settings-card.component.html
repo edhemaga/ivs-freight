@@ -28,7 +28,7 @@
         *ngIf="data?.name !== 'Fuel Station'"
         class="settings-card-arrow"
         [ngClass]="{ 'rotate': isCardOpen }"
-        src="assets/img/svgs/settings-company/settings-arrow.svg"
+        src="assets/svg/common/ic_arrow-down.svg"
       ></svg-icon>
     </div>
   </div>
@@ -42,7 +42,7 @@
       <div *ngSwitchCase="'commonTemplate'" class="settings-template">
         <div
           class="settings-template-data"
-          *ngFor="let item of data; trackBy: identityCommonData"
+          *ngFor="let item of data; trackBy: identity"
         >
           <p class="settings-template-name">{{ item.name }}</p>
           <p class="settings-template-value">{{ item.value }}</p>
@@ -56,7 +56,7 @@
             *ngFor="
               let item of data;
               let ind = index;
-              trackBy: identityBankAccount
+              trackBy: identity
             "
           >
             <p class="settings-template-name bank">{{ item.name }}</p>
@@ -78,8 +78,8 @@
                 class="hidden-svg-eye"
                 src="{{
                   isAccountVisible
-                    ? 'assets/img/svgs/settings-company/settings-eye-visible.svg'
-                    : 'assets/img/svgs/settings-company/settings-eye-hidden.svg'
+                    ? 'assets/svg/common/ic_eye-visible.svg'
+                    : 'assets/svg/common/ic_eye-hidden.svg'
                 }}"
               ></svg-icon>
             </div>
@@ -93,7 +93,7 @@
             <p
               *ngFor="
                 let item of bankCardHeaders;
-                trackBy: identityBankCardHeader
+                trackBy: identity
               "
             >
               {{ item }}
@@ -103,7 +103,7 @@
             *ngFor="
               let item of data;
               let ind = index;
-              trackBy: identityBankCard
+              trackBy: identity
             "
             class="bankcard-template-data"
             [ngClass]="{ first: ind === 0 }"
@@ -125,7 +125,7 @@
       <div *ngSwitchCase="'payrollTemplate'" class="payroll-template">
         <div
           class="payroll-template-data"
-          *ngFor="let item of data; trackBy: identityPayrollData"
+          *ngFor="let item of data; trackBy: identity"
         >
           <p class="payroll-template-name">{{ item.name }}</p>
           <p class="payroll-template-value">{{ item.value }}</p>
@@ -144,7 +144,7 @@
           <div class="insurance-template-data-bottom">
             <div
               class="insurance-field"
-              *ngFor="let item of data.fields; trackBy: identityInsurancePolicy"
+              *ngFor="let item of data.fields; trackBy: identity"
             >
               <div class="insurance-field-name">{{ item.name }}</div>
               <div class="insurance-field-value">{{ item.value }}</div>
@@ -167,7 +167,7 @@
             <svg-icon
               class="parking-template-svg"
               [ngClass]="{ disabled: !data.security_camera }"
-              src="assets/img/svgs/settings-company/settings-security-camera.svg"
+              src="assets/svg/common/ic_security-camera.svg"
             ></svg-icon>
             <p
               class="parking-template-text"
@@ -180,7 +180,7 @@
             <svg-icon
               class="parking-template-svg"
               [ngClass]="{ disabled: !data.gate }"
-              src="assets/img/svgs/settings-company/settings-security-gate.svg"
+              src="assets/svg/common/ic_security-gate.svg"
             ></svg-icon>
             <p
               class="parking-template-text"
@@ -197,21 +197,21 @@
           <div class="office-template-item">
             <svg-icon
               class="office-template-svg"
-              src="assets/img/svgs/settings-company/settings-phone.svg"
+              src="assets/svg/common/ic_phone.svg"
             ></svg-icon>
             <p class="office-template-value">{{ data.phone }}</p>
           </div>
           <div class="office-template-item">
             <svg-icon
               class="office-template-svg"
-              src="assets/img/svgs/settings-company/settings-phone-extension.svg"
+              src="assets/svg/common/ic_phone-extension.svg"
             ></svg-icon>
             <p class="office-template-value">{{ data.phone_ext }}</p>
           </div>
           <div class="office-template-item office-template-email">
             <svg-icon
               class="office-template-svg"
-              src="assets/img/svgs/settings-company/settings-email.svg"
+              src="assets/svg/common/ic_email.svg"
             ></svg-icon>
             <p class="office-template-value">{{ data.email }}</p>
           </div>
@@ -225,7 +225,7 @@
         >
           <div
             class="repair-shop-template-item"
-            *ngFor="let item of data; trackBy: identityRepairShop"
+            *ngFor="let item of data; trackBy: identity"
           >
             <svg-icon
               class="repair-shop-template-svg"
@@ -250,21 +250,21 @@
           <div class="terminal-template-item">
             <svg-icon
               class="terminal-template-svg"
-              src="assets/img/svgs/settings-company/settings-phone.svg"
+              src="assets/svg/common/ic_phone.svg"
             ></svg-icon>
             <p class="terminal-template-value">{{ data.phone }}</p>
           </div>
           <div class="terminal-template-item">
             <svg-icon
               class="terminal-template-svg"
-              src="assets/img/svgs/settings-company/settings-phone-extension.svg"
+              src="assets/svg/common/ic_phone-extension.svg"
             ></svg-icon>
             <p class="terminal-template-value">{{ data.phone_ext }}</p>
           </div>
           <div class="terminal-template-item terminal-template-email">
             <svg-icon
               class="terminal-template-svg"
-              src="assets/img/svgs/settings-company/settings-email.svg"
+              src="assets/svg/common/ic_email.svg"
             ></svg-icon>
             <p class="terminal-template-value">{{ data.email }}</p>
           </div>
@@ -283,7 +283,7 @@
             <svg-icon
               class="parking-template-svg"
               [ngClass]="{ disabled: !data.security_camera }"
-              src="assets/img/svgs/settings-company/settings-security-camera.svg"
+              src="assets/svg/common/ic_security-camera.svg"
             ></svg-icon>
             <p
               class="parking-template-text"
@@ -296,7 +296,7 @@
             <svg-icon
               class="parking-template-svg"
               [ngClass]="{ disabled: !data.gate }"
-              src="assets/img/svgs/settings-company/settings-security-gate.svg"
+              src="assets/svg/common/ic_security-gate.svg"
             ></svg-icon>
             <p
               class="parking-template-text"
