@@ -8,6 +8,8 @@ table {
       th {
         display: flex;
         align-items: center;
+        position: relative;
+        overflow: hidden;
 
         // Selected Row Count
         .selected-rows-count {
@@ -36,9 +38,14 @@ table {
           background: #AAAAAA;
           border-radius: 1px;
           cursor: ew-resize;
-          margin-left: auto;
-          position: relative;
+          position: absolute;
+          right: 0;
           z-index: 100;
+          &:hover{
+            width: 6px;
+            background: #6C6C6C;
+            transition: 0.25s;
+          }
         }
       }
 
