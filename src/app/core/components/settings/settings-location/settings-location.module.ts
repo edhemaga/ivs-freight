@@ -6,7 +6,7 @@ import { SettingsLocationRoutes } from './settings-location.routing';
 import { SettingsParkingComponent } from './settings-parking/settings-parking.component';
 import { SettingsOfficeComponent } from './settings-office/settings-office.component';
 import { SettingsTerminalComponent } from './settings-terminal/settings-terminal.component';
-import { SharedModule } from 'src/app/core/shared/shared/shared.module';
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { SettingsParkingModalComponent } from './location-modals/settings-parking-modal/settings-parking-modal.component';

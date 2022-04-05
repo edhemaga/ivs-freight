@@ -151,8 +151,15 @@
         padding-top: 0 !important;
         padding-bottom: 0 !important;
         border: none;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 14px !important;
   
-        color: #919191;
+        color: #6C6C6C !important;
+
+        &.note-col{
+          padding-left: 35px !important;
+        }
   
         &:not(.header_note_col) {
           padding-left: 0.7rem;
@@ -176,7 +183,6 @@
       display: flex;
       align-items: center;
       z-index: 10;
-      color: #919191;
     }
   
     .destination-col {
@@ -692,7 +698,7 @@
     }
   
     .dispatcher-drpdwn-wrap {
-      width: 180px;
+      width: 200px;
       height: 32px;
     }
   
@@ -1344,7 +1350,7 @@
         line-height: 32px;
         height: 32px;
         // box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
-        padding-left: 0.7rem;
+        padding-left: 6px;
         display: flex;
         align-items: center;
   
@@ -1831,7 +1837,7 @@
     }
   
     .phone-email-icon {
-      background-image: url('../../../../assets/img/svgs/mail-white.svg');
+      // background-image: url('../../../../assets/img/svgs/mail-white.svg');
       background-position: center;
       background-size: 18px 14px;
       background-repeat: no-repeat;
@@ -1842,7 +1848,7 @@
     }
   
     .phone-email-icon.phone-icon {
-      background-image: url('../../../../assets/img/svgs/phone.svg') !important;
+      //background-image: url('../../../../assets/img/svgs/phone.svg') !important;
       background-size: 18px;
     }
   }
@@ -2241,7 +2247,7 @@
             height: 22px;
             border-radius: 3px;
   
-            background-image: url('../../../../assets/img/svgs/right.svg');
+            //background-image: url('../../../../assets/img/svgs/right.svg');
             background-repeat: no-repeat;
             background-position: calc(100% - 3px) center;
             background-size: 6px auto;
@@ -2342,7 +2348,7 @@
   
               &:not(.circle_span)::before {
                 content: '';
-                background-image: url('../../../../assets/img/svgs/note_arrow.svg');
+                //background-image: url('../../../../assets/img/svgs/note_arrow.svg');
                 background-repeat: no-repeat;
                 background-position: center;
                 position: absolute;
@@ -2371,6 +2377,124 @@
   height: 34px;
 }
 
+.dispatch-dropdown.ng-select.ng-select-opened {
+  position: relative;
+  top: 0 !important;
+  left: 50%;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.15) !important;
+  background-color: $white;
+  z-index: 10;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  transition: none !important;
+  transform: translateX(-50%);
+
+  .disp_selected {
+    background-color: #fff;
+  }
+}
+
+.dispatch-dropdown.ng-select {
+  position: relative;
+  right: 18px;
+  width: calc(100% + 2rem);
+  padding-bottom: 0 !important;
+  margin-left: 3px;
+  margin-right: 6px;
+
+  .ng-select-container {
+    align-items: center;
+    min-height: 38px;
+    padding-left: 7px;
+    background-color: unset;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+  }
+
+  .ng-select-container.ng-has-value {
+    color: #606060;
+    padding-left: 22px;
+  }
+
+  &.ng-select-top {
+    &::before {
+      top: auto !important;
+      bottom: -10px;
+
+      transform: scale(1.8, 1) translateX(-50%) rotate(180deg);
+    }
+
+    .ng-dropdown-panel,
+    .ng-option {
+      border-radius: 3px 3px 0 0;
+    }
+
+    &.ng-select-opened {
+      top: auto !important;
+      bottom: 38px;
+      border-radius: 0 0 3px 3px;
+    }
+  }
+
+  .ng-dropdown-panel.ng-select-top {
+    top: auto !important;
+    bottom: 100%;
+    box-shadow: 0 -1px 4px 0px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .ng-dropdown-panel.ng-select-bottom {
+    top: calc(100% - 0em) !important;
+  }
+
+  .ng-dropdown-panel.ng-select-bottom {
+    top: calc(100% - 0em) !important;
+  }
+
+  .ng-value-container {
+    border-top: none !important;
+    padding-bottom: 0 !important;
+    //margin-top: -15px; // Ovo kreira problem na ostalim dropdownima
+  }
+
+  .ng-select-container::after {
+    display: none !important;
+  }
+
+  .ng-arrow-wrapper {
+    display: none;
+  }
+
+  .ng-dropdown-panel {
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15) !important;
+    // box-shadow: $box-shadow !important;
+    border-radius: 0 0 3px 3px;
+  }
+
+  .ng-option {
+    // border-top: 1px solid #f4f5f7;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    padding: 0 6px;
+    
+    span{
+      font-size: 14px;
+      color: #b7b7b7;
+    }
+  }
+
+  .ng-option:hover {
+    background-color: #f9f9f9 !important;
+  }
+
+  .ng-input {
+    padding: 5px 0;
+  }
+
+  .ng-option-marked {
+    background: inherit !important;
+  }
+}
+
 .kendo-table-container.dispacher-table td.trailer-col,
 .kendo-table-container.dispacher-table td.truck-col,
 .kendo-table-container.dispacher-table td.driver-col {
@@ -2385,8 +2509,13 @@
 
     z-index: 100;
 
+    .ng-select-container .ng-value-container .ng-input{
+      bottom: 0;
+    }
+
     .ng-select-container .ng-value-container .ng-input > input {
       height: 32px !important;
+      padding-left: 6px;
     }
 
   

@@ -22,14 +22,14 @@
 
       <svg-icon
         *ngIf="cardImg"
-        src="assets/img/svgs/driver/ic_driver-bank.svg"
+        src="assets/svg/common/ic_bankAccount_dummy.svg"
       ></svg-icon>
     </div>
 
     <svg-icon
       class="driver-card-arrow"
       [ngClass]="{ rotate: isCardOpen }"
-      src="assets/img/svgs/settings-company/settings-arrow.svg"
+      src="assets/svg/common/ic_arrow-down.svg"
     ></svg-icon>
   </div>
 
@@ -45,14 +45,14 @@
           <div class="assignTo-item">
             <svg-icon
               class="assignTo-vehicle"
-              src="assets/img/svgs/driver/ic_driver-truck.svg"
+              src="assets/svg/common/ic_driver-truck.svg"
             ></svg-icon>
             <p class="assignTo-value">{{ data.truck }}</p>
           </div>
           <div class="assignTo-item">
             <svg-icon
               class="assignTo-vehicle"
-              src="assets/img/svgs/driver/ic_driver-trailer.svg"
+              src="assets/svg/common/ic_driver-trailer.svg"
             ></svg-icon>
             <p class="assignTo-value">{{ data.trailer }}</p>
           </div>
@@ -111,8 +111,8 @@
                 class="hidden-svg-eye"
                 src="{{
                   isAccountVisible
-                    ? 'assets/img/svgs/settings-company/settings-eye-visible.svg'
-                    : 'assets/img/svgs/settings-company/settings-eye-hidden.svg'
+                    ? 'assets/svg/common/ic_eye-visible.svg'
+                    : 'assets/svg/common/ic_eye-hidden.svg'
                 }}"
               ></svg-icon>
             </div>

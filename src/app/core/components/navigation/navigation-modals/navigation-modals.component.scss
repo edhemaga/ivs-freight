@@ -1,8 +1,8 @@
 @import "../navigation.design.scss";
 .modal-nav-panel {
   position: absolute;
-  top: 67px;
-  left: 7px;
+  top: 61px;
+  left: 7.5px;
   z-index: 99;
   width: 184px;
   height: auto;
@@ -33,13 +33,19 @@
     left: 1px;
 
     .modal-nav-close-svg {
+      transition: all 0.3s ease-in-out;
+      height: 32px;
+      width: 32px;
+      background: $nav-hover-darker;
+      border-radius: 50%;
+
       svg {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         path {
           fill: $nav-svg;
-        }
-
-        #Ellipse_6396 {
-          fill: $nav-hover-darker;
         }
       }
     }
@@ -54,13 +60,10 @@
     &:hover {
       .modal-nav-close-svg {
         transition: $nav-transition;
+        background-color: $nav-hover-lightcolor;
         svg {
           path {
             fill: $nav-svg-hover;
-          }
-
-          #Ellipse_6396 {
-            fill: $nav-hover-lightcolor;
           }
         }
       }
@@ -69,13 +72,14 @@
 
   .modal-nav-content {
     height: auto;
-    margin-top: 8px;
+    margin-top: 11px;
 
     .modal-nav-header {
-      font-size: $nav-font-size-verysmall;
+      font-size: $nav-font-size-small;
       font-weight: $nav-font-bold;
-      color: $nav-text-color-lighter;
-      padding-left: 6px;
+      color: $nav-text-color-dadada;
+      padding-left: 5px;
+      margin-bottom: 2.5px;
     }
 
     .modal-nav-routes {
@@ -91,12 +95,23 @@
         padding: 4px 6px;
         border-radius: 3px;
         transition: all 0.2s ease-in-out;
+        position: relative;
 
         &:hover {
           transition: $nav-transition;
           color: $nav-text-color-hover;
           background-color: $nav-hover-color;
           cursor: pointer;
+        }
+
+        .border-right {
+          position: absolute;
+          right: -4px;
+          top: 0;
+          content: "";
+          width: 2px;
+          height: 26px;
+          background: #f3f3f3;
         }
       }
     }

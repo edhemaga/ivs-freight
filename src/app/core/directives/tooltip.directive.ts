@@ -20,6 +20,9 @@ export class TooltipDirective {
   @Input() fontWeight: string;
   @Input() fontSize: string;
 
+  // Position Custom
+  @Input() customPosition: number = 0;
+
   constructor(public el: ElementRef, public renderer: Renderer2) {
   }
 
@@ -104,7 +107,6 @@ export class TooltipDirective {
     this.renderer.setStyle(this.tooltip, 'box-shadow', this.boxShadow);
     this.renderer.setStyle(this.tooltip, 'font-weight', this.fontWeight);
     this.renderer.setStyle(this.tooltip, 'font-size', this.fontSize);
-    console.log("CREATED")
   }
 
   public setPosition() {
@@ -116,6 +118,8 @@ export class TooltipDirective {
     let top;
     let left;
     let right;
+
+    // console.log(hostPos)
 
     if (this.position === 'bottom-right') {
       top = hostPos.bottom + this.offset;
@@ -130,6 +134,21 @@ export class TooltipDirective {
     if (this.position === 'bottom-left') {
       top = hostPos.bottom + this.offset;
       right = document.body.offsetWidth - hostPos.left - hostPos.width / 2;
+    }
+
+    if(this.position === 'top-middle') {
+      top = hostPos.top - 30;
+      left = hostPos.left - hostPos.width + 5 + this.customPosition;
+      console.log(hostPos)
+      console.log(document.body.offsetWidth)
+      console.log(hostPos.left)
+      console.log(hostPos.width)
+      console.log(left)
+    }
+
+    if(this.position === 'middle-right') {
+      top = hostPos.top + 4;
+      left = hostPos.left + hostPos.width + 5;
     }
 
     this.renderer.setStyle(this.tooltip, 'top', `${top + scrollPos}px`);

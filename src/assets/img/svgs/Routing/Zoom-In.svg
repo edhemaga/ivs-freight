@@ -1,9 +1,0 @@
-<svg height="15" id="Plus" viewBox="0 0 22 15" width="22" xmlns="http://www.w3.org/2000/svg">
-  <path d="M2,0H20a2,2,0,0,1,2,2V15a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V2A2,2,0,0,1,2,0Z" data-name="Rectangle 1159"
-        fill="#fff" id="Rectangle_1159" opacity="0.8"/>
-  <path
-    d="M12.671,10.663H10.663v2.007a1,1,0,1,1-1.993,0V10.663H6.663a1,1,0,0,1-1-1h0a1,1,0,0,1,1-1H8.671V6.663a1,1,0,1,1,1.993,0V8.671h2.007a1,1,0,1,1,0,1.993Z"
-    data-name="Plus"
-    fill="#919191"
-    id="Plus-2" opacity="0.8" transform="translate(1.332 -2.668)"/>
-</svg>

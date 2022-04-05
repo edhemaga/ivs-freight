@@ -33,7 +33,7 @@ export class SettingsParkingComponent implements OnInit {
       parking_slot: 12,
       parking_slot_full: 47,
       companyOwned:
-        'assets/img/svgs/settings-company/settings-company-owned.svg',
+        'assets/svg/common/ic_company.svg',
       gate: true,
       security_camera: true,
       rent: '',

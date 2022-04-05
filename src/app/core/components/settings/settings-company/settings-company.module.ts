@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from 'src/app/core/shared/shared/shared.module';
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { SettingsCompanyRoutes } from './settings-company.routing';
 
 // Components

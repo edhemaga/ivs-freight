@@ -43,10 +43,7 @@
     }
 
     &.show {
-      animation: fadeIn 0.2s;
-    }
-    &.hide {
-      animation: fadeOut 0.15s;
+      animation: fadeIn 0.3s;
     }
   }
 
@@ -66,7 +63,7 @@
 }
 
 .nav-item-active {
-  color: $nav-active;
+  color: $nav-active-lighter;
   border-radius: 3px;
 
   .nav-item-img-active,

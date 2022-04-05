@@ -17,7 +17,6 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {FILE_TABLES} from "../../../../../../const";
 import {DatePipe} from "@angular/common";
 import { checkSelectedText, pasteCheck } from 'src/assets/utils/methods-global';
-import { DriverService } from 'src/app/core/services/driver/driver.service';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -53,7 +52,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private driverService: DriverService,
     private activeModal: NgbActiveModal,
     private shared: SharedService,
     private notification: NotificationService,
@@ -88,30 +86,30 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   getLicenseData() {
     const classes$ = this.metadataService.getMetaDataByDomainKey('driver', 'class');
     const countries$ = this.metadataService.getMetaDataByDomainKey('driver', 'country');
-    const restrictions$ = this.driverService.getRestriction();
-    const endorsments$ = this.driverService.getEndorsement();
+    // const restrictions$ = this.driverService.getRestriction();
+    // const endorsments$ = this.driverService.getEndorsement();
 
 
-    forkJoin([classes$, countries$, restrictions$, endorsments$])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        ([classes, countries, restrictions, endorsments]: [
-          MetaData[],
-          MetaData[],
-          RestrictionData[],
-          EndorsementData[]
-        ]) => {
-          this.classData = classes;
-          this.countryData = countries;
-          this.restrictionData = restrictions;
-          this.endorsementData = endorsments;
+    // forkJoin([classes$, countries$, restrictions$, endorsments$])
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe(
+    //     ([classes, countries, restrictions, endorsments]: [
+    //       MetaData[],
+    //       MetaData[],
+    //       RestrictionData[],
+    //       EndorsementData[]
+    //     ]) => {
+    //       this.classData = classes;
+    //       this.countryData = countries;
+    //       this.restrictionData = restrictions;
+    //       this.endorsementData = endorsments;
 
-          this.loadLicenseData();
-        },
-        (error: HttpErrorResponse) => {
-          this.shared.handleError(error);
-        }
-      );
+    //       this.loadLicenseData();
+    //     },
+    //     (error: HttpErrorResponse) => {
+    //       this.shared.handleError(error);
+    //     }
+    //   );
   }
 
   openNote() {
@@ -273,81 +271,81 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     this.spinner.show(true);
 
     const newFiles = this.shared.getNewFiles(this.files);
-    if (newFiles.length > 0) {
-      this.storageService
-        .uploadFiles(
-          this.driver.guid,
-          FILE_TABLES.DRIVER,
-          this.driver.id,
-          this.files,
-          'cdl',
-          license.id.toString()
-        )
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          (resp: any) => {
-            resp.success.forEach((element) => {
-              license.attachments.push(element);
-            });
-            this.notification.success(`Attachments successfully uploaded.`, ' ');
-            this.driverService
-              .updateDriverData(saveData, this.inputData.data.driver.id)
-              .pipe(takeUntil(this.destroy$))
-              .subscribe(
-                (driver: DriverData) => {
-                  if (this.inputData.data.driver?.doc) {
-                    this.inputData.data.driver.doc.licenseData =
-                      driver.doc.licenseData || driver.licenseData;
-                  }
-                  this.shared.emitRefreshAfterUpdate.emit();
-                  if (this.inputData.data.type === 'edit') {
-                    this.notification.success(
-                      `License ${license.number} has been updated.`,
-                      'Success:'
-                    );
-                  } else {
-                    this.notification.success(
-                      `License ${license.number} has been added.`,
-                      'Success:'
-                    );
-                  }
-                  if (!keepModal) {
-                    this.resetModalData();
-                  }
-                  this.spinner.show(false);
-                },
-                (error: HttpErrorResponse) => {
-                  this.shared.handleError(error);
-                }
-              );
-          },
-          (error: any) => {
-            error ? this.shared.handleServerError() : null;
-          }
-        );
-    } else {
-      this.driverService
-        .updateDriverData(saveData, this.inputData.data.driver.id)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          (driver: DriverData) => {
-            this.inputData.data.driver.doc.licenseData = driver.doc.licenseData;
-            this.shared.emitRefreshAfterUpdate.emit();
-            if (this.inputData.data.type === 'edit') {
-              this.notification.success(`License ${license.number} has been updated.`, 'Success:');
-            } else {
-              this.notification.success(`License ${license.number} has been added.`, 'Success:');
-            }
-            if (!keepModal) {
-              this.resetModalData();
-            }
-            this.spinner.show(false);
-          },
-          (error: HttpErrorResponse) => {
-            this.shared.handleError(error);
-          }
-        );
-    }
+    // if (newFiles.length > 0) {
+    //   this.storageService
+    //     .uploadFiles(
+    //       this.driver.guid,
+    //       FILE_TABLES.DRIVER,
+    //       this.driver.id,
+    //       this.files,
+    //       'cdl',
+    //       license.id.toString()
+    //     )
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe(
+    //       (resp: any) => {
+    //         resp.success.forEach((element) => {
+    //           license.attachments.push(element);
+    //         });
+    //         this.notification.success(`Attachments successfully uploaded.`, ' ');
+    //         this.driverService
+    //           .updateDriverData(saveData, this.inputData.data.driver.id)
+    //           .pipe(takeUntil(this.destroy$))
+    //           .subscribe(
+    //             (driver: DriverData) => {
+    //               if (this.inputData.data.driver?.doc) {
+    //                 this.inputData.data.driver.doc.licenseData =
+    //                   driver.doc.licenseData || driver.licenseData;
+    //               }
+    //               this.shared.emitRefreshAfterUpdate.emit();
+    //               if (this.inputData.data.type === 'edit') {
+    //                 this.notification.success(
+    //                   `License ${license.number} has been updated.`,
+    //                   'Success:'
+    //                 );
+    //               } else {
+    //                 this.notification.success(
+    //                   `License ${license.number} has been added.`,
+    //                   'Success:'
+    //                 );
+    //               }
+    //               if (!keepModal) {
+    //                 this.resetModalData();
+    //               }
+    //               this.spinner.show(false);
+    //             },
+    //             (error: HttpErrorResponse) => {
+    //               this.shared.handleError(error);
+    //             }
+    //           );
+    //       },
+    //       (error: any) => {
+    //         error ? this.shared.handleServerError() : null;
+    //       }
+    //     );
+    // } else {
+    //   this.driverService
+    //     .updateDriverData(saveData, this.inputData.data.driver.id)
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe(
+    //       (driver: DriverData) => {
+    //         this.inputData.data.driver.doc.licenseData = driver.doc.licenseData;
+    //         this.shared.emitRefreshAfterUpdate.emit();
+    //         if (this.inputData.data.type === 'edit') {
+    //           this.notification.success(`License ${license.number} has been updated.`, 'Success:');
+    //         } else {
+    //           this.notification.success(`License ${license.number} has been added.`, 'Success:');
+    //         }
+    //         if (!keepModal) {
+    //           this.resetModalData();
+    //         }
+    //         this.spinner.show(false);
+    //       },
+    //       (error: HttpErrorResponse) => {
+    //         this.shared.handleError(error);
+    //       }
+    //     );
+    // }
   }
 
   resetModalData() {

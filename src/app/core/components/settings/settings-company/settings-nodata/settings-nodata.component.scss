@@ -14,11 +14,21 @@
   .no-settings-edit-button {
     display: inline-block;
     position: relative;
-    top: 56px;
-    left: 482px;
-
-    border: 5px solid rgba(86, 115, 170, 0.3);
+    top: 61px;
+    left: 485px;
+    background-color: #ffffff;
+    width: 32px;
+    height: 32px;
+    border: 5px solid rgba(86, 115, 170, 0.4);
     border-radius: 3px;
+    padding: 12px;
+
+    svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }
 
     &:hover {
       transform: $settings-transition;
@@ -34,8 +44,8 @@
   .no-settings-text {
     display: inline-block;
     position: relative;
-    top: 95px;
-    left: 363px;
+    top: 82px;
+    left: 370px;
     height: 27px;
     width: 193px;
     color: $settings-gray-dark;

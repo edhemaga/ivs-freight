@@ -62,7 +62,7 @@
 		},
 		{
 			"iconName": "hosinactive",
-			"iconPath": "/assets/img/shared/hos_innactive_hours.svg"
+			"iconPath": "/assets/svg/dispatchboard/hos-arrow.svg"
 		},
 		{
 			"iconName": "svg_num_box_1",

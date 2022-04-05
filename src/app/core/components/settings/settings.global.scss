@@ -20,6 +20,7 @@ $settings-gray-black: #3c3c3c;
 $settings-blue-light: #778fbb;
 $settings-blue: #5673aa;
 $settings-blue-dark: #6d82c7;
+$settings-blue-hover: #3551b7;
 
 $settings-red-dark: #ff5050;
 
@@ -57,30 +58,29 @@ p {
 }
 
 // Progress bar settings
-.settings-progress-container  {
+.settings-progress-container {
   .table-progress-cotnainer {
     display: flex !important;
     flex-direction: column !important;
-  
+
     .table-progress {
       order: 1 !important;
       width: 100% !important;
       height: 8px !important;
     }
-  
+
     .table-progress-panel {
       order: -1 !important;
       display: flex !important;
       justify-content: space-between !important;
       color: #6c6c6c !important;
-  
+
       .progress-text {
         margin: 2px 0px !important;
       }
     }
   }
 }
-
 
 // Settings Header global
 .settings-header {
@@ -102,56 +102,29 @@ p {
     user-select: none;
   }
 
-  // Multiple buttons (edit, delete)
+  // Multiple buttons container
   .settings-header-buttons {
     width: 68px;
-    height: 100%;
+    height: 32px;
     user-select: none;
-
-    .settings-plus-button {
-      svg {
-        path {
-          fill: $settings-blue-dark;
-        }
-      }
-      &:hover {
-        transform: $settings-transition;
-        cursor: pointer;
-      }
-    }
-
-    .settings-edit-button {
-      margin-right: 4px;
-
-      &:hover {
-        transform: $settings-transition;
-        cursor: pointer;
-        svg {
-          path {
-            fill: $settings-gray;
-          }
-        }
-      }
-    }
-
-    .settings-trash-button {
-      &:hover {
-        transform: $settings-transition;
-        cursor: pointer;
-        svg {
-          path {
-            fill: $settings-red-dark;
-          }
-        }
-      }
-    }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
+
   // Single Button
   .settings-header-button {
     width: 32px;
-    height: 100%;
+    height: 32px;
+    background: $settings-background;
+    border-radius: 3px;
+    position: relative;
 
     .settings-edit-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       &:hover {
         transform: $settings-transition;
         cursor: pointer;
@@ -164,6 +137,10 @@ p {
     }
 
     .settings-plus-button {
+      position: absolute;
+      top: 48%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       svg {
         path {
           fill: $settings-blue-dark;
@@ -172,6 +149,27 @@ p {
       &:hover {
         transform: $settings-transition;
         cursor: pointer;
+        svg {
+          path {
+            fill: $settings-blue-hover;
+          }
+        }
+      }
+    }
+
+    .settings-trash-button {
+      position: absolute;
+      top: 48%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      &:hover {
+        transform: $settings-transition;
+        cursor: pointer;
+        svg {
+          path {
+            fill: $settings-red-dark;
+          }
+        }
       }
     }
   }
