@@ -65,7 +65,7 @@ export class AccountManageComponent implements OnInit {
    */
   public createForm() {
     this.accountForm = this.formBuilder.group({
-      name: [null, Validators.required],
+      name: [null, [Validators.minLength(5), Validators.required]],
       username: [null, Validators.required],
       password: [null],
       url: ['', [Validators.minLength(5)]],
@@ -127,6 +127,7 @@ export class AccountManageComponent implements OnInit {
    * Manage account function
    */
   public manageAccount() {
+    console.log(this.accountForm.value);
     this.accountService.reloadAccount = true;
     if (!this.shared.markInvalid(this.accountForm)) {
       return false;

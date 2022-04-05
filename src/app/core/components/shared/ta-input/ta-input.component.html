@@ -1,0 +1,118 @@
+<div
+  class="input-group"
+  [ngClass]="{
+    'valid': getSuperControl.value && getSuperControl.valid && !focusInput,
+    'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput
+  }"
+>
+  <svg-icon
+    src="assets/svg/ic_x.svg"
+    class="input-clear"
+    [ngClass]="{
+      'focus-typing': focusInput && getSuperControl.value,
+      'valid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        focusInput &&
+        waitValidation,
+      'invalid-focus-out':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        waitValidation,
+      'invalid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        waitValidation
+    }"
+    (click)="clearInput()"
+  ></svg-icon>
+
+  <label
+    [for]="inputConfig.name"
+    class="input-label"
+    [ngClass]="{
+      'required': inputConfig.isRequired && !inputConfig.isDisabled,
+      'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
+      'filled': getSuperControl.value || focusInput,
+      'focus-empty': focusInput && !getSuperControl.value,
+      'focus-typing': focusInput && getSuperControl.value,
+      'valid-focus-out':
+        getSuperControl.value && getSuperControl.valid && !focusInput,
+      'valid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        focusInput &&
+        waitValidation,
+      'invalid-focus-out':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        waitValidation,
+      'invalid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        waitValidation
+    }"
+  >
+    {{ inputConfig.label }}
+  </label>
+
+  <input
+    #input
+    [type]="inputConfig.type"
+    [id]="inputConfig.name"
+    [name]="inputConfig.name"
+    [placeholder]="inputConfig.placeholder"
+    [pattern]="inputConfig.pattern"
+    [disabled]="inputConfig.isDisabled"
+    class="input-control {{ inputConfig.specificPlaceholder }}"
+    [ngClass]="{
+      'required': inputConfig.isRequired && !inputConfig.isDisabled,
+      'disabled': inputConfig.isDisabled && !getSuperControl.value,
+      'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
+      'focus-typing': focusInput && getSuperControl.value,
+      'valid-focus-out':
+        getSuperControl.value && getSuperControl.valid && !focusInput,
+      'valid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        focusInput &&
+        waitValidation,
+      'invalid-focus-out':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        waitValidation,
+      'invalid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        waitValidation
+    }"
+    (keyup)="onCheckBackSpace($event)"
+    (input)="onChange($event.target.value)"
+    (blur)="onBlur()"
+    (focus)="onFocus()"
+  />
+
+  <span
+    class="input-error"
+    [ngClass]="{
+      'invalid-focus-out':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        waitValidation,
+      'invalid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        waitValidation
+    }"
+  >
+    Error Message
+  </span>
+</div>

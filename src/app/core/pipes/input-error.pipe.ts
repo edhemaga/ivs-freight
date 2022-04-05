@@ -9,13 +9,13 @@ export class InputErrorPipe implements PipeTransform {
     let errorMessageValue: string = '';
 
     if (value !== null) {
-      if (value['invalid'] === true) {
+      if (value['invalid']) {
         errorMessageValue = 'Invalid';
       }
-      if (value['email'] === true) {
+      if (value['email']) {
         errorMessageValue = 'Invalid';
       }
-      if (value['required'] === true) {
+      if (value['required']) {
         errorMessageValue = 'Required';
       }
     }
