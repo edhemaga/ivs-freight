@@ -168,9 +168,13 @@
     top: 3px;
     left: 6px;
     font-size: 14px;
-    user-select: none;
     transition: all 0.3s ease-in-out;
     color: #6c6c6c;
+
+    &::selection {
+      background-color: #e5e5e5 !important;
+      color: #3c3c3c !important;
+    }
 
     &.required {
       &::after {
@@ -219,6 +223,10 @@
     background-color: #f7f7f7;
     color: #6c6c6c;
 
+    &::selection {
+      background-color: #919191 !important;;
+    }
+
     &.disabled {
       background-color: #f9f9f9 !important;
       -webkit-user-select: none;
@@ -258,11 +266,19 @@
       &.valid-focus-in {
         transition: all 0.3s ease-in-out;
         background-color: #536bc2;
+
+        &::selection {
+          background-color: #6d82c7 !important;
+        }
       }
 
       &.invalid-focus-in {
         transition: all 0.3s ease-in-out;
         background-color: #ef5350;
+
+        &::selection {
+          background-color: #e57373 !important;
+        }
       }
     }
 
@@ -459,6 +475,10 @@
     font-size: 11px;
     font-weight: 600;
     display: none;
+
+    &::selection {
+      background-color: #ffe1e4;
+    }
 
     &.invalid-focus-out,
     &.invalid-empty-focus-out-required {
