@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
+import { navigation_header_animation } from '../navigation.animation';
 import { NavigationService } from '../services/navigation.service';
 @Component({
   selector: 'app-navigation-header',
   templateUrl: './navigation-header.component.html',
   styleUrls: ['./navigation-header.component.scss'],
+  animations: [navigation_header_animation('showHideDetails')],
 })
 export class NavigationHeaderComponent {
   @Input() isNavigationHovered: boolean = false;

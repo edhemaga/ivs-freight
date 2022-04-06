@@ -1,6 +1,6 @@
-<!-- <div cdkDrag class="modal-container">
+<div cdkDrag class="modal-container">
   <div cdkDragHandle class="modal-header">
-    <h5 class="modal-title">{{ modalTitle}}</h5>
+    <h5 class="modal-title">{{ modalTitle }}</h5>
     <div class="d-flex align-items-center">
       <svg-icon
         (click)="closeAccountsEditModal()"
@@ -9,17 +9,29 @@
         src="assets/img/svgs/table/close.svg"
       ></svg-icon>
     </div>
-
   </div>
-  <div class="divider">
-  </div>
+  <div class="divider"></div>
 
   <div class="modal-body">
     <form [formGroup]="accountForm" class="form-container">
       <div class="row">
         <div class="col-7">
-          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
-            <input
+          <app-ta-input
+            formControlName="name"
+            [inputConfig]="{
+              name: 'Phone',
+              type: 'text',
+              label: 'Phone',
+              placeholderIcon: 'phone',
+              isRequired: true,
+              mask: '(000) 000-0000'
+            }"
+          ></app-ta-input>
+          <!-- <div
+            class="form-label-group"
+            [ngClass]="inputText ? 'typing' : 'not-typing'"
+          >
+           <input
               (keydown)="onCheckBackSpace($event)"
               (keypress)="onNameTyping($event)"
               (paste)="onPaste($event, 'name', 23)"
@@ -37,10 +49,13 @@
             </div>
             <label class="required-label" for="name">Account name</label>
             <app-required-label [control]="accountForm.controls.name"></app-required-label>
-          </div>
+          </div>  -->
         </div>
         <div class="col-5">
-          <div class="form-label-group" [ngClass]="inputText ? 'typing' : 'not-typing'">
+          <div
+            class="form-label-group"
+            [ngClass]="inputText ? 'typing' : 'not-typing'"
+          >
             <ng-select
               [(ngModel)]="selectedLabelId"
               [items]="createdLabels"
@@ -51,8 +66,16 @@
               formControlName="labelId"
               placeholder="Select label"
             >
-              <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
-                <span [ngOptionHighlight]="search" [ngStyle]="{ color: item.labelColor }">{{ item.labelName }}</span>
+              <ng-template
+                let-item="item"
+                let-search="searchTerm"
+                ng-option-tmp
+              >
+                <span
+                  [ngOptionHighlight]="search"
+                  [ngStyle]="{ color: item.labelColor }"
+                  >{{ item.labelName }}</span
+                >
               </ng-template>
             </ng-select>
           </div>
@@ -60,7 +83,10 @@
       </div>
       <div class="row">
         <div class="col-7">
-          <div class="form-label-group input-holder" [ngClass]="inputText ? 'typing' : 'not-typing'">
+          <div
+            class="form-label-group input-holder"
+            [ngClass]="inputText ? 'typing' : 'not-typing'"
+          >
             <input
               (keydown)="onCheckBackSpace($event)"
               (keypress)="onEmailTyping($event)"
@@ -80,19 +106,29 @@
             </svg-icon>
 
             <svg-icon
-              (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+              (click)="clearInput($event)"
+              class="clear-icon"
+              ngbTooltip="Clear"
               placement="bottom-left"
               src="../../../../../assets/img/form-validation/x-icon-cut.svg"
             ></svg-icon>
-            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-            </div>
+            <div
+              (click)="clearInput($event)"
+              class="clear-button"
+              ngbTooltip="Clear"
+              placement="bottom-left"
+            ></div>
             <label class="required-label" for="username">Username</label>
-            <app-required-label [control]="accountForm.controls.username"></app-required-label>
+            <app-required-label
+              [control]="accountForm.controls.username"
+            ></app-required-label>
           </div>
         </div>
         <div class="col-5 password-field">
-          <div class="form-label-group input-icon password-field-wrapper input-holder"
-               [ngClass]="inputText ? 'typing' : 'not-typing'">
+          <div
+            class="form-label-group input-icon password-field-wrapper input-holder"
+            [ngClass]="inputText ? 'typing' : 'not-typing'"
+          >
             <input
               #password
               (ngModelChange)="accountPassChange($event)"
@@ -113,24 +149,28 @@
             </svg-icon>
 
             <svg-icon
-              (click)="clearPasswordInput()" ngbTooltip="Clear" placement="bottom-left"
+              (click)="clearPasswordInput()"
+              ngbTooltip="Clear"
+              placement="bottom-left"
               class="clear-icon"
               src="../../../../../assets/img/form-validation/x-icon-cut.svg"
             ></svg-icon> -->
 
-            <!-- <label class="required-label" for="password">Password</label> -->
+            <label class="required-label" for="password">Password</label> 
             <!-- TODO ADD PASSWORD STRENGTH WHICH IS NOT MATERIAL -->
-            <!-- <span class="fs-12 position-absolute">{{ passwordStrength }}</span>
+           <span class="fs-12 position-absolute">{{ passwordStrength }}</span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
-          <div class="form-label-group input-icon link-field-wrapper input-holder"
-               [ngClass]="inputText ? 'typing' : 'not-typing'">
+          <div
+            class="form-label-group input-icon link-field-wrapper input-holder"
+            [ngClass]="inputText ? 'typing' : 'not-typing'"
+          >
             <input
               appInputFocus
-              class="form-control input-control required "
+              class="form-control input-control required"
               formControlName="url"
               id="hyperlink"
               maxlength="400"
@@ -145,21 +185,29 @@
             </svg-icon>
 
             <svg-icon
-              (click)="clearInput($event)" class="clear-icon" ngbTooltip="Clear"
+              (click)="clearInput($event)"
+              class="clear-icon"
+              ngbTooltip="Clear"
               placement="bottom-left"
               src="../../../../../assets/img/form-validation/x-icon-cut.svg"
             ></svg-icon>
-            <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
-            </div>
+            <div
+              (click)="clearInput($event)"
+              class="clear-button"
+              ngbTooltip="Clear"
+              placement="bottom-left"
+            ></div>
             <label class="required-label" for="hyperlink">Hyperlink</label>
           </div>
         </div>
       </div>
-      <div class="divider">
-
-      </div>
+      <div class="divider"></div>
       <div class="row">
-        <div class="col-12 note-wrapper{{ showNote ? ' visible-note' : ' hidden-note' }}">
+        <div
+          class="col-12 note-wrapper{{
+            showNote ? ' visible-note' : ' hidden-note'
+          }}"
+        >
           <div (click)="openNote()" class="note-label-wrapper">
             <span class="note-label">Note</span>
             <svg-icon
@@ -167,22 +215,34 @@
               src="assets/img/svgs/down-arrow.svg"
             ></svg-icon>
           </div>
-          <div class="example-full-width note-input{{ showNote ? ' note-visible' : ' note-hidden' }}">
-              <textarea
-                #note
-                cdkAutosizeMaxRows="5"
-                cdkAutosizeMinRows="2"
-                cdkTextareaAutosize
-                class="input-custom-textarea form-textarea"
-                formControlName="note"
-                placeholder="Write a note."
-              ></textarea>
+          <div
+            class="example-full-width note-input{{
+              showNote ? ' note-visible' : ' note-hidden'
+            }}"
+          >
+            <textarea
+              #note
+              cdkAutosizeMaxRows="5"
+              cdkAutosizeMinRows="2"
+              cdkTextareaAutosize
+              class="input-custom-textarea form-textarea"
+              formControlName="note"
+              placeholder="Write a note."
+            ></textarea>
           </div>
         </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button (click)="manageAccount()"  [ngClass]="{'invalid-btn' : !accountForm.valid}" class="save-btn" ngbAutofocus type="button">Save</button>
+    <button
+      (click)="manageAccount()"
+      [ngClass]="{ 'invalid-btn': !accountForm.valid }"
+      class="save-btn"
+      ngbAutofocus
+      type="button"
+    >
+      Save
+    </button>
   </div>
-</div> -->
+</div>

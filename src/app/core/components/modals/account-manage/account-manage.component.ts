@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NotificationService} from 'src/app/core/services/notification/notification.service';
@@ -6,8 +6,8 @@ import {SharedService} from 'src/app/core/services/shared/shared.service';
 import {SpinnerService} from 'src/app/core/services/spinner/spinner.service';
 import {ManageAccount} from 'src/app/core/model/account';
 import {NewLabel} from 'src/app/core/model/label';
-import {ContactAccountService} from 'src/app/core/services/contact-account/contact-account.service';
 import {checkSelectedText, emailChack, pasteCheck} from 'src/assets/utils/methods-global';
+import { ContactAccountService } from 'src/app/core/services/shared/contactaccount.service';
 
 @Component({
   selector: 'app-account-manage',
@@ -65,7 +65,7 @@ export class AccountManageComponent implements OnInit {
    */
   public createForm() {
     this.accountForm = this.formBuilder.group({
-      name: [null, Validators.required],
+      name: [null, [Validators.minLength(5),Validators.required]],
       username: [null, Validators.required],
       password: [null],
       url: ['', [Validators.minLength(5)]],
@@ -127,6 +127,7 @@ export class AccountManageComponent implements OnInit {
    * Manage account function
    */
   public manageAccount() {
+    console.log(this.accountForm.value);
     this.accountService.reloadAccount = true;
     if (!this.shared.markInvalid(this.accountForm)) {
       return false;

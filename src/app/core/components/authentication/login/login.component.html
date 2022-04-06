@@ -3,7 +3,7 @@
     <div class="login-container container-fluid d-flex justify-content-center">
       <div class="d-flex flex-column align-items-center">
         <div class="login-logo">
-          <img src="assets/svg/common/ic_logo-new.svg">
+          <img src="assets/svg/common/ic_logo-new.svg" />
         </div>
         <div class="login-text d-flex flex-column align-items-center">
           <p><span class="color_welcome_to">Welcome to</span> Truck Assist</p>
@@ -19,7 +19,18 @@
             <div class="col-12">
               <div class="row">
                 <div class="col-12">
-                  <div
+                  <app-ta-input
+                    formControlName="email"
+                    [inputConfig]="{
+                      name: 'Email',
+                      type: 'email',
+                      label: 'Email',
+                      placeholderIcon: 'email',
+                      isRequired: true,
+                      autocomplete: 'off'
+                    }"
+                  ></app-ta-input>
+                  <!-- <div
                     [ngClass]="inputText ? 'typing' : 'not-typing'"
                     class="form-label-group input-icon email-field-wrapper input-holder {{
                       manageInputValidation(email)
@@ -54,25 +65,35 @@
                     <p class="m-0 required-notice invalid-length"
                        *ngIf="loginForm.get('email').errors">{{loginForm.get('email').errors | inputError}} </p>
 
-                  </div>
+                  </div> -->
                 </div>
-                <div class="col-12">
-                  <div
+                <div class="col-12 mt-5">
+                  <app-ta-input
+                    formControlName="password"
+                    [inputConfig]="{
+                      name: 'Password',
+                      type: 'password',
+                      label: 'Password',
+                      placeholderIcon: 'password',
+                      isRequired: true,
+                      autocomplete: 'off'
+                    }"
+                  ></app-ta-input>
+                  <!-- <div
                     [ngClass]="passwordText ? 'typing' : 'not-typing'"
                     class="form-label-group input-icon password-field-wrapper input-holder {{
                       manageInputValidation(password)
                     }}"
                   >
-
                     <input
                       class="form-control input-control required password-input"
                       (keyup)="onPasswordKeyUp($event)"
                       appInputFocus
                       placeholder="password"
                       id="password"
-                      type="{{passwordType}}"
+                      type="{{ passwordType }}"
                       formControlName="password"
-                    >
+                    />
 
                     <svg-icon
                       class="default-icon"
@@ -81,28 +102,47 @@
                     </svg-icon>
 
                     <svg-icon
-                      (click)="clearPasswordInput() " ngbTooltip="Clear" placement="bottom-left"
+                      (click)="clearPasswordInput()"
+                      ngbTooltip="Clear"
+                      placement="bottom-left"
                       class="clear-icon"
                       src="../../../../../assets/img/form-validation/x-icon-cut.svg"
                     ></svg-icon>
 
-                    <label class="required-label" for="password">Password</label>
-                    <p class="required-notice"
-                       *ngIf="(password.dirty || password.touched) && loginForm.get('password').hasError('required')">
-                      Required</p>
-                  </div>
+                    <label class="required-label" for="password"
+                      >Password</label
+                    >
+                    <p
+                      class="required-notice"
+                      *ngIf="
+                        (password.dirty || password.touched) &&
+                        loginForm.get('password').hasError('required')
+                      "
+                    >
+                      Required
+                    </p>
+                  </div> -->
                 </div>
               </div>
             </div>
           </div>
 
-          <p id="forgot-password" routerLink="/forgot-password">Forgot Password?</p>
-          <button (click)="userLogin($event)" class="login-btn" [ngClass]="{'invalid-btn' : !loginForm.valid}"
-                  type="submit">
+          <p id="forgot-password" routerLink="/forgot-password">
+            Forgot Password?
+          </p>
+          <button
+            (click)="userLogin($event)"
+            class="login-btn"
+            [ngClass]="{ 'invalid-btn': !loginForm.valid }"
+            type="submit"
+          >
             <p>LOG IN</p>
           </button>
           <p id="login-sign-up">
-            Don't have an account?<a href="https://truckassist.io/startfreetrial">Sign Up</a>
+            Don't have an account?<a
+              href="https://truckassist.io/startfreetrial"
+              >Sign Up</a
+            >
           </p>
         </form>
       </div>
@@ -110,7 +150,7 @@
   </div>
   <div class="row">
     <div class="copyright">
-      <p>Copyright © TruckAssist {{copyrightYear}}.</p>
+      <p>Copyright © TruckAssist {{ copyrightYear }}.</p>
     </div>
   </div>
 </div>

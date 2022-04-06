@@ -1,0 +1,190 @@
+<div
+  class="input-group"
+  [ngClass]="{
+    'hide-placeholder-icon': getSuperControl.value,
+    'valid': getSuperControl.value && getSuperControl.valid && !focusInput,
+    'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput,
+    'invalid-empty-required':
+      inputConfig.isRequired &&
+      !getSuperControl.value &&
+      getSuperControl.invalid &&
+      !focusInput,
+    'invalid-empty-focus-required':
+      inputConfig.isRequired &&
+      !getSuperControl.value &&
+      getSuperControl.invalid &&
+      focusInput
+  }"
+>
+  <!-- Input Clear -->
+  <svg-icon
+    src="assets/svg/ic_x.svg"
+    class="input-clear"
+    [ngClass]="{
+      'disabled': inputConfig.isDisabled,
+      'focus-typing': focusInput && getSuperControl.value,
+      'valid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        focusInput &&
+        waitValidation,
+      'invalid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        waitValidation,
+      'invalid-focus-out':
+        !inputConfig.isRequired &&
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        waitValidation,
+      'invalid-focus-in-required':
+        getSuperControl.value &&
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
+        waitValidation &&
+        focusInput,
+      'invalid-focus-out-required':
+        !getSuperControl.value &&
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
+        waitValidation &&
+        !inputConfig.placeholderIcon
+    }"
+    [appTooltip]="'Clear'"
+    [position]="'top-middle'"
+    [tooltipBackground]="'#6C6C6C'"
+    [tooltipColor]="'#FFFFFF'"
+    [zIndex]="900"
+    [borderRadius]="'2px'"
+    [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+    [fontWeight]="'bold'"
+    [fontSize]="'11px'"
+    [customPosition]="-3"
+    (click)="clearInput()"
+  ></svg-icon>
+  <!-- Input Required Check -->
+  <svg-icon
+    class="input-required-check"
+    [ngClass]="{
+      'valid':
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        !focusInput &&
+        inputConfig.isRequired &&
+        !inputConfig.isDisabled &&
+        !inputConfig.placeholderIcon
+    }"
+    src="assets/svg/common/ic_confirm.svg"
+  ></svg-icon>
+  <!-- Input Control -->
+  <input
+    #input
+    [type]="inputConfig.type"
+    [id]="inputConfig.name"
+    [name]="inputConfig.name"
+    [pattern]="inputConfig?.pattern"
+    [disabled]="inputConfig?.isDisabled"
+    [autocomplete]="inputConfig.autocomplete"
+    [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
+    [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
+    [mask]="inputConfig.mask"
+    class="input-control"
+    [ngClass]="{
+      'disabled': inputConfig.isDisabled && !getSuperControl.value,
+      'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
+      'valid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        focusInput &&
+        waitValidation,
+      'invalid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        waitValidation
+    }"
+    [(ngModel)]="input.value"
+    (keyup)="onCheckBackSpace($event)"
+    (input)="onChange($event.target.value)"
+    (blur)="onBlur()"
+    (focus)="onFocus()"
+  />
+  <!-- Input Icon Placeholder -->
+  <svg-icon
+    class="input-icon"
+    [ngClass]="{
+      'show-input-icon': inputConfig.placeholderIcon,
+      'disabled-empty': inputConfig.isDisabled && !getSuperControl.value,
+      'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
+      'hide-icon': getSuperControl.value && focusInput,
+      'valid-required':
+        getSuperControl.value &&
+        !focusInput &&
+        getSuperControl.valid &&
+        inputConfig.isRequired,
+      'invalid-required-empty':
+        !getSuperControl.value &&
+        !focusInput &&
+        getSuperControl.invalid &&
+        inputConfig.isRequired &&
+        waitValidation,
+      'invalid-required-empty-focus':
+        !getSuperControl.value &&
+        focusInput &&
+        getSuperControl.invalid &&
+        inputConfig.isRequired &&
+        waitValidation,
+      'invalid-required-filled':
+        getSuperControl.value &&
+        !focusInput &&
+        getSuperControl.invalid &&
+        inputConfig.isRequired
+    }"
+    src="{{ getPlaceholderIcon(inputConfig.placeholderIcon) }}"
+  ></svg-icon>
+  <!-- Input Label -->
+  <label
+    [for]="inputConfig.name"
+    class="input-label"
+    [ngClass]="{
+      'required': inputConfig.isRequired && !input.isDisabled,
+      'disabled-empty': inputConfig.isDisabled && !getSuperControl.value,
+      'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
+      'up-label': getSuperControl.value || focusInput,
+      'valid-focus-out':
+        getSuperControl.value && getSuperControl.valid && !focusInput,
+      'invalid-focus-out':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        waitValidation
+    }"
+  >
+    {{ inputConfig.label }}
+  </label>
+  <!-- Input Error Message -->
+  <span
+    class="input-error"
+    [ngClass]="{
+      'invalid-focus-out':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        waitValidation,
+      'invalid-empty-focus-out-required':
+        inputConfig.isRequired &&
+        !getSuperControl.value &&
+        getSuperControl.invalid &&
+        waitValidation,
+      'invalid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        waitValidation
+    }"
+  >
+    {{ getSuperControl.errors | inputError }}
+  </span>
+</div>

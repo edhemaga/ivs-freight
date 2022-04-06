@@ -21,7 +21,8 @@
   font-weight: $nav-font-medium;
 
   transition: $nav-transition;
-
+  overflow: hidden;
+  
   &:hover {
     width: 200px;
     box-shadow: $nav-boxshadow;
@@ -44,7 +45,6 @@
       position: absolute;
       top: 115px;
       left: 6px;
-
       padding: 11px;
       height: 600px;
       width: 194px;
@@ -132,16 +132,11 @@
     left: -6px;
     top: 0px;
     content: "";
-    width: 178px;
     height: 28px;
     background: $nav-hover-color;
     border-radius: 3px;
     transition: $magic-line-transition;
     z-index: -1;
-
-    &.show {
-      animation: showMagicLine 1s;
-    }
   }
 
   .new-magic-line-selected {

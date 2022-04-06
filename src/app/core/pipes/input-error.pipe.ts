@@ -7,15 +7,19 @@ export class InputErrorPipe implements PipeTransform {
 
   transform(value: any): string {
     let errorMessageValue: string = '';
-
+    console.log("ERRORS")
+    console.log(value)
     if (value !== null) {
-      if (value['invalid'] === true) {
+      if(value['minlength']) {
+        errorMessageValue = `Minimum required length ${value.minlength.requiredLength}`
+      }
+      if (value['invalid']) {
         errorMessageValue = 'Invalid';
       }
-      if (value['email'] === true) {
+      if (value['email']) {
         errorMessageValue = 'Invalid';
       }
-      if (value['required'] === true) {
+      if (value['required']) {
         errorMessageValue = 'Required';
       }
     }
