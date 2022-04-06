@@ -1,6 +1,7 @@
 <div
   class="input-group"
   [ngClass]="{
+    'hide-placeholder-icon': getSuperControl.value,
     'valid': getSuperControl.value && getSuperControl.valid && !focusInput,
     'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required': inputConfig.isRequired && !getSuperControl.value && getSuperControl.invalid && !focusInput,
@@ -25,6 +26,7 @@
         focusInput &&
         waitValidation,
       'invalid-focus-out':
+        !inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.invalid &&
         !focusInput &&
@@ -39,7 +41,8 @@
         !getSuperControl.value &&
         inputConfig.isRequired &&
         getSuperControl.invalid &&
-        waitValidation
+        waitValidation &&
+        !inputConfig.placeholderIcon
     }"
     (click)="clearInput()"
   ></svg-icon>
@@ -51,7 +54,9 @@
         getSuperControl.value &&
         getSuperControl.valid &&
         !focusInput &&
-        inputConfig.isRequired
+        inputConfig.isRequired &&
+        !inputConfig.isDisabled &&
+        !inputConfig.placeholderIcon
     }"
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
@@ -84,6 +89,20 @@
     (focus)="onFocus()"
     required
   />
+    <!-- Input Icon Placeholder -->
+    <svg-icon
+    class="input-icon {{ inputConfig.placeholderIcon }}"
+    [ngClass]="{
+      'disabled-empty': inputConfig.isDisabled && !getSuperControl.value,
+      'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
+      'hide-icon': getSuperControl.value && focusInput,
+      'valid-required': getSuperControl.value && !focusInput && getSuperControl.valid && inputConfig.isRequired,
+      'invalid-required-empty': !getSuperControl.value && !focusInput && getSuperControl.invalid && inputConfig.isRequired && waitValidation,
+      'invalid-required-empty-focus': !getSuperControl.value && focusInput && getSuperControl.invalid && inputConfig.isRequired && waitValidation,
+      'invalid-required-filled': getSuperControl.value && !focusInput && getSuperControl.invalid && inputConfig.isRequired
+    }"
+    src="{{ getPlaceholderIcon(inputConfig.placeholderIcon) }}"
+  ></svg-icon>
 <!-- Input Label -->
   <label
     [for]="inputConfig.name"

@@ -2,6 +2,25 @@
   display: block;
   position: relative;
 
+  &:hover {
+    .input-icon {
+      transition: all 0.3s ease-in-out;
+      svg {
+        path {
+          fill: #aaaaaa;
+        }
+      }
+    }
+  }
+
+  &.hide-placeholder-icon {
+    &:hover {
+      .input-icon {
+        display: none !important;
+      }
+    }
+  }
+
   //----------- Valid, Invalid Classes for whole container
   &.invalid {
     &:hover {
@@ -50,7 +69,7 @@
         svg {
           path {
             transition: all 0.3s ease-in-out;
-            fill: #EF5350;
+            fill: #ef5350;
           }
         }
 
@@ -70,6 +89,17 @@
         transition: all 0.3s ease-in-out;
         color: #ef5350;
       }
+
+      .input-icon {
+        &.invalid-required-empty{
+          transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #ef5350;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -78,13 +108,24 @@
       svg {
         path {
           transition: all 0.3s ease-in-out;
-          fill: #EF9A9A !important;
+          fill: #ef9a9a !important;
         }
       }
     }
     .input-error {
       transition: all 0.3s ease-in-out;
       color: #ef5350 !important;
+    }
+
+    .input-icon {
+      &.invalid-required-empty-focus{
+        transition: all 0.3s ease-in-out;
+        svg {
+          path {
+            fill: #ef9a9a !important;
+          }
+        }
+      }
     }
   }
 
@@ -224,6 +265,15 @@
         background-color: #ef5350;
       }
     }
+
+    &:focus ~ .input-icon {
+      transition: all 0.3s ease-in-out;
+      svg {
+        path {
+          fill: #b7b7b7;
+        }
+      }
+    }
   }
 
   // -------------------- Input Required Check --------------------
@@ -338,6 +388,65 @@
           fill: #e57373;
         }
       }
+    }
+  }
+
+  //-------------------- Input Icon ---------------------
+  .input-icon {
+    position: absolute;
+    right: 10px;
+    width: 14px;
+    height: 10px;
+    display: none;
+
+    svg {
+      path {
+        fill: #b7b7b7;
+      }
+    }
+
+    &.disabled-empty {
+      svg {
+        path {
+          fill: #dadada !important;
+        }
+      }
+    }
+
+    &.disabled-filled {
+      svg {
+        path {
+          fill: #cccccc !important;
+        }
+      }
+    }
+
+    &.hide-icon {
+      display: none !important;
+    }
+
+    &.valid-required {
+      transition: all 0.3s ease-in-out;
+      svg {
+        path {
+          fill: #97a8dc;
+        }
+      }
+    }
+
+    &.invalid-required-empty,
+    &.invalid-required-filled {
+      transition: all 0.3s ease-in-out;
+      svg {
+        path {
+          fill: #E57373;
+        }
+      }
+    }
+
+    &.phone {
+      transition: all 0.3s ease-in-out;
+      display: inline-block;
     }
   }
 

@@ -22,23 +22,23 @@ export class TaInputComponent implements ControlValueAccessor {
     return this.superControl.control;
   }
 
-  writeValue(obj: any): void {
+  public writeValue(obj: any): void {
     this.input.nativeElement.value = obj;
   }
 
-  registerOnChange(fn: any): void {
+  public registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {}
+  public registerOnTouched(fn: any): void {}
 
-  setDisabledState?(isDisabled: boolean): void {
+  public setDisabledState?(isDisabled: boolean): void {
     this.inputConfig.isDisabled = isDisabled;
   }
 
-  onChange(event: any) {}
+  public onChange(event: any) {}
 
-  onFocus() {
+  public onFocus() {
     // Skip valid focus in, if do not have value
     if (this.getSuperControl.value) {
       this.waitValidation = true;
@@ -46,7 +46,7 @@ export class TaInputComponent implements ControlValueAccessor {
     this.focusInput = true;
   }
 
-  onBlur() {
+  public onBlur() {
     this.focusInput = false;
     // Required Field
     if (this.inputConfig.isRequired) {
@@ -66,7 +66,7 @@ export class TaInputComponent implements ControlValueAccessor {
     }
   }
 
-  clearInput() {
+  public clearInput() {
     this.input.nativeElement.value = null;
     this.getSuperControl.setValue(null);
     if(this.inputConfig.isRequired && this.getSuperControl.errors) {
@@ -78,9 +78,14 @@ export class TaInputComponent implements ControlValueAccessor {
     
   }
 
-  onCheckBackSpace(event: any) {
+  public onCheckBackSpace(event: any) {
     if (event.keyCode === 8 && !this.getSuperControl.value) {
       this.clearInput();
     }
   }
+
+  public getPlaceholderIcon(iconPlaceholder: string): string {
+    return `assets/svg/common/ic_${iconPlaceholder}.svg`
+  }
+
 }
