@@ -2,13 +2,13 @@ import { NavigationSubRoutes } from './../model/navigation.model';
 import { Router } from '@angular/router';
 import { Navigation } from '../model/navigation.model';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { navigation_route_animation } from '../navigation.animation';
+import { navigation_mamgic_line, navigation_route_animation } from '../navigation.animation';
 
 @Component({
   selector: 'app-navigation-route',
   templateUrl: './navigation-route.component.html',
   styleUrls: ['./navigation-route.component.scss'],
-  animations: [navigation_route_animation('showHideDetails')],
+  animations: [navigation_route_animation('showHideDetails'), navigation_mamgic_line('magicLine')],
 })
 export class NavigationRouteComponent implements OnInit {
   @Input() route: Navigation;

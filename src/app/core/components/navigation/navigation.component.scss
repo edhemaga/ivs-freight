@@ -21,7 +21,8 @@
   font-weight: $nav-font-medium;
 
   transition: $nav-transition;
-
+  overflow: hidden;
+  
   &:hover {
     width: 200px;
     box-shadow: $nav-boxshadow;
