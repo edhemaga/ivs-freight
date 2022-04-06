@@ -66,9 +66,13 @@
     [type]="inputConfig.type"
     [id]="inputConfig.name"
     [name]="inputConfig.name"
-    [pattern]="inputConfig.pattern"
-    [disabled]="inputConfig.isDisabled"
-    class="input-control {{ inputConfig.placeholderIcon }}"
+    [pattern]="inputConfig?.pattern"
+    [disabled]="inputConfig?.isDisabled"
+    [autocomplete]="inputConfig.autocomplete"
+    [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
+    [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
+    [mask]="inputConfig.mask ? inputConfig.mask : null"
+    class="input-control"
     [ngClass]="{
       'disabled': inputConfig.isDisabled && !getSuperControl.value,
       'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
@@ -87,12 +91,12 @@
     (input)="onChange($event.target.value)"
     (blur)="onBlur()"
     (focus)="onFocus()"
-    required
   />
     <!-- Input Icon Placeholder -->
     <svg-icon
-    class="input-icon {{ inputConfig.placeholderIcon }}"
+    class="input-icon"
     [ngClass]="{
+      'show-input-icon': inputConfig.placeholderIcon,
       'disabled-empty': inputConfig.isDisabled && !getSuperControl.value,
       'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
       'hide-icon': getSuperControl.value && focusInput,

@@ -85,7 +85,10 @@ export class TaInputComponent implements ControlValueAccessor {
   }
 
   public getPlaceholderIcon(iconPlaceholder: string): string {
-    return `assets/svg/common/ic_${iconPlaceholder}.svg`
+    if(!iconPlaceholder) {
+      return null;
+    }
+    return `assets/svg/common/ic_${iconPlaceholder.toLowerCase()}.svg`
   }
 
 }

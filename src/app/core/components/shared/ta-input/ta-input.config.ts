@@ -5,5 +5,9 @@ export interface ITaInput {
     placeholderIcon?: string;
     isRequired?: boolean;
     isDisabled?: boolean;
-    pattern?: string
+    pattern?: string;
+    autocomplete?:string;
+    minLength?:number;
+    maxLength?:number;
+    mask?: string;
 }
