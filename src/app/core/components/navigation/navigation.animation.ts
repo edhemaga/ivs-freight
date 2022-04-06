@@ -31,7 +31,7 @@ export const navigation_header_animation = (type: string) =>
     transition('true => false', [animate('0s ease-in-out')]),
     transition('false => true', [animate('0.3s ease-in-out')]),
   ]);
-export const navigation_mamgic_line = (type: string) =>
+export const navigation_magic_line = (type: string) =>
   trigger(type, [
     state(
       'true',

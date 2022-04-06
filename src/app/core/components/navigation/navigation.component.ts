@@ -9,14 +9,14 @@ import { navigationData } from './model/navigation-data';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { NavigationService } from './services/navigation.service';
-import { navigation_mamgic_line } from './navigation.animation';
+import { navigation_magic_line } from './navigation.animation';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [navigation_mamgic_line('showHideDetails')],
+  animations: [navigation_magic_line('showHideDetails')],
 })
 export class NavigationComponent implements OnInit, OnDestroy {
   public navigation: Navigation[] = navigationData;

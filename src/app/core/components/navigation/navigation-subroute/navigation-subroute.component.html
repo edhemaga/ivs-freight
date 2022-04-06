@@ -1,6 +1,6 @@
 <div class="subroutes-container">
   <div
-    [@showHideDetails]="isNavigationHovered ? 'true': 'false'"
+    [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
     *ngFor="let item of subroute.route; trackBy: identity"
     class="subroutes"
     [ngClass]="{
@@ -17,8 +17,5 @@
     <p class="subroutes-item">{{ item.name }}</p>
   </div>
 
-  <div
-    [@showHideMagicLine]="isMagicLineActive ? 'true' : 'false'"
-    class="new-magic-line"
-  ></div>
+  <div class="new-magic-line"></div>
 </div>
