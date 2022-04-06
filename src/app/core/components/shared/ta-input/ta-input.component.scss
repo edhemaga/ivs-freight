@@ -37,9 +37,6 @@
 
         &:hover {
           transition: all 0.3s ease-in-out;
-          width: 22px;
-          height: 22px;
-          top: 1.5px;
           background-color: #6c6c6c;
           cursor: pointer;
         }
@@ -136,9 +133,6 @@
         display: inline-block;
         &:hover {
           transition: all 0.3s ease-in-out;
-          width: 22px;
-          height: 22px;
-          top: 2px;
           background-color: #6c6c6c;
           cursor: pointer;
         }
@@ -156,7 +150,7 @@
       }
 
       .input-required-check {
-        display: none;
+        display: none !important;
       }
     }
   }
@@ -298,13 +292,14 @@
     right: 6px;
     width: 14px;
     height: 10px;
+    display: none;
+
     svg {
       path {
         fill: #97a8dc;
       }
     }
-    display: none;
-
+  
     &.valid {
       transition: all 0.3s ease-in-out;
       display: inline-block;
@@ -313,23 +308,31 @@
 
   // -------------------- Input Clear --------------------
   .input-clear {
-    display: none;
     position: absolute;
-    top: 3.5px;
     right: 4px;
+    top: 16%;
+    transform: translate(-6%, 0%);
     width: 18px;
     height: 18px;
     border-radius: 1px;
-    // Default Color
     background-color: #b7b7b7;
+    display: none;
+   
     svg {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-48%, -50%);
+      top: 22%;
+      left: 23%;
+      width: 10px !important;
+      height: 10px !important;
+      transform: translate(0.2px, 0.2px);
       path {
         fill: #eeeeee;
       }
+    }
+
+    &:hover {
+      transition: all 0.3s ease-in-out;
+      transform: scale(1.1);
     }
 
     &.disabled {
@@ -346,9 +349,6 @@
       }
 
       &:hover {
-        top: 1.5px;
-        width: 22px;
-        height: 22px;
         background-color: #eeeeee;
         cursor: pointer;
         transition: all 0.3s ease-in-out;
@@ -365,9 +365,6 @@
         }
       }
       &:hover {
-        top: 1.5px;
-        width: 22px;
-        height: 22px;
         transition: all 0.3s ease-in-out;
         background-color: #f5fafc;
         cursor: pointer;
@@ -385,9 +382,6 @@
         }
       }
       &:hover {
-        top: 1.5px;
-        width: 22px;
-        height: 22px;
         transition: all 0.3s ease-in-out;
         background-color: #fffafa;
         cursor: pointer;
