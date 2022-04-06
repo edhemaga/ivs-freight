@@ -39,6 +39,7 @@ export class TaInputComponent implements ControlValueAccessor {
   onChange(event: any) {}
 
   onFocus() {
+    // Skip valid focus in, if do not have value
     if (this.getSuperControl.value) {
       this.waitValidation = true;
     }
@@ -46,19 +47,35 @@ export class TaInputComponent implements ControlValueAccessor {
   }
 
   onBlur() {
-    if(this.getSuperControl.value && this.getSuperControl.invalid) {
-      this.waitValidation = true;
-    }
-    else {
-      this.waitValidation = false;
-    }
     this.focusInput = false;
+    // Required Field
+    if (this.inputConfig.isRequired) {
+      if (!this.focusInput && this.getSuperControl.invalid) {
+        this.waitValidation = true;
+      } else {
+        this.waitValidation = false;
+      }
+    }
+    // No Required Field
+    else {
+      if (this.getSuperControl.value && this.getSuperControl.invalid) {
+        this.waitValidation = true;
+      } else {
+        this.waitValidation = false;
+      }
+    }
   }
 
   clearInput() {
     this.input.nativeElement.value = null;
     this.getSuperControl.setValue(null);
-    this.waitValidation = false;
+    if(this.inputConfig.isRequired && this.getSuperControl.errors) {
+      this.waitValidation = true;
+    }
+    else {
+      this.waitValidation = false;
+    }
+    
   }
 
   onCheckBackSpace(event: any) {

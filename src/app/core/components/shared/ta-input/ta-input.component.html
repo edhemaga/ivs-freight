@@ -2,17 +2,26 @@
   class="input-group"
   [ngClass]="{
     'valid': getSuperControl.value && getSuperControl.valid && !focusInput,
-    'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput
+    'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput,
+    'invalid-empty-required': inputConfig.isRequired && !getSuperControl.value && getSuperControl.invalid && !focusInput,
+    'invalid-empty-focus-required': inputConfig.isRequired && !getSuperControl.value && getSuperControl.invalid && focusInput
   }"
 >
+<!-- Input Clear -->
   <svg-icon
     src="assets/svg/ic_x.svg"
     class="input-clear"
     [ngClass]="{
+      'disabled': inputConfig.isDisabled,
       'focus-typing': focusInput && getSuperControl.value,
       'valid-focus-in':
         getSuperControl.value &&
         getSuperControl.valid &&
+        focusInput &&
+        waitValidation,
+      'invalid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
         focusInput &&
         waitValidation,
       'invalid-focus-out':
@@ -20,71 +29,48 @@
         getSuperControl.invalid &&
         !focusInput &&
         waitValidation,
-      'invalid-focus-in':
+      'invalid-focus-in-required':
         getSuperControl.value &&
+        inputConfig.isRequired &&
         getSuperControl.invalid &&
-        focusInput &&
+        waitValidation &&
+        focusInput,
+      'invalid-focus-out-required': 
+        !getSuperControl.value &&
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
         waitValidation
     }"
     (click)="clearInput()"
   ></svg-icon>
-
-  <label
-    [for]="inputConfig.name"
-    class="input-label"
+<!-- Input Required Check -->
+  <svg-icon
+    class="input-required-check"
     [ngClass]="{
-      'required': inputConfig.isRequired && !inputConfig.isDisabled,
-      'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
-      'filled': getSuperControl.value || focusInput,
-      'focus-empty': focusInput && !getSuperControl.value,
-      'focus-typing': focusInput && getSuperControl.value,
-      'valid-focus-out':
-        getSuperControl.value && getSuperControl.valid && !focusInput,
-      'valid-focus-in':
+      valid:
         getSuperControl.value &&
         getSuperControl.valid &&
-        focusInput &&
-        waitValidation,
-      'invalid-focus-out':
-        getSuperControl.value &&
-        getSuperControl.invalid &&
         !focusInput &&
-        waitValidation,
-      'invalid-focus-in':
-        getSuperControl.value &&
-        getSuperControl.invalid &&
-        focusInput &&
-        waitValidation
+        inputConfig.isRequired
     }"
-  >
-    {{ inputConfig.label }}
-  </label>
-
+    src="assets/svg/common/ic_confirm.svg"
+  ></svg-icon>
+<!-- Input Control -->
   <input
     #input
     [type]="inputConfig.type"
     [id]="inputConfig.name"
     [name]="inputConfig.name"
-    [placeholder]="inputConfig.placeholder"
     [pattern]="inputConfig.pattern"
     [disabled]="inputConfig.isDisabled"
-    class="input-control {{ inputConfig.specificPlaceholder }}"
+    class="input-control {{ inputConfig.placeholderIcon }}"
     [ngClass]="{
-      'required': inputConfig.isRequired && !inputConfig.isDisabled,
       'disabled': inputConfig.isDisabled && !getSuperControl.value,
       'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
-      'focus-typing': focusInput && getSuperControl.value,
-      'valid-focus-out':
-        getSuperControl.value && getSuperControl.valid && !focusInput,
       'valid-focus-in':
         getSuperControl.value &&
         getSuperControl.valid &&
         focusInput &&
-        waitValidation,
-      'invalid-focus-out':
-        getSuperControl.value &&
-        getSuperControl.invalid &&
-        !focusInput &&
         waitValidation,
       'invalid-focus-in':
         getSuperControl.value &&
@@ -96,8 +82,29 @@
     (input)="onChange($event.target.value)"
     (blur)="onBlur()"
     (focus)="onFocus()"
+    required
   />
-
+<!-- Input Label -->
+  <label
+    [for]="inputConfig.name"
+    class="input-label"
+    [ngClass]="{
+      'required': inputConfig.isRequired && !input.isDisabled,
+      'disabled-empty': inputConfig.isDisabled && !getSuperControl.value,
+      'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
+      'up-label': getSuperControl.value || focusInput,
+      'valid-focus-out':
+        getSuperControl.value && getSuperControl.valid && !focusInput,
+      'invalid-focus-out':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        waitValidation
+    }"
+  >
+    {{ inputConfig.label }}
+  </label>
+<!-- Input Error Message -->
   <span
     class="input-error"
     [ngClass]="{
@@ -106,6 +113,11 @@
         getSuperControl.invalid &&
         !focusInput &&
         waitValidation,
+      'invalid-empty-focus-out-required':
+        inputConfig.isRequired &&
+        !getSuperControl.value &&
+        getSuperControl.invalid &&
+        waitValidation,
       'invalid-focus-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
@@ -113,6 +125,6 @@
         waitValidation
     }"
   >
-    Error Message
+    {{getSuperControl.errors | inputError}}
   </span>
 </div>

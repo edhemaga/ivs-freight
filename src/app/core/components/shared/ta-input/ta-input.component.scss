@@ -5,11 +5,6 @@
   //----------- Valid, Invalid Classes for whole container
   &.invalid {
     &:hover {
-      .input-label {
-        transition: all 0.3s ease-in-out;
-        color: #3c3c3c;
-      }
-
       .input-clear {
         transition: all 0.3s ease-in-out;
         display: inline-block;
@@ -30,7 +25,6 @@
           cursor: pointer;
         }
 
-        // Focus Typing / Clear Hover
         &:hover ~ .input-label {
           transition: all 0.3s ease-in-out;
           color: #3c3c3c;
@@ -50,26 +44,16 @@
     }
   }
 
-  &.valid {
+  &.invalid-empty-required {
     &:hover {
-      .input-label {
-        transition: all 0.3s ease-in-out;
-        color: #3c3c3c;
-      }
-
       .input-clear {
-        transition: all 0.3s ease-in-out;
-        display: inline-block;
-        &:hover {
-          transition: all 0.3s ease-in-out;
-          width: 22px;
-          height: 22px;
-          top: 1.5px;
-          background-color: #919191;
-          cursor: pointer;
+        svg {
+          path {
+            transition: all 0.3s ease-in-out;
+            fill: #EF5350;
+          }
         }
 
-        // Focus Typing / Clear Hover
         &:hover ~ .input-label {
           transition: all 0.3s ease-in-out;
           color: #3c3c3c;
@@ -81,6 +65,58 @@
           color: #3c3c3c;
         }
       }
+
+      .input-error {
+        transition: all 0.3s ease-in-out;
+        color: #ef5350;
+      }
+    }
+  }
+
+  &.invalid-empty-focus-required {
+    .input-clear {
+      svg {
+        path {
+          transition: all 0.3s ease-in-out;
+          fill: #EF9A9A !important;
+        }
+      }
+    }
+    .input-error {
+      transition: all 0.3s ease-in-out;
+      color: #ef5350 !important;
+    }
+  }
+
+  &.valid {
+    &:hover {
+      .input-clear {
+        transition: all 0.3s ease-in-out;
+        display: inline-block;
+        &:hover {
+          transition: all 0.3s ease-in-out;
+          width: 22px;
+          height: 22px;
+          top: 2px;
+          background-color: #6c6c6c;
+          cursor: pointer;
+        }
+
+        &:hover ~ .input-label {
+          transition: all 0.3s ease-in-out;
+          color: #3c3c3c;
+        }
+
+        &:hover ~ .input-control {
+          transition: all 0.3s ease-in-out;
+          background-color: #eeeeee;
+          color: #3c3c3c;
+        }
+      }
+
+      .input-required-check {
+        display: none;
+      }
     }
   }
   // -------------------- end
@@ -88,56 +124,48 @@
   // -------------------- Input Label --------------------
   .input-label {
     position: absolute;
-    top: -16px;
-    left: 4px;
-    display: none;
-    font-size: 11px;
-    font-weight: 600;
+    top: 3px;
+    left: 6px;
+    font-size: 14px;
+    user-select: none;
+    transition: all 0.3s ease-in-out;
+    color: #6c6c6c;
 
     &.required {
       &::after {
-        content: '*';
+        content: "*";
         color: #e57373;
       }
     }
 
-    &.disabled-filled {
-      color: #919191;
-    }
-
-    &.filled {
+    &.disabled-empty {
       transition: all 0.3s ease-in-out;
-      display: inline-block;
+      color: #b7b7b7 !important;
     }
 
-    &.focus-empty {
+    &.disabled-filled {
+      transition: all 0.3s ease-in-out;
+      color: #919191 !important;
+    }
+
+    &.up-label {
+      top: -16px;
+      left: 6px;
+      font-size: 11px;
+      font-weight: 600;
       transition: all 0.3s ease-in-out;
       color: #3c3c3c;
     }
 
-    &.focus-typing {
-      transition: all 0.3s ease-in-out;
-      color: #919191;
-    }
-
-    &.invalid-focus-out,
-    &.valid-focus-out {
+    &.valid-focus-out,
+    &.invalid-focus-out {
       transition: all 0.3s ease-in-out;
       color: #6c6c6c;
-    }
-
-    &.valid-focus-in {
-      transition: all 0.3s ease-in-out;
-      color: #3c3c3c;
-    }
-
-    &.invalid-focus-in {
-      transition: all 0.3s ease-in-out;
-      color: #919191;
     }
   }
 
   // -------------------- Input Control --------------------
+
   .input-control {
     width: 100%;
     border: none;
@@ -145,68 +173,23 @@
     border-radius: 2px !important;
     height: 26px;
     padding: 4px 6px;
+    font-size: 14px;
+    font-weight: 400;
     background-color: #f7f7f7;
     color: #6c6c6c;
 
-    &::-webkit-input-placeholder {
-      color: #6c6c6c !important;
-    }
-
-    &::-moz-placeholder {
-      color: #6c6c6c !important;
-    }
-
-    &:-ms-input-placeholder {
-      color: #6c6c6c !important;
-    }
-
-    &::-ms-input-placeholder {
-      color: #6c6c6c !important;
-    }
-
-    &::placeholder {
-      color: #6c6c6c !important;
-    }
-
-    &.required {
-      &::after {
-        content: '*' !important;
-        color: #e57373 !important;
-      }
-    }
-
     &.disabled {
-      background-color: #f9f9f9;
+      background-color: #f9f9f9 !important;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
       pointer-events: none;
-
-      &::-webkit-input-placeholder {
-        color: #b7b7b7 !important;
-      }
-
-      &::-moz-placeholder {
-        color: #b7b7b7 !important;
-      }
-
-      &:-ms-input-placeholder {
-        color: #b7b7b7 !important;
-      }
-
-      &::-ms-input-placeholder {
-        color: #b7b7b7 !important;
-      }
-
-      &::placeholder {
-        color: #b7b7b7 !important;
-      }
     }
 
     &.disabled-filled {
-      background-color: #f9f9f9;
-      color: #919191;
+      background-color: #f9f9f9 !important;
+      color: #919191 !important;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
@@ -218,26 +201,12 @@
       transition: all 0.3s ease-in-out;
       background-color: #eeeeee;
       color: #3c3c3c;
+    }
 
-      &::-webkit-input-placeholder {
-        color: #3c3c3c !important;
-      }
-
-      &::-moz-placeholder {
-        color: #3c3c3c !important;
-      }
-
-      &:-ms-input-placeholder {
-        color: #3c3c3c !important;
-      }
-
-      &::-ms-input-placeholder {
-        color: #3c3c3c !important;
-      }
-
-      &::placeholder {
-        color: #3c3c3c !important;
-      }
+    // Hover "label placehoder color change"
+    &:hover ~ .input-label {
+      transition: all 0.3s ease-in-out;
+      color: #3c3c3c;
     }
 
     &:focus {
@@ -245,46 +214,9 @@
       background-color: #6c6c6c;
       color: #ffffff;
 
-      &::-webkit-input-placeholder {
-        color: transparent !important;
-      }
-
-      &::-moz-placeholder {
-        color: transparent !important;
-      }
-
-      &:-ms-input-placeholder {
-        color: transparent !important;
-      }
-
-      &::-ms-input-placeholder {
-        color: transparent !important;
-      }
-
-      &::placeholder {
-        color: transparent !important;
-      }
-
-      &.focus-typing {
-        transition: all 0.3s ease-in-out;
-        background-color: #919191;
-      }
-
-      &.valid-focus-out {
-        transition: all 0.3s ease-in-out;
-        background-color: #f7f7f7;
-        color: #6c6c6c;
-      }
-
       &.valid-focus-in {
         transition: all 0.3s ease-in-out;
         background-color: #536bc2;
-      }
-
-      &.invalid-focus-out {
-        transition: all 0.3s ease-in-out;
-        background-color: #f7f7f7;
-        color: #6c6c6c;
       }
 
       &.invalid-focus-in {
@@ -294,17 +226,36 @@
     }
   }
 
+  // -------------------- Input Required Check --------------------
+  .input-required-check {
+    position: absolute;
+    right: 6px;
+    width: 14px;
+    height: 10px;
+    svg {
+      path {
+        fill: #97a8dc;
+      }
+    }
+    display: none;
+
+    &.valid {
+      transition: all 0.3s ease-in-out;
+      display: inline-block;
+    }
+  }
+
   // -------------------- Input Clear --------------------
   .input-clear {
-    position: absolute;
-    right: 4px;
-    top: 3.5px;
     display: none;
+    position: absolute;
+    top: 3.5px;
+    right: 4px;
     width: 18px;
     height: 18px;
-    background-color: #b7b7b7;
     border-radius: 1px;
-
+    // Default Color
+    background-color: #b7b7b7;
     svg {
       position: absolute;
       top: 50%;
@@ -313,6 +264,10 @@
       path {
         fill: #eeeeee;
       }
+    }
+
+    &.disabled {
+      display: none !important;
     }
 
     &.focus-typing {
@@ -328,24 +283,9 @@
         top: 1.5px;
         width: 22px;
         height: 22px;
-        transition: all 0.3s ease-in-out;
         background-color: #eeeeee;
         cursor: pointer;
-      }
-
-      // Focus Typing / Clear Hover
-      &:hover ~ .input-label {
-        &.focus-typing {
-          transition: all 0.3s ease-in-out;
-          color: #3c3c3c;
-        }
-      }
-
-      &:hover ~ .input-control {
-        &.focus-typing {
-          transition: all 0.3s ease-in-out;
-          background-color: #6c6c6c;
-        }
+        transition: all 0.3s ease-in-out;
       }
     }
 
@@ -358,7 +298,6 @@
           fill: #536bc2;
         }
       }
-
       &:hover {
         top: 1.5px;
         width: 22px;
@@ -367,35 +306,10 @@
         background-color: #f5fafc;
         cursor: pointer;
       }
-
-      // Focus Typing / Clear Hover
-      &:hover ~ .input-label {
-        &.focus-typing {
-          transition: all 0.3s ease-in-out;
-          color: #3c3c3c;
-        }
-      }
-
-      &:hover ~ .input-control {
-        &.focus-typing {
-          transition: all 0.3s ease-in-out;
-          background-color: #536bc2;
-        }
-      }
     }
 
-    &.invalid-focus-out {
-      background-color: transparent;
-      transition: all 0.3s ease-in-out;
-      display: inline-block;
-      svg {
-        path {
-          fill: #e57373;
-        }
-      }
-    }
-
-    &.invalid-focus-in {
+    &.invalid-focus-in,
+    &.invalid-focus-in-required {
       transition: all 0.3s ease-in-out;
       background-color: #ffcdd2;
       display: block;
@@ -404,7 +318,6 @@
           fill: #ef5350;
         }
       }
-
       &:hover {
         top: 1.5px;
         width: 22px;
@@ -413,19 +326,16 @@
         background-color: #fffafa;
         cursor: pointer;
       }
+    }
 
-      // Focus Typing / Clear Hover
-      &:hover ~ .input-label {
-        &.focus-typing {
-          transition: all 0.3s ease-in-out;
-          color: #6c6c6c;
-        }
-      }
-
-      &:hover ~ .input-control {
-        &.focus-typing {
-          transition: all 0.3s ease-in-out;
-          background-color: #ef5350;
+    &.invalid-focus-out,
+    &.invalid-focus-out-required {
+      background-color: transparent;
+      transition: all 0.3s ease-in-out;
+      display: inline-block;
+      svg {
+        path {
+          fill: #e57373;
         }
       }
     }
@@ -441,7 +351,8 @@
     font-weight: 600;
     display: none;
 
-    &.invalid-focus-out {
+    &.invalid-focus-out,
+    &.invalid-empty-focus-out-required {
       transition: all 0.3s ease-in-out;
       display: inline-block;
     }

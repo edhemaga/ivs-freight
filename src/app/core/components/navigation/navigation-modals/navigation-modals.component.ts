@@ -16,6 +16,7 @@ import {
 } from '../model/navigation-data';
 import { NavigationModal } from '../model/navigation.model';
 import { NavigationService } from '../services/navigation.service';
+import { AccountManageComponent } from '../../modals/account-manage/account-manage.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -59,20 +60,20 @@ export class NavigationModalsComponent {
   }
 
   private openModal(navItem: NavigationModal) {
-    // const path = navItem.path;
-    // const data = {
-    //   type: 'new',
-    //   vehicle: 'truck',
-    // };
-    // switch (path) {
-    //   case 'driver':
-    //     this.customModalService.openModal(
-    //       DriverManageComponent,
-    //       { data },
-    //       null,
-    //       { size: 'small' }
-    //     );
-    //     break;
+    const path = navItem.path;
+    const data = {
+      type: 'new',
+      vehicle: 'truck',
+    };
+    switch (path) {
+      // case 'driver':
+      //   this.customModalService.openModal(
+      //     DriverManageComponent,
+      //     { data },
+      //     null,
+      //     { size: 'small' }
+      //   );
+      //   break;
 
     //   case 'truck':
     //     this.customModalService.openModal(
@@ -166,16 +167,16 @@ export class NavigationModalsComponent {
     //     );
     //     break;
 
-    //   case 'account':
-    //     this.customModalService.openModal(
-    //       AccountManageComponent,
-    //       { data },
-    //       null,
-    //       {
-    //         size: 'small',
-    //       }
-    //     );
-    //     break;
+      case 'account':
+        this.customModalService.openModal(
+          AccountManageComponent,
+          { data },
+          null,
+          {
+            size: 'small',
+          }
+        );
+        break;
 
     //   case 'owner':
     //     this.customModalService.openModal(
@@ -202,7 +203,7 @@ export class NavigationModalsComponent {
 
     //   default:
     //     return;
-    // }
+    }
   }
 
   public identity(index: number, item: NavigationModal): number {

@@ -70,19 +70,21 @@
               "
               [subroute]="item"
               [isActiveSubroute]="isActiveSubroute"
+              [isNavigationHovered]="isNavigationHovered"
               (onSubrouteActiveEvent)="onRouteEvent($event)"
             >
             </app-navigation-subroute>
           </app-navigation-subroute-card>
         </div>
         <div
-          *ngIf="
+          [@showHideDetails]="
             isNavigationHovered &&
             !isActiveSubroute &&
             !isActiveFooterRoute &&
             isActiveMagicLine
+              ? 'true'
+              : 'false'
           "
-          [ngClass]="isNavigationHovered ? 'show' : 'hide'"
           class="new-magic-line"
         ></div>
       </div>

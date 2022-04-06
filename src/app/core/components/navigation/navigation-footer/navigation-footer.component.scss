@@ -124,15 +124,6 @@
     }
   }
 
-  .nav-footer-rightSide {
-    &.show {
-      animation: fadeIn 0.2s;
-    }
-    &.hide {
-      animation: fadeOut 0.15s;
-    }
-  }
-
   .nav-footer-item-active {
     color: $nav-active;
     background-color: $nav-hover-color;

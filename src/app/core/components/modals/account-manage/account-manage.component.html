@@ -1,4 +1,4 @@
-<!-- <div cdkDrag class="modal-container">
+<div cdkDrag class="modal-container">
   <div cdkDragHandle class="modal-header">
     <h5 class="modal-title">{{ modalTitle }}</h5>
     <div class="d-flex align-items-center">
@@ -22,16 +22,14 @@
               name: 'Account name',
               type: 'text',
               label: 'Account name',
-              placeholder: 'Account name',
               isRequired: true
             }"
           ></app-ta-input>
           <!-- <div
             class="form-label-group"
             [ngClass]="inputText ? 'typing' : 'not-typing'"
-          > -->
-
-          <!-- <input
+          >
+           <input
               (keydown)="onCheckBackSpace($event)"
               (keypress)="onNameTyping($event)"
               (paste)="onPaste($event, 'name', 23)"
@@ -48,8 +46,8 @@
             <div (click)="clearInput($event)" class="clear-button" ngbTooltip="Clear" placement="bottom-left">
             </div>
             <label class="required-label" for="name">Account name</label>
-            <app-required-label [control]="accountForm.controls.name"></app-required-label> -->
-          <!-- </div> -->
+            <app-required-label [control]="accountForm.controls.name"></app-required-label>
+          </div>  -->
         </div>
         <div class="col-5">
           <div
@@ -156,9 +154,9 @@
               src="../../../../../assets/img/form-validation/x-icon-cut.svg"
             ></svg-icon> -->
 
-            <!-- <label class="required-label" for="password">Password</label> -->
+            <label class="required-label" for="password">Password</label> 
             <!-- TODO ADD PASSWORD STRENGTH WHICH IS NOT MATERIAL -->
-            <!-- <span class="fs-12 position-absolute">{{ passwordStrength }}</span>
+           <span class="fs-12 position-absolute">{{ passwordStrength }}</span>
           </div>
         </div>
       </div>
@@ -245,4 +243,4 @@
       Save
     </button>
   </div>
-</div> -->
+</div>

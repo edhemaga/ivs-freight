@@ -11,15 +11,18 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { navigation_mamgic_line, navigation_route_animation } from '../navigation.animation';
 
 @Component({
   selector: 'app-navigation-subroute',
   templateUrl: './navigation-subroute.component.html',
   styleUrls: ['./navigation-subroute.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [navigation_mamgic_line('showHideMagicLine'), navigation_route_animation('showHideDetails')],
 })
 export class NavigationSubrouteComponent {
   @Input() subroute: Navigation;
+  @Input() isNavigationHovered: boolean = false;
   @Output() onSubrouteActiveEvent = new EventEmitter<NavigationSubRoutes>();
 
   public isMagicLineActive: boolean = false;
@@ -38,6 +41,9 @@ export class NavigationSubrouteComponent {
   }
 
   public isActiveRouteOnReload(route: string): boolean {
+    if(this.router.url.includes(route)) {
+      this.isMagicLineActive = true;
+    }
     return this.router.url.includes(route);
   }
 

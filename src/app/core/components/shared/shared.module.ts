@@ -59,6 +59,9 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { TaInputComponent } from '../../components/shared/ta-input/ta-input.component';
 import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions.component';
+import { AccountManageComponent } from '../modals/account-manage/account-manage.component';
+
+
 
 @NgModule({
   declarations: [
@@ -94,7 +97,8 @@ import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions
     TaFilesComponent,
     TaFileComponent,
     TaInputComponent,
-    SvgDefinitionsComponent
+    SvgDefinitionsComponent,
+    AccountManageComponent
   ],
   imports: [
     CommonModule,
@@ -188,7 +192,8 @@ import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions
     TaFileComponent,
     PdfViewerModule,
     TaInputComponent,
-    SvgDefinitionsComponent
+    SvgDefinitionsComponent,
+    AccountManageComponent
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
