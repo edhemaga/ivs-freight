@@ -371,7 +371,7 @@ export function getDriverColumnsDefinition() {
       moveRight: true,
       name: '',
       hidden: false,
-      width: 18,
+      width: 20,
       headIconStyle: {
         width: 19,
         height: 19,

@@ -7,6 +7,9 @@
       class="tr"
     >
       <th
+        [resizeColumn]="column.resizable && !locked"
+        [index]="i"
+        (resizeing)="onResize($event)"
         *ngFor="let column of columns; let i = index"
         cdkDrag
         [cdkDragDisabled]="locked || rezaizeing"
@@ -48,14 +51,6 @@
             "
           ></svg-icon>
         </div>
-
-        <div
-          (mouseover)="rezaizeing = true"
-          (mouseleave)="rezaizeing = false"
-          (click)="onRezaize()"
-          class="resise-btn"
-          *ngIf="column.resizable && !locked"
-        ></div>
       </th>
     </tr>
   </thead>

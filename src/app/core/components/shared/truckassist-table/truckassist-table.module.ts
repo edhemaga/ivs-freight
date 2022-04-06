@@ -12,6 +12,7 @@ import { TruckassistReveiwModule } from '../truckassist-reveiw/truckassist-revei
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaNoteModule } from '../ta-note/ta-note.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.directive';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     TruckassistTableHeadComponent,
     TruckassistTableToolbarComponent,
     GetExpireDataPipe,
-    TableDropdownComponent
+    TableDropdownComponent,
+    ResizeColumnDirective
   ],
   imports: [
     CommonModule,

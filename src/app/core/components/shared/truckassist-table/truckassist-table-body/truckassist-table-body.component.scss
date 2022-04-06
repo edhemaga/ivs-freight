@@ -26,7 +26,6 @@ table {
             display: flex;
             height: 100%;
             align-items: center;
-            transform: scale(0);
 
             // NO TEMPLATE
             .no-template {
@@ -893,12 +892,5 @@ table {
     .columns-container {
       background: #f7f7f7;
     }
-  }
-}
-
-.column-insert-animation {
-  .td-content {
-    transform: scale(1) !important;
-    transition: 1s;
   }
 }

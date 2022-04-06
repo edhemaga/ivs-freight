@@ -36,7 +36,7 @@ export class TruckassistTableHeadComponent
   @Input() viewData: any[];
   @Output() headActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
-  locked: boolean = false;
+  locked: boolean = true;
   rezaizeing: boolean = false;
 
   constructor(
@@ -75,19 +75,11 @@ export class TruckassistTableHeadComponent
       this.setVisibleColumns();
     }
 
-    if (
-      changes?.columns &&
-      !changes?.options?.firstChange &&
-      changes?.options
-    ) {
+    if (!changes?.options?.firstChange && changes?.options) {
       this.options = changes.options.currentValue;
     }
 
-    if (
-      changes?.columns &&
-      !changes?.viewData?.firstChange &&
-      changes?.viewData
-    ) {
+    if (!changes?.viewData?.firstChange && changes?.viewData) {
       this.viewData = changes.viewData.currentValue;
     }
   }
@@ -143,8 +135,15 @@ export class TruckassistTableHeadComponent
   }
 
   // Rezaize
-  onRezaize() {
-    this.rezaizeing = false;
+  onResize(event: any) {
+    this.rezaizeing = event.isResizeing;
+
+    if(!this.rezaizeing){
+      this.tableService.sendColumnWidth({
+        event: event,
+        columns: this.columns
+      });
+    }
   }
 
   // Select
@@ -177,6 +176,7 @@ export class TruckassistTableHeadComponent
 
   ngOnDestroy(): void {
     this.tableService.sendColumnsOrder({});
+    this.tableService.sendColumnWidth({});
 
     this.destroy$.next();
     this.destroy$.complete();

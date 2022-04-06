@@ -17,9 +17,18 @@ export class TruckassistTableService {
   private toaggleColumn = new BehaviorSubject<any>([]);
   public currentToaggleColumn = this.toaggleColumn.asObservable();
 
+  /* Set Column Table Width */
+  private columnWidth = new BehaviorSubject<any>([]);
+  public currentColumnWidth = this.columnWidth.asObservable();
+
   constructor() {}
 
-  /* Columns Order*/
+  /* Set Column Table Width */
+  public sendColumnWidth(columnWidth: any) {
+    this.columnWidth.next(columnWidth);
+  }
+
+  /* Columns Order */
   public sendColumnsOrder(columnsOrder: any) {
     this.columnsOrder.next(columnsOrder);
   }

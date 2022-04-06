@@ -45,6 +45,23 @@ export class TruckassistTableBodyComponent
   ) {}
 
   ngOnInit(): void {
+    // Rezaize
+    this.tableService.currentColumnWidth
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.columns = this.columns.map((c) => {
+            if (c.title === response.columns[response.event.index].title) {
+              c.width = response.event.width;
+            }
+
+            return c;
+          });
+
+          this.changeDetectorRef.detectChanges();
+        }
+      });
+
     // Columns Reorder
     this.tableService.currentColumnsOrder
       .pipe(takeUntil(this.destroy$))
