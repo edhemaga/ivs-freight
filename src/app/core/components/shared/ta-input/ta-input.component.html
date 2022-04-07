@@ -62,9 +62,10 @@
     [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
     [fontWeight]="'bold'"
     [fontSize]="'11px'"
-    [customPosition]="-3"
+    [customPosition]="-5"
     (click)="clearInput()"
   ></svg-icon>
+
   <!-- Input Required Check -->
   <svg-icon
     class="input-required-check"
@@ -79,10 +80,25 @@
     }"
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
+
+  <!-- Input Password Eye -->
+  <svg-icon
+    class="input-password-eye"
+    [ngClass]="{
+      'visible': isVisiblePasswordEye && inputConfig.type === 'password'
+    }"
+    (click)="onTogglePassword()"
+    src="{{
+      togglePassword
+        ? 'assets/svg/common/ic_eye-visible.svg'
+        : 'assets/svg/common/ic_eye-hidden.svg'
+    }}"
+  ></svg-icon>
+
   <!-- Input Control -->
   <input
     #input
-    [type]="inputConfig.type"
+    [type]="getInputType(inputConfig.type)"
     [id]="inputConfig.name"
     [name]="inputConfig.name"
     [pattern]="inputConfig?.pattern"
@@ -112,6 +128,7 @@
     (blur)="onBlur()"
     (focus)="onFocus()"
   />
+
   <!-- Input Icon Placeholder -->
   <svg-icon
     class="input-icon"
@@ -119,9 +136,9 @@
       'show-input-icon': inputConfig.placeholderIcon,
       'disabled-empty': inputConfig.isDisabled && !getSuperControl.value,
       'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
-      'hide-icon': 
-      getSuperControl.value && focusInput ||
-      (inputConfig.type === 'password' && focusInput),
+      'hide-icon':
+        (getSuperControl.value && focusInput) ||
+        (inputConfig.type === 'password' && focusInput),
       'valid-required':
         getSuperControl.value &&
         !focusInput &&
@@ -147,6 +164,7 @@
     }"
     src="{{ getPlaceholderIcon(inputConfig.placeholderIcon) }}"
   ></svg-icon>
+
   <!-- Input Label -->
   <label
     [for]="inputConfig.name"
@@ -167,6 +185,7 @@
   >
     {{ inputConfig.label }}
   </label>
+
   <!-- Input Error Message -->
   <span
     class="input-error"

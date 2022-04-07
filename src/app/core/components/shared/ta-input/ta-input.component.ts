@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input, Self, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, Self, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { ITaInput } from './ta-input.config';
 
@@ -14,6 +14,7 @@ export class TaInputComponent implements ControlValueAccessor {
   public focusInput: boolean = false;
   public waitValidation: boolean = false;
   public togglePassword: boolean = false;
+  public isVisiblePasswordEye: boolean = false;
 
   constructor(@Self() public superControl: NgControl) {
     this.superControl.valueAccessor = this;
@@ -45,6 +46,7 @@ export class TaInputComponent implements ControlValueAccessor {
       this.waitValidation = true;
     }
     this.focusInput = true;
+    this.isVisiblePasswordEye = true;
   }
 
   public onBlur(): void {
@@ -90,9 +92,13 @@ export class TaInputComponent implements ControlValueAccessor {
     return `assets/svg/common/ic_${iconPlaceholder.toLowerCase()}.svg`;
   }
 
-  public onTogglePassword(event: any) {
+  public onTogglePassword() {
     console.log("PASWWORD TOGGLED")
     this.togglePassword = !this.togglePassword;
+    this.focusInput = true;
+    this.input.nativeElement.focus();
+    this.waitValidation = false;
+    
   }
 
   public getInputType(type: string): string {
