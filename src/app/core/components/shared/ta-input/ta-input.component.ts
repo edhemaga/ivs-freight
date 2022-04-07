@@ -1,4 +1,11 @@
-import { Component, ElementRef, Input, Self, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  Self,
+  ViewChild,
+} from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { ITaInput } from './ta-input.config';
 
@@ -13,8 +20,13 @@ export class TaInputComponent implements ControlValueAccessor {
 
   public focusInput: boolean = false;
   public waitValidation: boolean = false;
-
-  constructor(@Self() public superControl: NgControl) {
+  public togglePassword: boolean = false;
+  public isVisiblePasswordEye: boolean = false;
+  public timeout = null;
+  constructor(
+    @Self() public superControl: NgControl,
+    private changeDetection: ChangeDetectorRef
+  ) {
     this.superControl.valueAccessor = this;
   }
 
@@ -36,17 +48,21 @@ export class TaInputComponent implements ControlValueAccessor {
     this.inputConfig.isDisabled = isDisabled;
   }
 
-  public onChange(event: any) {}
+  public onChange(event: any): void {}
 
-  public onFocus() {
+  public onFocus(): void {
     // Skip valid focus in, if do not have value
     if (this.getSuperControl.value) {
       this.waitValidation = true;
     }
     this.focusInput = true;
+
+    if (this.inputConfig.type === 'password') {
+      this.isVisiblePasswordEye = true;
+    }
   }
 
-  public onBlur() {
+  public onBlur(): void {
     this.focusInput = false;
     // Required Field
     if (this.inputConfig.isRequired) {
@@ -64,31 +80,72 @@ export class TaInputComponent implements ControlValueAccessor {
         this.waitValidation = false;
       }
     }
+    if (this.inputConfig.type === 'password') {
+      this.timeout = setTimeout(() => {
+        this.isVisiblePasswordEye = false;
+        this.changeDetection.detectChanges();
+      }, 150);
+    }
+    // console.log('FOCUS OUT');
+    // console.log('REQUIRED: ', this.inputConfig.isRequired);
+    // console.log('VALUE: ', this.getSuperControl.value);
+    // console.log('VALID: ', this.getSuperControl.valid);
+    // console.log('INVALID: ', this.getSuperControl.invalid);
+    // console.log('WAIT VALIDATION: ', this.waitValidation);
+    // console.log('FOCUS: ', this.focusInput);
+    // console.log('DISABLED: ', this.inputConfig.isDisabled);
+    // console.log("PLACEHOLDER ICON: ", this.inputConfig.placeholderIcon)
+    // console.log('VISIBLE PASSWORD EYE: ', this.isVisiblePasswordEye);
   }
 
-  public clearInput() {
+  public clearInput(): void {
     this.input.nativeElement.value = null;
     this.getSuperControl.setValue(null);
-    if(this.inputConfig.isRequired && this.getSuperControl.errors) {
+    if (this.inputConfig.isRequired && this.getSuperControl.errors) {
       this.waitValidation = true;
-    }
-    else {
+    } else {
       this.waitValidation = false;
     }
-    
   }
 
-  public onCheckBackSpace(event: any) {
+  public onCheckBackSpace(event: any): void {
     if (event.keyCode === 8 && !this.getSuperControl.value) {
       this.clearInput();
     }
   }
 
   public getPlaceholderIcon(iconPlaceholder: string): string {
-    if(!iconPlaceholder) {
+    if (!iconPlaceholder) {
       return null;
     }
-    return `assets/svg/common/ic_${iconPlaceholder.toLowerCase()}.svg`
+    return `assets/svg/common/ic_${iconPlaceholder.toLowerCase()}.svg`;
   }
 
+  public onTogglePassword() {
+    this.togglePassword = !this.togglePassword;
+    clearTimeout(this.timeout);
+    this.setInputCursorAtTheEnd(this.input.nativeElement);
+  }
+
+  public setInputCursorAtTheEnd(input: any) {
+    const selectionEnd = input.selectionEnd;
+    if (input.setSelectionRange) {
+      input.setSelectionRange(selectionEnd, selectionEnd);
+    }
+    const timeout = setTimeout(() => {
+      input.focus();
+      clearTimeout(timeout);
+    }, 200);
+  }
+
+  public getInputType(type: string): string {
+    if (type === 'password') {
+      if (this.togglePassword) {
+        return 'text';
+      } else {
+        return 'password';
+      }
+    }
+    return type;
+  }
 }

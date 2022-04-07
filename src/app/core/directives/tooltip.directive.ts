@@ -119,8 +119,6 @@ export class TooltipDirective {
     let left;
     let right;
 
-    // console.log(hostPos)
-
     if (this.position === 'bottom-right') {
       top = hostPos.bottom + this.offset;
       left = hostPos.left + hostPos.width / 2;
@@ -139,11 +137,6 @@ export class TooltipDirective {
     if(this.position === 'top-middle') {
       top = hostPos.top - 30;
       left = hostPos.left - hostPos.width + 5 + this.customPosition;
-      console.log(hostPos)
-      console.log(document.body.offsetWidth)
-      console.log(hostPos.left)
-      console.log(hostPos.width)
-      console.log(left)
     }
 
     if(this.position === 'middle-right') {

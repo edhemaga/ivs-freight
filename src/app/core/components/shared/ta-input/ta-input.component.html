@@ -1,5 +1,5 @@
 <div
-  class="input-group"
+  class="input-custom-group"
   [ngClass]="{
     'hide-placeholder-icon': getSuperControl.value,
     'valid': getSuperControl.value && getSuperControl.valid && !focusInput,
@@ -22,35 +22,58 @@
     class="input-clear"
     [ngClass]="{
       'disabled': inputConfig.isDisabled,
-      'focus-typing': focusInput && getSuperControl.value,
+      'focus-typing': getSuperControl.value && focusInput,
       'valid-focus-in':
         getSuperControl.value &&
         getSuperControl.valid &&
+        waitValidation &&
         focusInput &&
-        waitValidation,
+        !isVisiblePasswordEye,
       'invalid-focus-in':
+        !inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.invalid &&
+        waitValidation &&
         focusInput &&
-        waitValidation,
+        !isVisiblePasswordEye,
       'invalid-focus-out':
         !inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.invalid &&
+        waitValidation &&
         !focusInput &&
-        waitValidation,
+        !isVisiblePasswordEye,
       'invalid-focus-in-required':
+        inputConfig.isRequired &&
         getSuperControl.value &&
-        inputConfig.isRequired &&
         getSuperControl.invalid &&
         waitValidation &&
-        focusInput,
-      'invalid-focus-out-required':
+        focusInput &&
+        !isVisiblePasswordEye,
+      'invalid-focus-in-empty-required': 
+        inputConfig.isRequired &&
         !getSuperControl.value &&
+        getSuperControl.invalid &&
+        waitValidation &&
+        focusInput &&
+        !inputConfig.placeholderIcon &&
+        !isVisiblePasswordEye,
+      'invalid-focus-out-required':
         inputConfig.isRequired &&
         getSuperControl.invalid &&
         waitValidation &&
-        !inputConfig.placeholderIcon
+        !focusInput &&
+        !inputConfig.placeholderIcon &&
+        !isVisiblePasswordEye,
+      'second-position': inputConfig.type === 'password' && isVisiblePasswordEye,
+      'second-position-hover':  
+        getSuperControl.valid &&
+        inputConfig.type === 'password' &&
+        !focusInput &&
+        !isVisiblePasswordEye,
+      'password-eye': 
+        inputConfig.type === 'password' && 
+        isVisiblePasswordEye
     }"
     [appTooltip]="'Clear'"
     [position]="'top-middle'"
@@ -61,27 +84,58 @@
     [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
     [fontWeight]="'bold'"
     [fontSize]="'11px'"
-    [customPosition]="-3"
+    [customPosition]="-7"
     (click)="clearInput()"
   ></svg-icon>
+
   <!-- Input Required Check -->
   <svg-icon
     class="input-required-check"
     [ngClass]="{
       'valid':
+        inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.valid &&
         !focusInput &&
-        inputConfig.isRequired &&
         !inputConfig.isDisabled &&
         !inputConfig.placeholderIcon
     }"
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
+
+  <!-- Input Password Eye -->
+  <svg-icon
+    class="input-password-eye"
+    [ngClass]="{
+      'visible': inputConfig.type === 'password' && isVisiblePasswordEye,
+      'valid':
+        getSuperControl.valid &&
+        inputConfig.type === 'password' &&
+        !focusInput &&
+        !isVisiblePasswordEye
+    }"
+    (click)="onTogglePassword()"
+    src="{{
+      togglePassword
+        ? 'assets/svg/common/ic_eye-visible.svg'
+        : 'assets/svg/common/ic_eye-hidden.svg'
+    }}"
+    [appTooltip]="togglePassword ? 'Show Password' : 'Hide Password'"
+    [position]="'top-middle'"
+    [tooltipBackground]="'#6C6C6C'"
+    [tooltipColor]="'#FFFFFF'"
+    [zIndex]="900"
+    [borderRadius]="'2px'"
+    [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+    [fontWeight]="'bold'"
+    [fontSize]="'11px'"
+    [customPosition]="-33"
+  ></svg-icon>
+
   <!-- Input Control -->
   <input
     #input
-    [type]="inputConfig.type"
+    [type]="getInputType(inputConfig.type)"
     [id]="inputConfig.name"
     [name]="inputConfig.name"
     [pattern]="inputConfig?.pattern"
@@ -92,18 +146,26 @@
     [mask]="inputConfig.mask"
     class="input-control"
     [ngClass]="{
-      'disabled': inputConfig.isDisabled && !getSuperControl.value,
-      'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
+      'disabled': !getSuperControl.value && inputConfig.isDisabled,
+      'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-focus-in':
         getSuperControl.value &&
         getSuperControl.valid &&
+        waitValidation &&
         focusInput &&
-        waitValidation,
+        !isVisiblePasswordEye,
       'invalid-focus-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
+        waitValidation &&
+        focusInput,
+      'invalid-focus-in-password':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        waitValidation &&
         focusInput &&
-        waitValidation
+        isVisiblePasswordEye,
+      'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye
     }"
     [(ngModel)]="input.value"
     (keyup)="onCheckBackSpace($event)"
@@ -111,59 +173,64 @@
     (blur)="onBlur()"
     (focus)="onFocus()"
   />
+
   <!-- Input Icon Placeholder -->
   <svg-icon
     class="input-icon"
     [ngClass]="{
       'show-input-icon': inputConfig.placeholderIcon,
-      'disabled-empty': inputConfig.isDisabled && !getSuperControl.value,
-      'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
-      'hide-icon': getSuperControl.value && focusInput,
+      'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
+      'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
+      'hide-icon':
+        (getSuperControl.value && focusInput) ||
+        (inputConfig.type === 'password' && focusInput),
       'valid-required':
+        inputConfig.isRequired &&
         getSuperControl.value &&
-        !focusInput &&
         getSuperControl.valid &&
-        inputConfig.isRequired,
+        !focusInput,
       'invalid-required-empty':
-        !getSuperControl.value &&
-        !focusInput &&
-        getSuperControl.invalid &&
         inputConfig.isRequired &&
-        waitValidation,
+        !getSuperControl.value &&
+        getSuperControl.invalid &&
+        waitValidation &&
+        !focusInput,
       'invalid-required-empty-focus':
-        !getSuperControl.value &&
-        focusInput &&
-        getSuperControl.invalid &&
         inputConfig.isRequired &&
-        waitValidation,
-      'invalid-required-filled':
-        getSuperControl.value &&
-        !focusInput &&
+        !getSuperControl.value &&
         getSuperControl.invalid &&
-        inputConfig.isRequired
+        waitValidation &&
+        focusInput,
+      'invalid-required-filled':
+        inputConfig.isRequired &&
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput
     }"
     src="{{ getPlaceholderIcon(inputConfig.placeholderIcon) }}"
   ></svg-icon>
+
   <!-- Input Label -->
   <label
     [for]="inputConfig.name"
     class="input-label"
     [ngClass]="{
       'required': inputConfig.isRequired && !input.isDisabled,
-      'disabled-empty': inputConfig.isDisabled && !getSuperControl.value,
-      'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
+      'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
+      'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'up-label': getSuperControl.value || focusInput,
       'valid-focus-out':
         getSuperControl.value && getSuperControl.valid && !focusInput,
       'invalid-focus-out':
         getSuperControl.value &&
         getSuperControl.invalid &&
-        !focusInput &&
-        waitValidation
+        waitValidation &&
+        !focusInput
     }"
   >
     {{ inputConfig.label }}
   </label>
+
   <!-- Input Error Message -->
   <span
     class="input-error"
@@ -171,8 +238,8 @@
       'invalid-focus-out':
         getSuperControl.value &&
         getSuperControl.invalid &&
-        !focusInput &&
-        waitValidation,
+        waitValidation &&
+        !focusInput,
       'invalid-empty-focus-out-required':
         inputConfig.isRequired &&
         !getSuperControl.value &&

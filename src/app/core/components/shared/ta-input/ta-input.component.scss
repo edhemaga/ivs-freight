@@ -1,4 +1,4 @@
-.input-group {
+.input-custom-group {
   display: block;
   position: relative;
 
@@ -88,7 +88,7 @@
       }
 
       .input-icon {
-        &.invalid-required-empty{
+        &.invalid-required-empty {
           transition: all 0.3s ease-in-out;
           svg {
             path {
@@ -115,7 +115,7 @@
     }
 
     .input-icon {
-      &.invalid-required-empty-focus{
+      &.invalid-required-empty-focus {
         transition: all 0.3s ease-in-out;
         svg {
           path {
@@ -128,6 +128,19 @@
 
   &.valid {
     &:hover {
+      // Input clear class
+      .second-position-hover {
+        right: 27px;
+
+        &:hover {
+          transition: all 0.2s ease-in-out;
+          right: 27px !important;
+          width: 22px;
+          height: 22px;
+          transform: translate(-6%, -10%) !important;
+        }
+      }
+
       .input-clear {
         transition: all 0.3s ease-in-out;
         display: inline-block;
@@ -152,6 +165,20 @@
       .input-required-check {
         display: none !important;
       }
+
+      .input-password-eye {
+        &.valid {
+          transition: all 0.3s ease-in-out;
+          display: inline-block;
+          svg {
+            path {
+              fill: #6d82c7;
+            }
+          }
+        }
+      }
+
+      
     }
   }
   // -------------------- end
@@ -164,6 +191,11 @@
     font-size: 14px;
     transition: all 0.3s ease-in-out;
     color: #6c6c6c;
+
+    &::-moz-selection {
+      background-color: #e5e5e5 !important;
+      color: #3c3c3c !important;
+    }
 
     &::selection {
       background-color: #e5e5e5 !important;
@@ -217,8 +249,12 @@
     background-color: #f7f7f7;
     color: #6c6c6c;
 
+    &::-moz-selection {
+      background-color: #919191 !important;
+    }
+
     &::selection {
-      background-color: #919191 !important;;
+      background-color: #919191 !important;
     }
 
     &.disabled {
@@ -256,23 +292,44 @@
       transition: all 0.3s ease-in-out;
       background-color: #6c6c6c;
       color: #ffffff;
+    }
 
-      &.valid-focus-in {
-        transition: all 0.3s ease-in-out;
-        background-color: #536bc2;
+    &.password-eye {
+      background-color: #6c6c6c !important;
+      color: #ffffff;
+      
+      &::-moz-selection {
+        background-color: #919191 !important;
+      }
+      
+      &::selection {
+        background-color: #919191 !important;
+      }
+    }
 
-        &::selection {
-          background-color: #6d82c7 !important;
-        }
+    &.valid-focus-in {
+      transition: all 0.3s ease-in-out;
+      background-color: #536bc2;
+
+      &::-moz-selection {
+        background-color: #6d82c7 !important;
       }
 
-      &.invalid-focus-in {
-        transition: all 0.3s ease-in-out;
-        background-color: #ef5350;
+      &::selection {
+        background-color: #6d82c7 !important;
+      }
+    }
 
-        &::selection {
-          background-color: #e57373 !important;
-        }
+    &.invalid-focus-in {
+      transition: all 0.3s ease-in-out;
+      background-color: #ef5350;
+
+      &::-moz-selection {
+        background-color: #e57373 !important;
+      }
+
+      &::selection {
+        background-color: #e57373 !important;
       }
     }
 
@@ -299,7 +356,7 @@
         fill: #97a8dc;
       }
     }
-  
+
     &.valid {
       transition: all 0.3s ease-in-out;
       display: inline-block;
@@ -317,22 +374,27 @@
     border-radius: 1px;
     background-color: #b7b7b7;
     display: none;
-   
+    transition: all 0.3s ease-in-out;
+
     svg {
       position: absolute;
-      top: 22%;
-      left: 23%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-49.5%, -50%);
       width: 10px !important;
       height: 10px !important;
-      transform: translate(0.2px, 0.2px);
+      transition: all 0.3s ease-in-out;
       path {
         fill: #eeeeee;
       }
     }
 
     &:hover {
-      transition: all 0.3s ease-in-out;
-      transform: scale(1.1);
+      transition: all 0.2s ease-in-out;
+      right: 2px !important;
+      width: 22px;
+      height: 22px;
+      transform: translate(-6%, -10%) !important;
     }
 
     &.disabled {
@@ -389,13 +451,35 @@
     }
 
     &.invalid-focus-out,
-    &.invalid-focus-out-required {
+    &.invalid-focus-out-required,
+    &.invalid-focus-in-empty-required {
       background-color: transparent;
       transition: all 0.3s ease-in-out;
       display: inline-block;
       svg {
         path {
           fill: #e57373;
+        }
+      }
+    }
+
+    // If password eye visible
+    &.second-position {
+      right: 27px;
+
+      &:hover {
+        transition: all 0.2s ease-in-out;
+        right: 27px !important;
+        width: 22px;
+        height: 22px;
+        transform: translate(-6%, -10%) !important;
+      }
+    }
+
+    &.password-eye {
+      svg {
+        path {
+          fill: #6c6c6c !important;
         }
       }
     }
@@ -449,7 +533,7 @@
       transition: all 0.3s ease-in-out;
       svg {
         path {
-          fill: #E57373;
+          fill: #e57373;
         }
       }
     }
@@ -470,6 +554,10 @@
     font-weight: 600;
     display: none;
 
+    &::-moz-selection {
+      background-color: #ffe1e4;
+    }
+
     &::selection {
       background-color: #ffe1e4;
     }
@@ -485,5 +573,34 @@
       display: inline-block;
       color: #ef5350;
     }
+  }
+}
+//-------------------- Input Password Eye --------------------
+.input-password-eye {
+  position: absolute;
+  right: 4px;
+  width: 18px;
+  height: 26px;
+  display: none;
+
+  svg {
+    path {
+      fill: #dadada;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    svg {
+      path {
+        fill: #f7f7f7;
+      }
+    }
+  }
+
+  &.visible {
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
   }
 }
