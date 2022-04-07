@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, Self, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, Self, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { ITaInput } from './ta-input.config';
 
@@ -13,6 +13,7 @@ export class TaInputComponent implements ControlValueAccessor {
 
   public focusInput: boolean = false;
   public waitValidation: boolean = false;
+  public togglePassword: boolean = false;
 
   constructor(@Self() public superControl: NgControl) {
     this.superControl.valueAccessor = this;
@@ -36,9 +37,9 @@ export class TaInputComponent implements ControlValueAccessor {
     this.inputConfig.isDisabled = isDisabled;
   }
 
-  public onChange(event: any) {}
+  public onChange(event: any): void {}
 
-  public onFocus() {
+  public onFocus(): void {
     // Skip valid focus in, if do not have value
     if (this.getSuperControl.value) {
       this.waitValidation = true;
@@ -46,7 +47,7 @@ export class TaInputComponent implements ControlValueAccessor {
     this.focusInput = true;
   }
 
-  public onBlur() {
+  public onBlur(): void {
     this.focusInput = false;
     // Required Field
     if (this.inputConfig.isRequired) {
@@ -66,29 +67,42 @@ export class TaInputComponent implements ControlValueAccessor {
     }
   }
 
-  public clearInput() {
+  public clearInput(): void {
     this.input.nativeElement.value = null;
     this.getSuperControl.setValue(null);
-    if(this.inputConfig.isRequired && this.getSuperControl.errors) {
+    if (this.inputConfig.isRequired && this.getSuperControl.errors) {
       this.waitValidation = true;
-    }
-    else {
+    } else {
       this.waitValidation = false;
     }
-    
   }
 
-  public onCheckBackSpace(event: any) {
+  public onCheckBackSpace(event: any): void {
     if (event.keyCode === 8 && !this.getSuperControl.value) {
       this.clearInput();
     }
   }
 
   public getPlaceholderIcon(iconPlaceholder: string): string {
-    if(!iconPlaceholder) {
+    if (!iconPlaceholder) {
       return null;
     }
-    return `assets/svg/common/ic_${iconPlaceholder.toLowerCase()}.svg`
+    return `assets/svg/common/ic_${iconPlaceholder.toLowerCase()}.svg`;
   }
 
+  public onTogglePassword(event: any) {
+    console.log("PASWWORD TOGGLED")
+    this.togglePassword = !this.togglePassword;
+  }
+
+  public getInputType(type: string): string {
+    if (type === 'password') {
+      if (this.togglePassword) {
+        return 'text';
+      } else {
+        return 'password';
+      }
+    }
+    return type;
+  }
 }

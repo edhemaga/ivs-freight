@@ -1,4 +1,4 @@
-.input-group {
+.input-custom-group {
   display: block;
   position: relative;
 
@@ -88,7 +88,7 @@
       }
 
       .input-icon {
-        &.invalid-required-empty{
+        &.invalid-required-empty {
           transition: all 0.3s ease-in-out;
           svg {
             path {
@@ -115,7 +115,7 @@
     }
 
     .input-icon {
-      &.invalid-required-empty-focus{
+      &.invalid-required-empty-focus {
         transition: all 0.3s ease-in-out;
         svg {
           path {
@@ -218,7 +218,7 @@
     color: #6c6c6c;
 
     &::selection {
-      background-color: #919191 !important;;
+      background-color: #919191 !important;
     }
 
     &.disabled {
@@ -299,7 +299,7 @@
         fill: #97a8dc;
       }
     }
-  
+
     &.valid {
       transition: all 0.3s ease-in-out;
       display: inline-block;
@@ -317,22 +317,25 @@
     border-radius: 1px;
     background-color: #b7b7b7;
     display: none;
-   
+
     svg {
       position: absolute;
-      top: 22%;
-      left: 23%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-49.5%,-50%);
       width: 10px !important;
       height: 10px !important;
-      transform: translate(0.2px, 0.2px);
       path {
         fill: #eeeeee;
       }
     }
 
     &:hover {
-      transition: all 0.3s ease-in-out;
-      transform: scale(1.1);
+      transition: all 0.2s ease-in-out;
+      right: 2px !important;
+      width: 22px;
+      height: 22px;
+      transform: translate(-6%,-10%) !important;
     }
 
     &.disabled {
@@ -399,6 +402,11 @@
         }
       }
     }
+
+    // If password eye visible
+    &.second-position {
+      right: 30px;
+    }
   }
 
   //-------------------- Input Icon ---------------------
@@ -449,7 +457,7 @@
       transition: all 0.3s ease-in-out;
       svg {
         path {
-          fill: #E57373;
+          fill: #e57373;
         }
       }
     }
@@ -487,3 +495,5 @@
     }
   }
 }
+
+

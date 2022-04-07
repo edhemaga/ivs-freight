@@ -1,5 +1,5 @@
 <div
-  class="input-group"
+  class="input-custom-group"
   [ngClass]="{
     'hide-placeholder-icon': getSuperControl.value,
     'valid': getSuperControl.value && getSuperControl.valid && !focusInput,
@@ -50,7 +50,8 @@
         inputConfig.isRequired &&
         getSuperControl.invalid &&
         waitValidation &&
-        !inputConfig.placeholderIcon
+        !inputConfig.placeholderIcon,
+      'second-position': inputConfig.type === 'password'
     }"
     [appTooltip]="'Clear'"
     [position]="'top-middle'"
@@ -118,7 +119,9 @@
       'show-input-icon': inputConfig.placeholderIcon,
       'disabled-empty': inputConfig.isDisabled && !getSuperControl.value,
       'disabled-filled': inputConfig.isDisabled && getSuperControl.value,
-      'hide-icon': getSuperControl.value && focusInput,
+      'hide-icon': 
+      getSuperControl.value && focusInput ||
+      (inputConfig.type === 'password' && focusInput),
       'valid-required':
         getSuperControl.value &&
         !focusInput &&
