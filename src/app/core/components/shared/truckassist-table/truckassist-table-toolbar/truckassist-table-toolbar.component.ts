@@ -10,7 +10,6 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -68,9 +67,7 @@ export class TruckassistTableToolbarComponent
 
   constructor(private tableService: TruckassistTableService) {}
 
-  ngOnInit(): void {
-    console.log(this.columns);
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.options?.firstChange && changes?.options) {

@@ -9,14 +9,38 @@ table {
         display: flex;
         align-items: center;
         position: relative;
-        overflow: hidden;
 
         // Selected Row Count
         .selected-rows-count {
           width: 14px;
           height: 14px;
-          background: #dadada;
+          background: #AAAAAA;
           border-radius: 2px;
+          cursor: pointer;
+
+          &:hover{
+            background: #6C6C6C;
+          }
+        }
+
+        .has-selected{
+          width: fit-content !important;
+          min-width: 22px !important;
+          height: 22px !important;
+          background: #6D82C7 !important;
+          color: #FFFFFF;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2px;
+          font-size: 14px;
+          font-weight: bold;
+          /* transition: width 0.25s, height 0.25s; */
+
+          &:hover{
+            background: #536BC2 !important;
+            transition: 0.25s
+          }
         }
 
         // Titles
@@ -24,6 +48,7 @@ table {
           font-size: 16px;
           font-weight: bold;
           color: #b7b7b7;
+          overflow: hidden;
 
           &::selection {
             color: #b7b7b7;

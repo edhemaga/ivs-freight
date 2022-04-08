@@ -38,6 +38,7 @@ export class TruckassistTableHeadComponent
   mySelection: any[] = [];
   locked: boolean = true;
   rezaizeing: boolean = false;
+  optionsPopup: any;
 
   constructor(
     private tableService: TruckassistTableService,
@@ -46,6 +47,13 @@ export class TruckassistTableHeadComponent
 
   ngOnInit(): void {
     this.setVisibleColumns();
+
+    // Rows Selected
+    this.tableService.currentRowsSelected
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any[]) => {
+        this.mySelection = response;
+      });
 
     // Unlock Table
     this.tableService.currentUnlockTable
@@ -57,15 +65,17 @@ export class TruckassistTableHeadComponent
       });
 
     // Toaggle Columns
-    this.tableService.currentToaggleColumn.subscribe((response: any) => {
-      if (response.length) {
-        this.columns = response;
+    this.tableService.currentToaggleColumn
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response.length) {
+          this.columns = response;
 
-        this.setVisibleColumns();
+          this.setVisibleColumns();
 
-        this.changeDetectorRef.detectChanges();
-      }
-    });
+          this.changeDetectorRef.detectChanges();
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -138,45 +148,33 @@ export class TruckassistTableHeadComponent
   onResize(event: any) {
     this.rezaizeing = event.isResizeing;
 
-    if(!this.rezaizeing){
+    if (!this.rezaizeing) {
       this.tableService.sendColumnWidth({
         event: event,
-        columns: this.columns
+        columns: this.columns,
       });
     }
   }
 
   // Select
-  onSelect() {
-    this.toggleSelect(true);
+  onSelectedOptions(selectedPopover: any) {
+    this.optionsPopup = selectedPopover;
+
+    if (selectedPopover.isOpen()) {
+      selectedPopover.close();
+    } else {
+      selectedPopover.open({});
+    }
   }
 
-  onDeselect() {
-    this.toggleSelect(false);
-  }
-
-  toggleSelect(selected: boolean) {
-    this.mySelection = [];
-
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = selected;
-
-      if (selected) {
-        this.mySelection.push({ id: data.id });
-      }
-
-      return data;
-    });
-
-    /* this.tableService.sendData({
-      viewData: this.viewData,
-      mySelection: this.mySelection,
-    }); */
+  onSelect(action: string) {
+    this.tableService.sendSelectOrDeselect(action);
   }
 
   ngOnDestroy(): void {
     this.tableService.sendColumnsOrder({});
     this.tableService.sendColumnWidth({});
+    this.tableService.sendSelectOrDeselect('');
 
     this.destroy$.next();
     this.destroy$.complete();

@@ -412,7 +412,7 @@
             class="td-content"
             *ngIf="!column.hidden && column.ngTemplate === 'text'"
             [ngStyle]="{ width: column.width + 'px' }"
-          >
+          >  
             <span class="table-text">{{
               row[column.field] ? row[column.field] : ""
             }}</span>
