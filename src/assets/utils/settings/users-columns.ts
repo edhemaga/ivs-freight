@@ -2,7 +2,7 @@ export function getUsersColumnDefinition() {
   return [
     {
       ngTemplate: 'user-checkbox',
-      title: '',
+      title: 'Checkbox',
       field: 'active',
       name: '',
       hidden: false,
@@ -217,7 +217,7 @@ export function getUsersColumnDefinition() {
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'doc.additionalData.note',
       name: '',
       hidden: false,
@@ -240,7 +240,7 @@ export function getUsersColumnDefinition() {
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,

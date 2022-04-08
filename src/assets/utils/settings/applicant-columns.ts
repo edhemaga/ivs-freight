@@ -299,7 +299,7 @@ export function getApplicantColumnsDefinition() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       hidden: false,
@@ -327,7 +327,7 @@ export function getApplicantColumnsDefinition() {
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'additionalData.note',
       name: '',
       hidden: false,
@@ -353,7 +353,7 @@ export function getApplicantColumnsDefinition() {
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       headIconStyle: {

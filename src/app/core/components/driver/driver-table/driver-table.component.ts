@@ -1,13 +1,10 @@
-import { Driver } from './../state/driver.model';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 import { DriversQuery } from '../state/driver.query';
 import { DriversState } from '../state/driver.store';
-import { data } from 'jquery';
 
 @Component({
   selector: 'app-driver-table',

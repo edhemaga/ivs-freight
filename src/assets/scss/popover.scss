@@ -133,6 +133,266 @@
   }
 }
 
+// Options On Table Toolbar Popup
+.options-popover {
+  .arrow {
+    display: none !important;
+  }
+
+  .popover-body {
+    width: fit-content !important;
+    height: fit-content !important;
+
+    .options-container {
+      width: 130px !important;
+      height: fit-content !important;
+      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+      padding: 2px;
+      border-radius: 3px;
+      background: #ffffff;
+      display: unset !important;
+
+      .options {
+        cursor: pointer;
+        width: 100%;
+        height: 26px;
+        border-radius: 2px;
+        margin: 0 !important;
+        display: flex;
+        align-items: center !important;
+        justify-content: unset !important;
+
+        &:hover {
+          background: #f7f7f7;
+          transition: 0.25s;
+          .icon {
+            svg-icon {
+              svg {
+                path,
+                rect {
+                  fill: #b7b7b7;
+                  transition: 0.25s;
+                }
+              }
+            }
+          }
+
+          .text {
+            color: #919191;
+            transition: 0.25s;
+          }
+        }
+
+        .icon {
+          width: 26px;
+          display: flex;
+          justify-content: center !important;
+          align-items: center !important;
+
+          svg-icon {
+            display: flex;
+          }
+        }
+
+        .text {
+          width: 100% !important;
+          height: 26px !important;
+          justify-content: unset !important;
+          font-size: 12px;
+          font-weight: 400;
+          color: #b7b7b7;
+        }
+      }
+
+      .active-option {
+        background: #f7f7f7 !important;
+
+        .icon {
+          svg-icon {
+            svg {
+              path,
+              rect {
+                fill: #b7b7b7 !important;
+              }
+            }
+          }
+        }
+
+        .text {
+          color: #b7b7b7 !important;
+        }
+      }
+
+      .columns-options {
+        top: 109px;
+        width: 246px;
+        height: fit-content;
+        border-radius: 3px;
+        background: white;
+        box-shadow: 0 0 4px 0 rgb(0 0 0 / 15%);
+        position: absolute;
+        left: -250px;
+        padding: 2px;
+        display: grid;
+        justify-content: unset !important;
+        align-items: unset !important;
+        grid-template-columns: 120px 120px;
+        grid-gap: 1px 2px;
+
+        .column {
+          width: 120px;
+          height: 26px;
+          margin: 0;
+          padding-left: 7px;
+          justify-content: unset !important;
+          border-radius: 2px;
+
+          .checkbox {
+            width: fit-content;
+            height: fit-content;
+            margin: 0 6px 0 0;
+
+            .columns-options-checkbox {
+              display: none;
+            }
+
+            .columns-options-label {
+              width: 14px;
+              height: 14px;
+              background-color: #dadada;
+              margin-bottom: 0;
+              border-radius: 1px;
+              cursor: pointer;
+
+              &:hover {
+                background-color: #b7b7b7;
+              }
+            }
+
+            .columns-options-checkbox:checked + .columns-options-label {
+              background-color: #91a4c7;
+              background-image: url("../../assets/svg/truckassist-table/check-new.svg");
+              background-repeat: no-repeat;
+              background-position: center;
+              transition: background-color 0.25s;
+
+              &:hover {
+                background-color: #5673aa;
+              }
+            }
+          }
+
+          .not-allowed-action{
+            width: 14px !important;
+            margin-right: 6px !important;
+          }
+
+          .column-text {
+            font-size: 12px;
+            font-weight: 400;
+            color: #b7b7b7;
+            justify-content: unset !important;
+            width: 90px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+          }
+
+          &:hover {
+            background: #f7f7f7;
+            transition: 0.25s;
+
+            .column-text {
+              color: #919191;
+              transition: 0.25s;
+            }
+
+            .checkbox {
+              .columns-options-checkbox:checked + .columns-options-label {
+                background: #5673aa;
+                background-image: url("../../assets/svg/truckassist-table/check-new.svg");
+                background-repeat: no-repeat;
+                background-position: center;
+                transition: background-color 0.25s;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Selected On Table Head Popup
+.selected-options-popover{
+  top: 18px !important;
+  left: -18px !important;
+}
+
+.has-selected-options-popover{
+  top: 26px !important;
+  left: -26px !important;
+}
+
+.selected-options-popover, .has-selected-options-popover {
+  .arrow {
+    display: none !important;
+  }
+
+  .popover-body {
+    width: fit-content !important;
+    height: fit-content !important;
+
+    .select-options-container {
+      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+      width: 170px;
+      height: auto;
+      border-radius: 3px;
+      background: #ffffff;
+      padding: 2px;
+
+      .select-option{
+        cursor: pointer;
+        width: 100%;
+        height: 26px;
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        padding: 0 4px;
+
+        &:hover{
+          background: #F3F3F3;
+          transition: 0.25s;
+
+          .text, .count{
+            color: #3C3C3C;
+            transition: 0.25s;
+          }
+        }
+
+        .text, .count{
+          font-size: 14px;
+          color: #6C6C6C;
+        }
+
+        .text{
+          font-weight: 400;
+        }
+
+        .count{
+          font-weight: bold;
+          margin-left: auto;
+        }
+      }
+
+      .clear-selected{
+        margin-top: 2px;
+      }
+    }
+  }
+}
+
 // Global
 .popover {
   border: none !important;

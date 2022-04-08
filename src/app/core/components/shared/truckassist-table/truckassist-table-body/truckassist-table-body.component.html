@@ -20,7 +20,7 @@
           <!-- NO TEMPLATE -->
           <div
             *ngIf="!column.hidden && column.ngTemplate === ''"
-            [ngStyle]="{ width: column.width + 'px' }"
+            [ngStyle]="{ width: column.width + 'px'}"
             class="td-content"
           >
             <div class="no-template">NO TEMPLATE</div>
@@ -412,7 +412,7 @@
             class="td-content"
             *ngIf="!column.hidden && column.ngTemplate === 'text'"
             [ngStyle]="{ width: column.width + 'px' }"
-          >
+          >  
             <span class="table-text">{{
               row[column.field] ? row[column.field] : ""
             }}</span>
