@@ -1,3 +1,4 @@
+import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
 import { AutoFocusDirective } from "../../directives/auto-focus.directive";
@@ -60,6 +61,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { TaInputComponent } from '../../components/shared/ta-input/ta-input.component';
 import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions.component';
 import { AccountManageComponent } from '../modals/account-manage/account-manage.component';
+import { AccountModalComponent } from '../modals/account-modal/account-modal.component';
 
 
 
@@ -98,7 +100,9 @@ import { AccountManageComponent } from '../modals/account-manage/account-manage.
     TaFileComponent,
     TaInputComponent,
     SvgDefinitionsComponent,
-    AccountManageComponent
+    AccountManageComponent,
+    TaModalComponent,
+    AccountModalComponent
   ],
   imports: [
     CommonModule,
@@ -193,7 +197,9 @@ import { AccountManageComponent } from '../modals/account-manage/account-manage.
     PdfViewerModule,
     TaInputComponent,
     SvgDefinitionsComponent,
-    AccountManageComponent
+    AccountManageComponent,
+    TaModalComponent,
+    AccountModalComponent
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
