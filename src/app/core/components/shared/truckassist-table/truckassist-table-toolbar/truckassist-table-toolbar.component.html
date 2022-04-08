@@ -118,9 +118,7 @@
 
     <div class="columns-options" *ngIf="optionsPopupContent[4].active">
       <div class="column" *ngFor="let column of columns; let i = index">
-        <div
-          class="checkbox"
-        >
+        <div class="checkbox" *ngIf="!column.isPined && i > 1">
           <input
             (change)="onToaggleColumn(column)"
             [checked]="!column.hidden"
@@ -130,7 +128,19 @@
           />
           <label class="columns-options-label" for="checkbox{{ i }}"></label>
         </div>
-        <div class="column-text">{{ column.name !== '' ? column.name : column.title }}</div>
+
+        <div class="not-allowed-action" *ngIf="column.isPined || i < 2">
+          <svg-icon
+            [svgStyle]="{
+              'width.px': 14,
+              'height.px': 14
+            }"
+            [src]="'assets/svg/truckassist-table/user-owner-icon.svg'"
+          ></svg-icon>
+        </div>
+        <div class="column-text">
+          {{ column.name !== "" ? column.name : column.title }}
+        </div>
       </div>
     </div>
   </div>

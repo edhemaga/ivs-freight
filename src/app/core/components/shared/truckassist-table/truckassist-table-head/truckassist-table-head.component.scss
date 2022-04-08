@@ -14,21 +14,21 @@ table {
         .selected-rows-count {
           width: 14px;
           height: 14px;
-          background: #AAAAAA;
+          background: #aaaaaa;
           border-radius: 2px;
           cursor: pointer;
 
-          &:hover{
-            background: #6C6C6C;
+          &:hover {
+            background: #6c6c6c;
           }
         }
 
-        .has-selected{
+        .has-selected {
           width: fit-content !important;
           min-width: 22px !important;
           height: 22px !important;
-          background: #6D82C7 !important;
-          color: #FFFFFF;
+          background: #6d82c7 !important;
+          color: #ffffff;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -37,9 +37,9 @@ table {
           font-weight: bold;
           /* transition: width 0.25s, height 0.25s; */
 
-          &:hover{
-            background: #536BC2 !important;
-            transition: 0.25s
+          &:hover {
+            background: #536bc2 !important;
+            transition: 0.25s;
           }
         }
 
@@ -57,19 +57,62 @@ table {
         }
 
         // Resise Btn
-        .resise-btn{
+        .resise-btn {
           width: 4px;
           height: 18px;
-          background: #AAAAAA;
+          background: #aaaaaa;
           border-radius: 1px;
           cursor: ew-resize;
           position: absolute;
           right: 0;
           z-index: 100;
-          &:hover{
+          &:hover {
             width: 6px;
-            background: #6C6C6C;
+            background: #6c6c6c;
             transition: 0.25s;
+          }
+        }
+
+        // Pin And Remove
+        .pin-remove-container {
+          cursor: pointer !important;
+          width: 40px;
+          height: 100%;
+          position: absolute;
+          right: 0;
+          display: flex;
+          align-items: center;
+
+          .x-icon {
+            margin-right: 8px;
+          }
+
+          .pined {
+            margin: 0 11px 0 auto;
+            
+            svg {
+              path {
+                fill: #6d82c7;
+              }
+            }
+
+            &:hover {
+              svg {
+                path {
+                  fill: #536bc2 !important;
+                }
+              }
+            }
+          }
+
+          svg-icon {
+            &:hover {
+              svg {
+                path {
+                  fill: #6c6c6c;
+                }
+              }
+            }
           }
         }
       }
@@ -105,6 +148,10 @@ table {
     background: #f1f1f1;
     border-radius: 2px;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .pin-remove-container {
+    display: none !important;
   }
 }
 

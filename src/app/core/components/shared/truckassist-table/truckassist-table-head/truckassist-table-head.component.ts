@@ -97,13 +97,23 @@ export class TruckassistTableHeadComponent
   setVisibleColumns() {
     let columns = [];
 
-    this.columns.map((column) => {
+    this.columns.map((column, index) => {
       if (!column.hidden) {
+        if (!column.hasOwnProperty('isPined')) {
+          column.isPined = false;
+        }
+
+        if (index === 0 || index === 1) {
+          column.isPined = true;
+        }
+
         columns.push(column);
       }
     });
 
-    this.columns = columns;
+    this.columns = columns.sort(
+      (a, b) => Number(b.isPined) - Number(a.isPined)
+    );
   }
 
   // Sort
@@ -139,9 +149,11 @@ export class TruckassistTableHeadComponent
 
   // Reorder
   onReorder(event: CdkDragDrop<any>) {
-    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+    if (!this.columns[event.currentIndex].isPined && event.currentIndex > 1) {
+      moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
 
-    this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+      this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+    }
   }
 
   // Rezaize
@@ -169,6 +181,26 @@ export class TruckassistTableHeadComponent
 
   onSelect(action: string) {
     this.tableService.sendSelectOrDeselect(action);
+  }
+
+  // Remove Column
+  onRemoveColumn(column: any) {
+    column.hidden = true;
+
+    this.setVisibleColumns();
+
+    this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+  }
+
+  // Pin Column
+  onPinColumn(column: any) {
+    column.isPined = !column.isPined;
+
+    this.columns = this.columns.sort(
+      (a, b) => Number(b.isPined) - Number(a.isPined)
+    );
+
+    this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
   }
 
   ngOnDestroy(): void {

@@ -10,7 +10,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-truckassist-table-toolbar',
@@ -67,7 +67,25 @@ export class TruckassistTableToolbarComponent
 
   constructor(private tableService: TruckassistTableService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Columns Reorder
+    this.tableService.currentColumnsOrder
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((response: any) => {
+      if (response.columnsOrder) {
+        this.columns = this.columns.map((c) => {
+          response.columnsOrder.map((r) => {
+            if(r.field === c.field){
+              c.isPined = r.isPined;
+              c.hidden = r.hidden;
+            }
+          })
+
+          return c;
+        })
+      }
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.options?.firstChange && changes?.options) {

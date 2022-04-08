@@ -12,7 +12,7 @@
         (resizeing)="onResize($event)"
         *ngFor="let column of columns; let i = index"
         cdkDrag
-        [cdkDragDisabled]="locked || rezaizeing"
+        [cdkDragDisabled]="locked || rezaizeing || column.isPined"
         cdkDragBoundary="tr"
         [cdkDragPreviewClass]="'cdk-drag-preview'"
         [ngStyle]="{
@@ -34,7 +34,11 @@
           [autoClose]="true"
           [ngbPopover]="optionsPopover"
           [placement]="'right-top'"
-          popoverClass="{{ mySelection.length ? 'has-selected-options-popover' : 'selected-options-popover' }}"
+          popoverClass="{{
+            mySelection.length
+              ? 'has-selected-options-popover'
+              : 'selected-options-popover'
+          }}"
           triggers="manual"
           [ngClass]="{ 'has-selected': mySelection.length }"
         >
@@ -59,6 +63,41 @@
             [src]="
               column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''
             "
+          ></svg-icon>
+        </div>
+
+        <div
+          class="pin-remove-container"
+          *ngIf="
+            !locked &&
+            !rezaizeing &&
+            column.ngTemplate !== 'checkbox' &&
+            column.name !== '' &&
+            i !== 0 &&
+            i !== 1
+          "
+        >
+          <!-- Remove -->
+          <svg-icon
+            (click)="onRemoveColumn(column)"
+            *ngIf="!column.isPined"
+            class="x-icon"
+            [svgStyle]="{
+              'width.px': 10,
+              'height.px': 10
+            }"
+            [src]="'assets/svg/truckassist-table/x.svg'"
+          ></svg-icon>
+
+          <!-- Pin -->
+          <svg-icon
+            (click)="onPinColumn(column)"
+            [svgStyle]="{
+              'width.px': 9,
+              'height.px': 12
+            }"
+            [src]="'assets/svg/truckassist-table/pin.svg'"
+            [ngClass]="{ pined: column.isPined }"
           ></svg-icon>
         </div>
       </th>

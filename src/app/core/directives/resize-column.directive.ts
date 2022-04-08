@@ -33,13 +33,13 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (
-      !changes?.canDoResize?.firstChange &&
-      changes?.canDoResize?.currentValue !== undefined
-    ) {
+    if (changes?.canDoResize?.currentValue !== undefined) {
       if (changes?.canDoResize?.currentValue) {
         this.addResizer();
-      } else {
+      } else if (
+        !changes?.canDoResize?.currentValue &&
+        !changes?.canDoResize?.firstChange
+      ) {
         this.removeResizer();
       }
     }

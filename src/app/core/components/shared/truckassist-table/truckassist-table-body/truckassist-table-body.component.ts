@@ -68,6 +68,7 @@ export class TruckassistTableBodyComponent
           this.changeDetectorRef.detectChanges();
         }
       });
+      
     // Rezaize
     this.tableService.currentColumnWidth
       .pipe(takeUntil(this.destroy$))
