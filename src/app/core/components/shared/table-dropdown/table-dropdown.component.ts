@@ -48,7 +48,6 @@ export class TableDropdownComponent implements OnInit, OnChanges {
 
   setDropContent() {
     /* Drop Down Actions*/
-
     if (this.options.length) {
       for (let i = 0; i < this.options.length; i++) {
         this.dropContent.push(this.options[i]);

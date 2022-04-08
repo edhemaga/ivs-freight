@@ -52,7 +52,7 @@ export class TruckassistTableToolbarComponent
     },
     {
       text: 'Reset Columns',
-      svgPath: 'assets/svg/truckassist-table/reset.svg',
+      svgPath: 'assets/svg/truckassist-table/new-reset-icon.svg',
       width: 16,
       height: 16,
     },
@@ -70,21 +70,21 @@ export class TruckassistTableToolbarComponent
   ngOnInit(): void {
     // Columns Reorder
     this.tableService.currentColumnsOrder
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((response: any) => {
-      if (response.columnsOrder) {
-        this.columns = this.columns.map((c) => {
-          response.columnsOrder.map((r) => {
-            if(r.field === c.field){
-              c.isPined = r.isPined;
-              c.hidden = r.hidden;
-            }
-          })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response.columnsOrder) {
+          this.columns = this.columns.map((c) => {
+            response.columnsOrder.map((r) => {
+              if (r.field === c.field) {
+                c.isPined = r.isPined;
+                c.hidden = r.hidden;
+              }
+            });
 
-          return c;
-        })
-      }
-    });
+            return c;
+          });
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -142,12 +142,13 @@ export class TruckassistTableToolbarComponent
       });
     } else if (action.text === 'Columns') {
       action.active = !action.active;
+    } else if (action.text === 'Reset Columns') {
+      this.tableService.sendResetColumns(true);
     } else {
       alert('Treba da se odradi!');
     }
 
-
-    if(action.text !== 'Columns'){
+    if (action.text !== 'Columns') {
       this.optionsPopup.close();
     }
   }
@@ -161,6 +162,7 @@ export class TruckassistTableToolbarComponent
   ngOnDestroy(): void {
     this.tableService.sendUnlockTable({});
     this.tableService.sendToaggleColumn([]);
+    this.tableService.sendResetColumns(false);
 
     this.destroy$.next();
     this.destroy$.complete();

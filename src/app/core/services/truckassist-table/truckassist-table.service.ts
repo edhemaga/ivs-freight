@@ -29,7 +29,16 @@ export class TruckassistTableService {
   private selectOrDeselect = new BehaviorSubject<string>('');
   public currentSelectOrDeselect = this.selectOrDeselect.asObservable();
 
+  /* Reset Columns */
+  private resetColumns = new BehaviorSubject<boolean>(false);
+  public currentResetColumns = this.resetColumns.asObservable();
+
   constructor() {}
+
+  /* Reset Columns */
+  public sendResetColumns(resetColumns: boolean) {
+    this.resetColumns.next(resetColumns);
+  }
 
   /* Set Table Selection */
   public sendSelectOrDeselect(selectOrDeselect: string) {
