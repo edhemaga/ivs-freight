@@ -1,3 +1,4 @@
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 
@@ -9,14 +10,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class TaModalComponent {
 
   @Input() modalTitle: string;
-  @Output() modalActionEmitter: EventEmitter<boolean>;
+  @Output() modalActionTypeEmitter: EventEmitter<string> = new EventEmitter<string>(null);
+
+  constructor(private ngbActiveModal: NgbActiveModal) {}
 
   public closeModal() {
-    this.modalActionEmitter.emit(false);
+    this.modalActionTypeEmitter.emit('close');
+    this.ngbActiveModal.dismiss();
   }
 
   public onConfirm() {
-    this.modalActionEmitter.emit(true);
+    this.modalActionTypeEmitter.emit('save');
+    this.ngbActiveModal.close();
   }
 
 }

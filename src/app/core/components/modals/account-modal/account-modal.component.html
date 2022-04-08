@@ -1,3 +1,19 @@
-<app-ta-modal [modalTitle]="'Add Account'">
-
+<app-ta-modal [modalTitle]="'Add Account'" (modalActionTypeEmitter)="onModalAction($event)">
+    <form [formGroup]="accountForm" class="form-container">
+        <div class="row">
+          <div class="col-7">
+            <app-ta-input
+              formControlName="name"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                placeholderIcon: 'phone',
+                isRequired: true,
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+            </div>
+        </div>
+    </form>
 </app-ta-modal>

@@ -1,3 +1,4 @@
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountModalComponent implements OnInit {
 
-  constructor() { }
+  public accountForm: FormGroup;
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.createForm();
   }
 
+
+  public createForm() {
+    this.accountForm = this.formBuilder.group({
+      name: [null, [Validators.minLength(5),Validators.required]],
+      username: [null, Validators.required],
+      password: [null],
+      url: ['', [Validators.minLength(5)]],
+      labelId: [''],
+      note: [''],
+    });
+  }
+
+  public onModalAction(action: string) {
+    console.log("ACCOUNT ", action)
+  }
 }

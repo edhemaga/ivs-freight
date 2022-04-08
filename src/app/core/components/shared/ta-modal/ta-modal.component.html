@@ -11,15 +11,15 @@
   <div class="modal-body">
     <ng-content></ng-content>
   </div>
-</div>
-<div class="modal-footer">
-  <button
-    (click)="onConfirm()"
-    [ngClass]="{ 'invalid-btn': !modalTitle }"
-    class="save-btn"
-    ngbAutofocus
-    type="button"
-  >
-    Save
-  </button>
+  <div class="modal-footer">
+    <button
+      (click)="onConfirm()"
+      [ngClass]="{ 'invalid-btn': !modalTitle }"
+      class="save-btn"
+      ngbAutofocus
+      type="button"
+    >
+      Save
+    </button>
+  </div>
 </div>
