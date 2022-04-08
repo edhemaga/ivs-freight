@@ -447,9 +447,9 @@ textarea {
   position: relative;
   transition: 0.3s;
 
-  &:not(.has-tabs) {
-    margin-top: 14px;
-  }
+  // &:not(.has-tabs) {
+  //   margin-top: 14px;
+  // }
 
   &.tabs-2 {
     width: 936px;
@@ -477,6 +477,10 @@ textarea {
     &.tabs-hidden {
       margin-top: 16px;
     }
+  }
+
+  .row {
+    margin-top: 26px;
   }
 }
 

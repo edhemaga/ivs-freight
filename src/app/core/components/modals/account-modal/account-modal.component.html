@@ -1,19 +1,62 @@
-<app-ta-modal [modalTitle]="'Add Account'" (modalActionTypeEmitter)="onModalAction($event)">
-    <form [formGroup]="accountForm" class="form-container">
-        <div class="row">
-          <div class="col-7">
-            <app-ta-input
-              formControlName="name"
-              [inputConfig]="{
-                name: 'Phone',
-                type: 'text',
-                label: 'Phone',
-                placeholderIcon: 'phone',
-                isRequired: true,
-                mask: '(000) 000-0000'
-              }"
-            ></app-ta-input>
-            </div>
-        </div>
-    </form>
+<app-ta-modal
+  [modalTitle]="'Add Account'"
+  [customClass]="'width480'"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <form [formGroup]="accountForm" class="form-container">
+    <div class="row">
+      <div class="col-7">
+        <app-ta-input
+          formControlName="accountname"
+          [inputConfig]="{
+            name: 'Account Name',
+            type: 'text',
+            label: 'Account Name',
+            isRequired: true
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-5" bg-color="black"></div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <app-ta-input
+          formControlName="username"
+          [inputConfig]="{
+            name: 'Username',
+            type: 'text',
+            label: 'Username',
+            placeholderIcon: 'username',
+            isRequired: true
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-8">
+        <app-ta-input
+          formControlName="username"
+          [inputConfig]="{
+            name: 'Password',
+            type: 'password',
+            label: 'Password',
+            placeholderIcon: 'password',
+            isRequired: true
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <app-ta-input
+          formControlName="hyperlink"
+          [inputConfig]="{
+            name: 'Hyperlink',
+            type: 'text',
+            label: 'Hyperlink',
+            placeholderIcon: 'hyperlink',
+            isRequired: true
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+  </form>
 </app-ta-modal>

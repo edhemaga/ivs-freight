@@ -16,18 +16,7 @@
     <form [formGroup]="accountForm" class="form-container">
       <div class="row">
         <div class="col-7">
-          <app-ta-input
-            formControlName="name"
-            [inputConfig]="{
-              name: 'Phone',
-              type: 'text',
-              label: 'Phone',
-              placeholderIcon: 'phone',
-              isRequired: true,
-              mask: '(000) 000-0000'
-            }"
-          ></app-ta-input>
-          <!-- <div
+          <div
             class="form-label-group"
             [ngClass]="inputText ? 'typing' : 'not-typing'"
           >
@@ -49,7 +38,7 @@
             </div>
             <label class="required-label" for="name">Account name</label>
             <app-required-label [control]="accountForm.controls.name"></app-required-label>
-          </div>  -->
+          </div> 
         </div>
         <div class="col-5">
           <div

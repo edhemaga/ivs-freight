@@ -18,10 +18,10 @@ export class AccountModalComponent implements OnInit {
 
   public createForm() {
     this.accountForm = this.formBuilder.group({
-      name: [null, [Validators.minLength(5),Validators.required]],
+      accountname: [null, [Validators.required]],
       username: [null, Validators.required],
-      password: [null],
-      url: ['', [Validators.minLength(5)]],
+      password: [null, Validators.required],
+      hyperlink: [null, [Validators.minLength(5), Validators.required]],
       labelId: [''],
       note: [''],
     });

@@ -17,6 +17,8 @@ import {
 import { NavigationModal } from '../model/navigation.model';
 import { NavigationService } from '../services/navigation.service';
 import { AccountManageComponent } from '../../modals/account-manage/account-manage.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { AccountModalComponent } from '../../modals/account-modal/account-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -38,6 +40,7 @@ export class NavigationModalsComponent {
 
   constructor(
     private customModalService: CustomModalService,
+    private modalService: ModalService,
     private navigationService: NavigationService
   ) {}
 
@@ -61,11 +64,16 @@ export class NavigationModalsComponent {
 
   private openModal(navItem: NavigationModal) {
     const path = navItem.path;
-    const data = {
-      type: 'new',
-      vehicle: 'truck',
-    };
     switch (path) {
+      case 'account': {
+        this.modalService.openModal(
+          AccountModalComponent,
+          {
+            size: 'small',
+          }
+        );
+        break;
+      }
       // case 'driver':
       //   this.customModalService.openModal(
       //     DriverManageComponent,
@@ -166,18 +174,6 @@ export class NavigationModalsComponent {
     //       }
     //     );
     //     break;
-
-      case 'account':
-        this.customModalService.openModal(
-          AccountManageComponent,
-          { data },
-          null,
-          {
-            size: 'small',
-          }
-        );
-        break;
-
     //   case 'owner':
     //     this.customModalService.openModal(
     //       OwnerManageComponent,
