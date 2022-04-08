@@ -68,7 +68,7 @@ export class TruckassistTableBodyComponent
           this.changeDetectorRef.detectChanges();
         }
       });
-      
+
     // Rezaize
     this.tableService.currentColumnWidth
       .pipe(takeUntil(this.destroy$))
@@ -101,6 +101,10 @@ export class TruckassistTableBodyComponent
     this.tableService.currentToaggleColumn.subscribe((response: any) => {
       if (response.length) {
         this.columns = response;
+
+        this.columns = this.columns.sort(
+          (a, b) => Number(b.isPined) - Number(a.isPined)
+        );
 
         this.changeDetectorRef.detectChanges();
       }
