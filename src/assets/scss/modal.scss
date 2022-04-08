@@ -1,20 +1,40 @@
 @import "src/theme/variables";
 
-.modal {
-  opacity: 0;
-  transform: scale(0.7);
-  background-color: none !important;
-  transition: all 0.3s ease-in;
+ngb-modal-window[aria-hidden='true'] {
+  display: none !important;
+}
 
-  &.fade {
-    animation-name: fade-in-scale-animation 0.3s;
+.modal-dialog {
+  margin-top: 0;
+  max-width: 760px;
+}
+
+.modal.fade .modal-dialog {
+  animation-name: fade-in-scale-animation;
+  animation-duration: 0.5s;
+}
+
+.modal {
+  background-color: rgba(0, 0, 0, 0);
+  transition: 0.3s;
+
+  &.show .modal-dialog {
+    transition: 0.5s;
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+ 
+
+  &.modal-animation {
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: 0.3s;
   }
 
   // This class added through modal.service.ts
-  &.modal-animation {
+  &.modal-animation .modal-dialog {
     opacity: 1;
     transform: scale(1);
-    transition: all 0.3s ease-in;
   }
 
   .modal-content {
@@ -104,11 +124,9 @@
 @keyframes fade-in-scale-animation {
   0% {
     transform: scale(0.7);
-    opacity: 0;
   }
   100% {
     transform: scale(1);
-    opacity: 1;
   }
 }
 
