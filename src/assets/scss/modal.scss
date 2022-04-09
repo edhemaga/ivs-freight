@@ -4,36 +4,33 @@ ngb-modal-window[aria-hidden='true'] {
   display: none !important;
 }
 
-.modal-dialog {
-  margin-top: 0;
-  max-width: 760px;
-}
 
-.modal.fade .modal-dialog {
-  animation-name: fade-in-scale-animation 0.4s;
-}
 
 .modal {
   z-index: 1000;
   background-color: rgba(0, 0, 0, 0);
-  transition: all 0.1s ease-in-out;
+  transition: all 0.3s ease-in;
+
+  &.fade .modal-dialog {
+    animation-name: fade-in-scale-animation 0.3s;
+  }
 
   &.show .modal-dialog {
     opacity: 0;
     transform: scale(0.7) !important;
-    transition: all 0.3s ease-in-out !important;
-  }
-
-  &.modal-animation {
-    background-color: rgba(0, 0, 0, 0.2);
-    transition: all 0.4s ease-in-out;
+    transition: all 0.3s ease-in !important;
   }
 
   // This class added through modal.service.ts
+  &.modal-animation {
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in !important;
+  }
+
   &.modal-animation .modal-dialog {
     opacity: 1;
     transform: scale(1) !important;
-    transition: all 0.3s ease-in-out !important;
+    transition: all 0.3s ease-in !important;
   }
 
   .modal-content {
