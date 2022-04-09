@@ -41,7 +41,7 @@ export class NavigationSubrouteComponent {
   }
 
   public isActiveRouteOnReload(route: string): boolean {
-    if(this.router.url.includes(route)) {
+    if (this.router.url.includes(route)) {
       this.isMagicLineActive = true;
     }
     return this.router.url.includes(route);

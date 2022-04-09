@@ -231,6 +231,15 @@
       transition: all 0.3s ease-in-out;
       color: #6c6c6c;
     }
+
+    // Custom class
+    &.input-big {
+      top: 5.4px;
+
+      &.up-label {
+        top: -19px;
+      }
+    }
   }
 
   // -------------------- Input Control --------------------
@@ -351,6 +360,11 @@
         }
       }
     }
+
+    // Custom class
+    &.input-big {
+      height: 32px;
+    }
   }
 
   // -------------------- Input Required Check --------------------
@@ -370,6 +384,10 @@
     &.valid {
       transition: all 0.3s ease-in-out;
       display: inline-block;
+    }
+
+    &.input-big {
+      top: 3px;
     }
   }
 
@@ -502,6 +520,11 @@
         }
       }
     }
+
+    // Custom class
+    &.input-big {
+      top: 7px;
+    }
   }
 
   //-------------------- Input Icon ---------------------
@@ -561,6 +584,11 @@
       transition: all 0.3s ease-in-out;
       display: inline-block;
     }
+
+    // Custom class
+    &.input-big {
+      top: 2.5px;
+    }
   }
 
   //-------------------- Input Error --------------------
@@ -592,6 +620,11 @@
       display: inline-block;
       color: #ef5350;
     }
+
+    // Custom class
+    &.input-big {
+      top: 32px;
+    }
   }
 }
 //-------------------- Input Password Eye --------------------
@@ -621,5 +654,10 @@
   &.visible {
     transition: all 0.3s ease-in-out;
     display: inline-block;
+  }
+
+  // Custom class
+  &.input-big {
+    top: 2.5px;
   }
 }

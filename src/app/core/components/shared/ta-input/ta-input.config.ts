@@ -11,4 +11,5 @@ export interface ITaInput {
     maxLength?:number;
     mask?: string;
     textTransform?: string | 'capitalize' | 'upper' | 'lower';
+    customClass?: string;
 }

@@ -67,7 +67,10 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'Open User Panel': {
         if (index === 2) {
-            this.navigationService.onDropdownActivation({name: 'User Panel' , type: true})
+          this.navigationService.onDropdownActivation({
+            name: 'User Panel',
+            type: true,
+          });
         } else {
           this.isActiveFooterRoute(this.footerData[index]);
           localStorage.removeItem('subroute_active');

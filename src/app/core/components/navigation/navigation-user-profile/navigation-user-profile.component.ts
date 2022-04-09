@@ -139,7 +139,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     //     return 'online';
     //   }
     // }
-    return 'online'
+    return 'online';
   }
 
   private isUserInChat() {

@@ -11,15 +11,12 @@
   .row {
     margin-bottom: 32px;
 
+    &:nth-last-child(1) {
+      margin-bottom: 22px;
+    }
+
     & > * {
-      &:nth-child(odd) {
-        padding-left: 12px;
-        padding-right: 12px;
-      }
-      &:nth-child(even) {
-        padding-left: 0px;
-        padding-right: 12px;
-      }
+      padding: 0px;
     }
   }
 }

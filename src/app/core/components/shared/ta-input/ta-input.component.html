@@ -19,7 +19,7 @@
   <!-- Input Clear -->
   <svg-icon
     src="assets/svg/ic_x.svg"
-    class="input-clear"
+    class="input-clear {{inputConfig.customClass}}"
     [ngClass]="{
       'disabled': inputConfig.isDisabled,
       'focus-typing': getSuperControl.value && focusInput,
@@ -89,7 +89,7 @@
 
   <!-- Input Required Check -->
   <svg-icon
-    class="input-required-check"
+    class="input-required-check {{inputConfig.customClass}}"
     [ngClass]="{
       'valid':
         inputConfig.isRequired &&
@@ -104,7 +104,7 @@
 
   <!-- Input Password Eye -->
   <svg-icon
-    class="input-password-eye"
+    class="input-password-eye {{inputConfig.customClass}}"
     [ngClass]="{
       'visible': inputConfig.type === 'password' && isVisiblePasswordEye,
       'valid':
@@ -143,7 +143,7 @@
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
     [mask]="inputConfig.mask"
-    class="input-control {{ inputConfig.textTransform }}"
+    class="input-control {{ inputConfig.textTransform }} {{inputConfig.customClass}}"
     [ngClass]="{
       'disabled': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
@@ -176,7 +176,7 @@
 
   <!-- Input Icon Placeholder -->
   <svg-icon
-    class="input-icon"
+    class="input-icon {{inputConfig.customClass}}"
     [ngClass]="{
       'show-input-icon': inputConfig.placeholderIcon,
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
@@ -213,7 +213,7 @@
   <!-- Input Label -->
   <label
     [for]="inputConfig.name"
-    class="input-label"
+    class="input-label {{inputConfig.customClass}}"
     [ngClass]="{
       'required': inputConfig.isRequired && !input.isDisabled,
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
@@ -233,7 +233,7 @@
 
   <!-- Input Error Message -->
   <span
-    class="input-error"
+    class="input-error {{inputConfig.customClass}}"
     [ngClass]="{
       'invalid-focus-out':
         getSuperControl.value &&

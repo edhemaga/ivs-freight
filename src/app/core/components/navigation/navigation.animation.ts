@@ -15,9 +15,10 @@ export const navigation_route_animation = (type: string) =>
         opacity: 1,
       })
     ),
-    state('false', style({ transform: 'translateX(-80px)', opacity: 0 })),
+    state('false', style({ transform: 'translateX(-35px)', opacity: 0 })),
     transition('false <=> true', [animate('0.3s ease-in-out')]),
   ]);
+
 export const navigation_header_animation = (type: string) =>
   trigger(type, [
     state(
@@ -31,6 +32,7 @@ export const navigation_header_animation = (type: string) =>
     transition('true => false', [animate('0s ease-in-out')]),
     transition('false => true', [animate('0.3s ease-in-out')]),
   ]);
+
 export const navigation_magic_line = (type: string) =>
   trigger(type, [
     state(
