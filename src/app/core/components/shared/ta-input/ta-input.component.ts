@@ -23,6 +23,9 @@ export class TaInputComponent implements ControlValueAccessor {
   public togglePassword: boolean = false;
   public isVisiblePasswordEye: boolean = false;
   public timeout = null;
+
+  public patternNotAllowSpace: string = "/[ ]|^ /g";
+
   constructor(
     @Self() public superControl: NgControl,
     private changeDetection: ChangeDetectorRef
@@ -108,7 +111,8 @@ export class TaInputComponent implements ControlValueAccessor {
     }
   }
 
-  public onCheckBackSpace(event: any): void {
+  public onManipulateInput(event: KeyboardEvent): void {
+    // Check if backspace and empty value
     if (event.keyCode === 8 && !this.getSuperControl.value) {
       this.clearInput();
     }

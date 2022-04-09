@@ -10,31 +10,30 @@ ngb-modal-window[aria-hidden='true'] {
 }
 
 .modal.fade .modal-dialog {
-  animation-name: fade-in-scale-animation;
-  animation-duration: 0.5s;
+  animation-name: fade-in-scale-animation 0.4s;
 }
 
 .modal {
+  z-index: 1000;
   background-color: rgba(0, 0, 0, 0);
-  transition: 0.3s;
+  transition: all 0.1s ease-in-out;
 
   &.show .modal-dialog {
-    transition: 0.5s;
     opacity: 0;
-    transform: scale(0.7);
+    transform: scale(0.7) !important;
+    transition: all 0.3s ease-in-out !important;
   }
 
- 
-
   &.modal-animation {
-    background-color: rgba(0, 0, 0, 0.4);
-    transition: 0.3s;
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease-in-out;
   }
 
   // This class added through modal.service.ts
   &.modal-animation .modal-dialog {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) !important;
+    transition: all 0.3s ease-in-out !important;
   }
 
   .modal-content {
@@ -109,6 +108,8 @@ ngb-modal-window[aria-hidden='true'] {
           width: 150px;
           height: 32px;
           text-align: center;
+          margin: 0;
+          padding: 0;
 
           &:hover {
             transition: all 0.3s ease-in-out;

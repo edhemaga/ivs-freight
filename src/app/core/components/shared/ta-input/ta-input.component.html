@@ -138,8 +138,7 @@
     [type]="getInputType(inputConfig.type)"
     [id]="inputConfig.name"
     [name]="inputConfig.name"
-    [pattern]="inputConfig?.pattern"
-    [disabled]="inputConfig?.isDisabled"
+    [disabled]="inputConfig.isDisabled"
     [autocomplete]="inputConfig.autocomplete"
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
@@ -168,7 +167,7 @@
       'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye
     }"
     [(ngModel)]="input.value"
-    (keyup)="onCheckBackSpace($event)"
+    (keypress)="onManipulateInput($event)"
     (input)="onChange($event.target.value)"
     (blur)="onBlur()"
     (focus)="onFocus()"

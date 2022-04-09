@@ -7,24 +7,22 @@ import { ModalOptions } from './modal.options';
   providedIn: 'root',
 })
 export class ModalService {
-  private modalBehaviorSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   
   constructor(private ngbModal: NgbModal) {}
-
-  get modalSubject$() {
-    return this.modalBehaviorSubject.asObservable();
-  }
 
   public openModal(
     component: any,
     options: ModalOptions,
     customClass?: string
   ) {
+
+    options = {
+      ...options,
+      backdrop: 'static'
+    }
     
     const modal = this.ngbModal.open(component, options);
-
-    this.modalBehaviorSubject.next(true);
-
+   
     const instance = (modal as any)._windowCmptRef.instance
     setTimeout(() => {
         instance.windowClass = 'modal-animation'

@@ -1,6 +1,5 @@
 <app-ta-modal
   [modalTitle]="'Add Account'"
-  [customClass]="'width480'"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="accountForm" class="form-container">
@@ -12,7 +11,8 @@
             name: 'Account Name',
             type: 'text',
             label: 'Account Name',
-            isRequired: true
+            isRequired: true,
+            maxLength: 23
           }"
         ></app-ta-input>
       </div>
@@ -27,7 +27,9 @@
             type: 'text',
             label: 'Username',
             placeholderIcon: 'username',
-            isRequired: true
+            isRequired: true,
+            maxLength: 40,
+            pattern: 'not-allowed-space'
           }"
         ></app-ta-input>
       </div>
@@ -39,7 +41,8 @@
             type: 'password',
             label: 'Password',
             placeholderIcon: 'password',
-            isRequired: true
+            isRequired: true,
+            maxLength: 20
           }"
         ></app-ta-input>
       </div>
@@ -53,7 +56,8 @@
             type: 'text',
             label: 'Hyperlink',
             placeholderIcon: 'hyperlink',
-            isRequired: true
+            isRequired: true,
+            maxLength: 400
           }"
         ></app-ta-input>
       </div>

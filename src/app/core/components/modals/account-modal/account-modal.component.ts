@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class AccountModalComponent implements OnInit {
 
   public accountForm: FormGroup;
+  public usernamePattern: string = "/[ ]|^ /g,''"
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -18,10 +19,10 @@ export class AccountModalComponent implements OnInit {
 
   public createForm() {
     this.accountForm = this.formBuilder.group({
-      accountname: [null, [Validators.required]],
-      username: [null, Validators.required],
-      password: [null, Validators.required],
-      hyperlink: [null, [Validators.minLength(5), Validators.required]],
+      accountname: [null, [Validators.required, Validators.maxLength(23)]],
+      username: [null, [Validators.required, Validators.maxLength(40)]],
+      password: [null, [Validators.required, Validators.maxLength(20)]],
+      hyperlink: [null, [Validators.minLength(5), Validators.required, Validators.maxLength(400)]],
       labelId: [''],
       note: [''],
     });
