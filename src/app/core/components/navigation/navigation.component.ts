@@ -202,6 +202,14 @@ export class NavigationComponent implements OnInit, OnDestroy {
       this.isNavigationHovered = false;
       this.isActiveMagicLine = false;
     }
+
+    // Close Opened Dropdown Navigation
+    if(this.isModalPanelOpen) {
+      this.navigationService.onDropdownActivation({name: 'Modal Panel', type: false})
+    }
+    else if(this.isUserPanelOpen) {
+      this.navigationService.onDropdownActivation({name: 'User Panel', type: false})
+    }
   }
 
   public isActiveRouteOnReload(route: string): boolean {
