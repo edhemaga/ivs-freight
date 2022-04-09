@@ -11,7 +11,10 @@ export class InputErrorPipe implements PipeTransform {
     console.log(value)
     if (value !== null) {
       if(value['minlength']) {
-        errorMessageValue = `Minimum required length ${value.minlength.requiredLength}`
+        errorMessageValue = `Minimum required length is ${value.minlength.requiredLength}`
+      }
+      if(value['maxlength']) {
+        errorMessageValue = `Maximum possible characters is ${value.maxlength.requiredLength}`
       }
       if (value['invalid']) {
         errorMessageValue = 'Invalid';

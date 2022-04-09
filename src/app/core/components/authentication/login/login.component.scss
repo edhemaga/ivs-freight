@@ -1,4 +1,4 @@
-@import 'src/theme/variables';
+@import "src/theme/variables";
 
 * {
   font-family: $main-font;
@@ -10,201 +10,100 @@ p {
 }
 
 .login-container {
-  height: calc(100vh - 46px);
+  height: calc(100vh - 58px);
   min-height: 750px;
   background: $white;
-
-  .login-logo {
-    margin-top: 50px;
-
-    svg-icon {
-      width: 134px;
-    }
-  }
+  padding-top: 120px;
+  padding-bottom: 231px;
 
   .login-text {
-    margin-top: 80px;
+    margin: 62px 0px;
 
     p:first-child {
       font-size: 52px;
-      line-height: 39px;
       font-weight: 900;
-      color: $light-blue;
+      color: #536bc2;
+      line-height: 70px;
+    }
+
+    .color_welcome_to {
+      color: #6c6c6c;
     }
 
     p:nth-child(2) {
       font-size: 26px;
-      line-height: 24px;
-      font-weight: 700;
-      color: $bw6-2;
-      margin-top: 40px;
+      color: #919191;
+      margin-top: 12px;
+      line-height: 32px;
     }
   }
 
-  .color_welcome_to {
-    color: $bw6-2;
-  }
+  .login-form {
+    width: 422px;
+    height: 246px;
+    text-align: center;
 
-  form {
-    margin-top: 40px;
-    outline: none;
-    max-width: 622px;
-    width: 100%;
-    align-items: unset !important;
+    .form-container {
+      width: 100%;
+      margin: 0px;
 
-    .register-form {
-      .col-12 .row .col-12:last-of-type {
-        .form-label-group {
-          margin-bottom: 0;
+      .row {
+        margin: 0px;
+        width: 100%;
+        margin-bottom: 32px;
+
+        &:nth-last-child(1) {
+          margin-bottom: 22px;
         }
       }
     }
 
-    p#forgot-password {
-      font-weight: 400;
+    .forgot-password {
       font-size: 14px;
       line-height: 18px;
-      color: #889CC3;
-      cursor: pointer;
-      user-select: none;
-      transition: $transition;
-      margin: 10px auto;
-
-      &:hover {
-        font-size: 14px;
-        line-height: 18px;
-        color: $link-color;
-        transition: $transition;
-      }
+      color: #536bc2;
+      font-weight: 500;
     }
 
     .login-btn {
-      background: $bw1;
-
-      p {
-        color: $ceil-blue;
-      }
-
-      &:hover {
-        &:not(.invalid-btn) {
-          p {
-            color: $white;
-          }
-        }
-      }
-    }
-
-    button {
-      max-width: 320px;
+      background-color: #6d82c7;
+      color: #ffffff;
+      height: 42px;
       width: 100%;
-      height: 50px;
-      border-radius: 3px;
-      background: rgba(145, 145, 145, 0.4);
-      border: none;
       outline: none;
-      transition: all 0.3s ease-in-out;
-      margin: 40px auto auto auto;
-
-      p {
-        font-weight: bold;
-        font-size: 14px;
-        line-height: 14px;
-        color: $white;
-        transition: $transition;
-      }
-
-      &.invalid-btn {
-        transition: 0.3s;
-        background: $bw1;
-
-        p {
-          color: $bw4;
-        }
-
-        &:hover {
-          background-color: $bw2;
-          transition: 0.3s;
-        }
-      }
-
-      &:hover {
-        transition: 0.3s;
-        background: $cerulean-frost;
-      }
+      border: none;
+      border-radius: 3px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 32px;
+      margin-bottom: 22px;
+      padding: 11px 183px;
     }
 
-    p#login-sign-up {
-      font-weight: 400;
+    .login-sign-up {
       font-size: 14px;
+      color: #6c6c6c;
       line-height: 18px;
-      color: $bw5;
-      cursor: default;
-      user-select: none;
-      margin: 20px auto;
-      transition: $transition;
 
-      a {
-        padding-left: 10px;
-        font-weight: bold;
-        color: $bw5;
+      .sign-up-link {
+        margin-left: 12px;
+        font-weight: 700;
+        color: #536bc2;
         text-decoration: none;
-        transition: $transition;
-        opacity: 0.7;
-
-        &:hover {
-          color: $light-blue;
-          opacity: 1;
-          transition: $transition;
-        }
       }
     }
   }
 }
 
 .copyright {
-  background: $light-blue;
-  height: 46px;
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
+  background-color: #ffffff;
+  padding: 20px 0px;
+  text-align: center;
 
   p {
-    color: $white;
+    color: #919191;
     font-weight: 400;
     font-size: 14px;
     line-height: 18px;
   }
-}
-
-::ng-deep .tooltip-arrow {
-  &::before {
-    display: none !important;
-  }
-}
-
-::ng-deep .tooltip-inner {
-  background-color: $white;
-  color: $bw5;
-  height: 17px;
-  display: flex;
-  align-items: center;
-  border-radius: 2px;
-  font-size: 10px;
-  font-weight: 600;
-  box-shadow: $box-shadow;
-}
-
-.email-input {
-  &:focus {
-    outline: none !important;
-  }
-}
-
-form .form-control.input-control:focus {
-  color: $bw4 !important;
-}
-
-form .form-control.required.ng-invalid.ng-touched:focus {
-  color: $bw4 !important;
 }

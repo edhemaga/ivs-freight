@@ -1,0 +1,66 @@
+<app-ta-modal
+  [modalTitle]="'Add Account'"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <form [formGroup]="accountForm" class="form-container">
+    <div class="row">
+      <div class="col-7">
+        <app-ta-input
+          formControlName="accountname"
+          [inputConfig]="{
+            name: 'Account Name',
+            type: 'text',
+            label: 'Account Name',
+            isRequired: true,
+            maxLength: 23,
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-5" bg-color="black"></div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <app-ta-input
+          formControlName="username"
+          [inputConfig]="{
+            name: 'Username',
+            type: 'text',
+            label: 'Username',
+            placeholderIcon: 'username',
+            isRequired: true,
+            maxLength: 40
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-8">
+        <app-ta-input
+          formControlName="password"
+          [inputConfig]="{
+            name: 'Password',
+            type: 'password',
+            label: 'Password',
+            placeholderIcon: 'password',
+            isRequired: true,
+            maxLength: 20
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <app-ta-input
+          formControlName="hyperlink"
+          [inputConfig]="{
+            name: 'Hyperlink',
+            type: 'text',
+            label: 'Hyperlink',
+            placeholderIcon: 'hyperlink',
+            isRequired: true,
+            maxLength: 400
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+  </form>
+</app-ta-modal>

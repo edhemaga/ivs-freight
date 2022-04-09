@@ -31,53 +31,53 @@ export const navigationData: Navigation[] = [
       {
         name: 'Load',
         route: '/load',
-        activeRouteFlegId: 3  // for active sub-route to know which sub-route list is active
+        activeRouteFlegId: 3, // for active sub-route to know which sub-route list is active
       },
       {
         name: 'Customer',
         route: '/customer',
-        activeRouteFlegId: 3
+        activeRouteFlegId: 3,
       },
       {
         name: 'Driver',
         route: '/driver',
-        activeRouteFlegId: 3
+        activeRouteFlegId: 3,
       },
       {
         name: 'Truck',
         route: '/truck',
-        activeRouteFlegId: 3
+        activeRouteFlegId: 3,
       },
       {
         name: 'Trailer',
         route: '/trailer',
-        activeRouteFlegId: 3
+        activeRouteFlegId: 3,
       },
       {
         name: 'Repair',
         route: '/repair',
-        activeRouteFlegId: 3
+        activeRouteFlegId: 3,
       },
       // List Fuel route ?
       {
         name: 'Fuel',
         route: '/fuel',
-        activeRouteFlegId: 3
+        activeRouteFlegId: 3,
       },
       {
         name: 'Owner',
         route: '/owner',
-        activeRouteFlegId: 3
+        activeRouteFlegId: 3,
       },
       {
         name: 'Account',
         route: '/account',
-        activeRouteFlegId: 3
+        activeRouteFlegId: 3,
       },
       {
         name: 'Contact',
         route: '/contact',
-        activeRouteFlegId: 3
+        activeRouteFlegId: 3,
       },
     ],
   },
@@ -92,22 +92,22 @@ export const navigationData: Navigation[] = [
       {
         name: 'Payroll',
         route: '/accounting/payroll',
-        activeRouteFlegId: 4
+        activeRouteFlegId: 4,
       },
       {
         name: 'IFTA',
         route: '/accounting/ifta',
-        activeRouteFlegId: 4
+        activeRouteFlegId: 4,
       },
       {
         name: 'Ledger',
         route: '/accounting/ledger',
-        activeRouteFlegId: 4
+        activeRouteFlegId: 4,
       },
       {
         name: 'Tax',
         route: '/accounting/tax',
-        activeRouteFlegId: 4
+        activeRouteFlegId: 4,
       },
     ],
   },
@@ -122,22 +122,22 @@ export const navigationData: Navigation[] = [
       {
         name: 'Violation',
         route: '/safety/violation',
-        activeRouteFlegId: 5
+        activeRouteFlegId: 5,
       },
       {
         name: 'Accident',
         route: '/safety/accident',
-        activeRouteFlegId: 5
+        activeRouteFlegId: 5,
       },
       {
         name: 'Log',
         route: '/safety/log',
-        activeRouteFlegId: 5
+        activeRouteFlegId: 5,
       },
       {
         name: 'Scheduled Ins.',
         route: '/safety/scheduled-insurance',
-        activeRouteFlegId: 5
+        activeRouteFlegId: 5,
       },
     ],
   },
@@ -152,47 +152,47 @@ export const navigationData: Navigation[] = [
       {
         name: 'Miles',
         route: '/tools/miles',
-        activeRouteFlegId: 6
+        activeRouteFlegId: 6,
       },
       {
         name: 'MVR',
         route: '/tools/mvr',
-        activeRouteFlegId: 6
+        activeRouteFlegId: 6,
       },
       {
         name: 'Calendar',
         route: '/tools/calendar',
-        activeRouteFlegId: 6
+        activeRouteFlegId: 6,
       },
       {
         name: 'To-Do',
         route: '/tools/todo',
-        activeRouteFlegId: 6
+        activeRouteFlegId: 6,
       },
       {
         name: '1099',
         route: '/tools/1099',
-        activeRouteFlegId: 6
+        activeRouteFlegId: 6,
       },
       {
         name: '2290',
         route: '/tools/2290',
-        activeRouteFlegId: 6
+        activeRouteFlegId: 6,
       },
       {
         name: 'Factoring',
         route: '/tools/factoring',
-        activeRouteFlegId: 6
+        activeRouteFlegId: 6,
       },
       {
         name: 'Fax',
         route: '/tools/fax',
-        activeRouteFlegId: 6
+        activeRouteFlegId: 6,
       },
       {
         name: 'SMS',
         route: '/tools/sms',
-        activeRouteFlegId: 6
+        activeRouteFlegId: 6,
       },
     ],
   },
@@ -415,7 +415,6 @@ export const userNavigationData: NavigationUserPanel[] = [
     action: 'logout',
   },
 ];
-
 
 export const footerData: FooterData[] = [
   // ROUTE WHAT'S NEW ?

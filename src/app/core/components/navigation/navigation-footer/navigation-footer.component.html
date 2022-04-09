@@ -4,7 +4,7 @@
     class="nav-footer-item"
     [ngClass]="{
       'nav-footer-item-scaleWidth': !isNavigationHovered,
-      'show': isNavigationHovered
+      show: isNavigationHovered
     }"
     (click)="onAction(ind, 'Open User Panel')"
     [routerLink]="item.route"
@@ -24,7 +24,7 @@
     ></svg-icon>
     <div
       class="nav-footer-rightSide"
-      [@showHideDetails]="isNavigationHovered ? 'true': 'false'"
+      [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
     >
       <p
         class="nav-footer-text"

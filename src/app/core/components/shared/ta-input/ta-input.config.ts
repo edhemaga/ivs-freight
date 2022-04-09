@@ -10,4 +10,6 @@ export interface ITaInput {
     minLength?:number;
     maxLength?:number;
     mask?: string;
+    textTransform?: string | 'capitalize' | 'upper' | 'lower';
+    customClass?: string;
 }

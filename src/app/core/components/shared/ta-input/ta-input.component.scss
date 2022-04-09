@@ -177,8 +177,6 @@
           }
         }
       }
-
-      
     }
   }
   // -------------------- end
@@ -233,6 +231,15 @@
       transition: all 0.3s ease-in-out;
       color: #6c6c6c;
     }
+
+    // Custom class
+    &.input-big {
+      top: 5.4px;
+
+      &.up-label {
+        top: -19px;
+      }
+    }
   }
 
   // -------------------- Input Control --------------------
@@ -255,6 +262,18 @@
 
     &::selection {
       background-color: #919191 !important;
+    }
+
+    &.capitalize {
+      text-transform: capitalize;
+    }
+
+    &.upper {
+      text-transform: uppercase;
+    }
+
+    &.lower {
+      text-transform: lowercase;
     }
 
     &.disabled {
@@ -297,11 +316,11 @@
     &.password-eye {
       background-color: #6c6c6c !important;
       color: #ffffff;
-      
+
       &::-moz-selection {
         background-color: #919191 !important;
       }
-      
+
       &::selection {
         background-color: #919191 !important;
       }
@@ -341,6 +360,11 @@
         }
       }
     }
+
+    // Custom class
+    &.input-big {
+      height: 32px;
+    }
   }
 
   // -------------------- Input Required Check --------------------
@@ -360,6 +384,10 @@
     &.valid {
       transition: all 0.3s ease-in-out;
       display: inline-block;
+    }
+
+    &.input-big {
+      top: 3px;
     }
   }
 
@@ -395,6 +423,15 @@
       width: 22px;
       height: 22px;
       transform: translate(-6%, -10%) !important;
+    }
+
+    &.invalid-focus-out-required {
+      &:hover {
+        right: 4px !important;
+        width: 18px !important;
+        height: 18px !important;
+        transform: translate(-6%, 0%) !important;
+      }
     }
 
     &.disabled {
@@ -483,6 +520,11 @@
         }
       }
     }
+
+    // Custom class
+    &.input-big {
+      top: 7px;
+    }
   }
 
   //-------------------- Input Icon ---------------------
@@ -542,6 +584,11 @@
       transition: all 0.3s ease-in-out;
       display: inline-block;
     }
+
+    // Custom class
+    &.input-big {
+      top: 2.5px;
+    }
   }
 
   //-------------------- Input Error --------------------
@@ -573,6 +620,11 @@
       display: inline-block;
       color: #ef5350;
     }
+
+    // Custom class
+    &.input-big {
+      top: 32px;
+    }
   }
 }
 //-------------------- Input Password Eye --------------------
@@ -602,5 +654,10 @@
   &.visible {
     transition: all 0.3s ease-in-out;
     display: inline-block;
+  }
+
+  // Custom class
+  &.input-big {
+    top: 2.5px;
   }
 }
