@@ -397,6 +397,15 @@
       transform: translate(-6%, -10%) !important;
     }
 
+    &.invalid-focus-out-required {
+      &:hover {
+        right: 4px !important;
+        width: 18px !important;
+        height: 18px !important;
+        transform: translate(-6%, 0%) !important;
+      }
+    }
+
     &.disabled {
       display: none !important;
     }

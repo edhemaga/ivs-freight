@@ -167,7 +167,7 @@
       'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye
     }"
     [(ngModel)]="input.value"
-    (keypress)="onManipulateInput($event)"
+    (keypress)="manipulateWithInput($event)"
     (input)="onChange($event.target.value)"
     (blur)="onBlur()"
     (focus)="onFocus()"

@@ -23,8 +23,9 @@ export class TaInputComponent implements ControlValueAccessor {
   public togglePassword: boolean = false;
   public isVisiblePasswordEye: boolean = false;
   public timeout = null;
+  public numberOfSpaces: number = 0;
 
-  public patternNotAllowSpace: string = "/[ ]|^ /g";
+  public patternNotAllowSpace: string = '/[ ]|^ /g';
 
   constructor(
     @Self() public superControl: NgControl,
@@ -89,21 +90,12 @@ export class TaInputComponent implements ControlValueAccessor {
         this.changeDetection.detectChanges();
       }, 150);
     }
-    // console.log('FOCUS OUT');
-    // console.log('REQUIRED: ', this.inputConfig.isRequired);
-    // console.log('VALUE: ', this.getSuperControl.value);
-    // console.log('VALID: ', this.getSuperControl.valid);
-    // console.log('INVALID: ', this.getSuperControl.invalid);
-    // console.log('WAIT VALIDATION: ', this.waitValidation);
-    // console.log('FOCUS: ', this.focusInput);
-    // console.log('DISABLED: ', this.inputConfig.isDisabled);
-    // console.log("PLACEHOLDER ICON: ", this.inputConfig.placeholderIcon)
-    // console.log('VISIBLE PASSWORD EYE: ', this.isVisiblePasswordEye);
   }
 
   public clearInput(): void {
     this.input.nativeElement.value = null;
     this.getSuperControl.setValue(null);
+    this.numberOfSpaces = 0;
     if (this.inputConfig.isRequired && this.getSuperControl.errors) {
       this.waitValidation = true;
     } else {
@@ -111,11 +103,58 @@ export class TaInputComponent implements ControlValueAccessor {
     }
   }
 
-  public onManipulateInput(event: KeyboardEvent): void {
+  public manipulateWithInput(event: KeyboardEvent): void {
     // Check if backspace and empty value
-    if (event.keyCode === 8 && !this.getSuperControl.value) {
-      this.clearInput();
+    if (event.keyCode === 8) {
+      this.numberOfSpaces = 0;
+      if (!this.getSuperControl.value) {
+        this.clearInput();
+      }
     }
+
+    // Check different user input typing
+    if (['account name'].includes(this.inputConfig.name)) {
+      this.onNameTyping(event);
+    } else if (['email'].includes(this.inputConfig.name.toLowerCase())) {
+      this.onEmailTyping(event);
+    }
+  }
+
+  private onNameTyping(event) {
+    let k;
+    k = event.charCode;
+    if (k == 32) {
+      this.numberOfSpaces++;
+    } else {
+      this.numberOfSpaces = 0;
+    }
+    if (this.numberOfSpaces < 2) {
+      return (
+        (k > 64 && k < 91) ||
+        (k > 96 && k <= 122) ||
+        (k > 47 && k < 58) ||
+        k == 8 ||
+        k == 32 ||
+        k == 46 ||
+        k == 45
+      );
+    } else {
+      event.preventDefault();
+    }
+  }
+
+  private onEmailTyping(event) {
+    let k;
+    k = event.charCode;
+    return (
+      (k > 64 && k < 91) ||
+      (k > 96 && k < 123) ||
+      (k >= 48 && k <= 57) ||
+      k == 32 ||
+      k == 64 ||
+      k == 46 ||
+      k == 45
+    );
   }
 
   public getPlaceholderIcon(iconPlaceholder: string): string {
@@ -125,13 +164,13 @@ export class TaInputComponent implements ControlValueAccessor {
     return `assets/svg/common/ic_${iconPlaceholder.toLowerCase()}.svg`;
   }
 
-  public onTogglePassword() {
+  public onTogglePassword(): void {
     this.togglePassword = !this.togglePassword;
     clearTimeout(this.timeout);
     this.setInputCursorAtTheEnd(this.input.nativeElement);
   }
 
-  public setInputCursorAtTheEnd(input: any) {
+  private setInputCursorAtTheEnd(input: any): void {
     const selectionEnd = input.selectionEnd;
     if (input.setSelectionRange) {
       input.setSelectionRange(selectionEnd, selectionEnd);
@@ -153,3 +192,16 @@ export class TaInputComponent implements ControlValueAccessor {
     return type;
   }
 }
+
+
+// Validate options checking
+    // console.log('FOCUS OUT');
+    // console.log('REQUIRED: ', this.inputConfig.isRequired);
+    // console.log('VALUE: ', this.getSuperControl.value);
+    // console.log('VALID: ', this.getSuperControl.valid);
+    // console.log('INVALID: ', this.getSuperControl.invalid);
+    // console.log('WAIT VALIDATION: ', this.waitValidation);
+    // console.log('FOCUS: ', this.focusInput);
+    // console.log('DISABLED: ', this.inputConfig.isDisabled);
+    // console.log("PLACEHOLDER ICON: ", this.inputConfig.placeholderIcon)
+    // console.log('VISIBLE PASSWORD EYE: ', this.isVisiblePasswordEye);
