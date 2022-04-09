@@ -177,8 +177,6 @@
           }
         }
       }
-
-      
     }
   }
   // -------------------- end
@@ -257,6 +255,18 @@
       background-color: #919191 !important;
     }
 
+    &.capitalize {
+      text-transform: capitalize;
+    }
+
+    &.upper {
+      text-transform: uppercase;
+    }
+
+    &.lower {
+      text-transform: lowercase;
+    }
+
     &.disabled {
       background-color: #f9f9f9 !important;
       -webkit-user-select: none;
@@ -297,11 +307,11 @@
     &.password-eye {
       background-color: #6c6c6c !important;
       color: #ffffff;
-      
+
       &::-moz-selection {
         background-color: #919191 !important;
       }
-      
+
       &::selection {
         background-color: #919191 !important;
       }

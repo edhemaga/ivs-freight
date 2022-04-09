@@ -9,13 +9,12 @@ import { Component, OnInit } from '@angular/core';
 export class AccountModalComponent implements OnInit {
 
   public accountForm: FormGroup;
-  public usernamePattern: string = "/[ ]|^ /g,''"
+  
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.createForm();
   }
-
 
   public createForm() {
     this.accountForm = this.formBuilder.group({
@@ -29,6 +28,11 @@ export class AccountModalComponent implements OnInit {
   }
 
   public onModalAction(action: string) {
-    console.log("ACCOUNT ", action)
+    if(action === 'cancel') {
+      this.accountForm.reset();
+    }
+    else {
+      console.log(this.accountForm.value)
+    }
   }
 }

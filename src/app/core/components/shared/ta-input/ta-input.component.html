@@ -50,7 +50,7 @@
         waitValidation &&
         focusInput &&
         !isVisiblePasswordEye,
-      'invalid-focus-in-empty-required': 
+      'invalid-focus-in-empty-required':
         inputConfig.isRequired &&
         !getSuperControl.value &&
         getSuperControl.invalid &&
@@ -65,15 +65,14 @@
         !focusInput &&
         !inputConfig.placeholderIcon &&
         !isVisiblePasswordEye,
-      'second-position': inputConfig.type === 'password' && isVisiblePasswordEye,
-      'second-position-hover':  
+      'second-position':
+        inputConfig.type === 'password' && isVisiblePasswordEye,
+      'second-position-hover':
         getSuperControl.valid &&
         inputConfig.type === 'password' &&
         !focusInput &&
         !isVisiblePasswordEye,
-      'password-eye': 
-        inputConfig.type === 'password' && 
-        isVisiblePasswordEye
+      'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye
     }"
     [appTooltip]="'Clear'"
     [position]="'top-middle'"
@@ -140,10 +139,11 @@
     [name]="inputConfig.name"
     [disabled]="inputConfig.isDisabled"
     [autocomplete]="inputConfig.autocomplete"
+    [pattern]="inputConfig.pattern"
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
     [mask]="inputConfig.mask"
-    class="input-control"
+    class="input-control {{ inputConfig.textTransform }}"
     [ngClass]="{
       'disabled': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
@@ -171,6 +171,7 @@
     (input)="onChange($event.target.value)"
     (blur)="onBlur()"
     (focus)="onFocus()"
+    (paste)="onPaste($event, inputConfig.maxLength)"
   />
 
   <!-- Input Icon Placeholder -->

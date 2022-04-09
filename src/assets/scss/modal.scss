@@ -1,10 +1,8 @@
 @import "src/theme/variables";
 
-ngb-modal-window[aria-hidden='true'] {
+ngb-modal-window[aria-hidden="true"] {
   display: none !important;
 }
-
-
 
 .modal {
   z-index: 1000;
@@ -12,6 +10,7 @@ ngb-modal-window[aria-hidden='true'] {
   transition: all 0.3s ease-in;
 
   &.fade .modal-dialog {
+    -webkit-animation-name: fade-in-scale-animation 0.3s;
     animation-name: fade-in-scale-animation 0.3s;
   }
 
@@ -53,10 +52,11 @@ ngb-modal-window[aria-hidden='true'] {
 
         .modal-title {
           flex: 1;
+          cursor: -webkit-grab;
           cursor: grab;
           font-size: 18px;
           font-weight: 800;
-          color: #6C6C6C;
+          color: #6c6c6c;
         }
 
         .modal-close {
@@ -79,7 +79,7 @@ ngb-modal-window[aria-hidden='true'] {
         height: 2px;
         content: "";
         border-radius: 1px;
-        background-color: #F3F3F3;
+        background-color: #f3f3f3;
         margin: 0 auto;
       }
 
@@ -98,7 +98,7 @@ ngb-modal-window[aria-hidden='true'] {
           outline: none;
           border: none;
           border-radius: 2px;
-          background-color: #F3F3F3;
+          background-color: #f3f3f3;
           color: #919191;
           font-weight: 700;
           font-size: 14px;
@@ -110,12 +110,21 @@ ngb-modal-window[aria-hidden='true'] {
 
           &:hover {
             transition: all 0.3s ease-in-out;
-            color: #FFFFFF;
-            background-color: #6D82C7;
+            color: #ffffff;
+            background-color: #6d82c7;
           }
         }
       }
     }
+  }
+}
+
+@-webkit-keyframes fade-in-scale-animation {
+  0% {
+    transform: scale(0.7);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
