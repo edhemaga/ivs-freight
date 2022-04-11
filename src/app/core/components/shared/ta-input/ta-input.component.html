@@ -42,6 +42,7 @@
         getSuperControl.invalid &&
         waitValidation &&
         !focusInput &&
+        !inputConfig.placeholderIcon &&
         !isVisiblePasswordEye,
       'invalid-focus-in-required':
         inputConfig.isRequired &&
@@ -236,6 +237,7 @@
     class="input-error {{inputConfig.customClass}}"
     [ngClass]="{
       'invalid-focus-out':
+        inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.invalid &&
         waitValidation &&
@@ -246,6 +248,7 @@
         getSuperControl.invalid &&
         waitValidation,
       'invalid-focus-in':
+        inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.invalid &&
         focusInput &&
