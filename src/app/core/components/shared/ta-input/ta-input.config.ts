@@ -13,3 +13,5 @@ export interface ITaInput {
     textTransform?: string | 'capitalize' | 'upper' | 'lower';
     customClass?: string;
 }
+// default input: height: 26px
+// customClass: input-big -> height: 32px
