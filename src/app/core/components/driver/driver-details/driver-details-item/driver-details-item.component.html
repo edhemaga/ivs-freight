@@ -261,18 +261,15 @@
             </div>
             <div class="driver-row-5">
               <div class="driver-item">
-                <p class="driver-item-name">Note</p>
-                <p class="driver-item-value">
-                  <textarea
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5"
-                    class="input-custom-textarea form-textarea"
-                    placeholder="Write something"
-                    style="margin: 0"
-                  ></textarea>
-                </p>
+                <app-ta-input-note
+                  [formControl]="cdlNote"
+                  [isVisibleDivider]="false"
+                  [isVisibleNote]="true"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                ></app-ta-input-note>
               </div>
             </div>
           </div>
@@ -445,18 +442,15 @@
             </div>
             <div class="driver-row-5">
               <div class="driver-item">
-                <p class="driver-item-name">Note</p>
-                <p class="driver-item-value">
-                  <textarea
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5"
-                    class="input-custom-textarea form-textarea"
-                    placeholder="Write something"
-                    style="margin: 0"
-                  ></textarea>
-                </p>
+                <app-ta-input-note
+                  [formControl]="mvrNote"
+                  [isVisibleDivider]="false"
+                  [isVisibleNote]="true"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                ></app-ta-input-note>
               </div>
             </div>
           </div>

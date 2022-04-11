@@ -50,11 +50,6 @@ p {
       .row {
         margin: 0px;
         width: 100%;
-        margin-bottom: 32px;
-
-        &:nth-last-child(1) {
-          margin-bottom: 22px;
-        }
       }
     }
 
@@ -63,6 +58,10 @@ p {
       line-height: 18px;
       color: #536bc2;
       font-weight: 500;
+      &:hover {
+        transition: all 0.3s ease-in;
+        cursor: pointer;
+      }
     }
 
     .login-btn {

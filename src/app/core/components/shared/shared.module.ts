@@ -27,7 +27,6 @@ import { LayoutModule } from "@progress/kendo-angular-layout";
 import { ExcelExportModule } from "@progress/kendo-angular-excel-export";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { LabelModule } from "@progress/kendo-angular-label";
-import { TextFieldModule } from "@angular/cdk/text-field";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { StatusSwitcherComponent } from "../switchers/status-switcher/status-switcher.component";
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
@@ -62,6 +61,8 @@ import { TaInputComponent } from '../../components/shared/ta-input/ta-input.comp
 import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions.component';
 import { AccountManageComponent } from '../modals/account-manage/account-manage.component';
 import { AccountModalComponent } from '../modals/account-modal/account-modal.component';
+import { TaInputNoteComponent } from './ta-input-note/ta-input-note.component';
+import { TextareaAutosizeDirective } from '../../directives/TextareaAutosize.directive';
 
 
 
@@ -102,7 +103,9 @@ import { AccountModalComponent } from '../modals/account-modal/account-modal.com
     SvgDefinitionsComponent,
     AccountManageComponent,
     TaModalComponent,
-    AccountModalComponent
+    AccountModalComponent,
+    TaInputNoteComponent,
+    TextareaAutosizeDirective
   ],
   imports: [
     CommonModule,
@@ -134,7 +137,6 @@ import { AccountModalComponent } from '../modals/account-modal/account-modal.com
     ExcelExportModule,
     PDFExportModule,
     LabelModule,
-    TextFieldModule,
     DragDropModule,
     NgxMaskModule.forRoot(),
     Ng5SliderModule,
@@ -199,7 +201,9 @@ import { AccountModalComponent } from '../modals/account-modal/account-modal.com
     SvgDefinitionsComponent,
     AccountManageComponent,
     TaModalComponent,
-    AccountModalComponent
+    AccountModalComponent,
+    TaInputNoteComponent,
+    TextareaAutosizeDirective
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

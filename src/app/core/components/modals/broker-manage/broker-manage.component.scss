@@ -203,21 +203,7 @@
   justify-content: space-between;
 }
 
-textarea.input-custom-textarea.form-textarea {
-  font-size: 12px;
-  padding: 0;
-  margin-top: 6px;
-  resize: none;
-  color: $bw4;
-  width: 100% !important;
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
 
-  &::placeholder {
-    color: $bw-9 !important;
-  }
-}
 
 .note-visible {
   max-height: 60px;
