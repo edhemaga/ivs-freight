@@ -1,0 +1,47 @@
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  Self,
+  ViewChild,
+} from '@angular/core';
+import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { input_note_animation } from './ta-input-note.animation';
+
+@Component({
+  selector: 'app-ta-input-note',
+  templateUrl: './ta-input-note.component.html',
+  styleUrls: ['./ta-input-note.component.scss'],
+  animations: [input_note_animation('showHideNote')],
+})
+export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
+  @Input() isVisibleDivider: boolean = true;
+  @Input() minRows: number = 2;
+  @Input() maxRows: number = 5;
+  @Input() customClass: string = null;
+
+  @ViewChild('note', { static: true }) noteRef: ElementRef;
+  public isVisibleNote: boolean = false;
+
+  constructor(@Self() public superControl: NgControl) {
+    this.superControl.valueAccessor = this;
+  }
+
+  ngOnInit() {}
+
+  get getSuperControl() {
+    return this.superControl.control;
+  }
+
+  public writeValue(obj: any): void {
+    this.noteRef.nativeElement.value = obj;
+  }
+  public registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  public onChange(event: any): void {}
+
+  public registerOnTouched(fn: any): void {}
+}

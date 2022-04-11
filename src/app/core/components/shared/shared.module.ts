@@ -62,6 +62,8 @@ import { TaInputComponent } from '../../components/shared/ta-input/ta-input.comp
 import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions.component';
 import { AccountManageComponent } from '../modals/account-manage/account-manage.component';
 import { AccountModalComponent } from '../modals/account-modal/account-modal.component';
+import { TaInputNoteComponent } from './ta-input-note/ta-input-note.component';
+import { TextareaAutosizeDirective } from '../../directives/TextareaAutosize.directive';
 
 
 
@@ -102,7 +104,9 @@ import { AccountModalComponent } from '../modals/account-modal/account-modal.com
     SvgDefinitionsComponent,
     AccountManageComponent,
     TaModalComponent,
-    AccountModalComponent
+    AccountModalComponent,
+    TaInputNoteComponent,
+    TextareaAutosizeDirective
   ],
   imports: [
     CommonModule,
@@ -199,7 +203,9 @@ import { AccountModalComponent } from '../modals/account-modal/account-modal.com
     SvgDefinitionsComponent,
     AccountManageComponent,
     TaModalComponent,
-    AccountModalComponent
+    AccountModalComponent,
+    TaInputNoteComponent,
+    TextareaAutosizeDirective
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
