@@ -27,7 +27,6 @@ import { LayoutModule } from "@progress/kendo-angular-layout";
 import { ExcelExportModule } from "@progress/kendo-angular-excel-export";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { LabelModule } from "@progress/kendo-angular-label";
-import { TextFieldModule } from "@angular/cdk/text-field";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { StatusSwitcherComponent } from "../switchers/status-switcher/status-switcher.component";
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
@@ -138,7 +137,6 @@ import { TextareaAutosizeDirective } from '../../directives/TextareaAutosize.dir
     ExcelExportModule,
     PDFExportModule,
     LabelModule,
-    TextFieldModule,
     DragDropModule,
     NgxMaskModule.forRoot(),
     Ng5SliderModule,

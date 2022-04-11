@@ -3,6 +3,7 @@
   <div class="note-header" (click)="isVisibleNote = !isVisibleNote">
     <span class="note-label">Note</span>
     <svg-icon
+      *ngIf="isVisibleArrow"
       class="note-arrow"
       [ngClass]="{ rotate: isVisibleNote }"
       src="assets/svg/common/ic_arrow-down.svg"
@@ -12,9 +13,10 @@
     <textarea
       #note
       appTextareaAutosize
+      [rows]="minRows"
       [minRows]="minRows"
       [maxRows]="maxRows"
-      placeholder="Write a note."
+      [placeholder]="placeholder"
       class="note-textarea"
       (input)="onChange($event.target.value)"
     ></textarea>

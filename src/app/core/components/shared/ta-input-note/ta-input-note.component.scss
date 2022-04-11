@@ -23,17 +23,17 @@
       font-size: 14px;
       color: #919191;
       -webkit-user-select: none;
-         -moz-user-select: none;
-          -ms-user-select: none;
-              user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
 
     .note-arrow {
       transition: all 0.3s ease-in-out;
       -webkit-user-select: none;
-         -moz-user-select: none;
-          -ms-user-select: none;
-              user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
       &.rotate {
         transform: rotate(180deg);
         transition: all 0.3s ease-in-out;
@@ -45,7 +45,7 @@
     padding: 0 4px;
     .note-textarea {
       width: 100%;
-      font-size: 12px;
+      font-size: 14px;
       padding: 0;
       resize: none;
       color: #b7b7b7;
@@ -80,6 +80,21 @@
       &::selection {
         background-color: #b7b7b7;
       }
+    }
+  }
+
+  // Custom class
+  &.note-small {
+    .note-header {
+      padding: 0px;
+      .note-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #6c6c6c;
+      }
+    }
+    .note-body {
+      padding: 0px;
     }
   }
 }

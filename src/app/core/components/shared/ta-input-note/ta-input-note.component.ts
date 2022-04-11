@@ -17,12 +17,14 @@ import { input_note_animation } from './ta-input-note.animation';
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() isVisibleDivider: boolean = true;
+  @Input() isVisibleNote: boolean = false;
+  @Input() isVisibleArrow: boolean = true;
   @Input() minRows: number = 2;
   @Input() maxRows: number = 5;
+  @Input() placeholder: string = "Write a note."
   @Input() customClass: string = null;
 
   @ViewChild('note', { static: true }) noteRef: ElementRef;
-  public isVisibleNote: boolean = false;
 
   constructor(@Self() public superControl: NgControl) {
     this.superControl.valueAccessor = this;
