@@ -407,6 +407,7 @@ $transition: all 0.3s ease-in-out;
           border-radius: 2px;
           -o-object-fit: fill;
           object-fit: fill;
+          user-select: none;
         }
 
         .driver-avatar-owner {

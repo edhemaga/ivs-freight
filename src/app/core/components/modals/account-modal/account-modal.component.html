@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-7">
         <app-ta-input
-          formControlName="accountname"
+          formControlName="name"
           [inputConfig]="{
             name: 'Account Name',
             type: 'text',
@@ -17,7 +17,9 @@
           }"
         ></app-ta-input>
       </div>
-      <div class="col-5" bg-color="black"></div>
+      <div class="col-5">
+        <app-ta-input-dropdown></app-ta-input-dropdown>
+      </div>
     </div>
     <div class="row">
       <div class="col-4">
@@ -50,7 +52,7 @@
     <div class="row">
       <div class="col-12">
         <app-ta-input
-          formControlName="hyperlink"
+          formControlName="url"
           [inputConfig]="{
             name: 'Hyperlink',
             type: 'text',

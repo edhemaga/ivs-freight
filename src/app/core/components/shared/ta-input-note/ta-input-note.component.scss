@@ -74,11 +74,11 @@
       }
 
       &::-moz-selection {
-        background-color: #b7b7b7;
+        background-color: rgb(183, 183, 183, 0.2);
       }
 
       &::selection {
-        background-color: #b7b7b7;
+        background-color: rgb(183, 183, 183, 0.2);
       }
     }
   }
