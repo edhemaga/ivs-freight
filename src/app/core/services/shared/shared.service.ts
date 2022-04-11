@@ -98,6 +98,7 @@ export class SharedService {
         if (control.controls) {
           this.markInvalid(control);
         }
+        console.log(control)
       });
       this.notification.warning('Please fill all required fields.', 'Warning:');
       this.spinner.show(false);

@@ -489,7 +489,8 @@
 
     &.invalid-focus-out,
     &.invalid-focus-out-required,
-    &.invalid-focus-in-empty-required {
+    &.invalid-focus-in-empty-required,
+    &.invalid-submit {
       background-color: transparent;
       transition: all 0.3s ease-in-out;
       display: inline-block;
@@ -574,7 +575,8 @@
     }
 
     &.invalid-required-empty,
-    &.invalid-required-filled {
+    &.invalid-required-filled,
+    &.invalid-submit {
       transition: all 0.3s ease-in-out;
       svg {
         path {
@@ -622,6 +624,11 @@
       transition: all 0.3s ease-in-out;
       display: inline-block;
       color: #ef5350;
+    }
+
+    &.invalid-submit {
+      transition: all 0.3s ease-in-out;
+      display: inline-block;
     }
 
     // Custom class

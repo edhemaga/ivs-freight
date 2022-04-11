@@ -27,6 +27,5 @@ export class TaModalComponent {
 
   public onConfirm() {
     this.modalActionTypeEmitter.emit('save');
-    this.ngbActiveModal.close();
   }
 }

@@ -73,7 +73,12 @@
         inputConfig.type === 'password' &&
         !focusInput &&
         !isVisiblePasswordEye,
-      'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye
+      'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye,
+      'invalid-submit' :
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
+        getSuperControl.touched &&
+        !inputConfig.placeholderIcon
     }"
     [appTooltip]="'Clear'"
     [position]="'top-middle'"
@@ -206,7 +211,11 @@
         inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.invalid &&
-        !focusInput
+        !focusInput,
+      'invalid-submit':
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
+        getSuperControl.touched
     }"
     src="{{ getPlaceholderIcon(inputConfig.placeholderIcon) }}"
   ></svg-icon>
@@ -252,7 +261,11 @@
         getSuperControl.value &&
         getSuperControl.invalid &&
         focusInput &&
-        waitValidation
+        waitValidation,
+      'invalid-submit':
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
+        getSuperControl.touched
     }"
   >
     {{ getSuperControl.errors | inputError }}
