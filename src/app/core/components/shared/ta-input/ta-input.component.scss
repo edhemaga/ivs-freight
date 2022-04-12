@@ -11,6 +11,39 @@
         }
       }
     }
+    .input-clear {
+      &.input-dropdown {
+        right: 27px;
+
+        &:hover {
+          transition: all 0.2s ease-in-out;
+          right: 27px !important;
+          width: 22px;
+          height: 22px;
+          transform: translate(-6%, -10%) !important;
+        }
+      }
+    }
+
+    .input-dropdown-arrow {
+      svg {
+        path {
+          fill: #919191;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+
+      &:hover ~ .input-label {
+        transition: all 0.3s ease-in-out;
+        color: #3c3c3c;
+      }
+
+      &:hover ~ .input-control {
+        transition: all 0.3s ease-in-out;
+        background-color: #eeeeee;
+        color: #3c3c3c;
+      }
+    }
   }
 
   &.hide-placeholder-icon {
@@ -389,6 +422,10 @@
     &.input-big {
       top: 3.5px;
     }
+
+    &.input-dropdown {
+      display: none !important;
+    }
   }
 
   // -------------------- Input Clear --------------------
@@ -502,7 +539,8 @@
     }
 
     // If password eye visible
-    &.second-position {
+    &.second-position,
+    &.input-dropdown {
       right: 27px;
 
       &:hover {
@@ -594,6 +632,51 @@
     &.input-big {
       top: 2.7px;
     }
+
+    &.input-dropdown {
+      display: none !important;
+    }
+  }
+
+  //-------------------- Input Dropdown arrow -----------------
+  .input-dropdown-arrow {
+    position: absolute;
+    right: 7px;
+    top: 0.5px;
+    width: 12px;
+    height: 12px;
+    display: none;
+
+    svg {
+      transform: rotate(0deg);
+      transition: all 0.3s ease-in-out;
+      path {
+        fill: #aaaaaa;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
+    &:hover {
+      svg {
+        path {
+          fill: #6c6c6c;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+    }
+
+    &.visible {
+      display: inline-block;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+    }
+
+    &.rotate {
+      svg {
+        transform: rotate(180deg);
+        transition: all 0.3s ease-in-out;
+      }
+    }
   }
 
   //-------------------- Input Error --------------------
@@ -634,6 +717,10 @@
     // Custom class
     &.input-big {
       top: 32px;
+    }
+
+    &.input-dropdown {
+      display: none !important;
     }
   }
 }

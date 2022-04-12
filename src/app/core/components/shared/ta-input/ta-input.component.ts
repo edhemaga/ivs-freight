@@ -2,7 +2,9 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
+  Output,
   Self,
   ViewChild,
 } from '@angular/core';
@@ -19,10 +21,17 @@ export class TaInputComponent implements ControlValueAccessor {
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
 
+  @Output() dropdownEmitter: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
+  
+  @Output() onClearInputEmitter: EventEmitter<boolean> =
+  new EventEmitter<boolean>(); 
+
   public focusInput: boolean = false;
   public waitValidation: boolean = false;
   public togglePassword: boolean = false;
   public isVisiblePasswordEye: boolean = false;
+  public isActiveDropdownOptions: boolean = false;
   public timeout = null;
   public numberOfSpaces: number = 0;
 
@@ -65,10 +74,25 @@ export class TaInputComponent implements ControlValueAccessor {
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
     }
+
+    // Dropdown Input
+    if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
+      this.isActiveDropdownOptions = true;
+      this.dropdownEmitter.emit(this.isActiveDropdownOptions);
+    }
   }
 
   public onBlur(): void {
+    // Dropdown Input
+    if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
+      this.timeout = setTimeout(() => {
+        this.isActiveDropdownOptions = false;
+        this.dropdownEmitter.emit(this.isActiveDropdownOptions);
+      }, 150);
+    }
+
     this.focusInput = false;
+
     // Required Field
     if (this.inputConfig.isRequired) {
       if (!this.focusInput && this.getSuperControl.invalid) {
@@ -77,6 +101,7 @@ export class TaInputComponent implements ControlValueAccessor {
         this.waitValidation = false;
       }
     }
+    
     // No Required Field
     else {
       if (this.getSuperControl.value && this.getSuperControl.invalid) {
@@ -101,6 +126,9 @@ export class TaInputComponent implements ControlValueAccessor {
       this.waitValidation = true;
     } else {
       this.waitValidation = false;
+    }
+    if(this.inputConfig.dropdownArrow) {
+      this.onClearInputEmitter.emit(true);
     }
   }
 
@@ -279,9 +307,9 @@ export class TaInputComponent implements ControlValueAccessor {
         false,
         limitCharacters
       );
-    } 
-    else if(['url'].includes(this.inputConfig.name.toLowerCase())) {
-      regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+    } else if (['url'].includes(this.inputConfig.name.toLowerCase())) {
+      regex =
+        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
       this.input.nativeElement.value = pasteCheck(
         pasteText,
         regex,
@@ -290,8 +318,7 @@ export class TaInputComponent implements ControlValueAccessor {
         false,
         limitCharacters
       );
-    }
-    else {
+    } else {
       this.input.nativeElement.value = pasteCheck(
         pasteText,
         regex,
@@ -302,6 +329,20 @@ export class TaInputComponent implements ControlValueAccessor {
       );
     }
     this.onChange(this.input.nativeElement.value);
+  }
+
+  public toggleDropdownOptions() {
+    // if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
+    //   this.isActiveDropdownOptions = !this.isActiveDropdownOptions;
+    //   this.focusInput = !this.focusInput;
+    //   if (this.isActiveDropdownOptions && this.focusInput) {
+    //     this.setInputCursorAtTheEnd(this.input.nativeElement);
+    //   }
+    //   else {
+    //     this.onBlur();
+    //   }
+    //   this.dropdownEmitter.emit(this.isActiveDropdownOptions);
+    // }
   }
 }
 // Validate options checking

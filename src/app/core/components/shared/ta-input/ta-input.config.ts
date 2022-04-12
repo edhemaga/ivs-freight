@@ -1,3 +1,5 @@
+// default input: height: 26px
+// customClass: input-big -> height: 32px
 export interface ITaInput {
     name: string;
     type: string;
@@ -12,6 +14,5 @@ export interface ITaInput {
     mask?: string;
     textTransform?: string | 'capitalize' | 'upper' | 'lower';
     customClass?: string;
+    dropdownArrow?: boolean;
 }
-// default input: height: 26px
-// customClass: input-big -> height: 32px

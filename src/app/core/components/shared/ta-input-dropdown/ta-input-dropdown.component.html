@@ -1,0 +1,37 @@
+<div class="dropdown-container">
+  <!-- Dropdown search, select item -->
+  <app-ta-input
+    [formControl]="searchControl"
+    [inputConfig]="{
+      name: 'Input Dropdown',
+      type: 'text',
+      label: label,
+      dropdownArrow: true
+    }"
+    (dropdownEmitter)="toggleDropdownOptions($event)"
+    (onClearInputEmitter)="onClearSearch($event)"
+  ></app-ta-input>
+
+  <!-- Dropdown options -->
+  <div
+    [@showHideDropdownOptions]="isDropdownOptionsVisible ? 'true' : 'false'"
+    class="dropdown-options"
+    [ngClass]="{
+      scroll: options.length > 6
+    }"
+  >
+    <div
+      *ngFor="let option of options; trackBy: identity"
+      class="dropdown-option"
+      [ngClass]="{
+        'disabled': option?.disabled,
+        'no-result': options.length === 1 && options[0].name === 'No Results'
+      }"
+      value="{{ option.id }}"
+      (click)="onActiveItem(option)"
+      [innerHtml]="
+        option.name | taHighlight: [{ index: 45632, text: searchControl.value }]
+      "
+    ></div>
+  </div>
+</div>
