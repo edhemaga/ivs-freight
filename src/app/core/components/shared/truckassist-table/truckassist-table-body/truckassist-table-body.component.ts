@@ -98,17 +98,21 @@ export class TruckassistTableBodyComponent
       });
 
     // Toaggle Columns
-    this.tableService.currentToaggleColumn.subscribe((response: any) => {
-      if (response.length) {
-        this.columns = response;
+    this.tableService.currentToaggleColumn
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if(c.field === response.column.field){
+              c.hidden = response.column.hidden
+            }
 
-        this.columns = this.columns.sort(
-          (a, b) => Number(b.isPined) - Number(a.isPined)
-        );
+            return c;
+          })
 
-        this.changeDetectorRef.detectChanges();
-      }
-    });
+          this.changeDetectorRef.detectChanges();
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

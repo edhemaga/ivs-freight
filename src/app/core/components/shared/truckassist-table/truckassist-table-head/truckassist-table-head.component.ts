@@ -10,6 +10,7 @@ import {
   EventEmitter,
   OnDestroy,
   ChangeDetectorRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -26,6 +27,7 @@ const rotate: { [key: string]: any } = {
   templateUrl: './truckassist-table-head.component.html',
   styleUrls: ['./truckassist-table-head.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableHeadComponent
   implements OnInit, OnChanges, OnDestroy
@@ -37,8 +39,10 @@ export class TruckassistTableHeadComponent
   @Output() headActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
   locked: boolean = true;
+  reordering: boolean = false;
   rezaizeing: boolean = false;
   optionsPopup: any;
+  visibleColumns: any[] = [];
 
   constructor(
     private tableService: TruckassistTableService,
@@ -53,6 +57,8 @@ export class TruckassistTableHeadComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: any[]) => {
         this.mySelection = response;
+
+        this.changeDetectorRef.detectChanges();
       });
 
     // Unlock Table
@@ -61,6 +67,8 @@ export class TruckassistTableHeadComponent
       .subscribe((response: any) => {
         if (response.toaggleUnlockTable) {
           this.locked = !this.locked;
+
+          this.changeDetectorRef.detectChanges();
         }
       });
 
@@ -68,12 +76,16 @@ export class TruckassistTableHeadComponent
     this.tableService.currentToaggleColumn
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
-        if (response.length) {
-          this.columns = response;
+        if (response) {
+          this.columns = this.columns.map((c) => {
+            if(c.field === response.column.field){
+              c.hidden = response.column.hidden
+            }
+
+            return c;
+          })
 
           this.setVisibleColumns();
-
-          this.changeDetectorRef.detectChanges();
         }
       });
   }
@@ -87,33 +99,39 @@ export class TruckassistTableHeadComponent
 
     if (!changes?.options?.firstChange && changes?.options) {
       this.options = changes.options.currentValue;
+
+      this.changeDetectorRef.detectChanges();
     }
 
     if (!changes?.viewData?.firstChange && changes?.viewData) {
       this.viewData = changes.viewData.currentValue;
+
+      this.changeDetectorRef.detectChanges();
     }
   }
 
   setVisibleColumns() {
-    let columns = [];
+    this.visibleColumns = [];
 
     this.columns.map((column, index) => {
+      if (!column.hasOwnProperty('isPined')) {
+        column.isPined = false;
+      }
+
+      if (index === 0 || index === 1) {
+        column.isPined = true;
+      }
+
       if (!column.hidden) {
-        if (!column.hasOwnProperty('isPined')) {
-          column.isPined = false;
-        }
-
-        if (index === 0 || index === 1) {
-          column.isPined = true;
-        }
-
-        columns.push(column);
+        this.visibleColumns.push(column);
       }
     });
 
-    this.columns = columns.sort(
+    this.visibleColumns = this.visibleColumns.sort(
       (a, b) => Number(b.isPined) - Number(a.isPined)
     );
+
+    this.changeDetectorRef.detectChanges();
   }
 
   // Sort
@@ -144,26 +162,58 @@ export class TruckassistTableHeadComponent
         : '';
 
       /* this.headActions.emit({ action: 'sort', direction: directionSort }); */
+
+      this.changeDetectorRef.detectChanges();
     }
   }
 
   // Reorder
+  onReorderStart() {
+    this.reordering = true;
+  }
+
   onReorder(event: CdkDragDrop<any>) {
-    if (!this.columns[event.currentIndex].isPined && event.currentIndex > 1) {
-      moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+    if (
+      !this.visibleColumns[event.currentIndex].isPined &&
+      event.currentIndex > 1
+    ) {
+      let previousIndex: number = null,
+        currentIndex: number = null;
+
+      this.columns.map((c, i) => {
+        if (this.visibleColumns[event.previousIndex].field === c.field) {
+          previousIndex = i;
+        }
+      });
+
+      this.columns.map((c, i) => {
+        if (this.visibleColumns[event.currentIndex].field === c.field) {
+          currentIndex = i;
+        }
+      });
+
+      let column: any[] = this.columns.splice(previousIndex, 1);
+
+      this.columns.splice(currentIndex, 0, column[0]);
 
       this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+
+      this.setVisibleColumns();
     }
+  }
+
+  onReorderEnd() {
+    this.reordering = false;
   }
 
   // Rezaize
   onResize(event: any) {
     this.rezaizeing = event.isResizeing;
 
-    if (!this.rezaizeing) {
+    if (this.rezaizeing) {;
       this.tableService.sendColumnWidth({
         event: event,
-        columns: this.columns,
+        columns: this.visibleColumns,
       });
     }
   }
@@ -184,8 +234,8 @@ export class TruckassistTableHeadComponent
   }
 
   // Remove Column
-  onRemoveColumn(column: any) {
-    column.hidden = true;
+  onRemoveColumn(index: number) {
+    this.columns[index].hidden = true;
 
     this.setVisibleColumns();
 
@@ -196,11 +246,17 @@ export class TruckassistTableHeadComponent
   onPinColumn(column: any) {
     column.isPined = !column.isPined;
 
+    this.visibleColumns = this.visibleColumns.sort(
+      (a, b) => Number(b.isPined) - Number(a.isPined)
+    );
+
     this.columns = this.columns.sort(
       (a, b) => Number(b.isPined) - Number(a.isPined)
     );
 
     this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {

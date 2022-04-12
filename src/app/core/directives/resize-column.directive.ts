@@ -64,39 +64,41 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
   }
 
   onMouseDown = (event: MouseEvent) => {
-    this.resizeing.emit({
-      isResizeing: true,
-      width: null,
-      index: this.index,
-    });
+    if (!this.pressed) {
+      this.resizeing.emit({
+        isResizeing: true,
+      });
 
-    this.pressed = true;
-    this.startX = event.pageX;
-    this.startWidth = this.column.offsetWidth;
+      this.pressed = true;
+      this.startX = event.pageX;
+      this.startWidth = this.column.offsetWidth;
+    }
   };
 
   onMouseMove = (event: MouseEvent) => {
     if (this.pressed && event.buttons) {
-      this.renderer.addClass(this.table, 'resizing');
-
       // Calculate width of column
       this.newColumnWidth = this.startWidth + (event.pageX - this.startX);
 
       // Set table header width
       this.renderer.setStyle(this.column, 'width', `${this.newColumnWidth}px`);
+
+      // Send Resizeing Data
+      this.resizeing.emit({
+        isResizeing: true,
+        width: this.newColumnWidth,
+        index: this.index,
+      });
     }
   };
 
   onMouseUp = () => {
     if (this.pressed) {
+      this.pressed = false;
+
       this.resizeing.emit({
         isResizeing: false,
-        width: this.newColumnWidth,
-        index: this.index,
       });
-
-      this.pressed = false;
-      this.renderer.removeClass(this.table, 'resizing');
     }
   };
 }

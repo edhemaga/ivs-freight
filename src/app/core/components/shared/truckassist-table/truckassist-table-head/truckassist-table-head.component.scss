@@ -64,7 +64,7 @@ table {
           border-radius: 1px;
           cursor: ew-resize;
           position: absolute;
-          right: 0;
+          right: 9px;
           z-index: 100;
           &:hover {
             width: 6px;
@@ -79,12 +79,19 @@ table {
           width: 40px;
           height: 100%;
           position: absolute;
-          right: 0;
+          right: 9px;
           display: flex;
           align-items: center;
 
           .x-icon {
             margin-right: 8px;
+          }
+
+          .pin-icon{
+            svg{
+              position: relative;
+              top: 1px;
+            }
           }
 
           .pined {
@@ -103,6 +110,10 @@ table {
                 }
               }
             }
+          }
+
+          .hide{
+            display: none;
           }
 
           svg-icon {

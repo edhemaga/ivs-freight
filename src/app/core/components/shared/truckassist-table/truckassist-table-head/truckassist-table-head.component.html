@@ -10,9 +10,11 @@
         [resizeColumn]="column.resizable && !locked"
         [index]="i"
         (resizeing)="onResize($event)"
-        *ngFor="let column of columns; let i = index"
+        *ngFor="let column of visibleColumns; let i = index"
         cdkDrag
-        [cdkDragDisabled]="locked || rezaizeing || column.isPined"
+        (cdkDragStarted)="onReorderStart()"
+        (cdkDragEnded)="onReorderEnd()"
+        [cdkDragDisabled]="locked || rezaizeing || column.isPined || column.name === ''"
         cdkDragBoundary="tr"
         [cdkDragPreviewClass]="'cdk-drag-preview'"
         [ngStyle]="{
@@ -47,7 +49,7 @@
 
         <!-- Title -->
         <div
-          *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
+          *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''" 
           class="th-title"
         >
           {{ column.name }}
@@ -79,8 +81,8 @@
         >
           <!-- Remove -->
           <svg-icon
-            (click)="onRemoveColumn(column)"
-            *ngIf="!column.isPined"
+            (click)="onRemoveColumn(i)"
+            *ngIf="!column.isPined && !reordering"
             class="x-icon"
             [svgStyle]="{
               'width.px': 10,
@@ -91,13 +93,14 @@
 
           <!-- Pin -->
           <svg-icon
+            class="pin-icon"
             (click)="onPinColumn(column)"
             [svgStyle]="{
               'width.px': 9,
               'height.px': 12
             }"
             [src]="'assets/svg/truckassist-table/pin.svg'"
-            [ngClass]="{ pined: column.isPined }"
+            [ngClass]="{ pined: column.isPined, hide: !column.isPined && reordering}"
           ></svg-icon>
         </div>
       </th>
