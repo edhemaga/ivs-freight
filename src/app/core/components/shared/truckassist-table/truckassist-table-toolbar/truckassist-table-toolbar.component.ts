@@ -8,6 +8,7 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -156,12 +157,12 @@ export class TruckassistTableToolbarComponent
   onToaggleColumn(column: any) {
     column.hidden = !column.hidden;
 
-    this.tableService.sendToaggleColumn(this.columns);
+    /* this.tableService.sendToaggleColumn(column); */
   }
 
   ngOnDestroy(): void {
     this.tableService.sendUnlockTable({});
-    this.tableService.sendToaggleColumn([]);
+    this.tableService.sendToaggleColumn(null);
     this.tableService.sendResetColumns(false);
 
     this.destroy$.next();

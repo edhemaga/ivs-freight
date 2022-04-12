@@ -14,7 +14,7 @@ export class TruckassistTableService {
   public currentUnlockTable = this.unlockTable.asObservable();
 
   /* Toaggle Table Column */
-  private toaggleColumn = new BehaviorSubject<any>([]);
+  private toaggleColumn = new BehaviorSubject<any>(null);
   public currentToaggleColumn = this.toaggleColumn.asObservable();
 
   /* Set Column Table Width */

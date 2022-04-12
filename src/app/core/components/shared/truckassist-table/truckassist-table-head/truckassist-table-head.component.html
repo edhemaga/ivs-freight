@@ -12,6 +12,8 @@
         (resizeing)="onResize($event)"
         *ngFor="let column of columns; let i = index"
         cdkDrag
+        (cdkDragStarted)="onReorderStart()"
+        (cdkDragEnded)="onReorderEnd()"
         [cdkDragDisabled]="locked || rezaizeing || column.isPined"
         cdkDragBoundary="tr"
         [cdkDragPreviewClass]="'cdk-drag-preview'"
@@ -22,12 +24,13 @@
         }"
         [ngClass]="{
           'set-center': column.ngTemplate === 'checkbox' || column.setCenter,
-          'column-unlocket': !locked
+          'column-unlocket': !locked,
+          'hidde-column': column.hidden
         }"
       >
         <!-- Selected Row Count -->
         <div
-          *ngIf="column.ngTemplate === 'checkbox'"
+          *ngIf="column.ngTemplate === 'checkbox' && !column.hidden"
           class="selected-rows-count"
           #op="ngbPopover"
           (click)="onSelectedOptions(op)"
@@ -47,14 +50,14 @@
 
         <!-- Title -->
         <div
-          *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
+          *ngIf="column.ngTemplate !== 'checkbox' && column.name !== '' && !column.hidden" 
           class="th-title"
         >
           {{ column.name }}
         </div>
 
         <!-- Icons -->
-        <div *ngIf="column.name === '' && column?.headIconStyle" class="icons">
+        <div *ngIf="column.name === '' && column?.headIconStyle && !column.hidden" class="icons">
           <svg-icon
             [svgStyle]="{
               'width.px': column.headIconStyle.width,
@@ -75,12 +78,13 @@
             column.name !== '' &&
             i !== 0 &&
             i !== 1
+            && !column.hidden
           "
         >
           <!-- Remove -->
           <svg-icon
             (click)="onRemoveColumn(column)"
-            *ngIf="!column.isPined"
+            *ngIf="!column.isPined && !reordering"
             class="x-icon"
             [svgStyle]="{
               'width.px': 10,
@@ -91,13 +95,14 @@
 
           <!-- Pin -->
           <svg-icon
+            class="pin-icon"
             (click)="onPinColumn(column)"
             [svgStyle]="{
               'width.px': 9,
               'height.px': 12
             }"
             [src]="'assets/svg/truckassist-table/pin.svg'"
-            [ngClass]="{ pined: column.isPined }"
+            [ngClass]="{ pined: column.isPined, hide: !column.isPined && reordering}"
           ></svg-icon>
         </div>
       </th>
