@@ -81,7 +81,7 @@
         >
           <!-- Remove -->
           <svg-icon
-            (click)="onRemoveColumn(i)"
+            (click)="onRemoveColumn(column)"
             *ngIf="!column.isPined && !reordering"
             class="x-icon"
             [svgStyle]="{

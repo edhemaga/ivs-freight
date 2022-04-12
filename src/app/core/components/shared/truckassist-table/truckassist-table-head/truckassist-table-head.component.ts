@@ -234,8 +234,12 @@ export class TruckassistTableHeadComponent
   }
 
   // Remove Column
-  onRemoveColumn(index: number) {
-    this.columns[index].hidden = true;
+  onRemoveColumn(column: any) {
+    this.columns.map((c) => {
+      if(c.field === column.field){
+        c.hidden = true;
+      }
+    })
 
     this.setVisibleColumns();
 
