@@ -101,11 +101,16 @@ export class TruckassistTableBodyComponent
     this.tableService.currentToaggleColumn
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
-        if (response) {
-          console.log('Toaggle Columns Body');
-          console.log(response);
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if(c.field === response.column.field){
+              c.hidden = response.column.hidden
+            }
 
-          /* this.changeDetectorRef.detectChanges(); */
+            return c;
+          })
+
+          this.changeDetectorRef.detectChanges();
         }
       });
   }

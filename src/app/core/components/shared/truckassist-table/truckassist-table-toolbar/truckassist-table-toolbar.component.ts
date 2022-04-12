@@ -154,10 +154,13 @@ export class TruckassistTableToolbarComponent
     }
   }
 
-  onToaggleColumn(column: any) {
+  onToaggleColumn(column: any, index: number) {
     column.hidden = !column.hidden;
 
-    /* this.tableService.sendToaggleColumn(column); */
+     this.tableService.sendToaggleColumn({
+      column: column,
+      index: index
+    });
   }
 
   ngOnDestroy(): void {

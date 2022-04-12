@@ -120,7 +120,7 @@
       <div class="column" *ngFor="let column of columns; let i = index">
         <div class="checkbox" *ngIf="!column.isPined && i > 1">
           <input
-            (click)="onToaggleColumn(column)"
+            (click)="onToaggleColumn(column, i)"
             [checked]="!column.hidden"
             class="columns-options-checkbox"
             id="checkbox{{ i }}"

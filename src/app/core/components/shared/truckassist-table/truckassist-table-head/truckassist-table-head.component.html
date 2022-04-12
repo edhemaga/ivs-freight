@@ -10,11 +10,11 @@
         [resizeColumn]="column.resizable && !locked"
         [index]="i"
         (resizeing)="onResize($event)"
-        *ngFor="let column of columns; let i = index"
+        *ngFor="let column of visibleColumns; let i = index"
         cdkDrag
         (cdkDragStarted)="onReorderStart()"
         (cdkDragEnded)="onReorderEnd()"
-        [cdkDragDisabled]="locked || rezaizeing || column.isPined"
+        [cdkDragDisabled]="locked || rezaizeing || column.isPined || column.name === ''"
         cdkDragBoundary="tr"
         [cdkDragPreviewClass]="'cdk-drag-preview'"
         [ngStyle]="{
@@ -24,13 +24,12 @@
         }"
         [ngClass]="{
           'set-center': column.ngTemplate === 'checkbox' || column.setCenter,
-          'column-unlocket': !locked,
-          'hidde-column': column.hidden
+          'column-unlocket': !locked
         }"
       >
         <!-- Selected Row Count -->
         <div
-          *ngIf="column.ngTemplate === 'checkbox' && !column.hidden"
+          *ngIf="column.ngTemplate === 'checkbox'"
           class="selected-rows-count"
           #op="ngbPopover"
           (click)="onSelectedOptions(op)"
@@ -50,14 +49,14 @@
 
         <!-- Title -->
         <div
-          *ngIf="column.ngTemplate !== 'checkbox' && column.name !== '' && !column.hidden" 
+          *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''" 
           class="th-title"
         >
           {{ column.name }}
         </div>
 
         <!-- Icons -->
-        <div *ngIf="column.name === '' && column?.headIconStyle && !column.hidden" class="icons">
+        <div *ngIf="column.name === '' && column?.headIconStyle" class="icons">
           <svg-icon
             [svgStyle]="{
               'width.px': column.headIconStyle.width,
@@ -78,12 +77,11 @@
             column.name !== '' &&
             i !== 0 &&
             i !== 1
-            && !column.hidden
           "
         >
           <!-- Remove -->
           <svg-icon
-            (click)="onRemoveColumn(column)"
+            (click)="onRemoveColumn(i)"
             *ngIf="!column.isPined && !reordering"
             class="x-icon"
             [svgStyle]="{
