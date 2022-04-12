@@ -1,110 +1,112 @@
 {
-	"iconImageFiles": [
-		{
-			"iconName": "cloud-moon",
-			"iconPath": "/assets/img/svgs/weather/cloud-moon.svg"
-		},
-    {
-			"iconName": "moon-stars",
-			"iconPath": "/assets/img/svgs/weather/moon-stars.svg"
-		},
-        {
-			"iconName": "cloudy",
-			"iconPath": "/assets/img/svgs/weather/cloudy.svg"
-		},
-        {
-			"iconName": "part_cloudy",
-			"iconPath": "/assets/img/svgs/weather/part_cloudy.svg"
-		},
-        {
-			"iconName": "cloud-drizzle",
-			"iconPath": "/assets/img/svgs/weather/cloud-drizzle.svg"
-		},
-        {
-			"iconName": "wind",
-			"iconPath": "/assets/img/svgs/weather/wind.svg"
-		},
-        {
-			"iconName": "thunderstorm",
-			"iconPath": "/assets/img/svgs/weather/thunderstorm.svg"
-		},
-        {
-			"iconName": "sun",
-			"iconPath": "/assets/img/svgs/weather/sun.svg"
-		},
-        {
-			"iconName": "cloud-rain",
-			"iconPath": "/assets/img/svgs/weather/cloud-rain.svg"
-		},
-        {
-			"iconName": "note-close",
-			"iconPath": "/assets/img/shared/note_small_close.svg"
-		},
-        {
-			"iconName": "note-check",
-			"iconPath": "/assets/img/shared/note_small_check.svg"
-		},
-		{
-			"iconName": "note-b",
-			"iconPath": "/assets/img/shared/note_b.svg"
-		},
-		{
-			"iconName": "italic",
-			"iconPath": "/assets/img/shared/italic.svg"
-		},
-		{
-			"iconName": "underline",
-			"iconPath": "/assets/img/shared/underline.svg"
-		},
-		{
-			"iconName": "hosactive",
-			"iconPath": "/assets/img/shared/hos_active_hours.svg"
-		},
-		{
-			"iconName": "hosinactive",
-			"iconPath": "/assets/svg/dispatchboard/hos-arrow.svg"
-		},
-		{
-			"iconName": "svg_num_box_1",
-			"iconPath": "/assets/img/svg_numbers/svg_num_box_1.svg"
-		},
-		{
-			"iconName": "svg_num_box_2",
-			"iconPath": "/assets/img/svg_numbers/svg_num_box_2.svg"
-		},
-		{
-			"iconName": "svg_num_box_3",
-			"iconPath": "/assets/img/svg_numbers/svg_num_box_3.svg"
-		},
-		{
-			"iconName": "svg_num_box_4",
-			"iconPath": "/assets/img/svg_numbers/svg_num_box_4.svg"
-		},
-		{
-			"iconName": "svg_num_box_5",
-			"iconPath": "/assets/img/svg_numbers/svg_num_box_5.svg"
-		},
-		{
-			"iconName": "svg_num_box_6",
-			"iconPath": "/assets/img/svg_numbers/svg_num_box_6.svg"
-		},
-		{
-			"iconName": "svg_num_box_7",
-			"iconPath": "/assets/img/svg_numbers/svg_num_box_7.svg"
-		},
-		{
-			"iconName": "svg_num_box_8",
-			"iconPath": "/assets/img/svg_numbers/svg_num_box_8.svg"
-		},
-		{
-			"iconName": "svg_num_box_9",
-			"iconPath": "/assets/img/svg_numbers/svg_num_box_9.svg"
-		},
-		{
-			"iconName": "svg_num_over",
-			"iconPath": "/assets/img/svg_numbers/svg_num_over.svg"
-		}
-	],
-    "customIcons": [
-	]
+  "iconImageFiles": [],
+  "customIcons": [],
+  "bilo-U-iconImageFiles-pravilo-gresku": [
+	{
+		"iconName": "cloud-moon",
+		"iconPath": "/assets/img/svgs/weather/cloud-moon.svg"
+	  },
+	  {
+		"iconName": "moon-stars",
+		"iconPath": "/assets/img/svgs/weather/moon-stars.svg"
+	  },
+	  {
+		"iconName": "cloudy",
+		"iconPath": "/assets/img/svgs/weather/cloudy.svg"
+	  },
+	  {
+		"iconName": "part_cloudy",
+		"iconPath": "/assets/img/svgs/weather/part_cloudy.svg"
+	  },
+	  {
+		"iconName": "cloud-drizzle",
+		"iconPath": "/assets/img/svgs/weather/cloud-drizzle.svg"
+	  },
+	  {
+		"iconName": "wind",
+		"iconPath": "/assets/img/svgs/weather/wind.svg"
+	  },
+	  {
+		"iconName": "thunderstorm",
+		"iconPath": "/assets/img/svgs/weather/thunderstorm.svg"
+	  },
+	  {
+		"iconName": "sun",
+		"iconPath": "/assets/img/svgs/weather/sun.svg"
+	  },
+	  {
+		"iconName": "cloud-rain",
+		"iconPath": "/assets/img/svgs/weather/cloud-rain.svg"
+	  },
+	  {
+		"iconName": "note-close",
+		"iconPath": "/assets/img/shared/note_small_close.svg"
+	  },
+	  {
+		"iconName": "note-check",
+		"iconPath": "/assets/img/shared/note_small_check.svg"
+	  },
+	  {
+		"iconName": "note-b",
+		"iconPath": "/assets/img/shared/note_b.svg"
+	  },
+	  {
+		"iconName": "italic",
+		"iconPath": "/assets/img/shared/italic.svg"
+	  },
+	  {
+		"iconName": "underline",
+		"iconPath": "/assets/img/shared/underline.svg"
+	  },
+	  {
+		"iconName": "hosactive",
+		"iconPath": "/assets/img/shared/hos_active_hours.svg"
+	  },
+	  {
+		"iconName": "hosinactive",
+		"iconPath": "/assets/svg/dispatchboard/hos-arrow.svg"
+	  },
+	  {
+		"iconName": "svg_num_box_1",
+		"iconPath": "/assets/img/svg_numbers/svg_num_box_1.svg"
+	  },
+	  {
+		"iconName": "svg_num_box_2",
+		"iconPath": "/assets/img/svg_numbers/svg_num_box_2.svg"
+	  },
+	  {
+		"iconName": "svg_num_box_3",
+		"iconPath": "/assets/img/svg_numbers/svg_num_box_3.svg"
+	  },
+	  {
+		"iconName": "svg_num_box_4",
+		"iconPath": "/assets/img/svg_numbers/svg_num_box_4.svg"
+	  },
+	  {
+		"iconName": "svg_num_box_5",
+		"iconPath": "/assets/img/svg_numbers/svg_num_box_5.svg"
+	  },
+	  {
+		"iconName": "svg_num_box_6",
+		"iconPath": "/assets/img/svg_numbers/svg_num_box_6.svg"
+	  },
+	  {
+		"iconName": "svg_num_box_7",
+		"iconPath": "/assets/img/svg_numbers/svg_num_box_7.svg"
+	  },
+	  {
+		"iconName": "svg_num_box_8",
+		"iconPath": "/assets/img/svg_numbers/svg_num_box_8.svg"
+	  },
+	  {
+		"iconName": "svg_num_box_9",
+		"iconPath": "/assets/img/svg_numbers/svg_num_box_9.svg"
+	  },
+	  {
+		"iconName": "svg_num_over",
+		"iconPath": "/assets/img/svg_numbers/svg_num_over.svg"
+	  }
+  ]
 }
+
+
