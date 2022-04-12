@@ -1,5 +1,12 @@
+import { Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { debounceTime } from 'rxjs';
@@ -12,24 +19,24 @@ import { debounceTime } from 'rxjs';
 })
 export class TaInputDropdownComponent implements OnInit, OnDestroy {
   @Input() label: string = 'Dispatcher';
+  @Input() canAddNew: boolean = false;
   @Input() options: any[] = [
     { id: 1, name: 'Aleksandar Djordjevic' },
     { id: 2, name: 'Denis Rodman' },
     { id: 3, name: 'James Halpert' },
-    { id: 4, name: 'Pamela Beasley' },
-    { id: 5, name: 'Denis Rodman' },
-    { id: 63, name: 'James Halpert' },
-    { id: 7, name: 'Bradly Cooper' },
-    { id: 14, name: 'Mike Jordan', disabled: true },
+    { id: 4, name: 'Pamela Beasley' }
   ];
 
-  public searchControl: FormControl = new FormControl(null);
+  public searchControl: FormControl = new FormControl(
+    null,
+    Validators.required
+  );
   public activeItem: any;
   public originalOptions: any[] = [];
   public isDropdownOptionsVisible: boolean = false;
 
   constructor() {}
- 
+
   ngOnInit(): void {
     this.originalOptions = [...this.options];
     this.searchControl.valueChanges
@@ -38,23 +45,33 @@ export class TaInputDropdownComponent implements OnInit, OnDestroy {
   }
 
   private search(term: string): void {
-    // if (term?.length > 0 && !this.activeItem) {
-    //   this.options = this.originalOptions.filter((item) =>
-    //     item.name.toLowerCase().includes(term.toLowerCase())
-    //   );
+    if (term?.length > 0 && !this.activeItem) {
+      this.options = this.originalOptions.filter((item) =>
+        item.name.toLowerCase().includes(term.toLowerCase())
+      );
 
-    //   if(!this.options.length) {
-    //     this.options.push({
-    //       id: 7654,
-    //       name: 'No Results'
-    //     })
-    //   }
-    // } else {
-    //   this.options = this.originalOptions;
-    // }
+      if (!this.options.length && !this.canAddNew) {
+        this.options.push({
+          id: 7654,
+          name: 'No Results',
+        });
+      }
+
+      if (!this.options.length && this.canAddNew) {
+        this.options.push({
+          id: 7655,
+          name: 'Add New',
+        });
+      }
+    } else {
+      this.options = this.originalOptions;
+    }
   }
 
   public onActiveItem(option: any) {
+    if (option.name === 'No Results') {
+      return;
+    }
     this.searchControl.setValue(option.name);
     this.activeItem = option;
   }
@@ -64,6 +81,7 @@ export class TaInputDropdownComponent implements OnInit, OnDestroy {
   }
 
   public onClearSearch(action: boolean): void {
+    console.log(action);
     this.options = this.originalOptions;
     this.activeItem = null;
   }

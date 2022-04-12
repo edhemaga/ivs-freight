@@ -132,15 +132,16 @@ export class TaInputComponent implements ControlValueAccessor {
     }
   }
 
-  public manipulateWithInput(event: KeyboardEvent): void {
-    // Check if backspace and empty value
-    if (event.keyCode === 8) {
+  public onBackspace(event): void {
+    if (event.keyCode == 8) {
       this.numberOfSpaces = 0;
       if (!this.getSuperControl.value) {
         this.clearInput();
       }
     }
+  }
 
+  public manipulateWithInput(event: KeyboardEvent): void {
     // Check different user input typing
     if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
       this.inputTypingPattern(event, true, false, true, false);
@@ -332,27 +333,16 @@ export class TaInputComponent implements ControlValueAccessor {
   }
 
   public toggleDropdownOptions() {
-    // if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
-    //   this.isActiveDropdownOptions = !this.isActiveDropdownOptions;
-    //   this.focusInput = !this.focusInput;
-    //   if (this.isActiveDropdownOptions && this.focusInput) {
-    //     this.setInputCursorAtTheEnd(this.input.nativeElement);
-    //   }
-    //   else {
-    //     this.onBlur();
-    //   }
-    //   this.dropdownEmitter.emit(this.isActiveDropdownOptions);
-    // }
+    if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
+      this.isActiveDropdownOptions = !this.isActiveDropdownOptions;
+      this.focusInput = !this.focusInput;
+      if (this.isActiveDropdownOptions && this.focusInput) {
+        this.setInputCursorAtTheEnd(this.input.nativeElement);
+      }
+      else {
+        this.onBlur();
+      }
+      this.dropdownEmitter.emit(this.isActiveDropdownOptions);
+    }
   }
 }
-// Validate options checking
-// console.log('FOCUS OUT');
-// console.log('REQUIRED: ', this.inputConfig.isRequired);
-// console.log('VALUE: ', this.getSuperControl.value);
-// console.log('VALID: ', this.getSuperControl.valid);
-// console.log('INVALID: ', this.getSuperControl.invalid);
-// console.log('WAIT VALIDATION: ', this.waitValidation);
-// console.log('FOCUS: ', this.focusInput);
-// console.log('DISABLED: ', this.inputConfig.isDisabled);
-// console.log("PLACEHOLDER ICON: ", this.inputConfig.placeholderIcon)
-// console.log('VISIBLE PASSWORD EYE: ', this.isVisiblePasswordEye);

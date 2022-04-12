@@ -40,7 +40,8 @@ export class AccountModalComponent implements OnInit {
   }
 
   public onModalAction(action: string) {
-    if (action === 'cancel') {
+    console.log(action)
+    if (action === 'close') {
       this.accountForm.reset();
     } else {
       if (this.accountForm.invalid) {

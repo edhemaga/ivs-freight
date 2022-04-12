@@ -6,6 +6,7 @@
       name: 'Input Dropdown',
       type: 'text',
       label: label,
+      isRequired: true,
       dropdownArrow: true
     }"
     (dropdownEmitter)="toggleDropdownOptions($event)"
@@ -17,7 +18,7 @@
     [@showHideDropdownOptions]="isDropdownOptionsVisible ? 'true' : 'false'"
     class="dropdown-options"
     [ngClass]="{
-      scroll: options.length > 6
+      'scroll': options.length > 6
     }"
   >
     <div
@@ -25,12 +26,17 @@
       class="dropdown-option"
       [ngClass]="{
         'disabled': option?.disabled,
-        'no-result': options.length === 1 && options[0].name === 'No Results'
+        'no-result': options.length === 1 && options[0].name === 'No Results',
+        'add-new': options.length === 1 && options[0].name === 'Add New',
+        'active': option?.id === activeItem?.id
       }"
       value="{{ option.id }}"
       (click)="onActiveItem(option)"
       [innerHtml]="
-        option.name | taHighlight: [{ index: 45632, text: searchControl.value }]
+        activeItem
+          ? option.name
+          : (option.name
+            | taHighlight: [{ index: 45632, text: searchControl.value }])
       "
     ></div>
   </div>

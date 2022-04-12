@@ -50,7 +50,7 @@
       }
 
       &.disabled {
-        color: #AAAAAA;
+        color: #aaaaaa;
         font-style: italic;
       }
 
@@ -58,19 +58,65 @@
         height: 22px;
         font-size: 11px;
         font-weight: 600;
-        color: #B7B7B7;
+        color: #b7b7b7;
+        &:hover {
+          background-color: transparent !important;
+          color: #b7b7b7 !important;
+          transition: all 0.3s ease-in-out;
+          cursor: auto;
+        }
       }
-    }
-  }
 
-  // Higlight text
-  .highlight-text-45632 {
-    font-weight: 700;
-    background-color: transparent;
+      &.add-new {
+        color: #536BC2;
+        font-weight: 600;
 
-    &:hover {
-      color: #3c3c3c;
-      transition: all 0.3s ease-in-out;
+        &:hover {
+          color: #3551B7;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+
+      // Higlight text
+      .highlight-text-45632 {
+        font-weight: 700;
+        background-color: transparent;
+
+        &:hover {
+          color: #3c3c3c;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+
+      &.active {
+        color: #536bc2;
+        position: relative;
+
+        &:hover {
+          color: #3551B7;
+          transition: all 0.3s ease-in-out;
+        }
+
+        // Higlight text
+        .highlight-text-45632 {
+          font-weight: 700;
+          background-color: transparent;
+
+          &:hover {
+            color: #3551B7;
+            transition: all 0.3s ease-in-out;
+          }
+        }
+
+        &::after {
+          position: absolute;
+          right: 4px;
+          top: 2.5px;
+          content: url('../../../../../assets/svg/common/ic_confirm.svg');
+          width: 14px;
+          height: 10px;
+        }
+      }
     }
   }
 }

@@ -2,6 +2,7 @@
   display: block;
   position: relative;
 
+  // ------------------- Whole Container HOVER ----------------------
   &:hover {
     .input-icon {
       transition: all 0.3s ease-in-out;
@@ -11,40 +12,22 @@
         }
       }
     }
+
     .input-clear {
       &.input-dropdown {
-        right: 27px;
+        right: 22px;
 
         &:hover {
           transition: all 0.2s ease-in-out;
-          right: 27px !important;
+          right: 22px !important;
           width: 22px;
           height: 22px;
           transform: translate(-6%, -10%) !important;
         }
       }
     }
-
-    .input-dropdown-arrow {
-      svg {
-        path {
-          fill: #919191;
-          transition: all 0.3s ease-in-out;
-        }
-      }
-
-      &:hover ~ .input-label {
-        transition: all 0.3s ease-in-out;
-        color: #3c3c3c;
-      }
-
-      &:hover ~ .input-control {
-        transition: all 0.3s ease-in-out;
-        background-color: #eeeeee;
-        color: #3c3c3c;
-      }
-    }
   }
+  // ------------------- end ----------------------
 
   &.hide-placeholder-icon {
     &:hover {
@@ -54,7 +37,37 @@
     }
   }
 
-  //----------- Valid, Invalid Classes for whole container
+  &.dropdown {
+    &:hover {
+      .input-dropdown-arrow {
+        svg {
+          path {
+            fill: #919191;
+            transition: all 0.3s ease-in-out;
+          }
+          &:hover {
+            path {
+              fill: #6c6c6c;
+              transition: all 0.3s ease-in-out;
+            }
+          }
+        }
+
+        &:hover ~ .input-label {
+          transition: all 0.3s ease-in-out;
+          color: #3c3c3c;
+        }
+
+        &:hover ~ .input-control {
+          transition: all 0.3s ease-in-out;
+          background-color: #eeeeee;
+          color: #3c3c3c;
+        }
+      }
+    }
+  }
+
+  // ------------------- Whole Container HOVER INVALID ----------------------
   &.invalid {
     &:hover {
       .input-clear {
@@ -92,7 +105,9 @@
       }
     }
   }
+  // ------------------- end ----------------------
 
+  // ------------------- Whole Container HOVER INVALID EMPTY ----------------------
   &.invalid-empty-required {
     &:hover {
       .input-clear {
@@ -132,7 +147,24 @@
       }
     }
   }
+  // ------------------- end ----------------------
 
+  // ------------------- Whole Container INVALID EMPTY WAIT VALIDATION ----------------------
+  &.invalid-empty-required-waitValidation {
+    &:hover {
+      .input-dropdown-arrow {
+        svg {
+          path {
+            fill: #ef5350;
+            transition: all 0.2s ease-in-out;
+          }
+        }
+      }
+    }
+  }
+  // ------------------- end ----------------------
+
+  // ------------------- Whole Container FOCUS INVALID ----------------------
   &.invalid-empty-focus-required {
     .input-clear {
       svg {
@@ -142,6 +174,7 @@
         }
       }
     }
+
     .input-error {
       transition: all 0.3s ease-in-out;
       color: #ef5350 !important;
@@ -159,6 +192,20 @@
     }
   }
 
+  // ------------------- end ----------------------
+
+  &.invalid-empty-focus-required-waitValidation {
+    .input-dropdown-arrow {
+      svg {
+        path {
+          fill: #EF9A9A;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+    }
+  }
+
+  // ------------------- Whole Container HOVER VALID ----------------------
   &.valid {
     &:hover {
       // Input clear class
@@ -207,6 +254,15 @@
             path {
               fill: #6d82c7;
             }
+          }
+        }
+      }
+
+      .input-dropdown-arrow {
+        svg {
+          path {
+            fill: #6d82c7;
+            transition: all 0.2s ease-in-out;
           }
         }
       }
@@ -539,13 +595,24 @@
     }
 
     // If password eye visible
-    &.second-position,
-    &.input-dropdown {
+    &.second-position {
       right: 27px;
 
       &:hover {
         transition: all 0.2s ease-in-out;
         right: 27px !important;
+        width: 22px;
+        height: 22px;
+        transform: translate(-6%, -10%) !important;
+      }
+    }
+
+    &.input-dropdown {
+      right: 22px;
+
+      &:hover {
+        transition: all 0.2s ease-in-out;
+        right: 22px !important;
         width: 22px;
         height: 22px;
         transform: translate(-6%, -10%) !important;
@@ -649,10 +716,10 @@
 
     svg {
       transform: rotate(0deg);
-      transition: all 0.3s ease-in-out;
+      transition: all 0.2s ease-in-out;
       path {
         fill: #aaaaaa;
-        transition: all 0.3s ease-in-out;
+        transition: all 0.2s ease-in-out;
       }
     }
 
@@ -660,21 +727,93 @@
       svg {
         path {
           fill: #6c6c6c;
-          transition: all 0.3s ease-in-out;
+          transition: all 0.2s ease-in-out;
         }
       }
     }
 
     &.visible {
       display: inline-block;
-      transition: all 0.3s ease-in-out;
+      transition: all 0.2s ease-in-out;
       cursor: pointer;
     }
 
     &.rotate {
       svg {
         transform: rotate(180deg);
-        transition: all 0.3s ease-in-out;
+        transition: all 0.2s ease-in-out;
+      }
+    }
+
+    &.active {
+      svg {
+        path {
+          fill: #dadada;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+
+      &:hover {
+        svg {
+          path {
+            fill: #f7f7f7;
+            transition: all 0.2s ease-in-out;
+          }
+        }
+      }
+    }
+
+    &.valid {
+      svg {
+        path {
+          fill: #d4dff4;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+
+      &:hover {
+        svg {
+          path {
+            fill: #f5fafc;
+            transition: all 0.2s ease-in-out;
+          }
+        }
+      }
+    }
+
+    &.valid-focus-out-required {
+      svg {
+        path {
+          fill: #97a8dc;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+    }
+
+    &.invalid {
+      svg {
+        path {
+          fill: #ffcdd2;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+
+      &:hover {
+        svg {
+          path {
+            fill: #fffafa;
+            transition: all 0.2s ease-in-out;
+          }
+        }
+      }
+    }
+
+    &.invalid-focus-out-required {
+      svg {
+        path {
+          fill: #e57373;
+          transition: all 0.2s ease-in-out;
+        }
       }
     }
   }
@@ -717,10 +856,6 @@
     // Custom class
     &.input-big {
       top: 32px;
-    }
-
-    &.input-dropdown {
-      display: none !important;
     }
   }
 }

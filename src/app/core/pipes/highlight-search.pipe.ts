@@ -15,8 +15,6 @@ export class HighlightSearchPipe implements PipeTransform {
       chips = chips.sort((a, b) => {
         return b.text.length - a.text.length;
       });
-      console.log(text)
-      console.log(chips)
       chips.forEach((item, key) => {
         if (item.text && text) {
           let pattern = item.text.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
@@ -31,8 +29,6 @@ export class HighlightSearchPipe implements PipeTransform {
             regex,
             (match) => `<span class="highlight-text-${item.index}">${match}</span>`
           );
-          console.log("KRAJNI TEKST")
-          console.log(text)
         } else {
           return text;
         }
