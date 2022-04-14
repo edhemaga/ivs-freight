@@ -1,16 +1,8 @@
 <div class="dropdown-container">
   <!-- Dropdown search, select item -->
   <app-ta-input
-    [formControl]="searchControl"
-    [inputConfig]="{
-      name: 'Input Dropdown',
-      type: 'text',
-      label: label,
-      isRequired: true,
-      dropdownArrow: true
-    }"
-    (dropdownEmitter)="toggleDropdownOptions($event)"
-    (onClearInputEmitter)="onClearSearch($event)"
+    [formControl]="getSuperControl"
+    [inputConfig]="inputConfig"
   ></app-ta-input>
 
   <!-- Dropdown options -->
@@ -36,7 +28,7 @@
         activeItem
           ? option.name
           : (option.name
-            | taHighlight: [{ index: 45632, text: searchControl.value }])
+            | taHighlight: [{ index: 45632, text: getSuperControl.value }])
       "
     ></div>
   </div>

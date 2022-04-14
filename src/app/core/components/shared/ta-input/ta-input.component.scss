@@ -198,7 +198,7 @@
     .input-dropdown-arrow {
       svg {
         path {
-          fill: #EF9A9A;
+          fill: #ef9a9a;
           transition: all 0.2s ease-in-out;
         }
       }
@@ -630,9 +630,6 @@
     // Custom class
     &.input-big {
       top: 6.5px;
-      // &.second-position {
-      //   transform: translate(-6%, 0.5%) !important;
-      // }
     }
   }
 
@@ -705,6 +702,48 @@
     }
   }
 
+  //-------------------- Input Dropdwon confirmation ----------
+  .input-dropdown-confirmation {
+    position: absolute;
+    right: 26px;
+    top: 16%;
+    transform: translate(-6%, 0%);
+    width: 18px;
+    height: 18px;
+    border-radius: 1px;
+    background-color: #b7b7b7;
+    display: none;
+    transition: all 0.3s ease-in-out;
+
+    svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-49.5%, -50%);
+      width: 10px !important;
+      height: 10px !important;
+      transition: all 0.3s ease-in-out;
+      path {
+        fill: #6c6c6c;
+      }
+    }
+
+    &:hover {
+      transition: all 0.2s ease-in-out;
+      right: 26px !important;
+      width: 22px;
+      height: 22px;
+      background-color: #eeeeee;
+      transform: translate(-6%, -10%) !important;
+    }
+
+    &.visible {
+      display: inline-block;
+      transition: all 0.2s ease-in-out;
+      cursor: pointer;
+    }
+  }
+
   //-------------------- Input Dropdown arrow -----------------
   .input-dropdown-arrow {
     position: absolute;
@@ -738,15 +777,10 @@
       cursor: pointer;
     }
 
-    &.rotate {
+    &.active {
       svg {
         transform: rotate(180deg);
         transition: all 0.2s ease-in-out;
-      }
-    }
-
-    &.active {
-      svg {
         path {
           fill: #dadada;
           transition: all 0.2s ease-in-out;
@@ -813,6 +847,23 @@
         path {
           fill: #e57373;
           transition: all 0.2s ease-in-out;
+        }
+      }
+    }
+
+    &.invalid-focus-in-empty-required {
+      svg {
+        path {
+          fill: #ef9a9a;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+    }
+
+    &.invalid-submit {
+      svg {
+        path {
+          fill: #e57373;
         }
       }
     }
