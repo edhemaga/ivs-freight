@@ -1,9 +1,10 @@
-// default input: height: 26px
-// customClass: 'input-big' -> height: 32px
+// customClass: 
+//  - 'input-big' -> height: 32px
 export interface ITaInput {
     name: string;
     type: string;
     label: string;
+    placeholder?: string;    // only for dropdown, otherwise placeholder is label !!!
     placeholderIcon?: string;
     isRequired?: boolean;
     isDisabled?: boolean;

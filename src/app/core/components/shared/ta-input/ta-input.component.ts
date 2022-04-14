@@ -50,7 +50,7 @@ export class TaInputComponent
     // DropDown
     if (this.inputConfig.dropdownArrow) {
       this.inputService.activateDropdownAddNewSubject
-        .pipe(debounceTime(50), untilDestroyed(this))
+        .pipe(untilDestroyed(this))
         .subscribe((action) => {
           if (action) {
             this.activateDropdownAddNewMode = true;
@@ -107,6 +107,7 @@ export class TaInputComponent
     // Dropdown Input
     if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
       this.isActiveDropdownOptions = true;
+      this.inputService.onFocusInputSubject.next(true);
       if (!this.activateDropdownAddNewMode) {
         this.inputService.dropDownShowHideSubject.next(
           this.isActiveDropdownOptions
@@ -120,44 +121,44 @@ export class TaInputComponent
     if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
       this.timeout = setTimeout(() => {
         this.isActiveDropdownOptions = false;
-
+        this.focusInput = false;
         this.inputService.dropDownShowHideSubject.next(
           this.isActiveDropdownOptions
         );
       }, 150);
-    }
+    } else {
+      this.focusInput = false;
 
-    this.focusInput = false;
-
-    // Required Field
-    if (this.inputConfig.isRequired) {
-      if (!this.focusInput && this.getSuperControl.invalid) {
-        this.waitValidation = true;
-      } else {
-        this.waitValidation = false;
+      // Required Field
+      if (this.inputConfig.isRequired) {
+        if (!this.focusInput && this.getSuperControl.invalid) {
+          this.waitValidation = true;
+        } else {
+          this.waitValidation = false;
+        }
       }
-    }
 
-    // No Required Field
-    else {
-      if (this.getSuperControl.value && this.getSuperControl.invalid) {
-        this.waitValidation = true;
-      } else {
-        this.waitValidation = false;
+      // No Required Field
+      else {
+        if (this.getSuperControl.value && this.getSuperControl.invalid) {
+          this.waitValidation = true;
+        } else {
+          this.waitValidation = false;
+        }
       }
-    }
-    if (this.inputConfig.type === 'password') {
-      this.timeout = setTimeout(() => {
-        this.isVisiblePasswordEye = false;
-        this.changeDetection.detectChanges();
-      }, 150);
-    }
+      if (this.inputConfig.type === 'password') {
+        this.timeout = setTimeout(() => {
+          this.isVisiblePasswordEye = false;
+          this.changeDetection.detectChanges();
+        }, 150);
+      }
 
-    if (this.activateDropdownAddNewMode && this.inputConfig.dropdownArrow) {
-      this.timeout = setTimeout(() => {
-        this.isVisibleDropdownConfirmation = false;
-        this.changeDetection.detectChanges();
-      }, 150);
+      if (this.activateDropdownAddNewMode && this.inputConfig.dropdownArrow) {
+        this.timeout = setTimeout(() => {
+          this.isVisibleDropdownConfirmation = false;
+          this.changeDetection.detectChanges();
+        }, 150);
+      }
     }
   }
 
@@ -393,7 +394,7 @@ export class TaInputComponent
   }
 
   public onAddItemInDropdown() {
-    this.inputService.addItemInDropdownSubject.next(true);
+    this.inputService.addItemDropdownSubject.next(true);
     clearTimeout(this.timeout);
   }
 

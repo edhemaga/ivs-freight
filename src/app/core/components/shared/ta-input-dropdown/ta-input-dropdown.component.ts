@@ -13,7 +13,7 @@ import {
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from '../ta-input/ta-input.service';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { ITaInput } from '../ta-input/ta-input.config';
 @Component({
   selector: 'app-ta-input-dropdown',
@@ -43,6 +43,7 @@ export class TaInputDropdownComponent
 
   ngOnInit(): void {
     this.originalOptions = this.options;
+
     this.getSuperControl.valueChanges
       .pipe(untilDestroyed(this))
       .subscribe((term) => this.search(term));
@@ -53,21 +54,32 @@ export class TaInputDropdownComponent
         this.onClearSearch();
       });
 
+    this.inputService.onFocusInputSubject
+      .pipe(debounceTime(50), untilDestroyed(this))
+      .subscribe((action: boolean) => {
+        if (action && this.activeItem) {
+          this.inputConfig = {
+            ...this.inputConfig,
+            placeholder: this.activeItem.name,
+          };
+          this.getSuperControl.setValue(null);
+        }
+      });
+
     this.inputService.dropDownShowHideSubject
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
-        console.log("HIDE SHOW DROP DOWN")
-        console.log(action)
+        console.log('HIDE SHOW DROP DOWN');
+        console.log(action);
         this.toggleDropdownOptions(action);
       });
 
-    this.inputService.addItemInDropdownSubject
+    this.inputService.addItemDropdownSubject
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
-        if(action) {
+        if (action) {
           this.addNewItem();
         }
-        
       });
   }
 
@@ -80,7 +92,8 @@ export class TaInputDropdownComponent
   registerOnTouched(fn: any): void {}
 
   private search(term: string): void {
-    if (term?.length > 0 && !this.activeItem) {
+   
+    if (term?.length > 0) {
       this.options = this.originalOptions.filter((item) =>
         item.name.toLowerCase().includes(term.toLowerCase())
       );
@@ -107,19 +120,21 @@ export class TaInputDropdownComponent
     if (option.id === 7654) {
       // No Result
       this.options = [];
-    }
-    else if (option.id === 7655) {
+    } else if (option.id === 7655) {
       // Add New
       this.inputService.activateDropdownAddNewSubject.next(true);
       this.options = [];
       this.toggleDropdownOptions(false);
-    }
-    else {
-      this.getSuperControl.setValue(option.name);
-      this.activeItem = option;
+    } else {
+     
+      const timeout = setTimeout(() => {
+        this.activeItem = option;
+        this.getSuperControl.setValue(option.name);
+        clearTimeout(timeout);
+      },200)
+     
       this.options = this.originalOptions;
     }
-    
   }
 
   public toggleDropdownOptions(action: boolean): void {
@@ -129,13 +144,17 @@ export class TaInputDropdownComponent
   public onClearSearch(): void {
     this.options = this.originalOptions;
     this.activeItem = null;
+    this.inputConfig = {
+      ...this.inputConfig,
+      placeholder: '',
+    };
   }
 
   public addNewItem(): void {
     this.originalOptions.push({
       id: uuidv4(),
-      name: this.getSuperControl.value
-    })
+      name: this.getSuperControl.value,
+    });
     this.options = this.originalOptions;
     this.activeItem = this.originalOptions[this.originalOptions.length - 1];
     this.inputService.activateDropdownAddNewSubject.next(false);
