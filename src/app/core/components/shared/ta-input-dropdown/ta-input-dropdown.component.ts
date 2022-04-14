@@ -69,8 +69,6 @@ export class TaInputDropdownComponent
     this.inputService.dropDownShowHideSubject
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
-        console.log('HIDE SHOW DROP DOWN');
-        console.log(action);
         this.toggleDropdownOptions(action);
       });
 
