@@ -3,19 +3,26 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
+  OnInit,
   Self,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { debounceTime } from 'rxjs';
 import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
+import { TaInputService } from './ta-input.service';
 
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
   styleUrls: ['./ta-input.component.scss'],
 })
-export class TaInputComponent implements ControlValueAccessor {
+export class TaInputComponent
+  implements OnInit, OnDestroy, ControlValueAccessor
+{
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
 
@@ -23,14 +30,44 @@ export class TaInputComponent implements ControlValueAccessor {
   public waitValidation: boolean = false;
   public togglePassword: boolean = false;
   public isVisiblePasswordEye: boolean = false;
+  public isActiveDropdownOptions: boolean = false;
+  public activateDropdownAddNewMode: boolean = false;
+  public isVisibleDropdownConfirmation: boolean = false;
   public timeout = null;
   public numberOfSpaces: number = 0;
 
+  public counter = 0;
+
   constructor(
     @Self() public superControl: NgControl,
-    private changeDetection: ChangeDetectorRef
+    private changeDetection: ChangeDetectorRef,
+    private inputService: TaInputService
   ) {
     this.superControl.valueAccessor = this;
+  }
+
+  ngOnInit(): void {
+    // DropDown
+    if (this.inputConfig.dropdownArrow) {
+      this.inputService.activateDropdownAddNewSubject
+        .pipe(untilDestroyed(this))
+        .subscribe((action) => {
+          if (action) {
+            this.activateDropdownAddNewMode = true;
+            this.isVisibleDropdownConfirmation = true;
+            this.focusInput = true;
+            this.waitValidation = false;
+            if (this.timeout) {
+              clearTimeout(this.timeout);
+            }
+            this.setInputCursorAtTheEnd(this.input.nativeElement);
+          } else {
+            this.focusInput = false;
+            this.activateDropdownAddNewMode = false;
+            this.isVisibleDropdownConfirmation = false;
+          }
+        });
+    }
   }
 
   get getSuperControl() {
@@ -60,36 +97,68 @@ export class TaInputComponent implements ControlValueAccessor {
     if (this.getSuperControl.value) {
       this.waitValidation = true;
     }
+
     this.focusInput = true;
 
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
     }
+
+    // Dropdown Input
+    if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
+      this.isActiveDropdownOptions = true;
+      this.inputService.onFocusInputSubject.next(true);
+      if (!this.activateDropdownAddNewMode) {
+        this.inputService.dropDownShowHideSubject.next(
+          this.isActiveDropdownOptions
+        );
+      }
+    }
   }
 
   public onBlur(): void {
-    this.focusInput = false;
-    // Required Field
-    if (this.inputConfig.isRequired) {
-      if (!this.focusInput && this.getSuperControl.invalid) {
-        this.waitValidation = true;
-      } else {
-        this.waitValidation = false;
-      }
-    }
-    // No Required Field
-    else {
-      if (this.getSuperControl.value && this.getSuperControl.invalid) {
-        this.waitValidation = true;
-      } else {
-        this.waitValidation = false;
-      }
-    }
-    if (this.inputConfig.type === 'password') {
+    // Dropdown Input
+    if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
       this.timeout = setTimeout(() => {
-        this.isVisiblePasswordEye = false;
-        this.changeDetection.detectChanges();
+        this.isActiveDropdownOptions = false;
+        this.focusInput = false;
+        this.inputService.dropDownShowHideSubject.next(
+          this.isActiveDropdownOptions
+        );
       }, 150);
+    } else {
+      this.focusInput = false;
+
+      // Required Field
+      if (this.inputConfig.isRequired) {
+        if (!this.focusInput && this.getSuperControl.invalid) {
+          this.waitValidation = true;
+        } else {
+          this.waitValidation = false;
+        }
+      }
+
+      // No Required Field
+      else {
+        if (this.getSuperControl.value && this.getSuperControl.invalid) {
+          this.waitValidation = true;
+        } else {
+          this.waitValidation = false;
+        }
+      }
+      if (this.inputConfig.type === 'password') {
+        this.timeout = setTimeout(() => {
+          this.isVisiblePasswordEye = false;
+          this.changeDetection.detectChanges();
+        }, 150);
+      }
+
+      if (this.activateDropdownAddNewMode && this.inputConfig.dropdownArrow) {
+        this.timeout = setTimeout(() => {
+          this.isVisibleDropdownConfirmation = false;
+          this.changeDetection.detectChanges();
+        }, 150);
+      }
     }
   }
 
@@ -97,22 +166,28 @@ export class TaInputComponent implements ControlValueAccessor {
     this.input.nativeElement.value = null;
     this.getSuperControl.setValue(null);
     this.numberOfSpaces = 0;
-    if (this.inputConfig.isRequired && this.getSuperControl.errors) {
-      this.waitValidation = true;
-    } else {
-      this.waitValidation = false;
+
+    this.inputConfig.isRequired && this.getSuperControl.errors
+      ? (this.waitValidation = true)
+      : (this.waitValidation = false);
+
+    if (this.inputConfig.dropdownArrow) {
+      this.inputService.onClearInputSubject.next(true);
+      this.activateDropdownAddNewMode = false;
+    }
+  }
+
+  public onBackspace(event): void {
+    if (event.keyCode == 8) {
+      this.numberOfSpaces = 0;
+      if (!this.getSuperControl.value) {
+        this.clearInput();
+        this.waitValidation = false;
+      }
     }
   }
 
   public manipulateWithInput(event: KeyboardEvent): void {
-    // Check if backspace and empty value
-    if (event.keyCode === 8) {
-      this.numberOfSpaces = 0;
-      if (!this.getSuperControl.value) {
-        this.clearInput();
-      }
-    }
-
     // Check different user input typing
     if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
       this.inputTypingPattern(event, true, false, true, false);
@@ -279,9 +354,9 @@ export class TaInputComponent implements ControlValueAccessor {
         false,
         limitCharacters
       );
-    } 
-    else if(['url'].includes(this.inputConfig.name.toLowerCase())) {
-      regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+    } else if (['url'].includes(this.inputConfig.name.toLowerCase())) {
+      regex =
+        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
       this.input.nativeElement.value = pasteCheck(
         pasteText,
         regex,
@@ -290,8 +365,7 @@ export class TaInputComponent implements ControlValueAccessor {
         false,
         limitCharacters
       );
-    }
-    else {
+    } else {
       this.input.nativeElement.value = pasteCheck(
         pasteText,
         regex,
@@ -303,15 +377,26 @@ export class TaInputComponent implements ControlValueAccessor {
     }
     this.onChange(this.input.nativeElement.value);
   }
+
+  public toggleDropdownOptions() {
+    if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
+      this.isActiveDropdownOptions = !this.isActiveDropdownOptions;
+      this.focusInput = !this.focusInput;
+      if (this.isActiveDropdownOptions && this.focusInput) {
+        this.setInputCursorAtTheEnd(this.input.nativeElement);
+      } else {
+        this.onBlur();
+      }
+      this.inputService.dropDownShowHideSubject.next(
+        this.isActiveDropdownOptions
+      );
+    }
+  }
+
+  public onAddItemInDropdown() {
+    this.inputService.addItemDropdownSubject.next(true);
+    clearTimeout(this.timeout);
+  }
+
+  ngOnDestroy(): void {}
 }
-// Validate options checking
-// console.log('FOCUS OUT');
-// console.log('REQUIRED: ', this.inputConfig.isRequired);
-// console.log('VALUE: ', this.getSuperControl.value);
-// console.log('VALID: ', this.getSuperControl.valid);
-// console.log('INVALID: ', this.getSuperControl.invalid);
-// console.log('WAIT VALIDATION: ', this.waitValidation);
-// console.log('FOCUS: ', this.focusInput);
-// console.log('DISABLED: ', this.inputConfig.isDisabled);
-// console.log("PLACEHOLDER ICON: ", this.inputConfig.placeholderIcon)
-// console.log('VISIBLE PASSWORD EYE: ', this.isVisiblePasswordEye);

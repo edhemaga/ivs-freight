@@ -2,6 +2,7 @@
   display: block;
   position: relative;
 
+  // ------------------- Whole Container HOVER ----------------------
   &:hover {
     .input-icon {
       transition: all 0.3s ease-in-out;
@@ -11,7 +12,22 @@
         }
       }
     }
+
+    .input-clear {
+      &.input-dropdown {
+        right: 22px;
+
+        &:hover {
+          transition: all 0.2s ease-in-out;
+          right: 22px !important;
+          width: 22px;
+          height: 22px;
+          transform: translate(-6%, -10%) !important;
+        }
+      }
+    }
   }
+  // ------------------- end ----------------------
 
   &.hide-placeholder-icon {
     &:hover {
@@ -21,7 +37,37 @@
     }
   }
 
-  //----------- Valid, Invalid Classes for whole container
+  &.dropdown {
+    &:hover {
+      .input-dropdown-arrow {
+        svg {
+          path {
+            fill: #919191;
+            transition: all 0.3s ease-in-out;
+          }
+          &:hover {
+            path {
+              fill: #6c6c6c;
+              transition: all 0.3s ease-in-out;
+            }
+          }
+        }
+
+        &:hover ~ .input-label {
+          transition: all 0.3s ease-in-out;
+          color: #3c3c3c;
+        }
+
+        &:hover ~ .input-control {
+          transition: all 0.3s ease-in-out;
+          background-color: #eeeeee;
+          color: #3c3c3c;
+        }
+      }
+    }
+  }
+
+  // ------------------- Whole Container HOVER INVALID ----------------------
   &.invalid {
     &:hover {
       .input-clear {
@@ -59,7 +105,9 @@
       }
     }
   }
+  // ------------------- end ----------------------
 
+  // ------------------- Whole Container HOVER INVALID EMPTY ----------------------
   &.invalid-empty-required {
     &:hover {
       .input-clear {
@@ -99,7 +147,24 @@
       }
     }
   }
+  // ------------------- end ----------------------
 
+  // ------------------- Whole Container INVALID EMPTY WAIT VALIDATION ----------------------
+  &.invalid-empty-required-waitValidation {
+    &:hover {
+      .input-dropdown-arrow {
+        svg {
+          path {
+            fill: #ef5350;
+            transition: all 0.2s ease-in-out;
+          }
+        }
+      }
+    }
+  }
+  // ------------------- end ----------------------
+
+  // ------------------- Whole Container FOCUS INVALID ----------------------
   &.invalid-empty-focus-required {
     .input-clear {
       svg {
@@ -109,6 +174,7 @@
         }
       }
     }
+
     .input-error {
       transition: all 0.3s ease-in-out;
       color: #ef5350 !important;
@@ -126,6 +192,20 @@
     }
   }
 
+  // ------------------- end ----------------------
+
+  &.invalid-empty-focus-required-waitValidation {
+    .input-dropdown-arrow {
+      svg {
+        path {
+          fill: #ef9a9a;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+    }
+  }
+
+  // ------------------- Whole Container HOVER VALID ----------------------
   &.valid {
     &:hover {
       // Input clear class
@@ -174,6 +254,15 @@
             path {
               fill: #6d82c7;
             }
+          }
+        }
+      }
+
+      .input-dropdown-arrow {
+        svg {
+          path {
+            fill: #6d82c7;
+            transition: all 0.2s ease-in-out;
           }
         }
       }
@@ -326,9 +415,30 @@
       }
     }
 
-    &.valid-focus-in {
+    &.valid-focus-in,
+    &.valid-dropdown-placeholder {
       transition: all 0.3s ease-in-out;
       background-color: #536bc2;
+
+      &::-webkit-input-placeholder {
+        color: #97a8dc;
+      }
+
+      &::-moz-placeholder {
+        color: #97a8dc;
+      }
+
+      &:-ms-input-placeholder {
+        color: #97a8dc;
+      }
+
+      &::-ms-input-placeholder {
+        color: #97a8dc;
+      }
+
+      &::placeholder {
+        color: #97a8dc;
+      }
 
       &::-moz-selection {
         background-color: #6d82c7 !important;
@@ -388,6 +498,10 @@
 
     &.input-big {
       top: 3.5px;
+    }
+
+    &.input-dropdown {
+      display: none !important;
     }
   }
 
@@ -514,6 +628,18 @@
       }
     }
 
+    &.input-dropdown {
+      right: 22px;
+
+      &:hover {
+        transition: all 0.2s ease-in-out;
+        right: 22px !important;
+        width: 22px;
+        height: 22px;
+        transform: translate(-6%, -10%) !important;
+      }
+    }
+
     &.password-eye {
       svg {
         path {
@@ -525,9 +651,6 @@
     // Custom class
     &.input-big {
       top: 6.5px;
-      &.second-position {
-        transform: translate(-6%, 0.5%) !important;
-      }
     }
   }
 
@@ -593,6 +716,177 @@
     // Custom class
     &.input-big {
       top: 2.7px;
+    }
+
+    &.input-dropdown {
+      display: none !important;
+    }
+  }
+
+  //-------------------- Input Dropdwon confirmation ----------
+  .input-dropdown-confirmation {
+    position: absolute;
+    right: 26px;
+    top: 16%;
+    transform: translate(-6%, 0%);
+    width: 18px;
+    height: 18px;
+    border-radius: 1px;
+    background-color: #b7b7b7;
+    display: none;
+    transition: all 0.3s ease-in-out;
+
+    svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-49.5%, -50%);
+      width: 10px !important;
+      height: 10px !important;
+      transition: all 0.3s ease-in-out;
+      path {
+        fill: #6c6c6c;
+      }
+    }
+
+    &:hover {
+      transition: all 0.2s ease-in-out;
+      right: 26px !important;
+      width: 22px;
+      height: 22px;
+      background-color: #eeeeee;
+      transform: translate(-6%, -10%) !important;
+    }
+
+    &.visible {
+      display: inline-block;
+      transition: all 0.2s ease-in-out;
+      cursor: pointer;
+    }
+  }
+
+  //-------------------- Input Dropdown arrow -----------------
+  .input-dropdown-arrow {
+    position: absolute;
+    right: 7px;
+    top: 0.5px;
+    width: 12px;
+    height: 12px;
+    display: none;
+
+    svg {
+      transform: rotate(0deg);
+      transition: all 0.2s ease-in-out;
+      path {
+        fill: #aaaaaa;
+        transition: all 0.2s ease-in-out;
+      }
+    }
+
+    &:hover {
+      svg {
+        path {
+          fill: #6c6c6c;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+    }
+
+    &.visible {
+      display: inline-block;
+      transition: all 0.2s ease-in-out;
+      cursor: pointer;
+    }
+
+    &.active {
+      svg {
+        transform: rotate(180deg);
+        transition: all 0.2s ease-in-out;
+        path {
+          fill: #dadada;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+
+      &:hover {
+        svg {
+          path {
+            fill: #f7f7f7;
+            transition: all 0.2s ease-in-out;
+          }
+        }
+      }
+    }
+
+    &.invalid {
+      svg {
+        path {
+          fill: #ffcdd2;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+
+      &:hover {
+        svg {
+          path {
+            fill: #fffafa;
+            transition: all 0.2s ease-in-out;
+          }
+        }
+      }
+    }
+
+    &.invalid-focus-out-required {
+      svg {
+        path {
+          fill: #e57373;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+    }
+
+    &.invalid-focus-in-empty-required {
+      svg {
+        path {
+          fill: #ef9a9a;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+    }
+
+    &.invalid-submit {
+      svg {
+        path {
+          fill: #e57373;
+        }
+      }
+    }
+
+    &.valid {
+      svg {
+        path {
+          fill: #d4dff4;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+
+      &:hover {
+        svg {
+          path {
+            fill: #f5fafc;
+            transition: all 0.2s ease-in-out;
+          }
+        }
+      }
+    }
+
+    &.valid-focus-out-required {
+      svg {
+        path {
+          fill: #97a8dc;
+          transition: all 0.2s ease-in-out;
+        }
+      }
     }
   }
 

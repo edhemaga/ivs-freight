@@ -1,7 +1,7 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SharedService } from './../../../services/shared/shared.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { TaInputService } from '../../shared/ta-input/ta-input.service';
 
 @Component({
   selector: 'app-account-modal',
@@ -10,10 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountModalComponent implements OnInit {
   public accountForm: FormGroup;
+  public labels: any[] = [
+    { id: 1, name: 'Aleksandar Djordjevic' },
+    { id: 2, name: 'Denis Rodman' },
+    { id: 3, name: 'James Halpert' },
+    { id: 4, name: 'Pamela Beasley' }
+  ]
 
   constructor(
     private formBuilder: FormBuilder,
-    private sharedService: SharedService,
+    private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal
   ) {}
 
@@ -23,7 +29,7 @@ export class AccountModalComponent implements OnInit {
 
   public createForm() {
     this.accountForm = this.formBuilder.group({
-      name: [null, [Validators.required, Validators.maxLength(23)]],
+      name: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(23)]],
       username: [null, [Validators.required, Validators.maxLength(40)]],
       password: [null, [Validators.required, Validators.maxLength(20)]],
       url: [
@@ -34,20 +40,20 @@ export class AccountModalComponent implements OnInit {
           Validators.maxLength(400),
         ],
       ],
-      companyAccountLabel: [null],
+      companyAccountLabel: [null, [Validators.required]],
       note: [null],
     });
   }
 
   public onModalAction(action: string) {
-    if (action === 'cancel') {
+    if (action === 'close') {
       this.accountForm.reset();
     } else {
       if (this.accountForm.invalid) {
-        this.sharedService.markInvalid(this.accountForm);
+        console.log(this.accountForm.value);
+        this.inputService.markInvalid(this.accountForm);
         return;
       }
-      console.log(this.accountForm.value);
       this.ngbActiveModal.close();
     }
   }
