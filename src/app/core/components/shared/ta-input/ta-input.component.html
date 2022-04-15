@@ -19,7 +19,13 @@
       inputConfig.isRequired &&
       !getSuperControl.value &&
       getSuperControl.invalid &&
-      focusInput
+      focusInput,
+    'valid-dropdown':
+      getSuperControl.value &&
+      getSuperControl.valid &&
+      !focusInput &&
+      inputConfig.isDropdown &&
+      inputConfig.isRequired
   }"
 >
   <!-- Input Clear -->
@@ -155,7 +161,7 @@
   <!-- Input Confirm New Item in Dropdown -->
   <svg-icon
     class="input-dropdown-confirm"
-    [ngClass]="{ 'visible': isDropdownAddModeActive && inputConfig.isDropdown }"
+    [ngClass]="{ visible: isDropdownAddModeActive && inputConfig.isDropdown }"
     src="assets/svg/common/ic_confirm.svg"
     [appTooltip]="'Confirm'"
     [position]="'top-middle'"
@@ -203,8 +209,8 @@
         waitValidation &&
         focusInput &&
         inputConfig.isDropdown,
-      'hide':
-        isDropdownAddModeActive
+      'hide': isDropdownAddModeActive,
+      'no-validation-hover': !waitValidation && !focusInput
     }"
     src="assets/svg/common/ic_arrow-down.svg"
     (click)="toggleDropdownOptions()"
@@ -247,8 +253,7 @@
         focusInput &&
         isVisiblePasswordEye,
       'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye,
-      'dropdown-add-mode':
-        isDropdownAddModeActive && inputConfig.isDropdown
+      'dropdown-add-mode': isDropdownAddModeActive && inputConfig.isDropdown
     }"
     [(ngModel)]="input.value"
     (keypress)="manipulateWithInput($event)"

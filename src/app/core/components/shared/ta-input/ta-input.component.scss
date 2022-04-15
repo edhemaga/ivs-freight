@@ -205,7 +205,11 @@
           }
         }
       }
+    }
+  }
 
+  &.valid-dropdown {
+    &:hover {
       .input-dropdown-arrow {
         transition: all 0.3s ease-in-out;
         svg {
@@ -755,21 +759,23 @@
       }
     }
 
-    &:hover ~ .input-label {
-      transition: all 0.3s ease-in-out;
-      color: #3c3c3c;
-    }
-
-    &:hover ~ .input-control {
-      transition: all 0.3s ease-in-out;
-      background-color: #eeeeee;
-      color: #3c3c3c;
-    }
-
     &.visible {
       display: inline-block;
       transition: all 0.3s ease-in-out;
       cursor: pointer;
+    }
+
+    &.no-validation-hover {
+      &:hover ~ .input-label {
+        transition: all 0.3s ease-in-out;
+        color: #3c3c3c;
+      }
+  
+      &:hover ~ .input-control {
+        transition: all 0.3s ease-in-out;
+        background-color: #eeeeee;
+        color: #3c3c3c;
+      }
     }
 
     &.active {
@@ -789,17 +795,6 @@
             transition: all 0.3s ease-in-out;
           }
         }
-      }
-
-      &:hover ~ .input-label {
-        transition: all 0.3s ease-in-out;
-        color: #3c3c3c;
-      }
-
-      &:hover ~ .input-control {
-        transition: all 0.3s ease-in-out;
-        background-color: #6c6c6c;
-        color: #ffffff;
       }
     }
 

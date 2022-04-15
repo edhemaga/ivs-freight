@@ -58,6 +58,7 @@ export class TaInputComponent
             this.focusInput = true;
             this.setInputCursorAtTheEnd(this.input.nativeElement);
           }
+          console.log(action + " FROM INPUTTTTT")
         });
     }
   }
