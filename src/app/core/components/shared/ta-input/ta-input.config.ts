@@ -15,5 +15,5 @@ export interface ITaInput {
     mask?: string;
     textTransform?: string | 'capitalize' | 'upper' | 'lower';
     customClass?: string;
-    dropdownArrow?: boolean;
+    isDropdown?: boolean;
 }

@@ -2,7 +2,6 @@ import { debounceTime } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
-  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -25,6 +24,7 @@ import { ITaInput } from '../ta-input/ta-input.config';
 export class TaInputDropdownComponent
   implements OnInit, OnDestroy, ControlValueAccessor
 {
+  @Input() template: string;
   @Input() inputConfig: ITaInput;
   @Input() canAddNew: boolean = false;
   @Input() options: any[] = [];
@@ -35,8 +35,7 @@ export class TaInputDropdownComponent
 
   constructor(
     @Self() public superControl: NgControl,
-    private inputService: TaInputService,
-    private changeDetection: ChangeDetectorRef
+    private inputService: TaInputService
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -54,31 +53,40 @@ export class TaInputDropdownComponent
         this.onClearSearch();
       });
 
-    this.inputService.onFocusInputSubject
-      .pipe(debounceTime(50), untilDestroyed(this))
-      .subscribe((action: boolean) => {
-        if (action && this.activeItem) {
-          this.inputConfig = {
-            ...this.inputConfig,
-            placeholder: this.activeItem.name,
-          };
-          this.getSuperControl.setValue(null);
-        }
-      });
-
     this.inputService.dropDownShowHideSubject
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
         this.toggleDropdownOptions(action);
-      });
-
-    this.inputService.addItemDropdownSubject
-      .pipe(untilDestroyed(this))
-      .subscribe((action: boolean) => {
-        if (action) {
-          this.addNewItem();
+        console.log("DROPDOWN")
+        console.log(action)
+        if (!action) {
+          const index = this.originalOptions.findIndex(
+            (item) => item.name === this.getSuperControl.value
+          );
+          if (index === -1) {
+            this.onClearSearch();
+          }
+        }
+        else {
+          this.inputConfig = {
+            ...this.inputConfig,
+            placeholder: this.getSuperControl.value
+          }
+          this.getSuperControl.setValue(null);
+          console.log(this.activeItem)
+          console.log(this.inputConfig)
         }
       });
+
+    if (this.canAddNew) {
+      this.inputService.addDropdownItemSubject
+        .pipe(untilDestroyed(this))
+        .subscribe((action: boolean) => {
+          if (action) {
+            this.addNewItem();
+          }
+        });
+    }
   }
 
   get getSuperControl() {
@@ -90,7 +98,6 @@ export class TaInputDropdownComponent
   registerOnTouched(fn: any): void {}
 
   private search(term: string): void {
-   
     if (term?.length > 0) {
       this.options = this.originalOptions.filter((item) =>
         item.name.toLowerCase().includes(term.toLowerCase())
@@ -117,20 +124,15 @@ export class TaInputDropdownComponent
   public onActiveItem(option: any): void {
     if (option.id === 7654) {
       // No Result
-      this.options = [];
+      return;
     } else if (option.id === 7655) {
       // Add New
-      this.inputService.activateDropdownAddNewSubject.next(true);
-      this.options = [];
-      this.toggleDropdownOptions(false);
+      this.inputService.dropdownAddModeSubject.next(true);
+      this.isDropdownOptionsVisible = false;
+      return;
     } else {
-     
-      const timeout = setTimeout(() => {
-        this.activeItem = option;
-        this.getSuperControl.setValue(option.name);
-        clearTimeout(timeout);
-      },200)
-     
+      this.activeItem = option;
+      this.getSuperControl.setValue(option.name);
       this.options = this.originalOptions;
     }
   }
@@ -142,6 +144,7 @@ export class TaInputDropdownComponent
   public onClearSearch(): void {
     this.options = this.originalOptions;
     this.activeItem = null;
+    this.getSuperControl.setValue(null);
     this.inputConfig = {
       ...this.inputConfig,
       placeholder: '',
@@ -149,13 +152,13 @@ export class TaInputDropdownComponent
   }
 
   public addNewItem(): void {
-    this.originalOptions.push({
+    const newItem = {
       id: uuidv4(),
       name: this.getSuperControl.value,
-    });
+    };
+    this.originalOptions = [...this.originalOptions, newItem];
     this.options = this.originalOptions;
-    this.activeItem = this.originalOptions[this.originalOptions.length - 1];
-    this.inputService.activateDropdownAddNewSubject.next(false);
+    this.activeItem = newItem;
   }
 
   public identity(index: number, item: any): number {

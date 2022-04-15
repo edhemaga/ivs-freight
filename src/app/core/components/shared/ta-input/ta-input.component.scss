@@ -2,7 +2,6 @@
   display: block;
   position: relative;
 
-  // ------------------- Whole Container HOVER ----------------------
   &:hover {
     .input-icon {
       transition: all 0.3s ease-in-out;
@@ -12,22 +11,15 @@
         }
       }
     }
-
-    .input-clear {
-      &.input-dropdown {
-        right: 22px;
-
-        &:hover {
-          transition: all 0.2s ease-in-out;
-          right: 22px !important;
-          width: 22px;
-          height: 22px;
-          transform: translate(-6%, -10%) !important;
+    .input-dropdown-arrow {
+      transition: all 0.3s ease-in-out;
+      svg {
+        path {
+          fill: #919191;
         }
       }
     }
   }
-  // ------------------- end ----------------------
 
   &.hide-placeholder-icon {
     &:hover {
@@ -37,37 +29,6 @@
     }
   }
 
-  &.dropdown {
-    &:hover {
-      .input-dropdown-arrow {
-        svg {
-          path {
-            fill: #919191;
-            transition: all 0.3s ease-in-out;
-          }
-          &:hover {
-            path {
-              fill: #6c6c6c;
-              transition: all 0.3s ease-in-out;
-            }
-          }
-        }
-
-        &:hover ~ .input-label {
-          transition: all 0.3s ease-in-out;
-          color: #3c3c3c;
-        }
-
-        &:hover ~ .input-control {
-          transition: all 0.3s ease-in-out;
-          background-color: #eeeeee;
-          color: #3c3c3c;
-        }
-      }
-    }
-  }
-
-  // ------------------- Whole Container HOVER INVALID ----------------------
   &.invalid {
     &:hover {
       .input-clear {
@@ -84,7 +45,6 @@
         &:hover {
           transition: all 0.3s ease-in-out;
           background-color: #6c6c6c;
-          cursor: pointer;
         }
 
         &:hover ~ .input-label {
@@ -105,9 +65,28 @@
       }
     }
   }
-  // ------------------- end ----------------------
 
-  // ------------------- Whole Container HOVER INVALID EMPTY ----------------------
+  &.invalid-empty-required-waitValidation {
+    &:hover {
+      .input-dropdown-arrow {
+        transition: all 0.3s ease-in-out;
+        svg {
+          path {
+            fill: #ef5350;
+          }
+        }
+        &:hover {
+          transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+    }
+  }
+
   &.invalid-empty-required {
     &:hover {
       .input-clear {
@@ -147,24 +126,7 @@
       }
     }
   }
-  // ------------------- end ----------------------
 
-  // ------------------- Whole Container INVALID EMPTY WAIT VALIDATION ----------------------
-  &.invalid-empty-required-waitValidation {
-    &:hover {
-      .input-dropdown-arrow {
-        svg {
-          path {
-            fill: #ef5350;
-            transition: all 0.2s ease-in-out;
-          }
-        }
-      }
-    }
-  }
-  // ------------------- end ----------------------
-
-  // ------------------- Whole Container FOCUS INVALID ----------------------
   &.invalid-empty-focus-required {
     .input-clear {
       svg {
@@ -192,20 +154,6 @@
     }
   }
 
-  // ------------------- end ----------------------
-
-  &.invalid-empty-focus-required-waitValidation {
-    .input-dropdown-arrow {
-      svg {
-        path {
-          fill: #ef9a9a;
-          transition: all 0.2s ease-in-out;
-        }
-      }
-    }
-  }
-
-  // ------------------- Whole Container HOVER VALID ----------------------
   &.valid {
     &:hover {
       // Input clear class
@@ -213,7 +161,7 @@
         right: 27px;
 
         &:hover {
-          transition: all 0.2s ease-in-out;
+          transition: all 0.3s ease-in-out;
           right: 27px !important;
           width: 22px;
           height: 22px;
@@ -257,18 +205,29 @@
           }
         }
       }
+    }
+  }
 
+  &.valid-dropdown {
+    &:hover {
       .input-dropdown-arrow {
+        transition: all 0.3s ease-in-out;
         svg {
           path {
             fill: #6d82c7;
-            transition: all 0.2s ease-in-out;
+          }
+        }
+        &:hover {
+          transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #6c6c6c;
+            }
           }
         }
       }
     }
   }
-  // -------------------- end
 
   // -------------------- Input Label --------------------
   .input-label {
@@ -415,10 +374,24 @@
       }
     }
 
+    &.dropdown-add-mode {
+      background-color: #6c6c6c !important;
+      color: #ffffff;
+
+      &::-moz-selection {
+        background-color: #919191 !important;
+      }
+
+      &::selection {
+        background-color: #919191 !important;
+      }
+    }
+
     &.valid-focus-in,
-    &.valid-dropdown-placeholder {
+    &.dropdown-placeholder-active {
       transition: all 0.3s ease-in-out;
       background-color: #536bc2;
+      color: #ffffff;
 
       &::-webkit-input-placeholder {
         color: #97a8dc;
@@ -499,10 +472,6 @@
     &.input-big {
       top: 3.5px;
     }
-
-    &.input-dropdown {
-      display: none !important;
-    }
   }
 
   // -------------------- Input Clear --------------------
@@ -532,7 +501,7 @@
     }
 
     &:hover {
-      transition: all 0.2s ease-in-out;
+      transition: all 0.3s ease-in-out;
       right: 2px !important;
       width: 22px;
       height: 22px;
@@ -541,10 +510,10 @@
 
     &.invalid-focus-out-required {
       &:hover {
-        right: 4px !important;
-        width: 18px !important;
-        height: 18px !important;
-        transform: translate(-6%, 0%) !important;
+        width: 22px !important;
+        height: 22px !important;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
       }
     }
 
@@ -608,6 +577,7 @@
       background-color: transparent;
       transition: all 0.3s ease-in-out;
       display: inline-block;
+
       svg {
         path {
           fill: #e57373;
@@ -620,7 +590,7 @@
       right: 27px;
 
       &:hover {
-        transition: all 0.2s ease-in-out;
+        transition: all 0.3s ease-in-out;
         right: 27px !important;
         width: 22px;
         height: 22px;
@@ -628,11 +598,12 @@
       }
     }
 
-    &.input-dropdown {
+    // If dropdown
+    &.dropdown-position {
       right: 22px;
 
       &:hover {
-        transition: all 0.2s ease-in-out;
+        transition: all 0.3s ease-in-out;
         right: 22px !important;
         width: 22px;
         height: 22px;
@@ -724,7 +695,7 @@
   }
 
   //-------------------- Input Dropdwon confirmation ----------
-  .input-dropdown-confirmation {
+  .input-dropdown-confirm {
     position: absolute;
     right: 26px;
     top: 16%;
@@ -741,8 +712,6 @@
       top: 50%;
       left: 50%;
       transform: translate(-49.5%, -50%);
-      width: 10px !important;
-      height: 10px !important;
       transition: all 0.3s ease-in-out;
       path {
         fill: #6c6c6c;
@@ -750,7 +719,7 @@
     }
 
     &:hover {
-      transition: all 0.2s ease-in-out;
+      transition: all 0.3s ease-in-out;
       right: 26px !important;
       width: 22px;
       height: 22px;
@@ -760,7 +729,7 @@
 
     &.visible {
       display: inline-block;
-      transition: all 0.2s ease-in-out;
+      transition: all 0.3s ease-in-out;
       cursor: pointer;
     }
   }
@@ -776,10 +745,10 @@
 
     svg {
       transform: rotate(0deg);
-      transition: all 0.2s ease-in-out;
+      transition: all 0.3s ease-in-out;
       path {
         fill: #aaaaaa;
-        transition: all 0.2s ease-in-out;
+        transition: all 0.3s ease-in-out;
       }
     }
 
@@ -787,15 +756,28 @@
       svg {
         path {
           fill: #6c6c6c;
-          transition: all 0.2s ease-in-out;
+          transition: all 0.3s ease-in-out;
         }
       }
     }
 
     &.visible {
       display: inline-block;
-      transition: all 0.2s ease-in-out;
+      transition: all 0.3s ease-in-out;
       cursor: pointer;
+    }
+
+    &.no-validation-hover {
+      &:hover ~ .input-label {
+        transition: all 0.3s ease-in-out;
+        color: #3c3c3c;
+      }
+  
+      &:hover ~ .input-control {
+        transition: all 0.3s ease-in-out;
+        background-color: #eeeeee;
+        color: #3c3c3c;
+      }
     }
 
     &.active {
@@ -812,7 +794,7 @@
         svg {
           path {
             fill: #f7f7f7;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out;
           }
         }
       }
@@ -822,7 +804,7 @@
       svg {
         path {
           fill: #ffcdd2;
-          transition: all 0.2s ease-in-out;
+          transition: all 0.3s ease-in-out;
         }
       }
 
@@ -830,7 +812,7 @@
         svg {
           path {
             fill: #fffafa;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out;
           }
         }
       }
@@ -840,7 +822,7 @@
       svg {
         path {
           fill: #e57373;
-          transition: all 0.2s ease-in-out;
+          transition: all 0.3s ease-in-out;
         }
       }
     }
@@ -849,7 +831,46 @@
       svg {
         path {
           fill: #ef9a9a;
-          transition: all 0.2s ease-in-out;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+    }
+
+    &.valid,
+    &.valid-placeholder {
+      svg {
+        path {
+          fill: #d4dff4;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+
+      &:hover {
+        svg {
+          path {
+            fill: #f5fafc;
+            transition: all 0.3s ease-in-out;
+          }
+        }
+      }
+
+      &:hover ~ .input-label {
+        transition: all 0.3s ease-in-out;
+        color: #3c3c3c;
+      }
+
+      &:hover ~ .input-control {
+        transition: all 0.3s ease-in-out;
+        background-color: #536bc2;
+        color: #ffffff;
+      }
+    }
+
+    &.valid-focus-out-required {
+      svg {
+        path {
+          fill: #97a8dc;
+          transition: all 0.3s ease-in-out;
         }
       }
     }
@@ -862,31 +883,8 @@
       }
     }
 
-    &.valid {
-      svg {
-        path {
-          fill: #d4dff4;
-          transition: all 0.2s ease-in-out;
-        }
-      }
-
-      &:hover {
-        svg {
-          path {
-            fill: #f5fafc;
-            transition: all 0.2s ease-in-out;
-          }
-        }
-      }
-    }
-
-    &.valid-focus-out-required {
-      svg {
-        path {
-          fill: #97a8dc;
-          transition: all 0.2s ease-in-out;
-        }
-      }
+    &.hide {
+      display: none;
     }
   }
 
@@ -918,6 +916,10 @@
       transition: all 0.3s ease-in-out;
       display: inline-block;
       color: #ef5350;
+    }
+
+    &.invalid-dropdown-focus-in {
+      display: none;
     }
 
     &.invalid-submit {

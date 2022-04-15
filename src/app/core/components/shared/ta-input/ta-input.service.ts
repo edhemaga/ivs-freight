@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -12,17 +12,14 @@ export class TaInputService {
   public onClearInputSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
-  public onFocusInputSubject: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
-
   public dropDownShowHideSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
-  public activateDropdownAddNewSubject: BehaviorSubject<boolean> =
+  public dropdownAddModeSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
-  public addItemDropdownSubject: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
+  public addDropdownItemSubject: BehaviorSubject<boolean> =
+  new BehaviorSubject<boolean>(false);
 
   constructor(
     public notificationService: NotificationService,
