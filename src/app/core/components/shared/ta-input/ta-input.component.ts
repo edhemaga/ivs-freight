@@ -97,6 +97,7 @@ export class TaInputComponent
 
     if (this.inputConfig.isDropdown && !this.isDropdownAddModeActive) {
       this.inputService.dropDownShowHideSubject.next(true);
+      this.isDropdownOptionsActive = true;
     }
 
     this.focusInput = true;

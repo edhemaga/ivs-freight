@@ -387,9 +387,11 @@
       }
     }
 
-    &.valid-focus-in {
+    &.valid-focus-in,
+    &.dropdown-placeholder-active {
       transition: all 0.3s ease-in-out;
       background-color: #536bc2;
+      color: #ffffff;
 
       &::-webkit-input-placeholder {
         color: #97a8dc;
@@ -834,7 +836,8 @@
       }
     }
 
-    &.valid {
+    &.valid,
+    &.valid-placeholder {
       svg {
         path {
           fill: #d4dff4;

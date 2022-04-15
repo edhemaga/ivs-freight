@@ -57,7 +57,8 @@ export class TaInputDropdownComponent
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
         this.toggleDropdownOptions(action);
-
+        console.log("DROPDOWN")
+        console.log(action)
         if (!action) {
           const index = this.originalOptions.findIndex(
             (item) => item.name === this.getSuperControl.value
@@ -65,6 +66,15 @@ export class TaInputDropdownComponent
           if (index === -1) {
             this.onClearSearch();
           }
+        }
+        else {
+          this.inputConfig = {
+            ...this.inputConfig,
+            placeholder: this.getSuperControl.value
+          }
+          this.getSuperControl.setValue(null);
+          console.log(this.activeItem)
+          console.log(this.inputConfig)
         }
       });
 

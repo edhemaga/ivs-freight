@@ -93,7 +93,8 @@
         inputConfig.isRequired &&
         getSuperControl.invalid &&
         getSuperControl.touched &&
-        !inputConfig.placeholderIcon,
+        !inputConfig.placeholderIcon &&
+        !inputConfig.isDropdown,
       'dropdown-position':
         getSuperControl.value &&
         inputConfig.isDropdown &&
@@ -189,6 +190,11 @@
         inputConfig.isDropdown &&
         waitValidation &&
         focusInput,
+      'valid-placeholder':
+        inputConfig.isDropdown &&
+        waitValidation &&
+        focusInput &&
+        inputConfig.placeholder,
       'valid-focus-out-required':
         inputConfig.isRequired &&
         getSuperControl.value &&
@@ -208,7 +214,8 @@
         getSuperControl.invalid &&
         waitValidation &&
         focusInput &&
-        inputConfig.isDropdown,
+        inputConfig.isDropdown &&
+        !inputConfig.placeholder,
       'hide': isDropdownAddModeActive,
       'no-validation-hover': !waitValidation && !focusInput
     }"
@@ -253,7 +260,8 @@
         focusInput &&
         isVisiblePasswordEye,
       'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye,
-      'dropdown-add-mode': isDropdownAddModeActive && inputConfig.isDropdown
+      'dropdown-add-mode': isDropdownAddModeActive && inputConfig.isDropdown,
+      'dropdown-placeholder-active': inputConfig.isDropdown && inputConfig.placeholder && isDropdownOptionsActive && focusInput
     }"
     [(ngModel)]="input.value"
     (keypress)="manipulateWithInput($event)"
