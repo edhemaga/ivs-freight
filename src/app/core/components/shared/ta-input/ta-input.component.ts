@@ -129,10 +129,21 @@ export class TaInputComponent
       }, 150);
     }
 
-    if (this.inputConfig.isDropdown && !this.isDropdownAddModeActive) {
-      this.timeout = setTimeout(() => {
-        this.inputService.dropDownShowHideSubject.next(false);
-      }, 100);
+    if (this.inputConfig.isDropdown) {
+
+      if(!this.isDropdownAddModeActive) {
+        this.timeout = setTimeout(() => {
+          this.inputService.dropDownShowHideSubject.next(false);
+        }, 150);
+      }
+      else {
+        this.timeout = setTimeout(() => {
+          this.isDropdownAddModeActive = false;
+          this.inputService.dropDownShowHideSubject.next(false);
+          this.changeDetection.detectChanges();
+        }, 250);
+      }
+   
     }
   }
 
