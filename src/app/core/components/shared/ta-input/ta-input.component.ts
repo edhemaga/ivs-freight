@@ -48,7 +48,7 @@ export class TaInputComponent
 
   ngOnInit(): void {
     // DropDown
-    if (this.inputConfig.dropdownArrow) {
+    if (this.inputConfig.isDropdown) {
       this.inputService.activateDropdownAddNewSubject
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
@@ -105,7 +105,7 @@ export class TaInputComponent
     }
 
     // Dropdown Input
-    if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
+    if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
       this.isActiveDropdownOptions = true;
       this.inputService.onFocusInputSubject.next(true);
       if (!this.activateDropdownAddNewMode) {
@@ -118,7 +118,7 @@ export class TaInputComponent
 
   public onBlur(): void {
     // Dropdown Input
-    if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
+    if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
       this.timeout = setTimeout(() => {
         this.isActiveDropdownOptions = false;
         this.focusInput = false;
@@ -153,7 +153,7 @@ export class TaInputComponent
         }, 150);
       }
 
-      if (this.activateDropdownAddNewMode && this.inputConfig.dropdownArrow) {
+      if (this.activateDropdownAddNewMode && this.inputConfig.isDropdown) {
         this.timeout = setTimeout(() => {
           this.isVisibleDropdownConfirmation = false;
           this.changeDetection.detectChanges();
@@ -171,7 +171,7 @@ export class TaInputComponent
       ? (this.waitValidation = true)
       : (this.waitValidation = false);
 
-    if (this.inputConfig.dropdownArrow) {
+    if (this.inputConfig.isDropdown) {
       this.inputService.onClearInputSubject.next(true);
       this.activateDropdownAddNewMode = false;
     }
@@ -379,7 +379,7 @@ export class TaInputComponent
   }
 
   public toggleDropdownOptions() {
-    if (this.inputConfig.dropdownArrow && !this.inputConfig.isDisabled) {
+    if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
       this.isActiveDropdownOptions = !this.isActiveDropdownOptions;
       this.focusInput = !this.focusInput;
       if (this.isActiveDropdownOptions && this.focusInput) {

@@ -8,7 +8,7 @@
       !getSuperControl.value &&
       !focusInput &&
       !isActiveDropdownOptions &&
-      inputConfig.dropdownArrow,
+      inputConfig.isDropdown,
     'invalid-empty-required':
       inputConfig.isRequired &&
       !getSuperControl.value &&
@@ -19,13 +19,13 @@
       !getSuperControl.value &&
       getSuperControl.invalid &&
       waitValidation &&
-      inputConfig.dropdownArrow &&
+      inputConfig.isDropdown &&
       !focusInput,
     'invalid-empty-focus-required-waitValidation':
       inputConfig.isRequired &&
       getSuperControl.invalid &&
       waitValidation &&
-      inputConfig.dropdownArrow &&
+      inputConfig.isDropdown &&
       focusInput,
     'invalid-empty-focus-required':
       inputConfig.isRequired &&
@@ -64,7 +64,7 @@
         waitValidation &&
         !focusInput &&
         !inputConfig.placeholderIcon &&
-        !inputConfig.dropdownArrow &&
+        !inputConfig.isDropdown &&
         !isVisiblePasswordEye &&
         !inputConfig.placeholder,
       'invalid-focus-in-required':
@@ -82,7 +82,7 @@
         waitValidation &&
         focusInput &&
         !inputConfig.placeholderIcon &&
-        !inputConfig.dropdownArrow &&
+        !inputConfig.isDropdown &&
         !isVisiblePasswordEye &&
         !inputConfig.placeholder,
       'invalid-focus-out-required':
@@ -91,7 +91,7 @@
         waitValidation &&
         !focusInput &&
         !inputConfig.placeholderIcon &&
-        !inputConfig.dropdownArrow &&
+        !inputConfig.isDropdown &&
         !isVisiblePasswordEye &&
         !inputConfig.placeholder,
       'second-position':
@@ -107,9 +107,9 @@
         getSuperControl.invalid &&
         getSuperControl.touched &&
         !inputConfig.placeholderIcon &&
-        !inputConfig.dropdownArrow,
+        !inputConfig.isDropdown,
       'input-dropdown':
-        inputConfig.dropdownArrow &&
+        inputConfig.isDropdown &&
         !activateDropdownAddNewMode &&
         getSuperControl.value
     }"
@@ -137,7 +137,7 @@
         !focusInput &&
         !inputConfig.isDisabled &&
         !inputConfig.placeholderIcon,
-      'input-dropdown': inputConfig.dropdownArrow
+      'input-dropdown': inputConfig.isDropdown
     }"
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
@@ -194,33 +194,33 @@
     class="input-dropdown-arrow"
     [ngClass]="{
       'visible':
-        inputConfig.dropdownArrow &&
+        inputConfig.isDropdown &&
         !activateDropdownAddNewMode &&
         !inputConfig.isDisabled,
       'active':
         isActiveDropdownOptions &&
-        inputConfig.dropdownArrow &&
+        inputConfig.isDropdown &&
         !inputConfig.isDisabled,
       'valid':
         getSuperControl.value &&
         getSuperControl.valid &&
         waitValidation &&
         isActiveDropdownOptions &&
-        inputConfig.dropdownArrow &&
+        inputConfig.isDropdown &&
         focusInput,
       'valid-focus-out-required':
         inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.valid &&
         !isActiveDropdownOptions &&
-        inputConfig.dropdownArrow &&
+        inputConfig.isDropdown &&
         !focusInput,
       'invalid':
         getSuperControl.value &&
         getSuperControl.invalid &&
         waitValidation &&
         isActiveDropdownOptions &&
-        inputConfig.dropdownArrow &&
+        inputConfig.isDropdown &&
         focusInput &&
         !inputConfig.placeholder,
       'invalid-focus-out-required':
@@ -228,7 +228,7 @@
         getSuperControl.invalid &&
         waitValidation &&
         !isActiveDropdownOptions &&
-        inputConfig.dropdownArrow &&
+        inputConfig.isDropdown &&
         !focusInput &&
         !inputConfig.placeholder,
       'invalid-focus-in-empty-required':
@@ -237,7 +237,7 @@
         getSuperControl.invalid &&
         waitValidation &&
         isActiveDropdownOptions &&
-        inputConfig.dropdownArrow &&
+        inputConfig.isDropdown &&
         focusInput && 
         !inputConfig.placeholder,
       'invalid-submit':
@@ -290,7 +290,7 @@
       'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye,
       'valid-dropdown-placeholder':
         !getSuperControl.value &&
-        inputConfig.dropdownArrow &&
+        inputConfig.isDropdown &&
         inputConfig.placeholder
     }"
     [(ngModel)]="input.value"
@@ -338,7 +338,7 @@
         inputConfig.isRequired &&
         getSuperControl.invalid &&
         getSuperControl.touched,
-      'input-dropdown': inputConfig.dropdownArrow
+      'input-dropdown': inputConfig.isDropdown
     }"
     src="{{ getPlaceholderIcon(inputConfig.placeholderIcon) }}"
   ></svg-icon>
