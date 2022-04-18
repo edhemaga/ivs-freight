@@ -64,6 +64,7 @@ import { AccountModalComponent } from '../modals/account-modal/account-modal.com
 import { TaInputNoteComponent } from './ta-input-note/ta-input-note.component';
 import { TextareaAutosizeDirective } from '../../directives/TextareaAutosize.directive';
 import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.component';
+import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.
     AccountModalComponent,
     TaInputNoteComponent,
     TextareaAutosizeDirective,
-    TaInputDropdownComponent
+    TaInputDropdownComponent,
+    DriverModalComponent
   ],
   imports: [
     CommonModule,
@@ -204,7 +206,8 @@ import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.
     AccountModalComponent,
     TaInputNoteComponent,
     TextareaAutosizeDirective,
-    TaInputDropdownComponent
+    TaInputDropdownComponent,
+    DriverModalComponent
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
