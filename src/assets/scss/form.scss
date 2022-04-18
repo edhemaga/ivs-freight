@@ -3,6 +3,7 @@
 // New form container
 .form-container {
   margin-top: 26px;
+
   label {
     &.control-label {
       margin-bottom: 20px;
@@ -11,13 +12,57 @@
 
   .row {
     margin-bottom: 32px !important;
-  
-    &:nth-last-child(1) {
-      margin-bottom: 22px !important;
-    }
-  
+    
     & > * {
       padding: 0px;
+    }
+  }
+
+  .first-row {
+    margin-top: 26px;
+  }
+
+  .last-row {
+    margin-bottom: 22px !important;
+  }
+
+  .divider {
+    height: 2px;
+    content: "";
+    border-radius: 1px;
+    background-color: #f3f3f3;
+  }
+
+  //------------------------ Custom Schedule Of Inputs ------------------------------
+
+  // Bank Inputs
+  .custom-bank-row {
+    display: grid;
+    grid-template-columns: 164px 100px 168px;
+    column-gap: 12px;
+    margin-bottom: 32px;
+  }
+  // Pay Type & Notifications
+  .custom-row-paytype-notification {
+    display: grid;
+    grid-template-columns: 151px 1fr;
+    column-gap: 22px;
+    align-items: center;
+    margin-bottom: 32px;
+
+    .paytype-field-notification {
+      display: grid;
+      grid-template-columns: 91px 186px;
+      grid-template-rows: 26px;
+      align-items: center;
+      column-gap: 6px;
+
+      p {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+        color: #919191;
+      }
     }
   }
 }

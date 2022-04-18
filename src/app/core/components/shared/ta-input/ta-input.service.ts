@@ -4,9 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TaInputService {
 
   public onClearInputSubject: BehaviorSubject<boolean> =

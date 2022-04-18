@@ -13,21 +13,45 @@
       scroll: options.length > 6
     }"
   >
-    <div
-      *ngFor="let option of options; trackBy: identity"
-      class="dropdown-option"
-      [ngClass]="{
-        'disabled': option?.disabled,
-        'no-result': options.length === 1 && options[0].name === 'No Results',
-        'add-new': options.length === 1 && options[0].name === 'Add New',
-        'active': option.id === activeItem?.id
-      }"
-      value="{{ option.id }}"
-      (click)="onActiveItem(option)"
-      [innerHtml]="
-        option.name
-          | taHighlight: [{ index: 45632, text: getSuperControl.value }]
-      "
-    ></div>
+    <div [ngSwitch]="template">
+      <!-- Banks Template -->
+      <div *ngSwitchCase="'banks'">
+        <div
+        *ngFor="let option of options; trackBy: identity"
+        class="dropdown-option"
+        [ngClass]="{
+          'disabled': option?.disabled,
+          'no-result':
+            options.length === 1 && options[0].name === 'No Results',
+          'add-new': options.length === 1 && options[0].name === 'Add New',
+          'active': option.id === activeItem?.id
+        }"
+        value="{{ option.id }}"
+        (click)="onActiveItem(option)"
+      >
+        <svg-icon class="banks-logo" src="{{option.url}}"></svg-icon>
+    </div>
+      </div>
+      <!-- Default Template - Render Only Text -->
+      <div *ngSwitchDefault>
+        <div
+          *ngFor="let option of options; trackBy: identity"
+          class="dropdown-option"
+          [ngClass]="{
+            'disabled': option?.disabled,
+            'no-result':
+              options.length === 1 && options[0].name === 'No Results',
+            'add-new': options.length === 1 && options[0].name === 'Add New',
+            'active': option.id === activeItem?.id
+          }"
+          value="{{ option.id }}"
+          (click)="onActiveItem(option)"
+          [innerHtml]="
+            option.name
+              | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+          "
+        ></div>
+      </div>
+    </div>
   </div>
 </div>

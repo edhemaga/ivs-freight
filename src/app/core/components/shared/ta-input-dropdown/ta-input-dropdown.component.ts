@@ -14,10 +14,12 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from '../ta-input/ta-input.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ITaInput } from '../ta-input/ta-input.config';
+
 @Component({
   selector: 'app-ta-input-dropdown',
   templateUrl: './ta-input-dropdown.component.html',
   styleUrls: ['./ta-input-dropdown.component.scss'],
+  providers: [TaInputService],
   encapsulation: ViewEncapsulation.None,
   animations: [input_dropdown_animation('showHideDropdownOptions')],
 })
@@ -31,7 +33,7 @@ export class TaInputDropdownComponent
 
   public activeItem: any;
   public originalOptions: any[] = [];
-  public isDropdownOptionsVisible: boolean = true;
+  public isDropdownOptionsVisible: boolean = false;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -57,8 +59,6 @@ export class TaInputDropdownComponent
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
         this.toggleDropdownOptions(action);
-        console.log("DROPDOWN")
-        console.log(action)
         if (!action) {
           const index = this.originalOptions.findIndex(
             (item) => item.name === this.getSuperControl.value
@@ -73,8 +73,6 @@ export class TaInputDropdownComponent
             placeholder: this.getSuperControl.value
           }
           this.getSuperControl.setValue(null);
-          console.log(this.activeItem)
-          console.log(this.inputConfig)
         }
       });
 
@@ -86,6 +84,35 @@ export class TaInputDropdownComponent
             this.addNewItem();
           }
         });
+    }
+  }
+
+  public onDropDownShowHideSubject(action: boolean) {
+    this.toggleDropdownOptions(action);
+    if (!action) {
+      const index = this.originalOptions.findIndex(
+        (item) => item.name === this.getSuperControl.value
+      );
+      if (index === -1) {
+        this.onClearSearch();
+      }
+    }
+    else {
+      this.inputConfig = {
+        ...this.inputConfig,
+        placeholder: this.getSuperControl.value
+      }
+      this.getSuperControl.setValue(null);
+    }
+  }
+
+  public onClearInputSubject(action: boolean) {
+    this.onClearSearch();
+  }
+
+  public addDropdownItemSubject(action: boolean) {
+    if (action) {
+      this.addNewItem();
     }
   }
 

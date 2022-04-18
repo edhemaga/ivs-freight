@@ -6,7 +6,6 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { ModalService } from './modal.service';
 
 @Component({
   selector: 'app-ta-modal',

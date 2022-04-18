@@ -75,14 +75,6 @@ ngb-modal-window[aria-hidden="true"] {
         }
       }
 
-      .divider-line {
-        height: 2px;
-        content: "";
-        border-radius: 1px;
-        background-color: #f3f3f3;
-        margin: 0 auto;
-      }
-
       .modal-body {
         padding: 0 12px;
         &:focus {

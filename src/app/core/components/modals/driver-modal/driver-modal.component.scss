@@ -1,0 +1,84 @@
+.form-container {
+  &.tab-2 {
+    margin-top: 12px;
+  }
+
+  .animation-tabs {
+    position: relative;
+    display: grid;
+    grid-template-rows: 100%;
+    grid-template-columns: repeat(3, 100%);
+  }
+
+  // Is Owner On Tab 1
+  .custom-row-owner {
+    display: block;
+
+    .owner-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px;
+
+      .owner-header-arrow {
+        svg {
+          transform: rotate(0deg);
+          transition: all 0.3s ease-in-out;
+        }
+        &.rotate {
+          svg {
+            transform: rotate(180deg);
+            transition: all 0.3s ease-in-out;
+          }
+        }
+      }
+    }
+    .owner-body {
+      .animation-owner-tabs {
+        position: relative;
+        overflow: hidden;
+        transform: translate(20%);
+        opacity: 0;
+        height: 0px;
+        transition: all 0.3s ease-in-out;
+
+        &.fade {
+          transform: translate(0);
+          opacity: 1;
+          height: 48px;
+          margin-top: 26px;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+    }
+  }
+}
+
+.btn-group {
+  margin: 0px;
+  background: #f3f3f3;
+  border: none;
+  outline: none;
+  padding: 2px;
+  height: 26px;
+
+  .btn {
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    color: #b7b7b7;
+    height: 22px;
+    border-radius: 1px;
+    padding: 2px 8px;
+
+    &:nth-child(2) {
+      margin: 0 2px;
+    }
+
+    &.active {
+      background: #ffffff;
+      color: #536bc2;
+    }
+  }
+}

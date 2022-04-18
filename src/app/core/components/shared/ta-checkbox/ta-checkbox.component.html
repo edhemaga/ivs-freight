@@ -1,0 +1,14 @@
+<div class="ta-checkbox-container">
+  <label *ngIf="label" for="ta-checkbox"
+    >
+    <input
+      type="checkbox"
+      class="ta-checkbox"
+      name="ta-checkbox"
+      id="ta-checkbox"
+      (change)="onChange($event.target.checked)"
+    />
+    <span class="ta-mark"></span>
+        <span class="ta-checkbox-label">{{ label }}</span>
+  </label>
+</div>

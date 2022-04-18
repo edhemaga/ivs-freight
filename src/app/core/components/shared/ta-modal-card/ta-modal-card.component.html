@@ -1,0 +1,30 @@
+<div class="ta-modal-card">
+  <div class="divider"></div>
+  <div class="ta-card-header" (click)="isCardOpen = !isCardOpen">
+    <div class="header-content">
+      <app-ta-counter
+        *ngIf="hasCounter"
+        [count]="0"
+        [countBackground]="'#F3F3F3'"
+        [countColor]="'#919191'"
+        [countHeight]="'24px'"
+        [countWidth]="'24px'"
+      ></app-ta-counter>
+      <span class="header-text">{{ cardName }}</span>
+      <svg-icon
+        *ngIf="cardSvg"
+        class="header-svg"
+        src="{{ cardSvg }}"
+      ></svg-icon>
+    </div>
+    <svg-icon
+      *ngIf="hasArrow"
+      class="header-arrow"
+      [ngClass]="{ rotate: isCardOpen }"
+      src="assets/svg/common/ic_arrow-down.svg"
+    ></svg-icon>
+  </div>
+  <div class="ta-card-body" [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
+    <ng-content></ng-content>
+  </div>
+</div>

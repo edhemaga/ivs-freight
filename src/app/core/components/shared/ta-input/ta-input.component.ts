@@ -18,7 +18,7 @@ import { TaInputService } from './ta-input.service';
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
-  styleUrls: ['./ta-input.component.scss'],
+  styleUrls: ['./ta-input.component.scss']
 })
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor

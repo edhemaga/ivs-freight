@@ -7,128 +7,280 @@
     [tabs]="tabs"
   ></app-tab-switcher>
 
-  <form [formGroup]="driverForm" class="form-container">
-   
-      <div class="row">
-        <div class="col-6">
-          <app-ta-input
-            formControlName="firstName"
-            [inputConfig]="{
-              name: 'First name',
-              type: 'text',
-              label: 'First Name',
-              isRequired: true,
-              textTransform: 'capitalize'
-            }"
-          ></app-ta-input>
+  <form
+    [formGroup]="driverForm"
+    class="form-container"
+    [ngClass]="{ 'tab-2': selectedTab === 2 }"
+  >
+    <div class="animation-tabs" [@animationTabsModal]="selectedTab">
+      <div class="m-tab" *ngIf="selectedTab === 1">
+        <div class="row">
+          <div class="col-6">
+            <app-ta-input
+              formControlName="firstName"
+              [inputConfig]="{
+                name: 'First name',
+                type: 'text',
+                label: 'First Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-6">
+            <app-ta-input
+              formControlName="lastName"
+              [inputConfig]="{
+                name: 'Last name',
+                type: 'text',
+                label: 'Last Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
         </div>
-        <div class="col-6">
-          <app-ta-input
-            formControlName="lastName"
-            [inputConfig]="{
-              name: 'Last name',
-              type: 'text',
-              label: 'Last Name',
-              isRequired: true,
-              textTransform: 'capitalize'
-            }"
-          ></app-ta-input>
+        <div class="row">
+          <div class="col-5">
+            <app-ta-input
+              formControlName="phone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                isRequired: true,
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-7">
+            <app-ta-input
+              formControlName="email"
+              [inputConfig]="{
+                name: 'Email',
+                type: 'text',
+                label: 'Email',
+                isRequired: true,
+                placeholderIcon: 'email'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <app-ta-input
+              formControlName="address"
+              [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Address, City, State Zip',
+                isRequired: true,
+                placeholderIcon: 'address'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-2">
+            <app-ta-input
+              formControlName="addressUnit"
+              [inputConfig]="{
+                name: 'Address Unit',
+                type: 'text',
+                label: 'Unit #'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row last-row">
+          <div class="col-5">
+            <app-ta-input
+              formControlName="dateOfBirth"
+              [inputConfig]="{
+                name: 'DOB',
+                type: 'date',
+                label: 'DOB',
+                isRequired: true
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-7">
+            <app-ta-input
+              formControlName="ssn"
+              [inputConfig]="{
+                name: 'SSN',
+                type: 'text',
+                label: 'SSN',
+                isRequired: true
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <!-- IsOwner -->
+        <div class="custom-row-owner">
+          <!-- Owner Divider -->
+          <div class="divider"></div>
+          <!-- Owner Header -->
+          <div class="owner-header">
+            <app-ta-checkbox
+              formControlName="isOwner"
+              [label]="'Owner'"
+            ></app-ta-checkbox>
+            <svg-icon
+              class="owner-header-arrow"
+              src="assets/svg/common/ic_arrow-down.svg"
+              [ngClass]="{ rotate: driverForm.get('isOwner').value }"
+            ></svg-icon>
+          </div>
+          <!-- Owner Body -->
+          <div
+            class="owner-body"
+            [@showHideOwner]="
+              driverForm.get('isOwner').value ? 'true' : 'false'
+            "
+          >
+            <app-status-switcher
+              (switchClicked)="tabOwnerChange($event)"
+              [data]="ownerTabs"
+              [customClass]="'owner-switch'"
+            ></app-status-switcher>
+            <div
+              class="animation-owner-tabs"
+              [ngClass]="{ fade: selectedOwnerTab === 'company' }"
+            >
+              <div class="row">
+                <div class="col-4">
+                  <app-ta-input
+                    formControlName="ein"
+                    [inputConfig]="{
+                      name: 'EIN',
+                      type: 'text',
+                      label: 'EIN',
+                      isRequired: true
+                    }"
+                  ></app-ta-input>
+                </div>
+                <div class="col-8">
+                  <app-ta-input
+                    formControlName="bussinesName"
+                    [inputConfig]="{
+                      name: 'Bussines Name',
+                      type: 'text',
+                      label: 'Bussines Name',
+                      isDisabled: true
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Off duty Location -->
+        <app-ta-modal-card
+          [hasCounter]="true"
+          [cardName]="'Off duty Location'"
+          [cardSvg]="'assets/svg/common/ic_info.svg'"
+        ></app-ta-modal-card>
+        <!-- Note -->
+        <app-ta-input-note formControlName="note"></app-ta-input-note>
+      </div>
+
+      <div class="m-tab" *ngIf="selectedTab === 2">
+        <div class="divider"></div>
+        <app-ta-checkbox
+          formControlName="payroll"
+          [label]="'Include in Payroll'"
+        ></app-ta-checkbox>
+        <div class="custom-bank-row first-row">
+          <div class="bank-field">
+            <app-ta-input-dropdown
+              formControlName="bankId"
+              [template]="'banks'"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Bank Name',
+                isRequired: true,
+                isDropdown: true
+              }"
+              [canAddNew]="true"
+              [options]="labelsBank"
+            ></app-ta-input-dropdown>
+          </div>
+          <div class="bank-field">
+            <app-ta-input
+              formControlName="routing"
+              [inputConfig]="{
+                name: 'Routing',
+                type: 'text',
+                label: 'Routing',
+                isDisabled: !isBankSelected,
+                isRequired: isBankSelected
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="bank-field">
+            <app-ta-input
+              formControlName="account"
+              [inputConfig]="{
+                name: 'Account',
+                type: 'text',
+                label: 'Account',
+                isDisabled: !isBankSelected,
+                isRequired: isBankSelected
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="custom-row-paytype-notification">
+          <div class="paytype-field">
+            <app-ta-input-dropdown
+              formControlName="payType"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Pay type',
+                isRequired: isIncludePayroll,
+                isDropdown: true
+              }"
+              [options]="labelsPayType"
+            ></app-ta-input-dropdown>
+          </div>
+          <div class="paytype-field-notification">
+            <p>Notifications</p>
+            <div class="btn-group" role="group">
+              <label class="btn" ngbButtonLabel>
+                <input
+                  type="checkbox"
+                  class="btn-check"
+                  formControlName="mailNotification"
+                  ngbButton
+                />
+                Email
+              </label>
+              <label class="btn" ngbButtonLabel>
+                <input
+                  type="checkbox"
+                  class="btn-check"
+                  formControlName="phoneCallNotification"
+                  ngbButton
+                />
+                Phone Call
+              </label>
+              <label class="btn" ngbButtonLabel>
+                <input
+                  type="checkbox"
+                  class="btn-check"
+                  formControlName="smsNotification"
+                  ngbButton
+                />
+                SMS
+              </label>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-5">
-          <app-ta-input
-            formControlName="phone"
-            [inputConfig]="{
-              name: 'Phone',
-              type: 'text',
-              label: 'Phone',
-              isRequired: true,
-              placeholderIcon: 'phone',
-              mask: '(000) 000-0000'
-            }"
-          ></app-ta-input>
-        </div>
-        <div class="col-7">
-          <app-ta-input
-            formControlName="email"
-            [inputConfig]="{
-              name: 'Email',
-              type: 'text',
-              label: 'Email',
-              isRequired: true,
-              placeholderIcon: 'email'
-            }"
-          ></app-ta-input>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-10">
-          <app-ta-input
-            formControlName="address"
-            [inputConfig]="{
-              name: 'Address',
-              type: 'text',
-              label: 'Address, City, State Zip',
-              isRequired: true,
-              placeholderIcon: 'address'
-            }"
-          ></app-ta-input>
-        </div>
-        <div class="col-2">
-          <app-ta-input
-            formControlName="addressUnit"
-            [inputConfig]="{
-              name: 'Address Unit',
-              type: 'text',
-              label: 'Unit #'
-            }"
-          ></app-ta-input>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-5">
-          <app-ta-input
-            formControlName="dateOfBirth"
-            [inputConfig]="{
-              name: 'DOB',
-              type: 'date',
-              label: 'DOB',
-              isRequired: true
-            }"
-          ></app-ta-input>
-        </div>
-        <div class="col-7">
-          <app-ta-input
-            formControlName="ssn"
-            [inputConfig]="{
-              name: 'SSN',
-              type: 'text',
-              label: 'SSN',
-              isRequired: true
-            }"
-          ></app-ta-input>
-        </div>
-      </div>
 
-   
-
-      222 22222222222222222222222222<br />
-      222222222222222222222222222222222222
-      <br />
-      22222222222222222222222222222222222
-      <br />
-  
-
-
-
-      333333333333333333333333333333333<br />
-      333333333333333333333333333333333333333333
-      <br />
-33333333333333333333333333333333333333333333
-      <br />
- 
-    
- 
+      <div class="m-tab" *ngIf="selectedTab === 3"></div>
+    </div>
   </form>
 </app-ta-modal>

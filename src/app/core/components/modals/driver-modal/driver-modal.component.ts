@@ -1,96 +1,17 @@
-import {
-  animate,
-  group,
-  query,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { card_modal_animation } from '../../shared/animations/card-modal.animation';
+import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-
-const left = [
-  query(':enter, :leave', style({ position: 'fixed', width: '100%' }), {
-    optional: true,
-  }),
-  group([
-    query(
-      ':enter',
-      [
-        style({ transform: 'translateX(-15%)', height: '0px', opacity: 0 }),
-        animate(
-          '.2s ease-in-out',
-          style({ transform: 'translateX(0%)', height: '*', opacity: 1 })
-        ),
-      ],
-      {
-        optional: true,
-      }
-    ),
-    query(
-      ':leave',
-      [
-        style({ transform: 'translateX(0%)', height: '*', opacity: 1 }),
-        animate(
-          '.2s ease-in-out',
-          style({ transform: 'translateX(10%)', height: '0px', opacity: 0 })
-        ),
-      ],
-      {
-        optional: true,
-      }
-    ),
-  ]),
-];
-
-const right = [
-  query(':enter, :leave', style({ position: 'fixed', width: '100%' }), {
-    optional: true,
-  }),
-  group([
-    query(
-      ':enter',
-      [
-        style({ transform: 'translateX(15%)', height: '0px', opacity: 0 }),
-        animate(
-          '.2s ease-in-out',
-          style({ transform: 'translateX(0%)', height: '*', opacity: 1 })
-        ),
-      ],
-      {
-        optional: true,
-      }
-    ),
-    query(
-      ':leave',
-      [
-        style({ transform: 'translateX(0%)', height: '*', opacity: 1 }),
-        animate(
-          '.2s ease-in-out',
-          style({ transform: 'translateX(-15%)', height: '0px', opacity: 0 })
-        ),
-      ],
-      {
-        optional: true,
-      }
-    ),
-  ]),
-];
-
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
   styleUrls: ['./driver-modal.component.scss'],
-  animations: [
-    trigger('animationTabsModal', [
-      transition(':increment', right),
-      transition(':decrement', left),
-    ]),
-  ],
+  animations: [tab_modal_animation('animationTabsModal'), card_modal_animation('showHideOwner', '6px')],
 })
-export class DriverModalComponent implements OnInit {
+export class DriverModalComponent implements OnInit, OnDestroy {
   public driverForm: FormGroup;
   public tabs: any[] = [
     {
@@ -106,8 +27,45 @@ export class DriverModalComponent implements OnInit {
       name: 'Additional',
     },
   ];
+  public ownerTabs: any[] = [
+    {
+      id: 'sole',
+      name: 'Sole Proprietor',
+      checked: true,
+    },
+    {
+      id: 'company',
+      name: 'Company',
+      checked: false,
+    },
+  ]
+  public labelsBank: any[] = [
+    {
+      id: 1,
+      name: 'Bank Of America',
+      url: 'assets/svg/common/ic_bankAccount_color_dummy.svg'
+    },
+    {
+      id: 2,
+      name: 'Bank Of Serbia',
+      url: 'assets/svg/common/ic_bankAccount_color_dummy.svg'
+    }
+  ]
+  public labelsPayType: any[] = [
+      {
+        id: 1,
+        name: 'Per mile',
+      },
+      {
+        id: 2,
+        name: 'Commission',
+      },
+  ]
   public selectedTab = 1;
-  public prev = -1;
+  public selectedOwnerTab = 1;
+  public isOwner: boolean = false;
+  public isBankSelected: boolean = false;
+  public isIncludePayroll: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -117,6 +75,8 @@ export class DriverModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+    this.onBankSelected();
+    this.onIncludePayroll();
   }
 
   public onModalAction(action: string) {
@@ -159,7 +119,7 @@ export class DriverModalComponent implements OnInit {
       routing: [null],
       payroll: [false],
       payType: [null],
-      mailNotification: [false],
+      mailNotification: [true],
       phoneCallNotification: [false],
       smsNotification: [false],
       solo: [null],
@@ -175,13 +135,43 @@ export class DriverModalComponent implements OnInit {
     });
   }
 
-  public tabChange(event: any) {
-    if (event.id > this.selectedTab) {
-      this.prev = this.selectedTab;
-      this.selectedTab = event.id;
-    } else {
-      this.prev = this.selectedTab;
-      this.selectedTab = event.id;
-    }
+  public onIncludePayroll() {
+    this.driverForm.get('payroll').valueChanges.pipe(untilDestroyed(this)).subscribe(value => {
+      if(value) {
+        this.isIncludePayroll = true;
+        this.driverForm.get('payType').setValidators(Validators.required)
+      }
+      else {
+        this.isIncludePayroll = false;
+        this.driverForm.get('payType').reset();
+      }
+    })
   }
+
+  public onBankSelected() {
+    this.driverForm.get('bankId').valueChanges.pipe(untilDestroyed(this)).subscribe(value => {
+      if(value) {
+        this.isBankSelected = true;
+        this.driverForm.get('routing').setValidators(Validators.required);
+        this.driverForm.get('account').setValidators(Validators.required);
+      }
+      else {
+        this.isBankSelected = false;
+        this.driverForm.get('routing').reset();
+        this.driverForm.get('account').reset();
+      }
+    })
+  }
+
+  public tabChange(event: any) {
+    this.selectedTab = event.id;
+    console.log(this.selectedTab)
+  }
+
+  public tabOwnerChange(event: any[]) {
+   this.selectedOwnerTab = event.find(item => item.checked === true).id;
+   console.log(this.selectedOwnerTab)
+  }
+
+  ngOnDestroy(): void {}
 }
