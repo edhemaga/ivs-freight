@@ -65,7 +65,6 @@ export class TaFilesComponent {
           size: file.size,
         },
       ];
-      console.log(this.files);
       this.changeDetectorRef.detectChanges();
     } catch (err) {
       console.error(`Can't upload ${file.name}`);

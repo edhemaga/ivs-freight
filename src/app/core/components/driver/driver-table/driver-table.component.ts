@@ -1,20 +1,21 @@
-import { Driver } from './../state/driver.model';
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 import { DriversQuery } from '../state/driver.query';
 import { DriversState } from '../state/driver.store';
-import { data } from 'jquery';
 
 @Component({
   selector: 'app-driver-table',
   templateUrl: './driver-table.component.html',
   styleUrls: ['./driver-table.component.scss'],
 })
-export class DriverTableComponent implements OnInit {
+export class DriverTableComponent implements OnInit, OnDestroy {
+  private destroy$: Subject<void> = new Subject<void>();
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -26,12 +27,25 @@ export class DriverTableComponent implements OnInit {
 
   constructor(
     private customModalService: CustomModalService,
-    private driversQuery: DriversQuery
+    private driversQuery: DriversQuery,
+    private tableService: TruckassistTableService
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
     this.getDriversData();
+
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if(response){
+          console.log('Radi se reset columns-a');
+          this.resetColumns = response;
+
+          this.sendDriverData();
+        }
+      });
   }
 
   public initTableOptions(): void {
@@ -201,5 +215,10 @@ export class DriverTableComponent implements OnInit {
       this.selectedTab = event.tabData.field;
       this.setDriverData(event.tabData);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

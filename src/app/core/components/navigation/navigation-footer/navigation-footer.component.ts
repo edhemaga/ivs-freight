@@ -12,12 +12,14 @@ import { footerData } from '../model/navigation-data';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { NavigationService } from '../services/navigation.service';
+import { navigation_route_animation } from '../navigation.animation';
 
 @Component({
   selector: 'app-navigation-footer',
   templateUrl: './navigation-footer.component.html',
   styleUrls: ['./navigation-footer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [navigation_route_animation('showHideDetails')],
 })
 export class NavigationFooterComponent implements OnInit, OnDestroy {
   @Input() isNavigationHovered: boolean = false;
@@ -65,7 +67,10 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'Open User Panel': {
         if (index === 2) {
-          this.navigationService.onDropdownActivation({name: 'User Panel' , type: true})
+          this.navigationService.onDropdownActivation({
+            name: 'User Panel',
+            type: true,
+          });
         } else {
           this.isActiveFooterRoute(this.footerData[index]);
           localStorage.removeItem('subroute_active');

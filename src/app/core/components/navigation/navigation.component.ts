@@ -9,12 +9,14 @@ import { navigationData } from './model/navigation-data';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { NavigationService } from './services/navigation.service';
+import { navigation_magic_line } from './navigation.animation';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [navigation_magic_line('showHideDetails')],
 })
 export class NavigationComponent implements OnInit, OnDestroy {
   public navigation: Navigation[] = navigationData;
@@ -81,7 +83,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onPanelEvent(panel: { type: boolean; name: string }) {
+  public onPanelEvent(panel: { type: boolean; name: string }): void {
     switch (panel.name) {
       case 'Modal Panel': {
         this.isModalPanelOpen = panel.type;
@@ -100,7 +102,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onRouteEvent(subroute: NavigationSubRoutes) {
+  public onRouteEvent(subroute: NavigationSubRoutes): void {
     const index = this.navigation.findIndex(
       (item) => item.id === subroute.routeId
     );
@@ -116,7 +118,10 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
   }
 
-  private activationSubRoute(index: number, subroute: NavigationSubRoutes) {
+  private activationSubRoute(
+    index: number,
+    subroute: NavigationSubRoutes
+  ): void {
     if (index === this.isActiveSubrouteIndex) {
       this.navigation[index].isRouteActive =
         !this.navigation[index].isRouteActive;
@@ -148,13 +153,13 @@ export class NavigationComponent implements OnInit, OnDestroy {
     this.isActiveFooterRoute = false;
   }
 
-  private activationMainRoute(index: number) {
+  private activationMainRoute(index: number): void {
     this.disableRoutes();
     this.navigation[index].isRouteActive = true;
     this.isActiveFooterRoute = false;
   }
 
-  private disableRoutes() {
+  private disableRoutes(): void {
     this.navigation.forEach((nav) => (nav.isRouteActive = false));
     this.navigation.forEach((nav) => (nav.isSubrouteActive = false));
     localStorage.removeItem('subroute_active');
@@ -163,7 +168,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     this.activeSubrouteFleg = false;
   }
 
-  public onActivateFooterRoute(type: boolean) {
+  public onActivateFooterRoute(type: boolean): void {
     if (type) {
       this.isActiveFooterRoute = true;
       this.disableRoutes();
@@ -172,7 +177,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHoveredRoutesContainer(type: boolean) {
+  public onHoveredRoutesContainer(type: boolean): void {
     if (type) {
       this.onActivateFooterRoute(false);
       this.isActiveMagicLine = true;
@@ -186,7 +191,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHoveredNavigation(type: boolean) {
+  public onHoveredNavigation(type: boolean): void {
     if (type) {
       this.isNavigationHovered = true;
 

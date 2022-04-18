@@ -1,0 +1,27 @@
+.modal-container {
+  width: 480px;
+  height: auto;
+
+  .divider-line {
+    width: 456px;
+  }
+  //   Ovveride global settings for row > columns
+  .form-container {
+    .row {
+      &:nth-last-child(1) {
+        margin-bottom: 22px !important;
+      }
+
+      & > * {
+        &:nth-child(odd) {
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+        &:nth-child(even) {
+          padding-left: 0px;
+          padding-right: 12px;
+        }
+      }
+    }
+  }
+}

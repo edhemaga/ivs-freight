@@ -6,7 +6,6 @@ import { DriverDetailsComponent } from './driver-details.component';
 import { DriverDetailsRoutes } from './driver-details.routing';
 import { DriverDetailsItemComponent } from './driver-details-item/driver-details-item.component';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
-import { TextFieldModule } from '@angular/cdk/text-field';
 import { RenderMultipleItemsPipe } from './driver-details-item/renderMultipleItems.pipe';
 import { DriverDetailsCardComponent } from './driver-details-card/driver-details-card.component';
 import { DriverMvrModalComponent } from './driver-modals/driver-mvr-modal/driver-mvr-modal.component';
@@ -31,7 +30,6 @@ import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver
     DriverDetailsRoutes,
     SharedModule,
     TruckassistProgressExpirationModule,
-    TextFieldModule,
     SharedModule,
   ],
 })

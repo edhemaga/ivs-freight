@@ -5,7 +5,10 @@
       src="{{ isNavigationHovered | changeLogo }}"
     ></svg-icon>
   </div>
-  <div class="nav-header-bottom" [ngClass]="{'expand-width': isNavigationHovered}">
+  <div
+    class="nav-header-bottom"
+    [ngClass]="{ 'expand-width': isNavigationHovered }"
+  >
     <svg-icon
       class="nav-header-bottom-plus"
       src="assets/svg/common/ic_plus.svg"
@@ -22,9 +25,8 @@
     ></svg-icon>
 
     <div
-      *ngIf="isNavigationHovered"
       class="nav-header-bottom-rightSide"
-      [ngClass]="isNavigationHovered ? 'show' : 'hide'"
+      [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
     >
       <svg-icon
         class="nav-header-bottom-rightSide-search"

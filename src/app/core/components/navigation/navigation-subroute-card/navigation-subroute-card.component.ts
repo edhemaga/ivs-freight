@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-
 @Component({
   selector: 'app-navigation-subroute-card',
   templateUrl: './navigation-subroute-card.component.html',
@@ -15,8 +14,6 @@ export class NavigationSubrouteCardComponent {
    * 1 - header of subroutes
    */
   public getDynamicHeight() {
-    return this.isNavigationCardActive
-      ? (this.contentHeight + 1) * 29 + 5
-      : 0;
+    return this.isNavigationCardActive ? (this.contentHeight + 1) * 29 + 5 : 0;
   }
 }

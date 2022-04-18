@@ -9,7 +9,11 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 const rotate: { [key: string]: any } = {
@@ -23,21 +27,67 @@ const rotate: { [key: string]: any } = {
   templateUrl: './truckassist-table-head.component.html',
   styleUrls: ['./truckassist-table-head.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableHeadComponent
   implements OnInit, OnChanges, OnDestroy
 {
+  private destroy$: Subject<void> = new Subject<void>();
   @Input() columns: any[];
   @Input() options: any;
   @Input() viewData: any[];
   @Output() headActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
-  locked: boolean = false;
+  locked: boolean = true;
+  reordering: boolean = false;
+  rezaizeing: boolean = false;
+  optionsPopup: any;
+  visibleColumns: any[] = [];
 
-  constructor(private tableService: TruckassistTableService) {}
+  constructor(
+    private tableService: TruckassistTableService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.setVisibleColumns();
+
+    // Rows Selected
+    this.tableService.currentRowsSelected
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any[]) => {
+        this.mySelection = response;
+
+        this.changeDetectorRef.detectChanges();
+      });
+
+    // Unlock Table
+    this.tableService.currentUnlockTable
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response.toaggleUnlockTable) {
+          this.locked = !this.locked;
+
+          this.changeDetectorRef.detectChanges();
+        }
+      });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response) {
+          this.columns = this.columns.map((c) => {
+            if(c.field === response.column.field){
+              c.hidden = response.column.hidden
+            }
+
+            return c;
+          })
+
+          this.setVisibleColumns();
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -47,42 +97,45 @@ export class TruckassistTableHeadComponent
       this.setVisibleColumns();
     }
 
-    if (
-      changes?.columns &&
-      !changes?.options?.firstChange &&
-      changes?.options
-    ) {
+    if (!changes?.options?.firstChange && changes?.options) {
       this.options = changes.options.currentValue;
+
+      this.changeDetectorRef.detectChanges();
     }
 
-    if (
-      changes?.columns &&
-      !changes?.viewData?.firstChange &&
-      changes?.viewData
-    ) {
+    if (!changes?.viewData?.firstChange && changes?.viewData) {
       this.viewData = changes.viewData.currentValue;
+
+      this.changeDetectorRef.detectChanges();
     }
   }
 
   setVisibleColumns() {
-    let columns = [];
+    this.visibleColumns = [];
 
-    this.columns.map((column) => {
+    this.columns.map((column, index) => {
+      if (!column.hasOwnProperty('isPined')) {
+        column.isPined = false;
+      }
+
+      if (index === 0 || index === 1) {
+        column.isPined = true;
+      }
+
       if (!column.hidden) {
-        columns.push(column);
+        this.visibleColumns.push(column);
       }
     });
 
-    this.columns = columns;
+    this.visibleColumns = this.visibleColumns.sort(
+      (a, b) => Number(b.isPined) - Number(a.isPined)
+    );
+
+    this.changeDetectorRef.detectChanges();
   }
 
-  onReorder(event: CdkDragDrop<any>) {
-    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
-
-    this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
-  }
-
-  public sortHeaderClick(column: any): void {
+  // Sort
+  sortHeaderClick(column: any): void {
     if (
       column.field &&
       column.sortable &&
@@ -109,37 +162,113 @@ export class TruckassistTableHeadComponent
         : '';
 
       /* this.headActions.emit({ action: 'sort', direction: directionSort }); */
+
+      this.changeDetectorRef.detectChanges();
     }
   }
 
-  onDeselect() {
-    this.toggleSelect(false);
+  // Reorder
+  onReorderStart() {
+    this.reordering = true;
   }
 
-  onSelect() {
-    this.toggleSelect(true);
+  onReorder(event: CdkDragDrop<any>) {
+    if (
+      !this.visibleColumns[event.currentIndex].isPined &&
+      event.currentIndex > 1
+    ) {
+      let previousIndex: number = null,
+        currentIndex: number = null;
+
+      this.columns.map((c, i) => {
+        if (this.visibleColumns[event.previousIndex].field === c.field) {
+          previousIndex = i;
+        }
+      });
+
+      this.columns.map((c, i) => {
+        if (this.visibleColumns[event.currentIndex].field === c.field) {
+          currentIndex = i;
+        }
+      });
+
+      let column: any[] = this.columns.splice(previousIndex, 1);
+
+      this.columns.splice(currentIndex, 0, column[0]);
+
+      this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+
+      this.setVisibleColumns();
+    }
   }
 
-  toggleSelect(selected: boolean) {
-    this.mySelection = [];
+  onReorderEnd() {
+    this.reordering = false;
+  }
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = selected;
+  // Rezaize
+  onResize(event: any) {
+    this.rezaizeing = event.isResizeing;
 
-      if (selected) {
-        this.mySelection.push({ id: data.id });
+    if (this.rezaizeing) {;
+      this.tableService.sendColumnWidth({
+        event: event,
+        columns: this.visibleColumns,
+      });
+    }
+  }
+
+  // Select
+  onSelectedOptions(selectedPopover: any) {
+    this.optionsPopup = selectedPopover;
+
+    if (selectedPopover.isOpen()) {
+      selectedPopover.close();
+    } else {
+      selectedPopover.open({});
+    }
+  }
+
+  onSelect(action: string) {
+    this.tableService.sendSelectOrDeselect(action);
+  }
+
+  // Remove Column
+  onRemoveColumn(column: any) {
+    this.columns.map((c) => {
+      if(c.field === column.field){
+        c.hidden = true;
       }
+    })
 
-      return data;
-    });
+    this.setVisibleColumns();
 
-    /* this.tableService.sendData({
-      viewData: this.viewData,
-      mySelection: this.mySelection,
-    }); */
+    this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+  }
+
+  // Pin Column
+  onPinColumn(column: any) {
+    column.isPined = !column.isPined;
+
+    this.visibleColumns = this.visibleColumns.sort(
+      (a, b) => Number(b.isPined) - Number(a.isPined)
+    );
+
+    this.columns = this.columns.sort(
+      (a, b) => Number(b.isPined) - Number(a.isPined)
+    );
+
+    this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {
     this.tableService.sendColumnsOrder({});
+    this.tableService.sendColumnWidth({});
+    this.tableService.sendSelectOrDeselect('');
+
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

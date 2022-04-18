@@ -21,6 +21,15 @@
         color: $color-gray-dark;
         margin-right: 12px;
 
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+
         &.header-name-ml {
           margin-left: 4px;
         }
@@ -70,6 +79,15 @@
           font-size: $font-size18;
           font-weight: $font-bold;
           color: $color-gray-dark;
+
+          &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
+          &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
         }
       }
     }
@@ -88,16 +106,45 @@
           font-size: $font-size12;
           font-weight: $font-semibold;
           color: $color-gray-dark;
+
+          &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
+          &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
         }
 
         .common-template-item-value {
           font-size: $font-size14;
           color: $color-gray-dark;
 
+          &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
+          &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
+
+          p {
+            &::-moz-selection {
+              color: $color-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+              color: $color-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
+            }
+          }
+
           .hidden-svg-eye {
-              margin-left: 6px;
-              position: relative;
-              bottom: 1px;
+            margin-left: 6px;
+            position: relative;
+            bottom: 1px;
           }
         }
       }
@@ -107,6 +154,17 @@
     .note {
       font-size: $font-size14;
       color: $color-gray-dark;
+
+      .note-item {
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+      }
     }
   }
 

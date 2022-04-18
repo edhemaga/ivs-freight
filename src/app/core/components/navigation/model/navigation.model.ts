@@ -15,7 +15,7 @@ export interface NavigationSubRoute {
 export interface NavigationSubRoutes {
   routeId: number;
   routes: string | [];
-  activeRouteFlegId?: number
+  activeRouteFlegId?: number;
 }
 export interface NavigationModal {
   id: number;
@@ -33,5 +33,5 @@ export interface FooterData {
   image: string;
   text: string | {};
   route?: string;
-  isRouteActive?: boolean
+  isRouteActive?: boolean;
 }

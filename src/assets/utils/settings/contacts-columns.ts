@@ -144,7 +144,7 @@ export function getToolsContactsColumnDefinition() {
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'doc.note',
       name: '',
       moveRight: true,
@@ -165,7 +165,7 @@ export function getToolsContactsColumnDefinition() {
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,

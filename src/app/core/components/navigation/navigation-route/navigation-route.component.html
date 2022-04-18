@@ -28,7 +28,7 @@
 
   <div
     class="nav-item-rightSide"
-    [ngClass]="isNavigationHovered ? 'show' : 'hide'"
+    [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
   >
     <p *ngIf="isNavigationHovered" class="nav-item-name nav-item-name-active">
       {{ route.name }}

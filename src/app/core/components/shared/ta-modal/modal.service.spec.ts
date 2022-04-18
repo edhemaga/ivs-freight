@@ -1,16 +1,16 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
-import { NavigationService } from './navigation.service';
+import { ModalService } from './modal.service';
 
-describe('Service: Navigation', () => {
+describe('Service: Modal', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NavigationService]
+      providers: [ModalService]
     });
   });
 
-  it('should ...', inject([NavigationService], (service: NavigationService) => {
+  it('should ...', inject([ModalService], (service: ModalService) => {
     expect(service).toBeTruthy();
   }));
 });

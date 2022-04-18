@@ -52,16 +52,6 @@ p {
   }
 }
 
-.modal-header {
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  border-bottom: none;
-  height: 42px;
-  background-color: $bw1;
-  color: $bw4;
-}
-
 .btn-primary {
   font-size: 11px !important;
   border-radius: 3px;
@@ -75,47 +65,6 @@ p {
 .choice-wrapper {
   display: flex;
   align-items: center;
-}
-
-.modal-title {
-  margin-right: 12px;
-  color: #6C6C6C;
-}
-
-.save-btn {
-  background: $bw1;
-
-  p {
-    color: $muted;
-  }
-
-  &:hover {
-    &:not(.invalid-btn) {
-      p {
-        color: #fff;
-      }
-    }
-  }
-
-  &.invalid-btn {
-    transition: 0.3s;
-    background: #F9F9F9;
-
-    p {
-      color: $bw5;
-    }
-
-    &:hover {
-      background-color: $bw2;
-      transition: 0.3s;
-    }
-  }
-}
-
-.cancel-btn {
-  p {
-    color: $bw4;
-  }
 }
 
 .note-label-wrapper {
@@ -183,24 +132,6 @@ textarea.input-custom-textarea.form-textarea {
   height: 0;
   overflow: hidden;
   transition: all 0.3s ease-in-out;
-}
-
-.modal-body div[class^=col] {
-  padding-left: 6px;
-  padding-right: 6px;
-}
-
-.modal-body {
-  padding: 12px;
-  overflow-y: hidden;
-  overflow-x: hidden;
-}
-
-.modal-content {
-  border: none !important;
-  top: 75px;
-  background-color: transparent !important;
-
 }
 
 .note-label-wrapper,

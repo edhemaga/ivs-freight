@@ -1,3 +1,4 @@
+import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
 import { AutoFocusDirective } from "../../directives/auto-focus.directive";
@@ -26,7 +27,6 @@ import { LayoutModule } from "@progress/kendo-angular-layout";
 import { ExcelExportModule } from "@progress/kendo-angular-excel-export";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { LabelModule } from "@progress/kendo-angular-label";
-import { TextFieldModule } from "@angular/cdk/text-field";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { StatusSwitcherComponent } from "../switchers/status-switcher/status-switcher.component";
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
@@ -57,7 +57,13 @@ import { TaFilesComponent } from './ta-files/ta-files.component';
 import { TaFileComponent } from './ta-files/ta-file/ta-file.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
+import { TaInputComponent } from '../../components/shared/ta-input/ta-input.component';
 import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions.component';
+import { AccountManageComponent } from '../modals/account-manage/account-manage.component';
+import { AccountModalComponent } from '../modals/account-modal/account-modal.component';
+import { TaInputNoteComponent } from './ta-input-note/ta-input-note.component';
+import { TextareaAutosizeDirective } from '../../directives/TextareaAutosize.directive';
+import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +98,14 @@ import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions
     TaLogoChangeComponent,
     TaFilesComponent,
     TaFileComponent,
-    SvgDefinitionsComponent
+    TaInputComponent,
+    SvgDefinitionsComponent,
+    AccountManageComponent,
+    TaModalComponent,
+    AccountModalComponent,
+    TaInputNoteComponent,
+    TextareaAutosizeDirective,
+    TaInputDropdownComponent
   ],
   imports: [
     CommonModule,
@@ -124,7 +137,6 @@ import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions
     ExcelExportModule,
     PDFExportModule,
     LabelModule,
-    TextFieldModule,
     DragDropModule,
     NgxMaskModule.forRoot(),
     Ng5SliderModule,
@@ -185,7 +197,14 @@ import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions
     TaFilesComponent,
     TaFileComponent,
     PdfViewerModule,
-    SvgDefinitionsComponent
+    TaInputComponent,
+    SvgDefinitionsComponent,
+    AccountManageComponent,
+    TaModalComponent,
+    AccountModalComponent,
+    TaInputNoteComponent,
+    TextareaAutosizeDirective,
+    TaInputDropdownComponent
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

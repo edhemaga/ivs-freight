@@ -2,107 +2,66 @@
   <div class="row">
     <div class="login-container container-fluid d-flex justify-content-center">
       <div class="d-flex flex-column align-items-center">
-        <div class="login-logo">
-          <img src="assets/svg/common/ic_logo-new.svg">
-        </div>
+        <img
+          class="login-logo"
+          src="assets/png/ic_truckassist-logo.png"
+          alt="Truck Assist"
+        />
+
         <div class="login-text d-flex flex-column align-items-center">
           <p><span class="color_welcome_to">Welcome to</span> Truck Assist</p>
-          <p>To Sign in please enter your email and password</p>
+          <p>To Sign In please enter your email and password</p>
         </div>
-        <form
-          [formGroup]="loginForm"
-          class="d-flex flex-column align-items-center"
-          id="login"
-          tabindex="500"
-        >
-          <div class="pt-3 register-form">
-            <div class="col-12">
-              <div class="row">
-                <div class="col-12">
-                  <div
-                    [ngClass]="inputText ? 'typing' : 'not-typing'"
-                    class="form-label-group input-icon email-field-wrapper input-holder {{
-                      manageInputValidation(email)
-                    }}"
-                  >
-                    <input
-                      class="form-control input-control required email-input"
-                      (keyup)="onEmailKeyUp($event)"
-                      placeholder="Email"
-                      id="email"
-                      type="email"
-                      autocomplete="off"
-                      formControlName="email"
-                      email
-                      appAutoFocus
-                      appInputFocus
-                    >
-
-                    <svg-icon
-                      class="default-icon"
-                      src="../../../../../assets/img/form-validation/mail-icon-default.svg"
-                    >
-                    </svg-icon>
-
-                    <svg-icon
-                    (click)="clearEmailInput()" ngbTooltip="Clear" placement="bottom-left"
-                      class="clear-icon"
-                      src="../../../../../assets/img/form-validation/x-icon-cut.svg"
-                    ></svg-icon>
-
-                    <label class="required-label" for="email">Email</label>
-                    <p class="m-0 required-notice invalid-length"
-                       *ngIf="loginForm.get('email').errors">{{loginForm.get('email').errors | inputError}} </p>
-
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div
-                    [ngClass]="passwordText ? 'typing' : 'not-typing'"
-                    class="form-label-group input-icon password-field-wrapper input-holder {{
-                      manageInputValidation(password)
-                    }}"
-                  >
-
-                    <input
-                      class="form-control input-control required password-input"
-                      (keyup)="onPasswordKeyUp($event)"
-                      appInputFocus
-                      placeholder="password"
-                      id="password"
-                      type="{{passwordType}}"
-                      formControlName="password"
-                    >
-
-                    <svg-icon
-                      class="default-icon"
-                      src="../../../../../assets/img/form-validation/password-icon-default.svg"
-                    >
-                    </svg-icon>
-
-                    <svg-icon
-                      (click)="clearPasswordInput() " ngbTooltip="Clear" placement="bottom-left"
-                      class="clear-icon"
-                      src="../../../../../assets/img/form-validation/x-icon-cut.svg"
-                    ></svg-icon>
-
-                    <label class="required-label" for="password">Password</label>
-                    <p class="required-notice"
-                       *ngIf="(password.dirty || password.touched) && loginForm.get('password').hasError('required')">
-                      Required</p>
-                  </div>
-                </div>
+        <form [formGroup]="loginForm" class="d-flex flex-column login-form">
+          <div class="form-container">
+            <div class="row">
+              <div class="col-12">
+                <app-ta-input
+                  formControlName="email"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'email',
+                    label: 'Email',
+                    placeholderIcon: 'email',
+                    isRequired: true,
+                    autocomplete: 'off',
+                    customClass: 'input-big'
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <app-ta-input
+                  formControlName="password"
+                  [inputConfig]="{
+                    name: 'Password',
+                    type: 'password',
+                    label: 'Password',
+                    placeholderIcon: 'password',
+                    isRequired: true,
+                    autocomplete: 'off',
+                    customClass: 'input-big'
+                  }"
+                ></app-ta-input>
               </div>
             </div>
           </div>
 
-          <p id="forgot-password" routerLink="/forgot-password">Forgot Password?</p>
-          <button (click)="userLogin($event)" class="login-btn" [ngClass]="{'invalid-btn' : !loginForm.valid}"
-                  type="submit">
-            <p>LOG IN</p>
+          <p class="forgot-password" routerLink="/forgot-password">
+            FORGOT PASSWORD?
+          </p>
+          <button
+            (click)="userLogin($event)"
+            class="login-btn"
+            [ngClass]="{ 'invalid-btn': !loginForm.valid }"
+            type="submit"
+          >
+            SIGN IN
           </button>
-          <p id="login-sign-up">
-            Don't have an account?<a href="https://truckassist.io/startfreetrial">Sign Up</a>
+          <p class="login-sign-up">
+            Don't have an account?
+            <a class="sign-up-link" href="https://truckassist.io/startfreetrial">SIGN UP</a>
           </p>
         </form>
       </div>
@@ -110,7 +69,7 @@
   </div>
   <div class="row">
     <div class="copyright">
-      <p>Copyright © TruckAssist {{copyrightYear}}.</p>
+      <p>© Copyright {{ copyrightYear }} TruckAssist, Inc. All rights reserved.</p>
     </div>
   </div>
 </div>

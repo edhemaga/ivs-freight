@@ -1,6 +1,11 @@
 <div class="toolbar-container">
   <!-- LIST NAME -->
-  <div class="list-name" *ngIf="listName && !options.toolbarActions.hideListName">{{ listName }}</div>
+  <div
+    class="list-name"
+    *ngIf="listName && !options.toolbarActions.hideListName"
+  >
+    {{ listName }}
+  </div>
 
   <!-- TABS -->
   <div
@@ -66,7 +71,17 @@
       </div>
 
       <!-- Options -->
-      <div>
+      <div
+        #op="ngbPopover"
+        (click)="onShowOptions(op)"
+        [autoClose]="true"
+        [ngbPopover]="optionsPopover"
+        [placement]="'left-top'"
+        [autoClose]="'outside'"
+        popoverClass="options-popover"
+        [ngClass]="{ 'active-options': optionsPopup?.isOpen() }"
+        triggers="manual"
+      >
         <svg-icon
           [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
           [src]="'assets/svg/truckassist-table/burger-icon.svg'"
@@ -83,3 +98,50 @@
     ></svg-icon>
   </div>
 </div>
+
+<ng-template #optionsPopover let-data="data" data-toggle="popover">
+  <div class="options-container">
+    <div
+      (click)="onOptions(option)"
+      [ngClass]="{ 'active-option': option.active }"
+      *ngFor="let option of optionsPopupContent"
+      class="options"
+    >
+      <div class="icon">
+        <svg-icon
+          [svgStyle]="{ 'width.px': option.width, 'height.px': option.height }"
+          [src]="option.svgPath"
+        ></svg-icon>
+      </div>
+      <div class="text">{{ option.text }}</div>
+    </div>
+
+    <div class="columns-options" *ngIf="optionsPopupContent[4].active">
+      <div class="column" *ngFor="let column of columns; let i = index">
+        <div class="checkbox" *ngIf="!column.isPined && i > 1">
+          <input
+            (click)="onToaggleColumn(column, i)"
+            [checked]="!column.hidden"
+            class="columns-options-checkbox"
+            id="checkbox{{ i }}"
+            type="checkbox"
+          />
+          <label class="columns-options-label" for="checkbox{{ i }}"></label>
+        </div>
+
+        <div class="not-allowed-action" *ngIf="column.isPined || i < 2">
+          <svg-icon
+            [svgStyle]="{
+              'width.px': 14,
+              'height.px': 14
+            }"
+            [src]="'assets/svg/truckassist-table/user-owner-icon.svg'"
+          ></svg-icon>
+        </div>
+        <div class="column-text">
+          {{ column.name !== "" ? column.name : column.title }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

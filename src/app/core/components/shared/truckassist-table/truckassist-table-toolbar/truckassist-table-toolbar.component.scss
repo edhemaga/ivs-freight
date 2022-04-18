@@ -6,7 +6,7 @@
   user-select: none;
 
   // LIST NAME
-  .list-name{
+  .list-name {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -109,12 +109,37 @@
       display: flex;
 
       div {
+        cursor: pointer;
         width: 32px;
         height: 32px;
         display: flex;
         justify-content: center;
         align-items: center;
         margin-right: 2px;
+      }
+
+      .active-options {
+        svg-icon {
+          svg {
+            path,
+            rect {
+              fill: #91a4c7 !important;
+              transition: 0.25s;
+            }
+          }
+        }
+
+        &:hover{
+          svg-icon {
+            svg {
+              path,
+              rect {
+                fill: #6D82C7 !important;
+                transition: 0.25s;
+              }
+            }
+          }
+        }
       }
     }
   }

@@ -228,55 +228,6 @@
   }
 }
 
-.modal-dialog {
-  margin-top: 0;
-  max-width: 760px;
-}
-
-.modal.fade .modal-dialog {
-  animation-name: fade-in-scale-animation;
-  animation-duration: 0.5s;
-}
-
-@keyframes fade-in-scale-animation {
-  0% {
-    transform: scale(0.7);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.modal {
-  z-index: 1000;
-  background-color: rgba(0, 0, 0, 0);
-  transition: 0.3s;
-
-  &.show .modal-dialog {
-    transition: 0.5s;
-    opacity: 0;
-    transform: scale(0.7);
-    margin-top: 0;
-  }
-
-  &.modal-animation {
-    background-color: rgba(0, 0, 0, 0.4);
-    transition: 0.3s;
-  }
-
-  &.modal-animation .modal-dialog {
-    opacity: 1;
-    transform: scale(1);
-    margin-top: 0;
-  }
-
-  .modal-body {
-    &:focus {
-      outline: none;
-    }
-  }
-}
-
 // tooltip table icons
 .tooltip.tooltip-table-icons {
   left: 12px !important;

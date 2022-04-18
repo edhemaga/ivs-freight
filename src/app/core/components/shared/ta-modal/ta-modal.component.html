@@ -1,0 +1,24 @@
+<div cdkDrag class="modal-container {{ customClass }}">
+  <div cdkDragHandle class="modal-header">
+    <h5 class="modal-title">{{ modalTitle }}</h5>
+    <svg-icon
+      class="modal-close"
+      src="assets/svg/common/ic_x.svg"
+      (click)="closeModal()"
+    ></svg-icon>
+  </div>
+  <div class="divider-line"></div>
+  <div class="modal-body">
+    <ng-content></ng-content>
+  </div>
+  <div class="modal-footer">
+    <button
+      (click)="onConfirm()"
+      class="modal-save-btn"
+      ngbAutofocus
+      type="button"
+    >
+      Save
+    </button>
+  </div>
+</div>

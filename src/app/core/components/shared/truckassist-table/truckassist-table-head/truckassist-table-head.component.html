@@ -7,9 +7,14 @@
       class="tr"
     >
       <th
-        *ngFor="let column of columns; let i = index"
+        [resizeColumn]="column.resizable && !locked"
+        [index]="i"
+        (resizeing)="onResize($event)"
+        *ngFor="let column of visibleColumns; let i = index"
         cdkDrag
-        [cdkDragDisabled]="locked"
+        (cdkDragStarted)="onReorderStart()"
+        (cdkDragEnded)="onReorderEnd()"
+        [cdkDragDisabled]="locked || rezaizeing || column.isPined || column.name === ''"
         cdkDragBoundary="tr"
         [cdkDragPreviewClass]="'cdk-drag-preview'"
         [ngStyle]="{
@@ -26,11 +31,25 @@
         <div
           *ngIf="column.ngTemplate === 'checkbox'"
           class="selected-rows-count"
-        ></div>
+          #op="ngbPopover"
+          (click)="onSelectedOptions(op)"
+          [autoClose]="true"
+          [ngbPopover]="optionsPopover"
+          [placement]="'right-top'"
+          popoverClass="{{
+            mySelection.length
+              ? 'has-selected-options-popover'
+              : 'selected-options-popover'
+          }}"
+          triggers="manual"
+          [ngClass]="{ 'has-selected': mySelection.length }"
+        >
+          {{ mySelection.length ? mySelection.length : "" }}
+        </div>
 
         <!-- Title -->
         <div
-          *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
+          *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''" 
           class="th-title"
         >
           {{ column.name }}
@@ -49,8 +68,79 @@
           ></svg-icon>
         </div>
 
-       <!--  <div class="resise-btn" *ngIf="column.resizable && !locked"></div> -->
+        <div
+          class="pin-remove-container"
+          *ngIf="
+            !locked &&
+            !rezaizeing &&
+            column.ngTemplate !== 'checkbox' &&
+            column.name !== '' &&
+            i !== 0 &&
+            i !== 1
+          "
+        >
+          <!-- Remove -->
+          <svg-icon
+            (click)="onRemoveColumn(column)"
+            *ngIf="!column.isPined && !reordering"
+            class="x-icon"
+            [svgStyle]="{
+              'width.px': 10,
+              'height.px': 10
+            }"
+            [src]="'assets/svg/truckassist-table/x.svg'"
+          ></svg-icon>
+
+          <!-- Pin -->
+          <svg-icon
+            class="pin-icon"
+            (click)="onPinColumn(column)"
+            [svgStyle]="{
+              'width.px': 9,
+              'height.px': 12
+            }"
+            [src]="'assets/svg/truckassist-table/pin.svg'"
+            [ngClass]="{ pined: column.isPined, hide: !column.isPined && reordering}"
+          ></svg-icon>
+        </div>
       </th>
     </tr>
   </thead>
 </table>
+
+<ng-template #optionsPopover let-data="data" data-toggle="popover">
+  <div class="select-options-container">
+    <!-- Select All -->
+    <div
+      class="select-option"
+      (click)="onSelect('select')"
+      *ngIf="!mySelection.length"
+    >
+      <div class="text">Select All</div>
+      <div class="count">{{ viewData.length }}</div>
+    </div>
+
+    <!-- Deselect All -->
+    <div
+      class="select-option"
+      (click)="onSelect('deselect')"
+      *ngIf="mySelection.length === viewData.length"
+    >
+      <div class="text">Deselect All</div>
+      <div class="count">{{ viewData.length }}</div>
+    </div>
+
+    <!-- Select Remaining Or  Clear Selected -->
+    <div *ngIf="mySelection.length < viewData.length && mySelection.length">
+      <div class="select-option" (click)="onSelect('select')">
+        <div class="text">Select Remaining</div>
+        <div class="count">{{ viewData.length - mySelection.length }}</div>
+      </div>
+
+      <div class="select-option clear-selected" (click)="onSelect('deselect')">
+        <div class="text">Clear Selected</div>
+        <div class="count">{{ mySelection.length }}</div>
+      </div>
+    </div>
+  </div>
+</ng-template>

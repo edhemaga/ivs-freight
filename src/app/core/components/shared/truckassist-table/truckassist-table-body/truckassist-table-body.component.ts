@@ -45,14 +45,70 @@ export class TruckassistTableBodyComponent
   ) {}
 
   ngOnInit(): void {
+    // Select Or Deselect All
+    this.tableService.currentSelectOrDeselect
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: string) => {
+        if (response !== '') {
+          const isSelect = response === 'select';
+          this.mySelection = [];
+
+          this.viewData = this.viewData.map((data) => {
+            data.isSelected = isSelect;
+
+            if (data.isSelected) {
+              this.mySelection.push({ id: data.id });
+            }
+
+            return data;
+          });
+
+          this.tableService.sendRowsSelected(this.mySelection);
+
+          this.changeDetectorRef.detectChanges();
+        }
+      });
+
+    // Rezaize
+    this.tableService.currentColumnWidth
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.columns = this.columns.map((c) => {
+            if (c.title === response.columns[response.event.index].title) {
+              c.width = response.event.width;
+            }
+
+            return c;
+          });
+
+          this.changeDetectorRef.detectChanges();
+        }
+      });
+
+    // Columns Reorder
     this.tableService.currentColumnsOrder
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
-        console.log('Columns Order table head');
-        console.log(response);
         if (response.columnsOrder) {
-          console.log('Uslo da uradi set columnsOrder')
           this.columns = response.columnsOrder;
+
+          this.changeDetectorRef.detectChanges();
+        }
+      });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if(c.field === response.column.field){
+              c.hidden = response.column.hidden
+            }
+
+            return c;
+          })
 
           this.changeDetectorRef.detectChanges();
         }
@@ -103,22 +159,19 @@ export class TruckassistTableBodyComponent
   public onSelectItem(event: any, index: number): void {
     this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-    const isUser = !!event.userType;
+    if (event.isSelected) {
+      this.mySelection.push({ id: event.id });
+    } else {
+      const index = this.mySelection.findIndex(
+        (selection) => event.id === selection.id
+      );
 
-    if (!isUser) {
-      if (event.isSelected) {
-        this.mySelection.push({ id: event.id });
-      } else {
-        const index = this.mySelection.findIndex(
-          (selection) => event.id === selection.id
-        );
-        if (index !== -1) {
-          this.mySelection.splice(index, 1);
-        }
+      if (index !== -1) {
+        this.mySelection.splice(index, 1);
       }
     }
 
-    /* this.tableService.sendRowSelected(this.mySelection); */
+    this.tableService.sendRowsSelected(this.mySelection);
   }
 
   onShowAttachments(data: any) {
@@ -132,6 +185,8 @@ export class TruckassistTableBodyComponent
   }
 
   ngOnDestroy(): void {
+    this.tableService.sendRowsSelected([]);
+
     this.destroy$.next();
     this.destroy$.complete();
   }
