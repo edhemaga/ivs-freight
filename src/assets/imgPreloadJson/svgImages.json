@@ -38,23 +38,23 @@
 		},
         {
 			"iconName": "note-close",
-			"iconPath": "/assets/img/shared/note_small_close.svg"
+			"iconPath": "assets/svg/common/ic_x.svg"
 		},
         {
 			"iconName": "note-check",
-			"iconPath": "/assets/img/shared/note_small_check.svg"
+			"iconPath": "assets/svg/common/ic_confirm.svg"
 		},
 		{
 			"iconName": "note-b",
-			"iconPath": "/assets/img/shared/note_b.svg"
+			"iconPath": "/assets/svg/note/bold.svg"
 		},
 		{
 			"iconName": "italic",
-			"iconPath": "/assets/img/shared/italic.svg"
+			"iconPath": "/assets/svg/note/italic.svg"
 		},
 		{
 			"iconName": "underline",
-			"iconPath": "/assets/img/shared/underline.svg"
+			"iconPath": "/assets/svg/note/underline.svg"
 		},
 		{
 			"iconName": "hosactive",

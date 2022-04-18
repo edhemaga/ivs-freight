@@ -13,13 +13,15 @@ import {DispatcherHistoryComponent} from './dispatcher-history/dispatcher-histor
 import { DispatcherTableComponent } from './dispatcher-table/dispatcher-table.component';
 import { DispatcherDropdownComponent } from './dispatcher-dropdown/dispatcher-dropdown.component';
 import { PipesModule } from '../../pipes/pipes.module';
+import { DispatcherParkingComponent } from './dispatcher-parking/dispatcher-parking.component';
+import { DispatchboardTablesComponent } from './dispatchboard-tables/dispatchboard-tables.component';
 
 export function playerFactory() {
   return player;
 }
 
 @NgModule({
-  declarations: [DispatcherTableComponent, AppAddLoadTableComponent, AppDispatcherTableNewComponent, DispatcherGpsTableComponent, DispatcherNoteComponent, DispatcherHistoryComponent, DispatcherDropdownComponent],
+  declarations: [DispatcherTableComponent, AppAddLoadTableComponent, AppDispatcherTableNewComponent, DispatcherGpsTableComponent, DispatcherNoteComponent, DispatcherHistoryComponent, DispatcherDropdownComponent, DispatcherParkingComponent, DispatchboardTablesComponent],
   imports: [CommonModule, DispatchRoutingModule, SharedModule, AgmSnazzyInfoWindowModule, LottieModule.forRoot({player: playerFactory}), PipesModule],
   entryComponents: [],
   exports: [],
