@@ -109,7 +109,7 @@ export class TruckassistTableBodyComponent
 
             return c;
           })
-
+  
           this.changeDetectorRef.detectChanges();
         }
       });

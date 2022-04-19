@@ -111,7 +111,7 @@ export class TruckassistTableHeadComponent
   }
 
   setVisibleColumns() {
-    this.visibleColumns = [];
+    this.visibleColumns = [];  
 
     this.columns.map((column, index) => {
       if (!column.hasOwnProperty('isPined')) {
@@ -184,9 +184,7 @@ export class TruckassistTableHeadComponent
         if (this.visibleColumns[event.previousIndex].field === c.field) {
           previousIndex = i;
         }
-      });
 
-      this.columns.map((c, i) => {
         if (this.visibleColumns[event.currentIndex].field === c.field) {
           currentIndex = i;
         }
