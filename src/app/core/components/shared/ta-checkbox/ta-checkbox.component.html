@@ -1,0 +1,15 @@
+<div class="ta-checkbox-container {{customClass}}">
+  <label *ngIf="label" for="ta-checkbox"
+    >
+    <input
+      type="checkbox"
+      class="ta-checkbox"
+      name="ta-checkbox"
+      id="ta-checkbox"
+      [checked]="getSuperControl.value"
+      (change)="onChange($event.target.checked)"
+    />
+    <span class="ta-mark"></span>
+        <span class="ta-checkbox-label">{{ label }}</span>
+  </label>
+</div>

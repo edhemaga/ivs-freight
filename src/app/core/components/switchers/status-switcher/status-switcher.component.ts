@@ -12,7 +12,9 @@ export class StatusSwitcherComponent implements OnInit {
   @Input() changeToGpsStyle: boolean;
   @Input() sideBarStyle: boolean;
   @Input() customColorsMiles: boolean;
+  @Input() customClass: string = null;
   @Output() switchClicked = new EventEmitter<any>();
+
 
   numberOfTabs: number;
   checked: boolean;

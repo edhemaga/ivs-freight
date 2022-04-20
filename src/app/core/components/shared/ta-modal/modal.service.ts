@@ -11,9 +11,9 @@ export class ModalService {
 
   public openModal(
     component: any,
-    options: ModalOptions,
-    customClass?: string
+    options: ModalOptions
   ) {
+
     options = {
       ...options,
       backdrop: 'static',

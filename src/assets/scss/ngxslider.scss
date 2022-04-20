@@ -1,4 +1,6 @@
-// NGX-SLIDER CUSTOM SLIDER COMMISSION
+//-------------------------- NGX-SLIDER TEMPLATES --------------------------
+
+// Slider Commission
 .custom-slider-commission {
   margin-top: 18px;
   display: flex;
@@ -58,18 +60,44 @@
       }
     }
   }
-}
-.custom-slider-commission-driver {
-  .ngx-slider {
-    .ngx-slider-bubble {
-      &::after {
-        content: ".0%" !important;
+
+  // Override default slider commission
+  &.custom-driver-modal {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 12px;
+    align-items: center;
+    margin-top: 0px;
+
+    .custom-slider-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #6c6c6c;
+      position: relative;
+      top: 1px;
+      margin: 0;
+    }
+
+    .ngx-slider {
+      // FULL LINE
+      .ngx-slider-bar {
+        background: #f3f3f3 !important;
+      }
+
+      // ACTIVE LINE
+      .ngx-slider-selection {
+        background-color: #97a8dc !important;
+      }
+
+      // Number
+      .ngx-slider-bubble {
+        color: #536bc2 !important;
       }
     }
   }
 }
 
-// NGX CUSTOM SLIDER LOGO-CHANGE
+// Logo Change
 .custom-slider-logo-change {
   width: 394px;
   position: relative;
@@ -97,7 +125,6 @@
       box-shadow: 0 0 4px rgb(0, 0, 0, 0.16) !important;
       border-radius: 3px !important;
 
-
       &::after {
         content: none !important;
       }
@@ -105,8 +132,19 @@
   }
 }
 
-// Custom CLASS
+// Dispatch Manager
 .custom-slider-dispatch-manager {
   position: relative;
   bottom: 32px;
+}
+
+// Class for adding percentage
+.custom-slider-with-percentage {
+  .ngx-slider {
+    .ngx-slider-bubble {
+      &::after {
+        content: ".0%" !important;
+      }
+    }
+  }
 }

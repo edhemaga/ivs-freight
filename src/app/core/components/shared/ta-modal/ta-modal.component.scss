@@ -1,17 +1,20 @@
 .modal-container {
   width: 480px;
   height: auto;
+  overflow: hidden;
 
-  .divider-line {
+  .divider {
     width: 456px;
+    height: 2px;
+    content: "";
+    border-radius: 1px;
+    background-color: #f3f3f3;
+    margin: 0 auto;
   }
+
   //   Ovveride global settings for row > columns
   .form-container {
     .row {
-      &:nth-last-child(1) {
-        margin-bottom: 22px !important;
-      }
-
       & > * {
         &:nth-child(odd) {
           padding-left: 12px;

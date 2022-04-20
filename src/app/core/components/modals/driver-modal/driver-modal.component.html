@@ -1,0 +1,476 @@
+<app-ta-modal
+  [modalTitle]="'Add Driver'"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <app-tab-switcher
+    (switchClicked)="tabChange($event)"
+    [tabs]="tabs"
+  ></app-tab-switcher>
+
+  <form
+    [formGroup]="driverForm"
+    class="form-container"
+    [ngClass]="{ 'tab-2': selectedTab === 2 }"
+  >
+    <div class="animation-three-tabs" [@animationTabsModal]="selectedTab">
+      <!-------------------------------- Basic Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 1">
+        <div class="row">
+          <div class="col-6">
+            <app-ta-input
+              formControlName="firstName"
+              [inputConfig]="{
+                name: 'First name',
+                type: 'text',
+                label: 'First Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-6">
+            <app-ta-input
+              formControlName="lastName"
+              [inputConfig]="{
+                name: 'Last name',
+                type: 'text',
+                label: 'Last Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5">
+            <app-ta-input
+              formControlName="phone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                isRequired: true,
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-7">
+            <app-ta-input
+              formControlName="email"
+              [inputConfig]="{
+                name: 'Email',
+                type: 'text',
+                label: 'Email',
+                isRequired: true,
+                placeholderIcon: 'email'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <app-ta-input
+              formControlName="address"
+              [template]="'address'"
+              [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Address, City, State Zip',
+                isRequired: true,
+                placeholderIcon: 'address'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-2">
+            <app-ta-input
+              formControlName="addressUnit"
+              [inputConfig]="{
+                name: 'Address Unit',
+                type: 'text',
+                label: 'Unit #'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row last-row">
+          <div class="col-5">
+            <app-ta-input
+              formControlName="dateOfBirth"
+              [inputConfig]="{
+                name: 'DOB',
+                type: 'date',
+                label: 'DOB',
+                isRequired: true
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-7">
+            <app-ta-input
+              formControlName="ssn"
+              [inputConfig]="{
+                name: 'SSN',
+                type: 'text',
+                label: 'SSN',
+                isRequired: true
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <!-- IsOwner -->
+        <div class="custom-row-owner">
+          <!-- Owner Divider -->
+          <div class="divider"></div>
+          <!-- Owner Header -->
+          <div class="owner-header">
+            <app-ta-checkbox
+              formControlName="isOwner"
+              [label]="'Owner'"
+            ></app-ta-checkbox>
+            <svg-icon
+              class="owner-header-arrow"
+              src="assets/svg/common/ic_arrow-down.svg"
+              [ngClass]="{ rotate: driverForm.get('isOwner').value }"
+            ></svg-icon>
+          </div>
+          <!-- Owner Body -->
+          <div
+            class="owner-body"
+            [@showHideOwner]="
+              driverForm.get('isOwner').value ? 'true' : 'false'
+            "
+          >
+            <app-status-switcher
+              (switchClicked)="tabOwnerChange($event)"
+              [data]="ownerTabs"
+              [customClass]="'owner-switch'"
+            ></app-status-switcher>
+            <div
+              class="animation-owner-tabs"
+              [ngClass]="{ fade: selectedOwnerTab === 'company' }"
+            >
+              <div class="row">
+                <div class="col-4">
+                  <app-ta-input
+                    formControlName="ein"
+                    [inputConfig]="{
+                      name: 'EIN',
+                      type: 'text',
+                      label: 'EIN',
+                      isRequired: true
+                    }"
+                  ></app-ta-input>
+                </div>
+                <div class="col-8">
+                  <app-ta-input
+                    formControlName="bussinesName"
+                    [inputConfig]="{
+                      name: 'Bussines Name',
+                      type: 'text',
+                      label: 'Bussines Name',
+                      isDisabled: true
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Off duty Location -->
+        <app-ta-modal-card
+          [hasCounter]="true"
+          [cardName]="'Off duty Location'"
+          [cardSvg]="'assets/svg/common/ic_info.svg'"
+        ></app-ta-modal-card>
+        <!-- Note -->
+        <app-ta-input-note formControlName="note"></app-ta-input-note>
+      </div>
+      <!-------------------------------- Pay Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 2">
+        <div class="divider"></div>
+        <div class="payroll-checkbox">
+          <app-ta-checkbox
+            formControlName="payroll"
+            [label]="'Include in Payroll'"
+          ></app-ta-checkbox>
+        </div>
+        <div class="custom-bank-row first-row">
+          <div class="bank-field">
+            <app-ta-input-dropdown
+              formControlName="bankId"
+              [template]="'banks'"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Bank Name',
+                isRequired: true,
+                isDropdown: true
+              }"
+              [canAddNew]="true"
+              [options]="labelsBank"
+            ></app-ta-input-dropdown>
+          </div>
+          <div class="bank-field">
+            <app-ta-input
+              formControlName="routing"
+              [inputConfig]="{
+                name: 'Routing',
+                type: 'text',
+                label: 'Routing #',
+                isDisabled: !isBankSelected,
+                isRequired: isBankSelected
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="bank-field">
+            <app-ta-input
+              formControlName="account"
+              [inputConfig]="{
+                name: 'Account',
+                type: 'text',
+                label: 'Account #',
+                isDisabled: !isBankSelected,
+                isRequired: isBankSelected
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div
+          class="custom-row-paytype-notification"
+          [ngClass]="{ 'divide-margin': driverForm.get('payType').value }"
+          *ngIf="driverForm.get('payroll').value"
+          [@showHidePayroll]="
+            driverForm.get('payroll').value ? 'true' : 'false'
+          "
+        >
+          <div class="paytype-field">
+            <app-ta-input-dropdown
+              formControlName="payType"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Pay type',
+                isRequired: true,
+                isDropdown: true
+              }"
+              [options]="labelsPayType"
+            ></app-ta-input-dropdown>
+          </div>
+          <div class="paytype-field-notification">
+            <p>Notifications</p>
+            <div class="btn-group" role="group">
+              <label class="btn" ngbButtonLabel>
+                <input
+                  type="checkbox"
+                  class="btn-check"
+                  formControlName="mailNotification"
+                  ngbButton
+                />
+                Email
+              </label>
+              <label class="btn" ngbButtonLabel>
+                <input
+                  type="checkbox"
+                  class="btn-check"
+                  formControlName="phoneCallNotification"
+                  ngbButton
+                />
+                Phone Call
+              </label>
+              <label class="btn" ngbButtonLabel>
+                <input
+                  type="checkbox"
+                  class="btn-check"
+                  formControlName="smsNotification"
+                  ngbButton
+                />
+                SMS
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pay Type Per Mile -->
+        <div
+          class="paytype-permile"
+          *ngIf="driverForm.get('payType').value?.toLowerCase() === 'per mile'"
+          [@showHidePerMile]="
+            driverForm.get('payType').value?.toLowerCase() === 'per mile'
+              ? 'true'
+              : 'false'
+          "
+        >
+          <div class="permile-fields">
+            <p>Solo</p>
+            <app-ta-input
+              formControlName="soloEmptyMile"
+              [inputConfig]="{
+                name: 'Empty Mile',
+                type: 'text',
+                label: 'Empty Mile',
+                isRequired: true,
+                placeholderIcon: 'dollar'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="soloLoadedMile"
+              [inputConfig]="{
+                name: 'Loaded Mile',
+                type: 'text',
+                label: 'Loaded Mile',
+                isRequired: true,
+                placeholderIcon: 'dollar'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="soloPerStop"
+              [inputConfig]="{
+                name: 'Per Stop',
+                type: 'text',
+                label: 'Per Stop',
+                placeholderIcon: 'dollar'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="permile-fields">
+            <p>Team</p>
+            <app-ta-input
+              formControlName="teamEmptyMile"
+              [inputConfig]="{
+                name: 'Empty Mile',
+                type: 'text',
+                label: 'Empty Mile',
+                placeholderIcon: 'dollar'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="teamLoadedMile"
+              [inputConfig]="{
+                name: 'Loaded Mile',
+                type: 'text',
+                label: 'Loaded Mile',
+                placeholderIcon: 'dollar'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="teamPerStop"
+              [inputConfig]="{
+                name: 'Per Stop',
+                type: 'text',
+                label: 'Per Stop',
+                placeholderIcon: 'dollar'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+
+        <!-- Pay Type Commission -->
+        <div
+          class="paytype-commission"
+          *ngIf="
+            driverForm.get('payType').value?.toLowerCase() === 'commission'
+          "
+          [@showHideCommission]="
+            driverForm.get('payType').value?.toLowerCase() === 'commission'
+              ? 'true'
+              : 'false'
+          "
+        >
+          <div class="paytype-field">
+            <app-ta-ngx-slider
+              [sliderName]="'Solo'"
+              [sliderOptions]="soloSliderOptions"
+              [startedValue]="driverForm.get('commissionSolo')?.value"
+              [customClass]="
+                'custom-slider-with-percentage custom-driver-modal'
+              "
+              (onUserValueChange)="
+                driverForm.get('commissionSolo').setValue($event)
+              "
+            ></app-ta-ngx-slider>
+          </div>
+          <div class="paytype-field">
+            <app-ta-ngx-slider
+              [sliderName]="'Team'"
+              [sliderOptions]="teamSliderOptions"
+              [startedValue]="driverForm.get('commissionTeam')?.value"
+              [customClass]="
+                'custom-slider-with-percentage custom-driver-modal'
+              "
+              (onUserValueChange)="
+                driverForm.get('commissionTeam').setValue($event)
+              "
+            ></app-ta-ngx-slider>
+          </div>
+        </div>
+      </div>
+
+      <div class="m-tab" *ngIf="selectedTab === 3">
+        <div
+          class="row dropdown-row"
+          style="height: 194px; width: 456px; border: 1px solid black; margin: 0 auto;"
+        ></div>
+        <div class="row last-row">
+          <div class="col-2">
+            <app-ta-checkbox
+              formControlName="twic"
+              [label]="'TWIC'"
+              [customClass]="'regular'"
+            ></app-ta-checkbox>
+          </div>
+          <div class="col-4">
+            <app-ta-input
+              formControlName="twicExpDate"
+              [inputConfig]="{
+                name: 'Exp Date',
+                type: 'date',
+                label: 'Exp. Date',
+                isRequired: true
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-6 no-p-left">
+            <app-ta-input
+              formControlName="fuelCard"
+              [inputConfig]="{
+                name: 'Fuel Card',
+                type: 'text',
+                label: 'Fuel Card'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <app-ta-modal-card [cardName]="'Emergency Contact'">
+          <div class="emergency-contact">
+            <app-ta-input
+              formControlName="emergencyContactName"
+              [inputConfig]="{
+                name: 'Name',
+                type: 'text',
+                label: 'Name'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="emergencyContactPhone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="emergencyContactRelationship"
+              [inputConfig]="{
+                name: 'Relationship',
+                type: 'text',
+                label: 'Relationship'
+              }"
+            ></app-ta-input>
+          </div>
+        </app-ta-modal-card>
+      </div>
+    </div>
+  </form>
+</app-ta-modal>

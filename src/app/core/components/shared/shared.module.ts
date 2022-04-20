@@ -64,6 +64,11 @@ import { AccountModalComponent } from '../modals/account-modal/account-modal.com
 import { TaInputNoteComponent } from './ta-input-note/ta-input-note.component';
 import { TextareaAutosizeDirective } from '../../directives/TextareaAutosize.directive';
 import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.component';
+import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
+import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
+import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
+import { TaInputService } from './ta-input/ta-input.service';
+
 
 @NgModule({
   declarations: [
@@ -105,7 +110,10 @@ import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.
     AccountModalComponent,
     TaInputNoteComponent,
     TextareaAutosizeDirective,
-    TaInputDropdownComponent
+    TaInputDropdownComponent,
+    DriverModalComponent,
+    TaCheckboxComponent,
+    TaModalCardComponent
   ],
   imports: [
     CommonModule,
@@ -204,9 +212,12 @@ import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.
     AccountModalComponent,
     TaInputNoteComponent,
     TextareaAutosizeDirective,
-    TaInputDropdownComponent
+    TaInputDropdownComponent,
+    DriverModalComponent,
+    TaCheckboxComponent,
+    TaModalCardComponent
   ],
-  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
+  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe, TaInputService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {

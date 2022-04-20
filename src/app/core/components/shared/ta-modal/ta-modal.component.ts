@@ -6,7 +6,6 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { ModalService } from './modal.service';
 
 @Component({
   selector: 'app-ta-modal',
@@ -26,6 +25,7 @@ export class TaModalComponent {
 
   public closeModal() {
     this.modalActionTypeEmitter.emit('close');
+    $('.pac-container').remove();
     this.timeout = setTimeout(() => {
       this.ngbActiveModal.dismiss();
       clearTimeout(this.timeout);
