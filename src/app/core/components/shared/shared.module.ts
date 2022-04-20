@@ -28,6 +28,7 @@ import { ExcelExportModule } from "@progress/kendo-angular-excel-export";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { LabelModule } from "@progress/kendo-angular-label";
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import {ScrollingModule} from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from "../switchers/status-switcher/status-switcher.component";
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { TooltipDirective } from "../../directives/tooltip.directive";
@@ -148,6 +149,7 @@ import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars
     PDFExportModule,
     LabelModule,
     DragDropModule,
+    ScrollingModule,
     NgxMaskModule.forRoot(),
     Ng5SliderModule,
     NgxDropzoneModule,
@@ -195,6 +197,7 @@ import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars
     TaSelectComponent,
     DeleteDialogComponent,
     DragDropModule,
+    ScrollingModule,
     NgxMaskModule,
     Ng5SliderModule,
     NgxDropzoneModule,
@@ -214,7 +217,12 @@ import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars
     AccountModalComponent,
     TaInputNoteComponent,
     TextareaAutosizeDirective,
-    TaInputDropdownComponent
+    TaInputDropdownComponent,
+    CustomDatetimePickersComponent,
+    CalendarDatesMainComponent,
+    CalendarDaysComponent,
+    CalendarLeftComponent,
+    DateCalendarsComponent
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

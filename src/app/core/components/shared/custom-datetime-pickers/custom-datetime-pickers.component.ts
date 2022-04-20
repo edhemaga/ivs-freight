@@ -1,13 +1,14 @@
 import {CalendarScrollService} from './calendar-scroll.service';
 import {DateCalendarsComponent} from './date-calendars/date-calendars.component';
-import {Component, ElementRef, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild, ViewContainerRef, ViewEncapsulation} from '@angular/core';
 import calendarJson from '../../../../../assets/calendarjson/calendar.json';
 import {NgbDropdown, NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-custom-datetime-pickers',
   templateUrl: './custom-datetime-pickers.component.html',
-  styleUrls: ['./custom-datetime-pickers.component.scss'],
+  styleUrls: ['./custom-datetime-pickers.component.scss', './custompickers.scss'],
+  encapsulation: ViewEncapsulation.None,
   providers: [NgbDropdownConfig]
 })
 export class CustomDatetimePickersComponent implements OnInit {
