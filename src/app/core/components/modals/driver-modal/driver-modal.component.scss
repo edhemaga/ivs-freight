@@ -1,0 +1,56 @@
+.form-container {
+
+  // Is Owner On Tab 1
+  .custom-row-owner {
+    display: block;
+
+    .owner-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px;
+      line-height: 18px;
+
+      .owner-header-arrow {
+        svg {
+          transform: rotate(0deg);
+          transition: all 0.3s ease-in-out;
+        }
+        &.rotate {
+          svg {
+            transform: rotate(180deg);
+            transition: all 0.3s ease-in-out;
+          }
+        }
+      }
+    }
+
+    .owner-body {
+      .animation-owner-tabs {
+        position: relative;
+        overflow: hidden;
+        transform: translate(20%);
+        opacity: 0;
+        height: 0px;
+        transition: all 0.3s ease-in-out;
+
+        &.fade {
+          transform: translate(0);
+          opacity: 1;
+          height: 48px;
+          margin-top: 26px;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+    }
+  }
+
+  // Payroll Checkbox
+  .payroll-checkbox {
+    margin-top: 8px;
+    margin-left: 6px;
+    line-height: 18px;
+  }
+}
+
+

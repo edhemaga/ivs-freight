@@ -1,0 +1,54 @@
+// Addresses, City, Zip
+.pac-container {
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
+    margin-top: 4px;
+    border-top: none;
+    z-index: 1060;
+  
+    &.dashboard_pac_container {
+      width: 298px !important;
+      margin-left: -30px !important;
+    }
+  
+    &.timezone_pac_container {
+      width: 210px !important;
+      margin-left: -30px !important;
+    }
+  
+    .pac-icon.pac-icon-marker {
+      display: none;
+    }
+  
+    .pac-item {
+      border-top: none;
+      line-height: 2.25rem;
+      min-height: 2.25rem;
+      font-size: 14px;
+      padding: 0 6px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: 0.3s;
+      color: #606060;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+  
+      &:hover {
+        opacity: 1;
+        transition: 0.3s;
+        background: rgba(0, 0, 0, 0.04);
+      }
+    }
+  
+    &.pac-logo:after {
+      content: none;
+    }
+  
+    .pac-item-query {
+      font-size: 14px;
+      color: #606060;
+  
+      .pac-matched {
+        color: #000;
+      }
+    }
+  }

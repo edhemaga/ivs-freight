@@ -70,6 +70,11 @@ import { CalendarDatesMainComponent } from './custom-datetime-pickers/calendar-d
 import { CalendarDaysComponent } from './custom-datetime-pickers/calendar-days/calendar-days.component';
 import { CalendarLeftComponent } from './custom-datetime-pickers/calendar-left/calendar-left.component';
 import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars/date-calendars.component';
+import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
+import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
+import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
+import { TaInputService } from './ta-input/ta-input.service';
+
 
 @NgModule({
   declarations: [
@@ -116,7 +121,10 @@ import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars
     CalendarDatesMainComponent,
     CalendarDaysComponent,
     CalendarLeftComponent,
-    DateCalendarsComponent
+    DateCalendarsComponent,
+    DriverModalComponent,
+    TaCheckboxComponent,
+    TaModalCardComponent
   ],
   imports: [
     CommonModule,
@@ -222,9 +230,12 @@ import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars
     CalendarDatesMainComponent,
     CalendarDaysComponent,
     CalendarLeftComponent,
-    DateCalendarsComponent
+    DateCalendarsComponent,
+    DriverModalComponent,
+    TaCheckboxComponent,
+    TaModalCardComponent
   ],
-  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
+  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe, TaInputService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {

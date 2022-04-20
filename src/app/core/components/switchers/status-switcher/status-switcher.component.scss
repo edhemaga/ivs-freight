@@ -296,3 +296,20 @@ app-ta-tab-switch {
     color: white !important;
   }
 }
+
+//----- Custom classes
+
+// Driver Modal IsOwner
+.owner-switch {
+  margin-top: 0px;
+  margin-bottom: 12px;
+  .slide-container {
+    background-color: #f3f3f3;
+    color: #b7b7b7;
+  }
+
+  .slide-container label {
+    font-size: 12px;
+    font-weight: 700;
+  }
+}

@@ -1,0 +1,87 @@
+.ta-checkbox-container {
+  display: inline-block;
+  position: relative;
+
+  label {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Hide the default checkbox */
+  .ta-checkbox {
+    visibility: hidden;
+    cursor: pointer;
+  }
+
+  /* Create a custom checkbox */
+  .ta-mark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 14px;
+    width: 14px;
+    background-color: #cccccc;
+    border-radius: 1px;
+    cursor: pointer;
+
+    /* Create the mark/indicator (hidden when not checked) */
+    &::after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 4px;
+      top: 1px;
+      width: 6px;
+      height: 9px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+
+  &:hover .ta-checkbox ~ .ta-mark {
+    background-color: #6c6c6c;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .ta-checkbox:checked ~ .ta-checkbox-label {
+    color: #6c6c6c !important;
+  }
+
+  .ta-checkbox:checked ~ .ta-mark {
+    background-color: #6d82c7;
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Show the mark when checked */
+  .ta-checkbox:checked ~ .ta-mark:after {
+    display: block;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .ta-checkbox-label {
+    cursor: pointer;
+    color: #b7b7b7;
+    font-weight: 800;
+    font-size: 14px;
+    margin-left: 6px;
+    position: relative;
+    line-height: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  // Custom classes
+
+  &.regular {
+    position: relative;
+    top: 1px;
+
+    .ta-checkbox-label {
+      font-weight: 500;
+      color: #6c6c6c;
+    }
+  }
+}

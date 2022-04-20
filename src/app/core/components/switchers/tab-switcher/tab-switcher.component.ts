@@ -7,7 +7,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class TabSwitcherComponent implements OnInit {
   @Input() tabs: any[];
-
+  @Input() customClass: string = null;
   activeTab: number;
 
   @Output() switchClicked = new EventEmitter<any>();
