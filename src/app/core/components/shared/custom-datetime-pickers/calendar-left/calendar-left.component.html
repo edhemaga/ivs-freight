@@ -1,0 +1,11 @@
+<div (mouseover)="mouseOverSetItem()">
+  <cdk-virtual-scroll-viewport
+    #leftSideRef
+    (scrolledIndexChange)="onScrollChanged($event)"
+    style="height: 258px; width: 100%; margin: 0"
+  >
+    <ng-container *cdkVirtualFor="let month of months; let indx = index; templateCacheSize: 10;">
+      <div (click)="selectMonth(indx)" class="month-year-item">{{ getMonth(month) }}</div>
+    </ng-container>
+  </cdk-virtual-scroll-viewport>
+</div>

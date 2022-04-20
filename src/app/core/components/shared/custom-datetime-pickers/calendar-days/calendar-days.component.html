@@ -1,0 +1,10 @@
+<div class="calendar_days">
+  <div (click)="day && chooseDay(day)"
+       *ngFor="let day of days"
+       [class.current_day]="day == currentDay && year == currentYear && currentMonth == selectedMonth"
+       [class.empty_day]="!day"
+       class="calendar_day"
+  >
+    <span>{{day}}</span>
+  </div>
+</div>

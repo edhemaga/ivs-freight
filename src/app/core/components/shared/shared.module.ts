@@ -64,6 +64,11 @@ import { AccountModalComponent } from '../modals/account-modal/account-modal.com
 import { TaInputNoteComponent } from './ta-input-note/ta-input-note.component';
 import { TextareaAutosizeDirective } from '../../directives/TextareaAutosize.directive';
 import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.component';
+import { CustomDatetimePickersComponent } from './custom-datetime-pickers/custom-datetime-pickers.component';
+import { CalendarDatesMainComponent } from './custom-datetime-pickers/calendar-dates-main/calendar-dates-main.component';
+import { CalendarDaysComponent } from './custom-datetime-pickers/calendar-days/calendar-days.component';
+import { CalendarLeftComponent } from './custom-datetime-pickers/calendar-left/calendar-left.component';
+import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars/date-calendars.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +110,12 @@ import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.
     AccountModalComponent,
     TaInputNoteComponent,
     TextareaAutosizeDirective,
-    TaInputDropdownComponent
+    TaInputDropdownComponent,
+    CustomDatetimePickersComponent,
+    CalendarDatesMainComponent,
+    CalendarDaysComponent,
+    CalendarLeftComponent,
+    DateCalendarsComponent
   ],
   imports: [
     CommonModule,

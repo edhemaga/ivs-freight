@@ -1,0 +1,38 @@
+<div (mouseover)="mouseOverSetItem()">
+  <cdk-virtual-scroll-viewport
+    #monthsScrollRef
+    (scrolledIndexChange)="onMonthChange($event)"
+    style="height: 200px; width: 100%; margin: 0"
+  >
+    <ng-container *cdkVirtualFor="let month of months; let indx = index; templateCacheSize: 10">
+      <div class="calendar_indicator">
+        <span *ngIf="listPreview == 'full_list'">{{getMonth(month.getMonth())}} </span> {{month.getFullYear()}}
+      </div>
+      <div *ngIf="listPreview == 'full_list'">
+        <app-calendar-days
+          (selectDay)="selectDay($event)"
+          [index]="indx"
+          [month]="month"
+          [selectedMonth]="month.getMonth()"
+          [year]="selectedYear"
+        ></app-calendar-days>
+      </div>
+      <div *ngIf="listPreview == 'month_list'">
+          <div class="month_list">
+            <div class="month_list_item" (click)="setCalendarListPreview(0)" [class.current_month]="currentYear == item && 0 == currentMonth">JAN</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(1)" [class.current_month]="currentYear == item && 1 == currentMonth">FEB</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(2)" [class.current_month]="currentYear == item && 2 == currentMonth">MAR</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(3)" [class.current_month]="currentYear == item && 3 == currentMonth">APR</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(4)" [class.current_month]="currentYear == item && 4 == currentMonth">MAY</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(5)" [class.current_month]="currentYear == item && 5 == currentMonth">JUN</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(6)" [class.current_month]="currentYear == item && 6 == currentMonth">JUL</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(7)" [class.current_month]="currentYear == item && 7 == currentMonth">AUG</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(8)" [class.current_month]="currentYear == item && 8 == currentMonth">SEP</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(9)" [class.current_month]="currentYear == item && 9 == currentMonth">OCT</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(10)" [class.current_month]="currentYear == item && 10 == currentMonth">NOV</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(11)" [class.current_month]="currentYear == item && 11 == currentMonth">DEC</div>
+        </div>
+      </div>
+    </ng-container>
+  </cdk-virtual-scroll-viewport>
+</div>
