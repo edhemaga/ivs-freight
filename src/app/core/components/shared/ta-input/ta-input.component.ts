@@ -9,8 +9,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { debounceTime } from 'rxjs';
 import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
@@ -25,6 +25,7 @@ export class TaInputComponent
 {
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
+  @Input() template: string = 'default';
 
   public focusInput: boolean = false;
   public waitValidation: boolean = false;
@@ -58,17 +59,26 @@ export class TaInputComponent
             this.focusInput = true;
             this.setInputCursorAtTheEnd(this.input.nativeElement);
           }
-          console.log(action + " FROM INPUTTTTT")
         });
     }
   }
+
+  public handleAddressChange(address: Address) {
+    console.log(address);
+  }
+
+  public options = {
+    componentRestrictions: {country: ['US', 'CA']},
+  };
 
   get getSuperControl() {
     return this.superControl.control;
   }
 
   public writeValue(obj: any): void {
-    this.input.nativeElement.value = obj;
+    if(this.input) {
+      this.input.nativeElement.value = obj;
+    }
   }
 
   // RegisterOnChange & onChange

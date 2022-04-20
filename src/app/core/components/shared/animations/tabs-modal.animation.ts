@@ -23,7 +23,7 @@ export const left = [
           height: '0px'
         }),
         animate(
-          '.3s ease-out',
+          '.2s ease-out',
           keyframes([
             style({
               transform: 'translateX(-15%)',
@@ -53,7 +53,7 @@ export const left = [
           height: '0px'
         }),
         animate(
-          '.3s ease-out',
+          '.2s ease-out',
           style({
             transform: 'translateX(50%)',
             opacity: 0,
@@ -83,7 +83,7 @@ const right = [
           height: '0px'
         }),
         animate(
-          '.3s ease-out',
+          '.2s ease-out',
           keyframes([
             style({
               transform: 'translateX(25%)',
@@ -113,7 +113,7 @@ const right = [
           height: '0px'
         }),
         animate(
-          '.3s ease-out',
+          '.2s ease-out',
           style({
             transform: 'translateX(-50%)',
             opacity: 0,

@@ -72,6 +72,7 @@
           <div class="col-10">
             <app-ta-input
               formControlName="address"
+              [template]="'address'"
               [inputConfig]="{
                 name: 'Address',
                 type: 'text',
@@ -407,11 +408,38 @@
       <div class="m-tab" *ngIf="selectedTab === 3">
         <div
           class="row dropdown-row"
-          style="height: 226px; background-color: red"
-        >
-          DROPDOWN IMAGE
+          style="height: 194px; width: 456px; border: 1px solid black; margin: 0 auto;"
+        ></div>
+        <div class="row last-row">
+          <div class="col-2">
+            <app-ta-checkbox
+              formControlName="twic"
+              [label]="'TWIC'"
+              [customClass]="'regular'"
+            ></app-ta-checkbox>
+          </div>
+          <div class="col-4">
+            <app-ta-input
+              formControlName="twicExpDate"
+              [inputConfig]="{
+                name: 'Exp Date',
+                type: 'date',
+                label: 'Exp. Date',
+                isRequired: true
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-6 no-p-left">
+            <app-ta-input
+              formControlName="fuelCard"
+              [inputConfig]="{
+                name: 'Fuel Card',
+                type: 'text',
+                label: 'Fuel Card'
+              }"
+            ></app-ta-input>
+          </div>
         </div>
-        <div class="row last-row"></div>
         <app-ta-modal-card [cardName]="'Emergency Contact'">
           <div class="emergency-contact">
             <app-ta-input

@@ -2,6 +2,7 @@ import { Options } from '@angular-slider/ngx-slider';
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
@@ -210,18 +211,27 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onPayTypeSelected(): void {
     this.driverForm
-        .get('payType')
-        .valueChanges.pipe(untilDestroyed(this))
-        .subscribe((value) => {
-          if(value?.toLowerCase() === 'per mile') {
-            this.inputService.changeValidators(this.driverForm.get('soloEmptyMile'));
-            this.inputService.changeValidators(this.driverForm.get('soloLoadedMile'));
-          }
-          else {
-            this.inputService.changeValidators(this.driverForm.get('soloEmptyMile'), false);
-            this.inputService.changeValidators(this.driverForm.get('soloLoadedMile'), false);
-          }
-        })
+      .get('payType')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value?.toLowerCase() === 'per mile') {
+          this.inputService.changeValidators(
+            this.driverForm.get('soloEmptyMile')
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('soloLoadedMile')
+          );
+        } else {
+          this.inputService.changeValidators(
+            this.driverForm.get('soloEmptyMile'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('soloLoadedMile'),
+            false
+          );
+        }
+      });
   }
 
   public tabChange(event: any): void {

@@ -1,9 +1,12 @@
 .ta-counter {
   text-align: center;
   margin-right: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
   p {
-      margin: 0 !important;
-      position: relative
+    margin: 0 !important;
+    position: relative;
   }
 }

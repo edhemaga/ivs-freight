@@ -8,8 +8,8 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 })
 export class TaCheckboxComponent implements OnInit, ControlValueAccessor {
 
-  
   @Input() label: string;
+  @Input() customClass: string;
 
   constructor(@Self() public superControl: NgControl) {
     this.superControl.valueAccessor = this;

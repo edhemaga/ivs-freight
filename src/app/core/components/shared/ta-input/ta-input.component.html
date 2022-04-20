@@ -181,9 +181,9 @@
   <svg-icon
     class="input-dropdown-arrow"
     [ngClass]="{
-      'visible': inputConfig.isDropdown && !inputConfig.isDisabled,
-      'active': inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
-      'valid':
+      visible: inputConfig.isDropdown && !inputConfig.isDisabled,
+      active: inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
+      valid:
         inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.valid &&
@@ -216,15 +216,18 @@
         focusInput &&
         inputConfig.isDropdown &&
         !inputConfig.placeholder,
-      'hide': isDropdownAddModeActive,
+      hide: isDropdownAddModeActive,
       'no-validation-hover': !waitValidation && !focusInput
     }"
     src="assets/svg/common/ic_arrow-down.svg"
     (click)="toggleDropdownOptions()"
   ></svg-icon>
 
-  <!-- Input Control -->
   <input
+    *ngIf="template === 'address'"
+    #placesRef="ngx-places"
+    ngx-google-places-autocomplete
+    [options]="options"
     #input
     [type]="getInputType(inputConfig.type)"
     [id]="inputConfig.name"
@@ -261,7 +264,65 @@
         isVisiblePasswordEye,
       'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye,
       'dropdown-add-mode': isDropdownAddModeActive && inputConfig.isDropdown,
-      'dropdown-placeholder-active': inputConfig.isDropdown && inputConfig.placeholder && isDropdownOptionsActive && focusInput
+      'dropdown-placeholder-active':
+        inputConfig.isDropdown &&
+        inputConfig.placeholder &&
+        isDropdownOptionsActive &&
+        focusInput
+    }"
+    [(ngModel)]="input.value"
+    (keypress)="manipulateWithInput($event)"
+    (keyup)="onBackspace($event)"
+    (input)="onChange($event.target.value)"
+    (blur)="onBlur()"
+    (focus)="onFocus()"
+    (paste)="onPaste($event, inputConfig.maxLength)"
+  />
+
+  <!-- Input Control -->
+  <input
+    *ngIf="template === 'default'"
+    #input
+    [type]="getInputType(inputConfig.type)"
+    [id]="inputConfig.name"
+    [name]="inputConfig.name"
+    [disabled]="inputConfig.isDisabled"
+    [autocomplete]="inputConfig.autocomplete"
+    [pattern]="inputConfig.pattern"
+    [placeholder]="inputConfig.placeholder ? inputConfig.placeholder : ''"
+    [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
+    [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
+    [mask]="inputConfig.mask"
+    class="input-control {{ inputConfig.textTransform }} {{
+      inputConfig.customClass
+    }}"
+    [ngClass]="{
+      disabled: !getSuperControl.value && inputConfig.isDisabled,
+      'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
+      'valid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        waitValidation &&
+        focusInput &&
+        !isVisiblePasswordEye,
+      'invalid-focus-in':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        waitValidation &&
+        focusInput,
+      'invalid-focus-in-password':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        waitValidation &&
+        focusInput &&
+        isVisiblePasswordEye,
+      'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye,
+      'dropdown-add-mode': isDropdownAddModeActive && inputConfig.isDropdown,
+      'dropdown-placeholder-active':
+        inputConfig.isDropdown &&
+        inputConfig.placeholder &&
+        isDropdownOptionsActive &&
+        focusInput
     }"
     [(ngModel)]="input.value"
     (keypress)="manipulateWithInput($event)"
@@ -307,8 +368,7 @@
       'invalid-submit':
         inputConfig.isRequired &&
         getSuperControl.invalid &&
-        getSuperControl.touched,
-      'dollar-placeholderIcon': inputConfig.placeholderIcon === 'dollar'
+        getSuperControl.touched
     }"
     src="{{ getPlaceholderIcon(inputConfig.placeholderIcon) }}"
   ></svg-icon>
@@ -318,7 +378,7 @@
     [for]="inputConfig.name"
     class="input-label {{ inputConfig.customClass }}"
     [ngClass]="{
-      required: inputConfig.isRequired && !input.isDisabled,
+      required: inputConfig.isRequired && !inputConfig.isDisabled,
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'up-label': getSuperControl.value || focusInput,

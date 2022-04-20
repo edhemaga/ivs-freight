@@ -25,6 +25,7 @@ export class TaModalComponent {
 
   public closeModal() {
     this.modalActionTypeEmitter.emit('close');
+    $('.pac-container').remove();
     this.timeout = setTimeout(() => {
       this.ngbActiveModal.dismiss();
       clearTimeout(this.timeout);
