@@ -1,8 +1,7 @@
 import { Options } from '@angular-slider/ngx-slider';
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
@@ -21,6 +20,8 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
+
+  @Input() editData: any; 
   public driverForm: FormGroup;
 
   public tabs: any[] = [
@@ -108,6 +109,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.onBankSelected();
     this.onIncludePayroll();
     this.onPayTypeSelected();
+    this.onTwicTypeSelected();
   }
 
   public onModalAction(action: string): void {
@@ -117,6 +119,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       if (this.driverForm.invalid) {
         console.log(this.driverForm.value);
         this.inputService.markInvalid(this.driverForm);
+        
         return;
       }
       this.ngbActiveModal.close();
@@ -234,6 +237,24 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public onTwicTypeSelected() {
+    this.driverForm
+      .get('twic')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.inputService.changeValidators(
+            this.driverForm.get('twicExpDate')
+          );
+        } else {
+          this.inputService.changeValidators(
+            this.driverForm.get('twicExpDate'),
+            false
+          );
+        }
+      });
+  }
+
   public tabChange(event: any): void {
     this.selectedTab = event.id;
   }
@@ -245,12 +266,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       this.driverForm.get('isOwner').value &&
       this.selectedOwnerTab === 'company'
     ) {
-      this.driverForm.get('ein').setValidators([Validators.required]);
+      this.inputService.changeValidators(this.driverForm.get('ein'));
     } else {
-      this.driverForm.get('ein').clearValidators();
+      this.inputService.changeValidators(this.driverForm.get('ein'), false);
     }
-
-    this.driverForm.get('ein').updateValueAndValidity();
   }
 
   ngOnDestroy(): void {}

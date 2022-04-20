@@ -6,7 +6,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 3px 0px;
-    padding-right: 4px;
+    padding-right: 6px;
     cursor: pointer;
 
     .header-content {
@@ -38,6 +38,8 @@
     }
 
     .header-arrow {
+      position: relative;
+      bottom: 1px;
       svg {
         transform: rotate(0deg);
         transition: all 0.3s ease-in-out;

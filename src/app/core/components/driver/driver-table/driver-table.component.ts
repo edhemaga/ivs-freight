@@ -8,6 +8,8 @@ import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-col
 import { DriversQuery } from '../state/driver.query';
 import { DriversState } from '../state/driver.store';
 import { data } from 'jquery';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 
 @Component({
   selector: 'app-driver-table',
@@ -25,7 +27,7 @@ export class DriverTableComponent implements OnInit {
   public drivers: DriversState[] = [];
 
   constructor(
-    private customModalService: CustomModalService,
+    private modalService: ModalService,
     private driversQuery: DriversQuery
   ) {}
 
@@ -185,21 +187,20 @@ export class DriverTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      // this.customModalService.openModal(
-      //   DriverManageComponent,
-      //   {
-      //     data: {
-      //       type: 'new',
-      //     },
-      //   },
-      //   null,
-      //   {
-      //     size: 'small',
-      //   }
-      // );
+      this.modalService.openModal(DriverModalComponent, {
+        size: 'small',
+      });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setDriverData(event.tabData);
+    }
+  }
+
+  public onTableBodyActions(event: any) {
+    console.log(event);
+    if(event.type === 'edit') {
+      console.log("USO")
+      this.modalService.openModal(DriverModalComponent, {size: 'small'}, event);
     }
   }
 }

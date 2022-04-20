@@ -63,13 +63,13 @@ export class TaInputComponent
     }
   }
 
-  public handleAddressChange(address: Address) {
-    console.log(address);
-  }
+  // public handleAddressChange(address: Address) {
+  //   console.log(address);
+  // }
 
-  public options = {
-    componentRestrictions: {country: ['US', 'CA']},
-  };
+  // public options = {
+  //   componentRestrictions: {country: ['US', 'CA']},
+  // };
 
   get getSuperControl() {
     return this.superControl.control;

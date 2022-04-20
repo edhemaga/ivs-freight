@@ -1,6 +1,9 @@
 <div cdkDrag class="modal-container {{ customClass }}">
   <div cdkDragHandle class="modal-header">
-    <h5 class="modal-title">{{ modalTitle }}</h5>
+    <div class="modal-header-leftside">
+      <h5 class="modal-title">{{ modalTitle }}</h5>
+      <h5 class="edit-name" *ngIf="editData?.type === 'edit'">{{ editName }}</h5>
+    </div>
     <svg-icon
       class="modal-close"
       src="assets/svg/common/ic_x.svg"
@@ -11,7 +14,29 @@
   <div class="modal-body">
     <ng-content></ng-content>
   </div>
-  <div class="modal-footer">
+  <div
+    class="modal-footer"
+    [ngClass]="{ 'mutliple-buttons': editData?.type === 'edit' }"
+  >
+    <div class="left-side" *ngIf="editData?.type === 'edit'">
+      <button
+        (click)="onConfirm()"
+        class="modal-delete-btn"
+        ngbAutofocus
+        type="button"
+      >
+        Delete
+      </button>
+      <button
+        (click)="onConfirm()"
+        class="modal-deactivate-btn"
+        ngbAutofocus
+        type="button"
+      >
+        Deactivate
+      </button>
+    </div>
+
     <button
       (click)="onConfirm()"
       class="modal-save-btn"

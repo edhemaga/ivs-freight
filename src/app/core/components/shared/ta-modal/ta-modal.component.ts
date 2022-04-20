@@ -15,13 +15,20 @@ import {
 })
 export class TaModalComponent {
   @Input() modalTitle: string;
+  @Input() editName: string;
+  @Input() editData: any;
   @Input() customClass: string;
+
   private timeout = null;
 
   @Output() modalActionTypeEmitter: EventEmitter<string> =
     new EventEmitter<string>(null);
 
   constructor(private ngbActiveModal: NgbActiveModal) {}
+
+  ngOnInit() {
+    console.log(this.editData);
+  }
 
   public closeModal() {
     this.modalActionTypeEmitter.emit('close');

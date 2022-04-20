@@ -223,7 +223,7 @@
     (click)="toggleDropdownOptions()"
   ></svg-icon>
 
-  <input
+  <!-- <input
     *ngIf="template === 'address'"
     #placesRef="ngx-places"
     ngx-google-places-autocomplete
@@ -277,11 +277,10 @@
     (blur)="onBlur()"
     (focus)="onFocus()"
     (paste)="onPaste($event, inputConfig.maxLength)"
-  />
+  /> -->
 
   <!-- Input Control -->
   <input
-    *ngIf="template === 'default'"
     #input
     [type]="getInputType(inputConfig.type)"
     [id]="inputConfig.name"

@@ -1,5 +1,7 @@
 <app-ta-modal
-  [modalTitle]="'Add Driver'"
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Driver' : 'Edit Driver'"
+  [editName]="'Nikola Kovacevic'"
+  [editData]="editData"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher
@@ -72,7 +74,6 @@
           <div class="col-10">
             <app-ta-input
               formControlName="address"
-              [template]="'address'"
               [inputConfig]="{
                 name: 'Address',
                 type: 'text',
@@ -408,7 +409,12 @@
       <div class="m-tab" *ngIf="selectedTab === 3">
         <div
           class="row dropdown-row"
-          style="height: 194px; width: 456px; border: 1px solid black; margin: 0 auto;"
+          style="
+            height: 194px;
+            width: 456px;
+            border: 1px solid black;
+            margin: 0 auto;
+          "
         ></div>
         <div class="row last-row">
           <div class="col-2">
@@ -418,7 +424,7 @@
               [customClass]="'regular'"
             ></app-ta-checkbox>
           </div>
-          <div class="col-4">
+          <div class="col-4" *ngIf="driverForm.get('twic').value">
             <app-ta-input
               formControlName="twicExpDate"
               [inputConfig]="{
@@ -429,13 +435,16 @@
               }"
             ></app-ta-input>
           </div>
-          <div class="col-6 no-p-left">
+          <div
+            class="col-6 no-p-left"
+            [ngClass]="{ 'col-10': !driverForm.get('twic').value }"
+          >
             <app-ta-input
               formControlName="fuelCard"
               [inputConfig]="{
                 name: 'Fuel Card',
                 type: 'text',
-                label: 'Fuel Card'
+                label: 'Fuel Card #'
               }"
             ></app-ta-input>
           </div>
