@@ -2717,7 +2717,10 @@
 // GLOBAL CSS NEW FOR DISPATCHBOARD
 
 .dispatchboard-main-table{
+  width: 1200px;
+  overflow-x: auto;
   table{
+    width: 1435px !important;
     thead{
       th{
         height: 30px;
@@ -2753,6 +2756,12 @@
               }
             }
           }
+        }
+      }
+
+      tr{
+        td:nth-child(1), td:nth-child(2), td:nth-child(3){
+          position: absolute;
         }
       }
     }
@@ -2796,6 +2805,7 @@
   .empty-field{
     width: 34px;
     max-width: 34px;
+    min-width: 34px;
   }
 
   &.parking-opened{
