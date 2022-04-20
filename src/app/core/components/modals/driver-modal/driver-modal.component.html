@@ -12,7 +12,8 @@
     class="form-container"
     [ngClass]="{ 'tab-2': selectedTab === 2 }"
   >
-    <div class="animation-tabs" [@animationTabsModal]="selectedTab">
+    <div class="animation-three-tabs" [@animationTabsModal]="selectedTab">
+      <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
         <div class="row">
           <div class="col-6">
@@ -183,13 +184,15 @@
         <!-- Note -->
         <app-ta-input-note formControlName="note"></app-ta-input-note>
       </div>
-
+      <!-------------------------------- Pay Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
         <div class="divider"></div>
-        <app-ta-checkbox
-          formControlName="payroll"
-          [label]="'Include in Payroll'"
-        ></app-ta-checkbox>
+        <div class="payroll-checkbox">
+          <app-ta-checkbox
+            formControlName="payroll"
+            [label]="'Include in Payroll'"
+          ></app-ta-checkbox>
+        </div>
         <div class="custom-bank-row first-row">
           <div class="bank-field">
             <app-ta-input-dropdown
@@ -212,7 +215,7 @@
               [inputConfig]="{
                 name: 'Routing',
                 type: 'text',
-                label: 'Routing',
+                label: 'Routing #',
                 isDisabled: !isBankSelected,
                 isRequired: isBankSelected
               }"
@@ -224,14 +227,21 @@
               [inputConfig]="{
                 name: 'Account',
                 type: 'text',
-                label: 'Account',
+                label: 'Account #',
                 isDisabled: !isBankSelected,
                 isRequired: isBankSelected
               }"
             ></app-ta-input>
           </div>
         </div>
-        <div class="custom-row-paytype-notification">
+        <div
+          class="custom-row-paytype-notification"
+          [ngClass]="{ 'divide-margin': driverForm.get('payType').value }"
+          *ngIf="driverForm.get('payroll').value"
+          [@showHidePayroll]="
+            driverForm.get('payroll').value ? 'true' : 'false'
+          "
+        >
           <div class="paytype-field">
             <app-ta-input-dropdown
               formControlName="payType"
@@ -239,7 +249,7 @@
                 name: 'Input Dropdown',
                 type: 'text',
                 label: 'Pay type',
-                isRequired: isIncludePayroll,
+                isRequired: true,
                 isDropdown: true
               }"
               [options]="labelsPayType"
@@ -278,9 +288,161 @@
             </div>
           </div>
         </div>
+
+        <!-- Pay Type Per Mile -->
+        <div
+          class="paytype-permile"
+          *ngIf="driverForm.get('payType').value?.toLowerCase() === 'per mile'"
+          [@showHidePerMile]="
+            driverForm.get('payType').value?.toLowerCase() === 'per mile'
+              ? 'true'
+              : 'false'
+          "
+        >
+          <div class="permile-fields">
+            <p>Solo</p>
+            <app-ta-input
+              formControlName="soloEmptyMile"
+              [inputConfig]="{
+                name: 'Empty Mile',
+                type: 'text',
+                label: 'Empty Mile',
+                isRequired: true,
+                placeholderIcon: 'dollar'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="soloLoadedMile"
+              [inputConfig]="{
+                name: 'Loaded Mile',
+                type: 'text',
+                label: 'Loaded Mile',
+                isRequired: true,
+                placeholderIcon: 'dollar'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="soloPerStop"
+              [inputConfig]="{
+                name: 'Per Stop',
+                type: 'text',
+                label: 'Per Stop',
+                placeholderIcon: 'dollar'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="permile-fields">
+            <p>Team</p>
+            <app-ta-input
+              formControlName="teamEmptyMile"
+              [inputConfig]="{
+                name: 'Empty Mile',
+                type: 'text',
+                label: 'Empty Mile',
+                placeholderIcon: 'dollar'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="teamLoadedMile"
+              [inputConfig]="{
+                name: 'Loaded Mile',
+                type: 'text',
+                label: 'Loaded Mile',
+                placeholderIcon: 'dollar'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="teamPerStop"
+              [inputConfig]="{
+                name: 'Per Stop',
+                type: 'text',
+                label: 'Per Stop',
+                placeholderIcon: 'dollar'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+
+        <!-- Pay Type Commission -->
+        <div
+          class="paytype-commission"
+          *ngIf="
+            driverForm.get('payType').value?.toLowerCase() === 'commission'
+          "
+          [@showHideCommission]="
+            driverForm.get('payType').value?.toLowerCase() === 'commission'
+              ? 'true'
+              : 'false'
+          "
+        >
+          <div class="paytype-field">
+            <app-ta-ngx-slider
+              [sliderName]="'Solo'"
+              [sliderOptions]="soloSliderOptions"
+              [startedValue]="driverForm.get('commissionSolo')?.value"
+              [customClass]="
+                'custom-slider-with-percentage custom-driver-modal'
+              "
+              (onUserValueChange)="
+                driverForm.get('commissionSolo').setValue($event)
+              "
+            ></app-ta-ngx-slider>
+          </div>
+          <div class="paytype-field">
+            <app-ta-ngx-slider
+              [sliderName]="'Team'"
+              [sliderOptions]="teamSliderOptions"
+              [startedValue]="driverForm.get('commissionTeam')?.value"
+              [customClass]="
+                'custom-slider-with-percentage custom-driver-modal'
+              "
+              (onUserValueChange)="
+                driverForm.get('commissionTeam').setValue($event)
+              "
+            ></app-ta-ngx-slider>
+          </div>
+        </div>
       </div>
 
-      <div class="m-tab" *ngIf="selectedTab === 3"></div>
+      <div class="m-tab" *ngIf="selectedTab === 3">
+        <div
+          class="row dropdown-row"
+          style="height: 226px; background-color: red"
+        >
+          DROPDOWN IMAGE
+        </div>
+        <div class="row last-row"></div>
+        <app-ta-modal-card [cardName]="'Emergency Contact'">
+          <div class="emergency-contact">
+            <app-ta-input
+              formControlName="emergencyContactName"
+              [inputConfig]="{
+                name: 'Name',
+                type: 'text',
+                label: 'Name'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="emergencyContactPhone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="emergencyContactRelationship"
+              [inputConfig]="{
+                name: 'Relationship',
+                type: 'text',
+                label: 'Relationship'
+              }"
+            ></app-ta-input>
+          </div>
+        </app-ta-modal-card>
+      </div>
     </div>
   </form>
 </app-ta-modal>

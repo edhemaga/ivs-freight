@@ -307,7 +307,8 @@
       'invalid-submit':
         inputConfig.isRequired &&
         getSuperControl.invalid &&
-        getSuperControl.touched
+        getSuperControl.touched,
+      'dollar-placeholderIcon': inputConfig.placeholderIcon === 'dollar'
     }"
     src="{{ getPlaceholderIcon(inputConfig.placeholderIcon) }}"
   ></svg-icon>

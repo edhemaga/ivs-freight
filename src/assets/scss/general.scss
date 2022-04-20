@@ -34,72 +34,72 @@ body {
   display: none !important;
 }
 
-ngx-slider.ngx-slider {
-  margin: 10px 0 1.75rem 8px;
-  max-width: 428px;
+// ngx-slider.ngx-slider {
+//   margin: 10px 0 1.75rem 8px;
+//   max-width: 428px;
 
-  .ngx-slider-bar {
-    height: 6px;
-    background-color: rgba(0, 0, 0, 0.1);
-  }
+//   .ngx-slider-bar {
+//     height: 6px;
+//     background-color: rgba(0, 0, 0, 0.1);
+//   }
 
-  .ngx-slider-selection {
-    background-color: #97A8DC;
-    visibility: visible;
-  }
+//   .ngx-slider-selection {
+//     background-color: #97A8DC;
+//     visibility: visible;
+//   }
 
-  .ngx-slider-pointer {
-    cursor: pointer;
-    background-color: #fff;
-    z-index: 3;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
-    width: 44px;
-    height: 24px;
-    border-radius: 2px;
-    top: -9px;
+//   .ngx-slider-pointer {
+//     cursor: pointer;
+//     background-color: #fff;
+//     z-index: 3;
+//     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
+//     width: 44px;
+//     height: 24px;
+//     border-radius: 2px;
+//     top: -9px;
 
-    &.ngx-slider-active {
-      outline: none;
-      border: none;
-    }
-  }
+//     &.ngx-slider-active {
+//       outline: none;
+//       border: none;
+//     }
+//   }
 
-  .ngx-slider-pointer:after {
-    content: none;
-  }
+//   .ngx-slider-pointer:after {
+//     content: none;
+//   }
 
-  .ngx-slider-model-value {
-    color: #536BC2;
-    font-weight: 500;
-    font-size: 14px;
-    letter-spacing: 0;
-    font-family: 'Montserrat', sans-serif !important;
-    //margin-left: -1px;
-    top: -8px;
-    z-index: 9;
-    text-align: center;
+//   .ngx-slider-model-value {
+//     color: #536BC2;
+//     font-weight: 500;
+//     font-size: 14px;
+//     letter-spacing: 0;
+//     font-family: 'Montserrat', sans-serif !important;
+//     //margin-left: -1px;
+//     top: -8px;
+//     z-index: 9;
+//     text-align: center;
 
-    &:after {
-      position: relative;
-      content: '%';
-      color: #91A4C7;
-      font-weight: 500;
-      font-size: 14px;
-      letter-spacing: 0;
-      font-family: 'Montserrat', sans-serif !important;
-    }
-  }
+//     &:after {
+//       position: relative;
+//       content: '%';
+//       color: #91A4C7;
+//       font-weight: 500;
+//       font-size: 14px;
+//       letter-spacing: 0;
+//       font-family: 'Montserrat', sans-serif !important;
+//     }
+//   }
 
-  .ngx-slider-floor,
-  .ngx-slider-ceil {
-    display: none;
-  }
+//   .ngx-slider-floor,
+//   .ngx-slider-ceil {
+//     display: none;
+//   }
 
-  .ngx-slider-bubble {
-    bottom: 7px;
-    padding: 1px 4px !important;
-  }
-}
+//   .ngx-slider-bubble {
+//     bottom: 7px;
+//     padding: 1px 4px !important;
+//   }
+// }
 
 .ta-select-wrapper {
   .ng-arrow {

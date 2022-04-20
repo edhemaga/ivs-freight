@@ -1,6 +1,6 @@
 @import "src/theme/variables";
 
-// New form container
+//------------------------ Form Container Classes ---------------------------------------------------
 .form-container {
   margin-top: 26px;
 
@@ -12,7 +12,7 @@
 
   .row {
     margin-bottom: 32px !important;
-    
+
     & > * {
       padding: 0px;
     }
@@ -20,6 +20,10 @@
 
   .first-row {
     margin-top: 26px;
+  }
+
+  .dropdown-row {
+    margin-bottom: 28px !important;
   }
 
   .last-row {
@@ -33,6 +37,25 @@
     background-color: #f3f3f3;
   }
 
+  //------------------------ TABS ---------------------------------------------------
+  &.tab-2 {
+    margin-top: 12px;
+  }
+
+  .animation-three-tabs {
+    position: relative;
+    display: grid;
+    grid-template-rows: 100%;
+    grid-template-columns: repeat(3, 100%);
+  }
+
+  .animation-two-tabs {
+    position: relative;
+    display: grid;
+    grid-template-rows: 100%;
+    grid-template-columns: repeat(2, 100%);
+  }
+
   //------------------------ Custom Schedule Of Inputs ------------------------------
 
   // Bank Inputs
@@ -42,13 +65,18 @@
     column-gap: 12px;
     margin-bottom: 32px;
   }
+
   // Pay Type & Notifications
   .custom-row-paytype-notification {
     display: grid;
     grid-template-columns: 151px 1fr;
     column-gap: 22px;
     align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 20px;
+
+    &.divide-margin {
+      margin-bottom: 0px;
+    }
 
     .paytype-field-notification {
       display: grid;
@@ -63,7 +91,81 @@
         font-weight: 500;
         color: #919191;
       }
+
+      .btn-group {
+        margin: 0px;
+        background: #f3f3f3;
+        border: none;
+        outline: none;
+        padding: 2px;
+        height: 26px;
+
+        .btn {
+          font-size: 12px;
+          font-weight: bold;
+          border: none;
+          outline: none;
+          color: #b7b7b7;
+          height: 22px;
+          border-radius: 1px;
+          padding: 2px 8px;
+
+          &:nth-child(2) {
+            margin: 0 2px;
+          }
+
+          &.active {
+            background: #ffffff;
+            color: #536bc2;
+          }
+        }
+      }
     }
+  }
+
+  // PayType Commission
+  .paytype-commission {
+    display: grid;
+    grid-template-columns: 204px 213px;
+    grid-template-rows: 22px;
+    grid-column-gap: 27px;
+    column-gap: 27px;
+    padding: 0 6px;
+    margin-bottom: 12px;
+  }
+
+  // PayType Per Mile
+  .paytype-permile {
+    padding-left: 6px;
+    .permile-fields {
+      display: grid;
+      grid-template-columns: auto repeat(3,124px);
+      grid-template-rows: 26px;
+      margin-bottom: 32px;
+      column-gap: 12px;
+      align-items: center;
+      
+      p {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+        color: #6c6c6c;
+      }
+
+      &:nth-last-child(1) {
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  // Emergency Contact
+  .emergency-contact {
+    display: grid;
+    grid-template-columns: 150px 170px 112px;
+    column-gap: 12px;
+    margin-bottom: 10px;
+    margin-top: 14px;
+    transition: all 0.3s ease-in-out;
   }
 }
 
@@ -298,9 +400,9 @@ app-ta-select {
 //   .ng-select-container.ng-has-value
 //   .ng-value-container
 //   .ng-placeholder {
-  // color: #28529f !important;
-  // opacity: 1 !important;
-  // font-weight: 600 !important;
+// color: #28529f !important;
+// opacity: 1 !important;
+// font-weight: 600 !important;
 // }
 
 // .ng-select .ng-clear-wrapper {
@@ -431,7 +533,7 @@ app-ta-select {
 // }
 
 // select {
-  //background: $input-bg !important;
+//background: $input-bg !important;
 // }
 
 // .form-select {
@@ -547,7 +649,6 @@ app-ta-select {
 //   }
 // }
 
-
 // .fatality-injuries-padding {
 //   padding-left: 0;
 // }
@@ -585,4 +686,3 @@ app-ta-select {
     left: -1000px;
   }
 }
-

@@ -17,6 +17,19 @@
         color: #919191;
         font-weight: 800;
         font-size: 14px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        &.no-counter {
+          margin-left: 6px;
+        }
+
+        &.active {
+          color: #6c6c6c;
+          transition: all 0.3s ease-in-out;
+        }
       }
 
       .header-svg {

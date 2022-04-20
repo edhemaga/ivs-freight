@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+
 import { card_modal_animation } from '../animations/card-modal.animation';
 
 @Component({

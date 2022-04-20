@@ -1,14 +1,4 @@
 .form-container {
-  &.tab-2 {
-    margin-top: 12px;
-  }
-
-  .animation-tabs {
-    position: relative;
-    display: grid;
-    grid-template-rows: 100%;
-    grid-template-columns: repeat(3, 100%);
-  }
 
   // Is Owner On Tab 1
   .custom-row-owner {
@@ -19,6 +9,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 4px;
+      line-height: 18px;
 
       .owner-header-arrow {
         svg {
@@ -33,6 +24,7 @@
         }
       }
     }
+
     .owner-body {
       .animation-owner-tabs {
         position: relative;
@@ -52,33 +44,13 @@
       }
     }
   }
-}
 
-.btn-group {
-  margin: 0px;
-  background: #f3f3f3;
-  border: none;
-  outline: none;
-  padding: 2px;
-  height: 26px;
-
-  .btn {
-    font-size: 12px;
-    font-weight: bold;
-    border: none;
-    outline: none;
-    color: #b7b7b7;
-    height: 22px;
-    border-radius: 1px;
-    padding: 2px 8px;
-
-    &:nth-child(2) {
-      margin: 0 2px;
-    }
-
-    &.active {
-      background: #ffffff;
-      color: #536bc2;
-    }
+  // Payroll Checkbox
+  .payroll-checkbox {
+    margin-top: 8px;
+    margin-left: 6px;
+    line-height: 18px;
   }
 }
+
+

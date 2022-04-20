@@ -1,12 +1,16 @@
 import { BehaviorSubject, Subject } from 'rxjs';
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
 
 @Injectable()
 export class TaInputService {
-
   public onClearInputSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
@@ -17,7 +21,7 @@ export class TaInputService {
     new BehaviorSubject<boolean>(false);
 
   public addDropdownItemSubject: BehaviorSubject<boolean> =
-  new BehaviorSubject<boolean>(false);
+    new BehaviorSubject<boolean>(false);
 
   constructor(
     public notificationService: NotificationService,
@@ -55,5 +59,21 @@ export class TaInputService {
       });
       return true;
     }
+  }
+
+  public changeValidators(
+    formControl: AbstractControl,
+    hasValidation: boolean = true,
+    validators: any[] = []
+  ) {
+    const validation = [Validators.required, ...validators];
+
+    if (hasValidation) {
+      formControl.setValidators(validation);
+    } else {
+      formControl.clearValidators();
+      formControl.reset();
+    }
+    formControl.updateValueAndValidity();
   }
 }

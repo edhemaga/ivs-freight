@@ -15,7 +15,10 @@ export class TaCheckboxComponent implements OnInit, ControlValueAccessor {
     this.superControl.valueAccessor = this;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log("CHECKBOX")
+    console.log(this.getSuperControl.value)
+  }
 
   get getSuperControl() {
     return this.superControl.control;

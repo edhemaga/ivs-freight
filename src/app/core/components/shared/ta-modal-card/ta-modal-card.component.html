@@ -10,7 +10,7 @@
         [countHeight]="'24px'"
         [countWidth]="'24px'"
       ></app-ta-counter>
-      <span class="header-text">{{ cardName }}</span>
+      <span class="header-text" [ngClass]="{'no-counter': !hasCounter, 'active': isCardOpen}">{{ cardName }}</span>
       <svg-icon
         *ngIf="cardSvg"
         class="header-svg"
