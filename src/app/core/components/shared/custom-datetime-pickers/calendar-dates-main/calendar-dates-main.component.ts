@@ -1,8 +1,9 @@
 import {CalendarScrollService} from './../calendar-scroll.service';
-import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
 import {CdkVirtualScrollViewport, VIRTUAL_SCROLL_STRATEGY} from "@angular/cdk/scrolling";
 import {FULL_SIZE, MobileCalendarStrategy} from "./../date-calendars/calendar_strategy";
 import moment from "moment";
+import { Subject, takeUntil } from 'rxjs';
 
 const SCROLL_DEBOUNCE_TIME = 80;
 
@@ -42,6 +43,8 @@ export class CalendarDatesMainComponent implements OnInit {
   @ViewChild("monthsScrollRef", {static: true})
   public virtualScrollViewport: CdkVirtualScrollViewport;
 
+  private destroy$: Subject<void> = new Subject<void>();
+
   monthNames = [
     'January',
     'February',
@@ -66,11 +69,15 @@ export class CalendarDatesMainComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.calendarService.scrollToAutoIndex.subscribe(indx => {
+    this.calendarService.scrollToAutoIndex
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(indx => {
       this.virtualScrollViewport.scrollToIndex(indx, "auto");
     });
 
-    this.calendarService.scrolledIndexChange.subscribe(res => {
+    this.calendarService.scrolledIndexChange
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(res => {
       if (res.type != "main" && this.calendarService.selectedScroll != 'main') {
         const sizeTimes = FULL_SIZE / res.cycleSize;
         const newScrollSize = Math.ceil(sizeTimes * res.scrollOffset);
@@ -78,15 +85,17 @@ export class CalendarDatesMainComponent implements OnInit {
       }
     });
 
-    this.calendarService.scrollToDate.subscribe(res => {
+    this.calendarService.scrollToDate
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(res => {
       setTimeout(() => {
         if (res) {
           const indx = this.findIndexInMonth(res);
           this.virtualScrollViewport.scrollToIndex(indx);
         } else {
+          console.log(this.virtualScrollViewport.scrollToIndex);
           this.virtualScrollViewport.scrollToIndex(this.currentIndex);
         }
-        
       });
     });
   }
@@ -120,8 +129,13 @@ export class CalendarDatesMainComponent implements OnInit {
 
   public selectDay(data): void {
     const selectedMonth = this.months[data.index];
-    const new_date = moment(new Date(selectedMonth.getFullYear(), selectedMonth.getMonth(), data.day)).format("MM/DD/YY");
-    this.calendarService.dateChanged.next(new_date.split("/"));
+    const new_date = moment(new Date(selectedMonth.getFullYear(), selectedMonth.getMonth(), data.day)).format();
+    this.calendarService.dateChanged.next(new_date);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

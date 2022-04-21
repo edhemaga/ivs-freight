@@ -2,21 +2,7 @@ import {CalendarScrollService} from './../calendar-scroll.service';
 import {Component, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import {CalendarLeftStrategy, FULL_SIZE} from './calendar_left_strategy';
 import {CdkVirtualScrollViewport, VIRTUAL_SCROLL_STRATEGY} from "@angular/cdk/scrolling";
-
-const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
-];
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-calendar-left',
@@ -37,15 +23,21 @@ export class CalendarLeftComponent implements OnInit {
   public virtualScrollViewport: CdkVirtualScrollViewport;
   isHovered: boolean;
 
+  private destroy$: Subject<void> = new Subject<void>();
+
   constructor(private calendarService: CalendarScrollService) {
   }
 
   ngOnInit(): void {
-    this.calendarService.scrollToAutoIndex.subscribe(indx => {
+    this.calendarService.scrollToAutoIndex
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(indx => {
       this.virtualScrollViewport.scrollToIndex(indx, "auto");
     });
 
-    this.calendarService.scrolledIndexChange.subscribe(res => {
+    this.calendarService.scrolledIndexChange
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(res => {
       if (res.type != "left" && this.calendarService.selectedScroll != 'left') {
         const sizeTimes = FULL_SIZE / res.cycleSize;
         const newScrollSize = sizeTimes * res.scrollOffset;
@@ -53,7 +45,9 @@ export class CalendarLeftComponent implements OnInit {
       }
     });
 
-    this.calendarService.scrollToDate.subscribe(res => {
+    this.calendarService.scrollToDate
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(res => {
       setTimeout(() => {
         if (res) {
           const indx = this.findIndexInMonth(res);
@@ -70,13 +64,6 @@ export class CalendarLeftComponent implements OnInit {
     return indx;
   }
 
-  getMonth(index: any): any {
-    if (MONTHS[index.getMonth()] == "January" || this.listPreview == "month_list") {
-      return index.getFullYear();
-    }
-    return MONTHS[index.getMonth()].slice(0, 3);
-  }
-
   public onScrollChanged(data): void {
     this.calendarService.index$.next(data);
   }
@@ -87,6 +74,12 @@ export class CalendarLeftComponent implements OnInit {
 
   mouseOverSetItem(){
     this.calendarService.scrolledScrollItem = 'left';
+  }
+
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

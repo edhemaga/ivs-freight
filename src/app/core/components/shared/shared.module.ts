@@ -74,6 +74,7 @@ import { DriverModalComponent } from '../modals/driver-modal/driver-modal.compon
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
 import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
 import { TaInputService } from './ta-input/ta-input.service';
+import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
 
 
 @NgModule({
@@ -90,6 +91,7 @@ import { TaInputService } from './ta-input/ta-input.service';
     HosTimePipe,
     CdkIdPipe,
     CdkConnectPipe,
+    CalendarMonthsPipe,
     HistoryDataComponent,
     TabSwitcherComponent,
     StatusSwitcherComponent,
@@ -183,6 +185,7 @@ import { TaInputService } from './ta-input/ta-input.service';
     HosTimePipe,
     CdkIdPipe,
     CdkConnectPipe,
+    CalendarMonthsPipe,
     SortableModule,
     GridModule,
     PDFModule,
@@ -235,7 +238,7 @@ import { TaInputService } from './ta-input/ta-input.service';
     TaCheckboxComponent,
     TaModalCardComponent
   ],
-  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe, TaInputService],
+  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe,CalendarMonthsPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe, TaInputService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {

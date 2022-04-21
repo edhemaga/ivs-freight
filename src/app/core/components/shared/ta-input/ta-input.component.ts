@@ -14,17 +14,21 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
+import {NgbDropdown, NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
+import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
-  styleUrls: ['./ta-input.component.scss']
+  styleUrls: ['./ta-input.component.scss'],
+  providers: [NgbDropdownConfig]
 })
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor
 {
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
+  @ViewChild('t2') t2: any;
   @Input() template: string = 'default';
 
   public focusInput: boolean = false;
@@ -42,12 +46,21 @@ export class TaInputComponent
   constructor(
     @Self() public superControl: NgControl,
     private changeDetection: ChangeDetectorRef,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private calendarService: CalendarScrollService
   ) {
     this.superControl.valueAccessor = this;
   }
 
   ngOnInit(): void {
+    this.calendarService.dateChanged.subscribe(date => {
+      if(this.inputConfig.type === "date"){
+        this.onChange(new Date(date));
+        this.t2.close();
+      }
+    });
+
+
     if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
       this.inputService.dropdownAddModeSubject
         .pipe(untilDestroyed(this))

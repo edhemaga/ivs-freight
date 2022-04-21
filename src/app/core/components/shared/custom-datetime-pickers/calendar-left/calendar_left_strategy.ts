@@ -7,7 +7,7 @@ import { CalendarScrollService } from "../calendar-scroll.service";
 export const STARTING_YEAR = 1905;
 export const RANGE = 2352;
 
-export const FULL_SIZE = 22;
+export const FULL_SIZE = 24;
 const BUFFER = 500;
 export const CYCLE = getCycle();
 export const CYCLE_HEIGHT = reduceCycle();
@@ -48,6 +48,8 @@ export class CalendarLeftStrategy implements VirtualScrollStrategy {
   private viewport: CdkVirtualScrollViewport | null = null;
 
   attach(viewport: CdkVirtualScrollViewport) {
+    console.log("ATTAh");
+    console.log(viewport);
     this.viewport = viewport;
     this.viewport.setTotalContentSize(CYCLE_HEIGHT * 7);
     this.updateRenderedRange(this.viewport);
@@ -77,6 +79,8 @@ export class CalendarLeftStrategy implements VirtualScrollStrategy {
   }
 
   scrollToIndex(index: number, behavior: ScrollBehavior) {
+    console.log("WHAT IS THIS");
+    console.log(this.viewport);
     if (this.viewport) {
       this.viewport.scrollToOffset(this.getOffsetForIndex(index), behavior);
     }
