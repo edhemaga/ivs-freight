@@ -1,5 +1,12 @@
+import { distinctUntilChanged } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
-import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -20,8 +27,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
-
-  @Input() editData: any; 
+  @Input() editData: any;
   public driverForm: FormGroup;
 
   public tabs: any[] = [
@@ -119,7 +125,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       if (this.driverForm.invalid) {
         console.log(this.driverForm.value);
         this.inputService.markInvalid(this.driverForm);
-        
+
         return;
       }
       this.ngbActiveModal.close();
@@ -130,27 +136,31 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.driverForm = this.formBuilder.group({
       firstName: [null, [Validators.required]],
       lastName: [null, [Validators.required]],
-      phone: [null, [Validators.required]],
+      phone: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/),
+        ],
+      ],
       email: [null, [Validators.required, Validators.email]],
-      ssn: [null, [Validators.required]],
+      ssn: [
+        null,
+        [Validators.required, Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/)],
+      ],
       note: [null],
       dateOfBirth: [null, [Validators.required]],
-      offDutyLocations: [null], //Array<CreateOffDutyLocationCommand> | null;
+      offDutyLocations: [null], //Array<CreateOffDutyLocationCommand> | null; TODO:
       isOwner: [false],
-      ownerId: [null], //number | null;
-      ownerType: [null], //OwnerType;
-      ein: [null],
-      bussinesName: [null],
-      city: [null],
-      state: [null],
+      ownerId: [null], //number | null; TODO:
+      ownerType: [null], //OwnerType; TODO:
+      ein: [null, [Validators.pattern(/^\d{2}\-\d{7}$/)]],
+      bussinesName: [null], //TODO:
       address: [null, [Validators.required]],
-      country: [null],
-      zipCode: [null],
-      stateShortName: [null],
-      addressUnit: [null],
+      addressUnit: [null, [Validators.maxLength(6)]],
       bankId: [null, Validators.required], //number | null;
-      account: [null],
-      routing: [null],
+      account: [null, [Validators.minLength(4), Validators.maxLength(17)]],
+      routing: [null, [Validators.minLength(9), Validators.maxLength(9)]],
       payroll: [true],
       payType: [null, Validators.required],
       mailNotification: [true],
@@ -173,10 +183,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     });
   }
 
+  // city: [null],
+  // state: [null],
+  // country: [null],
+  // zipCode: [null],
+  // stateShortName: [null],
+
   public onIncludePayroll(): void {
     this.driverForm
       .get('payroll')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(this.driverForm.get('payType'));
@@ -192,7 +208,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public onBankSelected(): void {
     this.driverForm
       .get('bankId')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
         if (value) {
           this.isBankSelected = true;
@@ -215,7 +231,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public onPayTypeSelected(): void {
     this.driverForm
       .get('payType')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
         if (value?.toLowerCase() === 'per mile') {
           this.inputService.changeValidators(
@@ -240,8 +256,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public onTwicTypeSelected() {
     this.driverForm
       .get('twic')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
+        console.log("TWIC")
+        console.log(value)
         if (value) {
           this.inputService.changeValidators(
             this.driverForm.get('twicExpDate')
@@ -252,6 +270,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             false
           );
         }
+      });
+  }
+
+  public handleAddress() {
+    this.driverForm
+      .get('address')
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((value) => {
+        console.log(value);
       });
   }
 
@@ -266,7 +293,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       this.driverForm.get('isOwner').value &&
       this.selectedOwnerTab === 'company'
     ) {
-      this.inputService.changeValidators(this.driverForm.get('ein'));
+      this.inputService.changeValidators(this.driverForm.get('ein'), true);
     } else {
       this.inputService.changeValidators(this.driverForm.get('ein'), false);
     }

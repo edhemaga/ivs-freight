@@ -38,8 +38,7 @@ export class TaInputDropdownComponent
 
   constructor(
     @Self() public superControl: NgControl,
-    private inputService: TaInputService,
-    private changeDetection: ChangeDetectorRef
+    private inputService: TaInputService
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -48,48 +47,45 @@ export class TaInputDropdownComponent
     this.originalOptions = this.options;
 
     this.getSuperControl.valueChanges
-      .pipe(distinctUntilChanged(),untilDestroyed(this))
+      .pipe(untilDestroyed(this))
       .subscribe((term) => {
-        if(!this.activeItem) {
-          this.search(term)
-          console.log("VALUE CHANGES ", term);
-          console.log("INPUT CONFIG ", this.inputConfig);
-          console.log("CONTROL: ", this.getSuperControl.value)
+        if (!this.activeItem) {
+          this.search(term);
         }
       });
 
     this.inputService.onClearInputSubject
-      .pipe(debounceTime(50), distinctUntilChanged(), untilDestroyed(this))
+      .pipe(debounceTime(50), untilDestroyed(this))
       .subscribe((action: boolean) => {
-        this.onClearSearch();
-        console.log("CLEARING DROPDOWN")
+        if (action) {
+          this.onClearSearch();
+        }
       });
 
     this.inputService.dropDownShowHideSubject
-      .pipe(distinctUntilChanged(), untilDestroyed(this))
+      .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
         this.toggleDropdownOptions(action);
         if (!action) {
-          const index = this.originalOptions.findIndex(
-            (item) => item.name === this.getSuperControl.value
-          );
-          if (index === -1) {
-            this.onClearSearch();
+          if (this.activeItem) {
+            this.getSuperControl.setValue(this.activeItem.name);
+          } 
+          else {
+            const index = this.originalOptions.findIndex(
+              (item) => item.name === this.getSuperControl.value
+            );
+            if (index === -1) {
+              this.onClearSearch();
+            }
           }
-        }
-        else {
+        } else {
           this.inputConfig = {
             ...this.inputConfig,
-            placeholder: this.getSuperControl.value
-          }
+            placeholder: this.getSuperControl.value ? this.getSuperControl.value : this.activeItem.name,
+          };
           this.getSuperControl.setValue(null);
         }
-
-        console.log("SHOWHIDE DROPDOWN ", action);
-        console.log("INPUT CONFIG ", this.inputConfig);
-        console.log("CONTROL: ", this.getSuperControl.value)
       });
-
 
     if (this.canAddNew) {
       this.inputService.addDropdownItemSubject
@@ -98,39 +94,7 @@ export class TaInputDropdownComponent
           if (action) {
             this.addNewItem();
           }
-        console.log("ADDNEW DROPDOWN ", action);
         });
-    }
-
-    
-  }
-
-  public onDropDownShowHideSubject(action: boolean) {
-    this.toggleDropdownOptions(action);
-    if (!action) {
-      const index = this.originalOptions.findIndex(
-        (item) => item.name === this.getSuperControl.value
-      );
-      if (index === -1) {
-        this.onClearSearch();
-      }
-    }
-    else {
-      this.inputConfig = {
-        ...this.inputConfig,
-        placeholder: this.getSuperControl.value
-      }
-      this.getSuperControl.setValue(null);
-    }
-  }
-
-  public onClearInputSubject(action: boolean) {
-    this.onClearSearch();
-  }
-
-  public addDropdownItemSubject(action: boolean) {
-    if (action) {
-      this.addNewItem();
     }
   }
 
@@ -194,11 +158,6 @@ export class TaInputDropdownComponent
       ...this.inputConfig,
       placeholder: '',
     };
-    console.log("CLEAR")
-    console.log(this.options)
-    console.log(this.activeItem)
-    console.log(this.getSuperControl)
-    console.log(this.inputConfig)
   }
 
   public addNewItem(): void {

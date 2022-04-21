@@ -49,6 +49,8 @@ ngb-modal-window[aria-hidden="true"] {
         padding: 12px;
         padding-bottom: 6px;
         border: none;
+        cursor: -webkit-grab;
+        cursor: grab;
 
         .modal-header-leftside {
           display: flex;
@@ -67,7 +69,7 @@ ngb-modal-window[aria-hidden="true"] {
         .edit-name {
           font-size: 18px;
           font-weight: 500;
-          color: #6C6C6C;
+          color: #6c6c6c;
           margin: 0px;
           margin-left: 6px;
         }
@@ -98,7 +100,6 @@ ngb-modal-window[aria-hidden="true"] {
       .modal-footer {
         padding: 12px;
         border: none;
-        
 
         &.mutliple-buttons {
           display: flex;

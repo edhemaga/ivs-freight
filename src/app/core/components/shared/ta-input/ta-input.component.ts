@@ -17,7 +17,7 @@ import { TaInputService } from './ta-input.service';
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
-  styleUrls: ['./ta-input.component.scss']
+  styleUrls: ['./ta-input.component.scss'],
 })
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor
@@ -50,7 +50,7 @@ export class TaInputComponent
       this.inputService.dropdownAddModeSubject
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
-          if(action) {
+          if (action) {
             this.isDropdownOptionsActive = false;
             this.isDropdownAddModeActive = action;
             clearTimeout(this.timeout);
@@ -66,9 +66,7 @@ export class TaInputComponent
   }
 
   public writeValue(obj: any): void {
-    if(this.input) {
-      this.input.nativeElement.value = obj;
-    }
+    this.input.nativeElement.value = obj;
   }
 
   // RegisterOnChange & onChange
@@ -91,10 +89,12 @@ export class TaInputComponent
       this.waitValidation = true;
     }
 
+    // Password
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
     }
 
+    // Dropdown
     if (this.inputConfig.isDropdown && !this.isDropdownAddModeActive) {
       this.inputService.dropDownShowHideSubject.next(true);
       this.isDropdownOptionsActive = true;
@@ -124,6 +124,7 @@ export class TaInputComponent
       }
     }
 
+    // Password
     if (this.inputConfig.type === 'password') {
       this.timeout = setTimeout(() => {
         this.isVisiblePasswordEye = false;
@@ -131,21 +132,21 @@ export class TaInputComponent
       }, 150);
     }
 
+    // Dropdown
     if (this.inputConfig.isDropdown) {
-
-      if(!this.isDropdownAddModeActive) {
+      if (!this.isDropdownAddModeActive) {
         this.timeout = setTimeout(() => {
           this.inputService.dropDownShowHideSubject.next(false);
+          this.isDropdownOptionsActive = false;
+          this.changeDetection.detectChanges();
         }, 150);
-      }
-      else {
+      } else {
         this.timeout = setTimeout(() => {
           this.isDropdownAddModeActive = false;
           this.inputService.dropDownShowHideSubject.next(false);
           this.changeDetection.detectChanges();
         }, 250);
       }
-   
     }
   }
 
@@ -169,13 +170,15 @@ export class TaInputComponent
 
   public toggleDropdownOptions() {
     this.isDropdownOptionsActive = !this.isDropdownOptionsActive;
+
     this.inputService.dropDownShowHideSubject.next(
       this.isDropdownOptionsActive
     );
 
     if (this.isDropdownOptionsActive) {
       clearTimeout(this.timeout);
-      this.setInputCursorAtTheEnd(this.input.nativeElement);
+      this.input.nativeElement.focus();
+      this.focusInput = true;
     }
   }
 
@@ -224,15 +227,41 @@ export class TaInputComponent
   public manipulateWithInput(event: KeyboardEvent): void {
     // Check different user input typing
     if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
-      this.inputTypingPattern(event, true, false, true, false);
+      this.inputTypingPattern(event, true, false, true, false, true);
     }
 
     if (['username'].includes(this.inputConfig.name.toLowerCase())) {
-      this.inputTypingPattern(event, true, true, false, false);
+      this.inputTypingPattern(event, true, true, false, false, true);
+    }
+
+    if (
+      ['first name', 'last name', 'name', 'relationship'].includes(this.inputConfig.name.toLowerCase())
+    ) {
+      this.inputTypingPattern(event, true, false, true);
+    }
+
+    if (['address unit'].includes(this.inputConfig.name.toLowerCase())) {
+      this.inputTypingPattern(event, true, true, true);
+    }
+
+    if (['bussines name'].includes(this.inputConfig.name.toLowerCase())) {
+      this.inputTypingPattern(event, true, true, true, false, true, true);
+    }
+
+    if (
+      [
+        'routing number',
+        'account number',
+        'empty mile',
+        'loaded mile',
+        'per stop',
+      ].includes(this.inputConfig.name.toLowerCase())
+    ) {
+      this.inputTypingPattern(event, false, true, false);
     }
 
     if (['email'].includes(this.inputConfig.name.toLowerCase())) {
-      this.inputTypingPattern(event, true, true, false, true);
+      this.inputTypingPattern(event, false, false, false, true);
     }
   }
 
@@ -241,16 +270,44 @@ export class TaInputComponent
     characters: boolean,
     numbers: boolean,
     space: boolean,
-    email: boolean
+    email?: boolean,
+    pointDash?: boolean,
+    specialCharacters?: boolean
   ): void {
-    if (characters && !numbers && space && !email) {
-      this.inputWithSpaceTyping(event);
+   
+    if(characters && !numbers && space && !email && pointDash && !specialCharacters) {
       this.inputCharactersTyping(event);
+      this.inputWithSpaceTyping(event);
+      this.inputPointDash(event);
     }
 
-    if (characters && numbers && !space && !email) {
-      this.inputNoSpaceTyping(event);
-      this.inputCharactersNumberTyping(event);
+    if(characters && numbers && !space && !email && pointDash && !specialCharacters) {
+      this.inputCharactersTyping(event);
+      this.inputNumbersTyping(event);
+      this.inputPointDash(event);
+    }
+
+    if(characters && !numbers && space && !email && !pointDash && !specialCharacters) {
+      this.inputCharactersTyping(event);
+      this.inputWithSpaceTyping(event);
+    }
+
+    if(characters && numbers && space && !email && !pointDash && !specialCharacters) {
+      this.inputCharactersTyping(event);
+      this.inputNumbersTyping(event);
+      this.inputWithSpaceTyping(event);
+    }
+
+    if(characters && numbers && space && !email && pointDash && specialCharacters) {
+      this.inputCharactersTyping(event);
+      this.inputNumbersTyping(event);
+      this.inputWithSpaceTyping(event);
+      this.inputPointDash(event);
+      this.inputSpecialCharacters(event);
+    }
+  
+    if(!characters && numbers && !space && !email && !pointDash && !specialCharacters) {
+      this.inputNumbersTyping(event)
     }
 
     if (email) {
@@ -276,7 +333,7 @@ export class TaInputComponent
     }
   }
 
-  // Pattern 1: characters, space, backspace, point, dash
+  // Pattern 1: characters, space, backspace
   public inputCharactersTyping(event: KeyboardEvent): void {
     const charCode = event.charCode;
     if (
@@ -284,32 +341,47 @@ export class TaInputComponent
         (charCode >= 97 && charCode <= 122) ||
         (charCode >= 65 && charCode <= 90) ||
         charCode === 32 ||
-        charCode === 8 ||
-        charCode === 46 ||
-        charCode === 45
+        charCode === 8
       )
     ) {
       event.preventDefault();
     }
   }
 
-  // Pattern 2: characters, numbers, space, backspace, point, dash
-  private inputCharactersNumberTyping(event: KeyboardEvent): void {
+  // Pattern 2: numbers
+  public inputNumbersTyping(event: KeyboardEvent): void {
+    const charCode = event.charCode;
+    if (!(charCode >= 48 && charCode <= 57)) {
+      event.preventDefault();
+    }
+  }
+
+  // Pattern 3: point, dash
+  public inputPointDash(event: KeyboardEvent): void {
+    const charCode = event.charCode;
+    if (!(charCode === 46 || charCode === 45)) {
+      event.preventDefault();
+    }
+  }
+
+  // Pattern 4: point, dash, comma, &, ', ()
+  public inputSpecialCharacters(event: KeyboardEvent): void {
     const charCode = event.charCode;
     if (
       !(
-        (charCode >= 97 && charCode <= 122) ||
-        (charCode >= 65 && charCode <= 90) ||
-        (charCode >= 48 && charCode <= 57) ||
         charCode === 46 ||
-        charCode === 45
+        charCode === 45 ||
+        charCode === 44 ||
+        charCode === 38 ||
+        charCode === 39 ||
+        charCode === 40 ||
+        charCode === 41
       )
-    ) {
+    )
       event.preventDefault();
-    }
   }
 
-  // Pattern 3: characters, numbers, @, space, backspace, point, dash
+  // Pattern 6: EMAIL (characters, numbers, @, space, backspace, point, dash)
   private inputEmailTyping(event: KeyboardEvent): void {
     const charCode = event.charCode;
     if (

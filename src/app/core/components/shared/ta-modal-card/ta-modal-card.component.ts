@@ -14,8 +14,7 @@ export class TaModalCardComponent implements OnInit {
   @Input() hasArrow: boolean = true;
   @Input() cardSvg: string = null;
   @Input() cardName: string = null;
-  
-  public isCardOpen: boolean = false;
+  @Input() isCardOpen: boolean = false;  // if has data, set on true
 
   constructor() { }
 

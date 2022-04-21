@@ -79,7 +79,8 @@
                 type: 'text',
                 label: 'Address, City, State Zip',
                 isRequired: true,
-                placeholderIcon: 'address'
+                placeholderIcon: 'address',
+                textTransform: 'capitalize'
               }"
             ></app-ta-input-address>
           </div>
@@ -89,7 +90,8 @@
               [inputConfig]="{
                 name: 'Address Unit',
                 type: 'text',
-                label: 'Unit #'
+                label: 'Unit #',
+                maxLength: 6
               }"
             ></app-ta-input>
           </div>
@@ -113,7 +115,8 @@
                 name: 'SSN',
                 type: 'text',
                 label: 'SSN',
-                isRequired: true
+                isRequired: true,
+                mask: '000-00-0000'
               }"
             ></app-ta-input>
           </div>
@@ -158,7 +161,8 @@
                       name: 'EIN',
                       type: 'text',
                       label: 'EIN',
-                      isRequired: true
+                      isRequired: true,
+                      mask: '00-0000000'
                     }"
                   ></app-ta-input>
                 </div>
@@ -215,11 +219,13 @@
             <app-ta-input
               formControlName="routing"
               [inputConfig]="{
-                name: 'Routing',
+                name: 'Routing Number',
                 type: 'text',
                 label: 'Routing #',
                 isDisabled: !isBankSelected,
-                isRequired: isBankSelected
+                isRequired: isBankSelected,
+                minLength: 9,
+                maxLength: 9
               }"
             ></app-ta-input>
           </div>
@@ -227,11 +233,13 @@
             <app-ta-input
               formControlName="account"
               [inputConfig]="{
-                name: 'Account',
+                name: 'Account Number',
                 type: 'text',
                 label: 'Account #',
                 isDisabled: !isBankSelected,
-                isRequired: isBankSelected
+                isRequired: isBankSelected,
+                maxLength: 17,
+                minLength: 4
               }"
             ></app-ta-input>
           </div>
@@ -254,6 +262,7 @@
                 isRequired: true,
                 isDropdown: true
               }"
+              [canAddNew]="true"
               [options]="labelsPayType"
             ></app-ta-input-dropdown>
           </div>
@@ -449,14 +458,22 @@
             ></app-ta-input>
           </div>
         </div>
-        <app-ta-modal-card [cardName]="'Emergency Contact'">
+        <app-ta-modal-card
+          [cardName]="'Emergency Contact'"
+          [isCardOpen]="
+            driverForm.get('emergencyContactName').value ||
+            driverForm.get('emergencyContactPhone').value ||
+            driverForm.get('emergencyContactRelationship').value
+          "
+        >
           <div class="emergency-contact">
             <app-ta-input
               formControlName="emergencyContactName"
               [inputConfig]="{
                 name: 'Name',
                 type: 'text',
-                label: 'Name'
+                label: 'Name',
+                textTransform: 'capitalize'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -474,7 +491,8 @@
               [inputConfig]="{
                 name: 'Relationship',
                 type: 'text',
-                label: 'Relationship'
+                label: 'Relationship',
+                textTransform: 'capitalize'
               }"
             ></app-ta-input>
           </div>
