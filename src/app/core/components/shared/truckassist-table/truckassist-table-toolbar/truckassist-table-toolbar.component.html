@@ -76,7 +76,7 @@
         (click)="onShowOptions(op)"
         [autoClose]="true"
         [ngbPopover]="optionsPopover"
-        [placement]="'left-top'"
+        [placement]="'bottom-right'"
         [autoClose]="'outside'"
         popoverClass="options-popover"
         [ngClass]="{ 'active-options': optionsPopup?.isOpen() }"
@@ -113,7 +113,15 @@
           [src]="option.svgPath"
         ></svg-icon>
       </div>
+
       <div class="text">{{ option.text }}</div>
+
+      <div class="additional-drop-icon" *ngIf="option.additionalDropIcon && option.active">
+        <svg-icon
+          [svgStyle]="{ 'width.px': option.additionalDropIcon.width, 'height.px': option.additionalDropIcon.height }"
+          [src]="option.additionalDropIcon.path"
+        ></svg-icon>
+      </div>
     </div>
 
     <div class="columns-options" *ngIf="optionsPopupContent[4].active">
