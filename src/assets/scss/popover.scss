@@ -151,6 +151,8 @@
       border-radius: 3px;
       background: #ffffff;
       display: unset !important;
+      position: relative;
+      right: -3px;
 
       .options {
         cursor: pointer;
@@ -183,7 +185,8 @@
           }
         }
 
-        .icon {
+        .icon,
+        .additional-drop-icon {
           width: 26px;
           display: flex;
           justify-content: center !important;
@@ -194,8 +197,14 @@
           }
         }
 
+        .additional-drop-icon {
+          width: 6px !important;
+          margin-left: auto;
+          margin-right: 4px;
+        }
+
         .text {
-          width: 100% !important;
+          width: fit-content !important;
           height: 26px !important;
           justify-content: unset !important;
           font-size: 12px;
@@ -224,7 +233,7 @@
       }
 
       .columns-options {
-        top: 109px;
+        top: 105px;
         width: 246px;
         height: fit-content;
         border-radius: 3px;
@@ -282,7 +291,7 @@
             }
           }
 
-          .not-allowed-action{
+          .not-allowed-action {
             width: 14px !important;
             margin-right: 6px !important;
           }
@@ -325,17 +334,18 @@
 }
 
 // Selected On Table Head Popup
-.selected-options-popover{
+.selected-options-popover {
   top: 18px !important;
   left: -18px !important;
 }
 
-.has-selected-options-popover{
+.has-selected-options-popover {
   top: 26px !important;
   left: -26px !important;
 }
 
-.selected-options-popover, .has-selected-options-popover {
+.selected-options-popover,
+.has-selected-options-popover {
   .arrow {
     display: none !important;
   }
@@ -352,7 +362,7 @@
       background: #ffffff;
       padding: 2px;
 
-      .select-option{
+      .select-option {
         cursor: pointer;
         width: 100%;
         height: 26px;
@@ -361,32 +371,34 @@
         align-items: center;
         padding: 0 4px;
 
-        &:hover{
-          background: #F3F3F3;
+        &:hover {
+          background: #f3f3f3;
           transition: 0.25s;
 
-          .text, .count{
-            color: #3C3C3C;
+          .text,
+          .count {
+            color: #3c3c3c;
             transition: 0.25s;
           }
         }
 
-        .text, .count{
+        .text,
+        .count {
           font-size: 14px;
-          color: #6C6C6C;
+          color: #6c6c6c;
         }
 
-        .text{
+        .text {
           font-weight: 400;
         }
 
-        .count{
+        .count {
           font-weight: bold;
           margin-left: auto;
         }
       }
 
-      .clear-selected{
+      .clear-selected {
         margin-top: 2px;
       }
     }
