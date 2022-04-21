@@ -118,10 +118,6 @@ export class TaInputAddressComponent
       : (this.waitValidation = false);
   }
 
-  public getPlaceholderIcon(iconPlaceholder: string): string {
-    return this.inputService.getPlaceholderIcon(iconPlaceholder);
-  }
-
   public onBackspace(event): void {
     if (event.keyCode == 8) {
       if (!this.getSuperControl.value) {

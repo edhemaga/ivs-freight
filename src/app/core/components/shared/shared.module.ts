@@ -75,6 +75,7 @@ import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
 import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
 import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
+import { TaInputPlaceholderIconPipe } from './ta-input/ta-input-placeholderIcon.pipe';
 
 
 @NgModule({
@@ -127,7 +128,8 @@ import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
     DriverModalComponent,
     TaCheckboxComponent,
     TaModalCardComponent,
-    TaInputAddressComponent
+    TaInputAddressComponent,
+    TaInputPlaceholderIconPipe
   ],
   imports: [
     CommonModule,
@@ -238,7 +240,8 @@ import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
     DriverModalComponent,
     TaCheckboxComponent,
     TaModalCardComponent,
-    TaInputAddressComponent
+    TaInputAddressComponent,
+    TaInputPlaceholderIconPipe
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe,CalendarMonthsPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

@@ -203,10 +203,6 @@ export class TaInputComponent
     }
   }
 
-  public getPlaceholderIcon(iconPlaceholder: string): string {
-    return this.inputService.getPlaceholderIcon(iconPlaceholder);
-  }
-
   public onTogglePassword(): void {
     this.togglePassword = !this.togglePassword;
     clearTimeout(this.timeout);

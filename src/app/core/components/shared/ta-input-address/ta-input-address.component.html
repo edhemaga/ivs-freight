@@ -176,7 +176,7 @@
         getSuperControl.invalid &&
         getSuperControl.touched
     }"
-    src="{{ getPlaceholderIcon(inputConfig.placeholderIcon) }}"
+    [src]="inputConfig.placeholderIcon?.toLowerCase() | input_placeholderIcon"
   ></svg-icon>
 
   <!-- Input Label -->
