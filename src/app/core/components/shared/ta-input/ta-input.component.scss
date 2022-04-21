@@ -24,7 +24,7 @@
 
   &.hide-placeholder-icon {
     &:hover {
-      .input-icon {
+      .input-icon:not(.datetimeclass) {
         display: none !important;
       }
     }

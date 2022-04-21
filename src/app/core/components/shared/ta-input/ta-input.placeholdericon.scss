@@ -69,4 +69,11 @@
   &.input-dropdown {
     display: none !important;
   }
+
+  &.datetimeclass{
+   // width: 100% !important;
+   // text-align: right !important;
+    //z-index: 1;
+    display: inline-block !important;
+  }
 }

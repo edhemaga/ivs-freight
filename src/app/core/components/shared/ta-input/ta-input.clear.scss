@@ -32,6 +32,10 @@
     transform: translate(-6%, -10%) !important;
   }
 
+  &.datetimeclass{
+    right: 28px !important;
+  }
+
   &.invalid-focus-out-required {
     &:hover {
       width: 22px !important;

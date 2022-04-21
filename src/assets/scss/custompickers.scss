@@ -1,6 +1,6 @@
 .datetime-dropdown-holder{
   position: relative;
-  top: 15px;
+  top: 25px;
 }
 
 .picker_input_holder {
@@ -496,4 +496,9 @@ input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
+}
+
+
+.datetimepopovermain{
+  width: 220px;
 }
