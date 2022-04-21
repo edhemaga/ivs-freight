@@ -33,7 +33,16 @@ export class TruckassistTableService {
   private resetColumns = new BehaviorSubject<boolean>(false);
   public currentResetColumns = this.resetColumns.asObservable();
 
+  /* Scroll */
+  private scroll = new BehaviorSubject<number>(0);
+  public currentScroll = this.scroll.asObservable();
+
   constructor() {}
+
+  /* Scroll */
+  public sendScroll(scroll: number) {
+    this.scroll.next(scroll);
+  }
 
   /* Reset Columns */
   public sendResetColumns(resetColumns: boolean) {

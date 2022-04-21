@@ -55,6 +55,15 @@ export class TruckassistTableHeadComponent
   ngOnInit(): void {
     this.setVisibleColumns();
 
+    // Scroll
+    this.tableService.currentScroll
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: number) => {
+        console.log('Skroling');
+        let scroll = document.getElementById('scroll');
+        scroll.scrollLeft = response;
+      });
+
     // Rows Selected
     this.tableService.currentRowsSelected
       .pipe(takeUntil(this.destroy$))
@@ -135,20 +144,20 @@ export class TruckassistTableHeadComponent
 
     this.visibleColumns.map((v) => {
       /* Pined Columns */
-      if(v.isPined){
+      if (v.isPined) {
         this.pinedColumns.push(v);
       }
 
       /* Not Pined Columns */
-      if(!v.isPined && !v.isAction){
+      if (!v.isPined && !v.isAction) {
         this.notPinedColumns.push(v);
       }
 
       /* Action  Columns */
-      if(v.isAction){
+      if (v.isAction) {
         this.actionColumns.push(v);
       }
-    })
+    });
 
     this.changeDetectorRef.detectChanges();
   }
@@ -192,7 +201,6 @@ export class TruckassistTableHeadComponent
   }
 
   onReorder(event: CdkDragDrop<any>) {
-
     let previousIndex: number = null,
       currentIndex: number = null;
 
@@ -225,7 +233,10 @@ export class TruckassistTableHeadComponent
     if (this.rezaizeing) {
       this.tableService.sendColumnWidth({
         event: event,
-        columns: event.section === 'not-pined' ? this.notPinedColumns : this.pinedColumns,
+        columns:
+          event.section === 'not-pined'
+            ? this.notPinedColumns
+            : this.pinedColumns,
       });
     }
   }

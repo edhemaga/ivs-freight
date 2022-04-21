@@ -40,7 +40,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.tableService.currentResetColumns
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
-        if(response){
+        if (response) {
           console.log('Radi se reset columns-a');
           this.resetColumns = response;
 
@@ -123,7 +123,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.sendDriverData();
   }
 
-  sendDriverData(test?: number) {
+  sendDriverData() {
     this.tableData = [
       {
         title: 'Applicants',
@@ -139,7 +139,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Active',
         field: 'active',
         length: 5,
-        data: this.getDumyData(test ? test : 5),
+        data: this.getDumyData(5),
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -203,8 +203,6 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       this.modalService.openModal(DriverModalComponent, {
         size: 'small',
       });
-
-      this.sendDriverData(500);
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setDriverData(event.tabData);
@@ -213,9 +211,13 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
   public onTableBodyActions(event: any) {
     console.log(event);
-    if(event.type === 'edit') {
-      console.log("USO")
-      this.modalService.openModal(DriverModalComponent, {size: 'small'}, event);
+    if (event.type === 'edit') {
+      console.log('USO');
+      this.modalService.openModal(
+        DriverModalComponent,
+        { size: 'small' },
+        event
+      );
     }
   }
   ngOnDestroy(): void {

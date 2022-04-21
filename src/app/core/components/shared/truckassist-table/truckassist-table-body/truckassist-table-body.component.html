@@ -682,7 +682,7 @@
     <!-- Not Pined -->
     <div class="not-pined-border" [ngStyle]="{'height': viewData.length * 32 + 2 * viewData.length - 1 + 'px'}"></div>
     
-    <div class="not-pined-tr">
+    <div class="not-pined-tr" (scroll)="onScroll($event)">
       <tr
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
@@ -1325,7 +1325,7 @@
         class="actions-tr-container"
       >
         <div class="columns-container">
-          <td *ngFor="let column of columns" [ngClass]="{'move-right': column.moveRight}">
+          <td *ngFor="let column of columns">
             <!-- ATTACHMENTS COLUMN TEMPLATE -->
             <div
               *ngIf="!column.hidden && column.ngTemplate === 'attachments'"
