@@ -70,6 +70,7 @@
   .custom-bank-row {
     display: grid;
     grid-template-columns: 164px 100px 168px;
+    -moz-column-gap: 12px;
     column-gap: 12px;
     margin-bottom: 32px;
   }
@@ -78,6 +79,7 @@
   .custom-row-paytype-notification {
     display: grid;
     grid-template-columns: 151px 1fr;
+    -moz-column-gap: 22px;
     column-gap: 22px;
     align-items: center;
     margin-bottom: 20px;
@@ -91,6 +93,7 @@
       grid-template-columns: 91px 186px;
       grid-template-rows: 26px;
       align-items: center;
+      -moz-column-gap: 6px;
       column-gap: 6px;
 
       p {
@@ -137,6 +140,7 @@
     grid-template-columns: 204px 213px;
     grid-template-rows: 22px;
     grid-column-gap: 27px;
+    -moz-column-gap: 27px;
     column-gap: 27px;
     padding: 0 6px;
     margin-bottom: 12px;
@@ -147,12 +151,13 @@
     padding-left: 6px;
     .permile-fields {
       display: grid;
-      grid-template-columns: auto repeat(3,124px);
+      grid-template-columns: auto repeat(3, 124px);
       grid-template-rows: 26px;
       margin-bottom: 32px;
+      -moz-column-gap: 12px;
       column-gap: 12px;
       align-items: center;
-      
+
       p {
         margin: 0;
         font-size: 14px;
@@ -170,10 +175,72 @@
   .emergency-contact {
     display: grid;
     grid-template-columns: 150px 170px 112px;
+    -moz-column-gap: 12px;
     column-gap: 12px;
     margin-bottom: 10px;
     margin-top: 14px;
     transition: all 0.3s ease-in-out;
+  }
+
+  // Off Duty Locations
+  .offDutyLocations {
+    .offDutyLocations-label {
+      padding: 0 6px;
+      display: flex;
+      align-items: center;
+      line-height: 15px;
+      margin-bottom: 6px;
+
+      p {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 700;
+        color: #919191;
+
+        &:nth-child(2) {
+          margin-left: 52px;
+        }
+      }
+    }
+
+    .offDutyLications-card {
+      background-color: #f7f7f7;
+      padding-right: 6px;
+      display: grid;
+      grid-template-columns: 110px 304px 1fr;
+      grid-template-rows: 26px;
+      -moz-column-gap: 12px;
+      column-gap: 12px;
+      margin-bottom: 2px;
+      align-items: center;
+
+      .offDutyLocation-delete {
+        width: 18px;
+        height: 18px;
+        position: relative;
+        bottom: 4px;
+        right: 6px;
+        display: none;
+        cursor: pointer;
+        svg {
+          path {
+            fill: #919191;
+          }
+          &:hover {
+            transition: all 0.3s ease-in-out;
+
+            path {
+              fill: #ef5350;
+            }
+          }
+        }
+      }
+
+      &:hover .offDutyLocation-delete {
+        display: inline-block;
+        transition: all 0.3s ease-in-out;
+      }
+    }
   }
 }
 

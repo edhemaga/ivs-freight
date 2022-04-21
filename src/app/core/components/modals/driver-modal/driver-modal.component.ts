@@ -196,6 +196,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public get offDutyLocations(): FormArray {
+    console.log("FORM ARRAY")
+    console.log(this.driverForm.get('offDutyLocations') as FormArray)
     return this.driverForm.get('offDutyLocations') as FormArray;
   }
 

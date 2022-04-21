@@ -54,15 +54,15 @@ export class TaInputComponent
   }
 
   ngOnInit(): void {
-    this.calendarService.dateChanged.subscribe((date) => {
-      if(this.inputConfig.name === "datepicker") {
+    if (this.inputConfig.name === 'datepicker') {
+      this.calendarService.dateChanged.subscribe((date) => {
         const text = moment(new Date(date)).format('YYYY-MM-DD');
         this.input.nativeElement.value = text;
         this.onChange(this.input.nativeElement.value);
         this.inputConfig.type = 'date';
         this.t2.close();
-      }
-    });
+      });
+    }
 
     if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
       this.inputService.dropdownAddModeSubject
@@ -112,7 +112,7 @@ export class TaInputComponent
       this.isVisiblePasswordEye = true;
     }
 
-    if(this.inputConfig.name === "datepicker") {
+    if (this.inputConfig.name === 'datepicker') {
       this.inputConfig.type = 'date';
     }
 
@@ -171,8 +171,8 @@ export class TaInputComponent
       }
     }
 
-    if(this.inputConfig.name === "datepicker") {
-      if(!this.getSuperControl.value && this.getSuperControl.invalid){
+    if (this.inputConfig.name === 'datepicker') {
+      if (!this.getSuperControl.value && this.getSuperControl.invalid) {
         this.inputConfig.type = 'text';
       }
     }
@@ -188,7 +188,7 @@ export class TaInputComponent
       ? (this.waitValidation = true)
       : (this.waitValidation = false);
 
-    if(this.inputConfig.name === "datepicker") {
+    if (this.inputConfig.name === 'datepicker') {
       this.inputConfig.type = 'text';
     }
 

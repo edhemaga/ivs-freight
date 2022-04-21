@@ -108,7 +108,7 @@
                 isRequired: true,
                 customClass: 'datetimeclass'
               }"
-          ></app-ta-input>
+            ></app-ta-input>
           </div>
           <div class="col-7">
             <app-ta-input
@@ -185,23 +185,47 @@
         </div>
         <!-- Off duty Location -->
         <app-ta-modal-card
-          [hasCounter]="true"
+          [hasCounter]="offDutyLocations.length"
           [cardName]="'Off duty Location'"
           [cardSvg]="'assets/svg/common/ic_info.svg'"
           [hasAdd]="editData"
           [isCardOpen]="offDutyLocations.length"
           (onAddEvent)="addOffDutyLocation($event)"
         >
-
-        <!-- <div formArrayName="offDutyLocations">
-          <div *ngFor="let dutyLocation of offDutyLocations().controls; let i=index">
-            <div [formGroupName]="i">
-              
+          <div formArrayName="offDutyLocations" class="offDutyLocations" *ngIf="offDutyLocations.length">
+            <div class="offDutyLocations-label">
+              <p>NICKNAME</p>
+              <p>ADDRESS, CITY, STATE ZIP</p>
+            </div>
+            <div
+              *ngFor="
+                let dutyLocation of offDutyLocations.controls;
+                let ind = index
+              "
+            >
+              <div [formGroupName]="ind" class="offDutyLications-card">
+                  <app-ta-input
+                  formControlName="nickname"
+                  [inputConfig]="{
+                    name: 'NICKNAME',
+                    type: 'text',
+                    textTransform: 'capitalize'
+                  }"
+                ></app-ta-input>
+                <app-ta-input-address
+                  formControlName="address"
+                  [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    textTransform: 'capitalize'
+                  }"
+                ></app-ta-input-address>
+                
+                <svg-icon class="offDutyLocation-delete" (click)="removeOffDutyLocation(ind)" src="assets/svg/common/ic_trash.svg"></svg-icon>
+              </div>
             </div>
           </div>
-        </div> -->
-
-      </app-ta-modal-card>
+        </app-ta-modal-card>
         <!-- Note -->
         <app-ta-input-note formControlName="note"></app-ta-input-note>
       </div>

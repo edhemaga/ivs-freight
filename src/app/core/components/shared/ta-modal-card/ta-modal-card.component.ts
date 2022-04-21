@@ -11,7 +11,7 @@ import { card_modal_animation } from '../animations/card-modal.animation';
 })
 export class TaModalCardComponent {
 
-  @Input() hasCounter: boolean = false;
+  @Input() hasCounter: number;
   @Input() hasArrow: boolean = true;
   @Input() hasAdd: boolean = false;
   @Input() cardSvg: string = null;

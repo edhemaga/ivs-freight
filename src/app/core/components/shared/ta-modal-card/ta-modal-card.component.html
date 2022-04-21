@@ -4,7 +4,7 @@
     <div class="header-content">
       <app-ta-counter
         *ngIf="hasCounter"
-        [count]="0"
+        [count]="hasCounter"
         [countBackground]="'#F3F3F3'"
         [countColor]="'#919191'"
         [countHeight]="'24px'"
@@ -17,7 +17,7 @@
       >
       <svg-icon
         *ngIf="cardSvg"
-        class="header-svg"
+        class="info-svg"
         src="{{ cardSvg }}"
       ></svg-icon>
     </div>
