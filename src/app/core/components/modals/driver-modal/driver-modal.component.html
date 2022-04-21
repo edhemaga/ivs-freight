@@ -1,5 +1,7 @@
 <app-ta-modal
-  [modalTitle]="'Add Driver'"
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Driver' : 'Edit Driver'"
+  [editName]="'Nikola Kovacevic'"
+  [editData]="editData"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher
@@ -70,17 +72,17 @@
         </div>
         <div class="row">
           <div class="col-10">
-            <app-ta-input
+            <app-ta-input-address
               formControlName="address"
-              [template]="'address'"
               [inputConfig]="{
                 name: 'Address',
                 type: 'text',
                 label: 'Address, City, State Zip',
                 isRequired: true,
-                placeholderIcon: 'address'
+                placeholderIcon: 'address',
+                textTransform: 'capitalize'
               }"
-            ></app-ta-input>
+            ></app-ta-input-address>
           </div>
           <div class="col-2">
             <app-ta-input
@@ -88,7 +90,8 @@
               [inputConfig]="{
                 name: 'Address Unit',
                 type: 'text',
-                label: 'Unit #'
+                label: 'Unit #',
+                maxLength: 6
               }"
             ></app-ta-input>
           </div>
@@ -99,7 +102,7 @@
               formControlName="dateOfBirth"
               [inputConfig]="{
                 name: 'DOB',
-                type: 'date',
+                type: 'text',
                 label: 'DOB',
                 placeholderIcon: 'date',
                 isRequired: true,
@@ -114,7 +117,8 @@
                 name: 'SSN',
                 type: 'text',
                 label: 'SSN',
-                isRequired: true
+                isRequired: true,
+                mask: '000-00-0000'
               }"
             ></app-ta-input>
           </div>
@@ -159,7 +163,8 @@
                       name: 'EIN',
                       type: 'text',
                       label: 'EIN',
-                      isRequired: true
+                      isRequired: true,
+                      mask: '00-0000000'
                     }"
                   ></app-ta-input>
                 </div>
@@ -183,7 +188,20 @@
           [hasCounter]="true"
           [cardName]="'Off duty Location'"
           [cardSvg]="'assets/svg/common/ic_info.svg'"
-        ></app-ta-modal-card>
+          [hasAdd]="editData"
+          [isCardOpen]="offDutyLocations.length"
+          (onAddEvent)="addOffDutyLocation($event)"
+        >
+
+        <!-- <div formArrayName="offDutyLocations">
+          <div *ngFor="let dutyLocation of offDutyLocations().controls; let i=index">
+            <div [formGroupName]="i">
+              
+            </div>
+          </div>
+        </div> -->
+
+      </app-ta-modal-card>
         <!-- Note -->
         <app-ta-input-note formControlName="note"></app-ta-input-note>
       </div>
@@ -216,11 +234,13 @@
             <app-ta-input
               formControlName="routing"
               [inputConfig]="{
-                name: 'Routing',
+                name: 'Routing Number',
                 type: 'text',
                 label: 'Routing #',
                 isDisabled: !isBankSelected,
-                isRequired: isBankSelected
+                isRequired: isBankSelected,
+                minLength: 9,
+                maxLength: 9
               }"
             ></app-ta-input>
           </div>
@@ -228,11 +248,13 @@
             <app-ta-input
               formControlName="account"
               [inputConfig]="{
-                name: 'Account',
+                name: 'Account Number',
                 type: 'text',
                 label: 'Account #',
                 isDisabled: !isBankSelected,
-                isRequired: isBankSelected
+                isRequired: isBankSelected,
+                maxLength: 17,
+                minLength: 4
               }"
             ></app-ta-input>
           </div>
@@ -255,6 +277,7 @@
                 isRequired: true,
                 isDropdown: true
               }"
+              [canAddNew]="true"
               [options]="labelsPayType"
             ></app-ta-input-dropdown>
           </div>
@@ -410,7 +433,12 @@
       <div class="m-tab" *ngIf="selectedTab === 3">
         <div
           class="row dropdown-row"
-          style="height: 194px; width: 456px; border: 1px solid black; margin: 0 auto;"
+          style="
+            height: 194px;
+            width: 456px;
+            border: 1px solid black;
+            margin: 0 auto;
+          "
         ></div>
         <div class="row last-row">
           <div class="col-2">
@@ -420,7 +448,7 @@
               [customClass]="'regular'"
             ></app-ta-checkbox>
           </div>
-          <div class="col-4">
+          <div class="col-4" *ngIf="driverForm.get('twic').value">
             <app-ta-input
               formControlName="twicExpDate"
               [inputConfig]="{
@@ -431,25 +459,36 @@
               }"
             ></app-ta-input>
           </div>
-          <div class="col-6 no-p-left">
+          <div
+            class="col-6 no-p-left"
+            [ngClass]="{ 'col-10': !driverForm.get('twic').value }"
+          >
             <app-ta-input
               formControlName="fuelCard"
               [inputConfig]="{
                 name: 'Fuel Card',
                 type: 'text',
-                label: 'Fuel Card'
+                label: 'Fuel Card #'
               }"
             ></app-ta-input>
           </div>
         </div>
-        <app-ta-modal-card [cardName]="'Emergency Contact'">
+        <app-ta-modal-card
+          [cardName]="'Emergency Contact'"
+          [isCardOpen]="
+            driverForm.get('emergencyContactName').value ||
+            driverForm.get('emergencyContactPhone').value ||
+            driverForm.get('emergencyContactRelationship').value
+          "
+        >
           <div class="emergency-contact">
             <app-ta-input
               formControlName="emergencyContactName"
               [inputConfig]="{
                 name: 'Name',
                 type: 'text',
-                label: 'Name'
+                label: 'Name',
+                textTransform: 'capitalize'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -467,7 +506,8 @@
               [inputConfig]="{
                 name: 'Relationship',
                 type: 'text',
-                label: 'Relationship'
+                label: 'Relationship',
+                textTransform: 'capitalize'
               }"
             ></app-ta-input>
           </div>

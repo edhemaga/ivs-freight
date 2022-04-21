@@ -8,7 +8,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 4px;
+      padding: 6px;
       line-height: 18px;
 
       .owner-header-arrow {
@@ -28,7 +28,6 @@
     .owner-body {
       .animation-owner-tabs {
         position: relative;
-        overflow: hidden;
         transform: translate(20%);
         opacity: 0;
         height: 0px;
@@ -37,9 +36,15 @@
         &.fade {
           transform: translate(0);
           opacity: 1;
-          height: 48px;
+          height: 26px;
           margin-top: 26px;
+          margin-bottom: 22px;
           transition: all 0.3s ease-in-out;
+
+          // Override global class
+          .row {
+            margin-bottom: 0px !important;
+          }
         }
       }
     }

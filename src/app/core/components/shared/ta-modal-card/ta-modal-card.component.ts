@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
 
 import { card_modal_animation } from '../animations/card-modal.animation';
 
@@ -8,16 +9,21 @@ import { card_modal_animation } from '../animations/card-modal.animation';
   styleUrls: ['./ta-modal-card.component.scss'],
   animations: [card_modal_animation('showHideCardBody')]
 })
-export class TaModalCardComponent implements OnInit {
+export class TaModalCardComponent {
 
   @Input() hasCounter: boolean = false;
   @Input() hasArrow: boolean = true;
+  @Input() hasAdd: boolean = false;
   @Input() cardSvg: string = null;
   @Input() cardName: string = null;
-  
-  public isCardOpen: boolean = false;
+  @Input() isCardOpen: boolean = false;  // if has data, set on true
 
-  constructor() { }
+  @Output() onAddEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
-  ngOnInit() {}
+  public onAdd(event: any): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.onAddEvent.emit(true);
+  }
+
 }

@@ -1,0 +1,150 @@
+// -------------------- Input Clear --------------------
+.input-clear {
+  position: absolute;
+  right: 4px;
+  top: 16%;
+  transform: translate(-6%, 0%);
+  width: 18px;
+  height: 18px;
+  border-radius: 1px;
+  background-color: #b7b7b7;
+  display: none;
+  transition: all 0.3s ease-in-out;
+
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-49.5%, -50%);
+    width: 10px !important;
+    height: 10px !important;
+    transition: all 0.3s ease-in-out;
+    path {
+      fill: #eeeeee;
+    }
+  }
+
+  &:hover {
+    transition: all 0.3s ease-in-out;
+    right: 2px !important;
+    width: 22px;
+    height: 22px;
+    transform: translate(-6%, -10%) !important;
+  }
+
+  &.invalid-focus-out-required {
+    &:hover {
+      width: 22px !important;
+      height: 22px !important;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.disabled {
+    display: none !important;
+  }
+
+  &.focus-typing {
+    display: block;
+    transition: all 0.3s ease-in-out;
+    svg {
+      path {
+        fill: #6c6c6c;
+      }
+    }
+
+    &:hover {
+      background-color: #eeeeee;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.valid-focus-in {
+    transition: all 0.3s ease-in-out;
+    background-color: #bdcaeb;
+    display: block;
+    svg {
+      path {
+        fill: #536bc2;
+      }
+    }
+    &:hover {
+      transition: all 0.3s ease-in-out;
+      background-color: #f5fafc;
+      cursor: pointer;
+    }
+  }
+
+  &.invalid-focus-in,
+  &.invalid-focus-in-required {
+    transition: all 0.3s ease-in-out;
+    background-color: #ffcdd2;
+    display: block;
+    svg {
+      path {
+        fill: #ef5350;
+      }
+    }
+    &:hover {
+      transition: all 0.3s ease-in-out;
+      background-color: #fffafa;
+      cursor: pointer;
+    }
+  }
+
+  &.invalid-focus-out,
+  &.invalid-focus-out-required,
+  &.invalid-focus-in-empty-required,
+  &.invalid-submit {
+    background-color: transparent;
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+
+    svg {
+      path {
+        fill: #e57373;
+      }
+    }
+  }
+
+  // If password eye visible
+  &.second-position {
+    right: 27px;
+
+    &:hover {
+      transition: all 0.3s ease-in-out;
+      right: 27px !important;
+      width: 22px;
+      height: 22px;
+      transform: translate(-6%, -10%) !important;
+    }
+  }
+
+  // If dropdown
+  &.dropdown-position {
+    right: 22px;
+
+    &:hover {
+      transition: all 0.3s ease-in-out;
+      right: 22px !important;
+      width: 22px;
+      height: 22px;
+      transform: translate(-6%, -10%) !important;
+    }
+  }
+
+  &.password-eye {
+    svg {
+      path {
+        fill: #6c6c6c !important;
+      }
+    }
+  }
+
+  // Custom class
+  &.input-big {
+    top: 6.5px;
+  }
+}

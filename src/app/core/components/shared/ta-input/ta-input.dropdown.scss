@@ -1,0 +1,192 @@
+//-------------------- Input Dropdwon confirmation ----------
+.input-dropdown-confirm {
+  position: absolute;
+  right: 26px;
+  top: 16%;
+  transform: translate(-6%, 0%);
+  width: 18px;
+  height: 18px;
+  border-radius: 1px;
+  background-color: #b7b7b7;
+  display: none;
+  transition: all 0.3s ease-in-out;
+
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-49.5%, -50%);
+    transition: all 0.3s ease-in-out;
+    path {
+      fill: #6c6c6c;
+    }
+  }
+
+  &:hover {
+    transition: all 0.3s ease-in-out;
+    right: 26px !important;
+    width: 22px;
+    height: 22px;
+    background-color: #eeeeee;
+    transform: translate(-6%, -10%) !important;
+  }
+
+  &.visible {
+    display: inline-block;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+}
+//-------------------- Input Dropdown arrow -----------------
+.input-dropdown-arrow {
+  position: absolute;
+  right: 7px;
+  top: 0.5px;
+  width: 12px;
+  height: 12px;
+  display: none;
+
+  svg {
+    transform: rotate(0deg);
+    transition: all 0.3s ease-in-out;
+    path {
+      fill: #aaaaaa;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &:hover {
+    svg {
+      path {
+        fill: #6c6c6c;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+
+  &.visible {
+    display: inline-block;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  &.no-validation-hover {
+    &:hover ~ .input-label {
+      transition: all 0.3s ease-in-out;
+      color: #3c3c3c;
+    }
+
+    &:hover ~ .input-control {
+      transition: all 0.3s ease-in-out;
+      background-color: #eeeeee;
+      color: #3c3c3c;
+    }
+  }
+
+  &.active {
+    svg {
+      transform: rotate(180deg);
+      transition: all 0.2s ease-in-out;
+      path {
+        fill: #dadada;
+        transition: all 0.2s ease-in-out;
+      }
+    }
+
+    &:hover {
+      svg {
+        path {
+          fill: #f7f7f7;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+    }
+  }
+
+  &.invalid {
+    svg {
+      path {
+        fill: #ffcdd2;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
+    &:hover {
+      svg {
+        path {
+          fill: #fffafa;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+    }
+  }
+
+  &.invalid-focus-out-required {
+    svg {
+      path {
+        fill: #e57373;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+
+  &.invalid-focus-in-empty-required {
+    svg {
+      path {
+        fill: #ef9a9a;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+
+  &.valid,
+  &.valid-placeholder {
+    svg {
+      path {
+        fill: #d4dff4;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
+    &:hover {
+      svg {
+        path {
+          fill: #f5fafc;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+    }
+
+    &:hover ~ .input-label {
+      transition: all 0.3s ease-in-out;
+      color: #3c3c3c;
+    }
+
+    &:hover ~ .input-control {
+      transition: all 0.3s ease-in-out;
+      background-color: #536bc2;
+      color: #ffffff;
+    }
+  }
+
+  &.valid-focus-out-required {
+    svg {
+      path {
+        fill: #97a8dc;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+
+  &.invalid-submit {
+    svg {
+      path {
+        fill: #e57373;
+      }
+    }
+  }
+
+  &.hide {
+    display: none;
+  }
+}

@@ -10,19 +10,31 @@
         [countHeight]="'24px'"
         [countWidth]="'24px'"
       ></app-ta-counter>
-      <span class="header-text" [ngClass]="{'no-counter': !hasCounter, 'active': isCardOpen}">{{ cardName }}</span>
+      <span
+        class="header-text"
+        [ngClass]="{ 'no-counter': !hasCounter, active: isCardOpen }"
+        >{{ cardName }}</span
+      >
       <svg-icon
         *ngIf="cardSvg"
         class="header-svg"
         src="{{ cardSvg }}"
       ></svg-icon>
     </div>
-    <svg-icon
-      *ngIf="hasArrow"
-      class="header-arrow"
-      [ngClass]="{ rotate: isCardOpen }"
-      src="assets/svg/common/ic_arrow-down.svg"
-    ></svg-icon>
+    <div class="header-svgs">
+      <svg-icon
+        *ngIf="hasAdd"
+        class="header-add"
+        src="assets/svg/common/ic_plus.svg"
+        (click)="onAdd($event)"
+      ></svg-icon>
+      <svg-icon
+        *ngIf="hasArrow"
+        class="header-arrow"
+        [ngClass]="{ rotate: isCardOpen }"
+        src="assets/svg/common/ic_arrow-down.svg"
+      ></svg-icon>
+    </div>
   </div>
   <div class="ta-card-body" [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
     <ng-content></ng-content>
