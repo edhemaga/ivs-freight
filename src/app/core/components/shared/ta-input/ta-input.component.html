@@ -281,8 +281,9 @@
     #t2="ngbPopover"
     [ngbPopover]="dateTimePopover"
     [disablePopover]="inputConfig.type != 'date' && inputConfig.type != 'time'"
-    [placement]="['end-bottom', 'top']"
+    [placement]="'top-left'"
     autoClose="outside"
+    [container]="'body'"
     class="input-icon {{ inputConfig.customClass }}"
     [ngClass]="{
       'show-input-icon': inputConfig.placeholderIcon,
