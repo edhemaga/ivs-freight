@@ -286,7 +286,7 @@ export function getAccidentColumns() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       hidden: false,
@@ -311,10 +311,11 @@ export function getAccidentColumns() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'doc.additionalData.note',
       name: '',
       hidden: false,
@@ -331,10 +332,11 @@ export function getAccidentColumns() {
       disabled: true,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,
@@ -352,6 +354,7 @@ export function getAccidentColumns() {
       disabled: false,
       export: true,
       resizable: true,
+      isAction: true
     },
   ];
 }
@@ -772,7 +775,7 @@ export function getViolationsColums() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       moveRight: true,
@@ -797,10 +800,11 @@ export function getViolationsColums() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'doc.additionalData.note',
       name: '',
       hidden: false,
@@ -818,10 +822,11 @@ export function getViolationsColums() {
       disabled: false,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,
@@ -839,6 +844,7 @@ export function getViolationsColums() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ];
 }

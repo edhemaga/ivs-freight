@@ -299,7 +299,7 @@ export function getApplicantColumnsDefinition() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       hidden: false,
@@ -324,10 +324,11 @@ export function getApplicantColumnsDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'additionalData.note',
       name: '',
       hidden: false,
@@ -350,10 +351,11 @@ export function getApplicantColumnsDefinition() {
       disabled: false,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       headIconStyle: {
@@ -376,6 +378,7 @@ export function getApplicantColumnsDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ] as any[];
 }

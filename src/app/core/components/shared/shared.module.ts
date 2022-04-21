@@ -28,6 +28,7 @@ import { ExcelExportModule } from "@progress/kendo-angular-excel-export";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { LabelModule } from "@progress/kendo-angular-label";
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import {ScrollingModule} from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from "../switchers/status-switcher/status-switcher.component";
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { TooltipDirective } from "../../directives/tooltip.directive";
@@ -64,10 +65,16 @@ import { AccountModalComponent } from '../modals/account-modal/account-modal.com
 import { TaInputNoteComponent } from './ta-input-note/ta-input-note.component';
 import { TextareaAutosizeDirective } from '../../directives/TextareaAutosize.directive';
 import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.component';
+import { CustomDatetimePickersComponent } from './custom-datetime-pickers/custom-datetime-pickers.component';
+import { CalendarDatesMainComponent } from './custom-datetime-pickers/calendar-dates-main/calendar-dates-main.component';
+import { CalendarDaysComponent } from './custom-datetime-pickers/calendar-days/calendar-days.component';
+import { CalendarLeftComponent } from './custom-datetime-pickers/calendar-left/calendar-left.component';
+import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars/date-calendars.component';
 import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
 import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
 import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
+import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
 
 
 @NgModule({
@@ -84,6 +91,7 @@ import { TaInputAddressComponent } from './ta-input-address/ta-input-address.com
     HosTimePipe,
     CdkIdPipe,
     CdkConnectPipe,
+    CalendarMonthsPipe,
     HistoryDataComponent,
     TabSwitcherComponent,
     StatusSwitcherComponent,
@@ -111,6 +119,11 @@ import { TaInputAddressComponent } from './ta-input-address/ta-input-address.com
     TaInputNoteComponent,
     TextareaAutosizeDirective,
     TaInputDropdownComponent,
+    CustomDatetimePickersComponent,
+    CalendarDatesMainComponent,
+    CalendarDaysComponent,
+    CalendarLeftComponent,
+    DateCalendarsComponent,
     DriverModalComponent,
     TaCheckboxComponent,
     TaModalCardComponent,
@@ -147,6 +160,7 @@ import { TaInputAddressComponent } from './ta-input-address/ta-input-address.com
     PDFExportModule,
     LabelModule,
     DragDropModule,
+    ScrollingModule,
     NgxMaskModule.forRoot(),
     Ng5SliderModule,
     NgxDropzoneModule,
@@ -172,6 +186,7 @@ import { TaInputAddressComponent } from './ta-input-address/ta-input-address.com
     HosTimePipe,
     CdkIdPipe,
     CdkConnectPipe,
+    CalendarMonthsPipe,
     SortableModule,
     GridModule,
     PDFModule,
@@ -194,6 +209,7 @@ import { TaInputAddressComponent } from './ta-input-address/ta-input-address.com
     TaSelectComponent,
     DeleteDialogComponent,
     DragDropModule,
+    ScrollingModule,
     NgxMaskModule,
     Ng5SliderModule,
     NgxDropzoneModule,
@@ -214,12 +230,17 @@ import { TaInputAddressComponent } from './ta-input-address/ta-input-address.com
     TaInputNoteComponent,
     TextareaAutosizeDirective,
     TaInputDropdownComponent,
+    CustomDatetimePickersComponent,
+    CalendarDatesMainComponent,
+    CalendarDaysComponent,
+    CalendarLeftComponent,
+    DateCalendarsComponent,
     DriverModalComponent,
     TaCheckboxComponent,
     TaModalCardComponent,
     TaInputAddressComponent
   ],
-  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
+  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe,CalendarMonthsPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {

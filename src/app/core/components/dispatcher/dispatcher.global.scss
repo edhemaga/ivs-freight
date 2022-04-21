@@ -2709,3 +2709,138 @@
 .popover-body{
   padding: 0.5rem 0.75rem !important;
 }
+
+
+
+
+
+// GLOBAL CSS NEW FOR DISPATCHBOARD
+
+.dispatchboard-main-table{
+  width: 1200px;
+  overflow-x: auto;
+  table{
+    width: 1435px !important;
+    thead{
+      th{
+        height: 30px;
+        color: #6C6C6C;
+        font-weight: 700;
+        font-size: 14px;
+        padding-left: 9px;
+      }
+    }
+    tbody{
+      tr{
+        td{
+          padding: 1px !important;
+          .dispatcher-table-cell-container{
+            display: flex;
+            height: 32px;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 3px;
+            padding: 2px;
+            line-height: 1;
+
+            .dispatcher-table-cell-holder{
+              display: flex;
+              height: 28px;
+              width: 100%;
+              align-items: center;
+              border-radius: 3px;
+              padding-left: 6px;
+
+              &:hover{
+                background-color: #F7F7F7;
+              }
+            }
+          }
+        }
+      }
+
+      tr{
+        td:nth-child(1), td:nth-child(2), td:nth-child(3){
+          position: absolute;
+        }
+      }
+    }
+  }
+
+  .truck-field{
+    width: 76px;
+  }
+
+  .trailer-field{
+    width: 98px;
+  }
+
+  .driver-field{
+    width: 134px;
+  }
+
+  .phoneemail-field{
+    width: 176px;
+  }
+  .location-field{
+    width: 136px;
+  }
+
+  .status-field{
+    width: 112px;
+  }
+
+  .pick-del-field{
+    width: 300px;
+
+    .two-table-heads{
+      display: flex;
+      justify-content: space-between;
+      div{
+        flex: 1;
+      }
+    }
+  }
+
+  .empty-field{
+    width: 34px;
+    max-width: 34px;
+    min-width: 34px;
+  }
+
+  &.parking-opened{
+    .note-field{
+      width: 229px;
+      max-width: 229px;
+    }
+  
+    .driver-field{
+      width: 134px;
+      max-width: 134px;
+    }
+  
+    .phoneemail-field{
+      width: 149px;
+      max-width: 149px;
+    }
+    .location-field{
+      width: 136px;
+      max-width: 136px;
+    }
+  
+    .status-field{
+      width: 112px;
+      max-width: 112px;
+    }
+  
+    .pick-del-field{
+      width: 300px;
+      max-width: 300px;
+    }
+  
+    .empty-field{
+      width: 34px;
+      max-width: 34px;
+    }
+  }
+}

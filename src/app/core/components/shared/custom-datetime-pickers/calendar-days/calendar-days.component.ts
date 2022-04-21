@@ -1,0 +1,43 @@
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+
+@Component({
+  selector: 'app-calendar-days',
+  templateUrl: './calendar-days.component.html',
+  styleUrls: ['./calendar-days.component.scss']
+})
+export class CalendarDaysComponent implements OnInit {
+  currentYear: any = new Date().getFullYear();
+  currentMonth: any = new Date().getMonth();
+  currentDay: any = new Date().getDate();
+  @Input() year: string;
+  @Input() selectedMonth: string;
+  @Input() index: number;
+  @Output() selectDay = new EventEmitter();
+  days: ReadonlyArray<string | number> = [];
+
+  constructor() {
+  }
+
+  @Input()
+  set month(month: Date) {
+    const fillerCount = month.getDay();
+    const lastDay = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+    const daysCount = lastDay.getDate();
+
+    this.days = [
+      ...Array.from({length: fillerCount}).map(() => ""),
+      ...Array.from({length: daysCount}).map((_, i) => i + 1)
+    ];
+
+    // console.log("WHAT ARE DAYS");
+    // console.log(this.days);
+  }
+
+  ngOnInit(): void {
+  }
+
+  chooseDay(day): void {
+    this.selectDay.emit({index: this.index, day});
+  }
+
+}

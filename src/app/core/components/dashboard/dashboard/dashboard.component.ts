@@ -8,6 +8,7 @@ import { DashboardStats } from '../state/dashboard.model';
 import { DashboardStoreService } from '../state/dashboard.service';
 import { DashboardQuery } from '../state/dashboard.query';
 import { ActivatedRoute } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,8 +18,7 @@ import { ActivatedRoute } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit, OnDestroy {
- // dashboardStats: DashboardStats = { todayObject: [], mtdObject: [], ytdObject: [], allTimeObject: [] };
-
+  public inputDate: FormControl = new FormControl();
   dashboardStats: Observable<DashboardStats[]>;
   dispatchStatuses: any = [
     {

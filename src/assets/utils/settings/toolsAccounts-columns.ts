@@ -144,7 +144,7 @@ export function getToolsAccountsColumnDefinition() {
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'doc.note',
       name: '',
       moveRight: true,
@@ -162,10 +162,11 @@ export function getToolsAccountsColumnDefinition() {
       disabled: true,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,
@@ -183,6 +184,7 @@ export function getToolsAccountsColumnDefinition() {
       disabled: false,
       export: false,
       resizable: true,
+      isAction: true
     },
   ];
 }

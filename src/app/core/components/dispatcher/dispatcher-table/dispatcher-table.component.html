@@ -1,10 +1,10 @@
-<div class="container kendo-table-container p-0 mt-3 dispacher-table">
+<div class="kendo-table-container p-0 mt-3 dispacher-table">
   <div class="row">
     <div class="grid-wrapper col-12">
       <div class="kendo_top_grid">
         <div class="k-grid" [ngClass]="isBoardLocked ? 'locked' : 'unlocked'">
           <div class="k-grid-toolbar k-toolbar">
-            <div class="container toolbar-container main_top_container">
+            <div class="toolbar-container main_top_container">
               <div class="d-flex top_toolbar_cont">
                 <div class="dispatchboard-title">Dispatch Board</div>
                 <div class="dispatcher-drpdwn-wrap">
@@ -259,7 +259,7 @@
         </div>
       </div>
       <div class="dispatcher_table_list_holder">
-        <div
+        <!-- <div
           *ngFor="let dispatcher of selectedDispatchers; let ind = index"
           class="dipsatch_groups"
         >
@@ -276,8 +276,11 @@
             [phoneEmailToggle]="phoneEmailToggle"
           >
           </app-app-dispatcher-table-new>
-        </div>
+        </div> -->
+        
       </div>
+      <app-dispatchboard-tables></app-dispatchboard-tables>
     </div>
   </div>
 </div>
+<app-dispatcher-parking></app-dispatcher-parking>

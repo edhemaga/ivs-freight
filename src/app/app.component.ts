@@ -256,7 +256,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onDestroy() {
+  ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
     this.idle.stop();

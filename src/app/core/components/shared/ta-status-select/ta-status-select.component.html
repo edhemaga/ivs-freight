@@ -1,7 +1,7 @@
 <ng-select
   (change)="change($event)"
-  (close)="toggleClass($event, false);"
-  (open)="toggleClass($event, true);"
+  (close)="toggleClass($event, false)"
+  (open)="toggleClass($event, true)"
   [(ngModel)]="value"
   [class.load_status]="load_status"
   [class.tony_add_start]="addTonyStatusActive"
@@ -23,13 +23,29 @@
       (mouseover)="hoverItem = 0"
       *ngIf="!addTonyStatusActive"
       [ngClass]="extraNewClass"
-      class="status_select_custom load_count_main">
-      <div *ngIf="item.type" [class.revised_item]="item.type == 'R'"
-           [class.tonu_item]="item.type == 'T'" class="load-count ng-star-inserted repair_item"> {{item.type}} </div>
-      <span [class.has_tr]="item.type == 'T' || item.type == 'R'" [ngClass]="additionalClass"
-            [ngStyle]="{ backgroundColor: ((selectOpened) ? item.color : 'transparent')} "
-            [style.color]="!selectOpened ? item.color + ( hoverItem == 0 ? '' : '70') : '#fff'"
-            class="status_select_placeholder"> {{ item.name }}</span>
+      class="status_select_custom load_count_main"
+    >
+      <div
+        *ngIf="item.type"
+        [class.revised_item]="item.type == 'R'"
+        [class.tonu_item]="item.type == 'T'"
+        class="load-count ng-star-inserted repair_item"
+      >
+        {{ item.type }}
+      </div>
+      <span
+        [class.has_tr]="item.type == 'T' || item.type == 'R'"
+        [ngClass]="additionalClass"
+        [ngStyle]="{
+          backgroundColor: selectOpened ? item.color : 'transparent'
+        }"
+        [style.color]="
+          !selectOpened ? item.color + (hoverItem == 0 ? '' : '70') : '#fff'
+        "
+        class="status_select_placeholder"
+      >
+        {{ item.name }}</span
+      >
     </div>
     <div
       *ngIf="addTonyStatusActive"
@@ -43,7 +59,8 @@
             currencyMask
             maxlength="6"
             type="text"
-            value="$0.00"/>
+            value="$0.00"
+          />
           <button
             (click)="saveTonuStatus()"
             appTaTooltip="Save"
@@ -67,18 +84,36 @@
     </div>
   </ng-template>
 
-  <ng-template let-index="index" let-item="item" let-search="searchTerm" ng-option-tmp>
+  <ng-template
+    let-index="index"
+    let-item="item"
+    let-search="searchTerm"
+    ng-option-tmp
+  >
     <div
       (mouseleave)="hoverItem = -1"
       (mouseover)="hoverItem = index"
       [ngClass]="extraNewClass"
-      class="status_select_custom load_count_main">
-      <div *ngIf="item.type" [class.revised_item]="item.type == 'R'"
-           [class.tonu_item]="item.type == 'T'" class="load-count ng-star-inserted repair_item"> {{item.type}} </div>
-      <div [class.has_tr]="item.type == 'T' || item.type == 'R'" [ngClass]="additionalClass"
-           [ngOptionHighlight]="search"
-           [ngStyle]="{ color: ( hoverItem != index ? item.color : '#fff' ), backgroundColor: ( hoverItem == index ? item.color : '#fff' ) } "
-           class="custom-dropdown-item custom-status-item">
+      class="status_select_custom load_count_main"
+    >
+      <div
+        *ngIf="item.type"
+        [class.revised_item]="item.type == 'R'"
+        [class.tonu_item]="item.type == 'T'"
+        class="load-count ng-star-inserted repair_item"
+      >
+        {{ item.type }}
+      </div>
+      <div
+        [class.has_tr]="item.type == 'T' || item.type == 'R'"
+        [ngClass]="additionalClass"
+        [ngOptionHighlight]="search"
+        [ngStyle]="{
+          color: hoverItem != index ? item.color : '#fff',
+          backgroundColor: hoverItem == index ? item.color : '#fff'
+        }"
+        class="custom-dropdown-item custom-status-item"
+      >
         {{ item.name }}
       </div>
     </div>

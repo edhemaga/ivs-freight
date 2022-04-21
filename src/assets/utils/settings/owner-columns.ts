@@ -208,7 +208,7 @@ export function getOwnerColumnDefinition() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       moveRight: true,
@@ -233,10 +233,11 @@ export function getOwnerColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'doc.additionalData.note',
       name: '',
       hidden: false,
@@ -253,10 +254,11 @@ export function getOwnerColumnDefinition() {
       disabled: true,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,
@@ -274,6 +276,7 @@ export function getOwnerColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
+      isAction: true
     },
   ];
 }

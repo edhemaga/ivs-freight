@@ -1,0 +1,43 @@
+<div class="d-flex">
+  <div class="month-years-size">
+    <div class="calendar_border"></div>
+    <app-calendar-left 
+      [currentIndex]="currentIndex" 
+      [months]="listPreview == 'full_list' ? months : justYears"
+      [listPreview]="listPreview"
+      >
+    </app-calendar-left>
+  </div>
+  <div class="full-calendars-list">
+    <div class="full_list">
+      <div class="calendar_view">
+        <div class="calendar_view_head">
+          <div class="month_name">
+            <span (click)="setListPreview()" class="year_hold">
+              <span *ngIf="listPreview == 'full_list'">{{selectedMonth}}</span> {{selectedYear}}
+            </span>
+          </div>
+          <div class="today">Today</div>
+        </div>
+        <div class="calendars_list_view">
+          <div class="calendar_month_days d-flex" *ngIf="listPreview == 'full_list'">
+            <div class="cal_day">S</div>
+            <div class="cal_day">M</div>
+            <div class="cal_day">T</div>
+            <div class="cal_day">W</div>
+            <div class="cal_day">T</div>
+            <div class="cal_day">F</div>
+            <div class="cal_day">S</div>
+          </div>
+          <app-calendar-dates-main
+            [currentIndex]="currentIndex"
+            [monthYearsIndx]="monthYearsIndx"
+            [months]="listPreview == 'full_list' ? months : justYears"
+            [listPreview]="listPreview"
+            (setListPreviewToFull)="setListPreviewToFull($event)"
+          ></app-calendar-dates-main>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

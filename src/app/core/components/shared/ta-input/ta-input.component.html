@@ -223,7 +223,6 @@
     (click)="toggleDropdownOptions()"
   ></svg-icon>
 
-
   <!-- Input Control -->
   <input
     #input
@@ -279,6 +278,11 @@
 
   <!-- Input Icon Placeholder -->
   <svg-icon
+    #t2="ngbPopover"
+    [ngbPopover]="dateTimePopover"
+    [disablePopover]="inputConfig.type != 'date' && inputConfig.type != 'time'"
+    [placement]="['end-bottom', 'top']"
+    autoClose="outside"
     class="input-icon {{ inputConfig.customClass }}"
     [ngClass]="{
       'show-input-icon': inputConfig.placeholderIcon,
@@ -374,3 +378,14 @@
     {{ getSuperControl.errors | inputError:inputConfig.name }}
   </span>
 </div>
+
+
+<!-- Popover for DateTime Pickers -->
+<ng-template #dateTimePopover let-data="data">
+  <div class="datetime-dropdown-holder">
+    <app-custom-datetime-pickers
+    [calendarType]="'date'"
+    [placeholder]="'MM/DD/YY'"
+    ></app-custom-datetime-pickers>
+  </div>
+</ng-template>

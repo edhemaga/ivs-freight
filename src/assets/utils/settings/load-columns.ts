@@ -469,7 +469,7 @@ export function getLoadColumnDefinition() {
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'note',
       name: '',
       moveRight: true,
@@ -487,10 +487,11 @@ export function getLoadColumnDefinition() {
       disabled: true,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       headIconStyle: {
@@ -513,6 +514,7 @@ export function getLoadColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ];
 }

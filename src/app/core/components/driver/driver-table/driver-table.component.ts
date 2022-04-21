@@ -1,13 +1,11 @@
-import { Driver } from './../state/driver.model';
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 import { DriversQuery } from '../state/driver.query';
 import { DriversState } from '../state/driver.store';
-import { data } from 'jquery';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 
@@ -16,7 +14,9 @@ import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.com
   templateUrl: './driver-table.component.html',
   styleUrls: ['./driver-table.component.scss'],
 })
-export class DriverTableComponent implements OnInit {
+export class DriverTableComponent implements OnInit, OnDestroy {
+  private destroy$: Subject<void> = new Subject<void>();
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -28,12 +28,25 @@ export class DriverTableComponent implements OnInit {
 
   constructor(
     private modalService: ModalService,
-    private driversQuery: DriversQuery
+    private driversQuery: DriversQuery,
+    private tableService: TruckassistTableService
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
     this.getDriversData();
+
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if(response){
+          console.log('Radi se reset columns-a');
+          this.resetColumns = response;
+
+          this.sendDriverData();
+        }
+      });
   }
 
   public initTableOptions(): void {
@@ -110,7 +123,7 @@ export class DriverTableComponent implements OnInit {
     this.sendDriverData();
   }
 
-  sendDriverData() {
+  sendDriverData(test?: number) {
     this.tableData = [
       {
         title: 'Applicants',
@@ -118,7 +131,7 @@ export class DriverTableComponent implements OnInit {
         length: 8,
         data: this.getDumyData(8),
         extended: true,
-        gridNameTitle: 'Applicant',
+        gridNameTitle: 'Driver',
         stateName: 'applicants',
         gridColumns: this.getGridColumns('applicants', this.resetColumns),
       },
@@ -126,7 +139,7 @@ export class DriverTableComponent implements OnInit {
         title: 'Active',
         field: 'active',
         length: 5,
-        data: this.getDumyData(5),
+        data: this.getDumyData(test ? test : 5),
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -190,6 +203,8 @@ export class DriverTableComponent implements OnInit {
       this.modalService.openModal(DriverModalComponent, {
         size: 'small',
       });
+
+      this.sendDriverData(500);
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setDriverData(event.tabData);
@@ -202,5 +217,9 @@ export class DriverTableComponent implements OnInit {
       console.log("USO")
       this.modalService.openModal(DriverModalComponent, {size: 'small'}, event);
     }
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

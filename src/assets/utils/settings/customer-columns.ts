@@ -213,7 +213,7 @@ export function getBrokerColumnDefinition() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       headIconStyle: {
@@ -238,10 +238,11 @@ export function getBrokerColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'doc.additionalData.note',
       name: '',
       hidden: false,
@@ -259,10 +260,11 @@ export function getBrokerColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,
@@ -280,6 +282,7 @@ export function getBrokerColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ];
 }
@@ -499,7 +502,7 @@ export function getShipperColumnDefinition() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       name: '',
       headIconStyle: {
@@ -524,10 +527,11 @@ export function getShipperColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'doc.additionalData.note',
       name: '',
       hidden: false,
@@ -545,10 +549,11 @@ export function getShipperColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,
@@ -566,6 +571,7 @@ export function getShipperColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ];
 }

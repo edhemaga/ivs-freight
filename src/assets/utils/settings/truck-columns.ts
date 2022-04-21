@@ -475,7 +475,7 @@ export function getTruckColumnDefinition() {
     },
     {
       ngTemplate: 'attachments',
-      title: '',
+      title: 'Attachments',
       field: 'additionalData.files',
       moveRight: true,
       name: '',
@@ -500,10 +500,11 @@ export function getTruckColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
-      title: '',
+      title: 'Note',
       field: 'doc.additionalData.note',
       name: '',
       hidden: false,
@@ -522,10 +523,11 @@ export function getTruckColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
-      title: '',
+      title: 'Actions',
       field: 'action',
       name: '',
       hidden: false,
@@ -544,6 +546,7 @@ export function getTruckColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ];
 }
