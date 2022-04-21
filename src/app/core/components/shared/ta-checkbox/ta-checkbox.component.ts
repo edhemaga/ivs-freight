@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, Self, ViewChild } from '@angular/core';
+import { Component, Input, Self} from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
@@ -6,18 +6,13 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   templateUrl: './ta-checkbox.component.html',
   styleUrls: ['./ta-checkbox.component.scss']
 })
-export class TaCheckboxComponent implements OnInit, ControlValueAccessor {
+export class TaCheckboxComponent implements ControlValueAccessor {
 
   @Input() label: string;
   @Input() customClass: string;
 
   constructor(@Self() public superControl: NgControl) {
     this.superControl.valueAccessor = this;
-  }
-
-  ngOnInit() {
-    console.log("CHECKBOX")
-    console.log(this.getSuperControl.value)
   }
 
   get getSuperControl() {

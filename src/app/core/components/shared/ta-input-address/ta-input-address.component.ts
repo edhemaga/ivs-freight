@@ -1,17 +1,29 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnDestroy,
+  Output,
   Self,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-
 import { SharedService } from 'src/app/core/services/shared/shared.service';
-import { Address } from '../model/address';
 import { ITaInput } from '../ta-input/ta-input.config';
 import { TaInputService } from '../ta-input/ta-input.service';
+
+export interface Address {
+  address: string;
+  city: string;
+  state: string;
+  stateShortName: string;
+  country: string;
+  zipCode: number | string;
+  addressUnit?: number | string;
+  streetNumber?: string;
+  streetName?: string;
+}
 
 @Component({
   selector: 'app-ta-input-address',
@@ -36,7 +48,8 @@ export class TaInputAddressComponent
   }
 
   public handleAddressChange(address: Address) {
-    this.getSuperControl.setValue(this.sharedService.selectAddress(null, address));
+    this.inputService.handleAddress(this.sharedService.selectAddress(null, address));
+    this.getSuperControl.setValue(this.sharedService.selectAddress(null, address).address);
   }
 
   public options = {

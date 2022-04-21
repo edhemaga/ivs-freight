@@ -8,8 +8,11 @@ import {
 } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
+import { Address } from '../ta-input-address/ta-input-address.component';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TaInputService {
   public onClearInputSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
@@ -22,11 +25,25 @@ export class TaInputService {
 
   public addDropdownItemSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
+  
+  public activeItemDropdownSubject: BehaviorSubject<any> =
+     new BehaviorSubject<any>(null);
+
+  public googleAddressSubject: BehaviorSubject<Address> =
+    new BehaviorSubject<Address>(null);
 
   constructor(
     public notificationService: NotificationService,
     private spinnerService: SpinnerService
   ) {}
+
+  public get activeItemDropdown$() {
+    return this.activeItemDropdownSubject.asObservable();
+  }
+
+  public get getGoogleAddress$() {
+    return this.googleAddressSubject.asObservable();
+  }
 
   /**
    * @param formGroup FormGroup - The form group to touch
@@ -93,4 +110,19 @@ export class TaInputService {
     return `assets/svg/common/ic_${iconPlaceholder.toLowerCase()}.svg`;
   }
   
+  /**
+   * @param address - premapped address
+   */
+  public handleAddress(address: Address) {
+    this.googleAddressSubject.next(address);
+  }
+
+  /**
+   * @param data - active dropdown item
+   */
+  public hasDropdownActiveItem(data: any) {
+    console.log(data);
+    this.activeItemDropdownSubject.next(data);
+  }
+
 }

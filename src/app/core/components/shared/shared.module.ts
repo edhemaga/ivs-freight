@@ -67,7 +67,6 @@ import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.
 import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
 import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
-import { TaInputService } from './ta-input/ta-input.service';
 import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 
 
@@ -220,7 +219,7 @@ import { TaInputAddressComponent } from './ta-input-address/ta-input-address.com
     TaModalCardComponent,
     TaInputAddressComponent
   ],
-  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe, TaInputService],
+  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {

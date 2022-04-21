@@ -1,4 +1,5 @@
-import { distinctUntilChanged } from 'rxjs';
+import { FormArray } from '@angular/forms';
+import { distinctUntilChanged, debounceTime } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import {
   Component,
@@ -13,6 +14,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -104,6 +106,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public isOwner: boolean = false;
   public isBankSelected: boolean = false;
 
+  public address: Address = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -116,6 +120,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.onIncludePayroll();
     this.onPayTypeSelected();
     this.onTwicTypeSelected();
+    this.handleAddress();
+
+    this.inputService.activeItemDropdown$
+      .subscribe((value) => {
+        console.log(value);
+        if (value) {
+          this.isBankSelected = true;
+          this.inputService.changeValidators(this.driverForm.get('routing'));
+          this.inputService.changeValidators(this.driverForm.get('account'));
+        }
+      });
   }
 
   public onModalAction(action: string): void {
@@ -138,10 +153,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       lastName: [null, [Validators.required]],
       phone: [
         null,
-        [
-          Validators.required,
-          Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/),
-        ],
+        [Validators.required, Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)],
       ],
       email: [null, [Validators.required, Validators.email]],
       ssn: [
@@ -150,7 +162,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       ],
       note: [null],
       dateOfBirth: [null, [Validators.required]],
-      offDutyLocations: [null], //Array<CreateOffDutyLocationCommand> | null; TODO:
+      offDutyLocations: this.formBuilder.array([]),
       isOwner: [false],
       ownerId: [null], //number | null; TODO:
       ownerType: [null], //OwnerType; TODO:
@@ -183,11 +195,34 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  // city: [null],
-  // state: [null],
-  // country: [null],
-  // zipCode: [null],
-  // stateShortName: [null],
+  public get offDutyLocations(): FormArray {
+    return this.driverForm.get('offDutyLocations') as FormArray;
+  }
+
+  public createOffDutyLocation(): FormGroup {
+    return this.formBuilder.group({
+      nickname: [null],
+      address: [null],
+      city: [null],
+      state: [null],
+      stateShortName: [null],
+      country: [null],
+      zipCode: [null],
+      addressUnit: [null],
+      streetNumber: [null],
+      streetName: [null]
+    })
+  }
+
+  public addOffDutyLocation(event: any) {
+    if(event) {
+      this.offDutyLocations.push(this.createOffDutyLocation())
+    }
+  }
+
+  public removeOffDutyLocation(id: number) {
+    this.offDutyLocations.removeAt(id);
+  }
 
   public onIncludePayroll(): void {
     this.driverForm
@@ -253,13 +288,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onTwicTypeSelected() {
+  public onTwicTypeSelected(): void {
     this.driverForm
       .get('twic')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        console.log("TWIC")
-        console.log(value)
+        console.log('TWIC');
+        console.log(value);
         if (value) {
           this.inputService.changeValidators(
             this.driverForm.get('twicExpDate')
@@ -273,12 +308,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public handleAddress() {
-    this.driverForm
-      .get('address')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+  public handleAddress(): void {
+    this.inputService.getGoogleAddress$
+      .pipe(untilDestroyed(this))
       .subscribe((value) => {
-        console.log(value);
+        this.address = value;
       });
   }
 

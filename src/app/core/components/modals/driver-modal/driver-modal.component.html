@@ -186,7 +186,20 @@
           [hasCounter]="true"
           [cardName]="'Off duty Location'"
           [cardSvg]="'assets/svg/common/ic_info.svg'"
-        ></app-ta-modal-card>
+          [hasAdd]="editData"
+          [isCardOpen]="offDutyLocations().length"
+          (onAddEvent)="addOffDutyLocation($event)"
+        >
+
+        <div formArrayName="offDutyLocations">
+          <div *ngFor="let dutyLocation of offDutyLocations().controls; let i=index">
+            <div [formGroupName]="i">
+              
+            </div>
+          </div>
+        </div>
+
+      </app-ta-modal-card>
         <!-- Note -->
         <app-ta-input-note formControlName="note"></app-ta-input-note>
       </div>

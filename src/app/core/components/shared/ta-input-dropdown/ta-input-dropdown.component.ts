@@ -81,10 +81,12 @@ export class TaInputDropdownComponent
         } else {
           this.inputConfig = {
             ...this.inputConfig,
-            placeholder: this.getSuperControl.value ? this.getSuperControl.value : this.activeItem.name,
+            placeholder: this.getSuperControl.value ? this.getSuperControl.value : this.activeItem?.name,
           };
           this.getSuperControl.setValue(null);
         }
+        
+        this.inputService.hasDropdownActiveItem(this.activeItem);
       });
 
     if (this.canAddNew) {
