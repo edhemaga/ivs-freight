@@ -13,14 +13,15 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
-import {NgbDropdown, NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
   styleUrls: ['./ta-input.component.scss'],
-  providers: [NgbDropdownConfig]
+  providers: [NgbDropdownConfig],
 })
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor
@@ -45,19 +46,21 @@ export class TaInputComponent
     @Self() public superControl: NgControl,
     private changeDetection: ChangeDetectorRef,
     private inputService: TaInputService,
-    private calendarService: CalendarScrollService
+    private calendarService: CalendarScrollService,
+    private datePipe: DatePipe
   ) {
     this.superControl.valueAccessor = this;
   }
 
   ngOnInit(): void {
-    this.calendarService.dateChanged.subscribe(date => {
-      if(this.inputConfig.type === "date"){
-        this.onChange(new Date(date));
+    this.calendarService.dateChanged.subscribe((date) => {
+      if(this.inputConfig.name === "DOB") {
+        const text = this.datePipe.transform(new Date(date), 'yyyy-MM-dd');
+        this.input.nativeElement.value = text;
+        this.onChange(this.input.nativeElement.value);
         this.t2.close();
       }
     });
-
 
     if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
       this.inputService.dropdownAddModeSubject
@@ -105,6 +108,11 @@ export class TaInputComponent
     // Password
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
+    }
+
+    if(this.inputConfig.name === "DOB") {
+      this.inputConfig.type = 'date'
+      
     }
 
     // Dropdown
@@ -248,7 +256,9 @@ export class TaInputComponent
     }
 
     if (
-      ['first name', 'last name', 'name', 'relationship'].includes(this.inputConfig.name.toLowerCase())
+      ['first name', 'last name', 'name', 'relationship'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
     ) {
       this.inputTypingPattern(event, true, false, true);
     }
@@ -287,40 +297,81 @@ export class TaInputComponent
     pointDash?: boolean,
     specialCharacters?: boolean
   ): void {
-   
-    if(characters && !numbers && space && !email && pointDash && !specialCharacters) {
+    if (
+      characters &&
+      !numbers &&
+      space &&
+      !email &&
+      pointDash &&
+      !specialCharacters
+    ) {
       this.inputCharactersTyping(event);
       this.inputWithSpaceTyping(event);
       this.inputPointDash(event);
     }
 
-    if(characters && numbers && !space && !email && pointDash && !specialCharacters) {
+    if (
+      characters &&
+      numbers &&
+      !space &&
+      !email &&
+      pointDash &&
+      !specialCharacters
+    ) {
       this.inputCharactersTyping(event);
       this.inputNumbersTyping(event);
       this.inputPointDash(event);
     }
 
-    if(characters && !numbers && space && !email && !pointDash && !specialCharacters) {
+    if (
+      characters &&
+      !numbers &&
+      space &&
+      !email &&
+      !pointDash &&
+      !specialCharacters
+    ) {
       this.inputCharactersTyping(event);
       this.inputWithSpaceTyping(event);
     }
 
-    if(characters && numbers && space && !email && !pointDash && !specialCharacters) {
+    if (
+      characters &&
+      numbers &&
+      space &&
+      !email &&
+      !pointDash &&
+      !specialCharacters
+    ) {
       this.inputCharactersTyping(event);
       this.inputNumbersTyping(event);
       this.inputWithSpaceTyping(event);
     }
 
-    if(characters && numbers && space && !email && pointDash && specialCharacters) {
+    if (
+      characters &&
+      numbers &&
+      space &&
+      !email &&
+      pointDash &&
+      specialCharacters
+    ) {
       this.inputCharactersTyping(event);
       this.inputNumbersTyping(event);
       this.inputWithSpaceTyping(event);
       this.inputPointDash(event);
       this.inputSpecialCharacters(event);
     }
-  
-    if(!characters && numbers && !space && !email && !pointDash && !specialCharacters) {
-      this.inputNumbersTyping(event)
+
+    if (
+      !characters &&
+      numbers &&
+      !space &&
+      !email &&
+      !pointDash &&
+      !specialCharacters
+    ) {
+      this.inputNumbersTyping(event);
     }
 
     if (email) {

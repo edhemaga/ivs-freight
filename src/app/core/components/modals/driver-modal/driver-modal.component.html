@@ -102,7 +102,7 @@
               formControlName="dateOfBirth"
               [inputConfig]="{
                 name: 'DOB',
-                type: 'date',
+                type: 'text',
                 label: 'DOB',
                 placeholderIcon: 'date',
                 isRequired: true,
@@ -189,17 +189,17 @@
           [cardName]="'Off duty Location'"
           [cardSvg]="'assets/svg/common/ic_info.svg'"
           [hasAdd]="editData"
-          [isCardOpen]="offDutyLocations().length"
+          [isCardOpen]="offDutyLocations.length"
           (onAddEvent)="addOffDutyLocation($event)"
         >
 
-        <div formArrayName="offDutyLocations">
+        <!-- <div formArrayName="offDutyLocations">
           <div *ngFor="let dutyLocation of offDutyLocations().controls; let i=index">
             <div [formGroupName]="i">
               
             </div>
           </div>
-        </div>
+        </div> -->
 
       </app-ta-modal-card>
         <!-- Note -->
