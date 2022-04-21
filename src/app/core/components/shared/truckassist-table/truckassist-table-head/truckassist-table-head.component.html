@@ -1,20 +1,13 @@
 <table>
   <thead>
-    <tr
-      cdkDropListOrientation="horizontal"
-      cdkDropList
-      (cdkDropListDropped)="onReorder($event)"
-      class="tr"
-    >
+    <!-- Pined -->
+    <tr class="tr pined-columns-container">
       <th
         [resizeColumn]="column.resizable && !locked"
         [index]="i"
+        [tableSection]="'pined'"
         (resizeing)="onResize($event)"
-        *ngFor="let column of visibleColumns; let i = index"
-        cdkDrag
-        (cdkDragStarted)="onReorderStart()"
-        (cdkDragEnded)="onReorderEnd()"
-        [cdkDragDisabled]="locked || rezaizeing || column.isPined || column.name === ''"
+        *ngFor="let column of pinedColumns; let i = index"
         cdkDragBoundary="tr"
         [cdkDragPreviewClass]="'cdk-drag-preview'"
         [ngStyle]="{
@@ -49,14 +42,14 @@
 
         <!-- Title -->
         <div
-          *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''" 
+          *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
           class="th-title"
         >
           {{ column.name }}
         </div>
 
         <!-- Icons -->
-        <div *ngIf="column.name === '' && column?.headIconStyle" class="icons">
+        <div *ngIf="column?.headIconStyle" class="icons">
           <svg-icon
             [svgStyle]="{
               'width.px': column.headIconStyle.width,
@@ -68,29 +61,17 @@
           ></svg-icon>
         </div>
 
+        <!-- Pin System -->
         <div
           class="pin-remove-container"
           *ngIf="
             !locked &&
             !rezaizeing &&
             column.ngTemplate !== 'checkbox' &&
-            column.name !== '' &&
             i !== 0 &&
             i !== 1
           "
         >
-          <!-- Remove -->
-          <svg-icon
-            (click)="onRemoveColumn(column)"
-            *ngIf="!column.isPined && !reordering"
-            class="x-icon"
-            [svgStyle]="{
-              'width.px': 10,
-              'height.px': 10
-            }"
-            [src]="'assets/svg/truckassist-table/x.svg'"
-          ></svg-icon>
-
           <!-- Pin -->
           <svg-icon
             class="pin-icon"
@@ -100,7 +81,127 @@
               'height.px': 12
             }"
             [src]="'assets/svg/truckassist-table/pin.svg'"
-            [ngClass]="{ pined: column.isPined, hide: !column.isPined && reordering}"
+            [ngClass]="{
+              pined: column.isPined,
+              hide: !column.isPined && reordering
+            }"
+          ></svg-icon>
+        </div>
+      </th>
+    </tr>
+
+    <!-- Not Pined -->
+    <tr
+      cdkDropListOrientation="horizontal"
+      cdkDropList
+      (cdkDropListDropped)="onReorder($event)"
+      class="tr not-pined-columns-container"
+    >
+      <div class="scroll-container">
+        <th
+          [resizeColumn]="
+            column.resizable && !locked && i !== notPinedColumns.length - 1
+          "
+          [index]="i"
+          [tableSection]="'not-pined'"
+          (resizeing)="onResize($event)"
+          *ngFor="let column of notPinedColumns; let i = index"
+          cdkDrag
+          (cdkDragStarted)="onReorderStart()"
+          (cdkDragEnded)="onReorderEnd()"
+          [cdkDragDisabled]="locked || rezaizeing || column.isAction"
+          cdkDragBoundary="tr"
+          [cdkDragPreviewClass]="'cdk-drag-preview'"
+          [ngStyle]="{
+            width: column.width + 'px',
+            'justify-content': column?.headAlign ? column?.headAlign : ''
+          }"
+          [ngClass]="{
+            'set-center': column.ngTemplate === 'checkbox' || column.setCenter,
+            'column-unlocket': !locked
+          }"
+        >
+          <!-- Title -->
+          <div
+            *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
+            class="th-title"
+          >
+            {{ column.name }}
+          </div>
+
+          <!-- Icons -->
+          <div *ngIf="column?.headIconStyle" class="icons">
+            <svg-icon
+              [svgStyle]="{
+                'width.px': column.headIconStyle.width,
+                'height.px': column.headIconStyle.height
+              }"
+              [src]="
+                column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''
+              "
+            ></svg-icon>
+          </div>
+
+          <!-- Pin System -->
+          <div
+            class="pin-remove-container"
+            *ngIf="!locked && !rezaizeing && column.ngTemplate !== 'checkbox'"
+          >
+            <!-- Remove -->
+            <svg-icon
+              (click)="onRemoveColumn(column)"
+              *ngIf="!reordering"
+              class="x-icon"
+              [svgStyle]="{
+                'width.px': 10,
+                'height.px': 10
+              }"
+              [src]="'assets/svg/truckassist-table/x.svg'"
+            ></svg-icon>
+
+            <!-- Pin -->
+            <svg-icon
+              class="pin-icon"
+              (click)="onPinColumn(column)"
+              [svgStyle]="{
+                'width.px': 9,
+                'height.px': 12
+              }"
+              [src]="'assets/svg/truckassist-table/pin.svg'"
+              [ngClass]="{
+                pined: column.isPined,
+                hide: !column.isPined && reordering
+              }"
+            ></svg-icon>
+          </div>
+        </th>
+      </div>
+    </tr>
+
+    <!-- Actions -->
+    <tr class="tr actions-columns-container">
+      <th
+        *ngFor="let column of actionColumns; let i = index"
+        [ngStyle]="{
+          width: column.isAction ? column.width + 'px' : '0px',
+          display: column.isAction ? 'flex' : 'none',
+          'justify-content': column?.headAlign ? column?.headAlign : ''
+        }"
+        [ngClass]="{
+          'set-center': column.setCenter,
+          'column-unlocket': !locked
+        }"
+      >
+        <!-- Icons -->
+        <div *ngIf="column.isAction && column?.headIconStyle" class="icons">
+          <svg-icon
+            [svgStyle]="{
+              'width.px': column.headIconStyle.width,
+              'height.px': column.headIconStyle.height
+            }"
+            [src]="
+              column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''
+            "
           ></svg-icon>
         </div>
       </th>

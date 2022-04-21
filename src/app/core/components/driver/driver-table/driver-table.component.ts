@@ -122,7 +122,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.sendDriverData();
   }
 
-  sendDriverData() {
+  sendDriverData(test?: number) {
     this.tableData = [
       {
         title: 'Applicants',
@@ -130,7 +130,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         length: 8,
         data: this.getDumyData(8),
         extended: true,
-        gridNameTitle: 'Applicant',
+        gridNameTitle: 'Driver',
         stateName: 'applicants',
         gridColumns: this.getGridColumns('applicants', this.resetColumns),
       },
@@ -138,7 +138,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Active',
         field: 'active',
         length: 5,
-        data: this.getDumyData(5),
+        data: this.getDumyData(test ? test : 5),
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -211,6 +211,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       //     size: 'small',
       //   }
       // );
+
+      this.sendDriverData(500);
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setDriverData(event.tabData);
