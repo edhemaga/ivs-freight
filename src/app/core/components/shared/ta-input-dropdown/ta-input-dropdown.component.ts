@@ -1,7 +1,8 @@
-import { debounceTime } from 'rxjs';
+import { debounceTime, distinctUntilChanged, shareReplay } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
+  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -37,7 +38,8 @@ export class TaInputDropdownComponent
 
   constructor(
     @Self() public superControl: NgControl,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private changeDetection: ChangeDetectorRef
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -46,17 +48,25 @@ export class TaInputDropdownComponent
     this.originalOptions = this.options;
 
     this.getSuperControl.valueChanges
-      .pipe(untilDestroyed(this))
-      .subscribe((term) => this.search(term));
+      .pipe(distinctUntilChanged(),untilDestroyed(this))
+      .subscribe((term) => {
+        if(!this.activeItem) {
+          this.search(term)
+          console.log("VALUE CHANGES ", term);
+          console.log("INPUT CONFIG ", this.inputConfig);
+          console.log("CONTROL: ", this.getSuperControl.value)
+        }
+      });
 
     this.inputService.onClearInputSubject
-      .pipe(debounceTime(50), untilDestroyed(this))
+      .pipe(debounceTime(50), distinctUntilChanged(), untilDestroyed(this))
       .subscribe((action: boolean) => {
         this.onClearSearch();
+        console.log("CLEARING DROPDOWN")
       });
 
     this.inputService.dropDownShowHideSubject
-      .pipe(untilDestroyed(this))
+      .pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((action: boolean) => {
         this.toggleDropdownOptions(action);
         if (!action) {
@@ -74,17 +84,25 @@ export class TaInputDropdownComponent
           }
           this.getSuperControl.setValue(null);
         }
+
+        console.log("SHOWHIDE DROPDOWN ", action);
+        console.log("INPUT CONFIG ", this.inputConfig);
+        console.log("CONTROL: ", this.getSuperControl.value)
       });
+
 
     if (this.canAddNew) {
       this.inputService.addDropdownItemSubject
-        .pipe(untilDestroyed(this))
+        .pipe(distinctUntilChanged(), untilDestroyed(this))
         .subscribe((action: boolean) => {
           if (action) {
             this.addNewItem();
           }
+        console.log("ADDNEW DROPDOWN ", action);
         });
     }
+
+    
   }
 
   public onDropDownShowHideSubject(action: boolean) {
@@ -176,6 +194,11 @@ export class TaInputDropdownComponent
       ...this.inputConfig,
       placeholder: '',
     };
+    console.log("CLEAR")
+    console.log(this.options)
+    console.log(this.activeItem)
+    console.log(this.getSuperControl)
+    console.log(this.inputConfig)
   }
 
   public addNewItem(): void {

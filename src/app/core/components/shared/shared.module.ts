@@ -68,6 +68,7 @@ import { DriverModalComponent } from '../modals/driver-modal/driver-modal.compon
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
 import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
 import { TaInputService } from './ta-input/ta-input.service';
+import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 
 
 @NgModule({
@@ -113,7 +114,8 @@ import { TaInputService } from './ta-input/ta-input.service';
     TaInputDropdownComponent,
     DriverModalComponent,
     TaCheckboxComponent,
-    TaModalCardComponent
+    TaModalCardComponent,
+    TaInputAddressComponent
   ],
   imports: [
     CommonModule,
@@ -215,7 +217,8 @@ import { TaInputService } from './ta-input/ta-input.service';
     TaInputDropdownComponent,
     DriverModalComponent,
     TaCheckboxComponent,
-    TaModalCardComponent
+    TaModalCardComponent,
+    TaInputAddressComponent
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe, TaInputService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

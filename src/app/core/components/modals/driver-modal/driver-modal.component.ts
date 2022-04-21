@@ -131,7 +131,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       firstName: [null, [Validators.required]],
       lastName: [null, [Validators.required]],
       phone: [null, [Validators.required]],
-      email: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
       ssn: [null, [Validators.required]],
       note: [null],
       dateOfBirth: [null, [Validators.required]],

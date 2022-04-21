@@ -31,7 +31,7 @@ export class TaInputService {
   /**
    * @param formGroup FormGroup - The form group to touch
    */
-  public markInvalid(formGroup: FormGroup, isSpecialCase?: boolean) {
+  public markInvalid(formGroup: FormGroup, isSpecialCase?: boolean): boolean {
     if (!isSpecialCase) {
       this.spinnerService.show(true);
     }
@@ -61,11 +61,16 @@ export class TaInputService {
     }
   }
 
+  /**
+   * @param formControl
+   * @param hasValidation
+   * @param validators
+   */
   public changeValidators(
     formControl: AbstractControl,
     hasValidation: boolean = true,
     validators: any[] = []
-  ) {
+  ): void {
     const validation = [Validators.required, ...validators];
 
     if (hasValidation) {
@@ -76,4 +81,16 @@ export class TaInputService {
     }
     formControl.updateValueAndValidity();
   }
+
+  /**
+   * @param iconPlaceholder 
+   * @returns 
+   */
+  public getPlaceholderIcon(iconPlaceholder: string): string {
+    if (!iconPlaceholder) {
+      return null;
+    }
+    return `assets/svg/common/ic_${iconPlaceholder.toLowerCase()}.svg`;
+  }
+  
 }

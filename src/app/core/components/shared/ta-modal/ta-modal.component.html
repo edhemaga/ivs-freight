@@ -7,7 +7,7 @@
     <svg-icon
       class="modal-close"
       src="assets/svg/common/ic_x.svg"
-      (click)="closeModal()"
+      (click)="onAction('close')"
     ></svg-icon>
   </div>
   <div class="divider"></div>
@@ -20,7 +20,7 @@
   >
     <div class="left-side" *ngIf="editData?.type === 'edit'">
       <button
-        (click)="onConfirm()"
+        (click)="onAction('delete')"
         class="modal-delete-btn"
         ngbAutofocus
         type="button"
@@ -28,7 +28,7 @@
         Delete
       </button>
       <button
-        (click)="onConfirm()"
+        (click)="onAction('deactivate')"
         class="modal-deactivate-btn"
         ngbAutofocus
         type="button"
@@ -38,7 +38,7 @@
     </div>
 
     <button
-      (click)="onConfirm()"
+      (click)="onAction('save')"
       class="modal-save-btn"
       ngbAutofocus
       type="button"

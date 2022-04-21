@@ -223,9 +223,10 @@
     (click)="toggleDropdownOptions()"
   ></svg-icon>
 
-
-  <!-- Input Control -->
   <input
+    #placesRef="ngx-places"
+    ngx-google-places-autocomplete
+    [options]="options"
     #input
     [type]="getInputType(inputConfig.type)"
     [id]="inputConfig.name"
@@ -275,7 +276,9 @@
     (blur)="onBlur()"
     (focus)="onFocus()"
     (paste)="onPaste($event, inputConfig.maxLength)"
+    (onAddressChange)="handleAddressChange($event)"
   />
+
 
   <!-- Input Icon Placeholder -->
   <svg-icon

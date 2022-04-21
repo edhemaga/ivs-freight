@@ -9,7 +9,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
@@ -25,7 +24,6 @@ export class TaInputComponent
 {
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
-  @Input() template: string = 'default';
 
   public focusInput: boolean = false;
   public waitValidation: boolean = false;
@@ -62,14 +60,6 @@ export class TaInputComponent
         });
     }
   }
-
-  // public handleAddressChange(address: Address) {
-  //   console.log(address);
-  // }
-
-  // public options = {
-  //   componentRestrictions: {country: ['US', 'CA']},
-  // };
 
   get getSuperControl() {
     return this.superControl.control;
@@ -190,10 +180,7 @@ export class TaInputComponent
   }
 
   public getPlaceholderIcon(iconPlaceholder: string): string {
-    if (!iconPlaceholder) {
-      return null;
-    }
-    return `assets/svg/common/ic_${iconPlaceholder.toLowerCase()}.svg`;
+    return this.inputService.getPlaceholderIcon(iconPlaceholder);
   }
 
   public onTogglePassword(): void {
