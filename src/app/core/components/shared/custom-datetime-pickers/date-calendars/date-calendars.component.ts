@@ -129,8 +129,11 @@ export class DateCalendarsComponent implements OnInit {
   }
 
   public setListPreview(): void {
-    this.setListPreviewValue.emit("month_list");
-    this.calendarService.indexAuto$.next(Math.floor(this.activeIndex / 12));
+
+    if(this.listPreview === "full_list"){
+      this.setListPreviewValue.emit("month_list");
+      this.calendarService.indexAuto$.next(Math.floor(this.activeIndex / 12));
+    }
   }
 
   public setListPreviewToFull(num){
