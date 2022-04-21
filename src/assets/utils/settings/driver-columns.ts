@@ -391,6 +391,7 @@ export function getDriverColumnsDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
@@ -417,6 +418,7 @@ export function getDriverColumnsDefinition() {
       disabled: false,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
@@ -443,6 +445,7 @@ export function getDriverColumnsDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ] as any[];
 }

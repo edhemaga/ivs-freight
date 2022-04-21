@@ -238,6 +238,7 @@ export function getBrokerColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
@@ -259,6 +260,7 @@ export function getBrokerColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
@@ -280,6 +282,7 @@ export function getBrokerColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ];
 }
@@ -524,6 +527,7 @@ export function getShipperColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
@@ -545,6 +549,7 @@ export function getShipperColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
@@ -566,6 +571,7 @@ export function getShipperColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ];
 }

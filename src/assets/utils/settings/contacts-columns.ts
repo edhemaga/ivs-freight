@@ -162,6 +162,7 @@ export function getToolsContactsColumnDefinition() {
       disabled: true,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
@@ -183,6 +184,7 @@ export function getToolsContactsColumnDefinition() {
       disabled: false,
       export: false,
       resizable: true,
+      isAction: true
     },
   ];
 }

@@ -287,6 +287,7 @@ export function getAccountingFuelColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
@@ -307,6 +308,7 @@ export function getAccountingFuelColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ];
 }
