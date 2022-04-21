@@ -8,8 +8,11 @@ import {
 } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
+import { Address } from '../ta-input-address/ta-input-address.component';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TaInputService {
   public onClearInputSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
@@ -22,16 +25,30 @@ export class TaInputService {
 
   public addDropdownItemSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
+  
+  public activeItemDropdownSubject: BehaviorSubject<any> =
+     new BehaviorSubject<any>(null);
+
+  public googleAddressSubject: BehaviorSubject<Address> =
+    new BehaviorSubject<Address>(null);
 
   constructor(
     public notificationService: NotificationService,
     private spinnerService: SpinnerService
   ) {}
 
+  public get activeItemDropdown$() {
+    return this.activeItemDropdownSubject.asObservable();
+  }
+
+  public get getGoogleAddress$() {
+    return this.googleAddressSubject.asObservable();
+  }
+
   /**
    * @param formGroup FormGroup - The form group to touch
    */
-  public markInvalid(formGroup: FormGroup, isSpecialCase?: boolean) {
+  public markInvalid(formGroup: FormGroup, isSpecialCase?: boolean): boolean {
     if (!isSpecialCase) {
       this.spinnerService.show(true);
     }
@@ -61,11 +78,16 @@ export class TaInputService {
     }
   }
 
+  /**
+   * @param formControl
+   * @param hasValidation
+   * @param validators
+   */
   public changeValidators(
     formControl: AbstractControl,
     hasValidation: boolean = true,
     validators: any[] = []
-  ) {
+  ): void {
     const validation = [Validators.required, ...validators];
 
     if (hasValidation) {
@@ -76,4 +98,31 @@ export class TaInputService {
     }
     formControl.updateValueAndValidity();
   }
+
+  /**
+   * @param iconPlaceholder 
+   * @returns 
+   */
+  public getPlaceholderIcon(iconPlaceholder: string): string {
+    if (!iconPlaceholder) {
+      return null;
+    }
+    return `assets/svg/common/ic_${iconPlaceholder.toLowerCase()}.svg`;
+  }
+  
+  /**
+   * @param address - premapped address
+   */
+  public handleAddress(address: Address) {
+    this.googleAddressSubject.next(address);
+  }
+
+  /**
+   * @param data - active dropdown item
+   */
+  public hasDropdownActiveItem(data: any) {
+    console.log(data);
+    this.activeItemDropdownSubject.next(data);
+  }
+
 }

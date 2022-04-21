@@ -1,6 +1,7 @@
 // Addresses, City, Zip
 .pac-container {
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.3) !important;
+    border-radius: 2px;
     margin-top: 4px;
     border-top: none;
     z-index: 1060;
@@ -21,21 +22,20 @@
   
     .pac-item {
       border-top: none;
-      line-height: 2.25rem;
-      min-height: 2.25rem;
+      line-height: 26px;
+      min-height: 26px;
       font-size: 14px;
       padding: 0 6px;
       cursor: pointer;
-      opacity: 0.7;
-      transition: 0.3s;
-      color: #606060;
+      transition: all 0.3s ease-in-out;
+      color: #6C6C6C;
       font-family: 'Montserrat', sans-serif;
       font-weight: 400;
   
       &:hover {
-        opacity: 1;
-        transition: 0.3s;
-        background: rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease-in-out;
+        background: #F3F3F3;
+        color: #3c3c3c;
       }
     }
   
@@ -45,10 +45,10 @@
   
     .pac-item-query {
       font-size: 14px;
-      color: #606060;
+      color: #6C6C6C;
   
       .pac-matched {
-        color: #000;
+        color: #3c3c3c;
       }
     }
   }
