@@ -37,6 +37,7 @@ export class TruckassistTableBodyComponent
   loadingPassword: number = -1;
   showPassword: any[] = [];
   decryptedPassword: any[] = [];
+  actionsMinWidth: number = 0;
 
   constructor(
     private router: Router,
@@ -113,6 +114,13 @@ export class TruckassistTableBodyComponent
           this.changeDetectorRef.detectChanges();
         }
       });
+
+
+      this.columns.map((c) => {
+        if(c.isAction){
+          this.actionsMinWidth += c.width;
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -126,6 +134,9 @@ export class TruckassistTableBodyComponent
       changes.columns.currentValue !== changes.columns.previousValue
     ) {
       this.columns = changes.columns.currentValue;
+
+      console.log('columns');
+      console.log(this.columns);
     }
 
     if (

@@ -1,10 +1,10 @@
 table {
   width: 100%;
   thead {
+    display: flex;
     .tr {
       height: 31px;
       display: flex;
-      padding: 2px;
       th {
         display: flex;
         align-items: center;
@@ -87,8 +87,8 @@ table {
             margin-right: 8px;
           }
 
-          .pin-icon{
-            svg{
+          .pin-icon {
+            svg {
               position: relative;
               top: 1px;
             }
@@ -96,7 +96,7 @@ table {
 
           .pined {
             margin: 0 11px 0 auto;
-              
+
             svg {
               path {
                 fill: #6d82c7;
@@ -112,7 +112,7 @@ table {
             }
           }
 
-          .hide{
+          .hide {
             display: none;
           }
 
@@ -138,6 +138,30 @@ table {
 // Global Styles
 .set-center {
   justify-content: center;
+}
+
+.pined-columns-container {
+  padding: 2px 0px 2px 2px;
+}
+
+.not-pined-columns-container {
+  padding: 2px 0px 2px 0px;
+  max-width: 1132px;
+  overflow: hidden;
+
+  .scroll-container {
+    display: flex;
+  }
+}
+
+.actions-columns-container {
+  padding: 2px 2px 2px 0px;
+  flex: 1;
+  justify-content: flex-end;
+
+  th {
+    justify-content: center;
+  }
 }
 
 // Drag Preview
@@ -180,6 +204,7 @@ table {
   }
 }
 
-.tr.cdk-drop-list-dragging th:not(.cdk-drag-placeholder) {
+.not-pined-columns-container.cdk-drop-list-dragging
+  th:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

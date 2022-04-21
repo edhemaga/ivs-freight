@@ -98,10 +98,9 @@ body{
   }
 
   &::-webkit-scrollbar-thumb {
-    position: absolute;
     background-color: rgba(145, 145, 145, 0.7);
     border: 5px solid #EEEEEE;
-    border-radius: 10rem;
+    border-radius: 1px;
 
     &:hover {
       background-color: rgba(145, 145, 145, 1);

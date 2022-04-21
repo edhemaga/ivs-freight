@@ -212,7 +212,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       //   }
       // );
 
-      this.sendDriverData(300);
+      this.sendDriverData(500);
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setDriverData(event.tabData);

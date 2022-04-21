@@ -487,6 +487,7 @@ export function getLoadColumnDefinition() {
       disabled: true,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
@@ -513,6 +514,7 @@ export function getLoadColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ];
 }
