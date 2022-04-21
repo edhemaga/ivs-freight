@@ -11,7 +11,8 @@ export class ModalService {
 
   public openModal(
     component: any,
-    options: ModalOptions
+    options: ModalOptions,
+    editData?: any
   ) {
 
     options = {
@@ -20,6 +21,10 @@ export class ModalService {
     };
 
     const modal = this.ngbModal.open(component, options);
+
+    if(editData != null) {
+      modal.componentInstance.editData = editData;
+    }
 
     const instance = (modal as any)._windowCmptRef.instance;
     setTimeout(() => {

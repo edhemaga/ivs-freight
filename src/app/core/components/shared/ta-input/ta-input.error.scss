@@ -1,0 +1,44 @@
+//-------------------- Input Error --------------------
+.input-error {
+  position: absolute;
+  top: 26px;
+  right: 7px;
+  color: #e57373;
+  font-size: 11px;
+  font-weight: 600;
+  display: none;
+
+  &::-moz-selection {
+    background-color: #ffe1e4;
+  }
+
+  &::selection {
+    background-color: #ffe1e4;
+  }
+
+  &.invalid-focus-out,
+  &.invalid-empty-focus-out-required {
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+  }
+
+  &.invalid-focus-in {
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+    color: #ef5350;
+  }
+
+  &.invalid-dropdown-focus-in {
+    display: none;
+  }
+
+  &.invalid-submit {
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+  }
+
+  // Custom class
+  &.input-big {
+    top: 32px;
+  }
+}

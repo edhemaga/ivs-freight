@@ -34,6 +34,7 @@
       }
     }
 
+    //------------------------ Default Template ------------------------
     .dropdown-option {
       background-color: #ffffff;
       padding: 3px 4px;
@@ -120,7 +121,7 @@
         }
       }
 
-      // Different Templates Items
+      //------------------------ Bank Template ------------------------
       .banks-logo {
         height: 12px;
 
@@ -130,6 +131,16 @@
         }
 
         &:hover {
+          svg {
+            -webkit-filter: grayscale(0);
+            filter: grayscale(0);
+            transition: all 0.3s ease-in-out;
+          }
+        }
+
+        &.active {
+          position: relative;
+          // SVG COLORIZED
           svg {
             -webkit-filter: grayscale(0);
             filter: grayscale(0);

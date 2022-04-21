@@ -73,7 +73,7 @@ import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars
 import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
 import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
-import { TaInputService } from './ta-input/ta-input.service';
+import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
 
 
@@ -126,7 +126,8 @@ import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
     DateCalendarsComponent,
     DriverModalComponent,
     TaCheckboxComponent,
-    TaModalCardComponent
+    TaModalCardComponent,
+    TaInputAddressComponent
   ],
   imports: [
     CommonModule,
@@ -236,9 +237,10 @@ import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
     DateCalendarsComponent,
     DriverModalComponent,
     TaCheckboxComponent,
-    TaModalCardComponent
+    TaModalCardComponent,
+    TaInputAddressComponent
   ],
-  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe,CalendarMonthsPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe, TaInputService],
+  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe,CalendarMonthsPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {

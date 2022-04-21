@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 import { DriversQuery } from '../state/driver.query';
 import { DriversState } from '../state/driver.store';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 
 @Component({
   selector: 'app-driver-table',
@@ -26,7 +27,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   public drivers: DriversState[] = [];
 
   constructor(
-    private customModalService: CustomModalService,
+    private modalService: ModalService,
     private driversQuery: DriversQuery,
     private tableService: TruckassistTableService
   ) {}
@@ -199,18 +200,9 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      // this.customModalService.openModal(
-      //   DriverManageComponent,
-      //   {
-      //     data: {
-      //       type: 'new',
-      //     },
-      //   },
-      //   null,
-      //   {
-      //     size: 'small',
-      //   }
-      // );
+      this.modalService.openModal(DriverModalComponent, {
+        size: 'small',
+      });
 
       this.sendDriverData(500);
     } else if (event.action === 'tab-selected') {
@@ -219,6 +211,13 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onTableBodyActions(event: any) {
+    console.log(event);
+    if(event.type === 'edit') {
+      console.log("USO")
+      this.modalService.openModal(DriverModalComponent, {size: 'small'}, event);
+    }
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
