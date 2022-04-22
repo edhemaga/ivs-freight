@@ -16,6 +16,7 @@ import { TaInputService } from './ta-input.service';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import { DatePipe } from '@angular/common';
+import moment from 'moment';
 
 @Component({
   selector: 'app-ta-input',
@@ -54,10 +55,11 @@ export class TaInputComponent
 
   ngOnInit(): void {
     this.calendarService.dateChanged.subscribe((date) => {
-      if(this.inputConfig.name === "DOB") {
-        const text = this.datePipe.transform(new Date(date), 'yyyy-MM-dd');
+      if(this.inputConfig.name === "datepicker") {
+        const text = moment(new Date(date)).format('YYYY-MM-DD');
         this.input.nativeElement.value = text;
         this.onChange(this.input.nativeElement.value);
+        this.inputConfig.type = 'date';
         this.t2.close();
       }
     });
@@ -110,9 +112,8 @@ export class TaInputComponent
       this.isVisiblePasswordEye = true;
     }
 
-    if(this.inputConfig.name === "DOB") {
-      this.inputConfig.type = 'date'
-      
+    if(this.inputConfig.name === "datepicker") {
+      this.inputConfig.type = 'date';
     }
 
     // Dropdown
@@ -169,6 +170,12 @@ export class TaInputComponent
         }, 250);
       }
     }
+
+    if(this.inputConfig.name === "datepicker") {
+      if(!this.getSuperControl.value && this.getSuperControl.invalid){
+        this.inputConfig.type = 'text';
+      }
+    }
   }
 
   public clearInput(): void {
@@ -180,6 +187,10 @@ export class TaInputComponent
     this.inputConfig.isRequired && this.getSuperControl.errors
       ? (this.waitValidation = true)
       : (this.waitValidation = false);
+
+    if(this.inputConfig.name === "datepicker") {
+      this.inputConfig.type = 'text';
+    }
 
     this.inputService.onClearInputSubject.next(true);
   }

@@ -32,6 +32,7 @@
   <svg-icon
     src="assets/svg/ic_x.svg"
     class="input-clear {{ inputConfig.customClass }}"
+
     [ngClass]="{
       disabled: inputConfig.isDisabled,
       'focus-typing': getSuperControl.value && focusInput,
@@ -281,9 +282,11 @@
   <svg-icon
     #t2="ngbPopover"
     [ngbPopover]="dateTimePopover"
-    [disablePopover]="inputConfig.type != 'date' && inputConfig.type != 'time'"
-    [placement]="['end-bottom', 'top']"
+    [disablePopover]="inputConfig.name != 'datepicker' && inputConfig.name != 'timepicker'"
+    [placement]="['left']"
+    [popoverClass]="'datetimepopovermain'"
     autoClose="outside"
+    [container]="'body'"
     class="input-icon {{ inputConfig.customClass }}"
     [ngClass]="{
       'show-input-icon': inputConfig.placeholderIcon,
