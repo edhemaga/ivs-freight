@@ -1,0 +1,147 @@
+<div class="truck-details-card">
+  <div class="truck-card-header" [ngClass]="{ 'card-mb': !isCardOpen }" (click)="onCardOpen()">
+    <div class="truck-card-header-leftSide">
+      <app-ta-counter *ngIf="cardCount" [count]="cardCount" [countColor]="'#919191'" [countBackground]="'#F7F7F7'"
+        [countHeight]="'24px'" [countWidth]="'24px'"></app-ta-counter>
+      <p class="truck-card-header-name" [ngClass]="{ 'header-name-ml': cardCount }">
+        {{ cardName }}
+      </p>
+
+      <svg-icon *ngIf="cardImg" src="assets/svg/common/ic_bankAccount_dummy.svg"></svg-icon>
+    </div>
+
+    <svg-icon class="truck-card-arrow" [ngClass]="{ rotate: isCardOpen }" src="assets/svg/common/ic_arrow-down.svg">
+    </svg-icon>
+  </div>
+
+  <div [@openCloseBodyCard]="isCardOpen ? 'true' : 'false'" class="truck-card-body" [ngClass]="{ 'no-line': !hasLine }">
+    <div [ngSwitch]="cardTemplate">
+      <!----------------- Assigned To  -------------------->
+
+      <div *ngSwitchCase="'assignedTo'">
+        <div class="assignTo">
+          <div class="assignTo-item first">
+            <svg-icon class="assignTo-vehicle" src="assets/svg/common/trailer.svg"></svg-icon>
+            <p class="assignTo-value">12345</p>
+          </div>
+          <div class="assignTo-item">
+            <svg-icon class="assignTo-vehicle" src="assets/svg/common/user-image.svg"></svg-icon>
+            <p class="assignTo-value">Angelo Trotter</p>
+          </div>
+        </div>
+      </div>
+      <!----------------- Additional Info  -------------------->
+      <div *ngSwitchCase="'additionalInfo'">
+        <div class="common-template">
+          <div class="common-template-item">
+            <div class="common-template-item-name">Gross Weight</div>
+            <div class="common-template-item-value">G-60,001-61,000 ibs</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Starting Mileage</div>
+            <div class="common-template-item-value">237,456.3 mi</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Empty Weight</div>
+            <div class="common-template-item-value">18,360 ibs</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Engine Type</div>
+            <div class="common-template-item-value">Detroid Diesel 60 12.7L</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Axles</div>
+            <div class="common-template-item-value">3</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Tire size</div>
+            <div class="common-template-item-value">295-74-225</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">IPASS/EZPASS</div>
+            <div class="common-template-item-value">13330000123453</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Insurance Policy</div>
+            <div class="common-template-item-value">123B32894</div>
+          </div>
+        </div>
+      </div>
+      <!----------------- Owner -------------------->
+      <div *ngSwitchCase="'Owner'">
+
+      </div>
+      <div *ngSwitchCase="'Owner'">
+        <div class="common-template">
+          <div class="common-template-item">
+            <div class="common-template-item-name">Company</div>
+            <div class="common-template-item-value">KSKA FREIGHT, INC</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Commision</div>
+            <div class="common-template-item-value">10.0%</div>
+          </div>
+        </div>
+      </div>
+      <!----------------- Bank Info  -------------------->
+      <div *ngSwitchCase="'bankInfo'">
+        <div class="common-template">
+          <div class="common-template-item">
+            <div class="common-template-item-name">Routing</div>
+            <div class="common-template-item-value">5</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Account</div>
+            <div class="common-template-item-value d-flex">
+              <!-- <p>{{ accountText ? accountText : hiddenPassword(data.account, 4) }}</p> -->
+              <!-- <svg-icon
+                  (click)="showHideValue(data.account)"
+                  class="hidden-svg-eye"
+                  src="{{
+                    isAccountVisible
+                      ? 'assets/svg/common/ic_eye-visible.svg'
+                      : 'assets/svg/common/ic_eye-hidden.svg'
+                  }}"
+                ></svg-icon> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!----------------- Cards  -------------------->
+      <div *ngSwitchCase="'cards'">
+        <div class="common-template">
+          <div class="common-template-item">
+            <div class="common-template-item-name">TWIC Exp.</div>
+            <div class="common-template-item-value">3</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Fuel Card</div>
+            <div class="common-template-item-value">3</div>
+          </div>
+        </div>
+      </div>
+      <!----------------- Emergency Contact  -------------------->
+      <div *ngSwitchCase="'emergencyContact'">
+        <div class="common-template">
+          <div class="common-template-item">
+            <div class="common-template-item-name">Brother</div>
+            <div class="common-template-item-value">Milos Mikic</div>
+          </div>
+          <div class="common-template-item">
+            <div class="common-template-item-name">Phone</div>
+            <div class="common-template-item-value">33333</div>
+          </div>
+        </div>
+      </div>
+      <!----------------- Note  -------------------->
+      <div *ngSwitchCase="'note'">
+        <div class="note">
+          <p class="note-item">How to pursue pleasure 
+            rationally encounter consequences that are extremely painful.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="hasLine" class="truck-card-line" [ngClass]="{ 'line-mt': !isCardOpen }"></div>
+</div>

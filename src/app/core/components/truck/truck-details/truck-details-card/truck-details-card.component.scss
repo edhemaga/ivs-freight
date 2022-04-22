@@ -1,0 +1,182 @@
+@import '../truck-details.component.scss';
+
+.truck-details-card {
+    background-color: $color-white;
+    display: flex;
+    flex-direction: column;
+  
+    .truck-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 3px 0px;
+  
+      .truck-card-header-leftSide {
+        display: flex;
+        align-items: center;
+  
+        .truck-card-header-name {
+          font-size: $font-size14;
+          font-weight: $font-extrabold;
+          color: $color-gray-dark;
+          margin-right: 12px;
+  
+          &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
+          &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
+  
+          &.header-name-ml {
+            margin-left: 4px;
+          }
+        }
+      }
+  
+      .truck-card-arrow {
+        transition: $transition;
+        transform: rotate(0deg);
+        &.rotate {
+          transition: $transition;
+          transform: rotate(180deg);
+        }
+      }
+  
+      &:hover {
+        transition: $transition;
+        cursor: pointer;
+      }
+    }
+  
+    .truck-card-body {
+      // Assign To Template
+      .assignTo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+  
+        .assignTo-item {
+          background-color: $color-white-dark;
+          border-radius: 3px;
+          padding: 8px 6px;
+          width: 202px;
+          height: 34px;
+          display: flex;
+          align-items: center;
+          .first{
+            margin-right: 12px;
+          }
+          .assignTo-vehicle {
+            margin-right: 6px;
+            height: 18px;
+            position: relative;
+            bottom: 4px;
+          }
+  
+          .assignTo-value {
+            font-size: $font-size18;
+            font-weight: 500;
+            color: $color-gray-dark;
+  
+            &::-moz-selection {
+              color: $color-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+              color: $color-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
+            }
+          }
+        }
+      }
+  
+      // Common Template
+      .common-template {
+        display: grid;
+        grid-template-columns: 175px 153px;
+        row-gap: 10px;
+        margin-bottom: 12px;
+        .common-template-item {
+          display: flex;
+          flex-direction: column;
+  
+          .common-template-item-name {
+            font-size: $font-size12;
+            font-weight: $font-semibold;
+            color: $color-gray-dark;
+  
+            &::-moz-selection {
+              color: $color-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+              color: $color-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
+            }
+          }
+  
+          .common-template-item-value {
+            font-size: $font-size14;
+            font-weight: 400;
+            color: $color-gray-dark;
+  
+            &::-moz-selection {
+              color: $color-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+              color: $color-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
+            }
+  
+            p {
+              &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+              }
+              &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+              }
+            }
+  
+            .hidden-svg-eye {
+              margin-left: 6px;
+              position: relative;
+              bottom: 1px;
+            }
+          }
+        }
+      }
+  
+      // Note template
+      .note {
+        font-size: $font-size14;
+        color: $color-gray-dark;
+  
+        .note-item {
+          &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
+          &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
+        }
+      }
+    }
+  
+    .truck-card-line {
+      margin: 0;
+      height: 2px;
+      width: 100%;
+      border-radius: 1px;
+      background-color: $color-white-light;
+    }
+  }
+  

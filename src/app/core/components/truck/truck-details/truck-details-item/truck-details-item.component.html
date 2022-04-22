@@ -1,0 +1,91 @@
+<div class="truck-component">
+    <div [ngSwitch]="data.template">
+        <div *ngSwitchCase="'general'">
+            <div class="truck-toolbar-general">
+                <div class="truck-toolbar-dropdown">
+                    <svg-icon class="truck-toolbar-back" routerLink="/truck" src="assets/svg/common/ic_arrow-left.svg">
+
+                    </svg-icon>
+                    <p>Truck Details</p>
+                </div>
+                <svg-icon class="truck-toolbar-horizarrow" src="assets/svg/common/ic_horizontal-dots.svg">
+                </svg-icon>
+            </div>
+        </div>
+
+        <!----------------------------COMMON TEMPLATE HEADER ----------------------------->
+
+        <div *ngSwitchDefault>
+            <div class="truck-toolbar">
+                <p class="truck-toolbar-name">Test test</p>
+                <div class="truck-toolbar-button">
+                    <svg-icon class="truck-toolbar-plus" src="assets/svg/common/ic_plus.svg" (click)="onModalAction()">
+                    </svg-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div [ngSwitch]="data.template">
+
+        <!---------------------------- GENERAL TEMPLATE ----------------------------->
+
+        <div *ngSwitchCase="'general'">
+            <div class="truck-wrapper">
+                <div class="truck-switcher">
+                    <p class="truck-switcher-name">Unit 12345</p>
+                    <div class="arrows">
+                        <svg-icon src="assets/svg/common/arrow-left.svg">
+                        </svg-icon>
+                        <svg-icon class="arrow-right" src="assets/svg/common/arrow-right.svg"></svg-icon>
+                    </div>
+                </div>
+                <div class="truck-container">
+                    <div class="truck-avatar">
+                        <svg-icon class="truck" src="assets/svg/common/semi-truck.svg">
+                        </svg-icon>
+
+                        <div class="model-name">
+                            <svg-icon class="truck-model" src="assets/svg/common/chevrolet.svg"></svg-icon>
+                            <p>Model Name XYZ</p>
+                        </div>
+                    </div>
+                    <div class="truck-data">
+                        <div class="truck-data-item">
+                            <svg-icon src="assets/svg/common/vin.svg"></svg-icon>
+                            <p class="vin-text font">4Y1SL65848Z411439</p>
+                        </div>
+                        <div class="truck-data-item second">
+                            <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
+                            <p class="vin-text truck-data-item__text">2018</p>
+                            <svg-icon src="assets/svg/common/light-green.svg"></svg-icon>
+                            <p class="vin-text">Light Green</p>
+                        </div>
+                    </div>
+                    <div class="border-line">
+
+                    </div>
+                  <div class="truck-data">
+                    <div class="truck-data-item bottom">
+                        <svg-icon src="assets/svg/common/date.svg"></svg-icon>
+                        <p class="vin-text">08/03/20</p>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="truck-cards">
+                <!--------Assinged to--------->
+
+                <app-truck-details-card [cardTemplate]="'assignedTo'" [cardName]="'Assigned To'">
+                </app-truck-details-card>
+
+                <app-truck-details-card [cardTemplate]="'additionalInfo'" [cardName]="'Additional Details'">
+                </app-truck-details-card>
+                <app-truck-details-card [cardTemplate]="'Owner'" [cardName]="'Owner'">
+                </app-truck-details-card>
+                <app-truck-details-card [cardTemplate]="'note'" [cardName]="'Note'"></app-truck-details-card>
+            </div>
+        </div>
+
+    </div>
+</div>
