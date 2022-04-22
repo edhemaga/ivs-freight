@@ -134,9 +134,6 @@ export class TruckassistTableBodyComponent
       changes.columns.currentValue !== changes.columns.previousValue
     ) {
       this.columns = changes.columns.currentValue;
-
-      console.log('columns');
-      console.log(this.columns);
     }
 
     if (

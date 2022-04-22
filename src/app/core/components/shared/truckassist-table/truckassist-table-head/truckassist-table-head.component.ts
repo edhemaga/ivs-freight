@@ -59,7 +59,6 @@ export class TruckassistTableHeadComponent
     this.tableService.currentScroll
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: number) => {
-        console.log('Skroling');
         let scroll = document.getElementById('scroll');
         scroll.scrollLeft = response;
       });
