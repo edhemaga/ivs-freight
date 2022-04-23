@@ -75,38 +75,15 @@
         <div class="common-template">
           <div class="common-template-item">
             <div class="common-template-item-name">Company</div>
-            <div class="common-template-item-value">KSKA FREIGHT, INC</div>
+            <div class="common-template-item-value size18">KSKA FREIGHT, INC</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Commision</div>
-            <div class="common-template-item-value">10.0%</div>
+            <div class="common-template-item-value size18">10.0%</div>
           </div>
         </div>
       </div>
-      <!----------------- Bank Info  -------------------->
-      <div *ngSwitchCase="'bankInfo'">
-        <div class="common-template">
-          <div class="common-template-item">
-            <div class="common-template-item-name">Routing</div>
-            <div class="common-template-item-value">5</div>
-          </div>
-          <div class="common-template-item">
-            <div class="common-template-item-name">Account</div>
-            <div class="common-template-item-value d-flex">
-              <!-- <p>{{ accountText ? accountText : hiddenPassword(data.account, 4) }}</p> -->
-              <!-- <svg-icon
-                  (click)="showHideValue(data.account)"
-                  class="hidden-svg-eye"
-                  src="{{
-                    isAccountVisible
-                      ? 'assets/svg/common/ic_eye-visible.svg'
-                      : 'assets/svg/common/ic_eye-hidden.svg'
-                  }}"
-                ></svg-icon> -->
-            </div>
-          </div>
-        </div>
-      </div>
+      
 
       <!----------------- Cards  -------------------->
       <div *ngSwitchCase="'cards'">
@@ -121,19 +98,7 @@
           </div>
         </div>
       </div>
-      <!----------------- Emergency Contact  -------------------->
-      <div *ngSwitchCase="'emergencyContact'">
-        <div class="common-template">
-          <div class="common-template-item">
-            <div class="common-template-item-name">Brother</div>
-            <div class="common-template-item-value">Milos Mikic</div>
-          </div>
-          <div class="common-template-item">
-            <div class="common-template-item-name">Phone</div>
-            <div class="common-template-item-value">33333</div>
-          </div>
-        </div>
-      </div>
+      
       <!----------------- Note  -------------------->
       <div *ngSwitchCase="'note'">
         <div class="note">

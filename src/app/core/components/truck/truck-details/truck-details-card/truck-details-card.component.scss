@@ -97,7 +97,7 @@
       // Common Template
       .common-template {
         display: grid;
-        grid-template-columns: 175px 153px;
+        grid-template-columns: 200px 153px;
         row-gap: 10px;
         margin-bottom: 12px;
         .common-template-item {
@@ -177,6 +177,10 @@
       width: 100%;
       border-radius: 1px;
       background-color: $color-white-light;
+    }
+    .size18{
+      font-weight: $font-medium !important;
+      font-size: $font-size18 !important;
     }
   }
   

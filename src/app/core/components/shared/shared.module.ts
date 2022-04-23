@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
@@ -74,6 +75,7 @@ import { DriverModalComponent } from '../modals/driver-modal/driver-modal.compon
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
 import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
 import { TaInputService } from './ta-input/ta-input.service';
+import { TaCommonHeaderComponent } from './ta-common-header/ta-common-header.component';
 
 
 @NgModule({
@@ -124,7 +126,8 @@ import { TaInputService } from './ta-input/ta-input.service';
     DateCalendarsComponent,
     DriverModalComponent,
     TaCheckboxComponent,
-    TaModalCardComponent
+    TaModalCardComponent,
+    TaCommonHeaderComponent
   ],
   imports: [
     CommonModule,
@@ -132,6 +135,7 @@ import { TaInputService } from './ta-input/ta-input.service';
     ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
     NgSelectModule,
     NgbModule,
+    RouterModule,
     AngularSvgIconModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
@@ -233,7 +237,8 @@ import { TaInputService } from './ta-input/ta-input.service';
     DateCalendarsComponent,
     DriverModalComponent,
     TaCheckboxComponent,
-    TaModalCardComponent
+    TaModalCardComponent,
+    TaCommonHeaderComponent
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe, TaInputService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

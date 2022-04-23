@@ -163,6 +163,7 @@ export class TruckService{
             truckTireSize: '',
             truckMileage: '',
             truckIpasEzpass: '',
+            isSelected:false
           
     });
 

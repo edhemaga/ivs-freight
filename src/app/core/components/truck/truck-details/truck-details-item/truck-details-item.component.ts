@@ -20,9 +20,19 @@ export class TruckDetailsItemComponent implements OnInit {
   public purchaseNote:FormControl=new FormControl();
    
   private destory$:Subject<void>=new Subject<void>();
+
+   headerTextExm:any[]=[];
+   headerTitle:string='';
   constructor( private customModalService:CustomModalService) { }
 
   ngOnInit(): void {
+    this.headerTitle='Truck Details';
+    this.headerTextExm=[
+      {name:'Registration'},
+      {name:'FHWA Inspection'},
+      {name:'Title'},
+      {name:'Lease / Purchase'}
+    ]
   }
   ngOnDestroy():void{
     this.destory$.next();

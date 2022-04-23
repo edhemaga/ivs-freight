@@ -4,7 +4,7 @@ import { TruckInterface } from './truck.modal';
 export interface TruckState extends EntityState<TruckInterface,number>{}
 
 @Injectable({providedIn:'root'})
-@StoreConfig({name:'trucks'})
+@StoreConfig({name:'truck'})
 export class TruckStore extends EntityStore<TruckState>{
     constructor(){
         super();

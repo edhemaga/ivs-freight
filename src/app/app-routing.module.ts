@@ -6,6 +6,7 @@ import { AuthGuard } from './core/guards/authentication.guard';
 import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
+import { TaCommonHeaderComponent } from './core/components/shared/ta-common-header/ta-common-header.component';
 
 const routes: Routes = [
   // Auth Routes
@@ -130,6 +131,10 @@ const routes: Routes = [
         (m) => m.AccidentModule
       ),
     canActivate: [AuthGuard],
+  },
+  {
+   path:'test',
+   component:TaCommonHeaderComponent
   },
   {
     path: "catalog",

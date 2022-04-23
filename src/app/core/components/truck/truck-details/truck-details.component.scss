@@ -26,16 +26,16 @@ $border-radius: 3px;
 
 $transition: all 0.3s ease-in-out;
 
-.truck-details {
-  display: grid;
-  grid-template-columns: 352px repeat(4, 260px);
-  -moz-column-gap: 12px;
-  column-gap: 12px;
+// .truck-details {
+//   display: grid;
+//   grid-template-columns: 352px repeat(4, 260px);
+//   -moz-column-gap: 12px;
+//   column-gap: 12px;
 
-  p {
-    margin: 0px;
-  }
-}
+//   p {
+//     margin: 0px;
+//   }
+// }
 
 // Common Class
 .truck-component {
@@ -454,13 +454,14 @@ $transition: all 0.3s ease-in-out;
           justify-content: center;
           align-items: center;
           align-content: center;
+          height: 18px;
           .vin-text {
             margin-left: 6px;
             font-size: $font-size14;
             font-weight: 400;
           } 
           .font{
-            font-size: $font-size18 !important;
+            font-size: $font-size18 ;
           }
             &__text{
                margin-right: 31px;
@@ -468,10 +469,12 @@ $transition: all 0.3s ease-in-out;
            
         }
         .second{
-          margin-top: 14px !important;
+          margin-top: 14px;
+          margin-bottom: 12px;
         }
         .bottom{
-          margin-top: 12px !important;
+          margin-top: 12px ;
+          height: 18px;
         }
         svg {
           width: 18px;

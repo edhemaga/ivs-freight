@@ -8,7 +8,7 @@ import { TruckPurchaseModalComponent } from './truck-modals/truck-purchase-modal
 import { TruckRegistrationModalComponent } from './truck-modals/truck-registration-modal/truck-registration-modal.component';
 import { TruckTitleModalComponent } from './truck-modals/truck-title-modal/truck-title-modal.component';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { TruckDetailsRoutes } from './truck-details.routing';
 

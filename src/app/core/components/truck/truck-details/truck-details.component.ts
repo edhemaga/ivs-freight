@@ -22,43 +22,47 @@ export class TruckDetailsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.activated_route.paramMap.pipe(
-      switchMap((params:ParamMap)=>{
-        let truck_id=params.get('id');
-        return of(
-          this.truckQuery.getAll().
-          find((truck)=>truck.id===parseInt(truck_id))
-        );
-      }),
-      takeUntil(this.destroy$)
-    ).subscribe((res) => {
-      this.setDetailsConfig(res);
-    });
+    this.activated_route.paramMap
+      .pipe(
+        switchMap((params: ParamMap) => {
+          let truck_id = params.get('id');
+          return of(
+            this.truckQuery
+              .getAll()
+              .find((driver) => driver.id === parseInt(truck_id))
+          );
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((res) => {
+        console.log('REASPONSIVE ', res);
+        this.setDetailsConfig(res);
+      });
   }
   
   private setDetailsConfig(response:TruckInterface){
-    // const registrationData =response.registration.map((data)=>{
+    // const registrationData =response.registrationData.map((data)=>{
     //   return{
     //     ...data,
     //     showDetails:false,
     //   };
     // });
 
-    // const fhwaData= response.fhwa.map((data)=>{
+    // const fhwaData= response.fhwaData.map((data)=>{
     //   return{
     //     ...data,
     //     showDetails:false,
     //   }
     // })
 
-    // const titleData=response.title.map((data)=>{
+    // const titleData=response.titleData.map((data)=>{
     //   return{
     //     ...data,
     //     showDetails:false,
     //   }
     // });
 
-    // const purchaseData=response.purchase.map((data)=>{
+    // const purchaseData=response.purchaseData.map((data)=>{
     //   return{
     //     ...data,
     //    showDetails:false,
@@ -66,7 +70,6 @@ export class TruckDetailsComponent implements OnInit {
     // });
     this.truckDetailsConfig=[{
       id:0,
-      name:'General',
       template:'general',
       data:{
          response,
@@ -80,6 +83,7 @@ export class TruckDetailsComponent implements OnInit {
            emptyWei:'18,360',
            engineType:'Detroid Diesel 60 12.7L',
            axles:'3',
+           tireSize:'295-74-225',
            ipass_ez:'13330000123453',
            ins_policy:'123B32894'
          },
@@ -123,25 +127,25 @@ export class TruckDetailsComponent implements OnInit {
     //   id:1,
     //   name:'Registration',
     //   template:'registration',
-    //   data:registrationData,
+    //   data:[],
     // },
     // {
     //   id:2,
     //   name:'FHWA Inspection',
     //   template:'fhwa insepction',
-    //   data:fhwaData,
+    //   data:[],
     // },
     // {
     //   id:3,
     //   name:'Title',
     //   template:'title',
-    //   data:titleData,
+    //   data:[],
     // },
     // {
     //   id:4,
     //   name:'Lease/Purchase',
     //   template:'lease/purchase',
-    //   data:purchaseData,
+    //   data:[],
     // }
   ]
   }
