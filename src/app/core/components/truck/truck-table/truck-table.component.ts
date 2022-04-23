@@ -312,11 +312,14 @@ export class TruckTableComponent implements OnInit {
   }
 
   public onTableBodyActions(event: any) {
-    if (event.type === 'edit') {
+    if (event.type === 'edit-truck') {
       this.modalService.openModal(
         TruckModalComponent,
         { size: 'small' },
-        event
+        {
+          ...event,
+          type: 'edit'
+        }
       );
     }
   }
