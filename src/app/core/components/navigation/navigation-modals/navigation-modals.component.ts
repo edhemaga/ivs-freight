@@ -12,6 +12,7 @@ import { NavigationService } from '../services/navigation.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { AccountModalComponent } from '../../modals/account-modal/account-modal.component';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
+import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -57,14 +58,20 @@ export class NavigationModalsComponent {
   private openModal(navItem: NavigationModal) {
     const path = navItem.path;
     switch (path) {
-      case 'account': {
-        this.modalService.openModal(AccountModalComponent, {
+      case 'driver': {
+        this.modalService.openModal(DriverModalComponent, {
           size: 'small',
         });
         break;
       }
-      case 'driver': {
-        this.modalService.openModal(DriverModalComponent, {
+      case 'truck': {
+        this.modalService.openModal(TruckModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
+      case 'account': {
+        this.modalService.openModal(AccountModalComponent, {
           size: 'small',
         });
         break;

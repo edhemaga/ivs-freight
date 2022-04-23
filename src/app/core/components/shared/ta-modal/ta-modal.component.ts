@@ -26,6 +26,10 @@ export class TaModalComponent {
 
   constructor(private ngbActiveModal: NgbActiveModal) {}
 
+  ngOnInit() {
+    console.log(this.editData)
+  }
+
   public onAction(action: string) {
     switch (action) {
       case 'save': {

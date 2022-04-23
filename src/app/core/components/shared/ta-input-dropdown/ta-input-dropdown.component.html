@@ -1,14 +1,19 @@
-<div class="dropdown-container">
-  <!-- Dropdown search, select item -->
-  <app-ta-input
-    [formControl]="getSuperControl"
-    [inputConfig]="inputConfig"
-  ></app-ta-input>
+<!-- Dropdown search, select item -->
+<app-ta-input
+  [formControl]="getSuperControl"
+  [inputConfig]="inputConfig"
+  #t2="ngbPopover"
+  [ngbPopover]="taInputDropdownPopover"
+  [placement]="['bottom-left']"
+  popoverClass="ta-input-dropdown"
+  [container]="'body'"
+  autoClose="'outside'"
+></app-ta-input>
 
+<ng-template #taInputDropdownPopover>
   <!-- Dropdown options -->
   <div
-    [@showHideDropdownOptions]="isDropdownOptionsVisible ? 'true' : 'false'"
-    class="dropdown-options"
+    class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
     [ngClass]="{
       scroll: options.length > 6
     }"
@@ -20,15 +25,59 @@
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option"
           [ngClass]="{
-            'disabled': option?.disabled,
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            'active': option.id === activeItem?.id
+            active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
         >
-          <svg-icon class="banks-logo" [ngClass]="{'active': option.id === activeItem?.id}" src="{{ option.url }}"></svg-icon>
+          <svg-icon
+            *ngIf="option.svg"
+            class="banks-logo"
+            [ngClass]="{ active: option.id === activeItem?.id }"
+            [src]="option.svg | taSvg: option.folder:option.subFolder"
+          ></svg-icon>
+          <div
+            *ngIf="!option.svg"
+            [innerHtml]="
+              option.name
+                | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+            "
+          ></div>
+        </div>
+      </div>
+      <!-- Svg Text Template (display flex) -->
+      <div *ngSwitchCase="'svgtextflex'">
+        <div
+          *ngFor="let option of options; trackBy: identity"
+          class="dropdown-option svg-text-flex {{ option.subFolder }} {{
+            option.name.trim().replace(' ', '').toLowerCase()
+          }}"
+          [ngClass]="{
+            disabled: option?.disabled,
+            'no-result':
+              options.length === 1 && options[0].name === 'No Results',
+            'add-new': options.length === 1 && options[0].name === 'Add New',
+            active: option.id === activeItem?.id
+          }"
+          (click)="onActiveItem(option)"
+        >
+          <svg-icon
+            class="svgtextflex-logo {{
+              option.name.trim().replace(' ', '').toLowerCase()
+            }}"
+            [ngClass]="{ active: option.id === activeItem?.id }"
+            [src]="option.svg | taSvg: option.folder:option?.subFolder"
+          ></svg-icon>
+          <div
+            class="svgtextflex-text"
+            [innerHtml]="
+              option.name
+                | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+            "
+          ></div>
         </div>
       </div>
       <!-- Default Template - Render Only Text -->
@@ -37,11 +86,11 @@
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option"
           [ngClass]="{
-            'disabled': option?.disabled,
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            'active': option.id === activeItem?.id
+            active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
           [innerHtml]="
@@ -52,4 +101,4 @@
       </div>
     </div>
   </div>
-</div>
+</ng-template>

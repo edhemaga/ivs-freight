@@ -138,6 +138,7 @@
     (input)="onChange($event.target.value)"
     (blur)="onBlur()"
     (focus)="onFocus()"
+    (keypress)="manipulateWithInput($event)"
     (onAddressChange)="handleAddressChange($event)"
   />
 
@@ -176,7 +177,7 @@
         getSuperControl.invalid &&
         getSuperControl.touched
     }"
-    src="{{ getPlaceholderIcon(inputConfig.placeholderIcon) }}"
+    [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg:'common'"
   ></svg-icon>
 
   <!-- Input Label -->

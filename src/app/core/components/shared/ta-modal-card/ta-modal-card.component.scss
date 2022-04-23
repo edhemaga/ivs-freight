@@ -32,8 +32,12 @@
         }
       }
 
-      .header-svg {
+      .info-svg {
         margin-left: 6px;
+        width: 18px;
+        height: 18px;
+        position: relative;
+        bottom: 4.5px;
       }
     }
 
@@ -44,7 +48,7 @@
         margin-right: 7px;
         position: relative;
         bottom: 1px;
-        
+
         svg {
           path {
             fill: #6d82c7;

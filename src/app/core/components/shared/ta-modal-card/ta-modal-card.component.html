@@ -4,7 +4,7 @@
     <div class="header-content">
       <app-ta-counter
         *ngIf="hasCounter"
-        [count]="0"
+        [count]="hasCounter"
         [countBackground]="'#F3F3F3'"
         [countColor]="'#919191'"
         [countHeight]="'24px'"
@@ -16,16 +16,16 @@
         >{{ cardName }}</span
       >
       <svg-icon
-        *ngIf="cardSvg"
-        class="header-svg"
-        src="{{ cardSvg }}"
+        *ngIf="headerSvg"
+        class="info-svg"
+        src="{{ headerSvg }}"
       ></svg-icon>
     </div>
     <div class="header-svgs">
       <svg-icon
-        *ngIf="hasAdd"
+        *ngIf="actionSvg"
         class="header-add"
-        src="assets/svg/common/ic_plus.svg"
+        src="{{actionSvg}}"
         (click)="onAdd($event)"
       ></svg-icon>
       <svg-icon

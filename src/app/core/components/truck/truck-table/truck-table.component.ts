@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
+import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-truck-table',
@@ -15,7 +16,7 @@ export class TruckTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService) {}
+  constructor(private modalService: ModalService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -303,10 +304,23 @@ export class TruckTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba se doda modal!');
+      this.modalService.openModal(TruckModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setTruckData(event.tabData);
+    }
+  }
+
+  public onTableBodyActions(event: any) {
+    if (event.type === 'edit-truck') {
+      this.modalService.openModal(
+        TruckModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          type: 'edit'
+        }
+      );
     }
   }
 }

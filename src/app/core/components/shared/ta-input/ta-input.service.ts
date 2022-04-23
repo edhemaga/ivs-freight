@@ -59,7 +59,6 @@ export class TaInputService {
         if (control.controls) {
           this.markInvalid(control);
         }
-        console.log(control);
       });
       this.notificationService.warning(
         'Please fill all required fields.',
@@ -98,17 +97,6 @@ export class TaInputService {
     }
     formControl.updateValueAndValidity();
   }
-
-  /**
-   * @param iconPlaceholder 
-   * @returns 
-   */
-  public getPlaceholderIcon(iconPlaceholder: string): string {
-    if (!iconPlaceholder) {
-      return null;
-    }
-    return `assets/svg/common/ic_${iconPlaceholder.toLowerCase()}.svg`;
-  }
   
   /**
    * @param address - premapped address
@@ -121,7 +109,6 @@ export class TaInputService {
    * @param data - active dropdown item
    */
   public hasDropdownActiveItem(data: any) {
-    console.log(data);
     this.activeItemDropdownSubject.next(data);
   }
 
