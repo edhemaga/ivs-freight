@@ -148,7 +148,7 @@
         ? 'assets/svg/common/ic_eye-visible.svg'
         : 'assets/svg/common/ic_eye-hidden.svg'
     }}"
-    [appTooltip]="togglePassword ? 'Show Password' : 'Hide Password'"
+    [appTooltip]="!togglePassword ? 'Show Password' : 'Hide Password'"
     [position]="'top-middle'"
     [tooltipBackground]="'#6C6C6C'"
     [tooltipColor]="'#FFFFFF'"
@@ -237,6 +237,7 @@
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
     [mask]="inputConfig.mask"
+    [thousandSeparator]="inputConfig.mask === 'separator.2' ? ',' : null"
     class="input-control {{ inputConfig.textTransform }} {{
       inputConfig.customClass
     }}"
@@ -276,7 +277,6 @@
     (focus)="onFocus()"
     (paste)="onPaste($event, inputConfig.maxLength)"
   />
-
   <!-- Input Icon Placeholder -->
   <svg-icon
     #t2="ngbPopover"

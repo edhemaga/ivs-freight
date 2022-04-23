@@ -99,7 +99,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       emptyWeight: [null, Validators.maxLength(6)],
       truckEngineTypeId: [null],
       tireSizeId: [null],
-      axles: [null],
+      axles: [null, Validators.maxLength(1)],
       insurancePolicy: [null],
       mileage: [null, Validators.maxLength(8)],
       ipasEzpass: [null, Validators.maxLength(14)],

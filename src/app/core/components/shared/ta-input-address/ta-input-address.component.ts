@@ -128,37 +128,36 @@ export class TaInputAddressComponent
 
   public manipulateWithInput(event: KeyboardEvent): boolean {
     
-    const regex = /^[ ]*$/;
-
     // Disable first character to be space
     if (
       !this.input.nativeElement.value &&
-      regex.test(String.fromCharCode(event.charCode))
+      /^[ ]*$/.test(String.fromCharCode(event.charCode))
     ) {
       event.preventDefault();
       return false;
     }
 
-    // Disable 2 or more space consecutively
-    if(regex.test(String.fromCharCode(event.charCode))) {
-      this.numberOfSpaces++;
-      if(this.numberOfSpaces > 1) {
-        event.preventDefault();
-        return false;
-      }
-    }
-    else {
-      this.numberOfSpaces = 0;
-    }
 
     if (['address'].includes(this.inputConfig.name.toLowerCase())) {
-      const regex = /^[A-Za-z0-9 .-]*$/;
-      if (regex.test(String.fromCharCode(event.charCode))) {
+      if (/^[A-Za-z0-9 .&/,_-]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
         return true;
       } else {
         event.preventDefault();
         return false;
       }
+    }
+  }
+
+  public disableConsecutivelySpaces(event: any) {
+    if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
+      this.numberOfSpaces++;
+      if (this.numberOfSpaces > 1) {
+        event.preventDefault();
+        return false;
+      }
+    } else {
+      this.numberOfSpaces = 0;
     }
   }
 

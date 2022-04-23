@@ -189,6 +189,10 @@
         width: 228px;
       }
 
+      &.w-col-5 {
+        width: 188px;
+      }
+
       &.w-col-4 {
         width: 148px;
       }
@@ -199,6 +203,14 @@
 
       &.w-col-tireSize {
         width: 130px;
+      }
+
+      &.w-col-banks {
+        width: 163px;
+      }
+
+      &.w-col-paytype {
+        width: 151px;
       }
     }
   }

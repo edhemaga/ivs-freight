@@ -15,7 +15,7 @@ import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
-import { DatePipe } from '@angular/common';
+
 import moment from 'moment';
 
 @Component({
@@ -47,8 +47,8 @@ export class TaInputComponent
     @Self() public superControl: NgControl,
     private changeDetection: ChangeDetectorRef,
     private inputService: TaInputService,
-    private calendarService: CalendarScrollService,
-    private datePipe: DatePipe
+    private calendarService: CalendarScrollService
+    
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -253,33 +253,18 @@ export class TaInputComponent
   }
 
   public manipulateWithInput(event: KeyboardEvent): boolean {
-    
-    const regex = /^[ ]*$/;
-
     // Disable first character to be space
     if (
       !this.input.nativeElement.value &&
-      regex.test(String.fromCharCode(event.charCode))
+      /^[ ]*$/.test(String.fromCharCode(event.charCode))
     ) {
       event.preventDefault();
       return false;
     }
 
-    // Disable 2 or more space consecutively
-    if(regex.test(String.fromCharCode(event.charCode))) {
-      this.numberOfSpaces++;
-      if(this.numberOfSpaces > 1) {
-        event.preventDefault();
-        return false;
-      }
-    }
-    else {
-      this.numberOfSpaces = 0;
-    }
-
     if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
-      const regex = /^[A-Za-z .,&'()-]*$/;
-      if (regex.test(String.fromCharCode(event.charCode))) {
+      if (/^[A-Za-z .,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
         return true;
       } else {
         event.preventDefault();
@@ -288,8 +273,8 @@ export class TaInputComponent
     }
 
     if (['username'].includes(this.inputConfig.name.toLowerCase())) {
-      const regex = /^[A-Za-z0-9.,&'()-]*$/;
-      if (regex.test(String.fromCharCode(event.charCode))) {
+      if (/^[A-Za-z0-9.,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
         return true;
       } else {
         event.preventDefault();
@@ -302,8 +287,8 @@ export class TaInputComponent
         this.inputConfig.name.toLowerCase()
       )
     ) {
-      const regex = /^[A-Za-z ]*$/;
-      if (regex.test(String.fromCharCode(event.charCode))) {
+      if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
         return true;
       } else {
         event.preventDefault();
@@ -316,8 +301,8 @@ export class TaInputComponent
         this.inputConfig.name.toLowerCase()
       )
     ) {
-      const regex = /^[A-Za-z0-9 ]*$/;
-      if (regex.test(String.fromCharCode(event.charCode))) {
+      if (/^[A-Za-z0-9 ]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
         return true;
       } else {
         event.preventDefault();
@@ -332,11 +317,32 @@ export class TaInputComponent
         'empty mile',
         'loaded mile',
         'per stop',
-        'year',
+        'empty weight',
+        'axles',
+        'mileage',
+        'ipas ezpass',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
-      const regex = /^[0-9]*$/;
-      if (regex.test(String.fromCharCode(event.charCode))) {
+      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (['year'].includes(this.inputConfig.name.toLowerCase())) {
+      if (
+        /^[0]*$/.test(String.fromCharCode(event.charCode)) &&
+        !this.input.nativeElement.value
+      ) {
+        event.preventDefault();
+        return false;
+      }
+
+      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
         return true;
       } else {
         event.preventDefault();
@@ -345,8 +351,8 @@ export class TaInputComponent
     }
 
     if (['email'].includes(this.inputConfig.name.toLowerCase())) {
-      const regex = /^[A-Za-z0-9.@-]*$/;
-      if (regex.test(String.fromCharCode(event.charCode))) {
+      if (/^[A-Za-z0-9.@-_]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
         return true;
       } else {
         event.preventDefault();
@@ -355,8 +361,8 @@ export class TaInputComponent
     }
 
     if (['bussines name'].includes(this.inputConfig.name.toLowerCase())) {
-      const regex = /^[A-Za-z0-9 .,'()&-]*$/;
-      if (regex.test(String.fromCharCode(event.charCode))) {
+      if (/^[A-Za-z0-9 .,'()&-]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
         return true;
       } else {
         event.preventDefault();
@@ -365,8 +371,8 @@ export class TaInputComponent
     }
 
     if (['vin'].includes(this.inputConfig.name.toLowerCase())) {
-      const regex = /^[A-Za-z0-9]*$/;
-      if (regex.test(String.fromCharCode(event.charCode))) {
+      if (/^[A-Za-z0-9]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
         return true;
       } else {
         event.preventDefault();
@@ -375,13 +381,25 @@ export class TaInputComponent
     }
 
     if (['model'].includes(this.inputConfig.name.toLowerCase())) {
-      const regex = /^[A-Za-z0-9 .-]*$/;
-      if (regex.test(String.fromCharCode(event.charCode))) {
+      if (/^[A-Za-z0-9 -]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
         return true;
       } else {
         event.preventDefault();
         return false;
       }
+    }
+  }
+
+  public disableConsecutivelySpaces(event: any) {
+    if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
+      this.numberOfSpaces++;
+      if (this.numberOfSpaces > 1) {
+        event.preventDefault();
+        return false;
+      }
+    } else {
+      this.numberOfSpaces = 0;
     }
   }
 
