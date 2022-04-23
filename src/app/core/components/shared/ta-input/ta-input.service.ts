@@ -59,7 +59,6 @@ export class TaInputService {
         if (control.controls) {
           this.markInvalid(control);
         }
-        console.log(control);
       });
       this.notificationService.warning(
         'Please fill all required fields.',

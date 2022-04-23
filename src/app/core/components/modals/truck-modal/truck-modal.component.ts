@@ -89,7 +89,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       ],
       truckMakeId: [null, Validators.required],
       model: [null, [Validators.required, Validators.maxLength(22)]],
-      year: [null, Validators.required, Validators.maxLength(4)],
+      year: [null, [Validators.required, Validators.maxLength(4)]],
       colorId: [null],
       companyOwned: [false],
       ownerId: [null],
@@ -101,7 +101,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       tireSizeId: [null],
       axles: [null, Validators.maxLength(1)],
       insurancePolicy: [null],
-      mileage: [null, Validators.maxLength(8)],
+      mileage: [null, Validators.maxLength(10)],
       ipasEzpass: [null, Validators.maxLength(14)],
     });
   }

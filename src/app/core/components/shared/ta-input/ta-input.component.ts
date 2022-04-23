@@ -87,8 +87,6 @@ export class TaInputComponent
     this.input.nativeElement.value = obj;
   }
 
-  // RegisterOnChange & onChange
-  // this two methods, mapped value from input to form in parent component
   public registerOnChange(fn: any): void {
     this.onChange = fn;
   }

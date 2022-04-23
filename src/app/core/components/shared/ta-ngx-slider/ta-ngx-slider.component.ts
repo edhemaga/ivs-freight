@@ -16,8 +16,6 @@ export class TaNgxSliderComponent {
   @Output() onUserValueChange: EventEmitter<any> = new EventEmitter<any>();
 
   public userChangeEnd(changes: ChangeContext) {
-    console.log("NGX SLIDER")
-    console.log(changes)
     this.onUserValueChange.emit(changes.value);
   }
 
