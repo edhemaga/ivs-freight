@@ -494,10 +494,12 @@
             <app-ta-input
               formControlName="twicExpDate"
               [inputConfig]="{
-                name: 'Exp Date',
-                type: 'date',
+                name: 'datepicker',
+                type: 'text',
                 label: 'Exp. Date',
-                isRequired: true
+                placeholderIcon: 'date',
+                isRequired: true,
+                customClass: 'datetimeclass'
               }"
             ></app-ta-input>
           </div>
