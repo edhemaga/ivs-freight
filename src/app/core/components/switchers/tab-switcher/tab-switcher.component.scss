@@ -77,7 +77,7 @@
 
 /* 2 options, 2nd selected */
 .multiswitch label:nth-last-child(4) ~ input:nth-child(3):checked ~ a {
-  left: calc(50% + 1px);
+  left: calc(50% - 2px);
 }
 
 /* 3 options, 2nd selected */
