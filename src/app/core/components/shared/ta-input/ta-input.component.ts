@@ -13,7 +13,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
-import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import { DatePipe } from '@angular/common';
 import moment from 'moment';
@@ -269,6 +269,8 @@ export class TaInputComponent
     ) {
       this.inputTypingPattern(event, true, false, true);
     }
+
+    
 
     if (['address unit'].includes(this.inputConfig.name.toLowerCase())) {
       this.inputTypingPattern(event, true, true, true);

@@ -49,9 +49,7 @@ export class TaInputDropdownComponent
     this.getSuperControl.valueChanges
       .pipe(untilDestroyed(this))
       .subscribe((term) => {
-        if (!this.activeItem) {
           this.search(term);
-        }
       });
 
     this.inputService.onClearInputSubject
@@ -110,7 +108,7 @@ export class TaInputDropdownComponent
   registerOnTouched(fn: any): void {}
 
   private search(term: string): void {
-    if (term?.length > 0) {
+    if (term?.length > 0 && this.activeItem.name !== this.getSuperControl.value) {
       this.options = this.originalOptions.filter((item) =>
         item.name.toLowerCase().includes(term.toLowerCase())
       );
