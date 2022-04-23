@@ -26,8 +26,14 @@
     margin-bottom: 28px !important;
   }
 
+  // If has something below row
   .last-row {
     margin-bottom: 22px !important;
+  }
+
+  // If modal buttons directly below row
+  .last-modal-row {
+    margin-bottom: 20px !important;
   }
 
   .no-p-left {
@@ -66,7 +72,7 @@
 
   //------------------------ Custom Schedule Of Inputs ------------------------------
 
-  // Bank Inputs
+  //---------------- Bank Inputs ----------------
   .custom-bank-row {
     display: grid;
     grid-template-columns: 164px 100px 168px;
@@ -75,7 +81,63 @@
     margin-bottom: 32px;
   }
 
-  // Pay Type & Notifications
+  //---------------- Custom Checkbox Card With Content In ----------------
+  .custom-checkbox-card {
+    display: block;
+
+    .checkbox-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px;
+      line-height: 18px;
+
+      .checkbox-card-header-arrow {
+        svg {
+          transform: rotate(0deg);
+          transition: all 0.3s ease-in-out;
+        }
+        &.rotate {
+          svg {
+            transform: rotate(180deg);
+            transition: all 0.3s ease-in-out;
+          }
+        }
+      }
+    }
+
+    .checkbox-card-body {
+      .animation-checkbox-card-tabs {
+        position: relative;
+        transform: translate(20%);
+        opacity: 0;
+        height: 0px;
+        transition: all 0.3s ease-in-out;
+
+        &.fade {
+          transform: translate(0);
+          opacity: 1;
+          height: 26px;
+          margin-top: 26px;
+          margin-bottom: 22px;
+          transition: all 0.3s ease-in-out;
+
+          // Override global class
+          .row {
+            margin-bottom: 0px !important;
+          }
+        }
+      }
+
+      // Truck Modal
+      .animation-checkbox-card-tabs-truckModal {
+        height: 48px;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+
+  //---------------- Pay Type & Notifications ----------------
   .custom-row-paytype-notification {
     display: grid;
     grid-template-columns: 151px 1fr;
@@ -134,7 +196,7 @@
     }
   }
 
-  // PayType Commission
+  //---------------- PayType Commission ----------------
   .paytype-commission {
     display: grid;
     grid-template-columns: 204px 213px;
@@ -146,7 +208,7 @@
     margin-bottom: 12px;
   }
 
-  // PayType Per Mile
+  //---------------- PayType Per Mile ----------------
   .paytype-permile {
     padding-left: 6px;
     .permile-fields {
@@ -171,18 +233,18 @@
     }
   }
 
-  // Emergency Contact
+  //---------------- Emergency Contact ----------------
   .emergency-contact {
     display: grid;
     grid-template-columns: 150px 170px 112px;
     -moz-column-gap: 12px;
     column-gap: 12px;
-    margin-bottom: 10px;
+    height: 36px;
     margin-top: 14px;
     transition: all 0.3s ease-in-out;
   }
 
-  // Off Duty Locations
+  //---------------- Off Duty Locations ----------------
   .offDutyLocations {
     .offDutyLocations-label {
       padding: 0 6px;
@@ -196,6 +258,10 @@
         font-size: 12px;
         font-weight: 700;
         color: #919191;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
 
         &:nth-child(2) {
           margin-left: 52px;
@@ -224,7 +290,7 @@
         cursor: pointer;
         svg {
           path {
-            fill: #919191;
+            fill: #aaaaaa;
           }
           &:hover {
             transition: all 0.3s ease-in-out;
@@ -242,522 +308,19 @@
       }
     }
   }
-}
 
-// ------ end
-
-// .table-header-row {
-//   padding-right: 0;
-//   margin-top: -5px;
-//   background-color: #f7f7f7;
-//   margin: 0 -12px !important;
-//   height: 30px;
-//   line-height: 30px;
-//   margin-bottom: 8px !important;
-// }
-
-// .table-header-row label {
-//   font: Bold 12px/15px Montserrat;
-//   margin-bottom: 0.25rem;
-// }
-
-// .form-group {
-//   margin-bottom: 6px !important;
-
-//   label {
-//     font-weight: 400;
-//     color: $dark;
-//     font-size: 13px;
-//     letter-spacing: 0.5px;
-//     white-space: normal;
-//   }
-
-//   &.floating-addon {
-//     position: relative;
-
-//     .input-group-append {
-//       left: initial;
-//       right: 0;
-//     }
-
-//     .form-control {
-//       border-radius: 3px;
-//       padding-left: 50px;
-
-//       & + .form-control {
-//         border-radius: 0 3px 3px 0;
-//         padding-left: 15px;
-//       }
-//     }
-//   }
-// }
-
-// .custom-control-label {
-//   &::before {
-//     position: absolute;
-//     left: -1.5rem;
-//     display: block;
-//     width: 1rem;
-//     height: 1rem;
-//     pointer-events: none;
-//     content: "";
-//     -webkit-user-select: none;
-//     -moz-user-select: none;
-//     -ms-user-select: none;
-//     user-select: none;
-//     background-color: #ececec;
-//   }
-// }
-
-// .custom-checkbox {
-//   .custom-control-input {
-//     &:checked {
-//       & ~ .custom-control-label {
-//         &::before {
-//           box-shadow: none;
-//         }
-//       }
-//     }
-//   }
-// }
-
-// .form-group.floating-addon .input-group-prepend,
-// .form-group.floating-addon .input-group-append {
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   z-index: 5;
-// }
-
-// .form-group.floating-addon .input-group-prepend .input-group-text,
-// .form-group.floating-addon .input-group-append .input-group-text {
-//   border-color: transparent;
-//   font-size: 20px;
-//   line-height: 24px;
-// }
-
-// .input-group-text {
-//   background-color: transparent;
-//   border: 1px solid #e9f1f1;
-//   color: #d8dede;
-// }
-
-// .form-control:not(.search-input) {
-//   border: 1px solid #dddcde;
-//   // color: #6C6C6C;
-
-//   &:focus {
-//     border-color: $primary;
-//   }
-
-//   &::-webkit-input-placeholder {
-//     color: $muted;
-//     padding-left: 7px;
-//   }
-
-//   &::-moz-placeholder {
-//     color: transparent !important;
-//     opacity: 0 !important;
-//   }
-
-//   &:-ms-input-placeholder {
-//     color: $muted;
-//   }
-
-//   &.creditcard {
-//     background-position: 98%;
-//     background-repeat: no-repeat;
-//     background-size: 40px;
-//     padding-right: 60px;
-//   }
-// }
-
-// .input-lg {
-//   height: 46px;
-//   padding: 10px 16px;
-//   font-size: 18px;
-//   line-height: 1.3333333;
-//   border-radius: 3px;
-// }
-
-// .input-sm {
-//   height: 30px;
-//   padding: 5px 10px;
-//   font-size: 12px;
-//   line-height: 1.5;
-//   border-radius: 3px;
-// }
-
-// .input-group-addon {
-//   padding: 6px 12px;
-//   font-size: 14px;
-//   font-weight: 400;
-//   color: #888a8a;
-//   text-align: center;
-//   background-color: #eee;
-//   border: 1px solid #e9f1f1;
-//   border-radius: 3px;
-
-//   &:first-child {
-//     border-right: 0;
-//   }
-// }
-
-// .input-group {
-//   .input-group-addon {
-//     border-radius: 0;
-//     border-color: #e9f1f1;
-//     background-color: $white;
-//   }
-// }
-
-// .form-control:disabled,
-// .form-control[readonly] {
-//   background-color: #f0f0f5;
-// }
-
-// .input-group-text,
-// select.form-control:not([size]):not([multiple]),
-// .form-control:not(.form-control-sm):not(.form-control-lg) {
-//   line-height: 18px;
-// }
-
-// .dataTables_wrapper {
-//   .dataTables_length {
-//     select {
-//       height: calc(1.8125rem + 2px) !important;
-//       padding: 0.25rem 0.9rem !important;
-//     }
-//   }
-// }
-
-// .form-group label,
-// .ng-select .ng-select-container .ng-value-container .ng-placeholder {
-//   color: #b7b7b7 !important;
-//   //color: #919191;
-//   font-weight: 400;
-//   text-shadow: none;
-//   margin-left: -1px;
-
-//   & strong {
-//     font-weight: 600;
-//   }
-// }
-
-// .ng-select .ng-select-container .ng-value-container .ng-placeholder {
-//   margin-left: -2px;
-// }
-
-// .form-group label {
-//   font-weight: bold;
-//   opacity: 1;
-// }
-
-app-ta-select {
-  .ng-select .ng-select-container .ng-value-container .ng-placeholder {
-    bottom: 1px;
+  //---------------- TireSize & Axles ----------------
+  .tireSize-axles {
+    display: grid;
+    grid-template-columns: 130px 46px;
+    align-items: center;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
   }
 }
 
-.load-form-wrapper app-tab-switcher {
-  margin-bottom: 0.25rem;
-  display: block;
-}
+// ------------------------------------------------ end ------------------------------------------------
 
-.ng-select.ng-select-single .ng-select-container .ng-clear-wrapper {
-  bottom: -2px;
-  text-align: right;
-  right: 18px;
-}
 
-// .form-group label,
-// .ng-select
-//   .ng-select-container.ng-has-value
-//   .ng-value-container
-//   .ng-placeholder {
-// color: #28529f !important;
-// opacity: 1 !important;
-// font-weight: 600 !important;
-// }
 
-// .ng-select .ng-clear-wrapper {
-//   width: 13px !important;
-// }
 
-/*
-.ng-select.ng-select-single .ng-select-container .ng-arrow-wrapper {
-  bottom: 6px;
-  float: right;
-  left: 4px;
-}
-*/
-// .ng-select.ng-select-single .ng-select-container .ng-value-container,
-// .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
-//   overflow: visible !important;
-// }
-
-// .col-form-label {
-//   padding-top: calc(0.375rem + 1px);
-//   padding-bottom: calc(0.375rem + 1px);
-//   margin-bottom: 0;
-//   font-size: inherit;
-//   line-height: 1.2;
-// }
-
-// .form-control {
-//   font-size: 14px;
-//   font-weight: 400;
-//   height: auto;
-//   padding: 8px 8px 8px 6px;
-//   //color: $gray-800;
-// }
-
-// ::placeholder {
-//   padding-left: 0 !important;
-//   font-weight: 400 !important;
-//   color: #666 !important;
-// }
-
-// .ng-select .ng-select-container:after {
-//   transition: none !important;
-// }
-
-/*
-.ng-select-opened {
-  .ng-select-container .ng-value-container .ng-placeholder { color: #28529f !important; }
-}
-*/
-// #price {
-//   padding-left: 13px !important;
-// }
-
-// .ngx-dropdown-container span {
-//   //color: $gray-800;
-//   font-weight: 300;
-//   padding: 2px;
-// }
-
-// .mat-slide-toggle {
-//   margin-left: 15px;
-//   z-index: 1;
-// }
-
-// .mat-slide-toggle {
-//   .mat-slide-toggle-thumb-container {
-//     top: 1px;
-//     left: 1px;
-//   }
-
-//   .mat-slide-toggle-bar {
-//     box-shadow: 0 0 0 3px lightgrey;
-//     width: 33px;
-//     height: 18px;
-//     border-radius: 12px;
-//   }
-
-//   .mat-slide-toggle-thumb {
-//     height: 16px;
-//     width: 16px;
-//   }
-// }
-
-// .required-field {
-//   .ng-placeholder:after {
-//     content: "*" !important;
-//     color: #ff8080 !important;
-//     padding-left: 0.2rem !important;
-//     font-size: 14px !important;
-//     position: relative;
-//     top: 1px;
-//   }
-// }
-
-// .mat-slide-toggle.mat-checked {
-//   .mat-slide-toggle-thumb-container {
-//     transform: translate(14px, 0) !important;
-//   }
-
-//   .mat-slide-toggle-thumb {
-//     background-color: $white;
-//   }
-
-//   .mat-slide-toggle-bar {
-//     background-color: $primary;
-//   }
-// }
-
-// .mat-calendar-body-cell-content {
-//   border-radius: 4px !important;
-// }
-
-// .hideIftaForm {
-//   max-height: 0;
-//   transition: max-height 0.8s ease;
-//   overflow: hidden;
-// }
-
-// .openIftaForm {
-//   overflow: visible;
-//   transition: none;
-// }
-
-// .select2.select2-container.select2-container--default {
-//   width: 100% !important;
-//   min-height: 30px;
-//   background-color: white;
-// }
-
-// select {
-//background: $input-bg !important;
-// }
-
-// .form-select {
-//   font-weight: 400;
-//   //color: $gray-800;
-// }
-
-// input:not(.mat-input-element, .search-bg),
-// .select2-selection--single,
-// .select2-selection--multiple,
-// textarea {
-//   //background-color: $input-bg !important;
-//   font-weight: 400;
-// }
-
-// .select2-container--default
-//   .select2-selection--single
-//   .select2-selection__rendered {
-//   font-weight: 400 !important;
-//   //color: $gray-800 !important;
-// }
-
-// .search-element {
-//   border: 1px solid lightgray;
-//   padding-right: 50px;
-//   position: relative;
-
-//   span {
-//     position: absolute;
-//     top: 6px;
-//     right: 10px;
-//   }
-// }
-
-// .search-category {
-//   border: 0.25rem #e9f1f1;
-//   padding-right: 41px;
-//   margin-right: -50px;
-//   width: 410px !important;
-//   background: #ffffff;
-//   border-radius: 0.25rem;
-//   padding-bottom: 8px;
-//   margin-bottom: 0 !important;
-//   height: 29px;
-// }
-
-// .search-category-pb-7 {
-//   padding-bottom: 7px;
-// }
-
-// .input-price {
-//   border: 1px solid #dddcde;
-//   //background-color: $gray-100;
-// }
-
-// .custom-search {
-//   width: 300px;
-// }
-
-// .custom-search-maintenance {
-//   width: 150px;
-// }
-
-// .status-form {
-//   .form-group {
-//     margin-bottom: 0;
-//   }
-
-//   .mat-slide-toggle-label {
-//     margin-bottom: 0;
-//     margin-top: 0.25rem;
-//   }
-// }
-
-// .mat-checkbox-checked.mat-accent .mat-checkbox-background {
-//   background: $primary !important;
-// }
-
-// .form-container {
-//   position: relative;
-//   transition: 0.3s;
-
-//   // &:not(.has-tabs) {
-//   //   margin-top: 14px;
-//   // }
-
-//   &.tabs-2 {
-//     width: 936px;
-//   }
-
-//   &.tabs-3 {
-//     width: 1416px;
-//   }
-
-//   &.tab-1 {
-//     left: 0;
-//   }
-
-//   &.tab-2 {
-//     left: -480px;
-//   }
-
-//   &.tab-3 {
-//     left: -960px;
-//   }
-
-//   &.has-tabs {
-//     margin-top: 28px;
-
-//     &.tabs-hidden {
-//       margin-top: 16px;
-//     }
-//   }
-// }
-
-// .fatality-injuries-padding {
-//   padding-left: 0;
-// }
-
-// .injuries-padding p {
-//   margin-left: 0 !important;
-// }
-
-// .k-widget.k-timepicker.ng-pristine.ng-invalid.ng-touched
-//   .k-icon.k-i-clock:after {
-//   color: #fff;
-// }
-
-.dispatch-destination-wrapper {
-  overflow: hidden;
-}
-
-.load-routes-wrapper {
-  position: relative;
-  transition: 0.3s;
-
-  &.tabs-3 {
-    width: 1500px;
-  }
-
-  &.tab-Closed {
-    left: 0;
-  }
-
-  &.tab-Active {
-    left: -500px;
-  }
-
-  &.tab-Pending {
-    left: -1000px;
-  }
-}

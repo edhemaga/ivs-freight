@@ -30,7 +30,7 @@ export class TaInputDropdownComponent
   @Input() template: string;
   @Input() inputConfig: ITaInput;
   @Input() canAddNew: boolean = false;
-  @Input() options: any[] = [];
+  @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
 
   public activeItem: any;
   public originalOptions: any[] = [];
@@ -69,8 +69,7 @@ export class TaInputDropdownComponent
         if (!action) {
           if (this.activeItem) {
             this.getSuperControl.setValue(this.activeItem.name);
-          } 
-          else {
+          } else {
             const index = this.originalOptions.findIndex(
               (item) => item.name === this.getSuperControl.value
             );
@@ -81,11 +80,13 @@ export class TaInputDropdownComponent
         } else {
           this.inputConfig = {
             ...this.inputConfig,
-            placeholder: this.getSuperControl.value ? this.getSuperControl.value : this.activeItem?.name,
+            placeholder: this.getSuperControl.value
+              ? this.getSuperControl.value
+              : this.activeItem?.name,
           };
           this.getSuperControl.setValue(null);
         }
-        
+
         this.inputService.hasDropdownActiveItem(this.activeItem);
       });
 

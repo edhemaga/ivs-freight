@@ -16,16 +16,16 @@
         >{{ cardName }}</span
       >
       <svg-icon
-        *ngIf="cardSvg"
+        *ngIf="headerSvg"
         class="info-svg"
-        src="{{ cardSvg }}"
+        src="{{ headerSvg }}"
       ></svg-icon>
     </div>
     <div class="header-svgs">
       <svg-icon
-        *ngIf="hasAdd"
+        *ngIf="actionSvg"
         class="header-add"
-        src="assets/svg/common/ic_plus.svg"
+        src="{{actionSvg}}"
         (click)="onAdd($event)"
       ></svg-icon>
       <svg-icon

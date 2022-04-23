@@ -210,9 +210,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    console.log(event);
     if (event.type === 'edit') {
-      console.log('USO');
       this.modalService.openModal(
         DriverModalComponent,
         { size: 'small' },
@@ -220,6 +218,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       );
     }
   }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

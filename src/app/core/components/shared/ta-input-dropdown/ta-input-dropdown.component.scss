@@ -121,6 +121,27 @@
         }
       }
 
+      //------------------------ Trucks, Trailers, Colors Template  ------------------------
+      &.svg-text-flex {
+        display: flex;
+        align-items: center;
+
+        .svgtextflex-logo {
+          height: auto;
+          margin-right: 6.5px;
+        }
+  
+        .svgtextflex-text {
+          position: relative;
+          top: 1px;
+        }
+
+        .colors {
+          height: 18px;
+          width: 18px;
+        }
+      }
+
       //------------------------ Bank Template ------------------------
       .banks-logo {
         height: 12px;

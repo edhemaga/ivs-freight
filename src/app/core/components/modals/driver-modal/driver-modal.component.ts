@@ -15,6 +15,7 @@ import { card_modal_animation } from '../../shared/animations/card-modal.animati
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { Address } from '../../shared/ta-input-address/ta-input-address.component';
+import { MockModalService } from 'src/app/core/services/mockmodal.service';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -30,7 +31,19 @@ import { Address } from '../../shared/ta-input-address/ta-input-address.componen
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
+
   public driverForm: FormGroup;
+  public ownerTabs: any[] = [];
+  public labelsBank: any[] = [];
+  public labelsPayType: any[] = [];
+
+  public selectedTab: number = 1;
+  public selectedOwnerTab: string = 'sole';
+
+  public isOwner: boolean = false;
+  public isBankSelected: boolean = false;
+
+  public address: Address = null;
 
   public tabs: any[] = [
     {
@@ -44,43 +57,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     {
       id: 3,
       name: 'Additional',
-    },
-  ];
-
-  public ownerTabs: any[] = [
-    {
-      id: 'sole',
-      name: 'Sole Proprietor',
-      checked: true,
-    },
-    {
-      id: 'company',
-      name: 'Company',
-      checked: false,
-    },
-  ];
-
-  public labelsBank: any[] = [
-    {
-      id: 1,
-      name: 'Bank Of America',
-      url: 'assets/svg/common/ic_bankAccount_color_dummy.svg',
-    },
-    {
-      id: 2,
-      name: 'Bank Of Serbia',
-      url: 'assets/svg/common/ic_bankAccount_color_dummy.svg',
-    },
-  ];
-
-  public labelsPayType: any[] = [
-    {
-      id: 1,
-      name: 'Per mile',
-    },
-    {
-      id: 2,
-      name: 'Commission',
     },
   ];
 
@@ -100,18 +76,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     hideLimitLabels: true,
   };
 
-  public selectedTab: number = 1;
-  public selectedOwnerTab: string = 'sole';
-
-  public isOwner: boolean = false;
-  public isBankSelected: boolean = false;
-
-  public address: Address = null;
-
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal
+    private ngbActiveModal: NgbActiveModal,
+    private mockModalService: MockModalService
   ) {}
 
   ngOnInit(): void {
@@ -122,15 +91,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.onTwicTypeSelected();
     this.handleAddress();
 
-    this.inputService.activeItemDropdown$
-      .subscribe((value) => {
-        console.log(value);
-        if (value) {
-          this.isBankSelected = true;
-          this.inputService.changeValidators(this.driverForm.get('routing'));
-          this.inputService.changeValidators(this.driverForm.get('account'));
-        }
-      });
+    this.ownerTabs = this.mockModalService.ownerTabs;
+    this.labelsBank = this.mockModalService.labelsBank;
+    this.labelsPayType = this.mockModalService.labelsPayType;
   }
 
   public onModalAction(action: string): void {
@@ -138,9 +101,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       this.driverForm.reset();
     } else {
       if (this.driverForm.invalid) {
-        console.log(this.driverForm.value);
         this.inputService.markInvalid(this.driverForm);
-
         return;
       }
       this.ngbActiveModal.close();
@@ -196,8 +157,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public get offDutyLocations(): FormArray {
-    console.log("FORM ARRAY")
-    console.log(this.driverForm.get('offDutyLocations') as FormArray)
     return this.driverForm.get('offDutyLocations') as FormArray;
   }
 
@@ -212,13 +171,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       zipCode: [null],
       addressUnit: [null],
       streetNumber: [null],
-      streetName: [null]
-    })
+      streetName: [null],
+    });
   }
 
   public addOffDutyLocation(event: any) {
-    if(event) {
-      this.offDutyLocations.push(this.createOffDutyLocation())
+    if (event) {
+      this.offDutyLocations.push(this.createOffDutyLocation());
     }
   }
 
@@ -295,8 +254,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .get('twic')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        console.log('TWIC');
-        console.log(value);
         if (value) {
           this.inputService.changeValidators(
             this.driverForm.get('twicExpDate')

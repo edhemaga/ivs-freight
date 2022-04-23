@@ -60,7 +60,6 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { TaInputComponent } from '../../components/shared/ta-input/ta-input.component';
 import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions.component';
-import { AccountManageComponent } from '../modals/account-manage/account-manage.component';
 import { AccountModalComponent } from '../modals/account-modal/account-modal.component';
 import { TaInputNoteComponent } from './ta-input-note/ta-input-note.component';
 import { TextareaAutosizeDirective } from '../../directives/TextareaAutosize.directive';
@@ -75,7 +74,9 @@ import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
 import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
 import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
-import { TaInputPlaceholderIconPipe } from './ta-input/ta-input-placeholderIcon.pipe';
+
+import { TruckModalComponent } from '../modals/truck-modal/truck-modal.component';
+import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 
 
 @NgModule({
@@ -114,7 +115,6 @@ import { TaInputPlaceholderIconPipe } from './ta-input/ta-input-placeholderIcon.
     TaFileComponent,
     TaInputComponent,
     SvgDefinitionsComponent,
-    AccountManageComponent,
     TaModalComponent,
     AccountModalComponent,
     TaInputNoteComponent,
@@ -129,7 +129,8 @@ import { TaInputPlaceholderIconPipe } from './ta-input/ta-input-placeholderIcon.
     TaCheckboxComponent,
     TaModalCardComponent,
     TaInputAddressComponent,
-    TaInputPlaceholderIconPipe
+    TruckModalComponent,
+    TaSvgPipe
   ],
   imports: [
     CommonModule,
@@ -226,7 +227,6 @@ import { TaInputPlaceholderIconPipe } from './ta-input/ta-input-placeholderIcon.
     PdfViewerModule,
     TaInputComponent,
     SvgDefinitionsComponent,
-    AccountManageComponent,
     TaModalComponent,
     AccountModalComponent,
     TaInputNoteComponent,
@@ -241,7 +241,8 @@ import { TaInputPlaceholderIconPipe } from './ta-input/ta-input-placeholderIcon.
     TaCheckboxComponent,
     TaModalCardComponent,
     TaInputAddressComponent,
-    TaInputPlaceholderIconPipe
+    TruckModalComponent,
+    TaSvgPipe
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe,CalendarMonthsPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
