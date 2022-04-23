@@ -252,14 +252,49 @@ export class TaInputComponent
     }
   }
 
-  public manipulateWithInput(event: KeyboardEvent): void {
-    // Check different user input typing
+  public manipulateWithInput(event: KeyboardEvent): boolean {
+    
+    const regex = /^[ ]*$/;
+
+    // Disable first character to be space
+    if (
+      !this.input.nativeElement.value &&
+      regex.test(String.fromCharCode(event.charCode))
+    ) {
+      event.preventDefault();
+      return false;
+    }
+
+    // Disable 2 or more space consecutively
+    if(regex.test(String.fromCharCode(event.charCode))) {
+      this.numberOfSpaces++;
+      if(this.numberOfSpaces > 1) {
+        event.preventDefault();
+        return false;
+      }
+    }
+    else {
+      this.numberOfSpaces = 0;
+    }
+
     if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
-      this.inputTypingPattern(event, true, false, true, false, true);
+      const regex = /^[A-Za-z .,&'()-]*$/;
+      if (regex.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
     }
 
     if (['username'].includes(this.inputConfig.name.toLowerCase())) {
-      this.inputTypingPattern(event, true, true, false, false, true);
+      const regex = /^[A-Za-z0-9.,&'()-]*$/;
+      if (regex.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
     }
 
     if (
@@ -267,17 +302,27 @@ export class TaInputComponent
         this.inputConfig.name.toLowerCase()
       )
     ) {
-      this.inputTypingPattern(event, true, false, true);
+      const regex = /^[A-Za-z ]*$/;
+      if (regex.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
     }
 
-    
-
-    if (['address unit'].includes(this.inputConfig.name.toLowerCase())) {
-      this.inputTypingPattern(event, true, true, true);
-    }
-
-    if (['bussines name'].includes(this.inputConfig.name.toLowerCase())) {
-      this.inputTypingPattern(event, true, true, true, false, true, true);
+    if (
+      ['address unit', 'truck number'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
+      const regex = /^[A-Za-z0-9 ]*$/;
+      if (regex.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
     }
 
     if (
@@ -287,187 +332,56 @@ export class TaInputComponent
         'empty mile',
         'loaded mile',
         'per stop',
+        'year',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
-      this.inputTypingPattern(event, false, true, false);
+      const regex = /^[0-9]*$/;
+      if (regex.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
     }
 
     if (['email'].includes(this.inputConfig.name.toLowerCase())) {
-      this.inputTypingPattern(event, false, false, false, true);
-    }
-  }
-
-  private inputTypingPattern(
-    event: KeyboardEvent,
-    characters: boolean,
-    numbers: boolean,
-    space: boolean,
-    email?: boolean,
-    pointDash?: boolean,
-    specialCharacters?: boolean
-  ): void {
-    if (
-      characters &&
-      !numbers &&
-      space &&
-      !email &&
-      pointDash &&
-      !specialCharacters
-    ) {
-      this.inputCharactersTyping(event);
-      this.inputWithSpaceTyping(event);
-      this.inputPointDash(event);
+      const regex = /^[A-Za-z0-9.@-]*$/;
+      if (regex.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
     }
 
-    if (
-      characters &&
-      numbers &&
-      !space &&
-      !email &&
-      pointDash &&
-      !specialCharacters
-    ) {
-      this.inputCharactersTyping(event);
-      this.inputNumbersTyping(event);
-      this.inputPointDash(event);
+    if (['bussines name'].includes(this.inputConfig.name.toLowerCase())) {
+      const regex = /^[A-Za-z0-9 .,'()&-]*$/;
+      if (regex.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
     }
 
-    if (
-      characters &&
-      !numbers &&
-      space &&
-      !email &&
-      !pointDash &&
-      !specialCharacters
-    ) {
-      this.inputCharactersTyping(event);
-      this.inputWithSpaceTyping(event);
+    if (['vin'].includes(this.inputConfig.name.toLowerCase())) {
+      const regex = /^[A-Za-z0-9]*$/;
+      if (regex.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
     }
 
-    if (
-      characters &&
-      numbers &&
-      space &&
-      !email &&
-      !pointDash &&
-      !specialCharacters
-    ) {
-      this.inputCharactersTyping(event);
-      this.inputNumbersTyping(event);
-      this.inputWithSpaceTyping(event);
-    }
-
-    if (
-      characters &&
-      numbers &&
-      space &&
-      !email &&
-      pointDash &&
-      specialCharacters
-    ) {
-      this.inputCharactersTyping(event);
-      this.inputNumbersTyping(event);
-      this.inputWithSpaceTyping(event);
-      this.inputPointDash(event);
-      this.inputSpecialCharacters(event);
-    }
-
-    if (
-      !characters &&
-      numbers &&
-      !space &&
-      !email &&
-      !pointDash &&
-      !specialCharacters
-    ) {
-      this.inputNumbersTyping(event);
-    }
-
-    if (email) {
-      this.inputNoSpaceTyping(event);
-      this.inputEmailTyping(event);
-    }
-  }
-
-  // Allow One Space Only
-  private inputWithSpaceTyping(event: KeyboardEvent): void {
-    let charCode = event.charCode;
-    charCode === 32 ? this.numberOfSpaces++ : (this.numberOfSpaces = 0);
-    if (this.numberOfSpaces >= 2) {
-      event.preventDefault();
-    }
-  }
-
-  // Disallow space
-  private inputNoSpaceTyping(event: KeyboardEvent): void {
-    let charCode = event.charCode;
-    if (charCode === 32) {
-      event.preventDefault();
-    }
-  }
-
-  // Pattern 1: characters, space, backspace
-  public inputCharactersTyping(event: KeyboardEvent): void {
-    const charCode = event.charCode;
-    if (
-      !(
-        (charCode >= 97 && charCode <= 122) ||
-        (charCode >= 65 && charCode <= 90) ||
-        charCode === 32 ||
-        charCode === 8
-      )
-    ) {
-      event.preventDefault();
-    }
-  }
-
-  // Pattern 2: numbers
-  public inputNumbersTyping(event: KeyboardEvent): void {
-    const charCode = event.charCode;
-    if (!(charCode >= 48 && charCode <= 57)) {
-      event.preventDefault();
-    }
-  }
-
-  // Pattern 3: point, dash
-  public inputPointDash(event: KeyboardEvent): void {
-    const charCode = event.charCode;
-    if (!(charCode === 46 || charCode === 45)) {
-      event.preventDefault();
-    }
-  }
-
-  // Pattern 4: point, dash, comma, &, ', ()
-  public inputSpecialCharacters(event: KeyboardEvent): void {
-    const charCode = event.charCode;
-    if (
-      !(
-        charCode === 46 ||
-        charCode === 45 ||
-        charCode === 44 ||
-        charCode === 38 ||
-        charCode === 39 ||
-        charCode === 40 ||
-        charCode === 41
-      )
-    )
-      event.preventDefault();
-  }
-
-  // Pattern 6: EMAIL (characters, numbers, @, space, backspace, point, dash)
-  private inputEmailTyping(event: KeyboardEvent): void {
-    const charCode = event.charCode;
-    if (
-      !(
-        (charCode >= 97 && charCode <= 122) ||
-        (charCode >= 65 && charCode <= 90) ||
-        (charCode >= 48 && charCode <= 57) ||
-        charCode === 46 ||
-        charCode === 45 ||
-        charCode === 64
-      )
-    ) {
-      event.preventDefault();
+    if (['model'].includes(this.inputConfig.name.toLowerCase())) {
+      const regex = /^[A-Za-z0-9 .-]*$/;
+      if (regex.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
     }
   }
 

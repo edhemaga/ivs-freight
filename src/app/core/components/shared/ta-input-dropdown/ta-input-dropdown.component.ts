@@ -108,7 +108,7 @@ export class TaInputDropdownComponent
   registerOnTouched(fn: any): void {}
 
   private search(term: string): void {
-    if (term?.length > 0 && this.activeItem.name !== this.getSuperControl.value) {
+    if (term?.length > 0 && this.activeItem?.name !== this.getSuperControl.value) {
       this.options = this.originalOptions.filter((item) =>
         item.name.toLowerCase().includes(term.toLowerCase())
       );
