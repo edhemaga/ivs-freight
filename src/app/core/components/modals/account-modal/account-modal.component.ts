@@ -1,12 +1,13 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 
 @Component({
   selector: 'app-account-modal',
   templateUrl: './account-modal.component.html',
   styleUrls: ['./account-modal.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AccountModalComponent implements OnInit {
   public accountForm: FormGroup;

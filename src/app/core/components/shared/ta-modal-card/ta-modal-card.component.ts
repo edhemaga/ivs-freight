@@ -11,19 +11,20 @@ import { card_modal_animation } from '../animations/card-modal.animation';
 })
 export class TaModalCardComponent {
 
-  @Input() hasCounter: boolean = false;
-  @Input() hasArrow: boolean = true;
-  @Input() hasAdd: boolean = false;
-  @Input() cardSvg: string = null;
+  @Input() hasCounter: number;
   @Input() cardName: string = null;
+  @Input() hasArrow: boolean = true;
+  
+  @Input() headerSvg: string = null;
+  @Input() actionSvg: string = null;
   @Input() isCardOpen: boolean = false;  // if has data, set on true
 
-  @Output() onAddEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
   public onAdd(event: any): void {
     event.preventDefault();
     event.stopPropagation();
-    this.onAddEvent.emit(true);
+    this.onActionEvent.emit(true);
   }
 
 }

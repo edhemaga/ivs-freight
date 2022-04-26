@@ -67,6 +67,7 @@
                 isRequired: true,
                 placeholderIcon: 'email'
               }"
+              
             ></app-ta-input>
           </div>
         </div>
@@ -108,7 +109,7 @@
                 isRequired: true,
                 customClass: 'datetimeclass'
               }"
-          ></app-ta-input>
+            ></app-ta-input>
           </div>
           <div class="col-7">
             <app-ta-input
@@ -124,24 +125,21 @@
           </div>
         </div>
         <!-- IsOwner -->
-        <div class="custom-row-owner">
-          <!-- Owner Divider -->
+        <div class="custom-checkbox-card">
           <div class="divider"></div>
-          <!-- Owner Header -->
-          <div class="owner-header">
+          <div class="checkbox-card-header">
             <app-ta-checkbox
               formControlName="isOwner"
               [label]="'Owner'"
             ></app-ta-checkbox>
             <svg-icon
-              class="owner-header-arrow"
+              class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow-down.svg"
               [ngClass]="{ rotate: driverForm.get('isOwner').value }"
             ></svg-icon>
           </div>
-          <!-- Owner Body -->
           <div
-            class="owner-body"
+            class="checkbox-card-body"
             [@showHideOwner]="
               driverForm.get('isOwner').value ? 'true' : 'false'
             "
@@ -152,7 +150,8 @@
               [customClass]="'owner-switch'"
             ></app-status-switcher>
             <div
-              class="animation-owner-tabs"
+              *ngIf="driverForm.get('isOwner').value"
+              class="animation-checkbox-card-tabs"
               [ngClass]="{ fade: selectedOwnerTab === 'company' }"
             >
               <div class="row">
@@ -185,23 +184,65 @@
         </div>
         <!-- Off duty Location -->
         <app-ta-modal-card
-          [hasCounter]="true"
+          [hasCounter]="offDutyLocations.length ? offDutyLocations.length : '0'"
           [cardName]="'Off duty Location'"
-          [cardSvg]="'assets/svg/common/ic_info.svg'"
-          [hasAdd]="editData"
+          [headerSvg]="'assets/svg/common/ic_info.svg'"
+          [actionSvg]="editData ? 'assets/svg/common/ic_plus.svg' : null"
           [isCardOpen]="offDutyLocations.length"
-          (onAddEvent)="addOffDutyLocation($event)"
+          (onActionEvent)="addOffDutyLocation($event)"
         >
+          <div
+            formArrayName="offDutyLocations"
+            class="offDutyLocations"
+            *ngIf="offDutyLocations.length"
+          >
+            <div class="offDutyLocations-label">
+              <p>NICKNAME</p>
+              <p>ADDRESS, CITY, STATE ZIP</p>
+            </div>
+            <div
+              *ngFor="
+                let dutyLocation of offDutyLocations.controls;
+                let ind = index
+              "
+            >
+              <div [formGroupName]="ind" class="offDutyLications-card">
+                <app-ta-input
+                  formControlName="nickname"
+                  [inputConfig]="{
+                    name: 'NICKNAME',
+                    type: 'text',
+                    textTransform: 'capitalize'
+                  }"
+                ></app-ta-input>
+                <app-ta-input-address
+                  formControlName="address"
+                  [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    textTransform: 'capitalize'
+                  }"
+                ></app-ta-input-address>
 
-        <!-- <div formArrayName="offDutyLocations">
-          <div *ngFor="let dutyLocation of offDutyLocations().controls; let i=index">
-            <div [formGroupName]="i">
-              
+                <svg-icon
+                  class="offDutyLocation-delete"
+                  src="assets/svg/common/ic_trash.svg"
+                  (click)="removeOffDutyLocation(ind)"
+                  [appTooltip]="'Delete'"
+                  [position]="'top-middle'"
+                  [tooltipBackground]="'#EF5350'"
+                  [tooltipColor]="'#FFFFFF'"
+                  [zIndex]="900"
+                  [borderRadius]="'2px'"
+                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+                  [fontWeight]="'bold'"
+                  [fontSize]="'11px'"
+                  [customPosition]="-7"
+                ></svg-icon>
+              </div>
             </div>
           </div>
-        </div> -->
-
-      </app-ta-modal-card>
+        </app-ta-modal-card>
         <!-- Note -->
         <app-ta-input-note formControlName="note"></app-ta-input-note>
       </div>
@@ -214,7 +255,7 @@
             [label]="'Include in Payroll'"
           ></app-ta-checkbox>
         </div>
-        <div class="custom-bank-row first-row">
+        <div class="custom-bank-row first-row" [ngClass]="{'no-m-bottom': !driverForm.get('payroll').value}">
           <div class="bank-field">
             <app-ta-input-dropdown
               formControlName="bankId"
@@ -223,8 +264,9 @@
                 name: 'Input Dropdown',
                 type: 'text',
                 label: 'Bank Name',
-                isRequired: true,
-                isDropdown: true
+                isRequired: driverForm.get('payroll').value,
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-banks'
               }"
               [canAddNew]="true"
               [options]="labelsBank"
@@ -275,7 +317,8 @@
                 type: 'text',
                 label: 'Pay type',
                 isRequired: true,
-                isDropdown: true
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-paytype'
               }"
               [canAddNew]="true"
               [options]="labelsPayType"
@@ -452,10 +495,12 @@
             <app-ta-input
               formControlName="twicExpDate"
               [inputConfig]="{
-                name: 'Exp Date',
-                type: 'date',
+                name: 'datepicker',
+                type: 'text',
                 label: 'Exp. Date',
-                isRequired: true
+                placeholderIcon: 'date',
+                isRequired: true,
+                customClass: 'datetimeclass'
               }"
             ></app-ta-input>
           </div>

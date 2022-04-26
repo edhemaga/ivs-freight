@@ -26,13 +26,13 @@
 
   &:hover {
     transition: all 0.3s ease-in-out;
-    right: 2px !important;
+    right: 1px !important;
     width: 22px;
     height: 22px;
     transform: translate(-6%, -10%) !important;
   }
 
-  &.datetimeclass{
+  &.datetimeclass {
     right: 28px !important;
   }
 

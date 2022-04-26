@@ -2,8 +2,8 @@
   class="input-custom-group"
   [ngClass]="{
     'hide-placeholder-icon': getSuperControl.value,
-    valid: getSuperControl.value && getSuperControl.valid && !focusInput,
-    invalid: getSuperControl.value && getSuperControl.invalid && !focusInput,
+    'valid': getSuperControl.value && getSuperControl.valid && !focusInput,
+    'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required':
       inputConfig.isRequired &&
       !getSuperControl.value &&
@@ -34,7 +34,7 @@
     class="input-clear {{ inputConfig.customClass }}"
 
     [ngClass]="{
-      disabled: inputConfig.isDisabled,
+      'disabled': inputConfig.isDisabled,
       'focus-typing': getSuperControl.value && focusInput,
       'valid-focus-in':
         getSuperControl.value &&
@@ -135,8 +135,8 @@
   <svg-icon
     class="input-password-eye {{ inputConfig.customClass }}"
     [ngClass]="{
-      visible: inputConfig.type === 'password' && isVisiblePasswordEye,
-      valid:
+      'visible': inputConfig.type === 'password' && isVisiblePasswordEye,
+      'valid':
         getSuperControl.valid &&
         inputConfig.type === 'password' &&
         !focusInput &&
@@ -148,7 +148,7 @@
         ? 'assets/svg/common/ic_eye-visible.svg'
         : 'assets/svg/common/ic_eye-hidden.svg'
     }}"
-    [appTooltip]="togglePassword ? 'Show Password' : 'Hide Password'"
+    [appTooltip]="!togglePassword ? 'Show Password' : 'Hide Password'"
     [position]="'top-middle'"
     [tooltipBackground]="'#6C6C6C'"
     [tooltipColor]="'#FFFFFF'"
@@ -182,9 +182,9 @@
   <svg-icon
     class="input-dropdown-arrow"
     [ngClass]="{
-      visible: inputConfig.isDropdown && !inputConfig.isDisabled,
-      active: inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
-      valid:
+      'visible': inputConfig.isDropdown && !inputConfig.isDisabled,
+      'active': inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
+      'valid':
         inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.valid &&
@@ -217,7 +217,7 @@
         focusInput &&
         inputConfig.isDropdown &&
         !inputConfig.placeholder,
-      hide: isDropdownAddModeActive,
+      'hide': isDropdownAddModeActive,
       'no-validation-hover': !waitValidation && !focusInput
     }"
     src="assets/svg/common/ic_arrow-down.svg"
@@ -237,11 +237,12 @@
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
     [mask]="inputConfig.mask"
+    thousandSeparator="{{inputConfig.mask === 'separator.2' ? ',' : null}}"
     class="input-control {{ inputConfig.textTransform }} {{
       inputConfig.customClass
     }}"
     [ngClass]="{
-      disabled: !getSuperControl.value && inputConfig.isDisabled,
+      'disabled': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-focus-in':
         getSuperControl.value &&
@@ -276,9 +277,7 @@
     (focus)="onFocus()"
     (paste)="onPaste($event, inputConfig.maxLength)"
   />
-
   <!-- Input Icon Placeholder -->
-  <!--   -->
   <svg-icon
     #t2="ngbPopover"
     [ngbPopover]="dateTimePopover"
@@ -322,7 +321,7 @@
         getSuperControl.invalid &&
         getSuperControl.touched
     }"
-    src="{{ getPlaceholderIcon(inputConfig.placeholderIcon) }}"
+    [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg:'common'"
   ></svg-icon>
 
   <!-- Input Label -->
@@ -330,7 +329,7 @@
     [for]="inputConfig.name"
     class="input-label {{ inputConfig.customClass }}"
     [ngClass]="{
-      required: inputConfig.isRequired && !inputConfig.isDisabled,
+      'required': inputConfig.isRequired && !inputConfig.isDisabled,
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'up-label': getSuperControl.value || focusInput,
