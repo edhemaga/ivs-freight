@@ -26,17 +26,16 @@
 
   .table-progress-panel {
     .progress-text {
-      /* margin: 4px 0 0 4px; */
       margin: 2px 0 0 4px;
       font-size: 14px;
       font-weight: 500;
-      color: #b7b7b7;
+      color: #6C6C6C;
       display: flex;
 
       span {
         &::selection {
-          color: #b7b7b7;
-          background: rgba(145, 145, 145, 0.2);
+          color: #6C6C6C;
+          background: #6C6C6C20;
         }
       }
 
