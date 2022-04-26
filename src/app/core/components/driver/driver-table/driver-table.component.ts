@@ -41,7 +41,6 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          console.log('Radi se reset columns-a');
           this.resetColumns = response;
 
           this.sendDriverData();
@@ -53,13 +52,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.tableOptions = {
       disabledMutedStyle: null,
       toolbarActions: {
-        hideImport: false,
-        hideExport: false,
-        hideViewMode: true,
-        hideLockUnlock: false,
-        hideAddNew: false,
-        hideColumns: false,
-        hideCompress: false,
+        hideViewMode: false,
       },
       config: {
         showSort: true,

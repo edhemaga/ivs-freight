@@ -31,7 +31,6 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from "../switchers/status-switcher/status-switcher.component";
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { TooltipDirective } from "../../directives/tooltip.directive";
 import { NgxMaskModule } from "ngx-mask";
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
@@ -75,13 +74,13 @@ import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
 import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
 import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
+import { DirectivesModule } from '../../directives/directives.module';
 
 
 @NgModule({
   declarations: [
     AutoFocusDirective,
     InputFocusDirective,
-    TooltipDirective,
     InputRestrictionDirective,
     InputErrorPipe,
     SortPipe,
@@ -96,7 +95,6 @@ import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
     TabSwitcherComponent,
     StatusSwitcherComponent,
     NFormatterPipe,
-    TooltipDirective,
     TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
@@ -165,7 +163,8 @@ import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
     Ng5SliderModule,
     NgxDropzoneModule,
     CroppieModule,
-    PdfViewerModule
+    PdfViewerModule,
+    DirectivesModule
   ],
   exports: [
     AutoFocusDirective,
@@ -202,7 +201,6 @@ import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
     LabelModule,
     NFormatterPipe,
     TabSwitcherComponent,
-    TooltipDirective,
     TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
@@ -238,7 +236,8 @@ import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
     DriverModalComponent,
     TaCheckboxComponent,
     TaModalCardComponent,
-    TaInputAddressComponent
+    TaInputAddressComponent,
+    DirectivesModule
   ],
   providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe,CalendarMonthsPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
