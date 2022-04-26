@@ -1,4 +1,4 @@
-export function getTrailerColumnDefinition() {
+export function getTrailerColumnDefinition() {  
   return [
     {
       ngTemplate: 'checkbox',

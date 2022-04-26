@@ -1,5 +1,5 @@
 // Customer Broker COLUMN DEFINITION
-export function getBrokerColumnDefinition() {
+export function getBrokerColumnDefinition() { 
   return [
     {
       ngTemplate: 'checkbox',

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getAccountingFuelColumnDefinition } from 'src/assets/utils/settings/accounting-fuel-columns';
 
 @Component({
@@ -8,6 +10,8 @@ import { getAccountingFuelColumnDefinition } from 'src/assets/utils/settings/acc
   styleUrls: ['./fuel-table.component.scss'],
 })
 export class FuelTableComponent implements OnInit {
+  private destroy$: Subject<void> = new Subject<void>();
+  
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -15,12 +19,22 @@ export class FuelTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService) {}
+  constructor(private customModalService: CustomModalService,  private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
-
     this.getFuelData();
+
+     // Reset Columns
+     this.tableService.currentResetColumns
+     .pipe(takeUntil(this.destroy$))
+     .subscribe((response: boolean) => {
+       if (response) {
+         this.resetColumns = response;
+
+         this.sendFuelData();
+       }
+     });
   }
 
   public initTableOptions(): void {

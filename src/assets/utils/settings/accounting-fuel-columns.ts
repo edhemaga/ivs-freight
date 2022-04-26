@@ -1,4 +1,4 @@
-export function getAccountingFuelColumnDefinition() {
+export function getAccountingFuelColumnDefinition() { 
   return [
     {
       ngTemplate: 'checkbox',

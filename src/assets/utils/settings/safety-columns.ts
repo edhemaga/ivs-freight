@@ -1,5 +1,5 @@
 // ACCIDENTS COLUMN DEFINITION
-export function getAccidentColumns() {
+export function getAccidentColumns() { 
   return [
     {
       ngTemplate: 'checkbox',
