@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
+import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-truck-table',
@@ -8,6 +11,8 @@ import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-column
   styleUrls: ['./truck-table.component.scss'],
 })
 export class TruckTableComponent implements OnInit {
+  private destroy$: Subject<void> = new Subject<void>();
+  
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -15,12 +20,22 @@ export class TruckTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService) {}
+  constructor(private modalService: ModalService,  private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
-
     this.getTrucksData();
+
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.resetColumns = response;
+
+          this.sendTruckData();
+        }
+      });
   }
 
   public initTableOptions(): void {
@@ -83,10 +98,10 @@ export class TruckTableComponent implements OnInit {
   }
 
   getTrucksData() {
-    this.sendDriverData();
+    this.sendTruckData();
   }
 
-  sendDriverData() {
+  sendTruckData() {
     this.tableData = [
       {
         title: 'Active',
@@ -303,10 +318,23 @@ export class TruckTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba se doda modal!');
+      this.modalService.openModal(TruckModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setTruckData(event.tabData);
+    }
+  }
+
+  public onTableBodyActions(event: any) {
+    if (event.type === 'edit-truck') {
+      this.modalService.openModal(
+        TruckModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          type: 'edit'
+        }
+      );
     }
   }
 }

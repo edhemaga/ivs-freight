@@ -43,6 +43,9 @@ export class TruckassistTableHeadComponent
   rezaizeing: boolean = false;
   optionsPopup: any;
   visibleColumns: any[] = [];
+  pinedColumns: any[] = [];
+  notPinedColumns: any[] = [];
+  actionColumns: any[] = [];
 
   constructor(
     private tableService: TruckassistTableService,
@@ -51,6 +54,14 @@ export class TruckassistTableHeadComponent
 
   ngOnInit(): void {
     this.setVisibleColumns();
+
+    // Scroll
+    this.tableService.currentScroll
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: number) => {
+        let scroll = document.getElementById('scroll');
+        scroll.scrollLeft = response;
+      });
 
     // Rows Selected
     this.tableService.currentRowsSelected
@@ -78,12 +89,12 @@ export class TruckassistTableHeadComponent
       .subscribe((response: any) => {
         if (response) {
           this.columns = this.columns.map((c) => {
-            if(c.field === response.column.field){
-              c.hidden = response.column.hidden
+            if (c.field === response.column.field) {
+              c.hidden = response.column.hidden;
             }
 
             return c;
-          })
+          });
 
           this.setVisibleColumns();
         }
@@ -112,6 +123,9 @@ export class TruckassistTableHeadComponent
 
   setVisibleColumns() {
     this.visibleColumns = [];
+    this.pinedColumns = [];
+    this.notPinedColumns = [];
+    this.actionColumns = [];
 
     this.columns.map((column, index) => {
       if (!column.hasOwnProperty('isPined')) {
@@ -127,9 +141,22 @@ export class TruckassistTableHeadComponent
       }
     });
 
-    this.visibleColumns = this.visibleColumns.sort(
-      (a, b) => Number(b.isPined) - Number(a.isPined)
-    );
+    this.visibleColumns.map((v) => {
+      /* Pined Columns */
+      if (v.isPined) {
+        this.pinedColumns.push(v);
+      }
+
+      /* Not Pined Columns */
+      if (!v.isPined && !v.isAction) {
+        this.notPinedColumns.push(v);
+      }
+
+      /* Action  Columns */
+      if (v.isAction) {
+        this.actionColumns.push(v);
+      }
+    });
 
     this.changeDetectorRef.detectChanges();
   }
@@ -173,33 +200,26 @@ export class TruckassistTableHeadComponent
   }
 
   onReorder(event: CdkDragDrop<any>) {
-    if (
-      !this.visibleColumns[event.currentIndex].isPined &&
-      event.currentIndex > 1
-    ) {
-      let previousIndex: number = null,
-        currentIndex: number = null;
+    let previousIndex: number = null,
+      currentIndex: number = null;
 
-      this.columns.map((c, i) => {
-        if (this.visibleColumns[event.previousIndex].field === c.field) {
-          previousIndex = i;
-        }
-      });
+    this.columns.map((c, i) => {
+      if (this.notPinedColumns[event.previousIndex].field === c.field) {
+        previousIndex = i;
+      }
 
-      this.columns.map((c, i) => {
-        if (this.visibleColumns[event.currentIndex].field === c.field) {
-          currentIndex = i;
-        }
-      });
+      if (this.notPinedColumns[event.currentIndex].field === c.field) {
+        currentIndex = i;
+      }
+    });
 
-      let column: any[] = this.columns.splice(previousIndex, 1);
+    let column: any[] = this.columns.splice(previousIndex, 1);
 
-      this.columns.splice(currentIndex, 0, column[0]);
+    this.columns.splice(currentIndex, 0, column[0]);
 
-      this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+    this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
 
-      this.setVisibleColumns();
-    }
+    this.setVisibleColumns();
   }
 
   onReorderEnd() {
@@ -209,11 +229,13 @@ export class TruckassistTableHeadComponent
   // Rezaize
   onResize(event: any) {
     this.rezaizeing = event.isResizeing;
-
-    if (this.rezaizeing) {;
+    if (this.rezaizeing) {
       this.tableService.sendColumnWidth({
         event: event,
-        columns: this.visibleColumns,
+        columns:
+          event.section === 'not-pined'
+            ? this.notPinedColumns
+            : this.pinedColumns,
       });
     }
   }
@@ -236,10 +258,10 @@ export class TruckassistTableHeadComponent
   // Remove Column
   onRemoveColumn(column: any) {
     this.columns.map((c) => {
-      if(c.field === column.field){
+      if (c.field === column.field) {
         c.hidden = true;
       }
-    })
+    });
 
     this.setVisibleColumns();
 
@@ -250,15 +272,9 @@ export class TruckassistTableHeadComponent
   onPinColumn(column: any) {
     column.isPined = !column.isPined;
 
-    this.visibleColumns = this.visibleColumns.sort(
-      (a, b) => Number(b.isPined) - Number(a.isPined)
-    );
-
-    this.columns = this.columns.sort(
-      (a, b) => Number(b.isPined) - Number(a.isPined)
-    );
-
     this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+
+    this.setVisibleColumns();
 
     this.changeDetectorRef.detectChanges();
   }

@@ -1,0 +1,281 @@
+// --------------------- TRUCKS ---------------------
+.trucks {
+  &.semitruck {
+    &:hover {
+      background-color: #ef6e6e !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.semisleeper {
+    &:hover {
+      background-color: #955fa2 !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.boxtruck {
+    &:hover {
+      background-color: #76a77d !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.cargovan {
+    &:hover {
+      background-color: #8fdee1 !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.towtruck {
+    &:hover {
+      background-color: #ffbe7d !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.carhauler {
+    &:hover {
+      background-color: #484848 !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  // For all svgs
+  &:hover {
+    transition: all 0.3s ease-in-out;
+    svg {
+      path,
+      // Car Hauler
+      #Rectangle_1321,
+      #Ellipse_492,
+      // Tow Truck
+      #Rectangle_1320 {
+        fill: #ffffff;
+      }
+    }
+
+    .svgtextflex-text {
+      color: #ffffff;
+    }
+  }
+}
+
+// --------------------- Colors ---------------------
+.colors {
+  .black {
+    svg {
+      #droplet {
+        fill: #6c6c6c;
+      }
+    }
+  }
+  .brown {
+    svg {
+      #droplet {
+        fill: #a1887f;
+      }
+    }
+  }
+  .darkgreen {
+    svg {
+      #droplet {
+        fill: #4db6a2;
+      }
+    }
+  }
+  .lightgreen {
+    svg {
+      #droplet {
+        fill: #81c784;
+      }
+    }
+  }
+  .darkblue {
+    svg {
+      #droplet {
+        fill: #546fd2;
+      }
+    }
+  }
+  .lightblue {
+    svg {
+      #droplet {
+        fill: #64b5f6;
+      }
+    }
+  }
+  .gray {
+    svg {
+      #droplet {
+        fill: #aaaaaa;
+      }
+    }
+  }
+  .purple {
+    svg {
+      #droplet {
+        fill: #ba68c8;
+      }
+    }
+  }
+  .gold {
+    svg {
+      #droplet {
+        fill: #bcad79;
+      }
+    }
+  }
+  .silver {
+    svg {
+      #droplet {
+        fill: #dadada;
+      }
+    }
+  }
+  .red {
+    svg {
+      #droplet {
+        fill: #f96b69;
+      }
+    }
+  }
+  .pink {
+    svg {
+      #droplet {
+        fill: #f26ec2;
+      }
+    }
+  }
+  .white {
+    svg {
+      #droplet {
+        fill: #f1f1f1;
+      }
+    }
+  }
+  .orange {
+    svg {
+      #droplet {
+        fill: #ff8a65;
+      }
+    }
+  }
+  .yellow {
+    svg {
+      #droplet {
+        fill: #ffd54f;
+      }
+    }
+  }
+
+  &:hover {
+    transition: all 0.3s ease-in-out;
+    .black {
+      svg {
+        #droplet {
+          fill: #3C3C3C;
+        }
+      }
+    }
+    .brown {
+      svg {
+        #droplet {
+          fill: #8D6E63;
+        }
+      }
+    }
+    .darkgreen {
+      svg {
+        #droplet {
+          fill: #26A690;
+        }
+      }
+    }
+    .lightgreen {
+      svg {
+        #droplet {
+          fill: #66BB6A;
+        }
+      }
+    }
+    .darkblue {
+      svg {
+        #droplet {
+          fill: #304FC1;
+        }
+      }
+    }
+    .lightblue {
+      svg {
+        #droplet {
+          fill: #42A5F5;
+        }
+      }
+    }
+    .gray {
+      svg {
+        #droplet {
+          fill: #919191;
+        }
+      }
+    }
+    .purple {
+      svg {
+        #droplet {
+          fill: #AB47BC;
+        }
+      }
+    }
+    .gold {
+      svg {
+        #droplet {
+          fill: #AA9C6E;
+        }
+      }
+    }
+    .silver {
+      svg {
+        #droplet {
+          fill: #B7B7B7;
+        }
+      }
+    }
+    .red {
+      svg {
+        #droplet {
+          fill: #EF5350;
+        }
+      }
+    }
+    .pink {
+      svg {
+        #droplet {
+          fill: #FA4DAA;
+        }
+      }
+    }
+    .white {
+      svg {
+        #droplet {
+          fill: #FFFFFF;
+        }
+      }
+    }
+    .orange {
+      svg {
+        #droplet {
+          fill: #FF7043;
+        }
+      }
+    }
+    .yellow {
+      svg {
+        #droplet {
+          fill: #FFCA28;
+        }
+      }
+    }
+  }
+}

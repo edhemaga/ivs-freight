@@ -16,6 +16,7 @@ import {
 export class ResizeColumnDirective implements OnInit, OnChanges {
   @Input('resizeColumn') canDoResize: boolean;
   @Input() index: number;
+  @Input() tableSection: string;
   @Output() resizeing: EventEmitter<any> = new EventEmitter();
 
   private startX: number;
@@ -67,6 +68,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
     if (!this.pressed) {
       this.resizeing.emit({
         isResizeing: true,
+        section: this.tableSection
       });
 
       this.pressed = true;
@@ -88,6 +90,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
         isResizeing: true,
         width: this.newColumnWidth,
         index: this.index,
+        section: this.tableSection
       });
     }
   };
@@ -98,6 +101,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
 
       this.resizeing.emit({
         isResizeing: false,
+        section: this.tableSection
       });
     }
   };

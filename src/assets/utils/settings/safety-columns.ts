@@ -1,5 +1,5 @@
 // ACCIDENTS COLUMN DEFINITION
-export function getAccidentColumns() {
+export function getAccidentColumns() { 
   return [
     {
       ngTemplate: 'checkbox',
@@ -311,6 +311,7 @@ export function getAccidentColumns() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
@@ -331,6 +332,7 @@ export function getAccidentColumns() {
       disabled: true,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
@@ -352,6 +354,7 @@ export function getAccidentColumns() {
       disabled: false,
       export: true,
       resizable: true,
+      isAction: true
     },
   ];
 }
@@ -797,6 +800,7 @@ export function getViolationsColums() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
@@ -818,6 +822,7 @@ export function getViolationsColums() {
       disabled: false,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
@@ -839,6 +844,7 @@ export function getViolationsColums() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ];
 }

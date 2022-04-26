@@ -1,0 +1,158 @@
+// -------------------- Input Control --------------------
+.input-control {
+  width: 100%;
+  border: none;
+  outline: none;
+  border-radius: 2px !important;
+  height: 26px;
+  padding: 4px 6px;
+  font-size: 14px;
+  font-weight: 400;
+  background-color: #f3f3f3;
+  color: #6c6c6c;
+
+  &::-moz-selection {
+    background-color: #919191 !important;
+  }
+
+  &::selection {
+    background-color: #919191 !important;
+  }
+
+  &.capitalize {
+    text-transform: capitalize;
+  }
+
+  &.upper {
+    text-transform: uppercase;
+  }
+
+  &.lower {
+    text-transform: lowercase;
+  }
+
+  &.disabled {
+    background-color: #f9f9f9 !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  &.disabled-filled {
+    background-color: #f9f9f9 !important;
+    color: #919191 !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transition: all 0.3s ease-in-out;
+    background-color: #eeeeee;
+    color: #3c3c3c;
+  }
+
+  // Hover "label placehoder color change"
+  &:hover ~ .input-label {
+    transition: all 0.3s ease-in-out;
+    color: #3c3c3c;
+  }
+
+  &:focus {
+    transition: all 0.3s ease-in-out;
+    background-color: #6c6c6c;
+    color: #ffffff;
+  }
+
+  &.password-eye {
+    background-color: #6c6c6c !important;
+    color: #ffffff;
+
+    &::-moz-selection {
+      background-color: #919191 !important;
+    }
+
+    &::selection {
+      background-color: #919191 !important;
+    }
+  }
+
+  &.dropdown-add-mode {
+    background-color: #6c6c6c !important;
+    color: #ffffff;
+
+    &::-moz-selection {
+      background-color: #919191 !important;
+    }
+
+    &::selection {
+      background-color: #919191 !important;
+    }
+  }
+
+  &.valid-focus-in,
+  &.dropdown-placeholder-active {
+    transition: all 0.3s ease-in-out;
+    background-color: #536bc2;
+    color: #ffffff;
+
+    &::-webkit-input-placeholder {
+      color: #97a8dc;
+    }
+
+    &::-moz-placeholder {
+      color: #97a8dc;
+    }
+
+    &:-ms-input-placeholder {
+      color: #97a8dc;
+    }
+
+    &::-ms-input-placeholder {
+      color: #97a8dc;
+    }
+
+    &::placeholder {
+      color: #97a8dc;
+    }
+
+    &::-moz-selection {
+      background-color: #6d82c7 !important;
+    }
+
+    &::selection {
+      background-color: #6d82c7 !important;
+    }
+  }
+
+  &.invalid-focus-in {
+    transition: all 0.3s ease-in-out;
+    background-color: #ef5350;
+
+    &::-moz-selection {
+      background-color: #e57373 !important;
+    }
+
+    &::selection {
+      background-color: #e57373 !important;
+    }
+  }
+
+  &:focus ~ .input-icon {
+    transition: all 0.3s ease-in-out;
+    svg {
+      path {
+        fill: #b7b7b7;
+      }
+    }
+  }
+
+  // Custom class
+  &.input-big {
+    height: 32px;
+  }
+}

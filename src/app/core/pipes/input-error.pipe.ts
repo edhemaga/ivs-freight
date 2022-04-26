@@ -5,8 +5,11 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class InputErrorPipe implements PipeTransform {
 
-  transform(value: any): string {
+  transform(value: any, inputName?: string): string {
     let errorMessageValue: string = '';
+    console.log("ERROR INPUT")
+    console.log(value)
+    console.log(inputName)
     if (value !== null) {
       if(value['minlength']) {
         errorMessageValue = `Minimum required length is ${value.minlength.requiredLength}`
@@ -22,6 +25,15 @@ export class InputErrorPipe implements PipeTransform {
       }
       if (value['required']) {
         errorMessageValue = 'Required';
+      }
+      if(value['pattern'] && inputName.toLocaleLowerCase() === 'phone') {
+        errorMessageValue = `Phone as (XXX) XXX-XXXX`
+      }
+      if(value['pattern'] && inputName.toLocaleLowerCase() === 'ssn') {
+        errorMessageValue = `SSN as XXX-XX-XXXX`
+      }
+      if(value['pattern'] && inputName.toLocaleLowerCase() === 'ein') {
+        errorMessageValue = `EIN as XX-XXXXXXX`
       }
     }
     return errorMessageValue

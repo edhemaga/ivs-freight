@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 import { DriversQuery } from '../state/driver.query';
 import { DriversState } from '../state/driver.store';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 
 @Component({
   selector: 'app-driver-table',
@@ -26,7 +27,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   public drivers: DriversState[] = [];
 
   constructor(
-    private customModalService: CustomModalService,
+    private modalService: ModalService,
     private driversQuery: DriversQuery,
     private tableService: TruckassistTableService
   ) {}
@@ -39,8 +40,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.tableService.currentResetColumns
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
-        if(response){
-          console.log('Radi se reset columns-a');
+        if (response) {
           this.resetColumns = response;
 
           this.sendDriverData();
@@ -52,13 +52,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.tableOptions = {
       disabledMutedStyle: null,
       toolbarActions: {
-        hideImport: false,
-        hideExport: false,
-        hideViewMode: true,
-        hideLockUnlock: false,
-        hideAddNew: false,
-        hideColumns: false,
-        hideCompress: false,
+        hideViewMode: false,
       },
       config: {
         showSort: true,
@@ -130,7 +124,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         length: 8,
         data: this.getDumyData(8),
         extended: true,
-        gridNameTitle: 'Applicant',
+        gridNameTitle: 'Driver',
         stateName: 'applicants',
         gridColumns: this.getGridColumns('applicants', this.resetColumns),
       },
@@ -199,21 +193,22 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      // this.customModalService.openModal(
-      //   DriverManageComponent,
-      //   {
-      //     data: {
-      //       type: 'new',
-      //     },
-      //   },
-      //   null,
-      //   {
-      //     size: 'small',
-      //   }
-      // );
+      this.modalService.openModal(DriverModalComponent, {
+        size: 'small',
+      });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setDriverData(event.tabData);
+    }
+  }
+
+  public onTableBodyActions(event: any) {
+    if (event.type === 'edit') {
+      this.modalService.openModal(
+        DriverModalComponent,
+        { size: 'small' },
+        event
+      );
     }
   }
 

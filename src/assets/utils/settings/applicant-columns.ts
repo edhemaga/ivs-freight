@@ -1,5 +1,5 @@
 // APPLICANT TABLE COLUMNS DEFINITION
-export function getApplicantColumnsDefinition() {
+export function getApplicantColumnsDefinition() { 
   return [
     {
       ngTemplate: 'checkbox',
@@ -324,6 +324,7 @@ export function getApplicantColumnsDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'note',
@@ -350,6 +351,7 @@ export function getApplicantColumnsDefinition() {
       disabled: false,
       export: true,
       resizable: false,
+      isAction: true
     },
     {
       ngTemplate: 'actions',
@@ -376,6 +378,7 @@ export function getApplicantColumnsDefinition() {
       disabled: false,
       export: false,
       resizable: false,
+      isAction: true
     },
   ] as any[];
 }

@@ -7,8 +7,7 @@ import {NgbDropdown, NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-custom-datetime-pickers',
   templateUrl: './custom-datetime-pickers.component.html',
-  styleUrls: ['./custom-datetime-pickers.component.scss', './custompickers.scss'],
-  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./custom-datetime-pickers.component.scss'],
   providers: [NgbDropdownConfig]
 })
 export class CustomDatetimePickersComponent implements OnInit {
@@ -103,18 +102,17 @@ export class CustomDatetimePickersComponent implements OnInit {
   ngOnInit(): void {
     this.calendarService.dateChanged.subscribe(date => {
       if (this.calendarMainType == 'time') {
-        /// this.outputType = ["hh",":","mm"," ", "AM"]
       } else {
         this.outputType[0] = date[0];
         this.outputType[2] = date[1];
         this.outputType[4] = date[2];
         this.selectedDateTime = this.createStringFromOutput();
-        this.dropdown.close();
       }
     });
   }
 
   ngAfterViewInit() {
+    this.changeOpened();
   }
 
   public setListPreview(value: string): void {
@@ -129,9 +127,9 @@ export class CustomDatetimePickersComponent implements OnInit {
     this.isInputFocus = false;
   }
 
-  public changeOpened(e): void {
-    this.isInputFocus = e;
-    if (e) {
+  public changeOpened(): void {
+    // this.isInputFocus = e;
+    // if (e) {
       if (this.calendarMainType == "time") {
         setTimeout(() => {
           this.hourScroll.nativeElement.scrollTop = this.scrollTypes.hourScroll * 22;
@@ -143,13 +141,11 @@ export class CustomDatetimePickersComponent implements OnInit {
         || isNaN(this.outputType[2])
         || isNaN(this.outputType[4]) ? null :
           `${this.outputType[0]}/${this.outputType[2]}/${this.outputType[4]}`;
+          console.log("THIS IS CROLLLL");
+          console.log(date);
 
         this.calendarService.scrollToDate.next(date);
       }
-    }else{
-      this.listPreview = "full_list";
-      this.calendarService.indexAuto$.next(0);
-    }
   }
 
   renderCalendarDays(fullYear, fullMonth) {
@@ -426,7 +422,7 @@ export class CustomDatetimePickersComponent implements OnInit {
     this.outputType[4] = this.timeOfDay[this.scrollTypes.pmAmScroll];
 
     this.selectedDateTime = this.createStringFromOutput();
-    this.dropdown.close();
+    //this.dropdown.close();
   }
 
   setDateTimeModel(direction: string, index?: any): void {

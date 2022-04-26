@@ -13,6 +13,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaNoteModule } from '../ta-note/ta-note.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.directive';
+import { DirectivesModule } from 'src/app/core/directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.dir
     TruckassistReveiwModule,
     NgbModule,
     TaNoteModule,
-    DragDropModule
+    DragDropModule,
+    DirectivesModule
   ],
   exports: [
     TruckassistTableBodyComponent,

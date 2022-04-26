@@ -1,0 +1,277 @@
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Truck' : 'Edit Truck'"
+  [editData]="editData"
+  [editName]="'262212'"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <app-tab-switcher
+    (switchClicked)="tabChange($event)"
+    [tabs]="tabs"
+  ></app-tab-switcher>
+
+  <form [formGroup]="truckForm" class="form-container">
+    <div class="animation-two-tabs" [@animationTabsModal]="selectedTab">
+      <!-------------------------------- Basic Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 1">
+        <div class="row">
+          <div class="col-4">
+            <app-ta-input
+              formControlName="truckNumber"
+              [inputConfig]="{
+                name: 'Truck Number',
+                type: 'text',
+                label: 'Unit #',
+                isRequired: true,
+                textTransform: 'capitalize',
+                maxLength: 6
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-8">
+            <app-ta-input-dropdown
+              formControlName="truckTypeId"
+              [template]="'svgtextflex'"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Type',
+                isRequired: true,
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-8'
+              }"
+              [options]="truckType"
+            ></app-ta-input-dropdown>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <app-ta-input
+              formControlName="vin"
+              [inputConfig]="{
+                name: 'VIN',
+                type: 'text',
+                label: 'VIN',
+                isRequired: true,
+                textTransform: 'capitalize',
+                maxLength: 17,
+                minLength: 17
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-6">
+            <app-ta-input-dropdown
+              formControlName="truckMakeId"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Make',
+                isRequired: true,
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-6'
+              }"
+              [options]="truckMakeType"
+            ></app-ta-input-dropdown>
+          </div>
+        </div>
+        <div class="row last-row">
+          <div class="col-6">
+            <app-ta-input
+              formControlName="model"
+              [inputConfig]="{
+                name: 'Model',
+                type: 'text',
+                label: 'Model',
+                isRequired: true,
+                textTransform: 'capitalize',
+                maxLength: 22
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-2">
+            <app-ta-input
+              formControlName="year"
+              [inputConfig]="{
+                name: 'Year',
+                type: 'text',
+                label: 'Year',
+                isRequired: true,
+                maxLength: 4
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-4 no-p-left">
+            <app-ta-input-dropdown
+              formControlName="colorId"
+              [template]="'svgtextflex'"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Color',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-4'
+              }"
+              [options]="colorType"
+            ></app-ta-input-dropdown>
+          </div>
+        </div>
+        <!-- Is Company Owned -->
+        <div class="custom-checkbox-card">
+          <div class="divider"></div>
+          <div class="checkbox-card-header">
+            <app-ta-checkbox
+              formControlName="companyOwned"
+              [label]="'Company Owned'"
+            ></app-ta-checkbox>
+            <svg-icon
+              class="checkbox-card-header-arrow"
+              src="assets/svg/common/ic_arrow-down.svg"
+              [ngClass]="{ rotate: truckForm.get('companyOwned')?.value }"
+            ></svg-icon>
+          </div>
+          <div
+            class="checkbox-card-body"
+            [@showHideCompanyOwned]="
+              truckForm.get('companyOwned').value ? 'true' : 'false'
+            "
+          >
+            <div
+              *ngIf="truckForm.get('companyOwned').value"
+              class="animation-checkbox-card-tabs-truckModal"
+            >
+              <div class="row">
+                <div class="col-6">
+                  <app-ta-input-dropdown
+                    formControlName="ownerId"
+                    [inputConfig]="{
+                      name: 'Input Dropdown',
+                      type: 'text',
+                      label: 'Owner',
+                      isRequired: true,
+                      isDropdown: true,
+                      dropdownWidthClass: 'w-col-companyOwned'
+                    }"
+                    [options]="ownerType"
+                  ></app-ta-input-dropdown>
+                </div>
+                <div class="col-6">
+                  <app-ta-ngx-slider
+                    [sliderName]="'Commission'"
+                    [sliderOptions]="commissionOptions"
+                    [startedValue]="truckForm.get('commission').value"
+                    [customClass]="'custom-truck-modal'"
+                    (onUserValueChange)="
+                      truckForm.get('commission').setValue($event)
+                    "
+                  ></app-ta-ngx-slider>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-ta-input-note formControlName="note"></app-ta-input-note>
+      </div>
+      <!-------------------------------- Additional Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 2">
+        <div class="row">
+          <div class="col-7">
+            <app-ta-input-dropdown
+              formControlName="truckGrossWeightId"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Gross Weight',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-7'
+              }"
+              [options]="grossWeight"
+            ></app-ta-input-dropdown>
+          </div>
+          <div class="col-5">
+            <app-ta-input
+              formControlName="emptyWeight"
+              [inputConfig]="{
+                name: 'Empty Weight',
+                type: 'text',
+                label: 'Empty Weight',
+                maxLength: 6,
+                mask: 'separator.2'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-7">
+            <app-ta-input-dropdown
+              formControlName="truckEngineTypeId"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Engine Type',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-7'
+              }"
+              [options]="grossWeight"
+            ></app-ta-input-dropdown>
+          </div>
+          <div class="col-5 tireSize-axles">
+            <app-ta-input-dropdown
+              formControlName="tireSizeId"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Tire Size',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-tireSize'
+              }"
+              [options]="tireSize"
+            ></app-ta-input-dropdown>
+            <app-ta-input
+              formControlName="axles"
+              [inputConfig]="{
+                name: 'Axles',
+                type: 'text',
+                label: 'Axl.',
+                maxLength: 1
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row last-modal-row">
+          <div class="col-4">
+            <app-ta-input
+              formControlName="insurancePolicy"
+              [inputConfig]="{
+                name: 'Insurance Policy',
+                type: 'text',
+                label: 'Insurance Policy'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-4">
+            <app-ta-input
+              formControlName="mileage"
+              [inputConfig]="{
+                name: 'Mileage',
+                type: 'text',
+                label: 'Mileage',
+                maxLength: 10,
+                mask: 'separator.2'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-4 no-p-left">
+            <app-ta-input
+              formControlName="ipasEzpass"
+              [inputConfig]="{
+                name: 'IPAS EZPASS',
+                type: 'text',
+                label: 'IPAS/EZPASS',
+                maxLength: 14
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-ta-modal>

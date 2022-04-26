@@ -1,7 +1,8 @@
-import { debounceTime } from 'rxjs';
+import { debounceTime, distinctUntilChanged, shareReplay } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
+  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -29,7 +30,7 @@ export class TaInputDropdownComponent
   @Input() template: string;
   @Input() inputConfig: ITaInput;
   @Input() canAddNew: boolean = false;
-  @Input() options: any[] = [];
+  @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
 
   public activeItem: any;
   public originalOptions: any[] = [];
@@ -47,12 +48,16 @@ export class TaInputDropdownComponent
 
     this.getSuperControl.valueChanges
       .pipe(untilDestroyed(this))
-      .subscribe((term) => this.search(term));
+      .subscribe((term) => {
+          this.search(term);
+      });
 
     this.inputService.onClearInputSubject
       .pipe(debounceTime(50), untilDestroyed(this))
       .subscribe((action: boolean) => {
-        this.onClearSearch();
+        if (action) {
+          this.onClearSearch();
+        }
       });
 
     this.inputService.dropDownShowHideSubject
@@ -60,59 +65,37 @@ export class TaInputDropdownComponent
       .subscribe((action: boolean) => {
         this.toggleDropdownOptions(action);
         if (!action) {
-          const index = this.originalOptions.findIndex(
-            (item) => item.name === this.getSuperControl.value
-          );
-          if (index === -1) {
-            this.onClearSearch();
+          if (this.activeItem) {
+            this.getSuperControl.setValue(this.activeItem.name);
+          } else {
+            const index = this.originalOptions.findIndex(
+              (item) => item.name === this.getSuperControl.value
+            );
+            if (index === -1) {
+              this.onClearSearch();
+            }
           }
-        }
-        else {
+        } else {
           this.inputConfig = {
             ...this.inputConfig,
             placeholder: this.getSuperControl.value
-          }
+              ? this.getSuperControl.value
+              : this.activeItem?.name,
+          };
           this.getSuperControl.setValue(null);
         }
+
+        this.inputService.hasDropdownActiveItem(this.activeItem);
       });
 
     if (this.canAddNew) {
       this.inputService.addDropdownItemSubject
-        .pipe(untilDestroyed(this))
+        .pipe(distinctUntilChanged(), untilDestroyed(this))
         .subscribe((action: boolean) => {
           if (action) {
             this.addNewItem();
           }
         });
-    }
-  }
-
-  public onDropDownShowHideSubject(action: boolean) {
-    this.toggleDropdownOptions(action);
-    if (!action) {
-      const index = this.originalOptions.findIndex(
-        (item) => item.name === this.getSuperControl.value
-      );
-      if (index === -1) {
-        this.onClearSearch();
-      }
-    }
-    else {
-      this.inputConfig = {
-        ...this.inputConfig,
-        placeholder: this.getSuperControl.value
-      }
-      this.getSuperControl.setValue(null);
-    }
-  }
-
-  public onClearInputSubject(action: boolean) {
-    this.onClearSearch();
-  }
-
-  public addDropdownItemSubject(action: boolean) {
-    if (action) {
-      this.addNewItem();
     }
   }
 
@@ -125,7 +108,7 @@ export class TaInputDropdownComponent
   registerOnTouched(fn: any): void {}
 
   private search(term: string): void {
-    if (term?.length > 0) {
+    if (term?.length > 0 && this.activeItem?.name !== this.getSuperControl.value) {
       this.options = this.originalOptions.filter((item) =>
         item.name.toLowerCase().includes(term.toLowerCase())
       );

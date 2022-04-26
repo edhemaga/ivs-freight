@@ -1,0 +1,65 @@
+// -------------------- Input Label --------------------
+.input-label {
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease-in-out;
+  color: #6c6c6c;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+
+  &::-moz-selection {
+    background-color: #e5e5e5 !important;
+    color: #3c3c3c !important;
+  }
+
+  &::selection {
+    background-color: #e5e5e5 !important;
+    color: #3c3c3c !important;
+  }
+
+  &.required {
+    &::after {
+      content: "*";
+      color: #e57373;
+    }
+  }
+
+  &.disabled-empty {
+    transition: all 0.3s ease-in-out;
+    color: #b7b7b7 !important;
+  }
+
+  &.disabled-filled {
+    transition: all 0.3s ease-in-out;
+    color: #919191 !important;
+  }
+
+  &.up-label {
+    top: -16px;
+    left: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    color: #3c3c3c;
+  }
+
+  &.valid-focus-out,
+  &.invalid-focus-out {
+    transition: all 0.3s ease-in-out;
+    color: #6c6c6c;
+  }
+
+  // Custom class
+  &.input-big {
+    top: 6px;
+
+    &.up-label {
+      top: -19px;
+    }
+  }
+}

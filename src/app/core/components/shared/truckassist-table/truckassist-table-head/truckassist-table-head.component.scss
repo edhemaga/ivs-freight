@@ -1,14 +1,20 @@
 table {
   width: 100%;
   thead {
+    display: flex;
     .tr {
-      height: 31px;
       display: flex;
-      padding: 2px;
       th {
         display: flex;
         align-items: center;
         position: relative;
+
+        &:hover{
+          .th-title{
+            color: #3C3C3C;
+            transition: 0.25s;
+          }
+        }
 
         // Selected Row Count
         .selected-rows-count {
@@ -45,14 +51,14 @@ table {
 
         // Titles
         .th-title {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: bold;
-          color: #b7b7b7;
+          color: #6C6C6C;
           overflow: hidden;
 
           &::selection {
-            color: #b7b7b7;
-            background: #b7b7b720;
+            color: #6C6C6C;
+            background: #6C6C6C20;
           }
         }
 
@@ -75,7 +81,7 @@ table {
 
         // Pin And Remove
         .pin-remove-container {
-          cursor: pointer !important;
+          cursor: pointer;
           width: 40px;
           height: 100%;
           position: absolute;
@@ -87,8 +93,8 @@ table {
             margin-right: 8px;
           }
 
-          .pin-icon{
-            svg{
+          .pin-icon {
+            svg {
               position: relative;
               top: 1px;
             }
@@ -96,7 +102,7 @@ table {
 
           .pined {
             margin: 0 11px 0 auto;
-            
+
             svg {
               path {
                 fill: #6d82c7;
@@ -112,7 +118,7 @@ table {
             }
           }
 
-          .hide{
+          .hide {
             display: none;
           }
 
@@ -131,6 +137,10 @@ table {
       .column-unlocket {
         cursor: grab;
       }
+
+      .column-locked{
+        cursor: pointer;
+      }
     }
   }
 }
@@ -140,11 +150,35 @@ table {
   justify-content: center;
 }
 
+.pined-columns-container {
+  padding: 2px 0px 2px 2px;
+}
+
+.not-pined-columns-container {
+  padding: 2px 0px 2px 0px;
+  max-width: 1132px;
+  overflow: hidden;
+
+  .scroll-container {
+    display: flex;
+  }
+}
+
+.actions-columns-container {
+  padding: 2px 2px 2px 0px;
+  flex: 1;
+  justify-content: flex-end;
+
+  th {
+    justify-content: center;
+  }
+}
+
 // Drag Preview
 .cdk-drag-preview {
   display: flex;
   align-items: center;
-  height: 31px !important;
+  height: 30px !important;
 
   .th-title {
     width: 100%;
@@ -152,13 +186,14 @@ table {
     padding: 2px 6px;
     display: flex;
     align-items: center;
-    /* color: #3c3c3c; */
-    color: #b7b7b7;
+    color: #3C3C3C;
     font-size: 14px;
     font-weight: bold;
     background: #f1f1f1;
     border-radius: 2px;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 1000;
   }
 
   .pin-remove-container {
@@ -177,9 +212,13 @@ table {
 .cdk-drop-list-dragging {
   th {
     cursor: grabbing !important;
+    .pin-remove-container{
+      cursor: grabbing !important;
+    }
   }
 }
 
-.tr.cdk-drop-list-dragging th:not(.cdk-drag-placeholder) {
+.not-pined-columns-container.cdk-drop-list-dragging
+  th:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

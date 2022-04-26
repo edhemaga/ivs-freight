@@ -1,0 +1,23 @@
+// -------------------- Input Required Check --------------------
+.input-required-check {
+  position: absolute;
+  right: 6px;
+  width: 14px;
+  height: 10px;
+  display: none;
+
+  svg {
+    path {
+      fill: #97a8dc;
+    }
+  }
+
+  &.valid {
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+  }
+
+  &.input-big {
+    top: 3.5px;
+  }
+}

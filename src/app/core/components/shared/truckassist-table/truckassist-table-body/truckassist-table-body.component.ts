@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -37,6 +38,7 @@ export class TruckassistTableBodyComponent
   loadingPassword: number = -1;
   showPassword: any[] = [];
   decryptedPassword: any[] = [];
+  actionsMinWidth: number = 0;
 
   constructor(
     private router: Router,
@@ -103,16 +105,22 @@ export class TruckassistTableBodyComponent
       .subscribe((response: any) => {
         if (response?.column) {
           this.columns = this.columns.map((c) => {
-            if(c.field === response.column.field){
-              c.hidden = response.column.hidden
+            if (c.field === response.column.field) {
+              c.hidden = response.column.hidden;
             }
 
             return c;
-          })
+          });
 
           this.changeDetectorRef.detectChanges();
         }
       });
+
+    this.columns.map((c) => {
+      if (c.isAction) {
+        this.actionsMinWidth += c.width;
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -135,6 +143,13 @@ export class TruckassistTableBodyComponent
       changes?.selectedTab
     ) {
       this.selectedTab = changes.selectedTab.currentValue;
+    }
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: any) {
+    if(event.target.className === 'not-pined-tr'){
+      this.tableService.sendScroll(event.path[0].scrollLeft);
     }
   }
 

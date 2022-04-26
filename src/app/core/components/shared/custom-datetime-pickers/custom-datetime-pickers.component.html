@@ -1,30 +1,7 @@
 <div class="temp_inp_holder">
-  <div
-    #actionDrop="ngbDropdown"
-    (openChange)="changeOpened($event)"
-    [class.active]="isInputFocus"
-    [placement]="'bottom-start'"
-    class="picker_input_holder"
-    ngbDropdown
-  >
-    <input
-      (blur)="inputBlur()"
-      (click)="selectAreaOnInput($event)"
-      (focus)="inputInFocus()"
-      (keydown)="changeSelection($event)"
-      [(ngModel)]="selectedDateTime"
-      [placeholder]="calendarMainType == 'date' ? 'MM/DD/YY' : 'hh:mm AM'"
-      type="text"
-    />
+  <div>
     <div
-      class="toggle_picker"
-      ngbDropdownToggle>
-      <svg-icon src="assets/svg/common/ic_arrow-down.svg"></svg-icon>
-    </div>
-    <div
-      appDropdownManager
-      class="pickers_holder"
-      ngbDropdownMenu>
+      class="pickers_holder">
       <div
         *ngIf="calendarMainType == 'date'"
         class="date_picker"

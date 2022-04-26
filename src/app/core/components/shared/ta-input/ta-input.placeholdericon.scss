@@ -1,0 +1,79 @@
+//-------------------- Input Icon ---------------------
+.input-icon {
+  position: absolute;
+  right: 10px;
+  width: 14px;
+  height: 10px;
+  display: none;
+
+  svg {
+    path {
+      fill: #b7b7b7;
+    }
+  }
+
+  &.dollar-placeholderIcon {
+    right: 7px;
+  }
+
+  &.disabled-empty {
+    svg {
+      path {
+        fill: #dadada !important;
+      }
+    }
+  }
+
+  &.disabled-filled {
+    svg {
+      path {
+        fill: #cccccc !important;
+      }
+    }
+  }
+
+  &.hide-icon {
+    display: none !important;
+  }
+
+  &.valid-required {
+    transition: all 0.3s ease-in-out;
+    svg {
+      path {
+        fill: #97a8dc;
+      }
+    }
+  }
+
+  &.invalid-required-empty,
+  &.invalid-required-filled,
+  &.invalid-submit {
+    transition: all 0.3s ease-in-out;
+    svg {
+      path {
+        fill: #e57373;
+      }
+    }
+  }
+
+  &.show-input-icon {
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+  }
+
+  // Custom class
+  &.input-big {
+    top: 2.7px;
+  }
+
+  &.input-dropdown {
+    display: none !important;
+  }
+
+  &.datetimeclass {
+    // width: 100% !important;
+    // text-align: right !important;
+    //z-index: 1;
+    display: inline-block !important;
+  }
+}

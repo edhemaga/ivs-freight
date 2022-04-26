@@ -1,5 +1,3 @@
-// customClass: 
-//  - 'input-big' -> height: 32px
 export interface ITaInput {
     name: string;
     type: string;
@@ -14,6 +12,7 @@ export interface ITaInput {
     maxLength?:number;
     mask?: string;
     textTransform?: string | 'capitalize' | 'upper' | 'lower';
-    customClass?: string;
+    customClass?: string;   // 'input-big' -> height: 32px
     isDropdown?: boolean;
+    dropdownWidthClass?: string;  // Look in ta-input-drodown.scss
 }

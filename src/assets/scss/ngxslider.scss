@@ -1,14 +1,11 @@
-//-------------------------- NGX-SLIDER TEMPLATES --------------------------
-
-// Slider Commission
 .custom-slider-commission {
   margin-top: 18px;
   display: flex;
   flex-direction: column;
   .custom-slider-text {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
-    color: #b7b7b7;
+    color: #6c6c6c;
     margin-bottom: 9px;
   }
 
@@ -18,18 +15,18 @@
     // FULL LINE
     .ngx-slider-bar {
       height: 6px;
-      background: #eeeeee !important;
+      background: #f3f3f3 !important;
     }
 
     // ACTIVE LINE
     .ngx-slider-selection {
-      background-color: #bbc7dd !important;
+      background-color: #97a8dc !important;
     }
 
     // Number
     .ngx-slider-bubble {
       cursor: pointer;
-      color: #b7b7b7 !important;
+      color: #536bc2 !important;
       font-size: 12px !important;
       box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
       background-color: #ffffff;
@@ -60,11 +57,13 @@
       }
     }
   }
+  //------------------------- Different Templates of NGX-SLIDER ---------------------------
 
-  // Override default slider commission
+  //-------------- Driver Modal --------------
   &.custom-driver-modal {
     display: grid;
     grid-template-columns: auto 1fr;
+    -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
     margin-top: 0px;
@@ -72,78 +71,66 @@
     .custom-slider-text {
       font-size: 14px;
       font-weight: 500;
-      color: #6c6c6c;
       position: relative;
       top: 1px;
       margin: 0;
     }
+  }
+  //-------------- Truck Modal --------------
+  &.custom-truck-modal {
+    margin-top: 0px;
+    position: relative;
+    bottom: 16px;
+  }
 
+  //-------------- Logo Change --------------
+  &.custom-slider-logo-change {
+    width: 394px;
+    position: relative;
+    top: 5px;
     .ngx-slider {
-      // FULL LINE
+      margin: 0 !important;
+
       .ngx-slider-bar {
+        height: 6px;
         background: #f3f3f3 !important;
       }
 
-      // ACTIVE LINE
       .ngx-slider-selection {
-        background-color: #97a8dc !important;
+        background: #b7b7b7 !important;
       }
-
-      // Number
       .ngx-slider-bubble {
-        color: #536bc2 !important;
+        display: none;
+      }
+
+      .ngx-slider-pointer {
+        width: 18px;
+        height: 18px;
+        top: -6px !important;
+        background-color: #ffffff !important;
+        box-shadow: 0 0 2px rgb(0, 0, 0, 0.3) !important;
+        border-radius: 3px !important;
+
+        &::after {
+          content: none !important;
+        }
       }
     }
   }
-}
 
-// Logo Change
-.custom-slider-logo-change {
-  width: 394px;
-  position: relative;
-  top: 5px;
-  .ngx-slider {
-    margin: 0 !important;
-
-    .ngx-slider-bar {
-      height: 6px;
-      background: #eeeeee !important;
-    }
-
-    .ngx-slider-selection {
-      background: #bbc7dd !important;
-    }
-    .ngx-slider-bubble {
-      display: none;
-    }
-
-    .ngx-slider-pointer {
-      width: 18px;
-      height: 18px;
-      top: -6px !important;
-      background-color: #ffffff !important;
-      box-shadow: 0 0 4px rgb(0, 0, 0, 0.16) !important;
-      border-radius: 3px !important;
-
-      &::after {
-        content: none !important;
-      }
-    }
+  //-------------- Dispatch Manager --------------
+  &.custom-slider-dispatch-manager {
+    position: relative;
+    bottom: 32px;
   }
-}
 
-// Dispatch Manager
-.custom-slider-dispatch-manager {
-  position: relative;
-  bottom: 32px;
-}
-
-// Class for adding percentage
-.custom-slider-with-percentage {
-  .ngx-slider {
-    .ngx-slider-bubble {
-      &::after {
-        content: ".0%" !important;
+  //-------------- Class for adding percentage .0 --------------
+  &.custom-slider-with-percentage {
+    .ngx-slider {
+      .ngx-slider-bubble {
+        &::after {
+          content: ".0%" !important;
+        }
       }
     }
   }

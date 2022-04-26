@@ -15,7 +15,10 @@ import {
 })
 export class TaModalComponent {
   @Input() modalTitle: string;
+  @Input() editName: string;
+  @Input() editData: any;
   @Input() customClass: string;
+
   private timeout = null;
 
   @Output() modalActionTypeEmitter: EventEmitter<string> =
@@ -23,16 +26,36 @@ export class TaModalComponent {
 
   constructor(private ngbActiveModal: NgbActiveModal) {}
 
-  public closeModal() {
-    this.modalActionTypeEmitter.emit('close');
-    $('.pac-container').remove();
-    this.timeout = setTimeout(() => {
-      this.ngbActiveModal.dismiss();
-      clearTimeout(this.timeout);
-    }, 150);
+  ngOnInit() {
+    console.log(this.editData)
   }
 
-  public onConfirm() {
-    this.modalActionTypeEmitter.emit('save');
+  public onAction(action: string) {
+    switch (action) {
+      case 'save': {
+        this.modalActionTypeEmitter.emit(action);
+        break;
+      }
+      case 'close': {
+        this.modalActionTypeEmitter.emit(action);
+        $('.pac-container').remove();
+        this.timeout = setTimeout(() => {
+          this.ngbActiveModal.dismiss();
+          clearTimeout(this.timeout);
+        }, 150);
+        break;
+      }
+      case 'deactivate': {
+        this.modalActionTypeEmitter.emit(action);
+        break;
+      }
+      case 'delete': {
+        this.modalActionTypeEmitter.emit(action);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 }

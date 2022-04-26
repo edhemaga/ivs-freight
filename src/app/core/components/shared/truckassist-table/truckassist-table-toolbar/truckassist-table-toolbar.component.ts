@@ -63,6 +63,11 @@ export class TruckassistTableToolbarComponent
       width: 16,
       height: 16,
       active: false,
+      additionalDropIcon: {
+        path: 'assets/svg/truckassist-table/arrow-columns-drop.svg',
+        width: 6,
+        height: 8,
+      }
     },
   ];
 
