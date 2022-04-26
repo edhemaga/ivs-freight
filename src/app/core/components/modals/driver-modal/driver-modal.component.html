@@ -67,6 +67,7 @@
                 isRequired: true,
                 placeholderIcon: 'email'
               }"
+              
             ></app-ta-input>
           </div>
         </div>
@@ -254,7 +255,7 @@
             [label]="'Include in Payroll'"
           ></app-ta-checkbox>
         </div>
-        <div class="custom-bank-row first-row">
+        <div class="custom-bank-row first-row" [ngClass]="{'no-m-bottom': !driverForm.get('payroll').value}">
           <div class="bank-field">
             <app-ta-input-dropdown
               formControlName="bankId"
@@ -263,7 +264,7 @@
                 name: 'Input Dropdown',
                 type: 'text',
                 label: 'Bank Name',
-                isRequired: true,
+                isRequired: driverForm.get('payroll').value,
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-banks'
               }"

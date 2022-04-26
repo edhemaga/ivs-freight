@@ -127,15 +127,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       isOwner: [false],
       ownerId: [null], //number | null; TODO:
       ownerType: [null], //OwnerType; TODO:
-      ein: [null, [Validators.pattern(/^\d{2}\-\d{7}$/)]],
+      ein: [null],
       bussinesName: [null], //TODO:
       address: [null, [Validators.required]],
       addressUnit: [null, [Validators.maxLength(6)]],
-      bankId: [null, Validators.required], //number | null;
-      account: [null, [Validators.minLength(4), Validators.maxLength(17)]],
-      routing: [null, [Validators.minLength(9), Validators.maxLength(9)]],
+      bankId: [null],
+      account: [null],
+      routing: [null],
       payroll: [true],
-      payType: [null, Validators.required],
+      payType: [null],
       mailNotification: [true],
       phoneCallNotification: [false],
       smsNotification: [false],
@@ -191,10 +191,23 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
         if (value) {
-          this.inputService.changeValidators(this.driverForm.get('payType'));
+          this.inputService.changeValidators(
+            this.driverForm.get('payType'),
+            true,
+            [Validators.required]
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('bankId'),
+            true,
+            [Validators.required]
+          );
         } else {
           this.inputService.changeValidators(
             this.driverForm.get('payType'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('bankId'),
             false
           );
         }
@@ -208,8 +221,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value) {
           this.isBankSelected = true;
-          this.inputService.changeValidators(this.driverForm.get('routing'));
-          this.inputService.changeValidators(this.driverForm.get('account'));
+          this.inputService.changeValidators(
+            this.driverForm.get('routing'),
+            true,
+            [Validators.minLength(9), Validators.maxLength(9)]
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('account'),
+            true,
+            [Validators.minLength(4), Validators.maxLength(17)]
+          );
         } else {
           this.isBankSelected = false;
           this.inputService.changeValidators(
@@ -286,7 +307,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       this.driverForm.get('isOwner').value &&
       this.selectedOwnerTab === 'company'
     ) {
-      this.inputService.changeValidators(this.driverForm.get('ein'), true);
+      this.inputService.changeValidators(this.driverForm.get('ein'), true, [
+        Validators.pattern(/^\d{2}\-\d{7}$/),
+      ]);
     } else {
       this.inputService.changeValidators(this.driverForm.get('ein'), false);
     }
