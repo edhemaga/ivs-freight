@@ -11,7 +11,8 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { TruckDetailsRoutes } from './truck-details.routing';
-
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import {NgApexchartsModule} from "ng-apexcharts";
 @NgModule({
     declarations:[
         TruckDetailsComponent,
@@ -29,7 +30,10 @@ import { TruckDetailsRoutes } from './truck-details.routing';
         CommonModule,
         TruckDetailsRoutes,
         TruckassistProgressExpirationModule,
-        SharedModule
-    ]
+        SharedModule,
+        MatButtonToggleModule,
+        NgApexchartsModule
+    ],
+   
 })
 export class TruckDetailsModule{}

@@ -4,10 +4,9 @@
       <app-ta-counter *ngIf="cardCount" [count]="cardCount" [countColor]="'#919191'" [countBackground]="'#F7F7F7'"
         [countHeight]="'24px'" [countWidth]="'24px'"></app-ta-counter>
       <p class="truck-card-header-name" [ngClass]="{ 'header-name-ml': cardCount }">
-        {{ cardName }}
+        {{ cardName }}  <span class="icon"><svg-icon *ngIf="cardImg" [src]="cardImg"></svg-icon></span> 
       </p>
 
-      <svg-icon *ngIf="cardImg" src="assets/svg/common/ic_bankAccount_dummy.svg"></svg-icon>
     </div>
 
     <svg-icon class="truck-card-arrow" [ngClass]="{ rotate: isCardOpen }" src="assets/svg/common/ic_arrow-down.svg">
@@ -68,10 +67,8 @@
         </div>
       </div>
       <!----------------- Owner -------------------->
-      <div *ngSwitchCase="'Owner'">
 
-      </div>
-      <div *ngSwitchCase="'Owner'">
+      <div *ngSwitchCase="'owner'">
         <div class="common-template">
           <div class="common-template-item">
             <div class="common-template-item-name">Company</div>
@@ -81,28 +78,166 @@
             <div class="common-template-item-name">Commision</div>
             <div class="common-template-item-value size18">10.0%</div>
           </div>
+         
+        </div>
+        <div class="single-icon-wrapper">
+          <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
         </div>
       </div>
-      
 
-      <!----------------- Cards  -------------------->
-      <div *ngSwitchCase="'cards'">
-        <div class="common-template">
+      <div *ngSwitchCase="'perfomance'">
+        <div class="common-template perfomance">
+          <mat-button-toggle-group [value]="selectedValuePerfomance" (change)="changeValuePerfomance($event.value)" appearance="legacy" #toggleBtn="matButtonToggleGroup">
+            <mat-button-toggle  appearance="legacy" value="1M">1M</mat-button-toggle>
+            <mat-button-toggle  appearance="legacy" value="3M"> 3M </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="6M"> 6M </mat-button-toggle>
+            <mat-button-toggle  appearance="legacy" value="1Y"> 1Y </mat-button-toggle>
+            <mat-button-toggle  appearance="legacy" value="YTD"> YTD </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="ALL"> ALL</mat-button-toggle>
+          </mat-button-toggle-group>
+          <div class="common-item-wrapper">
           <div class="common-template-item">
-            <div class="common-template-item-name">TWIC Exp.</div>
-            <div class="common-template-item-value">3</div>
+            <div class="icon-name-item">
+              <svg-icon src="assets/svg/common/mileage.svg"></svg-icon>
+              <div class="common-template-item-name">Mileage</div>
+            </div>
+            <div class="common-template-item-value">300,456.3 mi</div>
           </div>
+
+          <div class="common-template-item fuel-item">
+            <div class="icon-name-item">
+              <svg-icon src="assets/svg/common/fuel.svg"></svg-icon>
+              <div class="common-template-item-name">Fuel Cost</div>
+            </div>
+            <div class="common-template-item-value">$190,221.48</div>
+          </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!----------------- Fuel Consumption  -------------------->
+      <div *ngSwitchCase="'fuel'">
+        <div class="common-template perfomance">
+          <mat-button-toggle-group [value]="selectedValueFuel" (change)="changeValueFuel($event.value)" appearance="legacy" #toggleBtn="matButtonToggleGroup">
+            <mat-button-toggle  appearance="legacy" value="1M">1M</mat-button-toggle>
+            <mat-button-toggle  appearance="legacy" value="3M"> 3M </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="6M"> 6M </mat-button-toggle>
+            <mat-button-toggle  appearance="legacy" value="1Y"> 1Y </mat-button-toggle>
+            <mat-button-toggle  appearance="legacy" value="YTD"> YTD </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="ALL"> ALL</mat-button-toggle>
+          </mat-button-toggle-group>
+          <div class="common-item-wrapper">
           <div class="common-template-item">
-            <div class="common-template-item-name">Fuel Card</div>
-            <div class="common-template-item-value">3</div>
+            <div class="icon-name-item">
+              <svg-icon src="assets/svg/common/round_yellow.svg"></svg-icon>
+              <div class="common-template-item-name">Miles per galon</div>
+            </div>
+            <div class="common-template-item-value">5.75 mi</div>
+          </div>
+
+          <div class="common-template-item fuel-item">
+            <div class="icon-name-item">
+              <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+              <div class="common-template-item-name">Cost per Gallon</div>
+            </div>
+            <div class="common-template-item-value">$3.85</div>
+          </div>
+          </div>
+           <div id="chart">
+             <apx-chart
+             [series]="chartOptions.series"
+             [chart]="chartOptions.chart"
+             [xaxis]="chartOptions.xaxis"
+             [yaxis]="chartOptions.yaxis"
+             [labels]="chartOptions.labels"
+             [stroke]="chartOptions.stroke"
+             [title]="chartOptions.title"
+             [dataLabels]="chartOptions.dataLabels"
+             [fill]="chartOptions.fill"
+             [tooltip]="chartOptions.tooltip"
+             ></apx-chart>
+           </div>
+        </div>
+      </div>
+
+
+      
+      <!----------------- Revenue  -------------------->
+      <div *ngSwitchCase="'revenue'">
+        <div class="common-template perfomance">
+          <mat-button-toggle-group [value]="selectedValueRevenue" (change)="changeValueRevenue($event.value)" appearance="legacy" #toggleBtn="matButtonToggleGroup">
+            <mat-button-toggle  appearance="legacy" value="1M">1M</mat-button-toggle>
+            <mat-button-toggle  appearance="legacy" value="3M"> 3M </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="6M"> 6M </mat-button-toggle>
+            <mat-button-toggle  appearance="legacy" value="1Y"> 1Y </mat-button-toggle>
+            <mat-button-toggle  appearance="legacy" value="YTD"> YTD </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="ALL"> ALL</mat-button-toggle>
+          </mat-button-toggle-group>
+          <div class="common-item-wrapper">
+          <div class="common-template-item">
+            <div class="icon-name-item">
+              <svg-icon src="assets/svg/common/round_blue_light.svg"></svg-icon>
+              <div class="common-template-item-name">Miles</div>
+            </div>
+            <div class="common-template-item-value">150,257.7 mi</div>
+          </div>
+
+          <div class="common-template-item fuel-item">
+            <div class="icon-name-item">
+              <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+              <div class="common-template-item-name">Revenue</div>
+            </div>
+            <div class="common-template-item-value">$390,568.85</div>
+          </div>
+          </div>
+          <div id="chart">
+            <apx-chart
+            [series]="chartOptionsSecond.series"
+            [chart]="chartOptionsSecond.chart"
+            [xaxis]="chartOptionsSecond.xaxis"
+            [yaxis]="chartOptionsSecond.yaxis"
+            [labels]="chartOptionsSecond.labels"
+            [stroke]="chartOptionsSecond.stroke"
+            [title]="chartOptionsSecond.title"
+            [dataLabels]="chartOptionsSecond.dataLabels"
+            [fill]="chartOptionsSecond.fill"
+            [tooltip]="chartOptionsSecond.tooltip"
+            ></apx-chart>
           </div>
         </div>
       </div>
+
       
+      <!----------------- Owner History  -------------------->
+      <div *ngSwitchCase="'owner_history'">
+          <div class="owner-history-wrapper">
+             <div class="owner-history-title">
+                  <p class="title">COMPANY</p> 
+                  <p class="title">FROM-TO</p> 
+                  <p class="title">DURATION</p>  
+             </div>
+             <div class="truck-card-line"></div>
+
+             <div class="owner-history-body">
+                  <p class="company">IVS FREIGHT, INC</p>
+                  <P class="from">04/04/04-04/04/04</P>
+                  <p class="from duration">6 y 247 d</p>
+             </div>
+             <div class="truck-card-line"></div>
+             <div class="owner-history-body owner-history-bottom">
+              <p class="company">KSKA FREIGHT, INC</p>
+              <P class="from from-bottom">04/04/04-04/04/04</P>
+              <p class="from duration">135 d</p>
+         </div>
+          </div>
+      </div>
+
       <!----------------- Note  -------------------->
       <div *ngSwitchCase="'note'">
         <div class="note">
-          <p class="note-item">How to pursue pleasure 
+          <p class="note-item">How to pursue pleasure
             rationally encounter consequences that are extremely painful.</p>
         </div>
       </div>

@@ -35,7 +35,7 @@ export class TruckDetailsComponent implements OnInit {
         takeUntil(this.destroy$)
       )
       .subscribe((res) => {
-        console.log('REASPONSIVE ', res);
+        console.log('response ', res);
         this.setDetailsConfig(res);
       });
   }

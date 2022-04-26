@@ -1,0 +1,20 @@
+    <div class="header-wrapper">
+        <div class="toolbar-general">
+            <div class="icon-text-wrapper">
+                <svg-icon routerLink="/truck" src="assets/svg/common/ic_arrow-left.svg">
+                </svg-icon>
+                <p>{{commonHeaderText}}</p>
+            </div>
+            <svg-icon src="assets/svg/common/ic_horizontal-dots.svg">
+            </svg-icon>
+        </div>
+
+        <div class="header-toolbar" *ngFor="let item of detailsHeaderText; index as i">
+            <p class="header-name">{{item.name}}</p>
+            <div class="header-plus-button">
+                <svg-icon (click)="openModal(item.name)" src="assets/svg/common/plus.svg">
+
+                </svg-icon>
+            </div>
+        </div>
+    </div>

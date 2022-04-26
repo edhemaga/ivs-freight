@@ -6,7 +6,7 @@ import { AuthGuard } from './core/guards/authentication.guard';
 import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
-import { TaCommonHeaderComponent } from './core/components/shared/ta-common-header/ta-common-header.component';
+import { TaCommonHeaderComponent } from './core/components/shared/ta-details-header/ta-details-header.component';
 
 const routes: Routes = [
   // Auth Routes

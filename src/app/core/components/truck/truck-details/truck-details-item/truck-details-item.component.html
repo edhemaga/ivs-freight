@@ -1,21 +1,10 @@
-<div class="top-container">
-<app-ta-common-header [commonHeaderText]="headerTitle"
- [detailsHeaderText]="headerTextExm"></app-ta-common-header>
-</div>
+<app-ta-details-header
+ [commonHeaderText]="headerTitle"
+ [detailsHeaderText]="headerTextExm">
+</app-ta-details-header>
 <div class="truck-component">
-    <div [ngSwitch]="data.template">
-
-        <!-- <div *ngSwitchCase="'general'">
-            
-        </div> -->
-
-        <!----------------------------COMMON TEMPLATE HEADER ----------------------------->
-
-
         <div [ngSwitch]="data.template">
-
             <!---------------------------- GENERAL TEMPLATE ----------------------------->
-
             <div *ngSwitchCase="'general'">
                 <div class="truck-wrapper">
                     <div class="truck-switcher">
@@ -58,19 +47,56 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="truck-cards">
                     <!--------Assinged to--------->
-
-                    <app-truck-details-card [cardTemplate]="'assignedTo'" [cardName]="'Assigned To'">
+                    <app-truck-details-card
+                     [cardTemplate]="'assignedTo'"
+                     [cardName]="'Assigned To'"
+                     [cardImg]="'assets/svg/common/ic_half_time.svg'"
+                     >
                     </app-truck-details-card>
-
-                    <app-truck-details-card [cardTemplate]="'additionalInfo'" [cardName]="'Additional Details'">
+                    <!--------Additonal Details--------->
+                    <app-truck-details-card 
+                    [cardTemplate]="'additionalInfo'" 
+                    [cardName]="'Additional Details'">
                     </app-truck-details-card>
-                    <app-truck-details-card [cardTemplate]="'Owner'" [cardName]="'Owner'">
+                    <!--------Owner--------->
+                    <app-truck-details-card 
+                     [cardTemplate]="'owner'"
+                     [cardName]="'Owner'">
                     </app-truck-details-card>
-                    <app-truck-details-card [cardTemplate]="'note'" [cardName]="'Note'"></app-truck-details-card>
+                    <!--------Perfomane--------->
+                    <app-truck-details-card 
+                     [cardTemplate]="'perfomance'"
+                     [cardName]="'Perfomance'">
+                    </app-truck-details-card>
+                     <!--------Fuel Consumption--------->
+                     <app-truck-details-card 
+                     [cardTemplate]="'fuel'"
+                     [cardName]="'Fuel Consumption'"
+                     [cardImg]="'assets/svg/common/arrow_top_right.svg'"
+                     >
+                    </app-truck-details-card>
+                     <!--------Revenue--------->
+                     <app-truck-details-card 
+                     [cardTemplate]="'revenue'"
+                     [cardName]="'Revenue'"
+                     [cardImg]="'assets/svg/common/arrow_top_right.svg'"
+                     >
+                    </app-truck-details-card>
+                     <!--------Revenue--------->
+                     <app-truck-details-card 
+                     [cardTemplate]="'owner_history'"
+                     [cardImg]="'assets/svg/common/arrow_top_right.svg'"
+                     [cardName]="'Owner History'">
+                    </app-truck-details-card>
+                    <!--------Nore--------->
+                    <app-truck-details-card 
+                     [cardTemplate]="'note'"
+                     [cardName]="'Note'">
+                    </app-truck-details-card>
                 </div>
             </div>
 
         </div>
-    </div>

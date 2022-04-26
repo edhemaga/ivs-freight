@@ -75,7 +75,7 @@ import { DriverModalComponent } from '../modals/driver-modal/driver-modal.compon
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
 import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
 import { TaInputService } from './ta-input/ta-input.service';
-import { TaCommonHeaderComponent } from './ta-common-header/ta-common-header.component';
+import { TaCommonHeaderComponent } from './ta-details-header/ta-details-header.component';
 
 
 @NgModule({
