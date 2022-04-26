@@ -158,7 +158,7 @@
               "
               [ngStyle]="{ width: column.width + 'px' }"
             >
-              <span class="table-name-link">{{ row[column.field] }}</span>
+              <span class="table-name-link" (click)="goToDetails(column, row)">{{ row[column.field] }}</span>
             </div>
 
             <!-- OOS COLUMN -->
@@ -1295,11 +1295,6 @@
                     : (row[column.field]['start']
                       | getExpireData
                       | date: 'shortDate')
-                "
-                [startDate]="
-                  row[column.field]['start']
-                    ? (row[column.field]['start'] | date: 'shortDate')
-                    : undefined
                 "
                 [status]="row['status']"
               ></app-truckassist-progress-expiration>
