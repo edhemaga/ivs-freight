@@ -1,4 +1,4 @@
-export function getToolsContactsColumnDefinition() {
+export function getToolsContactsColumnDefinition() { 
   return [
     {
       ngTemplate: 'checkbox',
