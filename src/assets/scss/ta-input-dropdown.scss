@@ -200,20 +200,31 @@
         width: 228px;
       }
 
+      &.w-col-6-companyOwned {
+        width: 216px;
+      }
+
       &.w-col-5 {
         width: 188px;
+      }
+
+      &.w-col-5-tireSize {
+        width: 130px;
       }
 
       &.w-col-4 {
         width: 148px;
       }
 
-      &.w-col-companyOwned {
-        width: 216px;
+      &.w-col-4-tireSize,
+      &.w-col-4-doortype,
+      &.w-col-4-reeferUnit {
+        width: 136px;
       }
 
-      &.w-col-tireSize {
-        width: 130px;
+      &.w-col-3-suspension,
+      &.w-col-3-doortype {
+        width: 108px;
       }
 
       &.w-col-banks {
@@ -230,10 +241,6 @@
 
       &.w-col-trailerLength {
         width: 106px;
-      }
-
-      &.w-col-doortype {
-        width: 136px;
       }
     }
   }

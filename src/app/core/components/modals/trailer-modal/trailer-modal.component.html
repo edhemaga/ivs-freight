@@ -173,7 +173,24 @@
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
+        <!-------------------------------- FIRST ROW -------------------------------->
         <div class="row">
+          <div
+            class="col-4"
+            *ngIf="trailerForm.get('trailerTypeId').value === 'Reefer'"
+          >
+            <app-ta-input-dropdown
+              formControlName="reeferUnit"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Reefer Unit',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-4-reeferUnit'
+              }"
+              [options]="reeferUnitType"
+            ></app-ta-input-dropdown>
+          </div>
           <div class="col-2">
             <app-ta-input
               formControlName="axles"
@@ -185,7 +202,13 @@
               }"
             ></app-ta-input>
           </div>
-          <div class="col-6">
+          <div
+            class="{{
+              trailerForm.get('trailerTypeId').value !== 'Reefer'
+                ? 'col-6'
+                : 'col-3 no-p-left'
+            }}"
+          >
             <app-ta-input-dropdown
               formControlName="suspension"
               [inputConfig]="{
@@ -193,12 +216,15 @@
                 type: 'text',
                 label: 'Suspension',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-6'
+                dropdownWidthClass: trailerForm.get('trailerTypeId').value !== 'Reefer' ? 'w-col-6' : 'w-col-3-suspension'
               }"
-              [options]="ownerType"
+              [options]="suspensionType"
             ></app-ta-input-dropdown>
           </div>
-          <div class="col-4 no-p-left">
+          <div
+            class="col-4 no-p-left"
+            *ngIf="trailerForm.get('trailerTypeId').value !== 'Reefer'"
+          >
             <app-ta-input-dropdown
               formControlName="tireSizeId"
               [inputConfig]="{
@@ -211,12 +237,46 @@
               [options]="tireSize"
             ></app-ta-input-dropdown>
           </div>
+          <div
+            *ngIf="trailerForm.get('trailerTypeId').value === 'Reefer'"
+            class="col-3 no-p-left"
+          >
+            <app-ta-input-dropdown
+              formControlName="doorType"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Door Type',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-3-doortype'
+              }"
+              [options]="doorType"
+            ></app-ta-input-dropdown>
+          </div>
         </div>
+        <!-------------------------------- SECOND ROW -------------------------------->
         <div class="row">
           <div
+            class="col-4"
+            *ngIf="trailerForm.get('trailerTypeId').value === 'Reefer'"
+          >
+            <app-ta-input-dropdown
+              formControlName="tireSizeId"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Tire Size',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-4-tireSize'
+              }"
+              [options]="tireSize"
+            ></app-ta-input-dropdown>
+          </div>
+          <div
             *ngIf="
-              trailerForm.get('trailerTypeId').value === 'Dry Van' ||
-              trailerForm.get('trailerTypeId').value === 'Container'
+              (trailerForm.get('trailerTypeId').value === 'Dry Van' ||
+                trailerForm.get('trailerTypeId').value === 'Container') &&
+              trailerForm.get('trailerTypeId').value !== 'Reefer'
             "
             class="col-4"
           >
@@ -227,15 +287,16 @@
                 type: 'text',
                 label: 'Door Type',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-doortype'
+                dropdownWidthClass: 'w-col-4-doortype'
               }"
-              [options]="tireSize"
+              [options]="doorType"
             ></app-ta-input-dropdown>
           </div>
           <div
             class="{{
               trailerForm.get('trailerTypeId').value === 'Dry Van' ||
-              trailerForm.get('trailerTypeId').value === 'Container'
+              trailerForm.get('trailerTypeId').value === 'Container' ||
+              trailerForm.get('trailerTypeId').value === 'Reefer'
                 ? 'col-4'
                 : 'col-6'
             }}"
@@ -258,7 +319,8 @@
           <div
             class="{{
               trailerForm.get('trailerTypeId').value === 'Dry Van' ||
-              trailerForm.get('trailerTypeId').value === 'Container'
+              trailerForm.get('trailerTypeId').value === 'Container' ||
+              trailerForm.get('trailerTypeId').value === 'Reefer'
                 ? 'col-4 no-p-left'
                 : 'col-6'
             }}"
@@ -275,6 +337,7 @@
             ></app-ta-input>
           </div>
         </div>
+        <!-------------------------------- THIRD ROW -------------------------------->
         <div class="row last-modal-row">
           <div class="col-12">
             <app-ta-input

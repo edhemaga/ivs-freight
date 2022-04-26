@@ -212,7 +212,7 @@ export class MockModalService {
       id: 9,
       name: 'Manac',
     },
-  ]; 
+  ];
 
   public trailerLengthType: any[] = [
     {
@@ -247,7 +247,7 @@ export class MockModalService {
       id: 8,
       name: '45 ft',
     },
-  ]
+  ];
 
   public colorType: any[] = [
     {
@@ -488,32 +488,54 @@ export class MockModalService {
     {
       id: 7,
       name: '245-70-19.5',
-    }
-  ]
+    },
+  ];
 
   public ownerType: any[] = [
     {
       id: 1,
-      name: 'Purchase'
+      name: 'Purchase',
     },
     {
       id: 2,
-      name: 'Sale'
-    }
-  ]
+      name: 'Sale',
+    },
+  ];
 
   public suspensionType: any[] = [
     {
       id: 1,
-      name: 'Leaf Spring'
+      name: 'Leaf Spring',
     },
     {
       id: 2,
-      name: 'Air Ride'
+      name: 'Air Ride',
     },
     {
       id: 3,
-      name: 'Rigid'
-    }
-  ]
+      name: 'Rigid',
+    },
+  ];
+
+  public doorType: any[] = [
+    {
+      id: 1,
+      name: 'Swing',
+    },
+    {
+      id: 2,
+      name: 'Roll-Up',
+    },
+  ];
+
+  public reeferUnitType: any[] = [
+    {
+      id: 1,
+      name: 'THERMO KING',
+    },
+    {
+      id: 2,
+      name: 'Carrier',
+    },
+  ];
 }

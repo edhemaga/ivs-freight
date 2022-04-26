@@ -27,7 +27,9 @@ export class TrailerModalComponent implements OnInit {
   public ownerType: any[] = [];
   public suspensionType: any[] = [];
   public tireSize: any[] = [];
-
+  public doorType: any[] = [];
+  public reeferUnitType: any[] = [];
+ 
   public selectedTab: number = 1;
   public tabs: any[] = [
     {
@@ -56,6 +58,8 @@ export class TrailerModalComponent implements OnInit {
     this.ownerType = this.mockModalService.ownerType;
     this.suspensionType = this.mockModalService.suspensionType;
     this.tireSize = this.mockModalService.tireSize;
+    this.doorType = this.mockModalService.doorType;
+    this.reeferUnitType = this.mockModalService.reeferUnitType;
   }
 
   private createForm() {
