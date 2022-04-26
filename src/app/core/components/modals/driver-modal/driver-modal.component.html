@@ -2,6 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Driver' : 'Edit Driver'"
   [editName]="'Nikola Kovacevic'"
   [editData]="editData"
+  [isModalValid]="driverForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher

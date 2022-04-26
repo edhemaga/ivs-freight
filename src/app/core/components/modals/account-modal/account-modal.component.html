@@ -1,5 +1,6 @@
 <app-ta-modal
   [modalTitle]="'Add Account'"
+  [isModalValid]="accountForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="accountForm" class="form-container">

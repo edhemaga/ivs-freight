@@ -168,6 +168,12 @@ ngb-modal-window[aria-hidden="true"] {
             color: #ffffff;
             background-color: #6d82c7;
           }
+
+          &.valid {
+            transition: all 0.3s ease-in-out;
+            color: #ffffff;
+            background-color: #6d82c7;
+          }
         }
       }
     }

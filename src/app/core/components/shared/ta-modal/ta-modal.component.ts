@@ -18,6 +18,7 @@ export class TaModalComponent {
   @Input() editName: string;
   @Input() editData: any;
   @Input() customClass: string;
+  @Input() isModalValid: boolean;
 
   private timeout = null;
 
