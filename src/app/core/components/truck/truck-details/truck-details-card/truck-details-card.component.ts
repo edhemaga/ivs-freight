@@ -64,7 +64,8 @@ export class TruckDetailsCardComponent implements OnInit {
         }
       ],
       chart: {
-        height: 300,
+        height: 180,
+        width:408,
         type: "line"
       },
       stroke: {
@@ -133,6 +134,7 @@ export class TruckDetailsCardComponent implements OnInit {
           type: "column",
           data: [5,10,15,20,25,30,35,45,60],
           color:"#ffcc80",
+  
         },
         {
           name: "Cost per Gallon",
@@ -142,7 +144,8 @@ export class TruckDetailsCardComponent implements OnInit {
         }
       ],
       chart: {
-        height: 300,
+        height: 180,
+        width:408,
         type: "line"
       },
       stroke: {
@@ -168,7 +171,6 @@ export class TruckDetailsCardComponent implements OnInit {
         
       },
       yaxis: [
-        
         {
           tickAmount:5,
           labels:{

@@ -6,7 +6,7 @@ import { AuthGuard } from './core/guards/authentication.guard';
 import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
-import { TaCommonHeaderComponent } from './core/components/shared/ta-details-header/ta-details-header.component';
+import { TaReCardComponent } from './core/components/shared/ta-re-card/ta-re-card.component';
 
 const routes: Routes = [
   // Auth Routes
@@ -134,7 +134,7 @@ const routes: Routes = [
   },
   {
    path:'test',
-   component:TaCommonHeaderComponent
+   component:TaReCardComponent
   },
   {
     path: "catalog",

@@ -12,8 +12,8 @@
         <div class="header-toolbar" *ngFor="let item of detailsHeaderText; index as i">
             <p class="header-name">{{item.name}}</p>
             <div class="header-plus-button">
+                <div class="border-line-left"></div>
                 <svg-icon (click)="openModal(item.name)" src="assets/svg/common/plus.svg">
-
                 </svg-icon>
             </div>
         </div>

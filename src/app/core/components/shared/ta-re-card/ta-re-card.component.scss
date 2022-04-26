@@ -1,0 +1,93 @@
+.card-container-cmp {
+    width: 335px;
+    height: 166px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    padding: 12px;
+    .card-header-cmp {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        height: 22px;
+        background-color: #ffffff;
+        margin-bottom: 12px;
+        .card-name-cmp {
+            font-size: 18px;
+            font-weight: 500;
+            color: #6c6c6c;
+        }
+    }
+    .card-body-cmp {
+        display: flex;
+        flex-direction: column;
+        margin-top: 12px;
+        margin-bottom: 12px;
+        background-color: #ffffff;
+        .dates {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+        .state-issued {
+            display: grid;
+            grid-template-columns: 124px 112px;
+            margin: 0px 0px 8px 0px;
+            .state-issued-item {
+                height: 26px;
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+    .card-footer-cmp {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        background-color: #ffffff;
+        height: 18px;
+        svg {
+            cursor: pointer;
+        }
+        .icon-counter {
+            display: flex;
+            align-items: baseline;
+            .attachment-icon {
+                margin-left: 12px;
+            }
+            .card-document-counter {
+                font-size: 11px;
+                font-weight: 700;
+                margin-left: 4px !important;
+                color: #cccccc;
+            }
+        }
+    }
+}
+// Progress bar details
+.driver-details-progress-container {
+    .table-progress-cotnainer {
+        display: flex !important;
+        flex-direction: column !important;
+
+        .table-progress {
+            order: 1 !important;
+            width: 100% !important;
+            height: 8px !important;
+        }
+
+        .table-progress-panel {
+            order: -1 !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            color: #6c6c6c !important;
+
+            .progress-text {
+                margin: 2px 0px !important;
+            }
+        }
+    }
+}
+p {
+    margin: 0 !important;
+}
