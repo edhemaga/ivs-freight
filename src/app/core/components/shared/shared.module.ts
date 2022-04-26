@@ -1,38 +1,38 @@
 import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import {CommonModule, DatePipe} from '@angular/common';
-import { AutoFocusDirective } from "../../directives/auto-focus.directive";
-import { InputFocusDirective } from "../../directives/input-focus.directive";
-import { InputRestrictionDirective } from "../../directives/input-restriction.directive";
-import { InputErrorPipe } from "../../pipes/input-error.pipe";
+import { CommonModule, DatePipe } from '@angular/common';
+import { AutoFocusDirective } from '../../directives/auto-focus.directive';
+import { InputFocusDirective } from '../../directives/input-focus.directive';
+import { InputRestrictionDirective } from '../../directives/input-restriction.directive';
+import { InputErrorPipe } from '../../pipes/input-error.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { AngularSvgIconModule } from "angular-svg-icon";
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 import { AgmCoreModule } from '@agm/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SortPipe } from "../../pipes/sort.pipe";
-import { HistoryDataComponent } from "./history-data/history-data.component";
-import { DatePickerModule } from "@progress/kendo-angular-dateinputs";
-import { GooglePlaceModule } from "ngx-google-places-autocomplete";
-import { TabSwitcherComponent } from "../switchers/tab-switcher/tab-switcher.component";
-import { SortableModule } from "@progress/kendo-angular-sortable";
-import { GridModule, PDFModule } from "@progress/kendo-angular-grid";
-import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
-import { ButtonsModule } from "@progress/kendo-angular-buttons";
+import { SortPipe } from '../../pipes/sort.pipe';
+import { HistoryDataComponent } from './history-data/history-data.component';
+import { DatePickerModule } from '@progress/kendo-angular-dateinputs';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+import { TabSwitcherComponent } from '../switchers/tab-switcher/tab-switcher.component';
+import { SortableModule } from '@progress/kendo-angular-sortable';
+import { GridModule, PDFModule } from '@progress/kendo-angular-grid';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { SchedulerModule } from '@progress/kendo-angular-scheduler';
-import { InputsModule, SwitchModule } from "@progress/kendo-angular-inputs";
-import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
-import { LayoutModule } from "@progress/kendo-angular-layout";
-import { ExcelExportModule } from "@progress/kendo-angular-excel-export";
-import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
-import { LabelModule } from "@progress/kendo-angular-label";
-import { DragDropModule } from "@angular/cdk/drag-drop";
-import {ScrollingModule} from '@angular/cdk/scrolling';
-import { StatusSwitcherComponent } from "../switchers/status-switcher/status-switcher.component";
+import { InputsModule, SwitchModule } from '@progress/kendo-angular-inputs';
+import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+import { LayoutModule } from '@progress/kendo-angular-layout';
+import { ExcelExportModule } from '@progress/kendo-angular-excel-export';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { LabelModule } from '@progress/kendo-angular-label';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { StatusSwitcherComponent } from '../switchers/status-switcher/status-switcher.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { TooltipDirective } from "../../directives/tooltip.directive";
-import { NgxMaskModule } from "ngx-mask";
+import { TooltipDirective } from '../../directives/tooltip.directive';
+import { NgxMaskModule } from 'ngx-mask';
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
@@ -46,7 +46,7 @@ import { HighlightSearchPipe } from '../../pipes/highlight-search.pipe';
 import { HosTimePipe } from '../../pipes/hostime';
 import { NameInitialsPipe } from '../../pipes/nameinitials';
 import { Ng5SliderModule } from 'ng5-slider';
-import {EditProfileImageComponent} from "./edit-profile-image/edit-profile-image.component";
+import { EditProfileImageComponent } from './edit-profile-image/edit-profile-image.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CroppieModule } from 'angular-croppie-module';
 import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
@@ -77,14 +77,48 @@ import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
 
 import { TruckModalComponent } from '../modals/truck-modal/truck-modal.component';
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
-
+import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.component';
 
 @NgModule({
   declarations: [
-    AutoFocusDirective,
-    InputFocusDirective,
-    TooltipDirective,
-    InputRestrictionDirective,
+    HistoryDataComponent,
+    TabSwitcherComponent,
+    StatusSwitcherComponent,
+    TaNoteContainerComponent,
+    TaStatusSwitchComponent,
+    TaStatusSelectComponent,
+    TaSelectComponent,
+    DeleteDialogComponent,
+    EditProfileImageComponent,
+    EditProfileImageComponent,
+    EditProfileImageComponent,
+    SvgDefinitionsComponent,
+    CustomDatetimePickersComponent,
+    CalendarDatesMainComponent,
+    CalendarDaysComponent,
+    CalendarLeftComponent,
+    DateCalendarsComponent,
+
+    TaCheckboxComponent,
+    TaInputAddressComponent,
+    TaInputDropdownComponent,
+    TaInputNoteComponent,
+    TaInputComponent,
+    TaFilesComponent,
+    TaFileComponent,
+    TaCounterComponent,
+    TaNgxSliderComponent,
+    TaLogoChangeComponent,
+
+    // Modals Components
+    TaModalComponent,
+    TaModalCardComponent,
+    DriverModalComponent,
+    TruckModalComponent,
+    TrailerModalComponent,
+    AccountModalComponent,
+
+    // Pipes
     InputErrorPipe,
     SortPipe,
     StatusPipePipe,
@@ -94,43 +128,17 @@ import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
     CdkIdPipe,
     CdkConnectPipe,
     CalendarMonthsPipe,
-    HistoryDataComponent,
-    TabSwitcherComponent,
-    StatusSwitcherComponent,
     NFormatterPipe,
+    TaSvgPipe,
+
+    // Directive
+    AutoFocusDirective,
+    InputFocusDirective,
     TooltipDirective,
-    TaNoteContainerComponent,
-    TaStatusSwitchComponent,
-    TaStatusSelectComponent,
-    TaSelectComponent,
-    DeleteDialogComponent,
-    EditProfileImageComponent,
-    EditProfileImageComponent,
-    EditProfileImageComponent,
+    InputRestrictionDirective,
+    TooltipDirective,
     DragDropFileDirective,
-    TaCounterComponent,
-    TaNgxSliderComponent,
-    TaLogoChangeComponent,
-    TaFilesComponent,
-    TaFileComponent,
-    TaInputComponent,
-    SvgDefinitionsComponent,
-    TaModalComponent,
-    AccountModalComponent,
-    TaInputNoteComponent,
     TextareaAutosizeDirective,
-    TaInputDropdownComponent,
-    CustomDatetimePickersComponent,
-    CalendarDatesMainComponent,
-    CalendarDaysComponent,
-    CalendarLeftComponent,
-    DateCalendarsComponent,
-    DriverModalComponent,
-    TaCheckboxComponent,
-    TaModalCardComponent,
-    TaInputAddressComponent,
-    TruckModalComponent,
-    TaSvgPipe
   ],
   imports: [
     CommonModule,
@@ -168,13 +176,10 @@ import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
     Ng5SliderModule,
     NgxDropzoneModule,
     CroppieModule,
-    PdfViewerModule
+    PdfViewerModule,
   ],
   exports: [
-    AutoFocusDirective,
-    InputFocusDirective,
-    InputRestrictionDirective,
-    InputErrorPipe,
+    // Modules
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
@@ -182,14 +187,6 @@ import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
     AgmCoreModule,
     NgbModule,
     GooglePlaceModule,
-    SortPipe,
-    StatusPipePipe,
-    HighlightSearchPipe,
-    NameInitialsPipe,
-    HosTimePipe,
-    CdkIdPipe,
-    CdkConnectPipe,
-    CalendarMonthsPipe,
     SortableModule,
     GridModule,
     PDFModule,
@@ -203,49 +200,82 @@ import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
     ExcelExportModule,
     PDFExportModule,
     LabelModule,
-    NFormatterPipe,
-    TabSwitcherComponent,
-    TooltipDirective,
-    TaNoteContainerComponent,
-    TaStatusSwitchComponent,
-    TaStatusSelectComponent,
-    TaSelectComponent,
-    DeleteDialogComponent,
     DragDropModule,
     ScrollingModule,
     NgxMaskModule,
     Ng5SliderModule,
     NgxDropzoneModule,
     CroppieModule,
-    DragDropFileDirective,
-    TaCounterComponent,
     NgxSliderModule,
-    TaNgxSliderComponent,
-    TaLogoChangeComponent,
-    TaFilesComponent,
-    TaFileComponent,
     PdfViewerModule,
-    TaInputComponent,
+
+    // Components
+    TabSwitcherComponent,
+    TaNoteContainerComponent,
+    TaStatusSwitchComponent,
+    TaStatusSelectComponent,
+    TaSelectComponent,
+    DeleteDialogComponent,
     SvgDefinitionsComponent,
-    TaModalComponent,
-    AccountModalComponent,
-    TaInputNoteComponent,
-    TextareaAutosizeDirective,
-    TaInputDropdownComponent,
     CustomDatetimePickersComponent,
     CalendarDatesMainComponent,
     CalendarDaysComponent,
     CalendarLeftComponent,
     DateCalendarsComponent,
-    DriverModalComponent,
+
     TaCheckboxComponent,
-    TaModalCardComponent,
     TaInputAddressComponent,
+    TaInputDropdownComponent,
+    TaInputNoteComponent,
+    TaInputComponent,
+    TaFilesComponent,
+    TaFileComponent,
+    TaCounterComponent,
+    TaNgxSliderComponent,
+    TaLogoChangeComponent,
+
+    // Modals Components
+    TaModalComponent,
+    TaModalCardComponent,
+    DriverModalComponent,
     TruckModalComponent,
-    TaSvgPipe
+    TrailerModalComponent,
+    AccountModalComponent,
+
+    // Pipes
+    InputErrorPipe,
+    SortPipe,
+    StatusPipePipe,
+    HighlightSearchPipe,
+    NameInitialsPipe,
+    HosTimePipe,
+    CdkIdPipe,
+    CdkConnectPipe,
+    CalendarMonthsPipe,
+    NFormatterPipe,
+    TaSvgPipe,
+
+    // Directive
+    AutoFocusDirective,
+    InputFocusDirective,
+    TooltipDirective,
+    InputRestrictionDirective,
+    TooltipDirective,
+    DragDropFileDirective,
+    TextareaAutosizeDirective,
   ],
-  providers: [DatePipe, SortPipe, NFormatterPipe, StatusPipePipe, CdkConnectPipe,CalendarMonthsPipe, CdkIdPipe, HighlightSearchPipe, HosTimePipe, NameInitialsPipe],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  providers: [
+    DatePipe,
+    SortPipe,
+    NFormatterPipe,
+    StatusPipePipe,
+    CdkConnectPipe,
+    CalendarMonthsPipe,
+    CdkIdPipe,
+    HighlightSearchPipe,
+    HosTimePipe,
+    NameInitialsPipe,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class SharedModule {
-}
+export class SharedModule {}
