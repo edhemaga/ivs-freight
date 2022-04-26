@@ -44,7 +44,6 @@
 
   // For all svgs
   &:hover {
-    transition: all 0.3s ease-in-out;
     svg {
       path,
       // Car Hauler
@@ -53,11 +52,124 @@
       // Tow Truck
       #Rectangle_1320 {
         fill: #ffffff;
+        transition: all 0.3s ease-in-out;
       }
     }
 
     .svgtextflex-text {
       color: #ffffff;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+}
+
+// --------------------- TRAILERS ---------------------
+.trailers {
+  &.reefer {
+    &:hover {
+      background-color: #EF6E6E !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.dryvan {
+    &:hover {
+      background-color: #5673AA !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.sidekit {
+    &:hover {
+      background-color: #76A77D !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.conestoga {
+    &:hover {
+      background-color: #484848 !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.dumper {
+    &:hover {
+      background-color: #8FDEE1 !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.trailerContainer {
+
+    .container {
+      width: auto !important;
+      max-width: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      margin-right: 6px !important;
+    } 
+
+    &:hover {
+      background-color: #FFBE7D !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.tanker {
+    &:hover {
+      background-color: #81CCFF !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.carhauler {
+    &:hover {
+      background-color: #668888 !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.flatbed {
+    &:hover {
+      background-color: #AF88EA !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.lowboyrgn {
+    &:hover {
+      background-color: #955FA2 !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.chassis {
+    &:hover {
+      background-color: #547556 !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &.stepdeck {
+    &:hover {
+      background-color: #F2DD75 !important;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  // For all svgs
+  &:hover {
+    svg {
+      path {
+        fill: #ffffff;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
+    .svgtextflex-text {
+      color: #ffffff;
+      transition: all 0.3s ease-in-out;
     }
   }
 }
@@ -175,42 +287,42 @@
     .black {
       svg {
         #droplet {
-          fill: #3C3C3C;
+          fill: #3c3c3c;
         }
       }
     }
     .brown {
       svg {
         #droplet {
-          fill: #8D6E63;
+          fill: #8d6e63;
         }
       }
     }
     .darkgreen {
       svg {
         #droplet {
-          fill: #26A690;
+          fill: #26a690;
         }
       }
     }
     .lightgreen {
       svg {
         #droplet {
-          fill: #66BB6A;
+          fill: #66bb6a;
         }
       }
     }
     .darkblue {
       svg {
         #droplet {
-          fill: #304FC1;
+          fill: #304fc1;
         }
       }
     }
     .lightblue {
       svg {
         #droplet {
-          fill: #42A5F5;
+          fill: #42a5f5;
         }
       }
     }
@@ -224,56 +336,56 @@
     .purple {
       svg {
         #droplet {
-          fill: #AB47BC;
+          fill: #ab47bc;
         }
       }
     }
     .gold {
       svg {
         #droplet {
-          fill: #AA9C6E;
+          fill: #aa9c6e;
         }
       }
     }
     .silver {
       svg {
         #droplet {
-          fill: #B7B7B7;
+          fill: #b7b7b7;
         }
       }
     }
     .red {
       svg {
         #droplet {
-          fill: #EF5350;
+          fill: #ef5350;
         }
       }
     }
     .pink {
       svg {
         #droplet {
-          fill: #FA4DAA;
+          fill: #fa4daa;
         }
       }
     }
     .white {
       svg {
         #droplet {
-          fill: #FFFFFF;
+          fill: #ffffff;
         }
       }
     }
     .orange {
       svg {
         #droplet {
-          fill: #FF7043;
+          fill: #ff7043;
         }
       }
     }
     .yellow {
       svg {
         #droplet {
-          fill: #FFCA28;
+          fill: #ffca28;
         }
       }
     }

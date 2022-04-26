@@ -137,7 +137,10 @@
 
           .svgtextflex-text {
             position: relative;
-            top: 1px;
+
+            &.truck-text {
+              top: 1px;
+            }
           }
 
           .colors {
@@ -177,6 +180,14 @@
 
       //------------------------ Custom width dependent on 'col' bootstrap ------------------------
 
+      &.w-col-12 {
+        width: 455px;
+      }
+
+      &.w-col-9 {
+        width: 348px;
+      }
+
       &.w-col-8 {
         width: 308px;
       }
@@ -211,6 +222,14 @@
 
       &.w-col-paytype {
         width: 151px;
+      }
+
+      &.w-col-trailerColor {
+        width: 126px;
+      }
+
+      &.w-col-trailerLength {
+        width: 106px;
       }
     }
   }

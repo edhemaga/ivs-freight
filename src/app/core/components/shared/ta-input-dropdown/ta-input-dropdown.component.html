@@ -60,7 +60,10 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            active: option.id === activeItem?.id
+            active: option.id === activeItem?.id,
+            'trailerContainer': option.name === 'Container',
+            'semisleeper': option.name === 'Semi w/Sleeper',
+            'lowboyrgn': option.name === 'Low Boy/RGN'
           }"
           (click)="onActiveItem(option)"
         >
@@ -73,6 +76,7 @@
           ></svg-icon>
           <div
             class="svgtextflex-text"
+            [ngClass]="{'truck-text': option.subFolder === 'trucks'}"
             [innerHtml]="
               option.name
                 | taHighlight: [{ index: 45632, text: getSuperControl.value }]

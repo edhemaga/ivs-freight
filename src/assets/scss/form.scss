@@ -319,6 +319,13 @@
   }
 }
 
+//---------------- Model Color Year Length ----------------
+.custom-model-color-year-length {
+  display: grid;
+  grid-template-columns: 100px 126px 88px 106px;
+  column-gap: 12px;
+}
+
 // ------------------------------------------------ end ------------------------------------------------
 
 

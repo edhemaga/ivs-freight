@@ -28,7 +28,7 @@ export class AccountModalComponent implements OnInit {
     this.createForm();
   }
 
-  public createForm() {
+  private createForm() {
     this.accountForm = this.formBuilder.group({
       name: [null, [Validators.required, Validators.maxLength(23)]],
       username: [null, [Validators.required, Validators.maxLength(40)]],

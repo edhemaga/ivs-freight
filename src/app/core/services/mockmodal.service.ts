@@ -14,7 +14,7 @@ export class MockModalService {
     },
     {
       id: 2,
-      name: 'Semi Sleeper',
+      name: 'Semi w/Sleeper',
       svg: 'ic_truck_semi-wSleeper.svg',
       folder: 'common',
       subFolder: 'trucks',
@@ -46,6 +46,93 @@ export class MockModalService {
       svg: 'ic_truck_car-hauler.svg',
       folder: 'common',
       subFolder: 'trucks',
+    },
+  ];
+
+  public trailerType: any[] = [
+    {
+      id: 1,
+      name: 'Reefer',
+      svg: 'ic_trailer_reefer.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 2,
+      name: 'Dry Van',
+      svg: 'ic_trailer_dryvan.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 3,
+      name: 'Side Kit',
+      svg: 'ic_trailer_side-kit.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 4,
+      name: 'Conestoga',
+      svg: 'ic_trailer_conestoga.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 5,
+      name: 'Dumper',
+      svg: 'ic_trailer_dumper.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 6,
+      name: 'Container',
+      svg: 'ic_trailer_container.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 7,
+      name: 'Tanker',
+      svg: 'ic_trailer_tanker.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 8,
+      name: 'Car Hauler',
+      svg: 'ic_trailer_carhauler.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 9,
+      name: 'Flat Bed',
+      svg: 'ic_trailer_flatbed.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 9,
+      name: 'Low Boy/RGN',
+      svg: 'ic_trailer_low-boy.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 10,
+      name: 'Chassis',
+      svg: 'ic_trailer_chassis.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 11,
+      name: 'Step Deck',
+      svg: 'ic_trailer_step-deck.svg',
+      folder: 'common',
+      subFolder: 'trailers',
     },
   ];
 
@@ -87,6 +174,80 @@ export class MockModalService {
       name: 'VOLVO',
     },
   ];
+
+  public trailerMakeType: any[] = [
+    {
+      id: 1,
+      name: 'DORSEY',
+    },
+    {
+      id: 2,
+      name: 'EAST',
+    },
+    {
+      id: 3,
+      name: 'FONTAINE',
+    },
+    {
+      id: 4,
+      name: 'FRUENHAUF',
+    },
+    {
+      id: 5,
+      name: 'Great Dane',
+    },
+    {
+      id: 6,
+      name: 'Hudson Bros.',
+    },
+    {
+      id: 7,
+      name: 'HYUNDAI',
+    },
+    {
+      id: 8,
+      name: 'Kaufman',
+    },
+    {
+      id: 9,
+      name: 'Manac',
+    },
+  ]; 
+
+  public trailerLengthType: any[] = [
+    {
+      id: 1,
+      name: '20 ft',
+    },
+    {
+      id: 2,
+      name: '22 ft',
+    },
+    {
+      id: 3,
+      name: '24 ft',
+    },
+    {
+      id: 4,
+      name: '26 ft',
+    },
+    {
+      id: 5,
+      name: '28 ft',
+    },
+    {
+      id: 6,
+      name: '40 ft',
+    },
+    {
+      id: 7,
+      name: '43 ft',
+    },
+    {
+      id: 8,
+      name: '45 ft',
+    },
+  ]
 
   public colorType: any[] = [
     {
@@ -338,6 +499,21 @@ export class MockModalService {
     {
       id: 2,
       name: 'Sale'
+    }
+  ]
+
+  public suspensionType: any[] = [
+    {
+      id: 1,
+      name: 'Leaf Spring'
+    },
+    {
+      id: 2,
+      name: 'Air Ride'
+    },
+    {
+      id: 3,
+      name: 'Rigid'
     }
   ]
 }

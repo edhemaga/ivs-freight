@@ -295,7 +295,7 @@ export class TaInputComponent
     }
 
     if (
-      ['address unit', 'truck number'].includes(
+      ['address unit', 'truck number', 'trailer number'].includes(
         this.inputConfig.name.toLowerCase()
       )
     ) {

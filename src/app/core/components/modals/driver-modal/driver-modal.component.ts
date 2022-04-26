@@ -108,7 +108,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createForm(): void {
+  private createForm(): void {
     this.driverForm = this.formBuilder.group({
       firstName: [null, [Validators.required]],
       lastName: [null, [Validators.required]],
