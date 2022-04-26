@@ -1,10 +1,11 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-trailer-modal',
@@ -16,7 +17,7 @@ import { card_modal_animation } from '../../shared/animations/card-modal.animati
   styleUrls: ['./trailer-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TrailerModalComponent implements OnInit {
+export class TrailerModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
 
   public trailerForm: FormGroup;
@@ -48,9 +49,12 @@ export class TrailerModalComponent implements OnInit {
     private ngbActiveModal: NgbActiveModal,
     private mockModalService: MockModalService
   ) {}
+  
 
   ngOnInit() {
     this.createForm();
+    this.isCompanyOwned();
+    
     this.trailerType = this.mockModalService.trailerType;
     this.trailerMakeType = this.mockModalService.trailerMakeType;
     this.colorType = this.mockModalService.colorType;
@@ -87,6 +91,22 @@ export class TrailerModalComponent implements OnInit {
     });
   }
 
+  private isCompanyOwned() {
+    this.trailerForm
+      .get('companyOwned')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.inputService.changeValidators(this.trailerForm.get('ownerId'));
+        } else {
+          this.inputService.changeValidators(
+            this.trailerForm.get('ownerId'),
+            false
+          );
+        }
+      });
+  }
+
   public onModalAction(action: string): void {
     if (action === 'close') {
       this.trailerForm.reset();
@@ -104,4 +124,6 @@ export class TrailerModalComponent implements OnInit {
   public tabChange(event: any): void {
     this.selectedTab = event.id;
   }
+
+  ngOnDestroy(): void {}
 }

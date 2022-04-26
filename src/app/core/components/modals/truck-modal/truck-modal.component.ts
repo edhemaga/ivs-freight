@@ -123,7 +123,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public isCompanyOwned() {
+  private isCompanyOwned() {
     this.truckForm
       .get('companyOwned')
       .valueChanges.pipe(untilDestroyed(this))

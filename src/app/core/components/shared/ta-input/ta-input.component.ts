@@ -285,8 +285,7 @@ export class TaInputComponent
         this.inputConfig.name.toLowerCase()
       )
     ) {
-      if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
+      if (/^[A-Za-z]*$/.test(String.fromCharCode(event.charCode))) {
         return true;
       } else {
         event.preventDefault();

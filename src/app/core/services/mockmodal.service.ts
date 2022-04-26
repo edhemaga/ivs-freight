@@ -538,4 +538,11 @@ export class MockModalService {
       name: 'Carrier',
     },
   ];
+
+  public accountLabels: any [] = [
+    { id: 1, name: 'Aleksandar Djordjevic' },
+    { id: 2, name: 'Denis Rodman' },
+    { id: 3, name: 'James Halpert' },
+    { id: 4, name: 'Pamela Beasley' },
+  ];
 }
