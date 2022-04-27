@@ -137,7 +137,10 @@
 
           .svgtextflex-text {
             position: relative;
-            top: 1px;
+
+            &.truck-text {
+              top: 1px;
+            }
           }
 
           .colors {
@@ -177,6 +180,14 @@
 
       //------------------------ Custom width dependent on 'col' bootstrap ------------------------
 
+      &.w-col-12 {
+        width: 455px;
+      }
+
+      &.w-col-9 {
+        width: 348px;
+      }
+
       &.w-col-8 {
         width: 308px;
       }
@@ -189,20 +200,31 @@
         width: 228px;
       }
 
+      &.w-col-6-companyOwned {
+        width: 216px;
+      }
+
       &.w-col-5 {
         width: 188px;
+      }
+
+      &.w-col-5-tireSize {
+        width: 130px;
       }
 
       &.w-col-4 {
         width: 148px;
       }
 
-      &.w-col-companyOwned {
-        width: 216px;
+      &.w-col-4-tireSize,
+      &.w-col-4-doortype,
+      &.w-col-4-reeferUnit {
+        width: 136px;
       }
 
-      &.w-col-tireSize {
-        width: 130px;
+      &.w-col-3-suspension,
+      &.w-col-3-doortype {
+        width: 108px;
       }
 
       &.w-col-banks {
@@ -211,6 +233,14 @@
 
       &.w-col-paytype {
         width: 151px;
+      }
+
+      &.w-col-trailerColor {
+        width: 126px;
+      }
+
+      &.w-col-trailerLength {
+        width: 106px;
       }
     }
   }

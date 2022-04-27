@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
+import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-trailer-table',
@@ -19,7 +20,7 @@ export class TrailerTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService,  private tableService: TruckassistTableService) {}
+  constructor(private modalService: ModalService,  private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -288,10 +289,25 @@ export class TrailerTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba se doda modal!');
+      this.modalService.openModal(TrailerModalComponent, {
+        size: 'small',
+      });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setTrailerData(event.tabData);
+    }
+  }
+
+  public onTableBodyActions(event: any) {
+    if (event.type === 'edit-trailer') {
+      this.modalService.openModal(
+        TrailerModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          type: 'edit'
+        }
+      );
     }
   }
 }

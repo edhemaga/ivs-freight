@@ -2,33 +2,31 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { MockModalService } from 'src/app/core/services/mockmodal.service';
 
 @Component({
   selector: 'app-account-modal',
   templateUrl: './account-modal.component.html',
   styleUrls: ['./account-modal.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class AccountModalComponent implements OnInit {
   public accountForm: FormGroup;
-  public labels: any[] = [
-    { id: 1, name: 'Aleksandar Djordjevic' },
-    { id: 2, name: 'Denis Rodman' },
-    { id: 3, name: 'James Halpert' },
-    { id: 4, name: 'Pamela Beasley' },
-  ];
+  public accountLabels: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal
+    private ngbActiveModal: NgbActiveModal,
+    private mockModalService: MockModalService
   ) {}
 
   ngOnInit() {
     this.createForm();
+    this.accountLabels = this.mockModalService.accountLabels;
   }
 
-  public createForm() {
+  private createForm() {
     this.accountForm = this.formBuilder.group({
       name: [null, [Validators.required, Validators.maxLength(23)]],
       username: [null, [Validators.required, Validators.maxLength(40)]],

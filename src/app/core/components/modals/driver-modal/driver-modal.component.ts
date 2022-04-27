@@ -108,7 +108,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createForm(): void {
+  private createForm(): void {
     this.driverForm = this.formBuilder.group({
       firstName: [null, [Validators.required]],
       lastName: [null, [Validators.required]],
@@ -116,7 +116,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         null,
         [Validators.required, Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)],
       ],
-      email: [null, [Validators.required, Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)]],
+      email: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/),
+        ],
+      ],
       ssn: [
         null,
         [Validators.required, Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/)],
@@ -134,7 +140,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bankId: [null],
       account: [null],
       routing: [null],
-      payroll: [true],
+      payroll: [false],
       payType: [null],
       mailNotification: [true],
       phoneCallNotification: [false],
@@ -160,7 +166,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     return this.driverForm.get('offDutyLocations') as FormArray;
   }
 
-  public createOffDutyLocation(): FormGroup {
+  private createOffDutyLocation(): FormGroup {
     return this.formBuilder.group({
       nickname: [null],
       address: [null],
@@ -185,7 +191,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.offDutyLocations.removeAt(id);
   }
 
-  public onIncludePayroll(): void {
+  private onIncludePayroll(): void {
     this.driverForm
       .get('payroll')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
@@ -214,7 +220,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onBankSelected(): void {
+  private onBankSelected(): void {
     this.driverForm
       .get('bankId')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
@@ -245,7 +251,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onPayTypeSelected(): void {
+  private onPayTypeSelected(): void {
     this.driverForm
       .get('payType')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
@@ -270,7 +276,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onTwicTypeSelected(): void {
+  private onTwicTypeSelected(): void {
     this.driverForm
       .get('twic')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))

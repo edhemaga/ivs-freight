@@ -200,7 +200,10 @@ fieldset legend {
 .multiswitch .slide-container label {
   cursor: pointer;
   height: 30px;
-  line-height: 30px;
+  line-height: 18px;
+  position: relative;
+  padding: 6px;
+  font-size: 14px;
 
   &:focus {
     outline: none !important;
@@ -275,5 +278,3 @@ fieldset legend {
 app-ta-tab-switch {
   margin-bottom: 0.5rem;
 }
-
-

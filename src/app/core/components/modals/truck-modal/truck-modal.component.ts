@@ -75,7 +75,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     this.tireSize = this.mockModalService.tireSize;
   }
 
-  public createForm(): void {
+  private createForm(): void {
     this.truckForm = this.formBuilder.group({
       truckNumber: [null, [Validators.required, Validators.maxLength(6)]],
       truckTypeId: [null, Validators.required],
@@ -123,7 +123,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public isCompanyOwned() {
+  private isCompanyOwned() {
     this.truckForm
       .get('companyOwned')
       .valueChanges.pipe(untilDestroyed(this))
