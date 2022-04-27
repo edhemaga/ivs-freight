@@ -7,29 +7,28 @@ ngb-modal-window[aria-hidden="true"] {
 .modal {
   z-index: 1000;
   background-color: rgba(0, 0, 0, 0);
-  transition: all 0.3s ease-in;
+  transition: all 0.3s ease-out;
 
   &.fade .modal-dialog {
-    -webkit-animation-name: fade-in-scale-animation 0.3s;
-    animation-name: fade-in-scale-animation 0.3s;
+    -webkit-animation-name: fade-in-scale-animation 0.5s;
+    animation-name: fade-in-scale-animation 0.5s;
   }
 
   &.show .modal-dialog {
     opacity: 0;
     transform: scale(0.7) !important;
-    transition: all 0.3s ease-in !important;
+    transition: all 0.3s ease-out !important;
   }
 
   // This class added through modal.service.ts
   &.modal-animation {
-    background-color: rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in !important;
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: all 0.7s ease-out !important;
   }
 
   &.modal-animation .modal-dialog {
     opacity: 1;
     transform: scale(1) !important;
-    transition: all 0.3s ease-in !important;
   }
 
   .modal-content {
