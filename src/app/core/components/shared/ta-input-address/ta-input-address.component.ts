@@ -30,7 +30,9 @@ export interface Address {
   templateUrl: './ta-input-address.component.html',
   styleUrls: ['../ta-input/ta-input.component.scss'],
 })
-export class TaInputAddressComponent implements OnInit, OnDestroy, ControlValueAccessor {
+export class TaInputAddressComponent
+  implements OnInit, OnDestroy, ControlValueAccessor
+{
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
 
@@ -50,22 +52,15 @@ export class TaInputAddressComponent implements OnInit, OnDestroy, ControlValueA
   }
 
   ngOnInit(): void {
-    this.inputService.inputFieldMarkedInvalid$
-      .pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.waitValidation = true;
-        }
-      });
-
-      if(this.activeAddress) {
-        this.getSuperControl.valueChanges.pipe(untilDestroyed(this)).subscribe(value => {
-          if(value !== this.activeAddress) {
+    if (this.activeAddress) {
+      this.getSuperControl.valueChanges
+        .pipe(untilDestroyed(this))
+        .subscribe((value) => {
+          if (value !== this.activeAddress) {
             this.invalidAddress = true;
           }
-        })
-      }
-     
+        });
+    }
   }
 
   public handleAddressChange(address: Address) {
@@ -122,12 +117,6 @@ export class TaInputAddressComponent implements OnInit, OnDestroy, ControlValueA
 
     if (!this.activeAddress) {
       this.invalidAddress = true;
-      console.log("INVALID ADDRESS: ", this.invalidAddress)
-      console.log("CONTROL REQUIRED:  ", this.inputConfig.isRequired)
-      console.log("CONTROL VALUE:  ", this.getSuperControl.value)
-      console.log("CONTROL INVALID:  ", this.getSuperControl.invalid)
-      console.log("WAIT VALIDATION:  ", this.waitValidation)
-      console.log("FOCUS OUT: ", !this.focusInput)
     }
 
     // Required Field
