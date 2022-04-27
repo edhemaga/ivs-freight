@@ -76,14 +76,6 @@ export class TaInputComponent
           }
         });
     }
-
-    this.inputService.inputFieldMarkedInvalid$
-      .pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if(value) {
-          this.waitValidation = true;
-        }
-      });
   }
 
   get getSuperControl() {

@@ -1,17 +1,12 @@
-import { BehaviorSubject, Subject } from 'rxjs';
-import { EventEmitter, Injectable, Output } from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
 import { Address } from '../ta-input-address/ta-input-address.component';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TaInputService {
   public onClearInputSubject: BehaviorSubject<boolean> =
@@ -25,15 +20,12 @@ export class TaInputService {
 
   public addDropdownItemSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
-  
+
   public activeItemDropdownSubject: BehaviorSubject<any> =
-     new BehaviorSubject<any>(null);
+    new BehaviorSubject<any>(null);
 
   public googleAddressSubject: BehaviorSubject<Address> =
     new BehaviorSubject<Address>(null);
-  
-  public isInputFieldMarkedInvalidSubject: BehaviorSubject<boolean> =
-  new BehaviorSubject<boolean>(false); 
 
   constructor(
     public notificationService: NotificationService,
@@ -46,10 +38,6 @@ export class TaInputService {
 
   public get getGoogleAddress$() {
     return this.googleAddressSubject.asObservable();
-  }
-
-  public get inputFieldMarkedInvalid$() {
-    return this.isInputFieldMarkedInvalidSubject.asObservable();
   }
 
   /**
@@ -71,7 +59,6 @@ export class TaInputService {
         'Please fill all required fields.',
         'Warning:'
       );
-      this.isInputFieldMarkedInvalidSubject.next(true);
       this.spinnerService.show(false);
       return false;
     } else {
@@ -105,7 +92,7 @@ export class TaInputService {
     }
     formControl.updateValueAndValidity();
   }
-  
+
   /**
    * @param address - premapped address
    */
@@ -119,5 +106,4 @@ export class TaInputService {
   public hasDropdownActiveItem(data: any) {
     this.activeItemDropdownSubject.next(data);
   }
-
 }
