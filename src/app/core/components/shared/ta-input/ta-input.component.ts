@@ -251,6 +251,10 @@ export class TaInputComponent
   }
 
   public manipulateWithInput(event: KeyboardEvent): boolean {
+    // Input Validation
+    if(this.focusInput && this.getSuperControl.valid) {
+      this.waitValidation = true;
+    }
     // Disable first character to be space
     if (
       !this.input.nativeElement.value &&
