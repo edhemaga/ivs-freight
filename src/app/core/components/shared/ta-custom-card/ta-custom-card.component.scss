@@ -1,4 +1,4 @@
-.ta-modal-card {
+.ta-custom-card {
   display: block;
 
   .ta-card-header {
@@ -32,7 +32,7 @@
         }
       }
 
-      .info-svg {
+      .header-svg {
         margin-left: 6px;
         width: 18px;
         height: 18px;
@@ -41,8 +41,8 @@
       }
     }
 
-    .header-svgs {
-      .header-add {
+    .header-actions {
+      .header-action-svg {
         height: 16px;
         width: 16px;
         margin-right: 7px;

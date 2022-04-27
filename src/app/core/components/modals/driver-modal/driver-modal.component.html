@@ -183,11 +183,11 @@
           </div>
         </div>
         <!-- Off duty Location -->
-        <app-ta-modal-card
+        <app-ta-custom-card
           [hasCounter]="offDutyLocations.length ? offDutyLocations.length : '0'"
           [cardName]="'Off duty Location'"
-          [headerSvg]="'assets/svg/common/ic_info.svg'"
-          [actionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [isCardOpen]="offDutyLocations.length"
           (onActionEvent)="addOffDutyLocation($event)"
         >
@@ -242,7 +242,7 @@
               </div>
             </div>
           </div>
-        </app-ta-modal-card>
+        </app-ta-custom-card>
         <!-- Note -->
         <app-ta-input-note formControlName="note"></app-ta-input-note>
       </div>
@@ -539,7 +539,7 @@
             ></app-ta-input>
           </div>
         </div>
-        <app-ta-modal-card
+        <app-ta-custom-card
           [cardName]="'Emergency Contact'"
           [isCardOpen]="
             driverForm.get('emergencyContactName').value ||
@@ -577,7 +577,7 @@
               }"
             ></app-ta-input>
           </div>
-        </app-ta-modal-card>
+        </app-ta-custom-card>
       </div>
     </div>
   </form>

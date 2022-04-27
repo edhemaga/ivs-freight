@@ -70,7 +70,6 @@ import { CalendarLeftComponent } from './custom-datetime-pickers/calendar-left/c
 import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars/date-calendars.component';
 import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
-import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
 import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
 import { DirectivesModule } from '../../directives/directives.module';
@@ -78,6 +77,7 @@ import { DirectivesModule } from '../../directives/directives.module';
 import { TruckModalComponent } from '../modals/truck-modal/truck-modal.component';
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.component';
+import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component';
 
 @NgModule({
   declarations: [
@@ -109,10 +109,10 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
+    TaCustomCardComponent,
 
     // Modals Components
     TaModalComponent,
-    TaModalCardComponent,
     DriverModalComponent,
     TruckModalComponent,
     TrailerModalComponent,
@@ -221,6 +221,7 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
     CalendarDaysComponent,
     CalendarLeftComponent,
     DateCalendarsComponent,
+    TaCustomCardComponent,
 
     TaCheckboxComponent,
     TaInputAddressComponent,
@@ -235,7 +236,6 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
 
     // Modals Components
     TaModalComponent,
-    TaModalCardComponent,
     TaInputAddressComponent,
     DirectivesModule,
     DriverModalComponent,

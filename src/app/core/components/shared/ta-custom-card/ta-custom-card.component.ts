@@ -1,22 +1,19 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
 
 @Component({
-  selector: 'app-ta-modal-card',
-  templateUrl: './ta-modal-card.component.html',
-  styleUrls: ['./ta-modal-card.component.scss'],
+  selector: 'app-ta-custom-card',
+  templateUrl: './ta-custom-card.component.html',
+  styleUrls: ['./ta-custom-card.component.scss'],
   animations: [card_modal_animation('showHideCardBody')]
 })
-export class TaModalCardComponent {
+export class TaCustomCardComponent {
 
-  @Input() hasCounter: number;
   @Input() cardName: string = null;
+  @Input() hasCounter: number;
   @Input() hasArrow: boolean = true;
-  
-  @Input() headerSvg: string = null;
-  @Input() actionSvg: string = null;
+  @Input() hasHeaderSvg: string = null;
+  @Input() hasActionSvg: string = null;
   @Input() isCardOpen: boolean = false;  // if has data, set on true
 
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
