@@ -1,11 +1,9 @@
 import {
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output,
   Self,
   ViewChild,
 } from '@angular/core';
@@ -42,6 +40,8 @@ export class TaInputAddressComponent
   public waitValidation: boolean = false;
   public numberOfSpaces: number = 0;
 
+  public activeAddress: Address = null;
+
   constructor(
     @Self() public superControl: NgControl,
     private inputService: TaInputService,
@@ -49,20 +49,27 @@ export class TaInputAddressComponent
   ) {
     this.superControl.valueAccessor = this;
   }
-  
+
   ngOnInit(): void {
     this.inputService.inputFieldMarkedInvalid$
-    .pipe(untilDestroyed(this))
-    .subscribe((value) => {
-      if(value) {
-        this.waitValidation = true;
-      }
-    });
+      .pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.waitValidation = true;
+        }
+      });
   }
 
   public handleAddressChange(address: Address) {
-    this.inputService.handleAddress(this.sharedService.selectAddress(null, address));
-    this.getSuperControl.setValue(this.sharedService.selectAddress(null, address).address);
+    this.activeAddress = this.sharedService.selectAddress(null, address);
+    this.getSuperControl.setErrors(null);
+
+    this.inputService.handleAddress(
+      this.sharedService.selectAddress(null, address)
+    );
+    this.getSuperControl.setValue(
+      this.sharedService.selectAddress(null, address).address
+    );
   }
 
   public options = {
@@ -81,7 +88,13 @@ export class TaInputAddressComponent
     this.onChange = fn;
   }
 
-  public onChange(event: any): void {}
+  public onChange(event: any): void {
+     // Validate google address
+     if (!this.activeAddress && !this.getSuperControl.errors) {
+       console.log("SETUJ ERROR")
+      this.getSuperControl.setErrors({ incorrect_address: true });
+    }
+  }
 
   public registerOnTouched(fn: any): void {}
 
@@ -95,14 +108,22 @@ export class TaInputAddressComponent
       this.waitValidation = true;
     }
     this.focusInput = true;
+
+    if (!this.activeAddress && this.waitValidation) {
+      this.getSuperControl.setErrors({ incorrect_address: true });
+    }
   }
 
   public onBlur(): void {
     this.focusInput = false;
 
+    if (!this.activeAddress) {
+      this.getSuperControl.setErrors({ incorrect_address: true });
+    }
+
     // Required Field
     if (this.inputConfig.isRequired) {
-      if (!this.focusInput && this.getSuperControl.invalid) {
+      if (!this.focusInput && this.getSuperControl.errors) {
         this.waitValidation = true;
       } else {
         this.waitValidation = false;
@@ -111,7 +132,7 @@ export class TaInputAddressComponent
 
     // No Required Field
     else {
-      if (this.getSuperControl.value && this.getSuperControl.invalid) {
+      if (this.getSuperControl.value && this.getSuperControl.errors) {
         this.waitValidation = true;
       } else {
         this.waitValidation = false;
@@ -126,6 +147,8 @@ export class TaInputAddressComponent
     this.inputConfig.isRequired && this.getSuperControl.errors
       ? (this.waitValidation = true)
       : (this.waitValidation = false);
+    this.activeAddress = null;
+    this.getSuperControl.setErrors(null);
   }
 
   public onBackspace(event): void {
@@ -136,10 +159,12 @@ export class TaInputAddressComponent
         this.waitValidation = false;
       }
     }
+    if (this.activeAddress !== this.getSuperControl.value) {
+      this.getSuperControl.setErrors({ incorrect_address: true });
+    }
   }
 
   public manipulateWithInput(event: KeyboardEvent): boolean {
-    
     // Disable first character to be space
     if (
       !this.input.nativeElement.value &&
@@ -148,7 +173,6 @@ export class TaInputAddressComponent
       event.preventDefault();
       return false;
     }
-
 
     if (['address'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[A-Za-z0-9 .&/,_-]*$/.test(String.fromCharCode(event.charCode))) {

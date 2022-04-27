@@ -32,6 +32,9 @@ export class InputErrorPipe implements PipeTransform {
       if(value['pattern'] && inputName.toLocaleLowerCase() === 'ein') {
         errorMessageValue = `EIN as XX-XXXXXXX`
       }
+      if(value['incorrect_address'] && inputName.toLocaleLowerCase() === 'address') {
+        errorMessageValue = `Incorrect address`
+      }
     }
     return errorMessageValue
   }

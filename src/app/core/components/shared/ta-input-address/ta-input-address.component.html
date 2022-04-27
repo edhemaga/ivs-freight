@@ -2,83 +2,68 @@
   class="input-custom-group"
   [ngClass]="{
     'hide-placeholder-icon': getSuperControl.value,
-    'valid': getSuperControl.value && getSuperControl.valid && !focusInput,
-    'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput,
+    'valid': getSuperControl.value && !getSuperControl.errors && !focusInput,
+    'invalid': getSuperControl.value && getSuperControl.errors && !focusInput,
     'invalid-empty-required':
       inputConfig.isRequired &&
       !getSuperControl.value &&
-      getSuperControl.invalid &&
+      getSuperControl.errors &&
       !focusInput,
     'invalid-empty-required-waitValidation':
       inputConfig.isRequired &&
       !getSuperControl.value &&
-      getSuperControl.invalid &&
+      getSuperControl.errors &&
       waitValidation &&
       !focusInput,
     'invalid-empty-focus-required':
       inputConfig.isRequired &&
       !getSuperControl.value &&
-      getSuperControl.invalid &&
-      focusInput,
-    'valid-dropdown':
-      getSuperControl.value &&
-      getSuperControl.valid &&
-      !focusInput &&
-      inputConfig.isRequired
+      getSuperControl.errors &&
+      focusInput
   }"
 >
   <!-- Input Clear -->
   <div
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
-      disabled: inputConfig.isDisabled,
+      'disabled': inputConfig.isDisabled,
       'focus-typing': getSuperControl.value && focusInput,
       'valid-focus-in':
-        getSuperControl.value &&
-        getSuperControl.valid &&
+        activeAddress?.address === getSuperControl.value  &&
+        !getSuperControl.errors &&
         waitValidation &&
         focusInput,
       'invalid-focus-in':
         !inputConfig.isRequired &&
         getSuperControl.value &&
-        getSuperControl.invalid &&
+        getSuperControl.errors &&
         waitValidation &&
         focusInput,
       'invalid-focus-out':
         !inputConfig.isRequired &&
         getSuperControl.value &&
-        getSuperControl.invalid &&
+        getSuperControl.errors &&
         waitValidation &&
         !focusInput &&
         !inputConfig.placeholderIcon,
       'invalid-focus-in-required':
         inputConfig.isRequired &&
         getSuperControl.value &&
-        getSuperControl.invalid &&
+        getSuperControl.errors &&
         waitValidation &&
         focusInput,
       'invalid-focus-in-empty-required':
         inputConfig.isRequired &&
         !getSuperControl.value &&
-        getSuperControl.invalid &&
+        getSuperControl.errors &&
         waitValidation &&
         focusInput &&
-        !inputConfig.placeholderIcon &&
-        !inputConfig.isDropdown,
-      'second-position-hover':
-        getSuperControl.valid &&
-        inputConfig.type === 'password' &&
-        !focusInput,
+        !inputConfig.placeholderIcon,
       'invalid-submit':
         inputConfig.isRequired &&
-        getSuperControl.invalid &&
+        getSuperControl.errors &&
         getSuperControl.touched &&
-        !inputConfig.placeholderIcon &&
-        !inputConfig.isDropdown,
-      'dropdown-position':
-        getSuperControl.value &&
-        inputConfig.isDropdown &&
-        !inputConfig.isDisabled
+        !inputConfig.placeholderIcon
     }"
     [appTooltip]="'Clear'"
     [position]="'top-middle'"
@@ -102,7 +87,7 @@
       valid:
         inputConfig.isRequired &&
         getSuperControl.value &&
-        getSuperControl.valid &&
+        !getSuperControl.errors &&
         !focusInput &&
         !inputConfig.isDisabled &&
         !inputConfig.placeholderIcon
@@ -123,19 +108,10 @@
     [ngClass]="{
       'disabled': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
-      'valid-focus-in':
-        getSuperControl.value &&
-        getSuperControl.valid &&
-        waitValidation &&
-        focusInput,
+      'valid-focus-in': activeAddress && activeAddress?.address === getSuperControl.value && focusInput,
       'invalid-focus-in':
         getSuperControl.value &&
-        getSuperControl.invalid &&
-        waitValidation &&
-        focusInput,
-      'invalid-focus-in-password':
-        getSuperControl.value &&
-        getSuperControl.invalid &&
+        getSuperControl.errors &&
         waitValidation &&
         focusInput
     }"
@@ -158,28 +134,28 @@
       'valid-required':
         inputConfig.isRequired &&
         getSuperControl.value &&
-        getSuperControl.valid &&
+        !getSuperControl.errors &&
         !focusInput,
       'invalid-required-empty':
         inputConfig.isRequired &&
         !getSuperControl.value &&
-        getSuperControl.invalid &&
+        getSuperControl.errors &&
         waitValidation &&
         !focusInput,
       'invalid-required-empty-focus':
         inputConfig.isRequired &&
         !getSuperControl.value &&
-        getSuperControl.invalid &&
+        getSuperControl.errors &&
         waitValidation &&
         focusInput,
       'invalid-required-filled':
         inputConfig.isRequired &&
         getSuperControl.value &&
-        getSuperControl.invalid &&
+        getSuperControl.errors &&
         !focusInput,
       'invalid-submit':
         inputConfig.isRequired &&
-        getSuperControl.invalid &&
+        getSuperControl.errors &&
         getSuperControl.touched
     }"
     [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg:'common'"
@@ -195,10 +171,10 @@
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'up-label': getSuperControl.value || focusInput,
       'valid-focus-out':
-        getSuperControl.value && getSuperControl.valid && !focusInput,
+        getSuperControl.value && !getSuperControl.errors && !focusInput,
       'invalid-focus-out':
         getSuperControl.value &&
-        getSuperControl.invalid &&
+        getSuperControl.errors &&
         waitValidation &&
         !focusInput
     }"
@@ -213,31 +189,26 @@
       'invalid-focus-out':
         inputConfig.isRequired &&
         getSuperControl.value &&
-        getSuperControl.invalid &&
+        (getSuperControl.errors || getSuperControl.invalid) &&
         waitValidation &&
         !focusInput,
       'invalid-empty-focus-out-required':
         inputConfig.isRequired &&
         !getSuperControl.value &&
-        getSuperControl.invalid &&
+        (getSuperControl.errors || getSuperControl.invalid) &&
         waitValidation,
       'invalid-focus-in':
         inputConfig.isRequired &&
         getSuperControl.value &&
-        getSuperControl.invalid &&
-        focusInput &&
-        waitValidation,
-      'invalid-dropdown-focus-in':
-        inputConfig.isRequired &&
-        getSuperControl.invalid &&
+        (getSuperControl.errors || getSuperControl.invalid) &&
         focusInput &&
         waitValidation,
       'invalid-submit':
         inputConfig.isRequired &&
-        getSuperControl.invalid &&
+        (getSuperControl.errors || getSuperControl.invalid)  &&
         getSuperControl.touched
     }"
   >
-    {{ getSuperControl.errors | inputError }}
+    {{ getSuperControl.errors | inputError:inputConfig.name }}
   </span>
 </div>
