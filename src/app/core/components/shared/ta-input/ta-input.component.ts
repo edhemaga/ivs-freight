@@ -48,7 +48,6 @@ export class TaInputComponent
     private changeDetection: ChangeDetectorRef,
     private inputService: TaInputService,
     private calendarService: CalendarScrollService
-    
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -77,6 +76,14 @@ export class TaInputComponent
           }
         });
     }
+
+    this.inputService.inputFieldMarkedInvalid$
+      .pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if(value) {
+          this.waitValidation = true;
+        }
+      });
   }
 
   get getSuperControl() {
@@ -252,7 +259,7 @@ export class TaInputComponent
 
   public manipulateWithInput(event: KeyboardEvent): boolean {
     // Input Validation
-    if(this.focusInput && this.getSuperControl.valid) {
+    if (this.focusInput && this.getSuperControl.valid) {
       this.waitValidation = true;
     }
     // Disable first character to be space
