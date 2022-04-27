@@ -28,11 +28,10 @@
   }"
 >
   <!-- Input Clear -->
-  <svg-icon
-    src="assets/svg/ic_x.svg"
+  <div
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
-      'disabled': inputConfig.isDisabled,
+      disabled: inputConfig.isDisabled,
       'focus-typing': getSuperControl.value && focusInput,
       'valid-focus-in':
         getSuperControl.value &&
@@ -64,18 +63,22 @@
         getSuperControl.invalid &&
         waitValidation &&
         focusInput &&
-        !inputConfig.placeholderIcon,
-      'invalid-focus-out-required':
-        inputConfig.isRequired &&
-        getSuperControl.invalid &&
-        waitValidation &&
-        !focusInput &&
-        !inputConfig.placeholderIcon,
+        !inputConfig.placeholderIcon &&
+        !inputConfig.isDropdown,
+      'second-position-hover':
+        getSuperControl.valid &&
+        inputConfig.type === 'password' &&
+        !focusInput,
       'invalid-submit':
         inputConfig.isRequired &&
         getSuperControl.invalid &&
         getSuperControl.touched &&
-        !inputConfig.placeholderIcon
+        !inputConfig.placeholderIcon &&
+        !inputConfig.isDropdown,
+      'dropdown-position':
+        getSuperControl.value &&
+        inputConfig.isDropdown &&
+        !inputConfig.isDisabled
     }"
     [appTooltip]="'Clear'"
     [position]="'top-middle'"
@@ -86,9 +89,11 @@
     [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
     [fontWeight]="'bold'"
     [fontSize]="'11px'"
-    [customPosition]="-7"
+    [customPosition]="-6"
     (click)="clearInput()"
-  ></svg-icon>
+  >
+    <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
+  </div>
 
   <!-- Input Required Check -->
   <svg-icon

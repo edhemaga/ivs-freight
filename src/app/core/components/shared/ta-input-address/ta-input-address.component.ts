@@ -4,11 +4,13 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
+  OnInit,
   Output,
   Self,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { ITaInput } from '../ta-input/ta-input.config';
 import { TaInputService } from '../ta-input/ta-input.service';
@@ -31,7 +33,7 @@ export interface Address {
   styleUrls: ['../ta-input/ta-input.component.scss'],
 })
 export class TaInputAddressComponent
-  implements  OnDestroy, ControlValueAccessor
+  implements OnInit, OnDestroy, ControlValueAccessor
 {
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
@@ -46,6 +48,16 @@ export class TaInputAddressComponent
     private sharedService: SharedService
   ) {
     this.superControl.valueAccessor = this;
+  }
+  
+  ngOnInit(): void {
+    this.inputService.inputFieldMarkedInvalid$
+    .pipe(untilDestroyed(this))
+    .subscribe((value) => {
+      if(value) {
+        this.waitValidation = true;
+      }
+    });
   }
 
   public handleAddressChange(address: Address) {
