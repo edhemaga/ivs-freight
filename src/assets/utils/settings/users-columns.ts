@@ -1,4 +1,4 @@
-export function getUsersColumnDefinition() {
+export function getUsersColumnDefinition() {  
   return [
     {
       ngTemplate: 'user-checkbox',

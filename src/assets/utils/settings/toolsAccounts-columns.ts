@@ -1,4 +1,4 @@
-export function getToolsAccountsColumnDefinition() {
+export function getToolsAccountsColumnDefinition() {  
   return [
     {
       ngTemplate: 'checkbox',

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
 
 @Component({
@@ -8,6 +10,8 @@ import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
   styleUrls: ['./accident-table.component.scss'],
 })
 export class AccidentTableComponent implements OnInit {
+  private destroy$: Subject<void> = new Subject<void>();
+  
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -15,12 +19,22 @@ export class AccidentTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService) {}
+  constructor(private customModalService: CustomModalService,  private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
-
     this.getAccidentData();
+
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.resetColumns = response;
+
+          this.sendAccidentData();
+        }
+      });
   }
 
   public initTableOptions(): void {

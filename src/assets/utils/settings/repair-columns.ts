@@ -1,5 +1,5 @@
 // REPAIRS TRUCK COLUMN DEFINITION
-export function getRepairTruckColumnDefinition() {
+export function getRepairTruckColumnDefinition() {  
   return [
     {
       ngTemplate: 'checkbox',

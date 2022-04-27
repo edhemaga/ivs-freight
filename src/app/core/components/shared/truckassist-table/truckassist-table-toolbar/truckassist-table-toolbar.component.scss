@@ -39,15 +39,15 @@
       .data-count,
       .tab-title {
         font-size: 14px;
-        font-weight: bold;
-        color: #b7b7b7;
+        font-weight: 800;
+        color: #919191;
       }
 
       .data-count {
         height: 24px;
         min-width: 24px;
         border-radius: 2px;
-        background: #f3f3f3;
+        background: #F3F3F3;
         display: flex;
         padding: 3px 4px;
         justify-content: center;
@@ -75,21 +75,33 @@
     margin-right: 6px;
 
     .mode {
+      cursor: pointer;
       width: fit-content;
       height: 28px;
       border-radius: 2px;
       padding: 5px 8px;
-      font-weight: bold;
+      font-weight: 800;
       font-size: 14px;
-      color: #dadada;
+      color: #B7B7B7;
       display: flex;
       justify-content: center;
       align-items: center;
+
+      &:hover{
+        /* background: #F3F3F3 !important; */
+        color: #6C6C6C !important;
+        transition: 0.25s !important;
+      }
     }
 
     .mode-active {
       background: #f3f3f3 !important;
-      color: #91a4c7 !important;
+      color: #919191 !important;
+
+      &:hover{
+        color: #6C6C6C !important;
+        transition: 0.25s !important;
+      }
     }
   }
 
@@ -167,17 +179,9 @@
 .tab-inactive {
   &:hover {
     .tab {
-      background: #f7f7f7;
-      transition: 0.25s;
-
-      .data-count {
-        background: #eeeeee;
-        transition: 0.25s;
-      }
-
       .data-count,
       .tab-title {
-        color: #919191;
+        color: #6C6C6C;
         transition: 0.25s;
       }
     }
@@ -185,17 +189,17 @@
 }
 
 .tab-active {
-  background: #91a4c7 !important;
+  background: #919191 !important;
   transition: 0.25s;
 
   .data-count,
   .tab-title {
-    color: white !important;
+    color: #FFFFFF !important;
     transition: 0.25s;
   }
 
   .data-count {
-    background: #bbc7dd !important;
+    background: #AAAAAA !important;
     transition: 0.25s;
   }
 }

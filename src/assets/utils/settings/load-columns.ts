@@ -1,5 +1,5 @@
 // LOAD COLUMN DEFINITION
-export function getLoadColumnDefinition() {
+export function getLoadColumnDefinition() { 
   return [
     {
       ngTemplate: 'checkbox',

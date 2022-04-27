@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -9,6 +11,8 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   styleUrls: ['./trailer-table.component.scss'],
 })
 export class TrailerTableComponent implements OnInit {
+  private destroy$: Subject<void> = new Subject<void>();
+  
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -16,12 +20,22 @@ export class TrailerTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private modalService: ModalService) {}
+  constructor(private modalService: ModalService,  private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
-
     this.getTrucksData();
+
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.resetColumns = response;
+
+          this.sendTrailerData();
+        }
+      });
   }
 
   public initTableOptions(): void {
