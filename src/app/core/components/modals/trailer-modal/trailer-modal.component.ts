@@ -87,7 +87,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       emptyWeight: [null],
       mileage: [null],
       volume: [null],
-      insurancePolicy: [null],
+      insurancePolicy: [null, [Validators.minLength(8), Validators.maxLength(14)]],
     });
   }
 

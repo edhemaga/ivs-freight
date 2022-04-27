@@ -25,6 +25,10 @@
     }
   }
 
+  &.datetimeclass {
+    right: 8px;
+  }
+
   &.disabled-empty {
     svg {
       path {

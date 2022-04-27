@@ -27,23 +27,12 @@
     transition: all 0.3s ease-in-out;
   }
 
-  &:hover > .input-clear-x {
-    svg {
-      transform: scale(1) !important;
-    }
-  }
-
-  &.datetimeclass {
-    right: 28px !important;
-  }
-
   &.disabled {
     display: none !important;
   }
 
   &.focus-typing {
     display: block;
-    transition: all 0.3s ease-in-out;
     .input-clear-x {
       svg {
         path {
@@ -51,14 +40,12 @@
         }
       }
     }
-
     &:hover {
       background-color: #eeeeee;
     }
   }
 
   &.valid-focus-in {
-    transition: all 0.3s ease-in-out;
     background-color: #bdcaeb;
     display: block;
     .input-clear-x {
@@ -68,7 +55,6 @@
         }
       }
     }
-
     &:hover {
       background-color: #f5fafc;
     }
@@ -76,7 +62,6 @@
 
   &.invalid-focus-in,
   &.invalid-focus-in-required {
-    transition: all 0.3s ease-in-out;
     background-color: #ffcdd2;
     display: block;
     .input-clear-x {
@@ -86,7 +71,6 @@
         }
       }
     }
-
     &:hover {
       background-color: #fffafa;
     }
@@ -97,8 +81,7 @@
   &.invalid-focus-in-empty-required,
   &.invalid-submit {
     background-color: transparent;
-    transition: all 0.3s ease-in-out;
-    display: inline-block;
+    display: block;
     .input-clear-x {
       svg {
         path {
@@ -106,7 +89,6 @@
         }
       }
     }
-
     &:hover {
       transform: scale(1) !important;
     }
@@ -119,7 +101,11 @@
 
   // If dropdown
   &.dropdown-position {
-    right: 22px;
+    right: 23px;
+  }
+
+  &.datetimeclass {
+    right: 26px;
   }
 
   &.password-eye {

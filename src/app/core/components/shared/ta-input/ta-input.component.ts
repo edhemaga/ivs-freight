@@ -305,6 +305,19 @@ export class TaInputComponent
     }
 
     if (
+      ['insurance policy'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
+      if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (
       ['address unit', 'truck number', 'trailer number'].includes(
         this.inputConfig.name.toLowerCase()
       )
