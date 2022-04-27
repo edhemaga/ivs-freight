@@ -30,9 +30,7 @@ export interface Address {
   templateUrl: './ta-input-address.component.html',
   styleUrls: ['../ta-input/ta-input.component.scss'],
 })
-export class TaInputAddressComponent
-  implements OnInit, OnDestroy, ControlValueAccessor
-{
+export class TaInputAddressComponent implements OnInit, OnDestroy, ControlValueAccessor {
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
 
@@ -41,6 +39,7 @@ export class TaInputAddressComponent
   public numberOfSpaces: number = 0;
 
   public activeAddress: Address = null;
+  public invalidAddress: boolean = false;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -58,15 +57,25 @@ export class TaInputAddressComponent
           this.waitValidation = true;
         }
       });
+
+      if(this.activeAddress) {
+        this.getSuperControl.valueChanges.pipe(untilDestroyed(this)).subscribe(value => {
+          if(value !== this.activeAddress) {
+            this.invalidAddress = true;
+          }
+        })
+      }
+     
   }
 
   public handleAddressChange(address: Address) {
     this.activeAddress = this.sharedService.selectAddress(null, address);
-    this.getSuperControl.setErrors(null);
+    this.invalidAddress = false;
 
     this.inputService.handleAddress(
       this.sharedService.selectAddress(null, address)
     );
+
     this.getSuperControl.setValue(
       this.sharedService.selectAddress(null, address).address
     );
@@ -88,13 +97,7 @@ export class TaInputAddressComponent
     this.onChange = fn;
   }
 
-  public onChange(event: any): void {
-     // Validate google address
-     if (!this.activeAddress && !this.getSuperControl.errors) {
-       console.log("SETUJ ERROR")
-      this.getSuperControl.setErrors({ incorrect_address: true });
-    }
-  }
+  public onChange(event: any): void {}
 
   public registerOnTouched(fn: any): void {}
 
@@ -110,7 +113,7 @@ export class TaInputAddressComponent
     this.focusInput = true;
 
     if (!this.activeAddress && this.waitValidation) {
-      this.getSuperControl.setErrors({ incorrect_address: true });
+      this.invalidAddress = true;
     }
   }
 
@@ -118,7 +121,13 @@ export class TaInputAddressComponent
     this.focusInput = false;
 
     if (!this.activeAddress) {
-      this.getSuperControl.setErrors({ incorrect_address: true });
+      this.invalidAddress = true;
+      console.log("INVALID ADDRESS: ", this.invalidAddress)
+      console.log("CONTROL REQUIRED:  ", this.inputConfig.isRequired)
+      console.log("CONTROL VALUE:  ", this.getSuperControl.value)
+      console.log("CONTROL INVALID:  ", this.getSuperControl.invalid)
+      console.log("WAIT VALIDATION:  ", this.waitValidation)
+      console.log("FOCUS OUT: ", !this.focusInput)
     }
 
     // Required Field
@@ -148,7 +157,7 @@ export class TaInputAddressComponent
       ? (this.waitValidation = true)
       : (this.waitValidation = false);
     this.activeAddress = null;
-    this.getSuperControl.setErrors(null);
+    this.invalidAddress = false;
   }
 
   public onBackspace(event): void {
@@ -160,7 +169,7 @@ export class TaInputAddressComponent
       }
     }
     if (this.activeAddress !== this.getSuperControl.value) {
-      this.getSuperControl.setErrors({ incorrect_address: true });
+      this.invalidAddress = true;
     }
   }
 
