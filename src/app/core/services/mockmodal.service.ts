@@ -374,20 +374,107 @@ export class MockModalService {
     {
       id: 1,
       name: 'Bank Of America',
-      svg: 'ic_bankAccount_dummy.svg',
+      svg: 'ic_bank_of_america.svg',
       folder: 'common',
+      subFolder: 'banks'
     },
     {
       id: 2,
-      name: 'Bank Of Serbia',
-      svg: 'ic_bankAccount_dummy.svg',
+      name: 'BB&T',
+      svg: 'ic_bank_bbt.svg',
       folder: 'common',
+      subFolder: 'banks'
     },
     {
-      id: 2,
-      name: 'Unicredit Bank',
-      svg: '',
+      id: 3,
+      name: 'BMO Harris',
+      svg: 'ic_bank_bmo_harris.svg',
       folder: 'common',
+      subFolder: 'banks'
+    },
+    {
+      id: 4,
+      name: 'CHASE',
+      svg: 'ic_bank_chase.svg',
+      folder: 'common',
+      subFolder: 'banks'
+    },
+    {
+      id: 5,
+      name: 'CHIME',
+      svg: 'ic_bank_chime.svg',
+      folder: 'common',
+      subFolder: 'banks'
+    },
+    {
+      id: 6,
+      name: 'Citi Bank',
+      svg: 'ic_bank_citi.svg',
+      folder: 'common',
+      subFolder: 'banks'
+    },
+    {
+      id: 7,
+      name: 'Fifth Third',
+      svg: 'ic_bank_fifth_third.svg',
+      folder: 'common',
+      subFolder: 'banks'
+    },
+    {
+      id: 8,
+      name: 'MB Financial',
+      svg: 'ic_bank_mb_financial.svg',
+      folder: 'common',
+      subFolder: 'banks'
+    },
+    {
+      id: 9,
+      name: 'NAVY FEDERAL',
+      svg: 'ic_bank_navi_federal.svg',
+      folder: 'common',
+      subFolder: 'banks'
+    },
+    {
+      id: 10,
+      name: 'PNC BANK',
+      svg: 'ic_bank_pnc.svg',
+      folder: 'common',
+      subFolder: 'banks'
+    },
+    {
+      id: 11,
+      name: 'Regions',
+      svg: 'ic_bank_regions.svg',
+      folder: 'common',
+      subFolder: 'banks'
+    },
+    {
+      id: 12,
+      name: 'TCF Bank',
+      svg: 'ic_bank_tcf.svg',
+      folder: 'common',
+      subFolder: 'banks'
+    },
+    {
+      id: 13,
+      name: 'US Bank',
+      svg: 'ic_bank_us.svg',
+      folder: 'common',
+      subFolder: 'banks'
+    },
+    {
+      id: 14,
+      name: 'Wells Fargo',
+      svg: 'ic_bank_wells_fargo.svg',
+      folder: 'common',
+      subFolder: 'banks'
+    },
+    {
+      id: 15,
+      name: 'Meta Bank',
+      svg: 'ic_bank_meta.svg',
+      folder: 'common',
+      subFolder: 'banks'
     },
   ];
 

@@ -31,6 +31,9 @@ export class TaInputService {
 
   public googleAddressSubject: BehaviorSubject<Address> =
     new BehaviorSubject<Address>(null);
+  
+  public isInputFieldMarkedInvalidSubject: BehaviorSubject<boolean> =
+  new BehaviorSubject<boolean>(false); 
 
   constructor(
     public notificationService: NotificationService,
@@ -43,6 +46,10 @@ export class TaInputService {
 
   public get getGoogleAddress$() {
     return this.googleAddressSubject.asObservable();
+  }
+
+  public get inputFieldMarkedInvalid$() {
+    return this.isInputFieldMarkedInvalidSubject.asObservable();
   }
 
   /**
@@ -64,6 +71,7 @@ export class TaInputService {
         'Please fill all required fields.',
         'Warning:'
       );
+      this.isInputFieldMarkedInvalidSubject.next(true);
       this.spinnerService.show(false);
       return false;
     } else {

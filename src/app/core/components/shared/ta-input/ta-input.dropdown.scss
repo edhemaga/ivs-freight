@@ -2,8 +2,7 @@
 .input-dropdown-confirm {
   position: absolute;
   right: 26px;
-  top: 16%;
-  transform: translate(-6%, 0%);
+  top: 4px;
   width: 18px;
   height: 18px;
   border-radius: 1px;
@@ -11,30 +10,26 @@
   display: none;
   transition: all 0.3s ease-in-out;
 
-  svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-49.5%, -50%);
-    transition: all 0.3s ease-in-out;
-    path {
-      fill: #6c6c6c;
+  .input-dropdow-confirm-svg {
+    position: relative;
+    bottom: 4px;
+    left: 2px;
+    svg {
+      path {
+        fill: #6c6c6c;
+      }
     }
   }
 
   &:hover {
-    transition: all 0.3s ease-in-out;
-    right: 26px !important;
-    width: 22px;
-    height: 22px;
+    transform: scale(1.2);
     background-color: #eeeeee;
-    transform: translate(-6%, -10%) !important;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
   }
 
   &.visible {
     display: inline-block;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
   }
 }
 //-------------------- Input Dropdown arrow -----------------

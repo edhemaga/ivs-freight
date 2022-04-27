@@ -14,7 +14,7 @@ export class InputErrorPipe implements PipeTransform {
       if(value['maxlength']) {
         errorMessageValue = `Maximum possible characters is ${value.maxlength.requiredLength}`
       }
-      if (value['invalid']) {
+      if (value['invalid'] || inputName.toLocaleLowerCase() === 'address') {
         errorMessageValue = 'Invalid';
       }
       if (value['email']) {

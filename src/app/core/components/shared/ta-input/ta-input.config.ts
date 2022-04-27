@@ -11,7 +11,7 @@ export interface ITaInput {
     minLength?:number;
     maxLength?:number;
     mask?: string;
-    textTransform?: string | 'capitalize' | 'upper' | 'lower';
+    textTransform?: string | 'capitalize' | 'uppercase' | 'lowercase';
     customClass?: string;   // 'input-big' -> height: 32px
     isDropdown?: boolean;
     dropdownWidthClass?: string;  // Look in ta-input-drodown.scss
