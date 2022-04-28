@@ -1,8 +1,14 @@
 <div class="truck-details-card">
   <div class="truck-card-header" [ngClass]="{ 'card-mb': !isCardOpen }" (click)="onCardOpen()">
     <div class="truck-card-header-leftSide">
-      <app-ta-counter *ngIf="cardCount" [count]="cardCount" [countColor]="'#919191'" [countBackground]="'#F7F7F7'"
-        [countHeight]="'24px'" [countWidth]="'24px'"></app-ta-counter>
+      <app-ta-counter 
+      *ngIf="cardCount" 
+      [count]="cardCount" 
+      [countColor]="'#919191'" 
+      [countBackground]="'#F7F7F7'"
+      [countHeight]="'24px'" 
+      [countWidth]="'24px'">
+    </app-ta-counter>
       <p class="truck-card-header-name" [ngClass]="{ 'header-name-ml': cardCount }">
         {{ cardName }}  <span class="icon"><svg-icon *ngIf="cardImg" [src]="cardImg"></svg-icon></span> 
       </p>
@@ -21,11 +27,11 @@
         <div class="assignTo">
           <div class="assignTo-item first">
             <svg-icon class="assignTo-vehicle" src="assets/svg/common/trailer.svg"></svg-icon>
-            <p class="assignTo-value">12345</p>
+            <p class="assignTo-value">{{data.trailer}}</p>
           </div>
           <div class="assignTo-item">
             <svg-icon class="assignTo-vehicle" src="assets/svg/common/user-image.svg"></svg-icon>
-            <p class="assignTo-value">Angelo Trotter</p>
+            <p class="assignTo-value">{{data.driver}}</p>
           </div>
         </div>
       </div>
@@ -34,35 +40,35 @@
         <div class="common-template">
           <div class="common-template-item">
             <div class="common-template-item-name">Gross Weight</div>
-            <div class="common-template-item-value">G-60,001-61,000 ibs</div>
+            <div class="common-template-item-value">data.gross</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Starting Mileage</div>
-            <div class="common-template-item-value">237,456.3 mi</div>
+            <div class="common-template-item-value">{{data.startMilage}}</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Empty Weight</div>
-            <div class="common-template-item-value">18,360 ibs</div>
+            <div class="common-template-item-value">{{data.emptyWei}}</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Engine Type</div>
-            <div class="common-template-item-value">Detroid Diesel 60 12.7L</div>
+            <div class="common-template-item-value">{{data.engineType}}</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Axles</div>
-            <div class="common-template-item-value">3</div>
+            <div class="common-template-item-value">{{data.axles}}</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Tire size</div>
-            <div class="common-template-item-value">295-74-225</div>
+            <div class="common-template-item-value">{{data.tireSize}}</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">IPASS/EZPASS</div>
-            <div class="common-template-item-value">13330000123453</div>
+            <div class="common-template-item-value">{{data.ipass_ez}}</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Insurance Policy</div>
-            <div class="common-template-item-value">123B32894</div>
+            <div class="common-template-item-value">{{data.ins_policy}}</div>
           </div>
         </div>
       </div>
@@ -72,11 +78,11 @@
         <div class="common-template">
           <div class="common-template-item">
             <div class="common-template-item-name">Company</div>
-            <div class="common-template-item-value size18">KSKA FREIGHT, INC</div>
+            <div class="common-template-item-value size18">{{data.company}}</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Commision</div>
-            <div class="common-template-item-value size18">10.0%</div>
+            <div class="common-template-item-value size18">{{data.commision}}</div>
           </div>
          
         </div>
@@ -101,7 +107,7 @@
               <svg-icon src="assets/svg/common/mileage.svg"></svg-icon>
               <div class="common-template-item-name">Mileage</div>
             </div>
-            <div class="common-template-item-value">300,456.3 mi</div>
+            <div class="common-template-item-value">{{data.mileage}}</div>
           </div>
 
           <div class="common-template-item fuel-item">
@@ -109,7 +115,7 @@
               <svg-icon src="assets/svg/common/fuel.svg"></svg-icon>
               <div class="common-template-item-name">Fuel Cost</div>
             </div>
-            <div class="common-template-item-value">$190,221.48</div>
+            <div class="common-template-item-value">{{data.fuel_cost}}</div>
           </div>
           </div>
 
@@ -134,7 +140,7 @@
               <svg-icon src="assets/svg/common/round_yellow.svg"></svg-icon>
               <div class="common-template-item-name">Miles per galon</div>
             </div>
-            <div class="common-template-item-value">5.75 mi</div>
+            <div class="common-template-item-value">{{data.milesPerGalon}}</div>
           </div>
 
           <div class="common-template-item fuel-item">
@@ -142,7 +148,7 @@
               <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
               <div class="common-template-item-name">Cost per Gallon</div>
             </div>
-            <div class="common-template-item-value">$3.85</div>
+            <div class="common-template-item-value">{{data.costPerGalon}}</div>
           </div>
           </div>
            <div id="chart">
@@ -181,7 +187,7 @@
               <svg-icon src="assets/svg/common/round_blue_light.svg"></svg-icon>
               <div class="common-template-item-name">Miles</div>
             </div>
-            <div class="common-template-item-value">150,257.7 mi</div>
+            <div class="common-template-item-value">{{data.miles}}</div>
           </div>
 
           <div class="common-template-item fuel-item">
@@ -189,7 +195,7 @@
               <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
               <div class="common-template-item-name">Revenue</div>
             </div>
-            <div class="common-template-item-value">$390,568.85</div>
+            <div class="common-template-item-value">{{data.revenue}}</div>
           </div>
           </div>
           <div id="chart">
@@ -221,15 +227,15 @@
              <div class="truck-card-line"></div>
 
              <div class="owner-history-body">
-                  <p class="company">IVS FREIGHT, INC</p>
-                  <P class="from">04/04/04-04/04/04</P>
-                  <p class="from duration">6 y 247 d</p>
+                  <p class="company">{{data.company.name}}</p>
+                  <P class="from">{{data.company.from}}-{{data.company.to}}</P>
+                  <p class="from duration">{{data.company.duration}}</p>
              </div>
              <div class="truck-card-line"></div>
              <div class="owner-history-body owner-history-bottom">
-              <p class="company">KSKA FREIGHT, INC</p>
-              <P class="from from-bottom">04/04/04-04/04/04</P>
-              <p class="from duration">135 d</p>
+              <p class="company">{{data.company2.name}}</p>
+              <P class="from from-bottom">{{data.company2.from}}-{{data.company2.to}}</P>
+              <p class="from duration">{{data.company2.duration}}</p>
          </div>
           </div>
       </div>
@@ -237,8 +243,7 @@
       <!----------------- Note  -------------------->
       <div *ngSwitchCase="'note'">
         <div class="note">
-          <p class="note-item">How to pursue pleasure
-            rationally encounter consequences that are extremely painful.</p>
+          <p class="note-item">{{data.noteText}}</p>
         </div>
       </div>
     </div>

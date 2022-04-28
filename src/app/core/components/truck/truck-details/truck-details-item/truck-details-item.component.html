@@ -1,102 +1,172 @@
-<app-ta-details-header
- [commonHeaderText]="headerTitle"
- [detailsHeaderText]="headerTextExm">
-</app-ta-details-header>
 <div class="truck-component">
-        <div [ngSwitch]="data.template">
-            <!---------------------------- GENERAL TEMPLATE ----------------------------->
-            <div *ngSwitchCase="'general'">
-                <div class="truck-wrapper">
-                    <div class="truck-switcher">
-                        <p class="truck-switcher-name">Unit 12345</p>
-                        <div class="arrows">
-                            <svg-icon src="assets/svg/common/arrow-left.svg">
-                            </svg-icon>
-                            <svg-icon class="arrow-right" src="assets/svg/common/arrow-right.svg"></svg-icon>
-                        </div>
-                    </div>
-                    <div class="truck-container">
-                        <div class="truck-avatar">
-                            <svg-icon class="truck" src="assets/svg/common/semi-truck.svg">
-                            </svg-icon>
+    <div [ngSwitch]="data.template">
+        <!---------------------------- GENERAL TEMPLATE ----------------------------->
+        <div *ngSwitchCase="'general'">
+            <app-ta-details-header-card
+             [cardDetailsName]="'Unit 12345'"
+              [cardDetailsDate]="'08/03/20'">
+                <ng-container>
+                    <div class="truck-details-wrapper">
+                        <div class="details-header-avatar">
+                            <div class="svg-truck-wrapper">
+                                <svg-icon class="truck" src="assets/svg/common/semi-truck.svg">
+                                </svg-icon>
+                            </div>
 
                             <div class="model-name">
-                                <svg-icon class="truck-model" src="assets/svg/common/chevrolet.svg"></svg-icon>
+                                <div class="svg-wrapper">
+                                    <svg-icon class="details-header-model" src="assets/svg/common/chevrolet.svg">
+                                    </svg-icon>
+                                </div>
                                 <p>Model Name XYZ</p>
                             </div>
                         </div>
-                        <div class="truck-data">
-                            <div class="truck-data-item">
+                        <div class="details-header-data">
+                            <div class="details-header-data-item">
                                 <svg-icon src="assets/svg/common/vin.svg"></svg-icon>
-                                <p class="vin-text font">4Y1SL65848Z411439</p>
+                                <p class="vin-text">4Y1SL65848Z411439</p>
                             </div>
-                            <div class="truck-data-item second">
+                            <div class="details-header-data-item second">
                                 <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
-                                <p class="vin-text truck-data-item__text">2018</p>
-                                <svg-icon src="assets/svg/common/light-green.svg"></svg-icon>
+                                <p class="vin-text date">2018</p>
+                                <svg-icon class="light-green" src="assets/svg/common/light-green.svg"></svg-icon>
                                 <p class="vin-text">Light Green</p>
                             </div>
                         </div>
-                        <div class="border-line">
-                        </div>
-                        <div class="truck-data">
-                            <div class="truck-data-item bottom">
-                                <svg-icon src="assets/svg/common/date.svg"></svg-icon>
-                                <p class="vin-text">08/03/20</p>
+                    </div>
+                </ng-container>
+            </app-ta-details-header-card>
+
+            <div class="truck-cards">
+                <!--------Assinged to--------->
+                <app-truck-details-card 
+                [cardTemplate]="'assignedTo'" 
+                [cardName]="'Assigned To'"
+                [cardImg]="'assets/svg/common/ic_half_time.svg'"
+                [data]="data.data.assignedTo"
+                >
+                </app-truck-details-card>
+                <!--------Additonal Details--------->
+                <app-truck-details-card 
+                [cardTemplate]="'additionalInfo'" 
+                [cardName]="'Additional Details'"
+                [data]="data.data.additionalDetails"
+                >
+                </app-truck-details-card>
+                <!--------Owner--------->
+                <app-truck-details-card 
+                [cardTemplate]="'owner'" 
+                [cardName]="'Owner'"
+                [data]="data.data.owner">
+                </app-truck-details-card>
+                <!--------Perfomane--------->
+                <app-truck-details-card 
+                [cardTemplate]="'perfomance'" 
+                [cardName]="'Perfomance'"
+                [data]="data.data.performanceTrack">
+                </app-truck-details-card>
+                <!--------Fuel Consumption--------->
+                <app-truck-details-card 
+                    [cardTemplate]="'fuel'" 
+                    [cardName]="'Fuel Consumption'"
+                    [cardImg]="'assets/svg/common/arrow_top_right.svg'"
+                    [data]="data.data.fuelConsumption">
+                </app-truck-details-card>
+                <!--------Revenue--------->
+                <app-truck-details-card
+                 [cardTemplate]="'revenue'"
+                 [cardName]="'Revenue'"
+                 [cardImg]="'assets/svg/common/arrow_top_right.svg'"
+                 [data]="data.data.revenue">
+                </app-truck-details-card>
+                <!--------Revenue--------->
+                <app-truck-details-card 
+                   [cardTemplate]="'owner_history'"
+                   [cardImg]="'assets/svg/common/arrow_top_right.svg'" 
+                   [cardName]="'Owner History'"
+                   [data]="data.data.ownerHistory">
+                </app-truck-details-card>
+                <!--------Nore--------->
+                <app-truck-details-card 
+                [cardTemplate]="'note'" 
+                [cardName]="'Note'"
+                [data]="data.data.note"
+                [hasLine]="false">
+                </app-truck-details-card>
+            </div>
+        </div>
+        <!---------------------------- Registration TEMPLATE ----------------------------->
+        <div *ngSwitchCase="'registration'">
+            <div class="common-cards">
+                <app-ta-re-card
+                 [cardNameCommon]="'PR 365421'" 
+                 [cardDocumentCounter]="3" 
+                 [isCardOpen]="true">
+                    <ng-container>
+                        <div class="state-issued-container">
+                            <div class="state-issued-wrapper">
+                                <div class="state-issued-title">State</div>
+                                <p class="state-issued-title-item">KY</p>
+                            </div>
+                            <div class="state-issued-wrapper">
+                                <div class="state-issued-title">Issued</div>
+                                <p class="state-issued-title-item">04/04/04</p>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="truck-cards">
-                    <!--------Assinged to--------->
-                    <app-truck-details-card
-                     [cardTemplate]="'assignedTo'"
-                     [cardName]="'Assigned To'"
-                     [cardImg]="'assets/svg/common/ic_half_time.svg'"
-                     >
-                    </app-truck-details-card>
-                    <!--------Additonal Details--------->
-                    <app-truck-details-card 
-                    [cardTemplate]="'additionalInfo'" 
-                    [cardName]="'Additional Details'">
-                    </app-truck-details-card>
-                    <!--------Owner--------->
-                    <app-truck-details-card 
-                     [cardTemplate]="'owner'"
-                     [cardName]="'Owner'">
-                    </app-truck-details-card>
-                    <!--------Perfomane--------->
-                    <app-truck-details-card 
-                     [cardTemplate]="'perfomance'"
-                     [cardName]="'Perfomance'">
-                    </app-truck-details-card>
-                     <!--------Fuel Consumption--------->
-                     <app-truck-details-card 
-                     [cardTemplate]="'fuel'"
-                     [cardName]="'Fuel Consumption'"
-                     [cardImg]="'assets/svg/common/arrow_top_right.svg'"
-                     >
-                    </app-truck-details-card>
-                     <!--------Revenue--------->
-                     <app-truck-details-card 
-                     [cardTemplate]="'revenue'"
-                     [cardName]="'Revenue'"
-                     [cardImg]="'assets/svg/common/arrow_top_right.svg'"
-                     >
-                    </app-truck-details-card>
-                     <!--------Revenue--------->
-                     <app-truck-details-card 
-                     [cardTemplate]="'owner_history'"
-                     [cardImg]="'assets/svg/common/arrow_top_right.svg'"
-                     [cardName]="'Owner History'">
-                    </app-truck-details-card>
-                    <!--------Nore--------->
-                    <app-truck-details-card 
-                     [cardTemplate]="'note'"
-                     [cardName]="'Note'">
-                    </app-truck-details-card>
-                </div>
+                        <div class="expiration-container">
+                            <div class="expiration-wrapper">
+                                <div class="expiration-days">
+                                    <p> Exp. in <span class="days">164 days</span></p>
+                                </div>
+                            </div>
+                            <div class="expiration-wrapper">
+                                <div class="expiration-date"><p> 05/09/27</p></div>
+                            </div>
+                        </div>
+                        <div class="details-progress-container">
+                            <app-truckassist-progress-expiration [expireDate]="'05/09/23'"
+                                [startDate]="formatDate('2022-04-02T05:00:00Z')">
+                            </app-truckassist-progress-expiration>
+                        </div>
+                    </ng-container>
+                </app-ta-re-card>
             </div>
-
         </div>
+        <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
+        <div *ngSwitchCase="'fhwa-insepction'">
+            <div class="common-cards">
+                <app-ta-re-card
+                 [cardNameCommon]="'08/12/23'"
+                 [cardDocumentCounter]="3" 
+                 [isCardOpen]="true">
+                        <p class="custom-content">Custom content here</p>
+                </app-ta-re-card>
+            </div>
+        </div>
+
+        <!---------------------------- Title TEMPLATE ----------------------------->
+        <div *ngSwitchCase="'title'">
+            <div class="common-cards">
+                <app-ta-re-card 
+                [cardNameCommon]="'20344694031'" 
+                [cardDocumentCounter]="3" 
+                [isCardOpen]="true">
+                    <p class="custom-content">Custom content here</p>
+
+                </app-ta-re-card>
+            </div>
+        </div>
+        <!---------------------------- Title TEMPLATE ----------------------------->
+        <div *ngSwitchCase="'lease-purchase'">
+            <div class="common-cards">
+                <app-ta-re-card 
+                    [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
+                    [cardNameCommon]="'KSKA FREIGHT, INC'" 
+                    [isCardOpen]="true">
+                    <p class="custom-content">Custom content here</p>
+                </app-ta-re-card>
+            </div>
+        </div>
+    </div>
+
+</div>

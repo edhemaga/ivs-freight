@@ -1,3 +1,4 @@
+import { TruckassistProgressExpirationComponent } from './core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 import { DispatcherResolverService } from './core/components/dispatcher/state/dispatcher-resolver.service';
 import { DashboardResolverService } from './core/components/dashboard/state/dashboard-resolver.service';
 import { NgModule } from '@angular/core';
@@ -6,7 +7,6 @@ import { AuthGuard } from './core/guards/authentication.guard';
 import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
-import { TaReCardComponent } from './core/components/shared/ta-re-card/ta-re-card.component';
 
 const routes: Routes = [
   // Auth Routes
@@ -134,7 +134,7 @@ const routes: Routes = [
   },
   {
    path:'test',
-   component:TaReCardComponent
+   component:TruckassistProgressExpirationComponent
   },
   {
     path: "catalog",

@@ -30,7 +30,7 @@ export interface TruckInterface {
   percentage: number | null;
   doc:any;
   mileage: number | null;
-  additionData:AdditionalData
+  additionData:AdditionalData;
   registrationData:Registration[];
   fhwaData:FHWA[];
   titleData:Title[];
@@ -48,8 +48,8 @@ interface Registration {
   id?: string;
   startDate: string;
   endDate: string;
-  state: string
-  attachemts:Attachment[]
+  state: State[]
+  attachemts?:Attachment[]
 }
 interface AdditionalData{
   grossWeight:string;

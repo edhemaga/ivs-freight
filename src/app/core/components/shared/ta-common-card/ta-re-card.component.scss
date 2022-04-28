@@ -1,27 +1,50 @@
+.card-header-cmp {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 32px;
+    background-color: #ffffff;
+    border-radius: 3px;
+    padding: 0 !important;
+    .text-icon-common{
+        display: flex;
+        align-items: center;
+        .icon-common{
+            margin-left: 12px;
+            margin-right: 6px;
+            margin-top: 13px;
+        }
+        .has-svgIcon{
+            margin-left: 0  !important;
+        }
+        .card-close-title{
+            margin-top: 0 !important;
+         }
+       
+    }
+    .card-name-cmp {
+        font-size: 18px;
+        font-weight: 500;
+        color: #6c6c6c;
+        height: 22px;
+        margin-top: 13px !important;
+        margin-left: 12px !important;
+    }
+    .icon-dots{
+    svg{
+        margin-right: 7px;
+        margin-top: 13px;
+    }
+}
+}
 .card-container-cmp {
-    width: 335px;
-    height: 166px;
+    height: 134px;
     border-radius: 3px;
     background-color: #ffffff;
-    padding: 12px;
-    .card-header-cmp {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        height: 22px;
-        background-color: #ffffff;
-        margin-bottom: 12px;
-        .card-name-cmp {
-            font-size: 18px;
-            font-weight: 500;
-            color: #6c6c6c;
-        }
-    }
+
     .card-body-cmp {
         display: flex;
         flex-direction: column;
-        margin-top: 12px;
-        margin-bottom: 12px;
         background-color: #ffffff;
         .dates {
             display: flex;
@@ -46,6 +69,8 @@
         justify-content: space-between;
         background-color: #ffffff;
         height: 18px;
+        margin-left: 15px;
+        margin-right: 12px;
         svg {
             cursor: pointer;
         }
@@ -64,30 +89,20 @@
         }
     }
 }
-// Progress bar details
-.driver-details-progress-container {
-    .table-progress-cotnainer {
-        display: flex !important;
-        flex-direction: column !important;
 
-        .table-progress {
-            order: 1 !important;
-            width: 100% !important;
-            height: 8px !important;
-        }
-
-        .table-progress-panel {
-            order: -1 !important;
-            display: flex !important;
-            justify-content: space-between !important;
-            color: #6c6c6c !important;
-
-            .progress-text {
-                margin: 2px 0px !important;
-            }
-        }
+svg {
+    &:hover {
+        cursor: pointer;
     }
 }
 p {
     margin: 0 !important;
 }
+.card-close-dots-margin{
+    svg{
+        margin-top: 0 !important;
+    }
+}
+.card-close-icon{
+    margin-top: 0 !important;
+ }

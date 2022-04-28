@@ -20,19 +20,11 @@ export class TruckDetailsItemComponent implements OnInit {
   public purchaseNote:FormControl=new FormControl();
    
   private destory$:Subject<void>=new Subject<void>();
-
-   headerTextExm:any[]=[];
-   headerTitle:string='';
   constructor( private customModalService:CustomModalService) { }
 
   ngOnInit(): void {
-    this.headerTitle='Truck Details';
-    this.headerTextExm=[
-      {name:'Registration'},
-      {name:'FHWA Inspection'},
-      {name:'Title'},
-      {name:'Lease / Purchase'}
-    ]
+    console.log(this.data);
+    
   }
   ngOnDestroy():void{
     this.destory$.next();
@@ -46,7 +38,7 @@ export class TruckDetailsItemComponent implements OnInit {
   public onModalAction(){
     
   }
-  public formatData(date:string){
+  public formatDate(date:string){
     return moment(date).format('MM/DD/YY');
   }
 
@@ -60,7 +52,7 @@ export class TruckDetailsItemComponent implements OnInit {
     ${item.endorsmentName?.substring(0,numOfCharacters)}</span> ` + item.endorsementName.substring(0, numOfCharacters))
   }
    
-  public identity(item:any):number{
+  public identity(index:number,item:any):number{
     return item.id;
   }
 

@@ -1,9 +1,9 @@
-import { TruckInterface } from './../state/truck.modal';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { TruckQuery } from './../state/truck.query';
 import { Subject, of } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { TruckInterface } from '../state/truck.modal';
 
 @Component({
   selector: 'app-truck-details',
@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./truck-details.component.scss']
 })
 export class TruckDetailsComponent implements OnInit {
-
+  // @Input() data:any=null;
   public truckDetailsConfig:any[]=[];
   private destroy$:Subject<void>=new Subject<void>();
 
@@ -29,21 +29,25 @@ export class TruckDetailsComponent implements OnInit {
           return of(
             this.truckQuery
               .getAll()
-              .find((driver) => driver.id === parseInt(truck_id))
+              .find((truck) => truck.id === parseInt(truck_id))
           );
         }),
         takeUntil(this.destroy$)
       )
       .subscribe((res) => {
-        console.log('response ', res);
+        console.log(res);
+        console.log('aaaa');
+        
         this.setDetailsConfig(res);
       });
+      console.log(this.truckDetailsConfig);
+      
   }
   
-  private setDetailsConfig(response:TruckInterface){
-    // const registrationData =response.registrationData.map((data)=>{
+   setDetailsConfig(response:TruckInterface){
+    // const regExp = response.registrationData.map((data)=>{
     //   return{
-    //     ...data,
+    //     data,
     //     showDetails:false,
     //   };
     // });
@@ -70,6 +74,8 @@ export class TruckDetailsComponent implements OnInit {
     // });
     this.truckDetailsConfig=[{
       id:0,
+      
+      name:'Truck Details',
       template:'general',
       data:{
          response,
@@ -77,6 +83,7 @@ export class TruckDetailsComponent implements OnInit {
            trailer:'12345',
            driver:'Angelo Trotter'
          },
+         
          additionalDetails:{
            gross:'G-60,001 - 61,000',
            startMilage:'237,4563',
@@ -91,7 +98,7 @@ export class TruckDetailsComponent implements OnInit {
            company:'KSKA FREIGHT, INC',
            commision:'10.0%'
          },
-         performamceTrack:{
+         performanceTrack:{
            mileage:'300,456.3',
            fuel_cost:'190,221.48'
          },
@@ -101,7 +108,7 @@ export class TruckDetailsComponent implements OnInit {
          },
          revenue:{
            miles:'150,257.7',
-           revenue:'190,568.85'
+           revenue:'$190,568.85'
          },
          ownerHistory:{
            company:{
@@ -123,34 +130,34 @@ export class TruckDetailsComponent implements OnInit {
          }, 
       },
     },
-    // {
-    //   id:1,
-    //   name:'Registration',
-    //   template:'registration',
-    //   data:[],
-    // },
-    // {
-    //   id:2,
-    //   name:'FHWA Inspection',
-    //   template:'fhwa insepction',
-    //   data:[],
-    // },
-    // {
-    //   id:3,
-    //   name:'Title',
-    //   template:'title',
-    //   data:[],
-    // },
-    // {
-    //   id:4,
-    //   name:'Lease/Purchase',
-    //   template:'lease/purchase',
-    //   data:[],
-    // }
-  ]
+    {
+      id:1,
+      name:'Registration',
+      template:'registration',
+      data:[],
+    },
+    {
+      id:2,
+      name:'FHWA Inspection',
+      template:'fhwa-insepction',
+      data:[],
+    },
+    {
+      id:3,
+      name:'Title',
+      template:'title',
+      data:[],
+    },
+    {
+      id:4,
+      name:'Lease / Purchase',
+      template:'lease-purchase',
+      data:[],
+    }
+  ];
   }
 
-  public identity(item:any):number{
+  public identity(index:number,item:any):number{
     return item.id;
   }
 

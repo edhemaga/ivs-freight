@@ -7,20 +7,18 @@ import moment from 'moment';
   styleUrls: ['./ta-re-card.component.scss']
 })
 export class TaReCardComponent implements OnInit {
-  @Input() cardName:string='PR 365421';
-  @Input() cardDocumentCounter:number=3;
+  @Input() cardNameCommon:string;
+  @Input() cardDocumentCounter:number;
+  @Input() isCardOpen:boolean=true;
+  @Input() hasSvg:string='';
 
-  //TODO
-  /*
-  OPEN AND CLOSE CARD
-  ng-content height and width
-  
-  */
   constructor() { }
 
   ngOnInit(): void {
   }
-  
+  public toggleCards(){
+    this.isCardOpen = !this.isCardOpen;
+  }
   public formatDate(date: string) {
     return moment(date).format('MM/DD/YY');
   }

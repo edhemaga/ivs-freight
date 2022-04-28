@@ -1,43 +1,6 @@
 @import "../truck-details.component.scss";
 
-// Medical Template
-// MVR Template
-.truck-body-v2 {
-  grid-template-rows: 39px auto !important;
-  grid-template-columns: 236px;
 
-  .truck-expiration {
-    display: flex;
-    flex-direction: column;
-
-    .truck-expiration-name {
-      font-size: $font-size12;
-      font-weight: $font-semibold;
-      color: $color-gray-dark;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    .truck-expiration-value {
-      font-size: $font-size12;
-      color: $color-gray-dark;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-    }
-  }
-
-  .truck-card-buttons {
-    bottom: 9px !important;
-  }
-}
 .truck-toolbar-plus {
   svg {
     rect {
@@ -52,26 +15,87 @@
     }
   }
 }
-.arrows {
-  .arrow-right {
-    margin-bottom: 13px;
-    margin-top: 13px;
-    margin-right: 13px;
-    margin-left: 10px;
-  }
-  svg {
-    cursor: pointer;
+
+.state-issued-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 16px;
+  margin-right: 88px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  .state-issued-wrapper{
+    .state-issued-title{
+        font-size: 12px;
+        font-weight: 600;
+        color: #6c6c6c;
+        margin-bottom: 3px;
+    }
+    .state-issued-title-item{
+        font-size: 14px;
+        font-weight: 400;
+    }
   }
 }
-.border-line {
-  margin: 0;
-  height: 2px;
-  width: 428px;
-  border-radius: 1px;
-  margin-left: 5px;
-  margin-right: 5px;
-  background-color: $color-white-light;
+.expiration-container{
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+  justify-content: space-between;
+  height: 18px;
+  .expiration-wrapper{
+    margin-bottom: 6px;
+    .expiration-date{
+     margin-right: 16px;
+     p{
+       font-size: 14px;
+     }
+    }
+    .expiration-days{
+      p{
+        font-size: 14px;
+      }
+      .days{
+         font-size: 14px !important;
+         font-weight: 600 !important;
+         color: #6c6c6c;
+      }
+    }
+  }
 }
-.header-wrapper{
+.details-progress-container {
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 12px;
+    height: 8px;
+  .table-progress-cotnainer {
+    display: flex !important;
+    flex-direction: column !important;
+
+    .table-progress {
+      order: 1 !important;
+      width: 100% !important;
+      height: 8px !important;
+      background: #ffecd1 !important;
+    }
+     .bg-progress-muted{
+       background: #FFB74D !important;
+     }
+    .table-progress-panel {
+      order: -1 !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      color: #FFB74D !important;
+
+      .progress-text {
+        margin: 2px 0px !important;
+      }
+    }
+  }
+}
+.header-wrapper {
   width: 100%;
+}
+.custom-content{
+  margin-left: 16px !important;
 }

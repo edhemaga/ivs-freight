@@ -26,17 +26,23 @@ $border-radius: 3px;
 
 $transition: all 0.3s ease-in-out;
 
-// .truck-details {
-//   display: grid;
-//   grid-template-columns: 352px repeat(4, 260px);
-//   -moz-column-gap: 12px;
-//   column-gap: 12px;
+.truck-details {
+  display: grid;
+  grid-template-columns: 440px repeat(4, 335px);
+  column-gap: 12px;
+  row-gap: 12px;
+  p {
+    margin: 0px;
+  }
+}
 
-//   p {
-//     margin: 0px;
-//   }
-// }
-
+.truck-container-items {
+  display: grid;
+  grid-template-columns: 440px repeat(4, 335px);
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  row-gap: 12px;
+}
 // Common Class
 .truck-component {
   display: grid;
@@ -45,10 +51,9 @@ $transition: all 0.3s ease-in-out;
 
   // TOOLBAR GENERAL
   .truck-toolbar-general {
-    display: flex;
+    display: grid;
+    align-items: 319px 33px;
     align-items: center;
-    justify-content: space-between;
-    width: 97.5%;
 
     .truck-toolbar-dropdown {
       display: flex;
@@ -350,196 +355,8 @@ $transition: all 0.3s ease-in-out;
       }
     }
 
-    // GENERAL SWITCHER DRIVER
-    .truck-switcher {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 44px;
-      width: 440px;
-      .truck-switcher-name {
-        font-size: $font-size20;
-        font-weight: $font-bold;
-        color: $color-gray-dark;
-        position: relative;
-        margin-left: 12px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-      }
-
-      .truck-switcher-larrow,
-      .truck-switcher-rarrow {
-        &:hover {
-          transition: $transition;
-          cursor: pointer;
-          svg {
-            #chevron-down {
-              fill: $color-gray-dark;
-            }
-          }
-        }
-      }
-
-      .truck-switcher-larrow {
-        position: relative;
-        right: 13px;
-        top: 1px;
-        transform: rotate(180deg);
-      }
-
-      .truck-switcher-rarrow {
-        position: relative;
-        left: 13px;
-        bottom: 3px;
-      }
-    }
-
-    // DRIVER GENERAL PERSONAL DATA
-    .truck-container {
-      display: flex;
-      justify-content: flex-start;
-      align-items: flex-start;
-      flex-direction: column;
-      height: 182px;
-      width: 440px;
-      .truck-avatar {
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        width: 100%;
-        margin-bottom: 12px;
-       .truck{
-         margin-left: 16px;
-       }
-        svg {
-          height: 48px;
-          width: 132px;
-          -o-object-fit: fill;
-          object-fit: fill;
-          user-select: none;
-          margin-top: 14px;
-          fill: #AAAAAA;
-        }
-
-        .truck-avatar-owner {
-          position: absolute;
-          right: -8px;
-          bottom: 2px;
-        }
-      }
-      .model-name {
-        flex-direction: column;
-        margin-left: 12px;
-        height: 48px;
-        p {
-          font-size: $font-size14;
-          font-weight: $font-medium;
-          margin-top: 2px;
-          color: #6c6c6c;
-        }
-        svg {
-          width: 165px;
-          height: 30px;
-          fill: #AAAAAA;
-        }
-      }
-      .truck-data {
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        flex-direction: column;
-        margin-left: 16px;
-        .truck-data-item {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          align-content: center;
-          height: 18px;
-          .vin-text {
-            margin-left: 6px;
-            font-size: $font-size14;
-            font-weight: 400;
-          } 
-          .font{
-            font-size: $font-size18 ;
-          }
-            &__text{
-               margin-right: 31px;
-            }  
-           
-        }
-        .second{
-          margin-top: 14px;
-          margin-bottom: 12px;
-        }
-        .bottom{
-          margin-top: 12px ;
-          height: 18px;
-        }
-        svg {
-          width: 18px;
-          height: 18px;
-        }
-      }
-      .truck-data-item_bottom{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        align-content: center;
-        margin-bottom: 14px;
-        .vin-text {
-          margin-left: 6px;
-        } 
-      }
-
-      .truck-information {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        bottom: 3px;
-
-        // Ovveride email information-item
-        .information-item-email {
-          margin: 7px 0px;
-        }
-
-        .information-item {
-          display: flex;
-          align-items: center;
-
-          p {
-            font-size: 14px;
-            &::-moz-selection {
-              color: $color-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-              color: $color-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
-            }
-          }
-
-          .information-svg {
-            margin-right: 6px;
-          }
-
-          .information-email-value {
-            text-overflow: ellipsis;
-            overflow: hidden;
-            width: 220px;
-            white-space: nowrap;
-          }
-
-          .information-address-svg {
-            position: relative;
-            bottom: 11px;
-            left: 2px;
-            margin-right: 10px;
-          }
-        }
-      }
-    }
-
+   
+  
     .show-details {
       font-size: $font-size12;
       font-weight: $font-bold;
@@ -564,6 +381,12 @@ $transition: all 0.3s ease-in-out;
     overflow: hidden;
     padding: 8px 12px;
     width: 440px;
+    background-color: $color-white;
+  }
+  .common-cards{
+    border-radius: 3px;
+    overflow: hidden;
+    width: 335px;
     background-color: $color-white;
   }
 }
@@ -591,4 +414,69 @@ $transition: all 0.3s ease-in-out;
       }
     }
   }
+}
+.truck-details-wrapper{
+  margin-left: 16px;
+.details-header-avatar{
+  display: flex;
+  align-items: center;
+  height: 48px;
+  margin-top: 14px;
+  svg{
+    &:hover{
+      stroke: #7ea6f1;
+    }
+  }
+  .model-name{
+    flex-direction: column;
+    margin-left: 12px;
+    margin-top: 12px;
+    p{
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .svg-wrapper{
+      height: 14px;
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 2px;
+    }
+    svg{
+      fill:#aaaaaa;
+      object-fit: fill;
+    }
+  }
+}
+.details-header-data{
+  
+  margin-top: 14px;
+  .details-header-data-item{
+    display: flex;
+    height: 18px;
+    align-items: center;
+    p{
+      font-size: 18px;
+      color: #6c6c6c;
+      font-weight: 400;
+    }
+  }
+  .second{
+    margin-top: 14px;
+    margin-bottom: 14px;
+    p{
+      font-size: 14px !important;
+      color: #6c6c6c;
+      font-weight: 400;
+    }
+    .light-green{
+      margin-left: 29px;
+    }
+    .date{
+      margin-left: 8px !important;
+    }
+  }
+}
+.vin-text{
+  margin-left: 6px;
+}
 }

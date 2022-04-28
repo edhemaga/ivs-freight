@@ -74,7 +74,7 @@ import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
 import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
 import { TaInputService } from './ta-input/ta-input.service';
 import { TaCommonHeaderComponent } from './ta-details-header/ta-details-header.component';
-import { TaReCardComponent } from './ta-re-card/ta-re-card.component';
+import { TaReCardComponent } from './ta-common-card/ta-re-card.component';
 import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
 import { DirectivesModule } from '../../directives/directives.module';
@@ -82,6 +82,7 @@ import { DirectivesModule } from '../../directives/directives.module';
 import { TruckModalComponent } from '../modals/truck-modal/truck-modal.component';
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.component';
+import { TaDetailsHeaderCardComponent } from './ta-details-header-card/ta-details-header-card.component';
 
 @NgModule({
   declarations: [
@@ -107,6 +108,7 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
     TaModalCardComponent,
     TaCommonHeaderComponent,
     TaReCardComponent,
+    TaDetailsHeaderCardComponent,
     TaInputAddressComponent,
     TaInputDropdownComponent,
     TaInputNoteComponent,
@@ -229,6 +231,8 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
     CalendarDaysComponent,
     CalendarLeftComponent,
     DateCalendarsComponent,
+    TaReCardComponent,
+    TaDetailsHeaderCardComponent,
 
     TaCheckboxComponent,
     TaModalCardComponent,

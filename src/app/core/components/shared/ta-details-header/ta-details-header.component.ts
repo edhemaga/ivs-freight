@@ -6,18 +6,19 @@ import { Component, Input, OnInit, Output, EventEmitter, ViewEncapsulation } fro
   styleUrls: ['./ta-details-header.component.scss'],
 })
 export class TaCommonHeaderComponent implements OnInit {
-  @Input() commonHeaderText:any='';
-  @Input() detailsHeaderText:any;
-  @Input() detailsTemplate:string='';
+  @Input() headerText:string=null;
+  
   @Output('openModal') openModalAction=new EventEmitter<any>();
   constructor() { }
 
   ngOnInit(): void { 
-    
   }
   
   openModal(val:any){
     console.log(val);
     this.openModalAction.emit(val);
+  }
+  trackByIndex(index: number, obj: any): any {
+    return index;
   }
 }
