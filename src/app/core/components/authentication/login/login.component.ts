@@ -74,6 +74,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         const url =
           res.companies.length <= 1 ? '/dashboard' : '/select-company';
         this.notification.success('Login is success', 'Success');
+        console.log(url)
         setTimeout(() => {
           this.router.navigate([url]);
         }, 1000);
