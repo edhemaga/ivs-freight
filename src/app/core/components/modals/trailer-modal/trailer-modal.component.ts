@@ -125,5 +125,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     this.selectedTab = event.id;
   }
 
+  public openCloseCheckboxCard(event: any) {
+    if(this.trailerForm.get('companyOwned').value) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.trailerForm.get('companyOwned').setValue(false);
+    }
+  }
+
   ngOnDestroy(): void {}
 }

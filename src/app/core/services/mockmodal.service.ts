@@ -376,105 +376,105 @@ export class MockModalService {
       name: 'Bank Of America',
       svg: 'ic_bank_of_america.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 2,
       name: 'BB&T',
       svg: 'ic_bank_bbt.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 3,
       name: 'BMO Harris',
       svg: 'ic_bank_bmo_harris.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 4,
       name: 'CHASE',
       svg: 'ic_bank_chase.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 5,
       name: 'CHIME',
       svg: 'ic_bank_chime.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 6,
       name: 'Citi Bank',
       svg: 'ic_bank_citi.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 7,
       name: 'Fifth Third',
       svg: 'ic_bank_fifth_third.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 8,
       name: 'MB Financial',
       svg: 'ic_bank_mb_financial.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 9,
       name: 'NAVY FEDERAL',
       svg: 'ic_bank_navi_federal.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 10,
       name: 'PNC BANK',
       svg: 'ic_bank_pnc.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 11,
       name: 'Regions',
       svg: 'ic_bank_regions.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 12,
       name: 'TCF Bank',
       svg: 'ic_bank_tcf.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 13,
       name: 'US Bank',
       svg: 'ic_bank_us.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 14,
       name: 'Wells Fargo',
       svg: 'ic_bank_wells_fargo.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
     {
       id: 15,
       name: 'Meta Bank',
       svg: 'ic_bank_meta.svg',
       folder: 'common',
-      subFolder: 'banks'
+      subFolder: 'banks',
     },
   ];
 
@@ -626,10 +626,98 @@ export class MockModalService {
     },
   ];
 
-  public accountLabels: any [] = [
+  public accountLabels: any[] = [
     { id: 1, name: 'Aleksandar Djordjevic' },
     { id: 2, name: 'Denis Rodman' },
     { id: 3, name: 'James Halpert' },
     { id: 4, name: 'Pamela Beasley' },
+  ];
+
+  public sharedLabels: any[] = [
+    {
+      id: 1,
+      name: 'Whole Department',
+      groups: [
+        {
+          id: 1,
+          name: 'Accounting',
+        },
+        {
+          id: 2,
+          name: 'Dispatch',
+        },
+        {
+          id: 3,
+          name: 'Driver',
+        },
+        {
+          id: 4,
+          name: 'Safety',
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: 'Accounting',
+      groups: [
+        {
+          id: 1,
+          name: 'Angelo Trotter',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 2,
+          name: 'Aleksandar Djordjevic',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 3,
+          name: 'Denis Rodman',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+      ],
+    },
+    {
+      id: 3,
+      name: 'Dispatch',
+      groups: [
+        {
+          id: 1,
+          name: 'Angelo Trotter',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 2,
+          name: 'Aleksandar Djordjevic',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 3,
+          name: 'Denis Rodman',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+      ],
+    },
+    {
+      id: 4,
+      name: 'Safety',
+      groups: [
+        {
+          id: 1,
+          name: 'Angelo Trotter',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 2,
+          name: 'Aleksandar Djordjevic',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 3,
+          name: 'Denis Rodman',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+      ],
+    },
   ];
 }

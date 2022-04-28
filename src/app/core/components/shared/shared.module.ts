@@ -78,6 +78,7 @@ import { TruckModalComponent } from '../modals/truck-modal/truck-modal.component
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.component';
 import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component';
+import { ContactModalComponent } from '../modals/contact-modal/contact-modal.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +117,7 @@ import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component
     DriverModalComponent,
     TruckModalComponent,
     TrailerModalComponent,
+    ContactModalComponent,
     AccountModalComponent,
 
     // Pipes
@@ -241,6 +243,7 @@ import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component
     DriverModalComponent,
     TruckModalComponent,
     TrailerModalComponent,
+    ContactModalComponent,
     AccountModalComponent,
 
     // Pipes

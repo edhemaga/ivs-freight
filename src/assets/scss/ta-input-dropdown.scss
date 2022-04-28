@@ -4,6 +4,7 @@
   }
 
   .popover-body {
+    // ---------------------------------------- DROPDOWN ----------------------------------------
     .dropdown-options {
       position: relative;
       top: 4px;
@@ -240,6 +241,63 @@
 
       &.w-col-trailerLength {
         width: 106px;
+      }
+
+      // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
+      &.dropdown-options-groups {
+        max-height: 558px;
+        padding: 2px;
+
+        .dropdown-groups {
+          display: flex;
+          flex-direction: column;
+
+          p {
+            margin: 0;
+          }
+
+          .dropdown-group-header {
+            font-size: 10px;
+            color: #dadada;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 13px;
+            padding: 4px;
+          }
+
+          .dropdown-subgroup-options {
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            height: 26px;
+
+            &:hover {
+              background-color: #F7F7F7;
+              border-radius: 2px;
+              cursor: pointer;
+              transition: all 0.3s ease-in-out;
+
+              .dropdown-subgroup-text {
+                color: #919191;
+                transition: all 0.3s ease-in-out;
+              }
+            }
+
+            .dropdown-subgroup-image {
+              width: 16px;
+              height: 16px;
+              border-radius: 50%;
+              object-fit: fill;
+              margin-right: 4px;
+            }
+
+            .dropdown-subgroup-text {
+              font-size: 14px;
+              font-weight: 400;
+              color: #b7b7b7;
+            }
+          }
+        }
       }
     }
   }

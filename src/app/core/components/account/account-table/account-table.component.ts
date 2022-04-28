@@ -157,7 +157,6 @@ export class AccountTableComponent implements OnInit {
   }
 
   public onTableBodyActions(event: any) {
-    console.log(event)
     if (event.type === 'edit-account') {
       this.modalService.openModal(
         AccountModalComponent,

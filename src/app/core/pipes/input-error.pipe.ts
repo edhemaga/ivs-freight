@@ -20,7 +20,7 @@ export class InputErrorPipe implements PipeTransform {
       if (value['email']) {
         errorMessageValue = 'Invalid';
       }
-      if (value['required']) {
+      if (value['required'] || inputName.toLocaleLowerCase() === 'address') {
         errorMessageValue = 'Required';
       }
       if(value['pattern'] && inputName.toLocaleLowerCase() === 'phone') {

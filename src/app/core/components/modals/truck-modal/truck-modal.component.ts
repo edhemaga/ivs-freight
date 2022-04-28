@@ -139,5 +139,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public openCloseCheckboxCard(event: any) {
+    if(this.truckForm.get('companyOwned').value) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.truckForm.get('companyOwned').setValue(false);
+    }
+  }
+
   ngOnDestroy(): void {}
 }

@@ -23,7 +23,7 @@ ngb-modal-window[aria-hidden="true"] {
   // This class added through modal.service.ts
   &.modal-animation {
     background-color: rgba(0, 0, 0, 0.4);
-    transition: all 0.7s ease-out !important;
+    transition: all 0.4s ease-out !important;
   }
 
   &.modal-animation .modal-dialog {

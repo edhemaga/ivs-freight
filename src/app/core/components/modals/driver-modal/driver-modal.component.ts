@@ -321,5 +321,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public openCloseCheckboxCard(event: any) {
+    if(this.driverForm.get('ownerId').value) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.driverForm.get('ownerId').setValue(false);
+    }
+  }
+
   ngOnDestroy(): void {}
 }
