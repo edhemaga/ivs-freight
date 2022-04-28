@@ -11,10 +11,16 @@
   transition: all 0.3s ease-in-out;
 
   .input-clear-x {
-    position: relative;
-    bottom: 4px;
-    left: 4px;
+    width: 10px;
+    height: 10px;
     svg {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-48%, -48%) !important;
+
       path {
         fill: #eeeeee;
       }
@@ -25,12 +31,6 @@
     transform: scale(1.2);
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-  }
-
-  &:hover > .input-clear-x {
-    svg {
-      transform: scale(1) !important;
-    }
   }
 
   &.disabled {
@@ -101,17 +101,9 @@
   }
 
   // If password eye visible
-  &.second-position {
-    right: 27px;
-  }
-
-  // If dropdown
-  &.dropdown-position {
-    right: 23px;
-  }
-
-  &.datetimeclass {
-    right: 26px;
+  &.second-position,
+  &.password-eye {
+    right: 27px !important;
   }
 
   &.password-eye {
@@ -124,8 +116,25 @@
     }
   }
 
+  // If dropdown
+  &.dropdown-position {
+    right: 23px !important;
+  }
+
+  &.datetimeclass {
+    right: 26px !important;
+  }
+
   // Custom class
+  // BIG INPUT - height: 32px
   &.input-big {
     top: 6.5px;
+    right: 6px;
+
+    .input-clear-x {
+      svg {
+        transform: translate(-49%, -50%) !important;
+      }
+    }
   }
 }
