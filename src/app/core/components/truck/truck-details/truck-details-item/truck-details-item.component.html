@@ -102,7 +102,7 @@
                  [cardNameCommon]="'PR 365421'" 
                  [cardDocumentCounter]="3" 
                  [isCardOpen]="true">
-                    <ng-container>
+                   
                         <div class="state-issued-container">
                             <div class="state-issued-wrapper">
                                 <div class="state-issued-title">State</div>
@@ -113,22 +113,13 @@
                                 <p class="state-issued-title-item">04/04/04</p>
                             </div>
                         </div>
-                        <div class="expiration-container">
-                            <div class="expiration-wrapper">
-                                <div class="expiration-days">
-                                    <p> Exp. in <span class="days">164 days</span></p>
-                                </div>
-                            </div>
-                            <div class="expiration-wrapper">
-                                <div class="expiration-date"><p> 05/09/27</p></div>
-                            </div>
-                        </div>
                         <div class="details-progress-container">
-                            <app-truckassist-progress-expiration [expireDate]="'05/09/23'"
-                                [startDate]="formatDate('2022-04-02T05:00:00Z')">
+                            <app-truckassist-progress-expiration
+                                [expireDate]="'05/09/27'"
+                                [startDate]="formatDate('2019-11-11T05:00:00Z')"
+                                [expiresSettings]="'details'">
                             </app-truckassist-progress-expiration>
                         </div>
-                    </ng-container>
                 </app-ta-re-card>
             </div>
         </div>

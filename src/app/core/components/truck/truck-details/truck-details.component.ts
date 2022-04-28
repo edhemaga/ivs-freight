@@ -72,6 +72,7 @@ export class TruckDetailsComponent implements OnInit {
     //    showDetails:false,
     //   }
     // });
+    
     this.truckDetailsConfig=[{
       id:0,
       

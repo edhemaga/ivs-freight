@@ -1,9 +1,9 @@
-<div class="truck-container-items">
+<div class="details-container-items">
     <div *ngFor="let item of truckDetailsConfig">
         <app-ta-details-header [headerText]="item.name">
         </app-ta-details-header>
     </div>
-<div class="truck-details">
+<div class="details-item-cmp">
    
     <app-truck-details-item 
     *ngFor="let item of truckDetailsConfig; trackBy:identity"

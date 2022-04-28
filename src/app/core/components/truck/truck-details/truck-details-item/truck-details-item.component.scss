@@ -23,7 +23,7 @@
   margin-left: 16px;
   margin-right: 88px;
   margin-top: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   .state-issued-wrapper{
     .state-issued-title{
         font-size: 12px;
@@ -68,6 +68,7 @@
     margin-right: 16px;
     margin-bottom: 12px;
     height: 8px;
+    height: 32px;
   .table-progress-cotnainer {
     display: flex !important;
     flex-direction: column !important;
@@ -76,16 +77,12 @@
       order: 1 !important;
       width: 100% !important;
       height: 8px !important;
-      background: #ffecd1 !important;
     }
-     .bg-progress-muted{
-       background: #FFB74D !important;
-     }
+     
     .table-progress-panel {
       order: -1 !important;
       display: flex !important;
       justify-content: space-between !important;
-      color: #FFB74D !important;
 
       .progress-text {
         margin: 2px 0px !important;
@@ -98,4 +95,70 @@
 }
 .custom-content{
   margin-left: 16px !important;
+}
+
+.truck-details-wrapper{
+  margin-left: 16px;
+.details-header-avatar{
+  display: flex;
+  align-items: center;
+  height: 48px;
+  margin-top: 14px;
+  svg{
+    &:hover{
+      stroke: #7ea6f1;
+    }
+  }
+  .model-name{
+    flex-direction: column;
+    margin-left: 12px;
+    margin-top: 12px;
+    p{
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .svg-wrapper{
+      height: 14px;
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 2px;
+    }
+    svg{
+      fill:#aaaaaa;
+      object-fit: fill;
+    }
+  }
+}
+.details-header-data{
+  
+  margin-top: 14px;
+  .details-header-data-item{
+    display: flex;
+    height: 18px;
+    align-items: center;
+    p{
+      font-size: 18px;
+      color: #6c6c6c;
+      font-weight: 400;
+    }
+  }
+  .second{
+    margin-top: 14px;
+    margin-bottom: 14px;
+    p{
+      font-size: 14px !important;
+      color: #6c6c6c;
+      font-weight: 400;
+    }
+    .light-green{
+      margin-left: 29px;
+    }
+    .date{
+      margin-left: 8px !important;
+    }
+  }
+}
+.vin-text{
+  margin-left: 6px;
+}
 }

@@ -8,11 +8,11 @@
     padding: 0 !important;
     .text-icon-common{
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         .icon-common{
             margin-left: 12px;
             margin-right: 6px;
-            margin-top: 13px;
+            margin-top: 13.5px;
         }
         .has-svgIcon{
             margin-left: 0  !important;
@@ -38,12 +38,10 @@
 }
 }
 .card-container-cmp {
-    height: 134px;
     border-radius: 3px;
     background-color: #ffffff;
 
     .card-body-cmp {
-        display: flex;
         flex-direction: column;
         background-color: #ffffff;
         .dates {
@@ -68,9 +66,10 @@
         align-items: flex-start;
         justify-content: space-between;
         background-color: #ffffff;
-        height: 18px;
-        margin-left: 15px;
+        margin-left: 16px;
         margin-right: 12px;
+        margin-bottom: 9px;
+        margin-top: 12px;
         svg {
             cursor: pointer;
         }
