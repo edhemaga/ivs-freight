@@ -2,15 +2,12 @@ import { AuthStoreService } from './../state/auth.service';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedService } from '../../../services/shared/shared.service';
-import { AuthService } from '../../../services/auth/auth.service';
 import moment from 'moment';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { SpinnerService } from '../../../services/spinner/spinner.service';
@@ -86,7 +83,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   private createForm() {
     this.loginForm = this.formBuilder.group({
-      email: [null, [Validators.required, Validators.email]],
+      email: [null, [Validators.required, Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)]],
       password: [null, [Validators.required, Validators.minLength(5)]],
     });
   }
