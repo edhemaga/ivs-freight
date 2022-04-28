@@ -1,5 +1,7 @@
 <app-ta-modal
-  [modalTitle]="'Add Account'"
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Account' : 'Edit Account'"
+  [editData]="editData"
+  [editName]="'262212'"
   [isModalValid]="accountForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >

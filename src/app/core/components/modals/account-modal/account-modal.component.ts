@@ -1,6 +1,6 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
 
@@ -11,6 +11,8 @@ import { MockModalService } from 'src/app/core/services/mockmodal.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class AccountModalComponent implements OnInit {
+  @Input() editData: any;
+  
   public accountForm: FormGroup;
   public accountLabels: any[] = [];
 
