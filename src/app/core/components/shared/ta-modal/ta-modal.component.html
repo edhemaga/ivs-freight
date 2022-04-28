@@ -33,7 +33,7 @@
         ngbAutofocus
         type="button"
       >
-        Deactivate
+       {{isDeactivated ? 'Activate': 'Deactivate'}} 
       </button>
     </div>
 
@@ -44,7 +44,7 @@
       ngbAutofocus
       type="button"
     >
-      Save
+     {{editData ? 'Save Changes' : 'Save'}}
     </button>
   </div>
 </div>
