@@ -28,6 +28,7 @@
         Delete
       </button>
       <button
+        *ngIf="editData?.disableButton"
         (click)="onAction('deactivate')"
         class="modal-deactivate-btn"
         ngbAutofocus

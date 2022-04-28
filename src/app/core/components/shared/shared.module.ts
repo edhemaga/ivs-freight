@@ -79,6 +79,7 @@ import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.component';
 import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component';
 import { ContactModalComponent } from '../modals/contact-modal/contact-modal.component';
+import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
 
 @NgModule({
   declarations: [
@@ -132,6 +133,7 @@ import { ContactModalComponent } from '../modals/contact-modal/contact-modal.com
     CalendarMonthsPipe,
     NFormatterPipe,
     TaSvgPipe,
+    DropdownCountPipe,
 
     // Directive
     AutoFocusDirective,
@@ -258,6 +260,7 @@ import { ContactModalComponent } from '../modals/contact-modal/contact-modal.com
     CalendarMonthsPipe,
     NFormatterPipe,
     TaSvgPipe,
+    DropdownCountPipe,
 
     // Directive
     AutoFocusDirective,

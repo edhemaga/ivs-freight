@@ -245,8 +245,7 @@
 
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
       &.dropdown-options-groups {
-        max-height: 558px;
-        padding: 2px;
+        max-height: 495px;
 
         .dropdown-groups {
           display: flex;
@@ -263,6 +262,7 @@
             text-transform: uppercase;
             line-height: 13px;
             padding: 4px;
+            padding-bottom: 3px;
           }
 
           .dropdown-subgroup-options {
@@ -272,14 +272,34 @@
             height: 26px;
 
             &:hover {
-              background-color: #F7F7F7;
+              background-color: #f3f3f3;
               border-radius: 2px;
               cursor: pointer;
               transition: all 0.3s ease-in-out;
 
               .dropdown-subgroup-text {
-                color: #919191;
+                color: #3c3c3c;
                 transition: all 0.3s ease-in-out;
+
+                &.active {
+                  // Higlight text
+                  .highlight-text-45632 {
+                    background-color: transparent;
+
+                    &:hover {
+                      color: #3551b7 !important;
+                      transition: all 0.3s ease-in-out;
+                    }
+                  }
+                }
+              }
+            }
+
+            &.no-result {
+              height: 18px;
+              padding: 0px !important;
+              &:hover {
+                background-color: transparent !important;
               }
             }
 
@@ -294,7 +314,53 @@
             .dropdown-subgroup-text {
               font-size: 14px;
               font-weight: 400;
-              color: #b7b7b7;
+              color: #6c6c6c;
+              display: block;
+              width: 100%;
+
+              // Higlight text
+              .highlight-text-45632 {
+                font-weight: 700;
+                background-color: transparent;
+
+                &:hover {
+                  color: #3c3c3c;
+                  transition: all 0.3s ease-in-out;
+                }
+              }
+
+              &.active {
+                color: #536bc2;
+                position: relative;
+
+                &:hover {
+                  color: #3551b7;
+                  transition: all 0.3s ease-in-out;
+                }
+
+                &::after {
+                  position: absolute;
+                  right: 3px;
+                  content: url("../..//assets/svg/common/ic_confirm.svg");
+                  width: 14px;
+                  height: 10px;
+                }
+              }
+
+              &.no-result {
+                height: 20px;
+                font-size: 11px;
+                font-weight: 600;
+                padding: 1.5px 4px;
+                color: #b7b7b7;
+      
+                &:hover {
+                  background-color: transparent !important;
+                  color: #b7b7b7 !important;
+                  transition: all 0.3s ease-in-out;
+                  cursor: auto;
+                }
+              }
             }
           }
         }

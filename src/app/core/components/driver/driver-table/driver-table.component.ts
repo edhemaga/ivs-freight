@@ -207,7 +207,10 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       this.modalService.openModal(
         DriverModalComponent,
         { size: 'small' },
-        event
+        {
+          ...event,
+          disableButton: true
+        }
       );
     }
   }
