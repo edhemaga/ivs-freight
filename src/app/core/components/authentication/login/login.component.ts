@@ -1,3 +1,4 @@
+import { SignInResponse } from './../../../../../../appcoretruckassist/model/signInResponse';
 import { AuthStoreService } from './../state/auth.service';
 import {
   AfterViewInit,
@@ -11,6 +12,7 @@ import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { SpinnerService } from '../../../services/spinner/spinner.service';
+import { AccountService, SignInCommand } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +33,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private notification: NotificationService,
     private router: Router,
     private spinner: SpinnerService,
-    private shared: SharedService
+    private shared: SharedService,
+    private accountService: AccountService
   ) {
     this.createForm();
   }
@@ -56,15 +59,20 @@ export class LoginComponent implements OnInit, AfterViewInit {
     if (!this.shared.markInvalid(this.loginForm)) {
       return false;
     }
-    const data = this.loginForm.value;
-    this.authStoreService.userLogin(data).subscribe(
-      (res: any) => {
+    const data: SignInCommand = this.loginForm.value;
+    this.accountService.apiAccountLoginPost(data).subscribe(
+      (res: SignInResponse) => {
+        console.log(res);
         localStorage.setItem(
           'multiple_companies',
-          JSON.stringify(res.userCompanies)
+          JSON.stringify(res.companies)
+        );
+        localStorage.setItem(
+          'token',
+          JSON.stringify(res.token)
         );
         const url =
-          res.userCompanies.length <= 1 ? '/dashboard' : '/select-company';
+          res.companies.length <= 1 ? '/dashboard' : '/select-company';
         this.notification.success('Login is success', 'Success');
         setTimeout(() => {
           this.router.navigate([url]);
@@ -74,7 +82,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       (error: any) => {
         error ? this.shared.handleServerError() : null;
       }
-    );
+    )
   }
 
   manageInputValidation(formElement: any) {
