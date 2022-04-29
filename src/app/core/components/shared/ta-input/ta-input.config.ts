@@ -15,9 +15,4 @@ export interface ITaInput {
   customClass?: string; // 'input-big' -> height: 32px
   isDropdown?: boolean;
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss
-  hasInputColor?: boolean;
-  colorizedInput?: {
-    backgroundColor: string;
-    color: string;
-  };
 }

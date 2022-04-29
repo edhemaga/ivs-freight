@@ -48,13 +48,10 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-      
+        background-color: #ffffff;
+        color: #6c6c6c;
 
-        &:not(:hover) {
-          background-color: #ffffff !important;
-          color: #6c6c6c !important;
-        }
-
+     
         &:hover {
           background-color: #f3f3f3;
           color: #3c3c3c;
@@ -139,33 +136,6 @@
             transition: all 0.3s ease-in-out;
           }
         }
-
-        // &.red {
-        //   &:hover {
-        //     background-color: #e57373;
-        //     color: #ffffff;
-        //     border-radius: 2px;
-        //     transition: all 0.3s ease-in-out;
-        //   }
-        // }
-
-        // &.blue {
-        //   &:hover {
-        //     background-color: #6D82C7;
-        //     color: #ffffff;
-        //     border-radius: 2px;
-        //     transition: all 0.3s ease-in-out;
-        //   }
-        // }
-
-        // &.yellow {
-        //   &:hover {
-        //     background-color: #FFB74D;
-        //     color: #ffffff;
-        //     border-radius: 2px;
-        //     transition: all 0.3s ease-in-out;
-        //   }
-        // }
 
         //------------------------ Trucks, Trailers, Colors Template  ------------------------
         &.svg-text-flex {

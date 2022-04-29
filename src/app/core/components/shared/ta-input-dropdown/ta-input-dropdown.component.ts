@@ -189,16 +189,6 @@ export class TaInputDropdownComponent
       this.options = this.originalOptions;
       this.selectedItem.emit(option);
     }
-
-    if(this.inputConfig.hasInputColor && this.activeItem) {
-      this.inputConfig = {
-        ...this.inputConfig,
-        colorizedInput: {
-          backgroundColor: this.activeItem?.color,
-          color: '#FFFFFF'
-        }
-      }
-    }
   }
 
   public toggleDropdownOptions(action: boolean): void {

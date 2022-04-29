@@ -211,8 +211,7 @@
         inputConfig.isDropdown &&
         !inputConfig.placeholder,
       'hide': isDropdownAddModeActive,
-      'no-validation-hover': !waitValidation && !focusInput,
-      'colorized-arrow': inputConfig.colorizedInput
+      'no-validation-hover': !waitValidation && !focusInput
     }"
     src="assets/svg/common/ic_arrow-down.svg"
     (click)="toggleDropdownOptions()"
@@ -263,8 +262,6 @@
         isDropdownOptionsActive &&
         focusInput
     }"
-    [style.backgroundColor]="inputConfig.colorizedInput ? inputConfig.colorizedInput.backgroundColor: ''"
-    [style.color]="inputConfig.colorizedInput ? inputConfig.colorizedInput.color: ''"
     [(ngModel)]="input.value"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onBackspace($event)"

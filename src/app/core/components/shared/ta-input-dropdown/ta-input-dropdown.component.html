@@ -129,8 +129,6 @@
         <div
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option"
-          [style.backgroundColor]="option.color"
-          [style.color]="option.color ? '#ffffff': ''"
           [ngClass]="{
             'disabled': option?.disabled,
             'no-result':

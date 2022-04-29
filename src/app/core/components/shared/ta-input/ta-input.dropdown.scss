@@ -59,24 +59,6 @@
     }
   }
 
-  &.colorized-arrow {
-    svg {
-      path {
-        fill: #ffffff !important;
-        transition: all 0.3s ease-in-out;
-      }
-    }
-
-    &:hover {
-      svg {
-        path {
-          fill: #eeeeee !important;
-          transition: all 0.3s ease-in-out;
-        }
-      }
-    }
-  }
-
   &.visible {
     display: inline-block;
     transition: all 0.3s ease-in-out;
