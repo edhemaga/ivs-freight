@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -9,6 +11,8 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   styleUrls: ['./truck-table.component.scss'],
 })
 export class TruckTableComponent implements OnInit {
+  private destroy$: Subject<void> = new Subject<void>();
+  
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -16,12 +20,22 @@ export class TruckTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private modalService: ModalService) {}
+  constructor(private modalService: ModalService,  private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
-
     this.getTrucksData();
+
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.resetColumns = response;
+
+          this.sendTruckData();
+        }
+      });
   }
 
   public initTableOptions(): void {
@@ -84,10 +98,10 @@ export class TruckTableComponent implements OnInit {
   }
 
   getTrucksData() {
-    this.sendDriverData();
+    this.sendTruckData();
   }
 
-  sendDriverData() {
+  sendTruckData() {
     this.tableData = [
       {
         title: 'Active',
@@ -318,7 +332,8 @@ export class TruckTableComponent implements OnInit {
         { size: 'small' },
         {
           ...event,
-          type: 'edit'
+          type: 'edit',
+          disableButton: true
         }
       );
     }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getLoadColumnDefinition } from 'src/assets/utils/settings/load-columns';
 
 @Component({
@@ -8,6 +10,8 @@ import { getLoadColumnDefinition } from 'src/assets/utils/settings/load-columns'
   styleUrls: ['./load-table.component.scss'],
 })
 export class LoadTableComponent implements OnInit {
+  private destroy$: Subject<void> = new Subject<void>();
+  
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -15,12 +19,22 @@ export class LoadTableComponent implements OnInit {
   public selectedTab = 'template';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService) {}
+  constructor(private customModalService: CustomModalService,  private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
-
     this.getLoadData();
+
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.resetColumns = response;
+
+          this.sendLoadData();
+        }
+      });
   }
 
   public initTableOptions(): void {

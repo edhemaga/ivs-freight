@@ -26,6 +26,8 @@ import { NavigationSubrouteComponent } from './core/components/navigation/naviga
 import { NavigationSubrouteCardComponent } from './core/components/navigation/navigation-subroute-card/navigation-subroute-card.component';
 import { NavigationUserCompanyComponent } from './core/components/navigation/navigation-user-company/navigation-user-company.component';
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
+import { ApiModule } from 'appcoretruckassist';
+import { configFactory } from './app.config';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,8 @@ import { NavigationHeaderComponent } from './core/components/navigation/navigati
       enableHtml: true,
       timeOut: 5000,
     }),
-    NgIdleModule.forRoot()
+    NgIdleModule.forRoot(),
+    ApiModule.forRoot(configFactory)
   ],
   providers: [
     GoogleMapsAPIWrapper,

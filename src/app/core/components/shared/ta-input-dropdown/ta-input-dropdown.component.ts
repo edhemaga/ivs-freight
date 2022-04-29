@@ -44,12 +44,12 @@ export class TaInputDropdownComponent
   }
 
   ngOnInit(): void {
-    this.originalOptions = this.options;
+    this.originalOptions = [...this.options];
 
     this.getSuperControl.valueChanges
       .pipe(untilDestroyed(this))
       .subscribe((term) => {
-          this.search(term);
+        this.search(term);
       });
 
     this.inputService.onClearInputSubject
@@ -108,26 +108,66 @@ export class TaInputDropdownComponent
   registerOnTouched(fn: any): void {}
 
   private search(term: string): void {
-    if (term?.length > 0 && this.activeItem?.name !== this.getSuperControl.value) {
-      this.options = this.originalOptions.filter((item) =>
-        item.name.toLowerCase().includes(term.toLowerCase())
-      );
+    // Single Dropdown
+    if (this.template !== 'groups') {
+      if (
+        term?.length &&
+        this.activeItem?.name !== this.getSuperControl.value
+      ) {
+        this.options = this.originalOptions.filter((item) =>
+          item.name.toLowerCase().includes(term.toLowerCase())
+        );
 
-      if (!this.options.length && !this.canAddNew) {
-        this.options.push({
-          id: 7654,
-          name: 'No Results',
-        });
-      }
+        if (!this.options.length && !this.canAddNew) {
+          this.options.push({
+            id: 7654,
+            name: 'No Results',
+          });
+        }
 
-      if (!this.options.length && this.canAddNew) {
-        this.options.push({
-          id: 7655,
-          name: 'Add New',
-        });
+        if (!this.options.length && this.canAddNew) {
+          this.options.push({
+            id: 7655,
+            name: 'Add New',
+          });
+        }
+      } else {
+        this.options = this.originalOptions;
       }
-    } else {
-      this.options = this.originalOptions;
+    }
+    // Group Dropdown Items
+    else {
+      if (
+        term?.length &&
+        this.activeItem?.name !== this.getSuperControl.value
+      ) {
+        this.options = this.originalOptions
+          .map((element) => {
+            return {
+              ...element,
+              groups: element.groups.filter((subElement) =>
+                subElement.name.toLowerCase().includes(term.toLowerCase())
+              ),
+            };
+          })
+          .filter((item) => item.groups.length);
+
+        if (!this.options.length && !this.canAddNew) {
+          console.log('PRAZAN  NIIZZ');
+          this.options.push({
+            groups: [
+              {
+                id: 7654,
+                name: 'No Results',
+              },
+            ],
+          });
+          console.log(this.options);
+        }
+        console.log(this.options);
+      } else {
+        this.options = this.originalOptions;
+      }
     }
   }
 

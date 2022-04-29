@@ -89,8 +89,12 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 6px;
+      padding: 5px 6px;
       line-height: 18px;
+
+      &.pointer {
+        cursor: pointer;
+      }
 
       .checkbox-card-header-arrow {
         svg {
@@ -284,8 +288,8 @@
         width: 18px;
         height: 18px;
         position: relative;
-        bottom: 4px;
-        right: 6px;
+        bottom: 3.5px;
+        right: 4.5px;
         display: none;
         cursor: pointer;
         svg {
@@ -317,6 +321,13 @@
     -moz-column-gap: 12px;
     column-gap: 12px;
   }
+}
+
+//---------------- Model Color Year Length ----------------
+.custom-model-color-year-length {
+  display: grid;
+  grid-template-columns: 100px 126px 88px 106px;
+  column-gap: 12px;
 }
 
 // ------------------------------------------------ end ------------------------------------------------

@@ -10,7 +10,7 @@ export class AuthStoreService {
     constructor(private authStore: AuthStore, private http: HttpClient, private sharedService: SharedService) { }
 
     public userLogin(data: any) {
-        return this.http.post(environment.API_ENDPOINT + 'user/login', data).pipe(
+        return this.http.post(environment.API_ENDPOINT + '/api/account/login', data).pipe(
           map((user: any) => {
             localStorage.setItem('currentUser', JSON.stringify(user.loggedUser));
             localStorage.setItem('token', JSON.stringify(user.token));

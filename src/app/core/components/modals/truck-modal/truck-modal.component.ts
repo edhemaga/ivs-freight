@@ -75,7 +75,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     this.tireSize = this.mockModalService.tireSize;
   }
 
-  public createForm(): void {
+  private createForm(): void {
     this.truckForm = this.formBuilder.group({
       truckNumber: [null, [Validators.required, Validators.maxLength(6)]],
       truckTypeId: [null, Validators.required],
@@ -100,7 +100,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       truckEngineTypeId: [null],
       tireSizeId: [null],
       axles: [null, Validators.maxLength(1)],
-      insurancePolicy: [null],
+      insurancePolicy: [null, [Validators.minLength(8), Validators.maxLength(14)]],
       mileage: [null, Validators.maxLength(10)],
       ipasEzpass: [null, Validators.maxLength(14)],
     });
@@ -123,7 +123,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public isCompanyOwned() {
+  private isCompanyOwned() {
     this.truckForm
       .get('companyOwned')
       .valueChanges.pipe(untilDestroyed(this))
@@ -137,6 +137,14 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           );
         }
       });
+  }
+
+  public openCloseCheckboxCard(event: any) {
+    if(this.truckForm.get('companyOwned').value) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.truckForm.get('companyOwned').setValue(false);
+    }
   }
 
   ngOnDestroy(): void {}

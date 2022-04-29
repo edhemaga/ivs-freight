@@ -2,6 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Driver' : 'Edit Driver'"
   [editName]="'Nikola Kovacevic'"
   [editData]="editData"
+  [isModalValid]="driverForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher
@@ -67,7 +68,6 @@
                 isRequired: true,
                 placeholderIcon: 'email'
               }"
-              
             ></app-ta-input>
           </div>
         </div>
@@ -127,7 +127,11 @@
         <!-- IsOwner -->
         <div class="custom-checkbox-card">
           <div class="divider"></div>
-          <div class="checkbox-card-header">
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: driverForm.get('isOwner').value }"
+            (click)="openCloseCheckboxCard($event)"
+          >
             <app-ta-checkbox
               formControlName="isOwner"
               [label]="'Owner'"
@@ -183,11 +187,11 @@
           </div>
         </div>
         <!-- Off duty Location -->
-        <app-ta-modal-card
+        <app-ta-custom-card
           [hasCounter]="offDutyLocations.length ? offDutyLocations.length : '0'"
           [cardName]="'Off duty Location'"
-          [headerSvg]="'assets/svg/common/ic_info.svg'"
-          [actionSvg]="editData ? 'assets/svg/common/ic_plus.svg' : null"
+          [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [isCardOpen]="offDutyLocations.length"
           (onActionEvent)="addOffDutyLocation($event)"
         >
@@ -237,12 +241,12 @@
                   [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
                   [fontWeight]="'bold'"
                   [fontSize]="'11px'"
-                  [customPosition]="-7"
+                  [customPosition]="-11"
                 ></svg-icon>
               </div>
             </div>
           </div>
-        </app-ta-modal-card>
+        </app-ta-custom-card>
         <!-- Note -->
         <app-ta-input-note formControlName="note"></app-ta-input-note>
       </div>
@@ -255,7 +259,10 @@
             [label]="'Include in Payroll'"
           ></app-ta-checkbox>
         </div>
-        <div class="custom-bank-row first-row" [ngClass]="{'no-m-bottom': !driverForm.get('payroll').value}">
+        <div
+          class="custom-bank-row first-row"
+          [ngClass]="{ 'no-m-bottom': !driverForm.get('payroll').value }"
+        >
           <div class="bank-field">
             <app-ta-input-dropdown
               formControlName="bankId"
@@ -377,7 +384,10 @@
                 type: 'text',
                 label: 'Empty Mile',
                 isRequired: true,
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon',
+                maxLength: 4,
+                mask: 'separator.2'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -387,7 +397,10 @@
                 type: 'text',
                 label: 'Loaded Mile',
                 isRequired: true,
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon',
+                maxLength: 4,
+                mask: 'separator.2'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -396,7 +409,10 @@
                 name: 'Per Stop',
                 type: 'text',
                 label: 'Per Stop',
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon',
+                maxLength: 4,
+                mask: 'separator.2'
               }"
             ></app-ta-input>
           </div>
@@ -408,7 +424,10 @@
                 name: 'Empty Mile',
                 type: 'text',
                 label: 'Empty Mile',
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon',
+                maxLength: 4,
+                mask: 'separator.2'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -417,7 +436,10 @@
                 name: 'Loaded Mile',
                 type: 'text',
                 label: 'Loaded Mile',
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon',
+                maxLength: 4,
+                mask: 'separator.2'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -426,7 +448,10 @@
                 name: 'Per Stop',
                 type: 'text',
                 label: 'Per Stop',
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon',
+                maxLength: 4,
+                mask: 'separator.2'
               }"
             ></app-ta-input>
           </div>
@@ -484,7 +509,7 @@
           "
         ></div>
         <div class="row last-row">
-          <div class="col-2">
+          <div class="col-2 twic-driver">
             <app-ta-checkbox
               formControlName="twic"
               [label]="'TWIC'"
@@ -518,7 +543,7 @@
             ></app-ta-input>
           </div>
         </div>
-        <app-ta-modal-card
+        <app-ta-custom-card
           [cardName]="'Emergency Contact'"
           [isCardOpen]="
             driverForm.get('emergencyContactName').value ||
@@ -556,7 +581,7 @@
               }"
             ></app-ta-input>
           </div>
-        </app-ta-modal-card>
+        </app-ta-custom-card>
       </div>
     </div>
   </form>

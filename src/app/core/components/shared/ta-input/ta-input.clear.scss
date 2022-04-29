@@ -2,8 +2,7 @@
 .input-clear {
   position: absolute;
   right: 4px;
-  top: 16%;
-  transform: translate(-6%, 0%);
+  top: 4px;
   width: 18px;
   height: 18px;
   border-radius: 1px;
@@ -12,38 +11,27 @@
   transition: all 0.3s ease-in-out;
   z-index: 10;
 
-  svg {
+  .input-clear-x {
+    width: 10px;
+    height: 10px;
+    svg {
+    width: 10px;
+    height: 10px;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-49.5%, -50%);
-    width: 10px !important;
-    height: 10px !important;
-    transition: all 0.3s ease-in-out;
-    path {
-      fill: #eeeeee;
+    transform: translate(-49%, -50%) !important;
+
+      path {
+        fill: #eeeeee;
+      }
     }
   }
 
   &:hover {
+    transform: scale(1.2);
+    cursor: pointer;
     transition: all 0.3s ease-in-out;
-    right: 1px !important;
-    width: 22px;
-    height: 22px;
-    transform: translate(-6%, -10%) !important;
-  }
-
-  &.datetimeclass {
-    right: 28px !important;
-  }
-
-  &.invalid-focus-out-required {
-    &:hover {
-      width: 22px !important;
-      height: 22px !important;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-    }
   }
 
   &.disabled {
@@ -52,50 +40,46 @@
 
   &.focus-typing {
     display: block;
-    transition: all 0.3s ease-in-out;
-    svg {
-      path {
-        fill: #6c6c6c;
+    .input-clear-x {
+      svg {
+        path {
+          fill: #6c6c6c;
+        }
       }
     }
-
     &:hover {
       background-color: #eeeeee;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
     }
   }
 
   &.valid-focus-in {
-    transition: all 0.3s ease-in-out;
     background-color: #bdcaeb;
     display: block;
-    svg {
-      path {
-        fill: #536bc2;
+    .input-clear-x {
+      svg {
+        path {
+          fill: #536bc2;
+        }
       }
     }
     &:hover {
-      transition: all 0.3s ease-in-out;
       background-color: #f5fafc;
-      cursor: pointer;
     }
   }
 
   &.invalid-focus-in,
   &.invalid-focus-in-required {
-    transition: all 0.3s ease-in-out;
     background-color: #ffcdd2;
     display: block;
-    svg {
-      path {
-        fill: #ef5350;
+    .input-clear-x {
+      svg {
+        path {
+          fill: #ef5350;
+        }
       }
     }
     &:hover {
-      transition: all 0.3s ease-in-out;
       background-color: #fffafa;
-      cursor: pointer;
     }
   }
 
@@ -104,52 +88,54 @@
   &.invalid-focus-in-empty-required,
   &.invalid-submit {
     background-color: transparent;
-    transition: all 0.3s ease-in-out;
-    display: inline-block;
-
-    svg {
-      path {
-        fill: #e57373;
+    display: block;
+    .input-clear-x {
+      svg {
+        path {
+          fill: #e57373;
+        }
       }
+    }
+    &:hover {
+      transform: scale(1) !important;
     }
   }
 
   // If password eye visible
-  &.second-position {
-    right: 27px;
+  &.second-position,
+  &.password-eye {
+    right: 27px !important;
+  }
 
-    &:hover {
-      transition: all 0.3s ease-in-out;
-      right: 27px !important;
-      width: 22px;
-      height: 22px;
-      transform: translate(-6%, -10%) !important;
+  &.password-eye {
+    .input-clear-x {
+      svg {
+        path {
+          fill: #6c6c6c !important;
+        }
+      }
     }
   }
 
   // If dropdown
   &.dropdown-position {
-    right: 22px;
-
-    &:hover {
-      transition: all 0.3s ease-in-out;
-      right: 22px !important;
-      width: 22px;
-      height: 22px;
-      transform: translate(-6%, -10%) !important;
-    }
+    right: 23px !important;
   }
 
-  &.password-eye {
-    svg {
-      path {
-        fill: #6c6c6c !important;
-      }
-    }
+  &.datetimeclass {
+    right: 26px !important;
   }
 
   // Custom class
+  // BIG INPUT - height: 32px
   &.input-big {
     top: 6.5px;
+    right: 6px;
+
+    .input-clear-x {
+      svg {
+        transform: translate(-49%, -50%) !important;
+      }
+    }
   }
 }

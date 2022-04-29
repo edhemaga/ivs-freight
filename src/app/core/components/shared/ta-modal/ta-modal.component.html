@@ -28,22 +28,24 @@
         Delete
       </button>
       <button
+        *ngIf="editData?.disableButton"
         (click)="onAction('deactivate')"
         class="modal-deactivate-btn"
         ngbAutofocus
         type="button"
       >
-        Deactivate
+       {{isDeactivated ? 'Activate': 'Deactivate'}} 
       </button>
     </div>
 
     <button
       (click)="onAction('save')"
       class="modal-save-btn"
+      [ngClass]="{'valid': isModalValid}"
       ngbAutofocus
       type="button"
     >
-      Save
+     {{editData ? 'Save Changes' : 'Save'}}
     </button>
   </div>
 </div>

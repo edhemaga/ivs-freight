@@ -1,5 +1,8 @@
 <app-ta-modal
-  [modalTitle]="'Add Account'"
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Account' : 'Edit Account'"
+  [editData]="editData"
+  [editName]="'262212'"
+  [isModalValid]="accountForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="accountForm" class="form-container">
@@ -29,7 +32,7 @@
             dropdownWidthClass:'w-col-5'
           }"
           [canAddNew]="true"
-          [options]="labels"
+          [options]="accountLabels"
         ></app-ta-input-dropdown>
       </div>
     </div>

@@ -7,9 +7,6 @@ export class InputErrorPipe implements PipeTransform {
 
   transform(value: any, inputName?: string): string {
     let errorMessageValue: string = '';
-    console.log("ERROR INPUT")
-    console.log(value)
-    console.log(inputName)
     if (value !== null) {
       if(value['minlength']) {
         errorMessageValue = `Minimum required length is ${value.minlength.requiredLength}`
@@ -17,13 +14,13 @@ export class InputErrorPipe implements PipeTransform {
       if(value['maxlength']) {
         errorMessageValue = `Maximum possible characters is ${value.maxlength.requiredLength}`
       }
-      if (value['invalid']) {
+      if (value['invalid'] || inputName.toLocaleLowerCase() === 'address') {
         errorMessageValue = 'Invalid';
       }
       if (value['email']) {
         errorMessageValue = 'Invalid';
       }
-      if (value['required']) {
+      if (value['required'] || inputName.toLocaleLowerCase() === 'address') {
         errorMessageValue = 'Required';
       }
       if(value['pattern'] && inputName.toLocaleLowerCase() === 'phone') {

@@ -1,4 +1,4 @@
-export function getOwnerColumnDefinition() {
+export function getOwnerColumnDefinition() { 
   return [
     {
       ngTemplate: 'checkbox',

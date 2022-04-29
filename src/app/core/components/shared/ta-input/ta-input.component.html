@@ -29,8 +29,7 @@
   }"
 >
   <!-- Input Clear -->
-  <svg-icon
-    src="assets/svg/ic_x.svg"
+  <div
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
       disabled: inputConfig.isDisabled,
@@ -73,14 +72,6 @@
         !inputConfig.placeholderIcon &&
         !isVisiblePasswordEye &&
         !inputConfig.isDropdown,
-      'invalid-focus-out-required':
-        inputConfig.isRequired &&
-        getSuperControl.invalid &&
-        waitValidation &&
-        !focusInput &&
-        !inputConfig.placeholderIcon &&
-        !isVisiblePasswordEye &&
-        !inputConfig.isDropdown,
       'second-position':
         inputConfig.type === 'password' && isVisiblePasswordEye,
       'second-position-hover':
@@ -110,9 +101,11 @@
     [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
     [fontWeight]="'bold'"
     [fontSize]="'11px'"
-    [customPosition]="-7"
+    [customPosition]="-6"
     (click)="clearInput()"
-  ></svg-icon>
+  >
+    <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
+  </div>
 
   <!-- Input Required Check -->
   <svg-icon
@@ -160,10 +153,9 @@
   ></svg-icon>
 
   <!-- Input Confirm New Item in Dropdown -->
-  <svg-icon
+  <div
     class="input-dropdown-confirm"
     [ngClass]="{ visible: isDropdownAddModeActive && inputConfig.isDropdown }"
-    src="assets/svg/common/ic_confirm.svg"
     [appTooltip]="'Confirm'"
     [position]="'top-middle'"
     [tooltipBackground]="'#536BC2'"
@@ -175,7 +167,9 @@
     [fontSize]="'11px'"
     [customPosition]="-15"
     (click)="onAddItemInDropdown()"
-  ></svg-icon>
+  >
+    <svg-icon class="input-dropdow-confirm-svg" src="assets/svg/common/ic_confirm.svg"></svg-icon>
+  </div>
 
   <!-- Input Drodown Array -->
   <svg-icon

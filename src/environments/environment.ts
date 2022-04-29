@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  API_ENDPOINT: 'https://api-stage.truckassist.io/api/v2/',
+  // API_ENDPOINT: 'https://api-stage.truckassist.io/api/v2/',
+  API_ENDPOINT: 'https://localhost:7226',
   APPLICANT_API_ENDPOINT: 'https://applicants-api.truckassist.io/api',
   production: false,
   perPage: 1000,

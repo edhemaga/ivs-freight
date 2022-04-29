@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
+import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-trailer-table',
@@ -8,6 +11,8 @@ import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-co
   styleUrls: ['./trailer-table.component.scss'],
 })
 export class TrailerTableComponent implements OnInit {
+  private destroy$: Subject<void> = new Subject<void>();
+  
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -15,12 +20,22 @@ export class TrailerTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService) {}
+  constructor(private modalService: ModalService,  private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
-
     this.getTrucksData();
+
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.resetColumns = response;
+
+          this.sendTrailerData();
+        }
+      });
   }
 
   public initTableOptions(): void {
@@ -274,10 +289,26 @@ export class TrailerTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba se doda modal!');
+      this.modalService.openModal(TrailerModalComponent, {
+        size: 'small',
+      });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setTrailerData(event.tabData);
+    }
+  }
+
+  public onTableBodyActions(event: any) {
+    if (event.type === 'edit-trailer') {
+      this.modalService.openModal(
+        TrailerModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          type: 'edit',
+          disableButton: true
+        }
+      );
     }
   }
 }

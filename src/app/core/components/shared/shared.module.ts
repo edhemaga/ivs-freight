@@ -31,8 +31,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from '../switchers/status-switcher/status-switcher.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { TooltipDirective } from '../../directives/tooltip.directive';
-import { NgxMaskModule } from 'ngx-mask';
+import { NgxMaskModule } from "ngx-mask";
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
@@ -71,13 +70,16 @@ import { CalendarLeftComponent } from './custom-datetime-pickers/calendar-left/c
 import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars/date-calendars.component';
 import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
-import { TaModalCardComponent } from './ta-modal-card/ta-modal-card.component';
 import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
+import { DirectivesModule } from '../../directives/directives.module';
 
 import { TruckModalComponent } from '../modals/truck-modal/truck-modal.component';
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.component';
+import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component';
+import { ContactModalComponent } from '../modals/contact-modal/contact-modal.component';
+import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
 
 @NgModule({
   declarations: [
@@ -109,13 +111,14 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
+    TaCustomCardComponent,
 
     // Modals Components
     TaModalComponent,
-    TaModalCardComponent,
     DriverModalComponent,
     TruckModalComponent,
     TrailerModalComponent,
+    ContactModalComponent,
     AccountModalComponent,
 
     // Pipes
@@ -130,13 +133,12 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
     CalendarMonthsPipe,
     NFormatterPipe,
     TaSvgPipe,
+    DropdownCountPipe,
 
     // Directive
     AutoFocusDirective,
     InputFocusDirective,
-    TooltipDirective,
     InputRestrictionDirective,
-    TooltipDirective,
     DragDropFileDirective,
     TextareaAutosizeDirective,
   ],
@@ -177,6 +179,7 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
     NgxDropzoneModule,
     CroppieModule,
     PdfViewerModule,
+    DirectivesModule
   ],
   exports: [
     // Modules
@@ -222,6 +225,7 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
     CalendarDaysComponent,
     CalendarLeftComponent,
     DateCalendarsComponent,
+    TaCustomCardComponent,
 
     TaCheckboxComponent,
     TaInputAddressComponent,
@@ -236,10 +240,12 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
 
     // Modals Components
     TaModalComponent,
-    TaModalCardComponent,
+    TaInputAddressComponent,
+    DirectivesModule,
     DriverModalComponent,
     TruckModalComponent,
     TrailerModalComponent,
+    ContactModalComponent,
     AccountModalComponent,
 
     // Pipes
@@ -254,13 +260,12 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
     CalendarMonthsPipe,
     NFormatterPipe,
     TaSvgPipe,
+    DropdownCountPipe,
 
     // Directive
     AutoFocusDirective,
     InputFocusDirective,
-    TooltipDirective,
     InputRestrictionDirective,
-    TooltipDirective,
     DragDropFileDirective,
     TextareaAutosizeDirective,
   ],

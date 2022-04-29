@@ -53,7 +53,6 @@ export class TaInputComponent
     private changeDetection: ChangeDetectorRef,
     private inputService: TaInputService,
     private calendarService: CalendarScrollService
-    
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -273,6 +272,10 @@ export class TaInputComponent
   }
 
   public manipulateWithInput(event: KeyboardEvent): boolean {
+    // Input Validation
+    if (this.focusInput && this.getSuperControl.valid) {
+      this.waitValidation = true;
+    }
     // Disable first character to be space
     if (
       !this.input.nativeElement.value &&
@@ -307,8 +310,7 @@ export class TaInputComponent
         this.inputConfig.name.toLowerCase()
       )
     ) {
-      if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
+      if (/^[A-Za-z]*$/.test(String.fromCharCode(event.charCode))) {
         return true;
       } else {
         event.preventDefault();
@@ -317,7 +319,20 @@ export class TaInputComponent
     }
 
     if (
-      ['address unit', 'truck number'].includes(
+      ['insurance policy'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
+      if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (
+      ['address unit', 'truck number', 'trailer number'].includes(
         this.inputConfig.name.toLowerCase()
       )
     ) {

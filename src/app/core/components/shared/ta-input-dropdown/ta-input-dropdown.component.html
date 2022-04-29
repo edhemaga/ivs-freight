@@ -7,19 +7,19 @@
   [placement]="['bottom-left']"
   popoverClass="ta-input-dropdown"
   [container]="'body'"
-  autoClose="'outside'"
 ></app-ta-input>
-
+<!--  autoClose="'outside'" -->
 <ng-template #taInputDropdownPopover>
-  <!-- Dropdown options -->
+  <!--------------------------- Dropdown options --------------------------->
   <div
     class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
     [ngClass]="{
-      scroll: options.length > 6
+      scroll: options | taDropdownCount: template,
+      'dropdown-options-groups': template === 'groups'
     }"
   >
     <div [ngSwitch]="template">
-      <!-- Banks Template -->
+      <!--------------------------- Banks Template --------------------------->
       <div *ngSwitchCase="'banks'">
         <div
           *ngFor="let option of options; trackBy: identity"
@@ -37,7 +37,7 @@
             *ngIf="option.svg"
             class="banks-logo"
             [ngClass]="{ active: option.id === activeItem?.id }"
-            [src]="option.svg | taSvg: option.folder:option.subFolder"
+            [src]="option.svg | taSvg: option.folder:option?.subFolder"
           ></svg-icon>
           <div
             *ngIf="!option.svg"
@@ -48,7 +48,7 @@
           ></div>
         </div>
       </div>
-      <!-- Svg Text Template (display flex) -->
+      <!--------------------------- Svg Text Template (display flex) --------------------------->
       <div *ngSwitchCase="'svgtextflex'">
         <div
           *ngFor="let option of options; trackBy: identity"
@@ -60,7 +60,10 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            active: option.id === activeItem?.id
+            active: option.id === activeItem?.id,
+            trailerContainer: option.name === 'Container',
+            semisleeper: option.name === 'Semi w/Sleeper',
+            lowboyrgn: option.name === 'Low Boy/RGN'
           }"
           (click)="onActiveItem(option)"
         >
@@ -73,6 +76,7 @@
           ></svg-icon>
           <div
             class="svgtextflex-text"
+            [ngClass]="{ 'truck-text': option.subFolder === 'trucks' }"
             [innerHtml]="
               option.name
                 | taHighlight: [{ index: 45632, text: getSuperControl.value }]
@@ -80,7 +84,47 @@
           ></div>
         </div>
       </div>
-      <!-- Default Template - Render Only Text -->
+      <!--------------------------- Grouping template  --------------------------->
+      <div *ngSwitchCase="'groups'">
+        <div
+          *ngFor="let option of options; trackBy: identity"
+          class="dropdown-groups"
+        >
+          <p
+            *ngIf="options.length !== 1 && options[0].name !== 'No Results'"
+            class="dropdown-group-header"
+          >
+            {{ option.groupName }}
+          </p>
+          <div
+            *ngFor="let item of option?.groups; trackBy: identity"
+            class="dropdown-subgroup-options"
+            [ngClass]="{
+              'no-result': options.length === 1 && item.name === 'No Results'
+            }"
+            (click)="onActiveItem(item)"
+          >
+            <img
+              class="dropdown-subgroup-image"
+              *ngIf="item.svg"
+              [src]="item.svg"
+              [alt]="item.name"
+            />
+            <div
+              class="dropdown-subgroup-text"
+              [ngClass]="{
+                active: item.id === activeItem?.id,
+                'no-result': options.length === 1 && item.name === 'No Results'
+              }"
+              [innerHtml]="
+                item.name
+                  | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+              "
+            ></div>
+          </div>
+        </div>
+      </div>
+      <!--------------------------- Default Template - Render Only Text --------------------------->
       <div *ngSwitchDefault>
         <div
           *ngFor="let option of options; trackBy: identity"

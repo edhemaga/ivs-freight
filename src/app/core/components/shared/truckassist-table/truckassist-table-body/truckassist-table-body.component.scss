@@ -198,13 +198,13 @@ table {
               display: flex;
               justify-content: center;
               align-items: center;
-              color: #919191;
+              color: #6C6C6C;
               font-size: 16px;
               font-weight: 400;
 
               &::selection {
-                color: #919191;
-                background: #91919120;
+                color: #6C6C6C;
+                background: #6C6C6C20;
               }
             }
 
@@ -214,26 +214,26 @@ table {
               height: 28px;
               font-size: 16px;
               font-weight: bold;
-              color: #919191;
+              color: #6C6C6C;
               display: flex;
               justify-content: center;
               align-items: center;
 
               &::selection {
-                color: #919191;
-                background: #91919120;
+                color: #6C6C6C;
+                background: #6C6C6C20;
               }
             }
 
             // VL COLUMN
             .active-vl-count,
             .zero-vl-count {
-              color: #919191;
+              color: #6C6C6C;
               font-size: 16px;
 
               &::selection {
-                color: #919191;
-                background: #91919120;
+                color: #6C6C6C;
+                background: #6C6C6C20;
               }
             }
 
@@ -278,7 +278,7 @@ table {
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
-              color: #b7b7b7;
+              color: #6C6C6C;
               font-size: 14px;
               font-weight: bold;
               align-items: center;
@@ -290,8 +290,8 @@ table {
               }
 
               &::selection {
-                color: #b7b7b7;
-                background: rgba(145, 145, 145, 0.2);
+                color: #6C6C6C;
+                background: #6C6C6C20;
               }
             }
 
@@ -321,8 +321,8 @@ table {
               width: 64px;
               height: 20px;
               border-radius: 2px;
-              background: #b7b7b720;
-              color: #b7b7b7;
+              background: #6C6C6C20;
+              color: #6C6C6C;
               font-size: 12px;
               font-weight: bold;
               display: flex;
@@ -330,8 +330,8 @@ table {
               align-items: center;
 
               &::selection {
-                color: #b7b7b7;
-                background: #b7b7b720;
+                color: #6C6C6C;
+                background: #6C6C6C;
               }
             }
 
@@ -339,7 +339,7 @@ table {
             .table-name-link {
               font-size: 14px;
               font-weight: bold;
-              color: #b7b7b7;
+              color: #6C6C6C;
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
@@ -349,8 +349,8 @@ table {
               align-items: center;
               cursor: pointer;
               &::selection {
-                color: #b7b7b7;
-                background: #b7b7b720;
+                color: #6C6C6C;
+                background: #6C6C6C20;
               }
 
               &:hover {
@@ -372,7 +372,7 @@ table {
               .customer-name {
                 font-size: 16px;
                 font-weight: 400;
-                color: #919191;
+                color: #6C6C6C;
                 white-space: nowrap;
               }
             }
@@ -381,15 +381,15 @@ table {
             .table-text {
               font-size: 14px;
               font-weight: 400;
-              color: #b7b7b7;
+              color: #6C6C6C;
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
               width: 100%;
 
               &::selection {
-                color: #b7b7b7;
-                background: rgba(145, 145, 145, 0.2);
+                color: #6C6C6C;
+                background: #6C6C6C20;
               }
             }
 
@@ -401,15 +401,15 @@ table {
             .semi-bold-table-text {
               font-size: 14px;
               font-weight: 600;
-              color: #b7b7b7;
+              color: #6C6C6C;
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
               width: 100%;
 
               &::selection {
-                color: #b7b7b7;
-                background: rgba(145, 145, 145, 0.2);
+                color: #6C6C6C;
+                background: #6C6C6C20;
               }
             }
 
@@ -453,12 +453,12 @@ table {
                 width: fit-content;
                 display: flex;
                 align-self: center;
-                color: #b7b7b7;
+                color: #6C6C6C;
                 font-size: 14px;
                 font-weight: 400;
                 &::selection {
-                  color: #b7b7b7;
-                  background: #b7b7b720;
+                  color: #6C6C6C;
+                  background: #6C6C6C20;
                 }
               }
             }
@@ -487,7 +487,7 @@ table {
               height: 26px;
               background: #eeeeee;
               border-radius: 3px;
-              color: #b7b7b7;
+              color: #6C6C6C;
 
               .checkbox-content {
                 user-select: none;
@@ -570,13 +570,13 @@ table {
             // ITEM DROP COLUMN
             .table-item {
               &::selection {
-                color: #b7b7b7;
-                background: rgba(145, 145, 145, 0.2);
+                color: #6C6C6C;
+                background: #6C6C6C20;
               }
 
               display: flex;
               white-space: pre;
-              color: #b7b7b7;
+              color: #6C6C6C;
               font-size: 14px;
               font-weight: 400;
               .description-dot {
@@ -584,7 +584,7 @@ table {
                 height: 6px;
                 margin: 8px 5px 0 5px;
                 border-radius: 50%;
-                background: #b7b7b7;
+                background: #6C6C6C;
               }
             }
 
@@ -596,7 +596,7 @@ table {
               .item-title {
                 width: 100%;
                 height: 24px;
-                background: #b7b7b7;
+                background: #6C6C6C;
                 padding: 0 20px 0 17px;
                 display: flex;
                 border-radius: 1px;
@@ -729,14 +729,14 @@ table {
 
             // TOTAL TEXT
             .table-total {
-              &::selection {
-                color: #b7b7b7;
-                background: rgba(145, 145, 145, 0.2);
-              }
-
               font-size: 14px;
               font-weight: 600;
-              color: #b7b7b7;
+              color: #6C6C6C;
+
+              &::selection {
+                color: #6C6C6C;
+                background: #6C6C6C20;
+              }
             }
 
             // SERVICE
@@ -822,26 +822,26 @@ table {
 
             //URL
             .table-url {
-              &::selection {
-                color: #b7b7b7;
-                background: rgba(145, 145, 145, 0.2);
-              }
+              cursor: pointer;
+              text-decoration: none;
+              font-size: 14px;
+              font-weight: 400;
+              color: #6C6C6C;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              width: 100%;
+              margin-top: 1px;
 
               &:hover {
                 color: #5673aa;
                 transition: 0.25s;
               }
 
-              cursor: pointer;
-              text-decoration: none;
-              font-size: 14px;
-              font-weight: 400;
-              color: #b7b7b7;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              width: 100%;
-              margin-top: 1px;
+              &::selection {
+                color: #6C6C6C;
+                background: #6C6C6C20;
+              }
             }
 
             // PASSWORD
@@ -849,7 +849,7 @@ table {
               margin-right: 6px;
               &:hover {
                 path {
-                  fill: #919191;
+                  fill: #6C6C6C;
                 }
               }
               position: relative;
@@ -858,19 +858,19 @@ table {
             .decrypted-password,
             .crypted-password {
               &::selection {
-                color: #919191;
-                background: #91919120;
+                color: #6C6C6C;
+                background: #6C6C6C20;
               }
             }
 
             .decrypted-password {
-              color: #919191;
+              color: #6C6C6C;
               font-size: 14px;
               font-weight: 400;
             }
 
             .crypted-password {
-              color: #b1b1b1;
+              color: #6C6C6C;
             }
 
             .table-password-icon,
@@ -896,11 +896,11 @@ table {
             }
 
             .table-lable-text {
-              color: #919191;
+              color: #6C6C6C;
               margin-top: 1px;
               &::selection {
-                color: #919191;
-                background: #91919120;
+                color: #6C6C6C;
+                background: #6C6C6C20;
               }
             }
           }

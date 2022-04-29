@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
-import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
-import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import {
   getRepairsShopColumnDefinition,
   getRepairTrailerColumnDefinition,
@@ -14,6 +14,8 @@ import {
   styleUrls: ['./repair-table.component.scss'],
 })
 export class RepairTableComponent implements OnInit {
+  private destroy$: Subject<void> = new Subject<void>();
+  
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -21,12 +23,22 @@ export class RepairTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService) {}
+  constructor(private customModalService: CustomModalService, private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
-
     this.getRepairData();
+
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.resetColumns = response;
+
+          this.sendRepairData();
+        }
+      });
   }
 
   public initTableOptions(): void {

@@ -14,7 +14,7 @@ export class MockModalService {
     },
     {
       id: 2,
-      name: 'Semi Sleeper',
+      name: 'Semi w/Sleeper',
       svg: 'ic_truck_semi-wSleeper.svg',
       folder: 'common',
       subFolder: 'trucks',
@@ -46,6 +46,93 @@ export class MockModalService {
       svg: 'ic_truck_car-hauler.svg',
       folder: 'common',
       subFolder: 'trucks',
+    },
+  ];
+
+  public trailerType: any[] = [
+    {
+      id: 1,
+      name: 'Reefer',
+      svg: 'ic_trailer_reefer.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 2,
+      name: 'Dry Van',
+      svg: 'ic_trailer_dryvan.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 3,
+      name: 'Side Kit',
+      svg: 'ic_trailer_side-kit.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 4,
+      name: 'Conestoga',
+      svg: 'ic_trailer_conestoga.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 5,
+      name: 'Dumper',
+      svg: 'ic_trailer_dumper.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 6,
+      name: 'Container',
+      svg: 'ic_trailer_container.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 7,
+      name: 'Tanker',
+      svg: 'ic_trailer_tanker.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 8,
+      name: 'Car Hauler',
+      svg: 'ic_trailer_carhauler.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 9,
+      name: 'Flat Bed',
+      svg: 'ic_trailer_flatbed.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 9,
+      name: 'Low Boy/RGN',
+      svg: 'ic_trailer_low-boy.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 10,
+      name: 'Chassis',
+      svg: 'ic_trailer_chassis.svg',
+      folder: 'common',
+      subFolder: 'trailers',
+    },
+    {
+      id: 11,
+      name: 'Step Deck',
+      svg: 'ic_trailer_step-deck.svg',
+      folder: 'common',
+      subFolder: 'trailers',
     },
   ];
 
@@ -85,6 +172,80 @@ export class MockModalService {
     {
       id: 9,
       name: 'VOLVO',
+    },
+  ];
+
+  public trailerMakeType: any[] = [
+    {
+      id: 1,
+      name: 'DORSEY',
+    },
+    {
+      id: 2,
+      name: 'EAST',
+    },
+    {
+      id: 3,
+      name: 'FONTAINE',
+    },
+    {
+      id: 4,
+      name: 'FRUENHAUF',
+    },
+    {
+      id: 5,
+      name: 'Great Dane',
+    },
+    {
+      id: 6,
+      name: 'Hudson Bros.',
+    },
+    {
+      id: 7,
+      name: 'HYUNDAI',
+    },
+    {
+      id: 8,
+      name: 'Kaufman',
+    },
+    {
+      id: 9,
+      name: 'Manac',
+    },
+  ];
+
+  public trailerLengthType: any[] = [
+    {
+      id: 1,
+      name: '20 ft',
+    },
+    {
+      id: 2,
+      name: '22 ft',
+    },
+    {
+      id: 3,
+      name: '24 ft',
+    },
+    {
+      id: 4,
+      name: '26 ft',
+    },
+    {
+      id: 5,
+      name: '28 ft',
+    },
+    {
+      id: 6,
+      name: '40 ft',
+    },
+    {
+      id: 7,
+      name: '43 ft',
+    },
+    {
+      id: 8,
+      name: '45 ft',
     },
   ];
 
@@ -213,20 +374,107 @@ export class MockModalService {
     {
       id: 1,
       name: 'Bank Of America',
-      svg: 'ic_bankAccount_dummy.svg',
+      svg: 'ic_bank_of_america.svg',
       folder: 'common',
+      subFolder: 'banks',
     },
     {
       id: 2,
-      name: 'Bank Of Serbia',
-      svg: 'ic_bankAccount_dummy.svg',
+      name: 'BB&T',
+      svg: 'ic_bank_bbt.svg',
       folder: 'common',
+      subFolder: 'banks',
     },
     {
-      id: 2,
-      name: 'Unicredit Bank',
-      svg: '',
+      id: 3,
+      name: 'BMO Harris',
+      svg: 'ic_bank_bmo_harris.svg',
       folder: 'common',
+      subFolder: 'banks',
+    },
+    {
+      id: 4,
+      name: 'CHASE',
+      svg: 'ic_bank_chase.svg',
+      folder: 'common',
+      subFolder: 'banks',
+    },
+    {
+      id: 5,
+      name: 'CHIME',
+      svg: 'ic_bank_chime.svg',
+      folder: 'common',
+      subFolder: 'banks',
+    },
+    {
+      id: 6,
+      name: 'Citi Bank',
+      svg: 'ic_bank_citi.svg',
+      folder: 'common',
+      subFolder: 'banks',
+    },
+    {
+      id: 7,
+      name: 'Fifth Third',
+      svg: 'ic_bank_fifth_third.svg',
+      folder: 'common',
+      subFolder: 'banks',
+    },
+    {
+      id: 8,
+      name: 'MB Financial',
+      svg: 'ic_bank_mb_financial.svg',
+      folder: 'common',
+      subFolder: 'banks',
+    },
+    {
+      id: 9,
+      name: 'NAVY FEDERAL',
+      svg: 'ic_bank_navi_federal.svg',
+      folder: 'common',
+      subFolder: 'banks',
+    },
+    {
+      id: 10,
+      name: 'PNC BANK',
+      svg: 'ic_bank_pnc.svg',
+      folder: 'common',
+      subFolder: 'banks',
+    },
+    {
+      id: 11,
+      name: 'Regions',
+      svg: 'ic_bank_regions.svg',
+      folder: 'common',
+      subFolder: 'banks',
+    },
+    {
+      id: 12,
+      name: 'TCF Bank',
+      svg: 'ic_bank_tcf.svg',
+      folder: 'common',
+      subFolder: 'banks',
+    },
+    {
+      id: 13,
+      name: 'US Bank',
+      svg: 'ic_bank_us.svg',
+      folder: 'common',
+      subFolder: 'banks',
+    },
+    {
+      id: 14,
+      name: 'Wells Fargo',
+      svg: 'ic_bank_wells_fargo.svg',
+      folder: 'common',
+      subFolder: 'banks',
+    },
+    {
+      id: 15,
+      name: 'Meta Bank',
+      svg: 'ic_bank_meta.svg',
+      folder: 'common',
+      subFolder: 'banks',
     },
   ];
 
@@ -327,17 +575,185 @@ export class MockModalService {
     {
       id: 7,
       name: '245-70-19.5',
-    }
-  ]
+    },
+  ];
 
   public ownerType: any[] = [
     {
       id: 1,
-      name: 'Purchase'
+      name: 'Purchase',
     },
     {
       id: 2,
-      name: 'Sale'
-    }
-  ]
+      name: 'Sale',
+    },
+  ];
+
+  public suspensionType: any[] = [
+    {
+      id: 1,
+      name: 'Leaf Spring',
+    },
+    {
+      id: 2,
+      name: 'Air Ride',
+    },
+    {
+      id: 3,
+      name: 'Rigid',
+    },
+  ];
+
+  public doorType: any[] = [
+    {
+      id: 1,
+      name: 'Swing',
+    },
+    {
+      id: 2,
+      name: 'Roll-Up',
+    },
+  ];
+
+  public reeferUnitType: any[] = [
+    {
+      id: 1,
+      name: 'THERMO KING',
+    },
+    {
+      id: 2,
+      name: 'Carrier',
+    },
+  ];
+
+  public accountLabels: any[] = [
+    { id: 1, name: 'Aleksandar Djordjevic' },
+    { id: 2, name: 'Denis Rodman' },
+    { id: 3, name: 'James Halpert' },
+    { id: 4, name: 'Pamela Beasley' },
+  ];
+
+  public sharedLabels: any[] = [
+    {
+      id: 1,
+      groupName: 'Whole Department',
+      groups: [
+        {
+          id: 1,
+          name: 'Accounting',
+        },
+        {
+          id: 2,
+          name: 'Dispatch',
+        },
+        {
+          id: 3,
+          name: 'Driver',
+        },
+        {
+          id: 4,
+          name: 'Safety',
+        },
+      ],
+    },
+    {
+      id: 2,
+      groupName: 'Accounting',
+      groups: [
+        {
+          id: 5,
+          name: 'Ivan Rodman',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 6,
+          name: 'CAR Rodman',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 7,
+          name: 'Denis Rodman',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 8,
+          name: 'Kojot Rodman',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+      ],
+    },
+    {
+      id: 3,
+      groupName: 'Dispatch',
+      groups: [
+        {
+          id: 9,
+          name: 'Macroni Trotter',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 10,
+          name: 'Aleksandar Nacovister',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+      ],
+    },
+    {
+      id: 4,
+      groupName: 'Driver',
+      groups: [
+        {
+          id: 111,
+          name: 'Angelo Mistacuy',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 2123,
+          name: 'Aleksandar Djordjevic',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 3312,
+          name: 'Denis Rodman',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+      ],
+    },
+    {
+      id: 5,
+      groupName: 'Safety',
+      groups: [
+        {
+          id: 1312,
+          name: 'Angelo Trotter',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 254,
+          name: 'Marko Djordjevic',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 343,
+          name: 'Djole Rodman',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 454,
+          name: 'Bojan Rodman',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 5534,
+          name: 'Slavisa Rodman',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+        {
+          id: 6534,
+          name: 'Pera Rodman',
+          svg: 'https://picsum.photos/id/237/200/300',
+        },
+      ],
+    },
+  ];
 }

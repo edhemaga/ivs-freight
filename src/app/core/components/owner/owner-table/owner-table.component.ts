@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-columns';
 
 @Component({
@@ -8,6 +10,8 @@ import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-column
   styleUrls: ['./owner-table.component.scss'],
 })
 export class OwnerTableComponent implements OnInit {
+  private destroy$: Subject<void> = new Subject<void>();
+  
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -15,12 +19,22 @@ export class OwnerTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService) {}
+  constructor(private customModalService: CustomModalService, private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
-
     this.getOwnerData();
+
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.resetColumns = response;
+
+          this.sendOwnerData();
+        }
+      });
   }
 
   public initTableOptions(): void {

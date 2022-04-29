@@ -7,29 +7,28 @@ ngb-modal-window[aria-hidden="true"] {
 .modal {
   z-index: 1000;
   background-color: rgba(0, 0, 0, 0);
-  transition: all 0.3s ease-in;
+  transition: all 0.3s ease-out;
 
   &.fade .modal-dialog {
-    -webkit-animation-name: fade-in-scale-animation 0.3s;
-    animation-name: fade-in-scale-animation 0.3s;
+    -webkit-animation-name: fade-in-scale-animation 0.5s;
+    animation-name: fade-in-scale-animation 0.5s;
   }
 
   &.show .modal-dialog {
     opacity: 0;
     transform: scale(0.7) !important;
-    transition: all 0.3s ease-in !important;
+    transition: all 0.3s ease-out !important;
   }
 
   // This class added through modal.service.ts
   &.modal-animation {
-    background-color: rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in !important;
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: all 0.4s ease-out !important;
   }
 
   &.modal-animation .modal-dialog {
     opacity: 1;
     transform: scale(1) !important;
-    transition: all 0.3s ease-in !important;
   }
 
   .modal-content {
@@ -123,6 +122,12 @@ ngb-modal-window[aria-hidden="true"] {
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+
+          &:hover {
+            transition: all 0.3s ease-in-out;
+            color: #ffffff;
+            background-color: #ef5350;
+          }
         }
 
         .modal-deactivate-btn {
@@ -143,6 +148,12 @@ ngb-modal-window[aria-hidden="true"] {
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+
+          &:hover {
+            transition: all 0.3s ease-in-out;
+            color: #ffffff;
+            background-color: #6c6c6c;
+          }
         }
 
         .modal-save-btn {
@@ -150,7 +161,7 @@ ngb-modal-window[aria-hidden="true"] {
           border: none;
           border-radius: 2px;
           background-color: #f3f3f3;
-          color: #919191;
+          color: #B7B7B7;
           font-weight: 700;
           font-size: 14px;
           width: 150px;
@@ -162,11 +173,19 @@ ngb-modal-window[aria-hidden="true"] {
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+          pointer-events: none;
 
-          &:hover {
-            transition: all 0.3s ease-in-out;
-            color: #ffffff;
+          &.valid {
             background-color: #6d82c7;
+            color: #ffffff;
+            pointer-events: all;
+            transition: all 0.3s ease-in-out;
+
+            &:hover {
+              transition: all 0.3s ease-in-out;
+              color: #ffffff;
+              background-color: #536bc2;
+            }
           }
         }
       }

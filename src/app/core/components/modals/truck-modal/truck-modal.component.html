@@ -2,6 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Truck' : 'Edit Truck'"
   [editData]="editData"
   [editName]="'262212'"
+  [isModalValid]="truckForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher
@@ -117,7 +118,11 @@
         <!-- Is Company Owned -->
         <div class="custom-checkbox-card">
           <div class="divider"></div>
-          <div class="checkbox-card-header">
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: truckForm.get('companyOwned').value }"
+            (click)="openCloseCheckboxCard($event)"
+          >
             <app-ta-checkbox
               formControlName="companyOwned"
               [label]="'Company Owned'"
@@ -148,7 +153,7 @@
                       label: 'Owner',
                       isRequired: true,
                       isDropdown: true,
-                      dropdownWidthClass: 'w-col-companyOwned'
+                      dropdownWidthClass: 'w-col-6-companyOwned'
                     }"
                     [options]="ownerType"
                   ></app-ta-input-dropdown>
@@ -221,7 +226,7 @@
                 type: 'text',
                 label: 'Tire Size',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-tireSize'
+                dropdownWidthClass: 'w-col-5-tireSize'
               }"
               [options]="tireSize"
             ></app-ta-input-dropdown>
@@ -243,7 +248,8 @@
               [inputConfig]="{
                 name: 'Insurance Policy',
                 type: 'text',
-                label: 'Insurance Policy'
+                label: 'Insurance Policy',
+                textTransform: 'uppercase'
               }"
             ></app-ta-input>
           </div>
