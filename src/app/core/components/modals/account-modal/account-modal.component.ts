@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-account-modal',
@@ -20,12 +21,21 @@ export class AccountModalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal,
-    private mockModalService: MockModalService
+    private mockModalService: MockModalService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
     this.createForm();
     this.accountLabels = this.mockModalService.accountLabels;
+    this.modalService.companyAccountModalGet().subscribe(
+      (res) => {
+        console.log(res)
+      },
+      (err) => {
+        console.log(err)
+      }
+    );
   }
 
   private createForm() {
@@ -48,6 +58,7 @@ export class AccountModalComponent implements OnInit {
         this.inputService.markInvalid(this.accountForm);
         return;
       }
+      // this.modalService.addCompanyAccount()
       this.ngbActiveModal.close();
     }
   }
