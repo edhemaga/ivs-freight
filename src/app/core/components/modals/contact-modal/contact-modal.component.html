@@ -1,7 +1,7 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add Account' : 'Edit Account'"
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Contact' : 'Edit Contact'"
   [editData]="editData"
-  [editName]="'262212'"
+  [editName]="editData?.id"
   [isModalValid]="contactForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
@@ -22,17 +22,18 @@
       </div>
       <div class="col-5">
         <app-ta-input-dropdown
+          *ngIf="contactLabels.length"
           formControlName="companyContactLabelId"
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
             label: 'Select Label',
-            isRequired: true,
             isDropdown: true,
             dropdownWidthClass: 'w-col-5'
           }"
           [canAddNew]="true"
           [options]="contactLabels"
+          (selectedItem)="onSelectLabel($event)"
         ></app-ta-input-dropdown>
       </div>
     </div>
@@ -44,7 +45,6 @@
             name: 'Phone',
             type: 'text',
             label: 'Phone',
-            isRequired: true,
             placeholderIcon: 'phone',
             mask: '(000) 000-0000'
           }"
@@ -57,7 +57,6 @@
             name: 'Email',
             type: 'text',
             label: 'Email',
-            isRequired: true,
             placeholderIcon: 'email'
           }"
         ></app-ta-input>
@@ -71,10 +70,10 @@
             name: 'Address',
             type: 'text',
             label: 'Address, City, State Zip',
-            isRequired: true,
             placeholderIcon: 'address',
             textTransform: 'capitalize'
           }"
+          (selectedAddress)="onHandleAddress($event)"
         ></app-ta-input-address>
       </div>
       <div class="col-2">
@@ -117,6 +116,7 @@
           <div class="row shared-contact-dropdown">
             <div class="col-12">
               <app-ta-input-dropdown
+                *ngIf="sharedDepartments.length"
                 formControlName="sharedLabelId"
                 [template]="'groups'"
                 [inputConfig]="{
@@ -124,10 +124,10 @@
                   type: 'text',
                   label: 'Share Contact',
                   isDropdown: true,
-                  isRequired: true,
                   dropdownWidthClass: 'w-col-12'
                 }"
-                [options]="sharedLabels"
+                [options]="sharedDepartments"
+                (selectedItem)="onSelectDepartment($event)"
               ></app-ta-input-dropdown>
             </div>
           </div>

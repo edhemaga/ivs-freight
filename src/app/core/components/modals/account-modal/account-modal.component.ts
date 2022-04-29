@@ -9,7 +9,6 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
 import {
   CompanyAccountModalResponse,
   CompanyAccountResponse,
@@ -37,7 +36,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal,
-    private modalService: ModalService,
     private accountModalService: AccountModalService,
     private notificationService: NotificationService
   ) {}
@@ -95,7 +93,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   private getAccountLabels(): void {
-    this.accountLabels$ = this.modalService.companyAccountLabels();
+    this.accountLabels$ = this.accountModalService.companyAccountLabels();
   }
 
   private editCompanyAccount(id: number) {

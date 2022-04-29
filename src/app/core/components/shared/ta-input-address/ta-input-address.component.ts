@@ -1,9 +1,11 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   Self,
   ViewChild,
 } from '@angular/core';
@@ -36,6 +38,8 @@ export class TaInputAddressComponent
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
 
+  @Output() selectedAddress: EventEmitter<Address> = new EventEmitter<Address>(null);
+
   public focusInput: boolean = false;
   public waitValidation: boolean = false;
   public numberOfSpaces: number = 0;
@@ -66,7 +70,7 @@ export class TaInputAddressComponent
   public handleAddressChange(address: Address) {
     this.activeAddress = this.sharedService.selectAddress(null, address);
     this.invalidAddress = false;
-
+    this.selectedAddress.emit(this.activeAddress);
     this.inputService.handleAddress(
       this.sharedService.selectAddress(null, address)
     );

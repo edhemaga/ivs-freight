@@ -1,9 +1,18 @@
+import { ContactModalService } from './contact-modal.service';
 import { card_modal_animation } from './../../shared/animations/card-modal.animation';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import {
+  CompanyContactModalResponse,
+  CompanyContactResponse,
+  CreateCompanyContactCommand,
+  UpdateCompanyContactCommand,
+} from 'appcoretruckassist';
+import { MockModalService } from 'src/app/core/services/mockmodal.service';
 
 @Component({
   selector: 'app-contact-modal',
@@ -11,26 +20,40 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
   styleUrls: ['./contact-modal.component.scss'],
   animations: [card_modal_animation('showHideSharedContact', '20px')],
 })
-export class ContactModalComponent implements OnInit {
+export class ContactModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
 
   public contactForm: FormGroup;
   public contactLabels: any[] = [];
-  public sharedLabels: any[] = [];
+  public sharedDepartments: any[] = [];
+
+  public selectedContactLabel: any = null;
+  public selectedSharedDepartment: any = null;
+  public selectedAddress: any = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal,
+    private contactModalService: ContactModalService,
+    private notificationService: NotificationService,
     private mockModalService: MockModalService
   ) {}
 
   ngOnInit() {
     this.createForm();
-    this.contactLabels = this.mockModalService.accountLabels;
-    this.sharedLabels = this.mockModalService.sharedLabels;
-  }
+    this.getContactLabelsAndDepartments();
 
+    if (this.editData) {
+      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
+      this.editData = {
+        ...this.editData,
+        id: 2,
+      };
+      this.editCompanyContact(this.editData.id);
+    }
+  }
+ 
   private createForm() {
     this.contactForm = this.formBuilder.group({
       name: [null, [Validators.required, Validators.maxLength(23)]],
@@ -57,14 +80,168 @@ export class ContactModalComponent implements OnInit {
         this.inputService.markInvalid(this.contactForm);
         return;
       }
+
+      // Save & Update
+      if (action === 'save') {
+        if (this.editData) {
+          this.updateCompanyContact(this.editData.id);
+        } else {
+          this.addCompanyContact();
+        }
+      }
+
+      // Delete
+      if (action === 'delete' && this.editData) {
+        this.deleteCompanyContact(this.editData.id);
+      }
+
       this.ngbActiveModal.close();
     }
   }
+
   public openCloseCheckboxCard(event: any) {
-    if(this.contactForm.get('shared').value) {
+    if (this.contactForm.get('shared').value) {
       event.preventDefault();
       event.stopPropagation();
       this.contactForm.get('shared').setValue(false);
     }
   }
+
+  private getContactLabelsAndDepartments() {
+    this.contactModalService
+      .companyContactLabelsAndDeparments()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: CompanyContactModalResponse) => {
+          this.contactLabels = res.labels;
+          this.sharedDepartments = res.departments;
+          this.sharedDepartments = this.mockModalService.sharedLabels;
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't get contact labels and departments.",
+            'Error:'
+          );
+        },
+      });
+  }
+
+  private editCompanyContact(id: number) {
+    this.contactModalService
+      .getCompanyContactById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: CompanyContactResponse) => {
+          this.contactForm.patchValue({
+            name: res.name,
+            companyContactLabelId: res.companyContactLabel.name,
+            phone: res.phone,
+            email: res.email,
+            address: res.address.address,
+            addressUnit: res.address.addressUnit,
+            shared: res.shared,
+            sharedLabelId: null, // TODO: Ceka se BACK
+            note: res.note,
+          });
+        },
+        error: () => {
+          this.notificationService.error("Can't get contact.", 'Error:');
+        },
+      });
+
+      console.log(this.contactForm)
+  }
+
+  private addCompanyContact(): void {
+    const { sharedLabelId, addressUnit, ...form } = this.contactForm.value;
+    const { streetName, streetNumber, ...address } = this.selectedAddress;
+    const newData: CreateCompanyContactCommand = {
+      ...form,
+      companyContactLabelId: this.selectedContactLabel.id,
+      address: {
+        ...address,
+        addressUnit,
+      },
+    };
+    this.contactModalService
+      .addCompanyContact(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Company Contact successfully created.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Company Contact can't be created.",
+            'Error:'
+          );
+        },
+      });
+  }
+
+  private updateCompanyContact(id: number): void {
+    const { sharedLabelId, addressUnit, ...form } = this.contactForm.value;
+    const { streetName, streetNumber, ...address } = this.selectedAddress;
+    const newData: UpdateCompanyContactCommand = {
+      ...form,
+      companyContactLabelId: this.selectedContactLabel.id,
+      address: {
+        ...address,
+        addressUnit,
+      },
+      id: id,
+    };
+    this.contactModalService
+      .updateCompanyContact(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Company Contact successfully updated.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Company Contact can't be updated.",
+            'Error:'
+          );
+        },
+      });
+  }
+
+  public deleteCompanyContact(id: number): void {
+    this.contactModalService
+      .deleteCompanyContact(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () =>
+          this.notificationService.success(
+            'Company Contact successfully deleted.',
+            'Success:'
+          ),
+        error: () =>
+          this.notificationService.error(
+            "Company Contact can't be deleted.",
+            'Error:'
+          ),
+      });
+  }
+
+  public onSelectLabel(event: any): void {
+    this.selectedContactLabel = event;
+  }
+
+  public onSelectDepartment(event: any): void {
+    this.selectedSharedDepartment = event;
+  }
+
+  public onHandleAddress($event): void {
+    this.selectedAddress = $event;
+  }
+
+  ngOnDestroy(): void {}
 }

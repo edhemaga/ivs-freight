@@ -1,18 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalOptions } from './modal.options';
-import { CompanyAccountModalResponse, CompanyAccountService, CreateCompanyAccountCommand } from 'appcoretruckassist';
-import { LocalStorage } from '@ng-idle/core';
-
 @Injectable({
   providedIn: 'root',
 })
 export class ModalService {
-
-  token = JSON.parse(localStorage.getItem('token'))
-  constructor(private ngbModal: NgbModal, private companyAccountService: CompanyAccountService) {}
+  constructor(private ngbModal: NgbModal) {}
 
   public openModal(component: any, options: ModalOptions, editData?: any) {
     options = {
@@ -66,11 +59,5 @@ export class ModalService {
     }, 500);
 
     return modal;
-  }
-
-  // -------------------------- Company Account Labels --------------------------
-
-  public companyAccountLabels(): Observable<CompanyAccountModalResponse> {
-    return this.companyAccountService.apiCompanyaccountModalGet();
   }
 }
