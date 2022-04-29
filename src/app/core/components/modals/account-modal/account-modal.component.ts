@@ -169,7 +169,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
   public deleteCompanyAccount(id: number): void {
     this.accountModalService
-      .deleteCompanyAccount(id)
+      .deleteCompanyAccountById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () =>

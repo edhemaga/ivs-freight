@@ -143,6 +143,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             sharedLabelId: null, // TODO: Ceka se BACK
             note: res.note,
           });
+          this.selectedContactLabel = res.companyContactLabel
+          // TODO: shared departments label selected
         },
         error: () => {
           this.notificationService.error("Can't get contact.", 'Error:');
@@ -215,7 +217,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   public deleteCompanyContact(id: number): void {
     this.contactModalService
-      .deleteCompanyContact(id)
+      .deleteCompanyContactById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () =>

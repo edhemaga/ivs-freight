@@ -21,7 +21,7 @@ export class AccountModalService {
     return this.companyAccountService.apiCompanyaccountPost(data);
   }
 
-  public deleteCompanyAccount(id: number): Observable<any> {
+  public deleteCompanyAccountById(id: number): Observable<any> {
     return this.companyAccountService.apiCompanyaccountIdDelete(id);
   }
 

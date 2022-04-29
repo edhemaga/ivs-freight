@@ -21,7 +21,7 @@ export class ContactModalService {
     return this.companyContactService.apiCompanycontactPost(data);
   }
 
-  public deleteCompanyContact(id: number): Observable<any> {
+  public deleteCompanyContactById(id: number): Observable<any> {
     return this.companyContactService.apiCompanycontactIdDelete(id);
   }
 
