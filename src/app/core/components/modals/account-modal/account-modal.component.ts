@@ -1,9 +1,10 @@
+import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { CompanyAccountModalResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-account-modal',
@@ -15,27 +16,18 @@ export class AccountModalComponent implements OnInit {
   @Input() editData: any;
   
   public accountForm: FormGroup;
-  public accountLabels: any[] = [];
+  public accountLabels$: Observable<CompanyAccountModalResponse>;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal,
-    private mockModalService: MockModalService,
     private modalService: ModalService
   ) {}
 
   ngOnInit() {
     this.createForm();
-    this.accountLabels = this.mockModalService.accountLabels;
-    this.modalService.companyAccountModalGet().subscribe(
-      (res) => {
-        console.log(res)
-      },
-      (err) => {
-        console.log(err)
-      }
-    );
+    this.getAccountLabels();
   }
 
   private createForm() {
@@ -61,5 +53,9 @@ export class AccountModalComponent implements OnInit {
       // this.modalService.addCompanyAccount()
       this.ngbActiveModal.close();
     }
+  }
+
+  public getAccountLabels() {
+    this.accountLabels$ =  this.modalService.companyAccountModalGet();
   }
 }

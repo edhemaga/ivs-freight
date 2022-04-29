@@ -22,6 +22,7 @@
       </div>
       <div class="col-5">
         <app-ta-input-dropdown
+          *ngIf="accountLabels$ | async as accountLabels" 
           formControlName="companyAccountLabel"
           [inputConfig]="{
             name: 'Input Dropdown',
@@ -29,10 +30,11 @@
             label: 'Select Label',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass:'w-col-5'
+            dropdownWidthClass:'w-col-5',
+            hasInputColor: true
           }"
           [canAddNew]="true"
-          [options]="accountLabels"
+          [options]="accountLabels.labels"
         ></app-ta-input-dropdown>
       </div>
     </div>

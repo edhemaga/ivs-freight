@@ -185,6 +185,16 @@ export class TaInputDropdownComponent
       this.getSuperControl.setValue(option.name);
       this.options = this.originalOptions;
     }
+
+    if(this.inputConfig.hasInputColor && this.activeItem) {
+      this.inputConfig = {
+        ...this.inputConfig,
+        colorizedInput: {
+          backgroundColor: this.activeItem?.color,
+          color: '#FFFFFF'
+        }
+      }
+    }
   }
 
   public toggleDropdownOptions(action: boolean): void {

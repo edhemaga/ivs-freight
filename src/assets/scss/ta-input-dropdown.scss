@@ -40,13 +40,20 @@
 
       //------------------------ Default Template ------------------------
       .dropdown-option {
-        background-color: #ffffff;
         padding: 3px 4px;
         height: 26px;
         font-size: 14px;
         font-weight: 400;
-        color: #6c6c6c;
         border-radius: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      
+
+        &:not(:hover) {
+          background-color: #ffffff !important;
+          color: #6c6c6c !important;
+        }
 
         &:hover {
           background-color: #f3f3f3;
@@ -132,6 +139,33 @@
             transition: all 0.3s ease-in-out;
           }
         }
+
+        // &.red {
+        //   &:hover {
+        //     background-color: #e57373;
+        //     color: #ffffff;
+        //     border-radius: 2px;
+        //     transition: all 0.3s ease-in-out;
+        //   }
+        // }
+
+        // &.blue {
+        //   &:hover {
+        //     background-color: #6D82C7;
+        //     color: #ffffff;
+        //     border-radius: 2px;
+        //     transition: all 0.3s ease-in-out;
+        //   }
+        // }
+
+        // &.yellow {
+        //   &:hover {
+        //     background-color: #FFB74D;
+        //     color: #ffffff;
+        //     border-radius: 2px;
+        //     transition: all 0.3s ease-in-out;
+        //   }
+        // }
 
         //------------------------ Trucks, Trailers, Colors Template  ------------------------
         &.svg-text-flex {
@@ -353,7 +387,7 @@
                 font-weight: 600;
                 padding: 1.5px 4px;
                 color: #b7b7b7;
-      
+
                 &:hover {
                   background-color: transparent !important;
                   color: #b7b7b7 !important;

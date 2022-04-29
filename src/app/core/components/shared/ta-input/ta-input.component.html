@@ -175,9 +175,9 @@
   <svg-icon
     class="input-dropdown-arrow"
     [ngClass]="{
-      visible: inputConfig.isDropdown && !inputConfig.isDisabled,
-      active: inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
-      valid:
+      'visible': inputConfig.isDropdown && !inputConfig.isDisabled,
+      'active': inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
+      'valid':
         inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.valid &&
@@ -210,8 +210,9 @@
         focusInput &&
         inputConfig.isDropdown &&
         !inputConfig.placeholder,
-      hide: isDropdownAddModeActive,
-      'no-validation-hover': !waitValidation && !focusInput
+      'hide': isDropdownAddModeActive,
+      'no-validation-hover': !waitValidation && !focusInput,
+      'colorized-arrow': inputConfig.colorizedInput
     }"
     src="assets/svg/common/ic_arrow-down.svg"
     (click)="toggleDropdownOptions()"
@@ -262,6 +263,8 @@
         isDropdownOptionsActive &&
         focusInput
     }"
+    [style.backgroundColor]="inputConfig.colorizedInput ? inputConfig.colorizedInput.backgroundColor: ''"
+    [style.color]="inputConfig.colorizedInput ? inputConfig.colorizedInput.color: ''"
     [(ngModel)]="input.value"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onBackspace($event)"
