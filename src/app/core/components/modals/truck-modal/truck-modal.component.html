@@ -118,7 +118,11 @@
         <!-- Is Company Owned -->
         <div class="custom-checkbox-card">
           <div class="divider"></div>
-          <div class="checkbox-card-header">
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: truckForm.get('companyOwned').value }"
+            (click)="openCloseCheckboxCard($event)"
+          >
             <app-ta-checkbox
               formControlName="companyOwned"
               [label]="'Company Owned'"

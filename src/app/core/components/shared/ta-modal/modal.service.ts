@@ -1,20 +1,20 @@
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalOptions } from './modal.options';
+import { CompanyAccountModalResponse, CompanyAccountService, CreateCompanyAccountCommand } from 'appcoretruckassist';
+import { LocalStorage } from '@ng-idle/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ModalService {
-  constructor(private ngbModal: NgbModal) {}
 
-  public openModal(
-    component: any,
-    options: ModalOptions,
-    editData?: any
-  ) {
+  token = JSON.parse(localStorage.getItem('token'))
+  constructor(private ngbModal: NgbModal, private companyAccountService: CompanyAccountService) {}
 
+  public openModal(component: any, options: ModalOptions, editData?: any) {
     options = {
       ...options,
       backdrop: 'static',
@@ -22,7 +22,7 @@ export class ModalService {
 
     const modal = this.ngbModal.open(component, options);
 
-    if(editData != null) {
+    if (editData != null) {
       modal.componentInstance.editData = editData;
     }
 
@@ -66,5 +66,15 @@ export class ModalService {
     }, 500);
 
     return modal;
+  }
+
+  // -------------------------- Company Account --------------------------
+
+  public companyAccountModalGet(): Observable<CompanyAccountModalResponse> {
+    return this.companyAccountService.apiCompanyaccountModalGet();
+  }
+
+  public addCompanyAccount(data: CreateCompanyAccountCommand) {
+    return this.companyAccountService.apiCompanyaccountPost(data);
   }
 }

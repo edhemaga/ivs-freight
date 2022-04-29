@@ -127,7 +127,11 @@
         <!-- IsOwner -->
         <div class="custom-checkbox-card">
           <div class="divider"></div>
-          <div class="checkbox-card-header">
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: driverForm.get('isOwner').value }"
+            (click)="openCloseCheckboxCard($event)"
+          >
             <app-ta-checkbox
               formControlName="isOwner"
               [label]="'Owner'"

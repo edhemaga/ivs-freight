@@ -305,7 +305,8 @@ export class TrailerTableComponent implements OnInit {
         { size: 'small' },
         {
           ...event,
-          type: 'edit'
+          type: 'edit',
+          disableButton: true
         }
       );
     }

@@ -92,6 +92,10 @@
       padding: 5px 6px;
       line-height: 18px;
 
+      &.pointer {
+        cursor: pointer;
+      }
+
       .checkbox-card-header-arrow {
         svg {
           transform: rotate(0deg);

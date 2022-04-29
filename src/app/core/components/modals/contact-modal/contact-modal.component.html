@@ -1,0 +1,140 @@
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Account' : 'Edit Account'"
+  [editData]="editData"
+  [editName]="'262212'"
+  [isModalValid]="contactForm.valid"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <form [formGroup]="contactForm" class="form-container">
+    <div class="row">
+      <div class="col-7">
+        <app-ta-input
+          formControlName="name"
+          [inputConfig]="{
+            name: 'Full Name',
+            type: 'text',
+            label: 'Full Name',
+            isRequired: true,
+            maxLength: 23,
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-5">
+        <app-ta-input-dropdown
+          formControlName="companyContactLabelId"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Select Label',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-5'
+          }"
+          [canAddNew]="true"
+          [options]="contactLabels"
+        ></app-ta-input-dropdown>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-5">
+        <app-ta-input
+          formControlName="phone"
+          [inputConfig]="{
+            name: 'Phone',
+            type: 'text',
+            label: 'Phone',
+            isRequired: true,
+            placeholderIcon: 'phone',
+            mask: '(000) 000-0000'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-7">
+        <app-ta-input
+          formControlName="email"
+          [inputConfig]="{
+            name: 'Email',
+            type: 'text',
+            label: 'Email',
+            isRequired: true,
+            placeholderIcon: 'email'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-10">
+        <app-ta-input-address
+          formControlName="address"
+          [inputConfig]="{
+            name: 'Address',
+            type: 'text',
+            label: 'Address, City, State Zip',
+            isRequired: true,
+            placeholderIcon: 'address',
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input-address>
+      </div>
+      <div class="col-2">
+        <app-ta-input
+          formControlName="addressUnit"
+          [inputConfig]="{
+            name: 'Address Unit',
+            type: 'text',
+            label: 'Unit #',
+            maxLength: 6
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <!-- Shared Contact -->
+    <div class="custom-checkbox-card">
+      <div class="divider"></div>
+      <div
+        class="checkbox-card-header"
+        [ngClass]="{ pointer: contactForm.get('shared').value }"
+        (click)="openCloseCheckboxCard($event)"
+      >
+        <app-ta-checkbox
+          formControlName="shared"
+          [label]="'Shared Contact'"
+        ></app-ta-checkbox>
+        <svg-icon
+          class="checkbox-card-header-arrow"
+          src="assets/svg/common/ic_arrow-down.svg"
+          [ngClass]="{ rotate: contactForm.get('shared').value }"
+        ></svg-icon>
+      </div>
+      <div
+        class="checkbox-card-body"
+        [@showHideSharedContact]="
+          contactForm.get('shared').value ? 'true' : 'false'
+        "
+      >
+        <div *ngIf="contactForm.get('shared').value">
+          <div class="row shared-contact-dropdown">
+            <div class="col-12">
+              <app-ta-input-dropdown
+                formControlName="sharedLabelId"
+                [template]="'groups'"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Share Contact',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-12'
+                }"
+                [options]="sharedLabels"
+              ></app-ta-input-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Note -->
+      <app-ta-input-note formControlName="note"></app-ta-input-note>
+    </div>
+  </form>
+</app-ta-modal>

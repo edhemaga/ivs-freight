@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getToolsContactsColumnDefinition } from 'src/assets/utils/settings/contacts-columns';
+import { ContactModalComponent } from '../../modals/contact-modal/contact-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-contacts-table',
@@ -19,7 +20,7 @@ export class ContactsTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService, private tableService: TruckassistTableService) {}
+  constructor(private modalService: ModalService, private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -153,9 +154,26 @@ export class ContactsTableComponent implements OnInit {
     return data;
   }
 
+  public onTableBodyActions(event: any) {
+    console.log(event)
+    if (event.type === 'edit-contact') {
+      this.modalService.openModal(
+        ContactModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          type: 'edit'
+        }
+      );
+    }
+  }
+
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba da se odradi modal!');
+      this.modalService.openModal(
+        ContactModalComponent,
+        { size: 'small' }
+      );
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setContactData(event.tabData);

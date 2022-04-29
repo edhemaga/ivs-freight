@@ -4,6 +4,7 @@
   }
 
   .popover-body {
+    // ---------------------------------------- DROPDOWN ----------------------------------------
     .dropdown-options {
       position: relative;
       top: 4px;
@@ -240,6 +241,129 @@
 
       &.w-col-trailerLength {
         width: 106px;
+      }
+
+      // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
+      &.dropdown-options-groups {
+        max-height: 495px;
+
+        .dropdown-groups {
+          display: flex;
+          flex-direction: column;
+
+          p {
+            margin: 0;
+          }
+
+          .dropdown-group-header {
+            font-size: 10px;
+            color: #dadada;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 13px;
+            padding: 4px;
+            padding-bottom: 3px;
+          }
+
+          .dropdown-subgroup-options {
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            height: 26px;
+
+            &:hover {
+              background-color: #f3f3f3;
+              border-radius: 2px;
+              cursor: pointer;
+              transition: all 0.3s ease-in-out;
+
+              .dropdown-subgroup-text {
+                color: #3c3c3c;
+                transition: all 0.3s ease-in-out;
+
+                &.active {
+                  // Higlight text
+                  .highlight-text-45632 {
+                    background-color: transparent;
+
+                    &:hover {
+                      color: #3551b7 !important;
+                      transition: all 0.3s ease-in-out;
+                    }
+                  }
+                }
+              }
+            }
+
+            &.no-result {
+              height: 18px;
+              padding: 0px !important;
+              &:hover {
+                background-color: transparent !important;
+              }
+            }
+
+            .dropdown-subgroup-image {
+              width: 16px;
+              height: 16px;
+              border-radius: 50%;
+              object-fit: fill;
+              margin-right: 4px;
+            }
+
+            .dropdown-subgroup-text {
+              font-size: 14px;
+              font-weight: 400;
+              color: #6c6c6c;
+              display: block;
+              width: 100%;
+
+              // Higlight text
+              .highlight-text-45632 {
+                font-weight: 700;
+                background-color: transparent;
+
+                &:hover {
+                  color: #3c3c3c;
+                  transition: all 0.3s ease-in-out;
+                }
+              }
+
+              &.active {
+                color: #536bc2;
+                position: relative;
+
+                &:hover {
+                  color: #3551b7;
+                  transition: all 0.3s ease-in-out;
+                }
+
+                &::after {
+                  position: absolute;
+                  right: 3px;
+                  content: url("../..//assets/svg/common/ic_confirm.svg");
+                  width: 14px;
+                  height: 10px;
+                }
+              }
+
+              &.no-result {
+                height: 20px;
+                font-size: 11px;
+                font-weight: 600;
+                padding: 1.5px 4px;
+                color: #b7b7b7;
+      
+                &:hover {
+                  background-color: transparent !important;
+                  color: #b7b7b7 !important;
+                  transition: all 0.3s ease-in-out;
+                  cursor: auto;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

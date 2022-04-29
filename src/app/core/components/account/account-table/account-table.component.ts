@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getToolsAccountsColumnDefinition } from 'src/assets/utils/settings/toolsAccounts-columns';
+import { AccountModalComponent } from '../../modals/account-modal/account-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-account-table',
@@ -19,7 +20,7 @@ export class AccountTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService,  private tableService: TruckassistTableService) {}
+  constructor(private modalService: ModalService,  private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -155,9 +156,25 @@ export class AccountTableComponent implements OnInit {
     return data;
   }
 
+  public onTableBodyActions(event: any) {
+    if (event.type === 'edit-account') {
+      this.modalService.openModal(
+        AccountModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          type: 'edit'
+        }
+      );
+    }
+  }
+
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba da se uradi modal!');
+      this.modalService.openModal(
+        AccountModalComponent,
+        { size: 'small' }
+      );
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setAccountData(event.tabData);

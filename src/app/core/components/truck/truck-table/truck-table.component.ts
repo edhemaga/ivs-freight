@@ -332,7 +332,8 @@ export class TruckTableComponent implements OnInit {
         { size: 'small' },
         {
           ...event,
-          type: 'edit'
+          type: 'edit',
+          disableButton: true
         }
       );
     }

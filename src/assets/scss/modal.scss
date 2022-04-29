@@ -23,7 +23,7 @@ ngb-modal-window[aria-hidden="true"] {
   // This class added through modal.service.ts
   &.modal-animation {
     background-color: rgba(0, 0, 0, 0.4);
-    transition: all 0.7s ease-out !important;
+    transition: all 0.4s ease-out !important;
   }
 
   &.modal-animation .modal-dialog {
@@ -122,6 +122,12 @@ ngb-modal-window[aria-hidden="true"] {
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+
+          &:hover {
+            transition: all 0.3s ease-in-out;
+            color: #ffffff;
+            background-color: #ef5350;
+          }
         }
 
         .modal-deactivate-btn {
@@ -142,6 +148,12 @@ ngb-modal-window[aria-hidden="true"] {
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+
+          &:hover {
+            transition: all 0.3s ease-in-out;
+            color: #ffffff;
+            background-color: #6c6c6c;
+          }
         }
 
         .modal-save-btn {
@@ -149,7 +161,7 @@ ngb-modal-window[aria-hidden="true"] {
           border: none;
           border-radius: 2px;
           background-color: #f3f3f3;
-          color: #919191;
+          color: #B7B7B7;
           font-weight: 700;
           font-size: 14px;
           width: 150px;
@@ -161,17 +173,19 @@ ngb-modal-window[aria-hidden="true"] {
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
-
-          &:hover {
-            transition: all 0.3s ease-in-out;
-            color: #ffffff;
-            background-color: #6d82c7;
-          }
+          pointer-events: none;
 
           &.valid {
-            transition: all 0.3s ease-in-out;
-            color: #ffffff;
             background-color: #6d82c7;
+            color: #ffffff;
+            pointer-events: all;
+            transition: all 0.3s ease-in-out;
+
+            &:hover {
+              transition: all 0.3s ease-in-out;
+              color: #ffffff;
+              background-color: #536bc2;
+            }
           }
         }
       }

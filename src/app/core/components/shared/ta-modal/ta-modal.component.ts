@@ -20,10 +20,12 @@ export class TaModalComponent {
   @Input() customClass: string;
   @Input() isModalValid: boolean;
 
+  @Output() modalActionTypeEmitter: EventEmitter<string> =
+  new EventEmitter<string>(null);
+
   private timeout = null;
 
-  @Output() modalActionTypeEmitter: EventEmitter<string> =
-    new EventEmitter<string>(null);
+  public isDeactivated: boolean = false;
 
   constructor(private ngbActiveModal: NgbActiveModal) {}
 
@@ -47,6 +49,7 @@ export class TaModalComponent {
         break;
       }
       case 'deactivate': {
+        this.isDeactivated = !this.isDeactivated;
         this.modalActionTypeEmitter.emit(action);
         break;
       }
