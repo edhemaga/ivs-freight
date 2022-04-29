@@ -68,13 +68,9 @@ export class ModalService {
     return modal;
   }
 
-  // -------------------------- Company Account --------------------------
+  // -------------------------- Company Account Labels --------------------------
 
   public companyAccountModalGet(): Observable<CompanyAccountModalResponse> {
     return this.companyAccountService.apiCompanyaccountModalGet();
-  }
-
-  public addCompanyAccount(data: CreateCompanyAccountCommand) {
-    return this.companyAccountService.apiCompanyaccountPost(data);
   }
 }
