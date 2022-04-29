@@ -33,6 +33,7 @@ import {ToastrService} from 'ngx-toastr';
 import {NgSelectComponent} from '@ng-select/ng-select';
 import { SharedService } from '../../../services/shared/shared.service';
 import { AppLoadService } from '../../../services/load/app-load.service';
+import { DispatcherStoreService } from '../state/dispatcher.service';
 
 declare var google: any;
 
@@ -225,7 +226,8 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
     private toastr: ToastrService,
     private zone: NgZone,
     private changes: ChangeDetectorRef,
-    private searchDateService: SearchDataService
+    private searchDateService: SearchDataService,
+    public dispatcherStoreService: DispatcherStoreService
   ) {
   }
 

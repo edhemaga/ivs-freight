@@ -2,8 +2,8 @@
   class="input-custom-group"
   [ngClass]="{
     'hide-placeholder-icon': getSuperControl.value,
-    'valid': getSuperControl.value && getSuperControl.valid && !focusInput,
-    'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput,
+    valid: getSuperControl.value && getSuperControl.valid && !focusInput,
+    invalid: getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required':
       inputConfig.isRequired &&
       !getSuperControl.value &&
@@ -32,9 +32,8 @@
   <svg-icon
     src="assets/svg/ic_x.svg"
     class="input-clear {{ inputConfig.customClass }}"
-
     [ngClass]="{
-      'disabled': inputConfig.isDisabled,
+      disabled: inputConfig.isDisabled,
       'focus-typing': getSuperControl.value && focusInput,
       'valid-focus-in':
         getSuperControl.value &&
@@ -135,8 +134,8 @@
   <svg-icon
     class="input-password-eye {{ inputConfig.customClass }}"
     [ngClass]="{
-      'visible': inputConfig.type === 'password' && isVisiblePasswordEye,
-      'valid':
+      visible: inputConfig.type === 'password' && isVisiblePasswordEye,
+      valid:
         getSuperControl.valid &&
         inputConfig.type === 'password' &&
         !focusInput &&
@@ -182,9 +181,9 @@
   <svg-icon
     class="input-dropdown-arrow"
     [ngClass]="{
-      'visible': inputConfig.isDropdown && !inputConfig.isDisabled,
-      'active': inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
-      'valid':
+      visible: inputConfig.isDropdown && !inputConfig.isDisabled,
+      active: inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
+      valid:
         inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.valid &&
@@ -217,7 +216,7 @@
         focusInput &&
         inputConfig.isDropdown &&
         !inputConfig.placeholder,
-      'hide': isDropdownAddModeActive,
+      hide: isDropdownAddModeActive,
       'no-validation-hover': !waitValidation && !focusInput
     }"
     src="assets/svg/common/ic_arrow-down.svg"
@@ -229,6 +228,7 @@
     #input
     [type]="getInputType(inputConfig.type)"
     [id]="inputConfig.name"
+    inputformat="dd-mm-yy"
     [name]="inputConfig.name"
     [disabled]="inputConfig.isDisabled"
     [autocomplete]="inputConfig.autocomplete"
@@ -237,12 +237,12 @@
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
     [mask]="inputConfig.mask"
-    thousandSeparator="{{inputConfig.mask === 'separator.2' ? ',' : null}}"
+    thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
     class="input-control {{ inputConfig.textTransform }} {{
       inputConfig.customClass
     }}"
     [ngClass]="{
-      'disabled': !getSuperControl.value && inputConfig.isDisabled,
+      disabled: !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-focus-in':
         getSuperControl.value &&
@@ -277,15 +277,93 @@
     (focus)="onFocus()"
     (paste)="onPaste($event, inputConfig.maxLength)"
   />
+
+
+  <div
+    class="date_time_holder input-control"
+    *ngIf="
+      inputConfig.name === 'datepicker' || inputConfig.name === 'timepicker'
+    "
+    [class.active]="showDateInput"
+    (click)="showDateTimePlaceholder()"
+    [ngClass]="{
+      'focused': focusInput,
+      'invalid-focus-out':
+        inputConfig.isRequired &&
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        waitValidation &&
+        !focusInput,
+      'invalid-empty-focus-out-required':
+        inputConfig.isRequired &&
+        !getSuperControl.value &&
+        getSuperControl.invalid &&
+        waitValidation,
+      'invalid-focus-in':
+        inputConfig.isRequired &&
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        waitValidation,
+      'invalid-dropdown-focus-in':
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
+        focusInput &&
+        waitValidation &&
+        inputConfig.isDropdown,
+      'invalid-submit':
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
+        getSuperControl.touched
+    }"
+  >
+    <span
+      #span1
+      class="main"
+      tabindex="0"
+      (focus)="onFocus()"
+      (click)="setSelection($event)"
+      (keydown)="changeSelection($event)"
+      (blur)="onBlur()"
+      >mm</span
+    >
+    <span (click)="setSelection($event)">/</span>
+    <span
+      #span2
+      class="main"
+      tabindex="1"
+      (focus)="onFocus()"
+      (click)="setSelection($event)"
+      (keydown)="changeSelection($event)"
+      (blur)="onBlur()"
+      >dd</span
+    >
+    <span (click)="setSelection($event)">/</span>
+    <span
+      #span3
+      class="main"
+      tabindex="2"
+      (focus)="onFocus()"
+      (click)="setSelection($event)"
+      (keydown)="changeSelection($event)"
+      (blur)="onBlur()"
+      >yy</span
+    >
+  </div>
+
   <!-- Input Icon Placeholder -->
   <svg-icon
     #t2="ngbPopover"
     [ngbPopover]="dateTimePopover"
-    [disablePopover]="inputConfig.name != 'datepicker' && inputConfig.name != 'timepicker'"
+    [disablePopover]="
+      inputConfig.name != 'datepicker' && inputConfig.name != 'timepicker'
+    "
     [placement]="['left']"
     [popoverClass]="'datetimepopovermain'"
     autoClose="outside"
     [container]="'body'"
+    (shown)="onPopoverShown()"
+    (hidden)="onPopoverHidden()"
     class="input-icon {{ inputConfig.customClass }}"
     [ngClass]="{
       'show-input-icon': inputConfig.placeholderIcon,
@@ -321,7 +399,7 @@
         getSuperControl.invalid &&
         getSuperControl.touched
     }"
-    [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg:'common'"
+    [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg: 'common'"
   ></svg-icon>
 
   <!-- Input Label -->
@@ -329,10 +407,10 @@
     [for]="inputConfig.name"
     class="input-label {{ inputConfig.customClass }}"
     [ngClass]="{
-      'required': inputConfig.isRequired && !inputConfig.isDisabled,
+      required: inputConfig.isRequired && !inputConfig.isDisabled,
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
-      'up-label': getSuperControl.value || focusInput,
+      'up-label': getSuperControl.value || focusInput || showDateInput,
       'valid-focus-out':
         getSuperControl.value && getSuperControl.valid && !focusInput,
       'invalid-focus-out':
@@ -378,17 +456,17 @@
         getSuperControl.touched
     }"
   >
-    {{ getSuperControl.errors | inputError:inputConfig.name }}
+    {{ getSuperControl.errors | inputError: inputConfig.name }}
   </span>
 </div>
-
 
 <!-- Popover for DateTime Pickers -->
 <ng-template #dateTimePopover let-data="data">
   <div class="datetime-dropdown-holder">
     <app-custom-datetime-pickers
-    [calendarType]="'date'"
-    [placeholder]="'MM/DD/YY'"
+      [calendarType]="'date'"
+      [placeholder]="'MM/DD/YY'"
+      [dateTime]="dateTimeInputDate"
     ></app-custom-datetime-pickers>
   </div>
 </ng-template>

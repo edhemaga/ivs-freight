@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DispatcherStoreService } from '../state/dispatcher.service';
 
 @Component({
   selector: 'app-dispatcher-parking',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DispatcherParkingComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dispatcherStoreService: DispatcherStoreService) { }
 
   parkingData: any = [
     {

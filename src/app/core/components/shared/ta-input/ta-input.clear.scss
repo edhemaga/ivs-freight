@@ -10,6 +10,7 @@
   background-color: #b7b7b7;
   display: none;
   transition: all 0.3s ease-in-out;
+  z-index: 10;
 
   svg {
     position: absolute;

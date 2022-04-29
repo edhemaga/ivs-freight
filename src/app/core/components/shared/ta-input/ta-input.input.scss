@@ -62,7 +62,7 @@
     color: #3c3c3c;
   }
 
-  &:focus {
+  &:focus, &.focused {
     transition: all 0.3s ease-in-out;
     background-color: #6c6c6c;
     color: #ffffff;
@@ -142,7 +142,7 @@
     }
   }
 
-  &:focus ~ .input-icon {
+  &:focus ~ .input-icon, &.focused ~ .input-icon {
     transition: all 0.3s ease-in-out;
     svg {
       path {

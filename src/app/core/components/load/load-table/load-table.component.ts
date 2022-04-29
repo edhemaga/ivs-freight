@@ -12,7 +12,7 @@ export class LoadTableComponent implements OnInit {
   public tableData: any[] = [];
   public viewData: any[] = [];
   public columns: any[] = [];
-  public selectedTab = 'active';
+  public selectedTab = 'template';
   resetColumns: boolean;
 
   constructor(private customModalService: CustomModalService) {}

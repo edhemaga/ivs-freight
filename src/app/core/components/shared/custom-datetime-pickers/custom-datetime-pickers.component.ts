@@ -11,6 +11,7 @@ import {NgbDropdown, NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
   providers: [NgbDropdownConfig]
 })
 export class CustomDatetimePickersComponent implements OnInit {
+  @Input() dateTime: any;
   @ViewChild("ref", {read: ViewContainerRef}) ref: ViewContainerRef;
   selectedDateTime: any;
   calendarMainType: string;
@@ -144,7 +145,8 @@ export class CustomDatetimePickersComponent implements OnInit {
           console.log("THIS IS CROLLLL");
           console.log(date);
 
-        this.calendarService.scrollToDate.next(date);
+          console.log(`${this.dateTime.getMonth()+1}/${this.dateTime.getDate()}/${this.dateTime.getFullYear()}`);
+        this.calendarService.scrollToDate.next(`${this.dateTime.getMonth()+1}/${this.dateTime.getDate()}/${this.dateTime.getFullYear()}`);
       }
   }
 

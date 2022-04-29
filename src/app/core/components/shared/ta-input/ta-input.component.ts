@@ -28,6 +28,9 @@ export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor
 {
   @ViewChild('input', { static: true }) input: ElementRef;
+  @ViewChild('span1', { static: false }) span1: ElementRef;
+  @ViewChild('span2', { static: false }) span2: ElementRef;
+  @ViewChild('span3', { static: false }) span3: ElementRef;
   @Input() inputConfig: ITaInput;
   @ViewChild('t2') t2: any;
 
@@ -35,6 +38,8 @@ export class TaInputComponent
   public waitValidation: boolean = false;
   public togglePassword: boolean = false;
   public isVisiblePasswordEye: boolean = false;
+  public showDateInput: boolean = false;
+  public dateTimeInputDate: Date = new Date();
 
   public timeout = null;
   public numberOfSpaces: number = 0;
@@ -55,11 +60,19 @@ export class TaInputComponent
 
   ngOnInit(): void {
     if (this.inputConfig.name === 'datepicker') {
-      this.calendarService.dateChanged.subscribe((date) => {
-        const text = moment(new Date(date)).format('YYYY-MM-DD');
+      this.calendarService.dateChanged
+      .pipe(untilDestroyed(this))
+      .subscribe((date) => {
+        const text = moment(new Date(date)).format('MM/DD/YY');
         this.input.nativeElement.value = text;
         this.onChange(this.input.nativeElement.value);
-        this.inputConfig.type = 'date';
+        //this.inputConfig.type = 'date';
+        this.focusInput = false;
+        const dateFormat = text.split("/");
+        this.span1.nativeElement.innerHTML = dateFormat[0];
+        this.span2.nativeElement.innerHTML = dateFormat[1];
+        this.span3.nativeElement.innerHTML = dateFormat[2];
+        this.dateTimeInputDate = new Date(date);
         this.t2.close();
       });
     }
@@ -111,7 +124,8 @@ export class TaInputComponent
     }
 
     if (this.inputConfig.name === 'datepicker') {
-      this.inputConfig.type = 'date';
+      this.showDateInput = true;
+      //this.inputConfig.type = 'date';
     }
 
     // Dropdown
@@ -125,6 +139,8 @@ export class TaInputComponent
 
   public onBlur(): void {
     this.focusInput = false;
+    let selection = window.getSelection();
+		selection.removeAllRanges();
 
     // Required Field
     if (this.inputConfig.isRequired) {
@@ -172,6 +188,7 @@ export class TaInputComponent
     if (this.inputConfig.name === 'datepicker') {
       if (!this.getSuperControl.value && this.getSuperControl.invalid) {
         this.inputConfig.type = 'text';
+        this.blurOnDateTime();
       }
     }
   }
@@ -187,7 +204,12 @@ export class TaInputComponent
       : (this.waitValidation = false);
 
     if (this.inputConfig.name === 'datepicker') {
-      this.inputConfig.type = 'text';
+      this.focusInput = false;
+      this.showDateInput = false;
+      this.span1.nativeElement.innerHTML = "mm";
+      this.span2.nativeElement.innerHTML = "dd";
+      this.span3.nativeElement.innerHTML = "yy";
+      
     }
 
     this.inputService.onClearInputSubject.next(true);
@@ -453,4 +475,178 @@ export class TaInputComponent
   }
 
   ngOnDestroy(): void {}
+
+
+
+  // OVAJ DEO OVDE JE ZA CUSTOM DATEPICKERS
+
+  scrollTypes: any = {
+    pmAmScroll: 0,
+    minutesScroll: 0,
+    hourScroll: 8,
+    monthScroll: 0,
+    dayScroll: 0,
+    yearScroll: 0
+  }
+
+  selectionInput: number = -1;
+  setSelection(e){
+    e.preventDefault();
+    e.stopPropagation();
+    const element = e.target;
+    this.focusInput = true;
+    this.selectionInput = parseInt(element.getAttribute("tabindex"));
+
+    if(element.classList.contains('main')){
+      this.setSpanSelection(element);
+    }else{
+      // var selObj = window.getSelection();
+      // var selRange = selObj.getRangeAt(0);
+      this.span1.nativeElement.focus();
+      this.selectionInput = 0;
+      this.setSpanSelection(this.span1.nativeElement);
+    }
+  }
+
+  setSpanSelection(element){
+		var range, selection;
+
+		if (window.getSelection && document.createRange) {
+			selection = window.getSelection();
+			range = document.createRange();
+			range.selectNodeContents(element);
+			selection.removeAllRanges();
+			selection.addRange(range);
+		}
+	}
+
+  showDateTimePlaceholder(){
+    this.showDateInput = true;
+    this.focusInput = true;
+    this.selectionInput = 0;
+    this.span1.nativeElement.focus();
+    this.setSpanSelection(this.span1.nativeElement);
+  }
+
+  changeSelection(e): void{
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (
+        e.keyCode == 37
+        || e.keyCode == 38
+        || e.keyCode == 39
+        || e.keyCode == 40
+        || e.keyCode == 8
+        || e.keyCode == 46
+        || (this.selectionInput == 3 && this.inputConfig.name === 'timepicker')
+    ) {
+        !e.noPrevent && e.preventDefault();
+        if (e.keyCode == 37) {
+          if ( this.selectionInput != 0) {
+            this.selectionInput = this.selectionInput - 1;
+            this.selectSpanByTabIndex(this.selectionInput);
+          }
+        } else if (e.keyCode == 39) {
+          console.log("WHAT IS SELECTION COUNT");
+            console.log(this.selectionInput);
+          if (this.selectionInput != 2) {
+            
+            this.selectionInput = this.selectionInput + 1;
+            this.selectSpanByTabIndex(this.selectionInput);
+          }
+        } else if (e.keyCode == 38) {
+          this.setDateTimeModel("up");
+        } else if (e.keyCode == 40) {
+          this.setDateTimeModel("down");
+        }
+      } else if (!this.isNumber(e)) {
+        e.preventDefault();
+      } else {
+        e.preventDefault();
+        //this.handleKeyboardInputs(e);
+      }
+  }
+
+  selectSpanByTabIndex(indx){
+    switch(indx){
+      case 0:
+        this.setSpanSelection(this.span1.nativeElement);
+        break;
+      case 1:
+        this.setSpanSelection(this.span2.nativeElement);
+        break;
+        default: 
+        this.setSpanSelection(this.span3.nativeElement);
+    }
+  }
+
+
+  setDateTimeModel(direction: string){
+    if (this.inputConfig.name === 'datepicker') {
+      if( direction == "up" ){
+        if( this.selectionInput == 0 ){
+          this.dateTimeInputDate = new Date(this.dateTimeInputDate.setMonth(this.dateTimeInputDate.getMonth() + 1));
+          this.span1.nativeElement.innerHTML = ('0' + (this.dateTimeInputDate.getMonth() +1)).slice(-2);
+          this.setSpanSelection(this.span1.nativeElement);
+        }else if( this.selectionInput == 1 ){
+          this.dateTimeInputDate = new Date(this.dateTimeInputDate.setDate(this.dateTimeInputDate.getDate() + 1));
+          this.span2.nativeElement.innerHTML = ('0' + this.dateTimeInputDate.getDate()).slice(-2);
+          this.setSpanSelection(this.span2.nativeElement);
+        }else{
+          this.dateTimeInputDate = new Date(this.dateTimeInputDate.setFullYear(this.dateTimeInputDate.getFullYear() + 1));
+          this.span3.nativeElement.innerHTML = this.dateTimeInputDate.getFullYear().toString().slice(-2);
+          this.setSpanSelection(this.span3.nativeElement);
+        }
+      }else{
+        if( this.selectionInput == 0 ){
+          this.dateTimeInputDate = new Date(this.dateTimeInputDate.setMonth(this.dateTimeInputDate.getMonth() + 1));
+          this.span1.nativeElement.innerHTML = ('0' + (this.dateTimeInputDate.getMonth() +1)).slice(-2);
+          this.setSpanSelection(this.span1.nativeElement);
+        }else if( this.selectionInput == 1 ){
+          this.dateTimeInputDate = new Date(this.dateTimeInputDate.setDate(this.dateTimeInputDate.getDate() + 1));
+          this.span2.nativeElement.innerHTML = ('0' + this.dateTimeInputDate.getDate()).slice(-2);
+          this.setSpanSelection(this.span2.nativeElement);
+        }else{
+          this.dateTimeInputDate = new Date(this.dateTimeInputDate.setFullYear(this.dateTimeInputDate.getFullYear() - 1));
+          this.span3.nativeElement.innerHTML = this.dateTimeInputDate.getFullYear().toString().slice(-2);
+          this.setSpanSelection(this.span3.nativeElement);
+        }
+      }
+    }
+  }
+
+
+  isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    let charCode = (evt.which) ? evt.which : evt.keyCode;
+    return !(charCode > 31 && (charCode < 48 || charCode > 57));
+  }
+
+  onPopoverShown(){
+    this.focusInput = true;
+    this.showDateInput = true;
+  }
+
+  onPopoverHidden(){
+    this.focusInput = false;
+    this.blurOnDateTime();
+  }
+
+  dateTimeMainTimer: any;
+
+  blurOnDateTime(){
+    clearTimeout(this.dateTimeMainTimer);
+    this.dateTimeMainTimer = setTimeout(() => {
+      if( !isNaN(this.span1.nativeElement.innerHTML) && !isNaN(this.span2.nativeElement.innerHTML) && !isNaN(this.span3.nativeElement.innerHTML)  ){
+        this.calendarService.dateChanged.next(this.dateTimeInputDate);
+      }else{
+        this.span1.nativeElement.innerHTML = "mm";
+        this.span2.nativeElement.innerHTML = "dd";
+        this.span3.nativeElement.innerHTML = "yy";
+        this.showDateInput = false;
+      }
+
+     }, 10);
+  }
 }
