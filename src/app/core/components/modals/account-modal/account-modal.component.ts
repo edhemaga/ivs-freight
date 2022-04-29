@@ -14,6 +14,7 @@ import {
   CompanyAccountModalResponse,
   CompanyAccountResponse,
   CreateCompanyAccountCommand,
+  UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
 import { AccountModalService } from './account-modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -94,7 +95,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   private getAccountLabels(): void {
-    this.accountLabels$ = this.modalService.companyAccountModalGet();
+    this.accountLabels$ = this.modalService.companyAccountLabels();
   }
 
   private editCompanyAccount(id: number) {
@@ -144,7 +145,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   private updateCompanyAccount(id: number): void {
-    const newData: CreateCompanyAccountCommand = {
+    const newData: UpdateCompanyAccountCommand = {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',

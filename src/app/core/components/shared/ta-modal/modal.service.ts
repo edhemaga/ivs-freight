@@ -70,7 +70,7 @@ export class ModalService {
 
   // -------------------------- Company Account Labels --------------------------
 
-  public companyAccountModalGet(): Observable<CompanyAccountModalResponse> {
+  public companyAccountLabels(): Observable<CompanyAccountModalResponse> {
     return this.companyAccountService.apiCompanyaccountModalGet();
   }
 }

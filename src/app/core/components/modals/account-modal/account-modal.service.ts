@@ -5,6 +5,7 @@ import {
   CompanyAccountService,
   CreateCompanyAccountCommand,
   CreateResponse,
+  UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
 
 @Injectable({
@@ -25,7 +26,7 @@ export class AccountModalService {
     return this.companyAccountService.apiCompanyaccountIdGet(id);
   }
 
-  public updateCompanyAccount(data: CreateCompanyAccountCommand): Observable<any> {
+  public updateCompanyAccount(data: UpdateCompanyAccountCommand): Observable<any> {
     return this.companyAccountService.apiCompanyaccountPut(data);
   }
 }
