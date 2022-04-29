@@ -4,9 +4,11 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import {
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   Self,
   ViewEncapsulation,
 } from '@angular/core';
@@ -31,6 +33,7 @@ export class TaInputDropdownComponent
   @Input() inputConfig: ITaInput;
   @Input() canAddNew: boolean = false;
   @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
+  @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
 
   public activeItem: any;
   public originalOptions: any[] = [];
@@ -184,6 +187,7 @@ export class TaInputDropdownComponent
       this.activeItem = option;
       this.getSuperControl.setValue(option.name);
       this.options = this.originalOptions;
+      this.selectedItem.emit(option);
     }
   }
 

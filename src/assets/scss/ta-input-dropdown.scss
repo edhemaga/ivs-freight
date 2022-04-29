@@ -40,14 +40,18 @@
 
       //------------------------ Default Template ------------------------
       .dropdown-option {
-        background-color: #ffffff;
         padding: 3px 4px;
         height: 26px;
         font-size: 14px;
         font-weight: 400;
-        color: #6c6c6c;
         border-radius: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: #ffffff;
+        color: #6c6c6c;
 
+     
         &:hover {
           background-color: #f3f3f3;
           color: #3c3c3c;
@@ -353,7 +357,7 @@
                 font-weight: 600;
                 padding: 1.5px 4px;
                 color: #b7b7b7;
-      
+
                 &:hover {
                   background-color: transparent !important;
                   color: #b7b7b7 !important;
