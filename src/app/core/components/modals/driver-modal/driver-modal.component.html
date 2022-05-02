@@ -1,6 +1,6 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Driver' : 'Edit Driver'"
-  [editName]="'Nikola Kovacevic'"
+  [editName]="driverFullName"
   [editData]="editData"
   [isModalValid]="driverForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
@@ -83,6 +83,7 @@
                 placeholderIcon: 'address',
                 textTransform: 'capitalize'
               }"
+              (selectedAddress)="onHandleAddress($event)"
             ></app-ta-input-address>
           </div>
           <div class="col-2">

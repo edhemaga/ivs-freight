@@ -24,9 +24,6 @@ export class TaInputService {
   public activeItemDropdownSubject: BehaviorSubject<any> =
     new BehaviorSubject<any>(null);
 
-  public googleAddressSubject: BehaviorSubject<Address> =
-    new BehaviorSubject<Address>(null);
-
   constructor(
     public notificationService: NotificationService,
     private spinnerService: SpinnerService
@@ -34,10 +31,6 @@ export class TaInputService {
 
   public get activeItemDropdown$() {
     return this.activeItemDropdownSubject.asObservable();
-  }
-
-  public get getGoogleAddress$() {
-    return this.googleAddressSubject.asObservable();
   }
 
   /**
@@ -91,13 +84,6 @@ export class TaInputService {
       formControl.reset();
     }
     formControl.updateValueAndValidity();
-  }
-
-  /**
-   * @param address - premapped address
-   */
-  public handleAddress(address: Address) {
-    this.googleAddressSubject.next(address);
   }
 
   /**

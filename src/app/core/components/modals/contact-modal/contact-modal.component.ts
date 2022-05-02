@@ -1,6 +1,12 @@
 import { ContactModalService } from './contact-modal.service';
 import { card_modal_animation } from './../../shared/animations/card-modal.animation';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -48,12 +54,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 2,
+        id: 1,
       };
       this.editCompanyContact(this.editData.id);
     }
   }
- 
+
   private createForm() {
     this.contactForm = this.formBuilder.group({
       name: [null, [Validators.required, Validators.maxLength(23)]],
@@ -75,14 +81,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     if (action === 'close') {
       this.contactForm.reset();
     } else {
-      if (this.contactForm.invalid) {
-        console.log(this.contactForm.value);
-        this.inputService.markInvalid(this.contactForm);
-        return;
-      }
-
       // Save & Update
       if (action === 'save') {
+        if (this.contactForm.invalid) {
+          this.inputService.markInvalid(this.contactForm);
+          return;
+        }
         if (this.editData) {
           this.updateCompanyContact(this.editData.id);
         } else {
@@ -143,15 +147,13 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             sharedLabelId: null, // TODO: Ceka se BACK
             note: res.note,
           });
-          this.selectedContactLabel = res.companyContactLabel
+          this.selectedContactLabel = res.companyContactLabel;
           // TODO: shared departments label selected
         },
         error: () => {
           this.notificationService.error("Can't get contact.", 'Error:');
         },
       });
-
-      console.log(this.contactForm)
   }
 
   private addCompanyContact(): void {

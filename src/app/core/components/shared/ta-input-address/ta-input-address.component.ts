@@ -71,10 +71,7 @@ export class TaInputAddressComponent
     this.activeAddress = this.sharedService.selectAddress(null, address);
     this.invalidAddress = false;
     this.selectedAddress.emit(this.activeAddress);
-    this.inputService.handleAddress(
-      this.sharedService.selectAddress(null, address)
-    );
-
+  
     this.getSuperControl.setValue(
       this.sharedService.selectAddress(null, address).address
     );

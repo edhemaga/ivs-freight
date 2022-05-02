@@ -138,13 +138,12 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     if (action === 'close') {
       this.truckForm.reset();
     } else {
-      if (this.truckForm.invalid) {
-        console.log(this.truckForm.value);
-        this.inputService.markInvalid(this.truckForm);
-        return;
-      }
       // Save & Update
       if (action === 'save') {
+        if (this.truckForm.invalid) {
+          this.inputService.markInvalid(this.truckForm);
+          return;
+        }
         if (this.editData) {
           this.updateTruck(this.editData.id);
         } else {
@@ -254,7 +253,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         error: () =>
           this.notificationService.error("Truck can't be created.", 'Error:'),
       });
-    console.log(newData);
   }
 
   public updateTruck(id: number) {
@@ -290,7 +288,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.truckForm.get('commission').value.toString().replace(/,/g, '')
           )
         : null,
-      year: parseInt(this.truckForm.get('year').value)
+      year: parseInt(this.truckForm.get('year').value),
     };
     this.truckModalService
       .addTruck(newData)
@@ -304,7 +302,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         error: () =>
           this.notificationService.error("Truck can't be created.", 'Error:'),
       });
-    console.log(newData);
   }
 
   public deleteTruckById(id: number) {

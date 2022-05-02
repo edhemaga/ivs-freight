@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -22,7 +23,7 @@ import moment from 'moment';
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
   styleUrls: ['./ta-input.component.scss'],
-  providers: [NgbDropdownConfig],
+  providers: [NgbDropdownConfig]
 })
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor

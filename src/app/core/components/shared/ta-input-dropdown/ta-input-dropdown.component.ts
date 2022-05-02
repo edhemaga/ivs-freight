@@ -2,14 +2,17 @@ import { debounceTime, distinctUntilChanged, shareReplay } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   Self,
+  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
@@ -24,10 +27,10 @@ import { ITaInput } from '../ta-input/ta-input.config';
   styleUrls: ['./ta-input-dropdown.component.scss'],
   providers: [TaInputService],
   encapsulation: ViewEncapsulation.None,
-  animations: [input_dropdown_animation('showHideDropdownOptions')],
+  animations: [input_dropdown_animation('showHideDropdownOptions')]
 })
 export class TaInputDropdownComponent
-  implements OnInit, OnDestroy, ControlValueAccessor
+  implements OnInit, OnChanges, OnDestroy, ControlValueAccessor
 {
   @Input() template: string;
   @Input() inputConfig: ITaInput;
@@ -46,8 +49,17 @@ export class TaInputDropdownComponent
     this.superControl.valueAccessor = this;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if(this.options) {
+      this.originalOptions = [...this.options];
+    }
+     
+  }
+
   ngOnInit(): void {
-    this.originalOptions = [...this.options];
+    if(this.options) {
+      this.originalOptions = [...this.options];
+    }
 
     this.getSuperControl.valueChanges
       .pipe(untilDestroyed(this))
