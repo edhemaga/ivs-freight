@@ -296,11 +296,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () =>
           this.notificationService.success(
-            'Truck successfully created.',
+            'Truck successfully updated.',
             'Success:'
           ),
         error: () =>
-          this.notificationService.error("Truck can't be created.", 'Error:'),
+          this.notificationService.error("Truck can't be updated.", 'Error:'),
       });
   }
 

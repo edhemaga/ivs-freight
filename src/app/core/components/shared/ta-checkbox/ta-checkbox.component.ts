@@ -1,13 +1,18 @@
-import { Component, Input, Self} from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  Self,
+  SimpleChanges,
+} from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
   selector: 'app-ta-checkbox',
   templateUrl: './ta-checkbox.component.html',
-  styleUrls: ['./ta-checkbox.component.scss']
+  styleUrls: ['./ta-checkbox.component.scss'],
 })
-export class TaCheckboxComponent implements ControlValueAccessor {
-
+export class TaCheckboxComponent implements OnChanges, ControlValueAccessor {
   @Input() label: string;
   @Input() customClass: string;
 
@@ -15,20 +20,26 @@ export class TaCheckboxComponent implements ControlValueAccessor {
     this.superControl.valueAccessor = this;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes.getSuperControl?.currentValue !=
+      changes.getSuperControl?.previousValue
+    ) {
+      this.getSuperControl.patchValue(changes.getSuperControl?.currentValue);
+    }
+  }
+
   get getSuperControl() {
     return this.superControl.control;
   }
 
   public writeValue(obj: any): void {}
-  
+
   public registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
-  public onChange(event: any): void {
-    this.getSuperControl.setValue(event);
-  }
+  public onChange(event: any): void {}
 
   public registerOnTouched(fn: any): void {}
-
 }
