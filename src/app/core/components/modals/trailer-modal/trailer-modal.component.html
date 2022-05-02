@@ -304,11 +304,28 @@
               (selectedItem)="onSelectDoorType($event)"
             ></app-ta-input-dropdown>
           </div>
+          <div class="col-4" *ngIf="trailerForm.get('trailerTypeId').value === 'Tanker'">
+            <app-ta-input
+            formControlName="volume"
+            [inputConfig]="{
+              name: 'Volume',
+              type: 'text',
+              label: 'Volume',
+              maxLength: 6,
+              mask: 'separator.2',
+              placeholderIcon: !trailerForm.get('volume').value
+                ? ''
+                : 'gal',
+              customClass: 'gal-placeholderIcon'
+            }"
+          ></app-ta-input>
+          </div>
           <div
             class="{{
               trailerForm.get('trailerTypeId').value === 'Dry Van' ||
               trailerForm.get('trailerTypeId').value === 'Container' ||
-              trailerForm.get('trailerTypeId').value === 'Reefer'
+              trailerForm.get('trailerTypeId').value === 'Reefer' ||
+              trailerForm.get('trailerTypeId').value === 'Tanker'
                 ? 'col-4'
                 : 'col-6'
             }}"
@@ -332,7 +349,8 @@
             class="{{
               trailerForm.get('trailerTypeId').value === 'Dry Van' ||
               trailerForm.get('trailerTypeId').value === 'Container' ||
-              trailerForm.get('trailerTypeId').value === 'Reefer'
+              trailerForm.get('trailerTypeId').value === 'Reefer' ||
+              trailerForm.get('trailerTypeId').value === 'Tanker'
                 ? 'col-4 no-p-left'
                 : 'col-6'
             }}"
