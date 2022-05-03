@@ -32,7 +32,7 @@
   <div
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
-      'disabled': inputConfig.isDisabled,
+      disabled: inputConfig.isDisabled,
       'focus-typing': getSuperControl.value && focusInput,
       'valid-focus-in':
         getSuperControl.value &&
@@ -110,6 +110,17 @@
     [fontWeight]="'bold'"
     [fontSize]="'11px'"
     [customPosition]="-6"
+    [tatooltipvisible]="
+      !(
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
+        waitValidation &&
+        !focusInput &&
+        !inputConfig.placeholderIcon &&
+        !isVisiblePasswordEye &&
+        !inputConfig.isDropdown
+      )
+    "
     (click)="clearInput()"
   >
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
@@ -176,16 +187,19 @@
     [customPosition]="-15"
     (click)="onAddItemInDropdown()"
   >
-    <svg-icon class="input-dropdow-confirm-svg" src="assets/svg/common/ic_confirm.svg"></svg-icon>
+    <svg-icon
+      class="input-dropdow-confirm-svg"
+      src="assets/svg/common/ic_confirm.svg"
+    ></svg-icon>
   </div>
 
   <!-- Input Drodown Array -->
   <svg-icon
     class="input-dropdown-arrow"
     [ngClass]="{
-      'visible': inputConfig.isDropdown && !inputConfig.isDisabled,
-      'active': inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
-      'valid':
+      visible: inputConfig.isDropdown && !inputConfig.isDisabled,
+      active: inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
+      valid:
         inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.valid &&
@@ -218,7 +232,7 @@
         focusInput &&
         inputConfig.isDropdown &&
         !inputConfig.placeholder,
-      'hide': isDropdownAddModeActive,
+      hide: isDropdownAddModeActive,
       'no-validation-hover': !waitValidation && !focusInput
     }"
     src="assets/svg/common/ic_arrow-down.svg"
@@ -280,7 +294,6 @@
     (paste)="onPaste($event, inputConfig.maxLength)"
   />
 
-
   <div
     class="date_time_holder input-control"
     *ngIf="
@@ -289,7 +302,7 @@
     [class.active]="showDateInput"
     (click)="showDateTimePlaceholder()"
     [ngClass]="{
-      'focused': focusInput,
+      focused: focusInput,
       'invalid-focus-out':
         inputConfig.isRequired &&
         getSuperControl.value &&

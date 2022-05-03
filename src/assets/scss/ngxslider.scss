@@ -35,9 +35,9 @@
       top: -7.5px;
       width: 44px;
       height: 20px;
-      padding: 1px 5px;
       z-index: 1;
-
+      text-align: center;
+      padding-left: 4px;
       &::after {
         content: "%";
       }

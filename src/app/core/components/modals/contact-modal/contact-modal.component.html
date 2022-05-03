@@ -107,9 +107,8 @@
       </div>
       <div
         class="checkbox-card-body"
-        [@showHideSharedContact]="
-          contactForm.get('shared').value ? 'true' : 'false'
-        "
+        [ngClass]="{'active': contactForm.get('shared').value}"
+        
       >
         <div *ngIf="contactForm.get('shared').value">
           <div class="row shared-contact-dropdown">

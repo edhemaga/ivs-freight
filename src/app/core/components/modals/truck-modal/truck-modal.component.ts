@@ -27,8 +27,7 @@ import { TruckModalService } from './truck-modal.service';
   templateUrl: './truck-modal.component.html',
   styleUrls: ['./truck-modal.component.scss'],
   animations: [
-    tab_modal_animation('animationTabsModal'),
-    card_modal_animation('showHideCompanyOwned', '20px'),
+    tab_modal_animation('animationTabsModal')
   ],
   encapsulation: ViewEncapsulation.None,
 })
@@ -97,11 +96,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  get animationData() {
-    var dotAnimation = document.querySelector(".animation-two-tabs");
-    return {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
-  }
-
   private createForm(): void {
     this.truckForm = this.formBuilder.group({
       truckNumber: [null, [Validators.required, Validators.maxLength(6)]],
@@ -138,7 +132,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-    var dotAnimation = document.querySelector(".animation-two-tabs");
+    let dotAnimation = document.querySelector(".animation-two-tabs");
     this.animationObject = {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
   }
 

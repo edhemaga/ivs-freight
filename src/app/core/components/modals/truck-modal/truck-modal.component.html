@@ -138,9 +138,7 @@
           </div>
           <div
             class="checkbox-card-body"
-            [@showHideCompanyOwned]="
-              truckForm.get('companyOwned').value ? 'true' : 'false'
-            "
+            [ngClass]="{'active': truckForm.get('companyOwned').value}"
           >
             <div
               *ngIf="truckForm.get('companyOwned').value"

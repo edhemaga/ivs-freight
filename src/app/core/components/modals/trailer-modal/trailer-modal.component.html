@@ -11,7 +11,7 @@
   ></app-tab-switcher>
 
   <form [formGroup]="trailerForm" class="form-container">
-    <div class="animation-two-tabs" [@animationTabsModal]="selectedTab">
+    <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
         <div class="row">
@@ -150,9 +150,7 @@
           </div>
           <div
             class="checkbox-card-body"
-            [@showHideCompanyOwned]="
-              !trailerForm.get('companyOwned').value ? 'true' : 'false'
-            "
+            [ngClass]="{'active': !trailerForm.get('companyOwned').value}"
           >
             <div *ngIf="!trailerForm.get('companyOwned').value">
               <div class="row owner-dropdown">
