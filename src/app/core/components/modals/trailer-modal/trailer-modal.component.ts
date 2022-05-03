@@ -67,6 +67,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public animationObject = {value: this.selectedTab, params: {height: "0px"}}
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -162,6 +164,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
+    let dotAnimation = document.querySelector(".animation-two-tabs");
+    this.animationObject = {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
   }
 
   public openCloseCheckboxCard(event: any) {

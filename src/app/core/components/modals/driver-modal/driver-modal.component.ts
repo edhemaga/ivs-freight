@@ -118,12 +118,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  get animationData() {
-    var dotAnimation = document.querySelector(".animation-three-tabs");
-    return {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
-  }
-
   public onModalAction(action: string): void {
     if (action === 'close') {
       this.driverForm.reset();
@@ -350,10 +344,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-
-    var dotAnimation = document.querySelector(".animation-three-tabs");
+    let dotAnimation = document.querySelector(".animation-three-tabs");
     this.animationObject = {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
-
   }
 
   public tabOwnerChange(event: any[]): void {
