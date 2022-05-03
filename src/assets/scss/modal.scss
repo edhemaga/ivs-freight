@@ -42,6 +42,18 @@ ngb-modal-window[aria-hidden="true"] {
       box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
       background-color: #fff;
 
+      &.cdk-drag-dragging {
+        .modal-header {
+          cursor: -webkit-grabbing;
+          cursor: grabbing;
+
+          .modal-title {
+            cursor: -webkit-grabbing;
+            cursor: grabbing;
+          }
+        }
+      }
+
       .modal-header {
         display: flex;
         align-items: center;
@@ -161,7 +173,7 @@ ngb-modal-window[aria-hidden="true"] {
           border: none;
           border-radius: 2px;
           background-color: #f3f3f3;
-          color: #B7B7B7;
+          color: #b7b7b7;
           font-weight: 700;
           font-size: 14px;
           width: 150px;
