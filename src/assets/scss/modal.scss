@@ -236,10 +236,10 @@ ngb-modal-window[aria-hidden="true"] {
 
 body.modal-open{
   .modal-backdrop{
-    transition: all 0.3s ease-out;
+    transition: background-color 0.3s ease-out;
   
     &.myDropback{
-      transition: all 0.4s ease-out !important;
+      transition: background-color 0.4s ease-out !important;
       opacity: 1 !important;
       background-color: rgba(0, 0, 0, 0.4)  !important;;
   
