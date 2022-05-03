@@ -138,6 +138,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
+    var dotAnimation = document.querySelector(".animation-two-tabs");
+    this.animationObject = {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
   }
 
   public onModalAction(action: string): void {
