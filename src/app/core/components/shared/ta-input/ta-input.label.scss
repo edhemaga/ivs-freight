@@ -46,6 +46,21 @@
     font-weight: 600;
     transition: all 0.3s ease-in-out;
     color: #3c3c3c;
+    -webkit-user-select: auto !important;
+    -moz-user-select: auto !important;
+    -ms-user-select: auto !important;
+    user-select: auto !important;
+    pointer-events: all !important;
+
+    &::-moz-selection {
+      background-color: #e5e5e5;
+      color: #3c3c3c;
+    }
+
+    &::selection {
+      background-color: #e5e5e5;
+      color: #3c3c3c;
+    }
   }
 
   &.valid-focus-out,

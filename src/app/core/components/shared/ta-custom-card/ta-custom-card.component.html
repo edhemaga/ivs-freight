@@ -1,6 +1,6 @@
 <div class="ta-custom-card">
   <div class="divider"></div>
-  <div class="ta-card-header" (click)="openCard()">
+  <div class="ta-card-header" (click)="isCardOpen = !isCardOpen">
     <div class="header-content">
       <app-ta-counter
         *ngIf="hasCounter"
@@ -37,7 +37,7 @@
       ></svg-icon>
     </div>
   </div>
-  <div class="ta-card-body" [class.active]="isCardOpen">
+  <div class="ta-card-body" [ngClass]="{'active': isCardOpen}">
     <ng-content></ng-content>
   </div>
 </div>

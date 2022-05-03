@@ -145,9 +145,10 @@
           </div>
           <div
             class="checkbox-card-body"
-            [class.active]="driverForm.get('isOwner').value"
+            [ngClass]="{'active': driverForm.get('isOwner').value}"
           >
             <app-status-switcher
+              *ngIf="driverForm.get('isOwner').value"
               (switchClicked)="tabOwnerChange($event)"
               [data]="ownerTabs"
               [customClass]="'owner-switch'"

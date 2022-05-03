@@ -409,7 +409,7 @@
     [for]="inputConfig.name"
     class="input-label {{ inputConfig.customClass }}"
     [ngClass]="{
-      required: inputConfig.isRequired && !inputConfig.isDisabled,
+      'required': inputConfig.isRequired && !inputConfig.isDisabled,
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'up-label': getSuperControl.value || focusInput || showDateInput,
