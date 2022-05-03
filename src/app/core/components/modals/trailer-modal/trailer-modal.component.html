@@ -150,9 +150,7 @@
           </div>
           <div
             class="checkbox-card-body"
-            [@showHideCompanyOwned]="
-              !trailerForm.get('companyOwned').value ? 'true' : 'false'
-            "
+            [ngClass]="{'active': !trailerForm.get('companyOwned').value}"
           >
             <div *ngIf="!trailerForm.get('companyOwned').value">
               <div class="row owner-dropdown">

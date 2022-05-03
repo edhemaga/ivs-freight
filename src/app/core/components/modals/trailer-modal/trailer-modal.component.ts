@@ -25,8 +25,7 @@ import { throws } from 'assert';
   selector: 'app-trailer-modal',
   templateUrl: './trailer-modal.component.html',
   animations: [
-    tab_modal_animation('animationTabsModal'),
-    card_modal_animation('showHideCompanyOwned', '20px'),
+    tab_modal_animation('animationTabsModal')
   ],
   styleUrls: ['./trailer-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,

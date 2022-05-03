@@ -31,7 +31,6 @@ import moment from 'moment';
   styleUrls: ['./driver-modal.component.scss'],
   animations: [
     tab_modal_animation('animationTabsModal'),
-    card_modal_animation('showHideOwner', '6px'),
     card_modal_animation('showHidePayroll', '6px'),
     card_modal_animation('showHidePerMile', '32px'),
     card_modal_animation('showHideCommission', '24px'),

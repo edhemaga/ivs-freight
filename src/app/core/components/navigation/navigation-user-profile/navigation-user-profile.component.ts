@@ -31,8 +31,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
 
   public userNavigationData: NavigationUserPanel[] = userNavigationData;
 
-  public currentUser: {} = JSON.parse(localStorage.getItem('currentUser'));
-  public userCompany: {} = JSON.parse(localStorage.getItem('userCompany'));
   public currentUserStatus: string = 'online';
 
   public isItemHovered: boolean = false;

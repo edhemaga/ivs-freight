@@ -27,8 +27,7 @@ import { TruckModalService } from './truck-modal.service';
   templateUrl: './truck-modal.component.html',
   styleUrls: ['./truck-modal.component.scss'],
   animations: [
-    tab_modal_animation('animationTabsModal'),
-    card_modal_animation('showHideCompanyOwned', '20px'),
+    tab_modal_animation('animationTabsModal')
   ],
   encapsulation: ViewEncapsulation.None,
 })

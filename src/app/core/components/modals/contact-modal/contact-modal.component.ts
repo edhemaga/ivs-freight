@@ -1,11 +1,9 @@
 import { ContactModalService } from './contact-modal.service';
-import { card_modal_animation } from './../../shared/animations/card-modal.animation';
 import {
   Component,
   Input,
   OnInit,
   OnDestroy,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -24,7 +22,6 @@ import { MockModalService } from 'src/app/core/services/mockmodal.service';
   selector: 'app-contact-modal',
   templateUrl: './contact-modal.component.html',
   styleUrls: ['./contact-modal.component.scss'],
-  animations: [card_modal_animation('showHideSharedContact', '20px')],
 })
 export class ContactModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
