@@ -16,7 +16,6 @@ import {
   UpdateTruckCommand,
 } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
@@ -73,6 +72,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     hideLimitLabels: true,
   };
 
+  public animationObject = {value: this.selectedTab, params: {height: "0px"}}
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -96,6 +97,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  get animationData() {
+    var dotAnimation = document.querySelector(".animation-two-tabs");
+    return {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
+  }
+
   private createForm(): void {
     this.truckForm = this.formBuilder.group({
       truckNumber: [null, [Validators.required, Validators.maxLength(6)]],
@@ -110,7 +116,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       ],
       truckMakeId: [null, Validators.required],
       model: [null, [Validators.required, Validators.maxLength(22)]],
-      year: [null, [Validators.required, Validators.maxLength(4)]],
+      year: [null, [Validators.required, Validators.maxLength(4), Validators.pattern(/^(19[0-9]\d|20[0-4]\d|2100)$/)]],
       colorId: [null],
       companyOwned: [false],
       ownerId: [null],
@@ -138,13 +144,12 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     if (action === 'close') {
       this.truckForm.reset();
     } else {
-      if (this.truckForm.invalid) {
-        console.log(this.truckForm.value);
-        this.inputService.markInvalid(this.truckForm);
-        return;
-      }
       // Save & Update
       if (action === 'save') {
+        if (this.truckForm.invalid) {
+          this.inputService.markInvalid(this.truckForm);
+          return;
+        }
         if (this.editData) {
           this.updateTruck(this.editData.id);
         } else {
@@ -254,7 +259,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         error: () =>
           this.notificationService.error("Truck can't be created.", 'Error:'),
       });
-    console.log(newData);
   }
 
   public updateTruck(id: number) {
@@ -290,7 +294,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.truckForm.get('commission').value.toString().replace(/,/g, '')
           )
         : null,
-      year: parseInt(this.truckForm.get('year').value)
+      year: parseInt(this.truckForm.get('year').value),
     };
     this.truckModalService
       .addTruck(newData)
@@ -298,13 +302,12 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () =>
           this.notificationService.success(
-            'Truck successfully created.',
+            'Truck successfully updated.',
             'Success:'
           ),
         error: () =>
-          this.notificationService.error("Truck can't be created.", 'Error:'),
+          this.notificationService.error("Truck can't be updated.", 'Error:'),
       });
-    console.log(newData);
   }
 
   public deleteTruckById(id: number) {

@@ -24,8 +24,8 @@ export class TaInputService {
   public activeItemDropdownSubject: BehaviorSubject<any> =
     new BehaviorSubject<any>(null);
 
-  public googleAddressSubject: BehaviorSubject<Address> =
-    new BehaviorSubject<Address>(null);
+  public isInputMarkedInvalidSubject: BehaviorSubject<any> =
+    new BehaviorSubject<any>(null);
 
   constructor(
     public notificationService: NotificationService,
@@ -36,10 +36,6 @@ export class TaInputService {
     return this.activeItemDropdownSubject.asObservable();
   }
 
-  public get getGoogleAddress$() {
-    return this.googleAddressSubject.asObservable();
-  }
-
   /**
    * @param formGroup FormGroup - The form group to touch
    */
@@ -47,7 +43,7 @@ export class TaInputService {
     if (!isSpecialCase) {
       this.spinnerService.show(true);
     }
-
+    this.isInputMarkedInvalidSubject.next(true);
     if (formGroup.invalid) {
       (Object as any).values(formGroup.controls).forEach((control: any) => {
         control.markAsTouched();
@@ -91,13 +87,6 @@ export class TaInputService {
       formControl.reset();
     }
     formControl.updateValueAndValidity();
-  }
-
-  /**
-   * @param address - premapped address
-   */
-  public handleAddress(address: Address) {
-    this.googleAddressSubject.next(address);
   }
 
   /**

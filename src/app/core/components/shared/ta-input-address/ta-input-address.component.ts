@@ -38,7 +38,9 @@ export class TaInputAddressComponent
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
 
-  @Output() selectedAddress: EventEmitter<Address> = new EventEmitter<Address>(null);
+  @Output() selectedAddress: EventEmitter<Address> = new EventEmitter<Address>(
+    null
+  );
 
   public focusInput: boolean = false;
   public waitValidation: boolean = false;
@@ -65,15 +67,21 @@ export class TaInputAddressComponent
           }
         });
     }
+
+    this.inputService.isInputMarkedInvalidSubject
+      .pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.waitValidation = true;
+          this.inputService.isInputMarkedInvalidSubject.next(false);
+        }
+      });
   }
 
   public handleAddressChange(address: Address) {
     this.activeAddress = this.sharedService.selectAddress(null, address);
     this.invalidAddress = false;
     this.selectedAddress.emit(this.activeAddress);
-    this.inputService.handleAddress(
-      this.sharedService.selectAddress(null, address)
-    );
 
     this.getSuperControl.setValue(
       this.sharedService.selectAddress(null, address).address

@@ -48,7 +48,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 2,
+        id: 1,
       };
       this.editCompanyAccount(this.editData.id);
     }
@@ -69,13 +69,13 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     if (action === 'close') {
       this.accountForm.reset();
     } else {
-      // If Form not valid
-      if (this.accountForm.invalid) {
-        this.inputService.markInvalid(this.accountForm);
-        return;
-      }
       // Save & Update
       if (action === 'save') {
+        // If Form not valid
+        if (this.accountForm.invalid) {
+          this.inputService.markInvalid(this.accountForm);
+          return;
+        }
         if (this.editData) {
           this.updateCompanyAccount(this.editData.id);
         } else {
@@ -113,7 +113,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
           this.selectedAccountLabel = res.companyAccountLabel;
         },
         error: (err) => {
-          console.log(err);
+          this.notificationService.error("Can't get account.", 'Error:');
         },
       });
   }

@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -58,6 +59,15 @@ export class TaInputComponent
   }
 
   ngOnInit(): void {
+    this.inputService.isInputMarkedInvalidSubject
+      .pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.waitValidation = true;
+          this.inputService.isInputMarkedInvalidSubject.next(false);
+        }
+      });
+
     if (this.inputConfig.name === 'datepicker') {
       this.calendarService.dateChanged
       .pipe(untilDestroyed(this))
@@ -306,23 +316,25 @@ export class TaInputComponent
     }
 
     if (
-      ['first name', 'last name', 'name', 'relationship'].includes(
+      ['first name', 'last name', 'name', 'full name', 'relationship'].includes(
         this.inputConfig.name.toLowerCase()
       )
     ) {
-      if (/^[A-Za-z]*$/.test(String.fromCharCode(event.charCode))) {
+      let spaces = this.input.nativeElement.value.split(' ').length;
+      if (
+        /^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode)) &&
+        spaces <= 2
+      ) {
+        this.disableConsecutivelySpaces(event);
         return true;
       } else {
         event.preventDefault();
+        this.input.nativeElement.value.trimEnd();
         return false;
       }
     }
 
-    if (
-      ['insurance policy'].includes(
-        this.inputConfig.name.toLowerCase()
-      )
-    ) {
+    if (['insurance policy'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
         return true;
       } else {
@@ -376,7 +388,7 @@ export class TaInputComponent
         return false;
       }
 
-      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+      if (/^[0-9]$/.test(String.fromCharCode(event.charCode))) {
         this.disableConsecutivelySpaces(event);
         return true;
       } else {

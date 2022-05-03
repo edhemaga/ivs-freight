@@ -32,7 +32,7 @@
   <div
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
-      disabled: inputConfig.isDisabled,
+      'disabled': inputConfig.isDisabled,
       'focus-typing': getSuperControl.value && focusInput,
       'valid-focus-in':
         getSuperControl.value &&
@@ -69,6 +69,14 @@
         getSuperControl.invalid &&
         waitValidation &&
         focusInput &&
+        !inputConfig.placeholderIcon &&
+        !isVisiblePasswordEye &&
+        !inputConfig.isDropdown,
+      'invalid-focus-out-required':
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
+        waitValidation &&
+        !focusInput &&
         !inputConfig.placeholderIcon &&
         !isVisiblePasswordEye &&
         !inputConfig.isDropdown,

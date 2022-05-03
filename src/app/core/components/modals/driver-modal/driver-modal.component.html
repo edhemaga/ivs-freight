@@ -1,6 +1,6 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Driver' : 'Edit Driver'"
-  [editName]="'Nikola Kovacevic'"
+  [editName]="driverFullName"
   [editData]="editData"
   [isModalValid]="driverForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
@@ -83,6 +83,7 @@
                 placeholderIcon: 'address',
                 textTransform: 'capitalize'
               }"
+              (selectedAddress)="onHandleAddress($event)"
             ></app-ta-input-address>
           </div>
           <div class="col-2">
@@ -154,7 +155,7 @@
             <div
               *ngIf="driverForm.get('isOwner').value"
               class="animation-checkbox-card-tabs"
-              [ngClass]="{ fade: selectedOwnerTab === 'company' }"
+              [ngClass]="{ fade: selectedOwnerTab?.name.toLowerCase() === 'company' }"
             >
               <div class="row">
                 <div class="col-4">
@@ -224,6 +225,7 @@
                     type: 'text',
                     textTransform: 'capitalize'
                   }"
+                  (selectedAddress)="onHandleAddressFormArray($event, ind)"
                 ></app-ta-input-address>
 
                 <svg-icon
@@ -269,12 +271,12 @@
                 name: 'Input Dropdown',
                 type: 'text',
                 label: 'Bank Name',
-                isRequired: driverForm.get('payroll').value,
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-banks'
               }"
               [canAddNew]="true"
               [options]="labelsBank"
+              (selectedItem)="onSelectBank($event)"
             ></app-ta-input-dropdown>
           </div>
           <div class="bank-field">
@@ -327,6 +329,7 @@
               }"
               [canAddNew]="true"
               [options]="labelsPayType"
+              (selectedItem)="onSelectPayType($event)"
             ></app-ta-input-dropdown>
           </div>
           <div class="paytype-field-notification">
