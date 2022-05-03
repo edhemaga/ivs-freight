@@ -25,6 +25,11 @@ $font-extrabold: 800;
 $border-radius: 3px;
 
 $transition: all 0.3s ease-in-out;
+:host ::ng-deep .mat-button-toggle-label-content {
+  line-height: 0px !important;
+  font-size: $font-size12;
+  font-weight: 700;
+}
 
 .details-item-cmp {
   display: grid;
@@ -106,9 +111,9 @@ $transition: all 0.3s ease-in-out;
     //   }
 
     //   // Note
-    //   .truck-row-5 {
-    //     margin-top: 8px;
-    //   }
+      .details-page-row-5 {
+        margin-top: 8px;
+      }
 
     //   // Drug Test
     //   .truck-row-6 {
@@ -117,11 +122,11 @@ $transition: all 0.3s ease-in-out;
     //   }
 
     //   // PDF - big
-    //   .truck-row-7 {
-    //     height: 236px;
-    //     width: 100%;
-    //     margin: 22px 0px;
-    //   }
+      .details-page-row-7 {
+        height: 236px;
+        width: 100%;
+        margin: 22px 0px;
+      }
     // }
 
    
@@ -152,11 +157,6 @@ $transition: all 0.3s ease-in-out;
     width: 440px;
     background-color: $color-white;
   }
-  .common-cards{
-    border-radius: 3px;
-    overflow: hidden;
-    width: 335px;
-    background-color: $color-white;
-  }
+  
 }
 

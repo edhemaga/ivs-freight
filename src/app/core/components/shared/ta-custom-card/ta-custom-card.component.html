@@ -1,0 +1,43 @@
+<div class="ta-custom-card">
+  <div class="ta-card-header" (click)="isCardOpen = !isCardOpen">
+    <div class="header-content">
+      <app-ta-counter
+        *ngIf="hasCounter"
+        [count]="hasCounter"
+        [countBackground]="'#F3F3F3'"
+        [countColor]="'#919191'"
+        [countHeight]="'24px'"
+        [countWidth]="'24px'"
+      ></app-ta-counter>
+      <span
+        class="header-text" [ngClass]="{ 'no-counter': !hasCounter, 'active': isCardOpen }"
+        >
+        {{ cardName }}
+      </span>
+      <svg-icon
+        *ngIf="hasHeaderSvg"
+        class="header-svg"
+        src="{{ hasHeaderSvg }}"
+      ></svg-icon>
+    </div>
+    <div class="header-actions">
+      <svg-icon
+        *ngIf="hasActionSvg"
+        class="header-action-svg"
+        src="{{ hasActionSvg }}"
+        (click)="onAdd($event)"
+      ></svg-icon>
+      <svg-icon
+        *ngIf="hasArrow"
+        class="header-arrow"
+        [ngClass]="{ 'rotate': isCardOpen }"
+        src="assets/svg/common/ic_arrow-down.svg"
+      ></svg-icon>
+    </div>
+  </div>
+  <div class="ta-card-body" [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
+    <ng-content></ng-content>
+  </div>
+  <div *ngIf="hasDivider" class="divider"></div>
+
+</div>

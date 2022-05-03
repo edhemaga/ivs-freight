@@ -1,3 +1,6 @@
+.card-flex{
+    align-items: baseline !important;
+}
 .card-header-cmp {
     display: flex;
     align-items: center;
@@ -6,21 +9,24 @@
     background-color: #ffffff;
     border-radius: 3px;
     padding: 0 !important;
-    .text-icon-common{
+    .text-icon-common {
         display: flex;
         align-items: flex-start;
-        .icon-common{
+        .icon-common {
             margin-left: 12px;
             margin-right: 6px;
             margin-top: 13.5px;
         }
-        .has-svgIcon{
-            margin-left: 0  !important;
+        .has-svgIcon {
+            margin-left: 0 !important;
         }
-        .card-close-title{
-            margin-top: 0 !important;
-         }
-       
+        .card-close-title {
+            margin-top: 10px !important;
+            margin-bottom: 7px !important;
+            font-size: 14px !important;
+            color: #AAAAAA !important;
+            font-weight: 500 !important;
+        }
     }
     .card-name-cmp {
         font-size: 18px;
@@ -30,17 +36,18 @@
         margin-top: 13px !important;
         margin-left: 12px !important;
     }
-    .icon-dots{
-    svg{
-        margin-right: 7px;
-        margin-top: 13px;
+    .icon-dots {
+        svg {
+            margin-right: 7px;
+            margin-top: 13px;
+        }
     }
-}
 }
 .card-container-cmp {
     border-radius: 3px;
     background-color: #ffffff;
-
+     margin-bottom: 8px;
+     width: 335px;
     .card-body-cmp {
         flex-direction: column;
         background-color: #ffffff;
@@ -66,10 +73,9 @@
         align-items: flex-start;
         justify-content: space-between;
         background-color: #ffffff;
-        margin-left: 16px;
-        margin-right: 12px;
-        margin-bottom: 9px;
-        margin-top: 12px;
+        margin-left: 17px;
+        margin-right: 10px;
+        padding-bottom: 9px;
         svg {
             cursor: pointer;
         }
@@ -97,11 +103,29 @@ svg {
 p {
     margin: 0 !important;
 }
-.card-close-dots-margin{
-    svg{
+.card-close-dots-margin {
+    svg {
         margin-top: 0 !important;
     }
 }
-.card-close-icon{
-    margin-top: 0 !important;
- }
+.card-close-icon {
+    margin-top: 7px !important;
+    margin-bottom: 7px;
+    margin-right: 7px !important;
+}
+.rotate {
+    svg {
+      transform: rotate(180deg);
+      transition: all 0.3s ease-in-out;
+      path{
+        fill: #6d82c7 !important;
+      }
+    }
+  }
+  .hide-text{
+      color: #6d82c7;
+      font-size: 14px;
+      font-weight: 600;
+      margin-right: 6px;
+      cursor: pointer;
+  }

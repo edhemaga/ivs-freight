@@ -83,6 +83,7 @@ import { TruckModalComponent } from '../modals/truck-modal/truck-modal.component
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.component';
 import { TaDetailsHeaderCardComponent } from './ta-details-header-card/ta-details-header-card.component';
+import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component';
 
 @NgModule({
   declarations: [
@@ -107,6 +108,7 @@ import { TaDetailsHeaderCardComponent } from './ta-details-header-card/ta-detail
     TaCheckboxComponent,
     TaModalCardComponent,
     TaCommonHeaderComponent,
+    TaCustomCardComponent,
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
     TaInputAddressComponent,
@@ -233,7 +235,7 @@ import { TaDetailsHeaderCardComponent } from './ta-details-header-card/ta-detail
     DateCalendarsComponent,
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
-
+    TaCustomCardComponent,
     TaCheckboxComponent,
     TaModalCardComponent,
     TaCommonHeaderComponent,

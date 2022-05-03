@@ -1,7 +1,6 @@
 import { TruckDetailsItemComponent } from './truck-details-item/truck-details-item.component';
 import { TruckDetailsComponent } from './truck-details.component';
 import { NgModule } from "@angular/core";
-import { TruckDetailsCardComponent } from './truck-details-card/truck-details-card.component';
 import { RenderMultipleItemsPipe } from './truck-details-item/renderMultipleItems.pipe';
 import { TruckFhwaModalComponent } from './truck-modals/truck-fhwa-modal/truck-fhwa-modal.component';
 import { TruckPurchaseModalComponent } from './truck-modals/truck-purchase-modal/truck-purchase-modal.component';
@@ -17,7 +16,6 @@ import {NgApexchartsModule} from "ng-apexcharts";
     declarations:[
         TruckDetailsComponent,
         TruckDetailsItemComponent,
-        TruckDetailsCardComponent,
         RenderMultipleItemsPipe,
 
         //Modals truck

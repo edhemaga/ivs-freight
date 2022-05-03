@@ -86,7 +86,7 @@ export class TruckDetailsComponent implements OnInit {
          },
          
          additionalDetails:{
-           gross:'G-60,001 - 61,000',
+           gross:'G-60,001 - 61,000 Ibs',
            startMilage:'237,4563',
            emptyWei:'18,360',
            engineType:'Detroid Diesel 60 12.7L',

@@ -1,26 +1,28 @@
-<div class="card-header-cmp">
-    <div class="text-icon-common">
-        <span *ngIf="hasSvg"  [ngClass]="{'card-close-icon':!isCardOpen}" class="icon-common">
-            <svg-icon  *ngIf="hasSvg" [src]="hasSvg"></svg-icon>
-        </span>
-        <p class="card-name-cmp" [ngClass]="{'has-svgIcon':hasSvg,'card-close-title':!isCardOpen}"
-            (click)="toggleCards()">{{cardNameCommon}}</p>
+
+
+<div class="card-container-cmp" >
+    <div class="card-header-cmp" [ngClass]="{'card-flex':!isCardOpen}">
+        <div class="text-icon-common">
+            <span *ngIf="hasSvg"  [ngClass]="{'card-close-icon':!isCardOpen}" class="icon-common">
+                <svg-icon  *ngIf="hasSvg" [src]="hasSvg"></svg-icon>
+            </span>
+            <p class="card-name-cmp" [ngClass]="{'has-svgIcon':hasSvg,'card-close-title':!isCardOpen}"
+                (click)="toggleCards()">{{cardNameCommon}}</p>
+        </div>
+        <svg-icon class="icon-dots" [ngClass]="{'card-close-dots-margin':!isCardOpen}" src="assets/svg/common/ic_dots.svg">
+        </svg-icon>
     </div>
-    <svg-icon class="icon-dots" [ngClass]="{'card-close-dots-margin':!isCardOpen}" src="assets/svg/common/ic_dots.svg">
-    </svg-icon>
-</div>
-<div *ngIf="isCardOpen" class="card-container-cmp">
-    <div class="card-body-cmp">
+    <div [@showHideCardBody]="isCardOpen ? 'true' : 'false'" class="card-body-cmp">
         <ng-content></ng-content>
     </div>
-    <div class="card-footer-cmp">
-        <div class="icon-counter">
-            <svg-icon src="assets/svg/truckassist-table/note/Note-hover.svg"></svg-icon>
-            <svg-icon class="attachment-icon" src="assets/svg/common/ic_attachment.svg"></svg-icon>
-            <p class="card-document-counter">{{cardDocumentCounter}}</p>
+    <div [@showHideCardBody]="isCardOpen ? 'true' : 'false'" class="card-footer-cmp">
+        <div  class="icon-counter">
+            <svg-icon *ngIf="!resPage" src="assets/svg/truckassist-table/note/Note-hover.svg"></svg-icon>
+            <svg-icon *ngIf="!resPage" class="attachment-icon" src="assets/svg/common/ic_attachment.svg"></svg-icon>
+            <p *ngIf="!resPage" class="card-document-counter">{{cardDocumentCounter}}</p>
         </div>
-        <div class="resize-icon">
-            <svg-icon src="assets/svg/common/resize-arrow.svg"></svg-icon>
+        <div (click)="toggleResizePage($event.value)" [ngClass]="{'rotate':resPage}"  class="resize-icon">
+          <span class="hide-text" *ngIf="resPage">Hide Details</span>  <svg-icon src="assets/svg/common/resize-arrow.svg"></svg-icon>
         </div>
     </div>
 </div>
