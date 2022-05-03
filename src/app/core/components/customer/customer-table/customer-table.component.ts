@@ -6,6 +6,8 @@ import {
   getBrokerColumnDefinition,
   getShipperColumnDefinition,
 } from 'src/assets/utils/settings/customer-columns';
+import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-customer-table',
@@ -14,15 +16,18 @@ import {
 })
 export class CustomerTableComponent implements OnInit {
   private destroy$: Subject<void> = new Subject<void>();
-  
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
   public columns: any[] = [];
-  public selectedTab = 'active';
+  public selectedTab = 'broker';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService,  private tableService: TruckassistTableService) {}
+  constructor(
+    private modalService: ModalService,
+    private tableService: TruckassistTableService
+  ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -67,7 +72,7 @@ export class CustomerTableComponent implements OnInit {
           name: 'delete',
           type: 'customer',
           text:
-            this.selectedTab === 'active'
+            this.selectedTab === 'broker'
               ? 'Are you sure you want to delete customer(s)?'
               : 'Are you sure you want to delete shipper(s)?',
           class: 'delete-text',
@@ -86,7 +91,7 @@ export class CustomerTableComponent implements OnInit {
     this.tableData = [
       {
         title: 'Broker',
-        field: 'active',
+        field: 'broker',
         length: 8,
         data: this.getDumyData(8, 'broker'),
         extended: false,
@@ -97,7 +102,7 @@ export class CustomerTableComponent implements OnInit {
       },
       {
         title: 'Shipper',
-        field: 'inactive',
+        field: 'shipper',
         length: 15,
         data: this.getDumyData(15, 'shipper'),
         extended: false,
@@ -262,9 +267,30 @@ export class CustomerTableComponent implements OnInit {
     return data;
   }
 
+  public onTableBodyActions(event: any) {
+    if (this.selectedTab === 'broker') {
+      this.modalService.openModal(
+        BrokerModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          type: 'edit',
+        }
+      );
+    } else {
+      //TODO: SHIPPER
+    }
+  }
+
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba da se uradi modal!');
+      console.log(this.selectedTab);
+
+      if (this.selectedTab === 'broker') {
+        this.modalService.openModal(BrokerModalComponent, { size: 'small' });
+      } else {
+        //TODO: SHIPPER
+      }
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setCustomerData(event.tabData);

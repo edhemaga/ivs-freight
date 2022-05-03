@@ -1,5 +1,5 @@
 <div class="ta-custom-card">
-  <div class="divider"></div>
+  <div *ngIf="hasDivider" class="divider"></div>
   <div class="ta-card-header" (click)="isCardOpen = !isCardOpen">
     <div class="header-content">
       <app-ta-counter

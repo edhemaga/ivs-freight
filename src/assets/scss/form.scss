@@ -120,6 +120,11 @@
         margin-top: 12px;
       }
 
+      &.active-20 {
+        max-height: 600px;
+        margin-top: 20px;
+      }
+
       .animation-checkbox-card-tabs {
         position: relative;
         transform: translate(20%);

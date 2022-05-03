@@ -93,7 +93,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
       // Delete
       if (action === 'delete' && this.editData) {
-        this.deleteCompanyContact(this.editData.id);
+        this.deleteCompanyContactById(this.editData.id);
       }
 
       this.ngbActiveModal.close();
@@ -214,7 +214,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public deleteCompanyContact(id: number): void {
+  public deleteCompanyContactById(id: number): void {
     this.contactModalService
       .deleteCompanyContactById(id)
       .pipe(untilDestroyed(this))

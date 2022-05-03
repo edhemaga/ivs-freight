@@ -1,0 +1,174 @@
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Broker' : 'Edit Broker'"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="brokerForm.valid"
+  [customClass]="'modal-container-L'"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <app-tab-switcher
+    (switchClicked)="tabChange($event)"
+    [tabs]="tabs"
+  ></app-tab-switcher>
+  <form [formGroup]="brokerForm" class="form-container">
+    <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
+      <!-------------------------------- Details Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 1">
+        <div class="row">
+          <div class="col-12">
+            <app-ta-input
+              formControlName="businessName"
+              [inputConfig]="{
+                name: 'Bussiness Name',
+                type: 'text',
+                label: 'Bussiness Name',
+                isRequired: true,
+                textTransform: 'capitalize',
+                maxLength: 6
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <app-ta-input
+              formControlName="dbaName"
+              [inputConfig]="{
+                name: 'DBA Name',
+                type: 'text',
+                label: 'DBA Name',
+                textTransform: 'capitalize',
+                maxLength: 6
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-3">
+            <app-ta-input
+              formControlName="ein"
+              [inputConfig]="{
+                name: 'EIN',
+                type: 'text',
+                label: 'EIN #',
+                textTransform: 'capitalize',
+                maxLength: 6
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-3">
+            <app-ta-input
+              formControlName="mcNumber"
+              [inputConfig]="{
+                name: 'MC FF',
+                type: 'text',
+                label: 'MC/FF #',
+                textTransform: 'capitalize',
+                maxLength: 6
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row last-row">
+          <div class="col-6">
+            <app-ta-input
+              formControlName="phone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                isRequired: true,
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-6">
+            <app-ta-input
+              formControlName="email"
+              [inputConfig]="{
+                name: 'Email',
+                type: 'text',
+                label: 'Email',
+                placeholderIcon: 'email'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <app-status-switcher
+          (switchClicked)="tabMainAddressChange($event)"
+          [data]="mainAddressTabs"
+        ></app-status-switcher>
+        <div
+          class="animation-checkbox-card-tabs"
+          [ngClass]="{
+            fade: selectedMainAddressTab?.name.toLowerCase() === 'main address'
+          }"
+        >
+          <div class="row first-row last-row">
+            <div class="col-10">
+              <app-ta-input-address
+                formControlName="mainAddress"
+                [inputConfig]="{
+                  name: 'Address',
+                  type: 'text',
+                  label: 'Address, City, State Zip',
+                  isRequired: true,
+                  placeholderIcon: 'address',
+                  textTransform: 'capitalize'
+                }"
+                (selectedAddress)="onHandleAddress($event)"
+              ></app-ta-input-address>
+            </div>
+            <div class="col-2">
+              <app-ta-input
+                formControlName="mainAddressUnit"
+                [inputConfig]="{
+                  name: 'Address Unit',
+                  type: 'text',
+                  label: 'Unit #',
+                  maxLength: 6
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </div>
+        <app-ta-checkbox
+          formControlName="isCheckedBillingAddress"
+          [label]="'Billing address is same as main address'"
+        ></app-ta-checkbox>
+        <div *ngIf="brokerForm.get('isCheckedBillingAddress').value">
+          <div class="row first-row last-row">
+            <div class="col-4">
+              <app-ta-input
+                formControlName="billingPoBox"
+                [inputConfig]="{
+                  name: 'PO BOX',
+                  type: 'text',
+                  label: 'PO Box #',
+                  isRequired: true,
+                  maxLength: 6
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-8">
+              <app-ta-input-address
+                formControlName="billingAddress"
+                [inputConfig]="{
+                  name: 'Address',
+                  type: 'text',
+                  label: 'City, State Zip',
+                  isRequired: true,
+                  placeholderIcon: 'address',
+                  textTransform: 'capitalize'
+                }"
+                (selectedAddress)="onHandleAddress($event)"
+              ></app-ta-input-address>
+            </div>
+          </div>
+        </div>
+        <app-ta-input-note formControlName="note"></app-ta-input-note>
+      </div>
+      <!-------------------------------- Contact Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 2"></div>
+    </div>
+  </form>
+</app-ta-modal>

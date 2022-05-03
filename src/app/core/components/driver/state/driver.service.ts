@@ -7,8 +7,8 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class DriverService {
-  constructor(private http: HttpClient, private driverStore: DriversStore) {}
-
+  constructor(private http: HttpClient, private driverStore: DriversStore, private driverService: DriverService) {}
+  
   private fakeObservable = of({
     id: 336,
     companyId: 1,

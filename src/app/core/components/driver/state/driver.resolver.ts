@@ -19,6 +19,7 @@ export class DriverResolver implements Resolve<DriversState> {
     route: ActivatedRouteSnapshot
   ): Observable<DriversState> | Observable<any> {
     console.log('RESOLVER DRIVER');
+
     return this.driverService.getDrivers().pipe(
       catchError((error) => {
         return of('No drivers data...');
