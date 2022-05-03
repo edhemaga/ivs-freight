@@ -5,6 +5,7 @@
   width: 14px;
   height: 10px;
   display: none;
+  z-index: 10;
 
   svg {
     path {
@@ -16,10 +17,12 @@
     right: 6px;
   }
 
-  &.ibs-placeholderIcon {
+  &.ibs-placeholderIcon,
+  &.gal-placeholderIcon {
     right: 12px;
     svg {
-      #lbs {
+      #lbs,
+      #gal {
         fill: #6c6c6c;
       }
     }

@@ -11,6 +11,7 @@ export class ModalService {
     options = {
       ...options,
       backdrop: 'static',
+      backdropClass: "myDropback"
     };
 
     const modal = this.ngbModal.open(component, options);

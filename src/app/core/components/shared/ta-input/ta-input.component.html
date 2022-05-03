@@ -32,7 +32,7 @@
   <div
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
-      disabled: inputConfig.isDisabled,
+      'disabled': inputConfig.isDisabled,
       'focus-typing': getSuperControl.value && focusInput,
       'valid-focus-in':
         getSuperControl.value &&
@@ -69,6 +69,14 @@
         getSuperControl.invalid &&
         waitValidation &&
         focusInput &&
+        !inputConfig.placeholderIcon &&
+        !isVisiblePasswordEye &&
+        !inputConfig.isDropdown,
+      'invalid-focus-out-required':
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
+        waitValidation &&
+        !focusInput &&
         !inputConfig.placeholderIcon &&
         !isVisiblePasswordEye &&
         !inputConfig.isDropdown,
@@ -222,6 +230,7 @@
     #input
     [type]="getInputType(inputConfig.type)"
     [id]="inputConfig.name"
+    inputformat="dd-mm-yy"
     [name]="inputConfig.name"
     [disabled]="inputConfig.isDisabled"
     [autocomplete]="inputConfig.autocomplete"
@@ -270,6 +279,80 @@
     (focus)="onFocus()"
     (paste)="onPaste($event, inputConfig.maxLength)"
   />
+
+
+  <div
+    class="date_time_holder input-control"
+    *ngIf="
+      inputConfig.name === 'datepicker' || inputConfig.name === 'timepicker'
+    "
+    [class.active]="showDateInput"
+    (click)="showDateTimePlaceholder()"
+    [ngClass]="{
+      'focused': focusInput,
+      'invalid-focus-out':
+        inputConfig.isRequired &&
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        waitValidation &&
+        !focusInput,
+      'invalid-empty-focus-out-required':
+        inputConfig.isRequired &&
+        !getSuperControl.value &&
+        getSuperControl.invalid &&
+        waitValidation,
+      'invalid-focus-in':
+        inputConfig.isRequired &&
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        waitValidation,
+      'invalid-dropdown-focus-in':
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
+        focusInput &&
+        waitValidation &&
+        inputConfig.isDropdown,
+      'invalid-submit':
+        inputConfig.isRequired &&
+        getSuperControl.invalid &&
+        getSuperControl.touched
+    }"
+  >
+    <span
+      #span1
+      class="main"
+      tabindex="0"
+      (focus)="onFocus()"
+      (click)="setSelection($event)"
+      (keydown)="changeSelection($event)"
+      (blur)="onBlur()"
+      >mm</span
+    >
+    <span (click)="setSelection($event)">/</span>
+    <span
+      #span2
+      class="main"
+      tabindex="1"
+      (focus)="onFocus()"
+      (click)="setSelection($event)"
+      (keydown)="changeSelection($event)"
+      (blur)="onBlur()"
+      >dd</span
+    >
+    <span (click)="setSelection($event)">/</span>
+    <span
+      #span3
+      class="main"
+      tabindex="2"
+      (focus)="onFocus()"
+      (click)="setSelection($event)"
+      (keydown)="changeSelection($event)"
+      (blur)="onBlur()"
+      >yy</span
+    >
+  </div>
+
   <!-- Input Icon Placeholder -->
   <svg-icon
     #t2="ngbPopover"
@@ -281,6 +364,8 @@
     [popoverClass]="'datetimepopovermain'"
     autoClose="outside"
     [container]="'body'"
+    (shown)="onPopoverShown()"
+    (hidden)="onPopoverHidden()"
     class="input-icon {{ inputConfig.customClass }}"
     [ngClass]="{
       'show-input-icon': inputConfig.placeholderIcon,
@@ -324,10 +409,10 @@
     [for]="inputConfig.name"
     class="input-label {{ inputConfig.customClass }}"
     [ngClass]="{
-      required: inputConfig.isRequired && !inputConfig.isDisabled,
+      'required': inputConfig.isRequired && !inputConfig.isDisabled,
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
-      'up-label': getSuperControl.value || focusInput,
+      'up-label': getSuperControl.value || focusInput || showDateInput,
       'valid-focus-out':
         getSuperControl.value && getSuperControl.valid && !focusInput,
       'invalid-focus-out':
@@ -383,6 +468,7 @@
     <app-custom-datetime-pickers
       [calendarType]="'date'"
       [placeholder]="'MM/DD/YY'"
+      [dateTime]="dateTimeInputDate"
     ></app-custom-datetime-pickers>
   </div>
 </ng-template>

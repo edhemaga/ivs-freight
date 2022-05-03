@@ -33,7 +33,7 @@
             dropdownWidthClass:'w-col-5'
           }"
           [canAddNew]="true"
-          [options]="accountLabels.labels"
+          [options]="(accountLabels$ | async)?.labels"
           (selectedItem)="onSelectLabel($event)"
         ></app-ta-input-dropdown>
       </div>

@@ -23,26 +23,35 @@
                 <th class="empty-field"></th>
             </tr>
         </thead>
-        <tbody>
-            <tr *ngFor="let cell of data">
+        <tbody
+        cdkDropList
+        >
+            <tr 
+                *ngFor="let cell of data">
                 <td class="truck-field">
-                    <div class="dispatcher-table-cell-container">
+                    <div
+                    cdkDrag 
+                    [cdkDragPreviewClass]="'dispatch-dragged-row'"
+                    cdkDragBoundary=".dispatchboard-main-table"
+                    cdkDragLockAxis="y"
+                    cdkDragRootElement="tr"
+                    class="dispatcher-table-cell-container">
                         <div class="dispatcher-table-cell-holder">
-                            7532
+                            7532ta
                         </div>
                     </div>
                 </td>
                 <td class="trailer-field">
                     <div class="dispatcher-table-cell-container">
                         <div class="dispatcher-table-cell-holder">
-                            7532
+                            7532tr
                         </div>
                     </div>
                 </td>
                 <td class="driver-field">
                     <div class="dispatcher-table-cell-container">
                         <div class="dispatcher-table-cell-holder">
-                            7532
+                            7532dr
                         </div>
                     </div>
                 </td>

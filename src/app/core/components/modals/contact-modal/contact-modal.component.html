@@ -22,7 +22,6 @@
       </div>
       <div class="col-5">
         <app-ta-input-dropdown
-          *ngIf="contactLabels.length"
           formControlName="companyContactLabelId"
           [inputConfig]="{
             name: 'Input Dropdown',
@@ -108,15 +107,13 @@
       </div>
       <div
         class="checkbox-card-body"
-        [@showHideSharedContact]="
-          contactForm.get('shared').value ? 'true' : 'false'
-        "
+        [ngClass]="{'active': contactForm.get('shared').value}"
+        
       >
         <div *ngIf="contactForm.get('shared').value">
           <div class="row shared-contact-dropdown">
             <div class="col-12">
               <app-ta-input-dropdown
-                *ngIf="sharedDepartments.length"
                 formControlName="sharedLabelId"
                 [template]="'groups'"
                 [inputConfig]="{

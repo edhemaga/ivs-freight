@@ -3,6 +3,7 @@ import {
   ElementRef,
   Input,
   OnInit,
+  Renderer2,
   Self,
   ViewChild,
 } from '@angular/core';
@@ -25,8 +26,9 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() customClass: string = null;
 
   @ViewChild('note', { static: true }) noteRef: ElementRef;
+  @ViewChild('noteBody', { static: true }) noteBody: ElementRef;
 
-  constructor(@Self() public superControl: NgControl) {
+  constructor(@Self() public superControl: NgControl, private renderer: Renderer2) {
     this.superControl.valueAccessor = this;
   }
 
@@ -46,4 +48,8 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   public onChange(event: any): void {}
 
   public registerOnTouched(fn: any): void {}
+
+  public openNote(){
+    this.isVisibleNote = !this.isVisibleNote;
+  }
 }

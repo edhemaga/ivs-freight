@@ -26,8 +26,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
 
   @Output() onActivateFooterRoutes = new EventEmitter<boolean>();
 
-  private currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  private userCompany = JSON.parse(localStorage.getItem('userCompany'));
   public currentUserStatus: string = 'online';
 
   public footerData: FooterData[] = footerData;
@@ -40,14 +38,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.footerData[2].text = {
-      companyName: this.userCompany?.name,
-      userName: this.currentUser?.firstName.concat(
-        ' ',
-        this.currentUser?.lastName
-      ),
-    };
-
     this.isActiveFooterRouteOnReload(window.location.pathname);
 
     // this.communicatorUserDataService.chatUser

@@ -23,5 +23,4 @@ export class TaCustomCardComponent {
     event.stopPropagation();
     this.onActionEvent.emit(true);
   }
-
 }

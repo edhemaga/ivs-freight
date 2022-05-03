@@ -10,10 +10,12 @@
 
   &::-moz-selection {
     background-color: #ffe1e4;
+    color: #EF5350;
   }
 
   &::selection {
     background-color: #ffe1e4;
+    color: #EF5350;
   }
 
   &.invalid-focus-out,

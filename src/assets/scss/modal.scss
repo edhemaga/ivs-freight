@@ -6,8 +6,6 @@ ngb-modal-window[aria-hidden="true"] {
 
 .modal {
   z-index: 1000;
-  background-color: rgba(0, 0, 0, 0);
-  transition: all 0.3s ease-out;
 
   &.fade .modal-dialog {
     -webkit-animation-name: fade-in-scale-animation 0.5s;
@@ -22,8 +20,7 @@ ngb-modal-window[aria-hidden="true"] {
 
   // This class added through modal.service.ts
   &.modal-animation {
-    background-color: rgba(0, 0, 0, 0.4);
-    transition: all 0.4s ease-out !important;
+    
   }
 
   &.modal-animation .modal-dialog {
@@ -41,6 +38,18 @@ ngb-modal-window[aria-hidden="true"] {
       border-radius: 5px;
       box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
       background-color: #fff;
+
+      &.cdk-drag-dragging {
+        .modal-header {
+          cursor: -webkit-grabbing;
+          cursor: grabbing;
+
+          .modal-title {
+            cursor: -webkit-grabbing;
+            cursor: grabbing;
+          }
+        }
+      }
 
       .modal-header {
         display: flex;
@@ -161,7 +170,7 @@ ngb-modal-window[aria-hidden="true"] {
           border: none;
           border-radius: 2px;
           background-color: #f3f3f3;
-          color: #B7B7B7;
+          color: #b7b7b7;
           font-weight: 700;
           font-size: 14px;
           width: 150px;
@@ -209,4 +218,44 @@ ngb-modal-window[aria-hidden="true"] {
   100% {
     transform: scale(1);
   }
+} 
+
+@keyframes modalShow {
+  0% {
+    background-color: rgba(0, 0, 0, 0) !important;;
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.4) !important;;
+  }
 }
+
+
+.fade {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+body.modal-open{
+  .modal-backdrop{
+    transition: all 0.3s ease-out;
+  
+    &.myDropback{
+      transition: all 0.4s ease-out !important;
+      opacity: 1 !important;
+      background-color: rgba(0, 0, 0, 0.4)  !important;;
+  
+      -webkit-animation: modalShow 0.5s;
+      animation: modalShow 0.5s;
+    }
+  }
+}
+
+body:not(.modal-open){
+  .modal-backdrop{
+    &.myDropback{
+      -webkit-animation: modalShow 0.3s;
+      animation: modalShow 0.3s;
+      animation-direction: reverse;
+    }
+  }
+}
+
