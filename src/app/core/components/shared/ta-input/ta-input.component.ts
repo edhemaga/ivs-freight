@@ -23,7 +23,7 @@ import moment from 'moment';
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
   styleUrls: ['./ta-input.component.scss'],
-  providers: [NgbDropdownConfig]
+  providers: [NgbDropdownConfig],
 })
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor
@@ -54,6 +54,16 @@ export class TaInputComponent
   }
 
   ngOnInit(): void {
+    this.inputService.isInputMarkedInvalidSubject
+      .pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        console.log(value);
+        if (value) {
+          this.waitValidation = true;
+          this.inputService.isInputMarkedInvalidSubject.next(false);
+        }
+      });
+
     if (this.inputConfig.name === 'datepicker') {
       this.calendarService.dateChanged.subscribe((date) => {
         const text = moment(new Date(date)).format('YYYY-MM-DD');
@@ -297,11 +307,7 @@ export class TaInputComponent
       }
     }
 
-    if (
-      ['insurance policy'].includes(
-        this.inputConfig.name.toLowerCase()
-      )
-    ) {
+    if (['insurance policy'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
         return true;
       } else {
@@ -355,7 +361,7 @@ export class TaInputComponent
         return false;
       }
 
-      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+      if (/^[0-9]$/.test(String.fromCharCode(event.charCode))) {
         this.disableConsecutivelySpaces(event);
         return true;
       } else {

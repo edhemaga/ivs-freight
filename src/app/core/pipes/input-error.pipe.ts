@@ -6,15 +6,11 @@ import {Pipe, PipeTransform} from '@angular/core';
 export class InputErrorPipe implements PipeTransform {
 
   transform(value: any, inputName?: string): string {
+    console.log(value)
+    console.log(inputName)
     let errorMessageValue: string = '';
     if (value !== null) {
-      if(value['minlength']) {
-        errorMessageValue = `Minimum required length is ${value.minlength.requiredLength}`
-      }
-      if(value['maxlength']) {
-        errorMessageValue = `Maximum possible characters is ${value.maxlength.requiredLength}`
-      }
-      if (value['invalid'] || inputName.toLocaleLowerCase() === 'address') {
+      if (value['invalid']) {
         errorMessageValue = 'Invalid';
       }
       if (value['email']) {
@@ -31,6 +27,18 @@ export class InputErrorPipe implements PipeTransform {
       }
       if(value['pattern'] && inputName.toLocaleLowerCase() === 'ein') {
         errorMessageValue = `EIN as XX-XXXXXXX`
+      }
+      if(value['pattern'] && inputName.toLocaleLowerCase() === 'year') {
+        errorMessageValue = `Invalid`
+      }
+      if(value && inputName.toLocaleLowerCase() === 'address') {
+        errorMessageValue = `Invalid`
+      }
+      if(value['minlength']) {
+        errorMessageValue = `Minimum required length is ${value.minlength.requiredLength}`
+      }
+      if(value['maxlength']) {
+        errorMessageValue = `Maximum possible characters is ${value.maxlength.requiredLength}`
       }
     }
     return errorMessageValue

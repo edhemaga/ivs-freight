@@ -110,7 +110,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       ],
       truckMakeId: [null, Validators.required],
       model: [null, [Validators.required, Validators.maxLength(22)]],
-      year: [null, [Validators.required, Validators.maxLength(4)]],
+      year: [null, [Validators.required, Validators.maxLength(4), Validators.pattern(/^(19[0-9]\d|20[0-4]\d|2100)$/)]],
       colorId: [null],
       companyOwned: [false],
       ownerId: [null],

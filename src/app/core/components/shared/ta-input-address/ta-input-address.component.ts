@@ -63,8 +63,19 @@ export class TaInputAddressComponent
           if (value !== this.activeAddress) {
             this.invalidAddress = true;
           }
+          console.log(this.getSuperControl.errors)
         });
     }
+
+    this.inputService.isInputMarkedInvalidSubject
+      .pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        console.log(value);
+        if (value) {
+          this.waitValidation = true;
+          this.inputService.isInputMarkedInvalidSubject.next(false);
+        }
+      });
   }
 
   public handleAddressChange(address: Address) {

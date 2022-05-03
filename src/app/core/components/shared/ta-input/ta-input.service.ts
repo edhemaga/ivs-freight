@@ -24,6 +24,9 @@ export class TaInputService {
   public activeItemDropdownSubject: BehaviorSubject<any> =
     new BehaviorSubject<any>(null);
 
+  public isInputMarkedInvalidSubject: BehaviorSubject<any> =
+    new BehaviorSubject<any>(null);
+
   constructor(
     public notificationService: NotificationService,
     private spinnerService: SpinnerService
@@ -40,7 +43,7 @@ export class TaInputService {
     if (!isSpecialCase) {
       this.spinnerService.show(true);
     }
-
+    this.isInputMarkedInvalidSubject.next(true);
     if (formGroup.invalid) {
       (Object as any).values(formGroup.controls).forEach((control: any) => {
         control.markAsTouched();

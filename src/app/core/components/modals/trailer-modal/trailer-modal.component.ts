@@ -99,7 +99,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       trailerMakeId: [null, [Validators.required]],
       model: [null, [Validators.required]],
       colorId: [null],
-      year: [null, [Validators.required]],
+      year: [null, [Validators.required, Validators.pattern(/^(19[0-9]\d|20[0-4]\d|2100)$/)]],
       trailerLengthId: [null, [Validators.required]],
       ownerId: [null],
       note: [null],
