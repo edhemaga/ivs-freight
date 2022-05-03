@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import {
   Component,
@@ -8,11 +9,19 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  CreateTruckCommand,
+  GetTruckModalResponse,
+  TruckResponse,
+  UpdateTruckCommand,
+} from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { TruckModalService } from './truck-modal.service';
 
 @Component({
   selector: 'app-truck-modal',
@@ -35,6 +44,14 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public grossWeight: any[] = [];
   public engineType: any[] = [];
   public tireSize: any[] = [];
+
+  selectedTruckType: any = null;
+  selectedTruckMake: any = null;
+  selectedColor: any = null;
+  selectedOwner: any = null;
+  selectedTruckGrossWeight: any = null;
+  selectedEngineType: any = null;
+  selectedTireSize: any = null;
 
   public selectedTab: number = 1;
   public tabs: any[] = [
@@ -60,19 +77,23 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal,
-    private mockModalService: MockModalService
+    private truckModalService: TruckModalService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
     this.createForm();
     this.isCompanyOwned();
-    this.truckType = this.mockModalService.truckType;
-    this.truckMakeType = this.mockModalService.truckMakeType;
-    this.colorType = this.mockModalService.colorType;
-    this.ownerType = this.mockModalService.ownerType;
-    this.grossWeight = this.mockModalService.grossWeight;
-    this.engineType = this.mockModalService.engineType;
-    this.tireSize = this.mockModalService.tireSize;
+    this.getTruckDropdowns();
+
+    if (this.editData) {
+      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
+      this.editData = {
+        ...this.editData,
+        id: 2,
+      };
+      this.editTruckById(this.editData.id);
+    }
   }
 
   private createForm(): void {
@@ -100,7 +121,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       truckEngineTypeId: [null],
       tireSizeId: [null],
       axles: [null, Validators.maxLength(1)],
-      insurancePolicy: [null, [Validators.minLength(8), Validators.maxLength(14)]],
+      insurancePolicy: [
+        null,
+        [Validators.minLength(8), Validators.maxLength(14)],
+      ],
       mileage: [null, Validators.maxLength(10)],
       ipasEzpass: [null, Validators.maxLength(14)],
     });
@@ -119,6 +143,20 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         this.inputService.markInvalid(this.truckForm);
         return;
       }
+      // Save & Update
+      if (action === 'save') {
+        if (this.editData) {
+          this.updateTruck(this.editData.id);
+        } else {
+          this.addTruck();
+        }
+      }
+
+      // Delete
+      if (action === 'delete' && this.editData) {
+        this.deleteTruckById(this.editData.id);
+      }
+
       this.ngbActiveModal.close();
     }
   }
@@ -140,11 +178,217 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   }
 
   public openCloseCheckboxCard(event: any) {
-    if(this.truckForm.get('companyOwned').value) {
+    if (this.truckForm.get('companyOwned').value) {
       event.preventDefault();
       event.stopPropagation();
       this.truckForm.get('companyOwned').setValue(false);
     }
+  }
+
+  public getTruckDropdowns() {
+    this.truckModalService
+      .getTruckDropdowns()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: GetTruckModalResponse) => {
+          this.truckType = res.truckTypes;
+          this.truckMakeType = res.truckMakes;
+          this.colorType = res.colors;
+          this.ownerType = res.owners;
+          this.grossWeight = res.truckGrossWeights;
+          this.engineType = res.truckEngineTypes;
+          this.tireSize = res.tireSizes;
+        },
+        error: (err) => {
+          this.notificationService.error(
+            "Cant't get truck dropdown items.",
+            'Error:'
+          );
+        },
+      });
+  }
+
+  public addTruck() {
+    const newData: CreateTruckCommand = {
+      ...this.truckForm.value,
+      truckTypeId: this.selectedTruckType.id,
+      truckMakeId: this.selectedTruckMake.id,
+      colorId: this.selectedColor ? this.selectedColor.id : null,
+      ownerId: this.selectedOwner ? this.selectedOwner.id : null,
+      truckGrossWeightId: this.selectedTruckGrossWeight
+        ? this.selectedTruckGrossWeight.id
+        : null,
+      truckEngineTypeId: this.selectedEngineType
+        ? this.selectedEngineType.id
+        : null,
+      tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
+      mileage: this.truckForm.get('mileage').value
+        ? parseFloat(
+            this.truckForm.get('mileage').value.toString().replace(/,/g, '')
+          )
+        : null,
+      axles: this.truckForm.get('axles').value
+        ? parseInt(this.truckForm.get('axles').value)
+        : null,
+      emptyWeight: this.truckForm.get('emptyWeight').value
+        ? parseFloat(
+            this.truckForm.get('emptyWeight').value.toString().replace(/,/g, '')
+          )
+        : null,
+      commission: this.truckForm.get('commission').value
+        ? parseFloat(
+            this.truckForm.get('commission').value.toString().replace(/,/g, '')
+          )
+        : null,
+      year: parseInt(this.truckForm.get('year').value),
+    };
+    this.truckModalService
+      .addTruck(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () =>
+          this.notificationService.success(
+            'Truck successfully created.',
+            'Success:'
+          ),
+        error: () =>
+          this.notificationService.error("Truck can't be created.", 'Error:'),
+      });
+    console.log(newData);
+  }
+
+  public updateTruck(id: number) {
+    const newData: UpdateTruckCommand = {
+      id: id,
+      ...this.truckForm.value,
+      truckTypeId: this.selectedTruckType.id,
+      truckMakeId: this.selectedTruckMake.id,
+      colorId: this.selectedColor ? this.selectedColor.id : null,
+      ownerId: this.selectedOwner ? this.selectedOwner.id : null,
+      truckGrossWeightId: this.selectedTruckGrossWeight
+        ? this.selectedTruckGrossWeight.id
+        : null,
+      truckEngineTypeId: this.selectedEngineType
+        ? this.selectedEngineType.id
+        : null,
+      tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
+      mileage: this.truckForm.get('mileage').value
+        ? parseFloat(
+            this.truckForm.get('mileage').value.toString().replace(/,/g, '')
+          )
+        : null,
+      axles: this.truckForm.get('axles').value
+        ? parseInt(this.truckForm.get('axles').value)
+        : null,
+      emptyWeight: this.truckForm.get('emptyWeight').value
+        ? parseFloat(
+            this.truckForm.get('emptyWeight').value.toString().replace(/,/g, '')
+          )
+        : null,
+      commission: this.truckForm.get('commission').value
+        ? parseFloat(
+            this.truckForm.get('commission').value.toString().replace(/,/g, '')
+          )
+        : null,
+      year: parseInt(this.truckForm.get('year').value)
+    };
+    this.truckModalService
+      .addTruck(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () =>
+          this.notificationService.success(
+            'Truck successfully created.',
+            'Success:'
+          ),
+        error: () =>
+          this.notificationService.error("Truck can't be created.", 'Error:'),
+      });
+    console.log(newData);
+  }
+
+  public deleteTruckById(id: number) {
+    this.truckModalService
+      .deleteTruckById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () =>
+          this.notificationService.success(
+            'Truck successfully deleted.',
+            'Success:'
+          ),
+        error: () =>
+          this.notificationService.error("Truck can't be deleted.", 'Error:'),
+      });
+  }
+
+  public editTruckById(id: number) {
+    this.truckModalService
+      .getTruckById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: TruckResponse) => {
+          this.truckForm.patchValue({
+            truckNumber: res.truckNumber,
+            truckTypeId: res.truckType.name,
+            vin: res.vin,
+            truckMakeId: res.truckMake.name,
+            model: res.model,
+            year: res.year,
+            colorId: res.color.name,
+            companyOwned: res.companyOwned,
+            ownerId: res.owner.name, // TODO: PITATI BACK
+            commission: res.commission,
+            note: res.note,
+            truckGrossWeightId: res.truckGrossWeight.name,
+            emptyWeight: res.emptyWeight,
+            truckEngineTypeId: res.truckEngineType.name,
+            tireSizeId: res.tireSize.name,
+            axles: res.axles,
+            insurancePolicy: res.insurancePolicy,
+            mileage: res.mileage,
+            ipasEzpass: res.ipasEzpass,
+          });
+          this.selectedTruckType = res.truckType;
+          this.selectedTruckMake = res.truckMake;
+          this.selectedColor = res.color;
+          this.selectedOwner = res.owner;
+          this.selectedTruckGrossWeight = res.truckGrossWeight;
+          this.selectedEngineType = res.truckEngineType;
+          this.selectedTireSize = res.tireSize;
+        },
+        error: () => {
+          this.notificationService.error("Cant't get truck.", 'Error:');
+        },
+      });
+  }
+
+  public onSelectTruckType(event: any) {
+    this.selectedTruckType = event;
+  }
+
+  public onSelectTruckMake(event: any) {
+    this.selectedTruckMake = event;
+  }
+
+  public onSelectColor(event: any) {
+    this.selectedColor = event;
+  }
+
+  public onSelectOwner(event: any) {
+    this.selectedOwner = event;
+  }
+
+  public onSelectTruckGrossWeight(event: any) {
+    this.selectedTruckGrossWeight = event;
+  }
+
+  public onSelectTruckEngineType(event: any) {
+    this.selectedEngineType = event;
+  }
+
+  public onSelectTireSize(event: any) {
+    this.selectedTireSize = event;
   }
 
   ngOnDestroy(): void {}

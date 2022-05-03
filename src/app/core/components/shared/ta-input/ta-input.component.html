@@ -175,9 +175,9 @@
   <svg-icon
     class="input-dropdown-arrow"
     [ngClass]="{
-      visible: inputConfig.isDropdown && !inputConfig.isDisabled,
-      active: inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
-      valid:
+      'visible': inputConfig.isDropdown && !inputConfig.isDisabled,
+      'active': inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
+      'valid':
         inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.valid &&
@@ -210,7 +210,7 @@
         focusInput &&
         inputConfig.isDropdown &&
         !inputConfig.placeholder,
-      hide: isDropdownAddModeActive,
+      'hide': isDropdownAddModeActive,
       'no-validation-hover': !waitValidation && !focusInput
     }"
     src="assets/svg/common/ic_arrow-down.svg"

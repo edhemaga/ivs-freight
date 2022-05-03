@@ -1,18 +1,18 @@
 export interface ITaInput {
-    name: string;
-    type: string;
-    label: string;
-    placeholder?: string;    // only for dropdown, otherwise placeholder is label !!!
-    placeholderIcon?: string;
-    isRequired?: boolean;
-    isDisabled?: boolean;
-    pattern?: string;
-    autocomplete?:string;
-    minLength?:number;
-    maxLength?:number;
-    mask?: string;
-    textTransform?: string | 'capitalize' | 'uppercase' | 'lowercase';
-    customClass?: string;   // 'input-big' -> height: 32px
-    isDropdown?: boolean;
-    dropdownWidthClass?: string;  // Look in ta-input-drodown.scss
+  name: string;
+  type: string;
+  label: string;
+  placeholder?: string; // only for dropdown, otherwise placeholder is label !!!
+  placeholderIcon?: string;
+  isRequired?: boolean;
+  isDisabled?: boolean;
+  pattern?: string;
+  autocomplete?: string;
+  minLength?: number;
+  maxLength?: number;
+  mask?: string;
+  textTransform?: string | 'capitalize' | 'uppercase' | 'lowercase';
+  customClass?: string; // 'input-big' -> height: 32px
+  isDropdown?: boolean;
+  dropdownWidthClass?: string; // Look in ta-input-drodown.scss
 }
