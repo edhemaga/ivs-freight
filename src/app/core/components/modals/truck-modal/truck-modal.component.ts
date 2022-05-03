@@ -16,7 +16,6 @@ import {
   UpdateTruckCommand,
 } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
@@ -73,6 +72,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     hideLimitLabels: true,
   };
 
+  public animationObject = {value: this.selectedTab, params: {height: "0px"}}
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -94,6 +95,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       };
       this.editTruckById(this.editData.id);
     }
+  }
+
+  get animationData() {
+    var dotAnimation = document.querySelector(".animation-two-tabs");
+    return {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
   }
 
   private createForm(): void {
