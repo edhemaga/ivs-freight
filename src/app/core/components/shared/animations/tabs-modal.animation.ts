@@ -9,7 +9,7 @@ import {
 } from '@angular/animations';
 
 export const left = [
-  query(':enter, :leave', style({ position: 'absolute', width: '100%' }), {
+  query(':leave', style({ position: 'absolute', width: '100%' }), {
     optional: true,
   }),
   group([
@@ -20,7 +20,7 @@ export const left = [
           transform: 'translateX(-30%)',
           opacity: 0,
           offset: 0,
-          height: '0px'
+          height: "{{height}}"
         }),
         animate(
           '.2s ease-out',
@@ -29,13 +29,13 @@ export const left = [
               transform: 'translateX(-15%)',
               opacity: 0.7,
               offset: 0.9,
-              height: '*'
+              height: "*"
             }),
             style({
               transform: 'translateX(0%)',
               opacity: 1,
               offset: 1,
-              height: '*'
+              height: "*"
             }),
           ])
         ),
@@ -49,15 +49,13 @@ export const left = [
       [
         style({
           transform: 'translateX(0%)',
-          opacity: 0,
-          height: '0px'
+          opacity: 0
         }),
         animate(
-          '.2s ease-out',
+          '.25s ease-out',
           style({
             transform: 'translateX(50%)',
-            opacity: 0,
-            height: '0px'
+            opacity: 0
           })
         ),
       ],
@@ -69,7 +67,7 @@ export const left = [
 ];
 
 const right = [
-  query(':enter, :leave', style({ position: 'absolute', width: '100%' }), {
+  query(':leave', style({ position: 'absolute', width: '100%' }), {
     optional: true,
   }),
   group([
@@ -80,7 +78,7 @@ const right = [
           transform: 'translateX(50%)',
           opacity: 0,
           offset: 0,
-          height: '0px'
+          height: "{{height}}"
         }),
         animate(
           '.2s ease-out',
@@ -89,13 +87,13 @@ const right = [
               transform: 'translateX(25%)',
               opacity: 0.7,
               offset: 0.9,
-              height: '*'
+              height: "*"
             }),
             style({
               transform: 'translateX(0%)',
               opacity: 1,
               offset: 1,
-              height: '*'
+              height: "*"
             }),
           ])
         ),
@@ -109,15 +107,13 @@ const right = [
       [
         style({
           transform: 'translateX(0%)',
-          opacity: 0,
-          height: '0px'
+          opacity: 0
         }),
         animate(
           '.2s ease-out',
           style({
             transform: 'translateX(-50%)',
-            opacity: 0,
-            height: '0px'
+            opacity: 0
           })
         ),
       ],
@@ -130,6 +126,6 @@ const right = [
 
 export const tab_modal_animation = (type: string) =>
   trigger(type, [
-    transition(':increment', right),
-    transition(':decrement', left),
+    transition(':increment', right, {  params: {height: "{{height}}"} }),
+    transition(':decrement', left, {  params: {height: "{{height}}"} }),
   ]);

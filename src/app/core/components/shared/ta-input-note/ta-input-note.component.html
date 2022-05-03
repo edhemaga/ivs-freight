@@ -1,6 +1,6 @@
 <div class="note-container {{ customClass }}">
   <div *ngIf="isVisibleDivider" class="divider"></div>
-  <div class="note-header" (click)="isVisibleNote = !isVisibleNote">
+  <div class="note-header" (click)="openNote()">
     <span class="note-label">Note</span>
     <svg-icon
       *ngIf="isVisibleArrow"
@@ -9,7 +9,7 @@
       src="assets/svg/common/ic_arrow-down.svg"
     ></svg-icon>
   </div>
-  <div class="note-body" [@showHideNote]="isVisibleNote || getSuperControl.value  ? 'true' : 'false'">
+  <div class="note-body" #noteBody [class.active]="isVisibleNote">
     <textarea
       #note
       appTextareaAutosize

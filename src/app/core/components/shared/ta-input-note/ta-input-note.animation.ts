@@ -11,11 +11,11 @@ export const input_note_animation = (type: string) =>
     state(
       'true',
       style({
-        height: '*',
         overflow: 'visible',
         opacity: '1',
+        height: "*"
       })
     ),
-    state('false', style({ height: '0px', overflow: 'hidden', opacity: '0' })),
+    state('false', style({ overflow: 'hidden', opacity: '0', height: "0px" })),
     transition('false <=> true', [animate('0.3s ease-in-out')]),
   ]);

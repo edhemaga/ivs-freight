@@ -76,6 +76,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     hideLimitLabels: true,
   };
 
+  public animationObject = {value: this.selectedTab, params: {height: "0px"}}
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -94,6 +96,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.ownerTabs = this.mockModalService.ownerTabs;
     this.labelsBank = this.mockModalService.labelsBank;
     this.labelsPayType = this.mockModalService.labelsPayType;
+  }
+
+
+  get animationData() {
+    var dotAnimation = document.querySelector(".animation-three-tabs");
+    return {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
   }
 
   public onModalAction(action: string): void {
@@ -304,6 +312,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
+
+    var dotAnimation = document.querySelector(".animation-three-tabs");
+    this.animationObject = {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
+
   }
 
   public tabOwnerChange(event: any[]): void {

@@ -35,7 +35,14 @@
   }
 
   .note-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
     padding: 0 6px;
+
+    &.active{
+      max-height: 600px;
+    }
     .note-textarea {
       width: 100%;
       font-size: 14px;
