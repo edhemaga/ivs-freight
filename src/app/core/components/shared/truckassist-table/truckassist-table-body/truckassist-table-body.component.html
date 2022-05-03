@@ -158,7 +158,11 @@
               "
               [ngStyle]="{ width: column.width + 'px' }"
             >
-              <span class="table-name-link" (click)="goToDetails(column, row)">{{ row[column.field] }}</span>
+              <span
+                class="table-name-link"
+                (click)="goToDetails(column, row)"
+                >{{ row[column.field] }}</span
+              >
             </div>
 
             <!-- OOS COLUMN -->
@@ -680,9 +684,15 @@
     </div>
 
     <!-- Not Pined -->
-    <div class="not-pined-border" [ngStyle]="{'height': viewData.length * 32 + 2 * viewData.length - 1 + 'px'}"></div>
-    
-    <div class="not-pined-tr" (scroll)="onScroll($event)">
+    <div
+      class="not-pined-border"
+      *ngIf="showScrollSectionBorder"
+      [ngStyle]="{
+        height: viewData.length * 32 + 2 * viewData.length - 1 + 'px'
+      }"
+    ></div>
+
+    <div class="not-pined-tr" id="scroll-container" (scroll)="onScroll($event)">
       <tr
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
@@ -1304,10 +1314,16 @@
       </tr>
     </div>
 
-    <div class="not-pined-border" [ngStyle]="{'height': viewData.length * 32 + 2 * viewData.length - 1 + 'px'}"></div>
+    <div
+      class="not-pined-border"
+      *ngIf="showScrollSectionBorder"
+      [ngStyle]="{
+        height: viewData.length * 32 + 2 * viewData.length - 1 + 'px'
+      }"
+    ></div>
 
     <!-- Actions -->
-    <div class="actions" [ngStyle]="{'min-width': actionsMinWidth + 'px'}">
+    <div class="actions" [ngStyle]="{ 'min-width': actionsMinWidth + 'px' }">
       <tr
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"

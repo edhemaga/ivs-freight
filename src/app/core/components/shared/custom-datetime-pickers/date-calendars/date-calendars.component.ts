@@ -30,6 +30,7 @@ const MONTHS = [
 })
 export class DateCalendarsComponent implements OnInit {
   @Input() listPreview: string;
+  @Input() dateTime: any;
   @Output() setListPreviewValue = new EventEmitter();
 
   currentYear: any = new Date().getFullYear();

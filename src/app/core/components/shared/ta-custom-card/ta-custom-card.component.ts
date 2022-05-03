@@ -24,4 +24,9 @@ export class TaCustomCardComponent {
     this.onActionEvent.emit(true);
   }
 
+
+  public openCard(): void{
+    this.isCardOpen = !this.isCardOpen;
+  }
+
 }

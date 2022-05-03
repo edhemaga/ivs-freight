@@ -21,6 +21,7 @@ import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { AppDispatcherTableNewComponent } from '../app-dispatcher-table-new/app-dispatcher-table-new.component';
 import { AppAddLoadTableComponent } from '../app-add-load-table/app-add-load-table.component';
 import { DispatcherHistoryComponent } from '../dispatcher-history/dispatcher-history.component';
+import { DispatcherStoreService } from '../state/dispatcher.service';
 
 declare var google: any;
 
@@ -102,8 +103,13 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private signalrService: SignalRService,
     private gpsDataService: AppDispatchSignalrService,
-    private dispatcherQuery: DispatcherQuery
+    private dispatcherQuery: DispatcherQuery,
+    public dispatcherStoreService: DispatcherStoreService
   ) {
+  }
+
+  openParking(){
+    this.dispatcherStoreService.parkingOpened = !this.dispatcherStoreService.parkingOpened;
   }
 
   loteEnter(): void {

@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -25,7 +26,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableBodyComponent
-  implements OnInit, OnChanges, OnDestroy
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
   private destroy$: Subject<void> = new Subject<void>();
   @Input() viewData: any[];
@@ -39,6 +40,7 @@ export class TruckassistTableBodyComponent
   showPassword: any[] = [];
   decryptedPassword: any[] = [];
   actionsMinWidth: number = 0;
+  showScrollSectionBorder: boolean = false;
 
   constructor(
     private router: Router,
@@ -85,6 +87,8 @@ export class TruckassistTableBodyComponent
           });
 
           this.changeDetectorRef.detectChanges();
+
+          this.checkForScroll();
         }
       });
 
@@ -96,6 +100,8 @@ export class TruckassistTableBodyComponent
           this.columns = response.columnsOrder;
 
           this.changeDetectorRef.detectChanges();
+
+          this.checkForScroll();
         }
       });
 
@@ -113,6 +119,8 @@ export class TruckassistTableBodyComponent
           });
 
           this.changeDetectorRef.detectChanges();
+
+          this.checkForScroll();
         }
       });
 
@@ -134,6 +142,10 @@ export class TruckassistTableBodyComponent
       changes.columns.currentValue !== changes.columns.previousValue
     ) {
       this.columns = changes.columns.currentValue;
+
+      this.changeDetectorRef.detectChanges();
+
+      this.checkForScroll();
     }
 
     if (
@@ -146,11 +158,26 @@ export class TruckassistTableBodyComponent
     }
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.checkForScroll();
+    }, 100);
+
+  }
+
   @HostListener('window:scroll', ['$event'])
   onScroll(event: any) {
-    if(event.target.className === 'not-pined-tr'){
+    if (event.target.className === 'not-pined-tr') {
       this.tableService.sendScroll(event.path[0].scrollLeft);
     }
+  }
+
+  checkForScroll() {
+    const div = document.getElementById('scroll-container');
+
+    this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+
+    this.changeDetectorRef.detectChanges();
   }
 
   trackByFn(index) {

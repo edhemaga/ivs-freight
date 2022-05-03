@@ -10,6 +10,10 @@
     padding: 18px 6px;
     z-index: 100;
 
+    &.parking_opened{
+        display: flex;
+    }
+
     .parking-title{
         display: flex;
         height: 32px;

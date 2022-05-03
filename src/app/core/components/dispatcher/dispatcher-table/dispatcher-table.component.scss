@@ -259,7 +259,13 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
   position: absolute;
   width: calc(100% - 95px);
   max-width: 1920px;
+
+  &.parking_opened{
+    width: calc(100% - 440px);
+  }
+
   .kendo_top_grid {
+    max-width: 1510px !important;
     .k-grid-toolbar {
       position: relative;
 

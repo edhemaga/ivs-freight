@@ -9,11 +9,15 @@ export class CalendarDaysComponent implements OnInit {
   currentYear: any = new Date().getFullYear();
   currentMonth: any = new Date().getMonth();
   currentDay: any = new Date().getDate();
+  @Input() dateTime: any;
   @Input() year: string;
   @Input() selectedMonth: string;
   @Input() index: number;
   @Output() selectDay = new EventEmitter();
   days: ReadonlyArray<string | number> = [];
+  selectedDay: any = -1;
+  selMonth: any = -1;
+  selectedYear: any = -1;
 
   constructor() {
   }
@@ -34,6 +38,9 @@ export class CalendarDaysComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selectedDay = ('0' + this.dateTime.getDate()).slice(-2);
+    this.selMonth = ('0' + this.dateTime.getMonth()+1).slice(-2);
+    this.selectedYear = this.dateTime.getFullYear();
   }
 
   chooseDay(day): void {

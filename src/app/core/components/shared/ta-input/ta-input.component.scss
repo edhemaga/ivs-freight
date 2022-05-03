@@ -242,3 +242,25 @@
 }
 
 
+// CUSTOM DATEPICKER INPUT 
+
+.date_time_holder{
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+
+  &.active{
+    opacity: 1;
+  }
+
+  span.main{
+    padding: 0 2px;
+    outline: none;
+    font-size: 14px;
+  }
+}
+

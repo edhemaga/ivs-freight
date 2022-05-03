@@ -35,6 +35,7 @@ const MONTHS = [
 })
 export class CalendarDatesMainComponent implements OnInit {
   @Input() months: any;
+  @Input() dateTime: any;
   @Input() currentIndex: any;
   @Input() monthYearsIndx: any;
   @Input() listPreview: any; 
@@ -93,7 +94,6 @@ export class CalendarDatesMainComponent implements OnInit {
           const indx = this.findIndexInMonth(res);
           this.virtualScrollViewport.scrollToIndex(indx);
         } else {
-          console.log(this.virtualScrollViewport.scrollToIndex);
           this.virtualScrollViewport.scrollToIndex(this.currentIndex);
         }
       });

@@ -61,6 +61,7 @@
     display: grid;
     grid-template-rows: 100%;
     grid-template-columns: repeat(3, 100%);
+    transition: all 0.3s;
   }
 
   .animation-two-tabs {
@@ -111,6 +112,15 @@
     }
 
     .checkbox-card-body {
+
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.5s ease-in-out;
+  
+      &.active{
+        max-height: 600px
+      }
+
       .animation-checkbox-card-tabs {
         position: relative;
         transform: translate(20%);

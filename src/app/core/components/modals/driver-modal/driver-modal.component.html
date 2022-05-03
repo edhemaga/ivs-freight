@@ -15,7 +15,7 @@
     class="form-container"
     [ngClass]="{ 'tab-2': selectedTab === 2 }"
   >
-    <div class="animation-three-tabs" [@animationTabsModal]="selectedTab">
+    <div class="animation-three-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
         <div class="row">
@@ -145,9 +145,7 @@
           </div>
           <div
             class="checkbox-card-body"
-            [@showHideOwner]="
-              driverForm.get('isOwner').value ? 'true' : 'false'
-            "
+            [class.active]="driverForm.get('isOwner').value"
           >
             <app-status-switcher
               (switchClicked)="tabOwnerChange($event)"

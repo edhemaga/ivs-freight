@@ -1,4 +1,4 @@
-<div class="dispatch-parking">
+<div class="dispatch-parking" [class.parking_opened]="dispatcherStoreService.parkingOpened">
   <div
     class="parking-items"
     *ngFor="let parking of parkingData"
