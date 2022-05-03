@@ -2,7 +2,6 @@ import { debounceTime, distinctUntilChanged, shareReplay } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -44,7 +43,8 @@ export class TaInputDropdownComponent
 
   constructor(
     @Self() public superControl: NgControl,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private changeDetectionRef: ChangeDetectorRef
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -81,6 +81,7 @@ export class TaInputDropdownComponent
         if (!action) {
           if (this.activeItem) {
             this.getSuperControl.setValue(this.activeItem.name);
+            this.changeDetectionRef.detectChanges();
           } else {
             const index = this.originalOptions.findIndex(
               (item) => item.name === this.getSuperControl.value
