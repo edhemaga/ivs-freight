@@ -22,6 +22,6 @@ export class DashboardResolverService implements Resolve<any> {
       //       })
       //   );
       // }
-      return of();
+      return of(true);
   }
 }
