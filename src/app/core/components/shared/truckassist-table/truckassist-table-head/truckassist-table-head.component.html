@@ -85,21 +85,16 @@
               pined: column.isPined,
               hide: !column.isPined && reordering
             }"
-            [appTooltip]="'Unpin Column'"
-            [position]="'top-middle'"
-            [tooltipBackground]="'#6C6C6C'"
-            [tooltipColor]="'#FFFFFF'"
-            [zIndex]="900"
-            [borderRadius]="'2px'"
-            [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-            [fontWeight]="'bold'"
-            [fontSize]="'11px'"
           ></svg-icon>
         </div>
       </th>
     </tr>
 
+   
+
     <!-- Not Pined -->
+    <div class="not-pined-border" *ngIf="showBorder"></div>
+
     <tr
       cdkDropListOrientation="horizontal"
       cdkDropList
@@ -168,15 +163,6 @@
                 'height.px': 10
               }"
               [src]="'assets/svg/truckassist-table/x.svg'"
-              [appTooltip]="'Remove Column'"
-              [position]="'top-middle'"
-              [tooltipBackground]="'#6C6C6C'"
-              [tooltipColor]="'#FFFFFF'"
-              [zIndex]="900"
-              [borderRadius]="'2px'"
-              [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-              [fontWeight]="'bold'"
-              [fontSize]="'11px'"
             ></svg-icon>
 
             <!-- Pin -->
@@ -192,15 +178,6 @@
                 pined: column.isPined,
                 hide: !column.isPined && reordering
               }"
-              [appTooltip]="'Pin Column'"
-              [position]="'top-middle'"
-              [tooltipBackground]="'#6C6C6C'"
-              [tooltipColor]="'#FFFFFF'"
-              [zIndex]="900"
-              [borderRadius]="'2px'"
-              [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-              [fontWeight]="'bold'"
-              [fontSize]="'11px'"
             ></svg-icon>
           </div>
         </th>
