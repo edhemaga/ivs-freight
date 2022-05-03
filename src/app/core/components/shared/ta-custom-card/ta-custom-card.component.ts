@@ -15,6 +15,7 @@ export class TaCustomCardComponent {
   @Input() hasHeaderSvg: string = null;
   @Input() hasActionSvg: string = null;
   @Input() isCardOpen: boolean = false;  // if has data, set on true
+  @Input() hasDivider:boolean=true;
 
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 

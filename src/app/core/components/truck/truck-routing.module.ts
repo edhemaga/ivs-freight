@@ -8,6 +8,14 @@ const routes: Routes = [
     component: TruckTableComponent,
     data: { title: 'Truck' },
   },
+  {
+    path:':id/details',
+    loadChildren:()=>
+    import('./truck-details/truck-details.module').then(
+      (m) => m.TruckDetailsModule
+    ),
+    data:{title:'Truck details'}
+  }
 ];
 
 @NgModule({
@@ -15,4 +23,4 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 
-export class TruckRoutingModule {}
+export class TruckRoutingModule { }

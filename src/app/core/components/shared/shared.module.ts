@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -70,6 +71,9 @@ import { CalendarLeftComponent } from './custom-datetime-pickers/calendar-left/c
 import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars/date-calendars.component';
 import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
+import { TaInputService } from './ta-input/ta-input.service';
+import { TaCommonHeaderComponent } from './ta-details-header/ta-details-header.component';
+import { TaReCardComponent } from './ta-common-card/ta-re-card.component';
 import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
 import { DirectivesModule } from '../../directives/directives.module';
@@ -80,6 +84,7 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
 import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component';
 import { ContactModalComponent } from '../modals/contact-modal/contact-modal.component';
 import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
+import { TaDetailsHeaderCardComponent } from './ta-details-header-card/ta-details-header-card.component';
 
 @NgModule({
   declarations: [
@@ -100,8 +105,11 @@ import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
     CalendarDaysComponent,
     CalendarLeftComponent,
     DateCalendarsComponent,
-
     TaCheckboxComponent,
+    TaCommonHeaderComponent,
+    TaCustomCardComponent,
+    TaReCardComponent,
+    TaDetailsHeaderCardComponent,
     TaInputAddressComponent,
     TaInputDropdownComponent,
     TaInputNoteComponent,
@@ -148,6 +156,7 @@ import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
     ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
     NgSelectModule,
     NgbModule,
+    RouterModule,
     AngularSvgIconModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
@@ -227,7 +236,12 @@ import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
     DateCalendarsComponent,
     TaCustomCardComponent,
 
+    TaReCardComponent,
+    TaDetailsHeaderCardComponent,
+    TaCustomCardComponent,
     TaCheckboxComponent,
+    TaCommonHeaderComponent,
+    TaReCardComponent,
     TaInputAddressComponent,
     TaInputDropdownComponent,
     TaInputNoteComponent,

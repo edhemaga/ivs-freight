@@ -44,9 +44,9 @@ export function getTruckColumnDefinition() {
       disabled: true,
       export: true,
       resizable: true,
-      linkField: {
-        routerLinkStart: '/trucks/edit/',
-        routerLinkEnd: '/detail',
+      link: {
+        routerLinkStart: '/truck/',
+        routerLinkEnd: '/details',
       },
     },
     {

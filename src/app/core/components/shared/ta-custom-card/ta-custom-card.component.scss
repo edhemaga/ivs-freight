@@ -6,7 +6,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 3px 0px;
-    padding-right: 6px;
+    // padding-right: 6px;
     cursor: pointer;
 
     .header-content {
@@ -14,7 +14,7 @@
       align-items: center;
 
       .header-text {
-        color: #919191;
+        color: #6c6c6c;
         font-weight: 800;
         font-size: 14px;
         -webkit-user-select: none;
@@ -22,9 +22,9 @@
         -ms-user-select: none;
         user-select: none;
 
-        &.no-counter {
-          margin-left: 6px;
-        }
+        // &.no-counter {
+        //   margin-left: 6px;
+        // }
 
         &.active {
           color: #6c6c6c;
@@ -86,14 +86,14 @@
       cursor: pointer;
     }
   }
-
-  .ta-card-body{
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.5s ease-in-out;
-
-    &.active{
-      max-height: 600px;
-    }
-  }
+}
+.divider{
+  margin: 0;
+    height: 2px;
+    width: 100%;
+    border-radius: 1px;
+    background-color: #f3f3f3;
+}
+.ta-card-body{
+  margin-top: 0 !important;
 }

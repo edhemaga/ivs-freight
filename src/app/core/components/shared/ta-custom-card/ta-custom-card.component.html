@@ -11,8 +11,7 @@
         [countWidth]="'24px'"
       ></app-ta-counter>
       <span
-        class="header-text"
-        [ngClass]="{ 'no-counter': !hasCounter, 'active': isCardOpen }"
+        class="header-text" [ngClass]="{ 'no-counter': !hasCounter, 'active': isCardOpen }"
         >
         {{ cardName }}
       </span>
@@ -37,7 +36,9 @@
       ></svg-icon>
     </div>
   </div>
-  <div class="ta-card-body" [ngClass]="{'active': isCardOpen}">
+  <div class="ta-card-body" [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
     <ng-content></ng-content>
   </div>
+  <div *ngIf="hasDivider" class="divider"></div>
+
 </div>
