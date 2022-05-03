@@ -57,7 +57,6 @@ export class TaInputComponent
     this.inputService.isInputMarkedInvalidSubject
       .pipe(untilDestroyed(this))
       .subscribe((value) => {
-        console.log(value);
         if (value) {
           this.waitValidation = true;
           this.inputService.isInputMarkedInvalidSubject.next(false);
@@ -143,17 +142,6 @@ export class TaInputComponent
       } else {
         this.waitValidation = false;
       }
-
-      console.log(this.focusInput)
-      console.log(this.getSuperControl.invalid)
-      console.log(this.getSuperControl)
-     console.log("REQUIRED ", this.inputConfig.isRequired)
-     console.log("CONTROL VALUE ", this.getSuperControl.value)
-     console.log("CONTROL INVALID ", this.getSuperControl.invalid)
-     console.log("Wait validation ", this.waitValidation)
-     console.log("FOCUS  ", this.focusInput)
-     console.log("PlaceholderIcon ", this.inputConfig.placeholderIcon)
-     console.log("Password Eye ", this.isVisiblePasswordEye)
     }
 
     // No Required Field
@@ -310,8 +298,11 @@ export class TaInputComponent
         this.inputConfig.name.toLowerCase()
       )
     ) {
-      let spaces = (this.input.nativeElement.value.split(' ').length)
-      if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))  && spaces <=2) {
+      let spaces = this.input.nativeElement.value.split(' ').length;
+      if (
+        /^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode)) &&
+        spaces <= 2
+      ) {
         this.disableConsecutivelySpaces(event);
         return true;
       } else {

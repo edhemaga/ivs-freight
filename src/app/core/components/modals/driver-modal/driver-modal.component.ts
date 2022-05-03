@@ -237,18 +237,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             true,
             [Validators.required]
           );
-          this.inputService.changeValidators(
-            this.driverForm.get('bankId'),
-            true,
-            [Validators.required]
-          );
         } else {
           this.inputService.changeValidators(
             this.driverForm.get('payType'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.driverForm.get('bankId'),
             false
           );
         }
