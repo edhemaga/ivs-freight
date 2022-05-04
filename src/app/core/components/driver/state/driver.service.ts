@@ -19,6 +19,7 @@ export class DriverTService {
     search1?: string,
     search2?: string
   ): Observable<DriverListResponse> {
+    console.log('Poziva Api getDrivers')
     return this.driverService.apiDriverListGet(active, pageIndex, pageSize);
   }
 }

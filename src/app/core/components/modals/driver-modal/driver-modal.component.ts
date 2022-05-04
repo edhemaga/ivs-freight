@@ -109,10 +109,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
+      /* this.editData = {
         ...this.editData,
         id: 4,
-      };
+      }; */
       this.editDriverById(this.editData.id);
     }
   }
