@@ -84,7 +84,7 @@
     .input-clear-x {
       svg {
         path {
-         // fill: #536bc2;
+         fill: #536bc2;
         }
       }
     }
@@ -101,6 +101,14 @@
   &.invalid-focus-in-required {
     background-color: #ffcdd2;
     display: block;
+    .input-clear-x {
+      svg {
+        path {
+          fill: #EF5350;
+        }
+      }
+    }
+
     &:hover {
       svg {
         rect {
