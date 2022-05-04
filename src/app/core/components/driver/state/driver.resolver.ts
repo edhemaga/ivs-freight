@@ -19,10 +19,10 @@ export class DriverResolver implements Resolve<DriversState> {
   resolve(
     route: ActivatedRouteSnapshot
   ): Observable<DriversState> | Observable<any> {
-    if (this.driversStore.getValue()) {
-      console.log('Poziva Store');
-      return of(true);
-    } else {
+    // if (this.driversStore.getValue()) {
+    //   console.log('Poziva Store');
+    //   return of(true);
+    // } else {
       console.log('Poziva Api');
       return this.driverService.getDrivers(1, 1, 25).pipe(
         catchError((error) => {
@@ -32,6 +32,6 @@ export class DriverResolver implements Resolve<DriversState> {
           this.driversStore.set({ entities: driverPagination.pagination.data });
         })
       );
-    }
+    // }
   }
 }
