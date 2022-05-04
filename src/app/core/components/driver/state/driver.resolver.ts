@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { DriverListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { DriversQuery } from './driver.query';
-import { DriverService } from './driver.service';
+import { DriverTService } from './driver.service';
 import { DriversState, DriversStore } from './driver.store';
 
 @Injectable({
@@ -11,22 +12,26 @@ import { DriversState, DriversStore } from './driver.store';
 })
 export class DriverResolver implements Resolve<DriversState> {
   constructor(
-    private driverService: DriverService,
+    private driverService: DriverTService,
     private driversStore: DriversStore,
     private driversQuery: DriversQuery
   ) {}
   resolve(
     route: ActivatedRouteSnapshot
   ): Observable<DriversState> | Observable<any> {
-    console.log('RESOLVER DRIVER');
-
-    return this.driverService.getDrivers().pipe(
-      catchError((error) => {
-        return of('No drivers data...');
-      }),
-      tap((entities) => this.driversStore.set({ entities: entities }))
-    );
-
-    // return this.driverService.getDrivers();
+    if (this.driversStore.getValue()) {
+      console.log('Poziva Store');
+      return of(true);
+    } else {
+      console.log('Poziva Api');
+      return this.driverService.getDrivers(1, 1, 25).pipe(
+        catchError((error) => {
+          return of('No drivers data...');
+        }),
+        tap((driverPagination: DriverListResponse) => {
+          this.driversStore.set({ entities: driverPagination.pagination.data });
+        })
+      );
+    }
   }
 }

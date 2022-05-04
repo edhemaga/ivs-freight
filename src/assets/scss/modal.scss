@@ -14,13 +14,12 @@ ngb-modal-window[aria-hidden="true"] {
 
   &.show .modal-dialog {
     opacity: 0;
-    transform: scale(0.7) !important;
+    transform: scale(0.6) !important;
     transition: all 0.3s ease-out !important;
   }
 
   // This class added through modal.service.ts
   &.modal-animation {
-    
   }
 
   &.modal-animation .modal-dialog {
@@ -204,7 +203,7 @@ ngb-modal-window[aria-hidden="true"] {
 
 @-webkit-keyframes fade-in-scale-animation {
   0% {
-    transform: scale(0.7);
+    transform: scale(0.6);
   }
   100% {
     transform: scale(1);
@@ -213,49 +212,52 @@ ngb-modal-window[aria-hidden="true"] {
 
 @keyframes fade-in-scale-animation {
   0% {
-    transform: scale(0.7);
+    transform: scale(0.6);
   }
   100% {
     transform: scale(1);
   }
-} 
+}
+
+@-webkit-keyframes modalShow {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+}
 
 @keyframes modalShow {
   0% {
-    background-color: rgba(0, 0, 0, 0) !important;;
+    background-color: rgba(0, 0, 0, 0);
   }
   100% {
-    background-color: rgba(0, 0, 0, 0.4) !important;;
+    background-color: rgba(0, 0, 0, 0.6);
   }
 }
 
-
-.fade {
-  background-color: rgba(0, 0, 0, 0) !important;
+.modal-animation {
+  background-color: transparent !important;
 }
 
-body.modal-open{
-  .modal-backdrop{
-    transition: all 0.3s ease-out;
-  
-    &.myDropback{
-      transition: all 0.4s ease-out !important;
+body.modal-open {
+  .modal-backdrop {
+    &.fade {
+      transition: background-color 2s ease-out !important;
       opacity: 1 !important;
-      background-color: rgba(0, 0, 0, 0.4)  !important;;
-  
-      -webkit-animation: modalShow 0.5s;
-      animation: modalShow 0.5s;
+      background-color: rgba(0, 0, 0, 0.6);
+
+      animation-name: modalShow;
+      animation-duration: 0.3s;
     }
   }
 }
 
-body:not(.modal-open){
-  .modal-backdrop{
-    &.myDropback{
-      -webkit-animation: modalShow 0.3s;
-      animation: modalShow 0.3s;
-      animation-direction: reverse;
-    }
+body:not(.modal-open) {
+  .modal-backdrop {
+    opacity: 1 !important;
+    transition: background-color 0.3s ease-out !important;
+    background-color: rgba(0, 0, 0, 0);
   }
 }
-

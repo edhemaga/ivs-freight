@@ -108,11 +108,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.ownerTabs = this.mockModalService.ownerTabs;
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 8,
-      };
       this.editDriverById(this.editData.id);
     }
   }
