@@ -126,6 +126,9 @@
     display: block;
     .input-clear-x {
       svg {
+        rect{
+          fill: transparent;
+        }
         path {
           fill: #e57373;
         }
