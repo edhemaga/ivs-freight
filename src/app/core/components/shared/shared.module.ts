@@ -80,6 +80,8 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
 import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component';
 import { ContactModalComponent } from '../modals/contact-modal/contact-modal.component';
 import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
+import { BrokerModalComponent } from '../modals/broker-modal/broker-modal.component';
+import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-radiobuttons.component';
 
 @NgModule({
   declarations: [
@@ -112,6 +114,7 @@ import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
     TaNgxSliderComponent,
     TaLogoChangeComponent,
     TaCustomCardComponent,
+    TaInputRadiobuttonsComponent,
 
     // Modals Components
     TaModalComponent,
@@ -120,6 +123,7 @@ import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
     TrailerModalComponent,
     ContactModalComponent,
     AccountModalComponent,
+    BrokerModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -226,6 +230,7 @@ import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
     CalendarLeftComponent,
     DateCalendarsComponent,
     TaCustomCardComponent,
+    TaInputRadiobuttonsComponent,
 
     TaCheckboxComponent,
     TaInputAddressComponent,
@@ -247,6 +252,7 @@ import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
     TrailerModalComponent,
     ContactModalComponent,
     AccountModalComponent,
+    BrokerModalComponent,
 
     // Pipes
     InputErrorPipe,

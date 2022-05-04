@@ -85,7 +85,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
       // Delete
       if (action === 'delete' && this.editData) {
-        this.deleteCompanyAccount(this.editData.id);
+        this.deleteCompanyAccountById(this.editData.id);
       }
 
       this.ngbActiveModal.close();
@@ -167,7 +167,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public deleteCompanyAccount(id: number): void {
+  public deleteCompanyAccountById(id: number): void {
     this.accountModalService
       .deleteCompanyAccountById(id)
       .pipe(untilDestroyed(this))

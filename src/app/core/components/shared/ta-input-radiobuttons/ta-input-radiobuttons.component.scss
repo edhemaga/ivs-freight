@@ -1,0 +1,42 @@
+.ta-input-radiobutons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f3f3f3;
+  padding: 2px;
+  border-radius: 2px;
+  position: relative;
+  width: 128px;
+  height: 26px;
+  .radio-button-label {
+    width: 60px;
+    height: 22px;
+    cursor: pointer;
+    border-radius: 2px;
+    background: #f3f3f3;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 700;
+    padding: 2px 0px;
+
+    &.checked {
+      background-color: #ffffff !important;
+      transition: all 0.3 ease-in-out !important;
+    }
+
+    .radio-button {
+      appearance: none;
+      outline: none;
+    }
+
+    .radio-button:checked ~ .radio-button-text {
+      color: #536bc2;
+      transition: all 0.3 ease-in-out;
+    }
+
+    .radio-button-text {
+      color: #b7b7b7;
+      user-select: none !important;
+    }
+  }
+}

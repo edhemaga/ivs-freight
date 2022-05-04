@@ -108,11 +108,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.ownerTabs = this.mockModalService.ownerTabs;
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      /* this.editData = {
-        ...this.editData,
-        id: 4,
-      }; */
       this.editDriverById(this.editData.id);
     }
   }
@@ -381,7 +376,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.notificationService.error(
-            "Truck's dropdowns can't be loaded.",
+            "Driver's dropdowns can't be loaded.",
             'Error:'
           );
         },
@@ -404,7 +399,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       dateOfBirth: new Date(
         this.driverForm.get('dateOfBirth').value
       ).toISOString(),
-      ownerId: 1, // TODO: BACKEND TREBA DA DOSTAVI
+      ownerId: this.driverForm.get('ownerType').value === 'Sole Proprietor' ? null : 1, // TODO: BACKEND TREBA DA DOSTAVI
       city: this.selectedAddress.city,
       state: this.selectedAddress.state,
       address: this.selectedAddress.address,
@@ -429,18 +424,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.driverForm.get('twicExpDate').value
       ).toISOString(),
     };
-
+    console.log(newData);
     this.driverModalService
       .addDriver(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () =>
           this.notificationService.success(
-            'Truck successfully added.',
+            'Driver successfully added.',
             'Success:'
           ),
         error: () =>
-          this.notificationService.error("Truck can't be added.", 'Error:'),
+          this.notificationService.error("Driver can't be added.", 'Error:'),
       });
   }
 
@@ -494,11 +489,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () =>
           this.notificationService.success(
-            'Truck successfully updated.',
+            'Driver successfully updated.',
             'Success:'
           ),
         error: () =>
-          this.notificationService.error("Truck can't be updated.", 'Error:'),
+          this.notificationService.error("Driver can't be updated.", 'Error:'),
       });
   }
 

@@ -15,6 +15,7 @@ import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.com
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 import { ContactModalComponent } from '../../modals/contact-modal/contact-modal.component';
+import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -74,6 +75,12 @@ export class NavigationModalsComponent {
       } 
       case 'trailer': {
         this.modalService.openModal(TrailerModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
+      case 'broker': {
+        this.modalService.openModal(BrokerModalComponent, {
           size: 'small',
         });
         break;

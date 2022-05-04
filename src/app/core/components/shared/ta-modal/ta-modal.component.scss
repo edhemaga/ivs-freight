@@ -3,8 +3,16 @@
   height: auto;
   overflow: hidden;
 
+  &.modal-container-L {
+    width: 640px;
+
+    .divider {
+      width: 615px;
+    }
+  }
+
   .divider {
-    width: 456px;
+    width: 455px;
     height: 2px;
     content: "";
     border-radius: 1px;

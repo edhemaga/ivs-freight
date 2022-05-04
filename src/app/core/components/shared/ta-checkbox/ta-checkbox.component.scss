@@ -84,4 +84,15 @@
       color: #6c6c6c;
     }
   }
+
+  &.billing-address {
+    margin-bottom: 12px;
+    position: relative;
+    left: 6px;
+    top: 0px;
+
+    &.checked {
+      margin-bottom: 22px;
+    }
+  }
 }

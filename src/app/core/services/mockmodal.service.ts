@@ -370,6 +370,36 @@ export class MockModalService {
     },
   ];
 
+  public brokerPhysicalAddressTabs: any[] = [
+    {
+      id: 'physicaladdress',
+      name: 'Physical Address',
+      inputName: 'a',
+      checked: true,
+    },
+    {
+      id: 'poboxphysical',
+      name: 'PO Box Physical',
+      inputName: 'a',
+      checked: false,
+    },
+  ]
+
+  public brokerBillingAddressTabs: any[] = [
+    {
+      id: 'billingaddress',
+      name: 'Billing Address',
+      inputName: 'n',
+      checked: true,
+    },
+    {
+      id: 'poboxbilling',
+      name: 'PO Box Billing',
+      inputName: 'n',
+      checked: false,
+    },
+  ]
+
   public labelsBank: any[] = [
     {
       id: 1,
