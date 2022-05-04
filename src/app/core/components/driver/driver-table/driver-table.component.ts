@@ -154,6 +154,9 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
     const td = this.tableData.find((t) => t.field === this.selectedTab);
 
+    console.log('Table Data Befor Map');
+    console.log(td)
+
     this.setDriverData(td);
   }
 
