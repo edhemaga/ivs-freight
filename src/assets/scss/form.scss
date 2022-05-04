@@ -292,7 +292,7 @@
       }
     }
 
-    .offDutyLications-card {
+    .offDutyLocations-card {
       background-color: #f7f7f7;
       padding-right: 6px;
       display: grid;
@@ -332,6 +332,84 @@
     }
   }
 
+  //---------------- Broker Contacts ----------------
+  .broker-contacts {
+    overflow: hidden;
+    overflow-x: scroll;
+
+    scrollbar-width: none !important; /* Firefox */
+
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #CCCCCC;
+      border-left: 0px;
+      border-right: 0px;
+      border-top: 6px solid #ffffff;
+      border-bottom: 6px solid #ffffff;
+      border-radius: 1px;
+    }
+    &::-webkit-scrollbar-track {
+      padding: 5px;
+      position: absolute;
+      right: -3rem;
+      top: -50rem;
+      background: transparent;
+    }
+
+
+    .broker-contacts-label {
+      padding: 0 6px;
+      display: flex;
+      align-items: center;
+      line-height: 15px;
+      margin-bottom: 6px;
+
+      p {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 700;
+        color: #919191;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        &:nth-child(2) {
+          margin-left: 98px;
+        }
+
+        &:nth-child(3) {
+          margin-left: 44px;
+        }
+
+        &:nth-child(4) {
+          margin-left: 87px;
+        }
+
+        &:nth-child(5) {
+          margin-left: 48px;
+        }
+
+        span {
+          color: #e57373;
+        }
+      }
+    }
+
+    .broker-contacts-card {
+      display: grid;
+      grid-template-columns: 170px 120px 130px 60px 234px;
+      -moz-column-gap: 12px;
+      column-gap: 12px;
+      row-gap: 2px;
+      margin-bottom: 2px;
+      background-color: #f7f7f7;
+      padding-right: 6px;
+    }
+  }
+
   //---------------- TireSize & Axles ----------------
   .tireSize-axles {
     display: grid;
@@ -356,6 +434,7 @@
   grid-template-columns: 1fr 214px 194px;
   -moz-column-gap: 12px;
   column-gap: 12px;
+  row-gap: 26px;
   align-items: center;
   padding-left: 6px;
 
@@ -372,6 +451,10 @@
         color: #6c6c6c;
         position: relative;
         top: 1px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
       }
     }
   }

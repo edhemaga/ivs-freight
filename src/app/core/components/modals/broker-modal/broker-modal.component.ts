@@ -1,6 +1,12 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
@@ -72,6 +78,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public selectedBillingPoBoxCity: Address = null;
 
   public labelsPayType: any[] = [];
+  public labelsDepartments: any[] =[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -82,7 +89,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    this.onEinTyping();
+    // this.onEinTyping();
 
     this.physicalAddressTabs = this.mockModalService.brokerPhysicalAddressTabs;
     this.billingAddressTabs = this.mockModalService.brokerBillingAddressTabs;
@@ -96,8 +103,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       this.editBrokerById(this.editData.id);
       this.tabs.push({
         id: 3,
-        name: 'Review'
-      })
+        name: 'Review',
+      });
     }
   }
 
@@ -106,16 +113,22 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       businessName: [null, Validators.required],
       dbaName: [null],
       mcFFNumber: [null, Validators.maxLength(8)],
-      ein: [null],
-      email: [null],
-      phone: [null, Validators.required],
+      ein: [null, [Validators.pattern(/^\d{2}\-\d{7}$/)]],
+      email: [
+        null,
+        [Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)],
+      ],
+      phone: [
+        null,
+        [Validators.required, Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)],
+      ],
       // Physical Address
       physicalAddress: [null],
       physicalAddressUnit: [null],
       physicalPoBox: [null], // TODO:  city?: string | null; state?: string | null;  zipCode?: string | null; poBox?: string | null;
       physicalPoBoxCity: [null],
       // Billing Address
-      isCheckedBillingAddress: [true],
+      isCheckedBillingAddress: [false],
       billingAddress: [null],
       billingAddressUnit: [null],
       billingPoBox: [null], // TODO:  city?: string | null; state?: string | null;  zipCode?: string | null; poBox?: string | null;
@@ -123,34 +136,35 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       isCredit: [true],
       creditLimit: [null],
       payTerm: [null],
-
+      note: [null],
       creditType: [null],
       availableCredit: [null],
-      dnu: [false],
-      ban: [false],
-      note: [null],
-      brokerContacts: [null],
-      //  contactName?: string | null;
-      // departmentId?: number | null;
-      // phone?: string | null;
-      //extensionPhone?: string | null;
-      //email?: string | null;
+      brokerContacts: this.formBuilder.array([]),
     });
   }
 
-  public onEinTyping() {
-    this.brokerForm
-      .get('ein')
-      .valueChanges.pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.inputService.changeValidators(this.brokerForm.get('ein'), true, [
-            Validators.pattern(/^\d{2}\-\d{7}$/),
-          ]);
-        } else {
-          this.inputService.changeValidators(this.brokerForm.get('ein'), false);
-        }
-      });
+  public get brokerContacts(): FormArray {
+    return this.brokerForm.get('brokerContacts') as FormArray;
+  }
+
+  private createBrokerContacts(): FormGroup {
+    return this.formBuilder.group({
+      contactName: [null],
+      departmentId: [null],
+      phone: [null],
+      extensionPhone: [null],
+      email: [null],
+    });
+  }
+
+  public addBrokerContacts(event: any) {
+    if (event) {
+      this.brokerContacts.push(this.createBrokerContacts());
+    }
+  }
+
+  public removeBrokerContacts(id: number) {
+    this.brokerContacts.removeAt(id);
   }
 
   public onModalAction(action: string) {
@@ -180,7 +194,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-    let dotAnimation = document.querySelector(this.editData ? '.animation-three-tabs' : '.animation-two-tabs');
+    let dotAnimation = document.querySelector(
+      this.editData ? '.animation-three-tabs' : '.animation-two-tabs'
+    );
     this.animationObject = {
       value: this.selectedTab,
       params: { height: `${dotAnimation.getClientRects()[0].height}px` },
@@ -188,7 +204,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public tabPhysicalAddressChange(event: any): void {
-
     this.selectedPhysicalAddressTab = event.find(
       (item) => item.checked === true
     );
@@ -274,6 +289,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onSelectContactDepartment(event: any) {
+
+  }
+
+  public onSelectPayType(event: any) {}
+
   private addBroker(): void {}
 
   private updateBroker(id: number): void {}
@@ -282,7 +303,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   private editBrokerById(id: number): void {}
 
-  public onSelectPayType(event: any) {}
+
 
   ngOnDestroy(): void {}
 }

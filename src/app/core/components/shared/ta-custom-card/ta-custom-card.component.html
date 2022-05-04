@@ -26,6 +26,7 @@
       <svg-icon
         *ngIf="hasActionSvg"
         class="header-action-svg"
+        [ngClass]="{'new-position': !hasArrow}"
         src="{{ hasActionSvg }}"
         (click)="onAdd($event)"
       ></svg-icon>

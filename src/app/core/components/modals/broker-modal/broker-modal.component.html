@@ -11,7 +11,10 @@
     [tabs]="tabs"
   ></app-tab-switcher>
   <form [formGroup]="brokerForm" class="form-container">
-    <div class="{{editData ? 'animation-three-tabs' : 'animation-two-tabs'}}" [@animationTabsModal]="animationObject">
+    <div
+      class="{{ editData ? 'animation-three-tabs' : 'animation-two-tabs' }}"
+      [@animationTabsModal]="animationObject"
+    >
       <!-------------------------------- Details Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
         <div class="row">
@@ -47,7 +50,6 @@
                 name: 'EIN',
                 type: 'text',
                 label: 'EIN #',
-                isRequired: true,
                 mask: '00-0000000'
               }"
             ></app-ta-input>
@@ -291,8 +293,8 @@
                   name: 'Credit Limit',
                   type: 'text',
                   label: 'Credit Limit',
-                  isRequired: brokerForm.get('isCredit').value,
-                  isDisabled: !brokerForm.get('isCredit').value,
+                  isRequired: this.brokerForm.get('isCredit').value,
+                  isDisabled: !this.brokerForm.get('isCredit').value,
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   mask: 'separator.2'
@@ -306,7 +308,7 @@
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay term',
-                  isDisabled: !brokerForm.get('isCredit').value,
+                  isDisabled: !this.brokerForm.get('isCredit').value,
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-broker-payterm'
                 }"
@@ -314,12 +316,89 @@
                 (selectedItem)="onSelectPayType($event)"
               ></app-ta-input-dropdown>
             </div>
+            <div style="grid-column: 1 / -1">
+              Available Credit Custom Component !
+            </div>
           </div>
         </app-ta-custom-card>
         <app-ta-input-note formControlName="note"></app-ta-input-note>
       </div>
       <!-------------------------------- Contact Tab -------------------------------->
-      <div class="m-tab" *ngIf="selectedTab === 2"></div>
+      <div class="m-tab" *ngIf="selectedTab === 2">
+        <app-ta-custom-card
+          [hasCounter]="brokerContacts.length ? brokerContacts.length : '0'"
+          [cardName]="'Contact'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasArrow]="false"
+          [isCardOpen]="brokerContacts.length"
+          (onActionEvent)="addBrokerContacts($event)"
+        >
+          <div
+            formArrayName="brokerContacts"
+            class="broker-contacts"
+            *ngIf="brokerContacts.length"
+          >
+            <div class="broker-contacts-label">
+              <p>FULL NAME <span>*</span></p>
+              <p>DEPARTMENT</p>
+              <p>PHONE <span>*</span></p>
+              <p>EXT</p>
+              <p>EMAIL</p>
+            </div>
+            <div
+              *ngFor="
+                let brokerContact of brokerContacts.controls;
+                let ind = index
+              "
+            >
+              <div [formGroupName]="ind" class="broker-contacts-card">
+                <app-ta-input
+                  formControlName="contactName"
+                  [inputConfig]="{
+                    name: 'Full Name',
+                    type: 'text',
+                    textTransform: 'capitalize'
+                  }"
+                ></app-ta-input>
+                <app-ta-input-dropdown
+                  formControlName="departmentId"
+                  [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-banks'
+                  }"
+                  [options]="labelsDepartments"
+                  (selectedItem)="onSelectContactDepartment($event)"
+                ></app-ta-input-dropdown>
+                <app-ta-input
+                  formControlName="phone"
+                  [inputConfig]="{
+                    name: 'Phone',
+                    type: 'text',
+                    mask: '(000) 000-0000'
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="extensionPhone"
+                  [inputConfig]="{
+                    name: 'Phone Extension',
+                    type: 'text',
+                    maxLength: 3
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="email"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'text'
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+      </div>
       <!-------------------------------- Review Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 3 && editData"></div>
     </div>

@@ -372,7 +372,8 @@ export class TaInputComponent
         'axles',
         'mileage',
         'ipas ezpass',
-        'credit limit'
+        'credit limit',
+        'phone extension'
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
