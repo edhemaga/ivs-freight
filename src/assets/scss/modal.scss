@@ -244,7 +244,7 @@ ngb-modal-window[aria-hidden="true"] {
 body.modal-open {
   .modal-backdrop {
     &.fade {
-      transition: all 2s ease-out !important;
+      transition: background-color 2s ease-out !important;
       opacity: 1 !important;
       background-color: rgba(0, 0, 0, 0.6);
 
@@ -257,7 +257,7 @@ body.modal-open {
 body:not(.modal-open) {
   .modal-backdrop {
     opacity: 1 !important;
-    transition: all 0.3s ease-out !important;
+    transition: background-color 0.3s ease-out !important;
     background-color: rgba(0, 0, 0, 0);
   }
 }
