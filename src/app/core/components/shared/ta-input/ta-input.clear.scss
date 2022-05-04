@@ -3,24 +3,47 @@
   position: absolute;
   right: 4px;
   top: 4px;
-  width: 18px;
-  height: 18px;
+
   border-radius: 1px;
-  background-color: #b7b7b7;
   display: none;
   transition: all 0.3s ease-in-out;
+  background-color: transparent !important;
   z-index: 10;
 
+  svg-icon {
+    svg {
+      width: 18px !important;
+      height: 18px !important;
+      overflow: visible;
+      rect{
+        transition: transform 0.3s;
+        transform: scale(1);
+        transform-origin: center;
+      }
+    }
+
+    &:hover {
+      svg {
+        overflow: visible;
+        rect {
+          transform: scale(1.2);
+          transform-origin: center;
+          transition: transform 0.3s;
+        }
+      }
+    }
+  }
+
   .input-clear-x {
+    display: inline-block;
     width: 10px;
     height: 10px;
     svg {
-    width: 10px;
-    height: 10px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-49%, -50%) !important;
+      width: 10px;
+      height: 10px;
+      position: absolute;
+      top: 0;
+      right: 0;
 
       path {
         fill: #eeeeee;
@@ -29,7 +52,6 @@
   }
 
   &:hover {
-    transform: scale(1.2);
     cursor: pointer;
     transition: all 0.3s ease-in-out;
   }
@@ -48,7 +70,11 @@
       }
     }
     &:hover {
-      background-color: #eeeeee;
+      svg {
+        rect {
+          fill: #eeeeee;
+        }
+      }
     }
   }
 
@@ -58,12 +84,16 @@
     .input-clear-x {
       svg {
         path {
-          fill: #536bc2;
+         // fill: #536bc2;
         }
       }
     }
     &:hover {
-      background-color: #f5fafc;
+      svg {
+        rect {
+          fill: #f5fafc;
+        }
+      }
     }
   }
 
@@ -71,15 +101,12 @@
   &.invalid-focus-in-required {
     background-color: #ffcdd2;
     display: block;
-    .input-clear-x {
+    &:hover {
       svg {
-        path {
-          fill: #ef5350;
+        rect {
+          fill: #fffafa;
         }
       }
-    }
-    &:hover {
-      background-color: #fffafa;
     }
   }
 
@@ -132,10 +159,10 @@
     top: 6.5px;
     right: 6px;
 
-    .input-clear-x {
-      svg {
-        transform: translate(-49%, -50%) !important;
-      }
-    }
+    // .input-clear-x {
+    //   svg {
+    //     transform: translate(-49%, -50%) !important;
+    //   }
+    // }
   }
 }
