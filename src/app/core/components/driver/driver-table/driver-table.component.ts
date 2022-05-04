@@ -8,6 +8,7 @@ import { DriversQuery } from '../state/driver.query';
 import { DriversState } from '../state/driver.store';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-driver-table',
@@ -29,7 +30,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   constructor(
     private modalService: ModalService,
     private driversQuery: DriversQuery,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    public datepipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -122,7 +124,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Applicants',
         field: 'applicants',
         length: 8,
-        data: this.getDumyData(8),
+        data: this.getDumyData(),
         extended: true,
         gridNameTitle: 'Driver',
         stateName: 'applicants',
@@ -132,7 +134,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Active',
         field: 'active',
         length: 5,
-        data: this.getDumyData(5),
+        data: this.getDumyData(),
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -142,7 +144,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Inactive',
         field: 'inactive',
         length: 10,
-        data: this.getDumyData(10),
+        data: this.getDumyData(),
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -152,7 +154,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
     const td = this.tableData.find((t) => t.field === this.selectedTab);
 
-   /*  this.setDriverData(td); */
+    this.setDriverData(td);
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
@@ -179,19 +181,26 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       return {
         ...data,
         isSelected: false,
+        textAddress: data.address.address ? data.address.address : '',
+        textDOB: data.dateOfBirth ? this.datepipe.transform(data.dateOfBirth, 'dd/MM/yy') : '',
+        textHired: data.hired ? this.datepipe.transform(data.hired, 'dd/MM/yy') : '',
+        textCDL: data.cdlNumber ? data.cdlNumber : '',
+        textState: data.address.state ? data.address.state : '',
+        textBank: data.bank ? data.bank : '',
+        textAccount: data.account ? data.account : '',
+        textRouting: data.routing ? data.routing : '',
+        tableCDLData: data.cdlExpiration ? data.cdlExpiration : {},
+        tableMedicalData: data.medicalExpiration ? data.medicalExpiration : {},
+        tableMvrData: data.mvrIssueDate ? data.mvrIssueDate : {},
       };
     });
+
+    console.log('viewData');
+    console.log(this.viewData);
   }
 
-  getDumyData(numberOfCopy: number) {
-    this.drivers = this.driversQuery.getAll();
-
-    console.log('drivers')
-    console.log(this.drivers)
-    
-    /* for (let i = 0; i < numberOfCopy; i++) {
-      this.drivers.push(this.drivers[i]);
-    } */
+  getDumyData() {
+    this.drivers = this.driversQuery.getAll()[0];
 
     return this.drivers;
   }
