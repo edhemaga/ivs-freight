@@ -243,13 +243,13 @@ ngb-modal-window[aria-hidden="true"] {
 
 body.modal-open {
   .modal-backdrop {
-    &.myDropback.fade {
+    &.fade {
       transition: all 2s ease-out !important;
       opacity: 1 !important;
       background-color: rgba(0, 0, 0, 0.6);
 
       animation-name: modalShow;
-      animation-duration: 0.4s;
+      animation-duration: 0.3s;
     }
   }
 }
@@ -257,7 +257,7 @@ body.modal-open {
 body:not(.modal-open) {
   .modal-backdrop {
     opacity: 1 !important;
-    transition: all 0.5s !important;
+    transition: all 0.3s ease-out !important;
     background-color: rgba(0, 0, 0, 0);
   }
 }
