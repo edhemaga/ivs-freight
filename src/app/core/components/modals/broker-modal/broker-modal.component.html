@@ -10,7 +10,11 @@
     (switchClicked)="tabChange($event)"
     [tabs]="tabs"
   ></app-tab-switcher>
-  <form [formGroup]="brokerForm" class="form-container">
+  <form
+    [formGroup]="brokerForm"
+    class="form-container"
+    [ngClass]="{ 'tab-2': selectedTab === 2 }"
+  >
     <div
       class="{{ editData ? 'animation-three-tabs' : 'animation-two-tabs' }}"
       [@animationTabsModal]="animationObject"
@@ -366,7 +370,7 @@
                     name: 'Input Dropdown',
                     type: 'text',
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-banks'
+                    dropdownWidthClass: 'w-col-broker-department'
                   }"
                   [options]="labelsDepartments"
                   (selectedItem)="onSelectContactDepartment($event)"

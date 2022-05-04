@@ -336,7 +336,7 @@
   .broker-contacts {
     overflow: hidden;
     overflow-x: scroll;
-
+    margin-top: 10px;
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {
