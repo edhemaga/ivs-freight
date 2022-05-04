@@ -220,42 +220,49 @@ ngb-modal-window[aria-hidden="true"] {
   }
 } 
 
-@keyframes modalShow {
+@-webkit-keyframes modalShow {
   0% {
-    background-color: rgba(0, 0, 0, 0) !important;;
+    background-color: rgba(0, 0, 0, 0);
   }
   100% {
-    background-color: rgba(0, 0, 0, 0.4) !important;;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+@keyframes modalShow {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.6);
   }
 }
 
 
-.fade {
-  background-color: rgba(0, 0, 0, 0) !important;
+.fade.modal-animation {
+  background-color: transparent !important
 }
 
-body.modal-open{
   .modal-backdrop{
-    transition: background-color 0.3s ease-out;
+    transition: all 2s ease-out;
   
-    &.myDropback{
-      transition: background-color 0.4s ease-out !important;
+    &.myDropback.show{
+      transition: all 2s ease-out !important;
       opacity: 1 !important;
-      background-color: rgba(0, 0, 0, 0.4)  !important;;
+      background-color: rgba(0, 0, 0, 0.6);
   
-      -webkit-animation: modalShow 0.5s;
-      animation: modalShow 0.5s;
+      animation-name: modalShow;
+      animation-duration: 0.4s;
     }
   }
-}
 
-body:not(.modal-open){
-  .modal-backdrop{
-    &.myDropback{
-      -webkit-animation: modalShow 0.3s;
-      animation: modalShow 0.3s;
-      animation-direction: reverse;
-    }
-  }
-}
+// body:not(.modal-open){
+//   .modal-backdrop{
+//     &.myDropback{
+//       -webkit-animation: modalShow 0.3s;
+//       animation: modalShow 0.3s;
+//       animation-direction: reverse;
+//     }
+//   }
+// }
 

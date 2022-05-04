@@ -1,0 +1,38 @@
+<div class="row card-main-holder">
+    <div class="col-3">
+        <div class="details"></div>
+    </div>
+    <div class="col-9">
+        <div *ngFor="let item of driverBox; let indx=index" class="card-frame">
+            <div class="card-holder-frame" [class.active]="item.checked">
+                <div class="driver-dropdown">
+                    <svg-icon src="assets/svg/truckassist-table/dropdown/dropdown.svg"></svg-icon>
+                </div>    
+                <div class="driver-card-frame">
+                    <div class="driver-card-img">
+                        <label class="container1">
+                            <input (change)="changeChatBox($event, indx)" [checked]="item.checked" type="checkbox">
+                            <span class="checkmark"></span>
+                        </label>                           
+                        <svg-icon [src]="item.img"></svg-icon>
+                    </div>
+                    <div class="driver-card-info-frame">
+                        <div class="driver-card-name">{{item.name}}</div>
+                        <div class="driver-card-phone-frame padding-between">
+                            <div class="driver-phone-img">
+                                <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+                            </div>
+                            <div class="driver-phone">{{item.phone}}</div>
+                        </div>
+                        <div class="driver-card-phone-frame">
+                            <div class="driver-phone-img">
+                                <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+                            </div>
+                            <div class="driver-phone">{{item.email}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
