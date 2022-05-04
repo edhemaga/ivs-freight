@@ -160,14 +160,6 @@
       // Input clear class
       .second-position-hover {
         right: 27px;
-
-        &:hover {
-          transition: all 0.3s ease-in-out;
-          right: 27px !important;
-          width: 22px;
-          height: 22px;
-          transform: translate(-6%, -10%) !important;
-        }
       }
 
       .input-clear {

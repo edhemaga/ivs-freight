@@ -1,9 +1,11 @@
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
+import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 
 @Component({
   selector: 'app-broker-modal',
@@ -12,8 +14,9 @@ import { MockModalService } from 'src/app/core/services/mockmodal.service';
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
 })
-export class BrokerModalComponent implements OnInit {
+export class BrokerModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
+
   public brokerForm: FormGroup;
 
   public selectedTab: number = 1;
@@ -28,16 +31,47 @@ export class BrokerModalComponent implements OnInit {
     },
   ];
 
-  public selectedMainAddressTab: any = null;
-  public mainAddressTabs: any[] = [];
+  public selectedPhysicalAddressTab: any = {
+    id: 'physicaladdress',
+    name: 'Physical Address',
+    checked: true,
+  };
+  public physicalAddressTabs: any[] = [];
 
-  public selectedBillingAddressTab: any = null;
+  public selectedBillingAddressTab: any = {
+    id: 'billingaddress',
+    name: 'Billing Address',
+    checked: true,
+  };
   public billingAddressTabs: any[] = [];
 
   public animationObject = {
     value: this.selectedTab,
     params: { height: '0px' },
   };
+
+  public billingCredit = [
+    {
+      label: 'Enable',
+      value: 'enable',
+      name: 'credit',
+      checked: true,
+      isActive: true,
+    },
+    {
+      label: 'Disable',
+      value: 'disable',
+      name: 'credit',
+      checked: false,
+    },
+  ];
+
+  public selectedPhysicalAddress: Address = null;
+  public selectedPhysicalPoBoxCity: Address = null;
+  public selectedBillingAddress: Address = null;
+  public selectedBillingPoBoxCity: Address = null;
+
+  public labelsPayType: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,8 +82,11 @@ export class BrokerModalComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-    this.mainAddressTabs = this.mockModalService.brokerMainAddressTabs;
-    this.billingAddressTabs = this.mockModalService.billingAddressTabs;
+    this.onEinTyping();
+
+    this.physicalAddressTabs = this.mockModalService.brokerPhysicalAddressTabs;
+    this.billingAddressTabs = this.mockModalService.brokerBillingAddressTabs;
+
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
@@ -57,28 +94,38 @@ export class BrokerModalComponent implements OnInit {
         id: 1,
       };
       this.editBrokerById(this.editData.id);
+      this.tabs.push({
+        id: 3,
+        name: 'Review'
+      })
     }
   }
 
   private createForm() {
     this.brokerForm = this.formBuilder.group({
-      businessName: [null],
+      businessName: [null, Validators.required],
       dbaName: [null],
-      mcNumber: [null],
+      mcFFNumber: [null, Validators.maxLength(8)],
       ein: [null],
       email: [null],
-      phone: [null],
-      mainAddress: [null],
-      mainAddressUnit: [null],
+      phone: [null, Validators.required],
+      // Physical Address
+      physicalAddress: [null],
+      physicalAddressUnit: [null],
+      physicalPoBox: [null], // TODO:  city?: string | null; state?: string | null;  zipCode?: string | null; poBox?: string | null;
+      physicalPoBoxCity: [null],
+      // Billing Address
+      isCheckedBillingAddress: [true],
       billingAddress: [null],
-      mainPoBox: [null], // TODO:  city?: string | null; state?: string | null;  zipCode?: string | null; poBox?: string | null;
+      billingAddressUnit: [null],
       billingPoBox: [null], // TODO:  city?: string | null; state?: string | null;  zipCode?: string | null; poBox?: string | null;
-      isCheckedBillingAddress: [false],
-      isCredit: [false],
-      creditType: [null],
+      billingPoBoxCity: [null],
+      isCredit: [true],
       creditLimit: [null],
-      availableCredit: [null],
       payTerm: [null],
+
+      creditType: [null],
+      availableCredit: [null],
       dnu: [false],
       ban: [false],
       note: [null],
@@ -89,6 +136,21 @@ export class BrokerModalComponent implements OnInit {
       //extensionPhone?: string | null;
       //email?: string | null;
     });
+  }
+
+  public onEinTyping() {
+    this.brokerForm
+      .get('ein')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.inputService.changeValidators(this.brokerForm.get('ein'), true, [
+            Validators.pattern(/^\d{2}\-\d{7}$/),
+          ]);
+        } else {
+          this.inputService.changeValidators(this.brokerForm.get('ein'), false);
+        }
+      });
   }
 
   public onModalAction(action: string) {
@@ -118,19 +180,98 @@ export class BrokerModalComponent implements OnInit {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-    let dotAnimation = document.querySelector('.animation-two-tabs');
+    let dotAnimation = document.querySelector(this.editData ? '.animation-three-tabs' : '.animation-two-tabs');
     this.animationObject = {
       value: this.selectedTab,
       params: { height: `${dotAnimation.getClientRects()[0].height}px` },
     };
   }
 
-  public tabMainAddressChange(event: any): void {
-    console.log(event);
+  public tabPhysicalAddressChange(event: any): void {
+
+    this.selectedPhysicalAddressTab = event.find(
+      (item) => item.checked === true
+    );
+
+    if (this.selectedPhysicalAddressTab?.name === 'physical address') {
+      this.inputService.changeValidators(
+        this.brokerForm.get('physicalAddress')
+      );
+      this.inputService.changeValidators(
+        this.brokerForm.get('physicalPoBox'),
+        false
+      );
+      this.inputService.changeValidators(
+        this.brokerForm.get('physicalPoBoxCity'),
+        false
+      );
+    } else {
+      this.inputService.changeValidators(
+        this.brokerForm.get('physicalAddress'),
+        false
+      );
+      this.inputService.changeValidators(this.brokerForm.get('physicalPoBox'));
+      this.inputService.changeValidators(
+        this.brokerForm.get('physicalPoBoxCity')
+      );
+    }
   }
 
-  public onHandleAddress(event: any) {
+  public tabBillingAddressChange(event: any): void {
+    console.log('BILLING');
+    this.selectedBillingAddressTab = event.find(
+      (item) => item.checked === true
+    );
 
+    if (this.selectedBillingAddressTab?.name === 'billing address') {
+      this.inputService.changeValidators(this.brokerForm.get('billingAddress'));
+      this.inputService.changeValidators(
+        this.brokerForm.get('billingPoBox'),
+        false
+      );
+      this.inputService.changeValidators(
+        this.brokerForm.get('billingPoBoxCity'),
+        false
+      );
+    } else {
+      this.inputService.changeValidators(
+        this.brokerForm.get('billingAddress'),
+        false
+      );
+      this.inputService.changeValidators(this.brokerForm.get('billingPoBox'));
+      this.inputService.changeValidators(
+        this.brokerForm.get('billingPoBoxCity')
+      );
+    }
+  }
+
+  public onHandlePhysicalAddress(event: any) {
+    this.selectedPhysicalAddress = event;
+  }
+
+  public onHandlePhysicalPoBoxCityAddress(event: any) {
+    this.selectedPhysicalPoBoxCity = event;
+  }
+
+  public onHandleBillingAddress(event: any) {
+    this.selectedBillingAddress = event;
+  }
+
+  public onHandleBillingPoBoxCityAddress(event: any) {
+    this.selectedBillingPoBoxCity = event;
+  }
+
+  public isCredit(event: any) {
+    this.brokerForm.get('isCredit').patchValue(event.checked);
+
+    if (this.brokerForm.get('isCredit').value) {
+      this.inputService.changeValidators(this.brokerForm.get('creditLimit'));
+    } else {
+      this.inputService.changeValidators(
+        this.brokerForm.get('creditLimit'),
+        false
+      );
+    }
   }
 
   private addBroker(): void {}
@@ -140,4 +281,8 @@ export class BrokerModalComponent implements OnInit {
   private deleteBrokerById(id: number): void {}
 
   private editBrokerById(id: number): void {}
+
+  public onSelectPayType(event: any) {}
+
+  ngOnDestroy(): void {}
 }

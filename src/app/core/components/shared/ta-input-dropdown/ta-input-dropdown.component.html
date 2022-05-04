@@ -12,6 +12,7 @@
 <ng-template #taInputDropdownPopover>
   <!--------------------------- Dropdown options --------------------------->
   <div
+    *ngIf="!inputConfig.isDisabled"
     class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
     [ngClass]="{
       'scroll': options | taDropdownCount: template,

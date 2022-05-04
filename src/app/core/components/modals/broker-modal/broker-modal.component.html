@@ -11,7 +11,7 @@
     [tabs]="tabs"
   ></app-tab-switcher>
   <form [formGroup]="brokerForm" class="form-container">
-    <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
+    <div class="{{editData ? 'animation-three-tabs' : 'animation-two-tabs'}}" [@animationTabsModal]="animationObject">
       <!-------------------------------- Details Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
         <div class="row">
@@ -19,12 +19,11 @@
             <app-ta-input
               formControlName="businessName"
               [inputConfig]="{
-                name: 'Bussiness Name',
+                name: 'Bussines Name',
                 type: 'text',
-                label: 'Bussiness Name',
+                label: 'Bussines Name',
                 isRequired: true,
-                textTransform: 'capitalize',
-                maxLength: 6
+                textTransform: 'capitalize'
               }"
             ></app-ta-input>
           </div>
@@ -37,8 +36,7 @@
                 name: 'DBA Name',
                 type: 'text',
                 label: 'DBA Name',
-                textTransform: 'capitalize',
-                maxLength: 6
+                textTransform: 'capitalize'
               }"
             ></app-ta-input>
           </div>
@@ -49,20 +47,20 @@
                 name: 'EIN',
                 type: 'text',
                 label: 'EIN #',
-                textTransform: 'capitalize',
-                maxLength: 6
+                isRequired: true,
+                mask: '00-0000000'
               }"
             ></app-ta-input>
           </div>
           <div class="col-3">
             <app-ta-input
-              formControlName="mcNumber"
+              formControlName="mcFFNumber"
               [inputConfig]="{
                 name: 'MC FF',
                 type: 'text',
                 label: 'MC/FF #',
                 textTransform: 'capitalize',
-                maxLength: 6
+                maxLength: 8
               }"
             ></app-ta-input>
           </div>
@@ -93,20 +91,28 @@
             ></app-ta-input>
           </div>
         </div>
+        <!---------------------------- PHYSICAL TABS ---------------------------->
         <app-status-switcher
-          (switchClicked)="tabMainAddressChange($event)"
-          [data]="mainAddressTabs"
+          (switchClicked)="tabPhysicalAddressChange($event)"
+          [data]="physicalAddressTabs"
         ></app-status-switcher>
+        <!-- Physical address -->
         <div
+          *ngIf="
+            selectedPhysicalAddressTab?.name.toLowerCase() ===
+            'physical address'
+          "
           class="animation-checkbox-card-tabs"
           [ngClass]="{
-            fade: selectedMainAddressTab?.name.toLowerCase() === 'main address'
+            'fade-checkbox-inputs':
+              selectedPhysicalAddressTab?.name.toLowerCase() ===
+              'physical address'
           }"
         >
           <div class="row first-row last-row">
             <div class="col-10">
               <app-ta-input-address
-                formControlName="mainAddress"
+                formControlName="physicalAddress"
                 [inputConfig]="{
                   name: 'Address',
                   type: 'text',
@@ -115,12 +121,12 @@
                   placeholderIcon: 'address',
                   textTransform: 'capitalize'
                 }"
-                (selectedAddress)="onHandleAddress($event)"
+                (selectedAddress)="onHandlePhysicalAddress($event)"
               ></app-ta-input-address>
             </div>
             <div class="col-2">
               <app-ta-input
-                formControlName="mainAddressUnit"
+                formControlName="physicalAddressUnit"
                 [inputConfig]="{
                   name: 'Address Unit',
                   type: 'text',
@@ -131,27 +137,33 @@
             </div>
           </div>
         </div>
-        <app-ta-checkbox
-          formControlName="isCheckedBillingAddress"
-          [label]="'Billing address is same as main address'"
-        ></app-ta-checkbox>
-        <div *ngIf="brokerForm.get('isCheckedBillingAddress').value">
+        <!-- Physical PO Box -->
+        <div
+          *ngIf="
+            selectedPhysicalAddressTab?.name.toLowerCase() === 'po box physical'
+          "
+          class="animation-checkbox-card-tabs"
+          [ngClass]="{
+            'fade-checkbox-inputs':
+              selectedPhysicalAddressTab?.name.toLowerCase() ===
+              'po box physical'
+          }"
+        >
           <div class="row first-row last-row">
             <div class="col-4">
               <app-ta-input
-                formControlName="billingPoBox"
+                formControlName="physicalPoBox"
                 [inputConfig]="{
-                  name: 'PO BOX',
+                  name: 'PO Box',
                   type: 'text',
                   label: 'PO Box #',
-                  isRequired: true,
-                  maxLength: 6
+                  isRequired: true
                 }"
               ></app-ta-input>
             </div>
             <div class="col-8">
               <app-ta-input-address
-                formControlName="billingAddress"
+                formControlName="physicalPoBoxCity"
                 [inputConfig]="{
                   name: 'Address',
                   type: 'text',
@@ -160,15 +172,156 @@
                   placeholderIcon: 'address',
                   textTransform: 'capitalize'
                 }"
-                (selectedAddress)="onHandleAddress($event)"
+                (selectedAddress)="onHandlePhysicalPoBoxCityAddress($event)"
               ></app-ta-input-address>
             </div>
           </div>
         </div>
+        <!---------------------------- Billing address TABS ---------------------------->
+        <app-ta-checkbox
+          formControlName="isCheckedBillingAddress"
+          [customClass]="
+            brokerForm.get('isCheckedBillingAddress').value
+              ? 'regular billing-address'
+              : 'regular billing-address checked'
+          "
+          [label]="'Billing address is same as main address'"
+        ></app-ta-checkbox>
+
+        <div *ngIf="!brokerForm.get('isCheckedBillingAddress').value">
+          <app-status-switcher
+            (switchClicked)="tabBillingAddressChange($event)"
+            [data]="billingAddressTabs"
+          ></app-status-switcher>
+          <!-- Billing address -->
+          <div
+            *ngIf="
+              selectedBillingAddressTab?.name.toLowerCase() ===
+              'billing address'
+            "
+            class="animation-checkbox-card-tabs"
+            [ngClass]="{
+              'fade-checkbox-inputs':
+                selectedBillingAddressTab?.name.toLowerCase() ===
+                'billing address'
+            }"
+          >
+            <div class="row first-row last-row">
+              <div class="col-10">
+                <app-ta-input-address
+                  formControlName="billingAddress"
+                  [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    label: 'Address, City, State Zip',
+                    isRequired: true,
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize'
+                  }"
+                  (selectedAddress)="onHandleBillingAddress($event)"
+                ></app-ta-input-address>
+              </div>
+              <div class="col-2">
+                <app-ta-input
+                  formControlName="billingAddressUnit"
+                  [inputConfig]="{
+                    name: 'Address Unit',
+                    type: 'text',
+                    label: 'Unit #',
+                    maxLength: 6
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+          </div>
+          <!-- Billing PO Box -->
+          <div
+            *ngIf="
+              selectedBillingAddressTab?.name.toLowerCase() === 'po box billing'
+            "
+            class="animation-checkbox-card-tabs"
+            [ngClass]="{
+              'fade-checkbox-inputs':
+                selectedBillingAddressTab?.name.toLowerCase() ===
+                'po box billing'
+            }"
+          >
+            <div class="row first-row last-row">
+              <div class="col-4">
+                <app-ta-input
+                  formControlName="billingPoBox"
+                  [inputConfig]="{
+                    name: 'PO Box',
+                    type: 'text',
+                    label: 'PO Box #',
+                    isRequired: true
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="col-8">
+                <app-ta-input-address
+                  formControlName="billingPoBoxCity"
+                  [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    label: 'City, State Zip',
+                    isRequired: true,
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize'
+                  }"
+                  (selectedAddress)="onHandleBillingPoBoxCityAddress($event)"
+                ></app-ta-input-address>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-ta-custom-card [cardName]="'Billing'" [isCardOpen]="true">
+          <div class="broker-billing row-margintop12 last-row">
+            <div class="broker-billing-field credit">
+              <p>Credit</p>
+              <app-ta-input-radiobuttons
+                [buttons]="billingCredit"
+                (changedValue)="isCredit($event)"
+              ></app-ta-input-radiobuttons>
+            </div>
+            <div class="broker-billing-field">
+              <app-ta-input
+                formControlName="creditLimit"
+                [inputConfig]="{
+                  name: 'Credit Limit',
+                  type: 'text',
+                  label: 'Credit Limit',
+                  isRequired: brokerForm.get('isCredit').value,
+                  isDisabled: !brokerForm.get('isCredit').value,
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  mask: 'separator.2'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="borker-billing-field">
+              <app-ta-input-dropdown
+                formControlName="payTerm"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Pay term',
+                  isDisabled: !brokerForm.get('isCredit').value,
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-broker-payterm'
+                }"
+                [options]="labelsPayType"
+                (selectedItem)="onSelectPayType($event)"
+              ></app-ta-input-dropdown>
+            </div>
+          </div>
+        </app-ta-custom-card>
         <app-ta-input-note formControlName="note"></app-ta-input-note>
       </div>
       <!-------------------------------- Contact Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2"></div>
+      <!-------------------------------- Review Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 3 && editData"></div>
     </div>
   </form>
 </app-ta-modal>

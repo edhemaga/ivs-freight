@@ -81,6 +81,7 @@ import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component
 import { ContactModalComponent } from '../modals/contact-modal/contact-modal.component';
 import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
 import { BrokerModalComponent } from '../modals/broker-modal/broker-modal.component';
+import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-radiobuttons.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +114,7 @@ import { BrokerModalComponent } from '../modals/broker-modal/broker-modal.compon
     TaNgxSliderComponent,
     TaLogoChangeComponent,
     TaCustomCardComponent,
+    TaInputRadiobuttonsComponent,
 
     // Modals Components
     TaModalComponent,
@@ -228,6 +230,7 @@ import { BrokerModalComponent } from '../modals/broker-modal/broker-modal.compon
     CalendarLeftComponent,
     DateCalendarsComponent,
     TaCustomCardComponent,
+    TaInputRadiobuttonsComponent,
 
     TaCheckboxComponent,
     TaInputAddressComponent,

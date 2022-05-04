@@ -31,6 +31,11 @@
     margin-bottom: 22px !important;
   }
 
+  // Custom
+  .row-margintop12 {
+    margin-top: 12px !important;
+  }
+
   // If modal buttons directly below row
   .last-modal-row {
     margin-bottom: 20px !important;
@@ -71,7 +76,7 @@
     grid-template-columns: repeat(2, 100%);
   }
 
-  //------------------------ Custom Schedule Of Inputs ------------------------------
+  //------------------------------------------------ Custom Schedule Of Inputs ------------------------------------------------------
 
   //---------------- Bank Inputs ----------------
   .custom-bank-row {
@@ -114,8 +119,8 @@
     .checkbox-card-body {
       max-height: 0;
       transition: all 0.3s ease-out;
-  
-      &.active{
+
+      &.active {
         max-height: 600px;
         margin-top: 12px;
       }
@@ -132,7 +137,7 @@
         height: 0px;
         transition: all 0.3s ease-in-out;
 
-        &.fade {
+        &.fade-checkbox-inputs {
           transform: translate(0);
           opacity: 1;
           height: 26px;
@@ -341,11 +346,35 @@
 .custom-model-color-year-length {
   display: grid;
   grid-template-columns: 100px 126px 88px 106px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
 }
 
+//---------------- Broker Billing ----------------
+.broker-billing {
+  display: grid;
+  grid-template-columns: 1fr 214px 194px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  align-items: center;
+  padding-left: 6px;
+
+  .broker-billing-field {
+    height: 26px;
+    &.credit {
+      display: flex;
+      align-items: center;
+      p {
+        margin: 0;
+        margin-right: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #6c6c6c;
+        position: relative;
+        top: 1px;
+      }
+    }
+  }
+}
+
 // ------------------------------------------------ end ------------------------------------------------
-
-
-
-

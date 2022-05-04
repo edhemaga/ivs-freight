@@ -156,7 +156,7 @@
             <div
               *ngIf="driverForm.get('isOwner').value"
               class="animation-checkbox-card-tabs"
-              [ngClass]="{ fade: selectedOwnerTab?.name.toLowerCase() === 'company' }"
+              [ngClass]="{ 'fade-checkbox-inputs': selectedOwnerTab?.name.toLowerCase() === 'company' }"
             >
               <div class="row">
                 <div class="col-4">
@@ -165,7 +165,7 @@
                     [inputConfig]="{
                       name: 'EIN',
                       type: 'text',
-                      label: 'EIN',
+                      label: 'EIN #',
                       isRequired: true,
                       mask: '00-0000000'
                     }"
