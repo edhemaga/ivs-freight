@@ -1,6 +1,6 @@
 <div class="ta-custom-card">
   <div *ngIf="hasDivider" class="divider"></div>
-  <div class="ta-card-header" (click)="isCardOpen = !isCardOpen">
+  <div class="ta-card-header" (click)="isCardOpenEvent($event)">
     <div class="header-content">
       <app-ta-counter
         *ngIf="hasCounter"
@@ -22,7 +22,8 @@
         src="{{ hasHeaderSvg }}"
       ></svg-icon>
     </div>
-    <div class="header-actions">
+    <div class="header-actions" [ngClass]="{'like-dislike-template': hasLikeDislike}">
+      <app-ta-like-dislike  *ngIf="hasLikeDislike"></app-ta-like-dislike>
       <svg-icon
         *ngIf="hasActionSvg"
         class="header-action-svg"

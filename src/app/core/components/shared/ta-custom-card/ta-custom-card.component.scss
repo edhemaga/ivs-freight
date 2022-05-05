@@ -84,6 +84,17 @@
           }
         }
       }
+
+      &.like-dislike-template {
+        display: flex;
+        position: relative;
+        bottom: 3px;
+        .ta-like-dislike {
+          position: relative;
+          top: 3px;
+          margin-right: 13px;
+        }
+      }
     }
 
     &.cursor {

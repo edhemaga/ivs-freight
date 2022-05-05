@@ -13,7 +13,7 @@
   <form
     [formGroup]="brokerForm"
     class="form-container"
-    [ngClass]="{ 'tab-2': selectedTab === 2 }"
+    [ngClass]="{ 'tab-2': selectedTab !== 1 }"
   >
     <div
       class="{{ editData ? 'animation-three-tabs' : 'animation-two-tabs' }}"
@@ -398,13 +398,43 @@
                     type: 'text'
                   }"
                 ></app-ta-input>
+                <svg-icon
+                  class="brokerContacts-delete"
+                  src="assets/svg/common/ic_trash.svg"
+                  (click)="removeBrokerContacts(ind)"
+                  [appTooltip]="'Delete'"
+                  [position]="'top-middle'"
+                  [tooltipBackground]="'#EF5350'"
+                  [tooltipColor]="'#FFFFFF'"
+                  [zIndex]="900"
+                  [borderRadius]="'2px'"
+                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+                  [fontWeight]="'bold'"
+                  [fontSize]="'11px'"
+                  [customPosition]="-11"
+                ></svg-icon>
               </div>
             </div>
           </div>
         </app-ta-custom-card>
       </div>
       <!-------------------------------- Review Tab -------------------------------->
-      <div class="m-tab" *ngIf="selectedTab === 3 && editData"></div>
+      <div class="m-tab" *ngIf="selectedTab === 3 && editData">
+        <app-ta-custom-card
+          [hasCounter]="'0'"
+          [cardName]="'Review'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasArrow]="false"
+          [hasLikeDislike]="true"
+          [isCardOpen]="true"
+          (onActionEvent)="addNewReview($event)"
+        >
+        <div class="no-review-broker">
+          <svg-icon class="no-review-svg" src="assets/svg/common/ic_no_review.svg"></svg-icon>
+        </div>
+       
+        </app-ta-custom-card>
+      </div>
     </div>
   </form>
 </app-ta-modal>

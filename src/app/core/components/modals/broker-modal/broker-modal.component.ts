@@ -78,7 +78,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public selectedBillingPoBoxCity: Address = null;
 
   public labelsPayType: any[] = [];
-  public labelsDepartments: any[] =[];
+  public labelsDepartments: any[] = []; 
 
   constructor(
     private formBuilder: FormBuilder,
@@ -168,27 +168,40 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(action: string) {
-    if (action === 'close') {
-      this.brokerForm.reset();
+    if (action === 'bfb' || action === 'dnu') {
+      // DNU
+      if (action === 'dnu' && this.editData) {
+        // TODO: Add dnu on edit broker
+        console.log(action)
+      }
+      // BFB
+      if (action === 'bfb' && this.editData) {
+        // TODO: Add bfb on edit broker
+        console.log(action)
+      }
     } else {
-      // Save & Update
-      if (action === 'save') {
-        if (this.brokerForm.invalid) {
-          this.inputService.markInvalid(this.brokerForm);
-          return;
+      if (action === 'close') {
+        this.brokerForm.reset();
+      } else {
+        // Save & Update
+        if (action === 'save') {
+          if (this.brokerForm.invalid) {
+            this.inputService.markInvalid(this.brokerForm);
+            return;
+          }
+          if (this.editData) {
+            this.updateBroker(this.editData.id);
+          } else {
+            this.addBroker();
+          }
         }
-        if (this.editData) {
-          this.updateBroker(this.editData.id);
-        } else {
-          this.addBroker();
+        // Delete
+        if (action === 'delete' && this.editData) {
+          this.deleteBrokerById(this.editData.id);
         }
-      }
-      // Delete
-      if (action === 'delete' && this.editData) {
-        this.deleteBrokerById(this.editData.id);
-      }
 
-      this.ngbActiveModal.close();
+        this.ngbActiveModal.close();
+      }
     }
   }
 
@@ -289,9 +302,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSelectContactDepartment(event: any) {
+  public addNewReview(event: any) {}
 
-  }
+  public onSelectContactDepartment(event: any) {}
 
   public onSelectPayType(event: any) {}
 
@@ -302,8 +315,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   private deleteBrokerById(id: number): void {}
 
   private editBrokerById(id: number): void {}
-
-
 
   ngOnDestroy(): void {}
 }

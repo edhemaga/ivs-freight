@@ -1,11 +1,12 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
 
 @Component({
   selector: 'app-ta-custom-card',
   templateUrl: './ta-custom-card.component.html',
   styleUrls: ['./ta-custom-card.component.scss'],
-  animations: [card_modal_animation('showHideCardBody')]
+  animations: [card_modal_animation('showHideCardBody')],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TaCustomCardComponent {
 
@@ -16,8 +17,15 @@ export class TaCustomCardComponent {
   @Input() hasActionSvg: string = null;
   @Input() isCardOpen: boolean = false;  // if has data, set on true
   @Input() hasDivider: boolean = true;
+  @Input() hasLikeDislike: boolean = false;
 
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+
+  public isCardOpenEvent(event: any) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isCardOpen = !this.isCardOpen;
+  }
 
   public onAdd(event: any): void {
     event.preventDefault();

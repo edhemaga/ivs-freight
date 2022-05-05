@@ -1,0 +1,18 @@
+<div class="ta-like-dislike {{customClass}}">
+  <svg-icon
+    class="ta-like-svg"
+    src="assets/svg/common/ic_likes.svg"
+    (click)="onAction('like', $event)"
+  ></svg-icon>
+  <div class="ta-counter like-count">
+    {{ taLikes }}
+  </div>
+  <div class="ta-counter dislike-count">
+    {{ taDislikes }}
+  </div>
+  <svg-icon
+    class="ta-dislike-svg"
+    src="assets/svg/common/ic_dislikes.svg"
+    (click)="onAction('dislike', $event)"
+  ></svg-icon>
+</div>

@@ -124,7 +124,7 @@ ngb-modal-window[aria-hidden="true"] {
           outline: none;
           border: none;
           margin: 0;
-          padding: 0;
+          padding: 6px 0px;
           border-radius: 2px;
           -webkit-user-select: none;
           -moz-user-select: none;
@@ -139,7 +139,7 @@ ngb-modal-window[aria-hidden="true"] {
         }
 
         .modal-deactivate-btn {
-          width: 128px;
+          // width: 128px;
           height: 32px;
           text-align: center;
           font-size: 14px;
@@ -150,7 +150,7 @@ ngb-modal-window[aria-hidden="true"] {
           border: none;
           margin: 0;
           margin-left: 6px;
-          padding: 0;
+          padding: 6px 21px;
           border-radius: 2px;
           -webkit-user-select: none;
           -moz-user-select: none;
@@ -172,11 +172,11 @@ ngb-modal-window[aria-hidden="true"] {
           color: #b7b7b7;
           font-weight: 700;
           font-size: 14px;
-          width: 150px;
           height: 32px;
+          width: 150px;
           text-align: center;
           margin: 0;
-          padding: 0;
+          padding: 6px 0px;
           -webkit-user-select: none;
           -moz-user-select: none;
           -ms-user-select: none;

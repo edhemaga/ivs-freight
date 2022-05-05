@@ -82,6 +82,7 @@ import { ContactModalComponent } from '../modals/contact-modal/contact-modal.com
 import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
 import { BrokerModalComponent } from '../modals/broker-modal/broker-modal.component';
 import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { TaLikeDislikeComponent } from './ta-like-dislike/ta-like-dislike.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +116,7 @@ import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-r
     TaLogoChangeComponent,
     TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
+    TaLikeDislikeComponent,
 
     // Modals Components
     TaModalComponent,
@@ -242,6 +244,7 @@ import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-r
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
+    TaLikeDislikeComponent,
 
     // Modals Components
     TaModalComponent,
