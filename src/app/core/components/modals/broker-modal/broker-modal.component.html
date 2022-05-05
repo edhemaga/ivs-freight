@@ -421,7 +421,7 @@
       <!-------------------------------- Review Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 3 && editData">
         <app-ta-custom-card
-          [hasCounter]="'0'"
+          [hasCounter]="reviews.length ? reviews.length : '0'"
           [cardName]="'Review'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="false"
@@ -429,10 +429,16 @@
           [isCardOpen]="true"
           (onActionEvent)="addNewReview($event)"
         >
-        <div class="no-review-broker">
-          <svg-icon class="no-review-svg" src="assets/svg/common/ic_no_review.svg"></svg-icon>
-        </div>
-       
+          <div class="no-review-broker" *ngIf="!reviews.length">
+            <svg-icon
+              class="no-review-svg"
+              src="assets/svg/common/ic_no_review.svg"
+            ></svg-icon>
+          </div>
+          <app-ta-user-review
+            *ngIf="reviews.length"
+            [reviewData]="reviews"
+          ></app-ta-user-review>
         </app-ta-custom-card>
       </div>
     </div>

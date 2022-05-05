@@ -1,0 +1,92 @@
+<div
+  *ngFor="let data of reviewData; trackBy: identity; let ind = index"
+  class="ta-user-review"
+  [ngClass]="{ 'edit-review': data.isEditMode }"
+>
+  <div class="ta-review-header">
+    <div class="ta-user-information">
+      <img
+        class="ta-user-image"
+        src="{{ data.companyUser.image }}"
+        alt="{{ data.companyUser.fullName }}"
+      />
+      <svg-icon
+        *ngIf="data.companyUser.reaction && !data.isEditMode"
+        class="ta-user-reaction"
+        [ngClass]="{ like: data.companyUser.reaction === 'like' }"
+        src="assets/svg/common/ic_{{ data.companyUser.reaction }}.svg"
+      ></svg-icon>
+      <div class="ta-user-data">
+        <p class="ta-user-fullname">{{ data.companyUser.fullName }}</p>
+        <div class="ta-user-datetime">
+          <div class="ta-user-date">
+            {{ data.createdAt | date: "shortDate" }}
+          </div>
+          <div class="ta-user-time">
+            {{ data.createdAt | date: "shortTime" }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ta-user-actions">
+      <svg-icon
+        *ngIf="!data.isEditMode"
+        class="action-edit"
+        src="assets/svg/common/ic_pen.svg"
+        [appTooltip]="'Edit'"
+        [position]="'top-middle'"
+        [tooltipBackground]="'#6C6C6C'"
+        [tooltipColor]="'#FFFFFF'"
+        [zIndex]="900"
+        [borderRadius]="'2px'"
+        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+        [customPosition]="-8"
+        (click)="onAction(data, 'edit', ind)"
+      ></svg-icon>
+      <svg-icon
+        *ngIf="!data.isEditMode"
+        class="action-delete"
+        src="assets/svg/common/ic_trash.svg"
+        [appTooltip]="'Delete'"
+        [position]="'top-middle'"
+        [tooltipBackground]="'#EF5350'"
+        [tooltipColor]="'#FFFFFF'"
+        [zIndex]="900"
+        [borderRadius]="'2px'"
+        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+        [customPosition]="-14"
+        (click)="onAction(data, 'delete', ind)"
+      ></svg-icon>
+    </div>
+  </div>
+  <div class="ta-review-message">
+    <div *ngIf="!data.isEditMode" class="message">{{ data.comment }}</div>
+    <textarea
+      [class.show]="data.isEditMode"
+      #reviewMessage
+      appTextareaAutosize
+      [rows]="2"
+      [minRows]="2"
+      [maxRows]="5"
+      class="review-textarea"
+    ></textarea>
+    <div class="ta-review-message-actions">
+      <svg-icon
+        *ngIf="data.isEditMode"
+        class="action-confirm"
+        src="assets/svg/common/ic_confirm.svg"
+        (click)="onAction(data, 'confirm', ind)"
+      ></svg-icon>
+      <svg-icon
+        *ngIf="data.isEditMode"
+        class="action-cancel"
+        src="assets/svg/common/ic_cancel.svg"
+        (click)="onAction(data, 'cancel', ind)"
+      ></svg-icon>
+    </div>
+  </div>
+</div>

@@ -72,6 +72,34 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public reviews: any[] = [
+    {
+      id: 0,
+      companyUser: {
+        id: 0,
+        fullName: 'Kevin Malone',
+        image: 'https://picsum.photos/id/237/200/300',
+        reaction: 'like',
+      },
+      comment: 'Lorem ipsum dolor sit',
+      createdAt: '2022-05-05T08:02:52.616Z',
+      updatedAt: '2022-05-05T08:02:52.616Z',
+    },
+    {
+      id: 1,
+      companyUser: {
+        id: 1,
+        fullName: 'Vlade Divac',
+        image: 'https://picsum.photos/id/237/200/300',
+        reaction: 'dislike',
+      },
+      comment:
+        'Lorem ipsum dolor sit amet, consetetur sadipscing elit dolor sit amet, consetetur sadipscing elitelit dolor sit amet, conseelit dolor sit amet, conse.',
+      createdAt: '2022-05-05T08:02:52.616Z',
+      updatedAt: '2022-05-05T08:02:52.616Z',
+    },
+  ];
+
   public selectedPhysicalAddress: Address = null;
   public selectedPhysicalPoBoxCity: Address = null;
   public selectedBillingAddress: Address = null;

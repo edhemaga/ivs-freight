@@ -244,7 +244,6 @@
     #input
     [type]="getInputType(inputConfig.type)"
     [id]="inputConfig.name"
-    inputformat="dd-mm-yy"
     [name]="inputConfig.name"
     [disabled]="inputConfig.isDisabled"
     [autocomplete]="inputConfig.autocomplete"
@@ -254,6 +253,7 @@
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
     [mask]="inputConfig.mask"
     thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
+    inputformat="dd-mm-yy"
     class="input-control {{ inputConfig.textTransform }} {{
       inputConfig.customClass
     }}"
