@@ -75,7 +75,6 @@
 }
 
 .purchase-container {
-    
     .purchase-progress {
         margin-left: 16px !important;
         margin-right: 16px !important;
@@ -199,15 +198,15 @@
         .bottom {
             margin-bottom: 16px !important;
         }
-        .body{
+        .body {
             justify-content: space-between;
             width: 304px;
         }
-        .table-amor-data-items-header{
+        .table-amor-data-items-header {
             display: flex;
             align-items: center;
-            margin-top: 12px ;
-            margin-bottom: 6px ;
+            margin-top: 12px;
+            margin-bottom: 6px;
             .p-header {
                 font-size: $font-size14;
                 font-weight: 700 !important;
@@ -219,7 +218,7 @@
                 color: $color-gray-dark;
                 margin-right: 74px;
             }
-            .p-date{
+            .p-date {
                 margin-right: 107px;
             }
             .p-balance {
@@ -233,73 +232,31 @@
             align-items: center;
             justify-content: space-between;
             width: 304px;
-           margin-top: 8px;
-           margin-bottom: 8px;
-            .p-data-text{
+            margin-top: 8px;
+            margin-bottom: 8px;
+            .p-data-text {
                 font-size: $font-size14;
                 font-weight: 500;
                 color: $color-gray-dark;
             }
-            .p-date-text{
+            .p-date-text {
                 font-size: $font-size14;
                 font-weight: 500;
                 color: $color-gray-dark;
                 margin-left: -7px;
             }
-            .p-balance-text{
+            .p-balance-text {
                 font-size: $font-size14;
                 font-weight: $font-semibold;
                 color: #6c6c6c;
             }
-            
         }
     }
 }
-
-//-------------- Driver Details Single PDF
-.driver-details-single-pdf {
-    width: 303px;
-    height: 343px;
-    position: relative;
-  
-    .ng2-pdf-viewer-container {
-      overflow: hidden !important;
-      background-color: transparent !important;
-      width: 303px !important;
-      height: 343px !important;
-      border-radius: 3px !important;
-  
-      .canvasWrapper,
-      .pdfViewer,
-      .pdfViewer .page,
-      canvas {
-        width: 303px !important;
-        height: 343px !important;
-        margin: 0 !important;
-      }
+.details-header-wrapper .details-header-wrapper-switcher .name-icon {
+    input {
+        margin-left: 12px;
+        position: relative;
+        left: 0 !important;
     }
-  }
-  //-------------- Driver Details Multiple Pdf
-  .driver-details-multiple-pdf {
-    width: 303px;
-    height: 340px;
-    position: relative;
-  
-    .ng2-pdf-viewer-container {
-      overflow: hidden !important;
-      background-color: transparent !important;
-      width: 303px !important;
-      height: 340px !important;
-      border-radius: 3px !important;
-  
-      .canvasWrapper,
-      .pdfViewer,
-      .pdfViewer .page,
-      canvas {
-        width: 303px !important;
-        height: 340px !important;
-        margin: 0 !important;
-      }
-    }
-  }
-  
+}

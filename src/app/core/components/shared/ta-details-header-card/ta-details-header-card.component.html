@@ -1,24 +1,27 @@
 <div class="details-header-wrapper">
-<div class="details-header-wrapper-switcher">
-    <p class="details-header-wrapper-switcher-name">{{cardDetailsName}}</p>
-    <div class="arrows">
-        <svg-icon src="assets/svg/common/arrow-left.svg">
-        </svg-icon>
-        <svg-icon class="arrow-right" src="assets/svg/common/arrow-right.svg"></svg-icon>
-    </div>
-</div>
-<div class="details-header-wrapper-container">
-    <div class="details-header-wrapper">
-        <ng-content></ng-content>
-    </div>
-    
-   
-    <div class="border-line"></div>
-    <div class="details-header-wrapper-data">
-        <div class="details-header-wrapper-data-item bottom">
-            <svg-icon src="assets/svg/common/date.svg"></svg-icon>
-            <p class="vin-text">{{cardDetailsDate}}</p>
+    <div class="details-header-wrapper-switcher">
+        <div class="name-icon">
+            <svg-icon class="header-svg" *ngIf="hasSvgHeader && cardDetailsName.length<0" src="{{hasSvgHeader}}"></svg-icon>
+             <input type="text" [ngModel]="cardDetailsName">
+        </div>
+        <div class="arrows">
+            <svg-icon class="arrow-left" src="assets/svg/common/arrow-left.svg">
+            </svg-icon>
+            <svg-icon class="arrow-right" src="assets/svg/common/arrow-right.svg"></svg-icon>
         </div>
     </div>
-</div>
+    <div class="details-header-wrapper-container">
+        <div class="details-header-wrapper">
+            <ng-content></ng-content>
+        </div>
+
+
+        <div class="border-line"></div>
+        <div class="details-header-wrapper-data">
+            <div class="details-header-wrapper-data-item bottom">
+                <svg-icon src="assets/svg/common/date.svg"></svg-icon>
+                <p class="vin-text">{{cardDetailsDate}}</p>
+            </div>
+        </div>
+    </div>
 </div>

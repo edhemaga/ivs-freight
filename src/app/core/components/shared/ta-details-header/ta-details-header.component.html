@@ -1,5 +1,5 @@
     <div class="header-wrapper">
-        <div class="toolbar-general-cmp" *ngIf="['Truck Details'].includes(headerText)">
+        <div class="toolbar-general-cmp" *ngIf="['Truck Details','Driver Details'].includes(headerText)">
             <div class="icon-text-wrapper">
                 <svg-icon routerLink="/truck" src="assets/svg/common/ic_arrow-left.svg">
                 </svg-icon>
@@ -11,7 +11,7 @@
         </div>
         </div>
 
-        <div class="header-toolbar" *ngIf="!['Truck Details'].includes(headerText)">
+        <div class="header-toolbar" *ngIf="!['Truck Details','Driver Details'].includes(headerText)">
             <p class="header-name">{{headerText}}</p>
             <div class="header-plus-button">
                 <div class="border-line-left"></div>

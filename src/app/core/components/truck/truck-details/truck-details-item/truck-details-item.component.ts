@@ -313,7 +313,6 @@ export class TruckDetailsItemComponent implements OnInit {
   }
 
   public showHideValue(value:string){
-    
     this.isAccountVisible= !this.isAccountVisible;
     if(!this.isAccountVisible){
       this.accountText=this.hiddenPassword(value,4);

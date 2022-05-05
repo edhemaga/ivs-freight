@@ -2,13 +2,6 @@ table {
   width: 100%;
   thead {
     display: flex;
-
-    .not-pined-border{
-      width: 3px;
-      height: 100%;
-      border: 1px solid transparent;
-    }
-
     .tr {
       display: flex;
       th {

@@ -13,6 +13,29 @@ import moment from 'moment';
 import { Subject } from 'rxjs';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { driver_details_animation } from '../driver-details.animation';
+import {
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexFill,
+  ApexTitleSubtitle,
+  ApexTooltip,
+  ApexXAxis,
+  ApexYAxis,
+  ChartComponent
+} from 'ng-apexcharts';
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis | ApexYAxis[];
+  title: ApexTitleSubtitle;
+  labels: string[];
+  stroke: any;
+  dataLabels: any;
+  fill: ApexFill;
+  tooltip: ApexTooltip;
+};
 
 @Component({
   selector: 'app-driver-details-item',
@@ -26,15 +49,108 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
   @Input() data: any = null;
 
+  @ViewChild("chart") chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
+
   public cdlNote: FormControl = new FormControl();;
   public mvrNote: FormControl = new FormControl();;
-
+  public toggler: boolean = false;
   private destroy$: Subject<void> = new Subject<void>();
+  public selectedValuePayroll: string = "";
+  public copied: boolean = false;
+  public copiedBankRouting: boolean = false;
+  public copiedBankAccount: boolean = false;
 
-  constructor(private customModalService: CustomModalService) {}
+  isAccountVisible: boolean = true;
+  accountText: string = null;
+  constructor(private customModalService: CustomModalService) {
+
+    this.chartOptions = {
+
+      series: [
+        {
+          name: "Miles per Gallon",
+          type: "column",
+          data: [5, 10, 15, 20, 25, 30, 35, 45, 60],
+          color: "#ffcc80",
+
+        },
+        {
+          name: "Cost per Gallon",
+          type: "line",
+          data: [23, 2.000, 3.000, 5.000, 6.000, 7.000, 11.000, 18.000, 23.000],
+          color: "#6d82c7"
+        }
+      ],
+      chart: {
+        height: 180,
+        width: 408,
+        type: "line",
+        zoom: {
+          enabled: false
+        }
+      },
+      stroke: {
+        width: [0, 4]
+      },
+      title: {
+        text: ""
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      xaxis: {
+        categories: ["NOV", "2021", "MAR", "MAY", "JUL", "SEP", "NOV", "2021", "MAR", "MAY", "JUL", "SEP"],
+        labels: {
+
+          show: true,
+          style: {
+            colors: '#AAAAAA',
+            fontSize: '11px',
+            fontWeight: '700'
+          }
+        }
+
+      },
+      yaxis: [
+        {
+          tickAmount: 5,
+          labels: {
+            show: true,
+            style: {
+              colors: '#AAAAAA',
+              fontSize: '11px',
+              fontWeight: '700'
+            },
+
+          }
+
+        },
+
+        {
+          opposite: true,
+          tickAmount: 5,
+          labels: {
+            show: true,
+            style: {
+              colors: '#AAAAAA',
+              fontSize: '11px',
+              fontWeight: '700'
+            },
+            formatter: function (val) {
+              val.toFixed(2);
+              return val.toFixed(0) + "K"
+            }
+          }
+        }
+      ],
+
+    };
+  }
 
   ngOnInit() {
     console.log(this.data);
+    this.selectedValuePayroll = "1Y";
   }
 
   public onModalAction() {
@@ -128,6 +244,74 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     return item.id;
   }
 
+  public toggleResizePage(value: boolean) {
+    this.toggler = value;
+    console.log(this.toggler);
+  }
+  public changeValuePayroll(val: string) {
+    this.selectedValuePayroll = val;
+    console.log(val + " Payroll");
+  }
+  public onFileAction(action: string) {
+    switch (action) {
+      case 'download': {
+        this.downloadFile('https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf', 'truckassist0');
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+  public downloadFile(url: string, filename: string) {
+    fetch(url).then((t) => {
+      return t.blob().then((b) => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.setAttribute('download', filename);
+        a.click();
+      });
+    });
+  }
+  /* To copy any Text */
+  public copyText(val: any) {
+    this.copied = !this.copied;
+    this.copiedBankAccount = !this.copiedBankAccount;
+    this.copiedBankRouting = !this.copiedBankRouting;
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = val;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+
+  }
+
+  public hiddenPassword(value: any, numberOfCharacterToHide: number): string {
+    const lastFourCharaters = value.substring(
+      value.length - numberOfCharacterToHide
+    );
+    let hiddenCharacter = '';
+
+    for (let i = 0; i < numberOfCharacterToHide; i++) {
+      hiddenCharacter += "*";
+    }
+    return hiddenCharacter + lastFourCharaters;
+  }
+
+  public showHideValue(value: string) {
+    this.isAccountVisible = !this.isAccountVisible;
+    if (!this.isAccountVisible) {
+      this.accountText = this.hiddenPassword(value, 4);
+      return;
+    }
+    this.accountText = value;
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

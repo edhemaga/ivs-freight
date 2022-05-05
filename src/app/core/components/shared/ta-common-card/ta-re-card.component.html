@@ -1,13 +1,13 @@
 
 
 <div class="card-container-cmp" >
-    <div class="card-header-cmp" [ngClass]="{'card-flex':!isCardOpen}">
+    <div (click)="toggleCards()" class="card-header-cmp" [ngClass]="{'card-flex':!isCardOpen}">
         <div class="text-icon-common">
             <span *ngIf="hasSvg"  [ngClass]="{'card-close-icon':!isCardOpen}" class="icon-common">
                 <svg-icon  *ngIf="hasSvg" [src]="hasSvg"></svg-icon>
             </span>
             <p class="card-name-cmp" [ngClass]="{'has-svgIcon':hasSvg,'card-close-title':!isCardOpen}"
-                (click)="toggleCards()">{{cardNameCommon}}</p>
+                >{{cardNameCommon}}</p>
         </div>
         <svg-icon class="icon-dots" [ngClass]="{'card-close-dots-margin':!isCardOpen}" src="assets/svg/common/ic_dots.svg">
         </svg-icon>
@@ -18,7 +18,7 @@
     <div [@showHideCardBody]="isCardOpen ? 'true' : 'false'" class="card-footer-cmp">
         <div  class="icon-counter">
             <svg-icon *ngIf="!resPage" src="assets/svg/truckassist-table/note/Note-hover.svg"></svg-icon>
-            <svg-icon *ngIf="!resPage" class="attachment-icon" src="assets/svg/common/ic_attachment.svg"></svg-icon>
+            <svg-icon *ngIf="!resPage && cardDocumentCounter" class="attachment-icon" src="assets/svg/common/ic_attachment.svg"></svg-icon>
             <p *ngIf="!resPage" class="card-document-counter">{{cardDocumentCounter}}</p>
         </div>
         <div (click)="toggleResizePage($event.value)" [ngClass]="{'rotate':resPage}"  class="resize-icon">

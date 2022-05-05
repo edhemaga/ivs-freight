@@ -49,7 +49,7 @@ $transition: all 0.3s ease-in-out;
   row-gap: 12px;
 }
 // Common Class
-.truck-component {
+.details-component {
   display: grid;
   row-gap: 12px;
 
@@ -86,40 +86,13 @@ $transition: all 0.3s ease-in-out;
       }
     }
 
-    // .truck-card-bottom {
-    //   display: flex;
-    //   flex-direction: column;
-
-    //   // State, Class, Issued
-    //   .truck-row-1 {
-    //     display: grid;
-    //     grid-template-columns: 51px 73px 112px;
-    //   }
-
-    //   // Restrictions & Endorsments
-    //   .truck-row-2 {
-    //     display: grid;
-    //     grid-template-columns: 124px 112px;
-    //     margin: 8px 0px;
-    //   }
-
-
-    //   // PDF - small
-    //   .truck-row-4 {
-    //     height: 150px;
-    //     width: 100%;
-    //   }
 
     //   // Note
       .details-page-row-5 {
         margin-top: 8px;
       }
 
-    //   // Drug Test
-    //   .truck-row-6 {
-    //     display: grid;
-    //     grid-template-columns: 164px 72px;
-    //   }
+   
 
     //   // PDF - big
       .details-page-row-7 {
@@ -127,7 +100,6 @@ $transition: all 0.3s ease-in-out;
         width: 100%;
         margin: 22px 0px;
       }
-    // }
 
    
   
@@ -150,7 +122,7 @@ $transition: all 0.3s ease-in-out;
     }
   }
 
-  .truck-cards {
+  .details-cards {
     border-radius: 3px;
     overflow: hidden;
     padding: 8px 12px;
@@ -160,3 +132,51 @@ $transition: all 0.3s ease-in-out;
   
 }
 
+.assignTo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+ margin-top: 12px;
+ .first {
+  margin-right: 12px;
+}
+  .assignTo-item {
+    background-color: $color-white-dark;
+    border-radius: 3px;
+    padding: 8px 6px;
+    width: 202px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    svg {
+      fill: #aaaaaa;
+      object-fit: fill;
+    }
+    
+    .assignTo-vehicle {
+      margin-right: 6px;
+      height: 18px;
+      position: relative;
+      bottom: 4px;
+    }
+
+    .assignTo-value {
+      font-size: $font-size18;
+      font-weight: 500;
+      color: $color-gray-dark;
+
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+    }
+    p {
+      margin: 0 !important;
+    }
+  }
+}

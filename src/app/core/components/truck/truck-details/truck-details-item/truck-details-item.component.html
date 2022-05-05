@@ -1,4 +1,4 @@
-<div class="truck-component">
+<div class="details-component">
     <div [ngSwitch]="data.template">
         <!---------------------------- GENERAL TEMPLATE ----------------------------->
         <div *ngSwitchCase="'general'">
@@ -35,7 +35,7 @@
                 </ng-container>
             </app-ta-details-header-card>
 
-            <div class="truck-cards">
+            <div class="details-cards">
                 <!--------Assinged to--------->
                 <app-ta-custom-card [cardName]="'Assigned To'" [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
                     [isCardOpen]="true">
@@ -353,6 +353,7 @@
                         [startDate]="formatDate('2013-11-11T05:00:00Z')" [expiresSettings]="'details'">
                     </app-truckassist-progress-expiration>
                 </div>
+                
             </app-ta-re-card>
         </div>
         <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->

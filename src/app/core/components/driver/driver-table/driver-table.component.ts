@@ -152,7 +152,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
     const td = this.tableData.find((t) => t.field === this.selectedTab);
 
-   /*  this.setDriverData(td); */
+    this.setDriverData(td);
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
@@ -185,14 +185,9 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
   getDumyData(numberOfCopy: number) {
     this.drivers = this.driversQuery.getAll();
-
-    console.log('drivers')
-    console.log(this.drivers)
-    
-    /* for (let i = 0; i < numberOfCopy; i++) {
+    for (let i = 0; i < numberOfCopy; i++) {
       this.drivers.push(this.drivers[i]);
-    } */
-
+    }
     return this.drivers;
   }
 

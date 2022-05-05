@@ -76,7 +76,7 @@ export class TruckassistTableBodyComponent
     // Rezaize
     this.tableService.currentColumnWidth
       .pipe(takeUntil(this.destroy$))
-      .subscribe((response: any) => { 
+      .subscribe((response: any) => {
         if (response?.event?.width) {
           this.columns = this.columns.map((c) => {
             if (c.title === response.columns[response.event.index].title) {
@@ -162,6 +162,7 @@ export class TruckassistTableBodyComponent
     setTimeout(() => {
       this.checkForScroll();
     }, 100);
+
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -175,8 +176,6 @@ export class TruckassistTableBodyComponent
     const div = document.getElementById('scroll-container');
 
     this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-
-    this.tableService.sendShowingScroll(this.showScrollSectionBorder);
 
     this.changeDetectorRef.detectChanges();
   }

@@ -9,11 +9,10 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   
   @Input() cardDetailsName:string='';
   @Input() cardDetailsDate:string='';
+  @Input() hasSvgHeader:string='';
   constructor() { }
 
   ngOnInit(): void {
-    this.cardDetailsName='Unit 12345';
-    this.cardDetailsDate='08/03/20';
   }
 
 }

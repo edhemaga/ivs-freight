@@ -27,10 +27,11 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-      &.rotate {
-        transform: rotate(180deg);
-        transition: all 0.3s ease-in-out;
-      }
+      
+    }
+    .rotate {
+      transform: rotate(180deg);
+      transition: all 0.3s ease-in-out;
     }
   }
 

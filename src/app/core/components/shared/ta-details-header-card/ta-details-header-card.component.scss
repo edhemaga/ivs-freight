@@ -29,6 +29,51 @@ $border-radius: 3px;
         align-items: center;
         height: 44px;
         width: 440px;
+        .name-icon {
+            display: flex;
+            align-items: center;
+            width: 366px;
+            .header-svg {
+                position: relative;
+                bottom: 4px;
+                margin: 0;
+                padding: 0;
+                width: 18px;
+                height: 18px;
+                z-index: 10;
+                cursor: pointer;
+                left: 70%;
+            }
+
+            input[type="text"] {
+                border: none;
+                outline: none;
+                background: transparent;
+                font-size: $font-size20;
+                font-weight: $font-bold;
+                color: $color-gray-dark;
+                position: relative;
+                left: -6px;
+                &:focus {
+                    border: none !important;
+                    background-color: #6c6c6c !important;
+                    color: #ffffff !important;
+                    outline: none !important;
+                    border-radius: 2px ;
+                    padding: 2px 7px;
+                    width: 366px;
+                }
+                &:hover {
+                    border: none;
+                    outline: none;
+                    background-color: #f3f3f3;
+                    border-radius: 2px;
+                    color: #3c3c3c;
+                    padding: 2px 7px;
+                    width: 366px;
+                }
+            }
+        }
     }
     .details-header-wrapper-switcher-name {
         font-size: $font-size20;
@@ -39,7 +84,6 @@ $border-radius: 3px;
         margin-top: 10px;
         margin-bottom: 10px;
     }
-
 }
 // DRIVER GENERAL PERSONAL DATA
 .details-header-wrapper-container {
@@ -48,8 +92,7 @@ $border-radius: 3px;
     // align-items: flex-start;
     // flex-direction: column;
     // height: 182px;
-    
-    
+
     .details-header-wrapper-data {
         display: flex;
         justify-content: flex-start;
@@ -66,7 +109,7 @@ $border-radius: 3px;
                 margin-left: 6px;
                 font-size: $font-size14;
                 font-weight: 400;
-                P{
+                P {
                     color: #aaaaaa;
                 }
             }
@@ -79,8 +122,9 @@ $border-radius: 3px;
             margin-top: 12px;
             margin-bottom: 12px;
             height: 18px;
-            p{
-                font-size: $font-size14 ;
+            align-items: end;
+            p {
+                font-size: $font-size14;
                 font-weight: 400;
                 color: #6c6c6c;
             }
@@ -103,15 +147,49 @@ $border-radius: 3px;
 }
 
 .arrows {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
     .arrow-right {
         margin-bottom: 13px;
         margin-top: 13px;
         margin-right: 13px;
         margin-left: 10px;
+
+        &:hover{
+            background-color: #f3f3f3;
+            height: 28px;
+            width: 28px;
+            border-radius: 2px;
+            text-align: center;
+            margin-top: 8px !important;
+            margin-bottom: 8px !important;
+            margin-left: 5px !important;
+            margin-right: 8px !important;
+            cursor: pointer;
+            svg{
+              vertical-align: bottom !important;
+            }
+        }
     }
-    svg {
-        cursor: pointer;
+    .arrow-left{
+        &:hover{
+            background-color: #f3f3f3;
+            height: 28px;
+            width: 28px;
+            border-radius: 2px;
+            text-align: center;
+            margin-top: 8px !important;
+            margin-left: 8px !important;
+            margin-right: -5.5px;
+            margin-bottom: 8px !important;
+            cursor: pointer;
+            svg{
+              vertical-align: bottom !important;
+            }
+        }
     }
+    
 }
 .border-line {
     margin: 0;

@@ -46,7 +46,6 @@ export class TruckassistTableHeadComponent
   pinedColumns: any[] = [];
   notPinedColumns: any[] = [];
   actionColumns: any[] = [];
-  showBorder: boolean = false;
 
   constructor(
     private tableService: TruckassistTableService,
@@ -99,13 +98,6 @@ export class TruckassistTableHeadComponent
 
           this.setVisibleColumns();
         }
-      });
-
-    // Showing Scroll
-    this.tableService.currentShowingScroll
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((response: boolean) => {
-        this.showBorder = response;
       });
   }
 
