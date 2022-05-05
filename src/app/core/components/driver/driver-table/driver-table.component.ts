@@ -154,10 +154,13 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
     const td = this.tableData.find((t) => t.field === this.selectedTab);
 
-    console.log('Table Data Befor Map');
-    console.log(td)
-
     this.setDriverData(td);
+  }
+
+  getDumyData() {
+    this.drivers = this.driversQuery.getAll()[0];
+
+    return this.drivers?.length ? this.drivers : [];
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
@@ -177,35 +180,38 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   }
 
   setDriverData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data: DriversState) => {
-      return {
-        ...data,
-        isSelected: false,
-        textAddress: data.address.address ? data.address.address : '',
-        textDOB: data.dateOfBirth ? this.datepipe.transform(data.dateOfBirth, 'dd/MM/yy') : '',
-        textHired: data.hired ? this.datepipe.transform(data.hired, 'dd/MM/yy') : '',
-        textCDL: data.cdlNumber ? data.cdlNumber : '',
-        textState: data.address.state ? data.address.state : '',
-        textBank: data.bank ? data.bank : '',
-        textAccount: data.account ? data.account : '',
-        textRouting: data.routing ? data.routing : '',
-        tableCDLData: data.cdlExpiration ? data.cdlExpiration : {},
-        tableMedicalData: data.medicalExpiration ? data.medicalExpiration : {},
-        tableMvrData: data.mvrIssueDate ? data.mvrIssueDate : {},
-      };
-    });
+    if (td.data.length) {
+      this.viewData = td.data;
 
-    console.log('viewData');
-    console.log(this.viewData);
-  }
+      this.viewData = this.viewData.map((data: DriversState) => {
+        return {
+          ...data,
+          isSelected: false,
+          textAddress: data.address.address ? data.address.address : '',
+          textDOB: data.dateOfBirth
+            ? this.datepipe.transform(data.dateOfBirth, 'dd/MM/yy')
+            : '',
+          textHired: data.hired
+            ? this.datepipe.transform(data.hired, 'dd/MM/yy')
+            : '',
+          textCDL: data.cdlNumber ? data.cdlNumber : '',
+          textState: data.address.state ? data.address.state : '',
+          textBank: data.bank ? data.bank : '',
+          textAccount: data.account ? data.account : '',
+          textRouting: data.routing ? data.routing : '',
+          tableCDLData: data.cdlExpiration ? data.cdlExpiration : {},
+          tableMedicalData: data.medicalExpiration
+            ? data.medicalExpiration
+            : {},
+          tableMvrData: data.mvrIssueDate ? data.mvrIssueDate : {},
+        };
+      });
 
-  getDumyData() {
-    this.drivers = this.driversQuery.getAll()[0];
-
-    return this.drivers;
+      // console.log('viewData');
+      // console.log(this.viewData);
+    }
   }
 
   onToolBarAction(event: any) {
@@ -220,13 +226,16 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
+    // console.log('onTableBodyActions');
+    // console.log(event);
+
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
         { size: 'small' },
         {
           ...event,
-          disableButton: true
+          disableButton: true,
         }
       );
     }
