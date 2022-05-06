@@ -12,12 +12,42 @@ export class TaLikeDislikeComponent {
   @Input() taDislikes: number = 0;
   @Input() customClass: string = null;
 
+  public isLiked: boolean = false;
+  public isDisliked: boolean = false;
+
   constructor(private taLikeDislikeService: TaLikeDislikeService) {}
 
   public onAction(type: string, event: any) {
-    console.log(type)
     event.preventDefault();
     event.stopPropagation();
-    this.taLikeDislikeService.userLikeDislikeEvent(type);
+    if (type === 'like') {
+      this.isLiked = !this.isLiked;
+      if (this.isDisliked) {
+        this.taDislikes--;
+        this.isDisliked = false;
+      }
+
+      if (this.isLiked) {
+        this.taLikes++;
+      } else {
+        this.taLikes--;
+      }
+    } else {
+      this.isDisliked = !this.isDisliked;
+      if (this.isLiked) {
+        this.taLikes--;
+        this.isLiked = false;
+      }
+      if (this.isDisliked) {
+        this.taDislikes++;
+      } else {
+        this.taDislikes--;
+      }
+    }
+    this.taLikeDislikeService.userLikeDislikeEvent({
+      action: type,
+      likes: this.taLikes,
+      dislikes: this.taDislikes,
+    });
   }
 }

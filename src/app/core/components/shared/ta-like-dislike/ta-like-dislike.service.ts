@@ -5,14 +5,23 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class TaLikeDislikeService {
-  private likeDislikeSubject: BehaviorSubject<string> =
-    new BehaviorSubject<string>(null);
+  private likeDislikeSubject: BehaviorSubject<{
+    action: string;
+    likes: number;
+    dislikes: number;
+  }> = new BehaviorSubject<{ action: string; likes: number; dislikes: number }>(
+    null
+  );
 
   public get likeDislikeSubject$() {
     return this.likeDislikeSubject.asObservable();
   }
 
-  public userLikeDislikeEvent(type: string) {
-    this.likeDislikeSubject.next(type);
+  public userLikeDislikeEvent(data: {
+    action: string;
+    likes: number;
+    dislikes: number;
+  }) {
+    this.likeDislikeSubject.next(data);
   }
 }
