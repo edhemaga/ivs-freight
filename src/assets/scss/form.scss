@@ -336,7 +336,7 @@
   .broker-contacts {
     overflow: hidden;
     overflow-x: scroll;
-
+    margin-top: 10px;
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {
@@ -360,7 +360,7 @@
 
 
     .broker-contacts-label {
-      padding: 0 6px;
+      padding: 0 5px;
       display: flex;
       align-items: center;
       line-height: 15px;
@@ -407,6 +407,34 @@
       margin-bottom: 2px;
       background-color: #f7f7f7;
       padding-right: 6px;
+      position: relative;
+
+      .brokerContacts-delete {
+        width: 18px;
+        height: 18px;
+        position: absolute;
+        bottom: 7.5px;
+        right: 4.5px;
+        display: none;
+        cursor: pointer;
+        svg {
+          path {
+            fill: #aaaaaa;
+          }
+          &:hover {
+            transition: all 0.3s ease-in-out;
+
+            path {
+              fill: #ef5350;
+            }
+          }
+        }
+      }
+
+      &:hover .brokerContacts-delete {
+        display: inline-block;
+        transition: all 0.3s ease-in-out;
+      }
     }
   }
 

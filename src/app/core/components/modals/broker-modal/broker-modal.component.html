@@ -10,7 +10,11 @@
     (switchClicked)="tabChange($event)"
     [tabs]="tabs"
   ></app-tab-switcher>
-  <form [formGroup]="brokerForm" class="form-container">
+  <form
+    [formGroup]="brokerForm"
+    class="form-container"
+    [ngClass]="{ 'tab-2': selectedTab !== 1 }"
+  >
     <div
       class="{{ editData ? 'animation-three-tabs' : 'animation-two-tabs' }}"
       [@animationTabsModal]="animationObject"
@@ -331,6 +335,7 @@
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="false"
           [isCardOpen]="brokerContacts.length"
+          [hasScrollBody]="brokerContacts.length > 10"
           (onActionEvent)="addBrokerContacts($event)"
         >
           <div
@@ -366,7 +371,7 @@
                     name: 'Input Dropdown',
                     type: 'text',
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-banks'
+                    dropdownWidthClass: 'w-col-broker-department'
                   }"
                   [options]="labelsDepartments"
                   (selectedItem)="onSelectContactDepartment($event)"
@@ -394,13 +399,52 @@
                     type: 'text'
                   }"
                 ></app-ta-input>
+                <svg-icon
+                  class="brokerContacts-delete"
+                  src="assets/svg/common/ic_trash.svg"
+                  (click)="removeBrokerContacts(ind)"
+                  [appTooltip]="'Delete'"
+                  [position]="'top-middle'"
+                  [tooltipBackground]="'#EF5350'"
+                  [tooltipColor]="'#FFFFFF'"
+                  [zIndex]="900"
+                  [borderRadius]="'2px'"
+                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+                  [fontWeight]="'bold'"
+                  [fontSize]="'11px'"
+                  [customPosition]="-11"
+                ></svg-icon>
               </div>
             </div>
           </div>
         </app-ta-custom-card>
       </div>
       <!-------------------------------- Review Tab -------------------------------->
-      <div class="m-tab" *ngIf="selectedTab === 3 && editData"></div>
+      <div class="m-tab" *ngIf="selectedTab === 3 && editData">
+        <app-ta-custom-card
+          [hasCounter]="reviews.length ? reviews.length : '0'"
+          [cardName]="'Review'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasArrow]="false"
+          [hasLikeDislike]="true"
+          [isCardOpen]="true"
+          [hasScrollBody]="reviews.length > 6"
+          (onActionEvent)="addNewReview($event)"
+        >
+          <div class="no-review-broker" *ngIf="!reviews.length">
+            <svg-icon
+              class="no-review-svg"
+              src="assets/svg/common/ic_no_review.svg"
+            ></svg-icon>
+          </div>
+          <app-ta-user-review
+            *ngIf="reviews.length"
+            [reviewData]="reviews"
+            [isNewReview]="reviews[0].isNewReview"
+            (changeReviewsEvent)="changeReviewsEvent($event)"
+          ></app-ta-user-review>
+        </app-ta-custom-card>
+      </div>
     </div>
   </form>
 </app-ta-modal>

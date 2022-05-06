@@ -1,0 +1,259 @@
+.ta-user-review {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  border-radius: 2px;
+  font-size: 12px;
+  color: #6c6c6c;
+
+  p {
+    margin: 0;
+  }
+
+  &:hover {
+    background-color: #f7f7f7;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .ta-review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+
+    .ta-user-information {
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      .ta-user-image {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        -o-object-fit: fill;
+        object-fit: fill;
+        margin-right: 6px;
+        user-select: none;
+      }
+
+      .ta-user-reaction {
+        position: absolute;
+        left: 19px;
+        top: 16px;
+        svg {
+          width: 15px;
+          height: 15px;
+          path {
+            fill: #e57373;
+          }
+        }
+
+        &.like {
+          svg {
+            path {
+              fill: #4db6a2;
+            }
+          }
+        }
+      }
+
+      .ta-user-data {
+        display: flex;
+        flex-direction: column;
+
+        .ta-user-fullname {
+          font-weight: 700;
+
+          &::-moz-selection {
+            background-color: rgb(108, 108, 108, 0.2);
+            color: #6c6c6c;
+          }
+
+          &::selection {
+            background-color: rgb(108, 108, 108, 0.2);
+            color: #6c6c6c;
+          }
+        }
+
+        .ta-user-datetime {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 10px;
+          font-weight: 600;
+          color: #919191;
+
+          .ta-user-date,
+          .ta-user-time {
+            &::-moz-selection {
+              background-color: rgba(108, 108, 108, 0.2);
+              color: #919191;
+            }
+
+            &::selection {
+              background-color: rgba(108, 108, 108, 0.2);
+              color: #919191;
+            }
+          }
+
+          .ta-user-time {
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+
+    .ta-user-actions {
+      .action-edit,
+      .action-delete {
+        width: 22px;
+        height: 22px;
+        svg {
+          width: 14px;
+          height: 14px;
+          path {
+            fill: #b7b7b7;
+          }
+        }
+        &:hover {
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+
+      .action-edit {
+        margin-right: 6px;
+        &:hover {
+          svg {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+
+      .action-delete {
+        &:hover {
+          svg {
+            path {
+              fill: #ef5350;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .ta-review-message {
+    .message {
+      &::-moz-selection {
+        background-color: rgb(108, 108, 108, 0.2);
+        color: #6c6c6c;
+      }
+
+      &::selection {
+        background-color: rgb(108, 108, 108, 0.2);
+        color: #6c6c6c;
+      }
+    }
+    .review-textarea {
+      width: 100%;
+      font-size: 12px;
+      font-weight: 400;
+      color: #ffffff;
+      background-color: transparent;
+      padding: 0;
+      resize: none;
+      border: none;
+      box-shadow: none;
+      outline: none;
+      display: none;
+
+      scrollbar-width: none !important; /* Firefox */
+
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border: 6px solid #e5e5e5;
+        border-radius: 1px;
+      }
+      &::-webkit-scrollbar-track {
+        padding: 0;
+        position: relative;
+        right: 0;
+        top: 0;
+        background: transparent;
+      }
+
+      &::-moz-selection {
+        background-color: rgb(229, 229, 229, .2);
+        color: #6c6c6c;
+      }
+
+      &::selection {
+        background-color: rgb(229, 229, 229, .2);
+        color: #6c6c6c;
+      }
+
+      &.show {
+        display: block;
+      }
+    }
+
+    .ta-review-message-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+      left: 4px;
+
+      .action-confirm {
+        position: relative;
+        top: 1px;
+        left: 2px;
+        padding-left: 4px;
+      }
+
+      .action-confirm,
+      .action-cancel {
+        width: 22px;
+        height: 22px;
+        svg {
+          path {
+            fill: #e5e5e5;
+          }
+          #Rectangle_20157 {
+            fill: transparent;
+          }
+        }
+
+        &:hover {
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #ffffff;
+            }
+            #Rectangle_20157 {
+              fill: transparent;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // EDIT MODE
+  &.edit-review {
+    background-color: #919191;
+    color: #ffffff;
+    transition: all 0.3s ease-in-out;
+
+    .ta-user-datetime {
+      color: #e5e5e5 !important;
+    }
+  }
+}

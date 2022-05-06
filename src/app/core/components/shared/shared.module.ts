@@ -82,6 +82,9 @@ import { ContactModalComponent } from '../modals/contact-modal/contact-modal.com
 import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
 import { BrokerModalComponent } from '../modals/broker-modal/broker-modal.component';
 import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { TaLikeDislikeComponent } from './ta-like-dislike/ta-like-dislike.component';
+import { TaUserReviewComponent } from './ta-user-review/ta-user-review.component';
+import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
 
 @NgModule({
   declarations: [
@@ -115,6 +118,8 @@ import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-r
     TaLogoChangeComponent,
     TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
+    TaLikeDislikeComponent,
+    TaUserReviewComponent,
 
     // Modals Components
     TaModalComponent,
@@ -138,6 +143,7 @@ import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-r
     NFormatterPipe,
     TaSvgPipe,
     DropdownCountPipe,
+    ReviewsSortPipe,
 
     // Directive
     AutoFocusDirective,
@@ -231,6 +237,7 @@ import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-r
     DateCalendarsComponent,
     TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
+    TaUserReviewComponent,
 
     TaCheckboxComponent,
     TaInputAddressComponent,
@@ -242,6 +249,7 @@ import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-r
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
+    TaLikeDislikeComponent,
 
     // Modals Components
     TaModalComponent,
@@ -267,6 +275,7 @@ import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-r
     NFormatterPipe,
     TaSvgPipe,
     DropdownCountPipe,
+    ReviewsSortPipe,
 
     // Directive
     AutoFocusDirective,

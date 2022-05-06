@@ -138,16 +138,16 @@
         }
 
         //------------------------ Trucks, Trailers, Colors Template  ------------------------
-        &.svg-text-flex {
+        &.svg-text-template {
           display: flex;
           align-items: center;
 
-          .svgtextflex-logo {
+          .svgtext-template-logo {
             height: auto;
             margin-right: 6.5px;
           }
 
-          .svgtextflex-text {
+          .svgtext-template-text {
             position: relative;
 
             &.truck-text {
@@ -160,6 +160,16 @@
             width: 18px;
           }
         }
+
+         //------------------------ Details Template ------------------------
+         &.details-template {
+           display: flex;
+           align-items: center;
+
+           .details-template-logo {
+             margin-left: 6px;
+           }
+         }
 
         //------------------------ Bank Template ------------------------
         .banks-logo {
@@ -249,6 +259,14 @@
 
       &.w-col-broker-payterm {
         width: 194px;
+      }
+
+      &.w-col-broker-department {
+        width: 120px;
+      }
+
+      &.w-col-details-template {
+        width: 366px;
       }
 
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------

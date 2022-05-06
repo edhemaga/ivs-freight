@@ -275,6 +275,8 @@ export class CustomerTableComponent implements OnInit {
         {
           ...event,
           type: 'edit',
+          dnuButton: true,
+          bfbButton: true
         }
       );
     } else {

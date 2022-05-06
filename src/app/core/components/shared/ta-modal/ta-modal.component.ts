@@ -20,12 +20,14 @@ export class TaModalComponent {
   @Input() customClass: string;
   @Input() isModalValid: boolean;
 
+  @Input() isDeactivated: boolean = false;
+  @Input() isDNU: boolean = false;
+  @Input() isBFB: boolean = false;
+
   @Output() modalActionTypeEmitter: EventEmitter<string> =
   new EventEmitter<string>(null);
 
   private timeout = null;
-
-  public isDeactivated: boolean = false;
 
   constructor(private ngbActiveModal: NgbActiveModal) {}
 
@@ -50,6 +52,16 @@ export class TaModalComponent {
       }
       case 'deactivate': {
         this.isDeactivated = !this.isDeactivated;
+        this.modalActionTypeEmitter.emit(action);
+        break;
+      }
+      case 'dnu': {
+        this.isDNU = !this.isDNU;
+        this.modalActionTypeEmitter.emit(action);
+        break;
+      }
+      case 'bfb': {
+        this.isBFB = !this.isBFB;
         this.modalActionTypeEmitter.emit(action);
         break;
       }
