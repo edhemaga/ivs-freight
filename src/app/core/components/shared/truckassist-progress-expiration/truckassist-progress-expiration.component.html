@@ -1,30 +1,18 @@
 <div class="table-progress-cotnainer">
   <div class="table-progress">
-    <div
-      [class]="'bg-' + progressbarColor"
-      [ngClass]="{ 'progres-default': !progressbarColor }"
-      [ngStyle]="{ width: calculatedProgress + '%' }"
-      class="table-progress-bar"
-    ></div>
+    <div [class]="'bg-' + progressbarColor" [ngClass]="{ 'progres-default': !progressbarColor }"
+      [ngStyle]="{ width: calculatedProgress + '%' }" class="table-progress-bar"></div>
   </div>
 
   <div class="table-progress-panel">
     <!-- EXPIRES IN -->
-    <span
-      *ngIf="!negative && expire >= 1 && expiresSettings !== 'details'"
-      [ngClass]="{ 'd-none': expire !== expire }"
-      class="progress-text"
-    >
-      <span
-        *ngIf="expiresSettings === 'settings-insurance-policy' || expiresSettings === 'settings-parking'"
-        class="expires-settings"
-        >{{ customText }}</span
-      >
-      <span
-        *ngIf="expiresSettings !== 'settings-parking'"
-        [ngClass]="{ 'expires-settings-bold': expiresSettings }"
-        >in {{ progresDay }} {{ progresDay > 1 ? "days" : "day" }}</span
-      >
+    <span *ngIf="!negative && expire >= 1 && expiresSettings !== 'details'" [ngClass]="{ 'd-none': expire !== expire }"
+      class="progress-text">
+      <span *ngIf="expiresSettings === 'settings-insurance-policy' || expiresSettings === 'settings-parking'"
+        class="expires-settings">{{ customText }}</span>
+      <span *ngIf="expiresSettings !== 'settings-parking'"
+        [ngClass]="{ 'expires-settings-bold': expiresSettings }">Exp.in {{ progresDay }} {{ progresDay > 1 ? "days" :
+        "day" }}</span>
     </span>
 
     <!-- EXPIRED -->
@@ -38,31 +26,22 @@
     </span>
 
     <!-- DAYS -->
-    <span
-      *ngIf="!negative && expiresSettings === 'details'"
-      class="progress-days"
-    >
-      <span>{{ days }} days</span>
+    <span *ngIf="!negative && expiresSettings === 'details'" class="progress-days">
+      <span>Exp. in  <span class="progress-days-bold">{{ days }} days</span></span>
     </span>
 
     <!-- DAYS TO GO -->
-    <span
-      *ngIf="!negative && expiresSettings === 'settings-parking'"
-      class="progress-days-to-go"
-    >
+    <span *ngIf="!negative && expiresSettings === 'settings-parking'" class="progress-days-to-go">
       <span>{{ days }} days to go</span>
     </span>
 
     <!-- EXPIRED DATE - MM-DD-YYYY -->
-    <span
-      *ngIf="
+    <span *ngIf="
         expire !== 0 &&
         !negative &&
         (expiresSettings === 'settings-insurance-policy' ||
           expiresSettings === 'details')
-      "
-      class="progress-text"
-    >
+      " class="progress-text">
       <span>{{ expireDate }}</span>
     </span>
   </div>

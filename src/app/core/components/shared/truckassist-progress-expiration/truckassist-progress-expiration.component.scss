@@ -28,14 +28,14 @@
     .progress-text {
       margin: 2px 0 0 4px;
       font-size: 14px;
-      font-weight: 500;
-      color: #6C6C6C;
+      font-weight: 400;
+      color: #6c6c6c;
       display: flex;
 
       span {
         &::selection {
-          color: #6C6C6C;
-          background: #6C6C6C20;
+          color: #6c6c6c;
+          background: #6c6c6c20;
         }
       }
 
@@ -53,6 +53,7 @@
 
     .progress-days-to-go {
       color: #6c6c6c;
+     
       span {
         &::selection {
           color: #b7b7b7;
@@ -66,6 +67,11 @@
       color: #6c6c6c;
       position: relative;
       top: 2px;
+      .progress-days-bold {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: #6c6c6c;
+      }
       span {
         &::selection {
           color: #b7b7b7;
@@ -111,4 +117,35 @@
 
 .bg-progress-4 {
   background: #000000;
+}
+
+.details-progress-container {
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 12px;
+  height: 8px;
+  .table-progress-cotnainer {
+    display: flex !important;
+    flex-direction: column !important;
+
+    .table-progress {
+      order: 1 !important;
+      width: 100% !important;
+      height: 8px !important;
+      background: #ffecd1 !important;
+    }
+    .bg-progress-muted {
+      background: #ffb74d !important;
+    }
+    .table-progress-panel {
+      order: -1 !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      color: #ffb74d !important;
+
+      .progress-text {
+        margin: 2px 0px !important;
+      }
+    }
+  }
 }

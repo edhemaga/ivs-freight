@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -70,6 +71,7 @@ import { CalendarLeftComponent } from './custom-datetime-pickers/calendar-left/c
 import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars/date-calendars.component';
 import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
+import { TaInputService } from './ta-input/ta-input.service';
 import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
 import { DirectivesModule } from '../../directives/directives.module';
@@ -85,6 +87,9 @@ import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-r
 import { TaLikeDislikeComponent } from './ta-like-dislike/ta-like-dislike.component';
 import { TaUserReviewComponent } from './ta-user-review/ta-user-review.component';
 import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
+import { TaCommonHeaderComponent } from './ta-details-header/ta-details-header.component';
+import { TaDetailsHeaderCardComponent } from './ta-details-header-card/ta-details-header-card.component';
+import { TaReCardComponent } from './ta-common-card/ta-re-card.component';
 
 @NgModule({
   declarations: [
@@ -105,8 +110,11 @@ import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
     CalendarDaysComponent,
     CalendarLeftComponent,
     DateCalendarsComponent,
-
     TaCheckboxComponent,
+    TaCommonHeaderComponent,
+    TaCustomCardComponent,
+    TaReCardComponent,
+    TaDetailsHeaderCardComponent,
     TaInputAddressComponent,
     TaInputDropdownComponent,
     TaInputNoteComponent,
@@ -158,6 +166,7 @@ import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
     ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
     NgSelectModule,
     NgbModule,
+    RouterModule,
     AngularSvgIconModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
@@ -239,7 +248,12 @@ import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
     TaInputRadiobuttonsComponent,
     TaUserReviewComponent,
 
+    TaReCardComponent,
+    TaDetailsHeaderCardComponent,
+    TaCustomCardComponent,
     TaCheckboxComponent,
+    TaCommonHeaderComponent,
+    TaReCardComponent,
     TaInputAddressComponent,
     TaInputDropdownComponent,
     TaInputNoteComponent,

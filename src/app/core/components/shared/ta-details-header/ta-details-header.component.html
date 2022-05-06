@@ -1,0 +1,34 @@
+    <div class="header-wrapper">
+        <div class="toolbar-general-cmp" *ngIf="['Truck Details','Driver Details'].includes(headerText)">
+            <div class="icon-text-wrapper">
+                <svg-icon
+                 [appTooltip]="tooltipHeaderName"
+                 [position]="'bottom-right'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="30"
+                routerLink="{{route}}" 
+                src="assets/svg/common/ic_arrow-left.svg">
+                </svg-icon>
+                <p>{{headerText}}</p>
+            </div>
+            <div class="icon-right">
+            <svg-icon  src="assets/svg/common/ic_horizontal-dots.svg">
+            </svg-icon>
+        </div>
+        </div>
+
+        <div class="header-toolbar" *ngIf="!['Truck Details','Driver Details'].includes(headerText)">
+            <p class="header-name">{{headerText}}</p>
+            <div class="header-plus-button">
+                <div class="border-line-left"></div>
+                <svg-icon (click)="openModal(headerText)" src="assets/svg/common/ic_plus.svg">
+                </svg-icon>
+            </div>
+        </div>
+    </div>

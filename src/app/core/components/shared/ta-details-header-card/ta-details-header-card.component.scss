@@ -1,0 +1,206 @@
+$font-size12: 12px;
+$font-size14: 14px;
+$font-size18: 18px;
+$font-size20: 20px;
+
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+$font-extrabold: 800;
+
+$color-white-light: #f3f3f3;
+$color-white: #ffffff;
+
+$color-gray: #919191;
+$color-gray-dark: #6c6c6c;
+
+$border-radius: 3px;
+// GENERAL SWITCHER DRIVER
+.details-header-wrapper {
+    background-color: $color-white;
+    border-radius: $border-radius;
+    margin-bottom: 8px;
+    p {
+        margin: 0px;
+    }
+    .details-header-wrapper-switcher {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 44px;
+        width: 440px;
+        .name-icon {
+            display: flex;
+            align-items: center;
+            width: 366px;
+            .header-svg {
+                position: relative;
+                bottom: 4px;
+                margin: 0;
+                padding: 0;
+                width: 18px;
+                height: 18px;
+                z-index: 10;
+                cursor: pointer;
+                left: 70%;
+            }
+
+            input[type="text"] {
+                border: none;
+                outline: none;
+                background: transparent;
+                font-size: $font-size20;
+                font-weight: $font-bold;
+                color: $color-gray-dark;
+                position: relative;
+                left: -6px;
+                &:focus {
+                    border: none !important;
+                    background-color: #6c6c6c !important;
+                    color: #ffffff !important;
+                    outline: none !important;
+                    border-radius: 2px ;
+                    padding: 2px 7px;
+                    width: 366px;
+                }
+                &:hover {
+                    border: none;
+                    outline: none;
+                    background-color: #f3f3f3;
+                    border-radius: 2px;
+                    color: #3c3c3c;
+                    padding: 2px 7px;
+                    width: 366px;
+                }
+            }
+        }
+    }
+    .details-header-wrapper-switcher-name {
+        font-size: $font-size20;
+        font-weight: $font-bold;
+        color: $color-gray-dark;
+        position: relative;
+        margin-left: 12px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+// DRIVER GENERAL PERSONAL DATA
+.details-header-wrapper-container {
+
+    .details-header-wrapper-data {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-left: 16px;
+        .date-terminated{
+            margin-left: 130px;
+        }
+        .details-header-wrapper-data-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            height: 18px;
+            .vin-text {
+                margin-left: 6px;
+                font-size: $font-size14;
+                font-weight: 400;
+                P {
+                    color: #aaaaaa;
+                }
+            }
+        }
+        .second {
+            margin-top: 14px;
+            margin-bottom: 12px;
+        }
+        .bottom {
+            margin-top: 12px;
+            margin-bottom: 12px;
+            height: 18px;
+            align-items: end;
+            p {
+                font-size: $font-size14;
+                font-weight: 400;
+                color: #6c6c6c;
+            }
+        }
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+    }
+    .details-header-wrapper-data-item_bottom {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        margin-bottom: 14px;
+        .vin-text {
+            margin-left: 6px;
+        }
+    }
+}
+
+.arrows {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    .arrow-right {
+        margin-bottom: 13px;
+        margin-top: 13px;
+        margin-right: 13px;
+        margin-left: 10px;
+
+        &:hover{
+            background-color: #f3f3f3;
+            height: 28px;
+            width: 28px;
+            border-radius: 2px;
+            text-align: center;
+            margin-top: 8px !important;
+            margin-bottom: 8px !important;
+            margin-left: 5px !important;
+            margin-right: 8px !important;
+            cursor: pointer;
+            svg{
+              vertical-align: bottom !important;
+            }
+        }
+    }
+    .arrow-left{
+        &:hover{
+            background-color: #f3f3f3;
+            height: 28px;
+            width: 28px;
+            border-radius: 2px;
+            text-align: center;
+            margin-top: 8px !important;
+            margin-left: 8px !important;
+            margin-right: -5.5px;
+            margin-bottom: 8px !important;
+            cursor: pointer;
+            svg{
+              vertical-align: bottom !important;
+            }
+        }
+    }
+    
+}
+.border-line {
+    margin: 0;
+    height: 2px;
+    width: 428px;
+    border-radius: 1px;
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: $color-white-light;
+}
+.no-icon{
+    input{
+        margin-left: 12px;
+        position: relative;
+        left: 0 !important;
+    }
+}

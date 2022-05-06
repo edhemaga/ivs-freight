@@ -3,6 +3,7 @@
   cursor: pointer;
   &:hover {
     transition: all 0.3s ease-in-out;
+    .name-document,
     .file-action-buttons,
     .file-info {
       display: flex;
@@ -11,47 +12,74 @@
 }
 
 //-------------- File Action Buttons Top Right Corner
-.file-action-buttons {
-  width: 76px;
-  height: 28px;
-  background-color: #6c6c6c;
-  opacity: 0.9;
-  border-radius: 2px;
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  display: none;
-  align-items: center;
-  justify-content: space-around;
 
-  .file-action-download,
-  .file-action-edit,
-  .file-action-delete {
-    svg {
-      width: 16px;
-      height: 16px;
+.name-document-button {
+  display: flex;    
+    .name-document {
+    width: 265px;
+    height: 26px;
+    background-color: #6c6c6c;
+    opacity: 0.9;
+    border-radius: 2px;
+    position: absolute;
+    display: none;
+    top: 2px;
+    left: 4px;
+    align-items: center;
+    p {
+      margin-left: 6px;
+      margin-right: 6px;
+      margin-top: 4px;
+      margin-bottom: 4px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
     }
-    &:hover {
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
+  }
+}
+
+  .file-action-buttons {
+    width: 26px;
+    height: 26px;
+    background-color: #6c6c6c;
+    opacity: 0.9;
+    border-radius: 2px;
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    display: none;
+    align-items: center;
+    justify-content: space-around;
+
+    .file-action-download,
+    .file-action-edit,
+    .file-action-delete {
       svg {
+        width: 16px;
+        height: 16px;
+      }
+      &:hover {
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        svg {
+          path {
+            fill: #ffffff;
+          }
+        }
+      }
+    }
+
+    .file-action-delete {
+      svg {
+        width: 14px;
+        height: 14px;
         path {
-          fill: #ffffff;
+          fill: rgb(218, 218, 218);
         }
       }
     }
   }
 
-  .file-action-delete {
-    svg {
-      width: 14px;
-      height: 14px;
-      path {
-        fill: rgb(218, 218, 218);
-      }
-    }
-  }
-}
 
 //-------------- File Info Bottom Left Corner
 .file-info {
@@ -111,7 +139,7 @@
     text-align: center;
     padding: 2.5px 6px;
     border-radius: 2px;
-    background-color: #6c6c6c;
+    // background-color: #6c6c6c;
     opacity: 0.9;
     font-weight: 600;
   }
@@ -120,46 +148,46 @@
 // ---------------------------------------- DYNAMIC COMPONENT CLASSES --------------------------------------------------
 //-------------- Driver Details Single PDF
 .driver-details-single-pdf {
-  width: 236px;
-  height: 150px;
+  width: 303px;
+  height: 343px;
   position: relative;
 
   .ng2-pdf-viewer-container {
     overflow: hidden !important;
     background-color: transparent !important;
-    width: 236px !important;
-    height: 150px !important;
+    width: 303px !important;
+    height: 343px !important;
     border-radius: 3px !important;
 
     .canvasWrapper,
     .pdfViewer,
     .pdfViewer .page,
     canvas {
-      width: 236px !important;
-      height: 150px !important;
+      width: 303px !important;
+      height: 343px !important;
       margin: 0 !important;
     }
   }
 }
 //-------------- Driver Details Multiple Pdf
 .driver-details-multiple-pdf {
-  width: 236px;
-  height: 236px;
+  width: 303px;
+  height: 340px;
   position: relative;
 
   .ng2-pdf-viewer-container {
     overflow: hidden !important;
     background-color: transparent !important;
-    width: 236px !important;
-    height: 236px !important;
+    width: 303px !important;
+    height: 340px !important;
     border-radius: 3px !important;
 
     .canvasWrapper,
     .pdfViewer,
     .pdfViewer .page,
     canvas {
-      width: 236px !important;
-      height: 236px !important;
+      width: 303px !important;
+      height: 340px !important;
       margin: 0 !important;
     }
   }

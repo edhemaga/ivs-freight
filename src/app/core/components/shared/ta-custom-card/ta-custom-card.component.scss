@@ -6,7 +6,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 3px 0px;
-    padding-right: 6px;
+    // padding-right: 6px;
     cursor: pointer;
 
     .header-content {
@@ -14,7 +14,7 @@
       align-items: center;
 
       .header-text {
-        color: #919191;
+        color: #6c6c6c;
         font-weight: 800;
         font-size: 14px;
         -webkit-user-select: none;
@@ -22,9 +22,9 @@
         -ms-user-select: none;
         user-select: none;
 
-        &.no-counter {
-          margin-left: 6px;
-        }
+        // &.no-counter {
+        //   margin-left: 6px;
+        // }
 
         &.active {
           color: #6c6c6c;

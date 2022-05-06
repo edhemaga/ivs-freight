@@ -1,0 +1,74 @@
+<div class="details-header-wrapper">
+    <div class="details-header-wrapper-switcher">
+        <div class="name-icon" [ngClass]="{'no-icon':!hasSvgHeader}">
+            <svg-icon class="header-svg" *ngIf="hasSvgHeader" src="{{hasSvgHeader}}"></svg-icon>
+             <input type="text" [ngModel]="cardDetailsName">
+        </div>
+        <div class="arrows">
+            <svg-icon
+            [appTooltip]="tooltipPrevious"
+            [position]="'top-middle'"
+            [tooltipBackground]="'#6c6c6c'"
+            [tooltipColor]="'#ffffff'"
+            [zIndex]="900"
+            [borderRadius]="'2px'"
+            [fontWeight]="'bold'"
+            [fontSize]="'11px'"
+            [customPosition]="-11" 
+             class="arrow-left" 
+             src="assets/svg/common/arrow-left.svg">
+            </svg-icon>
+            <svg-icon
+            [appTooltip]="tooltipNext"
+            [position]="'top-middle'"
+            [tooltipBackground]="'#6c6c6c'"
+            [tooltipColor]="'#ffffff'"
+            [zIndex]="900"
+            [borderRadius]="'2px'"
+            [fontWeight]="'bold'"
+            [fontSize]="'11px'"
+            [customPosition]="-11"
+             class="arrow-right" 
+             src="assets/svg/common/arrow-right.svg"></svg-icon>
+        </div>
+    </div>
+    <div class="details-header-wrapper-container">
+        <div class="details-header-wrapper">
+            <ng-content></ng-content>
+        </div>
+
+
+        <div class="border-line"></div>
+        <div class="details-header-wrapper-data">
+            <div 
+            [appTooltip]="'Date Added'"
+            [position]="'top-middle'"
+            [tooltipBackground]="'#6c6c6c'"
+            [tooltipColor]="'#ffffff'"
+            [zIndex]="900"
+            [borderRadius]="'2px'"
+            [fontWeight]="'bold'"
+            [fontSize]="'11px'"
+            [customPosition]="80"
+             class="arrow-right"           
+                class="details-header-wrapper-data-item bottom">
+                <svg-icon src="assets/svg/common/date.svg"></svg-icon>
+                <p class="vin-text">{{cardDetailsDate}}</p>
+            </div>
+            <div 
+            [appTooltip]="'Date Terminated'"
+            [position]="'top-middle'"
+            [tooltipBackground]="'#6c6c6c'"
+            [tooltipColor]="'#ffffff'"
+            [zIndex]="900"
+            [borderRadius]="'2px'"
+            [fontWeight]="'bold'"
+            [fontSize]="'11px'"
+            [customPosition]="330"
+            *ngIf="cardDetailsDateTerminated" class="details-header-wrapper-data-item bottom">
+                <svg-icon class="date-terminated" src="assets/svg/common/ic_date.svg"></svg-icon>
+                <p class="vin-text">{{cardDetailsDateTerminated}}</p>
+            </div>
+        </div>
+    </div>
+</div>

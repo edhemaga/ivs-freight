@@ -11,8 +11,7 @@
         [countWidth]="'24px'"
       ></app-ta-counter>
       <span
-        class="header-text"
-        [ngClass]="{ 'no-counter': !hasCounter, 'active': isCardOpen }"
+        class="header-text" [ngClass]="{ 'no-counter': !hasCounter, 'active': isCardOpen }"
         >
         {{ cardName }}
       </span>
@@ -42,4 +41,5 @@
   <div class="ta-card-body" [ngClass]="{'active': isCardOpen, 'scroll': hasScrollBody}">
     <ng-content></ng-content>
   </div>
+
 </div>

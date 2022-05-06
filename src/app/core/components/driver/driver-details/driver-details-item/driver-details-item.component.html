@@ -1,464 +1,795 @@
-<div class="driver-component">
-  <div [ngSwitch]="data.template">
-    <!---------------------- GENERAL TEMPLATE HEADER ------------------>
-    <div *ngSwitchCase="'general'">
-      <div class="driver-toolbar-general">
-        <div class="driver-toolbar-dropdown">
-          <svg-icon
-            routerLink="/driver"
-            class="driver-toolbar-back"
-            src="assets/svg/common/ic_arrow-left.svg"
-          ></svg-icon>
-          <p>Driver Details - waiting dropdown...</p>
-        </div>
-        <svg-icon
-          class="driver-toolbar-horizarrow"
-          src="assets/svg/common/ic_horizontal-dots.svg"
-        ></svg-icon>
-      </div>
-    </div>
-    <!---------------------- COMMON TEMPLATE HEADER ------------------>
-    <div *ngSwitchDefault>
-      <div class="driver-toolbar">
-        <p class="driver-toolbar-name">{{ data.name }}</p>
-        <div class="driver-toolbar-button">
-          <svg-icon
-            class="driver-toolbar-plus"
-            src="assets/svg/common/ic_plus.svg"
-            (click)="onModalAction()"
-          ></svg-icon>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="details-component">
   <div [ngSwitch]="data.template">
     <!---------------------- GENERAL TEMPLATE ------------------>
     <div *ngSwitchCase="'general'">
-      <div class="driver-body">
-        <div class="driver-switcher">
-          <svg-icon
-            class="driver-switcher-larrow"
-            src="assets/svg/common/ic_arrow-right.svg"
-          ></svg-icon>
-          <p class="driver-switcher-name">{{ data.data.reasponse.fullName }}</p>
-          <svg-icon
-            class="driver-switcher-rarrow"
-            src="assets/svg/common/ic_arrow-right.svg"
-          ></svg-icon>
-        </div>
-        <div class="driver-personal">
-          <div class="driver-avatar">
-            <img
-              class="driver-avatar-svg"
-              src="{{
-                data.data.reasponse.avatar
-                  ? data.data.reasponse.avatar
-                  : 'assets/svg/common/ic_noimage-avatar.svg'
-              }}"
-              alt="Driver Image"
-            />
-            <svg-icon
-              class="driver-avatar-owner"
-              src="assets/svg/common/ic_driver-owner.svg"
-            ></svg-icon>
+      <app-ta-details-header-card
+        [tooltipNext]="'Next Driver'" 
+        [tooltipPrevious]="'Previous Driver'" 
+        [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
+        [cardDetailsName]="'Aleksandar Djordjevic'" 
+        [cardDetailsDateTerminated]="'10/08/26'" [cardDetailsDate]="'08/03/20'">
+        <div class="driver-container">
+          <div class="driver-personal">
+            <div class="driver-avatar">
+              <img class="driver-avatar-svg" src="{{
+                      data.data.reasponse.avatar
+                        ? data.data.reasponse.avatar
+                        : 'assets/svg/common/ic_noimage-avatar.svg'
+                    }}" alt="Driver Image" />
+            </div>
+            <div class="driver-information">
+              <div class="information-item">
+                <svg-icon 
+                 class="information-svg"
+                 src="assets/svg/common/ic_ssn.svg"
+                 
+                 ></svg-icon>
+                <p class="information-value ssn">
+                  {{data.data.reasponse.ssn}}
+                </p>
+                <svg-icon
+                class="card-icon"
+                src="assets/svg/common/ic_copy.svg"
+                [appTooltip]="'Copy'"
+                [position]="'top-middle'"
+                [tooltipBackground]="'#6c6c6c'"
+                [tooltipColor]="'#ffffff'"
+                [zIndex]="900"
+                [borderRadius]="'2px'"
+                [fontWeight]="'bold'"
+                [fontSize]="'11px'"
+                [customPosition]="-2"
+                 (click)="copyText(data.data.reasponse.ssn)"></svg-icon>
+              </div>
+              <div class="information-item">
+                <svg-icon class="information-svg" src="assets/svg/common/ic_phone.svg"></svg-icon>
+                <p class="information-value">
+                  {{ data.data.reasponse.additionalData?.phone }}
+                </p>
+                <svg-icon
+                 (click)="copyText(data.data.reasponse.additionalData?.phone)"
+                 class="card-icon"
+                 src="assets/svg/common/ic_copy.svg"
+                 [appTooltip]="'Copy'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="-2"
+                 >
+                </svg-icon>
+              </div>
+              <div class="information-item">
+                <svg-icon class="information-svg" src="assets/svg/common/ic_email.svg"></svg-icon>
+                <p class="information-value information-email-value">
+                  {{ data.data.reasponse.additionalData?.email }}
+                </p>
+                <svg-icon
+                 (click)="copyText(data.data.reasponse.additionalData?.email)" 
+                 class="card-icon" 
+                 src="assets/svg/common/ic_copy.svg"
+                 [appTooltip]="'Copy'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="-2"
+                 ></svg-icon>
+              </div>
+
+            </div>
           </div>
-          <div class="driver-information">
-            <div class="information-item">
-              <svg-icon
-                class="information-svg"
-                src="assets/svg/common/ic_phone.svg"
-              ></svg-icon>
-              <p class="information-value">
-                {{ data.data.reasponse.additionalData?.phone }}
-              </p>
-            </div>
-            <div class="information-item information-item-email">
-              <svg-icon
-                class="information-svg"
-                src="assets/svg/common/ic_email.svg"
-              ></svg-icon>
-              <p class="information-value information-email-value">
-                {{ data.data.reasponse.additionalData?.email }}
-              </p>
-            </div>
-            <div class="information-item information-email">
-              <svg-icon
-                class="information-svg information-address-svg"
-                src="assets/svg/common/ic_address.svg"
-              ></svg-icon>
-              <p class="information-value">
-                {{ data.data.reasponse.additionalData?.address.address }}
-              </p>
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="driver-cards">
+      </app-ta-details-header-card>
+      <div class="details-cards">
         <!-- assignedTo -->
-        <app-driver-details-card
-          [cardTemplate]="'assignedTo'"
-          [cardName]="'Assigned to'"
-          [data]="data.data.assignedTo"
-        ></app-driver-details-card>
-        <!-- additionalInfo -->
-        <app-driver-details-card
-          [cardTemplate]="'additionalInfo'"
-          [cardName]="'Additional Info'"
-          [data]="data.data.additionalInfo"
-        ></app-driver-details-card>
-        <!-- employmentHistory -->
-        <app-driver-details-card
-          [cardTemplate]="'employmentHistory'"
-          [cardName]="'Employment History'"
-          [data]="data.data.additionalInfo"
-        ></app-driver-details-card>
-        <!-- commissionPay -->
-        <app-driver-details-card
-          [cardTemplate]="'commissionPay'"
-          [cardName]="'Commission Pay'"
-          [data]="data.data.reasponse"
-        ></app-driver-details-card>
-        <!-- bankInfo -->
-        <app-driver-details-card
-          [cardTemplate]="'bankInfo'"
-          [cardName]="'Bank Info'"
-          [cardImg]="true"
-          [data]="data.data.bankInfo"
-        ></app-driver-details-card>
-        <!-- duttyLocation -->
-        <app-driver-details-card
-          [cardTemplate]="'duttyLocation'"
-          [cardName]="'Off Duty Location'"
-          [cardCount]="'3'"
-          [data]="null"
-        ></app-driver-details-card>
-        <!-- cards -->
-        <app-driver-details-card
-          [cardTemplate]="'cards'"
-          [cardName]="'Cards'"
-          [data]="data.data.cards"
-        ></app-driver-details-card>
-        <!-- emergencyContact -->
-        <app-driver-details-card
-          [cardTemplate]="'emergencyContact'"
-          [cardName]="'Emergency Contact'"
-          [data]="data.data.emergencyContact"
-        ></app-driver-details-card>
-        <!-- note -->
-        <app-driver-details-card
-          [cardTemplate]="'note'"
-          [cardName]="'Note'"
-          [data]="data.data.note"
-          [hasLine]="false"
-        ></app-driver-details-card>
+        <app-ta-custom-card [cardName]="'Assigned To'" [tooltipName]="'Dispatch History'" [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
+          [isCardOpen]="true">
+          <div class="assignTo">
+            <div class="assignTo-item first">
+              <svg-icon
+                class="assignTo-vehicle" 
+                src="assets/svg/truckassist-table/truck/gray-icons/semi-truck.svg"
+                 [appTooltip]="'Semi Truck'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="38"
+                >
+              </svg-icon>
+              <p class="assignTo-value">{{data.data.assignedTo.truck}}</p>
+              <svg-icon 
+              class="open-modal-icon"
+              src="assets/svg/common/arrow_top_right.svg"
+                 [appTooltip]="'View in Modal'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="-26"
+              ></svg-icon>
+            </div>
+            <div class="assignTo-item second">
+              <svg-icon 
+               class="assignTo-vehicle" 
+               src="assets/svg/common/trailers/ic_trailer_container.svg"
+                 [appTooltip]="'Container'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="40"
+               ></svg-icon>
+              <p class="assignTo-value">{{data.data.assignedTo.trailer}}</p>
+              <svg-icon
+               class="open-modal-icon2" 
+               src="assets/svg/common/arrow_top_right.svg"
+                [appTooltip]="'View in Modal'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="-26"
+               ></svg-icon>
+            </div>
+          </div>
+        </app-ta-custom-card>
+
+        <!-- Additional info -->
+        <app-ta-custom-card [cardName]="'Additional info'" [isCardOpen]="false">
+          <div class="additional-container">
+            <div class="addres-wrapper">
+              <div class="addres-name">Addres</div>
+              <div class="addres-value-icon">
+                <div class="addres-value">5462 N East River Rd apt 611, Chicago, WY 52655, USA</div>
+                <svg-icon 
+                class="address-icon" 
+                src="assets/svg/common/ic_address.svg"
+                 [appTooltip]="'Open in Places'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="-30"
+                >
+                </svg-icon>
+
+              </div>
+            </div>
+            <div class="addres-wrapper addres-second">
+              <div class="addres-name">Date of Birth</div>
+              <div class="addres-value">05/07/86</div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+
+        <!-- Off Duty Location-->
+        <app-ta-custom-card [hasCounter]="3" [cardName]="'Off Duty Location'" [isCardOpen]="false">
+          <div class="additional-container">
+            <div class="addres-wrapper">
+              <div class="addres-name">Home</div>
+              <div class="addres-value-icon">
+                <div class="addres-value">5462 N East River Rd apt 611, Chicago, WY 52655, USA</div>
+                <svg-icon 
+                class="address-icon" 
+                src="assets/svg/common/ic_address.svg"
+                [appTooltip]="'Open in Places'"
+                [position]="'top-middle'"
+                [tooltipBackground]="'#6c6c6c'"
+                [tooltipColor]="'#ffffff'"
+                [zIndex]="900"
+                [borderRadius]="'2px'"
+                [fontWeight]="'bold'"
+                [fontSize]="'11px'"
+                [customPosition]="-30"
+                >
+                </svg-icon>
+              </div>
+            </div>
+            <div class="addres-wrapper addres-second">
+              <div class="addres-name">Address 2</div>
+              <div class="addres-value-icon">
+                <div class="addres-value">5462 N East River Rd apt 611, Chicago, WY 52655, USA</div>
+                <svg-icon 
+                class="address-icon" 
+                src="assets/svg/common/ic_address.svg"
+                 [appTooltip]="'Open in Places'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="-30"
+                >
+                </svg-icon>
+              </div>
+            </div>
+            <div class="addres-wrapper addres-second">
+              <div class="addres-name">Parking! 5623</div>
+              <div class="addres-value-icon">
+                <div class="addres-value">5462 N East River Rd apt 611, Chicago, WY 52655, USA</div>
+                <svg-icon 
+                class="address-icon" 
+                src="assets/svg/common/ic_address.svg"
+                 [appTooltip]="'Open in Places'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="-30"
+                >
+                </svg-icon>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+
+        <!-- Employment history-->
+        <app-ta-custom-card [cardName]="'Employment history'" [isCardOpen]="false">
+          <div class="content">
+            <p>Wait design</p>
+          </div>
+        </app-ta-custom-card>
+
+        <!-- Owner Details-->
+        <app-ta-custom-card [cardName]="'Owner Details'" [isCardOpen]="true">
+          <div class="purchase-template">
+            <div class="purchase-template-item">
+              <div class="purchase-template-item-name">Company</div>
+              <div class="purchase-icon-copy">
+                <div class="purchase-template-item-value">KSKA FREIGHT, INC</div>
+                <svg-icon
+                 class="card-icon" 
+                 src="assets/svg/common/arrow_top_right.svg"
+                 [appTooltip]="'View in Modal'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="-26"
+                 ></svg-icon>
+              </div>
+              
+            </div>
+            <div class="purchase-template-item second-name">
+              <div class="purchase-template-item-name ">EIN</div>
+              <div class="purchase-icon-copy" [ngClass]="{'copied':copied}">
+                <div class="purchase-template-item-value">12-3456789</div>
+                <svg-icon
+                 (click)="copyText('12-3456789')" 
+                 class="card-icon" 
+                 src="assets/svg/common/ic_copy.svg"
+                 [appTooltip]="copied ? 'Copied':'Copy'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="copied ? '#536BC2':'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="-2"
+                 ></svg-icon>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+
+        <!-- Commission Pay-->
+        <app-ta-custom-card [cardName]="'Commission Pay'" [isCardOpen]="true">
+          <div class="purchase-template">
+            <div class="purchase-template-item">
+              <div class="purchase-template-item-name">Solo</div>
+              <div class="purchase-template-item-value">10.0%</div>
+            </div>
+            <div class="purchase-template-item second-name">
+              <div class="purchase-template-item-name ">Team</div>
+              <div class="purchase-template-item-value">8.5%</div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+
+        <!-- Payroll -->
+        <app-ta-custom-card [cardName]="'Payroll'" [tooltipName]="'View in Modal'"  [isCardOpen]="true"
+          [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'">
+          <div class="common-template perfomance">
+            <mat-button-toggle-group [value]="selectedValuePayroll" (change)="changeValuePayroll($event.value)"
+              appearance="legacy" #toggleBtn="matButtonToggleGroup">
+              <mat-button-toggle appearance="legacy" value="1M">1M</mat-button-toggle>
+              <mat-button-toggle appearance="legacy" value="3M"> 3M </mat-button-toggle>
+              <mat-button-toggle appearance="legacy" value="6M"> 6M </mat-button-toggle>
+              <mat-button-toggle appearance="legacy" value="1Y"> 1Y </mat-button-toggle>
+              <mat-button-toggle appearance="legacy" value="YTD"> YTD </mat-button-toggle>
+              <mat-button-toggle appearance="legacy" value="ALL"> ALL</mat-button-toggle>
+            </mat-button-toggle-group>
+            <div class="common-item-wrapper revenue">
+              <div class="common-template-item">
+                <div class="icon-name-item">
+                  <svg-icon src="assets/svg/common/round_yellow.svg"></svg-icon>
+                  <div class="common-template-item-name">Miles</div>
+                </div>
+                <div class="common-template-item-value">46,755.2 mi
+                </div>
+              </div>
+
+              <div class="common-template-item fuel-item">
+                <div class="icon-name-item">
+                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                  <div class="common-template-item-name">Salary</div>
+                </div>
+                <div class="common-template-item-value">$36.854.27</div>
+              </div>
+            </div>
+            <div id="chart">
+              <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+                [yaxis]="chartOptions.yaxis" [labels]="chartOptions.labels" [stroke]="chartOptions.stroke"
+                [title]="chartOptions.title" [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                [tooltip]="chartOptions.tooltip"></apx-chart>
+            </div>
+          </div>
+        </app-ta-custom-card>
+
+        <!-- Bank Info-->
+        <app-ta-custom-card [hasHeaderSvg]="'assets/svg/common/ic_bankAccount_dummy.svg'" [cardName]="'Bank Info'" [isCardOpen]="false">
+
+          <div class="purchase-template">
+            <div class="purchase-template-item">
+              <div class="purchase-template-item-name">Routing</div>
+              <div class="purchase-icon-copy" [ngClass]="{'copied':copiedBankRouting}">
+                <div class="purchase-template-item-value">{{data.data.bankInfo.routing}}</div>
+                <svg-icon
+                 (click)="copyText(data.data.bankInfo.routing)"
+                 class="card-icon" 
+                 src="assets/svg/common/ic_copy.svg"
+                 [appTooltip]="'Copy'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="-2"
+                 ></svg-icon>
+              </div>
+            </div>
+            <div class="purchase-template-item second-name">
+              <div class="purchase-template-item-name ">Account</div>
+              <div class="purchase-icon-copy" [ngClass]="{'copied':copiedBankAccount}">
+                <div class="purchase-template-item-value">{{accountText ? accountText : hiddenPassword(data.data.bankInfo.account,4)}}</div>
+                <svg-icon 
+                  class="hidden-svg-eye"
+                  [appTooltip]="isAccountVisible ? 'Hide Account Number' : 'Show Account Number'"
+                  [position]="'top-middle'"
+                  [tooltipBackground]="'#6c6c6c'"
+                  [tooltipColor]="'#ffffff'"
+                  [zIndex]="900"
+                  [borderRadius]="'2px'"
+                  [fontWeight]="'bold'"
+                  [fontSize]="'11px'"
+                  [customPosition]="-50"
+                   (click)="showHideValue(data.data.bankInfo.account)"
+                   src="{{isAccountVisible ? 'assets/svg/common/ic_eye-visible.svg':'assets/svg/common/ic_eye-hidden.svg'}}"
+                  ></svg-icon>
+                <svg-icon 
+                  (click)="copyText(data.data.bankInfo.account)" 
+                  class="card-icon" 
+                  src="assets/svg/common/ic_copy.svg"
+                  [appTooltip]="'Copy'"
+                  [position]="'top-middle'"
+                  [tooltipBackground]="'#6c6c6c'"
+                  [tooltipColor]="'#ffffff'"
+                  [zIndex]="900"
+                  [borderRadius]="'2px'"
+                  [fontWeight]="'bold'"
+                  [fontSize]="'11px'"
+                  [customPosition]="-2"
+                  ></svg-icon>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <!-- Emergency Contact-->
+        <app-ta-custom-card [cardName]="'Emergency Contact'" [isCardOpen]="false">
+
+          <div class="purchase-template">
+            <div class="purchase-template-item">
+              <div class="purchase-template-item-name">Brother</div>
+              <div class="purchase-template-item-value">{{data.data.emergencyContact.brother}}</div>
+            </div>
+            <div class="purchase-template-item second-name">
+              <div class="purchase-template-item-name ">Phone</div>
+              <div class="purchase-icon-copy" [ngClass]="{'copied':copied}">
+                <div class="purchase-template-item-value">{{data.data.emergencyContact.phone}}</div>
+                <svg-icon 
+                (click)="copyText(data.data.emergencyContact.phone)" 
+                class="card-icon" 
+                src="assets/svg/common/ic_copy.svg"
+                 [appTooltip]="'Copy'"
+                 [position]="'top-middle'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="-2"
+                ></svg-icon>
+              </div>
+            </div>
+          </div>
+        
+        </app-ta-custom-card>
+
+        <div class="details-page-row-5">
+          <div class="note-item">
+            <app-ta-input-note [formControl]="note" [isVisibleDivider]="false" [isVisibleNote]="true"
+              [isVisibleArrow]="true" [minRows]="1" [placeholder]="'Write something.'" [customClass]="'note-small'">
+
+            </app-ta-input-note>
+          </div>
+        </div>
+
       </div>
     </div>
-    <!---------------------- CDL TEMPLATE ------------------>
     <div *ngSwitchCase="'cdl'">
-      <div class="driver-body" *ngFor="let cdl of data.data; trackBy: identity">
-        <div class="driver-card-top">
-          <p class="driver-card-name">
-            {{ cdl.number }}
-          </p>
-          <div class="driver-card-buttons">
-            <svg-icon
-              class="driver-card-attachments"
-              src="assets/svg/common/ic_attachment.svg"
-              (click)="
-                onButtonAction({ template: 'cdl', action: 'attachments' })
-              "
-            ></svg-icon>
-            <svg-icon
-              class="driver-card-note"
-              src="assets/svg/common/ic_note.svg"
-              (click)="onButtonAction({ template: 'cdl', action: 'notes' })"
-            ></svg-icon>
-            <svg-icon
-              class="driver-card-dots"
-              src="assets/svg/common/ic_dots.svg"
-              (click)="onButtonAction({ template: 'cdl', action: 'dots' })"
-            ></svg-icon>
-          </div>
-        </div>
-        <div class="driver-card-bottom">
-          <div class="driver-row-1">
-            <div class="driver-item">
-              <p class="driver-item-name">State</p>
-              <p class="driver-item-value">
-                {{ cdl.state.key }}
-              </p>
-            </div>
-            <div class="driver-item">
-              <p class="driver-item-name">Class</p>
-              <p class="driver-item-value">
-                {{ cdl.class.value }}
-              </p>
-            </div>
-            <div class="driver-item">
-              <p class="driver-item-name">Issued</p>
-              <p class="driver-item-value">04/04/04</p>
-            </div>
-          </div>
-          <div class="driver-row-2">
-            <div
-              class="driver-item"
-              [ngClass]="{ 'item-row-expanded': cdl.showDetails }"
-            >
-              <p class="driver-item-name">Restrictions</p>
-              <p
-                class="driver-item-value"
-                [ngClass]="{
-                  'break-word': cdl.showDetails,
-                  none: !cdl.restrictions
-                }"
-                [innerHtml]="
-                  formatText(cdl.restrictions, cdl.showDetails, 2)
-                    | renderMultipleItems: cdl.showDetails
-                "
-              ></p>
-            </div>
-            <div
-              class="driver-item"
-              [ngClass]="{ 'item-row-expanded': cdl.showDetails }"
-            >
-              <p class="driver-item-name">Endorsments</p>
-              <span
-                class="driver-item-value"
-                [ngClass]="{
-                  'break-word': cdl.showDetails,
-                  none: !cdl.restrictions
-                }"
-                [innerHtml]="
-                  formatText(cdl.endorsements, cdl.showDetails, 1)
-                    | renderMultipleItems: cdl.showDetails
-                "
-              >
-              </span>
-            </div>
-          </div>
-          <div class="driver-row-3">
-            <div class="driver-item">
-              <p class="driver-item-name">Expiration</p>
-              <div class="driver-details-progress-container">
-                <app-truckassist-progress-expiration
-                  [expireDate]="'04/04/25'"
-                  [startDate]="formatDate(cdl.endDate)"
-                  [expiresSettings]="'details'"
-                ></app-truckassist-progress-expiration>
-              </div>
-            </div>
-          </div>
-          <div
-            class="driver-hidden"
-            [@showHideDetails]="cdl.showDetails ? 'true' : 'false'"
+      <div *ngFor="let cdl of data.data; trackBy:identity">
+        <app-ta-re-card
+          [options]="testPleaseWork.title"
+          [cardDocumentCounter]="1"  
+          (resizePage)="toggleResizePage($event)"
+          [cardNameCommon]="'S53044475284'"
+          
           >
-            <div class="driver-row-4">
-              <app-ta-files
-                [files]="[]"
-                [fileType]="'single-pdf'"
-                [customClassName]="'driver-details-single-pdf'"
-              ></app-ta-files>
+          <div class="card-body-cdl">
+            <div class="card-row-issued">
+              <div class="card-item">
+                <div class="card-item-name">
+                  State
+                </div>
+                <div class="card-item-value">{{cdl.state.key}}</div>
+              </div>
+              <div class="card-item">
+                <div class="card-item-name">
+                  Class
+                </div>
+                <div class="card-item-value">{{cdl.class.value}}</div>
+              </div>
+              <div class="card-item">
+                <div class="card-item-name">
+                  Issued
+                </div>
+                <div class="card-item-value">04/04/04</div>
+              </div>
             </div>
-            <div class="driver-row-5">
-              <div class="driver-item">
-                <app-ta-input-note
-                  [formControl]="cdlNote"
-                  [isVisibleDivider]="false"
-                  [isVisibleNote]="true"
-                  [isVisibleArrow]="false"
-                  [minRows]="1"
-                  [placeholder]="'Write something.'"
-                  [customClass]="'note-small'"
-                ></app-ta-input-note>
+            <div class="card-row-endor">
+              <div class="card-item">
+                <div class="card-item-name">
+                  Restriction
+                </div>
+                <div class="card-item-value">A1, A2</div>
+              </div>
+              <div class="card-item">
+                <div class="card-item-name">
+                  Endorsement
+                </div>
+                <div class="card-item-value">None</div>
+              </div>
+            </div>
+            <div class="card-row-progress">
+              <div class="card-details-progress-container">
+                <app-truckassist-progress-expiration [expireDate]="'04/04/27'" [startDate]="formatDate(cdl.endDate)"
+                  [expiresSettings]="'details'">
+
+                </app-truckassist-progress-expiration>
+              </div>
+
+            </div>
+          </div>
+        </app-ta-re-card>
+        <app-ta-re-card [cardDocumentCounter]="6" (resizePage)="toggleResizePage($event)"
+          [cardNameCommon]="'570AG0927'">
+          <div class="card-body-cdl">
+            <div class="card-row-issued">
+              <div class="card-item">
+                <div class="card-item-name">
+                  State
+                </div>
+                <div class="card-item-value">{{cdl.state.key}}</div>
+              </div>
+              <div class="card-item">
+                <div class="card-item-name">
+                  Class
+                </div>
+                <div class="card-item-value">{{cdl.class.value}}</div>
+              </div>
+              <div class="card-item">
+                <div class="card-item-name">
+                  Issued
+                </div>
+                <div class="card-item-value">04/04/04</div>
+              </div>
+            </div>
+            <div class="card-restriction">
+              <p class="restriction-name">Restriction</p>
+              <p class="restriction-item-value"><span class="value-name">A1</span> - Temporary Visitor</p>
+              <p class="restriction-item-value"><span class="value-name">A2</span> - Problem Driver</p>
+              <p class="restriction-item-value"><span class="value-name">A3</span> - Med Cart Examption</p>
+            </div>
+            <div class="card-restriction endorsement">
+              <p class="restriction-name">Endorsement</p>
+              <p class="restriction-item-value"><span class="value-name">H</span> - Hazadrous</p>
+              <p class="restriction-item-value"><span class="value-name">M</span> - Metal Coil</p>
+
+            </div>
+            <div class="card-row-progress second-progress">
+              <div class="card-details-progress-container">
+                <app-truckassist-progress-expiration [expireDate]="'04/04/27'" [startDate]="formatDate(cdl.endDate)"
+                  [expiresSettings]="'details'">
+
+                </app-truckassist-progress-expiration>
               </div>
             </div>
           </div>
-          <a class="show-details" (click)="onShowDetails(cdl)">{{
-            cdl.showDetails ? "Hide Details" : "Show Details"
-          }}</a>
-        </div>
-      </div>
-    </div>
-    <!---------------------- DRUG & ALCOHOL TEMPLATE ------------------>
-    <div *ngSwitchCase="'drugAlcohol'">
-      <div class="driver-body">
-        <div class="driver-card-top">
-          <p class="driver-card-name">Drug Test</p>
-          <div class="driver-card-buttons">
-            <svg-icon
-              class="driver-card-attachments"
-              src="assets/svg/common/ic_attachment.svg"
-              (click)="
-                onButtonAction({ template: 'cdl', action: 'attachments' })
-              "
-            ></svg-icon>
-            <svg-icon
-              class="driver-card-note"
-              src="assets/svg/common/ic_note.svg"
-              (click)="onButtonAction({ template: 'cdl', action: 'notes' })"
-            ></svg-icon>
-            <svg-icon
-              class="driver-card-dots"
-              src="assets/svg/common/ic_dots.svg"
-              (click)="onButtonAction({ template: 'cdl', action: 'dots' })"
-            ></svg-icon>
-          </div>
-        </div>
-        <div class="driver-card-bottom">
-          <div class="driver-row-6">
-            <div class="driver-item">
-              <p class="driver-item-name">Reason</p>
-              <p class="driver-item-value">Resonable suspicion</p>
-            </div>
-            <div class="driver-item">
-              <p class="driver-item-name">Issued</p>
-              <p class="driver-item-value">04/04/04</p>
+
+          <div class="divider"></div>
+          <div class="details-document-container">
+            <div class="icon-counter-wrapper">
+              <div class="counter-text-wrapper">
+                <app-ta-counter [countBackgroud]="'#F3F3F3'" [countHeight]="'24px'" [countWidth]="'24px'" [count]="6">
+                </app-ta-counter>
+                <p class="details-document-name">Document</p>
+              </div>
+              <svg-icon (click)="onFileAction('download')" src="assets/svg/common/ic_download.svg">
+              </svg-icon>
             </div>
           </div>
-          <a class="show-details">Show Details</a>
-        </div>
+          <div class="card-pdf">
+            <app-ta-files [files]="[
+            {
+             fileName: 'truckassist0',
+             url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+             extension: 'pdf'
+           },
+           {
+             fileName: 'truckassist0',
+             url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+             extension: 'pdf'
+           },
+           {
+             fileName: 'truckassist0',
+             url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+             extension: 'pdf'
+           },
+           {
+             fileName: 'truckassist0',
+             url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+             extension: 'pdf'
+           },
+            ]" [fileType]="'multiple-pdf'" [customClassName]="'driver-details-multiple-pdf'">
+            </app-ta-files>
+          </div>
+          <div class="divider"></div>
+          <div class="card-note">
+            <app-ta-input-note [formControl]="cdlNote" [isVisibleDivider]="false" [isVisibleNote]="true"
+              [isVisibleArrow]="false" [minRows]="1" [placeholder]="'Write something.'" [customClass]="'note-small'">
+
+            </app-ta-input-note>
+          </div>
+        </app-ta-re-card>
       </div>
     </div>
-    <!---------------------- MEDICAL TEMPLATE ------------------>
+    <div *ngSwitchCase="'drug-alcohol'">
+      <app-ta-re-card [cardNameCommon]="'Drug Test'" (resizePage)="toggleResizePage($event)">
+        <div class="card-body-cdl">
+          <div class="card-row-endor">
+            <div class="card-item">
+              <div class="card-item-name">
+                Reason
+              </div>
+              <div class="card-item-value">Resonable suspicion</div>
+            </div>
+            <div class="card-item">
+              <div class="card-item-name">
+                Issued
+              </div>
+              <div class="card-item-value">04/04/04</div>
+            </div>
+          </div>
+        </div>
+      </app-ta-re-card>
+
+      <app-ta-re-card [cardNameCommon]="'Alcohol Test'" [cardDocumentCounter]="2"
+        (resizePage)="toggleResizePage($event)">
+        <div class="card-body-cdl">
+          <div class="card-row-endor">
+            <div class="card-item">
+              <div class="card-item-name">
+                Reason
+              </div>
+              <div class="card-item-value">Post-Accident</div>
+            </div>
+            <div class="card-item">
+              <div class="card-item-name">
+                Issued
+              </div>
+              <div class="card-item-value">04/04/04</div>
+            </div>
+          </div>
+        </div>
+      </app-ta-re-card>
+
+      <app-ta-re-card [cardNameCommon]="'Alcohol Test'" [cardDocumentCounter]="1"
+        (resizePage)="toggleResizePage($event)">
+        <div class="card-body-cdl">
+          <div class="card-row-endor">
+            <div class="card-item">
+              <div class="card-item-name">
+                Reason
+              </div>
+              <div class="card-item-value">Post-Accident</div>
+            </div>
+            <div class="card-item">
+              <div class="card-item-name">
+                Issued
+              </div>
+              <div class="card-item-value">04/04/04</div>
+            </div>
+          </div>
+        </div>
+      </app-ta-re-card>
+    </div>
     <div *ngSwitchCase="'medical'">
-      <div
-        class="driver-body driver-body-v2"
-        *ngFor="let medical of data.data; trackBy: identity"
-      >
-        <div class="driver-card-top">
-          <div class="driver-expiration">
-            <p class="driver-expiration-name">Issued</p>
-            <p class="driver-expiration-value">04/04/04</p>
-          </div>
-          <div class="driver-card-buttons">
-            <svg-icon
-              class="driver-card-attachments"
-              src="assets/svg/common/ic_attachment.svg"
-              (click)="
-                onButtonAction({ template: 'medical', action: 'attachments' })
-              "
-            ></svg-icon>
-            <svg-icon
-              class="driver-card-note"
-              src="assets/svg/common/ic_note.svg"
-              (click)="onButtonAction({ template: 'medical', action: 'notes' })"
-            ></svg-icon>
-            <svg-icon
-              class="driver-card-dots"
-              src="assets/svg/common/ic_dots.svg"
-              (click)="onButtonAction({ template: 'medical', action: 'dots' })"
-            ></svg-icon>
-          </div>
-        </div>
-        <div class="driver-card-bottom">
-          <div class="driver-row-3">
-            <div class="driver-item">
-              <p class="driver-item-name">Expiration</p>
-              <div class="driver-details-progress-container">
-                <app-truckassist-progress-expiration
-                  [expireDate]="'04/04/25'"
-                  [startDate]="formatDate(medical.startDate)"
-                  [expiresSettings]="'details'"
-                ></app-truckassist-progress-expiration>
+      <div *ngFor="let medical of data.data; trackBy:identity">
+        <app-ta-re-card [cardNameCommon]="'08/12/23'">
+          <div class="card-body-cdl">
+            <div class="card-row-progress">
+              <div class="card-details-progress-container">
+                <app-truckassist-progress-expiration [expireDate]="'05/09/27'"
+                  [startDate]="formatDate(medical.startDate)" [expiresSettings]="'details'">
+
+                </app-truckassist-progress-expiration>
               </div>
+
             </div>
           </div>
-          <a class="show-details" (click)="onShowDetails(medical)">{{
-            medical.showDetails ? "Hide Details" : "Show Details"
-          }}</a>
-        </div>
+        </app-ta-re-card>
+        <app-ta-re-card [cardDocumentCounter]="1" [cardNameCommon]="'09/27/22'">
+          <div class="card-body-cdl">
+            <div class="card-row-progress">
+              <div class="card-details-progress-container">
+                <app-truckassist-progress-expiration [expireDate]="'05/09/27'"
+                  [startDate]="formatDate(medical.startDate)" [expiresSettings]="'details'">
+
+                </app-truckassist-progress-expiration>
+              </div>
+
+            </div>
+          </div>
+        </app-ta-re-card>
+        <app-ta-re-card [isCardOpen]="false" [cardNameCommon]="'09/27/22'">
+          <div class="card-row-progress">
+            <div class="card-details-progress-container">
+              <app-truckassist-progress-expiration [expireDate]="'05/09/27'" [startDate]="formatDate(medical.startDate)"
+                [expiresSettings]="'details'">
+
+              </app-truckassist-progress-expiration>
+            </div>
+          </div>
+        </app-ta-re-card>
       </div>
     </div>
-    <!---------------------- MVR TEMPLATE ------------------>
     <div *ngSwitchCase="'mvr'">
-      <div
-        class="driver-body driver-body-v2"
-        *ngFor="let mvr of data.data; trackBy: identity"
-      >
-        <div class="driver-card-top">
-          <div class="driver-expiration">
-            <p class="driver-expiration-name">Issued</p>
-            <p class="driver-expiration-value">04/04/04</p>
-          </div>
-          <div class="driver-card-buttons">
-            <svg-icon
-              class="driver-card-attachments"
-              src="assets/svg/common/ic_attachment.svg"
-              (click)="
-                onButtonAction({ template: 'mvr', action: 'attachments' })
-              "
-            ></svg-icon>
-            <svg-icon
-              class="driver-card-note"
-              src="assets/svg/common/ic_note.svg"
-              (click)="onButtonAction({ template: 'mvr', action: 'notes' })"
-            ></svg-icon>
-            <svg-icon
-              class="driver-card-dots"
-              src="assets/svg/common/ic_dots.svg"
-              (click)="onButtonAction({ template: 'mvr', action: 'dots' })"
-            ></svg-icon>
-          </div>
-        </div>
-        <div class="driver-card-bottom">
-          <div class="driver-row-3">
-            <div class="driver-item">
-              <p class="driver-item-name">Expiration</p>
-              <div class="driver-details-progress-container">
-                <app-truckassist-progress-expiration
-                  [expireDate]="'04/04/25'"
-                  [startDate]="formatDate(mvr.startDate)"
-                  [expiresSettings]="'details'"
-                ></app-truckassist-progress-expiration>
+      <div *ngFor="let mvr of data.data; truckBy:identity">
+        <app-ta-re-card [cardNameCommon]="'08/12/23'">
+          <div class="card-body-cdl">
+            <div class="card-row-progress">
+              <div class="card-details-progress-container">
+                <app-truckassist-progress-expiration [expireDate]="'05/09/27'" [startDate]="formatDate(mvr.startDate)"
+                  [expiresSettings]="'details'">
+                </app-truckassist-progress-expiration>
               </div>
             </div>
           </div>
-          <div
-            class="driver-hidden"
-            [@showHideDetails]="mvr.showDetails ? 'true' : 'false'"
-          >
-            <div class="driver-row-7">
-              <app-ta-files
-                [files]="[
-                  {
-                    fileName: 'truckassist0',
-                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                    extension: 'pdf'
-                  },
-                  {
-                    fileName: 'truckassist1',
-                    url: 'https://s2.q4cdn.com/498544986/files/doc_downloads/test.pdf',
-                    extension: 'pdf'
-                  },
-                  {
-                    fileName: 'truckassist2',
-                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                    extension: 'pdf'
-                  }
-                ]"
-                [fileType]="'multiple-pdf'"
-                [customClassName]="'driver-details-multiple-pdf'"
-              ></app-ta-files>
-            </div>
-            <div class="driver-row-5">
-              <div class="driver-item">
-                <app-ta-input-note
-                  [formControl]="mvrNote"
-                  [isVisibleDivider]="false"
-                  [isVisibleNote]="true"
-                  [isVisibleArrow]="false"
-                  [minRows]="1"
-                  [placeholder]="'Write something.'"
-                  [customClass]="'note-small'"
-                ></app-ta-input-note>
+        </app-ta-re-card>
+
+        <app-ta-re-card [cardDocumentCounter]="1" [cardNameCommon]="'09/27/22'">
+          <div class="card-body-cdl">
+            <div class="card-row-progress">
+              <div class="card-details-progress-container">
+                <app-truckassist-progress-expiration [expireDate]="'05/09/27'" [startDate]="formatDate(mvr.startDate)"
+                  [expiresSettings]="'details'">
+                </app-truckassist-progress-expiration>
               </div>
             </div>
           </div>
-          <a class="show-details" (click)="onShowDetails(mvr)">{{
-            mvr.showDetails ? "Hide Details" : "Show Details"
-          }}</a>
-        </div>
+        </app-ta-re-card>
+
+        <app-ta-re-card [cardDocumentCounter]="6" [cardNameCommon]="'09/27/22'">
+          <div class="card-body-cdl">
+            <div class="card-row-progress  second-progress">
+              <div class="card-details-progress-container">
+                <app-truckassist-progress-expiration [expireDate]="'05/09/27'" [startDate]="formatDate(mvr.startDate)"
+                  [expiresSettings]="'details'">
+                </app-truckassist-progress-expiration>
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="details-document-container">
+            <div class="icon-counter-wrapper">
+              <div class="counter-text-wrapper">
+                <app-ta-counter [countBackgroud]="'#F3F3F3'" [countHeight]="'24px'" [countWidth]="'24px'" [count]="6">
+                </app-ta-counter>
+                <p class="details-document-name">Document</p>
+              </div>
+              <svg-icon (click)="onFileAction('download')" src="assets/svg/common/ic_download.svg">
+              </svg-icon>
+            </div>
+          </div>
+          <div class="card-pdf">
+            <app-ta-files [files]="[
+           {
+            fileName: 'truckassist0',
+            url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+            extension: 'pdf'
+          },
+          {
+            fileName: 'truckassist0',
+            url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+            extension: 'pdf'
+          },
+          {
+            fileName: 'truckassist0',
+            url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+            extension: 'pdf'
+          },
+          {
+            fileName: 'truckassist0',
+            url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+            extension: 'pdf'
+          },
+           ]" [fileType]="'multiple-pdf'" [customClassName]="'driver-details-multiple-pdf'">
+            </app-ta-files>
+          </div>
+          <div class="divider"></div>
+          <div class="card-note">
+            <app-ta-input-note [formControl]="cdlNote" [isVisibleDivider]="false" [isVisibleNote]="true"
+              [isVisibleArrow]="false" [minRows]="1" [placeholder]="'Write something.'" [customClass]="'note-small'">
+
+            </app-ta-input-note>
+          </div>
+        </app-ta-re-card>
+
       </div>
     </div>
   </div>
-</div>
