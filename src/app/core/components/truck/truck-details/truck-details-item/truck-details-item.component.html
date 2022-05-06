@@ -2,7 +2,12 @@
     <div [ngSwitch]="data.template">
         <!---------------------------- GENERAL TEMPLATE ----------------------------->
         <div *ngSwitchCase="'general'">
-            <app-ta-details-header-card [cardDetailsName]="'Unit 12345'" [cardDetailsDate]="'08/03/20'">
+            <app-ta-details-header-card 
+            [cardDetailsName]="'Unit 12345'" 
+            [cardDetailsDate]="'08/03/20'"
+            [tooltipNext]="'Next Truck'" 
+            [tooltipPrevious]="'Previous Truck'" 
+            >
                 <ng-container>
                     <div class="truck-details-wrapper">
                         <div class="details-header-avatar">
@@ -37,7 +42,7 @@
 
             <div class="details-cards">
                 <!--------Assinged to--------->
-                <app-ta-custom-card [cardName]="'Assigned To'" [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
+                <app-ta-custom-card [cardName]="'Assigned To'" [tooltipName]="'Dispatch History'" [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
                     [isCardOpen]="true">
                     <div class="assignTo">
                         <div class="assignTo-item first">
@@ -143,7 +148,7 @@
                     </div>
                 </app-ta-custom-card>
                 <!--------Fuel Consumption--------->
-                <app-ta-custom-card [cardName]="'Fuel Consumption'"
+                <app-ta-custom-card [tooltipName]="'View in Modal'" [cardName]="'Fuel Consumption'"
                     [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'">
                     <div class="common-template perfomance">
                         <mat-button-toggle-group [value]="selectedValueFuel" (change)="changeValueFuel($event.value)"
@@ -184,7 +189,7 @@
                 </app-ta-custom-card>
 
                 <!--------Revenue--------->
-                <app-ta-custom-card [cardName]="'Revenue'" [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'">
+                <app-ta-custom-card [tooltipName]="'View in Modal'" [cardName]="'Revenue'" [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'">
                     <div class="common-template perfomance">
                         <mat-button-toggle-group [value]="selectedValueRevenue"
                             (change)="changeValueRevenue($event.value)" appearance="legacy"
@@ -223,8 +228,8 @@
                     </div>
                 </app-ta-custom-card>
 
-                <!--------Owner Historu--------->
-                <app-ta-custom-card [cardName]="'Owner History'"
+                <!--------Owner History--------->
+                <app-ta-custom-card [tooltipName]="'View in Modal'" [cardName]="'Owner History'"
                     [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'">
                     <div class="owner-history-wrapper">
                         <div class="owner-history-title">

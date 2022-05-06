@@ -63,6 +63,8 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
 
   isAccountVisible: boolean = true;
   accountText: string = null;
+
+  public testPleaseWork:any={};
   constructor(private customModalService: CustomModalService) {
 
     this.chartOptions = {
@@ -151,6 +153,71 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log(this.data);
     this.selectedValuePayroll = "1Y";
+    this.initTableOptions();
+  }
+  
+  public initTableOptions(): void {
+    this.testPleaseWork = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit Driver',
+          name: 'edit',
+          class: 'regular-text',
+          contentType: 'edit',
+        },
+        {
+          title: 'Add CDL',
+          name: 'new-licence',
+          class: 'regular-text',
+          contentType: 'add',
+        },
+        {
+          title: 'Add Medical',
+          name: 'new-medical',
+          class: 'regular-text',
+          contentType: 'add',
+        },
+        {
+          title: 'Add MVR',
+          name: 'new-mvr',
+          class: 'regular-text',
+          contentType: 'add',
+        },
+        {
+          title: 'Add Test',
+          name: 'new-drug',
+          class: 'regular-text',
+          contentType: 'add',
+        },
+        {
+          title: 'Activate',
+          reverseTitle: 'Deactivate',
+          name: 'activate-item',
+          class: 'regular-text',
+          contentType: 'activate',
+        },
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
+        },
+      ],
+      export: true,
+    };
   }
 
   public onModalAction() {
@@ -278,6 +345,8 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     this.copied = !this.copied;
     this.copiedBankAccount = !this.copiedBankAccount;
     this.copiedBankRouting = !this.copiedBankRouting;
+    console.log(this.copied);
+    
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';

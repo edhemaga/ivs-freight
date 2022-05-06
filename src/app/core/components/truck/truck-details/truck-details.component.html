@@ -1,6 +1,6 @@
 <div class="details-container-items">
     <div *ngFor="let item of truckDetailsConfig">
-        <app-ta-details-header [headerText]="item.name">
+        <app-ta-details-header [route]="'/truck'" [tooltipHeaderName]="'Back to Truck List'" [headerText]="item.name">
         </app-ta-details-header>
     </div>
 <div class="details-item-cmp">

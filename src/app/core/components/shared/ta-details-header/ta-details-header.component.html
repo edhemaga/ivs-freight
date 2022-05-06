@@ -1,7 +1,19 @@
     <div class="header-wrapper">
         <div class="toolbar-general-cmp" *ngIf="['Truck Details','Driver Details'].includes(headerText)">
             <div class="icon-text-wrapper">
-                <svg-icon routerLink="/truck" src="assets/svg/common/ic_arrow-left.svg">
+                <svg-icon
+                 [appTooltip]="tooltipHeaderName"
+                 [position]="'bottom-right'"
+                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipColor]="'#ffffff'"
+                 [zIndex]="900"
+                 [borderRadius]="'2px'"
+                 [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+                 [fontWeight]="'bold'"
+                 [fontSize]="'11px'"
+                 [customPosition]="30"
+                routerLink="{{route}}" 
+                src="assets/svg/common/ic_arrow-left.svg">
                 </svg-icon>
                 <p>{{headerText}}</p>
             </div>

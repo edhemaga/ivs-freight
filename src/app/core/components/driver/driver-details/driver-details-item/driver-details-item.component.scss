@@ -51,6 +51,21 @@
       align-items: flex-end;
       height: 18px;
       margin-bottom: 12px;
+      cursor: pointer;
+      .card-icon {
+        display: none;
+        position: relative;
+        margin-left: 6px;
+        bottom: 8px;
+        height: 18px;
+        svg {
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
       p {
         font-size: 14px;
         font-weight: 500;
@@ -75,7 +90,6 @@
       .information-email-value {
         text-overflow: ellipsis;
         overflow: hidden;
-        width: 220px;
         white-space: nowrap;
       }
 
@@ -85,18 +99,59 @@
         left: 2px;
         margin-right: 10px;
       }
+      &:hover{
+        .card-icon{
+          display: block;
+        }
+      }
     }
   }
 }
 .purchase-template {
   display: grid;
-  grid-template-columns: repeat(2, 141px);
+  grid-template-columns: repeat(2, 162px);
   grid-template-rows: repeat(1, 36px);
-  grid-column-gap: 72px;
+  grid-column-gap: 55px;
   margin-bottom: 12px;
   margin-left: 4px;
   margin-right: 16px;
   .purchase-template-item {
+    .purchase-icon-copy {
+      display: flex;
+      align-items: flex-start;
+      cursor: pointer;
+      .hidden-svg-eye {
+        margin-left: 5px;
+        position: relative;
+        bottom: 4px;
+        svg {
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+      .card-icon {
+        display: none;
+        position: relative;
+        margin-left: 6px;
+        bottom: 4px;
+        height: 18px;
+        svg {
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+      &:hover {
+        .card-icon {
+          display: block;
+        }
+      }
+    }
     .purchase-template-item-name {
       font-size: $font-size12;
       font-weight: $font-semibold;
@@ -164,11 +219,6 @@ mat-button-toggle {
     display: flex;
     align-items: flex-start;
     cursor: pointer;
-    .hidden-svg-eye {
-      margin-left: 5px;
-      position: relative;
-      bottom: 4px;
-    }
     .card-icon {
       display: none;
       position: relative;
@@ -281,6 +331,9 @@ mat-button-toggle {
 }
 .copied {
   .card-item-value {
+    color: #3551b7 !important;
+  }
+  .purchase-template-item-value {
     color: #3551b7 !important;
   }
   .card-icon {

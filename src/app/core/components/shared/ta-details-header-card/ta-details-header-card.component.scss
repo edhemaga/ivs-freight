@@ -87,18 +87,15 @@ $border-radius: 3px;
 }
 // DRIVER GENERAL PERSONAL DATA
 .details-header-wrapper-container {
-    // display: flex;
-    // justify-content: flex-start;
-    // align-items: flex-start;
-    // flex-direction: column;
-    // height: 182px;
 
     .details-header-wrapper-data {
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
-        flex-direction: column;
         margin-left: 16px;
+        .date-terminated{
+            margin-left: 130px;
+        }
         .details-header-wrapper-data-item {
             display: flex;
             justify-content: center;
@@ -199,4 +196,11 @@ $border-radius: 3px;
     margin-left: 5px;
     margin-right: 5px;
     background-color: $color-white-light;
+}
+.no-icon{
+    input{
+        margin-left: 12px;
+        position: relative;
+        left: 0 !important;
+    }
 }

@@ -1,4 +1,4 @@
-.card-flex{
+.card-flex {
     align-items: baseline !important;
 }
 .card-header-cmp {
@@ -9,12 +9,28 @@
     background-color: #ffffff;
     border-radius: 3px;
     padding: 0 !important;
-    &:hover{
+    &:hover {
         cursor: pointer;
     }
     .text-icon-common {
         display: flex;
         align-items: flex-start;
+        
+        .card-icon {
+            visibility: hidden;
+            position: relative;
+            margin-left: 6px;
+            bottom: -14px;
+            height: 18px;
+            svg {
+                &:hover {
+                    path {
+                        fill: #6c6c6c;
+                    }
+                }
+            }
+        }
+       
         .icon-common {
             margin-left: 12px;
             margin-right: 6px;
@@ -27,8 +43,13 @@
             margin-top: 10px !important;
             margin-bottom: 7px !important;
             font-size: 14px !important;
-            color: #AAAAAA !important;
+            color: #aaaaaa !important;
             font-weight: 500 !important;
+        }
+        &:hover {
+            .card-icon {
+                visibility: visible;
+            }
         }
     }
     .card-name-cmp {
@@ -49,8 +70,8 @@
 .card-container-cmp {
     border-radius: 3px;
     background-color: #ffffff;
-     margin-bottom: 8px;
-     width: 335px;
+    margin-bottom: 8px;
+    width: 335px;
     .card-body-cmp {
         flex-direction: column;
         background-color: #ffffff;
@@ -118,17 +139,27 @@ p {
 }
 .rotate {
     svg {
-      transform: rotate(180deg);
-      transition: all 0.3s ease-in-out;
-      path{
-        fill: #6d82c7 !important;
-      }
+        transform: rotate(180deg);
+        transition: all 0.3s ease-in-out;
+        path {
+            fill: #6d82c7 !important;
+        }
     }
-  }
-  .hide-text{
-      color: #6d82c7;
-      font-size: 14px;
-      font-weight: 600;
-      margin-right: 6px;
-      cursor: pointer;
-  }
+}
+.hide-text {
+    color: #6d82c7;
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 6px;
+    cursor: pointer;
+}
+.icon-dots{
+    cursor: pointer;
+    svg {
+        &:hover {
+            path {
+                fill: #6c6c6c;
+            }
+        }
+    }
+}

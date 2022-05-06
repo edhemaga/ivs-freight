@@ -16,6 +16,7 @@ export class TaCustomCardComponent {
   @Input() hasActionSvg: string = null;
   @Input() isCardOpen: boolean = false;  // if has data, set on true
   @Input() hasDivider:boolean=true;
+  @Input() tooltipName:string='';
 
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 

@@ -17,6 +17,15 @@
       <svg-icon
         *ngIf="hasHeaderSvg"
         class="header-svg"
+        [appTooltip]="tooltipName"
+        [position]="'top-middle'"
+        [tooltipBackground]="'#6c6c6c'"
+        [tooltipColor]="'#ffffff'"
+        [zIndex]="900"
+        [borderRadius]="'2px'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+        [customPosition]="-35"
         src="{{ hasHeaderSvg }}"
       ></svg-icon>
     </div>
