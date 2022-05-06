@@ -34,6 +34,7 @@
         -o-object-fit: fill;
         object-fit: fill;
         margin-right: 6px;
+        user-select: none;
       }
 
       .ta-user-reaction {
@@ -63,6 +64,16 @@
 
         .ta-user-fullname {
           font-weight: 700;
+
+          &::-moz-selection {
+            background-color: rgb(108, 108, 108, 0.2);
+            color: #6c6c6c;
+          }
+
+          &::selection {
+            background-color: rgb(108, 108, 108, 0.2);
+            color: #6c6c6c;
+          }
         }
 
         .ta-user-datetime {
@@ -72,6 +83,19 @@
           font-size: 10px;
           font-weight: 600;
           color: #919191;
+
+          .ta-user-date,
+          .ta-user-time {
+            &::-moz-selection {
+              background-color: rgba(108, 108, 108, 0.2);
+              color: #919191;
+            }
+
+            &::selection {
+              background-color: rgba(108, 108, 108, 0.2);
+              color: #919191;
+            }
+          }
 
           .ta-user-time {
             margin-left: 8px;
@@ -122,6 +146,17 @@
   }
 
   .ta-review-message {
+    .message {
+      &::-moz-selection {
+        background-color: rgb(108, 108, 108, 0.2);
+        color: #6c6c6c;
+      }
+
+      &::selection {
+        background-color: rgb(108, 108, 108, 0.2);
+        color: #6c6c6c;
+      }
+    }
     .review-textarea {
       width: 100%;
       font-size: 12px;
@@ -135,12 +170,32 @@
       outline: none;
       display: none;
 
+      scrollbar-width: none !important; /* Firefox */
+
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border: 6px solid #e5e5e5;
+        border-radius: 1px;
+      }
+      &::-webkit-scrollbar-track {
+        padding: 0;
+        position: relative;
+        right: 0;
+        top: 0;
+        background: transparent;
+      }
+
       &::-moz-selection {
-        background-color: rgb(183, 183, 183, 0.2);
+        background-color: rgb(229, 229, 229, .2);
+        color: #6c6c6c;
       }
 
       &::selection {
-        background-color: rgb(183, 183, 183, 0.2);
+        background-color: rgb(229, 229, 229, .2);
+        color: #6c6c6c;
       }
 
       &.show {

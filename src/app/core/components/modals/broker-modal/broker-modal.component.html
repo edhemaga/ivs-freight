@@ -335,6 +335,7 @@
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="false"
           [isCardOpen]="brokerContacts.length"
+          [hasScrollBody]="brokerContacts.length > 10"
           (onActionEvent)="addBrokerContacts($event)"
         >
           <div
@@ -427,6 +428,7 @@
           [hasArrow]="false"
           [hasLikeDislike]="true"
           [isCardOpen]="true"
+          [hasScrollBody]="reviews.length > 6"
           (onActionEvent)="addNewReview($event)"
         >
           <div class="no-review-broker" *ngIf="!reviews.length">
@@ -438,6 +440,8 @@
           <app-ta-user-review
             *ngIf="reviews.length"
             [reviewData]="reviews"
+            [isNewReview]="reviews[0].isNewReview"
+            (changeReviewsEvent)="changeReviewsEvent($event)"
           ></app-ta-user-review>
         </app-ta-custom-card>
       </div>

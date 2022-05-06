@@ -100,13 +100,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public hasNewReview: boolean = false;
+
   public selectedPhysicalAddress: Address = null;
   public selectedPhysicalPoBoxCity: Address = null;
   public selectedBillingAddress: Address = null;
   public selectedBillingPoBoxCity: Address = null;
 
   public labelsPayType: any[] = [];
-  public labelsDepartments: any[] = []; 
+  public labelsDepartments: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -200,12 +202,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       // DNU
       if (action === 'dnu' && this.editData) {
         // TODO: Add dnu on edit broker
-        console.log(action)
+        console.log(action);
       }
       // BFB
       if (action === 'bfb' && this.editData) {
         // TODO: Add bfb on edit broker
-        console.log(action)
+        console.log(action);
       }
     } else {
       if (action === 'close') {
@@ -274,7 +276,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public tabBillingAddressChange(event: any): void {
-    console.log('BILLING');
     this.selectedBillingAddressTab = event.find(
       (item) => item.checked === true
     );
@@ -330,7 +331,27 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public addNewReview(event: any) {}
+  public changeReviewsEvent(reviews: { data: any[]; action: string }) {
+    console.log(reviews);
+    this.reviews = [...reviews.data];
+  }
+
+  public addNewReview(event: any) {
+    this.hasNewReview = true;
+    this.reviews.unshift({
+      id: Math.random() * 100,
+      companyUser: {
+        id: Math.random() * 100,
+        fullName: 'Angela Martin',
+        image: 'https://picsum.photos/id/237/200/300',
+        reaction: '',
+      },
+      comment: '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      isNewReview: true
+    });
+  }
 
   public onSelectContactDepartment(event: any) {}
 

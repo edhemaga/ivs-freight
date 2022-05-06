@@ -39,7 +39,7 @@
       ></svg-icon>
     </div>
   </div>
-  <div class="ta-card-body" [ngClass]="{'active': isCardOpen}">
+  <div class="ta-card-body" [ngClass]="{'active': isCardOpen, 'scroll': hasScrollBody}">
     <ng-content></ng-content>
   </div>
 </div>

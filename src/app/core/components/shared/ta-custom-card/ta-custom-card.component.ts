@@ -18,6 +18,7 @@ export class TaCustomCardComponent {
   @Input() isCardOpen: boolean = false;  // if has data, set on true
   @Input() hasDivider: boolean = true;
   @Input() hasLikeDislike: boolean = false;
+  @Input() hasScrollBody: boolean = false;
 
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 

@@ -84,6 +84,7 @@ import { BrokerModalComponent } from '../modals/broker-modal/broker-modal.compon
 import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-radiobuttons.component';
 import { TaLikeDislikeComponent } from './ta-like-dislike/ta-like-dislike.component';
 import { TaUserReviewComponent } from './ta-user-review/ta-user-review.component';
+import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
 
 @NgModule({
   declarations: [
@@ -142,6 +143,7 @@ import { TaUserReviewComponent } from './ta-user-review/ta-user-review.component
     NFormatterPipe,
     TaSvgPipe,
     DropdownCountPipe,
+    ReviewsSortPipe,
 
     // Directive
     AutoFocusDirective,
@@ -273,6 +275,7 @@ import { TaUserReviewComponent } from './ta-user-review/ta-user-review.component
     NFormatterPipe,
     TaSvgPipe,
     DropdownCountPipe,
+    ReviewsSortPipe,
 
     // Directive
     AutoFocusDirective,

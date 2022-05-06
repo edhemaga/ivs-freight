@@ -1,12 +1,13 @@
+import { ReviewsSortPipe } from './reviews-sort.pipe';
 import {
   Component,
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
   QueryList,
-  ViewChild,
   ViewChildren,
 } from '@angular/core';
 
@@ -15,14 +16,33 @@ import {
   templateUrl: './ta-user-review.component.html',
   styleUrls: ['./ta-user-review.component.scss'],
 })
-export class TaUserReviewComponent implements OnInit {
+export class TaUserReviewComponent implements OnInit, OnChanges {
   @ViewChildren('reviewMessage') reviewMessageRef: QueryList<ElementRef>;
   @Input() reviewData: any[] = [];
-  @Output() changedReviewData: EventEmitter<any[]> = new EventEmitter<any[]>();
+  /**
+   * isNewReview: true; 
+   * must be set in object of array reviewData for new review, 
+   * and pass like input, for focusing first created new review !!!
+   */
+  @Input() isNewReview: boolean = false; 
+  @Output() changeReviewsEvent: EventEmitter<{ data: any[]; action: string }> =
+    new EventEmitter<{ data: any[]; action: string }>();
 
-  public isEditMode: boolean = false;
+  constructor(private reviewSortPipe: ReviewsSortPipe) {}
 
-  constructor() {}
+  ngOnChanges(): void {
+    if (this.isNewReview) {
+     const timeout = setTimeout(() => {
+        this.setInputCursorAtTheEnd(
+          this.reviewMessageRef.toArray()[0].nativeElement
+        );
+        this.reviewData.filter((item) => (item.isEditMode = false));
+        this.reviewData[0].isEditMode = true;
+        this.reviewData[0].isNewReview = false;
+        clearTimeout(timeout);
+      }, 50);
+    }
+  }
 
   ngOnInit() {
     this.reviewData.map((item) => ({ ...item, isEditMode: false }));
@@ -35,7 +55,6 @@ export class TaUserReviewComponent implements OnInit {
         review.isEditMode = true;
         this.reviewMessageRef.toArray()[index].nativeElement.value =
           review.comment;
-
         this.setInputCursorAtTheEnd(
           this.reviewMessageRef.toArray()[index].nativeElement
         );
@@ -45,13 +64,17 @@ export class TaUserReviewComponent implements OnInit {
         this.reviewData = this.reviewData.filter(
           (item) => item.id !== review.id
         );
-        this.changedReviewData.emit(this.reviewData);
+        this.reviewSortPipe.transform(this.reviewData);
+        this.changeReviewsEvent.emit({ data: this.reviewData, action: type });
         break;
       }
       case 'confirm': {
         review.comment =
           this.reviewMessageRef.toArray()[index].nativeElement.value;
         review.isEditMode = false;
+        review.updatedAt = new Date().toISOString();
+        this.reviewSortPipe.transform(this.reviewData);
+        this.changeReviewsEvent.emit({ data: this.reviewData, action: type });
         break;
       }
       case 'cancel': {
