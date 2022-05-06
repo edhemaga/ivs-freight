@@ -74,12 +74,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onModalAction(action: string) {
-    if (action === 'close') {
+  public onModalAction(data: {action: string, bool: boolean}) {
+    if (data.action === 'close') {
       this.contactForm.reset();
     } else {
       // Save & Update
-      if (action === 'save') {
+      if (data.action === 'save') {
         if (this.contactForm.invalid) {
           this.inputService.markInvalid(this.contactForm);
           return;
@@ -92,7 +92,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       }
 
       // Delete
-      if (action === 'delete' && this.editData) {
+      if (data.action === 'delete' && this.editData) {
         this.deleteCompanyContactById(this.editData.id);
       }
 

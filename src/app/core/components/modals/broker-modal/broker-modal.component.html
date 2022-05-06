@@ -297,8 +297,8 @@
                   name: 'Credit Limit',
                   type: 'text',
                   label: 'Credit Limit',
-                  isRequired: this.brokerForm.get('isCredit').value,
-                  isDisabled: !this.brokerForm.get('isCredit').value,
+                  isRequired: this.brokerForm.get('creditType').value === 'Enable',
+                  isDisabled: this.brokerForm.get('creditType').value !== 'Enable',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   mask: 'separator.2'
@@ -312,11 +312,11 @@
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay term',
-                  isDisabled: !this.brokerForm.get('isCredit').value,
+                  isDisabled: this.brokerForm.get('creditType').value !== 'Enable',
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-broker-payterm'
                 }"
-                [options]="labelsPayType"
+                [options]="labelsPayTerms"
                 (selectedItem)="onSelectPayType($event)"
               ></app-ta-input-dropdown>
             </div>
@@ -374,7 +374,7 @@
                     dropdownWidthClass: 'w-col-broker-department'
                   }"
                   [options]="labelsDepartments"
-                  (selectedItem)="onSelectContactDepartment($event)"
+                  (selectedItem)="onSelectContactDepartment($event, ind)"
                 ></app-ta-input-dropdown>
                 <app-ta-input
                   formControlName="phone"

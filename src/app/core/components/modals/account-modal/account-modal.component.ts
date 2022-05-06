@@ -65,12 +65,12 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onModalAction(action: string) {
-    if (action === 'close') {
+  public onModalAction(data: {action: string, bool: boolean}) {
+    if (data.action === 'close') {
       this.accountForm.reset();
     } else {
       // Save & Update
-      if (action === 'save') {
+      if (data.action === 'save') {
         // If Form not valid
         if (this.accountForm.invalid) {
           this.inputService.markInvalid(this.accountForm);
@@ -84,7 +84,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       }
 
       // Delete
-      if (action === 'delete' && this.editData) {
+      if (data.action === 'delete' && this.editData) {
         this.deleteCompanyAccountById(this.editData.id);
       }
 

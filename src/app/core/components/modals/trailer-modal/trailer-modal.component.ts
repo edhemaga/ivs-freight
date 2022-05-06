@@ -135,12 +135,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onModalAction(action: string): void {
-    if (action === 'close') {
+  public onModalAction(data: {action: string, bool: boolean}): void {
+    if (data.action === 'close') {
       this.trailerForm.reset();
     } else {
       // Save & Update
-      if (action === 'save') {
+      if (data.action === 'save') {
         if (this.trailerForm.invalid) {
           this.inputService.markInvalid(this.trailerForm);
           return;
@@ -153,7 +153,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       }
 
       // Delete
-      if (action === 'delete' && this.editData) {
+      if (data.action === 'delete' && this.editData) {
         this.deleteTrailerById(this.editData.id);
       }
 
