@@ -1,6 +1,6 @@
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable} from 'rxjs';
 import { DriverListResponse } from 'appcoretruckassist';
 
 @Injectable({
@@ -9,6 +9,7 @@ import { DriverListResponse } from 'appcoretruckassist';
 export class DriverTService {
   constructor(private driverService: DriverService) {}
 
+  // Create Driver
   public getDrivers(
     active?: number,
     pageIndex?: number,
@@ -19,7 +20,11 @@ export class DriverTService {
     search1?: string,
     search2?: string
   ): Observable<DriverListResponse> {
-    console.log('Poziva Api getDrivers')
     return this.driverService.apiDriverListGet(active, pageIndex, pageSize);
+  }
+
+  // Delete Driver
+  public deleteDriverById(id: number): Observable<any> {
+    return this.driverService.apiDriverIdDelete(id);
   }
 }
