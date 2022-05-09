@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { of, Subject, takeUntil } from 'rxjs';
 
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
@@ -9,6 +9,9 @@ import { DriversState } from '../state/driver.store';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 import { DatePipe } from '@angular/common';
+import { DriverTService } from '../state/driver.service';
+import { catchError, tap } from 'rxjs/operators';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
 @Component({
   selector: 'app-driver-table',
@@ -31,7 +34,9 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private driversQuery: DriversQuery,
     private tableService: TruckassistTableService,
-    public datepipe: DatePipe
+    public datePipe: DatePipe,
+    private driverTService: DriverTService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -191,10 +196,10 @@ export class DriverTableComponent implements OnInit, OnDestroy {
           isSelected: false,
           textAddress: data.address.address ? data.address.address : '',
           textDOB: data.dateOfBirth
-            ? this.datepipe.transform(data.dateOfBirth, 'dd/MM/yy')
+            ? this.datePipe.transform(data.dateOfBirth, 'dd/MM/yy')
             : '',
           textHired: data.hired
-            ? this.datepipe.transform(data.hired, 'dd/MM/yy')
+            ? this.datePipe.transform(data.hired, 'dd/MM/yy')
             : '',
           textCDL: data.cdlNumber ? data.cdlNumber : '',
           textState: data.address.state ? data.address.state : '',
@@ -209,8 +214,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         };
       });
 
-      // console.log('viewData');
-      // console.log(this.viewData);
+      console.log('viewData');
+      console.log(this.viewData);
     }
   }
 
@@ -226,9 +231,6 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    // console.log('onTableBodyActions');
-    // console.log(event);
-
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
@@ -238,6 +240,37 @@ export class DriverTableComponent implements OnInit, OnDestroy {
           disableButton: true,
         }
       );
+    } else if (event.type === 'delete-item') {
+      this.driverTService
+        .deleteDriverById(event.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.notificationService.success(
+              'Driver successfully deleted',
+              'Success:'
+            );
+
+            let drivers = []
+
+            const index = this.viewData.map((driver) =>{
+              if(driver.id !== event.id){
+                drivers.push(driver);
+              }
+            })
+
+            this.viewData = drivers;
+            
+            // TODO: Treba Store da se updejtuje
+            // this.driversQuery.deleteDriverByIdFromStore(event.id);
+          },
+          error: () => {
+            this.notificationService.error(
+              `Driver with id: ${event.id} couldn't be deleted`,
+              'Error:'
+            );
+          },
+        });
     }
   }
 
