@@ -253,9 +253,10 @@
         }
     }
 }
-.details-header-wrapper .details-header-wrapper-switcher .name-icon {
+.name-icon {
+     margin-left: 0 !important;
     input {
-        margin-left: 12px;
+        margin-left: 6px;
         position: relative;
         left: 0 !important;
     }
@@ -305,3 +306,4 @@
       }
     }
   }
+ 

@@ -163,3 +163,14 @@ p {
         }
     }
 }
+.copied {
+    .card-icon {
+      svg {
+        path {
+          &:hover {
+            fill: #3551b7 !important;
+          }
+        }
+      }
+    }
+  }

@@ -19,17 +19,24 @@ export class DriverResolver implements Resolve<DriversState> {
   resolve(
     route: ActivatedRouteSnapshot
   ): Observable<DriversState> | Observable<any> {
-    if (this.driversStore.getValue().ids.length) {
-      return of(true);
-    } else {
-      return this.driverService.getDrivers(1, 1, 25).pipe(
-        catchError((error) => {
-          return of('No drivers data...');
-        }),
-        tap((driverPagination: DriverListResponse) => {
-          this.driversStore.set({ entities: driverPagination.pagination.data });
-        })
-      );
-    }
+    // if (this.driversStore.getValue().ids.length) {
+    //   return of(true);
+    // } else {
+    //   return this.driverService.getDrivers(1, 1, 25).pipe(
+    //     catchError((error) => {
+    //       return of('No drivers data...');
+    //     }),
+    //     tap((driverPagination: DriverListResponse) => {
+    //       this.driversStore.set({ entities: driverPagination.pagination.data });
+    //     })
+    //   );
+    // }
+    return this.driverService.getDriversFake().pipe(
+      catchError((error)=>{
+        return of('No drivers')
+      }),
+      tap((entites)=>this.driversStore.set({entites:entites}))
+    )
+
   }
 }

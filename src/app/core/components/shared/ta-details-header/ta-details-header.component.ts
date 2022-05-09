@@ -9,6 +9,7 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() headerText:string=null;
   @Input() tooltipHeaderName:string='';
   @Input() route:string='';
+  @Input() options:any=[];
   @Output('openModal') openModalAction=new EventEmitter<any>();
   constructor() { }
 

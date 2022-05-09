@@ -4,10 +4,16 @@
     <div *ngSwitchCase="'general'">
       <app-ta-details-header-card
         [tooltipNext]="'Next Driver'" 
-        [tooltipPrevious]="'Previous Driver'" 
+        [tooltipPrevious]="'Previous Driver'"
+        [searchName]="'Search Driver'" 
         [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
-        [cardDetailsName]="'Aleksandar Djordjevic'" 
-        [cardDetailsDateTerminated]="'10/08/26'" [cardDetailsDate]="'08/03/20'">
+        [cardDetailsName]="arrayDriverName.name" 
+        [cardDetailsDateTerminated]="'10/08/26'"
+        [cardDetailsDate]="'08/03/20'"
+        (nextValue)="nextDriver()"
+        (previousValue)="previousDriver()"
+        [optionsCmp]="arrayDrivers"
+        >
         <div class="driver-container">
           <div class="driver-personal">
             <div class="driver-avatar">
@@ -17,8 +23,8 @@
                         : 'assets/svg/common/ic_noimage-avatar.svg'
                     }}" alt="Driver Image" />
             </div>
-            <div class="driver-information">
-              <div class="information-item">
+            <div class="driver-information" >
+              <div class="information-item" [ngClass]="{'copied':copiedSSN}">
                 <svg-icon 
                  class="information-svg"
                  src="assets/svg/common/ic_ssn.svg"
@@ -30,56 +36,56 @@
                 <svg-icon
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
-                [appTooltip]="'Copy'"
+                [appTooltip]="copiedSSN ? 'Copied':'Copy'"
                 [position]="'top-middle'"
-                [tooltipBackground]="'#6c6c6c'"
+                [tooltipBackground]="copiedSSN ? '#536BC2':'#6c6c6c'"
                 [tooltipColor]="'#ffffff'"
                 [zIndex]="900"
                 [borderRadius]="'2px'"
                 [fontWeight]="'bold'"
                 [fontSize]="'11px'"
                 [customPosition]="-2"
-                 (click)="copyText(data.data.reasponse.ssn)"></svg-icon>
+                 (click)="copyText(data.data.reasponse.ssn,'ssn')"></svg-icon>
               </div>
-              <div class="information-item">
+              <div class="information-item" [ngClass]="{'copied':copiedDriverPhone}">
                 <svg-icon class="information-svg" src="assets/svg/common/ic_phone.svg"></svg-icon>
                 <p class="information-value">
                   {{ data.data.reasponse.additionalData?.phone }}
                 </p>
                 <svg-icon
-                 (click)="copyText(data.data.reasponse.additionalData?.phone)"
+                 (click)="copyText(data.data.reasponse.additionalData?.phone,'driver-phone')"
                  class="card-icon"
                  src="assets/svg/common/ic_copy.svg"
-                 [appTooltip]="'Copy'"
-                 [position]="'top-middle'"
-                 [tooltipBackground]="'#6c6c6c'"
-                 [tooltipColor]="'#ffffff'"
-                 [zIndex]="900"
-                 [borderRadius]="'2px'"
-                 [fontWeight]="'bold'"
-                 [fontSize]="'11px'"
-                 [customPosition]="-2"
+                 [appTooltip]="copiedDriverPhone ? 'Copied':'Copy'"
+                [position]="'top-middle'"
+                [tooltipBackground]="copiedDriverPhone ? '#536BC2':'#6c6c6c'"
+                [tooltipColor]="'#ffffff'"
+                [zIndex]="900"
+                [borderRadius]="'2px'"
+                [fontWeight]="'bold'"
+                [fontSize]="'11px'"
+                [customPosition]="-2"
                  >
                 </svg-icon>
               </div>
-              <div class="information-item">
+              <div class="information-item" [ngClass]="{'copied':copiedDriverEmail}">
                 <svg-icon class="information-svg" src="assets/svg/common/ic_email.svg"></svg-icon>
                 <p class="information-value information-email-value">
                   {{ data.data.reasponse.additionalData?.email }}
                 </p>
                 <svg-icon
-                 (click)="copyText(data.data.reasponse.additionalData?.email)" 
+                 (click)="copyText(data.data.reasponse.additionalData?.email,'driver-email')" 
                  class="card-icon" 
                  src="assets/svg/common/ic_copy.svg"
-                 [appTooltip]="'Copy'"
-                 [position]="'top-middle'"
-                 [tooltipBackground]="'#6c6c6c'"
-                 [tooltipColor]="'#ffffff'"
-                 [zIndex]="900"
-                 [borderRadius]="'2px'"
-                 [fontWeight]="'bold'"
-                 [fontSize]="'11px'"
-                 [customPosition]="-2"
+                 [appTooltip]="copiedDriverEmail ? 'Copied':'Copy'"
+                [position]="'top-middle'"
+                [tooltipBackground]="copiedDriverEmail ? '#536BC2':'#6c6c6c'"
+                [tooltipColor]="'#ffffff'"
+                [zIndex]="900"
+                [borderRadius]="'2px'"
+                [fontWeight]="'bold'"
+                [fontSize]="'11px'"
+                [customPosition]="-2"
                  ></svg-icon>
               </div>
 
@@ -89,7 +95,7 @@
       </app-ta-details-header-card>
       <div class="details-cards">
         <!-- assignedTo -->
-        <app-ta-custom-card [cardName]="'Assigned To'" [tooltipName]="'Dispatch History'" [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
+        <app-ta-custom-card [cardName]="'Assigned To'" [hasDivider]="false" [tooltipName]="'Dispatch History'" [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
           [isCardOpen]="true">
           <div class="assignTo">
             <div class="assignTo-item first">
@@ -283,15 +289,15 @@
             </div>
             <div class="purchase-template-item second-name">
               <div class="purchase-template-item-name ">EIN</div>
-              <div class="purchase-icon-copy" [ngClass]="{'copied':copied}">
+              <div class="purchase-icon-copy" [ngClass]="{'copied':copiedEin}">
                 <div class="purchase-template-item-value">12-3456789</div>
                 <svg-icon
-                 (click)="copyText('12-3456789')" 
+                 (click)="copyText('12-3456789','ein')" 
                  class="card-icon" 
                  src="assets/svg/common/ic_copy.svg"
-                 [appTooltip]="copied ? 'Copied':'Copy'"
+                 [appTooltip]="copiedEin ? 'Copied':'Copy'"
                  [position]="'top-middle'"
-                 [tooltipBackground]="copied ? '#536BC2':'#6c6c6c'"
+                 [tooltipBackground]="copiedEin ? '#536BC2':'#6c6c6c'"
                  [tooltipColor]="'#ffffff'"
                  [zIndex]="900"
                  [borderRadius]="'2px'"
@@ -367,12 +373,12 @@
               <div class="purchase-icon-copy" [ngClass]="{'copied':copiedBankRouting}">
                 <div class="purchase-template-item-value">{{data.data.bankInfo.routing}}</div>
                 <svg-icon
-                 (click)="copyText(data.data.bankInfo.routing)"
+                 (click)="copyText(data.data.bankInfo.routing,'bankRouting')"
                  class="card-icon" 
                  src="assets/svg/common/ic_copy.svg"
-                 [appTooltip]="'Copy'"
+                 [appTooltip]="copiedBankRouting ? 'Copied':'Copy'"
                  [position]="'top-middle'"
-                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipBackground]="copiedBankRouting ? '#536BC2':'#6c6c6c'"
                  [tooltipColor]="'#ffffff'"
                  [zIndex]="900"
                  [borderRadius]="'2px'"
@@ -388,7 +394,7 @@
                 <div class="purchase-template-item-value">{{accountText ? accountText : hiddenPassword(data.data.bankInfo.account,4)}}</div>
                 <svg-icon 
                   class="hidden-svg-eye"
-                  [appTooltip]="isAccountVisible ? 'Hide Account Number' : 'Show Account Number'"
+                  [appTooltip]="isAccountVisible ? 'Show Account Number' : 'Hide Account Number'"
                   [position]="'top-middle'"
                   [tooltipBackground]="'#6c6c6c'"
                   [tooltipColor]="'#ffffff'"
@@ -401,12 +407,12 @@
                    src="{{isAccountVisible ? 'assets/svg/common/ic_eye-visible.svg':'assets/svg/common/ic_eye-hidden.svg'}}"
                   ></svg-icon>
                 <svg-icon 
-                  (click)="copyText(data.data.bankInfo.account)" 
+                  (click)="copyText(data.data.bankInfo.account, 'bankAcc')" 
                   class="card-icon" 
                   src="assets/svg/common/ic_copy.svg"
-                  [appTooltip]="'Copy'"
+                  [appTooltip]="copiedBankAccount ? 'Copied':'Copy'"
                   [position]="'top-middle'"
-                  [tooltipBackground]="'#6c6c6c'"
+                  [tooltipBackground]="copiedBankAccount ? '#536BC2':'#6c6c6c'"
                   [tooltipColor]="'#ffffff'"
                   [zIndex]="900"
                   [borderRadius]="'2px'"
@@ -428,15 +434,15 @@
             </div>
             <div class="purchase-template-item second-name">
               <div class="purchase-template-item-name ">Phone</div>
-              <div class="purchase-icon-copy" [ngClass]="{'copied':copied}">
+              <div class="purchase-icon-copy" [ngClass]="{'copied':copiedPhone}">
                 <div class="purchase-template-item-value">{{data.data.emergencyContact.phone}}</div>
                 <svg-icon 
-                (click)="copyText(data.data.emergencyContact.phone)" 
+                (click)="copyText(data.data.emergencyContact.phone,'phone')" 
                 class="card-icon" 
                 src="assets/svg/common/ic_copy.svg"
-                 [appTooltip]="'Copy'"
+                 [appTooltip]="copiedPhone ? 'Copied':'Copy'"
                  [position]="'top-middle'"
-                 [tooltipBackground]="'#6c6c6c'"
+                 [tooltipBackground]="copiedPhone ? '#536BC2':'#6c6c6c'"
                  [tooltipColor]="'#ffffff'"
                  [zIndex]="900"
                  [borderRadius]="'2px'"
@@ -452,7 +458,7 @@
 
         <div class="details-page-row-5">
           <div class="note-item">
-            <app-ta-input-note [formControl]="note" [isVisibleDivider]="false" [isVisibleNote]="true"
+            <app-ta-input-note [formControl]="note" [isVisibleNote]="true"
               [isVisibleArrow]="true" [minRows]="1" [placeholder]="'Write something.'" [customClass]="'note-small'">
 
             </app-ta-input-note>
@@ -464,11 +470,10 @@
     <div *ngSwitchCase="'cdl'">
       <div *ngFor="let cdl of data.data; trackBy:identity">
         <app-ta-re-card
-          [options]="testPleaseWork.title"
           [cardDocumentCounter]="1"  
           (resizePage)="toggleResizePage($event)"
           [cardNameCommon]="'S53044475284'"
-          
+          [options]="dataTest"
           >
           <div class="card-body-cdl">
             <div class="card-row-issued">
@@ -516,7 +521,7 @@
             </div>
           </div>
         </app-ta-re-card>
-        <app-ta-re-card [cardDocumentCounter]="6" (resizePage)="toggleResizePage($event)"
+        <app-ta-re-card [options]="dataTest" [cardDocumentCounter]="6" (resizePage)="toggleResizePage($event)"
           [cardNameCommon]="'570AG0927'">
           <div class="card-body-cdl">
             <div class="card-row-issued">
@@ -609,7 +614,7 @@
       </div>
     </div>
     <div *ngSwitchCase="'drug-alcohol'">
-      <app-ta-re-card [cardNameCommon]="'Drug Test'" (resizePage)="toggleResizePage($event)">
+      <app-ta-re-card [options]="dataTest" [cardNameCommon]="'Drug Test'" (resizePage)="toggleResizePage($event)">
         <div class="card-body-cdl">
           <div class="card-row-endor">
             <div class="card-item">
@@ -628,7 +633,7 @@
         </div>
       </app-ta-re-card>
 
-      <app-ta-re-card [cardNameCommon]="'Alcohol Test'" [cardDocumentCounter]="2"
+      <app-ta-re-card [options]="dataTest" [cardNameCommon]="'Alcohol Test'" [cardDocumentCounter]="2"
         (resizePage)="toggleResizePage($event)">
         <div class="card-body-cdl">
           <div class="card-row-endor">
@@ -648,7 +653,7 @@
         </div>
       </app-ta-re-card>
 
-      <app-ta-re-card [cardNameCommon]="'Alcohol Test'" [cardDocumentCounter]="1"
+      <app-ta-re-card [options]="dataTest" [cardNameCommon]="'Alcohol Test'" [cardDocumentCounter]="1"
         (resizePage)="toggleResizePage($event)">
         <div class="card-body-cdl">
           <div class="card-row-endor">
@@ -670,7 +675,7 @@
     </div>
     <div *ngSwitchCase="'medical'">
       <div *ngFor="let medical of data.data; trackBy:identity">
-        <app-ta-re-card [cardNameCommon]="'08/12/23'">
+        <app-ta-re-card [options]="dataTest" [cardNameCommon]="'08/12/23'">
           <div class="card-body-cdl">
             <div class="card-row-progress">
               <div class="card-details-progress-container">
@@ -683,7 +688,7 @@
             </div>
           </div>
         </app-ta-re-card>
-        <app-ta-re-card [cardDocumentCounter]="1" [cardNameCommon]="'09/27/22'">
+        <app-ta-re-card [options]="dataTest" [cardDocumentCounter]="1" [cardNameCommon]="'09/27/22'">
           <div class="card-body-cdl">
             <div class="card-row-progress">
               <div class="card-details-progress-container">
@@ -696,13 +701,17 @@
             </div>
           </div>
         </app-ta-re-card>
-        <app-ta-re-card [isCardOpen]="false" [cardNameCommon]="'09/27/22'">
+        <app-ta-re-card [options]="dataTest" [isCardOpen]="false" [cardNameCommon]="'09/27/22'">
           <div class="card-row-progress">
-            <div class="card-details-progress-container">
-              <app-truckassist-progress-expiration [expireDate]="'05/09/27'" [startDate]="formatDate(medical.startDate)"
-                [expiresSettings]="'details'">
-
-              </app-truckassist-progress-expiration>
+            <div class="card-body-cdl">
+              <div class="card-row-progress">
+                <div class="card-details-progress-container">
+                  <app-truckassist-progress-expiration [expireDate]="'05/09/27'"
+                    [startDate]="formatDate(medical.startDate)" [expiresSettings]="'details'">
+  
+                  </app-truckassist-progress-expiration>
+                </div>
+              </div>
             </div>
           </div>
         </app-ta-re-card>
@@ -710,7 +719,7 @@
     </div>
     <div *ngSwitchCase="'mvr'">
       <div *ngFor="let mvr of data.data; truckBy:identity">
-        <app-ta-re-card [cardNameCommon]="'08/12/23'">
+        <app-ta-re-card [options]="dataTest" [cardNameCommon]="'08/12/23'">
           <div class="card-body-cdl">
             <div class="card-row-progress">
               <div class="card-details-progress-container">
@@ -722,7 +731,7 @@
           </div>
         </app-ta-re-card>
 
-        <app-ta-re-card [cardDocumentCounter]="1" [cardNameCommon]="'09/27/22'">
+        <app-ta-re-card [options]="dataTest" [cardDocumentCounter]="1" [cardNameCommon]="'09/27/22'">
           <div class="card-body-cdl">
             <div class="card-row-progress">
               <div class="card-details-progress-container">
@@ -734,7 +743,7 @@
           </div>
         </app-ta-re-card>
 
-        <app-ta-re-card [cardDocumentCounter]="6" [cardNameCommon]="'09/27/22'">
+        <app-ta-re-card [options]="dataTest" [cardDocumentCounter]="6" [cardNameCommon]="'09/27/22'">
           <div class="card-body-cdl">
             <div class="card-row-progress  second-progress">
               <div class="card-details-progress-container">

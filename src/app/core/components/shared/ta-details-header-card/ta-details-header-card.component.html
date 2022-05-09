@@ -1,8 +1,30 @@
 <div class="details-header-wrapper">
     <div class="details-header-wrapper-switcher">
-        <div class="name-icon" [ngClass]="{'no-icon':!hasSvgHeader}">
-            <svg-icon class="header-svg" *ngIf="hasSvgHeader" src="{{hasSvgHeader}}"></svg-icon>
-             <input type="text" [ngModel]="cardDetailsName">
+        <div [appTooltip]="searchName"
+        [position]="'top-middle'"
+        [tooltipBackground]="'#6c6c6c'"
+        [tooltipColor]="'#ffffff'"
+        [zIndex]="900"
+        [borderRadius]="'2px'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+        [customPosition]="-11"
+         class="name-icon" >
+            <app-ta-input-dropdown
+                class="dropInput"
+                [formControl]="inputFormControl"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-details-template'
+                }"
+                [(ngModel)]='cardDetailsName'
+                [options]="optionsCmp"
+                [template]="'details-template'"
+                (selectedItem)="onSelectDetail($event)"
+              >
+            </app-ta-input-dropdown>
         </div>
         <div class="arrows">
             <svg-icon
@@ -16,6 +38,7 @@
             [fontSize]="'11px'"
             [customPosition]="-11" 
              class="arrow-left" 
+             (click)="onPreviousAction($event)"
              src="assets/svg/common/arrow-left.svg">
             </svg-icon>
             <svg-icon
@@ -28,7 +51,8 @@
             [fontWeight]="'bold'"
             [fontSize]="'11px'"
             [customPosition]="-11"
-             class="arrow-right" 
+            class="arrow-right" 
+            (click)="onNextAction()"
              src="assets/svg/common/arrow-right.svg"></svg-icon>
         </div>
     </div>

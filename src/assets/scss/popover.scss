@@ -65,6 +65,22 @@
             height: 16px;
             background-image: url("../../assets/png/table-dropdown/delete.png");
           }
+
+          .deactivate{
+            width: 18px;
+            height: 18px;
+            background-image: url("../../assets/svg/common/ic_deactivate.svg");
+          }
+          .dm{
+            width: 14px;
+            height: 16px;
+            background-image: url("../../assets/svg/common/ic_dm.svg");
+          }
+          .print{
+            width: 14px;
+            height: 16px;
+            background-image: url("../../assets/svg/common/ic_print.svg");
+          }
         }
 
         .dropdown-content-text {
@@ -99,6 +115,15 @@
 
             .reset {
               background-image: url("../../assets/png/table-dropdown/reset-hover.png") !important;
+            }
+            .deactivate{
+              background-image: url("../../assets/svg/common/ic_deactivate.svg");
+            }
+            .dm{
+              background-image: url("../../assets/svg/common/ic_dm.svg");
+            }
+            .print{
+              background-image: url("../../assets/svg/common/ic_print.svg");
             }
           }
         }

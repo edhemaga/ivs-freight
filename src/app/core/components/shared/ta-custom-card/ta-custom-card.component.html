@@ -19,6 +19,15 @@
         *ngIf="hasHeaderSvg"
         class="header-svg"
         src="{{ hasHeaderSvg }}"
+        [appTooltip]="tooltipName"
+        [position]="'top-middle'"
+        [tooltipBackground]="'#6c6c6c'"
+        [tooltipColor]="'#ffffff'"
+        [zIndex]="900"
+        [borderRadius]="'2px'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+        [customPosition]="-35"
       ></svg-icon>
     </div>
     <div class="header-actions" [ngClass]="{'like-dislike-template': hasLikeDislike}">

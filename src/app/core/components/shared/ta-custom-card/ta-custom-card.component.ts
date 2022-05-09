@@ -19,6 +19,7 @@ export class TaCustomCardComponent {
   @Input() hasDivider: boolean = true;
   @Input() hasLikeDislike: boolean = false;
   @Input() hasScrollBody: boolean = false;
+  @Input() tooltipName:string='';
 
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 

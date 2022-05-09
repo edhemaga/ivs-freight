@@ -13,8 +13,40 @@ $color-white: #ffffff;
 
 $color-gray: #919191;
 $color-gray-dark: #6c6c6c;
-
 $border-radius: 3px;
+
+::ng-deep .input-custom-group {
+    .input-dropdown-arrow {
+        top: 10px !important;
+        svg {
+            display: none !important;
+        }
+    }
+    &:hover {
+        .input-dropdown-arrow {
+            svg {
+                display: block !important;
+            }
+        }
+    }
+
+    .input-control {
+        background-color: transparent !important;
+        font-size: $font-size20 !important;
+        color: #6c6c6c !important;
+        font-weight: $font-bold !important;
+        cursor: pointer;
+        &:hover {
+            background-color: #f3f3f3 !important;
+            color: #3c3c3c !important;
+            font-style: italic;
+        }
+        &:focus {
+            background-color: #6c6c6c !important;
+        }
+    }
+}
+
 // GENERAL SWITCHER DRIVER
 .details-header-wrapper {
     background-color: $color-white;
@@ -33,46 +65,7 @@ $border-radius: 3px;
             display: flex;
             align-items: center;
             width: 366px;
-            .header-svg {
-                position: relative;
-                bottom: 4px;
-                margin: 0;
-                padding: 0;
-                width: 18px;
-                height: 18px;
-                z-index: 10;
-                cursor: pointer;
-                left: 70%;
-            }
-
-            input[type="text"] {
-                border: none;
-                outline: none;
-                background: transparent;
-                font-size: $font-size20;
-                font-weight: $font-bold;
-                color: $color-gray-dark;
-                position: relative;
-                left: -6px;
-                &:focus {
-                    border: none !important;
-                    background-color: #6c6c6c !important;
-                    color: #ffffff !important;
-                    outline: none !important;
-                    border-radius: 2px ;
-                    padding: 2px 7px;
-                    width: 366px;
-                }
-                &:hover {
-                    border: none;
-                    outline: none;
-                    background-color: #f3f3f3;
-                    border-radius: 2px;
-                    color: #3c3c3c;
-                    padding: 2px 7px;
-                    width: 366px;
-                }
-            }
+            margin-left: 6px;
         }
     }
     .details-header-wrapper-switcher-name {
@@ -87,13 +80,12 @@ $border-radius: 3px;
 }
 // DRIVER GENERAL PERSONAL DATA
 .details-header-wrapper-container {
-
     .details-header-wrapper-data {
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
         margin-left: 16px;
-        .date-terminated{
+        .date-terminated {
             margin-left: 130px;
         }
         .details-header-wrapper-data-item {
@@ -153,7 +145,7 @@ $border-radius: 3px;
         margin-right: 13px;
         margin-left: 10px;
 
-        &:hover{
+        &:hover {
             background-color: #f3f3f3;
             height: 28px;
             width: 28px;
@@ -164,13 +156,13 @@ $border-radius: 3px;
             margin-left: 5px !important;
             margin-right: 8px !important;
             cursor: pointer;
-            svg{
-              vertical-align: bottom !important;
+            svg {
+                vertical-align: bottom !important;
             }
         }
     }
-    .arrow-left{
-        &:hover{
+    .arrow-left {
+        &:hover {
             background-color: #f3f3f3;
             height: 28px;
             width: 28px;
@@ -181,12 +173,11 @@ $border-radius: 3px;
             margin-right: -5.5px;
             margin-bottom: 8px !important;
             cursor: pointer;
-            svg{
-              vertical-align: bottom !important;
+            svg {
+                vertical-align: bottom !important;
             }
         }
     }
-    
 }
 .border-line {
     margin: 0;
@@ -197,10 +188,6 @@ $border-radius: 3px;
     margin-right: 5px;
     background-color: $color-white-light;
 }
-.no-icon{
-    input{
-        margin-left: 12px;
-        position: relative;
-        left: 0 !important;
-    }
+.dropInput {
+    width: 366px;
 }

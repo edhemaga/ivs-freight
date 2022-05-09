@@ -57,15 +57,85 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public toggler: boolean = false;
   private destroy$: Subject<void> = new Subject<void>();
   public selectedValuePayroll: string = "";
-  public copied: boolean = false;
+  public copiedPhone: boolean = false;
   public copiedBankRouting: boolean = false;
   public copiedBankAccount: boolean = false;
+  public copiedEin: boolean = false;
+  public copiedSSN:boolean=false;
+  public copiedDriverPhone:boolean=false;
+  public copiedDriverEmail:boolean=false;
 
-  isAccountVisible: boolean = true;
-  accountText: string = null;
-
-  public testPleaseWork:any={};
+  public isAccountVisible: boolean = true;
+  public accountText: string = null;
+  public arrayDrivers: any = [];
+  public arrayDriverName: any = '';
+  public driverId:number=0;
+  dataTest:any;
   constructor(private customModalService: CustomModalService) {
+
+    this.arrayDrivers = [
+      {
+        id: 1,
+        name: 'Angela Martin',
+        svg: 'ic_owner-status.svg',
+        folder: 'common'
+      },
+      {
+        id: 2,
+        name: 'Angela Lomarion',
+        svg: 'ic_owner-status.svg',
+        folder: 'common'
+      },
+      {
+        id: 3,
+        name: 'Denis Rodmar',
+        svg: null,
+        folder: null
+      },
+      {
+        id: 4,
+        name: 'Milos Cirkovic',
+        svg: 'ic_owner-status.svg',
+        folder: 'common'
+      },
+      {
+        id: 5,
+        name: 'Aleksandar Djordjevic',
+        svg: 'ic_owner-status.svg',
+        folder: 'common'
+      },
+      {
+        id: 6,
+        name: 'Mika Mikic',
+        svg: null,
+        folder: null
+      }
+      ,
+      {
+        id: 7,
+        name: 'Denis Rodmar',
+        svg: null,
+        folder: null
+      },
+      {
+        id: 8,
+        name: 'Milos Cirkovic',
+        svg: 'ic_owner-status.svg',
+        folder: 'common'
+      },
+      {
+        id: 9,
+        name: 'Aleksandar Djordjevic',
+        svg: 'ic_owner-status.svg',
+        folder: 'common'
+      },
+      {
+        id: 10,
+        name: 'Mika Mikic',
+        svg: null,
+        folder: null
+      }
+    ];
 
     this.chartOptions = {
 
@@ -154,10 +224,36 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     console.log(this.data);
     this.selectedValuePayroll = "1Y";
     this.initTableOptions();
+    this.getDriversList();
   }
-  
+
+
+  public getDriversList() {
+    for (let i = 0; i < this.arrayDrivers.length; i++) {
+      this.arrayDrivers[i];
+    }
+    this.arrayDriverName = this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]]
+    return this.arrayDrivers;
+  }
+
+  public nextDriver() {
+    this.driverId < this.arrayDrivers.length -1 ? this.driverId++ : this.driverId = 0;
+    console.log(this.driverId);
+    this.arrayDriverName = this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]]
+    console.log(this.arrayDrivers.length);
+    
+     
+  }
+
+  public previousDriver() {
+    this.driverId < 1 ? this.driverId=this.arrayDrivers.length : this.driverId--;
+    console.log(this.driverId);
+    this.arrayDriverName = this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]]
+
+  }
+
   public initTableOptions(): void {
-    this.testPleaseWork = {
+    this.dataTest = {
       disabledMutedStyle: null,
       toolbarActions: {
         hideViewMode: false,
@@ -171,42 +267,12 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
       },
       actions: [
         {
-          title: 'Edit Driver',
+          title: 'Edit',
           name: 'edit',
           class: 'regular-text',
           contentType: 'edit',
         },
-        {
-          title: 'Add CDL',
-          name: 'new-licence',
-          class: 'regular-text',
-          contentType: 'add',
-        },
-        {
-          title: 'Add Medical',
-          name: 'new-medical',
-          class: 'regular-text',
-          contentType: 'add',
-        },
-        {
-          title: 'Add MVR',
-          name: 'new-mvr',
-          class: 'regular-text',
-          contentType: 'add',
-        },
-        {
-          title: 'Add Test',
-          name: 'new-drug',
-          class: 'regular-text',
-          contentType: 'add',
-        },
-        {
-          title: 'Activate',
-          reverseTitle: 'Deactivate',
-          name: 'activate-item',
-          class: 'regular-text',
-          contentType: 'activate',
-        },
+        
         {
           title: 'Delete',
           name: 'delete-item',
@@ -341,12 +407,37 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     });
   }
   /* To copy any Text */
-  public copyText(val: any) {
-    this.copied = !this.copied;
-    this.copiedBankAccount = !this.copiedBankAccount;
-    this.copiedBankRouting = !this.copiedBankRouting;
-    console.log(this.copied);
-    
+  public copyText(val: any, copVal: string) {
+
+    switch (copVal) {
+      case 'phone':
+        this.copiedPhone = true;
+        break;
+
+      case 'bankAcc':
+        this.copiedBankAccount = true;
+        break;
+
+      case 'bankRouting':
+        this.copiedBankRouting = true
+        break;
+
+      case 'ein':
+        this.copiedEin = true;
+        break;
+
+      case 'ssn':
+        this.copiedSSN=true;
+        break;
+      
+      case 'driver-phone':
+        this.copiedDriverPhone=true;
+        break;
+      case 'driver-email':
+        this.copiedDriverEmail=true;
+        break;
+    }
+
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';

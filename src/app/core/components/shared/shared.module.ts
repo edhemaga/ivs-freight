@@ -90,6 +90,7 @@ import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
 import { TaCommonHeaderComponent } from './ta-details-header/ta-details-header.component';
 import { TaDetailsHeaderCardComponent } from './ta-details-header-card/ta-details-header-card.component';
 import { TaReCardComponent } from './ta-common-card/ta-re-card.component';
+import { TruckassistTableModule } from './truckassist-table/truckassist-table.module';
 
 @NgModule({
   declarations: [
@@ -198,7 +199,8 @@ import { TaReCardComponent } from './ta-common-card/ta-re-card.component';
     NgxDropzoneModule,
     CroppieModule,
     PdfViewerModule,
-    DirectivesModule
+    DirectivesModule,
+    TruckassistTableModule
   ],
   exports: [
     // Modules

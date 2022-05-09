@@ -165,7 +165,6 @@
          &.details-template {
            display: flex;
            align-items: center;
-
            .details-template-logo {
              margin-left: 6px;
            }
@@ -267,6 +266,8 @@
 
       &.w-col-details-template {
         width: 366px;
+        height: 142px;
+        overflow: auto;
       }
 
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------

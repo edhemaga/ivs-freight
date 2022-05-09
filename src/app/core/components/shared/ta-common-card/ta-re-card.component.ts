@@ -38,7 +38,7 @@ export class TaReCardComponent implements OnInit {
   }
   /* To copy any Text */
   public copyText(val: any) {
-    this.copied = !this.copied;
+    this.copied = true;
     
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
