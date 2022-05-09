@@ -1,3 +1,4 @@
+import { AddressEntity } from './../../../../../../appcoretruckassist/model/addressEntity';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -12,6 +13,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import { Address } from '../../shared/ta-input-address/ta-input-address.component';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { BrokerModalService } from './broker-modal.service';
+import { BrokerModalResponse } from './../../../../../../appcoretruckassist/model/brokerModalResponse';
+import {
+  BrokerResponse,
+  CreateBrokerCommand,
+  UpdateBrokerCommand,
+} from 'appcoretruckassist';
 
 @Component({
   selector: 'app-broker-modal',
@@ -62,7 +71,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       value: 'enable',
       name: 'credit',
       checked: true,
-      isActive: true,
     },
     {
       label: 'Disable',
@@ -72,63 +80,41 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public reviews: any[] = [
-    {
-      id: 0,
-      companyUser: {
-        id: 0,
-        fullName: 'Kevin Malone',
-        image: 'https://picsum.photos/id/237/200/300',
-        reaction: 'like',
-      },
-      comment: 'Lorem ipsum dolor sit',
-      createdAt: '2022-05-05T08:02:52.616Z',
-      updatedAt: '2022-05-05T08:02:52.616Z',
-    },
-    {
-      id: 1,
-      companyUser: {
-        id: 1,
-        fullName: 'Vlade Divac',
-        image: 'https://picsum.photos/id/237/200/300',
-        reaction: 'dislike',
-      },
-      comment:
-        'Lorem ipsum dolor sit amet, consetetur sadipscing elit dolor sit amet, consetetur sadipscing elitelit dolor sit amet, conseelit dolor sit amet, conse.',
-      createdAt: '2022-05-05T08:02:52.616Z',
-      updatedAt: '2022-05-05T08:02:52.616Z',
-    },
-  ];
+  public reviews: any[] = [];
 
-  public hasNewReview: boolean = false;
+  public selectedPhysicalAddress: Address | AddressEntity = null;
+  public selectedPhysicalPoBox: Address | AddressEntity = null;
+  public selectedBillingAddress: Address | AddressEntity = null;
+  public selectedBillingPoBox: Address | AddressEntity = null;
 
-  public selectedPhysicalAddress: Address = null;
-  public selectedPhysicalPoBoxCity: Address = null;
-  public selectedBillingAddress: Address = null;
-  public selectedBillingPoBoxCity: Address = null;
-
-  public labelsPayType: any[] = [];
+  public labelsPayTerms: any[] = [];
   public labelsDepartments: any[] = [];
+
+  public selectedContractDepartmentFormArray: any[] = [];
+
+  public selectedPayTerm: any = null;
+
+  public isContactCardsScrolling: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal,
-    private mockModalService: MockModalService
+    private mockModalService: MockModalService,
+    private brokerModalService: BrokerModalService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
     this.createForm();
-    // this.onEinTyping();
-
-    this.physicalAddressTabs = this.mockModalService.brokerPhysicalAddressTabs;
-    this.billingAddressTabs = this.mockModalService.brokerBillingAddressTabs;
+    this.getBrokerDropdown();
+    this.isCredit(this.billingCredit);
 
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 1,
+        id: 4,
       };
       this.editBrokerById(this.editData.id);
       this.tabs.push({
@@ -155,20 +141,22 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       // Physical Address
       physicalAddress: [null],
       physicalAddressUnit: [null],
-      physicalPoBox: [null], // TODO:  city?: string | null; state?: string | null;  zipCode?: string | null; poBox?: string | null;
+      physicalPoBox: [null],
       physicalPoBoxCity: [null],
       // Billing Address
       isCheckedBillingAddress: [false],
       billingAddress: [null],
       billingAddressUnit: [null],
-      billingPoBox: [null], // TODO:  city?: string | null; state?: string | null;  zipCode?: string | null; poBox?: string | null;
+      billingPoBox: [null],
       billingPoBoxCity: [null],
       isCredit: [true],
+      creditType: [null], // Enable | Disable
       creditLimit: [null],
+      availableCredit: [null],
       payTerm: [null],
       note: [null],
-      creditType: [null],
-      availableCredit: [null],
+      ban: [null],
+      dnu: [null],
       brokerContacts: this.formBuilder.array([]),
     });
   }
@@ -195,26 +183,25 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   public removeBrokerContacts(id: number) {
     this.brokerContacts.removeAt(id);
+    this.selectedContractDepartmentFormArray.splice(id, 1);
   }
 
-  public onModalAction(action: string) {
-    if (action === 'bfb' || action === 'dnu') {
+  public onModalAction(data: { action: string; bool: boolean }) {
+    if (data.action === 'bfb' || data.action === 'dnu') {
       // DNU
-      if (action === 'dnu' && this.editData) {
-        // TODO: Add dnu on edit broker
-        console.log(action);
+      if (data.action === 'dnu' && this.editData) {
+        this.brokerForm.get('dnu').patchValue(data.bool);
       }
       // BFB
-      if (action === 'bfb' && this.editData) {
-        // TODO: Add bfb on edit broker
-        console.log(action);
+      if (data.action === 'bfb' && this.editData) {
+        this.brokerForm.get('ban').patchValue(data.bool);
       }
     } else {
-      if (action === 'close') {
+      if (data.action === 'close') {
         this.brokerForm.reset();
       } else {
         // Save & Update
-        if (action === 'save') {
+        if (data.action === 'save') {
           if (this.brokerForm.invalid) {
             this.inputService.markInvalid(this.brokerForm);
             return;
@@ -226,10 +213,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           }
         }
         // Delete
-        if (action === 'delete' && this.editData) {
+        if (data.action === 'delete' && this.editData) {
           this.deleteBrokerById(this.editData.id);
         }
-
         this.ngbActiveModal.close();
       }
     }
@@ -302,42 +288,48 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandlePhysicalAddress(event: any) {
+  public onHandlePhysicalAddress(event: Address) {
     this.selectedPhysicalAddress = event;
   }
 
-  public onHandlePhysicalPoBoxCityAddress(event: any) {
-    this.selectedPhysicalPoBoxCity = event;
+  public onHandlePhysicalPoBoxCityAddress(event: Address) {
+    this.selectedPhysicalPoBox = event;
   }
 
-  public onHandleBillingAddress(event: any) {
+  public onHandleBillingAddress(event: Address) {
     this.selectedBillingAddress = event;
   }
 
-  public onHandleBillingPoBoxCityAddress(event: any) {
-    this.selectedBillingPoBoxCity = event;
+  public onHandleBillingPoBoxCityAddress(event: Address) {
+    this.selectedBillingPoBox = event;
   }
 
   public isCredit(event: any) {
-    this.brokerForm.get('isCredit').patchValue(event.checked);
+    this.billingCredit = [...event];
+    this.billingCredit.forEach((item) => {
+      if (item.checked) {
+        this.brokerForm.get('creditType').patchValue(item.label);
+      }
+    });
 
-    if (this.brokerForm.get('isCredit').value) {
+    if (this.brokerForm.get('creditType').value === 'Enable') {
       this.inputService.changeValidators(this.brokerForm.get('creditLimit'));
+      this.inputService.changeValidators(this.brokerForm.get('payTerm'));
     } else {
       this.inputService.changeValidators(
         this.brokerForm.get('creditLimit'),
         false
       );
+      this.inputService.changeValidators(this.brokerForm.get('payTerm'), false);
     }
   }
 
   public changeReviewsEvent(reviews: { data: any[]; action: string }) {
-    console.log(reviews);
     this.reviews = [...reviews.data];
+    // TODO: API CREATE OR DELETE
   }
 
   public addNewReview(event: any) {
-    this.hasNewReview = true;
     this.reviews.unshift({
       id: Math.random() * 100,
       companyUser: {
@@ -349,21 +341,347 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       comment: '',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      isNewReview: true
+      isNewReview: true,
     });
   }
 
-  public onSelectContactDepartment(event: any) {}
+  public onSelectContactDepartment(event: any, index: number) {
+    this.selectedContractDepartmentFormArray[index] = event;
+  }
 
-  public onSelectPayType(event: any) {}
+  public onSelectPayType(event: any) {
+    this.selectedPayTerm = event;
+  }
 
-  private addBroker(): void {}
+  private getBrokerDropdown() {
+    this.brokerModalService
+      .getBrokerDropdowns()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (reasponse: BrokerModalResponse) => {
+          this.labelsDepartments = reasponse.departments;
+          this.labelsPayTerms = reasponse.payTerms;
+        },
+        error: () => {
+          this.notificationService.error(
+            "Broker's dropdowns can't be loaded.",
+            'Error:'
+          );
+        },
+      });
+    this.physicalAddressTabs = this.mockModalService.brokerPhysicalAddressTabs;
+    this.billingAddressTabs = this.mockModalService.brokerBillingAddressTabs;
+  }
 
-  private updateBroker(id: number): void {}
+  private addBroker(): void {
+    const {
+      physicalAddress,
+      physicalAddressUnit,
+      physicalPoBox,
+      physicalPoBoxCity,
+      billingAddress,
+      billingAddressUnit,
+      billingPoBox,
+      billingPoBoxCity,
+      isCredit,
+      isCheckedBillingAddress,
+      brokerContacts,
+      mcFFNumber,
+      ...form
+    } = this.brokerForm.value;
+    let newData: CreateBrokerCommand = {
+      ...form,
+      mainAddress: {
+        address: this.selectedPhysicalAddress.address,
+        city: this.selectedPhysicalAddress.city,
+        state: this.selectedPhysicalAddress.state,
+        country: this.selectedPhysicalAddress.country,
+        zipCode: this.selectedPhysicalAddress.zipCode,
+        stateShortName: this.selectedPhysicalAddress.stateShortName,
+        addressUnit: physicalAddressUnit,
+      },
+      billingAddress: {
+        address: isCheckedBillingAddress
+          ? this.selectedPhysicalAddress.address
+          : this.selectedBillingAddress.address,
+        city: isCheckedBillingAddress
+          ? this.selectedPhysicalAddress.city
+          : this.selectedBillingAddress.city,
+        state: isCheckedBillingAddress
+          ? this.selectedPhysicalAddress.state
+          : this.selectedBillingAddress.state,
+        country: isCheckedBillingAddress
+          ? this.selectedPhysicalAddress.country
+          : this.selectedBillingAddress.country,
+        zipCode: isCheckedBillingAddress
+          ? this.selectedPhysicalAddress.zipCode
+          : this.selectedBillingAddress.zipCode,
+        stateShortName: isCheckedBillingAddress
+          ? this.selectedPhysicalAddress.stateShortName
+          : this.selectedBillingAddress.stateShortName,
+        addressUnit: isCheckedBillingAddress
+          ? physicalAddressUnit
+          : billingAddressUnit,
+      },
+      mainPoBox: {
+        city: this.selectedPhysicalPoBox
+          ? this.selectedPhysicalPoBox.city
+          : null,
+        state: this.selectedPhysicalPoBox
+          ? this.selectedPhysicalPoBox.state
+          : null,
+        zipCode: this.selectedPhysicalPoBox
+          ? this.selectedPhysicalPoBox.zipCode
+          : null,
+        poBox: this.selectedPhysicalPoBox ? physicalPoBox : null,
+      },
+      billingPoBox: {
+        city: this.selectedBillingPoBox ? this.selectedBillingPoBox.city : null,
+        state: this.selectedBillingPoBox
+          ? this.selectedBillingPoBox.state
+          : null,
+        zipCode: this.selectedBillingPoBox
+          ? this.selectedBillingPoBox.zipCode
+          : null,
+        poBox: billingPoBox,
+      },
+      isCheckedBillingAddress: isCheckedBillingAddress,
+      isCredit: isCredit,
+      mcNumber: mcFFNumber,
+    };
+    for (let index = 0; index < brokerContacts.length; index++) {
+      brokerContacts[index].departmentId =
+        this.selectedContractDepartmentFormArray[index].id;
+    }
+    newData = {
+      ...newData,
+      brokerContacts,
+    };
+    this.brokerModalService
+      .addBroker(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Broker successfully created.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Broker can't be created.", 'Error:');
+        },
+      });
+  }
 
-  private deleteBrokerById(id: number): void {}
+  private updateBroker(id: number): void {
+    const {
+      physicalAddress,
+      physicalAddressUnit,
+      physicalPoBox,
+      physicalPoBoxCity,
+      billingAddress,
+      billingAddressUnit,
+      billingPoBox,
+      billingPoBoxCity,
+      isCredit,
+      isCheckedBillingAddress,
+      brokerContacts,
+      mcFFNumber,
+      ...form
+    } = this.brokerForm.value;
 
-  private editBrokerById(id: number): void {}
+    let newData: UpdateBrokerCommand = {
+      id: id,
+      ...form,
+      mainAddress: {
+        address: this.selectedPhysicalAddress.address,
+        city: this.selectedPhysicalAddress.city,
+        state: this.selectedPhysicalAddress.state,
+        country: this.selectedPhysicalAddress.country,
+        zipCode: this.selectedPhysicalAddress.zipCode,
+        stateShortName: this.selectedPhysicalAddress.stateShortName,
+        addressUnit: physicalAddressUnit,
+      },
+      billingAddress: {
+        address: isCheckedBillingAddress
+          ? this.selectedPhysicalAddress.address
+          : this.selectedBillingAddress.address,
+        city: isCheckedBillingAddress
+          ? this.selectedPhysicalAddress.city
+          : this.selectedBillingAddress.city,
+        state: isCheckedBillingAddress
+          ? this.selectedPhysicalAddress.state
+          : this.selectedBillingAddress.state,
+        country: isCheckedBillingAddress
+          ? this.selectedPhysicalAddress.country
+          : this.selectedBillingAddress.country,
+        zipCode: isCheckedBillingAddress
+          ? this.selectedPhysicalAddress.zipCode
+          : this.selectedBillingAddress.zipCode,
+        stateShortName: isCheckedBillingAddress
+          ? this.selectedPhysicalAddress.stateShortName
+          : this.selectedBillingAddress.stateShortName,
+        addressUnit: isCheckedBillingAddress
+          ? physicalAddressUnit
+          : billingAddressUnit,
+      },
+      mainPoBox: {
+        city: this.selectedPhysicalPoBox
+          ? this.selectedPhysicalPoBox.city
+          : null,
+        state: this.selectedPhysicalPoBox
+          ? this.selectedPhysicalPoBox.state
+          : null,
+        zipCode: this.selectedPhysicalPoBox
+          ? this.selectedPhysicalPoBox.zipCode
+          : null,
+        poBox: this.selectedPhysicalPoBox ? physicalPoBox : null,
+      },
+      billingPoBox: {
+        city: this.selectedBillingPoBox ? this.selectedBillingPoBox.city : null,
+        state: this.selectedBillingPoBox
+          ? this.selectedBillingPoBox.state
+          : null,
+        zipCode: this.selectedBillingPoBox
+          ? this.selectedBillingPoBox.zipCode
+          : null,
+        poBox: billingPoBox,
+      },
+      isCheckedBillingAddress: isCheckedBillingAddress,
+      mcNumber: mcFFNumber,
+    };
+
+    for (let index = 0; index < brokerContacts.length; index++) {
+      brokerContacts[index].departmentId =
+        this.selectedContractDepartmentFormArray[index].id;
+    }
+
+    newData = {
+      ...newData,
+      brokerContacts,
+    };
+
+    this.brokerModalService
+      .updateBroker(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Broker successfully updated.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Broker can't be updated.", 'Error:');
+        },
+      });
+  }
+
+  private deleteBrokerById(id: number): void {
+    this.brokerModalService
+      .deleteBrokerById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Broker successfully deleted.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Broker can't be deleted.", 'Error:');
+        },
+      });
+  }
+
+  private editBrokerById(id: number): void {
+    this.brokerModalService
+      .getBrokerById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (reasponse: BrokerResponse) => {
+          this.brokerForm.patchValue({
+            businessName: reasponse.businessName,
+            dbaName: reasponse.dbaName,
+            mcFFNumber: reasponse.mcNumber,
+            ein: reasponse.ein,
+            email: reasponse.email,
+            phone: reasponse.phone,
+            // Physical Address
+            physicalAddress: reasponse.mainAddress.address,
+            physicalAddressUnit: reasponse.mainAddress.addressUnit,
+            physicalPoBox: reasponse.mainPoBox.poBox,
+            physicalPoBoxCity: reasponse.mainPoBox.city,
+            // Billing Address
+            isCheckedBillingAddress:
+              reasponse.mainAddress.address ===
+              reasponse.billingAddress.address,
+            billingAddress: reasponse.billingAddress.address,
+            billingAddressUnit: reasponse.billingAddress.addressUnit,
+            billingPoBox: reasponse.billingPoBox.poBox,
+            billingPoBoxCity: reasponse.billingPoBox.city,
+            creditType: reasponse.creditType,
+            creditLimit: reasponse.creditType === 'Enable' ? 5 : null, // TODO: BACK
+            availableCredit: reasponse.availableCredit,
+            payTerm:
+              reasponse.creditType === 'Enable' ? reasponse.payTerm : null,
+            note: reasponse.note,
+            ban: reasponse.ban,
+            dnu: reasponse.dnu,
+            brokerContacts: [],
+          });
+
+          if (reasponse.brokerContacts) {
+            for (const contact of reasponse.brokerContacts) {
+              this.brokerContacts.push(
+                this.formBuilder.group({
+                  contactName: contact.contactName,
+                  departmentId: contact.department.name,
+                  phone: contact.phone,
+                  extensionPhone: contact.extensionPhone,
+                  email: contact.email,
+                })
+              );
+              this.selectedContractDepartmentFormArray.push(contact.department);
+            }
+          }
+
+          this.reviews = [...reasponse.brokerReviews].map((item) => ({
+            ...item,
+            companyUser: {
+              ...item.companyUser,
+              image: 'https://picsum.photos/id/237/200/300',
+            },
+          }));
+
+          this.selectedPhysicalAddress = reasponse.mainAddress;
+          this.selectedPhysicalPoBox = reasponse.mainPoBox;
+          this.selectedBillingAddress = reasponse.billingAddress;
+          this.selectedBillingPoBox = reasponse.billingPoBox;
+          this.selectedPayTerm = null;
+
+          if (reasponse.creditType === 'Enable') {
+            this.billingCredit[0].checked = true;
+            this.isCredit(this.billingCredit);
+          } else {
+            this.billingCredit[0].checked = false;
+            this.billingCredit[1].checked = true;
+            this.isCredit(this.billingCredit);
+          }
+        },
+        error: () => {
+          this.notificationService.error("Broker can't be loaded.", 'Error:');
+        },
+      });
+  }
+
+  public onScrollingBrokerContacts(event: any) {
+    if (event.target.scrollLeft > 1) {
+      this.isContactCardsScrolling = true;
+    } else {
+      this.isContactCardsScrolling = false;
+    }
+  }
 
   ngOnDestroy(): void {}
 }

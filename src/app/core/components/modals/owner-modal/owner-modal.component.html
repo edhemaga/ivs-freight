@@ -1,0 +1,182 @@
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Contact' : 'Edit Contact'"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="ownerForm.valid"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <app-tab-switcher
+    (switchClicked)="tabChange($event)"
+    [tabs]="tabs"
+  ></app-tab-switcher>
+
+  <form [formGroup]="ownerForm" class="form-container">
+    <div class="row" *ngIf="selectedTab === 1">
+      <div class="col-9">
+        <app-ta-input
+          formControlName="bussinesName"
+          [inputConfig]="{
+            name: 'Bussines Name',
+            type: 'text',
+            label: 'Bussines Name',
+            isRequired: true,
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-3">
+        <app-ta-input
+          formControlName="ein"
+          [inputConfig]="{
+            name: 'EIN',
+            type: 'text',
+            label: 'EIN #',
+            isRequired: true,
+            mask: '00-0000000'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row" *ngIf="selectedTab === 2">
+      <div class="col-4">
+        <app-ta-input
+          formControlName="firstName"
+          [inputConfig]="{
+            name: 'First name',
+            type: 'text',
+            label: 'First Name',
+            isRequired: true,
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-4 no-p-right">
+        <app-ta-input
+          formControlName="lastName"
+          [inputConfig]="{
+            name: 'Last name',
+            type: 'text',
+            label: 'Last Name',
+            isRequired: true,
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-4">
+        <app-ta-input
+          formControlName="ssn"
+          [inputConfig]="{
+            name: 'SSN',
+            type: 'text',
+            label: 'SSN',
+            isRequired: true,
+            mask: '000-00-0000'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-5">
+        <app-ta-input
+          formControlName="phone"
+          [inputConfig]="{
+            name: 'Phone',
+            type: 'text',
+            label: 'Phone',
+            isRequired: true,
+            placeholderIcon: 'phone',
+            mask: '(000) 000-0000'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-7">
+        <app-ta-input
+          formControlName="email"
+          [inputConfig]="{
+            name: 'Email',
+            type: 'text',
+            label: 'Email',
+            isRequired: true,
+            placeholderIcon: 'email'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-10">
+        <app-ta-input-address
+          formControlName="address"
+          [inputConfig]="{
+            name: 'Address',
+            type: 'text',
+            label: 'Address, City, State Zip',
+            isRequired: true,
+            placeholderIcon: 'address',
+            textTransform: 'capitalize'
+          }"
+          (selectedAddress)="onHandleAddress($event)"
+        ></app-ta-input-address>
+      </div>
+      <div class="col-2">
+        <app-ta-input
+          formControlName="addressUnit"
+          [inputConfig]="{
+            name: 'Address Unit',
+            type: 'text',
+            label: 'Unit #',
+            maxLength: 6
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <app-ta-input-dropdown
+          formControlName="bankId"
+          [template]="'banks'"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Bank Name',
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-12'
+          }"
+          [canAddNew]="true"
+          [options]="labelsBank"
+          (selectedItem)="onSelectBank($event)"
+        ></app-ta-input-dropdown>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-7">
+        <app-ta-input
+          formControlName="accountNumber"
+          [inputConfig]="{
+            name: 'Account Number',
+            type: 'text',
+            label: 'Account #',
+            isDisabled: !isBankSelected,
+            isRequired: isBankSelected,
+            maxLength: 17,
+            minLength: 4
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-5">
+        <app-ta-input
+          formControlName="routingNumber"
+          [inputConfig]="{
+            name: 'Routing Number',
+            type: 'text',
+            label: 'Routing #',
+            isDisabled: !isBankSelected,
+            isRequired: isBankSelected,
+            minLength: 9,
+            maxLength: 9
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <app-ta-input-note formControlName="note"></app-ta-input-note>
+  </form>
+</app-ta-modal>

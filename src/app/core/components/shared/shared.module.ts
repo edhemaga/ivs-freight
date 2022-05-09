@@ -85,6 +85,8 @@ import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-r
 import { TaLikeDislikeComponent } from './ta-like-dislike/ta-like-dislike.component';
 import { TaUserReviewComponent } from './ta-user-review/ta-user-review.component';
 import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
+import { ShipperModalComponent } from '../modals/shipper-modal/shipper-modal.component';
+import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component';
 
 @NgModule({
   declarations: [
@@ -129,6 +131,8 @@ import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
     ContactModalComponent,
     AccountModalComponent,
     BrokerModalComponent,
+    ShipperModalComponent,
+    OwnerModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -261,6 +265,8 @@ import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
     ContactModalComponent,
     AccountModalComponent,
     BrokerModalComponent,
+    ShipperModalComponent,
+    OwnerModalComponent,
 
     // Pipes
     InputErrorPipe,
