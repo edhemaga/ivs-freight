@@ -1,13 +1,18 @@
 <div class="details-container-items">
   <div *ngFor="let item of driverDetailsConfig">
-     <app-ta-details-header [options]="dataTest" [route]="'/driver'" [tooltipHeaderName]="'Back to Driver List'" [headerText]="item.name">
-
-     </app-ta-details-header>
+    <app-ta-details-header
+      [customClassDropDown]="'table-dropdown-container-horizontal-details'"
+      [options]="dataTest"
+      [route]="'/driver'"
+      [tooltipHeaderName]="'Back to Driver List'"
+      [headerText]="item.name"
+    >
+    </app-ta-details-header>
   </div>
   <div class="details-item-cmp">
-  <app-driver-details-item
-    *ngFor="let item of driverDetailsConfig; trackBy: identity"
-    [data]="item"
-  ></app-driver-details-item>
-</div>
+    <app-driver-details-item
+      *ngFor="let item of driverDetailsConfig; trackBy: identity"
+      [data]="item"
+    ></app-driver-details-item>
+  </div>
 </div>

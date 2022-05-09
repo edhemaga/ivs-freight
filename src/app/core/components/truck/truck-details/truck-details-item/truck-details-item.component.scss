@@ -67,7 +67,6 @@
   }
 }
 
-
 .truck-details-wrapper {
   margin-left: 16px;
   .details-header-avatar {
@@ -132,8 +131,6 @@
     margin-left: 6px;
   }
 }
-
-
 
 .perfomance {
   display: flex !important;
@@ -304,7 +301,7 @@ mat-button-toggle {
 }
 .carousel-buttons-control {
   &.prev {
-    left: -2px!important;
+    left: -2px !important;
   }
 
   &.next {
@@ -319,9 +316,9 @@ mat-button-toggle {
     margin-left: 5px;
   }
 }
-.revenue{
+.revenue {
   margin-left: 4px;
 }
-.bank-card{
+.bank-card {
   margin-left: 12px;
 }

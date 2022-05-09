@@ -254,7 +254,7 @@
     }
 }
 .name-icon {
-     margin-left: 0 !important;
+    margin-left: 0 !important;
     input {
         margin-left: 6px;
         position: relative;
@@ -268,42 +268,40 @@
     justify-content: space-between;
     margin-bottom: 12px;
     margin-top: 12px;
-    
+
     .assignTo-item {
-      background-color: $color-white-dark;
-      border-radius: 3px;
-      padding: 8px 6px;
-      width: 202px;
-      height: 34px;
-      display: flex;
-      align-items: center;
-      svg {
-        fill: #aaaaaa;
-        object-fit: fill;
-      }
-     
-      .assignTo-vehicle {
-        margin-right: 6px;
-       
-      }
-  
-      .assignTo-value {
-        font-size: $font-size18;
-        font-weight: 500;
-        color: $color-gray-dark;
-  
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+        background-color: $color-white-dark;
+        border-radius: 3px;
+        padding: 8px 6px;
+        width: 202px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        svg {
+            fill: #aaaaaa;
+            object-fit: fill;
         }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+
+        .assignTo-vehicle {
+            margin-right: 6px;
         }
-      }
-      p {
-        margin: 0 !important;
-      }
+
+        .assignTo-value {
+            font-size: $font-size18;
+            font-weight: 500;
+            color: $color-gray-dark;
+
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+        p {
+            margin: 0 !important;
+        }
     }
-  }
- 
+}

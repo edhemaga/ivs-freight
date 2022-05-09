@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { of, Subject, switchMap, takeUntil } from 'rxjs';
 import { Driver } from '../state/driver.model';
@@ -12,7 +17,7 @@ import { DriversQuery } from '../state/driver.query';
 })
 export class DriverDetailsComponent implements OnInit, OnDestroy {
   public driverDetailsConfig: any[] = [];
-  dataTest:any;
+  dataTest: any;
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -21,7 +26,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.initTableOptions()
+    this.initTableOptions();
     this.activated_route.paramMap
       .pipe(
         switchMap((params: ParamMap) => {
@@ -123,7 +128,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   public identity(index: number, item: any): number {
     return item.id;
   }
-   
+
   public initTableOptions(): void {
     this.dataTest = {
       disabledMutedStyle: null,
@@ -162,7 +167,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           class: 'regular-text',
           contentType: 'edit',
         },
-        
+
         {
           title: 'Delete',
           name: 'delete-item',

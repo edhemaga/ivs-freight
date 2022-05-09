@@ -21,7 +21,7 @@ import {
   ApexTooltip,
   ApexXAxis,
   ApexYAxis,
-  ChartComponent
+  ChartComponent,
 } from 'ng-apexcharts';
 
 export type ChartOptions = {
@@ -49,140 +49,148 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
   @Input() data: any = null;
 
-  @ViewChild("chart") chart: ChartComponent;
+  @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
-  public cdlNote: FormControl = new FormControl();;
-  public mvrNote: FormControl = new FormControl();;
+  public cdlNote: FormControl = new FormControl();
+  public mvrNote: FormControl = new FormControl();
   public toggler: boolean = false;
   private destroy$: Subject<void> = new Subject<void>();
-  public selectedValuePayroll: string = "";
+  public selectedValuePayroll: string = '';
   public copiedPhone: boolean = false;
   public copiedBankRouting: boolean = false;
   public copiedBankAccount: boolean = false;
   public copiedEin: boolean = false;
-  public copiedSSN:boolean=false;
-  public copiedDriverPhone:boolean=false;
-  public copiedDriverEmail:boolean=false;
+  public copiedSSN: boolean = false;
+  public copiedDriverPhone: boolean = false;
+  public copiedDriverEmail: boolean = false;
 
   public isAccountVisible: boolean = true;
   public accountText: string = null;
   public arrayDrivers: any = [];
   public arrayDriverName: any = '';
-  public driverId:number=0;
-  dataTest:any;
+  public driverId: number = 0;
+  public showMoreEmployment: boolean = false;
+  dataTest: any;
   constructor(private customModalService: CustomModalService) {
-
     this.arrayDrivers = [
       {
         id: 1,
         name: 'Angela Martin',
         svg: 'ic_owner-status.svg',
-        folder: 'common'
+        folder: 'common',
       },
       {
         id: 2,
         name: 'Angela Lomarion',
         svg: 'ic_owner-status.svg',
-        folder: 'common'
+        folder: 'common',
       },
       {
         id: 3,
         name: 'Denis Rodmar',
         svg: null,
-        folder: null
+        folder: null,
       },
       {
         id: 4,
         name: 'Milos Cirkovic',
         svg: 'ic_owner-status.svg',
-        folder: 'common'
+        folder: 'common',
       },
       {
         id: 5,
         name: 'Aleksandar Djordjevic',
         svg: 'ic_owner-status.svg',
-        folder: 'common'
+        folder: 'common',
       },
       {
         id: 6,
         name: 'Mika Mikic',
         svg: null,
-        folder: null
-      }
-      ,
+        folder: null,
+      },
       {
         id: 7,
         name: 'Denis Rodmar',
         svg: null,
-        folder: null
+        folder: null,
       },
       {
         id: 8,
         name: 'Milos Cirkovic',
         svg: 'ic_owner-status.svg',
-        folder: 'common'
+        folder: 'common',
       },
       {
         id: 9,
         name: 'Aleksandar Djordjevic',
         svg: 'ic_owner-status.svg',
-        folder: 'common'
+        folder: 'common',
       },
       {
         id: 10,
         name: 'Mika Mikic',
         svg: null,
-        folder: null
-      }
+        folder: null,
+      },
     ];
 
     this.chartOptions = {
-
       series: [
         {
-          name: "Miles per Gallon",
-          type: "column",
+          name: 'Miles per Gallon',
+          type: 'column',
           data: [5, 10, 15, 20, 25, 30, 35, 45, 60],
-          color: "#ffcc80",
-
+          color: '#ffcc80',
         },
         {
-          name: "Cost per Gallon",
-          type: "line",
-          data: [23, 2.000, 3.000, 5.000, 6.000, 7.000, 11.000, 18.000, 23.000],
-          color: "#6d82c7"
-        }
+          name: 'Cost per Gallon',
+          type: 'line',
+          data: [23, 2.0, 3.0, 5.0, 6.0, 7.0, 11.0, 18.0, 23.0],
+          color: '#6d82c7',
+        },
       ],
       chart: {
         height: 180,
         width: 408,
-        type: "line",
+        type: 'line',
         zoom: {
-          enabled: false
-        }
+          enabled: false,
+        },
       },
       stroke: {
-        width: [0, 4]
+        width: [0, 4],
       },
       title: {
-        text: ""
+        text: '',
       },
       dataLabels: {
         enabled: false,
       },
       xaxis: {
-        categories: ["NOV", "2021", "MAR", "MAY", "JUL", "SEP", "NOV", "2021", "MAR", "MAY", "JUL", "SEP"],
+        categories: [
+          'NOV',
+          '2021',
+          'MAR',
+          'MAY',
+          'JUL',
+          'SEP',
+          'NOV',
+          '2021',
+          'MAR',
+          'MAY',
+          'JUL',
+          'SEP',
+        ],
         labels: {
-
           show: true,
           style: {
             colors: '#AAAAAA',
             fontSize: '11px',
-            fontWeight: '700'
-          }
-        }
-
+            fontWeight: '700',
+          },
+        },
       },
       yaxis: [
         {
@@ -192,11 +200,9 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
             style: {
               colors: '#AAAAAA',
               fontSize: '11px',
-              fontWeight: '700'
+              fontWeight: '700',
             },
-
-          }
-
+          },
         },
 
         {
@@ -207,49 +213,51 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
             style: {
               colors: '#AAAAAA',
               fontSize: '11px',
-              fontWeight: '700'
+              fontWeight: '700',
             },
             formatter: function (val) {
               val.toFixed(2);
-              return val.toFixed(0) + "K"
-            }
-          }
-        }
+              return val.toFixed(0) + 'K';
+            },
+          },
+        },
       ],
-
     };
   }
 
   ngOnInit() {
     console.log(this.data);
-    this.selectedValuePayroll = "1Y";
+    this.selectedValuePayroll = '1Y';
     this.initTableOptions();
     this.getDriversList();
   }
-
 
   public getDriversList() {
     for (let i = 0; i < this.arrayDrivers.length; i++) {
       this.arrayDrivers[i];
     }
-    this.arrayDriverName = this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]]
+    this.arrayDriverName =
+      this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]];
     return this.arrayDrivers;
   }
 
   public nextDriver() {
-    this.driverId < this.arrayDrivers.length -1 ? this.driverId++ : this.driverId = 0;
+    this.driverId < this.arrayDrivers.length - 1
+      ? this.driverId++
+      : (this.driverId = 0);
     console.log(this.driverId);
-    this.arrayDriverName = this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]]
+    this.arrayDriverName =
+      this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]];
     console.log(this.arrayDrivers.length);
-    
-     
   }
 
   public previousDriver() {
-    this.driverId < 1 ? this.driverId=this.arrayDrivers.length : this.driverId--;
+    this.driverId < 1
+      ? (this.driverId = this.arrayDrivers.length)
+      : this.driverId--;
     console.log(this.driverId);
-    this.arrayDriverName = this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]]
-
+    this.arrayDriverName =
+      this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]];
   }
 
   public initTableOptions(): void {
@@ -272,7 +280,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           class: 'regular-text',
           contentType: 'edit',
         },
-        
+
         {
           title: 'Delete',
           name: 'delete-item',
@@ -291,7 +299,6 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     //   type: 'new',
     //   vehicle: 'truck',
     // };
-
     // switch (this.data.template) {
     //   case 'cdl': {
     //     this.customModalService.openModal(
@@ -383,12 +390,15 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   }
   public changeValuePayroll(val: string) {
     this.selectedValuePayroll = val;
-    console.log(val + " Payroll");
+    console.log(val + ' Payroll');
   }
   public onFileAction(action: string) {
     switch (action) {
       case 'download': {
-        this.downloadFile('https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf', 'truckassist0');
+        this.downloadFile(
+          'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+          'truckassist0'
+        );
         break;
       }
       default: {
@@ -408,7 +418,6 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   }
   /* To copy any Text */
   public copyText(val: any, copVal: string) {
-
     switch (copVal) {
       case 'phone':
         this.copiedPhone = true;
@@ -419,7 +428,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
         break;
 
       case 'bankRouting':
-        this.copiedBankRouting = true
+        this.copiedBankRouting = true;
         break;
 
       case 'ein':
@@ -427,14 +436,14 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
         break;
 
       case 'ssn':
-        this.copiedSSN=true;
+        this.copiedSSN = true;
         break;
-      
+
       case 'driver-phone':
-        this.copiedDriverPhone=true;
+        this.copiedDriverPhone = true;
         break;
       case 'driver-email':
-        this.copiedDriverEmail=true;
+        this.copiedDriverEmail = true;
         break;
     }
 
@@ -449,7 +458,6 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-
   }
 
   public hiddenPassword(value: any, numberOfCharacterToHide: number): string {
@@ -459,7 +467,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     let hiddenCharacter = '';
 
     for (let i = 0; i < numberOfCharacterToHide; i++) {
-      hiddenCharacter += "*";
+      hiddenCharacter += '*';
     }
     return hiddenCharacter + lastFourCharaters;
   }
