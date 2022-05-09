@@ -18,10 +18,6 @@ ngb-modal-window[aria-hidden="true"] {
     transition: all 0.3s ease-out !important;
   }
 
-  // This class added through modal.service.ts
-  &.modal-animation {
-  }
-
   &.modal-animation .modal-dialog {
     opacity: 1;
     transform: scale(1) !important;

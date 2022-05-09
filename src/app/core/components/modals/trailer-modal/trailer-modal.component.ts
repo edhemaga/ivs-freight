@@ -10,7 +10,6 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TrailerModalService } from './trailer-modal.service';
 import {
@@ -19,15 +18,14 @@ import {
   TrailerResponse,
   UpdateTrailerCommand,
 } from 'appcoretruckassist';
-import { throws } from 'assert';
 
 @Component({
   selector: 'app-trailer-modal',
   templateUrl: './trailer-modal.component.html',
+  styleUrls: ['./trailer-modal.component.scss'],
   animations: [
     tab_modal_animation('animationTabsModal')
   ],
-  styleUrls: ['./trailer-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {

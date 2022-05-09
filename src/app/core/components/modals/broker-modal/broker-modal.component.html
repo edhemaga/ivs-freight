@@ -188,8 +188,8 @@
           formControlName="isCheckedBillingAddress"
           [customClass]="
             brokerForm.get('isCheckedBillingAddress').value
-              ? 'regular billing-address'
-              : 'regular billing-address checked'
+              ? 'medium billing-address'
+              : 'medium billing-address checked'
           "
           [label]="'Billing address is same as main address'"
         ></app-ta-checkbox>
@@ -341,6 +341,7 @@
           <div
             formArrayName="brokerContacts"
             class="broker-contacts"
+            (scroll)="onScrollingBrokerContacts($event)"
             *ngIf="brokerContacts.length"
           >
             <div class="broker-contacts-label">
@@ -401,6 +402,10 @@
                 ></app-ta-input>
                 <svg-icon
                   class="brokerContacts-delete"
+                  [ngClass]="{
+                    'new-position': isContactCardsScrolling && brokerContact.get('email').value, 
+                    'new-position-without-email': isContactCardsScrolling && !brokerContact.get('email').value
+                  }"
                   src="assets/svg/common/ic_trash.svg"
                   (click)="removeBrokerContacts(ind)"
                   [appTooltip]="'Delete'"

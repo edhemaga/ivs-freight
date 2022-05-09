@@ -7,6 +7,7 @@ import {
   getShipperColumnDefinition,
 } from 'src/assets/utils/settings/customer-columns';
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
+import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
@@ -280,7 +281,14 @@ export class CustomerTableComponent implements OnInit {
         }
       );
     } else {
-      //TODO: SHIPPER
+      this.modalService.openModal(
+        ShipperModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          type: 'edit',
+        }
+      );
     }
   }
 
@@ -290,8 +298,8 @@ export class CustomerTableComponent implements OnInit {
 
       if (this.selectedTab === 'broker') {
         this.modalService.openModal(BrokerModalComponent, { size: 'small' });
-      } else {
-        //TODO: SHIPPER
+      } else { 
+        this.modalService.openModal(ShipperModalComponent, { size: 'small' });
       }
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;

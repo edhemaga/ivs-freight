@@ -2,7 +2,6 @@ import { AddressEntity } from './../../../../../../appcoretruckassist/model/addr
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -92,8 +91,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public labelsDepartments: any[] = [];
 
   public selectedContractDepartmentFormArray: any[] = [];
-  public selectedContractDepartment: any = null;
+
   public selectedPayTerm: any = null;
+
+  public isContactCardsScrolling: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -108,8 +109,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.getBrokerDropdown();
     this.isCredit(this.billingCredit);
-
-    // this.onEinTyping();
 
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
@@ -347,8 +346,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectContactDepartment(event: any, index: number) {
-    this.selectedContractDepartment = event;
-
     this.selectedContractDepartmentFormArray[index] = event;
   }
 
@@ -450,7 +447,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       },
       isCheckedBillingAddress: isCheckedBillingAddress,
       isCredit: isCredit,
-      mcNumber: mcFFNumber
+      mcNumber: mcFFNumber,
     };
     for (let index = 0; index < brokerContacts.length; index++) {
       brokerContacts[index].departmentId =
@@ -551,23 +548,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         poBox: billingPoBox,
       },
       isCheckedBillingAddress: isCheckedBillingAddress,
-      mcNumber: mcFFNumber
+      mcNumber: mcFFNumber,
     };
-    console.log("PRE UPDATE")
-    console.log(brokerContacts)
+
     for (let index = 0; index < brokerContacts.length; index++) {
       brokerContacts[index].departmentId =
         this.selectedContractDepartmentFormArray[index].id;
     }
-    console.log("POSLE UPDATE")
-    console.log(brokerContacts)
+
     newData = {
       ...newData,
       brokerContacts,
     };
 
-    console.log("CEO UPDATE")
-    console.log(newData)
     this.brokerModalService
       .updateBroker(newData)
       .pipe(untilDestroyed(this))
@@ -653,8 +646,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             }
           }
 
-          console.log(this.selectedContractDepartmentFormArray)
-
           this.reviews = [...reasponse.brokerReviews].map((item) => ({
             ...item,
             companyUser: {
@@ -682,6 +673,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Broker can't be loaded.", 'Error:');
         },
       });
+  }
+
+  public onScrollingBrokerContacts(event: any) {
+    if (event.target.scrollLeft > 1) {
+      this.isContactCardsScrolling = true;
+    } else {
+      this.isContactCardsScrolling = false;
+    }
   }
 
   ngOnDestroy(): void {}
