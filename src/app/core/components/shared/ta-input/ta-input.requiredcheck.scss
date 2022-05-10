@@ -4,7 +4,11 @@
   right: 6px;
   width: 14px;
   height: 10px;
-  display: none;
+  display: inline-block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   svg {
     path {
@@ -12,11 +16,7 @@
     }
   }
 
-  &.valid {
-    transition: all 0.3s ease-in-out;
-    display: inline-block;
-  }
-
+  //------------------------- Custom class -------------------------
   &.input-big {
     top: 3.5px;
   }

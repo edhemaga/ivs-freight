@@ -12,6 +12,7 @@
         }
       }
     }
+
     .input-dropdown-arrow {
       transition: all 0.3s ease-in-out;
       svg {
@@ -24,8 +25,8 @@
 
   &.hide-placeholder-icon {
     &:hover {
-      .input-icon:not(.datetimeclass) {
-        display: none !important;
+      .input-icon {
+        display: none;
       }
     }
   }
@@ -90,6 +91,17 @@
 
   &.invalid-empty-required {
     &:hover {
+      .input-icon {
+        &.invalid-required-empty {
+          transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #ef5350;
+            }
+          }
+        }
+      }
+
       .input-clear {
         svg {
           path {
@@ -114,35 +126,10 @@
         transition: all 0.3s ease-in-out;
         color: #ef5350;
       }
-
-      .input-icon {
-        &.invalid-required-empty {
-          transition: all 0.3s ease-in-out;
-          svg {
-            path {
-              fill: #ef5350;
-            }
-          }
-        }
-      }
     }
   }
 
   &.invalid-empty-focus-required {
-    .input-clear {
-      svg {
-        path {
-          transition: all 0.3s ease-in-out;
-          fill: #ef9a9a !important;
-        }
-      }
-    }
-
-    .input-error {
-      transition: all 0.3s ease-in-out;
-      color: #ef5350 !important;
-    }
-
     .input-icon {
       &.invalid-required-empty-focus {
         transition: all 0.3s ease-in-out;
@@ -153,15 +140,32 @@
         }
       }
     }
+    .input-clear {
+      svg {
+        path {
+          transition: all 0.3s ease-in-out;
+          fill: #ef9a9a !important;
+        }
+      }
+    }
+    .input-error {
+      transition: all 0.3s ease-in-out;
+      color: #ef5350 !important;
+    }
   }
 
   &.valid {
     &:hover {
-      // Input clear class
-      .second-position-hover {
-        right: 27px;
+      .input-icon {
+        &.valid-required {
+          transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #6d82c7;
+            }
+          }
+        }
       }
-
       .input-clear {
         transition: all 0.3s ease-in-out;
         display: inline-block;
@@ -198,6 +202,11 @@
           }
         }
       }
+
+      // Input clear class
+      .second-position-hover {
+        right: 27px;
+      }
     }
   }
 
@@ -223,20 +232,19 @@
   }
   //--------------- end ---------------
 
-  @import './ta-input.label.scss';
-  @import './ta-input.input.scss';
-  @import './ta-input.requiredcheck.scss';
-  @import './ta-input.clear.scss';
-  @import './ta-input.placeholdericon.scss';
-  @import './ta-input.dropdown.scss';
-  @import './ta-input.error.scss';
-  @import './ta-input.passwordeye.scss';
+  @import "./ta-input.label.scss";
+  @import "./ta-input.input.scss";
+  @import "./ta-input.requiredcheck.scss";
+  @import "./ta-input.clear.scss";
+  @import "./ta-input.placeholdericon.scss";
+  @import "./ta-input.dropdown.scss";
+  @import "./ta-input.error.scss";
+  @import "./ta-input.passwordeye.scss";
 }
 
+// CUSTOM DATEPICKER INPUT
 
-// CUSTOM DATEPICKER INPUT 
-
-.date_time_holder{
+.date_time_holder {
   display: flex;
   align-items: center;
   position: absolute;
@@ -245,14 +253,13 @@
   height: 100%;
   opacity: 0;
 
-  &.active{
+  &.active {
     opacity: 1;
   }
 
-  span.main{
+  span.main {
     padding: 0 2px;
     outline: none;
     font-size: 14px;
   }
 }
-
