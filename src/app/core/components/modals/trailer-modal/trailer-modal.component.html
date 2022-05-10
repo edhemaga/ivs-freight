@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Trailer' : 'Edit Trailer'"
   [editData]="editData"
-  [editName]="'262212'"
+  [editName]="editData?.id"
   [isModalValid]="trailerForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >

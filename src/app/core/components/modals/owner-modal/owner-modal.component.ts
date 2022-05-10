@@ -342,23 +342,23 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         if (value) {
           this.isBankSelected = true;
           this.inputService.changeValidators(
-            this.ownerForm.get('routing'),
+            this.ownerForm.get('routingNumber'),
             true,
             [Validators.minLength(9), Validators.maxLength(9)]
           );
           this.inputService.changeValidators(
-            this.ownerForm.get('account'),
+            this.ownerForm.get('accountNumber'),
             true,
             [Validators.minLength(4), Validators.maxLength(17)]
           );
         } else {
           this.isBankSelected = false;
           this.inputService.changeValidators(
-            this.ownerForm.get('routing'),
+            this.ownerForm.get('routingNumber'),
             false
           );
           this.inputService.changeValidators(
-            this.ownerForm.get('account'),
+            this.ownerForm.get('accountNumber'),
             false
           );
         }
