@@ -1,5 +1,5 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add Contact' : 'Edit Contact'"
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Owner' : 'Edit Owner'"
   [editData]="editData"
   [editName]="editData?.id"
   [isModalValid]="ownerForm.valid"
@@ -147,7 +147,7 @@
         ></app-ta-input-dropdown>
       </div>
     </div>
-    <div class="row">
+    <div class="row last-row">
       <div class="col-7">
         <app-ta-input
           formControlName="accountNumber"
@@ -177,6 +177,9 @@
         ></app-ta-input>
       </div>
     </div>
-    <app-ta-input-note formControlName="note"></app-ta-input-note>
+    <app-ta-input-note
+      formControlName="note"
+      [isVisibleNote]="ownerForm.get('note').value"
+    ></app-ta-input-note>
   </form>
 </app-ta-modal>
