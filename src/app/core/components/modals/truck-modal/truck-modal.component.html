@@ -175,7 +175,7 @@
             </div>
           </div>
         </div>
-        <app-ta-input-note formControlName="note"></app-ta-input-note>
+        <app-ta-input-note formControlName="note" [isVisibleNote]="truckForm.get('note').value"></app-ta-input-note>
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">

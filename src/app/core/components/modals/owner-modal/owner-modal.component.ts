@@ -11,24 +11,25 @@ import {
   OnInit,
   ViewEncapsulation,
   OnDestroy,
-  ChangeDetectorRef,
+  ViewChild,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerModalService } from './owner-modal.service';
-import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 import { AddressEntity } from 'appcoretruckassist';
 import { distinctUntilChanged } from 'rxjs';
+import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
 
 @Component({
   selector: 'app-owner-modal',
   templateUrl: './owner-modal.component.html',
   styleUrls: ['./owner-modal.component.scss'],
-  animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
+  @ViewChild(TabSwitcherComponent) tabSwitcher: any;
+
   @Input() editData: any;
 
   public ownerForm: FormGroup;
@@ -50,11 +51,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   public selectedAddress: Address | AddressEntity = null;
   public selectedBank: any = null;
   public isBankSelected: boolean = false;
-
-  public animationObject = {
-    value: this.selectedTab,
-    params: { height: '0px' },
-  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -108,15 +104,9 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-    console.log(this.selectedTab);
+    this.tabSwitcher.activeTab = this.selectedTab;
 
-    let dotAnimation = document.querySelector('.animation-two-tabs');
-    this.animationObject = {
-      value: this.selectedTab,
-      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-    };
-
-    if ((this.selectedTab = 1)) {
+    if (this.selectedTab === 1) {
       this.inputService.changeValidators(
         this.ownerForm.get('bussinesName'),
         true
@@ -165,7 +155,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       if (data.action === 'delete' && this.editData) {
         this.deleteOwnerById(this.editData.id);
       }
-
       this.ngbActiveModal.close();
     }
   }
@@ -200,7 +189,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       bankId: 1, //this.selectedBank ? this.selectedBank.id : null,
       ...form,
     };
-    console.log(newData);
+
     this.ownerModalService
       .updateOwner(newData)
       .pipe(untilDestroyed(this))
@@ -254,7 +243,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       bankId: 1, //this.selectedBank ? this.selectedBank.id : null,
       ...form,
     };
-    console.log(newData);
+
     this.ownerModalService
       .addOwner(newData)
       .pipe(untilDestroyed(this))
@@ -280,7 +269,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           const splitName = res.ownerType.includes('Proprietor')
             ? res.name.split(' ')
             : null;
-          console.log(splitName);
+
           this.ownerForm.patchValue({
             bussinesName: !res.ownerType.includes('Proprietor')
               ? res.name
