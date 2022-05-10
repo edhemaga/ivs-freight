@@ -112,7 +112,7 @@
   .ta-card-body {
     max-height: 0;
     overflow: hidden;
-    transition: all 0.5s ease-in-out;
+    transition: all 0.3s ease-in-out;
 
     &.active {
       max-height: 600px;
@@ -144,4 +144,7 @@
       }
     }
   }
+}
+.has-counter{
+  margin-left: 8px !important;
 }

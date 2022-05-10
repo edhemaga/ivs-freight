@@ -113,7 +113,7 @@
   grid-template-rows: repeat(1, 36px);
   grid-column-gap: 55px;
   margin-bottom: 12px;
-  margin-left: 4px;
+  margin-left: 16px;
   margin-right: 16px;
   .purchase-template-item {
     .purchase-icon-copy {
@@ -178,6 +178,7 @@ mat-button-toggle {
   margin: 2px;
   color: #b7b7b7 !important;
   font-weight: 700;
+  transition: left 0.25 ease-out;
 }
 
 .mat-button-toggle-checked {
@@ -206,12 +207,13 @@ mat-button-toggle {
     display: grid;
     grid-template-columns: 32px 32px 32px;
     column-gap: 49px;
-    margin-bottom: 12px;
+    margin-top: 12px;
   }
   .card-row-endor {
     display: grid;
     grid-template-columns: 144px 68px;
     column-gap: 19px;
+    margin-top: 12px;
   }
   .card-row-progress {
     margin-top: 12px;
@@ -290,7 +292,7 @@ mat-button-toggle {
 .divider {
   margin: 0;
   height: 2px;
-  width: 97%;
+  width: 428px;
   margin-left: 6px;
   margin-right: 6px;
   border-radius: 1px;
@@ -398,4 +400,12 @@ mat-button-toggle {
       }
     }
   }
+}
+.details-page-row-5{
+  margin-left: 12px;
+  margin-right: 10px;
+  margin-bottom: 12px;
+}
+#chart{
+  width: 436px !important;
 }

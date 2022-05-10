@@ -153,7 +153,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
       ],
       chart: {
         height: 180,
-        width: 408,
+        width: 415,
         type: 'line',
         zoom: {
           enabled: false,

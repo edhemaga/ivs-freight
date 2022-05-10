@@ -22,7 +22,11 @@
       <p>{{ headerText }}</p>
     </div>
     <div class="icon-right">
-      <app-table-dropdown [options]="options.actions"> </app-table-dropdown>
+      <app-table-dropdown
+        [customClassDropDown]="'table-dropdown-container-horizontal-details'"
+        [options]="options.actions"
+      >
+      </app-table-dropdown>
     </div>
   </div>
 

@@ -40,16 +40,14 @@
 }
 
 .common-template {
-  display: grid;
-  grid-template-columns: 215px 153px;
   row-gap: 12px;
   margin-bottom: 12px;
-  margin-left: 4px;
   margin-top: 8px;
   .common-item-wrapper {
     display: flex;
     align-items: center;
     height: 40px;
+    margin-left: 4px;
   }
   .common-template-item {
     display: flex;
@@ -115,6 +113,8 @@
 .perfomance {
   display: flex !important;
   flex-direction: column;
+  margin-left: 12px;
+  margin-right: 12px;
   .common-template-item-name {
     font-size: $font-size14 !important;
     font-weight: $font-semibold !important;
@@ -135,9 +135,9 @@
   }
 }
 .additional-container {
-  margin-left: 4px;
   margin-right: 16px;
   margin-top: 12px;
+  margin-left: 16px;
   .addres-wrapper {
     .address-icon {
       display: none;
@@ -190,7 +190,9 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
-  margin-top: 12px;
+  margin-top: 6px;
+  margin-left: 12px;
+  margin-right: 12px;
   .first {
     height: 18px;
     width: 18px;

@@ -11,11 +11,14 @@
   }
 }
 .table-dropdown-container-vertical{
-  width: 30px;
-  height: 28px;
+  width: 18px;
+  height: 18px;
   background-image: url("../../../../../assets/svg/common/ic_dots.svg") !important;
   background-repeat: no-repeat;
   background-position: center;
+  position: relative;
+  top: 5px;
+  right: 7px;
   cursor: pointer;
 
   &:hover {
@@ -31,6 +34,6 @@
   cursor: pointer;
 
   &:hover {
-    background-image: url("../../../../../assets/svg/common/ic_dots.svg") !important;
+    background-image: url("../../../../../assets/svg/common/ic_horizontal_dots_details.svg") !important;
   }
 }
