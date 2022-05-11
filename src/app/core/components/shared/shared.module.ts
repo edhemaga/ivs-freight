@@ -84,9 +84,7 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
 import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component';
 import { ContactModalComponent } from '../modals/contact-modal/contact-modal.component';
 import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
-<<<<<<< HEAD
 import { TaDetailsHeaderCardComponent } from './ta-details-header-card/ta-details-header-card.component';
-=======
 import { BrokerModalComponent } from '../modals/broker-modal/broker-modal.component';
 import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-radiobuttons.component';
 import { TaLikeDislikeComponent } from './ta-like-dislike/ta-like-dislike.component';
@@ -94,7 +92,6 @@ import { TaUserReviewComponent } from './ta-user-review/ta-user-review.component
 import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
 import { ShipperModalComponent } from '../modals/shipper-modal/shipper-modal.component';
 import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component';
->>>>>>> 2e35f3d6d10d3101e0dad3ac13a61a4907ee5dbb
 
 @NgModule({
   declarations: [

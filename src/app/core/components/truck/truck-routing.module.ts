@@ -10,18 +10,16 @@ const routes: Routes = [
     data: { title: 'Truck' },
   },
   {
-<<<<<<< HEAD
     path:':id/details',
     loadChildren:()=>
     import('./truck-details/truck-details.module').then(
       (m) => m.TruckDetailsModule
     ),
     data:{title:'Truck details'}
-=======
-    path: 'card',
+  },
+   { path: 'card',
     component: TruckCardComponent,
     data: {title: 'Truck cards'},
->>>>>>> 2e35f3d6d10d3101e0dad3ac13a61a4907ee5dbb
   }
 ];
 
