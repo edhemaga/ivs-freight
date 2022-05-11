@@ -12,6 +12,7 @@
   <div class="note-body" #noteBody [class.active]="isVisibleNote">
     <textarea
       #note
+      [readOnly]="isReadOnly"
       appTextareaAutosize
       [rows]="minRows"
       [minRows]="minRows"

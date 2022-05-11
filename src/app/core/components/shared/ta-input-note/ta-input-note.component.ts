@@ -23,6 +23,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() minRows: number = 2;
   @Input() maxRows: number = 5;
   @Input() placeholder: string = "Write a note."
+  @Input() isReadOnly: boolean = false;
   @Input() customClass: string = null;
 
   @ViewChild('note', { static: true }) noteRef: ElementRef;

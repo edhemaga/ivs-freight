@@ -30,13 +30,7 @@ $transition: all 0.3s ease-in-out;
   font-size: $font-size12;
   font-weight: 700;
 }
-:host ::ng-deep .ta-card-header {
-  padding: 0 !important;
-  margin-right: 10px !important;
-  margin-left: 12px;
-  margin-top: 6px !important;
-  margin-bottom: 6px !important;
-}
+
 .details-item-cmp {
   display: grid;
   grid-template-columns: 440px repeat(4, 335px);
@@ -128,8 +122,6 @@ $transition: all 0.3s ease-in-out;
     overflow: hidden;
     width: 440px;
     background-color: $color-white;
+    padding: 12px 6px;
   }
 }
-// .has-counter{
-//   margin-left: 8px !important;
-// }

@@ -51,6 +51,7 @@
         <!--------Assinged to--------->
         <app-ta-custom-card
           [bodyTemplate]="'card'"
+          [hasDivider]="false"
           [cardName]="'Assigned To'"
           [tooltipName]="'Dispatch History'"
           [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
@@ -129,7 +130,7 @@
         </app-ta-custom-card>
 
         <!--------Owner--------->
-        <app-ta-custom-card [cardName]="'Owner'">
+        <app-ta-custom-card [cardName]="'Owner'" [bodyTemplate]="'card'">
           <div class="common-template">
             <div class="common-template-item">
               <div class="common-template-item-name">Company</div>
@@ -150,7 +151,7 @@
         </app-ta-custom-card>
 
         <!--------Perfomance--------->
-        <app-ta-custom-card [cardName]="'Perfomance'">
+        <app-ta-custom-card [cardName]="'Perfomance'" [bodyTemplate]="'card'">
           <div class="common-template perfomance">
             <mat-button-toggle-group
               [value]="selectedValuePerfomance"
@@ -203,6 +204,7 @@
         <!--------Fuel Consumption--------->
         <app-ta-custom-card
           [tooltipName]="'View in Modal'"
+          [bodyTemplate]="'card'"
           [cardName]="'Fuel Consumption'"
           [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         >
@@ -274,6 +276,7 @@
         <app-ta-custom-card
           [tooltipName]="'View in Modal'"
           [cardName]="'Revenue'"
+          [bodyTemplate]="'card'"
           [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         >
           <div class="common-template perfomance">
@@ -346,6 +349,7 @@
         <app-ta-custom-card
           [tooltipName]="'View in Modal'"
           [cardName]="'Owner History'"
+          [bodyTemplate]="'card'"
           [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         >
           <div class="owner-history-wrapper">
@@ -383,11 +387,12 @@
         </app-ta-custom-card>
 
         <!--------Note--------->
-        <app-ta-custom-card [hasDivider]="false" [cardName]="'Note'">
+        <!-- <app-ta-custom-card [hasDivider]="false" [cardName]="'Note'">
           <div class="note">
             <p class="note-item">{{ data.data.note.noteText }}</p>
           </div>
-        </app-ta-custom-card>
+        </app-ta-custom-card> -->
+        <app-ta-input-note [formControl]="noteControl" [isReadOnly]="true" [isVisibleNote]="noteControl.value"></app-ta-input-note>
       </div>
     </div>
     <!---------------------------- Registration TEMPLATE ----------------------------->
