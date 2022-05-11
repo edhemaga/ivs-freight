@@ -58,6 +58,7 @@
         (click)="onNextAction()"
         src="assets/svg/common/arrow-right.svg"
       ></svg-icon>
+      
     </div>
   </div>
   <div class="details-header-wrapper-container">
@@ -80,7 +81,7 @@
         class="arrow-right"
         class="details-header-wrapper-data-item bottom"
       >
-        <svg-icon src="assets/svg/common/date.svg"></svg-icon>
+        <svg-icon class="date-add" src="assets/svg/common/date.svg"></svg-icon>
         <p class="vin-text">{{ cardDetailsDate }}</p>
       </div>
       <div
@@ -98,7 +99,7 @@
       >
         <svg-icon
           class="date-terminated"
-          src="assets/svg/common/ic_date.svg"
+          src="assets/svg/common/ic_terminated.svg"
         ></svg-icon>
         <p class="vin-text">{{ cardDetailsDateTerminated }}</p>
       </div>

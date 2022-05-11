@@ -14,6 +14,7 @@ export class TaReCardComponent implements OnInit {
   @Input() isCardOpen: boolean = true;
   @Input() hasSvg: string = '';
   @Input() options: any = [];
+  @Input() hasCopyIcon:boolean=false;
   @Output() resizePage = new EventEmitter<boolean>();
   public resPage: boolean = false;
   public copied: boolean = false;

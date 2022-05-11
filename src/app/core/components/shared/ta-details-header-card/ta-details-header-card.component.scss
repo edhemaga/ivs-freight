@@ -39,7 +39,6 @@ $border-radius: 3px;
         &:hover {
             background-color: #f3f3f3 !important;
             color: #3c3c3c !important;
-            font-style: italic;
         }
         &:focus {
             background-color: #6c6c6c !important;
@@ -100,7 +99,11 @@ $border-radius: 3px;
                 font-weight: 400;
                 P {
                     color: #aaaaaa;
+                    &:hover{
+                        color: #3c3c3c !important;
+                    }
                 }
+                
             }
         }
         .second {
@@ -190,4 +193,24 @@ $border-radius: 3px;
 }
 .dropInput {
     width: 366px;
+}
+.date-add{
+     svg{
+        &:hover{
+            cursor: pointer;
+          path{
+              fill: #919191;
+          }  
+        }
+    }
+}
+.date-terminated{
+    svg{
+        &:hover{
+            cursor: pointer;
+          path{
+              fill: #919191;
+          }  
+        }
+    }
 }

@@ -13,6 +13,7 @@
     width: 300px;
     &:hover {
         cursor: pointer;
+        
     }
     .text-icon-common {
         display: flex;
@@ -26,6 +27,7 @@
             height: 18px;
             svg {
                 &:hover {
+                    
                     path {
                         fill: #6c6c6c;
                     }
@@ -47,19 +49,26 @@
             font-size: 14px !important;
             color: #aaaaaa !important;
             font-weight: 500 !important;
+            
         }
         &:hover {
             .card-icon {
                 visibility: visible;
+                position: relative;
+                bottom: -10px;
+            }
+            .card-close-title{
+                color: #3c3c3c !important;
             }
         }
+
     }
     .card-name-cmp {
         font-size: 18px;
         font-weight: 500;
         color: #6c6c6c;
         height: 22px;
-        margin-top: 12px !important;
+        margin-top: 10px !important;
         margin-left: 12px !important;
     }
     .icon-dots {
@@ -102,7 +111,7 @@
         background-color: #ffffff;
         margin-left: 17px;
         margin-right: 10px;
-        padding-bottom: 9px;
+        padding-bottom: 10px;
         margin-top: 12px;
         svg {
             cursor: pointer;

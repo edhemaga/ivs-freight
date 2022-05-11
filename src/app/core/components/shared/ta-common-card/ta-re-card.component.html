@@ -10,7 +10,7 @@
       [borderRadius]="'2px'"
       [fontWeight]="'bold'"
       [fontSize]="'11px'"
-      [customPosition]="435"
+      [customPosition]="425"
       class="card-header-cmp"
       [ngClass]="{ 'card-flex': !isCardOpen }"
      >
@@ -29,7 +29,7 @@
           {{ cardNameCommon }}
         </p>
         <svg-icon
-          *ngIf="isCardOpen"
+          *ngIf="isCardOpen && hasCopyIcon"
           (click)="copyText(cardNameCommon)"
           class="card-icon"
           src="assets/svg/common/ic_copy.svg"
@@ -80,7 +80,7 @@
         [ngClass]="{ rotate: resPage }"
         class="resize-icon"
       >
-        <span class="hide-text" *ngIf="resPage">Hide Details</span>
+        <span class="hide-text" *ngIf="resPage">HIDE DETAILS</span>
         <svg-icon src="assets/svg/common/resize-arrow.svg"></svg-icon>
       </div>
     </div>

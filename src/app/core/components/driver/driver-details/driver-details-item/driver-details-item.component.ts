@@ -71,6 +71,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public arrayDriverName: any = '';
   public driverId: number = 0;
   public showMoreEmployment: boolean = false;
+  public employmentHistory: any = [];
   dataTest: any;
   constructor(private customModalService: CustomModalService) {
     this.arrayDrivers = [
@@ -230,6 +231,47 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     this.selectedValuePayroll = '1Y';
     this.initTableOptions();
     this.getDriversList();
+    this.getEmploymentHistory();
+  }
+
+  public getEmploymentHistory() {
+    this.employmentHistory = [
+      {
+        status: 'Employed',
+        fromTo: '08/10/21 - 04/23/22',
+        duration: '0y 204 d',
+        svgIcon:'assets/svg/common/round_blue.svg',
+        hasDivider:true
+      },
+      {
+        status: 'Deactivated',
+        fromTo: '04/24/22 - 07/05/23',
+        duration: '1y 103 d',
+        svgIcon:'assets/svg/common/ic_circle_light_blue.svg',
+        hasDivider:true
+      },
+      {
+        status: 'Employed',
+        fromTo: '07/06/23 - 07/21/24',
+        duration: '1y 16 d',
+        svgIcon:'assets/svg/common/round_blue.svg',
+        hasDivider:true
+      },
+      {
+        status: 'Deactivated',
+        fromTo: '07/22/24 - 09/04/24',
+        duration: '0y 53 d',
+        svgIcon:'assets/svg/common/ic_circle_light_blue.svg',
+        hasDivider:true
+      },
+      {
+        status: 'Employed',
+        fromTo: '09/05/24 - Today',
+        duration: '0y 247 d',
+        svgIcon:'assets/svg/common/round_blue.svg',
+        hasDivider:false
+      },
+    ];
   }
 
   public getDriversList() {

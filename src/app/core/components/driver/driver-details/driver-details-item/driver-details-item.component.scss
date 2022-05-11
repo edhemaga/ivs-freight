@@ -66,9 +66,9 @@
           }
         }
       }
-      p {
+      .information-value {
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 400;
         color: #6c6c6c;
         &::-moz-selection {
           color: $color-gray-dark;
@@ -109,10 +109,10 @@
 }
 .purchase-template {
   display: grid;
-  grid-template-columns: repeat(2, 162px);
+  grid-template-columns: repeat(2, 193px);
   grid-template-rows: repeat(1, 36px);
-  grid-column-gap: 55px;
-  margin-bottom: 12px;
+  grid-column-gap: 22px;
+  margin-bottom: 16px;
   margin-left: 16px;
   margin-right: 16px;
   .purchase-template-item {
@@ -193,12 +193,15 @@ mat-button-toggle {
     font-size: $font-size12;
     color: #6c6c6c;
     font-weight: $font-semibold;
+    height: 15px;
+    margin-bottom: 3px;
   }
   .card-item-value {
     font-size: $font-size14;
     font-weight: 400;
     color: #6c6c6c;
     white-space: nowrap;
+    height: 18px;
     &:hover {
       color: #3c3c3c;
     }
@@ -211,8 +214,8 @@ mat-button-toggle {
   }
   .card-row-endor {
     display: grid;
-    grid-template-columns: 144px 68px;
-    column-gap: 19px;
+    grid-template-columns: 141px 141px;
+    column-gap: 21px;
     margin-top: 12px;
   }
   .card-row-progress {
@@ -255,15 +258,20 @@ mat-button-toggle {
   .card-restriction {
     display: flex;
     flex-direction: column;
+    margin-top: 10px;
     .restriction-name {
       font-size: $font-size12;
       font-weight: $font-semibold;
       color: #6c6c6c;
+      height: 15px;
     }
     .restriction-item-value {
       font-size: $font-size14;
       font-weight: 400;
       color: #6c6c6c;
+      height: 18px;
+      margin-bottom: 2px;
+      margin-top: 3px;
       .value-name {
         font-size: $font-size14;
         font-weight: $font-semibold;
@@ -358,10 +366,11 @@ mat-button-toggle {
   flex-direction: column;
   margin-left: 8px;
   margin-right: 8px;
+  margin-top: 6px;
   .transform-arrow {
     svg {
       transform: rotate(180deg);
-      transition: all 0.5s ease-in-out;
+      transition: all 0.3s ease-in-out;
     }
   }
   .arrow-down-employment {
@@ -369,16 +378,114 @@ mat-button-toggle {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    position: relative;
+    bottom: 12px;
+    svg {
+      &:hover {
+        path {
+          fill: #6c6c6c;
+        }
+      }
+    }
   }
   .years-of-service {
-    width: 424px;
-    height: 52px;
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+    margin-bottom: 12px;
+    .items-wrapper {
+      flex-direction: column;
+    }
+    .service-years-name {
+      font-size: 12px;
+      font-weight: $font-semibold;
+      color: #6c6c6c;
+      height: 15px;
+      margin-bottom: 3px;
+    }
+    .service-year-value {
+      font-size: 18px;
+      font-weight: 500;
+      color: #6c6c6c;
+      height: 22px;
+    }
   }
   .progress-employment-history {
     width: 408px;
     height: 42px;
+    display: flex;
+    flex-direction: column;
     margin-left: 8px;
     margin-right: 8px;
+    margin-top: 12px;
+    
+    .employment-tooltip {
+      width: 424px;
+      height: 52px;
+      margin-left: -8px;
+      margin-right: 7px;
+      display: none;
+      background-color: #ffffff;
+      position: relative;
+      bottom: 60px;
+      .emp-tooltip {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        height: 52px;
+        padding: 6px 8px;
+        .year-working{
+          font-size: 18px;
+          font-weight: 500;
+          color: #6c6c6c;
+        }
+        .emp-tooltip-value {
+          display: flex;
+          justify-content: space-between;
+          height: 52px;
+          align-items: baseline;
+          width: 100%;
+          .emp-duration{
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c6c6c;
+          }
+        }
+        .emp-text-icon{
+          display: flex;
+          align-items: baseline;
+          margin-right: 12px;
+          p{
+            font-size: 12px;
+            font-weight: 500;
+            color: #6c6c6c;
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+    .progress {
+      width: 100%;
+      height: 18px;
+      background-color: #6d82c8;
+      &:hover{
+        .employment-tooltip{
+          display: block;
+        }
+      }
+    }
+    .year-employer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      height: 18px;
+      p{
+        font-size: 14px;
+        font-weight: 400;
+        color: #6c6c6c;
+      }
+    }
   }
   .status-container {
     margin-left: 8px;
@@ -399,13 +506,52 @@ mat-button-toggle {
         }
       }
     }
+    .status-items {
+      .item-wrapper {
+        display: grid;
+        grid-template-columns: 113px 149px 66px;
+        grid-column-gap: 40px;
+        .svg-text {
+          display: flex;
+          align-items: baseline;
+          .employment {
+            margin-left: 6px;
+          }
+        }
+        .duration {
+          text-align: right;
+        }
+        p {
+          font-size: 14px;
+          font-weight: 400;
+          color: #6c6c6c;
+        }
+      }
+    }
   }
 }
-.details-page-row-5{
+.details-page-row-5 {
   margin-left: 12px;
   margin-right: 10px;
   margin-bottom: 12px;
 }
-#chart{
-  width: 436px !important;
+.divider-common {
+  margin: 0;
+  height: 2px;
+  width: 323px;
+  margin-left: 6px;
+  margin-right: 6px;
+  border-radius: 1px;
+  background-color: $color-white-light;
+}
+.divider-employment {
+  margin: 0;
+  height: 2px;
+  width: 420px;
+  margin-left: -4px;
+  margin-right: 9px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 1px;
+  background-color: $color-white-light;
 }

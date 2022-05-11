@@ -130,6 +130,7 @@
           [tooltipName]="'Dispatch History'"
           [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
           [isCardOpen]="true"
+          class="first-custom-card"
         >
           <div class="assignTo">
             <div class="assignTo-item first">
@@ -308,24 +309,34 @@
           [isCardOpen]="false"
         >
           <div class="employment-history-container">
-            <div class="years-of-service"></div>
-            <div class="progress-employment-history"></div>
-            <svg-icon
-              [ngClass]="{ 'transform-arrow': showMoreEmployment }"
-              (click)="showMoreEmployment = !showMoreEmployment"
-              class="arrow-down-employment"
-              src="assets/svg/common/fill_arrow_down.svg"
-              [appTooltip]="showMoreEmployment ? 'Show More' : 'Show Less'"
-              [position]="'top-middle'"
-              [tooltipBackground]="'#6c6c6c'"
-              [tooltipColor]="'#ffffff'"
-              [zIndex]="900"
-              [borderRadius]="'2px'"
-              [fontWeight]="'bold'"
-              [fontSize]="'11px'"
-              [customPosition]="-26"
-            ></svg-icon>
-
+            <div class="years-of-service">
+              <div class="items-wrapper">
+                <div class="service-years-name">Years of Service</div>
+                <div class="service-year-value">4 years 70 days</div>
+              </div>
+            </div>
+           
+            <div class="progress-employment-history">
+            <div class="progress">
+              <div class="employment-tooltip">
+                <div class="emp-tooltip">
+                  <div class="emp-tooltip-value">
+                    <p class="emp-duration">10 September, 2021 - 04 January, 2023</p>
+                    <div class="emp-text-icon">
+                     <p >Deactivatd</p>
+                     <svg-icon src="assets/svg/common/ic_circle_light_blue.svg"></svg-icon>
+                    </div>
+                  </div>
+                  <p class="year-working">1 year 103 days</p>
+                </div>
+            </div>
+            </div>
+             <div class="year-employer">
+               <p>05/23/21</p>
+               <p>Today</p>
+             </div>
+            </div>
+            
             <div *ngIf="showMoreEmployment" class="status-container">
               <div class="status-header">
                 <div class="status-item">
@@ -338,7 +349,38 @@
                   <p class="p-status">DURATION</p>
                 </div>
               </div>
+              <div class="divider-employment"></div>
+              <div class="status-items">
+                <div class="item-wrapper" *ngFor="let emp of employmentHistory">
+                  
+                  <div class="svg-text">
+                    <svg-icon
+                      class="svg-blue"
+                      src="{{emp.svgIcon}}"
+                    ></svg-icon>
+                    <p class="employment">{{emp.status}}</p>
+                  </div>
+                  <p class="date-from-to">{{emp.fromTo}}</p>
+                  <p class="duration">{{emp.duration}}</p>
+                  <div *ngIf="emp.hasDivider==true" class="divider-employment"></div>
+                </div>
+              </div>
             </div>
+            <svg-icon
+              [ngClass]="{ 'transform-arrow': showMoreEmployment }"
+              (click)="showMoreEmployment = !showMoreEmployment"
+              [appTooltip]="'Show More'"
+              [position]="'top-middle'"
+              [tooltipBackground]="'#6c6c6c'"
+              [tooltipColor]="'#ffffff'"
+              [zIndex]="900"
+              [borderRadius]="'2px'"
+              [fontWeight]="'bold'"
+              [fontSize]="'11px'"
+              [customPosition]="0"
+              class="arrow-down-employment"
+              src="assets/svg/common/fill_arrow_down.svg"
+            ></svg-icon>
           </div>
         </app-ta-custom-card>
 
@@ -464,7 +506,6 @@
                 [title]="chartOptions.title"
                 [dataLabels]="chartOptions.dataLabels"
                 [fill]="chartOptions.fill"
-                [tooltip]="chartOptions.tooltip"
               ></apx-chart>
             </div>
           </div>
@@ -598,7 +639,7 @@
             </div>
           </div>
         </app-ta-custom-card>
-       <div class="divider"></div>
+        <div class="divider"></div>
         <div class="details-page-row-5">
           <div class="note-item">
             <app-ta-input-note
@@ -621,6 +662,7 @@
           [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage($event)"
           [cardNameCommon]="'S53044475284'"
+          [hasCopyIcon]="true"
           [options]="dataTest"
         >
           <div class="card-body-cdl">
@@ -665,6 +707,7 @@
           [cardDocumentCounter]="6"
           (resizePage)="toggleResizePage($event)"
           [cardNameCommon]="'570AG0927'"
+          [hasCopyIcon]="true"
         >
           <div class="card-body-cdl">
             <div class="card-row-issued">
@@ -714,7 +757,7 @@
             </div>
           </div>
 
-          <div class="divider"></div>
+          <div class="divider-common"></div>
           <div class="details-document-container">
             <div class="icon-counter-wrapper">
               <div class="counter-text-wrapper">
@@ -763,7 +806,7 @@
             >
             </app-ta-files>
           </div>
-          <div class="divider"></div>
+          <div class="divider-common"></div>
           <div class="card-note">
             <app-ta-input-note
               [formControl]="cdlNote"
@@ -948,7 +991,7 @@
               </div>
             </div>
           </div>
-          <div class="divider"></div>
+          <div class="divider-common"></div>
           <div class="details-document-container">
             <div class="icon-counter-wrapper">
               <div class="counter-text-wrapper">
@@ -997,7 +1040,7 @@
             >
             </app-ta-files>
           </div>
-          <div class="divider"></div>
+          <div class="divider-common"></div>
           <div class="card-note">
             <app-ta-input-note
               [formControl]="cdlNote"
