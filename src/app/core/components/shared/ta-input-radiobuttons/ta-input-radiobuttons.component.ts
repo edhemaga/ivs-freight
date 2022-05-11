@@ -15,19 +15,15 @@ interface RadioButton {
 })
 export class TaInputRadiobuttonsComponent {
   @Input() buttons: RadioButton[] = null;
-  @Output() changedValue: EventEmitter<RadioButton> =
-    new EventEmitter<RadioButton>(null);
+  @Output() changedValue: EventEmitter<RadioButton[]> = new EventEmitter<
+    RadioButton[]
+  >(null);
 
   public onChange(button: RadioButton): void {
-    const active = this.buttons.findIndex(
-      (item) => item.value === button.value
-    );
-
-    if (active !== -1) {
-      this.buttons.filter((item) => (item.isActive = false));
-      this.buttons[active].isActive = true;
-    }
-    this.changedValue.emit(button);
+    this.buttons.filter((item) => (item.checked = false));
+    button.checked = true;
+    console.log(this.buttons)
+    this.changedValue.emit(this.buttons);
   }
 
   public identity(index: number, item: any): string {

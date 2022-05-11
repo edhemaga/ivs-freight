@@ -1,13 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { of, Subject, takeUntil } from 'rxjs';
 
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 import { DriversQuery } from '../state/driver.query';
-import { DriversState } from '../state/driver.store';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
+import { DatePipe } from '@angular/common';
+import { DriverTService } from '../state/driver.service';
+import { catchError, tap } from 'rxjs/operators';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { DriversState } from '../state/driver.store';
 
 @Component({
   selector: 'app-driver-table',
@@ -29,7 +33,10 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   constructor(
     private modalService: ModalService,
     private driversQuery: DriversQuery,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    public datePipe: DatePipe,
+    private driverTService: DriverTService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -122,7 +129,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Applicants',
         field: 'applicants',
         length: 8,
-        data: this.getDumyData(8),
+        data: this.getDumyData(),
         extended: true,
         gridNameTitle: 'Driver',
         stateName: 'applicants',
@@ -132,7 +139,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Active',
         field: 'active',
         length: 5,
-        data: this.getDumyData(5),
+        data: this.getDumyData(),
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -142,7 +149,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Inactive',
         field: 'inactive',
         length: 10,
-        data: this.getDumyData(10),
+        data: this.getDumyData(),
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -153,6 +160,12 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     const td = this.tableData.find((t) => t.field === this.selectedTab);
 
     this.setDriverData(td);
+  }
+
+  getDumyData() {
+    this.drivers = this.driversQuery.getAll()[0];
+
+    return this.drivers?.length ? this.drivers : [];
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
@@ -172,23 +185,38 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   }
 
   setDriverData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data: DriversState) => {
-      return {
-        ...data,
-        isSelected: false,
-      };
-    });
-  }
+    if (td.data.length) {
+      this.viewData = td.data;
 
-  getDumyData(numberOfCopy: number) {
-    this.drivers = this.driversQuery.getAll();
-    for (let i = 0; i < numberOfCopy; i++) {
-      this.drivers.push(this.drivers[i]);
+      this.viewData = this.viewData.map((data: DriversState) => {
+        return {
+          ...data,
+          isSelected: false,
+          textAddress: data.address.address ? data.address.address : '',
+          textDOB: data.dateOfBirth
+            ? this.datePipe.transform(data.dateOfBirth, 'dd/MM/yy')
+            : '',
+          textHired: data.hired
+            ? this.datePipe.transform(data.hired, 'dd/MM/yy')
+            : '',
+          textCDL: data.cdlNumber ? data.cdlNumber : '',
+          textState: data.address.state ? data.address.state : '',
+          textBank: data.bank ? data.bank : '',
+          textAccount: data.account ? data.account : '',
+          textRouting: data.routing ? data.routing : '',
+          tableCDLData: data.cdlExpiration ? data.cdlExpiration : {},
+          tableMedicalData: data.medicalExpiration
+            ? data.medicalExpiration
+            : {},
+          tableMvrData: data.mvrIssueDate ? data.mvrIssueDate : {},
+        };
+      });
+
+      console.log('viewData');
+      console.log(this.viewData);
     }
-    return this.drivers;
   }
 
   onToolBarAction(event: any) {
@@ -209,9 +237,40 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         { size: 'small' },
         {
           ...event,
-          disableButton: true
+          disableButton: true,
         }
       );
+    } else if (event.type === 'delete-item') {
+      this.driverTService
+        .deleteDriverById(event.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.notificationService.success(
+              'Driver successfully deleted',
+              'Success:'
+            );
+
+            let drivers = []
+
+            const index = this.viewData.map((driver) =>{
+              if(driver.id !== event.id){
+                drivers.push(driver);
+              }
+            })
+
+            this.viewData = drivers;
+            
+            // TODO: Treba Store da se updejtuje
+            // this.driversQuery.deleteDriverByIdFromStore(event.id);
+          },
+          error: () => {
+            this.notificationService.error(
+              `Driver with id: ${event.id} couldn't be deleted`,
+              'Error:'
+            );
+          },
+        });
     }
   }
 

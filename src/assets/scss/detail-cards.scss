@@ -1,518 +1,515 @@
-.card-main-holder{
-    width: 100%;
-    display: flex;
-    margin: auto;
+.card-main-holder {
+  width: 100%;
+  display: flex;
+  margin: auto;
 
-    .col-3{
-        padding: 0px;
+  .col-3 {
+    padding: 0px;
 
-        .details{
-            width: 100%;
-            height: 720px;
-            border-radius: 3px;
-            background-color: #ffffff;
-        }
+    .details {
+      width: 100%;
+      height: 720px;
+      border-radius: 3px;
+      background-color: #ffffff;
     }
+  }
 
-    .col-9{
-        padding-right: 0px;
+  .col-9 {
+    padding-right: 0px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    .card-frame {
+      position: relative;
+      padding: 0px 6px 12px 6px;
+      box-sizing: border-box;
+
+      .card-holder-frame {
+        position: relative;
+        width: 300px;
+        padding: 12px;
+        box-sizing: border-box;
+        background-color: #fff;
+        border-radius: 3px;
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
-        align-content: flex-start;
-        flex-wrap: wrap;
-        flex-direction: row;
+        flex-direction: column;
 
-        .card-frame{
+        .driver-dropdown {
+          position: absolute;
+          top: 12.5px;
+          right: 12px;
+          z-index: 100;
+          svg-icon {
+            svg {
+              display: flex;
+              width: 18px;
+              height: 5px;
+              circle {
+                fill: #aaaaaa;
+              }
+            }
+          }
+        }
+
+        .inactive-overflow {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(255, 255, 255, 0.5);
+          z-index: 10;
+          top: 0px;
+          left: 0px;
+        }
+
+        &.active {
+          background-color: #e5e5e5;
+
+          .broker-box-bcg {
+            background-color: #536bc2 !important;
+          }
+
+          .broker-box-between {
+            background-color: #f44336 !important;
+          }
+        }
+
+        .card-holder {
           position: relative;
-            padding: 0px 6px 12px 6px;
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .broker-image {
+            width: 18px;
+            height: 18px;
+            margin-right: 6px;
+            svg-icon {
+              svg {
+                display: flex;
+                path {
+                  fill: #aaaaaa;
+                }
+              }
+            }
+          }
+
+          .broker-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6c6c6c;
+            line-height: 18px;
+            padding-left: 35px;
+            box-sizing: border-box;
+          }
+
+          &.padding-between {
+            padding: 12px 0px;
+            box-sizing: border-box;
+          }
+
+          .check-holder {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+
+            input {
+              opacity: 0;
+              cursor: pointer;
+              height: 0;
+              width: 0;
+            }
+
+            .container1 {
+              position: relative;
+              width: 14px;
+              display: flex;
+              cursor: pointer;
+              user-select: none;
+            }
+
+            .container1 .checkmark {
+              position: absolute;
+              display: inline-block;
+              width: 14px;
+              height: 14px;
+              border-radius: 2px;
+              background-color: #cccccc;
+              top: 50%;
+              transform: translateY(-50%);
+              left: 0px;
+            }
+
+            .container1 input:checked ~ .checkmark {
+              background-color: #fff;
+            }
+
+            .checkmark:after {
+              content: "";
+              position: absolute;
+              display: none;
+            }
+
+            .container1 input:checked ~ .checkmark:after {
+              display: block;
+            }
+
+            .container1 .checkmark:after {
+              left: 5px;
+              top: 1.4px;
+              width: 5px;
+              height: 10px;
+              border: solid #919191;
+              border-width: 0 3px 3px 0;
+              transform: rotate(45deg);
+            }
+
+            .check-box {
+              width: 14px;
+              height: 14px;
+              border-radius: 2px;
+              background-color: #cccccc;
+            }
+
+            .check-title {
+              font-size: 16px;
+              font-weight: 700;
+              color: #6c6c6c;
+              line-height: 16px;
+              padding-left: 6px;
+              box-sizing: border-box;
+
+              &.owner-title {
+                color: #b7b7b7;
+              }
+
+              &.truck-hover {
+                &:hover {
+                  cursor: pointer;
+                  color: #536bc2;
+                }
+              }
+
+              &.broker-title-size {
+                width: 206px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+
+                &:hover {
+                  cursor: pointer;
+                  color: #536bc2;
+                }
+              }
+            }
+
+            .active-circle {
+              width: 18px;
+              height: 18px;
+              margin-left: 6px;
+              svg-icon {
+                svg {
+                  display: flex;
+                  path {
+                    fill: #6d82c7;
+                  }
+                }
+              }
+            }
+
+            .ban-item {
+              width: 18px;
+              height: 18px;
+              margin-left: 6px;
+
+              svg-icon {
+                svg {
+                  display: flex;
+                  path:first-child {
+                    fill: #707070;
+                  }
+                }
+              }
+
+              &.ban {
+                svg-icon {
+                  svg {
+                    display: flex;
+                    path:first-child {
+                      fill: #e57373;
+                    }
+                  }
+                }
+              }
+            }
+
+            .count-box {
+              min-width: 18px;
+              padding: 2px 5px;
+              box-sizing: border-box;
+              border-radius: 2px;
+              background-color: #4db6a2;
+              font-size: 11px;
+              font-weight: 700;
+              color: #fff;
+              line-height: 14px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              &.different-bcg {
+                background-color: #e57373;
+              }
+
+              &.broker-box-bcg {
+                background-color: #6d82c7;
+                border-radius: 2px 0px 0px 2px;
+                padding: 2px 3px;
+              }
+
+              &.broker-box-between {
+                background-color: #e57373;
+                border-radius: 0px 2px 2px 0px;
+                padding: 2px 3px;
+                margin: 0px 4px 0px 2px;
+              }
+
+              &.no_value {
+                background-color: #d2d2d2;
+              }
+            }
+          }
+
+          .dropdown {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            svg-icon {
+              svg {
+                display: flex;
+                path {
+                  fill: #aaaaaa;
+                }
+              }
+            }
+
+            &.owner-dropdown {
+              svg {
+                path {
+                  fill: #dadada;
+                }
+              }
+            }
+          }
+        }
+
+        .name {
+          font-size: 14px;
+          font-weight: 400;
+          color: #6c6c6c;
+          line-height: 14px;
+
+          &.name-padding {
+            padding: 0px 14px 0px 4px;
+            box-sizing: border-box;
+          }
+        }
+
+        .truck-card-text {
+          display: flex;
+          font-size: 14px;
+          font-weight: 600;
+          color: #6c6c6c;
+          line-height: 14px;
+
+          .regular {
+            width: 85px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 400;
+            padding-left: 6px;
+            box-sizing: border-box;
+          }
+
+          .repair-regular {
+            display: inline-block;
+            width: 207px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 400;
+            padding-left: 6px;
+            box-sizing: border-box;
+          }
+
+          .repair-bold {
+            font-weight: 700;
+            padding-left: 6px;
+            box-sizing: border-box;
+          }
+        }
+
+        .finish-order {
+          padding: 2px 12px;
+          border-radius: 2px;
+          background-color: #f3f3f3;
+          font-size: 11px;
+          font-weight: 800;
+          color: #6c6c6c;
+          line-height: 16px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          &:hover {
+            cursor: pointer;
+            background-color: #ab47bc;
+            color: #ffffff;
+          }
+        }
+
+        .miles {
+          font-weight: 700;
+        }
+
+        .driver-card-frame {
+          position: relative;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+
+          .driver-card-img {
+            width: 68px;
+            height: 79px;
+            border-radius: 2px;
+
+            .container1 {
+              position: absolute;
+              display: none;
+              width: 14px;
+              cursor: pointer;
+              user-select: none;
+              top: 2px;
+              left: 2px;
+            }
+
+            .container1 .checkmark {
+              position: absolute;
+              display: inline-block;
+              width: 14px;
+              height: 14px;
+              border-radius: 2px;
+              background-color: #ffffff;
+              top: 50%;
+              transform: translateY(-50%);
+              left: 0px;
+            }
+
+            .container1 input:checked ~ .checkmark {
+              background-color: #fff;
+            }
+
+            .checkmark:after {
+              content: "";
+              position: absolute;
+              display: none;
+            }
+
+            .container1 input:checked ~ .checkmark:after {
+              display: block;
+            }
+
+            .container1 .checkmark:after {
+              left: 5px;
+              top: 1.4px;
+              width: 5px;
+              height: 10px;
+              border: solid #919191;
+              border-width: 0 3px 3px 0;
+              transform: rotate(45deg);
+            }
+
+            .check-box {
+              width: 14px;
+              height: 14px;
+              border-radius: 2px;
+              background-color: #ffffff;
+            }
+
+            &:hover {
+              .container1 {
+                display: flex;
+              }
+            }
+          }
+
+          .driver-card-info-frame {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-direction: column;
+            padding-left: 12px;
             box-sizing: border-box;
 
-            .card-holder-frame{
-              position: relative;
-              width: 300px;
-              padding: 12px;
-              box-sizing: border-box;
-              background-color: #fff;
-              border-radius: 3px;
+            .driver-card-name {
+              font-size: 16px;
+              font-weight: 600;
+              color: #6c6c6c;
+              line-height: 16px;
+
+              &:hover {
+                cursor: pointer;
+                color: #536bc2;
+              }
+            }
+
+            .driver-card-phone-frame {
               display: flex;
               justify-content: flex-start;
               align-items: flex-start;
-              flex-direction: column;
 
-              .driver-dropdown{
-                position: absolute;
-                top: 12.5px;
-                right: 12px;
-                z-index: 100;
-                svg-icon{
-                  svg{
+              &.padding-between {
+                padding: 12px 0px;
+                box-sizing: border-box;
+              }
+
+              .driver-phone-img {
+                width: 18px;
+                height: 18px;
+
+                svg-icon {
+                  svg {
                     display: flex;
-                    width: 18px;
-                    height: 5px;    
-                    circle{
-                      fill: #AAAAAA;
+                    path {
+                      fill: #aaaaaa;
                     }
                   }
                 }
-              }  
+              }
 
-                .inactive-overflow{
-                  position: absolute;
-                  width: 100%;
-                  height: 100%;
-                  background-color: rgba(255, 255, 255, 0.5);
-                  z-index: 10;
-                  top: 0px;
-                  left: 0px;
-
-                }
-
-                &.active{
-                  background-color: #E5E5E5;
-
-                  .broker-box-bcg{
-                    background-color: #536BC2 !important;
-                  }
-
-                  .broker-box-between{
-                    background-color: #F44336 !important;
-                  }
-                }
-
-                .card-holder{
-                    position: relative;
-                    width: 100%;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-
-                    .broker-image{
-                    width: 18px;
-                    height: 18px;
-                    margin-right: 6px;
-                      svg-icon{
-                        svg{
-                        display: flex;
-                        path{
-                          fill: #AAAAAA;
-                          }
-                        }
-                      }
-                    }
-
-                    .broker-price{
-                      font-size: 14px;
-                      font-weight: 600;
-                      color: #6C6C6C;
-                      line-height: 18px;
-                      padding-left: 35px;
-                      box-sizing: border-box;
-                    }
-
-                    &.padding-between{
-                        padding: 12px 0px;
-                        box-sizing: border-box;
-                    }
-
-                    .check-holder{
-                        display: flex;
-                        justify-content: flex-start;
-                        align-items: center;
-
-                        input{
-                            opacity: 0;
-                            cursor: pointer;
-                            height: 0;
-                            width: 0;
-                        }
-
-                        .container1{
-                            position: relative;
-                            width: 14px;
-                            display: flex;
-                            cursor: pointer;
-                            user-select: none;
-                        }
-
-                        .container1 .checkmark{
-                            position: absolute;
-                            display: inline-block;
-                            width: 14px;
-                            height: 14px;
-                            border-radius: 2px;
-                            background-color: #CCCCCC;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            left: 0px;
-                        }
-
-                        .container1 input:checked ~ .checkmark {
-                          background-color: #fff;
-                        }
-
-                        .checkmark:after {
-                            content: "";
-                            position: absolute;
-                            display: none;
-                        }
-
-                        .container1 input:checked ~ .checkmark:after {
-                            display: block;
-                        }
-                        
-                        .container1 .checkmark:after {
-                            left: 5px;
-                            top: 1.4px;
-                            width: 5px;
-                            height: 10px;
-                            border: solid #919191;
-                            border-width: 0 3px 3px 0;
-                            transform: rotate(45deg);
-                          }
-
-                        .check-box{
-                            width: 14px;
-                            height: 14px;
-                            border-radius: 2px;
-                            background-color: #CCCCCC;
-                        }
-    
-                        .check-title{
-                          font-size: 16px;
-                          font-weight: 700;
-                          color: #6C6C6C;
-                          line-height: 16px;
-                          padding-left: 6px;
-                          box-sizing: border-box;
-
-                          &.owner-title{
-                            color: #B7B7B7;
-                          }
-
-                          &.truck-hover{
-                            &:hover{
-                              cursor: pointer;
-                              color: #536BC2;
-                            }
-                          }
-
-                            &.broker-title-size{
-                              width: 206px;
-                              overflow: hidden;
-                              text-overflow: ellipsis;
-                              white-space: nowrap;
-
-                              &:hover{
-                                cursor: pointer;
-                                color: #536BC2;
-                              }
-                            }
-                        }
-
-                        .active-circle{
-                          width: 18px;
-                          height: 18px;
-                          margin-left: 6px;
-                          svg-icon{
-                            svg{
-                              display: flex;
-                              path{
-                                fill: #6D82C7;
-                              }
-                            }
-                          }
-                        }
-
-                        .ban-item{
-                          width: 18px;
-                          height: 18px;
-                          margin-left: 6px;
-
-                          svg-icon{
-                            svg{
-                              display: flex;
-                              path:first-child{
-                                fill: #707070;
-                              }
-                            }
-                          }
-
-                          &.ban{
-                            svg-icon{
-                              svg{
-                                display: flex;
-                                path:first-child{
-                                  fill: #E57373;
-                                }
-                              }
-                            }
-                          }
-                        }
-
-                        .count-box{
-                          min-width: 18px;
-                          padding: 2px 5px;
-                          box-sizing: border-box;
-                          border-radius: 2px;
-                          background-color: #4DB6A2;
-                          font-size: 11px;
-                          font-weight: 700;
-                          color: #fff;
-                          line-height: 14px;
-                          display: flex;
-                          justify-content: center;
-                          align-items: center;
-
-                            &.different-bcg{
-                              background-color: #E57373;
-                            }
-
-                            &.broker-box-bcg{
-                              background-color: #6D82C7;
-                              border-radius: 2px 0px 0px 2px;
-                              padding: 2px 3px;
-                            }
-
-                            &.broker-box-between{
-                              background-color: #E57373;
-                              border-radius: 0px 2px 2px 0px;
-                              padding: 2px 3px;
-                              margin: 0px 4px 0px 2px;
-                            }
-
-                            &.no_value{
-                              background-color: #d2d2d2;
-                            }
-                        }
-    
-                    }
-
-                    .dropdown{
-                        position: absolute;
-                        right: 0px;
-                        top: 0px;
-                        svg-icon{
-                            svg{
-                                display: flex;
-                                path{
-                                    fill: #AAAAAA;
-                                }
-                            }
-                        }
-
-                        &.owner-dropdown{
-                          svg{
-                            path{
-                              fill: #DADADA;
-                            }
-                          }
-                        }
-                    }
-
-                }
-
-                .name{
-                    font-size: 14px;
-                    font-weight: 400;
-                    color: #6C6C6C;
-                    line-height: 14px;
-
-                    &.name-padding{
-                        padding: 0px 14px 0px 4px;
-                        box-sizing: border-box;
-                    }
-                }
-
-                .truck-card-text{
-                  display: flex;
-                  font-size: 14px;
-                  font-weight: 600;
-                  color: #6C6C6C;
-                  line-height: 14px;
-
-                  .regular{
-                    width: 85px;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    font-weight: 400;
-                    padding-left: 6px;
-                    box-sizing: border-box;
-                  }
-
-                  .repair-regular{
-                    display: inline-block;
-                    width: 207px;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    font-weight: 400;
-                    padding-left: 6px;
-                    box-sizing: border-box;
-                  }
-
-                  .repair-bold{
-                    font-weight: 700;
-                    padding-left: 6px;
-                    box-sizing: border-box;
-                  }
-                }
-
-                .finish-order{
-                  padding: 2px 12px;
-                  border-radius: 2px;
-                  background-color: #F3F3F3;
-                  font-size: 11px;
-                  font-weight: 800;
-                  color: #6C6C6C;
-                  line-height: 16px;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-
-                  &:hover{
-                    cursor: pointer;
-                    background-color: #AB47BC;
-                    color: #ffffff;
-                  }
-                }
-
-                .miles{
-                    font-weight: 700;
-                }
-
-                .driver-card-frame{
-                  position: relative;
-                  display: flex;
-                  justify-content: flex-start;
-                  align-items: center;
-
-                  .driver-card-img{
-                    width: 68px;
-                    height: 79px;
-                    border-radius: 2px;
-
-                    .container1{
-                      position: absolute;
-                      display: none;
-                      width: 14px;
-                      cursor: pointer;
-                      user-select: none;
-                      top: 2px;
-                      left: 2px;
-                    } 
-                    
-                    .container1 .checkmark{
-                      position: absolute;
-                      display: inline-block;
-                      width: 14px;
-                      height: 14px;
-                      border-radius: 2px;
-                      background-color: #ffffff;
-                      top: 50%;
-                      transform: translateY(-50%);
-                      left: 0px;
-                    }
-
-                    .container1 input:checked ~ .checkmark {
-                      background-color: #fff;
-                    }
-
-                    .checkmark:after {
-                        content: "";
-                        position: absolute;
-                        display: none;
-                    }
-
-                    .container1 input:checked ~ .checkmark:after {
-                        display: block;
-                    }
-                    
-                    .container1 .checkmark:after {
-                        left: 5px;
-                        top: 1.4px;
-                        width: 5px;
-                        height: 10px;
-                        border: solid #919191;
-                        border-width: 0 3px 3px 0;
-                        transform: rotate(45deg);
-                      }
-
-                    .check-box{
-                        width: 14px;
-                        height: 14px;
-                        border-radius: 2px;
-                        background-color: #ffffff;
-                    }
-
-                    &:hover{
-                      .container1{
-                        display: flex;
-                      }
-                    }
-                  }
-
-                  .driver-card-info-frame{
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: flex-start;
-                    flex-direction: column;
-                    padding-left: 12px;
-                    box-sizing: border-box;
-
-                    .driver-card-name{
-                      font-size: 16px;
-                      font-weight: 600;
-                      color: #6C6C6C;
-                      line-height: 16px;  
-
-                      &:hover{
-                        cursor: pointer;
-                        color: #536BC2;
-                      }
-                    }
-
-                    .driver-card-phone-frame{
-                      display: flex;
-                      justify-content: flex-start;
-                      align-items: flex-start;  
-
-                      &.padding-between{
-                        padding: 12px 0px;
-                        box-sizing: border-box;
-                      }
-
-                      .driver-phone-img{
-                        width: 18px;
-                        height: 18px;
-
-                        svg-icon{
-                          svg{
-                            display: flex;
-                            path{
-                              fill: #AAAAAA;
-                            }
-                          }
-                        }
-                      }
-
-                      .driver-phone{
-                        width: 142px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        font-size: 14px;
-                        font-weight: 400;
-                        color: #6C6C6C;
-                        line-height: 14px;
-                        padding-left: 6px;
-                        box-sizing: border-box;    
-                      }
-                    }
-                  }
-                }
+              .driver-phone {
+                width: 142px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 14px;
+                font-weight: 400;
+                color: #6c6c6c;
+                line-height: 14px;
+                padding-left: 6px;
+                box-sizing: border-box;
+              }
             }
+          }
         }
+      }
     }
+  }
 }

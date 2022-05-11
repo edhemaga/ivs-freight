@@ -9,16 +9,15 @@ const routes: Routes = [
     component: TruckTableComponent,
     data: { title: 'Truck' },
   },
-  { // /truck/
-    path: ':id/details',
-    loadChildren: () =>
-      import('./truck-details/truck-details.module').then(
-        (m) => m.TruckDetailsModule
-      ),
-    data: { title: 'Driver Details' },
-  },
   {
-    path: 'card',
+    path:':id/details',
+    loadChildren:()=>
+    import('./truck-details/truck-details.module').then(
+      (m) => m.TruckDetailsModule
+    ),
+    data:{title:'Truck details'}
+  },
+   { path: 'card',
     component: TruckCardComponent,
     data: {title: 'Truck cards'},
   }

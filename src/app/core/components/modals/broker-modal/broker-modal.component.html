@@ -188,8 +188,8 @@
           formControlName="isCheckedBillingAddress"
           [customClass]="
             brokerForm.get('isCheckedBillingAddress').value
-              ? 'regular billing-address'
-              : 'regular billing-address checked'
+              ? 'medium billing-address'
+              : 'medium billing-address checked'
           "
           [label]="'Billing address is same as main address'"
         ></app-ta-checkbox>
@@ -297,8 +297,8 @@
                   name: 'Credit Limit',
                   type: 'text',
                   label: 'Credit Limit',
-                  isRequired: this.brokerForm.get('isCredit').value,
-                  isDisabled: !this.brokerForm.get('isCredit').value,
+                  isRequired: this.brokerForm.get('creditType').value === 'Enable',
+                  isDisabled: this.brokerForm.get('creditType').value !== 'Enable',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   mask: 'separator.2'
@@ -312,11 +312,11 @@
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay term',
-                  isDisabled: !this.brokerForm.get('isCredit').value,
+                  isDisabled: this.brokerForm.get('creditType').value !== 'Enable',
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-broker-payterm'
                 }"
-                [options]="labelsPayType"
+                [options]="labelsPayTerms"
                 (selectedItem)="onSelectPayType($event)"
               ></app-ta-input-dropdown>
             </div>
@@ -325,7 +325,7 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-input-note formControlName="note"></app-ta-input-note>
+        <app-ta-input-note formControlName="note" [isVisibleNote]="brokerForm.get('note').value"></app-ta-input-note>
       </div>
       <!-------------------------------- Contact Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
@@ -341,6 +341,7 @@
           <div
             formArrayName="brokerContacts"
             class="broker-contacts"
+            (scroll)="onScrollingBrokerContacts($event)"
             *ngIf="brokerContacts.length"
           >
             <div class="broker-contacts-label">
@@ -374,7 +375,7 @@
                     dropdownWidthClass: 'w-col-broker-department'
                   }"
                   [options]="labelsDepartments"
-                  (selectedItem)="onSelectContactDepartment($event)"
+                  (selectedItem)="onSelectContactDepartment($event, ind)"
                 ></app-ta-input-dropdown>
                 <app-ta-input
                   formControlName="phone"
@@ -401,6 +402,10 @@
                 ></app-ta-input>
                 <svg-icon
                   class="brokerContacts-delete"
+                  [ngClass]="{
+                    'new-position': isContactCardsScrolling && brokerContact.get('email').value, 
+                    'new-position-without-email': isContactCardsScrolling && !brokerContact.get('email').value
+                  }"
                   src="assets/svg/common/ic_trash.svg"
                   (click)="removeBrokerContacts(ind)"
                   [appTooltip]="'Delete'"

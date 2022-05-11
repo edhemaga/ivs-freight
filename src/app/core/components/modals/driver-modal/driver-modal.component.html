@@ -249,7 +249,7 @@
           </div>
         </app-ta-custom-card>
         <!-- Note -->
-        <app-ta-input-note formControlName="note"></app-ta-input-note>
+        <app-ta-input-note formControlName="note" [isVisibleNote]="driverForm.get('note').value"></app-ta-input-note>
       </div>
       <!-------------------------------- Pay Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">

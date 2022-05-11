@@ -31,12 +31,17 @@ export class DriverResolver implements Resolve<DriversState> {
     //     })
     //   );
     // }
-    return this.driverService.getDriversFake().pipe(
-      catchError((error)=>{
-        return of('No drivers')
-      }),
-      tap((entites)=>this.driversStore.set({entites:entites}))
-    )
 
+    return this.driverService.getDrivers(1, 1, 25).pipe(
+      catchError((error) => {
+        this.driversStore.set({ entities: [] });
+        return of('No drivers data...');
+      }),
+      tap((driverPagination: DriverListResponse) => {
+        console.log('On Resolver');
+        console.log(driverPagination);
+        this.driversStore.set({ entities: driverPagination.pagination.data });
+      })
+    );
   }
 }

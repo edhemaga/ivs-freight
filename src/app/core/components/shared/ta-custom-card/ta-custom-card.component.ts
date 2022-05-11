@@ -10,6 +10,7 @@ import { card_modal_animation } from '../animations/card-modal.animation';
 })
 export class TaCustomCardComponent {
 
+  @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'
   @Input() cardName: string = null;
   @Input() hasCounter: number;
   @Input() hasArrow: boolean = true;

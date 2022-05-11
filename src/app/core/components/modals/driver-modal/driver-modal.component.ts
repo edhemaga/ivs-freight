@@ -112,12 +112,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onModalAction(action: string): void {
-    if (action === 'close') {
+  public onModalAction(data: {action: string, bool: boolean}): void {
+    if (data.action === 'close') {
       this.driverForm.reset();
     } else {
       // Save & Update
-      if (action === 'save') {
+      if (data.action === 'save') {
         if (this.driverForm.invalid) {
           this.inputService.markInvalid(this.driverForm);
           return;
@@ -130,7 +130,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       }
 
       // Delete
-      if (action === 'delete' && this.editData) {
+      if (data.action === 'delete' && this.editData) {
         this.deleteDriverById(this.editData.id);
       }
 
