@@ -58,11 +58,13 @@
 
   <!-- BODY -->
   <div
-    class="{{ !bodyTemplate ? 'ta-card-body' : 'ta-card-body-v2' }}"
-    [@.disabled]="!bodyTemplate"
-    [@showHideCardBody]="isCardOpen ? 'true' : 'false'"
+    class="{{ animationsDisabled ? 'ta-card-body' : 'ta-card-body-v2' }}"
+    [@.disabled]="animationsDisabled"
     [ngClass]="{ 'active': isCardOpen, 'scroll': hasScrollBody }"
   >
+  <div [@showHideCardBody]="isCardOpen? 'true' : 'false'">
     <ng-content></ng-content>
+  </div>
+    
   </div>
 </div>

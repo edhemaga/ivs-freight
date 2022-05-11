@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation, HostBinding } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
 
 @Component({
@@ -9,6 +9,9 @@ import { card_modal_animation } from '../animations/card-modal.animation';
   encapsulation: ViewEncapsulation.None,
 })
 export class TaCustomCardComponent {
+
+  @Input()
+  public animationsDisabled = true;
 
   @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'
   @Input() cardName: string = null;
