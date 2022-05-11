@@ -1,6 +1,6 @@
 <div class="ta-custom-card">
-  <div class="divider"></div>
-  <div class="ta-card-header" (click)="isCardOpen = !isCardOpen">
+  <div *ngIf="hasDivider" class="divider"></div>
+  <div class="ta-card-header" (click)="isCardOpenEvent($event)">
     <div class="header-content">
       <app-ta-counter
         *ngIf="hasCounter"
@@ -11,8 +11,14 @@
         [countWidth]="'24px'"
       ></app-ta-counter>
       <span
+<<<<<<< HEAD
         class="header-text" [ngClass]="{ 'no-counter': !hasCounter, 'active': isCardOpen }"
         >
+=======
+        class="header-text"
+        [ngClass]="{ 'no-counter': !hasCounter, active: isCardOpen }"
+      >
+>>>>>>> 2e35f3d6d10d3101e0dad3ac13a61a4907ee5dbb
         {{ cardName }}
       </span>
       <svg-icon
@@ -21,23 +27,45 @@
         src="{{ hasHeaderSvg }}"
       ></svg-icon>
     </div>
-    <div class="header-actions">
+    <div
+      class="header-actions"
+      [ngClass]="{ 'like-dislike-template': hasLikeDislike }"
+    >
+      <app-ta-like-dislike *ngIf="hasLikeDislike"></app-ta-like-dislike>
       <svg-icon
         *ngIf="hasActionSvg"
         class="header-action-svg"
+        [ngClass]="{ 'new-position': !hasArrow }"
         src="{{ hasActionSvg }}"
         (click)="onAdd($event)"
       ></svg-icon>
       <svg-icon
         *ngIf="hasArrow"
         class="header-arrow"
-        [ngClass]="{ 'rotate': isCardOpen }"
+        [ngClass]="{ rotate: isCardOpen }"
         src="assets/svg/common/ic_arrow-down.svg"
       ></svg-icon>
     </div>
   </div>
+<<<<<<< HEAD
   <div class="ta-card-body" [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
     <ng-content></ng-content>
+=======
+  <div [ngSwitch]="bodyTemplate">
+    <div *ngSwitchCase="'card'">
+      <div class="ta-card-body" [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
+        <ng-content></ng-content>
+      </div>
+    </div>
+    <div *ngSwitchDefault>
+      <div
+        class="ta-card-body"
+        [ngClass]="{ active: isCardOpen, scroll: hasScrollBody }"
+      >
+        <ng-content></ng-content>
+      </div>
+    </div>
+>>>>>>> 2e35f3d6d10d3101e0dad3ac13a61a4907ee5dbb
   </div>
   <div *ngIf="hasDivider" class="divider"></div>
 

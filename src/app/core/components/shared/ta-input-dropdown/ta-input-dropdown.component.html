@@ -12,9 +12,10 @@
 <ng-template #taInputDropdownPopover>
   <!--------------------------- Dropdown options --------------------------->
   <div
+    *ngIf="!inputConfig.isDisabled"
     class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
     [ngClass]="{
-      'scroll': options | taDropdownCount: template,
+      scroll: options | taDropdownCount: template,
       'dropdown-options-groups': template === 'groups'
     }"
   >
@@ -25,11 +26,11 @@
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option"
           [ngClass]="{
-            'disabled': option?.disabled,
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            'active': option.id === activeItem?.id
+            active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
         >
@@ -49,39 +50,65 @@
         </div>
       </div>
       <!--------------------------- Svg Text Template (display flex) --------------------------->
-      <div *ngSwitchCase="'svgtextflex'">
+      <div *ngSwitchCase="'svgtext-template'">
         <div
           *ngFor="let option of options; trackBy: identity"
-          class="dropdown-option svg-text-flex {{ option.subFolder }} {{
+          class="dropdown-option svg-text-template {{ option.subFolder }} {{
             option.name.trim().replace(' ', '').toLowerCase()
           }}"
           [ngClass]="{
-            'disabled': option?.disabled,
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            'active': option.id === activeItem?.id,
-            'trailerContainer': option.name === 'Container',
-            'semisleeper': option.name === 'Semi w/Sleeper',
-            'lowboyrgn': option.name === 'Low Boy/RGN'
+            active: option.id === activeItem?.id,
+            trailerContainer: option.name === 'Container',
+            semisleeper: option.name === 'Semi w/Sleeper',
+            lowboyrgn: option.name === 'Low Boy/RGN'
           }"
           (click)="onActiveItem(option)"
         >
           <svg-icon
-            class="svgtextflex-logo {{
+            class="svgtext-template-logo {{
               option.name.trim().replace(' ', '').toLowerCase()
             }}"
-            [ngClass]="{ 'active': option.id === activeItem?.id }"
+            [ngClass]="{ active: option.id === activeItem?.id }"
             [src]="option.svg | taSvg: option.folder:option?.subFolder"
           ></svg-icon>
           <div
-            class="svgtextflex-text"
+            class="svgtext-template-text"
             [ngClass]="{ 'truck-text': option.subFolder === 'trucks' }"
             [innerHtml]="
               option.name
                 | taHighlight: [{ index: 45632, text: getSuperControl.value }]
             "
           ></div>
+        </div>
+      </div>
+      <!--------------------------- Details template  --------------------------->
+      <div *ngSwitchCase="'details-template'">
+        <div
+          *ngFor="let option of options; trackBy: identity"
+          class="dropdown-option details-template"
+          [ngClass]="{
+            'disabled': option?.disabled,
+            'no-result': options.length === 1 && options[0].name === 'No Results',
+            'active': option.id === activeItem?.id
+          }"
+          (click)="onActiveItem(option)"
+        >
+          <div
+            class="details-template-text"
+            [innerHtml]="
+              option.name
+                | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+            "
+          ></div>
+          <svg-icon
+            class="details-template-logo"
+            [ngClass]="{ active: option.id === activeItem?.id }"
+            [src]="option.svg | taSvg: option.folder"
+          ></svg-icon>
         </div>
       </div>
       <!--------------------------- Grouping template  --------------------------->
@@ -113,7 +140,7 @@
             <div
               class="dropdown-subgroup-text"
               [ngClass]="{
-                'active': item.id === activeItem?.id,
+                active: item.id === activeItem?.id,
                 'no-result': options.length === 1 && item.name === 'No Results'
               }"
               [innerHtml]="
@@ -130,12 +157,11 @@
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option"
           [ngClass]="{
-            'disabled': option?.disabled,
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            'active': option.id === activeItem?.id
-            
+            active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
           [innerHtml]="

@@ -75,7 +75,7 @@
   }
 
   // Custom classes
-  &.regular {
+  &.medium {
     position: relative;
     top: 1px;
 
@@ -83,5 +83,23 @@
       font-weight: 500;
       color: #6c6c6c;
     }
+  }
+
+  &.billing-address {
+    margin-bottom: 12px;
+    position: relative;
+    left: 6px;
+    top: 0px;
+
+    &.checked {
+      margin-bottom: 22px;
+    }
+  }
+
+  &.shipper-hours {
+    margin-bottom: 10px;
+    position: relative;
+    left: 6px;
+    top: 0px;
   }
 }

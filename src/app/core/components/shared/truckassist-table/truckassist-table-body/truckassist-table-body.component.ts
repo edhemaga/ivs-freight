@@ -162,7 +162,6 @@ export class TruckassistTableBodyComponent
     setTimeout(() => {
       this.checkForScroll();
     }, 100);
-
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -176,6 +175,8 @@ export class TruckassistTableBodyComponent
     const div = document.getElementById('scroll-container');
 
     this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+
+    this.tableService.sendShowingScroll(this.showScrollSectionBorder);
 
     this.changeDetectorRef.detectChanges();
   }

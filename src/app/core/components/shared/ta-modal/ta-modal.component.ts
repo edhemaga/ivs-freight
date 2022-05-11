@@ -20,12 +20,14 @@ export class TaModalComponent {
   @Input() customClass: string;
   @Input() isModalValid: boolean;
 
-  @Output() modalActionTypeEmitter: EventEmitter<string> =
-  new EventEmitter<string>(null);
+  @Input() isDeactivated: boolean = false;
+  @Input() isDNU: boolean = false;
+  @Input() isBFB: boolean = false;
+
+  @Output() modalActionTypeEmitter: EventEmitter<{action: string, bool: boolean}> =
+  new EventEmitter<{action: string, bool: boolean}>(null);
 
   private timeout = null;
-
-  public isDeactivated: boolean = false;
 
   constructor(private ngbActiveModal: NgbActiveModal) {}
 
@@ -36,11 +38,11 @@ export class TaModalComponent {
   public onAction(action: string) {
     switch (action) {
       case 'save': {
-        this.modalActionTypeEmitter.emit(action);
+        this.modalActionTypeEmitter.emit({action: action, bool: false});
         break;
       }
       case 'close': {
-        this.modalActionTypeEmitter.emit(action);
+        this.modalActionTypeEmitter.emit({action: action, bool: false});
         $('.pac-container').remove();
         this.timeout = setTimeout(() => {
           this.ngbActiveModal.dismiss();
@@ -50,11 +52,21 @@ export class TaModalComponent {
       }
       case 'deactivate': {
         this.isDeactivated = !this.isDeactivated;
-        this.modalActionTypeEmitter.emit(action);
+        this.modalActionTypeEmitter.emit({action: action, bool: this.isDeactivated});
+        break;
+      }
+      case 'dnu': {
+        this.isDNU = !this.isDNU;
+        this.modalActionTypeEmitter.emit({action: action, bool: this.isDNU});
+        break;
+      }
+      case 'bfb': {
+        this.isBFB = !this.isBFB;
+        this.modalActionTypeEmitter.emit({action: action, bool: this.isBFB});
         break;
       }
       case 'delete': {
-        this.modalActionTypeEmitter.emit(action);
+        this.modalActionTypeEmitter.emit({action: action, bool: false});
         break;
       }
       default: {

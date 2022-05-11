@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Trailer' : 'Edit Trailer'"
   [editData]="editData"
-  [editName]="'262212'"
+  [editName]="editData?.id"
   [isModalValid]="trailerForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
@@ -31,7 +31,7 @@
           <div class="col-9">
             <app-ta-input-dropdown
               formControlName="trailerTypeId"
-              [template]="'svgtextflex'"
+              [template]="'svgtext-template'"
               [inputConfig]="{
                 name: 'Input Dropdown',
                 type: 'text',
@@ -93,7 +93,7 @@
           <div class="modelColorYearLentgh-field">
             <app-ta-input-dropdown
               formControlName="colorId"
-              [template]="'svgtextflex'"
+              [template]="'svgtext-template'"
               [inputConfig]="{
                 name: 'Input Dropdown',
                 type: 'text',
@@ -150,7 +150,7 @@
           </div>
           <div
             class="checkbox-card-body"
-            [ngClass]="{'active': !trailerForm.get('companyOwned').value}"
+            [ngClass]="{'active-20': !trailerForm.get('companyOwned').value}"
           >
             <div *ngIf="!trailerForm.get('companyOwned').value">
               <div class="row owner-dropdown">
@@ -173,7 +173,7 @@
             </div>
           </div>
         </div>
-        <app-ta-input-note formControlName="note"></app-ta-input-note>
+        <app-ta-input-note formControlName="note" [isVisibleNote]="trailerForm.get('note').value"></app-ta-input-note>
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">

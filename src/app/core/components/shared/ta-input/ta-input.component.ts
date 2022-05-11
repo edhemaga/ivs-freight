@@ -372,6 +372,8 @@ export class TaInputComponent
         'axles',
         'mileage',
         'ipas ezpass',
+        'credit limit',
+        'phone extension'
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
@@ -412,7 +414,37 @@ export class TaInputComponent
     }
 
     if (['bussines name'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9 .,'()&-]*$/.test(String.fromCharCode(event.charCode))) {
+      if (/^[A-Za-z0-9 .,$@#*&%-]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (['dba name'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9 .,$@&-]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (['mc ff'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9 ,.&-]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (['po box'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9 .]*$/.test(String.fromCharCode(event.charCode))) {
         this.disableConsecutivelySpaces(event);
         return true;
       } else {

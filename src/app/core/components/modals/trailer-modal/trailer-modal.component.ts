@@ -10,7 +10,6 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TrailerModalService } from './trailer-modal.service';
 import {
@@ -19,15 +18,14 @@ import {
   TrailerResponse,
   UpdateTrailerCommand,
 } from 'appcoretruckassist';
-import { throws } from 'assert';
 
 @Component({
   selector: 'app-trailer-modal',
   templateUrl: './trailer-modal.component.html',
+  styleUrls: ['./trailer-modal.component.scss'],
   animations: [
     tab_modal_animation('animationTabsModal')
   ],
-  styleUrls: ['./trailer-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
@@ -135,12 +133,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onModalAction(action: string): void {
-    if (action === 'close') {
+  public onModalAction(data: {action: string, bool: boolean}): void {
+    if (data.action === 'close') {
       this.trailerForm.reset();
     } else {
       // Save & Update
-      if (action === 'save') {
+      if (data.action === 'save') {
         if (this.trailerForm.invalid) {
           this.inputService.markInvalid(this.trailerForm);
           return;
@@ -153,7 +151,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       }
 
       // Delete
-      if (action === 'delete' && this.editData) {
+      if (data.action === 'delete' && this.editData) {
         this.deleteTrailerById(this.editData.id);
       }
 

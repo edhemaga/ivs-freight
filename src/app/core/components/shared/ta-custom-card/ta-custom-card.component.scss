@@ -49,6 +49,10 @@
         position: relative;
         bottom: 1px;
 
+        &.new-position {
+          margin-right: 0px;
+        }
+
         svg {
           path {
             fill: #6d82c7;
@@ -80,12 +84,24 @@
           }
         }
       }
+
+      &.like-dislike-template {
+        display: flex;
+        position: relative;
+        bottom: 3px;
+        .ta-like-dislike {
+          position: relative;
+          top: 3px;
+          margin-right: 10px;
+        }
+      }
     }
 
     &.cursor {
       cursor: pointer;
     }
   }
+<<<<<<< HEAD
 }
 .divider{
   margin: 0;
@@ -96,4 +112,43 @@
 }
 .ta-card-body{
   margin-top: 0 !important;
+=======
+
+  .ta-card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s ease-in-out;
+
+    &.active {
+      max-height: 600px;
+      transition: all 0.4s ease-in-out;
+    }
+
+    &.scroll {
+      overflow-y: scroll;
+      scrollbar-width: none !important; /* Firefox */
+  
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border: 6px solid #6c6c6c;
+        border-radius: 1px;
+      }
+      &::-webkit-scrollbar-track {
+        padding: 0;
+        position: relative;
+        right: 0;
+        top: 0;
+        background: transparent;
+      }
+
+      &::-moz-selection {
+        background-color: rgb(229, 229, 229, .2);
+        color: #6c6c6c;
+      }
+    }
+  }
+>>>>>>> 2e35f3d6d10d3101e0dad3ac13a61a4907ee5dbb
 }

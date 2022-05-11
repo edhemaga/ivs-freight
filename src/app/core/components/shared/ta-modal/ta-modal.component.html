@@ -2,7 +2,9 @@
   <div cdkDragHandle class="modal-header">
     <div class="modal-header-leftside">
       <h5 class="modal-title">{{ modalTitle }}</h5>
-      <h5 class="edit-name" *ngIf="editData?.type === 'edit'">{{ editName }}</h5>
+      <h5 class="edit-name" *ngIf="editData?.type === 'edit'">
+        {{ editName }}
+      </h5>
     </div>
     <svg-icon
       class="modal-close"
@@ -34,18 +36,56 @@
         ngbAutofocus
         type="button"
       >
-       {{isDeactivated ? 'Activate': 'Deactivate'}} 
+        {{ isDeactivated ? "Activate" : "Deactivate" }}
+      </button>
+      <button
+        *ngIf="editData?.dnuButton"
+        (click)="onAction('dnu')"
+        class="modal-deactivate-btn"
+        ngbAutofocus
+        type="button"
+        [appTooltip]="'Do Not Use List'"
+        [position]="'top-middle'"
+        [tooltipBackground]="'#6C6C6C'"
+        [tooltipColor]="'#FFFFFF'"
+        [zIndex]="900"
+        [borderRadius]="'2px'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+        [customPosition]="147"
+        [tatooltipvisible]="!isDNU"
+      >
+        {{ isDNU ? "Remove from DNU" : "Move to DNU" }}
+      </button>
+      <button
+        *ngIf="editData?.bfbButton"
+        (click)="onAction('bfb')"
+        class="modal-deactivate-btn"
+        ngbAutofocus
+        type="button"
+        [appTooltip]="'Banned from Broker List'"
+        [position]="'top-middle'"
+        [tooltipBackground]="'#6C6C6C'"
+        [tooltipColor]="'#FFFFFF'"
+        [zIndex]="900"
+        [borderRadius]="'2px'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+        [customPosition]="114"
+        [tatooltipvisible]="!isBFB"
+      >
+        {{ isBFB ? "Remove from BFB" : "Move to BFB" }}
       </button>
     </div>
 
     <button
       (click)="onAction('save')"
       class="modal-save-btn"
-      [ngClass]="{'valid': isModalValid}"
+      [ngClass]="{ valid: isModalValid }"
       ngbAutofocus
       type="button"
     >
-     {{editData ? 'Save Changes' : 'Save'}}
+      {{ editData ? "Save Changes" : "Save" }}
     </button>
   </div>
 </div>

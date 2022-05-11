@@ -15,6 +15,9 @@ import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.com
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 import { ContactModalComponent } from '../../modals/contact-modal/contact-modal.component';
+import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
+import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
+import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -71,18 +74,33 @@ export class NavigationModalsComponent {
           size: 'small',
         });
         break;
-      } 
+      }
       case 'trailer': {
         this.modalService.openModal(TrailerModalComponent, {
           size: 'small',
         });
         break;
       }
+      case 'broker': {
+        this.modalService.openModal(BrokerModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
+      case 'shipper': {
+        this.modalService.openModal(ShipperModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
+      case 'owner': {
+        this.modalService.openModal(OwnerModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
       case 'contact': {
-        this.modalService.openModal(
-          ContactModalComponent,
-          { size: 'small' }
-        );
+        this.modalService.openModal(ContactModalComponent, { size: 'small' });
         break;
       }
       case 'account': {

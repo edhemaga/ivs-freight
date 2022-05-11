@@ -37,7 +37,16 @@ export class TruckassistTableService {
   private scroll = new BehaviorSubject<number>(0);
   public currentScroll = this.scroll.asObservable();
 
+  /* Showing Scroll */
+  private showingScroll = new BehaviorSubject<boolean>(null);
+  public currentShowingScroll = this.showingScroll.asObservable();
+
   constructor() {}
+
+  /* Showing Scroll */
+  public sendShowingScroll(showingScroll: boolean) {
+    this.showingScroll.next(showingScroll);
+  }
 
   /* Scroll */
   public sendScroll(scroll: number) {

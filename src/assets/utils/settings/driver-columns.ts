@@ -53,7 +53,7 @@ export function getDriverColumnsDefinition() {
     {
       ngTemplate: 'text',
       title: 'Phone',
-      field: 'textPhone',
+      field: 'phone',
       name: 'Phone',
       hidden: false,
       width: 117,
@@ -75,7 +75,7 @@ export function getDriverColumnsDefinition() {
     {
       ngTemplate: 'text',
       title: 'Email',
-      field: 'textEmail',
+      field: 'email',
       name: 'Email',
       hidden: true,
       width: 100,
@@ -396,7 +396,7 @@ export function getDriverColumnsDefinition() {
     {
       ngTemplate: 'note',
       title: 'Note',
-      field: 'additionalData.note',
+      field: 'note',
       name: '',
       hidden: false,
       width: 40,

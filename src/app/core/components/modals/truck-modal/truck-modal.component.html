@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Truck' : 'Edit Truck'"
   [editData]="editData"
-  [editName]="'262212'"
+  [editName]="editData?.id"
   [isModalValid]="truckForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
@@ -31,7 +31,7 @@
           <div class="col-8">
             <app-ta-input-dropdown
               formControlName="truckTypeId"
-              [template]="'svgtextflex'"
+              [template]="'svgtext-template'"
               [inputConfig]="{
                 name: 'Input Dropdown',
                 type: 'text',
@@ -105,7 +105,7 @@
           <div class="col-4 no-p-left">
             <app-ta-input-dropdown
               formControlName="colorId"
-              [template]="'svgtextflex'"
+              [template]="'svgtext-template'"
               [inputConfig]="{
                 name: 'Input Dropdown',
                 type: 'text',
@@ -138,7 +138,7 @@
           </div>
           <div
             class="checkbox-card-body"
-            [ngClass]="{'active': truckForm.get('companyOwned').value}"
+            [ngClass]="{'active-20': truckForm.get('companyOwned').value}"
           >
             <div
               *ngIf="truckForm.get('companyOwned').value"
@@ -175,7 +175,7 @@
             </div>
           </div>
         </div>
-        <app-ta-input-note formControlName="note"></app-ta-input-note>
+        <app-ta-input-note formControlName="note" [isVisibleNote]="truckForm.get('note').value"></app-ta-input-note>
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">

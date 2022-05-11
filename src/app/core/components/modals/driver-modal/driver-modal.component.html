@@ -156,7 +156,7 @@
             <div
               *ngIf="driverForm.get('isOwner').value"
               class="animation-checkbox-card-tabs"
-              [ngClass]="{ fade: selectedOwnerTab?.name.toLowerCase() === 'company' }"
+              [ngClass]="{ 'fade-checkbox-inputs': selectedOwnerTab?.name.toLowerCase() === 'company' }"
             >
               <div class="row">
                 <div class="col-4">
@@ -165,7 +165,7 @@
                     [inputConfig]="{
                       name: 'EIN',
                       type: 'text',
-                      label: 'EIN',
+                      label: 'EIN #',
                       isRequired: true,
                       mask: '00-0000000'
                     }"
@@ -210,7 +210,7 @@
                 let ind = index
               "
             >
-              <div [formGroupName]="ind" class="offDutyLications-card">
+              <div [formGroupName]="ind" class="offDutyLocations-card">
                 <app-ta-input
                   formControlName="nickname"
                   [inputConfig]="{
@@ -249,7 +249,7 @@
           </div>
         </app-ta-custom-card>
         <!-- Note -->
-        <app-ta-input-note formControlName="note"></app-ta-input-note>
+        <app-ta-input-note formControlName="note" [isVisibleNote]="driverForm.get('note').value"></app-ta-input-note>
       </div>
       <!-------------------------------- Pay Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
@@ -388,8 +388,8 @@
                 isRequired: true,
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                maxLength: 4,
-                mask: 'separator.2'
+                maxLength: 2,
+                mask: '00'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -401,8 +401,8 @@
                 isRequired: true,
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                maxLength: 4,
-                mask: 'separator.2'
+                maxLength: 2,
+                mask: '00'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -413,8 +413,8 @@
                 label: 'Per Stop',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                maxLength: 4,
-                mask: 'separator.2'
+                maxLength: 2,
+                mask: '00'
               }"
             ></app-ta-input>
           </div>
@@ -428,8 +428,8 @@
                 label: 'Empty Mile',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                maxLength: 4,
-                mask: 'separator.2'
+                maxLength: 2,
+                mask: '00'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -440,8 +440,8 @@
                 label: 'Loaded Mile',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                maxLength: 4,
-                mask: 'separator.2'
+                maxLength: 2,
+                mask: '00'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -452,8 +452,8 @@
                 label: 'Per Stop',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                maxLength: 4,
-                mask: 'separator.2'
+                maxLength: 2,
+                mask: '00'
               }"
             ></app-ta-input>
           </div>

@@ -27,6 +27,8 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+      position: relative;
+      bottom: 1.5px;
       &.rotate {
         transform: rotate(180deg);
         transition: all 0.3s ease-in-out;

@@ -95,7 +95,7 @@
                   [src]="
                     row.avatar
                       ? row.avatar
-                      : 'assets/img/svgs/table/profile.svg/profile.svg'
+                      : 'assets/svg/truckassist-table/no-profile-avatar.svg'
                   "
                   class="avatar"
                 />
@@ -103,11 +103,11 @@
                   alt="avatar"
                   *ngIf="row.isOwner"
                   class="avatar-owner"
-                  src="../../../../assets/img/table-svgs/owner-badge-new.svg"
+                  src="assets/img/table-svgs/owner-badge-new.svg"
                 />
               </div>
               <span (click)="goToDetails(column, row)" class="table-avatar-name"
-                >{{ row.firstName }} {{ row.lastName }}</span
+                >{{ row[column.field] }}</span
               >
             </div>
 
@@ -733,7 +733,7 @@
                   [src]="
                     row.avatar
                       ? row.avatar
-                      : 'assets/img/svgs/table/profile.svg/profile.svg'
+                      : 'assets/svg/truckassist-table/no-profile-avatar.svg'
                   "
                   class="avatar"
                 />
@@ -741,11 +741,11 @@
                   alt="avatar"
                   *ngIf="row.isOwner"
                   class="avatar-owner"
-                  src="../../../../assets/img/table-svgs/owner-badge-new.svg"
+                  src="assets/img/table-svgs/owner-badge-new.svg"
                 />
               </div>
               <span (click)="goToDetails(column, row)" class="table-avatar-name"
-                >{{ row.firstName }} {{ row.lastName }}</span
+                >{{ row[column.field] }}</span
               >
             </div>
 
@@ -1208,7 +1208,7 @@
               </div>
             </div>
 
-            <!-- PICKUP COLUMN -->
+            <!-- DELIVERY COLUMN -->
             <div
               class="td-content"
               *ngIf="
@@ -1276,7 +1276,6 @@
               class="td-content"
             >
               <span
-                *ngIf="row?.licenseData"
                 class="table-text table-text-state"
                 >{{ row[column.field] ? row[column.field] : "" }}</span
               >

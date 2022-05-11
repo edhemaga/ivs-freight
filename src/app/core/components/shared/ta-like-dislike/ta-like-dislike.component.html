@@ -1,0 +1,20 @@
+<div class="ta-like-dislike {{customClass}}">
+  <svg-icon
+    class="ta-like-svg"
+    [ngClass]="{'liked': isLiked}"
+    src="assets/svg/common/ic_like.svg"
+    (click)="onAction('like', $event)"
+  ></svg-icon>
+  <div class="ta-counter like-count">
+    {{ taLikes }}
+  </div>
+  <div class="ta-counter dislike-count">
+    {{ taDislikes }}
+  </div>
+  <svg-icon
+    class="ta-dislike-svg"
+    [ngClass]="{'disliked': isDisliked}"
+    src="assets/svg/common/ic_dislike.svg"
+    (click)="onAction('dislike', $event)"
+  ></svg-icon>
+</div>
