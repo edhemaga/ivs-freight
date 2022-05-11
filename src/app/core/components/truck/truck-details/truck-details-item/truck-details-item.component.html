@@ -50,6 +50,7 @@
       <div class="details-cards">
         <!--------Assinged to--------->
         <app-ta-custom-card
+          [bodyTemplate]="'card'"
           [cardName]="'Assigned To'"
           [tooltipName]="'Dispatch History'"
           [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
@@ -61,67 +62,67 @@
                 class="assignTo-vehicle"
                 src="assets/svg/common/trailer.svg"
               ></svg-icon>
-              <p class="assignTo-value">{{ data.data.assignedTo.trailer }}</p>
+              <p class="assignTo-value">32433434</p>
             </div>
             <div class="assignTo-item">
               <svg-icon
                 class="assignTo-vehicle"
                 src="assets/svg/common/user-image.svg"
               ></svg-icon>
-              <p class="assignTo-value">{{ data.data.assignedTo.driver }}</p>
+              <p class="assignTo-value">4334343</p>
             </div>
           </div>
         </app-ta-custom-card>
 
         <!--------Additonal Details--------->
-        <app-ta-custom-card [cardName]="'Additional Details'">
+        <app-ta-custom-card [bodyTemplate]="'card'" [cardName]="'Additional Details'">
           <div class="common-template">
             <div class="common-template-item">
               <div class="common-template-item-name">Gross Weight</div>
               <div class="common-template-item-value">
-                {{ data.data.additionalDetails.gross }}
+                34243243243242
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Starting Mileage</div>
               <div class="common-template-item-value">
-                {{ data.data.additionalDetails.startMilage }} mi
+                2222233 mi
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Empty Weight</div>
               <div class="common-template-item-value">
-                {{ data.data.additionalDetails.emptyWei }}
+                434334
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Engine Type</div>
               <div class="common-template-item-value">
-                {{ data.data.additionalDetails.engineType }}
+                4343432
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Axles</div>
               <div class="common-template-item-value">
-                {{ data.data.additionalDetails.axles }}
+                4343
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Tire size</div>
               <div class="common-template-item-value">
-                {{ data.data.additionalDetails.tireSize }}
+                4444
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">IPASS/EZPASS</div>
               <div class="common-template-item-value">
-                {{ data.data.additionalDetails.ipass_ez }}
+                333
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Insurance Policy</div>
               <div class="common-template-item-value">
-                {{ data.data.additionalDetails.ins_policy }}
+               444
               </div>
             </div>
           </div>
