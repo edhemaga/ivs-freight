@@ -21,13 +21,13 @@
   &::after {
     content: "";
     display: block;
-    height: 14px;
+    height: 16px;
     width: 1px;
     border-radius: 3px;
     background: #e5e5e5;
     position: absolute;
     left: 24px;
-    top: 6px;
+    top: 5px;
   }
 
   &.disabled-empty {
