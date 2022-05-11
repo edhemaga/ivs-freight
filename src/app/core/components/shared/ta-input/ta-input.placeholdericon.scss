@@ -46,11 +46,29 @@
     }
   }
 
+  &.valid-required-in {
+    transition: all 0.3s ease-in-out;
+    svg {
+      path {
+        fill: #BDCAEB !important;
+      }
+    }
+  }
+
   &.valid-required-out {
     transition: all 0.3s ease-in-out;
     svg {
       path {
         fill: #97a8dc;
+      }
+    }
+  }
+
+  &.invalid-required-in {
+    transition: all 0.3s ease-in-out;
+    svg {
+      path {
+        fill: #FFCDD2 !important;
       }
     }
   }

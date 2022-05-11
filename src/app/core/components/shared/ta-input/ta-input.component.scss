@@ -3,25 +3,39 @@
   position: relative;
 
   //--------------- Classes on all INPUT ELEMENTS ---------------
-  &:hover {
-    .input-icon {
-      transition: all 0.3s ease-in-out;
-      svg {
-        path {
-          fill: #aaaaaa;
+  &.hover-out-of-focus {
+    &:hover {
+      .input-icon {
+        transition: all 0.3s ease-in-out;
+        svg {
+          path {
+            fill: #aaaaaa;
+          }
+        }
+
+        &:hover ~ .input-label {
+          transition: all 0.3s ease-in-out;
+          color: #3c3c3c;
+        }
+
+        &:hover ~ .input-control {
+          transition: all 0.3s ease-in-out;
+          background-color: #eeeeee;
+          color: #3c3c3c;
         }
       }
-    }
-
-    .input-dropdown-arrow {
-      transition: all 0.3s ease-in-out;
-      svg {
-        path {
-          fill: #919191;
+  
+      .input-dropdown-arrow {
+        transition: all 0.3s ease-in-out;
+        svg {
+          path {
+            fill: #919191;
+          }
         }
       }
     }
   }
+
 
   &.hide-placeholder-icon {
     &:hover {
@@ -37,7 +51,7 @@
         &.invalid-required-empty-focus,
         &.invalid-required-filled {
           &:hover {
-            fill: #FF5050;
+            fill: #ff5050;
           }
         }
       }
