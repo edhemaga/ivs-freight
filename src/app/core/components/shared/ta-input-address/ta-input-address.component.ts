@@ -148,6 +148,15 @@ export class TaInputAddressComponent
         this.waitValidation = false;
       }
     }
+
+    console.log("BLUR ADDRESS")
+    console.log("REQUIRED ", this.inputConfig.isRequired)
+    console.log("VALUE ",this.getSuperControl.value)
+    console.log("WAIT VALIDATION ", this.waitValidation)
+    console.log("INVALID ADDRESS, ", this.invalidAddress)
+    console.log("INVALID CONTROL ", this.getSuperControl.invalid)
+    console.log("FOCUS ", !this.focusInput)
+   
   }
 
   public clearInput(): void {

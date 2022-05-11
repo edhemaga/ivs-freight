@@ -69,7 +69,7 @@
     [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
     [fontWeight]="'bold'"
     [fontSize]="'11px'"
-    [customPosition]="-20"
+    [customPosition]="-6"
     (click)="clearInput()"
   >
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
@@ -100,17 +100,17 @@
      'valid-required-in':
         inputConfig.isRequired &&
         getSuperControl.value &&
-        getSuperControl.valid &&
+        !invalidAddress &&
         focusInput,
      'valid-required-out':
         inputConfig.isRequired &&
         getSuperControl.value &&
-        getSuperControl.valid &&
+        !invalidAddress &&
         !focusInput,
      'invalid-required-in':
         inputConfig.isRequired &&
         getSuperControl.value &&
-        getSuperControl.invalid &&
+        (invalidAddress || getSuperControl.invalid) &&
         waitValidation &&
         focusInput,
      'invalid-required-empty':
