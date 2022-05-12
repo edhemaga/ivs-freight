@@ -84,7 +84,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       ssn: [null],
       ein: [null, [Validators.required, Validators.pattern(/^\d{2}\-\d{7}$/)]],
       address: [null, Validators.required],
-      addressUnit: [null],
+      addressUnit: [null, [Validators.maxLength(6)]],
       phone: [
         null,
         [Validators.required, Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)],
