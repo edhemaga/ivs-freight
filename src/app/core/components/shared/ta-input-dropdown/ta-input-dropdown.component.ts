@@ -25,7 +25,7 @@ import { ITaInput } from '../ta-input/ta-input.config';
   templateUrl: './ta-input-dropdown.component.html',
   styleUrls: ['./ta-input-dropdown.component.scss'],
   providers: [TaInputService],
-  encapsulation: ViewEncapsulation.None,
+  // encapsulation: ViewEncapsulation.None,
   animations: [input_dropdown_animation('showHideDropdownOptions')]
 })
 export class TaInputDropdownComponent

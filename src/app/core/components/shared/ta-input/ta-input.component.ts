@@ -61,15 +61,6 @@ export class TaInputComponent
   }
 
   ngOnInit(): void {
-    this.inputService.isInputMarkedInvalidSubject
-      .pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.waitValidation = true;
-          this.inputService.isInputMarkedInvalidSubject.next(false);
-        }
-      });
-
     if (this.inputConfig.name === 'datepicker') {
       this.calendarService.dateChanged
         .pipe(untilDestroyed(this))
@@ -151,8 +142,7 @@ export class TaInputComponent
     // Dropdown
     if (this.inputConfig.isDropdown) {
       this.blurOnDropDownArrow();
-    }
-    else {
+    } else {
       this.focusInput = false;
     }
 
@@ -199,12 +189,22 @@ export class TaInputComponent
   }
 
   private blurOnDropDownArrow() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
     this.timeout = setTimeout(() => {
       this.inputService.dropDownShowHideSubject.next(false);
       this.isDropdownOptionsActive = false;
-      this.focusInput = false;
       this.changeDetection.detectChanges();
+      clearTimeout(this.timeout);
     }, 150);
+    this.focusInput = false;
+    console.log('REQUIRED ', this.inputConfig.isRequired);
+    console.log('VALUE ', this.getSuperControl.value);
+    console.log('Inalid ', this.getSuperControl.invalid);
+    console.log('Wait Validation ', this.waitValidation);
+    console.log('Dropdown ', this.inputConfig.isDropdown);
+    console.log('FOCUS ', this.focusInput);
   }
 
   public clearInput(): void {
@@ -373,7 +373,7 @@ export class TaInputComponent
         'mileage',
         'ipas ezpass',
         'credit limit',
-        'phone extension'
+        'phone extension',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
@@ -414,7 +414,9 @@ export class TaInputComponent
     }
 
     if (['bussines name'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9 .,$@#*&%-]*$/.test(String.fromCharCode(event.charCode))) {
+      if (
+        /^[A-Za-z0-9 .,$@#*&%-]*$/.test(String.fromCharCode(event.charCode))
+      ) {
         this.disableConsecutivelySpaces(event);
         return true;
       } else {

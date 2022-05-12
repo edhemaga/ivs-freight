@@ -128,6 +128,15 @@
   }
 
   &.no-validation-hover {
+    &:hover {
+      transition: all 0.3s ease-in-out;
+      svg {
+        path {
+          fill: #6c6c6c;
+        }
+      }
+    }
+    
     &:hover ~ .input-label {
       transition: all 0.3s ease-in-out;
       color: #3c3c3c;

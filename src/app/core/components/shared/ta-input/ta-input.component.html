@@ -3,12 +3,13 @@
   [ngClass]="{
     'hover-out-of-focus': !focusInput,
     'hide-placeholder-icon':
-      inputConfig.type === 'password' && getSuperControl.valid,
+      inputConfig.type === 'password' && getSuperControl.valid && getSuperControl.value,
     'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput,
-    'invalid-empty-required-waitValidation':
+    'invalid-empty-required-dropdown':
       inputConfig.isRequired &&
       !getSuperControl.value &&
       getSuperControl.invalid &&
+      inputConfig.isDropdown &&
       waitValidation &&
       !focusInput,
     'invalid-empty-required':
@@ -39,7 +40,6 @@
       'valid-focus-in':
         getSuperControl.value &&
         getSuperControl.valid &&
-        waitValidation &&
         focusInput &&
         !isVisiblePasswordEye &&
         !isDropdownAddModeActive,
@@ -57,6 +57,15 @@
         waitValidation &&
         focusInput &&
         !isVisiblePasswordEye,
+      'invalid-focus-in-empty-required':
+        inputConfig.isRequired &&
+        !getSuperControl.value &&
+        getSuperControl.invalid &&
+        waitValidation &&
+        focusInput &&
+        !inputConfig.placeholderIcon &&
+        !isVisiblePasswordEye &&
+        !inputConfig.isDropdown,
       'invalid-focus-out':
         !inputConfig.isRequired &&
         getSuperControl.value &&
@@ -70,15 +79,6 @@
         getSuperControl.invalid &&
         waitValidation &&
         !focusInput &&
-        !inputConfig.placeholderIcon &&
-        !isVisiblePasswordEye &&
-        !inputConfig.isDropdown,
-      'invalid-focus-in-empty-required':
-        inputConfig.isRequired &&
-        !getSuperControl.value &&
-        getSuperControl.invalid &&
-        waitValidation &&
-        focusInput &&
         !inputConfig.placeholderIcon &&
         !isVisiblePasswordEye &&
         !inputConfig.isDropdown,
@@ -192,11 +192,9 @@
         getSuperControl.value &&
         getSuperControl.valid &&
         inputConfig.isDropdown &&
-        waitValidation &&
         focusInput,
       'valid-placeholder':
         inputConfig.isDropdown &&
-        waitValidation &&
         focusInput &&
         inputConfig.placeholder,
       'valid-focus-out-required':
@@ -305,7 +303,6 @@
       'valid-focus-in':
         getSuperControl.value &&
         getSuperControl.valid &&
-        waitValidation &&
         focusInput &&
         !isVisiblePasswordEye,
       'invalid-focus-in':

@@ -24,7 +24,7 @@
           color: #3c3c3c;
         }
       }
-  
+
       .input-dropdown-arrow {
         transition: all 0.3s ease-in-out;
         svg {
@@ -35,7 +35,6 @@
       }
     }
   }
-
 
   &.hide-placeholder-icon {
     &:hover {
@@ -50,8 +49,10 @@
       .input-icon {
         &.invalid-required-empty-focus,
         &.invalid-required-filled {
-          &:hover {
-            fill: #ff5050 !important;
+          svg {
+            path {
+              fill: #ff5050;
+            }
           }
         }
       }
@@ -104,7 +105,7 @@
     }
   }
 
-  &.invalid-empty-required-waitValidation {
+  &.invalid-empty-required-dropdown {
     &:hover {
       .input-dropdown-arrow {
         transition: all 0.3s ease-in-out;

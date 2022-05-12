@@ -67,15 +67,6 @@ export class TaInputAddressComponent
           }
         });
     }
-
-    this.inputService.isInputMarkedInvalidSubject
-      .pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.waitValidation = true;
-          this.inputService.isInputMarkedInvalidSubject.next(false);
-        }
-      });
   }
 
   public handleAddressChange(address: Address) {
