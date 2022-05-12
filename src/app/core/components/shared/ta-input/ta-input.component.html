@@ -88,7 +88,8 @@
         getSuperControl.value &&
         inputConfig.isDropdown &&
         !inputConfig.isDisabled &&
-        !isDropdownAddModeActive
+        !isDropdownAddModeActive,
+      'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye
     }"
     [appTooltip]="'Clear'"
     [position]="'top-middle'"

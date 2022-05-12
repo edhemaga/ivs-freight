@@ -124,6 +124,16 @@
     }
   }
 
+  &.password-eye {
+    .input-clear-x {
+      svg {
+        path {
+          fill: #6c6c6c !important;
+        }
+      }
+    }
+  }
+
   // If dropdown
   &.dropdown-position {
     right: 24px !important;
@@ -131,7 +141,7 @@
 
   //------------------------- Custom class -------------------------
   &.input-big {
-    top: 6.5px;
+    top: 3.5px;
     right: 6px;
   }
 }
