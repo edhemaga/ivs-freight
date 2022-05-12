@@ -2,20 +2,21 @@
 .input-clear {
   position: absolute;
   right: 4px;
-  top: 4px;
-
+  top: 0px;
   border-radius: 1px;
-  display: none;
+  display: block;
   transition: all 0.3s ease-in-out;
-  background-color: transparent !important;
-  z-index: 10;
+  display: none;
 
-  svg-icon {
+  .input-clear-x {
     svg {
       width: 18px !important;
       height: 18px !important;
       overflow: visible;
-      rect{
+      path {
+        fill: #eeeeee;
+      }
+      rect {
         transition: transform 0.3s;
         transform: scale(1);
         transform-origin: center;
@@ -34,23 +35,6 @@
     }
   }
 
-  .input-clear-x {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    svg {
-      width: 10px;
-      height: 10px;
-      position: absolute;
-      top: 0;
-      right: 0;
-
-      path {
-        fill: #eeeeee;
-      }
-    }
-  }
-
   &:hover {
     cursor: pointer;
     transition: all 0.3s ease-in-out;
@@ -61,7 +45,7 @@
   }
 
   &.focus-typing {
-    display: block;
+    display: inline-block;
     .input-clear-x {
       svg {
         path {
@@ -69,6 +53,7 @@
         }
       }
     }
+
     &:hover {
       svg {
         rect {
@@ -76,43 +61,45 @@
         }
       }
     }
-  }
 
-  &.valid-focus-in {
-    background-color: #bdcaeb;
-    display: block;
-    .input-clear-x {
-      svg {
-        path {
-         fill: #536bc2;
+    &.valid-focus-in {
+      .input-clear-x {
+        svg {
+          path {
+            fill: #536bc2;
+          }
+          rect {
+            fill: #bdcaeb !important;
+          }
         }
-      }
-    }
-    &:hover {
-      svg {
-        rect {
-          fill: #f5fafc;
-        }
-      }
-    }
-  }
 
-  &.invalid-focus-in,
-  &.invalid-focus-in-required {
-    background-color: #ffcdd2;
-    display: block;
-    .input-clear-x {
-      svg {
-        path {
-          fill: #EF5350;
+        &:hover {
+          svg {
+            rect {
+              fill: #f5fafc !important;
+            }
+          }
         }
       }
     }
 
-    &:hover {
-      svg {
-        rect {
-          fill: #fffafa;
+    &.invalid-focus-in,
+    &.invalid-focus-in-required {
+      .input-clear-x {
+        svg {
+          path {
+            fill: #ef5350;
+          }
+          rect {
+            fill: #ffcdd2;
+          }
+        }
+        &:hover {
+          svg {
+            rect {
+              fill: #fffafa;
+            }
+          }
         }
       }
     }
@@ -120,29 +107,21 @@
 
   &.invalid-focus-out,
   &.invalid-focus-out-required,
-  &.invalid-focus-in-empty-required,
-  &.invalid-submit {
-    background-color: transparent;
-    display: block;
+  &.invalid-focus-in-empty-required {
+    display: inline-block;
     .input-clear-x {
       svg {
-        rect{
+        rect {
           fill: transparent;
         }
         path {
           fill: #e57373;
         }
       }
+      &:hover {
+        transform: scale(1) !important;
+      }
     }
-    &:hover {
-      transform: scale(1) !important;
-    }
-  }
-
-  // If password eye visible
-  &.second-position,
-  &.password-eye {
-    right: 27px !important;
   }
 
   &.password-eye {
@@ -157,23 +136,12 @@
 
   // If dropdown
   &.dropdown-position {
-    right: 23px !important;
+    right: 24px !important;
   }
 
-  &.datetimeclass {
-    right: 26px !important;
-  }
-
-  // Custom class
-  // BIG INPUT - height: 32px
+  //------------------------- Custom class -------------------------
   &.input-big {
-    top: 6.5px;
+    top: 3.5px;
     right: 6px;
-
-    // .input-clear-x {
-    //   svg {
-    //     transform: translate(-49%, -50%) !important;
-    //   }
-    // }
   }
 }

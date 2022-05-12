@@ -13,7 +13,6 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { ITaInput } from '../ta-input/ta-input.config';
-import { TaInputService } from '../ta-input/ta-input.service';
 
 export interface Address {
   address: string;
@@ -49,9 +48,12 @@ export class TaInputAddressComponent
   public activeAddress: Address = null;
   public invalidAddress: boolean = false;
 
+  public options = {
+    componentRestrictions: { country: ['US', 'CA'] },
+  };
+
   constructor(
     @Self() public superControl: NgControl,
-    private inputService: TaInputService,
     private sharedService: SharedService
   ) {
     this.superControl.valueAccessor = this;
@@ -62,20 +64,11 @@ export class TaInputAddressComponent
       this.getSuperControl.valueChanges
         .pipe(untilDestroyed(this))
         .subscribe((value) => {
-          if (value !== this.activeAddress) {
+          if (value !== this.activeAddress?.address) {
             this.invalidAddress = true;
           }
         });
     }
-
-    this.inputService.isInputMarkedInvalidSubject
-      .pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.waitValidation = true;
-          this.inputService.isInputMarkedInvalidSubject.next(false);
-        }
-      });
   }
 
   public handleAddressChange(address: Address) {
@@ -87,10 +80,6 @@ export class TaInputAddressComponent
       this.sharedService.selectAddress(null, address).address
     );
   }
-
-  public options = {
-    componentRestrictions: { country: ['US', 'CA'] },
-  };
 
   get getSuperControl() {
     return this.superControl.control;
@@ -127,26 +116,25 @@ export class TaInputAddressComponent
   public onBlur(): void {
     this.focusInput = false;
 
-    if (!this.activeAddress) {
+    if (
+      !this.activeAddress ||
+      this.activeAddress?.address !== this.getSuperControl.value
+    ) {
       this.invalidAddress = true;
     }
 
-    // Required Field
-    if (this.inputConfig.isRequired) {
-      if (!this.focusInput && this.getSuperControl.errors) {
-        this.waitValidation = true;
-      } else {
-        this.waitValidation = false;
-      }
+    if (
+      this.activeAddress &&
+      this.activeAddress?.address !== this.getSuperControl.value
+    ) {
+      this.getSuperControl.setErrors({ invalid: true });
     }
 
-    // No Required Field
-    else {
-      if (this.getSuperControl.value && this.getSuperControl.errors) {
-        this.waitValidation = true;
-      } else {
-        this.waitValidation = false;
-      }
+    // Required Field
+    if (!this.focusInput && this.getSuperControl.errors) {
+      this.waitValidation = true;
+    } else {
+      this.waitValidation = false;
     }
   }
 
@@ -169,7 +157,7 @@ export class TaInputAddressComponent
         this.waitValidation = false;
       }
     }
-    if (this.activeAddress !== this.getSuperControl.value) {
+    if (this.activeAddress?.address !== this.getSuperControl.value) {
       this.invalidAddress = true;
     }
   }
