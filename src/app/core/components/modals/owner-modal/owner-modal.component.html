@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Owner' : 'Edit Owner'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="ownerForm.valid"
+  [isModalValid]="ownerForm.valid && selectedAddress"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher

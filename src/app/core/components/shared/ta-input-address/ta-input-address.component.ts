@@ -22,8 +22,8 @@ export interface Address {
   country: string;
   zipCode: number | string;
   addressUnit?: number | string;
-  streetNumber?: string;
-  streetName?: string;
+  // streetNumber?: string;
+  // streetName?: string;
 }
 
 @Component({
@@ -66,6 +66,7 @@ export class TaInputAddressComponent
         .subscribe((value) => {
           if (value !== this.activeAddress?.address) {
             this.invalidAddress = true;
+            this.selectedAddress.emit(null);
           }
         });
     }
@@ -110,6 +111,7 @@ export class TaInputAddressComponent
 
     if (!this.activeAddress && this.waitValidation) {
       this.invalidAddress = true;
+      this.selectedAddress.emit(null);
     }
   }
 
@@ -121,6 +123,7 @@ export class TaInputAddressComponent
       this.activeAddress?.address !== this.getSuperControl.value
     ) {
       this.invalidAddress = true;
+      this.selectedAddress.emit(null);
     }
 
     if (
@@ -159,6 +162,7 @@ export class TaInputAddressComponent
     }
     if (this.activeAddress?.address !== this.getSuperControl.value) {
       this.invalidAddress = true;
+      this.selectedAddress.emit(null);
     }
   }
 

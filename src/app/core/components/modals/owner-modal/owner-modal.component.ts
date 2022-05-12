@@ -49,6 +49,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   public labelsBank: any[] = [];
 
   public selectedAddress: Address | AddressEntity = null;
+
   public selectedBank: any = null;
   public isBankSelected: boolean = false;
 
@@ -69,7 +70,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 3,
+        id: 8,
       };
       this.editOwnerById(this.editData.id);
     }
@@ -81,10 +82,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       firstName: [null],
       lastName: [null],
       ssn: [null],
-      ein: [null, [Validators.pattern(/^\d{2}\-\d{7}$/)]],
+      ein: [null, [Validators.required, Validators.pattern(/^\d{2}\-\d{7}$/)]],
       address: [null, Validators.required],
       addressUnit: [null],
-      phone: [null, [Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)]],
+      phone: [
+        null,
+        [Validators.required, Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)],
+      ],
       email: [
         null,
         [
@@ -126,7 +130,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       this.inputService.changeValidators(this.ownerForm.get('firstName'), true);
       this.inputService.changeValidators(this.ownerForm.get('lastName'), true);
       this.inputService.changeValidators(this.ownerForm.get('ssn'), true, [
-        Validators.required,
         Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/),
       ]);
     }
@@ -164,6 +167,37 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     this.selectedBank = event;
   }
 
+  private onBankSelected(): void {
+    this.ownerForm
+      .get('bankId')
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.isBankSelected = true;
+          this.inputService.changeValidators(
+            this.ownerForm.get('routingNumber'),
+            true,
+            [Validators.minLength(9), Validators.maxLength(9)]
+          );
+          this.inputService.changeValidators(
+            this.ownerForm.get('accountNumber'),
+            true,
+            [Validators.minLength(4), Validators.maxLength(17)]
+          );
+        } else {
+          this.isBankSelected = false;
+          this.inputService.changeValidators(
+            this.ownerForm.get('routingNumber'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.ownerForm.get('accountNumber'),
+            false
+          );
+        }
+      });
+  }
+  
   private updateOwner(id: number) {
     const {
       bussinesName,
@@ -231,14 +265,15 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       addressUnit,
       ...form
     } = this.ownerForm.value;
+
     const newData: CreateOwnerCommand = {
+      ...form,
       ownerType: this.selectedTab,
       name:
         this.selectedTab === 1 ? bussinesName : firstName.concat(' ', lastName),
       ssnEin: this.selectedTab === 1 ? ein : ssn,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
-      bankId: 1, //this.selectedBank ? this.selectedBank.id : null,
-      ...form,
+      bankId:  this.selectedBank ? this.selectedBank.id : null,
     };
 
     this.ownerModalService
@@ -263,22 +298,14 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: OwnerResponse) => {
-          const splitName = res.ownerType.includes('Proprietor')
-            ? res.name.split(' ')
-            : null;
+          const splitName = res.ownerTypeId === 2 ? res.name.split(' ') : null;
 
           this.ownerForm.patchValue({
-            bussinesName: !res.ownerType.includes('Proprietor')
-              ? res.name
-              : null,
-            firstName: res.ownerType.includes('Proprietor')
-              ? splitName[0]
-              : null,
-            lastName: res.ownerType.includes('Proprietor')
-              ? splitName[1]
-              : null,
-            ssn: res.ownerType.includes('Proprietor') ? res.ssnEin : null,
-            ein: !res.ownerType.includes('Proprietor') ? res.ssnEin : null,
+            bussinesName: res.ownerTypeId === 1 ? res.name : null,
+            firstName: res.ownerTypeId === 2 ? splitName[0] : null,
+            lastName: res.ownerTypeId === 2 ? splitName[1] : null,
+            ssn: res.ownerTypeId === 2 ? res.ssnEin : null,
+            ein: res.ownerTypeId === 1 ? res.ssnEin : null,
             address: res.address.address,
             addressUnit: res.address.addressUnit,
             phone: res.phone,
@@ -289,13 +316,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             note: res.note,
           });
           this.selectedAddress = res.address;
-
-          this.tabChange(
-            this.tabs.find(
-              (item) =>
-                item.name.toLowerCase() === 'Sole Proprietor'.toLowerCase()
-            )
-          );
+          this.selectedBank = res.bankName;
+          this.tabChange(this.tabs.find((item) => item.id === res.ownerTypeId));
         },
         error: () => {
           this.notificationService.error("Owner can't be loaded.", 'Error:');
@@ -317,37 +339,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             'Error:'
           );
         },
-      });
-  }
-
-  private onBankSelected(): void {
-    this.ownerForm
-      .get('bankId')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.isBankSelected = true;
-          this.inputService.changeValidators(
-            this.ownerForm.get('routingNumber'),
-            true,
-            [Validators.minLength(9), Validators.maxLength(9)]
-          );
-          this.inputService.changeValidators(
-            this.ownerForm.get('accountNumber'),
-            true,
-            [Validators.minLength(4), Validators.maxLength(17)]
-          );
-        } else {
-          this.isBankSelected = false;
-          this.inputService.changeValidators(
-            this.ownerForm.get('routingNumber'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.ownerForm.get('accountNumber'),
-            false
-          );
-        }
       });
   }
 
