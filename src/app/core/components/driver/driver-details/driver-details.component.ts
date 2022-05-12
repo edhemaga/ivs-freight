@@ -6,7 +6,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { of, Subject, switchMap, takeUntil } from 'rxjs';
-import { Driver } from '../state/driver.model';
 import { DriversQuery } from '../state/driver.query';
 import { DriverTService } from '../state/driver.service';
 
@@ -19,6 +18,8 @@ import { DriverTService } from '../state/driver.service';
 export class DriverDetailsComponent implements OnInit, OnDestroy {
   public driverDetailsConfig: any[] = [];
   dataTest: any;
+
+  public driverData:any;
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -29,16 +30,42 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initTableOptions();
-    const driver_id=this.activated_route.snapshot.paramMap.get('id');
-    this.driverTService.getDriverById(+driver_id).subscribe((data)=>{
-      console.log(data);
-      
-    })
+    this.detailCongif();
   }
 
 
   public identity(index: number, item: any): number {
     return item.id;
+  }
+  detailCongif(){
+    this.driverDetailsConfig = [
+      {
+        id: 0,
+        name: 'Driver Details',
+        template: 'general',
+      },
+      {
+        id: 1,
+        name: 'CDL',
+        template: 'cdl',
+      },
+      {
+        id: 2,
+        name: 'Drug & Alcohol',
+        template: 'drug-alcohol',
+      },
+      {
+        id: 3,
+        name: 'Medical',
+        template: 'medical',
+      },
+      {
+        id: 4,
+        name: 'MVR',
+        template: 'mvr',
+        }
+    ];
+  
   }
 
   public initTableOptions(): void {

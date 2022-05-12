@@ -19,4 +19,5 @@ export class DriversQuery extends QueryEntity<DriversState> {
   //   console.log('Store After Delete');
   //   console.log(this.driverStore.getValue());
   // }
+
 }

@@ -7,8 +7,7 @@
         [tooltipPrevious]="'Previous Driver'"
         [searchName]="'Search Driver'"
         [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
-        [cardDetailsName]="arrayDriverName.name"
-        [cardDetailsDateTerminated]="'10/08/26'"
+        [cardDetailsName]="currentDriverName"
         [cardDetailsDate]="'08/03/20'"
         (nextValue)="nextDriver()"
         (previousValue)="previousDriver()"
@@ -19,11 +18,7 @@
             <div class="driver-avatar">
               <img
                 class="driver-avatar-svg"
-                src="{{
-                  data.data.reasponse.avatar
-                    ? data.data.reasponse.avatar
-                    : 'assets/svg/common/ic_noimage-avatar.svg'
-                }}"
+                src="assets/svg/truckassist-table/user-avatar-no-profile.svg"
                 alt="Driver Image"
               />
             </div>
@@ -34,7 +29,7 @@
                   src="assets/svg/common/ic_ssn.svg"
                 ></svg-icon>
                 <p class="information-value ssn">
-                  {{ data.data.reasponse.ssn }}
+                  {{ driverData.ssn }}
                 </p>
                 <svg-icon
                   class="card-icon"
@@ -48,7 +43,7 @@
                   [fontWeight]="'bold'"
                   [fontSize]="'11px'"
                   [customPosition]="-2"
-                  (click)="copyText(data.data.reasponse.ssn, 'ssn')"
+                  (click)="copyText(driverData.ssn, 'ssn')"
                 ></svg-icon>
               </div>
               <div
@@ -60,15 +55,10 @@
                   src="assets/svg/common/ic_phone.svg"
                 ></svg-icon>
                 <p class="information-value">
-                  {{ data.data.reasponse.additionalData?.phone }}
+                  {{ driverData.phone }}
                 </p>
                 <svg-icon
-                  (click)="
-                    copyText(
-                      data.data.reasponse.additionalData?.phone,
-                      'driver-phone'
-                    )
-                  "
+                  (click)="copyText(driverData.phone, 'driver-phone')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                   [appTooltip]="copiedDriverPhone ? 'Copied' : 'Copy'"
@@ -94,15 +84,10 @@
                   src="assets/svg/common/ic_email.svg"
                 ></svg-icon>
                 <p class="information-value information-email-value">
-                  {{ data.data.reasponse.additionalData?.email }}
+                  {{ driverData.email }}
                 </p>
                 <svg-icon
-                  (click)="
-                    copyText(
-                      data.data.reasponse.additionalData?.email,
-                      'driver-email'
-                    )
-                  "
+                  (click)="copyText(driverData.email, 'driver-email')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                   [appTooltip]="copiedDriverEmail ? 'Copied' : 'Copy'"
@@ -130,6 +115,8 @@
           [tooltipName]="'Dispatch History'"
           [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
           [isCardOpen]="true"
+          [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
           class="first-custom-card"
         >
           <div class="assignTo">
@@ -148,7 +135,7 @@
                 [customPosition]="38"
               >
               </svg-icon>
-              <p class="assignTo-value">{{ data.data.assignedTo.truck }}</p>
+              <p class="assignTo-value">42423</p>
               <svg-icon
                 class="open-modal-icon"
                 src="assets/svg/common/arrow_top_right.svg"
@@ -177,7 +164,7 @@
                 [fontSize]="'11px'"
                 [customPosition]="40"
               ></svg-icon>
-              <p class="assignTo-value">{{ data.data.assignedTo.trailer }}</p>
+              <p class="assignTo-value">R4578</p>
               <svg-icon
                 class="open-modal-icon2"
                 src="assets/svg/common/arrow_top_right.svg"
@@ -196,13 +183,23 @@
         </app-ta-custom-card>
 
         <!-- Additional info -->
-        <app-ta-custom-card [cardName]="'Additional info'" [isCardOpen]="false">
+        <app-ta-custom-card
+          class="item-cards"
+          [animationsDisabled]="false"
+          [bodyTemplate]="'card'"
+          [cardName]="'Additional info'"
+          [isCardOpen]="false"
+        >
           <div class="additional-container">
             <div class="addres-wrapper">
-              <div class="addres-name">Addres</div>
+              <div class="addres-name">Address</div>
               <div class="addres-value-icon">
                 <div class="addres-value">
-                  5462 N East River Rd apt 611, Chicago, WY 52655, USA
+                  {{ driverData.address.address }}
+                  {{ driverData.address.addressUnit }},
+                  {{ driverData.address.city }},{{ driverData.address.state }}
+                  {{ driverData.address.zipCode }},
+                  {{ driverData.address.country }}
                 </div>
                 <svg-icon
                   class="address-icon"
@@ -222,67 +219,34 @@
             </div>
             <div class="addres-wrapper addres-second">
               <div class="addres-name">Date of Birth</div>
-              <div class="addres-value">05/07/86</div>
+              <div class="addres-value">
+                {{ formatDate(driverData.dateOfBirth) }}
+              </div>
             </div>
           </div>
         </app-ta-custom-card>
 
         <!-- Off Duty Location-->
         <app-ta-custom-card
-          [hasCounter]="3"
+          [hasCounter]="driverData.offDutyLocations.length"
           [cardName]="'Off Duty Location'"
           [isCardOpen]="false"
+          [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
+          class="item-cards"
         >
-          <div class="additional-container">
+          <div
+            class="additional-container"
+            *ngFor="let offDuty of driverData.offDutyLocations"
+          >
             <div class="addres-wrapper">
-              <div class="addres-name">Home</div>
+              <div class="addres-name">{{ offDuty.nickname }}</div>
               <div class="addres-value-icon">
                 <div class="addres-value">
-                  5462 N East River Rd apt 611, Chicago, WY 52655, USA
-                </div>
-                <svg-icon
-                  class="address-icon"
-                  src="assets/svg/common/ic_address.svg"
-                  [appTooltip]="'Open in Places'"
-                  [position]="'top-middle'"
-                  [tooltipBackground]="'#6c6c6c'"
-                  [tooltipColor]="'#ffffff'"
-                  [zIndex]="900"
-                  [borderRadius]="'2px'"
-                  [fontWeight]="'bold'"
-                  [fontSize]="'11px'"
-                  [customPosition]="-30"
-                >
-                </svg-icon>
-              </div>
-            </div>
-            <div class="addres-wrapper addres-second">
-              <div class="addres-name">Address 2</div>
-              <div class="addres-value-icon">
-                <div class="addres-value">
-                  5462 N East River Rd apt 611, Chicago, WY 52655, USA
-                </div>
-                <svg-icon
-                  class="address-icon"
-                  src="assets/svg/common/ic_address.svg"
-                  [appTooltip]="'Open in Places'"
-                  [position]="'top-middle'"
-                  [tooltipBackground]="'#6c6c6c'"
-                  [tooltipColor]="'#ffffff'"
-                  [zIndex]="900"
-                  [borderRadius]="'2px'"
-                  [fontWeight]="'bold'"
-                  [fontSize]="'11px'"
-                  [customPosition]="-30"
-                >
-                </svg-icon>
-              </div>
-            </div>
-            <div class="addres-wrapper addres-second">
-              <div class="addres-name">Parking! 5623</div>
-              <div class="addres-value-icon">
-                <div class="addres-value">
-                  5462 N East River Rd apt 611, Chicago, WY 52655, USA
+                  {{ offDuty.address.address }}
+                  {{ offDuty.address.addressUnit }},
+                  {{ offDuty.address.city }},{{ offDuty.address.state }}
+                  {{ offDuty.address.zipCode }}, {{ offDuty.address.country }}
                 </div>
                 <svg-icon
                   class="address-icon"
@@ -307,6 +271,9 @@
         <app-ta-custom-card
           [cardName]="'Employment history'"
           [isCardOpen]="false"
+          class="item-cards"
+          [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
         >
           <div class="employment-history-container">
             <div class="years-of-service">
@@ -315,28 +282,32 @@
                 <div class="service-year-value">4 years 70 days</div>
               </div>
             </div>
-           
+
             <div class="progress-employment-history">
-            <div class="progress">
-              <div class="employment-tooltip">
-                <div class="emp-tooltip">
-                  <div class="emp-tooltip-value">
-                    <p class="emp-duration">10 September, 2021 - 04 January, 2023</p>
-                    <div class="emp-text-icon">
-                     <p >Deactivatd</p>
-                     <svg-icon src="assets/svg/common/ic_circle_light_blue.svg"></svg-icon>
+              <div class="progress">
+                <div class="employment-tooltip">
+                  <div class="emp-tooltip">
+                    <div class="emp-tooltip-value">
+                      <p class="emp-duration">
+                        10 September, 2021 - 04 January, 2023
+                      </p>
+                      <div class="emp-text-icon">
+                        <p>Deactivatd</p>
+                        <svg-icon
+                          src="assets/svg/common/ic_circle_light_blue.svg"
+                        ></svg-icon>
+                      </div>
                     </div>
+                    <p class="year-working">1 year 103 days</p>
                   </div>
-                  <p class="year-working">1 year 103 days</p>
                 </div>
+              </div>
+              <div class="year-employer">
+                <p>05/23/21</p>
+                <p>Today</p>
+              </div>
             </div>
-            </div>
-             <div class="year-employer">
-               <p>05/23/21</p>
-               <p>Today</p>
-             </div>
-            </div>
-            
+
             <div *ngIf="showMoreEmployment" class="status-container">
               <div class="status-header">
                 <div class="status-item">
@@ -352,17 +323,19 @@
               <div class="divider-employment"></div>
               <div class="status-items">
                 <div class="item-wrapper" *ngFor="let emp of employmentHistory">
-                  
                   <div class="svg-text">
                     <svg-icon
                       class="svg-blue"
-                      src="{{emp.svgIcon}}"
+                      src="{{ emp.svgIcon }}"
                     ></svg-icon>
-                    <p class="employment">{{emp.status}}</p>
+                    <p class="employment">{{ emp.status }}</p>
                   </div>
-                  <p class="date-from-to">{{emp.fromTo}}</p>
-                  <p class="duration">{{emp.duration}}</p>
-                  <div *ngIf="emp.hasDivider==true" class="divider-employment"></div>
+                  <p class="date-from-to">{{ emp.fromTo }}</p>
+                  <p class="duration">{{ emp.duration }}</p>
+                  <div
+                    *ngIf="emp.hasDivider == true"
+                    class="divider-employment"
+                  ></div>
                 </div>
               </div>
             </div>
@@ -385,7 +358,13 @@
         </app-ta-custom-card>
 
         <!-- Owner Details-->
-        <app-ta-custom-card [cardName]="'Owner Details'" [isCardOpen]="true">
+        <app-ta-custom-card
+          class="item-cards"
+          [animationsDisabled]="false"
+          [bodyTemplate]="'card'"
+          [cardName]="'Owner Details'"
+          [isCardOpen]="true"
+        >
           <div class="purchase-template">
             <div class="purchase-template-item">
               <div class="purchase-template-item-name">Company</div>
@@ -432,15 +411,25 @@
         </app-ta-custom-card>
 
         <!-- Commission Pay-->
-        <app-ta-custom-card [cardName]="'Commission Pay'" [isCardOpen]="true">
+        <app-ta-custom-card
+          class="item-cards"
+          [animationsDisabled]="false"
+          [bodyTemplate]="'card'"
+          [cardName]="'Commission Pay'"
+          [isCardOpen]="true"
+        >
           <div class="purchase-template">
             <div class="purchase-template-item">
               <div class="purchase-template-item-name">Solo</div>
-              <div class="purchase-template-item-value">10.0%</div>
+              <div class="purchase-template-item-value">
+                {{ driverData.commissionSolo }}%
+              </div>
             </div>
             <div class="purchase-template-item second-name">
               <div class="purchase-template-item-name">Team</div>
-              <div class="purchase-template-item-value">8.5%</div>
+              <div class="purchase-template-item-value">
+                {{ driverData.commissionTeam }}%
+              </div>
             </div>
           </div>
         </app-ta-custom-card>
@@ -450,6 +439,8 @@
           [cardName]="'Payroll'"
           [tooltipName]="'View in Modal'"
           [isCardOpen]="true"
+          class="item-cards"
+          [bodyTemplate]="'card'"
           [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         >
           <div class="common-template perfomance">
@@ -516,6 +507,9 @@
           [hasHeaderSvg]="'assets/svg/common/ic_bankAccount_dummy.svg'"
           [cardName]="'Bank Info'"
           [isCardOpen]="false"
+          class="item-cards"
+          [animationsDisabled]="false"
+          [bodyTemplate]="'card'"
         >
           <div class="purchase-template">
             <div class="purchase-template-item">
@@ -525,10 +519,10 @@
                 [ngClass]="{ copied: copiedBankRouting }"
               >
                 <div class="purchase-template-item-value">
-                  {{ data.data.bankInfo.routing }}
+                  {{ driverData.routing ? driverData.routing : "No routing" }}
                 </div>
                 <svg-icon
-                  (click)="copyText(data.data.bankInfo.routing, 'bankRouting')"
+                  (click)="copyText(driverData.routing, 'bankRouting')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                   [appTooltip]="copiedBankRouting ? 'Copied' : 'Copy'"
@@ -555,15 +549,20 @@
                   {{
                     accountText
                       ? accountText
-                      : hiddenPassword(data.data.bankInfo.account, 4)
+                      : hiddenPassword(
+                          driverData.account
+                            ? driverData.account
+                            : "No account",
+                          4
+                        )
                   }}
                 </div>
                 <svg-icon
                   class="hidden-svg-eye"
                   [appTooltip]="
                     isAccountVisible
-                      ? 'Show Account Number'
-                      : 'Hide Account Number'
+                      ? 'Hide Account Number'
+                      : 'Show Account Number'
                   "
                   [position]="'top-middle'"
                   [tooltipBackground]="'#6c6c6c'"
@@ -573,7 +572,11 @@
                   [fontWeight]="'bold'"
                   [fontSize]="'11px'"
                   [customPosition]="-50"
-                  (click)="showHideValue(data.data.bankInfo.account)"
+                  (click)="
+                    showHideValue(
+                      driverData.account ? driverData.account : 'No account'
+                    )
+                  "
                   src="{{
                     isAccountVisible
                       ? 'assets/svg/common/ic_eye-visible.svg'
@@ -581,7 +584,12 @@
                   }}"
                 ></svg-icon>
                 <svg-icon
-                  (click)="copyText(data.data.bankInfo.account, 'bankAcc')"
+                  (click)="
+                    copyText(
+                      driverData.account ? driverData.account : 'No account',
+                      'bankAcc'
+                    )
+                  "
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                   [appTooltip]="copiedBankAccount ? 'Copied' : 'Copy'"
@@ -604,12 +612,17 @@
         <app-ta-custom-card
           [cardName]="'Emergency Contact'"
           [isCardOpen]="false"
+          class="item-cards"
+          [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
         >
           <div class="purchase-template">
             <div class="purchase-template-item">
-              <div class="purchase-template-item-name">Brother</div>
+              <div class="purchase-template-item-name">
+                {{ driverData.emergencyContactRelationship }}
+              </div>
               <div class="purchase-template-item-value">
-                {{ data.data.emergencyContact.brother }}
+                {{ driverData.emergencyContactName }}
               </div>
             </div>
             <div class="purchase-template-item second-name">
@@ -619,10 +632,10 @@
                 [ngClass]="{ copied: copiedPhone }"
               >
                 <div class="purchase-template-item-value">
-                  {{ data.data.emergencyContact.phone }}
+                  {{ driverData.emergencyContactPhone }}
                 </div>
                 <svg-icon
-                  (click)="copyText(data.data.emergencyContact.phone, 'phone')"
+                  (click)="copyText(driverData.emergencyContactPhone, 'phone')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                   [appTooltip]="copiedPhone ? 'Copied' : 'Copy'"
@@ -657,8 +670,7 @@
       </div>
     </div>
     <div *ngSwitchCase="'cdl'">
-      <div *ngFor="let cdl of data.data; trackBy: identity">
-        <app-ta-re-card
+      <!-- <app-ta-re-card
           [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage($event)"
           [cardNameCommon]="'S53044475284'"
@@ -669,11 +681,11 @@
             <div class="card-row-issued">
               <div class="card-item">
                 <div class="card-item-name">State</div>
-                <div class="card-item-value">{{ cdl.state.key }}</div>
+                <div class="card-item-value">22222</div>
               </div>
               <div class="card-item">
                 <div class="card-item-name">Class</div>
-                <div class="card-item-value">{{ cdl.class.value }}</div>
+                <div class="card-item-value">2222222</div>
               </div>
               <div class="card-item">
                 <div class="card-item-name">Issued</div>
@@ -694,62 +706,68 @@
               <div class="card-details-progress-container">
                 <app-truckassist-progress-expiration
                   [expireDate]="'04/04/27'"
-                  [startDate]="formatDate(cdl.endDate)"
+                  [startDate]="formatDate('22244242424')"
                   [expiresSettings]="'details'"
                 >
                 </app-truckassist-progress-expiration>
               </div>
             </div>
           </div>
-        </app-ta-re-card>
+        </app-ta-re-card> -->
+      <div *ngFor="let cdl of driverData.cdls">
         <app-ta-re-card
           [options]="dataTest"
-          [cardDocumentCounter]="6"
+          [cardDocumentCounter]="cdl.length"
           (resizePage)="toggleResizePage($event)"
-          [cardNameCommon]="'570AG0927'"
+          [cardNameCommon]="cdl.cdlNumber"
           [hasCopyIcon]="true"
         >
           <div class="card-body-cdl">
             <div class="card-row-issued">
               <div class="card-item">
                 <div class="card-item-name">State</div>
-                <div class="card-item-value">{{ cdl.state.key }}</div>
+                <div class="card-item-value">
+                  {{ cdl.state.stateShortName }}
+                </div>
               </div>
               <div class="card-item">
                 <div class="card-item-name">Class</div>
-                <div class="card-item-value">{{ cdl.class.value }}</div>
+                <div class="card-item-value">{{ cdl.classType }}</div>
               </div>
               <div class="card-item">
                 <div class="card-item-name">Issued</div>
-                <div class="card-item-value">04/04/04</div>
+                <div class="card-item-value">
+                  {{ formatDate(cdl.issueDate) }}
+                </div>
               </div>
             </div>
             <div class="card-restriction">
               <p class="restriction-name">Restriction</p>
-              <p class="restriction-item-value">
-                <span class="value-name">A1</span> - Temporary Visitor
-              </p>
-              <p class="restriction-item-value">
-                <span class="value-name">A2</span> - Problem Driver
-              </p>
-              <p class="restriction-item-value">
-                <span class="value-name">A3</span> - Med Cart Examption
+              <p
+                class="restriction-item-value"
+                *ngFor="let rest of cdl.cdlRestrictions; let i = index"
+              >
+                <span class="value-name">{{ rest.code }}</span> -
+                {{ rest.description }}
               </p>
             </div>
             <div class="card-restriction endorsement">
               <p class="restriction-name">Endorsement</p>
-              <p class="restriction-item-value">
-                <span class="value-name">H</span> - Hazadrous
-              </p>
-              <p class="restriction-item-value">
-                <span class="value-name">M</span> - Metal Coil
-              </p>
+              <div>
+                <p
+                  class="restriction-item-value"
+                  *ngFor="let endors of cdl.cdlEndorsements; let i = index"
+                >
+                  <span class="value-name">{{ endors.code }}</span> -
+                  {{ endors.description }}
+                </p>
+              </div>
             </div>
             <div class="card-row-progress second-progress">
               <div class="card-details-progress-container">
                 <app-truckassist-progress-expiration
-                  [expireDate]="'04/04/27'"
-                  [startDate]="formatDate(cdl.endDate)"
+                  [expireDate]="formatDate(cdl.expDate)"
+                  [startDate]="formatDate(cdl.issueDate)"
                   [expiresSettings]="'details'"
                 >
                 </app-truckassist-progress-expiration>
@@ -823,7 +841,7 @@
       </div>
     </div>
     <div *ngSwitchCase="'drug-alcohol'">
-      <app-ta-re-card
+      <!-- <app-ta-re-card
         [options]="dataTest"
         [cardNameCommon]="'Drug Test'"
         (resizePage)="toggleResizePage($event)"
@@ -880,58 +898,23 @@
             </div>
           </div>
         </div>
-      </app-ta-re-card>
+      </app-ta-re-card> -->
     </div>
     <div *ngSwitchCase="'medical'">
-      <div *ngFor="let medical of data.data; trackBy: identity">
-        <app-ta-re-card [options]="dataTest" [cardNameCommon]="'08/12/23'">
-          <div class="card-body-cdl">
-            <div class="card-row-progress">
-              <div class="card-details-progress-container">
-                <app-truckassist-progress-expiration
-                  [expireDate]="'05/09/27'"
-                  [startDate]="formatDate(medical.startDate)"
-                  [expiresSettings]="'details'"
-                >
-                </app-truckassist-progress-expiration>
-              </div>
-            </div>
-          </div>
-        </app-ta-re-card>
+      <div *ngFor="let med of driverData.medicals">
         <app-ta-re-card
           [options]="dataTest"
-          [cardDocumentCounter]="1"
-          [cardNameCommon]="'09/27/22'"
+          [cardNameCommon]="formatDate(med.expDate)"
         >
           <div class="card-body-cdl">
             <div class="card-row-progress">
               <div class="card-details-progress-container">
                 <app-truckassist-progress-expiration
-                  [expireDate]="'05/09/27'"
-                  [startDate]="formatDate(medical.startDate)"
+                  [expireDate]="formatDate(med.expDate)"
+                  [startDate]="formatDate(med.issueDate)"
                   [expiresSettings]="'details'"
                 >
                 </app-truckassist-progress-expiration>
-              </div>
-            </div>
-          </div>
-        </app-ta-re-card>
-        <app-ta-re-card
-          [options]="dataTest"
-          [isCardOpen]="false"
-          [cardNameCommon]="'09/27/22'"
-        >
-          <div class="card-row-progress">
-            <div class="card-body-cdl">
-              <div class="card-row-progress">
-                <div class="card-details-progress-container">
-                  <app-truckassist-progress-expiration
-                    [expireDate]="'05/09/27'"
-                    [startDate]="formatDate(medical.startDate)"
-                    [expiresSettings]="'details'"
-                  >
-                  </app-truckassist-progress-expiration>
-                </div>
               </div>
             </div>
           </div>
@@ -939,41 +922,8 @@
       </div>
     </div>
     <div *ngSwitchCase="'mvr'">
-      <div *ngFor="let mvr of data.data; truckBy: identity">
-        <app-ta-re-card [options]="dataTest" [cardNameCommon]="'08/12/23'">
-          <div class="card-body-cdl">
-            <div class="card-row-progress">
-              <div class="card-details-progress-container">
-                <app-truckassist-progress-expiration
-                  [expireDate]="'05/09/27'"
-                  [startDate]="formatDate(mvr.startDate)"
-                  [expiresSettings]="'details'"
-                >
-                </app-truckassist-progress-expiration>
-              </div>
-            </div>
-          </div>
-        </app-ta-re-card>
-
-        <app-ta-re-card
-          [options]="dataTest"
-          [cardDocumentCounter]="1"
-          [cardNameCommon]="'09/27/22'"
-        >
-          <div class="card-body-cdl">
-            <div class="card-row-progress">
-              <div class="card-details-progress-container">
-                <app-truckassist-progress-expiration
-                  [expireDate]="'05/09/27'"
-                  [startDate]="formatDate(mvr.startDate)"
-                  [expiresSettings]="'details'"
-                >
-                </app-truckassist-progress-expiration>
-              </div>
-            </div>
-          </div>
-        </app-ta-re-card>
-
+      <!-- <div>
+       
         <app-ta-re-card
           [options]="dataTest"
           [cardDocumentCounter]="6"
@@ -984,7 +934,7 @@
               <div class="card-details-progress-container">
                 <app-truckassist-progress-expiration
                   [expireDate]="'05/09/27'"
-                  [startDate]="formatDate(mvr.startDate)"
+                  
                   [expiresSettings]="'details'"
                 >
                 </app-truckassist-progress-expiration>
@@ -1054,7 +1004,7 @@
             </app-ta-input-note>
           </div>
         </app-ta-re-card>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

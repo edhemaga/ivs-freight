@@ -23,6 +23,9 @@ import {
   ApexYAxis,
   ChartComponent,
 } from 'ng-apexcharts';
+import { DriversQuery } from '../../state/driver.query';
+import { ActivatedRoute } from '@angular/router';
+import { DriverTService } from '../../state/driver.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -69,11 +72,18 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public accountText: string = null;
   public arrayDrivers: any = [];
   public arrayDriverName: any = '';
+  public currentDriverName:string;
   public driverId: number = 0;
   public showMoreEmployment: boolean = false;
   public employmentHistory: any = [];
   dataTest: any;
-  constructor(private customModalService: CustomModalService) {
+  public driverData:any;
+  constructor(
+    private customModalService: CustomModalService,
+    private driversQuery: DriversQuery,
+    private activated_route: ActivatedRoute,
+    private driverTService:DriverTService
+    ) {
     this.arrayDrivers = [
       {
         id: 1,
@@ -226,12 +236,16 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     };
   }
 
-  ngOnInit() {
+  ngOnInit():void {
     console.log(this.data);
     this.selectedValuePayroll = '1Y';
     this.initTableOptions();
     this.getDriversList();
     this.getEmploymentHistory();
+    this.getDriverById()
+   
+   
+      
   }
 
   public getEmploymentHistory() {
@@ -273,7 +287,19 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
       },
     ];
   }
-
+   
+  public getDriverById(){
+    const driver_id=this.activated_route.snapshot.paramMap.get('id');
+    this.driverTService.getDriverById(+driver_id).subscribe((data)=>{
+      this.driverData=data;
+      let fullname= this.driverData.firstName+' ' +  this.driverData.lastName
+      this.currentDriverName=fullname;
+      console.log(this.driverData);
+      console.log(this.currentDriverName);
+      
+      
+    })
+  }
   public getDriversList() {
     for (let i = 0; i < this.arrayDrivers.length; i++) {
       this.arrayDrivers[i];

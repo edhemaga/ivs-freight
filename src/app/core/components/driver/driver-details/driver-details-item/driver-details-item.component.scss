@@ -112,9 +112,8 @@
   grid-template-columns: repeat(2, 193px);
   grid-template-rows: repeat(1, 36px);
   grid-column-gap: 22px;
-  margin-bottom: 16px;
-  margin-left: 16px;
-  margin-right: 16px;
+  padding-bottom: 4px;
+  padding: 0 10px;
   .purchase-template-item {
     .purchase-icon-copy {
       display: flex;
@@ -300,9 +299,7 @@ mat-button-toggle {
 .divider {
   margin: 0;
   height: 2px;
-  width: 428px;
-  margin-left: 6px;
-  margin-right: 6px;
+  width: 100%;
   border-radius: 1px;
   background-color: $color-white-light;
 }
@@ -364,9 +361,7 @@ mat-button-toggle {
 .employment-history-container {
   display: flex;
   flex-direction: column;
-  margin-left: 8px;
-  margin-right: 8px;
-  margin-top: 6px;
+  padding: 0 11px;
   .transform-arrow {
     svg {
       transform: rotate(180deg);
@@ -391,7 +386,6 @@ mat-button-toggle {
   .years-of-service {
     display: flex;
     align-items: center;
-    margin-left: 8px;
     margin-bottom: 12px;
     .items-wrapper {
       flex-direction: column;
@@ -415,10 +409,7 @@ mat-button-toggle {
     height: 42px;
     display: flex;
     flex-direction: column;
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-top: 12px;
-    
+
     .employment-tooltip {
       width: 424px;
       height: 52px;
@@ -434,7 +425,7 @@ mat-button-toggle {
         align-items: flex-start;
         height: 52px;
         padding: 6px 8px;
-        .year-working{
+        .year-working {
           font-size: 18px;
           font-weight: 500;
           color: #6c6c6c;
@@ -445,17 +436,17 @@ mat-button-toggle {
           height: 52px;
           align-items: baseline;
           width: 100%;
-          .emp-duration{
+          .emp-duration {
             font-size: 12px;
             font-weight: 600;
             color: #6c6c6c;
           }
         }
-        .emp-text-icon{
+        .emp-text-icon {
           display: flex;
           align-items: baseline;
           margin-right: 12px;
-          p{
+          p {
             font-size: 12px;
             font-weight: 500;
             color: #6c6c6c;
@@ -468,8 +459,8 @@ mat-button-toggle {
       width: 100%;
       height: 18px;
       background-color: #6d82c8;
-      &:hover{
-        .employment-tooltip{
+      &:hover {
+        .employment-tooltip {
           display: block;
         }
       }
@@ -480,7 +471,7 @@ mat-button-toggle {
       justify-content: space-between;
       margin-top: 6px;
       height: 18px;
-      p{
+      p {
         font-size: 14px;
         font-weight: 400;
         color: #6c6c6c;
@@ -488,9 +479,7 @@ mat-button-toggle {
     }
   }
   .status-container {
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-top: 12px;
+    padding-top: 12px;
     display: flex;
     flex-direction: column;
     .status-header {
@@ -531,9 +520,8 @@ mat-button-toggle {
   }
 }
 .details-page-row-5 {
-  margin-left: 12px;
-  margin-right: 10px;
-  margin-bottom: 12px;
+  padding: 0 6px;
+  padding-bottom: 6px;
 }
 .divider-common {
   margin: 0;
@@ -554,4 +542,7 @@ mat-button-toggle {
   margin-bottom: 8px;
   border-radius: 1px;
   background-color: $color-white-light;
+}
+.has-counter{
+  padding-left: 2px !important;
 }

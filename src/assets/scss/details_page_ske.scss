@@ -125,3 +125,107 @@ $transition: all 0.3s ease-in-out;
     padding: 9px 6px;
   }
 }
+.assignTo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  .first {
+    height: 18px;
+    width: 18px;
+    .assignTo-vehicle {
+      svg {
+        width: 41px;
+        height: 20px;
+      }
+    }
+    &:hover {
+      .open-modal-icon {
+        display: block;
+        position: relative;
+        bottom: 4px;
+        height: 18px;
+        width: 18px;
+        svg {
+          cursor: pointer;
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+    }
+  }
+  .second {
+    &:hover {
+      .open-modal-icon2 {
+        display: block;
+        height: 18px;
+        width: 18px;
+        position: relative;
+        bottom: 4px;
+        svg {
+          cursor: pointer;
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+    }
+  }
+  .assignTo-item {
+    background-color: $color-white-dark;
+    border-radius: 3px;
+    padding: 8px 6px;
+    width: 202px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    svg {
+      fill: #aaaaaa;
+      object-fit: fill;
+    }
+    .open-modal-icon {
+      display: none;
+      margin-left: 53px;
+    }
+    .open-modal-icon2 {
+      display: none;
+      margin-left: 51px;
+    }
+    .assignTo-vehicle {
+      width: 55px;
+      margin-right: 6px;
+      height: 20px;
+      position: relative;
+      bottom: 2px;
+    }
+
+    .assignTo-value {
+      font-size: $font-size18;
+      font-weight: 500;
+      color: $color-gray-dark;
+
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+    }
+    p {
+      margin: 0 !important;
+    }
+  }
+}
+.item-cards{
+  .ta-card-header{
+    padding:6px 0 !important;
+    padding-right: 6px !important;
+  }
+}

@@ -45,7 +45,7 @@
   grid-row-gap: 12px;
   row-gap: 12px;
   margin-bottom: 12px;
-  padding-left: 10px;
+  padding-left: 6px;
   .common-item-wrapper {
     display: flex;
     align-items: center;
@@ -116,8 +116,7 @@
 .perfomance {
   display: flex !important;
   flex-direction: column;
-  margin-left: 12px;
-  margin-right: 12px;
+  
   .common-template-item-name {
     font-size: $font-size14 !important;
     font-weight: $font-semibold !important;
@@ -138,9 +137,10 @@
   }
 }
 .additional-container {
-  margin-right: 16px;
-  margin-top: 12px;
-  margin-left: 16px;
+  padding: 0 10px;
+  display: grid;
+  column-gap: 12px;
+  row-gap: 12px;
   .addres-wrapper {
     .address-icon {
       display: none;
@@ -152,7 +152,7 @@
         fill: #aaaaaa;
         &:hover {
           path {
-            fill: #6c6c6c ;
+            fill: #6c6c6c;
           }
         }
       }
@@ -166,9 +166,9 @@
       font-size: $font-size14;
       font-weight: 400;
       color: #6c6c6c;
-
+      white-space: nowrap;
     }
-    
+
     .addres-value-icon {
       display: flex;
       align-items: flex-start;
@@ -177,113 +177,10 @@
         .address-icon {
           display: block;
         }
-        .addres-value{
+        .addres-value {
           color: #3c3c3c;
         }
       }
-    }
-  }
-  .addres-second {
-    margin-top: 12px;
-    margin-bottom: 22px;
-  }
-}
-.assignTo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  margin-top: 6px;
-  margin-left: 12px;
-  margin-right: 12px;
-  .first {
-    height: 18px;
-    width: 18px;
-    .assignTo-vehicle {
-      svg {
-        width: 41px;
-        height: 20px;
-      }
-    }
-    &:hover {
-      .open-modal-icon {
-        display: block;
-        position: relative;
-        bottom: 1px;
-        svg {
-          cursor: pointer;
-          &:hover {
-            path {
-              fill: #6c6c6c;
-            }
-          }
-        }
-      }
-    }
-  }
-  .second {
-    &:hover {
-      .open-modal-icon2 {
-        display: block;
-        height: 18px;
-        width: 18px;
-        position: relative;
-        bottom: 4px;
-        svg {
-          cursor: pointer;
-          &:hover {
-            path {
-              fill: #6c6c6c;
-            }
-          }
-        }
-      }
-    }
-  }
-  .assignTo-item {
-    background-color: $color-white-dark;
-    border-radius: 3px;
-    padding: 8px 6px;
-    width: 202px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    svg {
-      fill: #aaaaaa;
-      object-fit: fill;
-    }
-    .open-modal-icon {
-      display: none;
-      margin-left: 57px;
-    }
-    .open-modal-icon2 {
-      display: none;
-      margin-left: 42px;
-    }
-    .assignTo-vehicle {
-      width: 55px;
-      margin-right: 6px;
-      height: 20px;
-      position: relative;
-      bottom: 2px;
-    }
-
-    .assignTo-value {
-      font-size: $font-size18;
-      font-weight: 500;
-      color: $color-gray-dark;
-
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-    }
-    p {
-      margin: 0 !important;
     }
   }
 }
