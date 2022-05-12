@@ -136,6 +136,13 @@ export class TaInputComponent
     }
 
     this.focusInput = true;
+    console.log("FOCUSSSSS IINNNNNN")
+     console.log('REQUIRED ', this.inputConfig.isRequired);
+    console.log('VALUE ', this.getSuperControl.value);
+    console.log('Inalid ', this.getSuperControl.invalid);
+    console.log('Wait Validation ', this.waitValidation);
+    console.log('Dropdown ', this.inputConfig.isDropdown);
+    console.log('FOCUS ', this.focusInput);
   }
 
   public onBlur(): void {
@@ -144,39 +151,28 @@ export class TaInputComponent
       this.blurOnDropDownArrow();
     } else {
       this.focusInput = false;
-    }
 
-    let selection = window.getSelection();
-    selection.removeAllRanges();
+      let selection = window.getSelection();
+      selection.removeAllRanges();
 
-    // Required Field
-    if (this.inputConfig.isRequired) {
+      // Wait Validation
       if (!this.focusInput && this.getSuperControl.invalid) {
         this.waitValidation = true;
       } else {
         this.waitValidation = false;
       }
-    }
 
-    // No Required Field
-    else {
-      if (this.getSuperControl.value && this.getSuperControl.invalid) {
-        this.waitValidation = true;
-      } else {
-        this.waitValidation = false;
+      // Password
+      if (this.inputConfig.type === 'password') {
+        this.blurOnPassword();
       }
-    }
 
-    // Password
-    if (this.inputConfig.type === 'password') {
-      this.blurOnPassword();
-    }
-
-    // Datepicker
-    if (this.inputConfig.name === 'datepicker') {
-      if (!this.getSuperControl.value && this.getSuperControl.invalid) {
-        this.inputConfig.type = 'text';
-        this.blurOnDateTime();
+      // Datepicker
+      if (this.inputConfig.name === 'datepicker') {
+        if (!this.getSuperControl.value && this.getSuperControl.invalid) {
+          this.inputConfig.type = 'text';
+          this.blurOnDateTime();
+        }
       }
     }
   }
@@ -192,19 +188,29 @@ export class TaInputComponent
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
+
     this.timeout = setTimeout(() => {
       this.inputService.dropDownShowHideSubject.next(false);
       this.isDropdownOptionsActive = false;
+      this.focusInput = false;
+
+      // Wait Validation
+      if (!this.focusInput && this.getSuperControl.invalid) {
+        this.waitValidation = true;
+      } else {
+        this.waitValidation = false;
+      }
+
       this.changeDetection.detectChanges();
       clearTimeout(this.timeout);
     }, 150);
-    this.focusInput = false;
-    console.log('REQUIRED ', this.inputConfig.isRequired);
-    console.log('VALUE ', this.getSuperControl.value);
-    console.log('Inalid ', this.getSuperControl.invalid);
-    console.log('Wait Validation ', this.waitValidation);
-    console.log('Dropdown ', this.inputConfig.isDropdown);
-    console.log('FOCUS ', this.focusInput);
+
+    // console.log('REQUIRED ', this.inputConfig.isRequired);
+    // console.log('VALUE ', this.getSuperControl.value);
+    // console.log('Inalid ', this.getSuperControl.invalid);
+    // console.log('Wait Validation ', this.waitValidation);
+    // console.log('Dropdown ', this.inputConfig.isDropdown);
+    // console.log('FOCUS ', this.focusInput);
   }
 
   public clearInput(): void {

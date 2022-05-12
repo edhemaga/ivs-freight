@@ -233,11 +233,29 @@
     column-gap: 27px;
     padding: 0 6px;
     margin-bottom: 12px;
+    max-height: 0px;
+    overflow: hidden;
+
+    &.active {
+      max-height: 600px !important;
+      margin-top: 24px;
+      transition: all 0.3s ease-in-out;
+    }
   }
 
   //---------------- PayType Per Mile ----------------
   .paytype-permile {
     padding-left: 6px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+
+    &.active {
+      max-height: 600px !important;
+      margin-top: 32px;
+      transition: all 0.3s ease-in-out;
+    }
+
     .permile-fields {
       display: grid;
       grid-template-columns: auto repeat(3, 124px);
