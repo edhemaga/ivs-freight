@@ -134,7 +134,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: CompanyContactResponse) => {
-          console.log(res)
           this.contactForm.patchValue({
             name: res.name,
             companyContactLabelId: res.companyContactLabel ? res.companyContactLabel.name : null,
@@ -199,7 +198,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         addressUnit,
       }
     };
-    console.log(newData)
     this.contactModalService
       .updateCompanyContact(newData)
       .pipe(untilDestroyed(this))
