@@ -80,7 +80,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 3,
+        id: 5,
       };
       this.editShipperById(this.editData.id);
       this.tabs.push({
@@ -162,7 +162,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       fullName: [null],
       departmentId: [null],
       phone: [null],
-      extensionPhone: [null],
+      phoneExt: [null],
       email: [null],
     });
   }
@@ -186,8 +186,11 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandleAddress(event: any) {
-    this.selectedAddress = event;
+  public onHandleAddress(event: {address: Address, valid: boolean}) {
+    this.selectedAddress = event.address;
+    if(!event.valid) {
+      this.shipperForm.setErrors({'invalid': event.valid})
+    }
   }
 
   public onSelectContactDepartment(event: any, ind: number) {
@@ -222,12 +225,18 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       isShippingHoursSameLikeReceiving,
       shipping24h,
       shipperContacts,
+      shippingFrom,
+      shippingTo,
+      shippingAppointment,
       ...form
     } = this.shipperForm.value;
     
     let newData: CreateShipperCommand = {
       ...form,
-      address: this.selectedAddress,
+      address: {...this.selectedAddress, addressUnit: this.shipperForm.get('addressUnit').value},
+      shippingFrom: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingFrom').value : shippingFrom,
+      shippingTo: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingTo').value : shippingTo,
+      shippingAppointment: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingAppointment').value : shippingAppointment
     };
 
     for (let index = 0; index < shipperContacts.length; index++) {
@@ -263,12 +272,18 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       isShippingHoursSameLikeReceiving,
       shipping24h,
       shipperContacts,
+      shippingFrom,
+      shippingTo,
+      shippingAppointment,
       ...form
     } = this.shipperForm.value;
     let newData: UpdateShipperCommand = {
       id: id,
       ...form,
-      address: this.selectedAddress,
+      address: {...this.selectedAddress, addressUnit: this.shipperForm.get('addressUnit').value},
+      shippingFrom: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingFrom').value : shippingFrom,
+      shippingTo: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingTo').value : shippingTo,
+      shippingAppointment: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingAppointment').value : shippingAppointment
     };
 
     for (let index = 0; index < shipperContacts.length; index++) {
@@ -352,7 +367,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                   fullName: contact.fullName,
                   departmentId: contact.department.name,
                   phone: contact.phone,
-                  extensionPhone: contact.phoneExt,
+                  phoneExt: contact.phoneExt,
                   email: contact.email,
                 })
               );
