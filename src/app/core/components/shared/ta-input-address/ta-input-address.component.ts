@@ -37,7 +37,7 @@ export class TaInputAddressComponent
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
 
-  @Output() selectedAddress: EventEmitter<Address> = new EventEmitter<Address>(
+  @Output() selectedAddress: EventEmitter<{address: Address, valid: boolean}> = new EventEmitter<{address: Address, valid: boolean}>(
     null
   );
 
@@ -66,7 +66,7 @@ export class TaInputAddressComponent
         .subscribe((value) => {
           if (value !== this.activeAddress?.address) {
             this.invalidAddress = true;
-            this.selectedAddress.emit(null);
+            this.selectedAddress.emit({address: null, valid: false});
           }
         });
     }
@@ -75,7 +75,7 @@ export class TaInputAddressComponent
   public handleAddressChange(address: Address) {
     this.activeAddress = this.sharedService.selectAddress(null, address);
     this.invalidAddress = false;
-    this.selectedAddress.emit(this.activeAddress);
+    this.selectedAddress.emit({address: this.activeAddress, valid: true});
 
     this.getSuperControl.setValue(
       this.sharedService.selectAddress(null, address).address
@@ -111,7 +111,7 @@ export class TaInputAddressComponent
 
     if (!this.activeAddress && this.waitValidation) {
       this.invalidAddress = true;
-      this.selectedAddress.emit(null);
+      this.selectedAddress.emit({address: null, valid: false});
     }
   }
 
@@ -123,7 +123,7 @@ export class TaInputAddressComponent
       this.activeAddress?.address !== this.getSuperControl.value
     ) {
       this.invalidAddress = true;
-      this.selectedAddress.emit(null);
+      this.selectedAddress.emit({address: null, valid: false});
     }
 
     if (
@@ -150,6 +150,12 @@ export class TaInputAddressComponent
       : (this.waitValidation = false);
     this.activeAddress = null;
     this.invalidAddress = false;
+    if(!this.inputConfig.isRequired) {
+      this.selectedAddress.emit({address: null, valid: true});
+    }
+    else {
+      this.selectedAddress.emit({address: null, valid: false});
+    }
   }
 
   public onBackspace(event): void {
@@ -162,7 +168,7 @@ export class TaInputAddressComponent
     }
     if (this.activeAddress?.address !== this.getSuperControl.value) {
       this.invalidAddress = true;
-      this.selectedAddress.emit(null);
+      this.selectedAddress.emit({address: null, valid: false});
     }
   }
 
