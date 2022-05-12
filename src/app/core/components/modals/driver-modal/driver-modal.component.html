@@ -370,12 +370,8 @@
         <!-- Pay Type Per Mile -->
         <div
           class="paytype-permile"
+          [class.active]="driverForm.get('payType').value?.toLowerCase() === 'per mile'"
           *ngIf="driverForm.get('payType').value?.toLowerCase() === 'per mile'"
-          [@showHidePerMile]="
-            driverForm.get('payType').value?.toLowerCase() === 'per mile'
-              ? 'true'
-              : 'false'
-          "
         >
           <div class="permile-fields">
             <p>Solo</p>
@@ -384,7 +380,7 @@
               [inputConfig]="{
                 name: 'Empty Mile',
                 type: 'text',
-                label: 'Empty Mile',
+                label: 'Empty Mi',
                 isRequired: true,
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
@@ -397,7 +393,7 @@
               [inputConfig]="{
                 name: 'Loaded Mile',
                 type: 'text',
-                label: 'Loaded Mile',
+                label: 'Loaded Mi',
                 isRequired: true,
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
@@ -425,7 +421,7 @@
               [inputConfig]="{
                 name: 'Empty Mile',
                 type: 'text',
-                label: 'Empty Mile',
+                label: 'Empty Mi',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
                 maxLength: 2,
@@ -437,7 +433,7 @@
               [inputConfig]="{
                 name: 'Loaded Mile',
                 type: 'text',
-                label: 'Loaded Mile',
+                label: 'Loaded Mi',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
                 maxLength: 2,
@@ -465,11 +461,7 @@
           *ngIf="
             driverForm.get('payType').value?.toLowerCase() === 'commission'
           "
-          [@showHideCommission]="
-            driverForm.get('payType').value?.toLowerCase() === 'commission'
-              ? 'true'
-              : 'false'
-          "
+          [class.active]="driverForm.get('payType').value?.toLowerCase() === 'commission'"
         >
           <div class="paytype-field">
             <app-ta-ngx-slider

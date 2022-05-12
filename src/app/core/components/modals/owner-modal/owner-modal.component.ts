@@ -77,17 +77,14 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.ownerForm = this.formBuilder.group({
-      bussinesName: [null],
+      bussinesName: [null, Validators.required],
       firstName: [null],
       lastName: [null],
       ssn: [null],
-      ein: [null],
-      address: [null],
+      ein: [null, [Validators.pattern(/^\d{2}\-\d{7}$/)]],
+      address: [null, Validators.required],
       addressUnit: [null],
-      phone: [
-        null,
-        [Validators.required, Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)],
-      ],
+      phone: [null, [Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)]],
       email: [
         null,
         [
