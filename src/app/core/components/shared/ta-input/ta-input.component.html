@@ -3,7 +3,9 @@
   [ngClass]="{
     'hover-out-of-focus': !focusInput,
     'hide-placeholder-icon':
-      inputConfig.type === 'password' && getSuperControl.valid && getSuperControl.value,
+      inputConfig.type === 'password' &&
+      getSuperControl.valid &&
+      getSuperControl.value,
     'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required-dropdown':
       inputConfig.isRequired &&
@@ -194,9 +196,7 @@
         inputConfig.isDropdown &&
         focusInput,
       'valid-placeholder':
-        inputConfig.isDropdown &&
-        focusInput &&
-        inputConfig.placeholder,
+        inputConfig.isDropdown && focusInput && inputConfig.placeholder,
       'valid-focus-out-required':
         inputConfig.isRequired &&
         getSuperControl.value &&
@@ -243,13 +243,9 @@
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-required-in':
-        getSuperControl.value &&
-        getSuperControl.valid &&
-        focusInput,
+        getSuperControl.value && getSuperControl.valid && focusInput,
       'valid-required-out':
-        getSuperControl.value &&
-        getSuperControl.valid &&
-        !focusInput,
+        getSuperControl.value && getSuperControl.valid && !focusInput,
       'invalid-required-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
@@ -267,9 +263,7 @@
         waitValidation &&
         focusInput,
       'invalid-required-filled':
-        getSuperControl.value &&
-        getSuperControl.invalid &&
-        !focusInput
+        getSuperControl.value && getSuperControl.invalid && !focusInput
     }"
     [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg: 'common'"
   ></svg-icon>
@@ -436,9 +430,7 @@
         waitValidation &&
         !focusInput,
       'invalid-focus-in':
-        getSuperControl.invalid &&
-        focusInput &&
-        waitValidation,
+        getSuperControl.invalid && focusInput && waitValidation,
       'invalid-dropdown-focus-in':
         inputConfig.isRequired &&
         getSuperControl.invalid &&

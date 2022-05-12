@@ -136,13 +136,6 @@ export class TaInputComponent
     }
 
     this.focusInput = true;
-    console.log("FOCUSSSSS IINNNNNN")
-     console.log('REQUIRED ', this.inputConfig.isRequired);
-    console.log('VALUE ', this.getSuperControl.value);
-    console.log('Inalid ', this.getSuperControl.invalid);
-    console.log('Wait Validation ', this.waitValidation);
-    console.log('Dropdown ', this.inputConfig.isDropdown);
-    console.log('FOCUS ', this.focusInput);
   }
 
   public onBlur(): void {
@@ -204,13 +197,6 @@ export class TaInputComponent
       this.changeDetection.detectChanges();
       clearTimeout(this.timeout);
     }, 150);
-
-    // console.log('REQUIRED ', this.inputConfig.isRequired);
-    // console.log('VALUE ', this.getSuperControl.value);
-    // console.log('Inalid ', this.getSuperControl.invalid);
-    // console.log('Wait Validation ', this.waitValidation);
-    // console.log('Dropdown ', this.inputConfig.isDropdown);
-    // console.log('FOCUS ', this.focusInput);
   }
 
   public clearInput(): void {
@@ -292,10 +278,6 @@ export class TaInputComponent
   }
 
   public manipulateWithInput(event: KeyboardEvent): boolean {
-    // Input Validation
-    if (this.focusInput && this.getSuperControl.valid) {
-      this.waitValidation = true;
-    }
     // Disable first character to be space
     if (
       !this.input.nativeElement.value &&
@@ -617,8 +599,6 @@ export class TaInputComponent
           this.selectSpanByTabIndex(this.selectionInput);
         }
       } else if (e.keyCode == 39) {
-        console.log('WHAT IS SELECTION COUNT');
-        console.log(this.selectionInput);
         if (this.selectionInput != 2) {
           this.selectionInput = this.selectionInput + 1;
           this.selectSpanByTabIndex(this.selectionInput);
