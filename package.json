@@ -66,6 +66,7 @@
     "@progress/kendo-theme-default": "^5.2.0",
     "@types/chart.js": "^2.9.30",
     "angular-croppie-module": "0.0.7",
+    "angular-gridster2": "^13.2.1",
     "angular-svg-icon": "^13.0.0",
     "angular-svg-icon-preloader": "^2.0.1",
     "angular2-chartjs": "^0.5.1",

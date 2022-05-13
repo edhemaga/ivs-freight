@@ -132,6 +132,13 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'tools/todo',
+    loadChildren: () =>
+     import('./core/components/to-do/to-do.module').then(
+       (m) => m.ToDoModule
+     )
+  },
+  {
     path: "catalog",
     component: SvgDefinitionsComponent
   },

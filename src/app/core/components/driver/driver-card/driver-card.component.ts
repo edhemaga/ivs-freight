@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-driver-card',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./driver-card.component.scss']
 })
 export class DriverCardComponent implements OnInit {
+  @Input() viewData : any;
 
   driverBox: any[] = [
     {
@@ -30,7 +31,8 @@ export class DriverCardComponent implements OnInit {
       img: 'assets/svg/detail-cards/driver-img.svg',
       name: 'Donald Duckling',
       phone: '(325) 540-1157',
-      email: 'donald@gmail.com'
+      email: 'donald@gmail.com',
+      active: true
     },
     {
       img: 'assets/svg/detail-cards/driver-img.svg',
@@ -66,7 +68,8 @@ export class DriverCardComponent implements OnInit {
       img: 'assets/svg/detail-cards/driver-img.svg',
       name: 'A. Djordjevic',
       phone: '(482) 120-8701',
-      email: 'alex.djordjevic23-321@gmail.com'
+      email: 'alex.djordjevic23-321@gmail.com',
+      active: true
     },
     {
       img: 'assets/svg/detail-cards/driver-img.svg',
@@ -85,10 +88,11 @@ export class DriverCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log("DRIVER DATA");
+    console.log(this.viewData);
   }
 
   changeChatBox(e, indx) {
-    console.log(e.target.checked);
     this.driverBox[indx].checked = e.target.checked;
   }
 
