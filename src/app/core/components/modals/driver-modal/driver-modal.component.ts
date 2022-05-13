@@ -168,6 +168,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/)],
       ],
       note: [null],
+      avatar: [null],
       dateOfBirth: [null, [Validators.required]],
       offDutyLocations: this.formBuilder.array([]),
       isOwner: [false],
@@ -353,10 +354,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       value: this.selectedTab,
       params: { height: `${dotAnimation.getClientRects()[0].height}px` },
     };
-
-    if (this.selectedTab === 3) {
-      this.imagee = JSON.parse(localStorage.getItem('image'));
-    }
   }
 
   public tabOwnerChange(event: any[]): void {
@@ -532,6 +529,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             email: res.email,
             ssn: res.ssn,
             note: res.note,
+            avatar: res.avatar,
             dateOfBirth: moment(new Date(res.dateOfBirth)).format('YYYY-MM-DD'),
             offDutyLocations: [],
             isOwner: true,
@@ -624,9 +622,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.selectedPayType = event;
   }
 
-  imagee: any;
   public onUploadImage(event: any) {
-    localStorage.setItem('image', JSON.stringify(event));
+    this.driverForm.get('avatar').patchValue(event);
   }
 
   ngOnDestroy(): void {}

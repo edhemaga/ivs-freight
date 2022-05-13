@@ -503,7 +503,7 @@
 
       <div class="m-tab" *ngIf="selectedTab === 3">
         <app-ta-logo-change
-          [imageUrl]="imagee"
+          [imageUrl]="this.driverForm.get('avatar').value"
           (base64ImageEvent)="onUploadImage($event)"
         ></app-ta-logo-change>
         <div class="row last-row">
