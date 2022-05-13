@@ -1,0 +1,28 @@
+.currency-progress-bar {
+  display: flex;
+  flex-direction: column;
+
+  .progress-bar-information {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .currency-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #6c6c6c;
+    }
+
+    .currency-price {
+      font-size: 14px;
+      font-weight: 600;
+      color: #6c6c6c;
+    }
+  }
+
+  .progress-bar-line {
+    height: 8px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+}

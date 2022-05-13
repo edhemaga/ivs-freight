@@ -93,6 +93,7 @@ import { TaReCardComponent } from './ta-common-card/ta-re-card.component';
 import { TruckassistTableModule } from './truckassist-table/truckassist-table.module';
 import { ShipperModalComponent } from '../modals/shipper-modal/shipper-modal.component';
 import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component';
+import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-currency-progress-bar.component';
 
 @NgModule({
   declarations: [
@@ -131,6 +132,7 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
     TaInputRadiobuttonsComponent,
     TaLikeDislikeComponent,
     TaUserReviewComponent,
+    TaCurrencyProgressBarComponent,
 
     // Modals Components
     TaModalComponent,
@@ -253,6 +255,7 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
     TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
     TaUserReviewComponent,
+   
 
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
@@ -270,6 +273,7 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
     TaNgxSliderComponent,
     TaLogoChangeComponent,
     TaLikeDislikeComponent,
+    TaCurrencyProgressBarComponent,
 
     // Modals Components
     TaModalComponent,

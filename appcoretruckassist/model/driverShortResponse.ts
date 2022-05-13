@@ -25,6 +25,7 @@ export interface DriverShortResponse {
     ssn?: string | null;
     status?: number;
     note?: string | null;
+    avatar?: string | null;
     address?: AddressEntity;
     dateOfBirth?: string | null;
     bank?: BankResponse;

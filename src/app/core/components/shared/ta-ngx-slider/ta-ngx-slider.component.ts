@@ -4,7 +4,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-ta-ngx-slider',
   templateUrl: './ta-ngx-slider.component.html',
-  styleUrls: ['./ta-ngx-slider.component.scss'],
+  styleUrls: ['./ta-ngx-slider.component.scss']
 })
 export class TaNgxSliderComponent {
   @Input() sliderTemplate: string = 'commission';

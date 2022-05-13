@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import {
   Component,
@@ -17,7 +16,6 @@ import {
 } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { TruckModalService } from './truck-modal.service';
@@ -26,9 +24,7 @@ import { TruckModalService } from './truck-modal.service';
   selector: 'app-truck-modal',
   templateUrl: './truck-modal.component.html',
   styleUrls: ['./truck-modal.component.scss'],
-  animations: [
-    tab_modal_animation('animationTabsModal')
-  ],
+  animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
@@ -43,13 +39,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public engineType: any[] = [];
   public tireSize: any[] = [];
 
-  selectedTruckType: any = null;
-  selectedTruckMake: any = null;
-  selectedColor: any = null;
-  selectedOwner: any = null;
-  selectedTruckGrossWeight: any = null;
-  selectedEngineType: any = null;
-  selectedTireSize: any = null;
+  public selectedTruckType: any = null;
+  public selectedTruckMake: any = null;
+  public selectedColor: any = null;
+  public selectedOwner: any = null;
+  public selectedTruckGrossWeight: any = null;
+  public selectedEngineType: any = null;
+  public selectedTireSize: any = null;
 
   public selectedTab: number = 1;
   public tabs: any[] = [
@@ -71,7 +67,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     hideLimitLabels: true,
   };
 
-  public animationObject = {value: this.selectedTab, params: {height: "0px"}}
+  public animationObject = {
+    value: this.selectedTab,
+    params: { height: '0px' },
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -90,7 +89,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 2,
+        id: 1,
       };
       this.editTruckById(this.editData.id);
     }
@@ -110,9 +109,16 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       ],
       truckMakeId: [null, Validators.required],
       model: [null, [Validators.required, Validators.maxLength(22)]],
-      year: [null, [Validators.required, Validators.maxLength(4), Validators.pattern(/^(19[0-9]\d|20[0-4]\d|2100)$/)]],
+      year: [
+        null,
+        [
+          Validators.required,
+          Validators.maxLength(4),
+          Validators.pattern(/^(19[0-9]\d|20[0-4]\d|2100)$/),
+        ],
+      ],
       colorId: [null],
-      companyOwned: [false],
+      companyOwned: [true],
       ownerId: [null],
       commission: [14.5],
       note: [null],
@@ -132,11 +138,14 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-    let dotAnimation = document.querySelector(".animation-two-tabs");
-    this.animationObject = {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
+    let dotAnimation = document.querySelector('.animation-two-tabs');
+    this.animationObject = {
+      value: this.selectedTab,
+      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+    };
   }
 
-  public onModalAction(data: {action: string, bool: boolean}): void {
+  public onModalAction(data: { action: string; bool: boolean }): void {
     if (data.action === 'close') {
       this.truckForm.reset();
     } else {
@@ -167,7 +176,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .get('companyOwned')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
-        if (value) {
+        if (!value) {
           this.inputService.changeValidators(this.truckForm.get('ownerId'));
         } else {
           this.inputService.changeValidators(
@@ -212,8 +221,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public addTruck() {
     const newData: CreateTruckCommand = {
       ...this.truckForm.value,
-      truckTypeId: this.selectedTruckType.id,
-      truckMakeId: this.selectedTruckMake.id,
+      truckTypeId: this.selectedTruckType ? this.selectedTruckType.id : null,
+      truckMakeId: this.selectedTruckMake ? this.selectedTruckMake.id : null,
       colorId: this.selectedColor ? this.selectedColor.id : null,
       ownerId: this.selectedOwner ? this.selectedOwner.id : null,
       truckGrossWeightId: this.selectedTruckGrossWeight
@@ -261,8 +270,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     const newData: UpdateTruckCommand = {
       id: id,
       ...this.truckForm.value,
-      truckTypeId: this.selectedTruckType.id,
-      truckMakeId: this.selectedTruckMake.id,
+      truckTypeId: this.selectedTruckType ? this.selectedTruckType.id : null,
+      truckMakeId: this.selectedTruckMake ? this.selectedTruckMake.id : null,
       colorId: this.selectedColor ? this.selectedColor.id : null,
       ownerId: this.selectedOwner ? this.selectedOwner.id : null,
       truckGrossWeightId: this.selectedTruckGrossWeight
@@ -293,7 +302,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       year: parseInt(this.truckForm.get('year').value),
     };
     this.truckModalService
-      .addTruck(newData)
+      .updateTruck(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () =>
@@ -329,32 +338,40 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         next: (res: TruckResponse) => {
           this.truckForm.patchValue({
             truckNumber: res.truckNumber,
-            truckTypeId: res.truckType.name,
+            truckTypeId: res.truckType ? res.truckType.name : null,
             vin: res.vin,
-            truckMakeId: res.truckMake.name,
+            truckMakeId: res.truckMake ? res.truckMake.name : null,
             model: res.model,
             year: res.year,
-            colorId: res.color.name,
+            colorId: res.color ? res.color.name : null,
             companyOwned: res.companyOwned,
-            ownerId: res.owner.name, // TODO: PITATI BACK
+            ownerId: res.owner ? res.owner.name : null,
             commission: res.commission,
             note: res.note,
-            truckGrossWeightId: res.truckGrossWeight.name,
+            truckGrossWeightId: res.truckGrossWeight
+              ? res.truckGrossWeight.name
+              : null,
             emptyWeight: res.emptyWeight,
-            truckEngineTypeId: res.truckEngineType.name,
-            tireSizeId: res.tireSize.name,
+            truckEngineTypeId: res.truckEngineType
+              ? res.truckEngineType.name
+              : null,
+            tireSizeId: res.tireSize ? res.tireSize.name : null,
             axles: res.axles,
             insurancePolicy: res.insurancePolicy,
             mileage: res.mileage,
             ipasEzpass: res.ipasEzpass,
           });
-          this.selectedTruckType = res.truckType;
-          this.selectedTruckMake = res.truckMake;
-          this.selectedColor = res.color;
-          this.selectedOwner = res.owner;
-          this.selectedTruckGrossWeight = res.truckGrossWeight;
-          this.selectedEngineType = res.truckEngineType;
-          this.selectedTireSize = res.tireSize;
+          this.selectedTruckType = res.truckType.name ? res.truckType : null;
+          this.selectedTruckMake = res.truckMake.name ? res.truckMake : null;
+          this.selectedColor = res.color.name ? res.color : null;
+          this.selectedOwner = res.owner.name ? res.owner : null;
+          this.selectedTruckGrossWeight = res.truckGrossWeight.name
+            ? res.truckGrossWeight
+            : null;
+          this.selectedEngineType = res.truckEngineType.name
+            ? res.truckEngineType
+            : null;
+          this.selectedTireSize = res.tireSize.name ? res.tireSize : null;
         },
         error: () => {
           this.notificationService.error("Cant't get truck.", 'Error:');
