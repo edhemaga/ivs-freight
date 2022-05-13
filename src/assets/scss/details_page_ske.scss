@@ -49,7 +49,7 @@ $transition: all 0.3s ease-in-out;
   row-gap: 12px;
 }
 // Common Class
-.truck-component {
+.details-component {
   display: grid;
   row-gap: 12px;
 
@@ -86,51 +86,18 @@ $transition: all 0.3s ease-in-out;
       }
     }
 
-    // .truck-card-bottom {
-    //   display: flex;
-    //   flex-direction: column;
-
-    //   // State, Class, Issued
-    //   .truck-row-1 {
-    //     display: grid;
-    //     grid-template-columns: 51px 73px 112px;
-    //   }
-
-    //   // Restrictions & Endorsments
-    //   .truck-row-2 {
-    //     display: grid;
-    //     grid-template-columns: 124px 112px;
-    //     margin: 8px 0px;
-    //   }
-
-
-    //   // PDF - small
-    //   .truck-row-4 {
-    //     height: 150px;
-    //     width: 100%;
-    //   }
-
     //   // Note
-      .details-page-row-5 {
-        margin-top: 8px;
-      }
-
-    //   // Drug Test
-    //   .truck-row-6 {
-    //     display: grid;
-    //     grid-template-columns: 164px 72px;
-    //   }
+    .details-page-row-5 {
+      margin-top: 8px;
+    }
 
     //   // PDF - big
-      .details-page-row-7 {
-        height: 236px;
-        width: 100%;
-        margin: 22px 0px;
-      }
-    // }
+    .details-page-row-7 {
+      height: 236px;
+      width: 100%;
+      margin: 22px 0px;
+    }
 
-   
-  
     .show-details {
       font-size: $font-size12;
       font-weight: $font-bold;
@@ -150,13 +117,372 @@ $transition: all 0.3s ease-in-out;
     }
   }
 
-  .truck-cards {
+  .details-cards {
     border-radius: 3px;
     overflow: hidden;
-    padding: 8px 12px;
     width: 440px;
     background-color: $color-white;
+    padding: 9px 6px;
   }
+}
+.assignTo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  .first {
+    height: 18px;
+    width: 18px;
+    .assignTo-vehicle {
+      svg {
+        width: 41px;
+        height: 20px;
+      }
+    }
+    &:hover {
+      .open-modal-icon {
+        display: block;
+        position: relative;
+        bottom: 4px;
+        height: 18px;
+        width: 18px;
+        svg {
+          cursor: pointer;
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+    }
+  }
+  .second {
+    &:hover {
+      .open-modal-icon2 {
+        display: block;
+        height: 18px;
+        width: 18px;
+        position: relative;
+        bottom: 4px;
+        svg {
+          cursor: pointer;
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+    }
+  }
+  .assignTo-item {
+    background-color: $color-white-dark;
+    border-radius: 3px;
+    padding: 8px 6px;
+    width: 202px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    svg {
+      fill: #aaaaaa;
+      object-fit: fill;
+    }
+    .open-modal-icon {
+      display: none;
+      margin-left: 67px;
+    }
+    .open-modal-icon2 {
+      display: none;
+      margin-left: 51px;
+    }
+    .assignTo-vehicle {
+      margin-right: 6px;
+      height: 20px;
+      position: relative;
+      bottom: 2px;
+    }
+
+    .assignTo-value {
+      font-size: $font-size18;
+      font-weight: 500;
+      color: $color-gray-dark;
+
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+    }
+    p {
+      margin: 0 !important;
+    }
+  }
+}
+.item-cards{
+  .ta-card-header{
+    padding:6px 0 !important;
+    padding-right: 6px !important;
+  }
+}
+.cards-container{
+  padding: 0 6px;
+.card-body-cdl {
+  display: grid;
+  padding: 0 10px;
+  .card-item-name {
+    font-size: $font-size12;
+    color: #6c6c6c;
+    font-weight: $font-semibold;
+    height: 15px;
+    margin-bottom: 3px;
+  }
+  .card-item-value {
+    font-size: $font-size14;
+    font-weight: 400;
+    color: #6c6c6c;
+    white-space: nowrap;
+    height: 18px;
+    &:hover {
+      color: #3c3c3c;
+    }
+  }
+  .card-row-issued {
+    display: grid;
+    grid-template-columns: 32px 32px 32px;
+    column-gap: 49px;
+    margin-top: 12px;
+  }
+  .card-row-endor {
+    display: grid;
+    grid-template-columns: 141px 141px;
+    column-gap: 21px;
+    margin-top: 12px;
+  }
+  .card-row-progress {
+   margin-top: 12px;
+  }
+
+  .card-icon-copy {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    .card-icon {
+      display: none;
+      position: relative;
+      margin-left: 6px;
+      bottom: 4px;
+      height: 18px;
+      svg {
+        fill: #aaaaaa;
+        &:hover {
+          path {
+            fill: #6c6c6c;
+          }
+        }
+      }
+    }
+    .card-icon {
+      height: 18px;
+      margin-left: 6px;
+    }
+    &:hover {
+      .card-icon {
+        display: block;
+      }
+    }
+  }
+
+ 
+  .card-restriction {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    .restriction-name {
+      font-size: $font-size12;
+      font-weight: $font-semibold;
+      color: #6c6c6c;
+      height: 15px;
+    }
+    .restriction-item-value {
+      font-size: $font-size14;
+      font-weight: 400;
+      color: #6c6c6c;
+      height: 18px;
+      margin-bottom: 2px;
+      margin-top: 3px;
+      .value-name {
+        font-size: $font-size14;
+        font-weight: $font-semibold;
+        color: #6c6c6c;
+      }
+    }
+  }
+  .endorsement {
+    margin-top: 12px;
+  }
+}
+}
+.perfomance {
+  display: flex !important;
+  flex-direction: column;
   
+  .common-template-item-name {
+    font-size: $font-size14 !important;
+    font-weight: $font-semibold !important;
+  }
+  .common-template-item-value {
+    font-size: $font-size18 !important;
+    font-weight: $font-semibold !important;
+  }
+}
+.card-pdf {
+  padding: 0 10px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+}
+// Progress bar details
+.card-details-progress-container {
+  .table-progress-cotnainer {
+    display: flex !important;
+    flex-direction: column !important;
+
+    .table-progress {
+      order: 1 !important;
+      width: 100% !important;
+      height: 8px !important;
+    }
+
+    .table-progress-panel {
+      order: -1 !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      color: #6c6c6c !important;
+
+      .progress-text {
+        margin: 2px 0px !important;
+      }
+    }
+  }
 }
 
+.status-container {
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  .status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .status-item {
+      height: 18px;
+      .p-status {
+        font-size: $font-size14;
+        font-weight: 700;
+        color: #919191;
+      }
+    }
+  }
+  .status-items {
+    .item-wrapper {
+      display: grid;
+      grid-template-columns: 113px 149px 66px;
+      grid-column-gap: 40px;
+      .svg-text {
+        display: flex;
+        align-items: baseline;
+        .employment {
+          margin-left: 6px;
+        }
+      }
+      .duration {
+        text-align: right;
+      }
+      p {
+        font-size: 14px;
+        font-weight: 400;
+        color: #6c6c6c;
+      }
+    }
+  }
+}
+.charts-template {
+  display: grid;
+  grid-template-columns: 215px 1fr;
+  grid-row-gap: 12px;
+  row-gap: 12px;
+  margin-bottom: 12px;
+  padding-left: 6px;
+  .charts-item-wrapper {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    margin-left: 4px;
+  }
+  .charts-template-item {
+    display: flex;
+    flex-direction: column;
+
+    .icon-name-item {
+      display: flex;
+      align-items: center;
+      height: 18px;
+      .charts-template-item-name {
+        margin-left: 6px;
+      }
+    }
+    .charts-template-item-name {
+      font-size: $font-size12;
+      font-weight: $font-semibold;
+      color: $color-gray-dark;
+
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+    }
+
+    .charts-template-item-value {
+      font-size: $font-size18;
+      font-weight: $font-semibold;
+      color: $color-gray-dark;
+      width: 220px;
+      height: 18px;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+
+      p {
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+      }
+
+      .hidden-svg-eye {
+        margin-left: 6px;
+        position: relative;
+        bottom: 1px;
+      }
+    }
+  }
+}
+.second-progress {
+  margin-bottom: 16px;
+}

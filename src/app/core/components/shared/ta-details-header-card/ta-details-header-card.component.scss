@@ -13,8 +13,39 @@ $color-white: #ffffff;
 
 $color-gray: #919191;
 $color-gray-dark: #6c6c6c;
-
 $border-radius: 3px;
+
+::ng-deep .input-custom-group {
+    .input-dropdown-arrow {
+        top: 10px !important;
+        svg {
+            display: none !important;
+        }
+    }
+    &:hover {
+        .input-dropdown-arrow {
+            svg {
+                display: block !important;
+            }
+        }
+    }
+
+    .input-control {
+        background-color: transparent !important;
+        font-size: $font-size20 !important;
+        color: #6c6c6c !important;
+        font-weight: $font-bold !important;
+        cursor: pointer;
+        &:hover {
+            background-color: #f3f3f3 !important;
+            color: #3c3c3c !important;
+        }
+        &:focus {
+            background-color: #6c6c6c !important;
+        }
+    }
+}
+
 // GENERAL SWITCHER DRIVER
 .details-header-wrapper {
     background-color: $color-white;
@@ -29,6 +60,12 @@ $border-radius: 3px;
         align-items: center;
         height: 44px;
         width: 440px;
+        .name-icon {
+            display: flex;
+            align-items: center;
+            width: 366px;
+            margin-left: 6px;
+        }
     }
     .details-header-wrapper-switcher-name {
         font-size: $font-size20;
@@ -39,23 +76,17 @@ $border-radius: 3px;
         margin-top: 10px;
         margin-bottom: 10px;
     }
-
 }
 // DRIVER GENERAL PERSONAL DATA
 .details-header-wrapper-container {
-    // display: flex;
-    // justify-content: flex-start;
-    // align-items: flex-start;
-    // flex-direction: column;
-    // height: 182px;
-    
-    
     .details-header-wrapper-data {
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
-        flex-direction: column;
         margin-left: 16px;
+        .date-terminated {
+            margin-left: 130px;
+        }
         .details-header-wrapper-data-item {
             display: flex;
             justify-content: center;
@@ -66,9 +97,13 @@ $border-radius: 3px;
                 margin-left: 6px;
                 font-size: $font-size14;
                 font-weight: 400;
-                P{
+                P {
                     color: #aaaaaa;
+                    &:hover{
+                        color: #3c3c3c !important;
+                    }
                 }
+                
             }
         }
         .second {
@@ -79,8 +114,9 @@ $border-radius: 3px;
             margin-top: 12px;
             margin-bottom: 12px;
             height: 18px;
-            p{
-                font-size: $font-size14 ;
+            align-items: end;
+            p {
+                font-size: $font-size14;
                 font-weight: 400;
                 color: #6c6c6c;
             }
@@ -103,14 +139,47 @@ $border-radius: 3px;
 }
 
 .arrows {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
     .arrow-right {
         margin-bottom: 13px;
         margin-top: 13px;
         margin-right: 13px;
         margin-left: 10px;
+
+        &:hover {
+            background-color: #f3f3f3;
+            height: 28px;
+            width: 28px;
+            border-radius: 2px;
+            text-align: center;
+            margin-top: 8px !important;
+            margin-bottom: 8px !important;
+            margin-left: 5px !important;
+            margin-right: 8px !important;
+            cursor: pointer;
+            svg {
+                vertical-align: bottom !important;
+            }
+        }
     }
-    svg {
-        cursor: pointer;
+    .arrow-left {
+        &:hover {
+            background-color: #f3f3f3;
+            height: 28px;
+            width: 28px;
+            border-radius: 2px;
+            text-align: center;
+            margin-top: 8px !important;
+            margin-left: 4px !important;
+            margin-right: -5.5px;
+            margin-bottom: 8px !important;
+            cursor: pointer;
+            svg {
+                vertical-align: bottom !important;
+            }
+        }
     }
 }
 .border-line {
@@ -118,7 +187,30 @@ $border-radius: 3px;
     height: 2px;
     width: 428px;
     border-radius: 1px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 6px;
+    margin-right: 6px;
     background-color: $color-white-light;
+}
+.dropInput {
+    width: 366px;
+}
+.date-add{
+     svg{
+        &:hover{
+            cursor: pointer;
+          path{
+              fill: #919191;
+          }  
+        }
+    }
+}
+.date-terminated{
+    svg{
+        &:hover{
+            cursor: pointer;
+          path{
+              fill: #919191;
+          }  
+        }
+    }
 }

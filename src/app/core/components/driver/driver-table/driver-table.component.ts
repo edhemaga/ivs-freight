@@ -5,13 +5,13 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 import { DriversQuery } from '../state/driver.query';
-import { DriversState } from '../state/driver.store';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 import { DatePipe } from '@angular/common';
 import { DriverTService } from '../state/driver.service';
 import { catchError, tap } from 'rxjs/operators';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { DriversState } from '../state/driver.store';
 
 @Component({
   selector: 'app-driver-table',

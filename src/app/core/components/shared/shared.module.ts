@@ -72,8 +72,6 @@ import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars
 import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
 import { TaInputService } from './ta-input/ta-input.service';
-import { TaCommonHeaderComponent } from './ta-details-header/ta-details-header.component';
-import { TaReCardComponent } from './ta-common-card/ta-re-card.component';
 import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
 import { DirectivesModule } from '../../directives/directives.module';
@@ -84,12 +82,15 @@ import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.com
 import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component';
 import { ContactModalComponent } from '../modals/contact-modal/contact-modal.component';
 import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
-import { TaDetailsHeaderCardComponent } from './ta-details-header-card/ta-details-header-card.component';
 import { BrokerModalComponent } from '../modals/broker-modal/broker-modal.component';
 import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-radiobuttons.component';
 import { TaLikeDislikeComponent } from './ta-like-dislike/ta-like-dislike.component';
 import { TaUserReviewComponent } from './ta-user-review/ta-user-review.component';
 import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
+import { TaCommonHeaderComponent } from './ta-details-header/ta-details-header.component';
+import { TaDetailsHeaderCardComponent } from './ta-details-header-card/ta-details-header-card.component';
+import { TaReCardComponent } from './ta-common-card/ta-re-card.component';
+import { TruckassistTableModule } from './truckassist-table/truckassist-table.module';
 import { ShipperModalComponent } from '../modals/shipper-modal/shipper-modal.component';
 import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component';
 
@@ -202,7 +203,8 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
     NgxDropzoneModule,
     CroppieModule,
     PdfViewerModule,
-    DirectivesModule
+    DirectivesModule,
+    TruckassistTableModule
   ],
   exports: [
     // Modules

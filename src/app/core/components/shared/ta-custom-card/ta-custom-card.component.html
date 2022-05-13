@@ -1,6 +1,10 @@
 <div class="ta-custom-card">
   <div *ngIf="hasDivider" class="divider"></div>
-  <div class="ta-card-header" (click)="isCardOpenEvent($event)">
+  <div
+    [ngClass]="{ 'has-counter': hasCounter }"
+    class="ta-card-header"
+    (click)="isCardOpenEvent($event)"
+  >
     <div class="header-content">
       <app-ta-counter
         *ngIf="hasCounter"
@@ -20,6 +24,15 @@
         *ngIf="hasHeaderSvg"
         class="header-svg"
         src="{{ hasHeaderSvg }}"
+        [appTooltip]="tooltipName"
+        [position]="'top-middle'"
+        [tooltipBackground]="'#6c6c6c'"
+        [tooltipColor]="'#ffffff'"
+        [zIndex]="900"
+        [borderRadius]="'2px'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+        [customPosition]="-35"
       ></svg-icon>
     </div>
     <div
@@ -38,25 +51,20 @@
         *ngIf="hasArrow"
         class="header-arrow"
         [ngClass]="{ rotate: isCardOpen }"
-        src="assets/svg/common/ic_arrow-down.svg"
+        src="assets/svg/common/ic_arrow_down_updated.svg"
       ></svg-icon>
     </div>
   </div>
-  <div [ngSwitch]="bodyTemplate">
-    <div *ngSwitchCase="'card'">
-      <div class="ta-card-body" [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
-        <ng-content></ng-content>
-      </div>
-    </div>
-    <div *ngSwitchDefault>
-      <div
-        class="ta-card-body"
-        [ngClass]="{ active: isCardOpen, scroll: hasScrollBody }"
-      >
-        <ng-content></ng-content>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="hasDivider" class="divider"></div>
 
+  <!-- BODY -->
+  <div
+    class="{{ animationsDisabled ? 'ta-card-body' : 'ta-card-body-v2' }}"
+    [@.disabled]="animationsDisabled"
+    [ngClass]="{ 'active': isCardOpen, 'scroll': hasScrollBody }"
+  >
+  <div [@showHideCardBody]="isCardOpen? 'true' : 'false'">
+    <ng-content></ng-content>
+  </div>
+    
+  </div>
 </div>

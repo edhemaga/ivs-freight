@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation, HostBinding } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
 
 @Component({
@@ -10,6 +10,9 @@ import { card_modal_animation } from '../animations/card-modal.animation';
 })
 export class TaCustomCardComponent {
 
+  @Input()
+  public animationsDisabled = true;
+
   @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'
   @Input() cardName: string = null;
   @Input() hasCounter: number;
@@ -20,6 +23,7 @@ export class TaCustomCardComponent {
   @Input() hasDivider: boolean = true;
   @Input() hasLikeDislike: boolean = false;
   @Input() hasScrollBody: boolean = false;
+  @Input() tooltipName:string='';
 
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 

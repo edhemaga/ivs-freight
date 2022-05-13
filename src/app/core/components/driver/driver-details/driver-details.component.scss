@@ -1,173 +1,77 @@
-// Constants
-$color-white-light: #f3f3f3;
-$color-white: #ffffff;
-$color-white-dark: #f7f7f7;
+@import "../../../../../assets/scss/details_page_ske.scss";
 
-$color-gray-light: #b7b7b7;
-$color-gray: #919191;
-$color-gray-dark: #6c6c6c;
 
-$color-blue-light: #778fbb;
-$color-blue: #5673aa;
-$settings-blue-dark: #6d82c7;
-$settings-blue-hover: #3551b7;
 
-$font-size12: 12px;
-$font-size14: 14px;
-$font-size18: 18px;
-$font-size20: 20px;
-
-$font-medium: 500;
-$font-semibold: 600;
-$font-bold: 700;
-$font-extrabold: 800;
-
-$border-radius: 3px;
-
-$transition: all 0.3s ease-in-out;
-
-.driver-details {
-  display: grid;
-  grid-template-columns: 352px repeat(4, 260px);
-  -moz-column-gap: 12px;
-  column-gap: 12px;
-
-  p {
-    margin: 0px;
+.note-item {
+  &::-moz-selection {
+    color: $color-gray-dark;
+    background: rgb(183, 183, 183, 0.2);
+  }
+  &::selection {
+    color: $color-gray-dark;
+    background: rgb(183, 183, 183, 0.2);
+  }
+  .note-body {
+    margin-left: 4px;
   }
 }
 
-// Common Class
-.driver-component {
+.common-template {
   display: grid;
-  grid-template-rows: 32px auto;
+  grid-template-columns: 215px 1fr;
+  grid-row-gap: 12px;
   row-gap: 12px;
-
-  // TOOLBAR GENERAL
-  .driver-toolbar-general {
-    display: grid;
-    grid-template-columns: 319px 33px;
+  margin-bottom: 12px;
+  padding-left: 6px;
+  .common-item-wrapper {
+    display: flex;
     align-items: center;
+    height: 40px;
+    margin-left: 4px;
+  }
+  .common-template-item {
+    display: flex;
+    flex-direction: column;
 
-    .driver-toolbar-dropdown {
+    .icon-name-item {
       display: flex;
       align-items: center;
-      position: relative;
-      top: 1px;
-
-      .driver-toolbar-back {
-        margin-right: 6px;
-
-        &:hover {
-          transition: $transition;
-          cursor: pointer;
-          svg {
-            #Rectangle_56525 {
-              fill: $color-gray-dark;
-            }
-          }
-        }
+      height: 18px;
+      .common-template-item-name {
+        margin-left: 6px;
       }
     }
+    .common-template-item-name {
+      font-size: $font-size12;
+      font-weight: $font-semibold;
+      color: $color-gray-dark;
 
-    .driver-toolbar-horizarrow {
-      position: relative;
-      left: 8px;
-
-      &:hover {
-        transition: $transition;
-        cursor: pointer;
-        svg {
-          #Ellipse_43,
-          #Ellipse_47,
-          #Ellipse_48 {
-            fill: $color-gray-dark;
-          }
-        }
-      }
-    }
-  }
-
-  // COMMON TOOLBAR
-  .driver-toolbar {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 224px 32px;
-    -moz-column-gap: 4px;
-    column-gap: 4px;
-
-    .driver-toolbar-name {
-      background-color: $color-white;
-      padding: 6px 12px;
-      width: 100%;
-      height: 32px;
-      border-radius: $border-radius;
-
-      font-size: $font-size14;
-      font-weight: $font-extrabold;
-      color: $color-gray;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    .driver-toolbar-button {
-      width: 32px;
-      height: 32px;
-      background: $color-white;
-      border-radius: 3px;
-      position: relative;
-
-      .driver-toolbar-plus {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        svg {
-          path {
-            fill: $settings-blue-dark;
-          }
-        }
-        &:hover {
-          transform: $transition;
-          cursor: pointer;
-          svg {
-            path {
-              fill: $settings-blue-hover;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // BODY
-  .driver-body {
-    background-color: $color-white;
-    padding: 7px 12px;
-    display: grid;
-    grid-template-rows: 22px auto;
-    row-gap: 12px;
-    border-radius: $border-radius;
-    margin-bottom: 8px;
-
-    p {
-      margin: 0px;
-    }
-
-    .driver-card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .driver-card-name {
+      &::-moz-selection {
         color: $color-gray-dark;
-        font-size: $font-size18;
-        font-weight: $font-medium;
-        position: relative;
-        top: 1px;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+    }
+
+    .common-template-item-value {
+      font-size: $font-size14;
+      font-weight: 400;
+      color: $color-gray-dark;
+      width: 220px;
+      height: 18px;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+
+      p {
         &::-moz-selection {
           color: $color-gray-dark;
           background: rgb(183, 183, 183, 0.2);
@@ -178,340 +82,69 @@ $transition: all 0.3s ease-in-out;
         }
       }
 
-      .driver-card-buttons {
-        display: flex;
-        align-items: center;
+      .hidden-svg-eye {
+        margin-left: 6px;
         position: relative;
-        left: 5px;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-
-        .driver-card-attachments,
-        .driver-card-note,
-        .driver-card-dots {
-          &:hover {
-            cursor: pointer;
-
-            svg {
-              #Path_35717,
-              #Path_31272,
-              #Path_31273,
-              #Path_31274,
-              #Path_26379 {
-                fill: $color-gray;
-              }
-            }
-          }
-        }
-
-        .driver-card-note {
-          margin: 0px 8px;
-          margin-right: 3px;
-        }
+        bottom: 1px;
       }
     }
-
-    .driver-card-bottom {
-      display: flex;
-      flex-direction: column;
-
-      // State, Class, Issued
-      .driver-row-1 {
-        display: grid;
-        grid-template-columns: 51px 73px 112px;
-      }
-
-      // Restrictions & Endorsments
-      .driver-row-2 {
-        display: grid;
-        grid-template-columns: 124px 112px;
-        margin: 8px 0px;
-      }
-
-      // Expiration
-      .driver-row-3 {
-        margin-bottom: 8px;
-      }
-
-      // PDF - small
-      .driver-row-4 {
-        height: 150px;
-        width: 100%;
-      }
-
-      // Note
-      .driver-row-5 {
-        margin-top: 8px;
-      }
-
-      // Drug Test
-      .driver-row-6 {
-        display: grid;
-        grid-template-columns: 164px 72px;
-      }
-
-      // PDF - big
-      .driver-row-7 {
-        height: 236px;
-        width: 100%;
-        margin: 22px 0px;
-      }
-
-      .driver-item {
-        display: flex;
-        flex-direction: column;
-
-        .driver-item-name {
-          font-size: $font-size12;
-          font-weight: $font-semibold;
-          color: $color-gray-dark;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-        }
-
-        .driver-item-value {
-          color: $color-gray-dark;
-          font-size: $font-size14;
-
-          &::-moz-selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
-
-          &::selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
-
-          // FOR RESTRICTIONS AND ENDORSMENTS
-          .first-character {
-            font-weight: $font-semibold;
-
-            &::-moz-selection {
-              color: $color-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
-            }
-
-            &::selection {
-              color: $color-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
-            }
-          }
-
-          &.none {
-            color: $color-gray-light;
-          }
-
-          &.break-word {
-            white-space: pre-wrap;
-          }
-
-          textarea {
-            font-size: $font-size14 !important;
-            &::-webkit-input-placeholder {
-              color: $color-gray-light !important;
-            }
-            &::-moz-placeholder {
-              color: $color-gray-light !important;
-            }
-            &:-ms-input-placeholder {
-              color: $color-gray-light !important;
-            }
-            &::-ms-input-placeholder {
-              color: $color-gray-light !important;
-            }
-            &::placeholder {
-              color: $color-gray-light !important;
-            }
-            &::-moz-selection {
-              color: $color-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-              color: $color-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
-            }
-          }
-        }
-
-        &.item-row-expanded {
-          grid-column: 1 / -1;
-
-          &:nth-child(2) {
-            margin-top: 8px;
-          }
-        }
-      }
-    }
-
-    // GENERAL SWITCHER DRIVER
-    .driver-switcher {
-      display: grid;
-      grid-template-columns: 18px 1fr 18px;
-      align-items: center;
-
-      .driver-switcher-name {
-        font-size: $font-size20;
-        font-weight: $font-bold;
-        color: $color-gray-dark;
-        position: relative;
-      }
-
-      .driver-switcher-larrow,
-      .driver-switcher-rarrow {
-        &:hover {
-          transition: $transition;
-          cursor: pointer;
-          svg {
-            #chevron-down {
-              fill: $color-gray-dark;
-            }
-          }
-        }
-      }
-
-      .driver-switcher-larrow {
-        position: relative;
-        right: 13px;
-        top: 1px;
-        transform: rotate(180deg);
-      }
-
-      .driver-switcher-rarrow {
-        position: relative;
-        left: 13px;
-        bottom: 3px;
-      }
-    }
-
-    // DRIVER GENERAL PERSONAL DATA
-    .driver-personal {
-      display: grid;
-      grid-template-columns: 80px 239px;
-      -moz-column-gap: 12px;
-      column-gap: 12px;
-      margin-top: 10px;
-
-      .driver-avatar {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-
-        .driver-avatar-svg {
-          height: 96px;
-          width: 80px;
-          border-radius: 2px;
-          -o-object-fit: fill;
-          object-fit: fill;
-          user-select: none;
-        }
-
-        .driver-avatar-owner {
-          position: absolute;
-          right: -8px;
-          bottom: 2px;
-        }
-      }
-
-      .driver-information {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        bottom: 3px;
-
-        // Ovveride email information-item
-        .information-item-email {
-          margin: 7px 0px;
-        }
-
-        .information-item {
-          display: flex;
-          align-items: center;
-
-          p {
-            font-size: 14px;
-            &::-moz-selection {
-              color: $color-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-              color: $color-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
-            }
-          }
-
-          .information-svg {
-            margin-right: 6px;
-          }
-
-          .information-email-value {
-            text-overflow: ellipsis;
-            overflow: hidden;
-            width: 220px;
-            white-space: nowrap;
-          }
-
-          .information-address-svg {
-            position: relative;
-            bottom: 11px;
-            left: 2px;
-            margin-right: 10px;
-          }
-        }
-      }
-    }
-
-    .show-details {
-      font-size: $font-size12;
-      font-weight: $font-bold;
-      color: $color-blue-light;
-      text-decoration: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-
-      &:hover {
-        transition: $transition;
-        cursor: pointer;
-        text-decoration: underline;
-        color: $color-blue;
-      }
-    }
-  }
-
-  .driver-cards {
-    border-radius: 3px;
-    overflow: hidden;
-    padding: 8px 12px;
-    background-color: $color-white;
   }
 }
 
-// Progress bar details
-.driver-details-progress-container {
-  .table-progress-cotnainer {
-    display: flex !important;
-    flex-direction: column !important;
 
-    .table-progress {
-      order: 1 !important;
-      width: 100% !important;
-      height: 8px !important;
+.carousel-buttons-control {
+  &.prev {
+    left: -2px !important;
+  }
+
+  &.next {
+    right: -2px !important;
+  }
+}
+.additional-container {
+  padding: 0 10px;
+  display: grid;
+  column-gap: 12px;
+  row-gap: 12px;
+  .addres-wrapper {
+    .address-icon {
+      display: none;
+      position: relative;
+      margin-left: 6px;
+      bottom: 4px;
+      height: 18px;
+      svg {
+        fill: #aaaaaa;
+        &:hover {
+          path {
+            fill: #6c6c6c;
+          }
+        }
+      }
+    }
+    .addres-name {
+      font-size: $font-size12;
+      font-weight: $font-semibold;
+      color: #6c6c6c;
+    }
+    .addres-value {
+      font-size: $font-size14;
+      font-weight: 400;
+      color: #6c6c6c;
+      white-space: nowrap;
     }
 
-    .table-progress-panel {
-      order: -1 !important;
-      display: flex !important;
-      justify-content: space-between !important;
-      color: #6c6c6c !important;
-
-      .progress-text {
-        margin: 2px 0px !important;
+    .addres-value-icon {
+      display: flex;
+      align-items: flex-start;
+      &:hover {
+        cursor: pointer;
+        .address-icon {
+          display: block;
+        }
+        .addres-value {
+          color: #3c3c3c;
+        }
       }
     }
   }
