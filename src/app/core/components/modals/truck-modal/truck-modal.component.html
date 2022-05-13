@@ -138,10 +138,10 @@
           </div>
           <div
             class="checkbox-card-body"
-            [ngClass]="{'active-20': truckForm.get('companyOwned').value}"
+            [ngClass]="{'active-20': !truckForm.get('companyOwned').value}"
           >
             <div
-              *ngIf="truckForm.get('companyOwned').value"
+              *ngIf="!truckForm.get('companyOwned').value"
               class="animation-checkbox-card-tabs-truckModal"
             >
               <div class="row">

@@ -497,9 +497,12 @@
   grid-template-columns: 1fr 214px 194px;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  row-gap: 26px;
   align-items: center;
   padding-left: 6px;
+
+  &.row-gap {
+    row-gap: 26px;
+  }
 
   .broker-billing-field {
     height: 26px;

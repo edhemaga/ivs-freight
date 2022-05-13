@@ -114,7 +114,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 4,
+        id: 5,
       };
       this.editBrokerById(this.editData.id);
       this.tabs.push({
@@ -128,7 +128,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     this.brokerForm = this.formBuilder.group({
       businessName: [null, Validators.required],
       dbaName: [null],
-      mcFFNumber: [null, Validators.maxLength(8)],
+      mcNumber: [null, Validators.maxLength(8)],
       ein: [null, [Validators.pattern(/^\d{2}\-\d{7}$/)]],
       email: [
         null,
@@ -386,7 +386,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       isCredit,
       isCheckedBillingAddress,
       brokerContacts,
-      mcFFNumber,
+      mcNumber,
       ...form
     } = this.brokerForm.value;
     let newData: CreateBrokerCommand = {
@@ -447,7 +447,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       },
       isCheckedBillingAddress: isCheckedBillingAddress,
       isCredit: isCredit,
-      mcNumber: mcFFNumber,
+      mcNumber: mcNumber,
     };
     for (let index = 0; index < brokerContacts.length; index++) {
       brokerContacts[index].departmentId =
@@ -486,7 +486,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       isCredit,
       isCheckedBillingAddress,
       brokerContacts,
-      mcFFNumber,
+      mcNumber,
       ...form
     } = this.brokerForm.value;
 
@@ -548,7 +548,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         poBox: billingPoBox,
       },
       isCheckedBillingAddress: isCheckedBillingAddress,
-      mcNumber: mcFFNumber,
+      mcNumber: mcNumber,
     };
 
     for (let index = 0; index < brokerContacts.length; index++) {
@@ -600,28 +600,29 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (reasponse: BrokerResponse) => {
+          console.log(reasponse)
           this.brokerForm.patchValue({
             businessName: reasponse.businessName,
             dbaName: reasponse.dbaName,
-            mcFFNumber: reasponse.mcNumber,
+            mcNumber: reasponse.mcNumber,
             ein: reasponse.ein,
             email: reasponse.email,
             phone: reasponse.phone,
             // Physical Address
-            physicalAddress: reasponse.mainAddress.address,
-            physicalAddressUnit: reasponse.mainAddress.addressUnit,
-            physicalPoBox: reasponse.mainPoBox.poBox,
-            physicalPoBoxCity: reasponse.mainPoBox.city,
+            physicalAddress: reasponse.mainAddress ? reasponse.mainAddress.address : null,
+            physicalAddressUnit: reasponse.mainAddress ? reasponse.mainAddress.addressUnit : null,
+            physicalPoBox: reasponse.mainPoBox ? reasponse.mainPoBox.poBox : null,
+            physicalPoBoxCity: reasponse.mainPoBox ? reasponse.mainPoBox.city : null,
             // Billing Address
             isCheckedBillingAddress:
               reasponse.mainAddress.address ===
               reasponse.billingAddress.address,
-            billingAddress: reasponse.billingAddress.address,
-            billingAddressUnit: reasponse.billingAddress.addressUnit,
-            billingPoBox: reasponse.billingPoBox.poBox,
-            billingPoBoxCity: reasponse.billingPoBox.city,
+            billingAddress: reasponse.billingAddress ? reasponse.billingAddress.address : null,
+            billingAddressUnit: reasponse.billingAddress ? reasponse.billingAddress.addressUnit : null,
+            billingPoBox: reasponse.billingPoBox ? reasponse.billingPoBox.poBox : null,
+            billingPoBoxCity: reasponse.billingPoBox ? reasponse.billingPoBox.city : null,
             creditType: reasponse.creditType,
-            creditLimit: reasponse.creditType === 'Enable' ? 5 : null, // TODO: BACK
+            creditLimit: reasponse.creditType === 'Enable' ? 200000 : null,
             availableCredit: reasponse.availableCredit,
             payTerm:
               reasponse.creditType === 'Enable' ? reasponse.payTerm : null,
@@ -630,6 +631,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             dnu: reasponse.dnu,
             brokerContacts: [],
           });
+
+          this.selectedPhysicalAddress = reasponse.mainAddress ? reasponse.mainAddress : null;
+          this.selectedPhysicalPoBox = reasponse.mainPoBox ? reasponse.mainPoBox : null;
+          this.selectedBillingAddress = reasponse.billingAddress ? reasponse.billingAddress : null;
+          this.selectedBillingPoBox = reasponse.billingPoBox ? reasponse.billingPoBox : null;
+          this.selectedPayTerm = reasponse.creditType === 'Enable' ? reasponse.payTerm : null;
 
           if (reasponse.brokerContacts) {
             for (const contact of reasponse.brokerContacts) {
@@ -654,14 +661,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             },
           }));
 
-          this.selectedPhysicalAddress = reasponse.mainAddress;
-          this.selectedPhysicalPoBox = reasponse.mainPoBox;
-          this.selectedBillingAddress = reasponse.billingAddress;
-          this.selectedBillingPoBox = reasponse.billingPoBox;
-          this.selectedPayTerm = null;
+          
 
           if (reasponse.creditType === 'Enable') {
             this.billingCredit[0].checked = true;
+            this.billingCredit[1].checked = false;
             this.isCredit(this.billingCredit);
           } else {
             this.billingCredit[0].checked = false;

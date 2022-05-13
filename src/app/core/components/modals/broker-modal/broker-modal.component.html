@@ -60,7 +60,7 @@
           </div>
           <div class="col-3">
             <app-ta-input
-              formControlName="mcFFNumber"
+              formControlName="mcNumber"
               [inputConfig]="{
                 name: 'MC FF',
                 type: 'text',
@@ -282,7 +282,15 @@
           </div>
         </div>
         <app-ta-custom-card [cardName]="'Billing'" [isCardOpen]="true">
-          <div class="broker-billing row-margintop12 last-row">
+          <div
+            class="broker-billing row-margintop20 last-row"
+            [ngClass]="{
+              'row-gap':
+                this.brokerForm.get('creditType').value === 'Enable' &&
+                brokerForm.get('creditLimit').value &&
+                brokerForm.get('availableCredit').value
+            }"
+          >
             <div class="broker-billing-field credit">
               <p>Credit</p>
               <app-ta-input-radiobuttons
@@ -297,22 +305,25 @@
                   name: 'Credit Limit',
                   type: 'text',
                   label: 'Credit Limit',
-                  isRequired: this.brokerForm.get('creditType').value === 'Enable',
-                  isDisabled: this.brokerForm.get('creditType').value !== 'Enable',
+                  isRequired:
+                    this.brokerForm.get('creditType').value === 'Enable',
+                  isDisabled:
+                    this.brokerForm.get('creditType').value !== 'Enable',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   mask: 'separator.2'
                 }"
               ></app-ta-input>
             </div>
-            <div class="borker-billing-field">
+            <div class="broker-billing-field">
               <app-ta-input-dropdown
                 formControlName="payTerm"
                 [inputConfig]="{
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay term',
-                  isDisabled: this.brokerForm.get('creditType').value !== 'Enable',
+                  isDisabled:
+                    this.brokerForm.get('creditType').value !== 'Enable',
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-broker-payterm'
                 }"
@@ -320,12 +331,27 @@
                 (selectedItem)="onSelectPayType($event)"
               ></app-ta-input-dropdown>
             </div>
-            <div style="grid-column: 1 / -1">
-              Available Credit Custom Component !
+            <div
+              *ngIf="
+                this.brokerForm.get('creditType').value === 'Enable' &&
+                brokerForm.get('creditLimit').value &&
+                brokerForm.get('availableCredit').value
+              "
+              class="broker-billing-field"
+              style="grid-column: 1 / -1"
+            >
+              <app-ta-currency-progress-bar
+                [totalAmount]="brokerForm.get('creditLimit').value"
+                [paidSoFarAmount]="brokerForm.get('availableCredit').value"
+                [progressBarName]="'Available Credit'"
+              ></app-ta-currency-progress-bar>
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-input-note formControlName="note" [isVisibleNote]="brokerForm.get('note').value"></app-ta-input-note>
+        <app-ta-input-note
+          formControlName="note"
+          [isVisibleNote]="brokerForm.get('note').value"
+        ></app-ta-input-note>
       </div>
       <!-------------------------------- Contact Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
@@ -403,8 +429,12 @@
                 <svg-icon
                   class="brokerContacts-delete"
                   [ngClass]="{
-                    'new-position': isContactCardsScrolling && brokerContact.get('email').value, 
-                    'new-position-without-email': isContactCardsScrolling && !brokerContact.get('email').value
+                    'new-position':
+                      isContactCardsScrolling &&
+                      brokerContact.get('email').value,
+                    'new-position-without-email':
+                      isContactCardsScrolling &&
+                      !brokerContact.get('email').value
                   }"
                   src="assets/svg/common/ic_trash.svg"
                   (click)="removeBrokerContacts(ind)"

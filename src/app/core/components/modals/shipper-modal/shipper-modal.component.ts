@@ -365,7 +365,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
               this.shipperContacts.push(
                 this.formBuilder.group({
                   fullName: contact.fullName,
-                  departmentId: contact.department.name,
+                  departmentId: contact.department ? contact.department.name : null,
                   phone: contact.phone,
                   phoneExt: contact.phoneExt,
                   email: contact.email,

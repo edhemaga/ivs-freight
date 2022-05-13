@@ -87,6 +87,7 @@ import { TaUserReviewComponent } from './ta-user-review/ta-user-review.component
 import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
 import { ShipperModalComponent } from '../modals/shipper-modal/shipper-modal.component';
 import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component';
+import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-currency-progress-bar.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
     TaInputRadiobuttonsComponent,
     TaLikeDislikeComponent,
     TaUserReviewComponent,
+    TaCurrencyProgressBarComponent,
 
     // Modals Components
     TaModalComponent,
@@ -242,6 +244,7 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
     TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
     TaUserReviewComponent,
+   
 
     TaCheckboxComponent,
     TaInputAddressComponent,
@@ -254,6 +257,7 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
     TaNgxSliderComponent,
     TaLogoChangeComponent,
     TaLikeDislikeComponent,
+    TaCurrencyProgressBarComponent,
 
     // Modals Components
     TaModalComponent,
