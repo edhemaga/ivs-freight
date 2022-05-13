@@ -626,9 +626,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   imagee: any;
   public onUploadImage(event: any) {
-    if (!localStorage.getItem('image')) {
-      localStorage.setItem('image', JSON.stringify(event));
-    }
+    localStorage.setItem('image', JSON.stringify(event));
   }
 
   ngOnDestroy(): void {}

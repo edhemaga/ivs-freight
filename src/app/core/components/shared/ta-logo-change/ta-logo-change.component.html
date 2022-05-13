@@ -1,9 +1,9 @@
 <div
   class="ta-logo-container"
-  [ngClass]="{ expanded: !showUploadZone && !savedFile }"
+  [ngClass]="{ expanded: !showUploadZone && !savedFile && !imageUrl }"
 >
   <!------------------------ Croppie editing ------------------------>
-  <div [hidden]="showUploadZone || savedFile" class="d-fex">
+  <div [hidden]="showUploadZone || savedFile || imageUrl" class="d-fex">
     <div class="d-flex">
       <img
         alt="cropped-image"
@@ -68,12 +68,12 @@
     ngx-dropzone
     [accept]="'image/gif, image/jpeg, image/png'"
     [multiple]="false"
-    [hidden]="!showUploadZone || savedFile"
+    [hidden]="!showUploadZone || savedFile || imageUrl"
     (change)="onSelect($event)"
   ></div>
 
   <!------------------------ Saved File ------------------------>
-  <div class="ta-logo-saved-image" *ngIf="savedFile">
+  <div class="ta-logo-saved-image" *ngIf="savedFile || imageUrl">
     <div
       class="delete-logo-saved-image"
       [appTooltip]="'Delete'"
@@ -93,6 +93,6 @@
         src="assets/svg/common/ic_trash.svg"
       ></svg-icon>
     </div>
-    <img [src]="savedFile" alt="croppie image" class="ta-logo-image" />
+    <img [src]="savedFile || imageUrl" alt="croppie image" class="ta-logo-image" />
   </div>
 </div>
