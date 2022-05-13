@@ -117,8 +117,20 @@
         .icon-counter {
             display: flex;
             align-items: baseline;
+           .note-icon{
+            svg{
+                path{
+                    fill: #cccccc;
+                }
+            }
+           }
             .attachment-icon {
                 margin-left: 12px;
+                svg{
+                    path{
+                        fill: #cccccc;
+                    }
+                }
             }
             .card-document-counter {
                 font-size: 11px;
@@ -196,4 +208,11 @@ p {
   }
   .rezise-icon{
       height: 18px;
+  }
+  .resize-icon-svg{
+      svg{
+          path{
+              fill: #aaaaaa;
+          }
+      }
   }
