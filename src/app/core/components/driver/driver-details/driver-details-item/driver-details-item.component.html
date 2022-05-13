@@ -7,7 +7,7 @@
         [tooltipPrevious]="'Previous Driver'"
         [searchName]="'Search Driver'"
         [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
-        [cardDetailsName]="currentDriverName"
+        [cardDetailsName]="arrayDriverName.name"
         [cardDetailsDate]="'08/03/20'"
         (nextValue)="nextDriver()"
         (previousValue)="previousDriver()"
@@ -269,7 +269,7 @@
 
         <!-- Employment history-->
         <app-ta-custom-card
-          [cardName]="'Employment history'"
+          [cardName]="'Employment History'"
           [isCardOpen]="false"
           class="item-cards"
           [bodyTemplate]="'card'"

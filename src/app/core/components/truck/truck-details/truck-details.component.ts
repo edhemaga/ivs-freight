@@ -15,6 +15,7 @@ export class TruckDetailsComponent implements OnInit {
   // @Input() data:any=null;
   public truckDetailsConfig: any[] = [];
   private destroy$: Subject<void> = new Subject<void>();
+  public dataTest:any;
   constructor(
     private truckQuery: TruckQuery,
     private truckTService:TruckTService,
@@ -22,6 +23,7 @@ export class TruckDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initTableOptions();
     this.truckDetailsConfig = [
       {
         id: 0,
@@ -56,7 +58,59 @@ export class TruckDetailsComponent implements OnInit {
   public identity(index: number, item: any): number {
     return item.id;
   }
+  
+  public initTableOptions(): void {
+    this.dataTest = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Send Message',
+          name: 'dm',
+          class: 'regular-text',
+          contentType: 'dm',
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          class: 'regular-text',
+          contentType: 'print',
+        },
+        {
+          title: 'Deactivate',
+          name: 'deactivate',
+          class: 'regular-text',
+          contentType: 'deactivate',
+        },
+        {
+          title: 'Edit',
+          name: 'edit',
+          class: 'regular-text',
+          contentType: 'edit',
+        },
 
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
+        },
+      ],
+      export: true,
+    };
+  }
+  
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

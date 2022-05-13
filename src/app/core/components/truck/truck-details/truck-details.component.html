@@ -1,6 +1,7 @@
 <div class="details-container-items">
   <div *ngFor="let item of truckDetailsConfig">
     <app-ta-details-header
+      [options]="dataTest"
       [route]="'/truck'"
       [tooltipHeaderName]="'Back to Truck List'"
       [headerText]="item.name"
