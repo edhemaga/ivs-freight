@@ -33,7 +33,6 @@ import moment from 'moment';
     tab_modal_animation('animationTabsModal'),
     card_modal_animation('showHidePayroll', '6px'),
   ],
-  encapsulation: ViewEncapsulation.None,
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -53,6 +52,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public selectedPayType: any = null;
 
   public driverFullName: string = null;
+
+  public logoOptions: Options = {
+    floor: 0.1,
+    ceil: 1.5,
+    step: 0.1,
+    animate: false,
+    showSelectionBar: true,
+    hideLimitLabels: true,
+  };
+  public slideInit = 0.5;
 
   public tabs: any[] = [
     {
@@ -85,7 +94,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     hideLimitLabels: true,
   };
 
-  public animationObject = {value: this.selectedTab, params: {height: "0px"}}
+  public animationObject = {
+    value: this.selectedTab,
+    params: { height: '0px' },
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -110,7 +122,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onModalAction(data: {action: string, bool: boolean}): void {
+  public onModalAction(data: { action: string; bool: boolean }): void {
     if (data.action === 'close') {
       this.driverForm.reset();
     } else {
@@ -320,7 +332,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onHandleAddressFormArray(event: any, index: number) {
     const address: Address = event;
-    console.log(address);
+
     this.offDutyLocations.at(index).patchValue({
       address: address.address,
       city: address.city,
@@ -336,8 +348,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-    let dotAnimation = document.querySelector(".animation-three-tabs");
-    this.animationObject = {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
+    let dotAnimation = document.querySelector('.animation-three-tabs');
+    this.animationObject = {
+      value: this.selectedTab,
+      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+    };
+
+    if (this.selectedTab === 3) {
+      this.imagee = JSON.parse(localStorage.getItem('image'));
+    }
   }
 
   public tabOwnerChange(event: any[]): void {
@@ -347,7 +366,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       this.driverForm.get('isOwner').value &&
       this.selectedOwnerTab?.name.toLowerCase() === 'company'
     ) {
-      this.inputService.changeValidators(this.driverForm.get('ein'), true, [Validators.pattern(/^\d{2}\-\d{7}$/)]);
+      this.inputService.changeValidators(this.driverForm.get('ein'), true, [
+        Validators.pattern(/^\d{2}\-\d{7}$/),
+      ]);
     } else {
       this.inputService.changeValidators(this.driverForm.get('ein'), false);
     }
@@ -395,13 +416,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       dateOfBirth: new Date(
         this.driverForm.get('dateOfBirth').value
       ).toISOString(),
-      ownerId: this.driverForm.get('ownerType').value === 'Sole Proprietor' ? null : 1, // TODO: BACKEND TREBA DA DOSTAVI
-      city: this.selectedAddress.city,
-      state: this.selectedAddress.state,
-      address: this.selectedAddress.address,
-      country: this.selectedAddress.country,
-      zipCode: this.selectedAddress.zipCode,
-      stateShortName: this.selectedAddress.stateShortName,
+      ownerId:
+        this.driverForm.get('ownerType').value === 'Sole Proprietor' ? null : 1, // TODO: BACKEND TREBA DA DOSTAVI
+      city: this.selectedAddress ? this.selectedAddress.city : null,
+      state: this.selectedAddress ? this.selectedAddress.state : null,
+      address: this.selectedAddress ? this.selectedAddress.address : null,
+      country: this.selectedAddress ? this.selectedAddress.country : null,
+      zipCode: this.selectedAddress ? this.selectedAddress.zipCode : null,
+      stateShortName: this.selectedAddress
+        ? this.selectedAddress.stateShortName
+        : null,
       bankId: this.selectedBank ? this.selectedBank.id : null,
       payType: this.selectedPayType ? this.selectedPayType.value : null,
       solo: {
@@ -420,7 +444,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.driverForm.get('twicExpDate').value
       ).toISOString(),
     };
-    console.log(newData);
+
     this.driverModalService
       .addDriver(newData)
       .pipe(untilDestroyed(this))
@@ -453,12 +477,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.driverForm.get('dateOfBirth').value
       ).toISOString(),
       ownerId: 1, // TODO: BACKEND TREBA DA DOSTAVI
-      city: this.selectedAddress.city,
-      state: this.selectedAddress.state,
-      address: this.selectedAddress.address,
-      country: this.selectedAddress.country,
-      zipCode: this.selectedAddress.zipCode,
-      stateShortName: this.selectedAddress.stateShortName,
+      city: this.selectedAddress ? this.selectedAddress.city : null,
+      state: this.selectedAddress ? this.selectedAddress.state : null,
+      address: this.selectedAddress ? this.selectedAddress.address : null,
+      country: this.selectedAddress ? this.selectedAddress.country : null,
+      zipCode: this.selectedAddress ? this.selectedAddress.zipCode : null,
+      stateShortName: this.selectedAddress
+        ? this.selectedAddress.stateShortName
+        : null,
       bankId: this.selectedBank ? this.selectedBank.id : null,
       payType: this.selectedPayType ? this.selectedPayType.value : null,
       solo: {
@@ -476,9 +502,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       twicExpDate: new Date(
         this.driverForm.get('twicExpDate').value
       ).toISOString(),
-      offDutyLocations: []
+      offDutyLocations: [],
     };
-    console.log(newData)
+
     this.driverModalService
       .updateDriver(newData)
       .pipe(untilDestroyed(this))
@@ -510,11 +536,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             offDutyLocations: [],
             isOwner: true,
             ownerId: 1,
-            ownerType: "Company",
-            ein: "77-777777",
+            ownerType: 'Company',
+            ein: '77-777777',
             bussinesName: null,
-            address: res.address.address,
-            addressUnit: res.address.addressUnit,
+            address: res.address ? res.address.address : null,
+            addressUnit: res.address ? res.address.addressUnit : null,
             bankId: res.bank ? res.bank.name : null,
             account: res.account,
             routing: res.routing,
@@ -523,12 +549,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             mailNotification: res.mailNotification,
             phoneCallNotification: res.phoneCallNotification,
             smsNotification: res.smsNotification,
-            soloEmptyMile: res.solo.emptyMile,
-            soloLoadedMile: res.solo.loadedMile,
-            soloPerStop: res.solo.perStop,
-            teamEmptyMile: res.team.emptyMile,
-            teamLoadedMile: res.team.loadedMile,
-            teamPerStop: res.team.perStop,
+            soloEmptyMile: res.solo ? res.solo.emptyMile : null,
+            soloLoadedMile: res.solo ? res.solo.loadedMile : null,
+            soloPerStop: res.solo ? res.solo.perStop : null,
+            teamEmptyMile: res.team ? res.team.emptyMile : null,
+            teamLoadedMile: res.team ? res.team.loadedMile : null,
+            teamPerStop: res.team ? res.team.perStop : null,
             commissionSolo: res.commissionSolo,
             commissionTeam: res.commissionTeam,
             twic: res.twic,
@@ -566,7 +592,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               );
             }
           }
-          console.log(res)
         },
         error: () => {
           this.notificationService.error("Driver can't be loaded.", 'Error:');
@@ -597,6 +622,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onSelectPayType(event: any): void {
     this.selectedPayType = event;
+  }
+
+  imagee: any;
+  public onUploadImage(event: any) {
+    if (!localStorage.getItem('image')) {
+      localStorage.setItem('image', JSON.stringify(event));
+    }
   }
 
   ngOnDestroy(): void {}

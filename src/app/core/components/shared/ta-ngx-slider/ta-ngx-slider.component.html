@@ -1,6 +1,6 @@
 <div [ngSwitch]="sliderTemplate">
   <div *ngSwitchCase="'commission'">
-    <div class="custom-slider-commission {{ customClass }}">
+    <div class=" ta-ngx-slider custom-slider-commission {{ customClass }}">
       <p class="custom-slider-text">{{ sliderName }}</p>
       <ngx-slider
         [options]="sliderOptions"
@@ -10,7 +10,7 @@
     </div>
   </div>
   <div *ngSwitchCase="'logo-change'">
-    <div class="custom-slider-logo-change">
+    <div class="ta-ngx-slider custom-slider-logo-change">
       <ngx-slider
         [options]="sliderOptions"
         [(value)]="startedValue"
