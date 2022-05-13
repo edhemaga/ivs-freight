@@ -83,7 +83,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 5,
+        id: 1,
       };
       this.editTrailerById(this.editData.id);
     }
@@ -208,9 +208,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
        trailerLengthId: this.selectedTrailerLength.id,
        ownerId: this.trailerForm.get('companyOwned').value ? null : this.selectedOwner.id,
        axles: this.trailerForm.get('axles').value ? parseInt(this.trailerForm.get('axles').value) : null,
-       tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
-
        suspension: this.selectedSuspension ? this.selectedSuspension.value : null,
+       tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
        doorType: this.selectedDoorType ? this.selectedDoorType.value : null,
        reeferUnit: this.selectedReeferType ? this.selectedReeferType.value : null,
        emptyWeight: this.trailerForm.get('emptyWeight').value
@@ -271,7 +270,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       ownerId: this.trailerForm.get('companyOwned').value ? null : this.selectedOwner.id,
       axles: this.trailerForm.get('axles').value ? parseInt(this.trailerForm.get('axles').value) : null,
       tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
-
       suspension: this.selectedSuspension ? this.selectedSuspension.value : null,
       doorType: this.selectedDoorType ? this.selectedDoorType.value : null,
       reeferUnit: this.selectedReeferType ? this.selectedReeferType.value : null,
@@ -312,37 +310,38 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: TrailerResponse) => {
+          console.log(res)
           this.trailerForm.patchValue({
             companyOwned: res.companyOwned,
             trailerNumber: res.trailerNumber,
-            trailerTypeId: res.trailerType.name,
+            trailerTypeId: res.trailerType ? res.trailerType.name : null,
             vin: res.vin,
-            trailerMakeId: res.trailerMake.name,
+            trailerMakeId: res.trailerMake ? res.trailerMake.name : null,
             model: res.model,
-            colorId: res.color.name,
+            colorId: res.color ? res.color.name : null,
             year: res.year,
-            trailerLengthId: res.trailerLength.name,
-            ownerId: res.owner.name,
+            trailerLengthId: res.trailerLength ? res.trailerLength.name : null,
+            ownerId: res.owner ? res.owner.name : null,
             note: res.note,
             axles: res.axles,
-            suspension: res.suspension.name,
-            tireSizeId: res.tireSize.name,
-            doorType: res.doorType.name,
-            reeferUnit: res.reeferUnit.name,
+            suspension: res.suspension ? res.suspension.name : null,
+            tireSizeId: res.tireSize ? res.tireSize.name : null,
+            doorType: res.doorType ? res.doorType.name : null,
+            reeferUnit: res.reeferUnit ? res.reeferUnit.name : null,
             emptyWeight: res.emptyWeight,
             mileage: res.mileage,
             volume: res.volume,
             insurancePolicy: res.insurancePolicy,
           });
-          this.selectedTrailerType = res.trailerType;
-          this.selectedTrailerMake = res.trailerMake;
-          this.selectedColor = res.color;
-          this.selectedTrailerLength = res.trailerLength;
-          this.selectedOwner = res.owner;
-          this.selectedSuspension = res.suspension;
-          this.selectedTireSize = res.tireSize;
-          this.selectedDoorType = res.doorType;
-          this.selectedReeferType = res.reeferUnit;
+          this.selectedTrailerType = res.trailerType.name ? res.trailerType : null;
+          this.selectedTrailerMake = res.trailerMake.name ? res.trailerMake : null;
+          this.selectedColor = res.color.name ? res.color : null;
+          this.selectedTrailerLength = res.trailerLength.name ? res.trailerLength : null;
+          this.selectedOwner = res.owner.name ? res.owner : null;
+          this.selectedSuspension = res.suspension.name ? res.suspension : null;
+          this.selectedTireSize = res.tireSize.name ? res.tireSize : null;
+          this.selectedDoorType = res.doorType.name ? res.doorType : null;
+          this.selectedReeferType = res.reeferUnit.name ? res.reeferUnit : null;
         },
         error: (err) => {
           this.notificationService.error("Cant't get trailer.", 'Error:');
