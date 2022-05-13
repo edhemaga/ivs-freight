@@ -84,6 +84,10 @@
     }
   }
 
+  &.has-input-icon {
+    padding-left: 37px;
+  }
+
   &.dropdown-add-mode {
     background-color: #6c6c6c !important;
     color: #ffffff;
@@ -145,16 +149,16 @@
     }
   }
 
-  &:focus ~ .input-icon, &.focused ~ .input-icon {
-    transition: all 0.3s ease-in-out;
-    svg {
-      path {
-        fill: #b7b7b7;
-      }
-    }
-  }
+  // &:focus ~ .input-icon, &.focused ~ .input-icon {
+  //   transition: all 0.3s ease-in-out;
+  //   svg {
+  //     path {
+  //       fill: #b7b7b7;
+  //     }
+  //   }
+  // }
 
-  // Custom class
+  //------------------------- Custom class -------------------------
   &.input-big {
     height: 32px;
   }

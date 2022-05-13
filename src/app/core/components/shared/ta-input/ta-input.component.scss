@@ -3,20 +3,34 @@
   position: relative;
 
   //--------------- Classes on all INPUT ELEMENTS ---------------
-  &:hover {
-    .input-icon {
-      transition: all 0.3s ease-in-out;
-      svg {
-        path {
-          fill: #aaaaaa;
+  &.hover-out-of-focus {
+    &:hover {
+      .input-icon {
+        transition: all 0.3s ease-in-out;
+        svg {
+          path {
+            fill: #aaaaaa;
+          }
+        }
+
+        &:hover ~ .input-label {
+          transition: all 0.3s ease-in-out;
+          color: #3c3c3c;
+        }
+
+        &:hover ~ .input-control {
+          transition: all 0.3s ease-in-out;
+          background-color: #eeeeee;
+          color: #3c3c3c;
         }
       }
-    }
-    .input-dropdown-arrow {
-      transition: all 0.3s ease-in-out;
-      svg {
-        path {
-          fill: #919191;
+
+      .input-dropdown-arrow {
+        transition: all 0.3s ease-in-out;
+        svg {
+          path {
+            fill: #919191;
+          }
         }
       }
     }
@@ -24,28 +38,52 @@
 
   &.hide-placeholder-icon {
     &:hover {
-      .input-icon:not(.datetimeclass) {
-        display: none !important;
+      .input-icon {
+        display: none;
       }
     }
   }
 
   &.invalid {
     &:hover {
+      .input-icon {
+        &.invalid-required-empty-focus,
+        &.invalid-required-filled {
+          svg {
+            path {
+              fill: #ff5050 !important;
+            }
+          }
+        }
+      }
+
       .input-clear {
-        transition: all 0.3s ease-in-out;
         display: inline-block;
-        background-color: #b7b7b7;
-        svg {
-          path {
-            transition: all 0.3s ease-in-out;
-            fill: #eeeeee;
+        transition: all 0.3s ease-in-out;
+
+        .input-clear-x {
+          svg {
+            path {
+              fill: #eeeeee;
+            }
+            rect {
+              fill: #b7b7b7;
+            }
           }
         }
 
         &:hover {
-          transition: all 0.3s ease-in-out;
-          background-color: #6c6c6c;
+          .input-clear-x {
+            transition: all 0.3s ease-in-out;
+            svg {
+              path {
+                fill: #eeeeee;
+              }
+              rect {
+                fill: #6c6c6c;
+              }
+            }
+          }
         }
 
         &:hover ~ .input-label {
@@ -67,7 +105,7 @@
     }
   }
 
-  &.invalid-empty-required-waitValidation {
+  &.invalid-empty-required-dropdown {
     &:hover {
       .input-dropdown-arrow {
         transition: all 0.3s ease-in-out;
@@ -90,11 +128,24 @@
 
   &.invalid-empty-required {
     &:hover {
+      .input-icon {
+        &.invalid-required-empty {
+          transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #ef5350;
+            }
+          }
+        }
+      }
+
       .input-clear {
-        svg {
-          path {
-            transition: all 0.3s ease-in-out;
-            fill: #ef5350;
+        .input-clear-x {
+          svg {
+            path {
+              transition: all 0.3s ease-in-out;
+              fill: #ef5350;
+            }
           }
         }
 
@@ -114,35 +165,10 @@
         transition: all 0.3s ease-in-out;
         color: #ef5350;
       }
-
-      .input-icon {
-        &.invalid-required-empty {
-          transition: all 0.3s ease-in-out;
-          svg {
-            path {
-              fill: #ef5350;
-            }
-          }
-        }
-      }
     }
   }
 
   &.invalid-empty-focus-required {
-    .input-clear {
-      svg {
-        path {
-          transition: all 0.3s ease-in-out;
-          fill: #ef9a9a !important;
-        }
-      }
-    }
-
-    .input-error {
-      transition: all 0.3s ease-in-out;
-      color: #ef5350 !important;
-    }
-
     .input-icon {
       &.invalid-required-empty-focus {
         transition: all 0.3s ease-in-out;
@@ -153,22 +179,47 @@
         }
       }
     }
+    .input-clear {
+      .input-clear-x {
+        svg {
+          path {
+            transition: all 0.3s ease-in-out;
+            fill: #ef9a9a !important;
+          }
+        }
+      }
+    }
+    .input-error {
+      transition: all 0.3s ease-in-out;
+      color: #ef5350 !important;
+    }
   }
 
   &.valid {
     &:hover {
-      // Input clear class
-      .second-position-hover {
-        right: 27px;
+      .input-icon {
+        &.valid-required-out {
+          transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #6d82c7;
+            }
+          }
+        }
       }
-
       .input-clear {
         transition: all 0.3s ease-in-out;
         display: inline-block;
         &:hover {
           transition: all 0.3s ease-in-out;
-          background-color: #6c6c6c;
           cursor: pointer;
+          .input-clear-x {
+            svg {
+              rect {
+                fill: #6c6c6c;
+              }
+            }
+          }
         }
 
         &:hover ~ .input-label {
@@ -223,36 +274,13 @@
   }
   //--------------- end ---------------
 
-  @import './ta-input.label.scss';
-  @import './ta-input.input.scss';
-  @import './ta-input.requiredcheck.scss';
-  @import './ta-input.clear.scss';
-  @import './ta-input.placeholdericon.scss';
-  @import './ta-input.dropdown.scss';
-  @import './ta-input.error.scss';
-  @import './ta-input.passwordeye.scss';
+  @import "./ta-input.label.scss";
+  @import "./ta-input.input.scss";
+  @import "./ta-input.requiredcheck.scss";
+  @import "./ta-input.clear.scss";
+  @import "./ta-input.placeholdericon.scss";
+  @import "./ta-input.dropdown.scss";
+  @import "./ta-input.error.scss";
+  @import "./ta-input.passwordeye.scss";
+  @import "./ta-input.datepicker.scss";
 }
-
-
-// CUSTOM DATEPICKER INPUT 
-
-.date_time_holder{
-  display: flex;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-
-  &.active{
-    opacity: 1;
-  }
-
-  span.main{
-    padding: 0 2px;
-    outline: none;
-    font-size: 14px;
-  }
-}
-
