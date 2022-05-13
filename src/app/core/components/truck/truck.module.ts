@@ -6,6 +6,7 @@ import { TruckRoutingModule } from './truck-routing.module';
 import { TruckCardComponent } from './truck-card/truck-card.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
+
 @NgModule({
   declarations: [TruckTableComponent, TruckCardComponent],
   imports: [CommonModule, TruckRoutingModule,  TruckassistTableModule, AngularSvgIconModule],

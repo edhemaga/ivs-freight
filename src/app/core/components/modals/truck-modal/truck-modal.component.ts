@@ -136,12 +136,12 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     this.animationObject = {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
   }
 
-  public onModalAction(action: string): void {
-    if (action === 'close') {
+  public onModalAction(data: {action: string, bool: boolean}): void {
+    if (data.action === 'close') {
       this.truckForm.reset();
     } else {
       // Save & Update
-      if (action === 'save') {
+      if (data.action === 'save') {
         if (this.truckForm.invalid) {
           this.inputService.markInvalid(this.truckForm);
           return;
@@ -154,7 +154,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       }
 
       // Delete
-      if (action === 'delete' && this.editData) {
+      if (data.action === 'delete' && this.editData) {
         this.deleteTruckById(this.editData.id);
       }
 

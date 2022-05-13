@@ -1,0 +1,162 @@
+// Constants
+$color-white-light: #f3f3f3;
+$color-white: #ffffff;
+$color-white-dark: #f7f7f7;
+
+$color-gray-light: #b7b7b7;
+$color-gray: #919191;
+$color-gray-dark: #6c6c6c;
+
+$color-blue-light: #778fbb;
+$color-blue: #5673aa;
+$settings-blue-dark: #6d82c7;
+$settings-blue-hover: #3551b7;
+
+$font-size12: 12px;
+$font-size14: 14px;
+$font-size18: 18px;
+$font-size20: 20px;
+
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+$font-extrabold: 800;
+
+$border-radius: 3px;
+
+$transition: all 0.3s ease-in-out;
+:host ::ng-deep .mat-button-toggle-label-content {
+  line-height: 0px !important;
+  font-size: $font-size12;
+  font-weight: 700;
+}
+
+.details-item-cmp {
+  display: grid;
+  grid-template-columns: 440px repeat(4, 335px);
+  column-gap: 12px;
+  row-gap: 12px;
+  p {
+    margin: 0px;
+  }
+}
+
+.details-container-items {
+  display: grid;
+  grid-template-columns: 440px repeat(4, 335px);
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  row-gap: 12px;
+}
+// Common Class
+.truck-component {
+  display: grid;
+  row-gap: 12px;
+
+  // BODY
+  .truck-wrapper {
+    background-color: $color-white;
+    border-radius: $border-radius;
+    margin-bottom: 8px;
+    width: 440px;
+    height: 226px;
+    p {
+      margin: 0px;
+    }
+
+    .truck-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .truck-card-name {
+        color: $color-gray-dark;
+        font-size: $font-size18;
+        font-weight: $font-medium;
+        position: relative;
+        top: 1px;
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+      }
+    }
+
+    // .truck-card-bottom {
+    //   display: flex;
+    //   flex-direction: column;
+
+    //   // State, Class, Issued
+    //   .truck-row-1 {
+    //     display: grid;
+    //     grid-template-columns: 51px 73px 112px;
+    //   }
+
+    //   // Restrictions & Endorsments
+    //   .truck-row-2 {
+    //     display: grid;
+    //     grid-template-columns: 124px 112px;
+    //     margin: 8px 0px;
+    //   }
+
+
+    //   // PDF - small
+    //   .truck-row-4 {
+    //     height: 150px;
+    //     width: 100%;
+    //   }
+
+    //   // Note
+      .details-page-row-5 {
+        margin-top: 8px;
+      }
+
+    //   // Drug Test
+    //   .truck-row-6 {
+    //     display: grid;
+    //     grid-template-columns: 164px 72px;
+    //   }
+
+    //   // PDF - big
+      .details-page-row-7 {
+        height: 236px;
+        width: 100%;
+        margin: 22px 0px;
+      }
+    // }
+
+   
+  
+    .show-details {
+      font-size: $font-size12;
+      font-weight: $font-bold;
+      color: $color-blue-light;
+      text-decoration: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      &:hover {
+        transition: $transition;
+        cursor: pointer;
+        text-decoration: underline;
+        color: $color-blue;
+      }
+    }
+  }
+
+  .truck-cards {
+    border-radius: 3px;
+    overflow: hidden;
+    padding: 8px 12px;
+    width: 440px;
+    background-color: $color-white;
+  }
+  
+}
+

@@ -16,6 +16,7 @@ export interface OwnerResponse {
     id?: number;
     name?: string | null;
     ownerType?: string | null;
+    ownerTypeId?: number;
     trailerCount?: number;
     truckCount?: number;
     ssnEin?: string | null;

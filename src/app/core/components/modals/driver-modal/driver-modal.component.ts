@@ -32,8 +32,6 @@ import moment from 'moment';
   animations: [
     tab_modal_animation('animationTabsModal'),
     card_modal_animation('showHidePayroll', '6px'),
-    card_modal_animation('showHidePerMile', '32px'),
-    card_modal_animation('showHideCommission', '24px'),
   ],
   encapsulation: ViewEncapsulation.None,
 })
@@ -112,12 +110,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onModalAction(action: string): void {
-    if (action === 'close') {
+  public onModalAction(data: {action: string, bool: boolean}): void {
+    if (data.action === 'close') {
       this.driverForm.reset();
     } else {
       // Save & Update
-      if (action === 'save') {
+      if (data.action === 'save') {
         if (this.driverForm.invalid) {
           this.inputService.markInvalid(this.driverForm);
           return;
@@ -130,7 +128,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       }
 
       // Delete
-      if (action === 'delete' && this.editData) {
+      if (data.action === 'delete' && this.editData) {
         this.deleteDriverById(this.editData.id);
       }
 
@@ -347,11 +345,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.driverForm.get('ownerType').patchValue(this.selectedOwnerTab.name);
     if (
       this.driverForm.get('isOwner').value &&
-      this.selectedOwnerTab?.name === 'company'
+      this.selectedOwnerTab?.name.toLowerCase() === 'company'
     ) {
-      this.inputService.changeValidators(this.driverForm.get('ein'), true, [
-        Validators.pattern(/^\d{2}\-\d{7}$/),
-      ]);
+      this.inputService.changeValidators(this.driverForm.get('ein'), true, [Validators.pattern(/^\d{2}\-\d{7}$/)]);
     } else {
       this.inputService.changeValidators(this.driverForm.get('ein'), false);
     }

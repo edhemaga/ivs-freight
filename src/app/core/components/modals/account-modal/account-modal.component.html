@@ -28,7 +28,6 @@
             name: 'Input Dropdown',
             type: 'text',
             label: 'Select Label',
-            isRequired: true,
             isDropdown: true,
             dropdownWidthClass:'w-col-5'
           }"
@@ -81,6 +80,6 @@
         ></app-ta-input>
       </div>
     </div>
-    <app-ta-input-note formControlName="note"></app-ta-input-note>
+    <app-ta-input-note formControlName="note" [isVisibleNote]="accountForm.get('note').value"></app-ta-input-note>
   </form>
 </app-ta-modal>

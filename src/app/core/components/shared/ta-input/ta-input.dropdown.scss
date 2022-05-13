@@ -1,47 +1,20 @@
-//-------------------- Input Dropdwon confirmation ----------
-.input-dropdown-confirm {
-  position: absolute;
-  right: 26px;
-  top: 4px;
-  width: 18px;
-  height: 18px;
-  border-radius: 1px;
-  background-color: #b7b7b7;
-  display: none;
-  transition: all 0.3s ease-in-out;
-
-  .input-dropdow-confirm-svg {
-    position: relative;
-    bottom: 4px;
-    left: 2px;
-    svg {
-      path {
-        fill: #6c6c6c;
-      }
-    }
-  }
-
-  &:hover {
-    transform: scale(1.2);
-    background-color: #eeeeee;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-  }
-
-  &.visible {
-    display: inline-block;
-  }
-}
 //-------------------- Input Dropdown arrow -----------------
 .input-dropdown-arrow {
   position: absolute;
-  right: 3px;
-  top: 0.5px;
-  width: 15px;
-  height: 24px;
-  display: none;
+  right: 4px;
+  top: 4px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   svg {
+    width: 100%;
     transform: rotate(0deg);
     transition: all 0.3s ease-in-out;
     path {
@@ -56,25 +29,6 @@
         fill: #6c6c6c;
         transition: all 0.3s ease-in-out;
       }
-    }
-  }
-
-  &.visible {
-    display: inline-block;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-  }
-
-  &.no-validation-hover {
-    &:hover ~ .input-label {
-      transition: all 0.3s ease-in-out;
-      color: #3c3c3c;
-    }
-
-    &:hover ~ .input-control {
-      transition: all 0.3s ease-in-out;
-      background-color: #eeeeee;
-      color: #3c3c3c;
     }
   }
 
@@ -173,15 +127,56 @@
     }
   }
 
-  &.invalid-submit {
+  &.no-validation-hover {
+    &:hover {
+      transition: all 0.3s ease-in-out;
+      svg {
+        path {
+          fill: #6c6c6c;
+        }
+      }
+    }
+    
+    &:hover ~ .input-label {
+      transition: all 0.3s ease-in-out;
+      color: #3c3c3c;
+    }
+
+    &:hover ~ .input-control {
+      transition: all 0.3s ease-in-out;
+      background-color: #eeeeee;
+      color: #3c3c3c;
+    }
+  }
+}
+
+//-------------------- Input Dropdwon confirmation ----------
+.input-dropdown-confirm {
+  position: absolute;
+  right: 26px;
+  top: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 1px;
+  background-color: #b7b7b7;
+  display: inline-block;
+  transition: all 0.3s ease-in-out;
+
+  .input-dropdow-confirm-svg {
+    position: relative;
+    bottom: 4px;
+    left: 2px;
     svg {
       path {
-        fill: #e57373;
+        fill: #6c6c6c;
       }
     }
   }
 
-  &.hide {
-    display: none;
+  &:hover {
+    transform: scale(1.2);
+    background-color: #eeeeee;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
   }
 }

@@ -60,17 +60,17 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       username: [null, [Validators.required, Validators.maxLength(40)]],
       password: [null, [Validators.required, Validators.maxLength(20)]],
       url: [null, [Validators.required, Validators.maxLength(400)]],
-      companyAccountLabelId: [null, [Validators.required]],
+      companyAccountLabelId: [null],
       note: [null],
     });
   }
 
-  public onModalAction(action: string) {
-    if (action === 'close') {
+  public onModalAction(data: {action: string, bool: boolean}) {
+    if (data.action === 'close') {
       this.accountForm.reset();
     } else {
       // Save & Update
-      if (action === 'save') {
+      if (data.action === 'save') {
         // If Form not valid
         if (this.accountForm.invalid) {
           this.inputService.markInvalid(this.accountForm);
@@ -84,7 +84,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       }
 
       // Delete
-      if (action === 'delete' && this.editData) {
+      if (data.action === 'delete' && this.editData) {
         this.deleteCompanyAccountById(this.editData.id);
       }
 
@@ -107,7 +107,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             username: res.username,
             password: res.password,
             url: res.url,
-            companyAccountLabelId: res.companyAccountLabel.name,
+            companyAccountLabelId: res.companyAccountLabel ? res.companyAccountLabel.name : null,
             note: res.note,
           });
           this.selectedAccountLabel = res.companyAccountLabel;
@@ -123,7 +123,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.selectedAccountLabel.id,
+      companyAccountLabelId: this.selectedAccountLabel ? this.selectedAccountLabel.id : null,
     };
     this.accountModalService
       .addCompanyAccount(newData)
@@ -144,11 +144,11 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
   private updateCompanyAccount(id: number): void {
     const newData: UpdateCompanyAccountCommand = {
+      id: id,
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.selectedAccountLabel.id,
-      id: id,
+      companyAccountLabelId: this.selectedAccountLabel ? this.selectedAccountLabel.id : null,
     };
     this.accountModalService
       .updateCompanyAccount(newData)

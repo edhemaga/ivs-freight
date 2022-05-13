@@ -13,13 +13,17 @@
   ></pdf-viewer>
 
   <!-- File Action Buttons -->
+  <div class="name-document-button">
+    <div class="name-document">
+      <p>{{file.fileName}}</p>
+    </div>
   <div class="file-action-buttons">
     <svg-icon
       class="file-action-download"
       src="assets/svg/common/ic_download.svg"
       (click)="onFileAction('download')"
     ></svg-icon>
-    <svg-icon
+    <!-- <svg-icon
       class="file-action-edit"
       src="assets/svg/common/ic_pen.svg"
       (click)="onFileAction('edit')"
@@ -28,16 +32,17 @@
       class="file-action-delete"
       src="assets/svg/common/ic_trash.svg"
       (click)="onFileAction('delete')"
-    ></svg-icon>
+    ></svg-icon> -->
   </div>
+</div>
 
   <!-- File Info -->
   <div class="file-info">
     <div class="file-type {{ file.extension }}">
       <p>{{ file.extension | uppercase }}</p>
     </div>
-    <div class="file-number-of-pages">
+    <!-- <div class="file-number-of-pages">
       <p>{{ numberOfFilePages }}</p>
-    </div>
+    </div> -->
   </div>
 </div>

@@ -39,6 +39,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
   }
 
   ngOnInit() {
+  
     if (this.expireDate === null || this.expireDate === '') {
       this.negative = true;
     }

@@ -1,0 +1,369 @@
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Shipper' : 'Edit Shipper'"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="shipperForm.valid"
+  [customClass]="'modal-container-L'"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <app-tab-switcher
+    (switchClicked)="tabChange($event)"
+    [tabs]="tabs"
+  ></app-tab-switcher>
+
+  <form
+    [formGroup]="shipperForm"
+    class="form-container"
+    [ngClass]="{ 'tab-2': selectedTab !== 1 }"
+  >
+    <div
+      class="{{ editData ? 'animation-three-tabs' : 'animation-two-tabs' }}"
+      [@animationTabsModal]="animationObject"
+    >
+      <!-------------------------------- Details Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 1">
+        <div class="row">
+          <div class="col-12">
+            <app-ta-input
+              formControlName="businessName"
+              [inputConfig]="{
+                name: 'Bussines Name',
+                type: 'text',
+                label: 'Bussines Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="phone-ext-email">
+          <div
+            class="phone-extension"
+            [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
+          >
+            <div class="phone-field">
+              <app-ta-input
+                formControlName="phone"
+                [inputConfig]="{
+                  name: 'Phone',
+                  type: 'text',
+                  label: 'Phone',
+                  isRequired: true,
+                  placeholderIcon: 'phone',
+                  mask: '(000) 000-0000'
+                }"
+              ></app-ta-input>
+            </div>
+            <div
+              class="extension-field"
+              *ngIf="!isPhoneExtExist"
+              (click)="isPhoneExtExist = !isPhoneExtExist"
+            >
+              <svg-icon
+                src="assets/svg/common/ic_plus.svg"
+              ></svg-icon>
+            </div>
+            <app-ta-input
+              *ngIf="isPhoneExtExist"
+              formControlName="phoneExt"
+              [inputConfig]="{
+                name: 'Phone Extension',
+                type: 'text',
+                label: 'Ext.',
+                maxLength: 3
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="email-field">
+            <app-ta-input
+              formControlName="email"
+              [inputConfig]="{
+                name: 'Email',
+                type: 'text',
+                label: 'Email',
+                placeholderIcon: 'email'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row last-row">
+          <div class="col-10">
+            <app-ta-input-address
+              formControlName="address"
+              [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Address, City, State Zip',
+                isRequired: true,
+                placeholderIcon: 'address',
+                textTransform: 'capitalize'
+              }"
+              (selectedAddress)="onHandleAddress($event)"
+            ></app-ta-input-address>
+          </div>
+          <div class="col-2">
+            <app-ta-input
+              formControlName="addressUnit"
+              [inputConfig]="{
+                name: 'Address Unit',
+                type: 'text',
+                label: 'Unit #',
+                maxLength: 6
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <app-ta-custom-card
+          [cardName]="'Receiving Work Hours'"
+          [isCardOpen]="true"
+        >
+          <div class="shipper-work-hours row-margintop20 last-row">
+            <div
+              class="shipper-work-hours-field appointment"
+              [ngClass]="{ active: isAppointmentReceiving }"
+              (click)="onAppontmentReceiving()"
+            >
+              Appointment
+            </div>
+            <div class="shipper-work-hours-field">
+              <app-ta-checkbox
+                formControlName="receiving24h"
+                [name]="'receiving24h'"
+                [customClass]="'medium'"
+                [label]="'Open 24h'"
+              ></app-ta-checkbox>
+            </div>
+            <div class="shipper-work-hours-field">
+              <!-- Time Picker -->
+              <app-ta-input
+                formControlName="receivingFrom"
+                [inputConfig]="{
+                  name: 'datepicker',
+                  type: 'text',
+                  label: 'DOB',
+                  placeholderIcon: 'date',
+                  isDisabled:
+                    shipperForm.get('receiving24h').value &&
+                    shipperForm.get('receivingAppointment').value,
+                  customClass: 'datetimeclass'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="shipper-work-hours-field">
+              <!-- Time Picker -->
+              <app-ta-input
+                formControlName="receivingTo"
+                [inputConfig]="{
+                  name: 'datepicker',
+                  type: 'text',
+                  label: 'DOB',
+                  placeholderIcon: 'date',
+                  isDisabled:
+                    shipperForm.get('receiving24h').value &&
+                    shipperForm.get('receivingAppointment').value,
+                  customClass: 'datetimeclass'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+
+        <app-ta-checkbox
+          formControlName="isShippingHoursSameLikeReceiving"
+          [customClass]="'medium shipper-hours'"
+          [label]="'Shipping hours is same as receiving hours'"
+        ></app-ta-checkbox>
+
+        <app-ta-custom-card
+          [cardName]="'Shipping Work Hours'"
+          *ngIf="!shipperForm.get('isShippingHoursSameLikeReceiving').value"
+          [isCardOpen]="
+            !shipperForm.get('isShippingHoursSameLikeReceiving').value
+          "
+        >
+          <div
+            *ngIf="!shipperForm.get('isShippingHoursSameLikeReceiving').value"
+          >
+            <div class="shipper-work-hours row-margintop20 last-row">
+              <div
+                class="shipper-work-hours-field appointment"
+                [ngClass]="{ active: isAppointmentShipping }"
+                (click)="onAppontmentShipping()"
+              >
+                Appointment
+              </div>
+              <div class="shipper-work-hours-field">
+                <app-ta-checkbox
+                  formControlName="shipping24h"
+                  [name]="'shipping24h'"
+                  [customClass]="'medium'"
+                  [label]="'Open 24h'"
+                ></app-ta-checkbox>
+              </div>
+              <div class="shipper-work-hours-field">
+                <!-- Time Picker -->
+                <app-ta-input
+                  formControlName="shippingFrom"
+                  [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'DOB',
+                    placeholderIcon: 'date',
+                    isDisabled:
+                      shipperForm.get('shipping24h').value &&
+                      shipperForm.get('shippingAppointment').value,
+                    customClass: 'datetimeclass'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="shipper-work-hours-field">
+                <!-- Time Picker -->
+                <app-ta-input
+                  formControlName="shippingTo"
+                  [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'DOB',
+                    placeholderIcon: 'date',
+                    isDisabled:
+                      shipperForm.get('shipping24h').value &&
+                      shipperForm.get('shippingAppointment').value,
+                    customClass: 'datetimeclass'
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-input-note formControlName="note" [isVisibleNote]="shipperForm.get('note').value"></app-ta-input-note>
+      </div>
+      <!-------------------------------- Contact Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 2">
+        <app-ta-custom-card
+          [hasCounter]="shipperContacts.length ? shipperContacts.length : '0'"
+          [cardName]="'Contact'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasArrow]="false"
+          [isCardOpen]="shipperContacts.length"
+          [hasScrollBody]="shipperContacts.length > 10"
+          (onActionEvent)="addShipperContacts($event)"
+        >
+          <div
+            formArrayName="shipperContacts"
+            class="shipper-contacts"
+            (scroll)="onScrollingShipperContacts($event)"
+            *ngIf="shipperContacts.length"
+          >
+            <div class="shipper-contacts-label">
+              <p>FULL NAME <span>*</span></p>
+              <p>DEPARTMENT</p>
+              <p>PHONE <span>*</span></p>
+              <p>EXT</p>
+              <p>EMAIL</p>
+            </div>
+            <div
+              *ngFor="
+                let shipperContact of shipperContacts.controls;
+                let ind = index
+              "
+            >
+              <div [formGroupName]="ind" class="shipper-contacts-card">
+                <app-ta-input
+                  formControlName="fullName"
+                  [inputConfig]="{
+                    name: 'Full Name',
+                    type: 'text',
+                    textTransform: 'capitalize'
+                  }"
+                ></app-ta-input>
+                <app-ta-input-dropdown
+                  formControlName="departmentId"
+                  [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-shipper-department'
+                  }"
+                  [options]="labelsDepartments"
+                  (selectedItem)="onSelectContactDepartment($event, ind)"
+                ></app-ta-input-dropdown>
+                <app-ta-input
+                  formControlName="phone"
+                  [inputConfig]="{
+                    name: 'Phone',
+                    type: 'text',
+                    mask: '(000) 000-0000'
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="phoneExt"
+                  [inputConfig]="{
+                    name: 'Phone Extension',
+                    type: 'text',
+                    maxLength: 3
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="email"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'text'
+                  }"
+                ></app-ta-input>
+                <svg-icon
+                  class="shipperContacts-delete"
+                  [ngClass]="{
+                    'new-position':
+                      isContactCardsScrolling &&
+                      shipperContact.get('email').value,
+                    'new-position-without-email':
+                      isContactCardsScrolling &&
+                      !shipperContact.get('email').value
+                  }"
+                  src="assets/svg/common/ic_trash.svg"
+                  (click)="removeShipperContacts(ind)"
+                  [appTooltip]="'Delete'"
+                  [position]="'top-middle'"
+                  [tooltipBackground]="'#EF5350'"
+                  [tooltipColor]="'#FFFFFF'"
+                  [zIndex]="900"
+                  [borderRadius]="'2px'"
+                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+                  [fontWeight]="'bold'"
+                  [fontSize]="'11px'"
+                  [customPosition]="-11"
+                ></svg-icon>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+      </div>
+      <!-------------------------------- Review Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 3 && editData">
+        <app-ta-custom-card
+          [hasCounter]="reviews.length ? reviews.length : '0'"
+          [cardName]="'Review'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasArrow]="false"
+          [hasLikeDislike]="true"
+          [isCardOpen]="true"
+          [hasScrollBody]="reviews.length > 6"
+          (onActionEvent)="addNewReview($event)"
+        >
+          <div class="no-review-shipper" *ngIf="!reviews.length">
+            <svg-icon
+              class="no-review-svg"
+              src="assets/svg/common/ic_no_review.svg"
+            ></svg-icon>
+          </div>
+          <app-ta-user-review
+            *ngIf="reviews.length"
+            [reviewData]="reviews"
+            [isNewReview]="reviews[0].isNewReview"
+            (changeReviewsEvent)="changeReviewsEvent($event)"
+          ></app-ta-user-review>
+        </app-ta-custom-card>
+      </div>
+    </div>
+  </form>
+</app-ta-modal>

@@ -36,6 +36,10 @@
     margin-top: 12px !important;
   }
 
+  .row-margintop20 {
+    margin-top: 20px !important;
+  }
+
   // If modal buttons directly below row
   .last-modal-row {
     margin-bottom: 20px !important;
@@ -229,11 +233,29 @@
     column-gap: 27px;
     padding: 0 6px;
     margin-bottom: 12px;
+    max-height: 0px;
+    overflow: hidden;
+
+    &.active {
+      max-height: 600px !important;
+      margin-top: 24px;
+      transition: all 0.3s ease-in-out;
+    }
   }
 
   //---------------- PayType Per Mile ----------------
   .paytype-permile {
     padding-left: 6px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+
+    &.active {
+      max-height: 600px !important;
+      margin-top: 32px;
+      transition: all 0.3s ease-in-out;
+    }
+
     .permile-fields {
       display: grid;
       grid-template-columns: auto repeat(3, 124px);
@@ -332,18 +354,20 @@
     }
   }
 
-  //---------------- Broker Contacts ----------------
-  .broker-contacts {
+  //---------------- Broker Contacts, Shipper Contacts ----------------
+  .broker-contacts,
+  .shipper-contacts {
     overflow: hidden;
     overflow-x: scroll;
     margin-top: 10px;
+
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {
       width: 3px;
     }
     &::-webkit-scrollbar-thumb {
-      background-color: #CCCCCC;
+      background-color: #cccccc;
       border-left: 0px;
       border-right: 0px;
       border-top: 6px solid #ffffff;
@@ -358,8 +382,8 @@
       background: transparent;
     }
 
-
-    .broker-contacts-label {
+    .broker-contacts-label,
+    .shipper-contacts-label {
       padding: 0 5px;
       display: flex;
       align-items: center;
@@ -398,7 +422,8 @@
       }
     }
 
-    .broker-contacts-card {
+    .broker-contacts-card,
+    .shipper-contacts-card {
       display: grid;
       grid-template-columns: 170px 120px 130px 60px 234px;
       -moz-column-gap: 12px;
@@ -409,7 +434,8 @@
       padding-right: 6px;
       position: relative;
 
-      .brokerContacts-delete {
+      .brokerContacts-delete,
+      .shipperContacts-delete {
         width: 18px;
         height: 18px;
         position: absolute;
@@ -429,9 +455,18 @@
             }
           }
         }
+
+        &.new-position {
+          right: -120px;
+        }
+
+        &.new-position-without-email {
+          right: -142px;
+        }
       }
 
-      &:hover .brokerContacts-delete {
+      &:hover .brokerContacts-delete,
+      &:hover .shipperContacts-delete {
         display: inline-block;
         transition: all 0.3s ease-in-out;
       }
@@ -484,6 +519,79 @@
         -ms-user-select: none;
         user-select: none;
       }
+    }
+  }
+}
+//---------------- Shipper Work Hours ----------------
+.shipper-work-hours {
+  display: grid;
+  grid-template-columns: 112px 90px 109px 109px;
+  grid-template-rows: 26px;
+  column-gap: 12px;
+  align-items: center;
+  margin-left: 6px;
+
+  .shipper-work-hours-field {
+    &.appointment {
+      background-color: #cccccc;
+      color: #ffffff;
+      border-radius: 2px;
+      border: 2px solid #f3f3f3;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 12px;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+
+      &.active {
+        background-color: #6d82c7;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+}
+
+//---------------- Phone, Phone Extension, Email ----------------
+.phone-ext-email {
+  display: grid;
+  grid-template-columns: 258px 1fr;
+  grid-template-rows: 26px;
+  column-gap: 12px;
+  margin: 32px 0px;
+
+  .phone-extension {
+    display: grid;
+    grid-template-columns: 232px 26px;
+    align-items: center;
+    column-gap: 2px;
+
+    .extension-field {
+      background: #f3f3f3;
+      border-radius: 2px;
+      padding: 1px 4.5px;
+      cursor: pointer;
+
+      svg {
+        position: relative;
+        bottom: 1px;
+        path {
+          fill: #b7b7b7;
+        }
+      }
+
+      &:hover {
+        background-color: #eeeeee;
+        transition: all 0.3s ease-in-out;
+        svg {
+          path {
+            fill: #919191;
+          }
+        }
+      }
+    }
+
+    &.active-phone-ext {
+      grid-template-columns: 207px 51px;
     }
   }
 }

@@ -75,7 +75,7 @@
   }
 
   // Custom classes
-  &.regular {
+  &.medium {
     position: relative;
     top: 1px;
 
@@ -94,5 +94,12 @@
     &.checked {
       margin-bottom: 22px;
     }
+  }
+
+  &.shipper-hours {
+    margin-bottom: 10px;
+    position: relative;
+    left: 6px;
+    top: 0px;
   }
 }
