@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { TruckState, TruckStore } from './truck.store';
+import { TruckResponse, TruckService } from 'appcoretruckassist';
 
 @Injectable({providedIn:'root'})
 
-export class TruckService{
-    constructor(private http:HttpClient, private truckStore:TruckStore){}
+export class TruckTService{
+    constructor(private truckStore:TruckStore, private truckService:TruckService){}
 
     private testData=of({
         
@@ -166,7 +167,10 @@ export class TruckService{
             isSelected:false
           
     });
-
+    
+    public getTruckById(id:number):Observable<TruckResponse>{
+       return this.truckService.apiTruckIdGet(id);
+    }
     public getTrucks():Observable<TruckState>{
         return this.testData;
     }

@@ -23,6 +23,8 @@ import {
   ChartComponent,
 } from 'ng-apexcharts';
 import moment from 'moment';
+import { ActivatedRoute } from '@angular/router';
+import { TruckTService } from '../../state/truck.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -49,23 +51,31 @@ export class TruckDetailsItemComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   public chartOptionsSecond: Partial<ChartOptions>;
-
+  public noteControl: FormControl = new FormControl();
   public fhwaNote: FormControl = new FormControl();
   public purchaseNote: FormControl = new FormControl();
+  public registrationNote: FormControl = new FormControl();
+  public titleNote: FormControl = new FormControl();
 
   private destory$: Subject<void> = new Subject<void>();
   public selectedValueFuel: string = '';
   public selectedValuePerfomance: string = '';
   public selectedValueRevenue: string = '';
   public toggler: boolean = false;
-
+  public svgColorVar: string = '';
+  truckName:string='';
   isAccountVisible: boolean = true;
   accountText: string = null;
   cardNumberFake: string = '0000000006213';
 
-  public noteControl: FormControl = new FormControl();
-
-  constructor(private customModalService: CustomModalService) {
+  public truckData: any;
+ 
+  public dataTest: any;
+  constructor(
+    private customModalService: CustomModalService,
+    private activated_route: ActivatedRoute,
+    private truckTService: TruckTService
+  ) {
     this.chartOptionsSecond = {
       series: [
         {
@@ -234,10 +244,8 @@ export class TruckDetailsItemComponent implements OnInit {
     this.selectedValuePerfomance = 'ALL';
     this.selectedValueFuel = '1Y';
     this.selectedValueRevenue = '1Y';
-
-    this.noteControl.patchValue(
-      'Neki glupi note. Neki glupi note. Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.Neki glupi note.'
-    );
+    this.initTableOptions();
+    this.getTruckById();
   }
   ngOnDestroy(): void {
     this.destory$.next();
@@ -246,6 +254,55 @@ export class TruckDetailsItemComponent implements OnInit {
 
   public onShowDetails(componentData: any) {
     componentData.showDetails = !componentData.showDetails;
+  }
+
+  public getTruckById() {
+    const truck_id = this.activated_route.snapshot.paramMap.get('id');
+    this.truckTService.getTruckById(+truck_id).subscribe((data) => {
+      this.truckData = data;
+      this.noteControl.patchValue(this.truckData.note);
+      // this.fhwaNote.patchValue(this.truckData.inspections.note)
+      // this.registrationNote.patchValue(this.truckData.registrations.note)
+      // this.titleNote.patchValue(this.truckData.titles.note);
+      this.svgColorVar = this.truckData.color.code;
+      this.truckName=this.truckData.truckNumber
+      console.log(this.truckName);
+      
+    });
+  }
+
+  public initTableOptions(): void {
+    this.dataTest = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          class: 'regular-text',
+          contentType: 'edit',
+        },
+
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
+        },
+      ],
+      export: true,
+    };
   }
 
   public onModalAction() {}

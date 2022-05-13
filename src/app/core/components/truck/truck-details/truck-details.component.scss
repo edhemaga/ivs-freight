@@ -73,18 +73,23 @@
 }
 
 .purchase-container {
+  padding: 0px 8px;
+  padding-top: 8px;
   .purchase-progress {
-    margin-left: 16px !important;
-    margin-right: 16px !important;
+     padding: 0 8px;
+     margin-bottom: 16px;
+     padding-top: 4px;
+  }
+  .no-toggler{
+    margin-bottom: 0px;
   }
   .purchase-template {
     display: grid;
     grid-template-columns: repeat(2, 141px);
     grid-template-rows: repeat(1, 36px);
     grid-column-gap: 22px;
+    padding: 0 8px;
     margin-bottom: 12px;
-    margin-left: 16px;
-    margin-right: 16px;
     .amount {
       font-size: $font-size18 !important;
       font-weight: $font-medium !important;
@@ -111,16 +116,12 @@
 .details-document-container {
   align-items: center;
   flex-direction: column;
-  margin-right: 8px;
-  margin-left: 6px;
   width: 100%;
   .icon-counter-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 3px;
-    margin-left: 1px;
-    margin-right: 14px;
   }
   .counter-text-wrapper {
     display: flex;
@@ -144,8 +145,7 @@
   }
 }
 .details-progress-container {
-  margin-left: 16px;
-  margin-right: 16px;
+ 
   margin-bottom: 12px;
   height: 8px;
   height: 32px;
@@ -178,8 +178,7 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 6px;
-    margin-left: 12px;
-    margin-right: 12px;
+    padding: 0 4px;
     height: 18px;
   }
   .amortization-details-name {
@@ -189,9 +188,7 @@
     margin-left: 0 !important;
   }
   .table-amor-data {
-    margin-top: 12px;
-    margin-left: 16px;
-    margin-right: 16px;
+    padding: 0 8px;
     width: 100%;
     .bottom {
       margin-bottom: 16px !important;
@@ -229,7 +226,6 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 304px;
       margin-top: 8px;
       margin-bottom: 8px;
       .p-data-text {
@@ -251,54 +247,4 @@
     }
   }
 }
-.name-icon {
-  margin-left: 0 !important;
-  input {
-    margin-left: 6px;
-    position: relative;
-    left: 0 !important;
-  }
-}
 
-.assignTo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-
-  .assignTo-item {
-    background-color: $color-white-dark;
-    border-radius: 3px;
-    padding: 8px 6px;
-    width: 202px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    svg {
-      fill: #aaaaaa;
-      object-fit: fill;
-    }
-
-    .assignTo-vehicle {
-      margin-right: 6px;
-    }
-
-    .assignTo-value {
-      font-size: $font-size18;
-      font-weight: 500;
-      color: $color-gray-dark;
-
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-    }
-    p {
-      margin: 0 !important;
-    }
-  }
-}

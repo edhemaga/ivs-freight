@@ -3,7 +3,7 @@
     <!---------------------------- GENERAL TEMPLATE ----------------------------->
     <div *ngSwitchCase="'general'">
       <app-ta-details-header-card
-        [cardDetailsName]="'Unit 12345'"
+        [cardDetailsName]="truckName"
         [cardDetailsDate]="'08/03/20'"
         [tooltipNext]="'Next Truck'"
         [tooltipPrevious]="'Previous Truck'"
@@ -25,22 +25,40 @@
                   >
                   </svg-icon>
                 </div>
-                <p>Model Name XYZ</p>
+                <p>Model Name {{ truckData.model }}</p>
               </div>
             </div>
             <div class="details-header-data">
               <div class="details-header-data-item">
                 <svg-icon src="assets/svg/common/vin.svg"></svg-icon>
-                <p class="vin-text">4Y1SL65848Z411439</p>
+                <p class="vin-text">{{ truckData.vin }}</p>
               </div>
               <div class="details-header-data-item second">
                 <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
-                <p class="vin-text date">2018</p>
-                <svg-icon
-                  class="light-green"
-                  src="assets/svg/common/light-green.svg"
-                ></svg-icon>
-                <p class="vin-text">Light Green</p>
+                <p class="vin-text date">{{ truckData.year }}</p>
+                <div class="light-green">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                  >
+                    <g transform="translate(-725 -247)">
+                      <rect
+                        width="18"
+                        height="18"
+                        transform="translate(725 247)"
+                        fill="none"
+                      />
+                      <path
+                        d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
+                        transform="translate(712.181 241.886)"
+                        [attr.fill]="svgColorVar"
+                      />
+                    </g>
+                  </svg>
+                </div>
+                <p class="vin-text">{{ truckData.color.name }}</p>
               </div>
             </div>
           </div>
@@ -64,214 +82,221 @@
                 class="assignTo-vehicle"
                 src="assets/svg/common/trailer.svg"
               ></svg-icon>
-              <p class="assignTo-value">32433434</p>
+              <p class="assignTo-value">3243</p>
             </div>
             <div class="assignTo-item">
               <svg-icon
                 class="assignTo-vehicle"
                 src="assets/svg/common/user-image.svg"
               ></svg-icon>
-              <p class="assignTo-value">4334343</p>
+              <p class="assignTo-value">Pera Peric</p>
             </div>
           </div>
         </app-ta-custom-card>
 
         <!--------Additonal Details--------->
-        <app-ta-custom-card class="item-cards" [bodyTemplate]="'card'" [cardName]="'Additional Details'">
+        <app-ta-custom-card
+          class="item-cards"
+          [animationsDisabled]="false"
+          [bodyTemplate]="'card'"
+          [cardName]="'Additional Details'"
+        >
           <div class="common-template">
             <div class="common-template-item">
               <div class="common-template-item-name">Gross Weight</div>
               <div class="common-template-item-value">
-                34243243243242
+                {{ truckData.truckGrossWeight.name }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Starting Mileage</div>
               <div class="common-template-item-value">
-                2222233 mi
+                {{ truckData.mileage }} mi
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Empty Weight</div>
               <div class="common-template-item-value">
-                434334
+                {{ truckData.emptyWeight }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Engine Type</div>
               <div class="common-template-item-value">
-                4343432
+                {{ truckData.truckEngineType.name }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Axles</div>
               <div class="common-template-item-value">
-                4343
+                {{ truckData.axles }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Tire size</div>
               <div class="common-template-item-value">
-                4444
+                {{ truckData.tireSize.name }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">IPASS/EZPASS</div>
               <div class="common-template-item-value">
-                333
+                {{ truckData.ipasEzpass }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Insurance Policy</div>
               <div class="common-template-item-value">
-               444
+                {{ truckData.insurancePolicy }}
               </div>
             </div>
           </div>
         </app-ta-custom-card>
 
         <!--------Owner--------->
-        <app-ta-custom-card class="item-cards" [cardName]="'Owner'" [bodyTemplate]="'card'">
+        <app-ta-custom-card
+          [animationsDisabled]="false"
+          class="item-cards"
+          [cardName]="'Owner'"
+          [bodyTemplate]="'card'"
+        >
           <div class="common-template">
             <div class="common-template-item">
               <div class="common-template-item-name">Company</div>
               <div class="common-template-item-value size18">
-                {{ data.data.owner.company }}
+                {{truckData.owner.name}}
               </div>
             </div>
             <div class="common-template-item">
-              <div class="common-template-item-name">Commision</div>
+              <div class="common-template-item-name">Commission</div>
               <div class="common-template-item-value size18">
-                {{ data.data.owner.commision }}
+                {{ truckData.commission }}
               </div>
             </div>
           </div>
-          <div class="single-icon-wrapper">
+          <!-- <div class="single-icon-wrapper">
             <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
-          </div>
+          </div> -->
         </app-ta-custom-card>
 
         <!--------Perfomance--------->
-        <app-ta-custom-card class="item-cards" [cardName]="'Perfomance'" [bodyTemplate]="'card'">
-          <div class="common-template perfomance">
-            <mat-button-toggle-group
-              [value]="selectedValuePerfomance"
-              (change)="changeValuePerfomance($event.value)"
-              appearance="legacy"
-              #toggleBtn="matButtonToggleGroup"
+        <app-ta-custom-card
+          [animationsDisabled]="false"
+          class="item-cards"
+          [cardName]="'Perfomance'"
+          [bodyTemplate]="'card'"
+        >
+        <div class="charts-template perfomance">
+          <mat-button-toggle-group
+            [value]="selectedValuePayroll"
+            (change)="changeValuePayroll($event.value)"
+            appearance="legacy"
+            #toggleBtn="matButtonToggleGroup"
+          >
+            <mat-button-toggle appearance="legacy" value="1M"
+              >1M</mat-button-toggle
             >
-              <mat-button-toggle appearance="legacy" value="1M"
-                >1M</mat-button-toggle
-              >
-              <mat-button-toggle appearance="legacy" value="3M">
-                3M
-              </mat-button-toggle>
-              <mat-button-toggle appearance="legacy" value="6M">
-                6M
-              </mat-button-toggle>
-              <mat-button-toggle appearance="legacy" value="1Y">
-                1Y
-              </mat-button-toggle>
-              <mat-button-toggle appearance="legacy" value="YTD">
-                YTD
-              </mat-button-toggle>
-              <mat-button-toggle appearance="legacy" value="ALL">
-                ALL</mat-button-toggle
-              >
-            </mat-button-toggle-group>
-            <div class="common-item-wrapper revenue">
-              <div class="common-template-item">
-                <div class="icon-name-item">
-                  <svg-icon src="assets/svg/common/mileage.svg"></svg-icon>
-                  <div class="common-template-item-name">Mileage</div>
-                </div>
-                <div class="common-template-item-value">
-                  {{ data.data.performanceTrack.mileage }} mi
-                </div>
+            <mat-button-toggle appearance="legacy" value="3M">
+              3M
+            </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="6M">
+              6M
+            </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="1Y">
+              1Y
+            </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="YTD">
+              YTD
+            </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="ALL">
+              ALL</mat-button-toggle
+            >
+          </mat-button-toggle-group>
+          <div class="charts-item-wrapper revenue">
+            <div class="charts-template-item">
+              <div class="icon-name-item">
+                <svg-icon src="assets/svg/common/mileage.svg"></svg-icon>
+                <div class="charts-template-item-name">Mileage</div>
               </div>
+              <div class="charts-template-item-value">300,456.3 mi</div>
+            </div>
 
-              <div class="common-template-item fuel-item">
-                <div class="icon-name-item">
-                  <svg-icon src="assets/svg/common/fuel.svg"></svg-icon>
-                  <div class="common-template-item-name">Fuel Cost</div>
-                </div>
-                <div class="common-template-item-value">
-                  {{ data.data.performanceTrack.fuel_cost }}
-                </div>
+            <div class="charts-template-item fuel-item">
+              <div class="icon-name-item">
+                <svg-icon src="assets/svg/common/fuel.svg"></svg-icon>
+                <div class="charts-template-item-name">Fuel Cost</div>
               </div>
+              <div class="charts-template-item-value">$190,221.48</div>
             </div>
           </div>
+        </div>
         </app-ta-custom-card>
         <!--------Fuel Consumption--------->
         <app-ta-custom-card
           [tooltipName]="'View in Modal'"
           [bodyTemplate]="'card'"
           [cardName]="'Fuel Consumption'"
+          [animationsDisabled]="false"
           [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
           class="item-cards"
         >
-          <div class="common-template perfomance">
-            <mat-button-toggle-group
-              [value]="selectedValueFuel"
-              (change)="changeValueFuel($event.value)"
-              appearance="legacy"
-              #toggleBtn="matButtonToggleGroup"
+        <div class="charts-template perfomance">
+          <mat-button-toggle-group
+            [value]="selectedValuePayroll"
+            (change)="changeValuePayroll($event.value)"
+            appearance="legacy"
+            #toggleBtn="matButtonToggleGroup"
+          >
+            <mat-button-toggle appearance="legacy" value="1M"
+              >1M</mat-button-toggle
             >
-              <mat-button-toggle appearance="legacy" value="1M"
-                >1M</mat-button-toggle
-              >
-              <mat-button-toggle appearance="legacy" value="3M">
-                3M
-              </mat-button-toggle>
-              <mat-button-toggle appearance="legacy" value="6M">
-                6M
-              </mat-button-toggle>
-              <mat-button-toggle appearance="legacy" value="1Y">
-                1Y
-              </mat-button-toggle>
-              <mat-button-toggle appearance="legacy" value="YTD">
-                YTD
-              </mat-button-toggle>
-              <mat-button-toggle appearance="legacy" value="ALL">
-                ALL</mat-button-toggle
-              >
-            </mat-button-toggle-group>
-            <div class="common-item-wrapper revenue">
-              <div class="common-template-item">
-                <div class="icon-name-item">
-                  <svg-icon src="assets/svg/common/round_yellow.svg"></svg-icon>
-                  <div class="common-template-item-name">Miles per galon</div>
-                </div>
-                <div class="common-template-item-value">
-                  {{ data.data.fuelConsumption.milesPerGalon }}
-                </div>
+            <mat-button-toggle appearance="legacy" value="3M">
+              3M
+            </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="6M">
+              6M
+            </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="1Y">
+              1Y
+            </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="YTD">
+              YTD
+            </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="ALL">
+              ALL</mat-button-toggle
+            >
+          </mat-button-toggle-group>
+          <div class="charts-item-wrapper revenue">
+            <div class="charts-template-item">
+              <div class="icon-name-item">
+                <svg-icon src="assets/svg/common/round_yellow.svg"></svg-icon>
+                <div class="charts-template-item-name">Miles per Gallon</div>
               </div>
-
-              <div class="common-template-item fuel-item">
-                <div class="icon-name-item">
-                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                  <div class="common-template-item-name">Cost per Gallon</div>
-                </div>
-                <div class="common-template-item-value">
-                  {{ data.data.fuelConsumption.costPerGalon }}
-                </div>
-              </div>
+              <div class="charts-template-item-value">5.75 mi</div>
             </div>
-            <div id="chart">
-              <apx-chart
-                [series]="chartOptions.series"
-                [chart]="chartOptions.chart"
-                [xaxis]="chartOptions.xaxis"
-                [yaxis]="chartOptions.yaxis"
-                [labels]="chartOptions.labels"
-                [stroke]="chartOptions.stroke"
-                [title]="chartOptions.title"
-                [dataLabels]="chartOptions.dataLabels"
-                [fill]="chartOptions.fill"
-                [tooltip]="chartOptions.tooltip"
-              ></apx-chart>
+
+            <div class="charts-template-item fuel-item">
+              <div class="icon-name-item">
+                <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                <div class="charts-template-item-name">Cost per Gallon</div>
+              </div>
+              <div class="charts-template-item-value">$3.85</div>
             </div>
           </div>
+          <div id="chart">
+            <apx-chart
+              [series]="chartOptions.series"
+              [chart]="chartOptions.chart"
+              [xaxis]="chartOptions.xaxis"
+              [yaxis]="chartOptions.yaxis"
+              [labels]="chartOptions.labels"
+              [stroke]="chartOptions.stroke"
+              [title]="chartOptions.title"
+              [dataLabels]="chartOptions.dataLabels"
+              [fill]="chartOptions.fill"
+            ></apx-chart>
+          </div>
+        </div>
         </app-ta-custom-card>
 
         <!--------Revenue--------->
@@ -279,73 +304,67 @@
           [tooltipName]="'View in Modal'"
           [cardName]="'Revenue'"
           [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
           [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
           class="item-cards"
         >
-          <div class="common-template perfomance">
-            <mat-button-toggle-group
-              [value]="selectedValueRevenue"
-              (change)="changeValueRevenue($event.value)"
-              appearance="legacy"
-              #toggleBtn="matButtonToggleGroup"
+        <div class="charts-template perfomance">
+          <mat-button-toggle-group
+            [value]="selectedValuePayroll"
+            (change)="changeValuePayroll($event.value)"
+            appearance="legacy"
+            #toggleBtn="matButtonToggleGroup"
+          >
+            <mat-button-toggle appearance="legacy" value="1M"
+              >1M</mat-button-toggle
             >
-              <mat-button-toggle appearance="legacy" value="1M"
-                >1M</mat-button-toggle
-              >
-              <mat-button-toggle appearance="legacy" value="3M">
-                3M
-              </mat-button-toggle>
-              <mat-button-toggle appearance="legacy" value="6M">
-                6M
-              </mat-button-toggle>
-              <mat-button-toggle appearance="legacy" value="1Y">
-                1Y
-              </mat-button-toggle>
-              <mat-button-toggle appearance="legacy" value="YTD">
-                YTD
-              </mat-button-toggle>
-              <mat-button-toggle appearance="legacy" value="ALL">
-                ALL</mat-button-toggle
-              >
-            </mat-button-toggle-group>
-            <div class="common-item-wrapper revenue">
-              <div class="common-template-item">
-                <div class="icon-name-item">
-                  <svg-icon
-                    src="assets/svg/common/round_blue_light.svg"
-                  ></svg-icon>
-                  <div class="common-template-item-name">Miles</div>
-                </div>
-                <div class="common-template-item-value">
-                  {{ data.data.revenue.miles }}
-                </div>
+            <mat-button-toggle appearance="legacy" value="3M">
+              3M
+            </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="6M">
+              6M
+            </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="1Y">
+              1Y
+            </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="YTD">
+              YTD
+            </mat-button-toggle>
+            <mat-button-toggle appearance="legacy" value="ALL">
+              ALL</mat-button-toggle
+            >
+          </mat-button-toggle-group>
+          <div class="charts-item-wrapper revenue">
+            <div class="charts-template-item">
+              <div class="icon-name-item">
+                <svg-icon src="assets/svg/common/round_blue_light.svg"></svg-icon>
+                <div class="charts-template-item-name">Miles</div>
               </div>
-
-              <div class="common-template-item fuel-item">
-                <div class="icon-name-item">
-                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                  <div class="common-template-item-name">Revenue</div>
-                </div>
-                <div class="common-template-item-value">
-                  {{ data.data.revenue.revenue }}
-                </div>
-              </div>
+              <div class="charts-template-item-value">50,257.7 mi</div>
             </div>
-            <div id="chart">
-              <apx-chart
-                [series]="chartOptionsSecond.series"
-                [chart]="chartOptionsSecond.chart"
-                [xaxis]="chartOptionsSecond.xaxis"
-                [yaxis]="chartOptionsSecond.yaxis"
-                [labels]="chartOptionsSecond.labels"
-                [stroke]="chartOptionsSecond.stroke"
-                [title]="chartOptionsSecond.title"
-                [dataLabels]="chartOptionsSecond.dataLabels"
-                [fill]="chartOptionsSecond.fill"
-                [tooltip]="chartOptionsSecond.tooltip"
-              ></apx-chart>
+
+            <div class="charts-template-item fuel-item">
+              <div class="icon-name-item">
+                <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                <div class="charts-template-item-name">Revenue</div>
+              </div>
+              <div class="charts-template-item-value">$190,568.85</div>
             </div>
           </div>
+          <div id="chart">
+            <apx-chart
+              [series]="chartOptionsSecond.series"
+              [chart]="chartOptionsSecond.chart"
+              [xaxis]="chartOptionsSecond.xaxis"
+              [yaxis]="chartOptionsSecond.yaxis"
+              [labels]="chartOptionsSecond.labels"
+              [stroke]="chartOptionsSecond.stroke"
+              [title]="chartOptionsSecond.title"
+              [dataLabels]="chartOptionsSecond.dataLabels"
+              [fill]="chartOptionsSecond.fill"
+            ></apx-chart>
+          </div>
+        </div>
         </app-ta-custom-card>
 
         <!--------Owner History--------->
@@ -353,333 +372,188 @@
           [tooltipName]="'View in Modal'"
           [cardName]="'Owner History'"
           [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
           [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
           class="item-cards"
         >
-          <div class="owner-history-wrapper">
-            <div class="owner-history-title">
-              <p class="title">COMPANY</p>
-              <p class="title">FROM-TO</p>
-              <p class="title">DURATION</p>
-            </div>
-            <div class="truck-card-line"></div>
+          <div class="owner-history-container">
+            <div class="status-container">
+              <div class="status-header">
+                <div class="status-item">
+                  <p class="p-status">COMPANY</p>
+                </div>
+                <div class="status-item">
+                  <p class="p-status">FROM - TO</p>
+                </div>
+                <div class="status-item">
+                  <p class="p-status">DURATION</p>
+                </div>
+              </div>
+              <div class="truck-card-line"></div>
+              <div class="status-items">
+                <div
+                  class="item-wrapper"
+                  *ngFor="let owHist of truckData.ownerHistories"
+                >
+                  <p class="employment">{{ owHist.name }}</p>
 
-            <div class="owner-history-body">
-              <p class="company">{{ data.data.ownerHistory.company.name }}</p>
-              <P class="from">
-                {{ data.data.ownerHistory.company.from }}-{{
-                  data.data.ownerHistory.company.to
-                }}</P
-              >
-              <p class="from duration">
-                {{ data.data.ownerHistory.company.duration }}
-              </p>
-            </div>
-            <div class="truck-card-line"></div>
-            <div class="owner-history-body owner-history-bottom">
-              <p class="company">{{ data.data.ownerHistory.company2.name }}</p>
-              <P class="from from-bottom">
-                {{ data.data.ownerHistory.company2.from }}-{{
-                  data.data.ownerHistory.company2.to
-                }}</P
-              >
-              <p class="from duration">
-                {{ data.data.ownerHistory.company2.duration }}
-              </p>
+                  <p class="date-from-to">
+                    {{ formatDate(owHist.startDate) }} -
+                    {{
+                      formatDate(owHist.endDate)
+                        ? formatDate(owHist.endDate) !== null
+                        : "Today"
+                    }}
+                  </p>
+                  <p class="duration">1 y 200 d</p>
+                </div>
+              </div>
             </div>
           </div>
         </app-ta-custom-card>
 
         <!--------Note--------->
-        <!-- <app-ta-custom-card [hasDivider]="false" [cardName]="'Note'">
-          <div class="note">
-            <p class="note-item">{{ data.data.note.noteText }}</p>
-          </div>
-        </app-ta-custom-card> -->
-        <app-ta-input-note [formControl]="noteControl" [isReadOnly]="true" [isVisibleNote]="noteControl.value"></app-ta-input-note>
+        <div class="note-cards">
+        <app-ta-input-note
+          [formControl]="noteControl"
+          [isReadOnly]="true"
+          [isVisibleNote]="noteControl.value"
+        ></app-ta-input-note>
+      </div>
       </div>
     </div>
     <!---------------------------- Registration TEMPLATE ----------------------------->
     <div *ngSwitchCase="'registration'">
-      <div class="common-cards-wrapper">
+      <div *ngFor="let reg of truckData.registrations">
         <app-ta-re-card
+          [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage($event)"
-          [cardNameCommon]="'PR 365421'"
-          [cardDocumentCounter]="3"
-          [isCardOpen]="true"
+          [cardNameCommon]="reg.licensePlate"
+          [hasCopyIcon]="true"
+          [options]="dataTest"
         >
-          <div class="state-issued-container">
-            <div class="state-issued-wrapper">
-              <div class="state-issued-title">State</div>
-              <p class="state-issued-title-item">KY</p>
+        <div class="cards-container">
+          <div class="card-body-cdl">
+            <div class="card-row-endor">
+              <div class="card-item">
+                <div class="card-item-name">State</div>
+                <div class="card-item-value">KV</div>
+              </div>
+              <div class="card-item">
+                <div class="card-item-name">Issued</div>
+                <div class="card-item-value">{{formatDate(reg.issueDate)}}</div>
+              </div>
             </div>
-            <div class="state-issued-wrapper">
-              <div class="state-issued-title">Issued</div>
-              <p class="state-issued-title-item">04/04/04</p>
+            <div class="card-row-progress" [ngClass]="{'second-progress':toggler}">
+              <div class="card-details-progress-container">
+                <app-truckassist-progress-expiration
+                  [expireDate]="formatDate(reg.expDate)"
+                  [startDate]="formatDate(reg.issueDate)"
+                  [expiresSettings]="'details'"
+                >
+                </app-truckassist-progress-expiration>
+              </div>
             </div>
           </div>
-          <div class="details-progress-container">
-            <app-truckassist-progress-expiration
-              [expireDate]="'05/09/27'"
-              [startDate]="formatDate('2019-11-11T05:00:00Z')"
-              [expiresSettings]="'details'"
-            >
-            </app-truckassist-progress-expiration>
+          <div class="divider" *ngIf="toggler"></div>
+          <div *ngIf="toggler" class="note-wrapper">
+            <app-ta-input-note
+              [formControl]="registrationNote"
+              [isVisibleDivider]="false"
+              [placeholder]="'Write something.'"
+              [customClass]="'note-small'"
+              [isVisibleArrow]="false"
+              [minRows]="1"
+              [isVisibleNote]="true"
+            ></app-ta-input-note>
+          </div>
           </div>
         </app-ta-re-card>
       </div>
-
-      <app-ta-re-card
-        [cardNameCommon]="'HK 3568451'"
-        (resizePage)="toggleResizePage($event)"
-        [cardDocumentCounter]="1"
-        [isCardOpen]="true"
-      >
-        <div class="state-issued-container">
-          <div class="state-issued-wrapper">
-            <div class="state-issued-title">State</div>
-            <p class="state-issued-title-item">TX</p>
-          </div>
-          <div class="state-issued-wrapper">
-            <div class="state-issued-title">Issued</div>
-            <p class="state-issued-title-item">04/04/04</p>
-          </div>
-        </div>
-        <div class="details-progress-container">
-          <app-truckassist-progress-expiration
-            [expireDate]="'05/09/27'"
-            [startDate]="formatDate('1980-11-02T05:00:00Z')"
-            [expiresSettings]="'details'"
-          >
-          </app-truckassist-progress-expiration>
-        </div>
-      </app-ta-re-card>
-      <app-ta-re-card [cardNameCommon]="'Exp. 08/01/17'" [isCardOpen]="false">
-        <div class="state-issued-container">
-          <div class="state-issued-wrapper">
-            <div class="state-issued-title">State</div>
-            <p class="state-issued-title-item">TX</p>
-          </div>
-          <div class="state-issued-wrapper">
-            <div class="state-issued-title">Issued</div>
-            <p class="state-issued-title-item">04/04/04</p>
-          </div>
-        </div>
-        <div class="details-progress-container">
-          <app-truckassist-progress-expiration
-            [expireDate]="'05/09/27'"
-            [startDate]="formatDate('2013-11-11T05:00:00Z')"
-            [expiresSettings]="'details'"
-          >
-          </app-truckassist-progress-expiration>
-        </div>
-      </app-ta-re-card>
-      <app-ta-re-card [cardNameCommon]="'Exp. 08/01/16'" [isCardOpen]="false">
-        <div class="state-issued-container">
-          <div class="state-issued-wrapper">
-            <div class="state-issued-title">State</div>
-            <p class="state-issued-title-item">TX</p>
-          </div>
-          <div class="state-issued-wrapper">
-            <div class="state-issued-title">Issued</div>
-            <p class="state-issued-title-item">04/04/04</p>
-          </div>
-        </div>
-        <div class="details-progress-container">
-          <app-truckassist-progress-expiration
-            [expireDate]="'05/09/27'"
-            [startDate]="formatDate('2013-11-11T05:00:00Z')"
-            [expiresSettings]="'details'"
-          >
-          </app-truckassist-progress-expiration>
-        </div>
-      </app-ta-re-card>
-      <app-ta-re-card [cardNameCommon]="'Exp. 08/01/15'" [isCardOpen]="false">
-        <div class="state-issued-container">
-          <div class="state-issued-wrapper">
-            <div class="state-issued-title">State</div>
-            <p class="state-issued-title-item">TX</p>
-          </div>
-          <div class="state-issued-wrapper">
-            <div class="state-issued-title">Issued</div>
-            <p class="state-issued-title-item">04/04/04</p>
-          </div>
-        </div>
-        <div class="details-progress-container">
-          <app-truckassist-progress-expiration
-            [expireDate]="'05/09/27'"
-            [startDate]="formatDate('2013-11-11T05:00:00Z')"
-            [expiresSettings]="'details'"
-          >
-          </app-truckassist-progress-expiration>
-        </div>
-      </app-ta-re-card>
     </div>
     <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
     <div *ngSwitchCase="'fhwa-insepction'">
-      <app-ta-re-card
-        [cardNameCommon]="'08/12/23'"
-        [cardDocumentCounter]="0"
-        [isCardOpen]="true"
-      >
-        <div class="details-progress-container">
-          <app-truckassist-progress-expiration
-            [expireDate]="'05/09/27'"
-            [startDate]="formatDate('1980-11-02T05:00:00Z')"
-            [expiresSettings]="'details'"
-          >
-          </app-truckassist-progress-expiration>
-        </div>
-      </app-ta-re-card>
-
-      <app-ta-re-card
-        [cardNameCommon]="'08/12/23'"
-        [cardDocumentCounter]="1"
-        [isCardOpen]="true"
-      >
-        <div class="details-progress-container">
-          <app-truckassist-progress-expiration
-            [expireDate]="'05/09/27'"
-            [startDate]="formatDate('2000-11-02T05:00:00Z')"
-            [expiresSettings]="'details'"
-          >
-          </app-truckassist-progress-expiration>
-        </div>
-      </app-ta-re-card>
-      <app-ta-re-card [cardNameCommon]="'Exp. 08/01/17'" [isCardOpen]="false">
-        <!-- <div class="state-issued-container">
-                        <div class="state-issued-wrapper">
-                            <div class="state-issued-title">State</div>
-                            <p class="state-issued-title-item">TX</p>
-                        </div>
-                        <div class="state-issued-wrapper">
-                            <div class="state-issued-title">Issued</div>
-                            <p class="state-issued-title-item">04/04/04</p>
-                        </div>
-                    </div>
-                    <div class="details-progress-container">
-                        <app-truckassist-progress-expiration [expireDate]="'05/09/27'"
-                            [startDate]="formatDate('2013-11-11T05:00:00Z')" [expiresSettings]="'details'">
-                        </app-truckassist-progress-expiration>
-                    </div> -->
-      </app-ta-re-card>
-      <app-ta-re-card [cardNameCommon]="'Exp. 08/01/17'" [isCardOpen]="false">
-        <!-- <div class="state-issued-container">
-                        <div class="state-issued-wrapper">
-                            <div class="state-issued-title">State</div>
-                            <p class="state-issued-title-item">TX</p>
-                        </div>
-                        <div class="state-issued-wrapper">
-                            <div class="state-issued-title">Issued</div>
-                            <p class="state-issued-title-item">04/04/04</p>
-                        </div>
-                    </div>
-                    <div class="details-progress-container">
-                        <app-truckassist-progress-expiration [expireDate]="'05/09/27'"
-                            [startDate]="formatDate('2013-11-11T05:00:00Z')" [expiresSettings]="'details'">
-                        </app-truckassist-progress-expiration>
-                    </div> -->
-      </app-ta-re-card>
-      <app-ta-re-card
-        [cardNameCommon]="'09/27/22'"
-        [cardDocumentCounter]="1"
-        [isCardOpen]="true"
-      >
-        <div class="details-progress-container">
-          <app-truckassist-progress-expiration
-            [expireDate]="'05/09/27'"
-            [startDate]="formatDate('2020-11-02T05:00:00Z')"
-            [expiresSettings]="'details'"
-          >
-          </app-truckassist-progress-expiration>
-        </div>
-      </app-ta-re-card>
-      <app-ta-re-card
-        (resizePage)="toggleResizePage($event)"
-        [cardNameCommon]="'09/27/22'"
-        [cardDocumentCounter]="1"
-        [isCardOpen]="true"
-      >
-        <div class="details-progress-container">
-          <app-truckassist-progress-expiration
-            [expireDate]="'05/09/27'"
-            [startDate]="formatDate('2025-01-02T05:00:00Z')"
-            [expiresSettings]="'details'"
-          >
-          </app-truckassist-progress-expiration>
-        </div>
-        <div *ngIf="toggler">
-          <div class="details-document-container">
-            <div class="divider"></div>
-            <div class="icon-counter-wrapper">
-              <div class="counter-text-wrapper">
-                <app-ta-counter
-                  [countBackgroud]="'#F3F3F3'"
-                  [countHeight]="'24px'"
-                  [countWidth]="'24px'"
-                  [count]="1"
+      <div *ngFor="let fhwa of truckData.inspections">
+        <app-ta-re-card
+          [options]="dataTest"
+          [cardNameCommon]="formatDate(fhwa.issueDate)"
+        >
+        <div class="cards-container">
+          <div class="card-body-cdl">
+            <div class="card-row-progress" [ngClass]="{'second-progress':toggler}">
+              <div class="card-details-progress-container">
+                <app-truckassist-progress-expiration
+                  [expireDate]="'04/04/25'"
+                  [startDate]="formatDate(fhwa.issueDate)"
+                  [expiresSettings]="'details'"
                 >
-                </app-ta-counter>
-                <p class="details-document-name">Document</p>
+                </app-truckassist-progress-expiration>
               </div>
-              <svg-icon
-                (click)="onFileAction('download')"
-                src="assets/svg/common/ic_download.svg"
-              >
-              </svg-icon>
             </div>
           </div>
-          <div class="files-item">
-            <div class="details-page-row-7">
-              <app-ta-files
-                [files]="[
-                  {
-                    fileName: 'truckassist0',
-                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                    extension: 'pdf'
-                  }
-                ]"
-                [fileType]="'single-pdf'"
-                [customClassName]="'driver-details-single-pdf'"
-              ></app-ta-files>
-            </div>
+          <div *ngIf="toggler" class="note-wrapper">
+            <app-ta-input-note
+              [formControl]="fhwaNote"
+              [placeholder]="'Write something.'"
+              [customClass]="'note-small'"
+              [isVisibleArrow]="false"
+              [minRows]="1"
+              [isVisibleNote]="true"
+            ></app-ta-input-note>
           </div>
-          <div class="details-page-row-5">
-            <div class="note-item">
-              <app-ta-input-note
-                [formControl]="note"
-                [isVisibleDivider]="false"
-                [isVisibleNote]="true"
-                [isVisibleArrow]="false"
-                [minRows]="1"
-                [placeholder]="'Write something.'"
-                [customClass]="'note-small'"
-              >
-              </app-ta-input-note>
-            </div>
           </div>
-        </div>
-      </app-ta-re-card>
+        </app-ta-re-card>
+      </div>
     </div>
 
     <!---------------------------- Title TEMPLATE ----------------------------->
     <div *ngSwitchCase="'title'">
-      <app-ta-re-card
-        [cardNameCommon]="'20344694031'"
-        [cardDocumentCounter]="3"
-        [isCardOpen]="true"
-      >
-        <div class="state-issued-container">
-          <div class="state-issued-wrapper">
-            <div class="state-issued-title">Purchased</div>
-            <p class="state-issued-title-item">09/01/20</p>
+      <div *ngFor="let title of truckData.titles">
+        <app-ta-re-card
+          [cardDocumentCounter]="1"
+          (resizePage)="toggleResizePage($event)"
+          [cardNameCommon]="title.number"
+          [hasCopyIcon]="true"
+          [options]="dataTest"
+        > 
+        <div class="cards-container">
+          <div class="card-body-cdl">
+            <div class="card-row-endor">
+              <div class="card-item">
+                <div class="card-item-name">State</div>
+                <div class="card-item-value">KV</div>
+              </div>
+              <div class="card-item">
+                <div class="card-item-name">Issued</div>
+                <div class="card-item-value">{{formatDate(title.issueDate)}}</div>
+              </div>
+            </div>
+            <div class="card-row-progress" [ngClass]="{'second-progress':toggler}">
+              <div class="card-details-progress-container">
+                <app-truckassist-progress-expiration
+                  [expireDate]="'04/04/27'"
+                  [startDate]="formatDate(title.issueDate)"
+                  [expiresSettings]="'details'"
+                >
+                </app-truckassist-progress-expiration>
+              </div>
+            </div>
           </div>
-          <div class="state-issued-wrapper">
-            <div class="state-issued-title">Issued</div>
-            <p class="state-issued-title-item">04/04/04</p>
+          <div class="divider" *ngIf="toggler"></div>
+          <div *ngIf="toggler" class="note-wrapper">
+            <app-ta-input-note
+              [formControl]="titleNote"
+              [placeholder]="'Write something.'"
+              [customClass]="'note-small'"
+              [isVisibleArrow]="false"
+              [minRows]="1"
+              [isVisibleDivider]="false"
+              [isVisibleNote]="true"
+            ></app-ta-input-note>
           </div>
-        </div>
-      </app-ta-re-card>
+          </div>
+        </app-ta-re-card>
+      </div>
     </div>
     <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
     <div *ngSwitchCase="'lease-purchase'">
@@ -742,7 +616,7 @@
           </div>
 
           <!----------Progress Card---------->
-          <div class="details-progress-container purchase-progress">
+          <div class="details-progress-container purchase-progress" [ngClass]="{'no-toggler':!toggler}">
             <app-truckassist-progress-expiration
               [expireDate]="'12'"
               [startDate]="'8'"
@@ -752,6 +626,7 @@
           </div>
 
           <!----------Amortization table Card---------->
+          <div *ngIf="toggler">
           <div class="details-document-container amortization-details">
             <div class="divider"></div>
             <div class="icon-counter-wrapper">
@@ -795,11 +670,9 @@
                 <p class="p-date-text">12/01/20</p>
                 <p class="p-balance-text">$38,658.52</p>
               </div>
-
-              <div class="divider"></div>
             </div>
           </div>
-
+          <div class="divider"></div>
           <!----------Bank Card---------->
           <div class="bank-card">
             <app-ta-custom-card
@@ -887,6 +760,7 @@
               </app-ta-files>
             </div>
           </div>
+          <div class="divider"></div>
           <div class="details-page-row-5">
             <div class="note-item">
               <app-ta-input-note
@@ -900,6 +774,7 @@
               >
               </app-ta-input-note>
             </div>
+          </div>
           </div>
         </div>
       </app-ta-re-card>

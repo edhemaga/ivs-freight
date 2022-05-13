@@ -19,9 +19,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   public driverDetailsConfig: any[] = [];
   dataTest: any;
 
-  public driverData:any;
   private destroy$: Subject<void> = new Subject<void>();
-
   constructor(
     private driversQuery: DriversQuery,
     private activated_route: ActivatedRoute,
@@ -119,7 +117,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
       export: true,
     };
   }
-
+  
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

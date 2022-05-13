@@ -112,8 +112,8 @@
   grid-template-columns: repeat(2, 193px);
   grid-template-rows: repeat(1, 36px);
   grid-column-gap: 22px;
-  padding-bottom: 4px;
   padding: 0 10px;
+  margin-top: -1px;
   .purchase-template-item {
     .purchase-icon-copy {
       display: flex;
@@ -184,116 +184,12 @@ mat-button-toggle {
   background-color: #ffffff;
   color: #536bc2 !important;
 }
-.card-body-cdl {
-  display: grid;
-  margin-left: 16px;
-  margin-right: 16px;
-  .card-item-name {
-    font-size: $font-size12;
-    color: #6c6c6c;
-    font-weight: $font-semibold;
-    height: 15px;
-    margin-bottom: 3px;
-  }
-  .card-item-value {
-    font-size: $font-size14;
-    font-weight: 400;
-    color: #6c6c6c;
-    white-space: nowrap;
-    height: 18px;
-    &:hover {
-      color: #3c3c3c;
-    }
-  }
-  .card-row-issued {
-    display: grid;
-    grid-template-columns: 32px 32px 32px;
-    column-gap: 49px;
-    margin-top: 12px;
-  }
-  .card-row-endor {
-    display: grid;
-    grid-template-columns: 141px 141px;
-    column-gap: 21px;
-    margin-top: 12px;
-  }
-  .card-row-progress {
-    margin-top: 12px;
-  }
 
-  .card-icon-copy {
-    display: flex;
-    align-items: flex-start;
-    cursor: pointer;
-    .card-icon {
-      display: none;
-      position: relative;
-      margin-left: 6px;
-      bottom: 4px;
-      height: 18px;
-      svg {
-        fill: #aaaaaa;
-        &:hover {
-          path {
-            fill: #6c6c6c;
-          }
-        }
-      }
-    }
-    .card-icon {
-      height: 18px;
-      margin-left: 6px;
-    }
-    &:hover {
-      .card-icon {
-        display: block;
-      }
-    }
-  }
-
-  .second-progress {
-    margin-bottom: 16px;
-  }
-  .card-restriction {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    .restriction-name {
-      font-size: $font-size12;
-      font-weight: $font-semibold;
-      color: #6c6c6c;
-      height: 15px;
-    }
-    .restriction-item-value {
-      font-size: $font-size14;
-      font-weight: 400;
-      color: #6c6c6c;
-      height: 18px;
-      margin-bottom: 2px;
-      margin-top: 3px;
-      .value-name {
-        font-size: $font-size14;
-        font-weight: $font-semibold;
-        color: #6c6c6c;
-      }
-    }
-  }
-  .endorsement {
-    margin-top: 12px;
-  }
-}
-.card-pdf {
-  margin-right: 16px;
-  margin-left: 16px;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-}
 .card-note {
-  margin-top: 6px;
-  margin-left: 12px;
-  margin-right: 16px;
+  margin-left: 6px;
+  height: 40px;
   .note-body {
-    margin-left: 4px;
+    padding-left: 4px  !important;
   }
 }
 .divider {
@@ -314,8 +210,8 @@ mat-button-toggle {
     align-items: center;
     justify-content: space-between;
     margin-top: 3px;
-    margin-right: 12px;
-    margin-left: 8px;
+    padding-left: 2px;
+    padding-right: 6px;
   }
   .counter-text-wrapper {
     display: flex;
@@ -478,60 +374,12 @@ mat-button-toggle {
       }
     }
   }
-  .status-container {
-    padding-top: 12px;
-    display: flex;
-    flex-direction: column;
-    .status-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .status-item {
-        height: 18px;
-        .p-status {
-          font-size: $font-size14;
-          font-weight: 700;
-          color: #919191;
-        }
-      }
-    }
-    .status-items {
-      .item-wrapper {
-        display: grid;
-        grid-template-columns: 113px 149px 66px;
-        grid-column-gap: 40px;
-        .svg-text {
-          display: flex;
-          align-items: baseline;
-          .employment {
-            margin-left: 6px;
-          }
-        }
-        .duration {
-          text-align: right;
-        }
-        p {
-          font-size: 14px;
-          font-weight: 400;
-          color: #6c6c6c;
-        }
-      }
-    }
-  }
 }
 .details-page-row-5 {
   padding: 0 6px;
   padding-bottom: 6px;
 }
-.divider-common {
-  margin: 0;
-  height: 2px;
-  width: 323px;
-  margin-left: 6px;
-  margin-right: 6px;
-  border-radius: 1px;
-  background-color: $color-white-light;
-}
+
 .divider-employment {
   margin: 0;
   height: 2px;

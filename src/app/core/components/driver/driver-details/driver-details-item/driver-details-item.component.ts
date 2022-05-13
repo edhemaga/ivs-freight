@@ -292,12 +292,8 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     const driver_id=this.activated_route.snapshot.paramMap.get('id');
     this.driverTService.getDriverById(+driver_id).subscribe((data)=>{
       this.driverData=data;
-      let fullname= this.driverData.firstName+' ' +  this.driverData.lastName
-      this.currentDriverName=fullname;
-      console.log(this.driverData);
-      console.log(this.currentDriverName);
-      
-      
+      let fullname= this.driverData.firstName+ ' ' +  this.driverData.lastName
+      this.currentDriverName=fullname; 
     })
   }
   public getDriversList() {

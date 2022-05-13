@@ -10,13 +10,13 @@
       [borderRadius]="'2px'"
       [fontWeight]="'bold'"
       [fontSize]="'11px'"
-      [customPosition]="425"
+      [customPosition]="410"
       class="card-header-cmp"
       [ngClass]="{ 'card-flex': !isCardOpen }"
      >
       <div class="text-icon-common" [ngClass]="{ copied: copied }">
         <span
-          *ngIf="hasSvg"
+          *ngIf="hasSvg && isCardOpen"
           [ngClass]="{ 'card-close-icon': !isCardOpen }"
           class="icon-common"
         >
@@ -26,7 +26,7 @@
           class="card-name-cmp"
           [ngClass]="{ 'has-svgIcon': hasSvg, 'card-close-title': !isCardOpen }"
         >
-          {{ cardNameCommon }}
+         <span class="exp-text" *ngIf="!isCardOpen" [ngClass]="{'card-close-title': !isCardOpen }">Exp.</span> {{ cardNameCommon }}
         </p>
         <svg-icon
           *ngIf="isCardOpen && hasCopyIcon"

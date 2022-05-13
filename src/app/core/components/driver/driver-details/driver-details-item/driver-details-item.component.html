@@ -18,7 +18,7 @@
             <div class="driver-avatar">
               <img
                 class="driver-avatar-svg"
-                src="assets/svg/truckassist-table/user-avatar-no-profile.svg"
+                src="assets/svg/common/ic_no_avatar_driver.svg"
                 alt="Driver Image"
               />
             </div>
@@ -443,7 +443,7 @@
           [bodyTemplate]="'card'"
           [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         >
-          <div class="common-template perfomance">
+          <div class="charts-template perfomance">
             <mat-button-toggle-group
               [value]="selectedValuePayroll"
               (change)="changeValuePayroll($event.value)"
@@ -469,21 +469,21 @@
                 ALL</mat-button-toggle
               >
             </mat-button-toggle-group>
-            <div class="common-item-wrapper revenue">
-              <div class="common-template-item">
+            <div class="charts-item-wrapper revenue">
+              <div class="charts-template-item">
                 <div class="icon-name-item">
                   <svg-icon src="assets/svg/common/round_yellow.svg"></svg-icon>
-                  <div class="common-template-item-name">Miles</div>
+                  <div class="charts-template-item-name">Miles</div>
                 </div>
-                <div class="common-template-item-value">46,755.2 mi</div>
+                <div class="charts-template-item-value">46,755.2 mi</div>
               </div>
 
-              <div class="common-template-item fuel-item">
+              <div class="charts-template-item fuel-item">
                 <div class="icon-name-item">
                   <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                  <div class="common-template-item-name">Salary</div>
+                  <div class="charts-template-item-name">Salary</div>
                 </div>
-                <div class="common-template-item-value">$36.854.27</div>
+                <div class="charts-template-item-value">$36.854.27</div>
               </div>
             </div>
             <div id="chart">
@@ -717,11 +717,12 @@
       <div *ngFor="let cdl of driverData.cdls">
         <app-ta-re-card
           [options]="dataTest"
-          [cardDocumentCounter]="cdl.length"
+          [cardDocumentCounter]="6"
           (resizePage)="toggleResizePage($event)"
           [cardNameCommon]="cdl.cdlNumber"
           [hasCopyIcon]="true"
         >
+        <div class="cards-container">
           <div class="card-body-cdl">
             <div class="card-row-issued">
               <div class="card-item">
@@ -763,7 +764,7 @@
                 </p>
               </div>
             </div>
-            <div class="card-row-progress second-progress">
+            <div class="card-row-progress" [ngClass]="{'second-progress':toggler}">
               <div class="card-details-progress-container">
                 <app-truckassist-progress-expiration
                   [expireDate]="formatDate(cdl.expDate)"
@@ -775,8 +776,8 @@
             </div>
           </div>
 
-          <div class="divider-common"></div>
-          <div class="details-document-container">
+          <div class="divider" *ngIf="toggler"></div>
+          <div *ngIf="toggler" class="details-document-container">
             <div class="icon-counter-wrapper">
               <div class="counter-text-wrapper">
                 <app-ta-counter
@@ -795,7 +796,7 @@
               </svg-icon>
             </div>
           </div>
-          <div class="card-pdf">
+          <div *ngIf="toggler" class="card-pdf">
             <app-ta-files
               [files]="[
                 {
@@ -824,12 +825,12 @@
             >
             </app-ta-files>
           </div>
-          <div class="divider-common"></div>
-          <div class="card-note">
+          <div *ngIf="toggler" class="divider"></div>
+          <div *ngIf="toggler" class="card-note">
             <app-ta-input-note
               [formControl]="cdlNote"
               [isVisibleDivider]="false"
-              [isVisibleNote]="true"
+              [isVisibleNote]="false"
               [isVisibleArrow]="false"
               [minRows]="1"
               [placeholder]="'Write something.'"
@@ -837,68 +838,33 @@
             >
             </app-ta-input-note>
           </div>
+            </div>
         </app-ta-re-card>
       </div>
     </div>
     <div *ngSwitchCase="'drug-alcohol'">
-      <!-- <app-ta-re-card
-        [options]="dataTest"
-        [cardNameCommon]="'Drug Test'"
-        (resizePage)="toggleResizePage($event)"
-      >
-        <div class="card-body-cdl">
-          <div class="card-row-endor">
-            <div class="card-item">
-              <div class="card-item-name">Reason</div>
-              <div class="card-item-value">Resonable suspicion</div>
-            </div>
-            <div class="card-item">
-              <div class="card-item-name">Issued</div>
-              <div class="card-item-value">04/04/04</div>
-            </div>
-          </div>
-        </div>
-      </app-ta-re-card>
-
+      <div *ngFor="let test of driverData.tests">
       <app-ta-re-card
         [options]="dataTest"
-        [cardNameCommon]="'Alcohol Test'"
-        [cardDocumentCounter]="2"
+        [cardNameCommon]="test.testType"
         (resizePage)="toggleResizePage($event)"
       >
+      <div class="cards-container">
         <div class="card-body-cdl">
           <div class="card-row-endor">
             <div class="card-item">
               <div class="card-item-name">Reason</div>
-              <div class="card-item-value">Post-Accident</div>
+              <div class="card-item-value">{{test.testReason.reason}}</div>
             </div>
             <div class="card-item">
               <div class="card-item-name">Issued</div>
-              <div class="card-item-value">04/04/04</div>
+              <div class="card-item-value">{{formatDate(test.testingDate)}}</div>
             </div>
           </div>
         </div>
+      </div>
       </app-ta-re-card>
-
-      <app-ta-re-card
-        [options]="dataTest"
-        [cardNameCommon]="'Alcohol Test'"
-        [cardDocumentCounter]="1"
-        (resizePage)="toggleResizePage($event)"
-      >
-        <div class="card-body-cdl">
-          <div class="card-row-endor">
-            <div class="card-item">
-              <div class="card-item-name">Reason</div>
-              <div class="card-item-value">Post-Accident</div>
-            </div>
-            <div class="card-item">
-              <div class="card-item-name">Issued</div>
-              <div class="card-item-value">04/04/04</div>
-            </div>
-          </div>
-        </div>
-      </app-ta-re-card> -->
+    </div>
     </div>
     <div *ngSwitchCase="'medical'">
       <div *ngFor="let med of driverData.medicals">
@@ -906,6 +872,7 @@
           [options]="dataTest"
           [cardNameCommon]="formatDate(med.expDate)"
         >
+        <div class="cards-container">
           <div class="card-body-cdl">
             <div class="card-row-progress">
               <div class="card-details-progress-container">
@@ -918,22 +885,25 @@
               </div>
             </div>
           </div>
+          </div>
         </app-ta-re-card>
       </div>
     </div>
     <div *ngSwitchCase="'mvr'">
-      <!-- <div>
+      <div *ngFor="let mvr of driverData.mvrs">
        
         <app-ta-re-card
           [options]="dataTest"
           [cardDocumentCounter]="6"
-          [cardNameCommon]="'09/27/22'"
-        >
+          (resizePage)="toggleResizePage($event)"
+          [cardNameCommon]="formatDate(mvr.issueDate)"
+        > 
+         <div class="cards-container">
           <div class="card-body-cdl">
-            <div class="card-row-progress second-progress">
+            <div class="card-row-progress" [ngClass]="{'second-progress':toggler}">
               <div class="card-details-progress-container">
                 <app-truckassist-progress-expiration
-                  [expireDate]="'05/09/27'"
+                  [startDate]="formatDate(mvr.issueDate)"
                   
                   [expiresSettings]="'details'"
                 >
@@ -941,8 +911,8 @@
               </div>
             </div>
           </div>
-          <div class="divider-common"></div>
-          <div class="details-document-container">
+          <div *ngIf="toggler" class="divider"></div>
+          <div *ngIf="toggler" class="details-document-container">
             <div class="icon-counter-wrapper">
               <div class="counter-text-wrapper">
                 <app-ta-counter
@@ -961,7 +931,7 @@
               </svg-icon>
             </div>
           </div>
-          <div class="card-pdf">
+          <div *ngIf="toggler" class="card-pdf">
             <app-ta-files
               [files]="[
                 {
@@ -990,8 +960,8 @@
             >
             </app-ta-files>
           </div>
-          <div class="divider-common"></div>
-          <div class="card-note">
+          <div *ngIf="toggler" class="divider"></div>
+          <div *ngIf="toggler" class="card-note">
             <app-ta-input-note
               [formControl]="cdlNote"
               [isVisibleDivider]="false"
@@ -1003,8 +973,9 @@
             >
             </app-ta-input-note>
           </div>
+        </div>
         </app-ta-re-card>
-      </div> -->
+      </div>
     </div>
   </div>
 </div>
