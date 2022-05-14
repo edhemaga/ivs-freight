@@ -233,6 +233,25 @@ $transition: all 0.3s ease-in-out;
 .card-body-cdl {
   display: grid;
   padding: 0 10px;
+  .card-restriction-endorsment{
+    display: grid;
+    grid-template-columns: 110px 90px;
+    column-gap: 53px;
+    height: 44px;
+    .item-card-wrapper{
+      display: flex;
+      .restriction-item-value{
+      .value-name{
+        font-size: 14px !important;
+        font-weight: 400 !important;
+        color: #6c6c6c;
+      }
+      .value-name:nth-child(1){
+        content:", ";
+        }
+    }
+    }
+  }
   .card-item-name {
     font-size: $font-size12;
     color: #6c6c6c;
@@ -246,6 +265,14 @@ $transition: all 0.3s ease-in-out;
     color: #6c6c6c;
     white-space: nowrap;
     height: 18px;
+    &::-moz-selection {
+      color: $color-gray-dark;
+      background: rgb(183, 183, 183, 0.2);
+    }
+    &::selection {
+      color: $color-gray-dark;
+      background: rgb(183, 183, 183, 0.2);
+    }
     &:hover {
       color: #3c3c3c;
     }
@@ -318,6 +345,14 @@ $transition: all 0.3s ease-in-out;
         font-size: $font-size14;
         font-weight: $font-semibold;
         color: #6c6c6c;
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
       }
     }
   }

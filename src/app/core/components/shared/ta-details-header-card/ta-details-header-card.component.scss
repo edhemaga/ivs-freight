@@ -15,37 +15,6 @@ $color-gray: #919191;
 $color-gray-dark: #6c6c6c;
 $border-radius: 3px;
 
-::ng-deep .input-custom-group {
-    .input-dropdown-arrow {
-        top: 10px !important;
-        svg {
-            display: none !important;
-        }
-    }
-    &:hover {
-        .input-dropdown-arrow {
-            svg {
-                display: block !important;
-            }
-        }
-    }
-
-    .input-control {
-        background-color: transparent !important;
-        font-size: $font-size20 !important;
-        color: #6c6c6c !important;
-        font-weight: $font-bold !important;
-        cursor: pointer;
-        &:hover {
-            background-color: #f3f3f3 !important;
-            color: #3c3c3c !important;
-        }
-        &:focus {
-            background-color: #6c6c6c !important;
-        }
-    }
-}
-
 // GENERAL SWITCHER DRIVER
 .details-header-wrapper {
     background-color: $color-white;
@@ -55,16 +24,50 @@ $border-radius: 3px;
         margin: 0px;
     }
     .details-header-wrapper-switcher {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 44px;
-        width: 440px;
-        .name-icon {
+        padding-left: 6px;
+        padding-top: 6px;
+        padding-right: 13px;
+        display: grid;
+        grid-template-columns: 366px 53px;
+        .arrows {
             display: flex;
             align-items: center;
-            width: 366px;
-            margin-left: 6px;
+            width: 100%;
+            justify-content: flex-end;
+            margin-left: 9px;
+            .arrow-left {
+                cursor: pointer;
+                padding: 0 5px;
+                &:hover {
+                    background: #f3f3f3;
+                    width: 28px;
+                    border-radius: 2px;
+                    margin-top: 2px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+            .arrow-right {
+                cursor: pointer;
+                padding: 0 5px;
+                &:hover {
+                    background: #f3f3f3;
+                    width: 28px;
+                    border-radius: 2px;
+                    margin-top: 2px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    height: 100%;
+                    display: flex;
+                    position: relative;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
         }
     }
     .details-header-wrapper-switcher-name {
@@ -99,11 +102,10 @@ $border-radius: 3px;
                 font-weight: 400;
                 P {
                     color: #aaaaaa;
-                    &:hover{
+                    &:hover {
                         color: #3c3c3c !important;
                     }
                 }
-                
             }
         }
         .second {
@@ -138,50 +140,6 @@ $border-radius: 3px;
     }
 }
 
-.arrows {
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-    .arrow-right {
-        margin-bottom: 13px;
-        margin-top: 13px;
-        margin-right: 13px;
-        margin-left: 10px;
-
-        &:hover {
-            background-color: #f3f3f3;
-            height: 28px;
-            width: 28px;
-            border-radius: 2px;
-            text-align: center;
-            margin-top: 8px !important;
-            margin-bottom: 8px !important;
-            margin-left: 5px !important;
-            margin-right: 8px !important;
-            cursor: pointer;
-            svg {
-                vertical-align: bottom !important;
-            }
-        }
-    }
-    .arrow-left {
-        &:hover {
-            background-color: #f3f3f3;
-            height: 28px;
-            width: 28px;
-            border-radius: 2px;
-            text-align: center;
-            margin-top: 8px !important;
-            margin-left: 4px !important;
-            margin-right: -5.5px;
-            margin-bottom: 8px !important;
-            cursor: pointer;
-            svg {
-                vertical-align: bottom !important;
-            }
-        }
-    }
-}
 .border-line {
     margin: 0;
     height: 2px;
@@ -193,24 +151,54 @@ $border-radius: 3px;
 }
 .dropInput {
     width: 366px;
-}
-.date-add{
-     svg{
-        &:hover{
+    .input-custom-group {
+        .input-dropdown-arrow {
+            top: 10px !important;
+            svg {
+                display: none !important;
+            }
+        }
+        &:hover {
+            .input-dropdown-arrow {
+                svg {
+                    display: block !important;
+                }
+            }
+        }
+
+        .input-control {
+            background-color: transparent !important;
+            font-size: $font-size20 !important;
+            color: #6c6c6c !important;
+            font-weight: $font-bold !important;
             cursor: pointer;
-          path{
-              fill: #919191;
-          }  
+            &:hover {
+                background-color: #f3f3f3 !important;
+                color: #3c3c3c !important;
+            }
+            &:focus {
+                background-color: #6c6c6c !important;
+            }
         }
     }
 }
-.date-terminated{
-    svg{
-        &:hover{
+.date-add {
+    svg {
+        &:hover {
             cursor: pointer;
-          path{
-              fill: #919191;
-          }  
+            path {
+                fill: #919191;
+            }
+        }
+    }
+}
+.date-terminated {
+    svg {
+        &:hover {
+            cursor: pointer;
+            path {
+                fill: #919191;
+            }
         }
     }
 }

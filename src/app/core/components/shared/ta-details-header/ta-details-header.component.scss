@@ -40,12 +40,6 @@
     .header-plus-button {
         display: flex;
         align-items: center;
-        svg {
-            margin: 8px;
-            &:hover {
-                cursor: pointer;
-            }
-        }
     }
 }
 .border-line-left {
@@ -60,4 +54,21 @@ svg {
         cursor: pointer;
     }
 }
-
+.icon-plus-header {
+    height: 28px;
+    width: 28px;
+    margin-left: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+    cursor: pointer;
+    &:hover {
+        background-color: #6d82c7;       
+        svg {
+            path {
+                fill: #fff;
+            }
+        }
+    }
+}

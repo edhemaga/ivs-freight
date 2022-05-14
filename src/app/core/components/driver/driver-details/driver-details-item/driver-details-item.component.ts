@@ -72,18 +72,18 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public accountText: string = null;
   public arrayDrivers: any = [];
   public arrayDriverName: any = '';
-  public currentDriverName:string;
+  public currentDriverName: string;
   public driverId: number = 0;
   public showMoreEmployment: boolean = false;
   public employmentHistory: any = [];
   dataTest: any;
-  public driverData:any;
+  public driverData: any;
   constructor(
     private customModalService: CustomModalService,
     private driversQuery: DriversQuery,
     private activated_route: ActivatedRoute,
-    private driverTService:DriverTService
-    ) {
+    private driverTService: DriverTService
+  ) {
     this.arrayDrivers = [
       {
         id: 1,
@@ -236,16 +236,13 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     };
   }
 
-  ngOnInit():void {
+  ngOnInit(): void {
     console.log(this.data);
     this.selectedValuePayroll = '1Y';
     this.initTableOptions();
     this.getDriversList();
     this.getEmploymentHistory();
-    this.getDriverById()
-   
-   
-      
+    this.getDriverById();
   }
 
   public getEmploymentHistory() {
@@ -254,47 +251,46 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
         status: 'Employed',
         fromTo: '08/10/21 - 04/23/22',
         duration: '0y 204 d',
-        svgIcon:'assets/svg/common/round_blue.svg',
-        hasDivider:true
+        svgIcon: 'assets/svg/common/round_blue.svg',
+        hasDivider: true,
       },
       {
         status: 'Deactivated',
         fromTo: '04/24/22 - 07/05/23',
         duration: '1y 103 d',
-        svgIcon:'assets/svg/common/ic_circle_light_blue.svg',
-        hasDivider:true
+        svgIcon: 'assets/svg/common/ic_circle_light_blue.svg',
+        hasDivider: true,
       },
       {
         status: 'Employed',
         fromTo: '07/06/23 - 07/21/24',
         duration: '1y 16 d',
-        svgIcon:'assets/svg/common/round_blue.svg',
-        hasDivider:true
+        svgIcon: 'assets/svg/common/round_blue.svg',
+        hasDivider: true,
       },
       {
         status: 'Deactivated',
         fromTo: '07/22/24 - 09/04/24',
         duration: '0y 53 d',
-        svgIcon:'assets/svg/common/ic_circle_light_blue.svg',
-        hasDivider:true
+        svgIcon: 'assets/svg/common/ic_circle_light_blue.svg',
+        hasDivider: true,
       },
       {
         status: 'Employed',
         fromTo: '09/05/24 - Today',
         duration: '0y 247 d',
-        svgIcon:'assets/svg/common/round_blue.svg',
-        hasDivider:false
+        svgIcon: 'assets/svg/common/round_blue.svg',
+        hasDivider: false,
       },
     ];
   }
-   
-  public getDriverById(){
-    const driver_id=this.activated_route.snapshot.paramMap.get('id');
-    this.driverTService.getDriverById(+driver_id).subscribe((data)=>{
-      this.driverData=data;
-      let fullname= this.driverData.firstName+ ' ' +  this.driverData.lastName
-      this.currentDriverName=fullname; 
-    })
+
+  public getDriverById() {
+    const driver_id = this.activated_route.snapshot.paramMap.get('id');
+    this.driverTService.getDriverById(+driver_id).subscribe((data) => {
+      this.driverData = data;
+      this.currentDriverName = this.driverData.firstName;
+    });
   }
   public getDriversList() {
     for (let i = 0; i < this.arrayDrivers.length; i++) {
@@ -427,6 +423,21 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
 
   public formatDate(date: string) {
     return moment(date).format('MM/DD/YY');
+  }
+  public formatPhone(phoneNumberString: string) {
+    const value = phoneNumberString;
+    const number = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+    phoneNumberString = number;
+    return number;
+  }
+
+  public formatHistoryDays(workDate: string) {
+    const dateB = moment(workDate);
+    const dateC = moment().format();
+    const year= dateB.diff(dateC,'year')
+    const days=dateB.diff(dateC,'days')
+    console.log(year);
+    
   }
 
   public formatText(data: any, type: boolean, numOfCharacters: string) {

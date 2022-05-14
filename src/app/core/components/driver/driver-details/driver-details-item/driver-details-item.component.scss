@@ -56,7 +56,7 @@
         display: none;
         position: relative;
         margin-left: 6px;
-        bottom: 8px;
+        bottom: 7px;
         height: 18px;
         svg {
           &:hover {
@@ -81,6 +81,8 @@
       }
       .ssn {
         font-size: 18px !important;
+        position: relative;
+        bottom: -2px;
       }
 
       .information-svg {
@@ -113,7 +115,7 @@
   grid-template-rows: repeat(1, 36px);
   grid-column-gap: 22px;
   padding: 0 10px;
-  margin-top: -1px;
+  margin-top: -7px;
   .purchase-template-item {
     .purchase-icon-copy {
       display: flex;
@@ -159,6 +161,14 @@
     .purchase-template-item-value {
       font-size: $font-size14;
       font-weight: 400;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
     }
   }
 }
@@ -189,7 +199,7 @@ mat-button-toggle {
   margin-left: 6px;
   height: 40px;
   .note-body {
-    padding-left: 4px  !important;
+    padding-left: 4px !important;
   }
 }
 .divider {
@@ -283,6 +293,7 @@ mat-button-toggle {
     display: flex;
     align-items: center;
     margin-bottom: 12px;
+    margin-top: -7px;
     .items-wrapper {
       flex-direction: column;
     }
@@ -305,7 +316,11 @@ mat-button-toggle {
     height: 42px;
     display: flex;
     flex-direction: column;
-
+    &:hover {
+      .employment-tooltip {
+        display: block;
+      }
+    }
     .employment-tooltip {
       width: 424px;
       height: 52px;
@@ -355,11 +370,7 @@ mat-button-toggle {
       width: 100%;
       height: 18px;
       background-color: #6d82c8;
-      &:hover {
-        .employment-tooltip {
-          display: block;
-        }
-      }
+     
     }
     .year-employer {
       display: flex;
@@ -391,6 +402,6 @@ mat-button-toggle {
   border-radius: 1px;
   background-color: $color-white-light;
 }
-.has-counter{
+.has-counter {
   padding-left: 2px !important;
 }
