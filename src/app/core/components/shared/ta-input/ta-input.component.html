@@ -316,6 +316,7 @@
         focusInput
     }"
     [(ngModel)]="input.value"
+    (keyup)="dropdownNavigator($event)"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onBackspace($event)"
     (input)="onChange($event.target.value)"

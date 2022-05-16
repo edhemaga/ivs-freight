@@ -18,6 +18,7 @@ import { ContactModalComponent } from '../../modals/contact-modal/contact-modal.
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
+import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -95,6 +96,12 @@ export class NavigationModalsComponent {
       }
       case 'owner': {
         this.modalService.openModal(OwnerModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
+      case 'user': {
+        this.modalService.openModal(UserModalComponent, {
           size: 'small',
         });
         break;

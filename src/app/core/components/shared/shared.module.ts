@@ -94,6 +94,7 @@ import { TruckassistTableModule } from './truckassist-table/truckassist-table.mo
 import { ShipperModalComponent } from '../modals/shipper-modal/shipper-modal.component';
 import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component';
 import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-currency-progress-bar.component';
+import { UserModalComponent } from '../modals/user-modal/user-modal.component';
 
 @NgModule({
   declarations: [
@@ -144,6 +145,7 @@ import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-cu
     BrokerModalComponent,
     ShipperModalComponent,
     OwnerModalComponent,
+    UserModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -287,6 +289,7 @@ import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-cu
     BrokerModalComponent,
     ShipperModalComponent,
     OwnerModalComponent,
+    UserModalComponent,
 
     // Pipes
     InputErrorPipe,

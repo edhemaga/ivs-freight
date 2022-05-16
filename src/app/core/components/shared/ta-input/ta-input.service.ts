@@ -15,6 +15,9 @@ export class TaInputService {
   public dropDownShowHideSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
+  public dropDownNavigatorSubject: BehaviorSubject<number> =
+  new BehaviorSubject<number>(0);
+
   public dropdownAddModeSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 

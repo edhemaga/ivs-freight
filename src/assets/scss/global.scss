@@ -87,7 +87,7 @@
 
 // GLOBAL SCROLLBAR
 body{
-  overflow: scroll;
+  overflow-y: scroll !important;
 }
 
 * {

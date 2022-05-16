@@ -277,6 +277,28 @@ export class TaInputComponent
     }
   }
 
+  public dropdownNavigator(event : any) {
+    
+    if(this.inputConfig.isDropdown) {
+      if(event.keyCode === 40 || event.keyCode === 38)  {
+        this.inputService.dropDownNavigatorSubject.next(event.keyCode);
+      }
+      if(event.keyCode === 13) {
+        this.inputService.dropDownNavigatorSubject.next(event.keyCode);
+      }
+      if(event.keyCode === 27) {
+        this.blurOnDropDownArrow();
+        this.input.nativeElement.blur();
+      }
+      if(event.keyCode === 9) {
+        this.onFocus();
+        this.input.nativeElement.focus();
+      }
+     
+    }
+  
+  }
+
   public manipulateWithInput(event: KeyboardEvent): boolean {
     // Disable first character to be space
     if (
