@@ -9,6 +9,7 @@ export class TaCurrencyProgressBarComponent implements OnInit {
   @Input() totalAmount: number;
   @Input() paidSoFarAmount: number;
   @Input() progressBarName: string;
+  @Input() template: string;
 
   public activePercentageOfPaid: number = 0;
   public status = null;

@@ -22,7 +22,7 @@ export class TaInputRadiobuttonsComponent {
   public onChange(button: RadioButton): void {
     this.buttons.filter((item) => (item.checked = false));
     button.checked = true;
-    console.log(this.buttons)
+    console.log(this.buttons);
     this.changedValue.emit(this.buttons);
   }
 
