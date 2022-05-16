@@ -106,9 +106,10 @@
   }
 
   &.invalid-focus-out,
-  &.invalid-focus-out-required,
-  &.invalid-focus-in-empty-required {
+  &.invalid-focus-out-required {
     display: inline-block;
+    cursor: default !important;
+    pointer-events: none;
     .input-clear-x {
       svg {
         rect {
@@ -116,6 +117,25 @@
         }
         path {
           fill: #e57373;
+        }
+      }
+      &:hover {
+        transform: scale(1) !important;
+      }
+    }
+  }
+
+  &.invalid-focus-in-empty-required {
+    display: inline-block;
+    cursor: default !important;
+    pointer-events: none;
+    .input-clear-x {
+      svg {
+        rect {
+          fill: transparent;
+        }
+        path {
+          fill: #dadada !important;
         }
       }
       &:hover {

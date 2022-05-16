@@ -21,6 +21,7 @@ import {
   CreateBrokerCommand,
   UpdateBrokerCommand,
 } from 'appcoretruckassist';
+import { einNumberRegex, emailRegex, phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-broker-modal',
@@ -129,14 +130,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       businessName: [null, Validators.required],
       dbaName: [null],
       mcNumber: [null, Validators.maxLength(8)],
-      ein: [null, [Validators.pattern(/^\d{2}\-\d{7}$/)]],
+      ein: [null, [einNumberRegex]],
       email: [
         null,
-        [Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)],
+        [emailRegex],
       ],
       phone: [
         null,
-        [Validators.required, Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)],
+        [Validators.required, phoneRegex],
       ],
       // Physical Address
       physicalAddress: [null],

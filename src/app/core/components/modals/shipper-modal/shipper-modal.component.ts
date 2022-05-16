@@ -1,3 +1,4 @@
+import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
 import { ShipperModalResponse } from './../../../../../../appcoretruckassist/model/shipperModalResponse';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -20,6 +21,7 @@ import {
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { ShipperModalService } from './shipper-modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-shipper-modal',
@@ -95,12 +97,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       businessName: [null, Validators.required],
       phone: [
         null,
-        [Validators.required, Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)],
+        [Validators.required, phoneRegex],
       ],
       phoneExt: [null],
       email: [
         null,
-        Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/),
+        emailRegex,
       ],
       address: [null, Validators.required],
       addressUnit: [null],
