@@ -1,13 +1,7 @@
 import { FormArray } from '@angular/forms';
 import { distinctUntilChanged } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
-import {
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -25,7 +19,15 @@ import {
   UpdateDriverCommand,
 } from 'appcoretruckassist';
 import moment from 'moment';
-import { accountBankRegex, einNumberRegex, routingBankRegex, ssnNumberRegex, emailRegex, phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  accountBankRegex,
+  einNumberRegex,
+  routingBankRegex,
+  ssnNumberRegex,
+  emailRegex,
+  phoneRegex,
+  bankRoutingValidator,
+} from '../../shared/ta-input/ta-input.regex-validations';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -116,6 +118,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.onPayTypeSelected();
     this.onTwicTypeSelected();
     this.getDriverDropdowns();
+
     this.ownerTabs = this.mockModalService.ownerTabs;
 
     if (this.editData) {
@@ -153,21 +156,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.driverForm = this.formBuilder.group({
       firstName: [null, [Validators.required]],
       lastName: [null, [Validators.required]],
-      phone: [
-        null,
-        [Validators.required, phoneRegex],
-      ],
-      email: [
-        null,
-        [
-          Validators.required,
-          emailRegex,
-        ],
-      ],
-      ssn: [
-        null,
-        [Validators.required, ssnNumberRegex],
-      ],
+      phone: [null, [Validators.required, phoneRegex]],
+      email: [null, [Validators.required, emailRegex]],
+      ssn: [null, [Validators.required, ssnNumberRegex]],
       note: [null],
       avatar: [null],
       dateOfBirth: [null, [Validators.required]],
@@ -264,12 +255,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.inputService.changeValidators(
             this.driverForm.get('routing'),
             true,
-            [routingBankRegex]
+            routingBankRegex
           );
+          this.routingNumberTyping();
           this.inputService.changeValidators(
             this.driverForm.get('account'),
             true,
-            [accountBankRegex]
+            accountBankRegex
           );
         } else {
           this.isBankSelected = false;
@@ -281,6 +273,21 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.driverForm.get('account'),
             false
           );
+        }
+      });
+  }
+
+  private routingNumberTyping() {
+    this.driverForm
+      .get('routing')
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          if (bankRoutingValidator(value)) {
+            this.driverForm.get('routing').setErrors(null);
+          } else {
+            this.driverForm.get('routing').setErrors({ invalid: true });
+          }
         }
       });
   }
