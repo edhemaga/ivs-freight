@@ -53,6 +53,10 @@
         fill: #BDCAEB !important;
       }
     }
+
+    text {
+      fill: #BDCAEB !important;
+    }
   }
 
   &.valid-required-out {
@@ -61,6 +65,10 @@
       path {
         fill: #97a8dc;
       }
+    }
+
+    text {
+      fill: #97a8dc !important;
     }
   }
 
@@ -71,6 +79,10 @@
         fill: #FFCDD2 !important;
       }
     }
+
+    text {
+      fill: #FFCDD2 !important;
+    }
   }
 
   &.invalid-required-empty,
@@ -80,6 +92,10 @@
       path {
         fill: #e57373;
       }
+    }
+
+    text {
+      fill: #e57373 !important;
     }
   }
 

@@ -21,6 +21,7 @@ export interface CreateDriverCommand {
     email?: string | null;
     ssn?: string | null;
     note?: string | null;
+    avatar?: string | null;
     dateOfBirth?: string;
     offDutyLocations?: Array<CreateOffDutyLocationCommand> | null;
     isOwner?: boolean;

@@ -144,19 +144,21 @@
             ></svg-icon>
           </div>
           <div
+            *ngIf="driverForm.get('isOwner').value"
             class="checkbox-card-body"
-            [ngClass]="{'active': driverForm.get('isOwner').value}"
+            [ngClass]="{ active: driverForm.get('isOwner').value }"
           >
             <app-status-switcher
-              *ngIf="driverForm.get('isOwner').value"
               (switchClicked)="tabOwnerChange($event)"
               [data]="ownerTabs"
               [customClass]="'owner-switch'"
             ></app-status-switcher>
             <div
-              *ngIf="driverForm.get('isOwner').value"
               class="animation-checkbox-card-tabs"
-              [ngClass]="{ 'fade-checkbox-inputs': selectedOwnerTab?.name.toLowerCase() === 'company' }"
+              [ngClass]="{
+                'fade-checkbox-inputs':
+                  selectedOwnerTab?.name.toLowerCase() === 'company'
+              }"
             >
               <div class="row">
                 <div class="col-4">
@@ -249,7 +251,10 @@
           </div>
         </app-ta-custom-card>
         <!-- Note -->
-        <app-ta-input-note formControlName="note" [isVisibleNote]="driverForm.get('note').value"></app-ta-input-note>
+        <app-ta-input-note
+          formControlName="note"
+          [isVisibleNote]="driverForm.get('note').value"
+        ></app-ta-input-note>
       </div>
       <!-------------------------------- Pay Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
@@ -370,7 +375,9 @@
         <!-- Pay Type Per Mile -->
         <div
           class="paytype-permile"
-          [class.active]="driverForm.get('payType').value?.toLowerCase() === 'per mile'"
+          [class.active]="
+            driverForm.get('payType').value?.toLowerCase() === 'per mile'
+          "
           *ngIf="driverForm.get('payType').value?.toLowerCase() === 'per mile'"
         >
           <div class="permile-fields">
@@ -461,7 +468,9 @@
           *ngIf="
             driverForm.get('payType').value?.toLowerCase() === 'commission'
           "
-          [class.active]="driverForm.get('payType').value?.toLowerCase() === 'commission'"
+          [class.active]="
+            driverForm.get('payType').value?.toLowerCase() === 'commission'
+          "
         >
           <div class="paytype-field">
             <app-ta-ngx-slider
@@ -493,15 +502,10 @@
       </div>
 
       <div class="m-tab" *ngIf="selectedTab === 3">
-        <div
-          class="row dropdown-row"
-          style="
-            height: 194px;
-            width: 456px;
-            border: 1px solid black;
-            margin: 0 auto;
-          "
-        ></div>
+        <app-ta-logo-change
+          [imageUrl]="this.driverForm.get('avatar').value"
+          (base64ImageEvent)="onUploadImage($event)"
+        ></app-ta-logo-change>
         <div class="row last-row">
           <div class="col-2 twic-driver">
             <app-ta-checkbox

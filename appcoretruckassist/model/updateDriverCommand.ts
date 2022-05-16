@@ -22,6 +22,7 @@ export interface UpdateDriverCommand {
     email?: string | null;
     ssn?: string | null;
     note?: string | null;
+    avatar?: string | null;
     dateOfBirth?: string;
     offDutyLocations?: Array<UpdateOffDutyLocationCommand> | null;
     ownerId?: number | null;
