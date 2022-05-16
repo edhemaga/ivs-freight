@@ -1,8 +1,8 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -13,18 +13,14 @@ import { Options } from '@angular-slider/ngx-slider';
 @Component({
   selector: 'app-ta-logo-change',
   templateUrl: './ta-logo-change.component.html',
-  styleUrls: ['./ta-logo-change.component.scss']
+  styleUrls: ['./ta-logo-change.component.scss'],
 })
-export class TaLogoChangeComponent implements OnInit {
-  @Input() src: string;
-  @Output()
-  saveAvatar: EventEmitter<string> = new EventEmitter<string>();
-  @Output()
-  cancel: EventEmitter<string> = new EventEmitter<string>();
+export class TaLogoChangeComponent implements AfterViewInit {
+  @Input() imageUrl: string;
+  @Output() base64ImageEvent: EventEmitter<string> = new EventEmitter<string>();
+
   // croppie
-  public croppedImage = '';
-  @ViewChild('croppie')
-  public croppieDirective: CroppieDirective | any;
+  @ViewChild('croppie') croppieDirective: CroppieDirective | any;
   public croppieOptions: Croppie.CroppieOptions = {
     enableExif: true,
     viewport: {
@@ -37,13 +33,13 @@ export class TaLogoChangeComponent implements OnInit {
       height: 144,
     },
   };
+  public imageScale = 0.5;
+
   // dropzone
-  public showDropzone = true;
-  public uploadedImageFile: any = null;
-  public files: File[] = [];
+  public showUploadZone = true;
+
   // slider
-  public slideInit = 0.5;
-  public logoOptions: Options = {
+  public ngxLogoOptions: Options = {
     floor: 0.1,
     ceil: 1.5,
     step: 0.1,
@@ -51,73 +47,73 @@ export class TaLogoChangeComponent implements OnInit {
     showSelectionBar: true,
     hideLimitLabels: true,
   };
-  public scale = 0.75;
-  avatarError = false;
-  showUploadZone = true;
+  public ngxSliderPosition = 0.5;
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  // upload file
+  public file: any;
+  public savedFile: any = null;
 
   public ngAfterViewInit() {
-    if (this.src) {
+    if (this.imageUrl) {
       this.croppieDirective.croppie.bind({
-        url: this.src,
+        url: this.imageUrl,
         points: [188, 101, 260, 191],
         zoom: 0,
       });
-
-      this.slideInit = 0;
-      this.showDropzone = false;
+      this.ngxSliderPosition = 0;
+      this.showUploadZone = false;
     }
   }
 
-  onSelect(event: any) {
-    this.files.push(...event.addedFiles);
+  public async onSelect(event: any) {
+    this.file = event.addedFiles[0];
+    const url = await this.drawImage(this.file);
 
-    const file = this.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      this.croppieDirective.croppie.bind({
-        url: reader.result as string,
-        points: [188, 101, 260, 191],
-        zoom: this.scale,
-      });
-      this.showDropzone = false;
-    };
+    this.croppieDirective.croppie.bind({
+      url: url as string,
+      points: [188, 101, 260, 191],
+      zoom: this.imageScale,
+    });
   }
 
-  public handleUpdate(event) {
-    this.slideInit = event.zoom;
+  public async drawImage(file: any) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.showUploadZone = false;
+        resolve(reader.result);
+      };
+      reader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  }
+
+  public handleCroppieUpdate(event) {
+    this.ngxSliderPosition = event.zoom;
   }
 
   public zooming(event: any) {
-    this.scale = event ? event : 0.1;
-    this.croppieDirective.croppie.setZoom(this.scale);
+    this.imageScale = event ? event : 0.1;
+    this.croppieDirective.croppie.setZoom(this.imageScale);
   }
 
   public saveImage() {
     this.croppieDirective.croppie.result('base64').then((base64) => {
-      this.croppedImage = base64;
-      this.avatarError = false;
-      this.saveAvatar.emit(base64);
+      this.base64ImageEvent.emit(base64);
+      this.savedFile = base64;
+      this.showUploadZone = false;
     });
   }
 
-  public onRemove() {
-    if (this.src) {
-      this.cancel.emit();
-      this.showDropzone = false;
-    } else {
-      this.files = [];
-      this.showDropzone = true;
-      /* this.cancel.emit(); */
-    }
+  public onDeleteSavedImage() {
+    this.showUploadZone = true;
+    this.savedFile = null;
+    this.base64ImageEvent.emit(null);
   }
 
-  public editProfileImage() {
+  public onCancel() {
     this.showUploadZone = true;
   }
-
 }

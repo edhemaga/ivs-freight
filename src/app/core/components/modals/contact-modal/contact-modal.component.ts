@@ -17,6 +17,8 @@ import {
   UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
+import { Address } from '../../shared/ta-input-address/ta-input-address.component';
+import { emailRegex, phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-contact-modal',
@@ -51,7 +53,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 1,
+        id: 2,
       };
       this.editCompanyContact(this.editData.id);
     }
@@ -61,10 +63,10 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.contactForm = this.formBuilder.group({
       name: [null, [Validators.required, Validators.maxLength(23)]],
       companyContactLabelId: [null],
-      phone: [null, [Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)]],
+      phone: [null, [phoneRegex]],
       email: [
         null,
-        [Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)],
+        [emailRegex],
       ],
       address: [null],
       addressUnit: [null, [Validators.maxLength(6)]],
@@ -135,16 +137,17 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         next: (res: CompanyContactResponse) => {
           this.contactForm.patchValue({
             name: res.name,
-            companyContactLabelId: res.companyContactLabel.name,
+            companyContactLabelId: res.companyContactLabel ? res.companyContactLabel.name : null,
             phone: res.phone,
             email: res.email,
-            address: res.address.address,
-            addressUnit: res.address.addressUnit,
+            address: res.address ? res.address.address : null,
+            addressUnit: res.address ? res.address.addressUnit : null,
             shared: res.shared,
             sharedLabelId: null, // TODO: Ceka se BACK
             note: res.note,
           });
           this.selectedContactLabel = res.companyContactLabel;
+          this.selectedAddress = res.address
           // TODO: shared departments label selected
         },
         error: () => {
@@ -155,10 +158,11 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   private addCompanyContact(): void {
     const { sharedLabelId, addressUnit, ...form } = this.contactForm.value;
-    const { streetName, streetNumber, ...address } = this.selectedAddress;
+    const { streetName, streetNumber, ...address } = this.selectedAddress || {};
+
     const newData: CreateCompanyContactCommand = {
       ...form,
-      companyContactLabelId: this.selectedContactLabel.id,
+      companyContactLabelId: this.selectedContactLabel ? this.selectedContactLabel.id : null,
       address: {
         ...address,
         addressUnit,
@@ -185,15 +189,15 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   private updateCompanyContact(id: number): void {
     const { sharedLabelId, addressUnit, ...form } = this.contactForm.value;
-    const { streetName, streetNumber, ...address } = this.selectedAddress;
+    const { streetName, streetNumber, ...address } = this.selectedAddress || {};
     const newData: UpdateCompanyContactCommand = {
+      id: id,
       ...form,
-      companyContactLabelId: this.selectedContactLabel.id,
+      companyContactLabelId: this.selectedContactLabel ? this.selectedContactLabel.id : null,
       address: {
         ...address,
         addressUnit,
-      },
-      id: id,
+      }
     };
     this.contactModalService
       .updateCompanyContact(newData)
@@ -240,8 +244,11 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.selectedSharedDepartment = event;
   }
 
-  public onHandleAddress($event): void {
-    this.selectedAddress = $event;
+  public onHandleAddress(event: {address: Address, valid: boolean}): void {
+    this.selectedAddress = event.address;
+    if(!event.valid) {
+      this.contactForm.setErrors({'invalid': event.valid})
+    }
   }
 
   ngOnDestroy(): void {}

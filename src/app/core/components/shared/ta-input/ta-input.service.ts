@@ -15,6 +15,9 @@ export class TaInputService {
   public dropDownShowHideSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
+  public dropDownNavigatorSubject: BehaviorSubject<number> =
+  new BehaviorSubject<number>(0);
+
   public dropdownAddModeSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
@@ -22,9 +25,6 @@ export class TaInputService {
     new BehaviorSubject<boolean>(false);
 
   public activeItemDropdownSubject: BehaviorSubject<any> =
-    new BehaviorSubject<any>(null);
-
-  public isInputMarkedInvalidSubject: BehaviorSubject<any> =
     new BehaviorSubject<any>(null);
 
   constructor(
@@ -43,7 +43,7 @@ export class TaInputService {
     if (!isSpecialCase) {
       this.spinnerService.show(true);
     }
-    this.isInputMarkedInvalidSubject.next(true);
+  
     if (formGroup.invalid) {
       (Object as any).values(formGroup.controls).forEach((control: any) => {
         control.markAsTouched();

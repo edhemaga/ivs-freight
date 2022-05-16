@@ -60,6 +60,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideViewMode: false,
+        viewModeActive: "List"
       },
       config: {
         showSort: true,
@@ -227,6 +228,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setDriverData(event.tabData);
+    } else if (event.action === 'view-mode'){
+      this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
   }
 

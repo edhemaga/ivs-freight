@@ -3,6 +3,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
+import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-settings-user',
@@ -19,7 +21,7 @@ export class SettingsUserComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService, private tableService: TruckassistTableService) {}
+  constructor(private modalService: ModalService, private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -231,9 +233,20 @@ export class SettingsUserComponent implements OnInit {
     return data;
   }
 
+  onTableBodyActions(event: any) {
+    if (event.type === 'edit') {
+      this.modalService.openModal(
+        UserModalComponent,
+        { size: 'small' },
+      );
+    }
+  }
+
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba da se odradi modal!');
+      this.modalService.openModal(UserModalComponent, {
+        size: 'small',
+      });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setUserData(event.tabData);

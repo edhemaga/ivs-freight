@@ -1,0 +1,304 @@
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add User' : 'Edit User'"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="userForm.valid"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <app-tab-switcher
+    (switchClicked)="tabChange($event)"
+    [tabs]="tabs"
+  ></app-tab-switcher>
+
+  <form [formGroup]="userForm" class="form-container">
+    <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
+      <!-------------------------------- Basic Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 1">
+        <div class="row">
+          <div class="col-6">
+            <app-ta-input
+              formControlName="firstName"
+              [inputConfig]="{
+                name: 'First name',
+                type: 'text',
+                label: 'First Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-6">
+            <app-ta-input
+              formControlName="lastName"
+              [inputConfig]="{
+                name: 'Last name',
+                type: 'text',
+                label: 'Last Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <app-ta-input-address
+              formControlName="address"
+              [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Address, City, State Zip',
+                isRequired: true,
+                placeholderIcon: 'address',
+                textTransform: 'capitalize'
+              }"
+              (selectedAddress)="onHandleAddress($event)"
+            ></app-ta-input-address>
+          </div>
+          <div class="col-2">
+            <app-ta-input
+              formControlName="addressUnit"
+              [inputConfig]="{
+                name: 'Address Unit',
+                type: 'text',
+                label: 'Unit #',
+                maxLength: 6
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row last-row">
+          <div class="col-5">
+            <app-ta-input
+              formControlName="personalPhone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                isRequired: true,
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-7">
+            <app-ta-input
+              formControlName="personalEmail"
+              [inputConfig]="{
+                name: 'Email',
+                type: 'text',
+                label: 'Email',
+                isRequired: true,
+                placeholderIcon: 'email'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+
+        <app-ta-custom-card [cardName]="'Employe Details'" [isCardOpen]="true">
+          <div class="row">
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="departmentId"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Department',
+                  isRequired: true,
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-4'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDepartment($event)"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-5">
+              <app-ta-input-dropdown
+                formControlName="mainOfficeId"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Office',
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-4'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectOffice($event)"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-3 no-p-left">
+              <app-ta-input-radiobuttons
+                [buttons]="typeOfEmploye"
+                (changedValue)="onTypeOfEmploye($event)"
+              ></app-ta-input-radiobuttons>
+            </div>
+          </div>
+          <div class="phone-ext-email-user">
+            <div
+              class="phone-extension"
+              [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
+            >
+              <div class="phone-field">
+                <app-ta-input
+                  formControlName="employePhone"
+                  [inputConfig]="{
+                    name: 'Phone',
+                    type: 'text',
+                    label: 'Phone',
+                    placeholderIcon: 'phone',
+                    mask: '(000) 000-0000'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div
+                class="extension-field"
+                *ngIf="!isPhoneExtExist"
+                (click)="isPhoneExtExist = !isPhoneExtExist"
+              >
+                <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+              </div>
+              <app-ta-input
+                *ngIf="isPhoneExtExist"
+                formControlName="employePhoneExt"
+                [inputConfig]="{
+                  name: 'Phone Extension',
+                  type: 'text',
+                  label: 'Ext.',
+                  maxLength: 3
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="email-field">
+              <app-ta-input
+                formControlName="employeEmail"
+                [inputConfig]="{
+                  name: 'Email',
+                  type: 'text',
+                  label: 'Email',
+                  placeholderIcon: 'email',
+                  isRequired: true
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <div class="custom-checkbox-card">
+          <div class="divider"></div>
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: userForm.get('isIncludePayroll').value }"
+            (click)="openCloseCheckboxCard($event)"
+          >
+            <app-ta-checkbox
+              formControlName="isIncludePayroll"
+              [label]="'Include in Payroll'"
+            ></app-ta-checkbox>
+            <svg-icon
+              class="checkbox-card-header-arrow"
+              src="assets/svg/common/ic_arrow-down.svg"
+              [ngClass]="{ rotate: userForm.get('isIncludePayroll').value }"
+            ></svg-icon>
+          </div>
+          <div
+            *ngIf="userForm.get('isIncludePayroll').value"
+            class="checkbox-card-body"
+            [ngClass]="{ active: userForm.get('isIncludePayroll').value }"
+          >
+            <div class="row">
+              <div class="col-5">
+                <app-ta-input
+                  formControlName="salary"
+                  [inputConfig]="{
+                    name: 'Salary',
+                    type: 'text',
+                    label: 'Salary',
+                    isRequired: true,
+                    placeholderIcon: 'dollar',
+                    customClass: 'dollar-placeholderIcon',
+                    maxLength: 2
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="col-4">
+                <app-ta-input
+                  formControlName="startDate"
+                  [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'Start Date',
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    customClass: 'datetimeclass'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="col-3 no-p-left">
+                <app-ta-input-radiobuttons
+                  [buttons]="typeOfPayroll"
+                  (changedValue)="onTypeOfPayroll($event)"
+                ></app-ta-input-radiobuttons>
+              </div>
+            </div>
+            <div
+              class="custom-bank-row last-row"
+              [ngClass]="{
+                'no-m-bottom': !userForm.get('isIncludePayroll').value
+              }"
+            >
+              <div class="bank-field">
+                <app-ta-input-dropdown
+                  formControlName="bankId"
+                  [template]="'banks'"
+                  [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Bank Name',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-banks'
+                  }"
+                  [canAddNew]="true"
+                  [options]="labelsBank"
+                  (selectedItem)="onSelectBank($event)"
+                ></app-ta-input-dropdown>
+              </div>
+              <div class="bank-field">
+                <app-ta-input
+                  formControlName="routingNumber"
+                  [inputConfig]="{
+                    name: 'Routing Number',
+                    type: 'text',
+                    label: 'Routing #',
+                    isDisabled: !isBankSelected,
+                    isRequired: isBankSelected,
+                    minLength: 9,
+                    maxLength: 9
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="bank-field">
+                <app-ta-input
+                  formControlName="accountNumber"
+                  [inputConfig]="{
+                    name: 'Account Number',
+                    type: 'text',
+                    label: 'Account #',
+                    isDisabled: !isBankSelected,
+                    isRequired: isBankSelected,
+                    maxLength: 17,
+                    minLength: 4
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+          </div>
+          <app-ta-input-note
+            formControlName="note"
+            [isVisibleNote]="userForm.get('note').value"
+          ></app-ta-input-note>
+        </div>
+      </div>
+      <!-------------------------------- Additional Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 2">Additional Tab TO DO</div>
+    </div>
+  </form>
+</app-ta-modal>

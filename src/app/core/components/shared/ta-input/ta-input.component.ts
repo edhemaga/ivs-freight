@@ -61,15 +61,6 @@ export class TaInputComponent
   }
 
   ngOnInit(): void {
-    this.inputService.isInputMarkedInvalidSubject
-      .pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.waitValidation = true;
-          this.inputService.isInputMarkedInvalidSubject.next(false);
-        }
-      });
-
     if (this.inputConfig.name === 'datepicker') {
       this.calendarService.dateChanged
         .pipe(untilDestroyed(this))
@@ -151,42 +142,30 @@ export class TaInputComponent
     // Dropdown
     if (this.inputConfig.isDropdown) {
       this.blurOnDropDownArrow();
-    }
-    else {
+    } else {
       this.focusInput = false;
-    }
 
-    let selection = window.getSelection();
-    selection.removeAllRanges();
+      let selection = window.getSelection();
+      selection.removeAllRanges();
 
-    // Required Field
-    if (this.inputConfig.isRequired) {
+      // Wait Validation
       if (!this.focusInput && this.getSuperControl.invalid) {
         this.waitValidation = true;
       } else {
         this.waitValidation = false;
       }
-    }
 
-    // No Required Field
-    else {
-      if (this.getSuperControl.value && this.getSuperControl.invalid) {
-        this.waitValidation = true;
-      } else {
-        this.waitValidation = false;
+      // Password
+      if (this.inputConfig.type === 'password') {
+        this.blurOnPassword();
       }
-    }
 
-    // Password
-    if (this.inputConfig.type === 'password') {
-      this.blurOnPassword();
-    }
-
-    // Datepicker
-    if (this.inputConfig.name === 'datepicker') {
-      if (!this.getSuperControl.value && this.getSuperControl.invalid) {
-        this.inputConfig.type = 'text';
-        this.blurOnDateTime();
+      // Datepicker
+      if (this.inputConfig.name === 'datepicker') {
+        if (!this.getSuperControl.value && this.getSuperControl.invalid) {
+          this.inputConfig.type = 'text';
+          this.blurOnDateTime();
+        }
       }
     }
   }
@@ -199,11 +178,24 @@ export class TaInputComponent
   }
 
   private blurOnDropDownArrow() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
     this.timeout = setTimeout(() => {
       this.inputService.dropDownShowHideSubject.next(false);
       this.isDropdownOptionsActive = false;
       this.focusInput = false;
+
+      // Wait Validation
+      if (!this.focusInput && this.getSuperControl.invalid) {
+        this.waitValidation = true;
+      } else {
+        this.waitValidation = false;
+      }
+
       this.changeDetection.detectChanges();
+      clearTimeout(this.timeout);
     }, 150);
   }
 
@@ -285,11 +277,29 @@ export class TaInputComponent
     }
   }
 
-  public manipulateWithInput(event: KeyboardEvent): boolean {
-    // Input Validation
-    if (this.focusInput && this.getSuperControl.valid) {
-      this.waitValidation = true;
+  public dropdownNavigator(event : any) {
+    
+    if(this.inputConfig.isDropdown) {
+      if(event.keyCode === 40 || event.keyCode === 38)  {
+        this.inputService.dropDownNavigatorSubject.next(event.keyCode);
+      }
+      if(event.keyCode === 13) {
+        this.inputService.dropDownNavigatorSubject.next(event.keyCode);
+      }
+      if(event.keyCode === 27) {
+        this.blurOnDropDownArrow();
+        this.input.nativeElement.blur();
+      }
+      if(event.keyCode === 9) {
+        this.onFocus();
+        this.input.nativeElement.focus();
+      }
+     
     }
+  
+  }
+
+  public manipulateWithInput(event: KeyboardEvent): boolean {
     // Disable first character to be space
     if (
       !this.input.nativeElement.value &&
@@ -333,7 +343,6 @@ export class TaInputComponent
         return true;
       } else {
         event.preventDefault();
-        this.input.nativeElement.value.trimEnd();
         return false;
       }
     }
@@ -373,7 +382,7 @@ export class TaInputComponent
         'mileage',
         'ipas ezpass',
         'credit limit',
-        'phone extension'
+        'phone extension',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
@@ -414,7 +423,9 @@ export class TaInputComponent
     }
 
     if (['bussines name'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9 .,$@#*&%-]*$/.test(String.fromCharCode(event.charCode))) {
+      if (
+        /^[A-Za-z0-9 .,$@#*&%-]*$/.test(String.fromCharCode(event.charCode))
+      ) {
         this.disableConsecutivelySpaces(event);
         return true;
       } else {
@@ -472,6 +483,8 @@ export class TaInputComponent
         return false;
       }
     }
+
+    this.input.nativeElement.value.trimEnd();
   }
 
   public disableConsecutivelySpaces(event: any) {
@@ -609,8 +622,6 @@ export class TaInputComponent
           this.selectSpanByTabIndex(this.selectionInput);
         }
       } else if (e.keyCode == 39) {
-        console.log('WHAT IS SELECTION COUNT');
-        console.log(this.selectionInput);
         if (this.selectionInput != 2) {
           this.selectionInput = this.selectionInput + 1;
           this.selectSpanByTabIndex(this.selectionInput);

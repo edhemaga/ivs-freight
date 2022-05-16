@@ -21,6 +21,7 @@ import {
   CreateBrokerCommand,
   UpdateBrokerCommand,
 } from 'appcoretruckassist';
+import { einNumberRegex, emailRegex, phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-broker-modal',
@@ -114,7 +115,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 4,
+        id: 7,
       };
       this.editBrokerById(this.editData.id);
       this.tabs.push({
@@ -128,15 +129,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     this.brokerForm = this.formBuilder.group({
       businessName: [null, Validators.required],
       dbaName: [null],
-      mcFFNumber: [null, Validators.maxLength(8)],
-      ein: [null, [Validators.pattern(/^\d{2}\-\d{7}$/)]],
+      mcNumber: [null, Validators.maxLength(8)],
+      ein: [null, [einNumberRegex]],
       email: [
         null,
-        [Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)],
+        [emailRegex],
       ],
       phone: [
         null,
-        [Validators.required, Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)],
+        [Validators.required, phoneRegex],
       ],
       // Physical Address
       physicalAddress: [null],
@@ -237,7 +238,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       (item) => item.checked === true
     );
 
-    if (this.selectedPhysicalAddressTab?.name === 'physical address') {
+    if (
+      this.selectedPhysicalAddressTab?.name.toLowerCase() === 'physical address'
+    ) {
       this.inputService.changeValidators(
         this.brokerForm.get('physicalAddress')
       );
@@ -254,6 +257,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.brokerForm.get('physicalAddress'),
         false
       );
+      this.brokerForm.get('physicalAddressUnit').reset();
+
       this.inputService.changeValidators(this.brokerForm.get('physicalPoBox'));
       this.inputService.changeValidators(
         this.brokerForm.get('physicalPoBoxCity')
@@ -281,6 +286,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.brokerForm.get('billingAddress'),
         false
       );
+      this.brokerForm.get('billingAddressUnit').reset();
       this.inputService.changeValidators(this.brokerForm.get('billingPoBox'));
       this.inputService.changeValidators(
         this.brokerForm.get('billingPoBoxCity')
@@ -288,20 +294,32 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandlePhysicalAddress(event: Address) {
-    this.selectedPhysicalAddress = event;
+  public onHandlePhysicalAddress(event: {address: Address, valid: boolean}) {
+    this.selectedPhysicalAddress = event.address;
+    if(!event.valid) {
+      this.brokerForm.setErrors({'invalid': event.valid})
+    }
   }
 
-  public onHandlePhysicalPoBoxCityAddress(event: Address) {
-    this.selectedPhysicalPoBox = event;
+  public onHandlePhysicalPoBoxCityAddress(event: {address: Address, valid: boolean}) {
+    this.selectedPhysicalPoBox = event.address;
+    if(!event.valid) {
+      this.brokerForm.setErrors({'invalid': event.valid})
+    }
   }
 
-  public onHandleBillingAddress(event: Address) {
-    this.selectedBillingAddress = event;
+  public onHandleBillingAddress(event: {address: Address, valid: boolean}) {
+    this.selectedBillingAddress = event.address;
+    if(!event.valid) {
+      this.brokerForm.setErrors({'invalid': event.valid})
+    }
   }
 
-  public onHandleBillingPoBoxCityAddress(event: Address) {
-    this.selectedBillingPoBox = event;
+  public onHandleBillingPoBoxCityAddress(event: {address: Address, valid: boolean}) {
+    this.selectedBillingPoBox = event.address;
+    if(!event.valid) {
+      this.brokerForm.setErrors({'invalid': event.valid})
+    }
   }
 
   public isCredit(event: any) {
@@ -386,18 +404,18 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       isCredit,
       isCheckedBillingAddress,
       brokerContacts,
-      mcFFNumber,
+      mcNumber,
       ...form
     } = this.brokerForm.value;
     let newData: CreateBrokerCommand = {
       ...form,
       mainAddress: {
-        address: this.selectedPhysicalAddress.address,
-        city: this.selectedPhysicalAddress.city,
-        state: this.selectedPhysicalAddress.state,
-        country: this.selectedPhysicalAddress.country,
-        zipCode: this.selectedPhysicalAddress.zipCode,
-        stateShortName: this.selectedPhysicalAddress.stateShortName,
+        address: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.address : null,
+        city: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.city : null,
+        state: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.state : null,
+        country: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.country : null,
+        zipCode: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.zipCode : null,
+        stateShortName: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.stateShortName : null,
         addressUnit: physicalAddressUnit,
       },
       billingAddress: {
@@ -447,16 +465,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       },
       isCheckedBillingAddress: isCheckedBillingAddress,
       isCredit: isCredit,
-      mcNumber: mcFFNumber,
+      mcNumber: mcNumber,
     };
+
     for (let index = 0; index < brokerContacts.length; index++) {
       brokerContacts[index].departmentId =
         this.selectedContractDepartmentFormArray[index].id;
     }
+
     newData = {
       ...newData,
       brokerContacts,
     };
+
     this.brokerModalService
       .addBroker(newData)
       .pipe(untilDestroyed(this))
@@ -486,20 +507,20 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       isCredit,
       isCheckedBillingAddress,
       brokerContacts,
-      mcFFNumber,
+      mcNumber,
       ...form
     } = this.brokerForm.value;
-
+    console.log(this.selectedBillingAddress)
     let newData: UpdateBrokerCommand = {
       id: id,
       ...form,
       mainAddress: {
-        address: this.selectedPhysicalAddress.address,
-        city: this.selectedPhysicalAddress.city,
-        state: this.selectedPhysicalAddress.state,
-        country: this.selectedPhysicalAddress.country,
-        zipCode: this.selectedPhysicalAddress.zipCode,
-        stateShortName: this.selectedPhysicalAddress.stateShortName,
+          address: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.address : null,
+        city: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.city : null,
+        state: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.state : null,
+        country: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.country : null,
+        zipCode: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.zipCode : null,
+        stateShortName: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.stateShortName : null,
         addressUnit: physicalAddressUnit,
       },
       billingAddress: {
@@ -548,7 +569,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         poBox: billingPoBox,
       },
       isCheckedBillingAddress: isCheckedBillingAddress,
-      mcNumber: mcFFNumber,
+      mcNumber: mcNumber,
     };
 
     for (let index = 0; index < brokerContacts.length; index++) {
@@ -600,28 +621,45 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (reasponse: BrokerResponse) => {
+          console.log(reasponse);
           this.brokerForm.patchValue({
             businessName: reasponse.businessName,
             dbaName: reasponse.dbaName,
-            mcFFNumber: reasponse.mcNumber,
+            mcNumber: reasponse.mcNumber,
             ein: reasponse.ein,
             email: reasponse.email,
             phone: reasponse.phone,
             // Physical Address
-            physicalAddress: reasponse.mainAddress.address,
-            physicalAddressUnit: reasponse.mainAddress.addressUnit,
-            physicalPoBox: reasponse.mainPoBox.poBox,
-            physicalPoBoxCity: reasponse.mainPoBox.city,
+            physicalAddress: reasponse.mainAddress
+              ? reasponse.mainAddress.address
+              : null,
+            physicalAddressUnit: reasponse.mainAddress
+              ? reasponse.mainAddress.addressUnit
+              : null,
+            physicalPoBox: reasponse.mainPoBox
+              ? reasponse.mainPoBox.poBox
+              : null,
+            physicalPoBoxCity: reasponse.mainPoBox
+              ? reasponse.mainPoBox.city
+              : null,
             // Billing Address
             isCheckedBillingAddress:
               reasponse.mainAddress.address ===
               reasponse.billingAddress.address,
-            billingAddress: reasponse.billingAddress.address,
-            billingAddressUnit: reasponse.billingAddress.addressUnit,
-            billingPoBox: reasponse.billingPoBox.poBox,
-            billingPoBoxCity: reasponse.billingPoBox.city,
+            billingAddress: reasponse.billingAddress
+              ? reasponse.billingAddress.address
+              : null,
+            billingAddressUnit: reasponse.billingAddress
+              ? reasponse.billingAddress.addressUnit
+              : null,
+            billingPoBox: reasponse.billingPoBox
+              ? reasponse.billingPoBox.poBox
+              : null,
+            billingPoBoxCity: reasponse.billingPoBox
+              ? reasponse.billingPoBox.city
+              : null,
             creditType: reasponse.creditType,
-            creditLimit: reasponse.creditType === 'Enable' ? 5 : null, // TODO: BACK
+            creditLimit: reasponse.creditType === 'Enable' ? 200000 : null,
             availableCredit: reasponse.availableCredit,
             payTerm:
               reasponse.creditType === 'Enable' ? reasponse.payTerm : null,
@@ -630,6 +668,21 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             dnu: reasponse.dnu,
             brokerContacts: [],
           });
+
+          this.selectedPhysicalAddress = reasponse.mainAddress
+            ? reasponse.mainAddress
+            : null;
+          this.selectedPhysicalPoBox = reasponse.mainPoBox
+            ? reasponse.mainPoBox
+            : null;
+          this.selectedBillingAddress = reasponse.billingAddress
+            ? reasponse.billingAddress
+            : null;
+          this.selectedBillingPoBox = reasponse.billingPoBox
+            ? reasponse.billingPoBox
+            : null;
+          this.selectedPayTerm =
+            reasponse.creditType === 'Enable' ? reasponse.payTerm : null;
 
           if (reasponse.brokerContacts) {
             for (const contact of reasponse.brokerContacts) {
@@ -654,14 +707,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             },
           }));
 
-          this.selectedPhysicalAddress = reasponse.mainAddress;
-          this.selectedPhysicalPoBox = reasponse.mainPoBox;
-          this.selectedBillingAddress = reasponse.billingAddress;
-          this.selectedBillingPoBox = reasponse.billingPoBox;
-          this.selectedPayTerm = null;
-
           if (reasponse.creditType === 'Enable') {
             this.billingCredit[0].checked = true;
+            this.billingCredit[1].checked = false;
             this.isCredit(this.billingCredit);
           } else {
             this.billingCredit[0].checked = false;

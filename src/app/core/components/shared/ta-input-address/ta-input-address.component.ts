@@ -13,7 +13,6 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { ITaInput } from '../ta-input/ta-input.config';
-import { TaInputService } from '../ta-input/ta-input.service';
 
 export interface Address {
   address: string;
@@ -23,8 +22,8 @@ export interface Address {
   country: string;
   zipCode: number | string;
   addressUnit?: number | string;
-  streetNumber?: string;
-  streetName?: string;
+  // streetNumber?: string;
+  // streetName?: string;
 }
 
 @Component({
@@ -38,7 +37,7 @@ export class TaInputAddressComponent
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
 
-  @Output() selectedAddress: EventEmitter<Address> = new EventEmitter<Address>(
+  @Output() selectedAddress: EventEmitter<{address: Address, valid: boolean}> = new EventEmitter<{address: Address, valid: boolean}>(
     null
   );
 
@@ -49,9 +48,12 @@ export class TaInputAddressComponent
   public activeAddress: Address = null;
   public invalidAddress: boolean = false;
 
+  public options = {
+    componentRestrictions: { country: ['US', 'CA'] },
+  };
+
   constructor(
     @Self() public superControl: NgControl,
-    private inputService: TaInputService,
     private sharedService: SharedService
   ) {
     this.superControl.valueAccessor = this;
@@ -62,35 +64,23 @@ export class TaInputAddressComponent
       this.getSuperControl.valueChanges
         .pipe(untilDestroyed(this))
         .subscribe((value) => {
-          if (value !== this.activeAddress) {
+          if (value !== this.activeAddress?.address) {
             this.invalidAddress = true;
+            this.selectedAddress.emit({address: null, valid: false});
           }
         });
     }
-
-    this.inputService.isInputMarkedInvalidSubject
-      .pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.waitValidation = true;
-          this.inputService.isInputMarkedInvalidSubject.next(false);
-        }
-      });
   }
 
   public handleAddressChange(address: Address) {
     this.activeAddress = this.sharedService.selectAddress(null, address);
     this.invalidAddress = false;
-    this.selectedAddress.emit(this.activeAddress);
+    this.selectedAddress.emit({address: this.activeAddress, valid: true});
 
     this.getSuperControl.setValue(
       this.sharedService.selectAddress(null, address).address
     );
   }
-
-  public options = {
-    componentRestrictions: { country: ['US', 'CA'] },
-  };
 
   get getSuperControl() {
     return this.superControl.control;
@@ -121,32 +111,33 @@ export class TaInputAddressComponent
 
     if (!this.activeAddress && this.waitValidation) {
       this.invalidAddress = true;
+      this.selectedAddress.emit({address: null, valid: false});
     }
   }
 
   public onBlur(): void {
     this.focusInput = false;
 
-    if (!this.activeAddress) {
+    if (
+      !this.activeAddress ||
+      this.activeAddress?.address !== this.getSuperControl.value
+    ) {
       this.invalidAddress = true;
+      this.selectedAddress.emit({address: null, valid: false});
+    }
+
+    if (
+      this.activeAddress &&
+      this.activeAddress?.address !== this.getSuperControl.value
+    ) {
+      this.getSuperControl.setErrors({ invalid: true });
     }
 
     // Required Field
-    if (this.inputConfig.isRequired) {
-      if (!this.focusInput && this.getSuperControl.errors) {
-        this.waitValidation = true;
-      } else {
-        this.waitValidation = false;
-      }
-    }
-
-    // No Required Field
-    else {
-      if (this.getSuperControl.value && this.getSuperControl.errors) {
-        this.waitValidation = true;
-      } else {
-        this.waitValidation = false;
-      }
+    if (!this.focusInput && this.getSuperControl.errors) {
+      this.waitValidation = true;
+    } else {
+      this.waitValidation = false;
     }
   }
 
@@ -159,6 +150,12 @@ export class TaInputAddressComponent
       : (this.waitValidation = false);
     this.activeAddress = null;
     this.invalidAddress = false;
+    if(!this.inputConfig.isRequired) {
+      this.selectedAddress.emit({address: null, valid: true});
+    }
+    else {
+      this.selectedAddress.emit({address: null, valid: false});
+    }
   }
 
   public onBackspace(event): void {
@@ -169,8 +166,9 @@ export class TaInputAddressComponent
         this.waitValidation = false;
       }
     }
-    if (this.activeAddress !== this.getSuperControl.value) {
+    if (this.activeAddress?.address !== this.getSuperControl.value) {
       this.invalidAddress = true;
+      this.selectedAddress.emit({address: null, valid: false});
     }
   }
 

@@ -5,7 +5,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { AutoFocusDirective } from '../../directives/auto-focus.directive';
 import { InputFocusDirective } from '../../directives/input-focus.directive';
 import { InputRestrictionDirective } from '../../directives/input-restriction.directive';
-import { InputErrorPipe } from '../../pipes/input-error.pipe';
+import { InputErrorPipe } from './ta-input/input-error.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -93,6 +93,8 @@ import { TaReCardComponent } from './ta-common-card/ta-re-card.component';
 import { TruckassistTableModule } from './truckassist-table/truckassist-table.module';
 import { ShipperModalComponent } from '../modals/shipper-modal/shipper-modal.component';
 import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component';
+import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-currency-progress-bar.component';
+import { UserModalComponent } from '../modals/user-modal/user-modal.component';
 
 @NgModule({
   declarations: [
@@ -131,6 +133,7 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
     TaInputRadiobuttonsComponent,
     TaLikeDislikeComponent,
     TaUserReviewComponent,
+    TaCurrencyProgressBarComponent,
 
     // Modals Components
     TaModalComponent,
@@ -142,6 +145,7 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
     BrokerModalComponent,
     ShipperModalComponent,
     OwnerModalComponent,
+    UserModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -253,6 +257,7 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
     TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
     TaUserReviewComponent,
+   
 
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
@@ -270,6 +275,7 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
     TaNgxSliderComponent,
     TaLogoChangeComponent,
     TaLikeDislikeComponent,
+    TaCurrencyProgressBarComponent,
 
     // Modals Components
     TaModalComponent,
@@ -283,6 +289,7 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
     BrokerModalComponent,
     ShipperModalComponent,
     OwnerModalComponent,
+    UserModalComponent,
 
     // Pipes
     InputErrorPipe,

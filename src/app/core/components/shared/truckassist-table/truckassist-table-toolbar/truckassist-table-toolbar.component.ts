@@ -128,6 +128,13 @@ export class TruckassistTableToolbarComponent
     });
   }
 
+  changeModeView(modeView: string){
+    this.toolBarAction.emit({
+      action: 'view-mode',
+      mode: modeView
+    });
+  }
+
   onShowOptions(optionsPopup: any) {
     this.optionsPopup = optionsPopup;
 

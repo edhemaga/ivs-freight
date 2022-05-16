@@ -1,3 +1,4 @@
+import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
 import { ShipperModalResponse } from './../../../../../../appcoretruckassist/model/shipperModalResponse';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -20,6 +21,7 @@ import {
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { ShipperModalService } from './shipper-modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-shipper-modal',
@@ -80,7 +82,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 3,
+        id: 5,
       };
       this.editShipperById(this.editData.id);
       this.tabs.push({
@@ -95,12 +97,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       businessName: [null, Validators.required],
       phone: [
         null,
-        [Validators.required, Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)],
+        [Validators.required, phoneRegex],
       ],
       phoneExt: [null],
       email: [
         null,
-        Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/),
+        emailRegex,
       ],
       address: [null, Validators.required],
       addressUnit: [null],
@@ -162,7 +164,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       fullName: [null],
       departmentId: [null],
       phone: [null],
-      extensionPhone: [null],
+      phoneExt: [null],
       email: [null],
     });
   }
@@ -186,8 +188,11 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandleAddress(event: any) {
-    this.selectedAddress = event;
+  public onHandleAddress(event: {address: Address, valid: boolean}) {
+    this.selectedAddress = event.address;
+    if(!event.valid) {
+      this.shipperForm.setErrors({'invalid': event.valid})
+    }
   }
 
   public onSelectContactDepartment(event: any, ind: number) {
@@ -222,12 +227,18 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       isShippingHoursSameLikeReceiving,
       shipping24h,
       shipperContacts,
+      shippingFrom,
+      shippingTo,
+      shippingAppointment,
       ...form
     } = this.shipperForm.value;
     
     let newData: CreateShipperCommand = {
       ...form,
-      address: this.selectedAddress,
+      address: {...this.selectedAddress, addressUnit: this.shipperForm.get('addressUnit').value},
+      shippingFrom: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingFrom').value : shippingFrom,
+      shippingTo: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingTo').value : shippingTo,
+      shippingAppointment: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingAppointment').value : shippingAppointment
     };
 
     for (let index = 0; index < shipperContacts.length; index++) {
@@ -263,12 +274,18 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       isShippingHoursSameLikeReceiving,
       shipping24h,
       shipperContacts,
+      shippingFrom,
+      shippingTo,
+      shippingAppointment,
       ...form
     } = this.shipperForm.value;
     let newData: UpdateShipperCommand = {
       id: id,
       ...form,
-      address: this.selectedAddress,
+      address: {...this.selectedAddress, addressUnit: this.shipperForm.get('addressUnit').value},
+      shippingFrom: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingFrom').value : shippingFrom,
+      shippingTo: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingTo').value : shippingTo,
+      shippingAppointment: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingAppointment').value : shippingAppointment
     };
 
     for (let index = 0; index < shipperContacts.length; index++) {
@@ -350,9 +367,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
               this.shipperContacts.push(
                 this.formBuilder.group({
                   fullName: contact.fullName,
-                  departmentId: contact.department.name,
+                  departmentId: contact.department ? contact.department.name : null,
                   phone: contact.phone,
-                  extensionPhone: contact.phoneExt,
+                  phoneExt: contact.phoneExt,
                   email: contact.email,
                 })
               );

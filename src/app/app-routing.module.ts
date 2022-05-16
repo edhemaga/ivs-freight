@@ -133,8 +133,15 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-   path:'test',
-   component:TruckassistProgressExpirationComponent
+    path: 'tools/todo',
+    loadChildren: () =>
+     import('./core/components/to-do/to-do.module').then(
+       (m) => m.ToDoModule
+     )
+  },
+  {
+    path:'test',
+    component:TruckassistProgressExpirationComponent
   },
   {
     path: "catalog",
