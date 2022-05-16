@@ -20,23 +20,28 @@ export class InputErrorPipe implements PipeTransform {
       }
 
       if(value['minlength']) {
-        errorMessageValue = `Minimum required length is ${value.minlength.requiredLength}`
+        // errorMessageValue = `Minimum required length is ${value.minlength.requiredLength}`
+        errorMessageValue = 'Invalid';
       }
       if(value['maxlength']) {
-        errorMessageValue = `Maximum possible characters is ${value.maxlength.requiredLength}`
+        // errorMessageValue = `Maximum possible characters is ${value.maxlength.requiredLength}`
+        errorMessageValue = 'Invalid';
       }
       if(value['pattern']?.requiredPattern) {
         switch(inputName.toLowerCase()) {
           case 'phone': {
-            errorMessageValue = `Phone as (XXX) XXX-XXXX`
+            // errorMessageValue = `Phone as (XXX) XXX-XXXX`
+            errorMessageValue = 'Invalid';
             break;
           }
           case 'ssn': {
-            errorMessageValue = `SSN as XXX-XX-XXXX`
+            // errorMessageValue = `SSN as XXX-XX-XXXX`
+            errorMessageValue = 'Invalid';
             break;
           }
           case 'ein': {
-            errorMessageValue = `EIN as XX-XXXXXXX`
+            // errorMessageValue = `EIN as XX-XXXXXXX`
+            errorMessageValue = 'Invalid';
             break;
           }
           default: {

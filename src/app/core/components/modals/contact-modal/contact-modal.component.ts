@@ -18,6 +18,7 @@ import {
 } from 'appcoretruckassist';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import { Address } from '../../shared/ta-input-address/ta-input-address.component';
+import { emailRegex, phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-contact-modal',
@@ -62,10 +63,10 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.contactForm = this.formBuilder.group({
       name: [null, [Validators.required, Validators.maxLength(23)]],
       companyContactLabelId: [null],
-      phone: [null, [Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)]],
+      phone: [null, [phoneRegex]],
       email: [
         null,
-        [Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)],
+        [emailRegex],
       ],
       address: [null],
       addressUnit: [null, [Validators.maxLength(6)]],

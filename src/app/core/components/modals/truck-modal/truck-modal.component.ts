@@ -17,6 +17,7 @@ import {
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
+import { insurancePolicyRegex, yearValidRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { TruckModalService } from './truck-modal.service';
 
@@ -114,7 +115,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         [
           Validators.required,
           Validators.maxLength(4),
-          Validators.pattern(/^(19[0-9]\d|20[0-4]\d|2100)$/),
+          yearValidRegex,
         ],
       ],
       colorId: [null],
@@ -129,7 +130,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       axles: [null, Validators.maxLength(1)],
       insurancePolicy: [
         null,
-        [Validators.minLength(8), Validators.maxLength(14)],
+        insurancePolicyRegex,
       ],
       mileage: [null, Validators.maxLength(10)],
       ipasEzpass: [null, Validators.maxLength(14)],

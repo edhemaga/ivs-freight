@@ -321,7 +321,6 @@ export class TaInputComponent
         return true;
       } else {
         event.preventDefault();
-        this.input.nativeElement.value.trimEnd();
         return false;
       }
     }
@@ -462,6 +461,8 @@ export class TaInputComponent
         return false;
       }
     }
+
+    this.input.nativeElement.value.trimEnd();
   }
 
   public disableConsecutivelySpaces(event: any) {

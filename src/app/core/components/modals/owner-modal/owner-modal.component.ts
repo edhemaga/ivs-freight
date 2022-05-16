@@ -1,3 +1,4 @@
+import { accountBankRegex } from './../../shared/ta-input/ta-input.regex-validations';
 import { UpdateOwnerCommand } from './../../../../../../appcoretruckassist/model/updateOwnerCommand';
 import { CreateOwnerCommand } from './../../../../../../appcoretruckassist/model/createOwnerCommand';
 import { OwnerResponse } from './../../../../../../appcoretruckassist/model/ownerResponse';
@@ -20,6 +21,7 @@ import { Address } from '../../shared/ta-input-address/ta-input-address.componen
 import { AddressEntity } from 'appcoretruckassist';
 import { distinctUntilChanged } from 'rxjs';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
+import { einNumberRegex, emailRegex, phoneRegex, routingBankRegex, ssnNumberRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-owner-modal',
@@ -82,18 +84,18 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       firstName: [null],
       lastName: [null],
       ssn: [null],
-      ein: [null, [Validators.required, Validators.pattern(/^\d{2}\-\d{7}$/)]],
+      ein: [null, [Validators.required, einNumberRegex]],
       address: [null, Validators.required],
       addressUnit: [null, [Validators.maxLength(6)]],
       phone: [
         null,
-        [Validators.required, Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)],
+        [Validators.required, phoneRegex],
       ],
       email: [
         null,
         [
           Validators.required,
-          Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/),
+          emailRegex,
         ],
       ],
       bankId: [null],
@@ -113,7 +115,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         true
       );
       this.inputService.changeValidators(this.ownerForm.get('ein'), true, [
-        Validators.pattern(/^\d{2}\-\d{7}$/),
+        einNumberRegex,
       ]);
       this.inputService.changeValidators(
         this.ownerForm.get('firstName'),
@@ -130,7 +132,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       this.inputService.changeValidators(this.ownerForm.get('firstName'), true);
       this.inputService.changeValidators(this.ownerForm.get('lastName'), true);
       this.inputService.changeValidators(this.ownerForm.get('ssn'), true, [
-        Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/),
+        ssnNumberRegex,
       ]);
     }
   }
@@ -180,12 +182,12 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.inputService.changeValidators(
             this.ownerForm.get('routingNumber'),
             true,
-            [Validators.minLength(9), Validators.maxLength(9)]
+            routingBankRegex
           );
           this.inputService.changeValidators(
             this.ownerForm.get('accountNumber'),
             true,
-            [Validators.minLength(4), Validators.maxLength(17)]
+            accountBankRegex
           );
         } else {
           this.isBankSelected = false;

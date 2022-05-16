@@ -18,6 +18,7 @@ import {
   TrailerResponse,
   UpdateTrailerCommand,
 } from 'appcoretruckassist';
+import { insurancePolicyRegex, yearValidRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-trailer-modal',
@@ -98,7 +99,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       trailerMakeId: [null, [Validators.required]],
       model: [null, [Validators.required]],
       colorId: [null],
-      year: [null, [Validators.required, Validators.pattern(/^(19[0-9]\d|20[0-4]\d|2100)$/)]],
+      year: [null, [Validators.required, yearValidRegex]],
       trailerLengthId: [null, [Validators.required]],
       ownerId: [null],
       note: [null],
@@ -112,7 +113,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       volume: [null],
       insurancePolicy: [
         null,
-        [Validators.minLength(8), Validators.maxLength(14)],
+        insurancePolicyRegex,
       ],
     });
   }

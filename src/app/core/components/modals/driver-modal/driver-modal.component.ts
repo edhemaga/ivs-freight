@@ -25,6 +25,7 @@ import {
   UpdateDriverCommand,
 } from 'appcoretruckassist';
 import moment from 'moment';
+import { accountBankRegex, einNumberRegex, routingBankRegex, ssnNumberRegex, emailRegex, phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -154,18 +155,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       lastName: [null, [Validators.required]],
       phone: [
         null,
-        [Validators.required, Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/)],
+        [Validators.required, phoneRegex],
       ],
       email: [
         null,
         [
           Validators.required,
-          Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/),
+          emailRegex,
         ],
       ],
       ssn: [
         null,
-        [Validators.required, Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/)],
+        [Validators.required, ssnNumberRegex],
       ],
       note: [null],
       avatar: [null],
@@ -263,12 +264,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.inputService.changeValidators(
             this.driverForm.get('routing'),
             true,
-            [Validators.minLength(9), Validators.maxLength(9)]
+            [routingBankRegex]
           );
           this.inputService.changeValidators(
             this.driverForm.get('account'),
             true,
-            [Validators.minLength(4), Validators.maxLength(17)]
+            [accountBankRegex]
           );
         } else {
           this.isBankSelected = false;
@@ -364,7 +365,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       this.selectedOwnerTab?.name.toLowerCase() === 'company'
     ) {
       this.inputService.changeValidators(this.driverForm.get('ein'), true, [
-        Validators.pattern(/^\d{2}\-\d{7}$/),
+        einNumberRegex,
       ]);
     } else {
       this.inputService.changeValidators(this.driverForm.get('ein'), false);
