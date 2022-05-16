@@ -38,6 +38,13 @@
         height: 18px;
         position: relative;
         bottom: 4px;
+        &:hover{
+          svg{
+            path{
+              fill: #6c6c6c;
+            }
+          }
+        }
       }
     }
 

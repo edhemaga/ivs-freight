@@ -59,6 +59,8 @@ export class AppComponent implements OnInit {
         filter((event) => event instanceof NavigationEnd),
         map(() => this.activatedRoute),
         map((route: any) => {
+          console.log('---------first child route ---');
+          console.log(route);
           while (route.firstChild) {
             route = route.firstChild;
           }
@@ -68,6 +70,8 @@ export class AppComponent implements OnInit {
         mergeMap((route: any) => route.data)
       )
       .subscribe((event: any) => {
+        console.log("TESTTTT");
+        console.log(event);
         this.currentPage = event?.title?.toLowerCase();
         this.titleService.setTitle('TruckAssist' + ' | ' + event.title);
       });

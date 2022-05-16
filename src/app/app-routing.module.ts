@@ -1,3 +1,4 @@
+import { TruckassistProgressExpirationComponent } from './core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 import { DispatcherResolverService } from './core/components/dispatcher/state/dispatcher-resolver.service';
 import { DashboardResolverService } from './core/components/dashboard/state/dashboard-resolver.service';
 import { NgModule } from '@angular/core';
@@ -130,6 +131,17 @@ const routes: Routes = [
         (m) => m.AccidentModule
       ),
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'tools/todo',
+    loadChildren: () =>
+     import('./core/components/to-do/to-do.module').then(
+       (m) => m.ToDoModule
+     )
+  },
+  {
+    path:'test',
+    component:TruckassistProgressExpirationComponent
   },
   {
     path: "catalog",

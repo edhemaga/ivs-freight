@@ -5,13 +5,14 @@
     <svg-icon
       *ngIf="isVisibleArrow"
       class="note-arrow"
-      [ngClass]="{ rotate: isVisibleNote || getSuperControl.value }"
-      src="assets/svg/common/ic_arrow-down.svg"
+      [ngClass]="{ 'rotate': isVisibleNote}"
+      src="assets/svg/common/ic_arrow_down_updated.svg"
     ></svg-icon>
   </div>
   <div class="note-body" #noteBody [class.active]="isVisibleNote">
     <textarea
       #note
+      [readOnly]="isReadOnly"
       appTextareaAutosize
       [rows]="minRows"
       [minRows]="minRows"

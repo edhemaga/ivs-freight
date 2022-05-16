@@ -27,12 +27,11 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-      position: relative;
-      bottom: 1.5px;
-      &.rotate {
-        transform: rotate(180deg);
-        transition: all 0.3s ease-in-out;
-      }
+      
+    }
+    .rotate {
+      transform: rotate(180deg);
+      transition: all 0.3s ease-in-out;
     }
   }
 
@@ -90,8 +89,8 @@
     .note-header {
       padding: 0px;
       .note-label {
-        font-size: 12px;
-        font-weight: 600;
+        font-size: 14px;
+        font-weight: 800;
         color: #6c6c6c;
       }
     }

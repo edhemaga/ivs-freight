@@ -5,13 +5,13 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 import { DriversQuery } from '../state/driver.query';
-import { DriversState } from '../state/driver.store';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 import { DatePipe } from '@angular/common';
 import { DriverTService } from '../state/driver.service';
 import { catchError, tap } from 'rxjs/operators';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { DriversState } from '../state/driver.store';
 
 @Component({
   selector: 'app-driver-table',
@@ -60,6 +60,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideViewMode: false,
+        viewModeActive: "List"
       },
       config: {
         showSort: true,
@@ -227,6 +228,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setDriverData(event.tabData);
+    } else if (event.action === 'view-mode'){
+      this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
   }
 

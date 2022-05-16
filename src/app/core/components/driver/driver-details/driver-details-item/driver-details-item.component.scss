@@ -1,40 +1,396 @@
 @import "../driver-details.component.scss";
 
-// Medical Template
-// MVR Template
-.driver-body-v2 {
-  grid-template-rows: 39px auto !important;
-  grid-template-columns: 236px;
-  
-  .driver-expiration {
+// DRIVER GENERAL PERSONAL DATA
+.details-header-wrapper {
+  margin-bottom: 12px !important;
+}
+.driver-container {
+  margin-left: 16px;
+  .driver-personal {
+    display: grid;
+    grid-template-columns: 80px 239px;
+    -moz-column-gap: 22px;
+    column-gap: 22px;
+    margin-top: 12px;
+
+    .driver-avatar {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
+      .driver-avatar-svg {
+        height: 82px;
+        width: 74px;
+        border-radius: 2px;
+        -o-object-fit: fill;
+        object-fit: fill;
+        user-select: none;
+      }
+
+      .driver-avatar-owner {
+        position: absolute;
+        right: -8px;
+        bottom: 2px;
+      }
+    }
+  }
+
+  .driver-information {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    bottom: -5px;
+
+    // Ovveride email information-item
+    .information-item-email {
+      margin: 7px 0px;
+    }
+
+    .information-item {
+      display: flex;
+      align-items: flex-end;
+      height: 18px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      .card-icon {
+        display: none;
+        position: relative;
+        margin-left: 6px;
+        bottom: 8px;
+        height: 18px;
+        svg {
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+      .information-value {
+        font-size: 14px;
+        font-weight: 400;
+        color: #6c6c6c;
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+      }
+      .ssn {
+        font-size: 18px !important;
+      }
+
+      .information-svg {
+        margin-right: 6px;
+      }
+
+      .information-email-value {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .information-address-svg {
+        position: relative;
+        bottom: 11px;
+        left: 2px;
+        margin-right: 10px;
+      }
+      &:hover {
+        .card-icon {
+          display: block;
+        }
+      }
+    }
+  }
+}
+.purchase-template {
+  display: grid;
+  grid-template-columns: repeat(2, 193px);
+  grid-template-rows: repeat(1, 36px);
+  grid-column-gap: 22px;
+  padding: 0 10px;
+  margin-top: -1px;
+  .purchase-template-item {
+    .purchase-icon-copy {
+      display: flex;
+      align-items: flex-start;
+      cursor: pointer;
+      .hidden-svg-eye {
+        margin-left: 5px;
+        position: relative;
+        bottom: 4px;
+        svg {
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+      .card-icon {
+        display: none;
+        position: relative;
+        margin-left: 6px;
+        bottom: 4px;
+        height: 18px;
+        svg {
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+      &:hover {
+        .card-icon {
+          display: block;
+        }
+      }
+    }
+    .purchase-template-item-name {
+      font-size: $font-size12;
+      font-weight: $font-semibold;
+      color: #6c6c6c;
+    }
+    .purchase-template-item-value {
+      font-size: $font-size14;
+      font-weight: 400;
+    }
+  }
+}
+mat-button-toggle-group {
+  width: 416px;
+  height: 26px;
+  display: flex;
+  justify-content: space-around;
+  background: #f3f3f3;
+  box-shadow: none !important;
+  border-radius: 2px;
+}
+mat-button-toggle {
+  width: 67px;
+  height: 22px;
+  margin: 2px;
+  color: #b7b7b7 !important;
+  font-weight: 700;
+  transition: left 0.25 ease-out;
+}
+
+.mat-button-toggle-checked {
+  background-color: #ffffff;
+  color: #536bc2 !important;
+}
+
+.card-note {
+  margin-left: 6px;
+  height: 40px;
+  .note-body {
+    padding-left: 4px  !important;
+  }
+}
+.divider {
+  margin: 0;
+  height: 2px;
+  width: 100%;
+  border-radius: 1px;
+  background-color: $color-white-light;
+}
+
+.details-document-container {
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 13px;
+  width: 100%;
+  .icon-counter-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 3px;
+    padding-left: 2px;
+    padding-right: 6px;
+  }
+  .counter-text-wrapper {
+    display: flex;
+    align-items: center;
+    .details-document-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: #6c6c6c;
+      margin-left: 4px;
+    }
+  }
+  svg {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    &:hover {
+      path {
+        stroke: rgb(66, 157, 209);
+      }
+    }
+  }
+}
+.copied {
+  .card-item-value {
+    color: #3551b7 !important;
+  }
+  .purchase-template-item-value {
+    color: #3551b7 !important;
+  }
+  .information-value {
+    color: #3551b7 !important;
+  }
+  .card-icon {
+    svg {
+      path {
+        &:hover {
+          fill: #3551b7 !important;
+        }
+      }
+    }
+  }
+}
+.employment-history-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 11px;
+  .transform-arrow {
+    svg {
+      transform: rotate(180deg);
+      transition: all 0.3s ease-in-out;
+    }
+  }
+  .arrow-down-employment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    bottom: 12px;
+    svg {
+      &:hover {
+        path {
+          fill: #6c6c6c;
+        }
+      }
+    }
+  }
+  .years-of-service {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    .items-wrapper {
+      flex-direction: column;
+    }
+    .service-years-name {
+      font-size: 12px;
+      font-weight: $font-semibold;
+      color: #6c6c6c;
+      height: 15px;
+      margin-bottom: 3px;
+    }
+    .service-year-value {
+      font-size: 18px;
+      font-weight: 500;
+      color: #6c6c6c;
+      height: 22px;
+    }
+  }
+  .progress-employment-history {
+    width: 408px;
+    height: 42px;
     display: flex;
     flex-direction: column;
 
-    .driver-expiration-name {
-      font-size: $font-size12;
-      font-weight: $font-semibold;
-      color: $color-gray-dark;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    .driver-expiration-value {
-      font-size: $font-size12;
-      color: $color-gray-dark;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
+    .employment-tooltip {
+      width: 424px;
+      height: 52px;
+      margin-left: -8px;
+      margin-right: 7px;
+      display: none;
+      background-color: #ffffff;
+      position: relative;
+      bottom: 60px;
+      .emp-tooltip {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        height: 52px;
+        padding: 6px 8px;
+        .year-working {
+          font-size: 18px;
+          font-weight: 500;
+          color: #6c6c6c;
+        }
+        .emp-tooltip-value {
+          display: flex;
+          justify-content: space-between;
+          height: 52px;
+          align-items: baseline;
+          width: 100%;
+          .emp-duration {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c6c6c;
+          }
+        }
+        .emp-text-icon {
+          display: flex;
+          align-items: baseline;
+          margin-right: 12px;
+          p {
+            font-size: 12px;
+            font-weight: 500;
+            color: #6c6c6c;
+            margin-right: 6px;
+          }
+        }
       }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
+    }
+    .progress {
+      width: 100%;
+      height: 18px;
+      background-color: #6d82c8;
+      &:hover {
+        .employment-tooltip {
+          display: block;
+        }
+      }
+    }
+    .year-employer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      height: 18px;
+      p {
+        font-size: 14px;
+        font-weight: 400;
+        color: #6c6c6c;
       }
     }
   }
+}
+.details-page-row-5 {
+  padding: 0 6px;
+  padding-bottom: 6px;
+}
 
-  .driver-card-buttons {
-    bottom: 9px !important;
-  }
+.divider-employment {
+  margin: 0;
+  height: 2px;
+  width: 420px;
+  margin-left: -4px;
+  margin-right: 9px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 1px;
+  background-color: $color-white-light;
+}
+.has-counter{
+  padding-left: 2px !important;
 }

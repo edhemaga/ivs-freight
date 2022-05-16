@@ -18,6 +18,7 @@ import {
 export class TableDropdownComponent implements OnInit, OnChanges {
   @Input() options: any;
   @Input() id: number;
+  @Input() customClassDropDown:string;
   @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
   dropContent: any[] = [];
   tooltip: any;
@@ -35,7 +36,8 @@ export class TableDropdownComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   toggleDropdown(tooltip: any) {
     this.tooltip = tooltip;

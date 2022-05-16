@@ -1,0 +1,240 @@
+@import "../truck-details.component.scss";
+::ng-deep .mat-button-toggle-label-content {
+  line-height: 0px !important;
+  font-size: $font-size12;
+  font-weight: 700;
+}
+.truck-toolbar-plus {
+  svg {
+    rect {
+      width: 18px;
+      height: 18px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    #Rectangle_565255 {
+      margin-right: 10px;
+    }
+  }
+}
+
+.truck-details-wrapper {
+  margin-left: 16px;
+  .details-header-avatar {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    margin-top: 14px;
+    svg {
+      &:hover {
+        stroke: #7ea6f1;
+      }
+    }
+    .model-name {
+      flex-direction: column;
+      margin-left: 12px;
+      margin-top: 12px;
+      p {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .svg-wrapper {
+        height: 14px;
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 2px;
+      }
+      svg {
+        fill: #aaaaaa;
+        object-fit: fill;
+      }
+    }
+  }
+  .details-header-data {
+    margin-top: 14px;
+    .details-header-data-item {
+      display: flex;
+      height: 18px;
+      align-items: center;
+      p {
+        font-size: 18px;
+        color: #6c6c6c;
+        font-weight: 400;
+      }
+    }
+    .second {
+      margin-top: 14px;
+      margin-bottom: 14px;
+      p {
+        font-size: 14px !important;
+        color: #6c6c6c;
+        font-weight: 400;
+        position: relative;
+        bottom: -1px;
+      }
+      .light-green {
+        margin-left: 29px;
+      }
+      .date {
+        margin-left: 8px !important;
+        position: relative;
+        bottom: -2px;
+      }
+    }
+  }
+  .vin-text {
+    margin-left: 6px;
+    position: relative;
+    bottom: -1px;
+  }
+}
+
+.fuel-item {
+  margin-left: -5px;
+}
+mat-button-toggle-group {
+  width: 416px;
+  height: 26px;
+  display: flex;
+  justify-content: space-around;
+  background: #f3f3f3;
+  box-shadow: none !important;
+  border-radius: 2px;
+}
+mat-button-toggle {
+  width: 67px;
+  height: 22px;
+  margin: 2px;
+  color: #b7b7b7 !important;
+  font-weight: 700;
+}
+
+.mat-button-toggle-checked {
+  background-color: #ffffff;
+  color: #536bc2 !important;
+}
+
+// Note template
+
+.truck-card-line {
+  margin: 0;
+  height: 2px;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  margin-right: -6px;
+  margin-left: -6px !important;
+  border-radius: 1px;
+  background-color: $color-white-light;
+}
+.size18 {
+  font-weight: $font-medium !important;
+  font-size: $font-size18 !important;
+}
+.single-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  margin-bottom: 10px;
+}
+.icon {
+  margin-left: 6px;
+}
+
+.divider {
+  margin: 0;
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  background-color: #f3f3f3;
+}
+
+.driver-details-multiple-pdf {
+  justify-content: center;
+  .files-count {
+    display: none;
+  }
+}
+.details-page-row-5 {
+  margin-top: 8px;
+}
+//   // PDF - big
+.details-page-row-7 {
+  height: 343px !important;
+  width: 100%;
+  margin: 12px 0px;
+}
+.note-item {
+  display: flex;
+  flex-direction: column;
+  margin-left: 4px;
+  height: 40px;
+  .note-body{
+    padding-left: 4px !important;
+  }
+}
+.files-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0 8px;
+  margin-bottom: 16px;
+}
+.carousel-buttons-control {
+  &.prev {
+    left: -2px !important;
+  }
+
+  &.next {
+    right: -2px !important;
+  }
+}
+
+.acc-number {
+  display: flex;
+  align-items: center;
+  .hidden-svg-eye {
+    margin-left: 5px;
+  }
+}
+.revenue {
+  margin-left: 4px;
+}
+.bank-card {
+  .header-text.no-counter{
+    margin: 4px !important;
+  }
+}
+.owner-history-container {
+  padding: 0 10px;
+  margin-top: -1px;
+  .status-container {
+    padding-top: 0 !important;
+  }
+  .item-wrapper {
+    grid-template-columns: 122px 131px 75px !important;
+    .employment {
+      font-weight: $font-semibold !important;
+    }
+  }
+}
+.note-wrapper{
+  padding-left: 5px;
+  padding-right: 9px;
+  height: 40px;
+  .note-body{
+    padding-left: 4px !important;
+    margin-top: 8px;
+  }
+}
+.note-cards{
+  .note-body{
+    height: 40px !important;
+    padding: 0 9px !important;
+    margin-bottom: 7px !important;
+    .note-textarea{
+      color: #6c6c6c !important;
+      font-weight: 400 !important;
+    }
+  }
+}

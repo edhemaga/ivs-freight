@@ -1,0 +1,488 @@
+// Constants
+$color-white-light: #f3f3f3;
+$color-white: #ffffff;
+$color-white-dark: #f7f7f7;
+
+$color-gray-light: #b7b7b7;
+$color-gray: #919191;
+$color-gray-dark: #6c6c6c;
+
+$color-blue-light: #778fbb;
+$color-blue: #5673aa;
+$settings-blue-dark: #6d82c7;
+$settings-blue-hover: #3551b7;
+
+$font-size12: 12px;
+$font-size14: 14px;
+$font-size18: 18px;
+$font-size20: 20px;
+
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+$font-extrabold: 800;
+
+$border-radius: 3px;
+
+$transition: all 0.3s ease-in-out;
+:host ::ng-deep .mat-button-toggle-label-content {
+  line-height: 0px !important;
+  font-size: $font-size12;
+  font-weight: 700;
+}
+
+.details-item-cmp {
+  display: grid;
+  grid-template-columns: 440px repeat(4, 335px);
+  column-gap: 12px;
+  row-gap: 12px;
+  p {
+    margin: 0px;
+  }
+}
+
+.details-container-items {
+  display: grid;
+  grid-template-columns: 440px repeat(4, 335px);
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  row-gap: 12px;
+}
+// Common Class
+.details-component {
+  display: grid;
+  row-gap: 12px;
+
+  // BODY
+  .truck-wrapper {
+    background-color: $color-white;
+    border-radius: $border-radius;
+    margin-bottom: 8px;
+    width: 440px;
+    height: 226px;
+    p {
+      margin: 0px;
+    }
+
+    .truck-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .truck-card-name {
+        color: $color-gray-dark;
+        font-size: $font-size18;
+        font-weight: $font-medium;
+        position: relative;
+        top: 1px;
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+      }
+    }
+
+    //   // Note
+    .details-page-row-5 {
+      margin-top: 8px;
+    }
+
+    //   // PDF - big
+    .details-page-row-7 {
+      height: 236px;
+      width: 100%;
+      margin: 22px 0px;
+    }
+
+    .show-details {
+      font-size: $font-size12;
+      font-weight: $font-bold;
+      color: $color-blue-light;
+      text-decoration: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      &:hover {
+        transition: $transition;
+        cursor: pointer;
+        text-decoration: underline;
+        color: $color-blue;
+      }
+    }
+  }
+
+  .details-cards {
+    border-radius: 3px;
+    overflow: hidden;
+    width: 440px;
+    background-color: $color-white;
+    padding: 9px 6px;
+  }
+}
+.assignTo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  .first {
+    height: 18px;
+    width: 18px;
+    .assignTo-vehicle {
+      svg {
+        width: 41px;
+        height: 20px;
+      }
+    }
+    &:hover {
+      .open-modal-icon {
+        display: block;
+        position: relative;
+        bottom: 4px;
+        height: 18px;
+        width: 18px;
+        svg {
+          cursor: pointer;
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+    }
+  }
+  .second {
+    &:hover {
+      .open-modal-icon2 {
+        display: block;
+        height: 18px;
+        width: 18px;
+        position: relative;
+        bottom: 4px;
+        svg {
+          cursor: pointer;
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+    }
+  }
+  .assignTo-item {
+    background-color: $color-white-dark;
+    border-radius: 3px;
+    padding: 8px 6px;
+    width: 202px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    svg {
+      fill: #aaaaaa;
+      object-fit: fill;
+    }
+    .open-modal-icon {
+      display: none;
+      margin-left: 67px;
+    }
+    .open-modal-icon2 {
+      display: none;
+      margin-left: 51px;
+    }
+    .assignTo-vehicle {
+      margin-right: 6px;
+      height: 20px;
+      position: relative;
+      bottom: 2px;
+    }
+
+    .assignTo-value {
+      font-size: $font-size18;
+      font-weight: 500;
+      color: $color-gray-dark;
+
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+    }
+    p {
+      margin: 0 !important;
+    }
+  }
+}
+.item-cards{
+  .ta-card-header{
+    padding:6px 0 !important;
+    padding-right: 6px !important;
+  }
+}
+.cards-container{
+  padding: 0 6px;
+.card-body-cdl {
+  display: grid;
+  padding: 0 10px;
+  .card-item-name {
+    font-size: $font-size12;
+    color: #6c6c6c;
+    font-weight: $font-semibold;
+    height: 15px;
+    margin-bottom: 3px;
+  }
+  .card-item-value {
+    font-size: $font-size14;
+    font-weight: 400;
+    color: #6c6c6c;
+    white-space: nowrap;
+    height: 18px;
+    &:hover {
+      color: #3c3c3c;
+    }
+  }
+  .card-row-issued {
+    display: grid;
+    grid-template-columns: 32px 32px 32px;
+    column-gap: 49px;
+    margin-top: 12px;
+  }
+  .card-row-endor {
+    display: grid;
+    grid-template-columns: 141px 141px;
+    column-gap: 21px;
+    margin-top: 12px;
+  }
+  .card-row-progress {
+   margin-top: 12px;
+  }
+
+  .card-icon-copy {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    .card-icon {
+      display: none;
+      position: relative;
+      margin-left: 6px;
+      bottom: 4px;
+      height: 18px;
+      svg {
+        fill: #aaaaaa;
+        &:hover {
+          path {
+            fill: #6c6c6c;
+          }
+        }
+      }
+    }
+    .card-icon {
+      height: 18px;
+      margin-left: 6px;
+    }
+    &:hover {
+      .card-icon {
+        display: block;
+      }
+    }
+  }
+
+ 
+  .card-restriction {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    .restriction-name {
+      font-size: $font-size12;
+      font-weight: $font-semibold;
+      color: #6c6c6c;
+      height: 15px;
+    }
+    .restriction-item-value {
+      font-size: $font-size14;
+      font-weight: 400;
+      color: #6c6c6c;
+      height: 18px;
+      margin-bottom: 2px;
+      margin-top: 3px;
+      .value-name {
+        font-size: $font-size14;
+        font-weight: $font-semibold;
+        color: #6c6c6c;
+      }
+    }
+  }
+  .endorsement {
+    margin-top: 12px;
+  }
+}
+}
+.perfomance {
+  display: flex !important;
+  flex-direction: column;
+  
+  .common-template-item-name {
+    font-size: $font-size14 !important;
+    font-weight: $font-semibold !important;
+  }
+  .common-template-item-value {
+    font-size: $font-size18 !important;
+    font-weight: $font-semibold !important;
+  }
+}
+.card-pdf {
+  padding: 0 10px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+}
+// Progress bar details
+.card-details-progress-container {
+  .table-progress-cotnainer {
+    display: flex !important;
+    flex-direction: column !important;
+
+    .table-progress {
+      order: 1 !important;
+      width: 100% !important;
+      height: 8px !important;
+    }
+
+    .table-progress-panel {
+      order: -1 !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      color: #6c6c6c !important;
+
+      .progress-text {
+        margin: 2px 0px !important;
+      }
+    }
+  }
+}
+
+.status-container {
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  .status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .status-item {
+      height: 18px;
+      .p-status {
+        font-size: $font-size14;
+        font-weight: 700;
+        color: #919191;
+      }
+    }
+  }
+  .status-items {
+    .item-wrapper {
+      display: grid;
+      grid-template-columns: 113px 149px 66px;
+      grid-column-gap: 40px;
+      .svg-text {
+        display: flex;
+        align-items: baseline;
+        .employment {
+          margin-left: 6px;
+        }
+      }
+      .duration {
+        text-align: right;
+      }
+      p {
+        font-size: 14px;
+        font-weight: 400;
+        color: #6c6c6c;
+      }
+    }
+  }
+}
+.charts-template {
+  display: grid;
+  grid-template-columns: 215px 1fr;
+  grid-row-gap: 12px;
+  row-gap: 12px;
+  margin-bottom: 12px;
+  padding-left: 6px;
+  .charts-item-wrapper {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    margin-left: 4px;
+  }
+  .charts-template-item {
+    display: flex;
+    flex-direction: column;
+
+    .icon-name-item {
+      display: flex;
+      align-items: center;
+      height: 18px;
+      .charts-template-item-name {
+        margin-left: 6px;
+      }
+    }
+    .charts-template-item-name {
+      font-size: $font-size12;
+      font-weight: $font-semibold;
+      color: $color-gray-dark;
+
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+    }
+
+    .charts-template-item-value {
+      font-size: $font-size18;
+      font-weight: $font-semibold;
+      color: $color-gray-dark;
+      width: 220px;
+      height: 18px;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+
+      p {
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+      }
+
+      .hidden-svg-eye {
+        margin-left: 6px;
+        position: relative;
+        bottom: 1px;
+      }
+    }
+  }
+}
+.second-progress {
+  margin-bottom: 16px;
+}
