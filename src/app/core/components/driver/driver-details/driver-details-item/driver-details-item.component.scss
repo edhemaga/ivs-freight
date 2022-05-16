@@ -269,6 +269,7 @@ mat-button-toggle {
   flex-direction: column;
   padding: 0 11px;
   .transform-arrow {
+    bottom: 0 !important;
     svg {
       transform: rotate(180deg);
       transition: all 0.3s ease-in-out;
@@ -280,7 +281,7 @@ mat-button-toggle {
     justify-content: center;
     cursor: pointer;
     position: relative;
-    bottom: 12px;
+    bottom: 8px;
     svg {
       &:hover {
         path {

@@ -282,9 +282,10 @@
               <div class="items-wrapper">
                 <div class="service-years-name">Years of Service</div>
                 <div class="service-year-value">
-                  {{
+                  <!-- {{
                     formatHistoryDays(driverData.employmentHistories.startDate)
-                  }}
+                  }} -->
+                  4 years 70 days
                 </div>
               </div>
             </div>
@@ -306,61 +307,64 @@
                   <p class="year-working">1 year 103 days</p>
                 </div>
               </div> -->
-              <div class="progress"></div>
+              <div class="progress">
+
+              </div>
               <div *ngIf="!showMoreEmployment" class="year-employer">
                 <p>05/23/21</p>
                 <p>Today</p>
               </div>
-              <div *ngIf="showMoreEmployment" class="status-container">
-                <div class="status-header">
-                  <div class="status-item">
-                    <p class="p-status">STATUS</p>
-                  </div>
-                  <div class="status-item">
-                    <p class="p-status">FROM - TO</p>
-                  </div>
-                  <div class="status-item">
-                    <p class="p-status">DURATION</p>
-                  </div>
+            </div>
+           
+            <div *ngIf="showMoreEmployment" class="status-container">
+              <div class="status-header">
+                <div class="status-item">
+                  <p class="p-status">STATUS</p>
                 </div>
-                <div class="divider-employment"></div>
-                <div class="status-items">
-                  <div
-                    class="item-wrapper"
-                    *ngFor="let emp of employmentHistory"
-                  >
-                    <div class="svg-text">
-                      <svg-icon
-                        class="svg-blue"
-                        src="{{ emp.svgIcon }}"
-                      ></svg-icon>
-                      <p class="employment">{{ emp.status }}</p>
-                    </div>
-                    <p class="date-from-to">{{ emp.fromTo }}</p>
-                    <p class="duration">{{ emp.duration }}</p>
-                    <div
-                      *ngIf="emp.hasDivider == true"
-                      class="divider-employment"
-                    ></div>
-                  </div>
+                <div class="status-item">
+                  <p class="p-status">FROM - TO</p>
+                </div>
+                <div class="status-item">
+                  <p class="p-status">DURATION</p>
                 </div>
               </div>
-              <svg-icon
-                [ngClass]="{ 'transform-arrow': showMoreEmployment }"
-                (click)="showMoreEmployment = !showMoreEmployment"
-                [appTooltip]="'Show More'"
-                [position]="'top-middle'"
-                [tooltipBackground]="'#6c6c6c'"
-                [tooltipColor]="'#ffffff'"
-                [zIndex]="900"
-                [borderRadius]="'2px'"
-                [fontWeight]="'bold'"
-                [fontSize]="'11px'"
-                [customPosition]="0"
-                class="arrow-down-employment"
-                src="assets/svg/common/fill_arrow_down.svg"
-              ></svg-icon>
+              <div class="divider-employment"></div>
+              <div class="status-items">
+                <div
+                  class="item-wrapper"
+                  *ngFor="let emp of employmentHistory"
+                >
+                  <div class="svg-text">
+                    <svg-icon
+                      class="svg-blue"
+                      src="{{ emp.svgIcon }}"
+                    ></svg-icon>
+                    <p class="employment">{{ emp.status }}</p>
+                  </div>
+                  <p class="date-from-to">{{ emp.fromTo }}</p>
+                  <p class="duration">{{ emp.duration }}</p>
+                  <div
+                    *ngIf="emp.hasDivider == true"
+                    class="divider-employment"
+                  ></div>
+                </div>
+              </div>
             </div>
+            <svg-icon
+            [ngClass]="{ 'transform-arrow': showMoreEmployment }"
+            (click)="showMoreEmployment = !showMoreEmployment"
+            [appTooltip]="'Show More'"
+            [position]="'top-middle'"
+            [tooltipBackground]="'#6c6c6c'"
+            [tooltipColor]="'#ffffff'"
+            [zIndex]="900"
+            [borderRadius]="'2px'"
+            [fontWeight]="'bold'"
+            [fontSize]="'11px'"
+            [customPosition]="0"
+            class="arrow-down-employment"
+            src="assets/svg/common/fill_arrow_down.svg"
+          ></svg-icon>
           </div>
         </app-ta-custom-card>
 
@@ -718,7 +722,7 @@
                       class="restriction-item-value"
                       *ngFor="let rest of cdl.cdlRestrictions; let i = index"
                     >
-                      <span class="value-name">{{ rest.code }} </span>
+                      <span class="value-name">{{ rest.code }}</span>
                       <span *ngIf="toggler">- {{ rest.description }} </span>
                     </p>
                   </div>

@@ -222,149 +222,150 @@ $transition: all 0.3s ease-in-out;
     }
   }
 }
-.item-cards{
-  .ta-card-header{
-    padding:6px 0 !important;
+.item-cards {
+  .ta-card-header {
+    padding: 6px 0 !important;
     padding-right: 6px !important;
   }
 }
-.cards-container{
+.cards-container {
   padding: 0 6px;
-.card-body-cdl {
-  display: grid;
-  padding: 0 10px;
-  .card-restriction-endorsment{
+  .card-body-cdl {
     display: grid;
-    grid-template-columns: 110px 90px;
-    column-gap: 53px;
-    height: 44px;
-    .item-card-wrapper{
-      display: flex;
-      .restriction-item-value{
-      .value-name{
-        font-size: 14px !important;
-        font-weight: 400 !important;
-        color: #6c6c6c;
-      }
-      .value-name:nth-child(1){
-        content:", ";
-        }
-    }
-    }
-  }
-  .card-item-name {
-    font-size: $font-size12;
-    color: #6c6c6c;
-    font-weight: $font-semibold;
-    height: 15px;
-    margin-bottom: 3px;
-  }
-  .card-item-value {
-    font-size: $font-size14;
-    font-weight: 400;
-    color: #6c6c6c;
-    white-space: nowrap;
-    height: 18px;
-    &::-moz-selection {
-      color: $color-gray-dark;
-      background: rgb(183, 183, 183, 0.2);
-    }
-    &::selection {
-      color: $color-gray-dark;
-      background: rgb(183, 183, 183, 0.2);
-    }
-    &:hover {
-      color: #3c3c3c;
-    }
-  }
-  .card-row-issued {
-    display: grid;
-    grid-template-columns: 32px 32px 32px;
-    column-gap: 49px;
-    margin-top: 12px;
-  }
-  .card-row-endor {
-    display: grid;
-    grid-template-columns: 141px 141px;
-    column-gap: 21px;
-    margin-top: 12px;
-  }
-  .card-row-progress {
-   margin-top: 12px;
-  }
-
-  .card-icon-copy {
-    display: flex;
-    align-items: flex-start;
-    cursor: pointer;
-    .card-icon {
-      display: none;
-      position: relative;
-      margin-left: 6px;
-      bottom: 4px;
-      height: 18px;
-      svg {
-        fill: #aaaaaa;
-        &:hover {
-          path {
-            fill: #6c6c6c;
+    padding: 0 10px;
+    .card-restriction-endorsment {
+      display: grid;
+      grid-template-columns: 110px 90px;
+      column-gap: 53px;
+      height: 44px;
+      .item-card-wrapper {
+        display: flex;
+        .restriction-item-value {
+          .value-name {
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            color: #6c6c6c;
+          }
+          &:not(:last-child) {
+            .value-name:after {
+              content: ", ";
+            }
           }
         }
       }
     }
-    .card-icon {
-      height: 18px;
-      margin-left: 6px;
-    }
-    &:hover {
-      .card-icon {
-        display: block;
-      }
-    }
-  }
-
- 
-  .card-restriction {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    .restriction-name {
+    .card-item-name {
       font-size: $font-size12;
-      font-weight: $font-semibold;
       color: #6c6c6c;
+      font-weight: $font-semibold;
       height: 15px;
+      margin-bottom: 3px;
     }
-    .restriction-item-value {
+    .card-item-value {
       font-size: $font-size14;
       font-weight: 400;
       color: #6c6c6c;
+      white-space: nowrap;
       height: 18px;
-      margin-bottom: 2px;
-      margin-top: 3px;
-      .value-name {
-        font-size: $font-size14;
-        font-weight: $font-semibold;
-        color: #6c6c6c;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &:hover {
+        color: #3c3c3c;
+      }
+    }
+    .card-row-issued {
+      display: grid;
+      grid-template-columns: 32px 32px 32px;
+      column-gap: 49px;
+      margin-top: 12px;
+    }
+    .card-row-endor {
+      display: grid;
+      grid-template-columns: 141px 141px;
+      column-gap: 21px;
+      margin-top: 12px;
+    }
+    .card-row-progress {
+      margin-top: 12px;
+    }
+
+    .card-icon-copy {
+      display: flex;
+      align-items: flex-start;
+      cursor: pointer;
+      .card-icon {
+        display: none;
+        position: relative;
+        margin-left: 6px;
+        bottom: 4px;
+        height: 18px;
+        svg {
+          fill: #aaaaaa;
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
         }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+      }
+      .card-icon {
+        height: 18px;
+        margin-left: 6px;
+      }
+      &:hover {
+        .card-icon {
+          display: block;
         }
       }
     }
+
+    .card-restriction {
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+      .restriction-name {
+        font-size: $font-size12;
+        font-weight: $font-semibold;
+        color: #6c6c6c;
+        height: 15px;
+      }
+      .restriction-item-value {
+        font-size: $font-size14;
+        font-weight: 400;
+        color: #6c6c6c;
+        height: 18px;
+        margin-bottom: 2px;
+        margin-top: 3px;
+        .value-name {
+          font-size: $font-size14;
+          font-weight: $font-semibold;
+          color: #6c6c6c;
+          &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
+          &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
+        }
+      }
+    }
+    .endorsement {
+      margin-top: 12px;
+    }
   }
-  .endorsement {
-    margin-top: 12px;
-  }
-}
 }
 .perfomance {
   display: flex !important;
   flex-direction: column;
-  
+
   .common-template-item-name {
     font-size: $font-size14 !important;
     font-weight: $font-semibold !important;
