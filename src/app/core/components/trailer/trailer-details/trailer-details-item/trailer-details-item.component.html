@@ -227,7 +227,7 @@
             <div (click)="toggleOwner = !toggleOwner" class="icon-show">
               <svg-icon
                 [ngClass]="{ 'transform-arrow': toggleOwner }"
-                [appTooltip]="toggleOwner?'SHOW CONTACT' : 'HIDE CONTACT'"
+                [appTooltip]="toggleOwner? 'HIDE CONTACT' : 'SHOW CONTACT '"
                 [position]="'top-middle'"
                 [tooltipBackground]="'#6c6c6c'"
                 [tooltipColor]="'#ffffff'"

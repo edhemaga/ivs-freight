@@ -259,6 +259,8 @@
   padding-right: 3px;
   .transform-arrow {
     bottom: 0 !important;
+    padding-bottom: 16px;
+    top: 12px;
     svg {
       transform: rotate(180deg);
       transition: all 0.3s ease-in-out;
