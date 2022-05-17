@@ -31,7 +31,8 @@
                 type: 'text',
                 label: 'Bussines Name',
                 isRequired: true,
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                autoFocus: true
               }"
             ></app-ta-input>
           </div>
@@ -117,7 +118,7 @@
           [cardName]="'Receiving Work Hours'"
           [isCardOpen]="true"
         >
-          <div class="shipper-work-hours row-margintop20 last-row">
+          <div class="shipper-work-hours row-mt-20 last-row">
             <div
               class="shipper-work-hours-field appointment"
               [ngClass]="{ active: isAppointmentReceiving }"
@@ -184,7 +185,7 @@
           <div
             *ngIf="!shipperForm.get('isShippingHoursSameLikeReceiving').value"
           >
-            <div class="shipper-work-hours row-margintop20 last-row">
+            <div class="shipper-work-hours row-mt-20 last-row">
               <div
                 class="shipper-work-hours-field appointment"
                 [ngClass]="{ active: isAppointmentShipping }"

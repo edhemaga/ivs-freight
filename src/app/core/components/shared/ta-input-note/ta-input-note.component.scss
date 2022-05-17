@@ -27,11 +27,33 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-      
+      position: relative;
+      left: 1px;
     }
     .rotate {
       transform: rotate(180deg);
       transition: all 0.3s ease-in-out;
+    }
+
+    &:hover {
+      .note-label {
+        color: #6c6c6c;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
+    &.active {
+      transition: all 0.3s ease-in-out;
+      .note-label {
+        color: #6c6c6c;
+      }
+
+      &:hover {
+        .note-label {
+          color: #3c3c3c;
+          transition: all 0.3s ease-in-out;
+        }
+      }
     }
   }
 
@@ -41,7 +63,7 @@
     transition: all 0.3s ease-in-out;
     padding: 0 6px;
 
-    &.active{
+    &.active {
       max-height: 600px;
     }
     .note-textarea {
@@ -53,6 +75,24 @@
       border: none;
       box-shadow: none;
       outline: none;
+
+      scrollbar-width: none !important; /* Firefox */
+
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border: 6px solid #e5e5e5;
+        border-radius: 1px;
+      }
+      &::-webkit-scrollbar-track {
+        padding: 0;
+        position: relative;
+        right: 0;
+        top: 0;
+        background: transparent;
+      }
 
       &::-webkit-input-placeholder {
         color: #dadada !important;

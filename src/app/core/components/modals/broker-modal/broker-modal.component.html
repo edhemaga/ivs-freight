@@ -30,7 +30,8 @@
                 type: 'text',
                 label: 'Bussines Name',
                 isRequired: true,
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                autoFocus: true
               }"
             ></app-ta-input>
           </div>
@@ -283,7 +284,7 @@
         </div>
         <app-ta-custom-card [cardName]="'Billing'" [isCardOpen]="true">
           <div
-            class="broker-billing row-margintop20 last-row"
+            class="broker-billing row-mt-20 last-row"
             [ngClass]="{
               'row-gap':
                 this.brokerForm.get('creditType').value === 'Enable' &&

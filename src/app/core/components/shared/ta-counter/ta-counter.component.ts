@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-ta-counter',
   templateUrl: './ta-counter.component.html',
-  styleUrls: ['./ta-counter.component.scss']
+  styleUrls: ['./ta-counter.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TaCounterComponent {
 

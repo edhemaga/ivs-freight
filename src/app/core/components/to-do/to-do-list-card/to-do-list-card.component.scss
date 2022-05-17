@@ -106,397 +106,1280 @@
                 }
             }
         }
+    }
 
-        .list-holder{
-            width: 100%;
-            padding: 12px;
-            box-sizing: border-box;
-            border-radius: 3px;
-            background-color: #fff;
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            flex-direction: column;
-            margin-bottom: 8px;
 
-            .list-items-frame{
+    .card-main-holder{
+        padding-right: 0;
+        gridster{
+            height: 100vh;
+            padding: 0px 0 0 10px !important;
+            background-color: transparent !important;
+
+            gridster-preview{
+                background-color: #DADADA;
+                border-radius: 3px;
+                box-shadow: inset 0px 0px 12px 5px rgb(0 0 0 / 10%);
+            }
+
+            .list-holder{
                 width: 100%;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding-bottom: 2px;
+                padding: 12px;
                 box-sizing: border-box;
-
-                .list-title{
-                    font-size: 14px;
-                    font-weight: 700;
-                    color: #6C6C6C;
-                    line-height: 18px;
-                }
-
-                .icons-frame{
+                border-radius: 3px;
+                background-color: #fff;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                flex-direction: column;
+                margin-bottom: 8px;
+                border-radius: 3px;
+    
+                .list-items-frame{
+                    width: 100%;
                     display: flex;
                     justify-content: space-between;
-                    align-items: center; 
-                    
-                    .icon-box{
-                        position: relative;
-                        width: 18px;
-                        height: 18px;
+                    align-items: center;
+                    padding-bottom: 2px;
+                    box-sizing: border-box;
+    
+                    .list-title{
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: #6C6C6C;
+                        line-height: 18px;
+                    }
+    
+                    .icons-frame{
                         display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        margin-left: 12px;
-
-                        &.blue-icons{
+                        justify-content: space-between;
+                        align-items: center; 
+                        
+                        .icon-box{
+                            position: relative;
+                            width: 18px;
+                            height: 18px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            margin-left: 12px;
+    
+                            &.blue-icons{
+                                svg-icon{
+                                    svg{
+                                        display: flex;
+                                        path{
+                                            fill: #6D82C7;
+                                        }
+                                    }    
+                                }
+    
+                                &:hover{
+                                    svg-icon{
+                                        svg{
+                                            display: flex;
+                                            cursor: pointer;
+                                            path{
+                                                fill: #536BC2;
+                                            }
+                                            circle{
+                                                fill: #536BC2; 
+                                            }        
+                                        }    
+                                    }    
+                                }
+                            }
+    
                             svg-icon{
                                 svg{
                                     display: flex;
                                     path{
-                                        fill: #6D82C7;
+                                        fill: #AAAAAA;
                                     }
-                                }    
+                                    circle{
+                                        fill: #AAAAAA; 
+                                    }
+                                }
                             }
-
+    
                             &:hover{
                                 svg-icon{
                                     svg{
                                         display: flex;
                                         cursor: pointer;
                                         path{
-                                            fill: #536BC2;
+                                            fill: #6C6C6C;
                                         }
                                         circle{
-                                            fill: #536BC2; 
-                                        }        
-                                    }    
+                                            fill: #6C6C6C; 
+                                        }
+                                    }
                                 }    
                             }
-                        }
-
-                        svg-icon{
-                            svg{
-                                display: flex;
-                                path{
-                                    fill: #AAAAAA;
-                                }
-                                circle{
-                                    fill: #AAAAAA; 
-                                }
-                            }
-                        }
-
-                        &:hover{
-                            svg-icon{
-                                svg{
-                                    display: flex;
-                                    cursor: pointer;
-                                    path{
-                                        fill: #6C6C6C;
-                                    }
-                                    circle{
-                                        fill: #6C6C6C; 
-                                    }
-                                }
-                            }    
-                        }
-
-                        .number-comments{
-                            position: absolute;
-                            font-size: 10px;
-                            font-weight: 700;
-                            color: #fff;
-                            line-height: 13px;
-                            top: 1px;
-                        }
-                    }
-                }
-
-                .list-time{
-                    font-size: 14px;
-                    font-weight: 500;
-                    color: #6C6C6C;
-                    line-height: 18px;
-
-                    &.time{
-                        color: #B7B7B7;
-                        padding-right: 6px;
-                        box-sizing: border-box;
-                    }
-                }
-            }
-
-            .options-frame{
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                padding-top: 2px;
-                box-sizing: border-box;
-
-                .dispatch-box{
-                    padding: 2px 4px;
-                    box-sizing: border-box;
-                    border-radius: 2px;
-                    background-color: #F3F3F3;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    font-size: 11px;
-                    font-weight: 800;
-                    color: #919191;
-                    line-height: 14px;
-                    margin-right: 4px;
-                }
-
-                .users{
-                    width: 18px;
-                    height: 18px;
-                    border-radius: 100%;
-                    margin-right: 4px;
-
-                    svg-icon{
-                        svg{
-                            display: flex;
-                            width: 18px;
-                            height: 18px;        
-                        }
-                    }
-
-                    &:hover{
-                        transform: scale(1.2);
-                    }
-                }
-            }
-
-            .list-text{
-                font-size: 14px;
-                font-weight: 400;
-                color: #6C6C6C;
-                line-height: 18px;
-                padding: 8px 0px 12px 0px;
-                box-sizing: border-box;
-            }
-
-            .link{
-                font-size: 14px;
-                font-weight: 500;
-                color: #536BC2;
-                line-height: 18px;
-                padding-bottom: 12px;
-                box-sizing: border-box;
-
-                &:hover{
-                    cursor: pointer;
-                    color: #3551B7;
-                }
-            }
-
-            .chat-holder{
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                margin-bottom: 6px;
-                padding: 6px;
-                box-sizing: border-box;
-
-                &:hover{
-                    background-color: #F7F7F7;
-
-                    .icons-holder{
-                        visibility: visible;
-                    }
-
-                    .user-name{
-                        color: #3C3C3C !important;
-                    }
-
-                    .time-and-date{
-                        color: #919191 !important;
-                    }
-                }
-
-                .chat-frame{
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: flex-start;
-                    flex-direction: column;
-
-                    .user-frame{
-                        display: flex;
-                        justify-content: flex-start;
-                        align-items: flex-start;
-
-                        .user-img{
-                            width: 28px;
-                            height: 28px;
-                            border-radius: 100%;
-
-                            svg-icon{
-                                svg{
-                                    display: flex;
-                                    width: 28px;
-                                    height: 28px;        
-                                }
-                            }
-                        }
-
-                        .user-name-holder{
-                            display: flex;
-                            justify-content: flex-start;
-                            align-items: flex-start;
-                            flex-direction: column;
-                            padding-left: 6px;
-                            box-sizing: border-box;
-
-                            .user-name{
-                                font-size: 11px;
+    
+                            .number-comments{
+                                position: absolute;
+                                font-size: 10px;
                                 font-weight: 700;
-                                color: #6C6C6C;
-                                line-height: 15px;      
-                            }
-
-                            .time-and-date{
-                                font-size: 11px;
-                                font-weight: 600;
-                                color: #B7B7B7;
-                                line-height: 22px;      
+                                color: #fff;
+                                line-height: 13px;
+                                top: 1px;
                             }
                         }
                     }
-
-                    .messages{
+    
+                    .list-time{
                         font-size: 14px;
-                        font-weight: 400;
+                        font-weight: 500;
                         color: #6C6C6C;
                         line-height: 18px;
-                        padding-top: 6px;
-                        box-sizing: border-box;        
+    
+                        &.time{
+                            color: #B7B7B7;
+                            padding-right: 6px;
+                            box-sizing: border-box;
+                        }
                     }
                 }
-
-                .icons-holder{
+    
+                .options-frame{
                     display: flex;
                     justify-content: flex-start;
-                    align-items: flex-start;
-                    visibility: hidden;
-
-                    .icons{
+                    align-items: center;
+                    padding-top: 2px;
+                    box-sizing: border-box;
+    
+                    .dispatch-box{
+                        padding: 2px 4px;
+                        box-sizing: border-box;
+                        border-radius: 2px;
+                        background-color: #F3F3F3;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 11px;
+                        font-weight: 800;
+                        color: #919191;
+                        line-height: 14px;
+                        margin-right: 4px;
+                    }
+    
+                    .users{
                         width: 18px;
                         height: 18px;
-                        margin-left: 6px;
-
+                        border-radius: 100%;
+                        margin-right: 4px;
+    
                         svg-icon{
                             svg{
                                 display: flex;
                                 width: 18px;
-                                height: 18px;
-                                
-                                path{
-                                    fill: #AAAAAA;
-                                }
+                                height: 18px;        
                             }
                         }
-                    }
-                }
-            }
-
-            .comment-holder{
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                padding: 6px 0px 12px 0px;
-                box-sizing: border-box;
-
-                .comment-user-img{
-                    width: 18px;
-                    height: 18px;
-                    border-radius: 100%;
-
-                    svg-icon{
-                        svg{
-                            display: flex;
-                            width: 18px;
-                            height: 18px;        
+    
+                        &:hover{
+                            transform: scale(1.2);
                         }
                     }
                 }
-
-                .comment{
+    
+                .list-text{
                     font-size: 14px;
-                    font-weight: 700;
+                    font-weight: 400;
                     color: #6C6C6C;
-                    line-height: 15px;
-                    padding-left: 4px;
+                    line-height: 18px;
+                    padding: 8px 0px 12px 0px;
                     box-sizing: border-box;
-
+                }
+    
+                .link{
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #536BC2;
+                    line-height: 18px;
+                    padding-bottom: 12px;
+                    box-sizing: border-box;
+    
                     &:hover{
                         cursor: pointer;
                         color: #3551B7;
                     }
                 }
-            }
-
-            .line-holder{
-                width: 100%;
-                height: 8px;
-                border-radius: 2px;
-                display: flex;
-
-                .line-left{
+    
+                .chat-holder{
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 6px;
+                    padding: 6px;
+                    box-sizing: border-box;
+    
+                    &:hover{
+                        background-color: #F7F7F7;
+    
+                        .icons-holder{
+                            visibility: visible;
+                        }
+    
+                        .user-name{
+                            color: #3C3C3C !important;
+                        }
+    
+                        .time-and-date{
+                            color: #919191 !important;
+                        }
+                    }
+    
+                    .chat-frame{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: flex-start;
+                        flex-direction: column;
+    
+                        .user-frame{
+                            display: flex;
+                            justify-content: flex-start;
+                            align-items: flex-start;
+    
+                            .user-img{
+                                width: 28px;
+                                height: 28px;
+                                border-radius: 100%;
+    
+                                svg-icon{
+                                    svg{
+                                        display: flex;
+                                        width: 28px;
+                                        height: 28px;        
+                                    }
+                                }
+                            }
+    
+                            .user-name-holder{
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: flex-start;
+                                flex-direction: column;
+                                padding-left: 6px;
+                                box-sizing: border-box;
+    
+                                .user-name{
+                                    font-size: 11px;
+                                    font-weight: 700;
+                                    color: #6C6C6C;
+                                    line-height: 15px;      
+                                }
+    
+                                .time-and-date{
+                                    font-size: 11px;
+                                    font-weight: 600;
+                                    color: #B7B7B7;
+                                    line-height: 22px;      
+                                }
+                            }
+                        }
+    
+                        .messages{
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: #6C6C6C;
+                            line-height: 18px;
+                            padding-top: 6px;
+                            box-sizing: border-box;        
+                        }
+                    }
+    
+                    .icons-holder{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: flex-start;
+                        visibility: hidden;
+    
+                        .icons{
+                            width: 18px;
+                            height: 18px;
+                            margin-left: 6px;
+    
+                            svg-icon{
+                                svg{
+                                    display: flex;
+                                    width: 18px;
+                                    height: 18px;
+                                    
+                                    path{
+                                        fill: #AAAAAA;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+    
+                .comment-holder{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding: 6px 0px 12px 0px;
+                    box-sizing: border-box;
+    
+                    .comment-user-img{
+                        width: 18px;
+                        height: 18px;
+                        border-radius: 100%;
+    
+                        svg-icon{
+                            svg{
+                                display: flex;
+                                width: 18px;
+                                height: 18px;        
+                            }
+                        }
+                    }
+    
+                    .comment{
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: #6C6C6C;
+                        line-height: 15px;
+                        padding-left: 4px;
+                        box-sizing: border-box;
+    
+                        &:hover{
+                            cursor: pointer;
+                            color: #3551B7;
+                        }
+                    }
+                }
+    
+                .line-holder{
                     width: 100%;
                     height: 8px;
-                    background-color: #FFE1E4;
-
-                    &.full-dark-green{
-                        background-color: #80CBBA;
-                    }
-
-                    &.green-line{
-                        background-color: #E0F2E9;
-                    }
-
-                    &.orange-line{
-                        background-color: #FFECD1;
-                    }
-
-                    &.color-gray{
-                        width: 69px;
-                        background-color: #DADADA;
-                    }
-
-                    &.color-red{
-                        background-color: #E57373;
-                    }
-
-                }
-
-                .line-right{
-                    width: 22px;
-                    height: 8px;
-                    background-color: #E57373;
-
-                    &.dark-green-line{
-                        width: 384px;
-                        background-color: #80CBBA;
-                    }
-
-                    &.orange-small-line{
-                        width: 241px;
-                        background-color: #FFB74D;
-                    }
-
-                    &.dark-orange-line{
-                        width: 252px;
-                        background-color: #FFB74D;
-                    }
-
-                    &.color-dark-gray{
+                    border-radius: 2px;
+                    display: flex;
+    
+                    .line-left{
                         width: 100%;
-                        background-color: #AAAAAA;
+                        height: 8px;
+                        background-color: #FFE1E4;
+    
+                        &.full-dark-green{
+                            background-color: #80CBBA;
+                        }
+    
+                        &.green-line{
+                            background-color: #E0F2E9;
+                        }
+    
+                        &.orange-line{
+                            background-color: #FFECD1;
+                        }
+    
+                        &.color-gray{
+                            width: 69px;
+                            background-color: #DADADA;
+                        }
+    
+                        &.color-red{
+                            background-color: #E57373;
+                        }
+    
+                    }
+    
+                    .line-right{
+                        width: 22px;
+                        height: 8px;
+                        background-color: #E57373;
+    
+                        &.dark-green-line{
+                            width: 384px;
+                            background-color: #80CBBA;
+                        }
+    
+                        &.orange-small-line{
+                            width: 241px;
+                            background-color: #FFB74D;
+                        }
+    
+                        &.dark-orange-line{
+                            width: 252px;
+                            background-color: #FFB74D;
+                        }
+    
+                        &.color-dark-gray{
+                            width: 100%;
+                            background-color: #AAAAAA;
+                        }
                     }
                 }
             }
+
+        }
+    }
+
+    .widgets-holder{
+        display: none; // flex
+        position: fixed;
+        width: 360px;
+        height: 100vh;
+        padding: 22px 12px 22px 16px;
+        box-sizing: border-box;
+        background-color: #fff;
+        top: 0px;
+        right: 0px;
+        flex-direction: column;
+
+        .widgets-title-holder{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            box-sizing: border-box;
+
+            .widgets-title-frame{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                .widgets-title{
+                    font-size: 26px;
+                    font-weight: 900;
+                    color: #919191;
+                    line-height: 32px;
+                    padding-right: 12px;
+                    box-sizing: border-box;
+                }
+
+                .refresh-icon{
+                    width: 16px;
+                    height: 16px;
+
+                    svg-icon{
+                        svg{
+                            display: flex;
+                            width: 16px;
+                            height: 16px;        
+                            path{
+                                fill: #B7B7B7;
+                            }
+                        }
+                    }
+                }
+
+                .update-text{
+                    font-size: 10px;
+                    font-weight: 600;
+                    color: #B7B7B7;
+                    line-height: 10px;
+                    padding-left: 6px;
+                    box-sizing: border-box;
+                }
+            }
+
+            .lock{
+                width: 32px;
+                height: 32px;
+                border-radius: 100%;
+                background-color: #F9F9F9;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                svg-icon{
+                    svg{
+                        width: 14px;
+                        height: 16px;
+                        display: flex;
+
+                        path{
+                            fill: #B7B7B7;
+                        }
+                    }
+                }
+            }
+        }
+
+        .middle-holder{
+            overflow: auto;
+            flex: 1;
+        }
+
+        .world-clock-holder{
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 10px 10px 7px 10px;
+            box-sizing: border-box;
+            border-radius: 3px;
+            background-color: #F9F9F9;
+            margin-bottom: 12px;
+
+            &.no-margin{
+                margin-bottom: 0px;
+            }
+
+            &.padding-none{
+                padding: 10px 10px 0px 10px;
+            }
+
+            .world-clock-title-holder{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding-bottom: 12px;
+                box-sizing: border-box;
+
+                .world-clock-title{
+                    font-size: 12px;
+                    font-weight: 700;
+                    color: #6C6C6C;
+                    line-height: 15px;
+                }
+
+                .add{
+                    width: 14px;
+                    height: 14px;
+
+                    svg-icon{
+                        svg{
+                            display: flex;
+                            width: 14px;
+                            height: 14px;
+
+                            path{
+                                fill: #B7B7B7;
+                            }
+                        }
+                    }
+
+                    &.different-fill{
+                        svg-icon{
+                            svg{
+                                path{
+                                    fill: #DADADA;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .weather-city-holder{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+
+                    .weather-icon{
+                        width: 32px;
+                        height: 32px;
+
+                        svg-icon{
+                            svg{
+                                display: flex;
+                                width: 32px;
+                                height: 32px;
+
+                                g{
+                                    opacity: 1;
+
+                                    path{
+                                        fill: #FFE17C;
+                                    }    
+                                }
+                            }
+                        }
+                    }
+
+                    .temperature-city{
+                        font-size: 26px;
+                        font-weight: 600;
+                        color: #6C6C6C;
+                        line-height: 32px;
+                        padding: 0px 7px 0px 12px;
+                        box-sizing: border-box;
+                    }
+
+                    .weather-status-holder{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: flex-start;
+                        flex-direction: column;
+
+                        .weather-city{
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #6C6C6C;
+                            line-height: 18px;    
+                        }
+
+                        .weather-status{
+                            font-size: 10px;
+                            font-weight: 700;
+                            color: #919191;
+                            line-height: 13px;    
+                        }
+                    }
+                }
+            }
+
+            .city-holder{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 12px;
+                box-sizing: border-box;
+
+
+                .city-frame{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    flex-direction: column;
+
+                    .city{
+                        font-size: 14px;
+                        font-weight: 500;
+                        color: #6C6C6C;
+                        line-height: 18px;
+                        padding-bottom: 1px;
+                        box-sizing: border-box;
+                    }
+
+                    .state{
+                        font-size: 10px;
+                        font-weight: 700;
+                        color: #919191;
+                        line-height: 13px;
+                    }
+                }
+
+                .time-and-date-holder{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+
+                    .date-holder{
+                        display: flex;
+                        justify-content: flex-end;
+                        align-items: flex-end;
+                        flex-direction: column;
+                        padding-right: 6px;
+                        box-sizing: border-box;
+
+                        .day{
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #6C6C6C;
+                            line-height: 18px;  
+                            padding-bottom: 1px;
+                            box-sizing: border-box;  
+                        }
+
+                        .date{
+                            font-size: 10px;
+                            font-weight: 700;
+                            color: #919191;
+                            line-height: 13px;  
+                        }
+                    }
+
+                    .time{
+                        font-size: 34px;
+                        font-weight: 500;
+                        color: #6C6C6C;
+                        line-height: 42px;  
+                        padding-right: 4px;
+                        box-sizing: border-box;
+                    }
+
+                    .part-of-day{
+                        width: 14px;
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: #6C6C6C;
+                        line-height: 12px;  
+                    }
+                }
+            }
+
+            .vehicle-title{
+                font-size: 12px;
+                font-weight: 700;
+                color: #6C6C6C;
+                line-height: 15px;  
+                padding-bottom: 14px;
+                box-sizing: border-box;
+            }
+
+            .vehicle-statistics-holder{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 7px;
+                box-sizing: border-box;
+
+                .vehicle-ring-icon{
+                    position: relative;
+                    width: 120px;
+                    height: 120px;
+
+                    svg-icon{
+                        svg{
+                            display: flex;
+                            width: 120px;
+                            height: 120px;
+                        }
+                    }
+
+                    .total-vehicle{
+                        position: absolute;
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: flex-start;
+                        flex-direction: column;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+
+                        .total{
+                            font-size: 26px;
+                            font-weight: 500;
+                            color: #6C6C6C;
+                            line-height: 32px;
+                        }
+
+                        .total-text{
+                            font-size: 12px;
+                            font-weight: 700;
+                            color: #919191;
+                            line-height: 15px; 
+                        }
+                    }
+                }
+
+                .vehicle-statistics-frame{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    flex-direction: column;
+
+                    .statistics-items-frame{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: flex-start;
+                        padding-bottom: 12px;
+                        box-sizing: border-box;
+
+                        .no-padding-bottom{
+                            padding-bottom: 0px;
+                        }
+
+                        .statistics-items{
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #778FBB;
+                            line-height: 16px;  
+                            padding-right: 6px;
+                            box-sizing: border-box;  
+                            
+                            &.short-stop{
+                                color: #FFBF6B;
+                            }
+
+                            &.extra-stop{
+                                color: #FF6A6A;
+                            }
+
+                            &.parking{
+                                color: #B7B7B7;
+                            }
+                        }
+
+                        .percent{
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #919191;
+                            line-height: 18px;  
+                        }
+                    }
+                }
+
+                .current-holder{
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: flex-end;
+                    flex-direction: column;
+
+                    .current{
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: #6C6C6C;
+                        line-height: 18px; 
+                        padding-bottom: 12px;
+                        box-sizing: border-box; 
+                    }
+                }
+            }
+
+            .max-min-temp-holder{
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+                align-items: flex-start;
+                padding-top: 4px;
+                box-sizing: border-box;
+
+                .max-min-temp-items-holder{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+
+                    .max-temp{
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: #6C6C6C;
+                        line-height: 15px; 
+
+                        &.min-temp{
+                            padding-bottom: 12px;
+                            box-sizing: border-box;
+                        }
+    
+                    }
+
+                    .temp-scale{
+                        position: relative;
+                        width: 8px;
+                        height: 46px;
+                        border-radius: 2px;
+                        background-color: #EEEEEE;
+                        margin: 2px 0px;
+
+                        .scale-position{
+                            position: absolute;
+                            width: 8px;
+                            height: 23px;
+                            border-radius: 2px;
+                            background-color: #FCD467;
+                            top: 7px;
+                            left: 0px;
+
+                            &.scales-thunder{
+                                height: 18px;
+                                background-color: #FCDE67;
+                                top: 14px;
+                            }
+
+                            &.scale-rain{
+                                height: 16px;
+                                background-color: #C1D8A1;
+                                top: 30px;
+                            }
+
+                            &.scale-cloudy{
+                                height: 21px;
+                                background-color: #FBD767;
+                                top: 13px;
+                            }
+
+                            &.scale-mostly-sunny{
+                                height: 17px;
+                                background-color: #FBD767;
+                                top: 13px;
+                            }
+
+                            &.scale-wind{
+                                height: 18px;
+                                background-color: #FBD767;
+                                top: 12px;
+                            }
+
+                            &.scale-sunny{
+                                height: 28px;
+                                background-color: #FDBF6A;
+                                top: 0px;
+                            }
+                        }
+                    }
+
+                    .weather-status-icon{
+                        width: 20px;
+                        height: 20px;
+
+                        svg-icon{
+                            svg{
+                                display: flex;
+                                width: 20px;
+                                height: 20px;    
+                                g{
+                                    opacity: 1;
+                                    path{
+                                        fill: #FFE17C;
+                                    }
+    
+                                }
+                            }
+                        }
+
+                        &.thunder{
+                            svg-icon{
+                                svg{
+                                    g{
+                                        opacity: 1;
+                                        path:nth-child(2){
+                                            fill: #FFE17C !important;
+                                        } 
+                                        path:nth-child(3){
+                                            fill: #C3ECFF !important;
+                                        }           
+                                    }
+                                }
+                            }
+                        }
+
+                        &.rain{
+                            svg-icon{
+                                svg{
+                                    g{
+                                        opacity: 1;
+
+                                        path{
+                                            fill: #C3ECFF;  
+                                        }    
+                                    }
+                                }
+                            }
+                        }
+
+                        &.cloudy-sunny{
+                            svg-icon{
+                                svg{
+                                    g{
+                                        path:nth-child(2){
+                                            fill: #FFE17C;
+                                        }
+                                        path:nth-child(3), path:nth-child(4){
+                                            fill: #C3ECFF;  
+                                        }    
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
+                    .weather-day{
+                        font-size: 10px;
+                        font-weight: 700;
+                        color: #919191;
+                        line-height: 13px; 
+                        padding-top: 6px;
+                        box-sizing: border-box;
+                    }
+
+                }
+            }
+
+            .border-bottom{
+                width: 100%;
+                height: 2px;
+                border-radius: 1px;
+                background-color: #EEEEEE;
+                margin: 12px 0px 10px 0px;
+            }
+
+            .temp-in-cities-global-holder{
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                flex-direction: column;
+                padding-bottom: 5px;
+                box-sizing: border-box;
+
+                .temp-in-cities-holder{
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-bottom: 14px;
+                    box-sizing: border-box;
+
+                    &.padding-bottom{
+                        padding-bottom: 0px;
+                    }
+
+                    .cities{
+                        font-size: 14px;
+                        font-weight: 500;
+                        color: #6C6C6C;
+                        line-height: 18px; 
+                    }
+
+                    .weather-temp-holder{
+                        width: 50%;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        .weather-description-holder{
+                            display: flex;
+                            justify-content: flex-start;
+                            align-items: center;
+
+                            .weather-box-icons{
+                                width: 20px;
+                                height: 20px;
+
+                                svg-icon{
+                                    svg{
+                                        display: flex;
+                                        width: 20px;
+                                        height: 20px;   
+                                        
+                                        g{
+                                            opacity: 1;
+
+                                            path{
+                                                fill: #C3ECFF;
+                                            }    
+                                        }
+                                    }
+                                }
+
+                                &.snow{
+                                    svg-icon{
+                                        svg{
+                                            g{
+                                                opacity: 1;
+
+                                                path:nth-child(2){
+                                                    fill: #FFE17C;
+                                                }
+                                                path:nth-child(3){
+                                                    fill: #C3ECFF;
+                                                }
+    
+                                            }
+                                        }
+                                    }
+                                }
+
+                                &.sunny{
+                                    svg-icon{
+                                        svg{
+                                            g{
+                                                opacity: 1;
+
+                                                path{
+                                                    fill: #FFE17C;
+                                                }    
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            .weather-description{
+                                font-size: 10px;
+                                font-weight: 700;
+                                color: #919191;
+                                line-height: 13px; 
+                                padding-left: 6px;
+                                box-sizing: border-box;        
+                            }
+                        }
+
+                        .temp-in-cities{
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #6C6C6C;
+                            line-height: 18px;     
+                        }
+                    }
+                }
+            }
+
+            .invoice-holder{
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                padding: 11px 0px 7px 0px;
+                box-sizing: border-box;
+
+                .invoice-text{
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #919191;
+                    line-height: 18px;
+                }
+
+                .invoice-price{
+                    font-size: 28px;
+                    font-weight: 600;
+                    color: #6C6C6C;
+                    line-height: 34px;
+                    padding-bottom: 22px;
+                    box-sizing: border-box;
+                }
+
+                .invoice-days-holder{
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0px 43px 0px 41px;
+                    box-sizing: border-box;
+
+                    .invoice-days-frame{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+
+                        .invoice-number{
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #BBC7DD;
+                            line-height: 18px;  
+                            padding-bottom: 2px;
+                            box-sizing: border-box; 
+                            
+                            &.color-light-blue{
+                                color: #91A4C7;
+                            }
+
+                            &.color-blue{
+                                color: #778FBB;
+                            }
+
+                            &.color-light-red{
+                                color: #FF8080;
+                            }
+                        }
+
+                        .invoice-days{
+                            font-size: 10px;
+                            font-weight: 700;
+                            color: #919191;
+                            line-height: 16px;         
+                        }
+                    }
+                }
+            }
+
+            .ring-chart{
+                position: absolute;
+                width: 316px;
+                height: 157px;
+                top: 16px;
+                left: 10px;
+
+                svg-icon{
+                    svg{
+                        display: flex;
+                        width: 316px;
+                        height: 157px;
+                    }
+                }
+            }
+        }
+
+        .menu-holder{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            .border{
+                width: 100%;
+                height: 2px;
+                border-radius: 1px;
+                background-color: #F3F3F3;
+                margin: 8px 0px;
+            } 
+            
+            .menu-icons-holder{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0px 10px;
+                box-sizing: border-box;
+    
+    
+                .menu-icons{
+                    position: relative;
+                    width: 20px;
+                    height: 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+    
+                    svg-icon{
+                        svg{
+                            display: flex;
+                            width: 18px;
+                            height: 18px;
+                            
+                            path{
+                                fill: #B7B7B7;
+                            }
+                        }
+                    }
+    
+                    &.active{
+                        width: 32px;
+                        height: 28px;
+                        border-radius: 3px;
+                        background-color: #F7F7F7;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+    
+                        svg-icon{
+                            svg{
+                                display: flex;
+                                width: 20px;
+                                height: 20px;
+                                
+                                path{
+                                    fill: #778FBB;
+                                }
+                            }
+                        }
+                    }
+    
+                    .circle-notification{
+                        position: absolute;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 100%;
+                        background-color: #fff;
+                        top: 0px;
+                        right: 0px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+    
+                        .circle-blue{
+                            width: 6px;
+                            height: 6px;
+                            border-radius: 100%;
+                            background-color: #778FBB;
+                        }
+                    }
+                }
+            }    
         }
     }
 }

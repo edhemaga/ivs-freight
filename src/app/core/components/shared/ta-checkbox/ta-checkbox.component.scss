@@ -34,14 +34,14 @@
       top: 1px;
       width: 6px;
       height: 9px;
-      border: solid white;
+      border: solid #FFFFFF;
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
     }
   }
 
   &:hover .ta-checkbox ~ .ta-mark {
-    background-color: #6c6c6c;
+    background-color: #919191;
     transition: all 0.3s ease-in-out;
   }
 
@@ -54,6 +54,11 @@
     transition: all 0.3s ease-in-out;
   }
 
+  .ta-checkbox:checked:hover ~ .ta-mark {
+    background-color: #536BC2;
+    transition: all 0.3s ease-in-out;
+  }
+
   /* Show the mark when checked */
   .ta-checkbox:checked ~ .ta-mark:after {
     display: block;
@@ -62,7 +67,7 @@
 
   .ta-checkbox-label {
     cursor: pointer;
-    color: #b7b7b7;
+    color: #919191;
     font-weight: 800;
     font-size: 14px;
     margin-left: 6px;
