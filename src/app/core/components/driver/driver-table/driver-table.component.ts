@@ -12,6 +12,10 @@ import { DriverTService } from '../state/driver.service';
 import { catchError, tap } from 'rxjs/operators';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DriversState } from '../state/driver.store';
+import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 
 @Component({
   selector: 'app-driver-table',
@@ -60,7 +64,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideViewMode: false,
-        viewModeActive: "List"
+        viewModeActive: 'List',
       },
       config: {
         showSort: true,
@@ -228,7 +232,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setDriverData(event.tabData);
-    } else if (event.action === 'view-mode'){
+    } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
   }
@@ -243,6 +247,34 @@ export class DriverTableComponent implements OnInit, OnDestroy {
           disableButton: true,
         }
       );
+    } else if (event.type === 'new-licence') {
+      this.modalService.openModal(
+        DriverCdlModalComponent,
+        { size: 'small' },
+        { ...event }
+      );
+    } else if (event.type === 'new-medical') {
+      this.modalService.openModal(
+        DriverMedicalModalComponent,
+        {
+          size: 'small',
+        },
+        { ...event }
+      );
+    } else if (event.type === 'new-mvr') {
+      this.modalService.openModal(
+        DriverMvrModalComponent,
+        { size: 'small' },
+        { ...event }
+      );
+    } else if (event.type === 'new-drug') {
+      this.modalService.openModal(
+        DriverDrugAlcoholModalComponent,
+        {
+          size: 'small',
+        },
+        { ...event }
+      );
     } else if (event.type === 'delete-item') {
       this.driverTService
         .deleteDriverById(event.id)
@@ -254,16 +286,16 @@ export class DriverTableComponent implements OnInit, OnDestroy {
               'Success:'
             );
 
-            let drivers = []
+            let drivers = [];
 
-            const index = this.viewData.map((driver) =>{
-              if(driver.id !== event.id){
+            const index = this.viewData.map((driver) => {
+              if (driver.id !== event.id) {
                 drivers.push(driver);
               }
-            })
+            });
 
             this.viewData = drivers;
-            
+
             // TODO: Treba Store da se updejtuje
             // this.driversQuery.deleteDriverByIdFromStore(event.id);
           },
