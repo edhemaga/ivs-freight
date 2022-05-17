@@ -1,0 +1,112 @@
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Licence' : 'Edit Licence'"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="cdlForm.valid"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <form [formGroup]="cdlForm" class="form-container">
+    <div class="cdl-issue-exp-date">
+      <app-ta-input
+        formControlName="cdlNumber"
+        [inputConfig]="{
+          name: 'CDL Number',
+          type: 'text',
+          label: 'CDL #',
+          isRequired: true,
+          textTransform: 'capitalize',
+          autoFocus: true
+        }"
+      ></app-ta-input>
+      <app-ta-input
+        formControlName="issueDate"
+        [inputConfig]="{
+          name: 'datepicker',
+          type: 'text',
+          label: 'Issue Date',
+          placeholderIcon: 'date',
+          isRequired: true,
+          customClass: 'datetimeclass'
+        }"
+      ></app-ta-input>
+      <app-ta-input
+        formControlName="expDate"
+        [inputConfig]="{
+          name: 'datepicker',
+          type: 'text',
+          label: 'Exp. Date',
+          placeholderIcon: 'date',
+          isRequired: true,
+          customClass: 'datetimeclass'
+        }"
+      ></app-ta-input>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <app-ta-input-dropdown
+          formControlName="classType"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Class',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-4'
+          }"
+          [canAddNew]="true"
+          [options]="classTypes"
+          (selectedItem)="onSelectClassType($event)"
+        ></app-ta-input-dropdown>
+      </div>
+      <div class="col-4">
+        <app-ta-input-dropdown
+          formControlName="countryType"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Country',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-4'
+          }"
+          [canAddNew]="true"
+          [options]="countryTypes"
+          (selectedItem)="onSelectCountryType($event)"
+        ></app-ta-input-dropdown>
+      </div>
+      <div class="col-4 no-p-left">
+        <app-ta-input-dropdown
+          formControlName="stateId"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'State',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-4'
+          }"
+          [canAddNew]="true"
+          [options]="stateTypes"
+          (selectedItem)="onSelectStateType($event)"
+        ></app-ta-input-dropdown>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">Restriction</div>
+    </div>
+    <div class="row">
+      <div class="col-12">Endorsment</div>
+    </div>
+    <app-ta-custom-card
+          [hasCounter]="documents.length ? documents.length : '0'"
+          [cardName]="'Documents'"
+          [isCardOpen]="documents.length"
+        >
+        DropZone for documents
+        </app-ta-custom-card>
+    <app-ta-input-note
+      formControlName="note"
+      [isVisibleNote]="cdlForm.get('note').value"
+    ></app-ta-input-note>
+  </form>
+</app-ta-modal>
