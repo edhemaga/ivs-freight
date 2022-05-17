@@ -4,6 +4,7 @@
     [ngClass]="{ 'has-counter': hasCounter }"
     class="ta-card-header"
     [class.active]="isCardOpen"
+    [class.no-data]="!hasTableData"
     (mouseenter)="isHeaderHover = true"
     (mouseleave)="isHeaderHover = false"
     (click)="isCardOpenEvent($event)"
@@ -47,7 +48,7 @@
         *ngIf="hasActionSvg"
         class="header-action-container"
         [class.hovered]="isHeaderHover"
-        [class.data]="hasTableData && isHeaderHover"
+        [class.data]="(hasTableData && isCardOpen) || (isHeaderHover && hasTableData && !isCardOpen)"
         (click)="onAdd($event)"
       >
         <svg-icon
@@ -55,7 +56,7 @@
           [ngClass]="{ 'new-position': !hasArrow || !hasTableData }"
           src="{{ hasActionSvg }}"
         ></svg-icon>
-        <p *ngIf="isHeaderHover" class="header-action-text">Add New</p>
+        <p *ngIf="isHeaderHover || (hasTableData && isCardOpen)" class="header-action-text">Add New</p>
       </div>
 
       <svg-icon

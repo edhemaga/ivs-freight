@@ -214,6 +214,29 @@
       }
     }
 
+    &.no-data {
+      cursor: auto !important;
+      &:hover {
+        .header-content {
+          .header-text {
+            color: #919191 !important;
+          }
+        }
+
+        .header-arrow {
+          svg {
+            path {
+              fill: #aaaaaa;
+            }
+          }
+        }
+
+        .ta-counter-number {
+          color: #919191 !important;
+        }
+      }
+    }
+
     &.cursor {
       cursor: pointer;
     }
