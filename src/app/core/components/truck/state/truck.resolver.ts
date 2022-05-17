@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { TruckQuery } from './truck.query';
-import { TruckService } from './truck.service';
+import { TruckTService } from './truck.service';
 import { TruckState, TruckStore } from './truck.store';
 
 
@@ -12,7 +12,7 @@ import { TruckState, TruckStore } from './truck.store';
 })
 export class DriverResolver implements Resolve<TruckState> {
   constructor(
-    private truckService: TruckService,
+    private truckService: TruckTService,
     private truckStore: TruckStore,
     private truckQuery: TruckQuery
   ) {}

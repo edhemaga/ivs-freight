@@ -8,6 +8,14 @@ const routes: Routes = [
     component: TrailerTableComponent,
     data: { title: 'Trailer' },
   },
+  {
+    path:':id/details',
+    loadChildren:()=>
+    import('./trailer-details/trailer-details.module').then(
+      (m) => m.TrailerDetailsModule
+    ),
+    data:{title:'Trailer details'}
+  }
 ];
 
 @NgModule({

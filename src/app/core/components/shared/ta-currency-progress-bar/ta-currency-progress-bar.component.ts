@@ -16,8 +16,9 @@ export class TaCurrencyProgressBarComponent implements OnInit {
 
   ngOnInit() {
     this.calculateCurrencyPercentage();
-  }
 
+  }
+  
   public calculateCurrencyPercentage() {
     this.activePercentageOfPaid =
       (this.paidSoFarAmount / this.totalAmount) * 100;
