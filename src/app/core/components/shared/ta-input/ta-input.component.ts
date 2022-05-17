@@ -92,14 +92,23 @@ export class TaInputComponent
         });
 
       this.inputService.isDropDownItemSelectedOnEnter
-      .pipe(untilDestroyed(this))
-        .subscribe((action) => { 
-          if(action) {
+        .pipe(untilDestroyed(this))
+        .subscribe((action) => {
+          if (action) {
             this.isDropdownOptionsActive = false;
             this.input.nativeElement.blur();
             this.blurOnDropDownArrow();
           }
-        })
+        });
+    }
+
+    // Auto Focus First Input
+    if (this.inputConfig.autoFocus) {
+      const timeout = setTimeout(() => {
+        this.onFocus();
+        this.input.nativeElement.focus();
+        clearTimeout(timeout);
+      }, 300);
     }
   }
 
@@ -286,19 +295,19 @@ export class TaInputComponent
       }
     }
 
-    console.log("KEY UP ", event.keyCode)
-    if(this.inputConfig.isDropdown) {
-      if(event.keyCode === 40 || event.keyCode === 38)  {
+    console.log('KEY UP ', event.keyCode);
+    if (this.inputConfig.isDropdown) {
+      if (event.keyCode === 40 || event.keyCode === 38) {
         this.inputService.dropDownNavigatorSubject.next(event.keyCode);
       }
-      if(event.keyCode === 13) {
+      if (event.keyCode === 13) {
         this.inputService.dropDownNavigatorSubject.next(event.keyCode);
       }
-      if(event.keyCode === 27) {
+      if (event.keyCode === 27) {
         this.blurOnDropDownArrow();
         this.input.nativeElement.blur();
       }
-      if(event.keyCode === 9) {
+      if (event.keyCode === 9) {
         this.onFocus();
         this.input.nativeElement.focus();
         this.inputService.dropDownNavigatorSubject.next(event.keyCode);
