@@ -3,9 +3,12 @@
   <div
     [ngClass]="{ 'has-counter': hasCounter }"
     class="ta-card-header"
+    [class.active]="isCardOpen"
+    (mouseenter)="isHeaderHover = true"
+    (mouseleave)="isHeaderHover = false"
     (click)="isCardOpenEvent($event)"
   >
-    <div class="header-content">
+    <div class="header-content" [class.counter]="hasCounter">
       <app-ta-counter
         *ngIf="hasCounter"
         [count]="hasCounter"
@@ -16,12 +19,12 @@
       ></app-ta-counter>
       <span
         class="header-text"
-        [ngClass]="{ 'no-counter': !hasCounter, active: isCardOpen }"
+        [ngClass]="{ 'no-counter': !hasCounter }"
       >
         {{ cardName }}
       </span>
       <svg-icon
-        *ngIf="hasHeaderSvg"
+        *ngIf="hasHeaderSvg && isCardOpen"
         class="header-svg"
         src="{{ hasHeaderSvg }}"
         [appTooltip]="tooltipName"
@@ -40,15 +43,23 @@
       [ngClass]="{ 'like-dislike-template': hasLikeDislike }"
     >
       <app-ta-like-dislike *ngIf="hasLikeDislike"></app-ta-like-dislike>
-      <svg-icon
+      <div
         *ngIf="hasActionSvg"
-        class="header-action-svg"
-        [ngClass]="{ 'new-position': !hasArrow }"
-        src="{{ hasActionSvg }}"
+        class="header-action-container"
+        [class.hovered]="isHeaderHover"
+        [class.data]="hasTableData && isHeaderHover"
         (click)="onAdd($event)"
-      ></svg-icon>
+      >
+        <svg-icon
+          class="header-action-svg"
+          [ngClass]="{ 'new-position': !hasArrow || !hasTableData }"
+          src="{{ hasActionSvg }}"
+        ></svg-icon>
+        <p *ngIf="isHeaderHover" class="header-action-text">Add New</p>
+      </div>
+
       <svg-icon
-        *ngIf="hasArrow"
+        *ngIf="hasArrow && hasTableData"
         class="header-arrow"
         [ngClass]="{ rotate: isCardOpen }"
         src="assets/svg/common/ic_arrow_down_updated.svg"
@@ -60,11 +71,10 @@
   <div
     class="{{ animationsDisabled ? 'ta-card-body' : 'ta-card-body-v2' }}"
     [@.disabled]="animationsDisabled"
-    [ngClass]="{ 'active': isCardOpen, 'scroll': hasScrollBody }"
+    [ngClass]="{ active: isCardOpen, scroll: hasScrollBody }"
   >
-  <div [@showHideCardBody]="isCardOpen? 'true' : 'false'">
-    <ng-content></ng-content>
-  </div>
-    
+    <div [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
+      <ng-content></ng-content>
+    </div>
   </div>
 </div>

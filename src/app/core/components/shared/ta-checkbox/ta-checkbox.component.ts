@@ -4,6 +4,7 @@ import {
   OnChanges,
   Self,
   SimpleChanges,
+  ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
@@ -11,6 +12,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   selector: 'app-ta-checkbox',
   templateUrl: './ta-checkbox.component.html',
   styleUrls: ['./ta-checkbox.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TaCheckboxComponent implements OnChanges, ControlValueAccessor {
   @Input() label: string;
