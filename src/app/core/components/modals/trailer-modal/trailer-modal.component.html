@@ -146,7 +146,7 @@
             <svg-icon
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow-down.svg"
-              [ngClass]="{ 'rotate': !trailerForm.get('companyOwned')?.value }"
+              [ngClass]="{ 'visible': !trailerForm.get('companyOwned')?.value }"
             ></svg-icon>
           </div>
           <div
