@@ -1,4 +1,11 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation, HostBinding } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewEncapsulation,
+  HostBinding,
+} from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
 
 @Component({
@@ -9,7 +16,6 @@ import { card_modal_animation } from '../animations/card-modal.animation';
   encapsulation: ViewEncapsulation.None,
 })
 export class TaCustomCardComponent {
-
   @Input()
   public animationsDisabled = true;
 
@@ -19,21 +25,25 @@ export class TaCustomCardComponent {
   @Input() hasArrow: boolean = true;
   @Input() hasHeaderSvg: string = null;
   @Input() hasActionSvg: string = null;
-  @Input() isCardOpen: boolean = false;  // if has data, set on true
+  @Input() isCardOpen: boolean = false; // if has data, set on true
   @Input() hasDivider: boolean = true;
   @Input() hasLikeDislike: boolean = false;
   @Input() hasScrollBody: boolean = false;
   @Input() hasTableData: boolean = true;
-  @Input() tooltipName:string='';
+  @Input() tooltipName: string = '';
 
-  @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
+    false
+  );
 
   public isHeaderHover: boolean = false;
 
   public isCardOpenEvent(event: any) {
     event.preventDefault();
     event.stopPropagation();
-    this.isCardOpen = !this.isCardOpen;
+    if (this.hasTableData) {
+      this.isCardOpen = !this.isCardOpen;
+    }
   }
 
   public onAdd(event: any): void {

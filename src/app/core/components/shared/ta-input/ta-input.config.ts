@@ -15,4 +15,5 @@ export interface ITaInput {
   customClass?: string; // 'input-big' -> height: 32px
   isDropdown?: boolean;
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss
+  autoFocus?: boolean; // focus first input in form
 }

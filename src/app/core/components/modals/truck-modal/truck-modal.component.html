@@ -24,7 +24,8 @@
                 label: 'Unit #',
                 isRequired: true,
                 textTransform: 'capitalize',
-                maxLength: 6
+                maxLength: 6,
+                autoFocus: true
               }"
             ></app-ta-input>
           </div>
@@ -133,7 +134,7 @@
             <svg-icon
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ rotate: truckForm.get('companyOwned')?.value }"
+              [ngClass]="{ visible: truckForm.get('companyOwned')?.value }"
             ></svg-icon>
           </div>
           <div

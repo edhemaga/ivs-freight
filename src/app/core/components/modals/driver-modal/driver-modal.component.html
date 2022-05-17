@@ -27,7 +27,8 @@
                 type: 'text',
                 label: 'First Name',
                 isRequired: true,
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                autoFocus: true
               }"
             ></app-ta-input>
           </div>
@@ -140,7 +141,7 @@
             <svg-icon
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ rotate: driverForm.get('isOwner').value }"
+              [ngClass]="{ visible: driverForm.get('isOwner').value }"
             ></svg-icon>
           </div>
           <div

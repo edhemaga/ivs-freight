@@ -16,7 +16,8 @@
             label: 'Full Name',
             isRequired: true,
             maxLength: 23,
-            textTransform: 'capitalize'
+            textTransform: 'capitalize',
+            autoFocus: true
           }"
         ></app-ta-input>
       </div>
@@ -102,7 +103,7 @@
         <svg-icon
           class="checkbox-card-header-arrow"
           src="assets/svg/common/ic_arrow_down_updated.svg"
-          [ngClass]="{ rotate: contactForm.get('shared').value }"
+          [ngClass]="{ 'visible': contactForm.get('shared').value }"
         ></svg-icon>
       </div>
       <div
