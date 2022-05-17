@@ -51,6 +51,12 @@
         background-color: #ffffff;
         color: #6c6c6c;
 
+
+        &.dropdown-option-hovered {
+          background-color: #f3f3f3;
+          color: #3c3c3c;
+          transition: all 0.2s ease-out;
+        }
      
         &:hover {
           background-color: #f3f3f3;

@@ -130,7 +130,7 @@
           <div class="divider"></div>
           <div
             class="checkbox-card-header"
-            [ngClass]="{ pointer: driverForm.get('isOwner').value }"
+            [ngClass]="{ 'pointer': driverForm.get('isOwner').value }"
             (click)="openCloseCheckboxCard($event)"
           >
             <app-ta-checkbox
@@ -139,7 +139,7 @@
             ></app-ta-checkbox>
             <svg-icon
               class="checkbox-card-header-arrow"
-              src="assets/svg/common/ic_arrow-down.svg"
+              src="assets/svg/common/ic_arrow_down_updated.svg"
               [ngClass]="{ rotate: driverForm.get('isOwner').value }"
             ></svg-icon>
           </div>
@@ -195,6 +195,7 @@
           [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [isCardOpen]="offDutyLocations.length"
+          [hasTableData]="offDutyLocations.length"
           (onActionEvent)="addOffDutyLocation($event)"
         >
           <div
@@ -267,7 +268,7 @@
         </div>
         <div
           class="custom-bank-row first-row"
-          [ngClass]="{ 'no-m-bottom': !driverForm.get('payroll').value }"
+          [ngClass]="{ 'row-mb-10 ': !driverForm.get('payroll').value }"
         >
           <div class="bank-field">
             <app-ta-input-dropdown

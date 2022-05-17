@@ -90,6 +90,16 @@ export class TaInputComponent
             this.setInputCursorAtTheEnd(this.input.nativeElement);
           }
         });
+
+      this.inputService.isDropDownItemSelectedOnEnter
+      .pipe(untilDestroyed(this))
+        .subscribe((action) => { 
+          if(action) {
+            this.isDropdownOptionsActive = false;
+            this.input.nativeElement.blur();
+            this.blurOnDropDownArrow();
+          }
+        })
     }
   }
 
@@ -267,7 +277,7 @@ export class TaInputComponent
     return type;
   }
 
-  public onBackspace(event): void {
+  public onKeyUp(event): void {
     if (event.keyCode == 8) {
       this.numberOfSpaces = 0;
       if (!this.getSuperControl.value) {
@@ -275,10 +285,8 @@ export class TaInputComponent
         this.waitValidation = false;
       }
     }
-  }
 
-  public dropdownNavigator(event : any) {
-    
+    console.log("KEY UP ", event.keyCode)
     if(this.inputConfig.isDropdown) {
       if(event.keyCode === 40 || event.keyCode === 38)  {
         this.inputService.dropDownNavigatorSubject.next(event.keyCode);
@@ -293,10 +301,9 @@ export class TaInputComponent
       if(event.keyCode === 9) {
         this.onFocus();
         this.input.nativeElement.focus();
+        this.inputService.dropDownNavigatorSubject.next(event.keyCode);
       }
-     
     }
-  
   }
 
   public manipulateWithInput(event: KeyboardEvent): boolean {

@@ -27,11 +27,33 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-      
+      position: relative;
+      left: 1px;
     }
     .rotate {
       transform: rotate(180deg);
       transition: all 0.3s ease-in-out;
+    }
+
+    &:hover {
+      .note-label {
+        color: #6c6c6c;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
+    &.active {
+      transition: all 0.3s ease-in-out;
+      .note-label {
+        color: #6c6c6c;
+      }
+
+      &:hover {
+        .note-label {
+          color: #3c3c3c;
+          transition: all 0.3s ease-in-out;
+        }
+      }
     }
   }
 
@@ -41,7 +63,7 @@
     transition: all 0.3s ease-in-out;
     padding: 0 6px;
 
-    &.active{
+    &.active {
       max-height: 600px;
     }
     .note-textarea {

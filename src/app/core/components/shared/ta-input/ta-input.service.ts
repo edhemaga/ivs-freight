@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
-import { Address } from '../ta-input-address/ta-input-address.component';
+
 
 @Injectable({
   providedIn: 'root',
@@ -18,23 +18,22 @@ export class TaInputService {
   public dropDownNavigatorSubject: BehaviorSubject<number> =
   new BehaviorSubject<number>(0);
 
+  public isDropDownItemSelectedOnEnter: BehaviorSubject<boolean> =
+  new BehaviorSubject<boolean>(false); 
+
   public dropdownAddModeSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
   public addDropdownItemSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
-  public activeItemDropdownSubject: BehaviorSubject<any> =
-    new BehaviorSubject<any>(null);
 
   constructor(
     public notificationService: NotificationService,
     private spinnerService: SpinnerService
   ) {}
 
-  public get activeItemDropdown$() {
-    return this.activeItemDropdownSubject.asObservable();
-  }
+
 
   /**
    * @param formGroup FormGroup - The form group to touch
@@ -87,12 +86,5 @@ export class TaInputService {
       formControl.reset();
     }
     formControl.updateValueAndValidity();
-  }
-
-  /**
-   * @param data - active dropdown item
-   */
-  public hasDropdownActiveItem(data: any) {
-    this.activeItemDropdownSubject.next(data);
   }
 }

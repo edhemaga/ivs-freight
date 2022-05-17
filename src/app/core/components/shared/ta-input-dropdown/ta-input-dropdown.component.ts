@@ -12,6 +12,8 @@ import {
   Output,
   Self,
   SimpleChanges,
+  TemplateRef,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
@@ -19,18 +21,19 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from '../ta-input/ta-input.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ITaInput } from '../ta-input/ta-input.config';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-ta-input-dropdown',
   templateUrl: './ta-input-dropdown.component.html',
   styleUrls: ['./ta-input-dropdown.component.scss'],
   providers: [TaInputService],
-  // encapsulation: ViewEncapsulation.None,
-  animations: [input_dropdown_animation('showHideDropdownOptions')]
+  animations: [input_dropdown_animation('showHideDropdownOptions')],
 })
 export class TaInputDropdownComponent
   implements OnInit, OnChanges, OnDestroy, ControlValueAccessor
 {
+  @ViewChild('t2') public popover: NgbPopover;
   @Input() template: string;
   @Input() inputConfig: ITaInput;
   @Input() canAddNew: boolean = false;
@@ -39,7 +42,7 @@ export class TaInputDropdownComponent
 
   public activeItem: any;
   public originalOptions: any[] = [];
-  public isDropdownOptionsVisible: boolean = false;
+  private dropdownPosition: number = 0;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -50,13 +53,13 @@ export class TaInputDropdownComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(this.options) {
+    if (this.options) {
       this.originalOptions = [...this.options];
     }
   }
 
   ngOnInit(): void {
-    if(this.options) {
+    if (this.options) {
       this.originalOptions = [...this.options];
     }
 
@@ -77,7 +80,7 @@ export class TaInputDropdownComponent
     this.inputService.dropDownShowHideSubject
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
-        this.toggleDropdownOptions(action);
+
         if (!action) {
           if (this.activeItem) {
             this.getSuperControl.setValue(this.activeItem.name);
@@ -99,8 +102,6 @@ export class TaInputDropdownComponent
           };
           this.getSuperControl.setValue(null);
         }
-
-        this.inputService.hasDropdownActiveItem(this.activeItem);
       });
 
     if (this.canAddNew) {
@@ -112,6 +113,35 @@ export class TaInputDropdownComponent
           }
         });
     }
+
+    this.inputService.dropDownNavigatorSubject
+      .pipe(untilDestroyed(this))
+      .subscribe((keyEvent) => {
+        console.log(keyEvent);
+        if (keyEvent === 40) {
+          this.dropdownNavigation(1);
+        }
+
+        if (keyEvent === 38) {
+          this.dropdownNavigation(-1);
+        }
+
+        if (keyEvent === 13) {
+          const selectedItem = $('.dropdown-option-hovered > div').text();
+          const existItem = this.options.find(
+            (item) => item.name.toLowerCase() === selectedItem.toLowerCase()
+          );
+          this.activeItem = existItem;
+          this.getSuperControl.setValue(existItem.name);
+          this.selectedItem.emit(existItem);
+          this.popover.close();
+          this.inputService.isDropDownItemSelectedOnEnter.next(true);
+        }
+
+        if(keyEvent === 9) {
+          this.popover.open();
+        }
+      });
   }
 
   get getSuperControl() {
@@ -168,7 +198,6 @@ export class TaInputDropdownComponent
           .filter((item) => item.groups.length);
 
         if (!this.options.length && !this.canAddNew) {
-          console.log('PRAZAN  NIIZZ');
           this.options.push({
             groups: [
               {
@@ -177,9 +206,7 @@ export class TaInputDropdownComponent
               },
             ],
           });
-          console.log(this.options);
         }
-        console.log(this.options);
       } else {
         this.options = this.originalOptions;
       }
@@ -193,7 +220,6 @@ export class TaInputDropdownComponent
     } else if (option.id === 7655) {
       // Add New
       this.inputService.dropdownAddModeSubject.next(true);
-      this.isDropdownOptionsVisible = false;
       return;
     } else {
       this.activeItem = option;
@@ -201,10 +227,6 @@ export class TaInputDropdownComponent
       this.options = this.originalOptions;
       this.selectedItem.emit(option);
     }
-  }
-
-  public toggleDropdownOptions(action: boolean): void {
-    this.isDropdownOptionsVisible = action;
   }
 
   public onClearSearch(): void {
@@ -225,6 +247,38 @@ export class TaInputDropdownComponent
     this.originalOptions = [...this.originalOptions, newItem];
     this.options = this.originalOptions;
     this.activeItem = newItem;
+  }
+
+  private dropdownNavigation(step: number) {
+    this.dropdownPosition += step;
+
+    if (this.dropdownPosition > this.options.length - 1) {
+      this.dropdownPosition = 0;
+    }
+
+    if (this.dropdownPosition < 0) {
+      this.dropdownPosition = this.options.length - 1;
+    }
+
+    let cssClass = 'dropdown-option-hovered';
+    let dropdownContainer: any = $('.dropdown-options');
+    let dropdownOption: any = $('.dropdown-option');
+
+    let elOffset =
+      dropdownOption.height() * this.dropdownPosition +
+      (this.dropdownPosition !== 0 ? this.dropdownPosition * 6 : 0);
+    let viewport = dropdownContainer.scrollTop() + dropdownContainer.height();
+
+    if (
+      elOffset < dropdownContainer.scrollTop() ||
+      elOffset + dropdownOption.height() > viewport
+    )
+      $(dropdownContainer).scrollTop(elOffset);
+
+    dropdownOption
+      .removeClass(cssClass)
+      .eq(this.dropdownPosition)
+      .addClass(cssClass);
   }
 
   public identity(index: number, item: any): number {

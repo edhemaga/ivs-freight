@@ -221,7 +221,7 @@
         !inputConfig.placeholder,
       'no-validation-hover': !waitValidation && !focusInput
     }"
-    src="assets/svg/common/ic_arrow-down.svg"
+    src="assets/svg/common/ic_arrow_down_updated.svg"
     (click)="toggleDropdownOptions()"
   ></svg-icon>
 
@@ -316,9 +316,8 @@
         focusInput
     }"
     [(ngModel)]="input.value"
-    (keyup)="dropdownNavigator($event)"
     (keypress)="manipulateWithInput($event)"
-    (keyup)="onBackspace($event)"
+    (keyup)="onKeyUp($event)"
     (input)="onChange($event.target.value)"
     (blur)="onBlur()"
     (focus)="onFocus()"
