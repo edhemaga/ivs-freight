@@ -205,4 +205,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
   parseNum(x) {
     return parseFloat(x);
   }
+
+
+  dataTest = {
+    disabledMutedStyle: null,
+    toolbarActions: {
+      hideViewMode: false,
+    },
+    config: {
+      showSort: true,
+      sortBy: '',
+      sortDirection: '',
+      disabledColumns: [0],
+      minWidth: 60,
+    },
+    actions: [
+      {
+        title: 'Edit',
+        name: 'edit',
+        class: 'regular-text',
+        contentType: 'edit',
+      },
+
+      {
+        title: 'Delete',
+        name: 'delete-item',
+        type: 'driver',
+        text: 'Are you sure you want to delete driver(s)?',
+        class: 'delete-text',
+        contentType: 'delete',
+      },
+    ],
+    export: true,
+  };
 }

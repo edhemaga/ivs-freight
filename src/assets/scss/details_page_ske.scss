@@ -25,12 +25,10 @@ $font-extrabold: 800;
 $border-radius: 3px;
 
 $transition: all 0.3s ease-in-out;
-:host ::ng-deep .mat-button-toggle-label-content {
-  line-height: 0px !important;
-  font-size: $font-size12;
-  font-weight: 700;
-}
 
+p {
+  margin-bottom: 0 !important;
+}
 .details-item-cmp {
   display: grid;
   grid-template-columns: 440px repeat(4, 335px);
@@ -205,7 +203,7 @@ $transition: all 0.3s ease-in-out;
 
     .assignTo-value {
       font-size: $font-size18;
-      font-weight: 500;
+      font-weight: $font-medium;
       color: $color-gray-dark;
 
       &::-moz-selection {
@@ -222,114 +220,167 @@ $transition: all 0.3s ease-in-out;
     }
   }
 }
-.item-cards{
-  .ta-card-header{
-    padding:6px 0 !important;
+.item-cards {
+  .ta-card-header {
+    padding: 6px 0 !important;
     padding-right: 6px !important;
   }
 }
-.cards-container{
+.cards-container {
   padding: 0 6px;
-.card-body-cdl {
-  display: grid;
-  padding: 0 10px;
-  .card-item-name {
-    font-size: $font-size12;
-    color: #6c6c6c;
-    font-weight: $font-semibold;
-    height: 15px;
-    margin-bottom: 3px;
-  }
-  .card-item-value {
-    font-size: $font-size14;
-    font-weight: 400;
-    color: #6c6c6c;
-    white-space: nowrap;
-    height: 18px;
-    &:hover {
-      color: #3c3c3c;
-    }
-  }
-  .card-row-issued {
+  .card-body-cdl {
     display: grid;
-    grid-template-columns: 32px 32px 32px;
-    column-gap: 49px;
-    margin-top: 12px;
-  }
-  .card-row-endor {
-    display: grid;
-    grid-template-columns: 141px 141px;
-    column-gap: 21px;
-    margin-top: 12px;
-  }
-  .card-row-progress {
-   margin-top: 12px;
-  }
-
-  .card-icon-copy {
-    display: flex;
-    align-items: flex-start;
-    cursor: pointer;
-    .card-icon {
-      display: none;
-      position: relative;
-      margin-left: 6px;
-      bottom: 4px;
-      height: 18px;
-      svg {
-        fill: #aaaaaa;
-        &:hover {
-          path {
-            fill: #6c6c6c;
+    padding: 0 10px;
+    .card-restriction-endorsment {
+      display: grid;
+      grid-template-columns: 110px 90px;
+      column-gap: 53px;
+      height: 44px;
+      .item-card-wrapper {
+        display: flex;
+        .restriction-item-value {
+          .value-name {
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            color: #6c6c6c;
+            
+          }
+          &:not(:first-child) {
+            .value-name:before {
+              content: ", ";
+            }
           }
         }
       }
     }
-    .card-icon {
-      height: 18px;
-      margin-left: 6px;
-    }
-    &:hover {
-      .card-icon {
-        display: block;
+    .card-item-name {
+      font-size: $font-size12;
+      color: #6c6c6c;
+      font-weight: $font-semibold;
+      height: 15px;
+      margin-bottom: 3px;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
       }
     }
-  }
-
- 
-  .card-restriction {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    .restriction-name {
-      font-size: $font-size12;
-      font-weight: $font-semibold;
-      color: #6c6c6c;
-      height: 15px;
-    }
-    .restriction-item-value {
+    .card-item-value {
       font-size: $font-size14;
       font-weight: 400;
       color: #6c6c6c;
+      white-space: nowrap;
       height: 18px;
-      margin-bottom: 2px;
-      margin-top: 3px;
-      .value-name {
-        font-size: $font-size14;
-        font-weight: $font-semibold;
-        color: #6c6c6c;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &:hover {
+        color: #3c3c3c;
       }
     }
+    .card-row-issued {
+      display: grid;
+      grid-template-columns: 32px 32px 32px;
+      column-gap: 49px;
+      margin-top: 12px;
+    }
+    .card-row-endor {
+      display: grid;
+      grid-template-columns: 141px 141px;
+      column-gap: 21px;
+      margin-top: 12px;
+    }
+    .card-row-progress {
+      margin-top: 12px;
+    }
+
+    .card-icon-copy {
+      display: flex;
+      align-items: flex-start;
+      cursor: pointer;
+      .card-icon {
+        display: none;
+        position: relative;
+        margin-left: 6px;
+        bottom: 4px;
+        height: 18px;
+        svg {
+          fill: #aaaaaa;
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+      .card-icon {
+        height: 18px;
+        margin-left: 6px;
+      }
+      &:hover {
+        .card-icon {
+          display: block;
+        }
+      }
+    }
+
+    .card-restriction {
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+      .restriction-name {
+        font-size: $font-size12;
+        font-weight: $font-semibold;
+        color: #6c6c6c;
+        height: 15px;
+        &::-moz-selection {
+          color: #6c6c6c;
+          background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+          color: #6c6c6c;
+          background: rgb(108, 108, 108, 0.2);
+        }
+      }
+      .restriction-item-value {
+        font-size: $font-size14;
+        font-weight: 400;
+        color: #6c6c6c;
+        height: 18px;
+        margin-bottom: 2px;
+        margin-top: 3px;
+        .value-name {
+          font-size: $font-size14;
+          font-weight: $font-semibold;
+          color: #6c6c6c;
+          &::-moz-selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+          }
+          &::selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+          }
+        }
+      }
+    }
+    .endorsement {
+      margin-top: 12px;
+    }
   }
-  .endorsement {
-    margin-top: 12px;
-  }
-}
 }
 .perfomance {
   display: flex !important;
   flex-direction: column;
-  
+
   .common-template-item-name {
     font-size: $font-size14 !important;
     font-weight: $font-semibold !important;
@@ -383,13 +434,26 @@ $transition: all 0.3s ease-in-out;
         font-size: $font-size14;
         font-weight: 700;
         color: #919191;
+        .note-textarea {
+          color: #6c6c6c !important;
+          font-weight: 400 !important;
+          &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+          }
+          &::selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+          }
+        }
       }
     }
   }
   .status-items {
+  
     .item-wrapper {
       display: grid;
-      grid-template-columns: 113px 149px 66px;
+      grid-template-columns: 119px 137px 78px;
       grid-column-gap: 40px;
       .svg-text {
         display: flex;
@@ -405,6 +469,14 @@ $transition: all 0.3s ease-in-out;
         font-size: 14px;
         font-weight: 400;
         color: #6c6c6c;
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
+        }
       }
     }
   }
@@ -416,6 +488,7 @@ $transition: all 0.3s ease-in-out;
   row-gap: 12px;
   margin-bottom: 12px;
   padding-left: 6px;
+  padding-right: 6px;
   .charts-item-wrapper {
     display: flex;
     align-items: center;
@@ -485,4 +558,212 @@ $transition: all 0.3s ease-in-out;
 }
 .second-progress {
   margin-bottom: 16px;
+}
+
+.truck-details-wrapper {
+  margin-left: 16px;
+  .truck {
+    svg {
+      width: 132px;
+      height: 48px;
+    }
+  }
+  .details-header-avatar {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    margin-top: 14px;
+    svg {
+      &:hover {
+        stroke: #7ea6f1;
+      }
+    }
+    .model-name {
+      flex-direction: column;
+      margin-left: 12px;
+      margin-top: 12px;
+
+      p {
+        font-size: 14px;
+        font-weight: 500;
+        color: #6c6c6c;
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
+        }
+      }
+      .svg-wrapper {
+        height: 14px;
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 2px;
+      }
+      svg {
+        path {
+          fill: #aaaaaa;
+          object-fit: fill;
+        }
+        rect {
+          fill: #aaaaaa;
+        }
+      }
+    }
+  }
+  .details-header-data {
+    margin-top: 14px;
+    .details-header-data-item {
+      display: flex;
+      height: 18px;
+      align-items: center;
+      p {
+        font-size: 18px;
+        color: #6c6c6c;
+        font-weight: 400;
+      }
+    }
+    .second {
+      margin-top: 14px;
+      margin-bottom: 14px;
+      p {
+        font-size: 14px !important;
+        color: #6c6c6c;
+        font-weight: 400;
+        position: relative;
+        bottom: -1px;
+      }
+      .light-green {
+        margin-left: 29px;
+      }
+      .date {
+        margin-left: 8px !important;
+        position: relative;
+      }
+    }
+  }
+  .vin-text {
+    margin-left: 6px;
+    position: relative;
+    bottom: -1px;
+   
+  }
+}
+.common-template {
+  display: grid;
+  grid-template-columns: 215px 1fr;
+  row-gap: 12px;
+  padding: 0 10px;
+  margin-top: -7px;
+  .common-item-wrapper {
+    display: flex;
+    align-items: center;
+    height: 40px;
+  }
+  .common-template-item {
+    display: flex;
+    flex-direction: column;
+    &::-moz-selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    .icon-name-item {
+      display: flex;
+      align-items: center;
+      height: 18px;
+      .common-template-item-name {
+        margin-left: 6px;
+      }
+    }
+    .common-template-item-name {
+      font-size: $font-size12;
+      font-weight: $font-semibold;
+      color: $color-gray-dark;
+
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+    }
+
+    .common-template-item-value {
+      font-size: $font-size14;
+      font-weight: 400;
+      color: $color-gray-dark;
+      height: 18px;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+
+      p {
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+      }
+
+      .hidden-svg-eye {
+        margin-left: 6px;
+        position: relative;
+        bottom: 1px;
+      }
+    }
+  }
+}
+
+.divider {
+  margin: 0;
+  height: 2px;
+  width: 100%;
+  border-radius: 1px;
+  background-color: #f3f3f3;
+}
+
+.note-cards {
+  .note-body {
+    height: 40px !important;
+    padding: 0 9px !important;
+    margin-bottom: 7px !important;
+    .note-textarea {
+      color: #6c6c6c !important;
+      font-weight: 400 !important;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+  }
+}
+.vin-text{
+  &::-moz-selection {
+    color: $color-gray-dark;
+    background: rgb(108, 108, 108, 0.2);
+  }
+  &::selection {
+    color: $color-gray-dark;
+    background: rgb(108, 108, 108, 0.2);
+  }
 }

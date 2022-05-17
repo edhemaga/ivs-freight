@@ -52,6 +52,7 @@ export class TruckDetailsItemComponent implements OnInit {
   public chartOptions: Partial<ChartOptions>;
   public chartOptionsSecond: Partial<ChartOptions>;
   public noteControl: FormControl = new FormControl();
+  public note: FormControl = new FormControl();
   public fhwaNote: FormControl = new FormControl();
   public purchaseNote: FormControl = new FormControl();
   public registrationNote: FormControl = new FormControl();
@@ -63,14 +64,15 @@ export class TruckDetailsItemComponent implements OnInit {
   public selectedValueRevenue: string = '';
   public toggler: boolean = false;
   public svgColorVar: string = '';
-  truckName:string='';
+  cardNumberFake:string='1234567890';
+  truckName: string = '';
   isAccountVisible: boolean = true;
   accountText: string = null;
-  cardNumberFake: string = '0000000006213';
-
   public truckData: any;
- 
   public dataTest: any;
+  public buttonsArrayPerfomance: any;
+  public buttonsArrayFuel: any;
+  public buttonsArrayRevenue: any;
   constructor(
     private customModalService: CustomModalService,
     private activated_route: ActivatedRoute,
@@ -246,6 +248,122 @@ export class TruckDetailsItemComponent implements OnInit {
     this.selectedValueRevenue = '1Y';
     this.initTableOptions();
     this.getTruckById();
+    this.buttonsArrayPerfomance = [
+      {
+        label: '1M',
+        value: '1Mchart',
+        name: 'chart',
+        checked: false,
+      },
+      {
+        label: '3M',
+        value: '3Mchart',
+        name: 'chart',
+        checked: false,
+      },
+      {
+        label: '6M',
+        value: '6Mchart',
+        name: 'chart',
+        checked: false,
+      },
+      {
+        label: '1Y',
+        value: '1Ychart',
+        name: 'chart',
+        checked: false,
+      },
+      {
+        label: 'YTD',
+        value: 'YTDchart',
+        name: 'chart',
+        checked: false,
+      },
+      {
+        label: 'ALL',
+        value: 'ALLchart',
+        name: 'chart',
+        checked: true,
+      },
+    ];
+    this.buttonsArrayRevenue = [
+      {
+        label: '1M',
+        value: '1Mrev',
+        name: 'rev',
+        checked: false,
+      },
+      {
+        label: '3M',
+        value: '3Mrev',
+        name: 'rev',
+        checked: false,
+      },
+      {
+        label: '6M',
+        value: '6Mrev',
+        name: 'rev',
+        checked: false,
+      },
+      {
+        label: '1Y',
+        value: '1Yrev',
+        name: 'rev',
+        checked: true,
+      },
+      {
+        label: 'YTD',
+        value: 'YTDrev',
+        name: 'rev',
+        checked: false,
+      },
+      {
+        label: 'ALL',
+        value: 'ALLrev',
+        name: 'rev',
+        checked: false,
+      },
+     
+    ];
+    this.buttonsArrayFuel = [
+      {
+        label: '1M',
+        value: '1Mfuel',
+        name: 'fuel',
+        checked: false,
+      },
+      {
+        label: '3M',
+        value: '3Mfuel',
+        name: 'fuel',
+        checked: false,
+      },
+      {
+        label: '6M',
+        value: '6Mfuel',
+        name: 'fuel',
+        checked: false,
+      },
+      {
+        label: '1Y',
+        value: '1Yfuel',
+        name: 'fuel',
+        checked: true,
+      },
+      {
+        label: 'YTD',
+        value: 'YTDfuel',
+        name: 'fuel',
+        checked: false,
+      },
+      {
+        label: 'ALL',
+        value: 'ALLfuel',
+        name: 'fuel',
+        checked: false,
+      },
+     
+    ];
   }
   ngOnDestroy(): void {
     this.destory$.next();
@@ -265,9 +383,8 @@ export class TruckDetailsItemComponent implements OnInit {
       // this.registrationNote.patchValue(this.truckData.registrations.note)
       // this.titleNote.patchValue(this.truckData.titles.note);
       this.svgColorVar = this.truckData.color.code;
-      this.truckName=this.truckData.truckNumber
+      this.truckName = this.truckData.truckNumber;
       console.log(this.truckName);
-      
     });
   }
 

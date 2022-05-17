@@ -1,0 +1,97 @@
+@import '../trailer-details.component.scss';
+
+.owner-container{
+    padding: 0 10px;
+    margin-top: -7px;
+    .owner-items-name{
+        .firm-name{
+            font-size: $font-size18;
+            font-weight: $font-medium;
+            color: $color-gray-dark;
+            height: 19px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+              }
+              &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+              }
+        }
+    }
+    .owner-items{
+        display: flex;
+        align-items: baseline;
+        height: 18px;
+        margin-top: 12px;
+        .information-value{
+            font-size: 14px;
+            font-weight: 400;
+            color: $color-gray-dark;
+            margin-left: 6px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+              }
+              &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+              }
+        }
+    }
+    .icon-show{
+         display: flex;
+         align-items: flex-end;
+         margin-top: 12px;
+         height: 18px;
+         cursor: pointer;
+        .arrow-down-employment{
+            svg{
+                path{
+                    fill: #536BC2;
+                }
+            }
+        }
+        .hide-show{
+            font-size: $font-size14;
+            color: #536BC2;
+            font-weight: $font-semibold;
+            margin-left: 6px;
+            &::-moz-selection {
+                color: #536BC2;
+                background: rgb(83, 107, 194, 0.2);
+              }
+              &::selection {
+                color: #536BC2;
+                background: rgb(83, 107, 194, 0.2);
+              }
+        }
+    }
+    .transform-arrow {
+        bottom: 0 !important;
+        svg {
+          transform: rotate(180deg);
+          transition: all 0.3s ease-in-out;
+        }
+      }
+}
+.owner-history-container{
+    padding: 0 4px;
+    .status-container{
+        padding-top: 0 !important;
+    }
+    .status-header{
+        padding: 0 6px;
+        margin-bottom: 6px;
+    }
+    .status-items{
+        padding: 0 6px;
+        margin-top: 8px;
+    }
+    .item-wrapper {
+        grid-template-columns: 122px 131px 75px !important;
+        .employment {
+          font-weight: $font-semibold !important;
+        }
+      }
+}

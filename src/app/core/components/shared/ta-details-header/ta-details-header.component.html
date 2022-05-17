@@ -1,7 +1,7 @@
 <div class="header-wrapper">
   <div
     class="toolbar-general-cmp"
-    *ngIf="['Truck Details', 'Driver Details'].includes(headerText)"
+    *ngIf="['Truck Details', 'Driver Details','Trailer Details'].includes(headerText)"
   >
     <div class="icon-text-wrapper">
       <svg-icon
@@ -19,7 +19,7 @@
         src="assets/svg/common/ic_arrow-left.svg"
       >
       </svg-icon>
-      <p>{{ headerText }}</p>
+      <p class="disable-selection">{{ headerText }}</p>
     </div>
     <div class="icon-right">
       <app-table-dropdown
@@ -32,12 +32,13 @@
 
   <div
     class="header-toolbar"
-    *ngIf="!['Truck Details', 'Driver Details'].includes(headerText)"
+    *ngIf="!['Truck Details', 'Driver Details', 'Trailer Details'].includes(headerText)"
   >
-    <p class="header-name">{{ headerText }}</p>
+    <p class="header-name disable-selection">{{ headerText }}</p>
     <div class="header-plus-button">
       <div class="border-line-left"></div>
       <svg-icon
+        class="icon-plus-header"
         (click)="openModal(headerText)"
         src="assets/svg/common/ic_plus.svg"
       >

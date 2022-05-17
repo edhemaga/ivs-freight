@@ -10,7 +10,6 @@
       [fontWeight]="'bold'"
       [fontSize]="'11px'"
       [customPosition]="-11"
-      class="name-icon"
     >
       <app-ta-input-dropdown
         class="dropInput"
@@ -19,16 +18,16 @@
           name: 'Input Dropdown',
           type: 'text',
           isDropdown: true,
-          dropdownWidthClass: 'w-col-details-template'
+          dropdownWidthClass: 'w-col-details-template',
+          placeholder:cardDetailsName
         }"
-        [(ngModel)]="cardDetailsName"
         [options]="optionsCmp"
         [template]="'details-template'"
         (selectedItem)="onSelectDetail($event)"
       >
       </app-ta-input-dropdown>
     </div>
-    <div class="arrows">
+      <div class="arrows">
       <svg-icon
         [appTooltip]="tooltipPrevious"
         [position]="'top-middle'"
@@ -58,7 +57,6 @@
         (click)="onNextAction()"
         src="assets/svg/common/arrow-right.svg"
       ></svg-icon>
-      
     </div>
   </div>
   <div class="details-header-wrapper-container">
