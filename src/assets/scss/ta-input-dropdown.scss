@@ -235,9 +235,18 @@
         width: 148px;
       }
 
+      &.w-test-types {
+        width: 145px
+      }
+
+      &.w-reason-types {
+        width: 168px;
+      }
+
       &.w-col-4-tireSize,
       &.w-col-4-doortype,
-      &.w-col-4-reeferUnit {
+      &.w-col-4-reeferUnit,
+      &.w-col-4-classType {
         width: 136px;
       }
 

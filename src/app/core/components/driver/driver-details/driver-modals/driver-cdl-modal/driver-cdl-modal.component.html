@@ -1,8 +1,9 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Licence' : 'Edit Licence'"
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="modalName"
   [isModalValid]="cdlForm.valid"
+  [specificCaseModalName]="true"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="cdlForm" class="form-container">
@@ -51,7 +52,7 @@
             label: 'Class',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-4'
+            dropdownWidthClass: 'w-col-4-classType'
           }"
           [canAddNew]="true"
           [options]="classTypes"
@@ -82,6 +83,7 @@
             type: 'text',
             label: 'State',
             isRequired: true,
+            isDisabled: !cdlForm.get('countryType').value,
             isDropdown: true,
             dropdownWidthClass: 'w-col-4'
           }"

@@ -2,7 +2,7 @@
   <div cdkDragHandle class="modal-header">
     <div class="modal-header-leftside">
       <h5 class="modal-title">{{ modalTitle }}</h5>
-      <h5 class="edit-name" *ngIf="editData?.type === 'edit'">
+      <h5 class="edit-name" *ngIf="editData?.type === 'edit' || specificCaseModalName">
         {{ editName }}
       </h5>
     </div>

@@ -125,13 +125,16 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
   public onModalAction(action: string): void {
     const driver_id=this.activated_route.snapshot.paramMap.get('id');
-
+    if(action.includes('Drug')) {
+      action = 'DrugAlcohol'
+    }
+    console.log(action)
     switch (action) {
       case 'CDL': {
         this.modalService.openModal(DriverCdlModalComponent, {size: 'small'}, {id: driver_id, type: 'new-licence'})
         break;
       }
-      case 'Drug & Alcohol': {
+      case 'DrugAlcohol': {
         this.modalService.openModal(DriverDrugAlcoholModalComponent, {size: 'small'}, {id: driver_id, type: 'new-drug'})
         break;
       }

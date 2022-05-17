@@ -24,6 +24,8 @@ export class TaModalComponent {
   @Input() isDNU: boolean = false;
   @Input() isBFB: boolean = false;
 
+  @Input() specificCaseModalName: boolean = false;
+
   @Output() modalActionTypeEmitter: EventEmitter<{action: string, bool: boolean}> =
   new EventEmitter<{action: string, bool: boolean}>(null);
 
