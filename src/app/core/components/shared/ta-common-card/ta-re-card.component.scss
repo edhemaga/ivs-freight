@@ -47,6 +47,14 @@
             font-size: 14px !important;
             color: #aaaaaa !important;
             font-weight: 500 !important;
+            &::-moz-selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+              }
+              &::selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+              }
             
         }
         &:hover {
@@ -68,6 +76,14 @@
         height: 22px;
         margin-top: 10px !important;
         margin-left: 12px !important;
+        &::-moz-selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+          }
+          &::selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+          }
     }
     .icon-dots {
         svg {
@@ -137,6 +153,14 @@
                 font-weight: 700;
                 margin-left: 4px !important;
                 color: #cccccc;
+                &::-moz-selection {
+                    color: #cccccc;
+                    background: rgb(204, 204, 204, 0.2);
+                  }
+                  &::selection {
+                    color: #cccccc;
+                    background: rgb(204, 204, 204, 0.2);
+                  }
             }
         }
     }
@@ -214,5 +238,15 @@ p {
           path{
               fill: #aaaaaa;
           }
+      }
+  }
+  .open-name{
+    &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
       }
   }

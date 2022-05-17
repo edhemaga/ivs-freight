@@ -71,12 +71,12 @@
         font-weight: 400;
         color: #6c6c6c;
         &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+          color: #6c6c6c;
+          background: rgb(108, 108, 108, 0.2);
         }
         &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+          color: #6c6c6c;
+          background: rgb(108, 108, 108, 0.2);
         }
       }
       .ssn {
@@ -157,42 +157,30 @@
       font-size: $font-size12;
       font-weight: $font-semibold;
       color: #6c6c6c;
+      &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
     .purchase-template-item-value {
       font-size: $font-size14;
       font-weight: 400;
+      overflow: hidden;
+      text-overflow: ellipsis;
       &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
       }
       &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
       }
     }
   }
-}
-mat-button-toggle-group {
-  width: 416px;
-  height: 26px;
-  display: flex;
-  justify-content: space-around;
-  background: #f3f3f3;
-  box-shadow: none !important;
-  border-radius: 2px;
-}
-mat-button-toggle {
-  width: 67px;
-  height: 22px;
-  margin: 2px;
-  color: #b7b7b7 !important;
-  font-weight: 700;
-  transition: left 0.25 ease-out;
-}
-
-.mat-button-toggle-checked {
-  background-color: #ffffff;
-  color: #536bc2 !important;
 }
 
 .card-note {
@@ -202,14 +190,6 @@ mat-button-toggle {
     padding-left: 4px !important;
   }
 }
-.divider {
-  margin: 0;
-  height: 2px;
-  width: 100%;
-  border-radius: 1px;
-  background-color: $color-white-light;
-}
-
 .details-document-container {
   align-items: center;
   flex-direction: column;
@@ -231,6 +211,14 @@ mat-button-toggle {
       font-weight: 800;
       color: #6c6c6c;
       margin-left: 4px;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
   }
   svg {
@@ -267,7 +255,8 @@ mat-button-toggle {
 .employment-history-container {
   display: flex;
   flex-direction: column;
-  padding: 0 11px;
+  padding-left: 5px;
+  padding-right: 3px;
   .transform-arrow {
     bottom: 0 !important;
     svg {
@@ -295,6 +284,7 @@ mat-button-toggle {
     align-items: center;
     margin-bottom: 12px;
     margin-top: -7px;
+    padding-left: 6px;
     .items-wrapper {
       flex-direction: column;
     }
@@ -304,19 +294,36 @@ mat-button-toggle {
       color: #6c6c6c;
       height: 15px;
       margin-bottom: 3px;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
     .service-year-value {
       font-size: 18px;
       font-weight: 500;
       color: #6c6c6c;
       height: 22px;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
   }
   .progress-employment-history {
-    width: 408px;
-    height: 42px;
+    width: 100%;
     display: flex;
     flex-direction: column;
+    padding-left: 5px;
+    padding-right: 6px;
     &:hover {
       .employment-tooltip {
         display: block;
@@ -371,7 +378,6 @@ mat-button-toggle {
       width: 100%;
       height: 18px;
       background-color: #6d82c8;
-     
     }
     .year-employer {
       display: flex;
@@ -396,8 +402,7 @@ mat-button-toggle {
   margin: 0;
   height: 2px;
   width: 420px;
-  margin-left: -4px;
-  margin-right: 9px;
+  margin-left: -5px;
   margin-top: 8px;
   margin-bottom: 8px;
   border-radius: 1px;

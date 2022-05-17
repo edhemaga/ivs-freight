@@ -77,6 +77,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public showMoreEmployment: boolean = false;
   public employmentHistory: any = [];
   dataTest: any;
+  public buttonsArray:any;
   public driverData: any;
   constructor(
     private customModalService: CustomModalService,
@@ -243,6 +244,45 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     this.getDriversList();
     this.getEmploymentHistory();
     this.getDriverById();
+    this.buttonsArray = [
+      {
+        label: '1M',
+        value: '1M',
+        name: 'chart',
+        checked: false,
+      },
+      {
+        label: '3M',
+        value: '3M',
+        name: 'chart',
+        checked: false,
+      },
+      {
+        label: '6M',
+        value: '6M',
+        name: 'chart',
+        checked: false,
+      },
+      {
+        label: '1Y',
+        value: '1Y',
+        name: 'chart',
+        checked: false,
+      },
+      {
+        label: 'YTD',
+        value: 'YTD',
+        name: 'chart',
+        checked: false,
+      },
+      {
+        label: 'ALL',
+        value: 'ALL',
+        name: 'chart',
+        checked: true,
+      },
+     
+    ];
   }
 
   public getEmploymentHistory() {
@@ -289,7 +329,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     const driver_id = this.activated_route.snapshot.paramMap.get('id');
     this.driverTService.getDriverById(+driver_id).subscribe((data) => {
       this.driverData = data;
-      this.currentDriverName = this.driverData.firstName;
+      this.currentDriverName = this.driverData.firstName + this.driverData.lastName;
     });
   }
   public getDriversList() {

@@ -1,0 +1,17 @@
+<div class="details-container-items">
+    <div *ngFor="let item of trailerDetailsConfig">
+      <app-ta-details-header
+        [route]="'/trailer'"
+        [tooltipHeaderName]="'Back to Trailer List'"
+        [headerText]="item.name"
+      >
+      </app-ta-details-header>
+    </div>
+    <div class="details-item-cmp">
+      <app-trailer-details-item
+        *ngFor="let item of trailerDetailsConfig; trackBy: identity"
+        [data]="item"
+      >
+      </app-trailer-details-item>
+    </div>
+  </div>

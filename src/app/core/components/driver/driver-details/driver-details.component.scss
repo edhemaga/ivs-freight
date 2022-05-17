@@ -5,92 +5,19 @@
 .note-item {
   &::-moz-selection {
     color: $color-gray-dark;
-    background: rgb(183, 183, 183, 0.2);
+    background: rgb(108, 108, 108, 0.2);
   }
   &::selection {
     color: $color-gray-dark;
-    background: rgb(183, 183, 183, 0.2);
+    background: rgb(108, 108, 108, 0.2);
   }
   .note-body {
     margin-left: 4px;
   }
-}
-
-.common-template {
-  display: grid;
-  grid-template-columns: 215px 1fr;
-  grid-row-gap: 12px;
-  row-gap: 12px;
-  margin-bottom: 12px;
-  padding-left: 6px;
-  .common-item-wrapper {
-    display: flex;
-    align-items: center;
-    height: 40px;
-    margin-left: 4px;
-  }
-  .common-template-item {
-    display: flex;
-    flex-direction: column;
-
-    .icon-name-item {
-      display: flex;
-      align-items: center;
-      height: 18px;
-      .common-template-item-name {
-        margin-left: 6px;
-      }
-    }
-    .common-template-item-name {
-      font-size: $font-size12;
-      font-weight: $font-semibold;
-      color: $color-gray-dark;
-
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-    }
-
-    .common-template-item-value {
-      font-size: $font-size14;
-      font-weight: 400;
-      color: $color-gray-dark;
-      width: 220px;
-      height: 18px;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-
-      p {
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-      }
-
-      .hidden-svg-eye {
-        margin-left: 6px;
-        position: relative;
-        bottom: 1px;
-      }
-    }
+  .note-textarea{
+    color: #6c6c6c;
   }
 }
-
 
 .carousel-buttons-control {
   &.prev {
@@ -126,6 +53,14 @@
       font-size: $font-size12;
       font-weight: $font-semibold;
       color: #6c6c6c;
+      &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
     .addres-value {
       font-size: $font-size14;
@@ -133,12 +68,12 @@
       color: #6c6c6c;
       white-space: nowrap;
       &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
       }
       &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
       }
     }
 
@@ -155,5 +90,18 @@
         }
       }
     }
+  }
+}
+
+.status-header{
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-bottom: 6px;
+}
+.status-items{
+  padding: 0 5px;
+  margin-top: 8px;
+  .item-wrapper{
+    grid-template-columns: 113px 137px 79px !important;
   }
 }

@@ -64,11 +64,17 @@ svg {
     margin: 2px;
     cursor: pointer;
     &:hover {
-        background-color: #6d82c7;       
+        background-color: #6d82c7;
         svg {
             path {
                 fill: #fff;
             }
         }
     }
+}
+.disable-selection{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

@@ -26,7 +26,8 @@
           class="card-name-cmp"
           [ngClass]="{ 'has-svgIcon': hasSvg, 'card-close-title': !isCardOpen }"
         >
-         <span class="exp-text" *ngIf="!isCardOpen" [ngClass]="{'card-close-title': !isCardOpen }">Exp.</span> {{ cardNameCommon }}
+        <span *ngIf="isCardOpen" class="open-name">{{ cardNameCommon }}</span>
+         <span class="exp-text" *ngIf="!isCardOpen" [ngClass]="{'card-close-title': !isCardOpen }">Exp.  {{expDateClose}} </span>
         </p>
         <svg-icon
           *ngIf="isCardOpen && hasCopyIcon"
