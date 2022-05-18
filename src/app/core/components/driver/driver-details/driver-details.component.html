@@ -1,11 +1,11 @@
 <div class="details-container-items">
   <div *ngFor="let item of driverDetailsConfig">
     <app-ta-details-header
-      
       [options]="dataTest"
       [route]="'/driver'"
       [tooltipHeaderName]="'Back to Driver List'"
       [headerText]="item.name"
+      [counterData]="item.data"
     >
     </app-ta-details-header>
   </div>

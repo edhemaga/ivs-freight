@@ -29,7 +29,7 @@
                   src="assets/svg/common/ic_ssn.svg"
                 ></svg-icon>
                 <p class="information-value ssn">
-                  {{ driverData.ssn }}
+                  {{ driverData?.driver.ssn }}
                 </p>
                 <svg-icon
                   class="card-icon"
@@ -43,7 +43,7 @@
                   [fontWeight]="'bold'"
                   [fontSize]="'11px'"
                   [customPosition]="-2"
-                  (click)="copyText(driverData.ssn, 'ssn')"
+                  (click)="copyText(driverData?.driver.ssn, 'ssn')"
                 ></svg-icon>
               </div>
               <div
@@ -55,11 +55,11 @@
                   src="assets/svg/common/ic_phone.svg"
                 ></svg-icon>
                 <p class="information-value">
-                  {{ formatPhone(driverData.phone) }}
+                  {{ formatPhone(driverData?.driver.phone) }}
                 </p>
                 <svg-icon
                   (click)="
-                    copyText(formatPhone(driverData.phone), 'driver-phone')
+                    copyText(formatPhone(driverData.driver.phone), 'driver-phone')
                   "
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
@@ -86,10 +86,10 @@
                   src="assets/svg/common/ic_email.svg"
                 ></svg-icon>
                 <p class="information-value information-email-value">
-                  {{ driverData.email }}
+                  {{ driverData?.driver.email }}
                 </p>
                 <svg-icon
-                  (click)="copyText(driverData.email, 'driver-email')"
+                  (click)="copyText(driverData?.driver.email, 'driver-email')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                   [appTooltip]="copiedDriverEmail ? 'Copied' : 'Copy'"
@@ -197,11 +197,11 @@
               <div class="addres-name">Address</div>
               <div class="addres-value-icon">
                 <div class="addres-value">
-                  {{ driverData.address.address }}
-                  {{ driverData.address.addressUnit }},
-                  {{ driverData.address.city }},{{ driverData.address.state }}
-                  {{ driverData.address.zipCode }},
-                  {{ driverData.address.country }}
+                  {{ driverData?.driver.address.address }}
+                  {{ driverData?.driver.address.addressUnit }},
+                  {{ driverData?.driver.address.city }},{{ driverData?.driver.address.state }}
+                  {{ driverData?.driver.address.zipCode }},
+                  {{ driverData?.driver.address.country }}
                 </div>
                 <svg-icon
                   class="address-icon"
@@ -222,7 +222,7 @@
             <div class="addres-wrapper addres-second">
               <div class="addres-name">Date of Birth</div>
               <div class="addres-value">
-                {{ formatDate(driverData.dateOfBirth) }}
+                {{ formatDate(driverData?.driver.dateOfBirth) }}
               </div>
             </div>
           </div>
@@ -230,7 +230,7 @@
 
         <!-- Off Duty Location-->
         <app-ta-custom-card
-          [hasCounter]="driverData.offDutyLocations.length"
+          [hasCounter]="driverData.driver.offDutyLocations.length"
           [cardName]="'Off Duty Location'"
           [isCardOpen]="false"
           [bodyTemplate]="'card'"
@@ -239,16 +239,16 @@
         >
           <div
             class="additional-container"
-            *ngFor="let offDuty of driverData.offDutyLocations"
+            *ngFor="let offDuty of driverData.driver.offDutyLocations"
           >
             <div class="addres-wrapper">
-              <div class="addres-name">{{ offDuty.nickname }}</div>
+              <div class="addres-name">{{ offDuty?.nickname }}</div>
               <div class="addres-value-icon">
                 <div class="addres-value">
-                  {{ offDuty.address.address }}
-                  {{ offDuty.address.addressUnit }},
-                  {{ offDuty.address.city }},{{ offDuty.address.state }}
-                  {{ offDuty.address.zipCode }}, {{ offDuty.address.country }}
+                  {{ offDuty?.address.address }}
+                  {{ offDuty?.address.addressUnit }},
+                  {{ offDuty?.address.city }},{{ offDuty.address.state }}
+                  {{ offDuty?.address.zipCode }}, {{ offDuty?.address.country }}
                 </div>
                 <svg-icon
                   class="address-icon"
@@ -434,13 +434,13 @@
             <div class="purchase-template-item">
               <div class="purchase-template-item-name">Solo</div>
               <div class="purchase-template-item-value">
-                {{ driverData.commissionSolo }}%
+                {{ driverData?.driver.commissionSolo }}%
               </div>
             </div>
             <div class="purchase-template-item second-name">
               <div class="purchase-template-item-name">Team</div>
               <div class="purchase-template-item-value">
-                {{ driverData.commissionTeam }}%
+                {{ driverData?.driver.commissionTeam }}%
               </div>
             </div>
           </div>
@@ -511,10 +511,10 @@
                 [ngClass]="{ copied: copiedBankRouting }"
               >
                 <div class="purchase-template-item-value">
-                  {{ driverData.routing ? driverData.routing : "No routing" }}
+                  {{ driverData.driver.routing ? driverData.driver.routing : "No routing" }}
                 </div>
                 <svg-icon
-                  (click)="copyText(driverData.routing, 'bankRouting')"
+                  (click)="copyText(driverData.driver.routing, 'bankRouting')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                   [appTooltip]="copiedBankRouting ? 'Copied' : 'Copy'"
@@ -542,14 +542,15 @@
                     accountText
                       ? accountText
                       : hiddenPassword(
-                          driverData.account
-                            ? driverData.account
+                        driverData.driver.account
+                            ? driverData.driver.account
                             : "No account",
                           4
                         )
                   }}
                 </div>
                 <svg-icon
+                *ngIf="driverData.driver.account !==null"
                   class="hidden-svg-eye"
                   [appTooltip]="
                     isAccountVisible
@@ -566,7 +567,7 @@
                   [customPosition]="-50"
                   (click)="
                     showHideValue(
-                      driverData.account ? driverData.account : 'No account'
+                      driverData?.driver.account ? driverData.driver.account  : 'No account'
                     )
                   "
                   src="{{
@@ -576,9 +577,10 @@
                   }}"
                 ></svg-icon>
                 <svg-icon
+                 *ngIf="driverData?.driver.account !==null"
                   (click)="
                     copyText(
-                      driverData.account ? driverData.account : 'No account',
+                      driverData.driver.account ? driverData.driver.account : 'No account',
                       'bankAcc'
                     )
                   "
@@ -611,10 +613,10 @@
           <div class="purchase-template">
             <div class="purchase-template-item">
               <div class="purchase-template-item-name">
-                {{ driverData.emergencyContactRelationship }}
+                {{ driverData?.driver.emergencyContactRelationship }}
               </div>
               <div class="purchase-template-item-value">
-                {{ driverData.emergencyContactName }}
+                {{ driverData?.driver.emergencyContactName }}
               </div>
             </div>
             <div class="purchase-template-item second-name">
@@ -624,12 +626,12 @@
                 [ngClass]="{ copied: copiedPhone }"
               >
                 <div class="purchase-template-item-value">
-                  {{ formatPhone(driverData.emergencyContactPhone) }}
+                  {{ formatPhone(driverData?.driver.emergencyContactPhone) }}
                 </div>
                 <svg-icon
                   (click)="
                     copyText(
-                      formatPhone(driverData.emergencyContactPhone),
+                      formatPhone(driverData?.driver.emergencyContactPhone),
                       'phone'
                     )
                   "
@@ -667,13 +669,13 @@
       </div>
     </div>
     <div *ngSwitchCase="'cdl'">
-      <div *ngFor="let cdl of driverData.cdls">
+      <div *ngFor="let cdl of driverData.driver.cdls">
         <app-ta-re-card
           [options]="dataTest"
           [cardDocumentCounter]="6"
           (resizePage)="toggleResizePage($event)"
-          [cardNameCommon]="cdl.cdlNumber"
-          [expDateClose]="formatDate(cdl.expDate)"
+          [cardNameCommon]="cdl?.cdlNumber"
+          [expDateClose]="formatDate(cdl?.expDate)"
           [hasCopyIcon]="true"
         >
           <div class="cards-container">
@@ -687,12 +689,12 @@
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Class</div>
-                  <div class="card-item-value">{{ cdl.classType }}</div>
+                  <div class="card-item-value">{{ cdl?.classType }}</div>
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
                   <div class="card-item-value">
-                    {{ formatDate(cdl.issueDate) }}
+                    {{ formatDate(cdl?.issueDate) }}
                   </div>
                 </div>
               </div>
@@ -704,8 +706,8 @@
                       class="restriction-item-value"
                       *ngFor="let rest of cdl.cdlRestrictions; let i = index"
                     >
-                      <span class="value-name">{{ rest.code }}</span>
-                      <span *ngIf="toggler">- {{ rest.description }} </span>
+                      <span class="value-name">{{ rest?.code }}</span>
+                      <span *ngIf="toggler">- {{ rest?.description }} </span>
                     </p>
                   </div>
                 </div>
@@ -716,8 +718,8 @@
                       class="restriction-item-value"
                       *ngFor="let endors of cdl.cdlEndorsements; let i = index"
                     >
-                      <span class="value-name">{{ endors.code }}</span>
-                      <span *ngIf="toggler">- {{ endors.description }}</span>
+                      <span class="value-name">{{ endors?.code }}</span>
+                      <span *ngIf="toggler">- {{ endors?.description }}</span>
                     </p>
                   </div>
                 </div>
@@ -728,8 +730,8 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="formatDate(cdl.expDate)"
-                    [startDate]="formatDate(cdl.issueDate)"
+                    [expireDate]="formatDate(cdl?.expDate)"
+                    [startDate]="formatDate(cdl?.issueDate)"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -804,12 +806,12 @@
       </div>
     </div>
     <div *ngSwitchCase="'drug-alcohol'">
-      <div *ngFor="let test of driverData.tests">
+      <div *ngFor="let test of driverData.driver.tests">
         <app-ta-re-card
           [options]="dataTest"
           [cardNameCommon]="test.testType"
           (resizePage)="toggleResizePage($event)"
-          [expDateClose]="formatDate(test.testingDate)"
+          [expDateClose]="formatDate(test?.testingDate)"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -817,13 +819,13 @@
                 <div class="card-item">
                   <div class="card-item-name">Reason</div>
                   <div class="card-item-value">
-                    {{ test.testReason.reason }}
+                    {{ test?.testReason.reason }}
                   </div>
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
                   <div class="card-item-value">
-                    {{ formatDate(test.testingDate) }}
+                    {{ formatDate(test?.testingDate) }}
                   </div>
                 </div>
               </div>
@@ -833,19 +835,19 @@
       </div>
     </div>
     <div *ngSwitchCase="'medical'">
-      <div *ngFor="let med of driverData.medicals">
+      <div *ngFor="let med of driverData.driver.medicals">
         <app-ta-re-card
           [options]="dataTest"
-          [cardNameCommon]="formatDate(med.issueDate)"
-          [expDateClose]="formatDate(med.expDate)"
+          [cardNameCommon]="formatDate(med?.issueDate)"
+          [expDateClose]="formatDate(med?.expDate)"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
               <div class="card-row-progress">
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="formatDate(med.expDate)"
-                    [startDate]="formatDate(med.issueDate)"
+                    [expireDate]="formatDate(med?.expDate)"
+                    [startDate]="formatDate(med?.issueDate)"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -857,13 +859,13 @@
       </div>
     </div>
     <div *ngSwitchCase="'mvr'">
-      <div *ngFor="let mvr of driverData.mvrs">
+      <div *ngFor="let mvr of driverData.driver.mvrs">
         <app-ta-re-card
           [options]="dataTest"
           [cardDocumentCounter]="6"
           (resizePage)="toggleResizePage($event)"
-          [cardNameCommon]="formatDate(mvr.issueDate)"
-          [expDateClose]="formatDate(mvr.issueDate)"
+          [cardNameCommon]="formatDate(mvr?.issueDate)"
+          [expDateClose]="formatDate(mvr?.issueDate)"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -873,7 +875,7 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [startDate]="formatDate(mvr.issueDate)"
+                    [startDate]="formatDate(mvr?.issueDate)"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>

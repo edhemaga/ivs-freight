@@ -72,7 +72,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public accountText: string = null;
   public arrayDrivers: any = [];
   public arrayDriverName: any = '';
-  public currentDriverName: string;
+  public currentDriverName: string='Milos Cirkovic';
   public driverId: number = 0;
   public showMoreEmployment: boolean = false;
   public employmentHistory: any = [];
@@ -80,10 +80,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public buttonsArray:any;
   public driverData: any;
   constructor(
-    private customModalService: CustomModalService,
-    private driversQuery: DriversQuery,
     private activated_route: ActivatedRoute,
-    private driverTService: DriverTService
   ) {
     this.arrayDrivers = [
       {
@@ -326,11 +323,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   }
 
   public getDriverById() {
-    const driver_id = this.activated_route.snapshot.paramMap.get('id');
-    this.driverTService.getDriverById(+driver_id).subscribe((data) => {
-      this.driverData = data;
-      this.currentDriverName = this.driverData.firstName + this.driverData.lastName;
-    });
+    this.driverData=this.activated_route.snapshot.data;  
   }
   public getDriversList() {
     for (let i = 0; i < this.arrayDrivers.length; i++) {
@@ -466,7 +459,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   }
   public formatPhone(phoneNumberString: string) {
     const value = phoneNumberString;
-    const number = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+    const number = value?.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
     phoneNumberString = number;
     return number;
   }

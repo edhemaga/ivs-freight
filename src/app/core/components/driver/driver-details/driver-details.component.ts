@@ -18,7 +18,11 @@ import { DriverTService } from '../state/driver.service';
 export class DriverDetailsComponent implements OnInit, OnDestroy {
   public driverDetailsConfig: any[] = [];
   dataTest: any;
-
+  cdlLength:number;
+  mvrLength:number;
+  testLength:number;
+  medicalLength:number;
+  public data:any;
   private destroy$: Subject<void> = new Subject<void>();
   constructor(
     private driversQuery: DriversQuery,
@@ -28,7 +32,14 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initTableOptions();
+    this.data=this.activated_route.snapshot.data;
+    this.cdlLength=this.data.driver.cdls.length
+    this.mvrLength=this.data.driver.mvrs.length
+    this.medicalLength=this.data.driver.medicals.length
+    this.testLength=this.data.driver.tests.length
+    
     this.detailCongif();
+    
   }
 
 
@@ -46,21 +57,25 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         id: 1,
         name: 'CDL',
         template: 'cdl',
+        data:this.cdlLength
       },
       {
         id: 2,
         name: 'Drug & Alcohol',
         template: 'drug-alcohol',
+        data:this.testLength
       },
       {
         id: 3,
         name: 'Medical',
         template: 'medical',
+        data:this.medicalLength
       },
       {
         id: 4,
         name: 'MVR',
         template: 'mvr',
+        data:this.mvrLength
         }
     ];
   
@@ -117,6 +132,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
       export: true,
     };
   }
+
+      
+  
   
   ngOnDestroy(): void {
     this.destroy$.next();

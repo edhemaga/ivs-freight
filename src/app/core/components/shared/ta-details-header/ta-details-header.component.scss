@@ -1,6 +1,16 @@
 .header-wrapper {
     display: grid;
 }
+.counter-text{
+    display: flex;
+    align-items: center;
+    padding: 4px;
+}
+.has-counter-header{
+    .header-name{
+        padding-left: 0px !important;
+    }
+}
 .toolbar-general-cmp {
     display: flex;
     justify-content: space-between;
@@ -32,7 +42,7 @@
     .header-name {
         margin: 0;
         color: #919191;
-        margin-left: 12px;
+        padding-left: 8px;
         font-size: 14px;
         font-weight: 800;
         height: 18px;

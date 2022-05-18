@@ -32,7 +32,7 @@
         <svg-icon
           *ngIf="isCardOpen && hasCopyIcon"
           (click)="copyText(cardNameCommon)"
-          class="card-icon"
+          class="card-icon-common"
           src="assets/svg/common/ic_copy.svg"
           [appTooltip]="copied ? 'Copied' : 'Copy'"
           [position]="'top-middle'"
@@ -50,8 +50,8 @@
    
     <app-table-dropdown
       [options]="options.actions"
-      
       [customClassDropDown]="'table-dropdown-container-vertical'"
+      class="drop"
     >
     </app-table-dropdown>
     </div>
@@ -79,7 +79,7 @@
       </div>
       <div
         (click)="toggleResizePage($event.value)"
-        [ngClass]="{ rotate: resPage }"
+        [ngClass]="{ 'rotate-common': resPage }"
         class="resize-icon"
       >
         <span class="hide-text" *ngIf="resPage">HIDE DETAILS</span>

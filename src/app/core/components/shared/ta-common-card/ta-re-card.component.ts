@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import moment from 'moment';
 import { card_modal_animation } from '../animations/card-modal.animation';
 
@@ -6,6 +6,7 @@ import { card_modal_animation } from '../animations/card-modal.animation';
   selector: 'app-ta-re-card',
   templateUrl: './ta-re-card.component.html',
   styleUrls: ['./ta-re-card.component.scss'],
+  encapsulation:ViewEncapsulation.None,
   animations: [card_modal_animation('showHideCardBody')],
 })
 export class TaReCardComponent implements OnInit {

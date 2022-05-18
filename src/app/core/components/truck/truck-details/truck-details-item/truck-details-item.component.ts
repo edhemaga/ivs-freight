@@ -64,7 +64,7 @@ export class TruckDetailsItemComponent implements OnInit {
   public selectedValueRevenue: string = '';
   public toggler: boolean = false;
   public svgColorVar: string = '';
-  cardNumberFake:string='1234567890';
+  cardNumberFake: string = '1234567890';
   truckName: string = '';
   isAccountVisible: boolean = true;
   accountText: string = null;
@@ -323,7 +323,6 @@ export class TruckDetailsItemComponent implements OnInit {
         name: 'rev',
         checked: false,
       },
-     
     ];
     this.buttonsArrayFuel = [
       {
@@ -362,7 +361,6 @@ export class TruckDetailsItemComponent implements OnInit {
         name: 'fuel',
         checked: false,
       },
-     
     ];
   }
   ngOnDestroy(): void {
@@ -375,17 +373,10 @@ export class TruckDetailsItemComponent implements OnInit {
   }
 
   public getTruckById() {
-    const truck_id = this.activated_route.snapshot.paramMap.get('id');
-    this.truckTService.getTruckById(+truck_id).subscribe((data) => {
-      this.truckData = data;
-      this.noteControl.patchValue(this.truckData.note);
-      // this.fhwaNote.patchValue(this.truckData.inspections.note)
-      // this.registrationNote.patchValue(this.truckData.registrations.note)
-      // this.titleNote.patchValue(this.truckData.titles.note);
-      this.svgColorVar = this.truckData.color.code;
-      this.truckName = this.truckData.truckNumber;
-      console.log(this.truckName);
-    });
+    this.truckData = this.activated_route.snapshot.data;
+    this.svgColorVar = this.truckData.truck.color.code;
+    this.truckName = this.truckData.truck.truckNumber;
+    this.noteControl.patchValue(this.truckData.truck.note);
   }
 
   public initTableOptions(): void {

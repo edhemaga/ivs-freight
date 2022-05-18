@@ -25,17 +25,17 @@
                   >
                   </svg-icon>
                 </div>
-                <p>{{ truckData.model }}</p>
+                <p>{{ truckData.truck.model }}</p>
               </div>
             </div>
             <div class="details-header-data">
               <div class="details-header-data-item">
                 <svg-icon src="assets/svg/common/vin.svg"></svg-icon>
-                <p class="vin-text">{{ truckData.vin }}</p>
+                <p class="vin-text">{{ truckData.truck.vin }}</p>
               </div>
               <div class="details-header-data-item second">
                 <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
-                <p class="vin-text date">{{ truckData.year }}</p>
+                <p class="vin-text date">{{ truckData.truck.year }}</p>
                 <div class="light-green">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@
                     </g>
                   </svg>
                 </div>
-                <p class="vin-text">{{ truckData.color.name }}</p>
+                <p class="vin-text">{{ truckData.truck.color.name }}</p>
               </div>
             </div>
           </div>
@@ -105,49 +105,49 @@
             <div class="common-template-item">
               <div class="common-template-item-name">Gross Weight</div>
               <div class="common-template-item-value">
-                {{ truckData.truckGrossWeight.name }}
+                {{ truckData.truck.truckGrossWeight.name }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Starting Mileage</div>
               <div class="common-template-item-value">
-                {{ truckData.mileage }} mi
+                {{ truckData.truck.mileage }} mi
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Empty Weight</div>
               <div class="common-template-item-value">
-                {{ truckData.emptyWeight }}
+                {{ truckData.truck.emptyWeight }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Engine Type</div>
               <div class="common-template-item-value">
-                {{ truckData.truckEngineType.name }}
+                {{ truckData.truck.truckEngineType.name }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Axles</div>
               <div class="common-template-item-value">
-                {{ truckData.axles }}
+                {{ truckData.truck.axles }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Tire size</div>
               <div class="common-template-item-value">
-                {{ truckData.tireSize.name }}
+                {{ truckData.truck.tireSize.name }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">IPASS/EZPASS</div>
               <div class="common-template-item-value">
-                {{ truckData.ipasEzpass }}
+                {{ truckData.truck.ipasEzpass }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Insurance Policy</div>
               <div class="common-template-item-value">
-                {{ truckData.insurancePolicy }}
+                {{ truckData.truck.insurancePolicy }}
               </div>
             </div>
           </div>
@@ -164,13 +164,13 @@
             <div class="common-template-item">
               <div class="common-template-item-name">Company</div>
               <div class="common-template-item-value size18">
-                {{ truckData.owner.name }}
+                {{ truckData.truck.owner.name }}
               </div>
             </div>
             <div class="common-template-item">
               <div class="common-template-item-name">Commission</div>
               <div class="common-template-item-value size18">
-                {{ truckData.commission }}
+                {{ truckData.truck.commission }}
               </div>
             </div>
           </div>
@@ -327,7 +327,7 @@
               <div class="status-items">
                 <div
                   class="item-wrapper"
-                  *ngFor="let owHist of truckData.ownerHistories"
+                  *ngFor="let owHist of truckData.truck.ownerHistories"
                 >
                   <p class="employment">{{ owHist.name }}</p>
 
@@ -358,7 +358,7 @@
     </div>
     <!---------------------------- Registration TEMPLATE ----------------------------->
     <div *ngSwitchCase="'registration'">
-      <div *ngFor="let reg of truckData.registrations">
+      <div *ngFor="let reg of truckData.truck.registrations">
         <app-ta-re-card
           [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage($event)"
@@ -413,7 +413,7 @@
     </div>
     <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
     <div *ngSwitchCase="'fhwa-insepction'">
-      <div *ngFor="let fhwa of truckData.inspections">
+      <div *ngFor="let fhwa of truckData.truck.inspections">
         <app-ta-re-card
           [options]="dataTest"
           [cardNameCommon]="formatDate(fhwa.issueDate)"
@@ -452,7 +452,7 @@
 
     <!---------------------------- Title TEMPLATE ----------------------------->
     <div *ngSwitchCase="'title'">
-      <div *ngFor="let title of truckData.titles">
+      <div *ngFor="let title of truckData.truck.titles">
         <app-ta-re-card
           [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage($event)"

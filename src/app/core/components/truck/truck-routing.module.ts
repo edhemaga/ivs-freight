@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TruckItemResolver } from './state/truck.items.resolver';
 import { TruckCardComponent } from './truck-card/truck-card.component';
 import { TruckTableComponent } from './truck-table/truck-table.component';
 
@@ -15,6 +16,9 @@ const routes: Routes = [
     import('./truck-details/truck-details.module').then(
       (m) => m.TruckDetailsModule
     ),
+    resolve:{
+      truck:TruckItemResolver
+    },
     data:{title:'Truck details'}
   },
    { path: 'card',
