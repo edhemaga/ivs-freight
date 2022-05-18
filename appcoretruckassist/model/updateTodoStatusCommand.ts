@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { TodoStatus } from './todoStatus';
 
 
-export interface OffDutyLocationResponse { 
+export interface UpdateTodoStatusCommand { 
     id?: number;
-    nickname?: string | null;
-    address?: AddressEntity;
+    status?: TodoStatus;
 }
 

@@ -31,8 +31,6 @@ export interface UpdateBrokerCommand {
     availableCredit?: number | null;
     creditType?: CreditType;
     payTerm?: number | null;
-    dnu?: boolean;
-    ban?: boolean;
     note?: string | null;
     isCheckedBillingAddress?: boolean;
     brokerContacts?: Array<BrokerContactCommand> | null;

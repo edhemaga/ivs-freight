@@ -32,8 +32,6 @@ export interface CreateBrokerCommand {
     creditLimit?: number | null;
     availableCredit?: number | null;
     payTerm?: number | null;
-    dnu?: boolean;
-    ban?: boolean;
     note?: string | null;
     brokerContacts?: Array<BrokerContactCommand> | null;
 }
