@@ -13,6 +13,6 @@
 
 export interface EnumValue { 
     name?: string | null;
-    value?: number;
+    id?: number;
 }
 

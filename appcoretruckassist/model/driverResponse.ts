@@ -16,6 +16,7 @@ import { MvrResponse } from './mvrResponse';
 import { TestResponse } from './testResponse';
 import { EnumValue } from './enumValue';
 import { CdlResponse } from './cdlResponse';
+import { OwnerResponse } from './ownerResponse';
 import { OffDutyLocationResponse } from './offDutyLocationResponse';
 import { PerMileEntity } from './perMileEntity';
 import { AddressEntity } from './addressEntity';
@@ -23,6 +24,7 @@ import { AddressEntity } from './addressEntity';
 
 export interface DriverResponse { 
     id?: number;
+    owner?: OwnerResponse;
     firstName?: string | null;
     lastName?: string | null;
     phone?: string | null;

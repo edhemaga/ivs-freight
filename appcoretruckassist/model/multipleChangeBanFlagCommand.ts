@@ -9,12 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
 
 
-export interface OffDutyLocationResponse { 
-    id?: number;
-    nickname?: string | null;
-    address?: AddressEntity;
+export interface MultipleChangeBanFlagCommand { 
+    ids?: Array<number> | null;
 }
 

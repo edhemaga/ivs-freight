@@ -132,6 +132,8 @@ model/giveRepairShopRatingCommand.ts
 model/inspectionResponse.ts
 model/medicalResponse.ts
 model/models.ts
+model/multipleChangeBanFlagCommand.ts
+model/multipleChangeDnuFlagCommand.ts
 model/multipleChangeTrailerStatusCommand.ts
 model/multipleChangeTruckStatusCommand.ts
 model/mvrResponse.ts
@@ -231,6 +233,7 @@ model/updateShipperCommand.ts
 model/updateShipperReviewCommand.ts
 model/updateTitleCommand.ts
 model/updateTodoCommand.ts
+model/updateTodoStatusCommand.ts
 model/updateTrailerCommand.ts
 model/updateTruckCommand.ts
 model/userType.ts
