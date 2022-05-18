@@ -1,0 +1,108 @@
+<div class="ta-upload-file-container">
+  <div class="ta-upload-file-header">
+    <div *ngIf="!isFileDelete" class="ta-upload-file-action">
+      <svg-icon
+        class="ta-upload-action-tag"
+        src="assets/svg/common/ic_tag.svg"
+        [appTooltip]="'Tag'"
+        [position]="'top-middle'"
+        [tooltipBackground]="'#6C6C6C'"
+        [tooltipColor]="'#FFFFFF'"
+        [zIndex]="900"
+        [borderRadius]="'2px'"
+        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+        [customPosition]="1"
+        (click)="onAction('tag')"
+      ></svg-icon>
+    </div>
+    <div class="ta-upload-file-action ta-upload-file-action-rightside">
+      <svg-icon
+        class="ta-upload-action-download"
+        src="assets/svg/common/ic_download.svg"
+        [appTooltip]="'Download'"
+        [position]="'top-middle'"
+        [tooltipBackground]="'#6C6C6C'"
+        [tooltipColor]="'#FFFFFF'"
+        [zIndex]="900"
+        [borderRadius]="'2px'"
+        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+        [customPosition]="-19"
+        (click)="onAction('download')"
+      ></svg-icon>
+      <svg-icon
+        class="ta-upload-action-delete"
+        src="assets/svg/common/ic_trash.svg"
+        [appTooltip]="'Delete'"
+        [position]="'top-middle'"
+        [tooltipBackground]="'#EF5350'"
+        [tooltipColor]="'#FFFFFF'"
+        [zIndex]="900"
+        [borderRadius]="'2px'"
+        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+        [customPosition]="-9"
+        (click)="isFileDelete = true"
+      ></svg-icon>
+    </div>
+  </div>
+  <div class="ta-upload-file-content">
+    <pdf-viewer
+      [src]="file.url"
+      [(page)]="activePage"
+      [render-text]="false"
+      [show-all]="false"
+      [autoresize]="false"
+      [original-size]="true"
+      [fit-to-page]="true"
+      [stick-to-page]="true"
+      style="display: block"
+      (after-load-complete)="afterLoadComplete($event)"
+    ></pdf-viewer>
+    <div *ngIf="hasTag" class="ta-upload-file-tag">
+      <span>{{ file?.tag ? file.tag : "No tag" }}</span>
+    </div>
+  </div>
+  <div *ngIf="isFileDelete" class="ta-upload-file-delete-template">
+    <div class="ta-upload-file-delete-text">
+      Are you sure you want to delete file?
+    </div>
+    <div
+      class="ta-upload-file-btn ta-upload-file-btn-delete"
+      (click)="onAction('delete')"
+    >
+      Delete
+    </div>
+    <div
+      class="ta-upload-file-btn ta-upload-file-btn-cancel"
+      (click)="onAction('cancel')"
+    >
+      Cancel
+    </div>
+  </div>
+  <div class="ta-upload-file-footer">
+    <div
+      class="ta-upload-file-ext ta-upload-file-ext-{{
+        file.extension | lowercase
+      }}"
+      [ngClass]="{ 'no-tag': !file.tag }"
+      [appTooltip]="numberOfFilePages"
+      [position]="'top-middle'"
+      [tooltipBackground]="'#6C6C6C'"
+      [tooltipColor]="'#FFFFFF'"
+      [zIndex]="900"
+      [borderRadius]="'2px'"
+      [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+      [fontWeight]="'bold'"
+      [fontSize]="'11px'"
+      [customPosition]="13"
+    >
+      {{ file.extension | uppercase }}
+    </div>
+    <p class="ta-upload-file-name">{{ file.name }}</p>
+  </div>
+</div>
