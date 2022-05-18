@@ -132,7 +132,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
-    console.log(data);
+
     if (data.action === 'close') {
       this.driverForm.reset();
     }
@@ -143,8 +143,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         .pipe(untilDestroyed(this))
         .subscribe({
           next: (res: any) => {
-            if(res.status === '200' || res.status === '204') {
-              this.modalService.changeModalStatus({name: 'deactivate', status: true});
+            if (res.status === '200' || res.status === '204') {
+              this.modalService.changeModalStatus({
+                name: 'deactivate',
+                status: true,
+              });
             }
           },
           error: () => {
@@ -431,7 +434,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .pipe(untilDestroyed(this))
             .subscribe({
               next: (res: CheckOwnerSsnEinResponse) => {
-                this.owner = res;
+                this.owner = res?.name ? res : null;
+                
                 if (this.owner) {
                   this.driverForm
                     .get('bussinesName')
@@ -530,19 +534,19 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         ? new Date(this.driverForm.get('twicExpDate').value).toISOString()
         : null,
     };
-
-    this.driverModalService
-      .addDriver(newData)
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: () =>
-          this.notificationService.success(
-            'Driver successfully added.',
-            'Success:'
-          ),
-        error: () =>
-          this.notificationService.error("Driver can't be added.", 'Error:'),
-      });
+    console.log(newData)
+    // this.driverModalService
+    //   .addDriver(newData)
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe({
+    //     next: () =>
+    //       this.notificationService.success(
+    //         'Driver successfully added.',
+    //         'Success:'
+    //       ),
+    //     error: () =>
+    //       this.notificationService.error("Driver can't be added.", 'Error:'),
+    //   });
   }
 
   private updateDriver(id: number): void {
