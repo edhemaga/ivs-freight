@@ -1,6 +1,9 @@
 <div class="ta-upload-file-container">
-  <div class="ta-upload-file-header">
-    <div *ngIf="!isFileDelete" class="ta-upload-file-action">
+  <div *ngIf="!isFileDelete" class="ta-upload-file-header">
+    <div
+      class="ta-upload-file-action-leftside"
+      [ngClass]="{ 'no-action-tag': !hastTag }"
+    >
       <svg-icon
         class="ta-upload-action-tag"
         src="assets/svg/common/ic_tag.svg"
@@ -17,7 +20,7 @@
         (click)="onAction('tag')"
       ></svg-icon>
     </div>
-    <div class="ta-upload-file-action ta-upload-file-action-rightside">
+    <div class="ta-upload-file-action-rightside">
       <svg-icon
         class="ta-upload-action-download"
         src="assets/svg/common/ic_download.svg"

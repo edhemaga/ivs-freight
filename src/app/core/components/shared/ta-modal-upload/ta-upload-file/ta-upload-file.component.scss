@@ -9,6 +9,7 @@
   align-items: center;
   position: relative;
 
+  //------------------ File Header Actions ------------------
   .ta-upload-file-header {
     position: absolute;
     top: 4px;
@@ -22,7 +23,7 @@
     z-index: 10;
     display: none;
 
-    .ta-upload-file-action {
+    .ta-upload-file-action-leftside {
       width: 30px;
       height: 30px;
       border-radius: 1px;
@@ -31,7 +32,45 @@
       padding-top: 2px;
       cursor: pointer;
 
-      .ta-upload-action-tag,
+      .ta-upload-action-tag {
+        width: 18px;
+        height: 18px;
+        svg {
+          height: 18px;
+          width: 18px;
+          path {
+            fill: #dadada;
+          }
+        }
+
+        &:hover {
+          transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #ffffff;
+            }
+          }
+        }
+      }
+
+      &.no-action-tag {
+        opacity: 0;
+        visibility: none;
+        pointer-events: none !important;
+      }
+    }
+
+    .ta-upload-file-action-rightside {
+      display: flex;
+      justify-content: space-around;
+      width: 60px;
+      height: 30px;
+      text-align: center;
+      padding-top: 2px;
+      border-radius: 1px;
+      background-color: rgb(108, 108, 108, 0.9);
+      cursor: pointer;
+
       .ta-upload-action-download,
       .ta-upload-action-delete {
         width: 18px;
@@ -53,17 +92,9 @@
           }
         }
       }
-
-      &-rightside {
-        border-radius: 1px;
-        background-color: rgb(108, 108, 108, 0.9);
-        display: flex;
-        justify-content: space-around;
-        width: 60px;
-      }
     }
   }
-
+  //------------------ File Content ------------------
   .ta-upload-file-content {
     width: 160px;
     height: 160px;
@@ -175,6 +206,7 @@
     }
   }
 
+  //------------------ File Footer Actions ------------------
   .ta-upload-file-footer {
     display: flex;
     align-items: center;
