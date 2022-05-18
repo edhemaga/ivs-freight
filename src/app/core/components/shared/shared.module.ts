@@ -95,6 +95,7 @@ import { ShipperModalComponent } from '../modals/shipper-modal/shipper-modal.com
 import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component';
 import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-currency-progress-bar.component';
 import { UserModalComponent } from '../modals/user-modal/user-modal.component';
+import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.component';
 
 @NgModule({
   declarations: [
@@ -146,6 +147,7 @@ import { UserModalComponent } from '../modals/user-modal/user-modal.component';
     ShipperModalComponent,
     OwnerModalComponent,
     UserModalComponent,
+    TaModalUploadComponent,
 
     // Pipes
     InputErrorPipe,
@@ -290,6 +292,7 @@ import { UserModalComponent } from '../modals/user-modal/user-modal.component';
     ShipperModalComponent,
     OwnerModalComponent,
     UserModalComponent,
+    TaModalUploadComponent,
 
     // Pipes
     InputErrorPipe,

@@ -517,7 +517,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         ? this.selectedAddress.stateShortName
         : null,
       bankId: this.selectedBank ? this.selectedBank.id : null,
-      payType: this.selectedPayType ? this.selectedPayType.value : null,
+      payType: this.selectedPayType ? this.selectedPayType.name : null,
       solo: {
         emptyMile: soloEmptyMile,
         loadedMile: soloLoadedMile,
@@ -588,7 +588,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         ? this.selectedAddress.stateShortName
         : null,
       bankId: this.selectedBank ? this.selectedBank.id : null,
-      payType: this.selectedPayType ? this.selectedPayType.value : null,
+      payType: this.selectedPayType ? this.selectedPayType.name : null,
       solo: {
         emptyMile: soloEmptyMile,
         loadedMile: soloLoadedMile,
@@ -729,6 +729,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectPayType(event: any): void {
+    console.log(event)
     this.selectedPayType = event;
   }
 
