@@ -1,5 +1,5 @@
 import { FormArray } from '@angular/forms';
-import { distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -13,6 +13,7 @@ import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import { DriverModalService } from './driver-modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
+  CheckOwnerSsnEinResponse,
   CreateDriverCommand,
   DriverResponse,
   GetDriverModalResponse,
@@ -28,6 +29,7 @@ import {
   phoneRegex,
   bankRoutingValidator,
 } from '../../shared/ta-input/ta-input.regex-validations';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -55,6 +57,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public selectedPayType: any = null;
 
   public driverFullName: string = null;
+
+  public owner: CheckOwnerSsnEinResponse = null;
 
   public logoOptions: Options = {
     floor: 0.1,
@@ -108,7 +112,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     private ngbActiveModal: NgbActiveModal,
     private mockModalService: MockModalService,
     private driverModalService: DriverModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -127,8 +132,31 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
+
     if (data.action === 'close') {
       this.driverForm.reset();
+    }
+    // Change Driver Status
+    if (data.action === 'deactivate' && this.editData) {
+      this.driverModalService
+        .changeDriverStatus(this.editData.id)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: (res: any) => {
+            if (res.status === '200' || res.status === '204') {
+              this.modalService.changeModalStatus({
+                name: 'deactivate',
+                status: true,
+              });
+            }
+          },
+          error: () => {
+            this.notificationService.error(
+              "Driver status can't be changed.",
+              'Error:'
+            );
+          },
+        });
     } else {
       // Save & Update
       if (data.action === 'save') {
@@ -147,7 +175,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       if (data.action === 'delete' && this.editData) {
         this.deleteDriverById(this.editData.id);
       }
-
       this.ngbActiveModal.close();
     }
   }
@@ -190,7 +217,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       twicExpDate: [null],
       fuelCard: [null],
       emergencyContactName: [null],
-      emergencyContactPhone: [null],
+      emergencyContactPhone: [null, phoneRegex],
       emergencyContactRelationship: [null],
     });
   }
@@ -335,24 +362,36 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onHandleAddress(event: any): void {
-    this.selectedAddress = event;
+  public onHandleAddress(event: {
+    address: Address | any;
+    valid: boolean;
+  }): void {
+    this.selectedAddress = event.address;
+    if (!event.valid) {
+      this.driverForm.get('addres').setErrors({ invalid: true });
+    }
   }
 
-  public onHandleAddressFormArray(event: any, index: number) {
-    const address: Address = event;
-
-    this.offDutyLocations.at(index).patchValue({
-      address: address.address,
-      city: address.city,
-      state: address.state,
-      stateShortName: address.stateShortName,
-      country: address.country,
-      zipCode: address.zipCode,
-      addressUnit: address.addressUnit,
-      // streetNumber: address,
-      // streetName: address,
-    });
+  public onHandleAddressFormArray(
+    event: { address: Address | any; valid: boolean },
+    index: number
+  ) {
+    const address: Address = event.address;
+    if (!event.valid) {
+      this.offDutyLocations.at(index).setErrors({ invalid: true });
+    } else {
+      this.offDutyLocations.at(index).patchValue({
+        address: address.address,
+        city: address.city,
+        state: address.state,
+        stateShortName: address.stateShortName,
+        country: address.country,
+        zipCode: address.zipCode,
+        addressUnit: address.addressUnit,
+        // streetNumber: address,
+        // streetName: address,
+      });
+    }
   }
 
   public tabChange(event: any): void {
@@ -374,9 +413,44 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       this.inputService.changeValidators(this.driverForm.get('ein'), true, [
         einNumberRegex,
       ]);
+      this.einNumberChange();
     } else {
       this.inputService.changeValidators(this.driverForm.get('ein'), false);
     }
+  }
+
+  private einNumberChange() {
+    this.driverForm
+      .get('ein')
+      .valueChanges.pipe(
+        debounceTime(3000),
+        distinctUntilChanged(),
+        untilDestroyed(this)
+      )
+      .subscribe((value) => {
+        if (value) {
+          this.driverModalService
+            .checkOwnerEinNumber(value)
+            .pipe(untilDestroyed(this))
+            .subscribe({
+              next: (res: CheckOwnerSsnEinResponse) => {
+                this.owner = res?.name ? res : null;
+                
+                if (this.owner) {
+                  this.driverForm
+                    .get('bussinesName')
+                    .patchValue(this.owner.name);
+                }
+              },
+              error: () => {
+                this.notificationService.error(
+                  "Owner can't be loaded.",
+                  'Error:'
+                );
+              },
+            });
+        }
+      });
   }
 
   public openCloseCheckboxCard(event: any) {
@@ -413,6 +487,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
+      address,
+      bussinesName,
       ...form
     } = this.driverForm.value;
 
@@ -422,7 +498,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.driverForm.get('dateOfBirth').value
       ).toISOString(),
       ownerId:
-        this.driverForm.get('ownerType').value === 'Sole Proprietor' ? null : 1, // TODO: BACKEND TREBA DA DOSTAVI
+        this.driverForm.get('ownerType').value === 'Sole Proprietor'
+          ? null
+          : this.owner
+          ? this.owner.id
+          : null,
+      ownerType:
+        this.driverForm.get('ownerType').value === 'Sole Proprietor' ? 2 : 1,
+      bussinesName: this.owner
+        ? null
+        : this.driverForm.get('bussinesName').value,
       city: this.selectedAddress ? this.selectedAddress.city : null,
       state: this.selectedAddress ? this.selectedAddress.state : null,
       address: this.selectedAddress ? this.selectedAddress.address : null,
@@ -445,23 +530,23 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       },
       commissionSolo: parseInt(this.driverForm.get('commissionSolo').value),
       commissionTeam: parseInt(this.driverForm.get('commissionTeam').value),
-      twicExpDate: new Date(
-        this.driverForm.get('twicExpDate').value
-      ).toISOString(),
+      twicExpDate: this.driverForm.get('twic').value
+        ? new Date(this.driverForm.get('twicExpDate').value).toISOString()
+        : null,
     };
-
-    this.driverModalService
-      .addDriver(newData)
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: () =>
-          this.notificationService.success(
-            'Driver successfully added.',
-            'Success:'
-          ),
-        error: () =>
-          this.notificationService.error("Driver can't be added.", 'Error:'),
-      });
+    console.log(newData)
+    // this.driverModalService
+    //   .addDriver(newData)
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe({
+    //     next: () =>
+    //       this.notificationService.success(
+    //         'Driver successfully added.',
+    //         'Success:'
+    //       ),
+    //     error: () =>
+    //       this.notificationService.error("Driver can't be added.", 'Error:'),
+    //   });
   }
 
   private updateDriver(id: number): void {
@@ -472,6 +557,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
+      address,
+      bussinesName,
       ...form
     } = this.driverForm.value;
 
@@ -481,7 +568,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       dateOfBirth: new Date(
         this.driverForm.get('dateOfBirth').value
       ).toISOString(),
-      ownerId: 1, // TODO: BACKEND TREBA DA DOSTAVI
+      ownerId:
+        this.driverForm.get('ownerType').value === 'Sole Proprietor'
+          ? null
+          : this.owner
+          ? this.owner.id
+          : null,
+      ownerType:
+        this.driverForm.get('ownerType').value === 'Sole Proprietor' ? 2 : 1,
+      bussinesName: this.owner
+        ? null
+        : this.driverForm.get('bussinesName').value,
       city: this.selectedAddress ? this.selectedAddress.city : null,
       state: this.selectedAddress ? this.selectedAddress.state : null,
       address: this.selectedAddress ? this.selectedAddress.address : null,
@@ -504,11 +601,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       },
       commissionSolo: parseInt(this.driverForm.get('commissionSolo').value),
       commissionTeam: parseInt(this.driverForm.get('commissionTeam').value),
-      twicExpDate: new Date(
-        this.driverForm.get('twicExpDate').value
-      ).toISOString(),
-      offDutyLocations: [],
+      twicExpDate: this.driverForm.get('twic').value
+        ? new Date(this.driverForm.get('twicExpDate').value).toISOString()
+        : null,
     };
+
+    console.log(newData);
 
     this.driverModalService
       .updateDriver(newData)
@@ -540,18 +638,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             avatar: res.avatar,
             dateOfBirth: moment(new Date(res.dateOfBirth)).format('YYYY-MM-DD'),
             offDutyLocations: [],
-            isOwner: true,
-            ownerId: 1,
-            ownerType: 'Company',
-            ein: '77-777777',
-            bussinesName: null,
+            isOwner: res.owner ? true : false,
+            ownerId: res.owner ? res.owner.id : null,
+            ownerType: res.owner ? res.owner.name : null,
+            ein: res.owner ? res.owner.ssnEin : null,
+            bussinesName: res.owner ? res.owner.name : null,
             address: res.address ? res.address.address : null,
             addressUnit: res.address ? res.address.addressUnit : null,
             bankId: res.bank ? res.bank.name : null,
             account: res.account,
             routing: res.routing,
             payroll: res.payroll,
-            payType: null,
+            payType: res.payType ? res.payType.name : null,
             mailNotification: res.mailNotification,
             phoneCallNotification: res.phoneCallNotification,
             smsNotification: res.smsNotification,
@@ -576,14 +674,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             res.lastName.charAt(0).toUpperCase() + res.lastName.slice(1);
 
           this.driverFullName = res.firstName.concat(' ', res.lastName);
-          this.selectedBank = res.bank;
-          this.selectedPayType = res.payType;
-          this.onHandleAddress(res.address);
+          this.selectedBank = res.bank ? res.bank : null;
+          this.selectedPayType = res.payType ? res.payType : null;
+          this.onHandleAddress({
+            address: res.address,
+            valid: res.address ? true : false,
+          });
 
           if (res.offDutyLocations.length) {
             for (const offDuty of res.offDutyLocations) {
               this.offDutyLocations.push(
                 this.formBuilder.group({
+                  id: offDuty.id,
                   nickname: offDuty.nickname,
                   address: offDuty.address.address,
                   city: offDuty.address.city,

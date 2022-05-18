@@ -181,7 +181,9 @@
                       name: 'Bussines Name',
                       type: 'text',
                       label: 'Bussines Name',
-                      isDisabled: true
+                      isRequired: owner,
+                      textTransform: 'capitalize',
+                      isDisabled: !driverForm.get('ein').value || owner
                     }"
                   ></app-ta-input>
                 </div>
