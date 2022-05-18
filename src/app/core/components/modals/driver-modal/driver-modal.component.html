@@ -131,7 +131,7 @@
           <div class="divider"></div>
           <div
             class="checkbox-card-header"
-            [ngClass]="{ 'pointer': driverForm.get('isOwner').value }"
+            [ngClass]="{ pointer: driverForm.get('isOwner').value }"
             (click)="openCloseCheckboxCard($event)"
           >
             <app-ta-checkbox
@@ -254,7 +254,7 @@
             </div>
           </div>
         </app-ta-custom-card>
-        
+
         <!-- Note -->
         <app-ta-input-note
           formControlName="note"
@@ -471,10 +471,10 @@
         <div
           class="paytype-commission"
           *ngIf="
-            driverForm.get('payType').value?.toLowerCase() === 'commission'
+            driverForm.get('payType').value?.toLowerCase() === 'commision'
           "
           [class.active]="
-            driverForm.get('payType').value?.toLowerCase() === 'commission'
+            driverForm.get('payType').value?.toLowerCase() === 'commision'
           "
         >
           <div class="paytype-field">
