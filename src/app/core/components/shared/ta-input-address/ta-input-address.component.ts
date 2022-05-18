@@ -64,6 +64,7 @@ export class TaInputAddressComponent
       this.getSuperControl.valueChanges
         .pipe(untilDestroyed(this))
         .subscribe((value) => {
+          console.log(value)
           if (value !== this.activeAddress?.address) {
             this.invalidAddress = true;
             this.selectedAddress.emit({address: null, valid: false});
@@ -123,7 +124,7 @@ export class TaInputAddressComponent
       this.activeAddress?.address !== this.getSuperControl.value
     ) {
       this.invalidAddress = true;
-      this.selectedAddress.emit({address: null, valid: false});
+      // this.selectedAddress.emit({address: null, valid: false});
     }
 
     if (
@@ -168,7 +169,7 @@ export class TaInputAddressComponent
     }
     if (this.activeAddress?.address !== this.getSuperControl.value) {
       this.invalidAddress = true;
-      this.selectedAddress.emit({address: null, valid: false});
+      // this.selectedAddress.emit({address: null, valid: false});
     }
   }
 

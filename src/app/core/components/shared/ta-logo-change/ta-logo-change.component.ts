@@ -101,7 +101,7 @@ export class TaLogoChangeComponent implements AfterViewInit {
 
   public saveImage() {
     this.croppieDirective.croppie.result('base64').then((base64) => {
-      this.base64ImageEvent.emit(base64);
+      this.base64ImageEvent.emit(base64.split(',')[1]);
       this.savedFile = base64;
       this.showUploadZone = false;
     });

@@ -181,7 +181,8 @@
                       name: 'Bussines Name',
                       type: 'text',
                       label: 'Bussines Name',
-                      isDisabled: true
+                      isRequired: owner,
+                      isDisabled: !driverForm.get('ein').value || owner
                     }"
                   ></app-ta-input>
                 </div>

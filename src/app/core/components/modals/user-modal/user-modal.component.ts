@@ -149,8 +149,11 @@ export class UserModalComponent implements OnInit {
     };
   }
 
-  public onHandleAddress(event: any): void {
-    this.selectedAddress = event;
+  public onHandleAddress(event: {address: Address, valid: boolean}): void {
+    this.selectedAddress = event.address;
+    if(!event.valid) {
+      this.userForm.get('address').setErrors({'invalid': true})
+    }
   }
 
   public openCloseCheckboxCard(event: any) {
