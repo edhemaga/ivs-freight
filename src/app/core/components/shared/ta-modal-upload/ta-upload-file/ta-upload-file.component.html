@@ -1,8 +1,9 @@
 <div class="ta-upload-file-container">
+  <!-- File Header Actions -->
   <div *ngIf="!isFileDelete" class="ta-upload-file-header">
     <div
       class="ta-upload-file-action-leftside"
-      [ngClass]="{ 'no-action-tag': !hastTag }"
+      [ngClass]="{ 'no-action-tag': !hasTag }"
     >
       <svg-icon
         class="ta-upload-action-tag"
@@ -53,9 +54,13 @@
       ></svg-icon>
     </div>
   </div>
+
+  <!-- File Content -->
   <div class="ta-upload-file-content">
+    <!-- Pdf Content -->
     <pdf-viewer
-      [src]="file.url"
+      *ngIf="file?.extension.toLowerCase() === 'pdf'"
+      [src]="file?.url"
       [(page)]="activePage"
       [render-text]="false"
       [show-all]="false"
@@ -66,10 +71,26 @@
       style="display: block"
       (after-load-complete)="afterLoadComplete($event)"
     ></pdf-viewer>
-    <div *ngIf="hasTag" class="ta-upload-file-tag">
-      <span>{{ file?.tag ? file.tag : "No tag" }}</span>
+
+    <!-- Image Content -->
+    <img
+      class="ta-upload-file-image"
+      *ngIf="file?.extension.toLowerCase() !== 'pdf'"
+      [src]="file?.url"
+      [alt]="file?.name"
+    />
+
+    <!-- Tag Content -->
+    <div
+      *ngIf="hasTag"
+      class="ta-upload-file-tag"
+      [ngClass]="{ 'no-tag': !file?.tag }"
+    >
+      <span>{{ file?.tag ? file?.tag : "No Tag" }}</span>
     </div>
   </div>
+
+  <!-- File Delete Template -->
   <div *ngIf="isFileDelete" class="ta-upload-file-delete-template">
     <div class="ta-upload-file-delete-text">
       Are you sure you want to delete file?
@@ -87,12 +108,14 @@
       Cancel
     </div>
   </div>
+
+  <!-- File Footer Information -->
   <div class="ta-upload-file-footer">
     <div
       class="ta-upload-file-ext ta-upload-file-ext-{{
-        file.extension | lowercase
+        file?.extension | lowercase
       }}"
-      [ngClass]="{ 'no-tag': !file.tag }"
+      [ngClass]="{ 'no-tag': !file?.tag }"
       [appTooltip]="numberOfFilePages"
       [position]="'top-middle'"
       [tooltipBackground]="'#6C6C6C'"
@@ -103,9 +126,10 @@
       [fontWeight]="'bold'"
       [fontSize]="'11px'"
       [customPosition]="13"
+      [tatooltipvisible]="file?.extension.toLowerCase() === 'pdf'"
     >
-      {{ file.extension | uppercase }}
+      {{ file?.extension | uppercase }}
     </div>
-    <p class="ta-upload-file-name">{{ file.name }}</p>
+    <p class="ta-upload-file-name">{{ file?.name }}</p>
   </div>
 </div>

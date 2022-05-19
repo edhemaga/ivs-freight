@@ -97,6 +97,7 @@ import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-cu
 import { UserModalComponent } from '../modals/user-modal/user-modal.component';
 import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.component';
 import { TaUploadFileComponent } from './ta-modal-upload/ta-upload-file/ta-upload-file.component';
+import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-files-carousel/ta-upload-files-carousel.component';
 
 @NgModule({
   declarations: [
@@ -136,6 +137,7 @@ import { TaUploadFileComponent } from './ta-modal-upload/ta-upload-file/ta-uploa
     TaLikeDislikeComponent,
     TaUserReviewComponent,
     TaCurrencyProgressBarComponent,
+    TaUploadFilesCarouselComponent,
 
     // Modals Components
     TaModalComponent,
@@ -262,7 +264,7 @@ import { TaUploadFileComponent } from './ta-modal-upload/ta-upload-file/ta-uploa
     TaInputRadiobuttonsComponent,
     TaUserReviewComponent,
     TaUploadFileComponent,
-   
+    TaUploadFilesCarouselComponent,
 
     TaReCardComponent,
     TaDetailsHeaderCardComponent,

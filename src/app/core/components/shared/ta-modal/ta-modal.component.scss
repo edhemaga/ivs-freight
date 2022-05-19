@@ -19,11 +19,19 @@
   height: auto;
   overflow: hidden;
 
-  &.modal-container-L {
+  &.modal-container-M {
     width: 640px;
 
     .divider {
       width: 615px;
+    }
+  }
+
+  &.modal-container-L {
+    width: 860px;
+
+    .divider {
+      width: 836px;
     }
   }
 

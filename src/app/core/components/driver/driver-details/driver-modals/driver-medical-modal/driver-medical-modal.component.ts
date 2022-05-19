@@ -56,5 +56,9 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public onFilesEvent(event: any) {
+    console.log(event);
+  }
+
   ngOnDestroy(): void {}
 }

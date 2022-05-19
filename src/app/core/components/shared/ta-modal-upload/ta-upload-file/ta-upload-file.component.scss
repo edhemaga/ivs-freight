@@ -22,6 +22,7 @@
     justify-content: space-between;
     z-index: 10;
     display: none;
+    user-select: none;
 
     .ta-upload-file-action-leftside {
       width: 30px;
@@ -109,6 +110,7 @@
       border-radius: 2px !important;
       box-shadow: 0 0 2px rgb(0, 0, 0, 0.3);
       top: 4px !important;
+      user-select: none !important;
 
       .canvasWrapper,
       .pdfViewer,
@@ -118,6 +120,20 @@
         height: 160px !important;
         margin: 0 !important;
       }
+    }
+
+    .ta-upload-file-image {
+      max-width: 160px;
+      max-height: 160px;
+      object-fit: fill;
+      border-radius: 2px;
+      vertical-align: middle;
+      top: 50%;
+      left: 50%;
+      position: relative;
+      transform: translate(-50%, -50%);
+      user-select: none !important;
+      box-shadow: 0 0 2px rgb(0, 0, 0, 0.3);
     }
 
     .ta-upload-file-tag {
@@ -133,6 +149,7 @@
       left: 0px;
       padding: 1px 4px;
       opacity: 0.9;
+      user-select: none !important;
 
       span {
         line-height: 14px;
@@ -144,6 +161,7 @@
 
       &:hover {
         transition: all 0.3s ease-in-out;
+        cursor: auto !important;
         opacity: 1;
       }
     }
@@ -155,7 +173,7 @@
     left: 0;
     z-index: 20;
     width: 168px;
-    height: 165px;
+    height: 167px;
     background-color: rgb(243, 243, 243, 0.9);
     display: flex;
     flex-direction: column;

@@ -1,8 +1,8 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
@@ -22,10 +22,11 @@ export interface UploadFile {
   templateUrl: './ta-upload-file.component.html',
   styleUrls: ['./ta-upload-file.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaUploadFileComponent implements OnInit {
+export class TaUploadFileComponent {
   @Input() file: UploadFile;
-  @Input() hasTag: boolean = true;
+  @Input() hasTag: boolean = false;
   @Input() activePage: number = 1;
 
   @Output() fileAction: EventEmitter<{ file: UploadFile; action: string }> =
@@ -34,10 +35,6 @@ export class TaUploadFileComponent implements OnInit {
   public numberOfFilePages: string = '0';
 
   public isFileDelete: boolean = false;
-
-  constructor() {}
-
-  ngOnInit() {}
 
   public afterLoadComplete(pdf: PDFDocumentProxy) {
     this.numberOfFilePages = pdf._pdfInfo.numPages
