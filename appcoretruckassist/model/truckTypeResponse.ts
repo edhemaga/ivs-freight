@@ -15,5 +15,6 @@ export interface TruckTypeResponse {
     id?: number;
     companyId?: number | null;
     name?: string | null;
+    logoName?: string | null;
 }
 
