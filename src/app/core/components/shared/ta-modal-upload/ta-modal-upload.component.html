@@ -1,3 +1,68 @@
-<p>
-  ta-modal-upload works!
-</p>
+<div
+  class="ta-modal-upload"
+  [ngClass]="{
+    'ta-modal-upload-small': files.length && modalSize === 'modal-small',
+    'ta-modal-upload-medium-file':
+      files.length && files.length < 2 && modalSize === 'modal-medium',
+    'ta-modal-upload-medium-files':
+      files.length && files.length > 1 && modalSize === 'modal-medium',
+    'ta-modal-upload-large-file':
+      files.length && files.length < 2 && modalSize === 'modal-large',
+    'ta-modal-upload-large-twofiles':
+      files.length && files.length >= 2 && modalSize === 'modal-large',
+    'ta-modal-upload-large-threefiles':
+      files.length && files.length >= 3 && modalSize === 'modal-large'
+  }"
+>
+  <!-- Carousel Files -->
+  <app-ta-upload-files-carousel
+    *ngIf="files.length"
+    [filesLength]="files.length"
+    [customClass]="modalSize"
+    (activeSlide)="currentSlide = $event"
+  >
+    <div
+      class="ta-modal-carousel-container"
+      *ngFor="let file of files; let ind = index; trackBy: identity"
+    >
+      <div [ngSwitch]="modalSize">
+        <div *ngSwitchCase="'modal-small'">
+          <app-ta-upload-file
+            *ngIf="currentSlide === ind"
+            [file]="file"
+            [hasTag]="hasTag"
+            (fileAction)="onFileAction($event)"
+          ></app-ta-upload-file>
+        </div>
+        <div *ngSwitchDefault>
+          <app-ta-upload-file
+            [file]="file"
+            [hasTag]="hasTag"
+            (fileAction)="onFileAction($event)"
+          ></app-ta-upload-file>
+        </div>
+      </div>
+    </div>
+  </app-ta-upload-files-carousel>
+
+  <!-- Dropzone -->
+  <div class="ta-modal-dropzone">
+    <label for="pdf" class="ta-modal-dropzone-label">
+      <svg-icon
+        class="ta-modal-dropzone-area"
+        src="assets/svg/common/ic_modal_upload_dropzone.svg"
+      ></svg-icon>
+      <div class="ta-modal-dropzone-text">
+        <span class="ta-modal-dropzone-text-big">DRAG FILES HERE</span>
+        <span class="ta-modal-dropzone-text-small">OR CLICK TO ADD</span>
+      </div>
+    </label>
+    <input
+      id="pdf"
+      type="file"
+      [accept]="'application/pdf, application/png, application/jpg'"
+      multiple
+      (change)="onFileUpload($event.target.files)"
+    />
+  </div>
+</div>

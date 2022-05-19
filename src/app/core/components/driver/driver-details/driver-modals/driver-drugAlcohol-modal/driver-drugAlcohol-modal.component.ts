@@ -131,5 +131,9 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     this.selectedReasonType = event;
   }
 
+  public onFilesEvent(event: any) {
+    
+  }
+
   ngOnDestroy(): void {}
 }

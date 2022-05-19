@@ -256,3 +256,9 @@ body:not(.modal-open) {
     background-color: rgba(0, 0, 0, 0);
   }
 }
+
+.ta-card-body-overflow-none {
+  .ta-card-body {
+    overflow: visible !important;
+  }
+}

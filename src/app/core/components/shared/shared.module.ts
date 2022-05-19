@@ -96,6 +96,8 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
 import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-currency-progress-bar.component';
 import { UserModalComponent } from '../modals/user-modal/user-modal.component';
 import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.component';
+import { TaUploadFileComponent } from './ta-modal-upload/ta-upload-file/ta-upload-file.component';
+import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-files-carousel/ta-upload-files-carousel.component';
 
 @NgModule({
   declarations: [
@@ -135,6 +137,7 @@ import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.compon
     TaLikeDislikeComponent,
     TaUserReviewComponent,
     TaCurrencyProgressBarComponent,
+    TaUploadFilesCarouselComponent,
 
     // Modals Components
     TaModalComponent,
@@ -148,6 +151,7 @@ import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.compon
     OwnerModalComponent,
     UserModalComponent,
     TaModalUploadComponent,
+    TaUploadFileComponent,
 
     // Pipes
     InputErrorPipe,
@@ -259,7 +263,8 @@ import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.compon
     TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
     TaUserReviewComponent,
-   
+    TaUploadFileComponent,
+    TaUploadFilesCarouselComponent,
 
     TaReCardComponent,
     TaDetailsHeaderCardComponent,

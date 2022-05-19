@@ -1,0 +1,103 @@
+.ta-card-body {
+  overflow: visible !important;
+}
+.ta-modal-upload {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 194px;
+  align-items: center;
+
+  &-small {
+    grid-template-columns: 168px 1fr;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-medium-file {
+    grid-template-columns: 168px 1fr;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-medium-files {
+    grid-template-columns: 348px 1fr;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-large-file {
+    grid-template-columns: 168px 1fr;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-large-twofiles {
+    grid-template-columns: 348px 1fr;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-large-threefiles {
+    grid-template-columns: 528px 1fr;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .ta-modal-dropzone {
+    width: 100%;
+    height: 194px;
+    border: 3px dashed #e5e5e5;
+    padding: 2px;
+
+    .ta-modal-dropzone-label {
+      width: 100%;
+      height: 100%;
+      padding: 22px 0px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      text-align: center;
+      border-radius: 2px;
+
+      .ta-modal-dropzone-text {
+        margin: 0;
+        margin-top: 18px;
+        color: #b7b7b7;
+        font-size: 14px;
+        font-weight: 600;
+        position: relative;
+        left: 2px;
+        height: 32px;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+
+        &-small {
+          font-size: 11px;
+          position: relative;
+          bottom: 3px;
+        }
+      }
+
+      &:hover {
+        transition: all 0.3 ease-in-out;
+        background-color: #eeeeee;
+
+        .ta-modal-dropzone-text {
+          color: #6c6c6c;
+        }
+      }
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+  }
+}

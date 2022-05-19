@@ -15,5 +15,6 @@ export interface TrailerTypeResponse {
     id?: number;
     companyId?: number | null;
     name?: string | null;
+    logoName?: string | null;
 }
 

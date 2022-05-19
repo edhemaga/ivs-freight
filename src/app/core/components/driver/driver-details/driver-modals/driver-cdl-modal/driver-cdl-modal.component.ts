@@ -149,5 +149,9 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public onFilesEvent(event: any) {
+
+  }
+
   ngOnDestroy(): void {}
 }

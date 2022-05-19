@@ -34,13 +34,19 @@
         ></app-ta-input>
       </div>
     </div>
-    <app-ta-custom-card
-      [hasCounter]="documents.length ? documents.length : '0'"
-      [cardName]="'Documents'"
-      [isCardOpen]="documents.length"
-    >
-      DropZone for documents
-    </app-ta-custom-card>
+    <div class="ta-card-body-overflow-none">
+      <app-ta-custom-card
+        [hasCounter]="documents.length ? documents.length : '0'"
+        [cardName]="'Documents'"
+        [isCardOpen]="documents.length"
+      >
+        <app-ta-modal-upload
+          [files]="[]"
+          (onFileEvent)="onFilesEvent($event)"
+        ></app-ta-modal-upload>
+      </app-ta-custom-card>
+    </div>
+
     <app-ta-input-note
       formControlName="note"
       [isVisibleNote]="medicalForm.get('note').value"
