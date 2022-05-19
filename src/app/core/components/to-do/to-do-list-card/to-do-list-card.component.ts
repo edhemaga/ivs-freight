@@ -3,7 +3,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridsterItemComponent, GridType } from 'angular-gridster2';
 import { Subject, takeUntil } from 'rxjs';
 import { TodoTService } from '../state/todo.service';
-import { TodoStatus, UpdateTodoCommand } from 'appcoretruckassist';
+import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-to-do-list-card',
@@ -15,7 +15,7 @@ export class ToDoListCardComponent implements OnInit {
 
   options: GridsterConfig;
 
-  public updatedStatusData: UpdateTodoCommand;
+  public updatedStatusData: UpdateTodoStatusCommand;
   startChangingStatus = false;
   public dragStarted = false;
   cardData: Array<GridsterItem> = [];
@@ -127,15 +127,9 @@ export class ToDoListCardComponent implements OnInit {
 
       this.updatedStatusData = {
         id: e.id,
-        status: newStatus,
-        title: e.title,
-        description: e.description,
-        note: e.note,
-        url: e.url,
-        departmentIds: e.departmentIds,
-        companyUserIds: e.companyUserIds
+        status: newStatus
       };
-      //this.updateStatus(this.updatedStatusData);
+      this.updateStatus(this.updatedStatusData);
     }
   }
 
@@ -159,73 +153,50 @@ export class ToDoListCardComponent implements OnInit {
       .subscribe((resp: TodoListResponse) => {
         console.log("WHAT IS RESPONSE FROM TODO");
         console.log(resp);
+        this.startChangingStatus = false;
        // this.notification.success('Task status updated successfully.', 'Success:');
         //this.updateTodosList(resp.pagination.data);
       });
-    // this.spinner.show(false);
-    // this.todoService
-    //   .updateTodo(id, status)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(
-    //     (resp: any) => {
-    //       // this.notification.success('Task status updated successfully.', 'Success:');
-    //       this.spinner.show(false);
-    //       this.startChangingStatus = false;
-    //       this.updateTodosList(this.dashboard, true);
-    //     },
-    //     (error) => {
-    //       this.startChangingStatus = false;
-    //       this.shared.handleServerError();
-    //     }
-    //   );
   }
 
   updateTodosList(resp, noReplace?: boolean) {
-    let todoIndx = 0;
-    this.toDoTasks = resp.filter((x) => {
+    this.toDoTasks = resp.filter((x, indx) => {
       if (x.status === TodoStatus.Todo) {
         if (!noReplace) {
           this.cardData.push({
             ...x,
             cols: 1,
             rows: 1,
-            y: todoIndx,
+            y: indx,
             x: 0,
             minItemRows: 1,
             minItemCols: 1,
             initCallback: this.initItem.bind(this, this.cardData.length)
           });
         }
-
-        todoIndx++;
         return true;
       }
     });
 
-    let proggIndx = 0;
-    this.inProgressTasks = resp.filter((x) => {
+    this.inProgressTasks = resp.filter((x, indx) => {
       if (x.status === TodoStatus.InProgres) {
         if (!noReplace) {
           this.cardData.push({
             ...x,
             cols: 1,
             rows: 1,
-            y: proggIndx,
+            y: indx,
             x: 1,
             minItemRows: 1,
             minItemCols: 1,
             initCallback: this.initItem.bind(this, this.cardData.length)
           });
-
-          proggIndx++;
         }
         return true;
       }
     });
 
-
-    let doneIndx = 0;
-    this.doneTasks = resp.filter((x) => {
+    this.doneTasks = resp.filter((x, indx) => {
       if (x.status === TodoStatus.Done) {
         if (!noReplace) {
           this.cardData.push({
@@ -233,14 +204,13 @@ export class ToDoListCardComponent implements OnInit {
             done: true,
             cols: 1,
             rows: 1,
-            y: doneIndx,
+            y: indx,
             x: 2,
             minItemRows: 1,
             minItemCols: 1,
             initCallback: this.initItem.bind(this, this.cardData.length)
           });
 
-          doneIndx++;
         }
         return true;
       }

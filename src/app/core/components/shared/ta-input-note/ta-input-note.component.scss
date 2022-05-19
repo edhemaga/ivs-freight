@@ -56,11 +56,23 @@
       }
     }
   }
+  
+
+  @keyframes growDown {
+    0% {
+      max-height: 0px;
+      overflow: hidden;
+    }
+    100% {
+      max-height: 600px;
+      overflow: auto;
+    }
+  }
+
 
   .note-body {
-    max-height: 0;
+    max-height: 0px;
     overflow: hidden;
-    transition: all 0.3s ease-in-out;
     padding: 0 6px;
 
     &.active {

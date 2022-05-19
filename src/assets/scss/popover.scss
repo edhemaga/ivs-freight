@@ -160,6 +160,10 @@
 
 // Options On Table Toolbar Popup
 .options-popover {
+
+  box-shadow: none !important;
+  background-color: transparent !important;
+
   .arrow {
     display: none !important;
   }

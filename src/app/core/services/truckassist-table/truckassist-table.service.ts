@@ -20,9 +20,9 @@ export class TruckassistTableService {
   /* Set Column Table Width */
   private columnWidth = new BehaviorSubject<any>([]);
   public currentColumnWidth = this.columnWidth.asObservable();
-
+  
   /* Set Table Selection */
-  private rowsSelected = new BehaviorSubject<any>([]);
+  public rowsSelected = new BehaviorSubject<any>([]);
   public currentRowsSelected = this.rowsSelected.asObservable();
 
   /* Selected Or Deselected All Rows */
