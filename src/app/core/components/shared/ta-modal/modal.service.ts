@@ -1,11 +1,23 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BehaviorSubject } from 'rxjs';
 import { ModalOptions } from './modal.options';
 @Injectable({
   providedIn: 'root',
 })
 export class ModalService {
+
+  public modalStatusChange: BehaviorSubject<{name: string, status: boolean}> = new BehaviorSubject<{name: string, status: boolean}>(null);
+
   constructor(private ngbModal: NgbModal) {}
+
+  public get modalStatus$() {
+    return this.modalStatusChange.asObservable();
+  }
+
+  public changeModalStatus({name: string, status: boolean}) {
+    this.modalStatusChange.next({name: string, status: boolean});
+  }
 
   public openModal(component: any, options: ModalOptions, editData?: any) {
     options = {
@@ -26,10 +38,14 @@ export class ModalService {
     });
 
     const fx = (modal as any)._removeModalElements.bind(modal);
-    (modal as any)._removeModalElements = () => {
-      instance.windowClass = '';
-      setTimeout(fx, 250);
-    };
+    
+    if(fx) {
+      (modal as any)._removeModalElements = () => {
+        instance.windowClass = '';
+        setTimeout(fx, 50);
+      };
+    }
+   
 
     setTimeout(() => {
       document
