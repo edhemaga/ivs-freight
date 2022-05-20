@@ -49,7 +49,6 @@
                 name: 'Address',
                 type: 'text',
                 label: 'Address, City, State Zip',
-                isRequired: true,
                 placeholderIcon: 'address',
                 textTransform: 'capitalize'
               }"
@@ -76,7 +75,6 @@
                 name: 'Phone',
                 type: 'text',
                 label: 'Phone',
-                isRequired: true,
                 placeholderIcon: 'phone',
                 mask: '(000) 000-0000'
               }"
@@ -89,7 +87,6 @@
                 name: 'Email',
                 type: 'text',
                 label: 'Email',
-                isRequired: true,
                 placeholderIcon: 'email'
               }"
             ></app-ta-input>
@@ -97,7 +94,7 @@
         </div>
 
         <app-ta-custom-card [cardName]="'Employe Details'" [isCardOpen]="true">
-          <div class="row">
+          <div class="row row-mt-20">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="departmentId"
@@ -107,7 +104,7 @@
                   label: 'Department',
                   isRequired: true,
                   isDropdown: true,
-                  dropdownWidthClass: 'w-col-4'
+                  dropdownWidthClass: 'w-col-4-department-user'
                 }"
                 [options]="[]"
                 (selectedItem)="onSelectDepartment($event)"
@@ -121,7 +118,7 @@
                   type: 'text',
                   label: 'Office',
                   isDropdown: true,
-                  dropdownWidthClass: 'w-col-4'
+                  dropdownWidthClass: 'w-col-5'
                 }"
                 [options]="[]"
                 (selectedItem)="onSelectOffice($event)"
@@ -215,8 +212,7 @@
                     label: 'Salary',
                     isRequired: true,
                     placeholderIcon: 'dollar',
-                    customClass: 'dollar-placeholderIcon',
-                    maxLength: 2
+                    customClass: 'dollar-placeholderIcon'
                   }"
                 ></app-ta-input>
               </div>

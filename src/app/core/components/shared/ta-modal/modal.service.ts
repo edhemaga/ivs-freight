@@ -6,8 +6,8 @@ import { ModalOptions } from './modal.options';
   providedIn: 'root',
 })
 export class ModalService {
-
-  public modalStatusChange: BehaviorSubject<{name: string, status: boolean}> = new BehaviorSubject<{name: string, status: boolean}>(null);
+  public modalStatusChange: BehaviorSubject<{ name: string; status: boolean }> =
+    new BehaviorSubject<{ name: string; status: boolean }>(null);
 
   constructor(private ngbModal: NgbModal) {}
 
@@ -15,15 +15,15 @@ export class ModalService {
     return this.modalStatusChange.asObservable();
   }
 
-  public changeModalStatus({name: string, status: boolean}) {
-    this.modalStatusChange.next({name: string, status: boolean});
+  public changeModalStatus({ name: string, status: boolean }) {
+    this.modalStatusChange.next({ name: string, status: boolean });
   }
 
   public openModal(component: any, options: ModalOptions, editData?: any) {
     options = {
       ...options,
       backdrop: 'static',
-      backdropClass: "myDropback"
+      backdropClass: 'myDropback',
     };
 
     const modal = this.ngbModal.open(component, options);
@@ -38,14 +38,11 @@ export class ModalService {
     });
 
     const fx = (modal as any)._removeModalElements.bind(modal);
-    
-    if(fx) {
-      (modal as any)._removeModalElements = () => {
-        instance.windowClass = '';
-        setTimeout(fx, 50);
-      };
-    }
-   
+
+    (modal as any)._removeModalElements = () => {
+      instance.windowClass = '';
+      setTimeout(fx, 250);
+    };
 
     setTimeout(() => {
       document

@@ -202,9 +202,22 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: GetTruckModalResponse) => {
-          this.truckType = res.truckTypes;
+          this.truckType = res.truckTypes.map(item => {
+            return {
+              ...item,
+              folder: 'common',
+              subFolder: 'trucks'
+            }
+          });
           this.truckMakeType = res.truckMakes;
-          this.colorType = res.colors;
+          this.colorType = res.colors.map(item => {
+            return {
+              ...item,
+              folder: 'common',
+              subFolder: 'colors',
+              logoName: 'ic_color.svg'
+            }
+          });;
           this.ownerType = res.owners;
           this.grossWeight = res.truckGrossWeights;
           this.engineType = res.truckEngineTypes;

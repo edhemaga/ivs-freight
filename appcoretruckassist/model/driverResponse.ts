@@ -47,6 +47,7 @@ export interface DriverResponse {
     team?: PerMileEntity;
     commissionSolo?: number | null;
     commissionTeam?: number | null;
+    createdAt?: string;
     twic?: boolean;
     twicExpDate?: string | null;
     fuelCard?: string | null;

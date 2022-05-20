@@ -1,4 +1,4 @@
-import { accountBankRegex } from './../../shared/ta-input/ta-input.regex-validations';
+import { accountBankRegex, bankRoutingValidator } from './../../shared/ta-input/ta-input.regex-validations';
 import { UpdateOwnerCommand } from './../../../../../../appcoretruckassist/model/updateOwnerCommand';
 import { CreateOwnerCommand } from './../../../../../../appcoretruckassist/model/createOwnerCommand';
 import { OwnerResponse } from './../../../../../../appcoretruckassist/model/ownerResponse';
@@ -184,6 +184,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             true,
             routingBankRegex
           );
+          this.routingNumberTyping();
           this.inputService.changeValidators(
             this.ownerForm.get('accountNumber'),
             true,
@@ -199,6 +200,21 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             this.ownerForm.get('accountNumber'),
             false
           );
+        }
+      });
+  }
+
+  private routingNumberTyping() {
+    this.ownerForm
+      .get('routingNumber')
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          if (bankRoutingValidator(value)) {
+            this.ownerForm.get('routingNumber').setErrors(null);
+          } else {
+            this.ownerForm.get('routingNumber').setErrors({ invalid: true });
+          }
         }
       });
   }

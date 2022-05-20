@@ -21,20 +21,22 @@
       &.scroll {
         transition: all 0.3s ease-in-out;
         overflow-y: scroll !important;
-        scrollbar-width: thin;
+        scrollbar-width: none !important; /* Firefox */
+
         &::-webkit-scrollbar {
-          width: 2px;
+          width: 3px;
         }
-
-        &::-webkit-scrollbar-track-piece {
-          background-color: #ffffff;
-        }
-
         &::-webkit-scrollbar-thumb {
-          background-color: #aaaaaa;
-          outline: none;
-          height: 43px;
-          max-height: 43px;
+          background-color: transparent;
+          border: 6px solid #e5e5e5;
+          border-radius: 1px;
+        }
+        &::-webkit-scrollbar-track {
+          padding: 0;
+          position: relative;
+          right: 0;
+          top: 0;
+          background: transparent;
         }
       }
 
@@ -246,7 +248,8 @@
       &.w-col-4-tireSize,
       &.w-col-4-doortype,
       &.w-col-4-reeferUnit,
-      &.w-col-4-classType {
+      &.w-col-4-classType,
+      &.w-col-4-department-user {
         width: 136px;
       }
 

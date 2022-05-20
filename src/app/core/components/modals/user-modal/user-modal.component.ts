@@ -1,12 +1,14 @@
-import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
+import { accountBankRegex, bankRoutingValidator, emailRegex, routingBankRegex } from './../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 import { AddressEntity } from 'appcoretruckassist';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
+import { distinctUntilChanged } from 'rxjs';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-user-modal',
@@ -15,7 +17,7 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
 })
-export class UserModalComponent implements OnInit {
+export class UserModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
 
   public userForm: FormGroup;
@@ -70,6 +72,8 @@ export class UserModalComponent implements OnInit {
   public selectedAddress: Address | AddressEntity = null;
   public isPhoneExtExist: boolean = false;
 
+  public isBankSelected: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -78,6 +82,7 @@ export class UserModalComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+    this.onBankSelected();
 
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
@@ -94,7 +99,7 @@ export class UserModalComponent implements OnInit {
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
       address: [null],
-      addressUnit: [null],
+      addressUnit: [null, Validators.maxLength(6)],
       personalPhone: [null, phoneRegex],
       personalEmail: [null, emailRegex],
       departmentId: [null, Validators.required],
@@ -164,6 +169,53 @@ export class UserModalComponent implements OnInit {
     }
   }
 
+  private onBankSelected(): void {
+    this.userForm
+      .get('bankId')
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.isBankSelected = true;
+          this.inputService.changeValidators(
+            this.userForm.get('routingNumber'),
+            true,
+            routingBankRegex
+          );
+          this.routingNumberTyping();
+          this.inputService.changeValidators(
+            this.userForm.get('accountNumber'),
+            true,
+            accountBankRegex
+          );
+        } else {
+          this.isBankSelected = false;
+          this.inputService.changeValidators(
+            this.userForm.get('routingNumber'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.userForm.get('accountNumber'),
+            false
+          );
+        }
+      });
+  }
+
+  private routingNumberTyping() {
+    this.userForm
+      .get('routingNumber')
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          if (bankRoutingValidator(value)) {
+            this.userForm.get('routingNumber').setErrors(null);
+          } else {
+            this.userForm.get('routingNumber').setErrors({ invalid: true });
+          }
+        }
+      });
+  }
+
   public onTypeOfEmploye(event: any) {}
 
   public onTypeOfPayroll(event: any) {}
@@ -179,4 +231,10 @@ export class UserModalComponent implements OnInit {
   private deleteUserById(id: number) {}
 
   private editUserById(id: number) {}
+
+  private getUserDropdowns() {}
+
+  ngOnDestroy():void {
+
+  }
 }
