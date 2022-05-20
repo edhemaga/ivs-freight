@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
+  CheckOwnerSsnEinResponse,
   CreateDriverCommand,
   CreateDriverResponse,
   DriverResponse,
   DriverService,
   GetDriverModalResponse,
+  OwnerService,
   UpdateDriverCommand,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
@@ -13,7 +15,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class DriverModalService {
-  constructor(private driverService: DriverService) {}
+  constructor(private driverService: DriverService, private ownerService: OwnerService) {}
 
   public addDriver(
     data: CreateDriverCommand
@@ -35,5 +37,13 @@ export class DriverModalService {
 
   public getDriverDropdowns(): Observable<GetDriverModalResponse> {
     return this.driverService.apiDriverModalGet();
+  }
+
+  public checkOwnerEinNumber(number: string): Observable<CheckOwnerSsnEinResponse> {
+    return this.ownerService.apiOwnerCheckSsnEinGet(number)
+  }
+
+  public changeDriverStatus(id: number): Observable<any> {
+    return this.driverService.apiDriverStatusIdPut(id, 'response');
   }
 }

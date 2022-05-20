@@ -6,6 +6,7 @@
       [tooltipHeaderName]="'Back to Driver List'"
       [headerText]="item.name"
       [counterData]="item.data"
+      (openModalAction)="onModalAction($event)"
     >
     </app-ta-details-header>
   </div>

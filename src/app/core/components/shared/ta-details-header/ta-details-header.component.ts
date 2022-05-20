@@ -19,7 +19,7 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() route: string = '';
   @Input() options: any = [];
   @Input() counterData: any;
-  @Output('openModal') openModalAction = new EventEmitter<any>();
+  @Output() openModalAction = new EventEmitter<any>();
   @Input() hasIcon:boolean=false;
   @Input() hasDateArrow:boolean=false;
   constructor(private routes: ActivatedRoute) {}
@@ -31,6 +31,7 @@ export class TaCommonHeaderComponent implements OnInit {
     console.log(val);
     this.openModalAction.emit(val);
   }
+
   trackByIndex(index: number, obj: any): any {
     return index;
   }

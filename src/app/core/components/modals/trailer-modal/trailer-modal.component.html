@@ -137,21 +137,24 @@
         <!-- Company Owned -->
         <div class="custom-checkbox-card">
           <div class="divider"></div>
-          <div class="checkbox-card-header" [ngClass]="{ pointer: !trailerForm.get('companyOwned').value }"
-          (click)="openCloseCheckboxCard($event)">
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: !trailerForm.get('companyOwned').value }"
+            (click)="openCloseCheckboxCard($event)"
+          >
             <app-ta-checkbox
               formControlName="companyOwned"
               [label]="'Company Owned'"
             ></app-ta-checkbox>
             <svg-icon
               class="checkbox-card-header-arrow"
-              src="assets/svg/common/ic_arrow-down.svg"
-              [ngClass]="{ 'visible': !trailerForm.get('companyOwned')?.value }"
+              src="assets/svg/common/ic_arrow_down_updated.svg"
+              [ngClass]="{ visible: !trailerForm.get('companyOwned')?.value }"
             ></svg-icon>
           </div>
           <div
             class="checkbox-card-body"
-            [ngClass]="{'active-20': !trailerForm.get('companyOwned').value}"
+            [ngClass]="{ 'active-20': !trailerForm.get('companyOwned').value }"
           >
             <div *ngIf="!trailerForm.get('companyOwned').value">
               <div class="row owner-dropdown">
@@ -174,7 +177,10 @@
             </div>
           </div>
         </div>
-        <app-ta-input-note formControlName="note" [isVisibleNote]="trailerForm.get('note').value"></app-ta-input-note>
+        <app-ta-input-note
+          formControlName="note"
+          [isVisibleNote]="trailerForm.get('note').value"
+        ></app-ta-input-note>
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
@@ -222,7 +228,10 @@
                 type: 'text',
                 label: 'Suspension',
                 isDropdown: true,
-                dropdownWidthClass: trailerForm.get('trailerTypeId').value !== 'Reefer' ? 'w-col-6' : 'w-col-3-suspension'
+                dropdownWidthClass:
+                  trailerForm.get('trailerTypeId').value !== 'Reefer'
+                    ? 'w-col-6'
+                    : 'w-col-3-suspension'
               }"
               [options]="suspensionType"
               (selectedItem)="onSelectSuspension($event)"
@@ -303,21 +312,22 @@
               (selectedItem)="onSelectDoorType($event)"
             ></app-ta-input-dropdown>
           </div>
-          <div class="col-4" *ngIf="trailerForm.get('trailerTypeId').value === 'Tanker'">
+          <div
+            class="col-4"
+            *ngIf="trailerForm.get('trailerTypeId').value === 'Tanker'"
+          >
             <app-ta-input
-            formControlName="volume"
-            [inputConfig]="{
-              name: 'Volume',
-              type: 'text',
-              label: 'Volume',
-              maxLength: 6,
-              mask: 'separator.2',
-              placeholderIcon: !trailerForm.get('volume').value
-                ? ''
-                : 'gal',
-              customClass: 'gal-placeholderIcon'
-            }"
-          ></app-ta-input>
+              formControlName="volume"
+              [inputConfig]="{
+                name: 'Volume',
+                type: 'text',
+                label: 'Volume',
+                maxLength: 6,
+                mask: 'separator.2',
+                placeholderIcon: !trailerForm.get('volume').value ? '' : 'gal',
+                customClass: 'gal-placeholderIcon'
+              }"
+            ></app-ta-input>
           </div>
           <div
             class="{{

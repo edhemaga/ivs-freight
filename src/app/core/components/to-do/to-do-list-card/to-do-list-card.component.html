@@ -90,29 +90,31 @@
         <gridster [options]="options" style="height: 200px">
             <gridster-item *ngFor="let item of cardData; let indx = index" [item]="item">
                 <div class="list-holder">
-                    <div class="list-items-frame">
-                        <div class="list-title">{{item.title}}</div>
-                        <div class="icons-frame">
-                            <div class="icon-box blue-icons">
-                                <svg-icon src="assets/svg/common/ic_web.svg"></svg-icon>
-                            </div>
-                            <div class="icon-box blue-icons">
-                                <svg-icon src="assets/svg/detail-cards/comment - count.svg"></svg-icon>
-                                <div class="number-comments">0</div>
-                            </div>
-                            <div class="icon-box">
-                                <svg-icon src="assets/svg/common/ic_attachment.svg"></svg-icon>
-                            </div>
-                            <div class="icon-box">
-                                <svg-icon src="assets/svg/common/ic_horizontal-dots.svg"></svg-icon>
+                    <div class="list-top-holder">
+                        <div class="list-items-frame">
+                            <div class="list-title">{{item.title}}</div>
+                            <div class="icons-frame">
+                                <div class="icon-box" [class.blue-icons]="item.linkActive">
+                                    <svg-icon src="assets/svg/common/ic_web.svg"></svg-icon>
+                                </div>
+                                <div class="icon-box" [class.blue-icons]="item.commentActive">
+                                    <svg-icon src="assets/svg/detail-cards/comment - count.svg"></svg-icon>
+                                    <div class="number-comments">0</div>
+                                </div>
+                                <div class="icon-box">
+                                    <svg-icon src="assets/svg/common/ic_attachment.svg"></svg-icon>
+                                </div>
+                                <div class="icon-box">
+                                    <svg-icon src="assets/svg/common/ic_horizontal-dots.svg"></svg-icon>
+                                </div>
                             </div>
                         </div>
+                        <div class="options-frame">
+                            <div class="dispatch-box" *ngFor="let dep of item.departments">{{dep.name}}</div>
+                        </div>
+                        <div class="list-text">{{item.description}}</div>
+                        <div class="link" *ngIf="item.linkActive">{{item.url}}</div>
                     </div>
-                    <div class="options-frame">
-                        <div class="dispatch-box">Dispatch</div>
-                    </div>
-                    <div class="list-text">{{item.description}}</div>
-                    <div class="link">{{item.url}}</div>
                     <!-- <div class="chat-holder">
                         <div class="chat-frame">
                             <div class="user-frame">

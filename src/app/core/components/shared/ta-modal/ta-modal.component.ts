@@ -1,11 +1,16 @@
+import { distinctUntilChanged } from 'rxjs/operators';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
+  OnInit,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
+import { ModalService } from './modal.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-ta-modal',
@@ -13,7 +18,7 @@ import {
   styleUrls: ['./ta-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TaModalComponent {
+export class TaModalComponent implements OnInit, OnDestroy {
   @Input() modalTitle: string;
   @Input() editName: string;
   @Input() editData: any;
@@ -24,21 +29,38 @@ export class TaModalComponent {
   @Input() isDNU: boolean = false;
   @Input() isBFB: boolean = false;
 
-  @Output() modalActionTypeEmitter: EventEmitter<{action: string, bool: boolean}> =
-  new EventEmitter<{action: string, bool: boolean}>(null);
+  @Input() specificCaseModalName: boolean = false;
+
+  @Output() modalActionTypeEmitter: EventEmitter<{
+    action: string;
+    bool: boolean;
+  }> = new EventEmitter<{ action: string; bool: boolean }>(null);
 
   private timeout = null;
 
-  constructor(private ngbActiveModal: NgbActiveModal) {}
+  constructor(
+    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService
+  ) {}
+
+  ngOnInit(): void {
+    this.modalService.modalStatus$
+      .pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((data: { name: string; status: boolean }) => {
+        if (data?.name === 'deactivate') {
+          this.isDeactivated = !this.isDeactivated;
+        }
+      });
+  }
 
   public onAction(action: string) {
     switch (action) {
       case 'save': {
-        this.modalActionTypeEmitter.emit({action: action, bool: false});
+        this.modalActionTypeEmitter.emit({ action: action, bool: false });
         break;
       }
       case 'close': {
-        this.modalActionTypeEmitter.emit({action: action, bool: false});
+        this.modalActionTypeEmitter.emit({ action: action, bool: false });
         $('.pac-container').remove();
         this.timeout = setTimeout(() => {
           this.ngbActiveModal.dismiss();
@@ -48,21 +70,24 @@ export class TaModalComponent {
       }
       case 'deactivate': {
         this.isDeactivated = !this.isDeactivated;
-        this.modalActionTypeEmitter.emit({action: action, bool: this.isDeactivated});
+        this.modalActionTypeEmitter.emit({
+          action: action,
+          bool: this.isDeactivated,
+        });
         break;
       }
       case 'dnu': {
         this.isDNU = !this.isDNU;
-        this.modalActionTypeEmitter.emit({action: action, bool: this.isDNU});
+        this.modalActionTypeEmitter.emit({ action: action, bool: this.isDNU });
         break;
       }
       case 'bfb': {
         this.isBFB = !this.isBFB;
-        this.modalActionTypeEmitter.emit({action: action, bool: this.isBFB});
+        this.modalActionTypeEmitter.emit({ action: action, bool: this.isBFB });
         break;
       }
       case 'delete': {
-        this.modalActionTypeEmitter.emit({action: action, bool: false});
+        this.modalActionTypeEmitter.emit({ action: action, bool: false });
         break;
       }
       default: {
@@ -70,4 +95,6 @@ export class TaModalComponent {
       }
     }
   }
+
+  ngOnDestroy(): void {}
 }

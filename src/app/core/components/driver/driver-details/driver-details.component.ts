@@ -1,3 +1,8 @@
+import { DriverMvrModalComponent } from './driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { DriverMedicalModalComponent } from './driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverDrugAlcoholModalComponent } from './driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { ModalService } from './../../shared/ta-modal/modal.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -27,7 +32,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private driversQuery: DriversQuery,
     private activated_route: ActivatedRoute,
-    private driverTService:DriverTService
+    private driverTService: DriverTService,
+    private modalService: ModalService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -42,11 +49,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     
   }
 
-
   public identity(index: number, item: any): number {
     return item.id;
   }
-  detailCongif(){
+  detailCongif() {
     this.driverDetailsConfig = [
       {
         id: 0,
@@ -78,7 +84,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         data:this.mvrLength
         }
     ];
-  
   }
 
   public initTableOptions(): void {
@@ -133,9 +138,35 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-      
-  
-  
+  public onModalAction(action: string): void {
+    const driver_id=this.activated_route.snapshot.paramMap.get('id');
+    if(action.includes('Drug')) {
+      action = 'DrugAlcohol'
+    }
+    console.log(action)
+    switch (action) {
+      case 'CDL': {
+        this.modalService.openModal(DriverCdlModalComponent, {size: 'small'}, {id: driver_id, type: 'new-licence'})
+        break;
+      }
+      case 'DrugAlcohol': {
+        this.modalService.openModal(DriverDrugAlcoholModalComponent, {size: 'small'}, {id: driver_id, type: 'new-drug'})
+        break;
+      }
+      case 'Medical': {
+        this.modalService.openModal(DriverMedicalModalComponent, {size: 'small'}, {id: driver_id, type: 'new-medical'})
+        break;
+      }
+      case 'MVR': {
+        this.modalService.openModal(DriverMvrModalComponent, {size: 'small'}, {id: driver_id, type: 'new-mvr'})
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

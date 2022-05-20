@@ -44,6 +44,10 @@
     margin-bottom: 10px !important;
   }
 
+  .row-mb-modal-upload {
+    margin-bottom: 12px !important;
+  }
+
   // If modal buttons directly below row
   .last-modal-row {
     margin-bottom: 20px !important;
@@ -141,7 +145,7 @@
             opacity: 1;
           }
         }
-      }   
+      }
     }
 
     .checkbox-card-body {
@@ -555,6 +559,7 @@
   display: grid;
   grid-template-columns: 112px 90px 109px 109px;
   grid-template-rows: 26px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   align-items: center;
   margin-left: 6px;
@@ -584,6 +589,7 @@
   display: grid;
   grid-template-columns: 258px 1fr;
   grid-template-rows: 26px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   margin: 32px 0px;
 
@@ -591,6 +597,7 @@
     display: grid;
     grid-template-columns: 232px 26px;
     align-items: center;
+    -moz-column-gap: 2px;
     column-gap: 2px;
 
     .extension-field {
@@ -628,6 +635,7 @@
   display: grid;
   grid-template-columns: 178px 1fr;
   grid-template-rows: 26px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   margin: 32px 0px;
   margin-bottom: 22px;
@@ -636,6 +644,7 @@
     display: grid;
     grid-template-columns: 150px 26px;
     align-items: center;
+    -moz-column-gap: 2px;
     column-gap: 2px;
 
     .extension-field {
@@ -668,5 +677,27 @@
     }
   }
 }
+//---------------- CDL, Issue & Exp Date Modal----------------
+.cdl-issue-exp-date {
+  display: grid;
+  grid-template-columns: 1fr repeat(2, 120px);
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin: 0px;
+  margin-top: 26px;
+  margin-bottom: 22px;
+}
 
+//---------------- Drug, Type, Reason Modal----------------
+.drug-type-reason-date {
+  display: grid;
+  grid-template-columns: 144px 168px 120px;
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin: 0;
+  margin-top: 26px;
+  margin-bottom: 22px;
+}
 // ------------------------------------------------ end ------------------------------------------------

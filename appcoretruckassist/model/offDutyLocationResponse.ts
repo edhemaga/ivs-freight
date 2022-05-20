@@ -13,6 +13,7 @@ import { AddressEntity } from './addressEntity';
 
 
 export interface OffDutyLocationResponse { 
+    id?: number;
     nickname?: string | null;
     address?: AddressEntity;
 }
