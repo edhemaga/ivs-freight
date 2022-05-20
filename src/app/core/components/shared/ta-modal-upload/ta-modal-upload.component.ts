@@ -5,8 +5,10 @@ import {
   Input,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { UploadFile } from './ta-upload-file/ta-upload-file.component';
+import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-upload-files-carousel.component';
 
 @Component({
   selector: 'app-ta-modal-upload',
@@ -14,6 +16,7 @@ import { UploadFile } from './ta-upload-file/ta-upload-file.component';
   styleUrls: ['./ta-modal-upload.component.scss'],
 })
 export class TaModalUploadComponent implements OnInit {
+  @ViewChild(TaUploadFilesCarouselComponent) modalCarousel: TaUploadFilesCarouselComponent;
   @Input() files: UploadFile[] = [];
   @Input() hasTag: boolean = false;
   @Input() modalSize: string = 'modal-small'; // small | medium | large
@@ -93,6 +96,18 @@ export class TaModalUploadComponent implements OnInit {
         this.files = this.files.filter((item) => item.name !== data.file.name);
         this.onFileEvent.emit( { files: this.files, action: 'delete' });
         this.currentSlide = this.files.length - 1;
+
+        if((this.modalSize === 'modal-large'  && this.files.length < 4) || (this.modalSize === 'modal-medium'  && this.files.length < 3)) {
+          this.modalCarousel.currentSlide = 0;
+          this.modalCarousel.translateXMultipleSlides = 0;
+          this.modalCarousel.multipleCurrentSlide = 0;
+         
+          console.log("On delete") 
+          console.log("Current slide ", this.modalCarousel.currentSlide)
+          console.log("Multiple slide ", this.modalCarousel.multipleCurrentSlide)
+          console.log("TranslateX slide ", this.modalCarousel.translateXMultipleSlides)
+        }
+
         this.changeDetectionRef.detectChanges();
         break;
       }

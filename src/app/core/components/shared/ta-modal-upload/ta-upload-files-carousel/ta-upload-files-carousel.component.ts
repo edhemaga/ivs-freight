@@ -16,7 +16,6 @@ export class TaUploadFilesCarouselComponent {
   // Multiple slides
   public multipleCurrentSlide: number = 0;
   public slideWidth: number = 180;
-  public fullWidth = 0;
   public translateXMultipleSlides: number = 0;
 
   public onAction(action: string) {
@@ -25,21 +24,23 @@ export class TaUploadFilesCarouselComponent {
         const previous = this.currentSlide - 1;
         this.currentSlide = previous < 0 ? this.filesLength - 1 : previous;
         this.activeSlide.emit(this.currentSlide);
-        console.log(this.customClass)
         // Multiple slides previous
         if (
           ['modal-medium', 'modal-large'].includes(
             this.customClass.toLowerCase()
           )
         ) {
-          this.multipleCurrentSlide--;
-          if (this.multipleCurrentSlide < 0) {
+          if (--this.multipleCurrentSlide <= 0) {
             this.multipleCurrentSlide = 0;
             return;
           } else {
             this.translateXMultipleSlides += this.slideWidth;
           }
         }
+        console.log('On Prev');
+        console.log('Current slide ', this.currentSlide);
+        console.log('Multiple slide ', this.multipleCurrentSlide);
+        console.log('TranslateX slide ', this.translateXMultipleSlides);
         break;
       }
       case 'next': {
@@ -48,20 +49,26 @@ export class TaUploadFilesCarouselComponent {
         this.activeSlide.emit(this.currentSlide);
 
         // Multiple slides previous
-        if (
-          ['modal-medium', 'modal-large'].includes(
-            this.customClass.toLowerCase()
-          )
-        ) {
-          this.multipleCurrentSlide++;
+        if (['modal-medium'].includes(this.customClass.toLowerCase())) {
+          if (++this.multipleCurrentSlide >= this.filesLength - 1) {
+            this.multipleCurrentSlide = this.filesLength - 1;
 
-          if (this.multipleCurrentSlide >= this.filesLength - 1) {
-            this.multipleCurrentSlide = this.filesLength - 2;
             return;
           } else {
             this.translateXMultipleSlides -= this.slideWidth;
           }
         }
+
+        if (['modal-large'].includes(this.customClass.toLowerCase())) {
+          if (++this.multipleCurrentSlide >= this.filesLength - 2) {
+            this.multipleCurrentSlide = this.filesLength - 2;
+
+            return;
+          } else {
+            this.translateXMultipleSlides -= this.slideWidth;
+          }
+        }
+
         break;
       }
       default: {
