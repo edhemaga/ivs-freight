@@ -29,7 +29,8 @@ export class TaCustomCardComponent {
   @Input() hasDivider: boolean = true;
   @Input() hasLikeDislike: boolean = false;
   @Input() hasScrollBody: boolean = false;
-  @Input() hasTableData: boolean = true;
+  @Input() hasBodyData: boolean = true;
+  @Input() isCommentData: boolean = false;
   @Input() tooltipName: string = '';
 
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
@@ -41,7 +42,7 @@ export class TaCustomCardComponent {
   public isCardOpenEvent(event: any) {
     event.preventDefault();
     event.stopPropagation();
-    if (this.hasTableData) {
+    if (this.hasBodyData) {
       this.isCardOpen = !this.isCardOpen;
     }
   }

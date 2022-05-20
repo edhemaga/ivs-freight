@@ -19,6 +19,7 @@ import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.com
 import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
 import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
+import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -112,6 +113,12 @@ export class NavigationModalsComponent {
       }
       case 'account': {
         this.modalService.openModal(AccountModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
+      case 'task': {
+        this.modalService.openModal(TaskModalComponent, {
           size: 'small',
         });
         break;

@@ -4,7 +4,7 @@
     [ngClass]="{ 'has-counter': hasCounter }"
     class="ta-card-header"
     [class.active]="isCardOpen"
-    [class.no-data]="!hasTableData"
+    [class.no-data]="!hasBodyData"
     (mouseenter)="isHeaderHover = true"
     (mouseleave)="isHeaderHover = false"
     (click)="isCardOpenEvent($event)"
@@ -43,24 +43,28 @@
       class="header-actions"
       [ngClass]="{ 'like-dislike-template': hasLikeDislike }"
     >
-      <app-ta-like-dislike *ngIf="hasLikeDislike"></app-ta-like-dislike>
+      <app-ta-like-dislike *ngIf="hasLikeDislike && hasBodyData && isCardOpen"></app-ta-like-dislike>
       <div
         *ngIf="hasActionSvg"
         class="header-action-container"
         [class.hovered]="isHeaderHover"
-        [class.data]="(hasTableData && isCardOpen && hasArrow) || (isHeaderHover && hasTableData && !isCardOpen && hasArrow)"
+        [class.data]="
+        (hasBodyData && isCardOpen && hasArrow) || 
+        (isHeaderHover && hasBodyData && !isCardOpen && hasArrow)
+        "
+        [class.comment]="hasBodyData && isCardOpen && isCommentData"
         (click)="onAdd($event)"
       >
         <svg-icon
           class="header-action-svg"
-          [ngClass]="{ 'new-position': !hasArrow || !hasTableData }"
+          [ngClass]="{ 'new-position': !hasArrow || !hasBodyData }"
           src="{{ hasActionSvg }}"
         ></svg-icon>
-        <p *ngIf="isHeaderHover || (hasTableData && isCardOpen)" class="header-action-text">Add New</p>
+        <p *ngIf="isHeaderHover || (hasBodyData && isCardOpen)" class="header-action-text">Add New</p>
       </div>
 
       <svg-icon
-        *ngIf="hasArrow && hasTableData"
+        *ngIf="hasArrow && hasBodyData"
         class="header-arrow"
         [ngClass]="{ rotate: isCardOpen }"
         src="assets/svg/common/ic_arrow_down_updated.svg"

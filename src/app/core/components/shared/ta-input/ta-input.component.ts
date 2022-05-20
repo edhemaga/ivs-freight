@@ -345,9 +345,15 @@ export class TaInputComponent
     }
 
     if (
-      ['first name', 'last name', 'name', 'full name', 'relationship'].includes(
-        this.inputConfig.name.toLowerCase()
-      )
+      [
+        'first name',
+        'last name',
+        'name',
+        'full name',
+        'relationship',
+        'title',
+        'description',
+      ].includes(this.inputConfig.name.toLowerCase())
     ) {
       let spaces = this.input.nativeElement.value.split(' ').length;
       if (

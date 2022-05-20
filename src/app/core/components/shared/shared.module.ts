@@ -98,6 +98,7 @@ import { UserModalComponent } from '../modals/user-modal/user-modal.component';
 import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.component';
 import { TaUploadFileComponent } from './ta-modal-upload/ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-files-carousel/ta-upload-files-carousel.component';
+import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
 
 @NgModule({
   declarations: [
@@ -152,6 +153,7 @@ import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-file
     UserModalComponent,
     TaModalUploadComponent,
     TaUploadFileComponent,
+    TaskModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -298,6 +300,7 @@ import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-file
     OwnerModalComponent,
     UserModalComponent,
     TaModalUploadComponent,
+    TaskModalComponent,
 
     // Pipes
     InputErrorPipe,
