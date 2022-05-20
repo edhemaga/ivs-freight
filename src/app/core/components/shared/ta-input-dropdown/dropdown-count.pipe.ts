@@ -15,7 +15,7 @@ export class DropdownCountPipe implements PipeTransform {
       });
       return groups > 20;
     } else {
-      return options.length > 6;
+      return options.length > 7;
     }
   }
 }
