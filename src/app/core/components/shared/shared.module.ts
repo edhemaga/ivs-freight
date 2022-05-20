@@ -102,6 +102,7 @@ import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
 import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
 
 @NgModule({
   declarations: [
@@ -181,6 +182,7 @@ import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/
     InputFocusDirective,
     InputRestrictionDirective,
     TextareaAutosizeDirective,
+    DragDropFileDirective
   ],
   imports: [
     CommonModule,
@@ -330,6 +332,7 @@ import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/
     InputFocusDirective,
     InputRestrictionDirective,
     TextareaAutosizeDirective,
+    DragDropFileDirective
   ],
   providers: [
     DatePipe,
