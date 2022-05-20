@@ -1,0 +1,20 @@
+  <!-- Dropzone -->
+  <div class="ta-modal-dropzone">
+    <label for="pdf" class="ta-modal-dropzone-label">
+      <svg-icon
+        class="ta-modal-dropzone-area"
+        src="assets/svg/common/ic_modal_upload_dropzone.svg"
+      ></svg-icon>
+      <div class="ta-modal-dropzone-text">
+        <span class="ta-modal-dropzone-text-big">DRAG FILES HERE</span>
+        <span class="ta-modal-dropzone-text-small">OR CLICK TO ADD</span>
+      </div>
+    </label>
+    <input
+      id="pdf"
+      type="file"
+      [accept]="'application/pdf, application/png, application/jpg'"
+      multiple
+      (change)="onFileUpload($event.target.files)"
+    />
+  </div>

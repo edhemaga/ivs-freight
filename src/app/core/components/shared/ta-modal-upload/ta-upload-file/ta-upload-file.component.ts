@@ -54,11 +54,13 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     this.inputService.onFocusOutInputSubject
       .pipe(untilDestroyed(this))
       .subscribe((value) => {
-        if(value) {
+        if (value) {
           this.editFile = false;
-          if(this.fileNewName.value) {
-            this.file.name =  this.fileNewName.value[0].toUpperCase() + this.fileNewName.value.substr(1).toLowerCase();
-            this.fileAction.emit({ file: this.file, action: 'edit' })
+          if (this.fileNewName.value) {
+            this.file.name =
+              this.fileNewName.value[0].toUpperCase() +
+              this.fileNewName.value.substr(1).toLowerCase();
+            this.fileAction.emit({ file: this.file, action: 'edit' });
           }
         }
       });
@@ -111,9 +113,8 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     const timeout = setTimeout(() => {
       this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
       clearTimeout(timeout);
-    },300)
-  
+    }, 300);
   }
 
-  ngOnDestroy():void { }
+  ngOnDestroy(): void {}
 }

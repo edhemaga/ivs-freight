@@ -37,10 +37,6 @@ export class TaUploadFilesCarouselComponent {
             this.translateXMultipleSlides += this.slideWidth;
           }
         }
-        console.log('On Prev');
-        console.log('Current slide ', this.currentSlide);
-        console.log('Multiple slide ', this.multipleCurrentSlide);
-        console.log('TranslateX slide ', this.translateXMultipleSlides);
         break;
       }
       case 'next': {

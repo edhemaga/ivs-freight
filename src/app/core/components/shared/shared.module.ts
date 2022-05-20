@@ -101,6 +101,7 @@ import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-file
 import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
 import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 
 @NgModule({
   declarations: [
@@ -141,6 +142,7 @@ import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-d
     TaUserReviewComponent,
     TaCurrencyProgressBarComponent,
     TaUploadFilesCarouselComponent,
+    TaUploadDropzoneComponent,
 
     // Modals Components
     TaModalComponent,
@@ -270,6 +272,7 @@ import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-d
     TaUserReviewComponent,
     TaUploadFileComponent,
     TaUploadFilesCarouselComponent,
+    TaUploadDropzoneComponent,
 
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
