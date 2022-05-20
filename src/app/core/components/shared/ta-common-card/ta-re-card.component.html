@@ -1,5 +1,5 @@
 <div class="card-container-cmp">
-  <div [ngClass]="{'card-flex':!isCardOpen}" class="name-dots">
+  <div [ngClass]="{ 'card-flex': !isCardOpen }" class="name-dots">
     <div
       (click)="toggleCards()"
       [appTooltip]="isCardOpen ? 'Close card' : 'Open card'"
@@ -13,7 +13,7 @@
       [customPosition]="410"
       class="card-header-cmp"
       [ngClass]="{ 'card-flex': !isCardOpen }"
-     >
+    >
       <div class="text-icon-common" [ngClass]="{ copied: copied }">
         <span
           *ngIf="hasSvg && isCardOpen"
@@ -26,8 +26,13 @@
           class="card-name-cmp"
           [ngClass]="{ 'has-svgIcon': hasSvg, 'card-close-title': !isCardOpen }"
         >
-        <span *ngIf="isCardOpen" class="open-name">{{ cardNameCommon }}</span>
-         <span class="exp-text" *ngIf="!isCardOpen" [ngClass]="{'card-close-title': !isCardOpen }">Exp.  {{expDateClose}} </span>
+          <span *ngIf="isCardOpen" class="open-name">{{ cardNameCommon }}</span>
+          <span
+            class="exp-text"
+            *ngIf="!isCardOpen"
+            [ngClass]="{ 'card-close-title': !isCardOpen }"
+            >Exp. {{ expDateClose }}
+          </span>
         </p>
         <svg-icon
           *ngIf="isCardOpen && hasCopyIcon"
@@ -45,45 +50,47 @@
           [customPosition]="-2"
         ></svg-icon>
       </div>
-
     </div>
-   
-    <app-table-dropdown
-      [options]="options.actions"
-      [customClassDropDown]="'table-dropdown-container-vertical'"
-      class="drop"
-    >
-    </app-table-dropdown>
-    </div>
-    <div
-      [@showHideCardBody]="isCardOpen ? 'true' : 'false'"
-      class="card-body-cmp"
-    >
-      <ng-content></ng-content>
-    </div>
-    <div class="card-footer-cmp" *ngIf="isCardOpen">
-      <div class="icon-counter">
-        <svg-icon
-          *ngIf="!resPage"
-          class="note-icon"
-          src="assets/svg/truckassist-table/note/Note-hover.svg"
-        ></svg-icon>
-        <svg-icon
-          *ngIf="!resPage && cardDocumentCounter"
-          class="attachment-icon"
-          src="assets/svg/common/ic_attachment.svg"
-        ></svg-icon>
-        <p *ngIf="!resPage" class="card-document-counter">
-          {{ cardDocumentCounter }}
-        </p>
-      </div>
-      <div
-        (click)="toggleResizePage($event.value)"
-        [ngClass]="{ 'rotate-common': resPage }"
-        class="resize-icon"
+    <div [ngClass]="{ 'dropdown-common': !isCardOpen }">
+      <app-table-dropdown
+        [options]="options.actions"
+        [customClassDropDown]="'table-dropdown-container-vertical'"
       >
-        <span class="hide-text" *ngIf="resPage">HIDE DETAILS</span>
-        <svg-icon class="resize-icon-svg" src="assets/svg/common/resize-arrow.svg"></svg-icon>
-      </div>
+      </app-table-dropdown>
     </div>
   </div>
+  <div
+    [@showHideCardBody]="isCardOpen ? 'true' : 'false'"
+    class="card-body-cmp"
+  >
+    <ng-content></ng-content>
+  </div>
+  <div class="card-footer-cmp" *ngIf="isCardOpen">
+    <div class="icon-counter">
+      <svg-icon
+        *ngIf="!resPage"
+        class="note-icon"
+        src="assets/svg/truckassist-table/note/Note-hover.svg"
+      ></svg-icon>
+      <svg-icon
+        *ngIf="!resPage && cardDocumentCounter"
+        class="attachment-icon"
+        src="assets/svg/common/ic_attachment.svg"
+      ></svg-icon>
+      <p *ngIf="!resPage" class="card-document-counter">
+        {{ cardDocumentCounter }}
+      </p>
+    </div>
+    <div
+      (click)="toggleResizePage($event.value)"
+      [ngClass]="{ 'rotate-common': resPage }"
+      class="resize-icon"
+    >
+      <span class="hide-text" *ngIf="resPage">HIDE DETAILS</span>
+      <svg-icon
+        class="resize-icon-svg"
+        src="assets/svg/common/resize-arrow.svg"
+      ></svg-icon>
+    </div>
+  </div>
+</div>

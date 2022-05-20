@@ -16,6 +16,7 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Input() tooltipPrevious:string='';
   @Input() searchName:string='';
   @Input() optionsCmp:any=[];
+  @Input() statusInactive:number=1;
   @Output() selectValue=new EventEmitter<string>();
   @Output() nextValue=new EventEmitter<any>();
   @Output() previousValue=new EventEmitter<any>();

@@ -1,5 +1,5 @@
 <div class="details-container-items">
-  <div *ngFor="let item of driverDetailsConfig">
+  <div *ngFor="let item of driverDetailsConfig; trackBy: identity">
     <app-ta-details-header
       [options]="dataTest"
       [route]="'/driver'"

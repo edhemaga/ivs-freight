@@ -1,0 +1,86 @@
+// Constants
+$color-white-light: #f3f3f3;
+$color-white: #ffffff;
+$color-white-dark: #f7f7f7;
+
+$color-gray-light: #b7b7b7;
+$color-gray: #919191;
+$color-gray-dark: #6c6c6c;
+
+$color-blue-light: #778fbb;
+$color-blue: #5673aa;
+$settings-blue-dark: #6d82c7;
+$settings-blue-hover: #3551b7;
+
+$font-size12: 12px;
+$font-size14: 14px;
+$font-size18: 18px;
+$font-size20: 20px;
+
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+$font-extrabold: 800;
+
+$border-radius: 3px;
+
+$transition: all 0.3s ease-in-out;
+
+.repair-details-container {
+    display: grid;
+    grid-template-columns: 440px 732px 340px 280px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    row-gap: 12px;
+}
+.repair-details-cmp {
+    display: grid;
+    grid-template-columns: 440px 732px 340px 280px;
+    column-gap: 12px;
+    row-gap: 12px;
+}
+.repair-component {
+    display: grid;
+    row-gap: 12px;
+    p {
+        margin: 0 !important;
+    }
+    .repair-information-wrapper {
+        padding: 0 16px;
+        padding-top: 22px;
+        .repair-information-item {
+            display: flex;
+            align-items: baseline;
+            svg {
+                &:hover {
+                    path {
+                        fill: #6c6c6c;
+                    }
+                }
+            }
+            .repair-value {
+                font-size: 14px;
+                font-weight: 400;
+                color: #6c6c6c;
+                padding-left: 6px;
+            }
+            .repair-icon {
+                cursor: pointer;
+            }
+        }
+    }
+    .repair-cards {
+        border-radius: 3px;
+        overflow: hidden;
+        width: 440px;
+        background-color: $color-white;
+        padding: 9px 6px;
+    }
+}
+.divider {
+    margin: 0;
+    height: 2px;
+    width: 100%;
+    border-radius: 1px;
+    background-color: #f3f3f3;
+  }

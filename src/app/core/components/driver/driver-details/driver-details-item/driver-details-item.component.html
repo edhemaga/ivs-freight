@@ -12,13 +12,14 @@
         (nextValue)="nextDriver()"
         (previousValue)="previousDriver()"
         [optionsCmp]="arrayDrivers"
+        [statusInactive]="driverData?.driver.status"
       >
         <div class="driver-container">
           <div class="driver-personal">
             <div class="driver-avatar">
               <img
                 class="driver-avatar-svg"
-                src="assets/svg/common/ic_no_avatar_driver.svg"
+                [src]="transformImage()"
                 alt="Driver Image"
               />
             </div>
@@ -59,7 +60,10 @@
                 </p>
                 <svg-icon
                   (click)="
-                    copyText(formatPhone(driverData.driver.phone), 'driver-phone')
+                    copyText(
+                      formatPhone(driverData.driver.phone),
+                      'driver-phone'
+                    )
                   "
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
@@ -199,7 +203,9 @@
                 <div class="addres-value">
                   {{ driverData?.driver.address.address }}
                   {{ driverData?.driver.address.addressUnit }},
-                  {{ driverData?.driver.address.city }},{{ driverData?.driver.address.state }}
+                  {{ driverData?.driver.address.city }},{{
+                    driverData?.driver.address.state
+                  }}
                   {{ driverData?.driver.address.zipCode }},
                   {{ driverData?.driver.address.country }}
                 </div>
@@ -239,7 +245,7 @@
         >
           <div
             class="additional-container"
-            *ngFor="let offDuty of driverData.driver.offDutyLocations"
+            *ngFor="let offDuty of driverData.driver.offDutyLocations; trackBy: identity"
           >
             <div class="addres-wrapper">
               <div class="addres-name">{{ offDuty?.nickname }}</div>
@@ -289,83 +295,107 @@
                 </div>
               </div>
             </div>
-
-            <div class="progress-employment-history">
-              <!-- <div class="employment-tooltip">
-                <div class="emp-tooltip">
-                  <div class="emp-tooltip-value">
-                    <p class="emp-duration">
-                      10 September, 2021 - 04 January, 2023
-                    </p>
-                    <div class="emp-text-icon">
-                      <p>Deactivatd</p>
-                      <svg-icon
-                        src="assets/svg/common/ic_circle_light_blue.svg"
-                      ></svg-icon>
+            <div *ngFor="let emp of driverData.driver.employmentHistories; trackBy: identity">
+              <div *ngIf="emp.endDate" class="progress-employment-history">
+                <div class="progress-driver">
+                  <div class="emp">
+                    <div class="employment-tooltip">
+                      <div class="emp-tooltip">
+                        <div class="emp-tooltip-value">
+                          <p class="emp-duration">10 September, 2021 - Today</p>
+                          <div class="emp-text-icon">
+                            <p>Employed</p>
+                            <svg-icon
+                              src="assets/svg/common/round_blue.svg"
+                            ></svg-icon>
+                          </div>
+                        </div>
+                        <p class="year-working">1 year 103 days</p>
+                      </div>
                     </div>
                   </div>
-                  <p class="year-working">1 year 103 days</p>
-                </div>
-              </div> -->
-              <div class="progress">
-                <div class="emp"></div>
-                <div class="unp"></div>
-              </div>
-              <div *ngIf="!showMoreEmployment" class="year-employer">
-                <p>05/23/21</p>
-                <p>Today</p>
-              </div>
-            </div>
-           
-            <div *ngIf="showMoreEmployment" class="status-container">
-              <div class="status-header">
-                <div class="status-item">
-                  <p class="p-status">STATUS</p>
-                </div>
-                <div class="status-item">
-                  <p class="p-status">FROM - TO</p>
-                </div>
-                <div class="status-item">
-                  <p class="p-status">DURATION</p>
-                </div>
-              </div>
-              <div class="divider"></div>
-              <div class="status-items">
-                <div
-                  class="item-wrapper"
-                  *ngFor="let emp of employmentHistory"
-                >
-                  <div class="svg-text">
-                    <svg-icon
-                      class="svg-blue"
-                      src="{{ emp.svgIcon }}"
-                    ></svg-icon>
-                    <p class="employment">{{ emp.status }}</p>
+                  <div class="unp">
+                    <div class="employment-tooltip">
+                      <div class="emp-tooltip">
+                        <div class="emp-tooltip-value">
+                          <p class="emp-duration">
+                            10 September, 2021 - 04 January, 2023
+                          </p>
+                          <div class="emp-text-icon">
+                            <p>Deactivated</p>
+                            <svg-icon
+                              src="assets/svg/common/ic_circle_light_blue.svg"
+                            ></svg-icon>
+                          </div>
+                        </div>
+                        <p class="year-working">1 year 103 days</p>
+                      </div>
+                    </div>
                   </div>
-                  <p class="date-from-to">{{ emp.fromTo }}</p>
-                  <p class="duration">{{ emp.duration }}</p>
-                  <div
-                    *ngIf="emp.hasDivider == true"
-                    class="divider-employment"
-                  ></div>
+                </div>
+                <div *ngIf="!showMoreEmployment" class="year-employer">
+                  <p>05/23/21</p>
+                  <p>Today</p>
                 </div>
               </div>
+
+              <div *ngIf="showMoreEmployment && emp.endDate" class="status-container">
+                <div class="status-header">
+                  <div class="status-item">
+                    <p class="p-status">STATUS</p>
+                  </div>
+                  <div class="status-item">
+                    <p class="p-status">FROM - TO</p>
+                  </div>
+                  <div class="status-item">
+                    <p class="p-status">DURATION</p>
+                  </div>
+                </div>
+                <div class="divider"></div>
+                <div class="status-items">
+                  <div *ngFor="let empH of driverData.driver.employmentHistories; trackBy: identity" class="item-wrapper">
+                    <div class="svg-text">
+                      <svg-icon
+                        class="svg-blue"
+                        src="{{
+                          empH.endDate
+                            ? 'assets/svg/common/ic_circle_light_blue.svg'
+                            : '  assets/svg/common/round_blue.svg'
+                        }}"
+                      ></svg-icon>
+                      <p class="employment">
+                        {{ empH.endDate ? "Deactivated " : "Employed" }}
+                      </p>
+                    </div>
+                    <p class="date-from-to">
+                      {{ formatDate(empH.startDate) }} -
+                      {{
+                        empH.endDate !== null ? formatDate(empH.endDate) : "Today"
+                      }}
+                    </p>
+                    <p class="duration">1 y 20 d</p>
+                    <div class="divider-employment"></div>
+                  </div>
+                </div>
+              </div>
+              <svg-icon
+              [ngClass]="{ 'transform-arrow': showMoreEmployment }"
+              *ngIf="emp.endDate"
+              (click)="showMoreEmployment = !showMoreEmployment"
+              [appTooltip]="'Show More'"
+              [position]="'top-middle'"
+              [tooltipBackground]="'#6c6c6c'"
+              [tooltipColor]="'#ffffff'"
+              [zIndex]="900"
+              [borderRadius]="'2px'"
+              [fontWeight]="'bold'"
+              [fontSize]="'11px'"
+              [customPosition]="0"
+              class="arrow-down-employment"
+              src="assets/svg/common/fill_arrow_down.svg"
+            ></svg-icon>
             </div>
-            <svg-icon
-            [ngClass]="{ 'transform-arrow': showMoreEmployment }"
-            (click)="showMoreEmployment = !showMoreEmployment"
-            [appTooltip]="'Show More'"
-            [position]="'top-middle'"
-            [tooltipBackground]="'#6c6c6c'"
-            [tooltipColor]="'#ffffff'"
-            [zIndex]="900"
-            [borderRadius]="'2px'"
-            [fontWeight]="'bold'"
-            [fontSize]="'11px'"
-            [customPosition]="0"
-            class="arrow-down-employment"
-            src="assets/svg/common/fill_arrow_down.svg"
-          ></svg-icon>
+            
           </div>
         </app-ta-custom-card>
 
@@ -382,7 +412,7 @@
               <div class="purchase-template-item-name">Company</div>
               <div class="purchase-icon-copy">
                 <div class="purchase-template-item-value">
-                  KSKA FREIGHT, INC
+                  {{ driverData.driver.owner.name }}
                 </div>
                 <svg-icon
                   class="card-icon"
@@ -402,9 +432,11 @@
             <div class="purchase-template-item second-name">
               <div class="purchase-template-item-name">EIN</div>
               <div class="purchase-icon-copy" [ngClass]="{ copied: copiedEin }">
-                <div class="purchase-template-item-value">12-3456789</div>
+                <div class="purchase-template-item-value">
+                  {{ driverData.driver.owner.ssnEin }}
+                </div>
                 <svg-icon
-                  (click)="copyText('12-3456789', 'ein')"
+                  (click)="copyText(driverData.driver.owner.ssnEin, 'ein')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                   [appTooltip]="copiedEin ? 'Copied' : 'Copy'"
@@ -457,10 +489,8 @@
           [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         >
           <div class="charts-template perfomance">
-            <app-ta-input-radiobuttons
-           [buttons]="buttonsArray"
-          >
-          </app-ta-input-radiobuttons>
+            <app-ta-input-radiobuttons [buttons]="buttonsArray">
+            </app-ta-input-radiobuttons>
             <div class="charts-item-wrapper revenue">
               <div class="charts-template-item">
                 <div class="icon-name-item">
@@ -511,7 +541,11 @@
                 [ngClass]="{ copied: copiedBankRouting }"
               >
                 <div class="purchase-template-item-value">
-                  {{ driverData.driver.routing ? driverData.driver.routing : "No routing" }}
+                  {{
+                    driverData.driver.routing
+                      ? driverData.driver.routing
+                      : "No routing"
+                  }}
                 </div>
                 <svg-icon
                   (click)="copyText(driverData.driver.routing, 'bankRouting')"
@@ -542,7 +576,7 @@
                     accountText
                       ? accountText
                       : hiddenPassword(
-                        driverData.driver.account
+                          driverData.driver.account
                             ? driverData.driver.account
                             : "No account",
                           4
@@ -550,7 +584,7 @@
                   }}
                 </div>
                 <svg-icon
-                *ngIf="driverData.driver.account !==null"
+                  *ngIf="driverData.driver.account !== null"
                   class="hidden-svg-eye"
                   [appTooltip]="
                     isAccountVisible
@@ -567,7 +601,9 @@
                   [customPosition]="-50"
                   (click)="
                     showHideValue(
-                      driverData?.driver.account ? driverData.driver.account  : 'No account'
+                      driverData?.driver.account
+                        ? driverData.driver.account
+                        : 'No account'
                     )
                   "
                   src="{{
@@ -577,10 +613,12 @@
                   }}"
                 ></svg-icon>
                 <svg-icon
-                 *ngIf="driverData?.driver.account !==null"
+                  *ngIf="driverData?.driver.account !== null"
                   (click)="
                     copyText(
-                      driverData.driver.account ? driverData.driver.account : 'No account',
+                      driverData.driver.account
+                        ? driverData.driver.account
+                        : 'No account',
                       'bankAcc'
                     )
                   "
@@ -669,7 +707,7 @@
       </div>
     </div>
     <div *ngSwitchCase="'cdl'">
-      <div *ngFor="let cdl of driverData.driver.cdls">
+      <div *ngFor="let cdl of driverData.driver.cdls; trackBy: identity">
         <app-ta-re-card
           [options]="dataTest"
           [cardDocumentCounter]="6"
@@ -704,10 +742,12 @@
                   <div class="item-card-wrapper">
                     <p
                       class="restriction-item-value"
-                      *ngFor="let rest of cdl.cdlRestrictions; let i = index"
+                      *ngFor="let rest of cdl.cdlRestrictions; trackBy: identity"
                     >
                       <span class="value-name">{{ rest?.code }}</span>
-                      <span *ngIf="toggler">- {{ rest?.description }} </span>
+                      <span class="desc" *ngIf="toggler"
+                        >- {{ rest?.description }}
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -716,10 +756,12 @@
                   <div class="item-card-wrapper">
                     <p
                       class="restriction-item-value"
-                      *ngFor="let endors of cdl.cdlEndorsements; let i = index"
+                      *ngFor="let endors of cdl.cdlEndorsements; trackBy: identity"
                     >
                       <span class="value-name">{{ endors?.code }}</span>
-                      <span *ngIf="toggler">- {{ endors?.description }}</span>
+                      <span class="desc" *ngIf="toggler"
+                        >- {{ endors?.description }}</span
+                      >
                     </p>
                   </div>
                 </div>
@@ -806,7 +848,7 @@
       </div>
     </div>
     <div *ngSwitchCase="'drug-alcohol'">
-      <div *ngFor="let test of driverData.driver.tests">
+      <div *ngFor="let test of driverData.driver.tests; trackBy: identity">
         <app-ta-re-card
           [options]="dataTest"
           [cardNameCommon]="test.testType"
@@ -835,7 +877,7 @@
       </div>
     </div>
     <div *ngSwitchCase="'medical'">
-      <div *ngFor="let med of driverData.driver.medicals">
+      <div *ngFor="let med of driverData.driver.medicals; trackBy: identity">
         <app-ta-re-card
           [options]="dataTest"
           [cardNameCommon]="formatDate(med?.issueDate)"
@@ -859,7 +901,7 @@
       </div>
     </div>
     <div *ngSwitchCase="'mvr'">
-      <div *ngFor="let mvr of driverData.driver.mvrs">
+      <div *ngFor="let mvr of driverData.driver.mvrs; trackBy: identity">
         <app-ta-re-card
           [options]="dataTest"
           [cardDocumentCounter]="6"

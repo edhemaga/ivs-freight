@@ -14,7 +14,7 @@
             <div class="svg-truck-wrapper">
               <svg-icon
                 class="truck"
-                src="assets/svg/common/trailers/ic_trailer_conestoga.svg"
+                src="{{'assets/svg/common/trailers/'+trailerData.trailer.trailerType.logoName}}"
               >
               </svg-icon>
             </div>
@@ -147,7 +147,7 @@
 
         <!-- Additional info -->
         <app-ta-custom-card
-          [cardName]="'Additiona Details'"
+          [cardName]="'Additional Details'"
           [isCardOpen]="true"
           [bodyTemplate]="'card'"
           [animationsDisabled]="false"
@@ -224,10 +224,10 @@
                 </p>
               </div>
             </div>
+            <div [ngClass]="{ 'transform-arrow': toggleOwner }" >
             <div (click)="toggleOwner = !toggleOwner" class="icon-show">
               <svg-icon
-                [ngClass]="{ 'transform-arrow': toggleOwner }"
-                [appTooltip]="toggleOwner? 'HIDE CONTACT' : 'SHOW CONTACT '"
+                [appTooltip]="toggleOwner? 'HIDE CONTACT' : ''"
                 [position]="'top-middle'"
                 [tooltipBackground]="'#6c6c6c'"
                 [tooltipColor]="'#ffffff'"
@@ -240,9 +240,10 @@
                 src="assets/svg/common/fill_arrow_down.svg"
               ></svg-icon>
               <p class="hide-show">
-                {{ toggleOwner ? "HIDE CONTACT" : "SHOW CONTACT" }}
+                {{ toggleOwner ? "HIDE CONTACT" : "" }}
               </p>
             </div>
+          </div>
           </div>
         </app-ta-custom-card>
 
@@ -272,7 +273,7 @@
             <div class="status-items">
               <div
                 class="item-wrapper"
-                *ngFor="let owHist of trailerData.trailer.ownerHistories"
+                *ngFor="let owHist of trailerData.trailer.ownerHistories; trackBy: identity"
               >
                 <p class="employment">{{ owHist.name }}</p>
 

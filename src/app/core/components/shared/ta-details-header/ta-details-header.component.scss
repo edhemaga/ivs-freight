@@ -1,13 +1,16 @@
 .header-wrapper {
     display: grid;
 }
-.counter-text{
+p {
+    margin: 0 !important;
+}
+.counter-text {
     display: flex;
     align-items: center;
     padding: 4px;
 }
-.has-counter-header{
-    .header-name{
+.has-counter-header {
+    .header-name {
         padding-left: 0px !important;
     }
 }
@@ -46,10 +49,51 @@
         font-size: 14px;
         font-weight: 800;
         height: 18px;
+        padding-right: 12px;
+        position: relative;
+        bottom: 2px;
     }
     .header-plus-button {
         display: flex;
         align-items: center;
+        .date-arrow-repair {
+            display: flex;
+            align-items: center;
+            padding-right: 10px;
+            .date-repair {
+                font-size: 14px;
+                font-weight: 500;
+                color: #919191;
+                padding-right: 6px;
+            }
+            .icons-repair {
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                bottom: 6px;
+                .first-icon {
+                    height: 14px;
+                    width: 14px;
+                    svg {
+                        transform: rotate(180deg);
+                        height: 14px;
+                        width: 12px;
+                        position: relative;
+                        bottom: -3px;
+                    }
+                }
+                .second-icon {
+                    height: 14px;
+                    width: 14px;
+                    svg {
+                        height: 14px;
+                        width: 12px;
+                        position: relative;
+                        top: -3px;
+                    }
+                }
+            }
+        }
     }
 }
 .border-line-left {
@@ -82,9 +126,36 @@ svg {
         }
     }
 }
-.disable-selection{
+.disable-selection {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    position: relative;
+    bottom: -1px;
+}
+
+.repair-header-icons {
+    display: flex;
+    justify-content: center;
+    .single-repair-icon {
+        padding-left: 7px;
+        padding-right: 7px;
+        padding-bottom: 3px;
+        svg {
+            &:hover {
+                path {
+                    fill: #6c6c6c;
+                }
+            }
+        }
+    }
+    .total-cost {
+        font-size: 14px;
+        font-weight: 700;
+        color: #6d82c7;
+        height: 18px;
+        padding-left: 15px;
+        padding-top: 3px;
+    }
 }

@@ -1,0 +1,99 @@
+<div class="repair-component">
+  <div [ngSwitch]="data.template">
+    <!---------------------------- GENERAL TEMPLATE ----------------------------->
+    <div *ngSwitchCase="'general'">
+      <app-ta-details-header-card
+        [cardDetailsName]=""
+        [cardDetailsDate]="'08/03/20'"
+        [tooltipNext]="'Next Repair'"
+        [tooltipPrevious]="'Previous Repair'"
+        [searchName]="'Search Repair'"
+      >
+        <div class="repair-information-wrapper">
+          <div class="repair-information-item">
+            <svg-icon
+              class="repair-icon"
+              src="assets/svg/common/ic_phone.svg"
+            ></svg-icon>
+            <p class="repair-value">{{ formatPhone(shopData?.shop.phone) }}</p>
+          </div>
+          <div class="repair-information-item">
+            <svg-icon
+              class="repair-icon"
+              src="assets/svg/common/ic_email.svg"
+            ></svg-icon>
+            <p class="repair-value">{{ shopData?.shop.email }}</p>
+          </div>
+          <div class="repair-information-item">
+            <svg-icon
+              class="repair-icon"
+              src="assets/svg/common/ic_address.svg"
+            ></svg-icon>
+            <p class="repair-value">
+              {{ shopData?.shop.address.addressUnit }}
+              {{ shopData?.shop.address.address }},
+              {{ shopData?.shop.address.city }},
+              {{ shopData?.shop.address.stateShortName }}
+              {{ shopData?.shop.address.zipCode }},
+              {{ shopData?.shop.address.country }}
+            </p>
+          </div>
+        </div>
+      </app-ta-details-header-card>
+      <div class="repair-cards">
+        <app-ta-custom-card
+          [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
+          [hasDivider]="false"
+          [cardName]="'Working Hours'"
+          [isCardOpen]="true"
+        >
+          <div class="working-hours-container">
+            <div class="open-now-wrapper">
+              <div class="open-now-icon-text">
+                <div class="open-header">Open Now</div>
+                <svg-icon src="assets/svg/common/ic_open-now.svg"></svg-icon>
+              </div>
+              <div class="open-time">{{shopData?.shop.openHoursToday}}</div>
+            </div>
+             <div class="open-hours-wrapper">
+                 <div class="working-days">
+                    <div class="open-header">Monday - Friday</div>
+                     <div class="open-working-days-value">
+                        {{shopData.shop.openHours[1].startTime}} AM - {{shopData.shop.openHours[1].endTime}} PM
+                     </div>
+                 </div>
+                 <div class="working-days">
+                    <div class="open-header">Saturday</div>
+                     <div class="open-working-days-value">
+                        {{shopData.shop.openHours[6].startTime}} AM - {{shopData.shop.openHours[6].endTime}} PM
+                     </div>
+                 </div>
+             </div>
+             <div class="open-now-wrapper sunday">
+                  <div class="open-header">Sunday</div>
+                <div class="open-working-days-value">{{shopData.shop.openHours[0].startTime ? shopData.shop.openHours[0].startTime !==null : 'Closed' }}</div>
+              </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [cardName]="'Service'"
+        [hasCounter]="shopData.shop.serviceTypes.length"
+        [isCardOpen]="true"
+      >
+      </app-ta-custom-card>
+
+       <!--------Note--------->
+       <div class="note-cards">
+        <app-ta-input-note
+          [formControl]="noteControl"
+          [isReadOnly]="true"
+          [isVisibleNote]="noteControl.value"
+        ></app-ta-input-note>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

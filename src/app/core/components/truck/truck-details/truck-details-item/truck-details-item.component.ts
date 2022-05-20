@@ -78,6 +78,15 @@ export class TruckDetailsItemComponent implements OnInit {
     private activated_route: ActivatedRoute,
     private truckTService: TruckTService
   ) {
+   
+  }
+
+  ngOnInit(): void {
+    this.selectedValuePerfomance = 'ALL';
+    this.selectedValueFuel = '1Y';
+    this.selectedValueRevenue = '1Y';
+    this.initTableOptions();
+    this.getTruckById();
     this.chartOptionsSecond = {
       series: [
         {
@@ -240,14 +249,6 @@ export class TruckDetailsItemComponent implements OnInit {
         },
       ],
     };
-  }
-
-  ngOnInit(): void {
-    this.selectedValuePerfomance = 'ALL';
-    this.selectedValueFuel = '1Y';
-    this.selectedValueRevenue = '1Y';
-    this.initTableOptions();
-    this.getTruckById();
     this.buttonsArrayPerfomance = [
       {
         label: '1M',

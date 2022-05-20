@@ -1,8 +1,8 @@
 .card-flex {
     height: 32px;
-        .table-dropdown-container-vertical {
-            top: 0 !important;
-        }
+    .table-dropdown-container-vertical {
+        top: 0 !important;
+    }
 }
 
 .card-header-cmp {
@@ -95,7 +95,7 @@
     border-radius: 3px;
     background-color: #ffffff;
     margin-bottom: 8px;
-    width: 335px;
+    width: 100%;
     .card-body-cmp {
         flex-direction: column;
         background-color: #ffffff;
@@ -198,6 +198,15 @@ p {
     font-weight: 600;
     margin-right: 6px;
     cursor: pointer;
+
+    &::-moz-selection {
+        color: #6d82c7;
+        background: rgba(109, 130, 199, 0.2);
+    }
+    &::selection {
+        color: #6d82c7;
+        background: rgba(109, 130, 199, 0.2);
+    }
 }
 .icon-dots {
     cursor: pointer;
@@ -248,4 +257,8 @@ p {
         color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);
     }
+}
+.dropdown-common {
+   position: relative;
+   top: -5px;
 }

@@ -1,0 +1,61 @@
+import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-shop-repair-details',
+  templateUrl: './shop-repair-details.component.html',
+  styleUrls: ['./shop-repair-details.component.scss']
+})
+export class ShopRepairDetailsComponent implements OnInit {
+  public data:any;
+  public shopRepairConfig:any[]=[]
+  
+  constructor(
+    private _act_route:ActivatedRoute
+  ) { }
+
+  ngOnInit(): void {
+    this.data=this._act_route.snapshot.data;
+    console.log(this.data);
+    console.log('Shop Data');
+    this.shopConf();
+    console.log(this.shopRepairConfig);
+    
+  }
+
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
+
+  shopConf(){
+    this.shopRepairConfig = [
+      {
+        id: 0,
+        name: 'Repair Shop Details',
+        template: 'general',
+      },
+      {
+        id: 1,
+        name: 'Repair',
+        template: 'repair',
+        icon:true,
+        data:25
+       
+      },
+      {
+        id: 2,
+        name: 'Repaired Vehicle',
+        template: 'repaired-vehicle',
+        data:18
+    
+      },
+      {
+        id: 3,
+        name: 'Review',
+        template: 'review',
+        data:9
+      },
+    ];
+  }
+
+}

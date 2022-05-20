@@ -1,5 +1,5 @@
 <div class="details-container-items">
-    <div *ngFor="let item of trailerDetailsConfig">
+    <div *ngFor="let item of trailerDetailsConfig; trackBy:identity">
       <app-ta-details-header
         [route]="'/trailer'"
         [tooltipHeaderName]="'Back to Trailer List'"

@@ -1,16 +1,11 @@
 <div class="details-header-wrapper">
   <div class="details-header-wrapper-switcher">
-    <div
-      [appTooltip]="searchName"
-      [position]="'top-middle'"
-      [tooltipBackground]="'#6c6c6c'"
-      [tooltipColor]="'#ffffff'"
-      [zIndex]="900"
-      [borderRadius]="'2px'"
-      [fontWeight]="'bold'"
-      [fontSize]="'11px'"
-      [customPosition]="-11"
-    >
+    <div class="inactive-icon-input">
+      <svg-icon
+        *ngIf="statusInactive==0"
+        class="inactive-status"
+        src="assets/svg/truckassist-table/dropdown/content/activate-hover.svg"
+      ></svg-icon>
       <app-ta-input-dropdown
         class="dropInput"
         [formControl]="inputFormControl"
@@ -23,10 +18,19 @@
         [options]="optionsCmp"
         [template]="'details-template'"
         (selectedItem)="onSelectDetail($event)"
+        [appTooltip]="searchName"
+        [position]="'top-middle'"
+        [tooltipBackground]="'#6c6c6c'"
+        [tooltipColor]="'#ffffff'"
+        [zIndex]="900"
+        [borderRadius]="'2px'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+        [customPosition]="-11"
       >
       </app-ta-input-dropdown>
     </div>
-      <div class="arrows">
+    <div class="arrows">
       <svg-icon
         [appTooltip]="tooltipPrevious"
         [position]="'top-middle'"

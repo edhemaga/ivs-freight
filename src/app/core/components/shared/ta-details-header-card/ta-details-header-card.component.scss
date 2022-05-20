@@ -204,3 +204,24 @@ $border-radius: 3px;
         }
     }
 }
+.inactive-status {
+    cursor: pointer;
+    padding-left: 6px;
+    padding-right: 6px;
+    svg {
+        height: 22px;
+        width: 22px;
+        path {
+            fill: #aaaaaa;
+        }
+        &:hover {
+            path {
+                fill: #6c6c6c;
+            }
+        }
+    }
+}
+.inactive-icon-input{
+    display: flex;
+    align-items: center;
+}

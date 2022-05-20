@@ -26,6 +26,7 @@ import {
 import { DriversQuery } from '../../state/driver.query';
 import { ActivatedRoute } from '@angular/router';
 import { DriverTService } from '../../state/driver.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -72,15 +73,17 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public accountText: string = null;
   public arrayDrivers: any = [];
   public arrayDriverName: any = '';
-  public currentDriverName: string='Milos Cirkovic';
+  public currentDriverName: string = 'Milos Cirkovic';
   public driverId: number = 0;
   public showMoreEmployment: boolean = false;
   public employmentHistory: any = [];
   dataTest: any;
-  public buttonsArray:any;
+  public buttonsArray: any;
   public driverData: any;
+  public driverImage: string;
   constructor(
     private activated_route: ActivatedRoute,
+    private sanitazer: DomSanitizer
   ) {
     this.arrayDrivers = [
       {
@@ -278,8 +281,16 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
         name: 'chart',
         checked: true,
       },
-     
     ];
+  }
+
+  public transformImage() {
+    if (this.driverData.driver.avatar) {
+      this.driverImage = 'data:image/*;base64,' + this.driverData.driver.avatar;
+    } else {
+      this.driverImage = 'assets/svg/common/ic_no_avatar_driver.svg';
+    }
+    return this.sanitazer.bypassSecurityTrustResourceUrl(this.driverImage);
   }
 
   public getEmploymentHistory() {
@@ -323,7 +334,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   }
 
   public getDriverById() {
-    this.driverData=this.activated_route.snapshot.data;  
+    this.driverData = this.activated_route.snapshot.data;
   }
   public getDriversList() {
     for (let i = 0; i < this.arrayDrivers.length; i++) {
@@ -467,10 +478,9 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public formatHistoryDays(workDate: string) {
     const dateB = moment(workDate);
     const dateC = moment().format();
-    const year= dateB.diff(dateC,'year')
-    const days=dateB.diff(dateC,'days')
+    const year = dateB.diff(dateC, 'year');
+    const days = dateB.diff(dateC, 'days');
     console.log(year);
-    
   }
 
   public formatText(data: any, type: boolean, numOfCharacters: string) {

@@ -2,9 +2,12 @@
   <div
     class="toolbar-general-cmp"
     *ngIf="
-      ['Truck Details', 'Driver Details', 'Trailer Details'].includes(
-        headerText
-      )
+      [
+        'Truck Details',
+        'Driver Details',
+        'Trailer Details',
+        'Repair Shop Details'
+      ].includes(headerText)
     "
   >
     <div class="icon-text-wrapper">
@@ -34,32 +37,88 @@
     </div>
   </div>
 
-  <div
-    class="header-toolbar"
-    *ngIf="
-      !['Truck Details', 'Driver Details', 'Trailer Details'].includes(headerText)
-    "
-  >
-    <div class="counter-text" [ngClass]="{'has-counter-header':counterData}">
-      <app-ta-counter
-        *ngIf="counterData"
-        [countBackgroud]="'#F3F3F3'"
-        [countColor]="'#919191'"
-        [countHeight]="'24px'"
-        [countWidth]="'24px'"
-        [count]="counterData"
+ 
+    <div>
+      <div
+        class="header-toolbar"
+        *ngIf="
+          !['Truck Details', 'Driver Details', 'Trailer Details','Repair Shop Details'].includes(
+            headerText
+          )
+        "
       >
-      </app-ta-counter>
-      <p  class="header-name disable-selection">{{ headerText }}</p>
+        <div
+          class="counter-text"
+          [ngClass]="{ 'has-counter-header': counterData }"
+        >
+          <app-ta-counter
+            *ngIf="counterData"
+            [countBackgroud]="'#F3F3F3'"
+            [countColor]="'#919191'"
+            [countHeight]="'24px'"
+            [countWidth]="'24px'"
+            [count]="counterData"
+          >
+          </app-ta-counter>
+          <p class="header-name disable-selection">{{ headerText }}</p>
+          <div *ngIf="hasIcon" class="repair-header-icons">
+            <div class="border-line-left"></div>
+            <svg-icon
+              class="single-repair-icon"
+              src="assets/svg/common/ic_search.svg"
+            ></svg-icon>
+            <div class="border-line-left"></div>
+            <svg-icon
+              class="single-repair-icon"
+              src="assets/svg/common/ic_clock.svg"
+            ></svg-icon>
+            <div class="border-line-left"></div>
+            <svg-icon
+              class="single-repair-icon"
+              src="assets/svg/common/ic_rubber.svg"
+            ></svg-icon>
+            <div class="border-line-left"></div>
+            <svg-icon
+              class="single-repair-icon"
+              src="assets/svg/common/ic_documents.svg"
+            ></svg-icon>
+            <div class="border-line-left"></div>
+            <svg-icon
+              class="single-repair-icon"
+              src="assets/svg/common/ic_sraf.svg"
+            ></svg-icon>
+            <div class="border-line-left"></div>
+            <svg-icon
+              class="single-repair-icon"
+              src="assets/svg/common/ic_funnel.svg"
+            ></svg-icon>
+            <div class="border-line-left"></div>
+            <svg-icon
+              class="single-repair-icon"
+              src="assets/svg/common/ic_dollar.svg"
+            ></svg-icon>
+            <div class="border-line-left"></div>
+
+            <div class="total-cost">$ 77.58M</div>
+          </div>
+        </div>
+        <div class="header-plus-button">
+          <div *ngIf="hasDateArrow" class="date-arrow-repair">
+             <p class="date-repair">Date</p>
+             <div class="icons-repair">
+               <svg-icon class="first-icon" src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
+               <svg-icon class="second-icon" src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
+             </div>
+          </div>
+          <div class="border-line-left"></div>
+          <svg-icon
+            class="icon-plus-header"
+            (click)="openModal(headerText)"
+            src="assets/svg/common/ic_plus.svg"
+          >
+          </svg-icon>
+        </div>
+      </div>
     </div>
-    <div class="header-plus-button">
-      <div class="border-line-left"></div>
-      <svg-icon
-        class="icon-plus-header"
-        (click)="openModal(headerText)"
-        src="assets/svg/common/ic_plus.svg"
-      >
-      </svg-icon>
     </div>
-  </div>
-</div>
+
