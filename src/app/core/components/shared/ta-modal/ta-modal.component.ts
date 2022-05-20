@@ -51,6 +51,14 @@ export class TaModalComponent implements OnInit, OnDestroy {
           this.isDeactivated = !this.isDeactivated;
         }
       });
+
+     $(document).on('dragover','.modal-animation', () => {
+       console.log("DRAGOVER")
+     })
+
+     $(document).on('dragleave','.modal-animation', () => {
+      console.log("DRAG LEAVE")
+    })
   }
 
   public onAction(action: string) {
@@ -98,3 +106,23 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {}
 }
+
+
+  // Drag and drop zone for chat events
+  // @HostListener('dragover', ['$event'])
+  // public onDragOver(evt) {
+  //   evt.preventDefault();
+  //   evt.stopPropagation();
+  //   console.log("DRAG OVER")
+  //   console.log(evt);
+  // }
+
+  // @HostListener('dragleave', ['$event'])
+  // public onDragLeave(evt) {
+  //   evt.preventDefault();
+  //   evt.stopPropagation();
+  //   if (!evt.fromElement) {
+  //    console.log("DRAG LEAVE")
+  //    console.log(evt);
+  //   }
+  // }

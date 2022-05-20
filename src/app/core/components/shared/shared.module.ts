@@ -49,7 +49,7 @@ import { Ng5SliderModule } from 'ng5-slider';
 import { EditProfileImageComponent } from './edit-profile-image/edit-profile-image.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CroppieModule } from 'angular-croppie-module';
-import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
+
 import { TaCounterComponent } from './ta-counter/ta-counter.component';
 import { TaNgxSliderComponent } from './ta-ngx-slider/ta-ngx-slider.component';
 import { TaLogoChangeComponent } from './ta-logo-change/ta-logo-change.component';
@@ -99,6 +99,8 @@ import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.compon
 import { TaUploadFileComponent } from './ta-modal-upload/ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-files-carousel/ta-upload-files-carousel.component';
 import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
+import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 
 @NgModule({
   declarations: [
@@ -154,6 +156,8 @@ import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
     TaModalUploadComponent,
     TaUploadFileComponent,
     TaskModalComponent,
+    TtRegistrationModalComponent,
+    TtFhwaInspectionModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -174,7 +178,6 @@ import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
-    DragDropFileDirective,
     TextareaAutosizeDirective,
   ],
   imports: [
@@ -301,6 +304,8 @@ import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
     UserModalComponent,
     TaModalUploadComponent,
     TaskModalComponent,
+    TtRegistrationModalComponent,
+    TtFhwaInspectionModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -321,7 +326,6 @@ import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
-    DragDropFileDirective,
     TextareaAutosizeDirective,
   ],
   providers: [

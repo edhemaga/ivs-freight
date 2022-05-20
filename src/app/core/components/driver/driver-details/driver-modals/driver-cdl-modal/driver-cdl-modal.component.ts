@@ -139,9 +139,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: DriverResponse) => {
-          console.log(res);
           this.modalName = res.firstName.concat(" ",res.lastName);
-          console.log(this.modalName)
         },
         error: () => {
           this.notificationService.error("Driver can't be loaded.", 'Error:');

@@ -32,7 +32,6 @@ export class TaModalUploadComponent implements OnInit {
 
   public async onFileUpload(files: FileList) {
     await this.addFiles(files);
-    console.log(this.files);
     this.onFileEvent.emit({files:this.files , action: 'add'});
   }
 
@@ -101,11 +100,6 @@ export class TaModalUploadComponent implements OnInit {
           this.modalCarousel.currentSlide = 0;
           this.modalCarousel.translateXMultipleSlides = 0;
           this.modalCarousel.multipleCurrentSlide = 0;
-         
-          console.log("On delete") 
-          console.log("Current slide ", this.modalCarousel.currentSlide)
-          console.log("Multiple slide ", this.modalCarousel.multipleCurrentSlide)
-          console.log("TranslateX slide ", this.modalCarousel.translateXMultipleSlides)
         }
 
         this.changeDetectionRef.detectChanges();
@@ -117,8 +111,19 @@ export class TaModalUploadComponent implements OnInit {
     }
   }
 
+  onDragDropFile(files: FileList) {
+    this.onFileUpload(files);
+    console.log(files)
+  }
+
+  onDropBackground(event) {
+    console.log(event);
+  }
+
   // TruckBy ngFor files changes
   public identity(index: number, item: any): number {
     return item.name;
   }
 }
+
+

@@ -27,7 +27,7 @@ import moment from 'moment';
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor
 {
-  @ViewChild('input', { static: true }) input: ElementRef;
+  @ViewChild('input', { static: true }) public input: ElementRef;
   @ViewChild('span1', { static: false }) span1: ElementRef;
   @ViewChild('span2', { static: false }) span2: ElementRef;
   @ViewChild('span3', { static: false }) span3: ElementRef;
@@ -155,6 +155,8 @@ export class TaInputComponent
     }
 
     this.focusInput = true;
+    console.log("FOCUS")
+    console.log(this.focusInput)
   }
 
   public onBlur(): void {
@@ -187,6 +189,7 @@ export class TaInputComponent
         }
       }
     }
+    this.inputService.onFocusOutInputSubject.next(true);
   }
 
   private blurOnPassword() {
@@ -264,7 +267,7 @@ export class TaInputComponent
     this.setInputCursorAtTheEnd(this.input.nativeElement);
   }
 
-  private setInputCursorAtTheEnd(input: any): void {
+  public setInputCursorAtTheEnd(input: any): void {
     const selectionEnd = input.selectionEnd;
     if (input.setSelectionRange) {
       input.setSelectionRange(selectionEnd, selectionEnd);
