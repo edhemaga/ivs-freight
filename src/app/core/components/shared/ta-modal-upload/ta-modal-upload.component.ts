@@ -6,6 +6,7 @@ import {
   OnInit,
   Output,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { UploadFile } from './ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-upload-files-carousel.component';
@@ -14,6 +15,7 @@ import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-up
   selector: 'app-ta-modal-upload',
   templateUrl: './ta-modal-upload.component.html',
   styleUrls: ['./ta-modal-upload.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TaModalUploadComponent implements OnInit {
   @ViewChild(TaUploadFilesCarouselComponent)
