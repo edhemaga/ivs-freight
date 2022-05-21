@@ -23,6 +23,7 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() hasIcon:boolean=false;
   @Input() hasDateArrow:boolean=false;
   @Input() hidePlus:boolean=true;
+  @Input() customText:string='Date';
   @Output() changeDataArrowUp=new EventEmitter<any>();
   @Output() changeDataArrowDown=new EventEmitter<any>();
   public up:boolean=false;

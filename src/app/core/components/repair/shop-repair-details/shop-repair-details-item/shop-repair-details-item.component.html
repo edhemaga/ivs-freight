@@ -208,5 +208,40 @@
         </div>
       </div>
     </div>
+    <div *ngSwitchCase="'review'">
+      <div class="likes-count-container">
+        <div class="likes-item">
+          <div class="ic-counter">
+            <svg-icon
+              class="like"
+              src="assets/svg/common/ic_dislike.svg"
+            ></svg-icon>
+            <app-ta-counter
+              [countBackgroud]="'#F3F3F3'"
+              [countColor]="'#919191'"
+              [countHeight]="'24px'"
+              [countWidth]="'24px'"
+              [count]="5"
+            >
+            </app-ta-counter>
+          </div>
+          <div class="border-vertical"></div>
+          <div class="ic-counter">
+            <app-ta-counter
+              [countBackgroud]="'#F3F3F3'"
+              [countColor]="'#919191'"
+              [countHeight]="'24px'"
+              [countWidth]="'24px'"
+              [count]="1"
+            >
+            </app-ta-counter>
+            <svg-icon
+              class="dislike"
+              src="assets/svg/common/ic_dislike.svg"
+            ></svg-icon>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

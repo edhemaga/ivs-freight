@@ -104,7 +104,7 @@
         </div>
         <div class="header-plus-button">
           <div *ngIf="hasDateArrow" class="date-arrow-repair">
-             <p class="date-repair">Date</p>
+             <p class="date-repair">{{customText}}</p>
              <div class="icons-repair">
                <svg-icon [ngClass]="{'clicked':up}" (click)="changeDataArrowUpFun($event)" class="first-icon" src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
                <svg-icon [ngClass]="{'clicked':down}" (click)="changeDataArrowDownFun($event)" class="second-icon" src="assets/svg/common/fill_arrow_down.svg"></svg-icon>

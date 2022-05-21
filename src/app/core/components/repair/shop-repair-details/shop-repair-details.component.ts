@@ -39,21 +39,23 @@ export class ShopRepairDetailsComponent implements OnInit {
         name: 'Repair',
         template: 'repair',
         icon:true,
-        data:25
-       
+        data:25,
+        customText:'Date'
       },
       {
         id: 2,
         name: 'Repaired Vehicle',
         template: 'repaired-vehicle',
         data:18,
-        hide:false,
+        hide:true,
+        customText:'Repairs'
       },
       {
         id: 3,
         name: 'Review',
         template: 'review',
-        data:9
+        data:9,
+        customText:'Date'
       },
     ];
   }
