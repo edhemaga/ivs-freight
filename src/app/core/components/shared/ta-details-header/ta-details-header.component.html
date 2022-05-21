@@ -106,10 +106,11 @@
           <div *ngIf="hasDateArrow" class="date-arrow-repair">
              <p class="date-repair">Date</p>
              <div class="icons-repair">
-               <svg-icon class="first-icon" src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
-               <svg-icon class="second-icon" src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
+               <svg-icon [ngClass]="{'clicked':up}" (click)="changeDataArrowUpFun($event)" class="first-icon" src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
+               <svg-icon [ngClass]="{'clicked':down}" (click)="changeDataArrowDownFun($event)" class="second-icon" src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
              </div>
           </div>
+          <div class="hide-buttons" *ngIf="!hidePlus">
           <div class="border-line-left"></div>
           <svg-icon
             class="icon-plus-header"
@@ -117,6 +118,7 @@
             src="assets/svg/common/ic_plus.svg"
           >
           </svg-icon>
+        </div>
         </div>
       </div>
     </div>

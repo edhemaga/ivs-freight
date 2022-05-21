@@ -46,8 +46,8 @@ export class ShopRepairDetailsComponent implements OnInit {
         id: 2,
         name: 'Repaired Vehicle',
         template: 'repaired-vehicle',
-        data:18
-    
+        data:18,
+        hide:false,
       },
       {
         id: 3,

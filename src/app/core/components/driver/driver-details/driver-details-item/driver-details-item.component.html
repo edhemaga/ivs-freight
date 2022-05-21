@@ -8,7 +8,7 @@
         [searchName]="'Search Driver'"
         [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
         [cardDetailsName]="currentDriverName"
-        [cardDetailsDate]="'08/03/20'"
+        [cardDetailsDate]="formatDate(driverData.driver.createdAt)"
         (nextValue)="nextDriver()"
         (previousValue)="previousDriver()"
         [optionsCmp]="arrayDrivers"

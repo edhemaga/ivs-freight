@@ -59,7 +59,7 @@ $transition: all 0.3s ease-in-out;
                 }
             }
             .repair-value {
-                font-size: 14px;
+                font-size: $font-size14;
                 font-weight: 400;
                 color: #6c6c6c;
                 padding-left: 6px;
@@ -82,5 +82,147 @@ $transition: all 0.3s ease-in-out;
     height: 2px;
     width: 100%;
     border-radius: 1px;
-    background-color: #f3f3f3;
-  }
+    background-color: $color-white-light;
+}
+.repair-container {
+    padding: 8px 6px;
+    width: 100%;
+    background-color: $color-white;
+    max-height: 600px;
+    border-radius: 3px;
+    .repair-items-wrapper {
+        overflow: auto;
+        max-height: 530px;
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+            border-radius: 1px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: #aaaaaa;
+            border-radius: 1px;
+            height: 20px;
+        }
+        &::-webkit-scrollbar-track-piece:end {
+            margin-bottom: 4px;
+        }
+
+        &::-webkit-scrollbar-track-piece:start {
+            margin-top: 4px;
+        }
+    }
+    .repair-header {
+        padding: 0 10px;
+        display: grid;
+        grid-template-columns: 36px 40px 40px 330px 50px;
+        column-gap: 46px;
+        height: 18px;
+        margin-bottom: 6px;
+        .repaier-headers {
+            font-size: 14px;
+            font-weight: $font-bold;
+            color: $color-gray;
+        }
+    }
+    .repair-items {
+        padding: 0 6px;
+        overflow: auto;
+        max-height: 900px;
+        .unit {
+            font-size: $font-size14;
+            font-weight: $font-bold;
+            color: $color-gray-dark;
+        }
+        .items-header {
+            padding: 0 4px;
+            display: grid;
+            grid-template-columns: 60px 64px 65px 340px 40px;
+            column-gap: 22px;
+            align-content: center;
+            grid-auto-flow: column;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            .dots-vertical {
+                width: 5px;
+                top: -5px !important;
+                position: relative;
+                margin-left: 12px;
+            }
+        }
+        .date {
+            font-size: $font-size14;
+            font-weight: 400;
+            color: $color-gray-dark;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 294px;
+        }
+        .cost {
+            font-size: $font-size14;
+            font-weight: $font-semibold;
+            color: $color-gray-dark;
+        }
+    }
+}
+.repaired-vehicle-container {
+    padding: 8px 8px;
+    max-width: 340px;
+    background-color: $color-white;
+    border-radius: 3px;
+    .repair-vehicle-header {
+        padding: 0 8px;
+        display: grid;
+        grid-template-columns: 40px 62px 58px 42px;
+        height: 18px;
+        grid-gap: 36px;
+        align-content: center;
+        margin-bottom: 4px;
+        margin-top: 2px;
+        .repaier-headers {
+            font-size: $font-size14;
+            font-weight: $font-bold;
+            color: $color-gray;
+        }
+    }
+    .repair-items-vehicle {
+        padding: 0 4px;
+        .items-vehicle {
+            padding: 0px 4px;
+            display: grid;
+            grid-gap: 12px;
+            grid-template-columns: 65px 83px 46px 100px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            align-content: center;
+            .vehicle-icon {
+                position: relative;
+                bottom: 3px;
+                svg {
+                    width: 55px;
+                    height: 20px;
+                    path {
+                        fill: #aaaaaa;
+                    }
+                }
+            }
+            .unit {
+                font-size: $font-size14;
+                font-weight: $font-bold;
+                color: $color-gray-dark;
+            }
+            .date {
+                font-size: $font-size14;
+                font-weight: 400;
+                color: $color-gray-dark;
+            }
+            .cost {
+                font-size: $font-size14;
+                font-weight: $font-semibold;
+                color: $color-gray-dark;
+            }
+        }
+    }
+}

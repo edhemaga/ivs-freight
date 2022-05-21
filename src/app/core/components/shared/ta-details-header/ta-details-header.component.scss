@@ -80,6 +80,12 @@ p {
                         width: 12px;
                         position: relative;
                         bottom: -3px;
+                        &:hover {
+                            path {
+                                fill: #6c6c6c;
+                            }
+                        }
+                       
                     }
                 }
                 .second-icon {
@@ -90,6 +96,12 @@ p {
                         width: 12px;
                         position: relative;
                         top: -3px;
+                        &:hover {
+                            path {
+                                fill: #6c6c6c;
+                            }
+                        }
+
                     }
                 }
             }
@@ -158,4 +170,15 @@ svg {
         padding-left: 15px;
         padding-top: 3px;
     }
+}
+.clicked{
+    svg{
+        path{
+            fill: #6d82c7;
+        }
+    }
+}
+.hide-buttons{
+    display: flex;
+    align-items: center;
 }

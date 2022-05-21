@@ -22,6 +22,11 @@ export class TaCommonHeaderComponent implements OnInit {
   @Output() openModalAction = new EventEmitter<any>();
   @Input() hasIcon:boolean=false;
   @Input() hasDateArrow:boolean=false;
+  @Input() hidePlus:boolean=true;
+  @Output() changeDataArrowUp=new EventEmitter<any>();
+  @Output() changeDataArrowDown=new EventEmitter<any>();
+  public up:boolean=false;
+  public down:boolean=false;
   constructor(private routes: ActivatedRoute) {}
 
   ngOnInit(): void {}
@@ -31,7 +36,20 @@ export class TaCommonHeaderComponent implements OnInit {
     console.log(val);
     this.openModalAction.emit(val);
   }
-
+  changeDataArrowUpFun(val:any){
+     this.up=true;
+     if(this.down==true){
+       this.down=false;
+     }
+     this.changeDataArrowUp.emit(val);
+  }
+  changeDataArrowDownFun(val:any){
+    this.down=true;
+    if(this.up==true){
+      this.up=false;
+    }
+    this.changeDataArrowDown.emit(val);
+  }
   trackByIndex(index: number, obj: any): any {
     return index;
   }

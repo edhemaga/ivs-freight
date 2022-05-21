@@ -1,3 +1,4 @@
+import { TruckassistTableModule } from './../../shared/truckassist-table/truckassist-table.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
@@ -18,6 +19,7 @@ import { ShopRepairDetailsItemComponent } from './shop-repair-details-item/shop-
     ShopRepairDetailsRoutes,
     TruckassistProgressExpirationModule,
     SharedModule,
+    TruckassistTableModule
   ],
 })
 export class ShopRepairDetailsModule {}
