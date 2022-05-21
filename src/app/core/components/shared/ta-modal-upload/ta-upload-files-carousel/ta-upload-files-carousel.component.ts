@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-ta-upload-files-carousel',
   templateUrl: './ta-upload-files-carousel.component.html',
   styleUrls: ['./ta-upload-files-carousel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaUploadFilesCarouselComponent {
   @Input() filesLength: number;

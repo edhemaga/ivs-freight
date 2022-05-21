@@ -69,7 +69,13 @@ export class TaModalUploadComponent implements OnInit {
     switch (data.action) {
       case 'add': {
         this.files = [...this.files, ...data.files];
-        this.changeDetectionRef.detectChanges();
+        const timeout = setTimeout(() => {
+          this.changeDetectionRef.detectChanges();
+          clearTimeout(timeout);
+        },200)
+        
+        console.log(this.files)
+       
         break;
       }
     }

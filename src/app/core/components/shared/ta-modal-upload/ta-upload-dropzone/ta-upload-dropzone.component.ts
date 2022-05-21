@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { UploadFile } from '../ta-upload-file/ta-upload-file.component';
 
 @Component({
@@ -14,11 +14,11 @@ export class TaUploadDropzoneComponent {
   @Output() onFileEvent: EventEmitter<{ files: UploadFile[]; action: string }> =
     new EventEmitter<{ files: UploadFile[]; action: string }>(null);
 
-  constructor(private changeDetectionRef: ChangeDetectorRef) { }
-
   public async onFileUpload(files: FileList) {
     await this.addFiles(files);
     this.onFileEvent.emit({files:this.files , action: 'add'});
+    this.files = [];
+    console.log(this.files + " FROM DROPZONE")
   }
 
   /**
@@ -48,7 +48,6 @@ export class TaUploadDropzoneComponent {
           size: file.size,
         },
       ];
-      this.changeDetectionRef.detectChanges();
     } catch (err) {
       console.error(`Can't upload ${file.name} ${err}`);
     }
