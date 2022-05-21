@@ -9,6 +9,8 @@ export class ModalService {
   public modalStatusChange: BehaviorSubject<{ name: string; status: boolean }> =
     new BehaviorSubject<{ name: string; status: boolean }>(null);
 
+  public documentsDropZoneSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(private ngbModal: NgbModal) {}
 
   public get modalStatus$() {

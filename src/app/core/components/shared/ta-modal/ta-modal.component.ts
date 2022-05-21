@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -37,12 +38,13 @@ export class TaModalComponent implements OnInit, OnDestroy {
   }> = new EventEmitter<{ action: string; bool: boolean }>(null);
 
   private timeout = null;
+  public isDropZoneVisible: boolean = false;
 
   constructor(
     private ngbActiveModal: NgbActiveModal,
     private modalService: ModalService
   ) {}
-
+  counter = 0;
   ngOnInit(): void {
     this.modalService.modalStatus$
       .pipe(distinctUntilChanged(), untilDestroyed(this))
@@ -52,13 +54,34 @@ export class TaModalComponent implements OnInit, OnDestroy {
         }
       });
 
-     $(document).on('dragover','.modal-animation', () => {
-       console.log("DRAGOVER")
-     })
+    this.modalService.documentsDropZoneSubject
+      .pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((value) => {
+        if(value) {
+          $(document).on('dragover', '.modal', (event) => {
+            //  console.log("DRAGOVER")
+            event.preventDefault();
+            if (this.counter < 2 && !this.leavingZOne) this.counter++;
+            //  document.querySelector('.modal-container').classList.add('prevent-default')
+            this.isDropZoneVisible = true;
+            console.log(this.counter);
+          });
+      
+          $(document).on('dragleave', '.modal', (event) => {
+            console.log('DRAG LEAVE');
+            this.counter--;
+            if (this.counter < 0) {
+              // document.querySelector('.modal-container').classList.remove('prevent-default')
+              this.isDropZoneVisible = false;
+              this.leavingZOne = false;
+              this.counter = 0;
+            }
+            console.log(this.counter);
+          });
+        }
+      });
 
-     $(document).on('dragleave','.modal-animation', () => {
-      console.log("DRAG LEAVE")
-    })
+ 
   }
 
   public onAction(action: string) {
@@ -104,25 +127,44 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onDropFile(event) {
+    console.log('DROP ', event);
+  }
+
+  public onDropBackground(event) {
+    console.log('BACKGROUND ', event);
+  }
+  leavingZOne: boolean = false;
+  dragOverHover: boolean = false;
+  public leaving(event: {action: string, value: boolean}) {
+    switch(event.action) {
+      case 'dragleave': {
+        if (!event.value && this.counter === 1) {
+          this.counter--;
+          this.leavingZOne = true;
+          console.log('AFTER LEAVING ZONE');
+          console.log(this.counter);
+        }
+        break;
+      }
+      case 'drop': {
+        if (!event.value) {
+          this.isDropZoneVisible = false;
+          console.log('AFTER DROP ZONE');
+          console.log(this.counter);
+        }
+        break;
+      }
+      case 'dragover': {
+        this.dragOverHover = true;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  
+  }
+
   ngOnDestroy(): void {}
 }
-
-
-  // Drag and drop zone for chat events
-  // @HostListener('dragover', ['$event'])
-  // public onDragOver(evt) {
-  //   evt.preventDefault();
-  //   evt.stopPropagation();
-  //   console.log("DRAG OVER")
-  //   console.log(evt);
-  // }
-
-  // @HostListener('dragleave', ['$event'])
-  // public onDragLeave(evt) {
-  //   evt.preventDefault();
-  //   evt.stopPropagation();
-  //   if (!evt.fromElement) {
-  //    console.log("DRAG LEAVE")
-  //    console.log(evt);
-  //   }
-  // }

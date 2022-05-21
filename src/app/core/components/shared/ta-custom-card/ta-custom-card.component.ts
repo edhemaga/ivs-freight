@@ -3,10 +3,10 @@ import {
   Input,
   Output,
   EventEmitter,
-  ViewEncapsulation,
-  HostBinding,
+  ViewEncapsulation
 } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
+import { ModalService } from '../ta-modal/modal.service';
 
 @Component({
   selector: 'app-ta-custom-card',
@@ -39,12 +39,17 @@ export class TaCustomCardComponent {
 
   public isHeaderHover: boolean = false;
 
+  constructor(private modalService: ModalService){}
+
+
+
   public isCardOpenEvent(event: any) {
     event.preventDefault();
     event.stopPropagation();
     if (this.hasBodyData) {
       this.isCardOpen = !this.isCardOpen;
     }
+    this.modalService.documentsDropZoneSubject.next(this.isCardOpen);
   }
 
   public onAdd(event: any): void {
