@@ -103,7 +103,7 @@ export class TaInputComponent
     }
 
     // Auto Focus First Input
-    if (this.inputConfig.autoFocus) {
+    if (this.inputConfig.autoFocus && !this.getSuperControl.value) {
       const timeout = setTimeout(() => {
         this.onFocus();
         this.input.nativeElement.focus();
