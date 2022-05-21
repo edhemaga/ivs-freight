@@ -8,4 +8,3 @@ import { SafeHtmlPipe } from './safe-html.pipe';
   exports: [SafeHtmlPipe]
 })
 export class PipesModule {}
- 

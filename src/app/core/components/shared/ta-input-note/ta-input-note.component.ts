@@ -17,8 +17,13 @@ import { input_note_animation } from './ta-input-note.animation';
   animations: [input_note_animation('showHideNote')],
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
+  _isVisibleNote: boolean = false;
   @Input() isVisibleDivider: boolean = true;
-  @Input() isVisibleNote: boolean = false;
+
+  @Input('isVisibleNote') set isVisibleNote(value: boolean) {
+      this._isVisibleNote = value ? true : false;
+  }
+
   @Input() isVisibleArrow: boolean = true;
   @Input() minRows: number = 2;
   @Input() maxRows: number = 5;
@@ -51,6 +56,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   public registerOnTouched(fn: any): void {}
 
   public openNote(){
-    this.isVisibleNote = !this.isVisibleNote;
+    this._isVisibleNote = !this._isVisibleNote;
   }
 }
