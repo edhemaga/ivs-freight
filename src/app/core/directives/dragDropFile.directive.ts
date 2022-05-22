@@ -35,6 +35,7 @@ export class DragDropFileDirective {
     evt.preventDefault();
     evt.stopPropagation();
     this.onDropBackground.emit({action: 'drop', value: false});
+    this.class = "dragDropFile"
 
     await this.onFileUpload(evt.dataTransfer.files)
   }
