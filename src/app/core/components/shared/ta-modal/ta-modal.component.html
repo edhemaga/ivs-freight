@@ -20,10 +20,10 @@
       [hidden]="!isDropZoneVisible"
       appDragDropFile
       (onDropFile)="onDropFile($event)"
-      (onDropBackground)="leaving($event)"
+      (onDropBackground)="onDropBackground($event)"
       class="drop-zone-active"
     >
-      <label for="pdf" class="ta-modal-dropzone-label2" [ngClass]="{'hovered': dragOverHover}">
+      <label for="pdf" class="ta-modal-dropzone-label2">
         <svg-icon
           class="ta-modal-dropzone-area2"
           src="assets/svg/common/ic_modal_upload_dropzone.svg"

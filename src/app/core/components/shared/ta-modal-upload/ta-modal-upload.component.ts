@@ -1,13 +1,16 @@
+import { untilDestroyed } from 'ngx-take-until-destroy';
 import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
+import { ModalService } from '../ta-modal/modal.service';
 import { UploadFile } from './ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-upload-files-carousel.component';
 
@@ -15,9 +18,9 @@ import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-up
   selector: 'app-ta-modal-upload',
   templateUrl: './ta-modal-upload.component.html',
   styleUrls: ['./ta-modal-upload.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
-export class TaModalUploadComponent implements OnInit {
+export class TaModalUploadComponent implements OnInit, OnDestroy {
   @ViewChild(TaUploadFilesCarouselComponent)
   modalCarousel: TaUploadFilesCarouselComponent;
 
@@ -30,9 +33,20 @@ export class TaModalUploadComponent implements OnInit {
 
   public currentSlide: number = 0;
 
-  constructor(private changeDetectionRef: ChangeDetectorRef) {}
+  constructor(
+    private changeDetectionRef: ChangeDetectorRef,
+    private modalService: ModalService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.modalService.uploadDocumentsSubject$
+      .pipe(untilDestroyed(this))
+      .subscribe((data: { files: UploadFile[]; action: string }) => {
+        if(data) {
+          this.onUploadFiles(data);
+        }
+      });
+  }
 
   /**
    *
@@ -74,10 +88,10 @@ export class TaModalUploadComponent implements OnInit {
         const timeout = setTimeout(() => {
           this.changeDetectionRef.detectChanges();
           clearTimeout(timeout);
-        },200)
-        
-        console.log(this.files)
-       
+        }, 200);
+
+        console.log(this.files);
+
         break;
       }
     }
@@ -87,4 +101,6 @@ export class TaModalUploadComponent implements OnInit {
   public identity(index: number, item: any): number {
     return item.name;
   }
+
+  ngOnDestroy(): void {}
 }

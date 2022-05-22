@@ -18,7 +18,6 @@ export class TaUploadDropzoneComponent {
     await this.addFiles(files);
     this.onFileEvent.emit({files:this.files , action: 'add'});
     this.files = [];
-    console.log(this.files + " FROM DROPZONE")
   }
 
   /**

@@ -19,79 +19,42 @@
   height: auto;
   overflow: hidden;
 
-  &.prevent-default {
-    pointer-events: none !important;
-  }
-
-  &.modal-container-M {
-    width: 640px;
-
-    .divider {
-      width: 615px;
-    }
-  }
-
-  &.modal-container-L {
-    width: 860px;
-
-    .divider {
-      width: 836px;
-    }
-  }
-
-  .divider {
-    width: 455px;
-    height: 2px;
-    content: "";
-    border-radius: 1px;
-    background-color: #f3f3f3;
-    margin: 0 auto;
-  }
-
-  //   Ovveride global settings for row > columns
-  .form-container {
-    .row {
-      & > * {
-        &:nth-child(odd) {
-          padding-left: 12px;
-          padding-right: 12px;
-        }
-        &:nth-child(even) {
-          padding-left: 0px;
-          padding-right: 12px;
-        }
-      }
-    }
-  }
-
-  .modal-footer > * {
-    margin: 0px !important;
-  }
-
   .dropzone-container {
     position: relative;
 
     .dragDropFile {
       width: 100%;
       height: 100%;
-      border: 3px dashed #e5e5e5;
-      padding: 2px;
       position: absolute;
       top: 0%;
       left: 0%;
       z-index: 999999;
+
+      &.hovered {
+        .ta-modal-dropzone-label2 {
+          background-color: #eeeeee;
+          .ta-modal-dropzone-text2 {
+            color: #6c6c6c;
+          }
+        }
+      }
     
       .ta-modal-dropzone-label2 {
-        width: 100%;
-        height: 100%;
-        padding: 22px 0px;
+        width: 456px;
+        height: 97%;
+        padding: 102px 0px;
         display: flex;
         flex-direction: column;
         align-items: center;
         cursor: pointer;
         text-align: center;
         border-radius: 2px;
+        outline: 3px dashed #e5e5e5;
         background-color: #ffffff;
+        position: relative;
+        left: 12px;
+        outline-offset: 2px;
+    
 
         .ta-modal-dropzone-area2 {
           pointer-events: none;
@@ -122,17 +85,64 @@
             bottom: 3px;
           }
         }
-    
-        &.hovered {
-          transition: all 0.3 ease-in-out;
-          background-color: #eeeeee;
-    
-          .ta-modal-dropzone-text2 {
-            color: #6c6c6c;
-          }
+      }
+    }
+  }
+
+  &.modal-container-M {
+    width: 640px;
+
+    .divider {
+      width: 615px;
+    }
+
+    .dropzone-container {
+      .ta-modal-dropzone-label2 {
+        width: 616px;
+      }
+    }
+  }
+
+  &.modal-container-L {
+    width: 860px;
+
+    .divider {
+      width: 836px;
+    }
+
+    .dropzone-container {
+      .ta-modal-dropzone-label2 {
+        width: 837px;
+      }
+    }
+  }
+
+  .divider {
+    width: 455px;
+    height: 2px;
+    content: "";
+    border-radius: 1px;
+    background-color: #f3f3f3;
+    margin: 0 auto;
+  }
+
+  //   Ovveride global settings for row > columns
+  .form-container {
+    .row {
+      & > * {
+        &:nth-child(odd) {
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+        &:nth-child(even) {
+          padding-left: 0px;
+          padding-right: 12px;
         }
       }
     }
-    
+  }
+
+  .modal-footer > * {
+    margin: 0px !important;
   }
 }

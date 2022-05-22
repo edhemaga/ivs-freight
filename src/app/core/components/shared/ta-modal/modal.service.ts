@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs';
+import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
 import { ModalOptions } from './modal.options';
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,9 @@ export class ModalService {
   public modalStatusChange: BehaviorSubject<{ name: string; status: boolean }> =
     new BehaviorSubject<{ name: string; status: boolean }>(null);
 
-  public documentsDropZoneSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public documentsDropZoneSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  
+  public uploadDocumentsSubject$: BehaviorSubject<{ files: UploadFile[]; action: string }> = new BehaviorSubject<{ files: UploadFile[]; action: string }>(null);
 
   constructor(private ngbModal: NgbModal) {}
 

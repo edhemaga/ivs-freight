@@ -49,7 +49,7 @@ export class TaCustomCardComponent {
     if (this.hasBodyData) {
       this.isCardOpen = !this.isCardOpen;
     }
-    this.modalService.documentsDropZoneSubject.next(this.isCardOpen);
+    this.modalService.documentsDropZoneSubject$.next(this.isCardOpen);
   }
 
   public onAdd(event: any): void {
