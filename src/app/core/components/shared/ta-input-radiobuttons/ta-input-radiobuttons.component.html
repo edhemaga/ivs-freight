@@ -3,10 +3,10 @@
     *ngFor="let button of buttons; trackBy: identity"
     class="radio-button-label"
     [ngClass]="{'checked': button.checked}"
-    for="{{ button.value }}"
+    for="{{ button.id }}"
   >
     <input
-      [id]="button.value"
+      [id]="button.id"
       [name]="button.name"
       [value]="button.value"
       [checked]="button.checked"

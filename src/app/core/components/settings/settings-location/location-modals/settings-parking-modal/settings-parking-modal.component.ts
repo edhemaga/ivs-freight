@@ -39,12 +39,14 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
   public gateBtns = [
     {
+      id: 511,
       label: 'Yes',
       value: 'yes',
       name: 'gate',
       checked: false,
     },
     {
+      id: 522,
       label: 'No',
       value: 'no',
       name: 'gate',
@@ -54,12 +56,14 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
   public cameraBtns = [
     {
+      id: 3,
       label: 'Yes',
       value: 'yes',
       name: 'camera',
       checked: false,
     },
     {
+      id: 4,
       label: 'No',
       value: 'no',
       name: 'camera',

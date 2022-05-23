@@ -246,36 +246,42 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     this.getDriverById();
     this.buttonsArray = [
       {
+        id: 1,
         label: '1M',
         value: '1M',
         name: 'chart',
         checked: false,
       },
       {
+        id: 2,
         label: '3M',
         value: '3M',
         name: 'chart',
         checked: false,
       },
       {
+        id: 3,
         label: '6M',
         value: '6M',
         name: 'chart',
         checked: false,
       },
       {
+        id: 4,
         label: '1Y',
         value: '1Y',
         name: 'chart',
         checked: false,
       },
       {
+        id: 5,
         label: 'YTD',
         value: 'YTD',
         name: 'chart',
         checked: false,
       },
       {
+        id: 6,
         label: 'ALL',
         value: 'ALL',
         name: 'chart',
