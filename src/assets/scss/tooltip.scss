@@ -284,3 +284,34 @@
     border-radius: 15px 0 15px 15px;
   }
 }
+
+@keyframes scaleItem {
+  0% {
+    transform: scale(0.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.app-main-tooltip{
+  .tooltip-inner{
+    padding: 0;
+    background-color: transparent;
+
+    .tooltip-holder{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      color: #fff;
+      height: 18px;
+      background-color: rgb(40, 82, 159);
+      border-radius: 2px;
+      padding: 0 6px;
+
+      animation: scaleItem 0.3s;
+    }
+  }
+}

@@ -80,6 +80,17 @@
                                 }    
                             }
                         }
+
+                        &:hover{
+                            cursor: pointer;
+                            svg-icon{
+                                svg{
+                                    path{
+                                        fill: #6C6C6C;
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     .plus-box{
