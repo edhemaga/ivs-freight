@@ -4,13 +4,14 @@ import {
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddressEntity } from 'appcoretruckassist';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-settings-repairshop-modal',
@@ -18,7 +19,7 @@ import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input
   styleUrls: ['./settings-repairshop-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
 })
-export class SettingsRepairshopModalComponent implements OnInit {
+export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
 
   public repairShopForm: FormGroup;
@@ -106,15 +107,16 @@ export class SettingsRepairshopModalComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+    this.isCheckedCompanyOwned();
   }
 
   private createForm() {
     this.repairShopForm = this.formBuilder.group({
       companyOwned: [false],
-      shopName: [null, Validators.required],
-      address: [null, Validators.required],
+      shopName: [null],
+      address: [null],
       addressUnit: [null, Validators.maxLength(6)],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null],
       phoneExtension: [null],
       email: [null, emailRegex],
       rent: [null],
@@ -184,6 +186,35 @@ export class SettingsRepairshopModalComponent implements OnInit {
     }
   }
 
+  public openCloseCheckboxCard(event: any) {
+    if (this.repairShopForm.get('companyOwned').value) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.repairShopForm.get('companyOwned').setValue(false);
+    }
+  }
+
+  public isCheckedCompanyOwned() {
+    this.repairShopForm
+      .get('companyOwned')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (!value) {
+          this.inputService.changeValidators(
+            this.repairShopForm.get('shopName')
+          );
+          this.inputService.changeValidators(this.repairShopForm.get('address'));
+          this.inputService.changeValidators(this.repairShopForm.get('phone'), true, [phoneRegex])
+        } else {
+          this.inputService.changeValidators(
+            this.repairShopForm.get('shopName'),false
+          );
+          this.inputService.changeValidators(this.repairShopForm.get('address'),false);
+          this.inputService.changeValidators(this.repairShopForm.get('phone'),false)
+        }
+      });
+  }
+
   public identity(index: number, item: any): number {
     return item.id;
   }
@@ -193,4 +224,6 @@ export class SettingsRepairshopModalComponent implements OnInit {
   private addRepairShop() {}
 
   private deleteRepairShopById(id: number) {}
+
+  ngOnDestroy(): void {}
 }

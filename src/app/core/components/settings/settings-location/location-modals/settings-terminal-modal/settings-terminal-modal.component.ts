@@ -1,6 +1,6 @@
 import { emailRegex } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Address } from 'src/app/core/components/shared/model/address';
 import { AddressEntity } from 'appcoretruckassist';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
@@ -8,6 +8,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-settings-terminal-modal',
@@ -15,7 +16,7 @@ import { tab_modal_animation } from 'src/app/core/components/shared/animations/t
   styleUrls: ['./settings-terminal-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
 })
-export class SettingsTerminalModalComponent implements OnInit {
+export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
   public terminalForm: FormGroup;
 
@@ -28,6 +29,40 @@ export class SettingsTerminalModalComponent implements OnInit {
     {
       id: 2,
       name: 'Additional',
+    },
+  ];
+
+  public gateBtns = [
+    {
+      id: 511,
+      label: 'Yes',
+      value: 'yes',
+      name: 'gate',
+      checked: false,
+    },
+    {
+      id: 522,
+      label: 'No',
+      value: 'no',
+      name: 'gate',
+      checked: false,
+    },
+  ];
+
+  public cameraBtns = [
+    {
+      id: 533,
+      label: 'Yes',
+      value: 'yes',
+      name: 'camera',
+      checked: false,
+    },
+    {
+      id: 544,
+      label: 'No',
+      value: 'no',
+      name: 'camera',
+      checked: false,
     },
   ];
 
@@ -68,12 +103,12 @@ export class SettingsTerminalModalComponent implements OnInit {
       terminalPhoneExtension: [null],
       terminalEmail: [null, emailRegex],
       // Office
-      office: [false],
+      office: [true],
       officePhone: [null, [Validators.required, phoneRegex]],
       officePhoneExtension: [null],
       officeEmail: [null, emailRegex],
       // Parking
-      parking: [false],
+      parking: [true],
       parkingPhone: [null, [Validators.required, phoneRegex]],
       parkingPhoneExtension: [null],
       parkingEmail: [null, emailRegex],
@@ -82,12 +117,12 @@ export class SettingsTerminalModalComponent implements OnInit {
       gate: [false],
       securityCamera: [false],
       // Warehouse
-      warehouse: [false],
+      warehouse: [true],
       warehousePhone: [null, [Validators.required, phoneRegex]],
       warehousePhoneExtension: [null],
       warehouseEmail: [null, emailRegex],
       // Fuel stattion
-      fuelStation: [false],
+      fuelStation: [true],
       fuelStationPhone: [null, [Validators.required, phoneRegex]],
       fuelStationPhoneExtension: [null],
       fuelStationEmail: [null, emailRegex],
@@ -141,6 +176,16 @@ export class SettingsTerminalModalComponent implements OnInit {
           event.stopPropagation();
           this.terminalForm.get('companyOwned').setValue(false);
         }
+        this.isCheckedCompanyOwned();
+        break;
+      }
+      case 'office': {
+        if (this.terminalForm.get('office').value) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.terminalForm.get('office').setValue(false);
+        }
+        this.isCheckedOffice();
         break;
       }
       case 'parking': {
@@ -149,6 +194,7 @@ export class SettingsTerminalModalComponent implements OnInit {
           event.stopPropagation();
           this.terminalForm.get('parking').setValue(false);
         }
+        this.isCheckedParking();
         break;
       }
       case 'warehouse': {
@@ -157,6 +203,7 @@ export class SettingsTerminalModalComponent implements OnInit {
           event.stopPropagation();
           this.terminalForm.get('warehouse').setValue(false);
         }
+        this.isCheckedWarehouse();
         break;
       }
       case 'fuelStation': {
@@ -165,6 +212,7 @@ export class SettingsTerminalModalComponent implements OnInit {
           event.stopPropagation();
           this.terminalForm.get('fuelStation').setValue(false);
         }
+        this.isCheckedFuelStation();
         break;
       }
       default: {
@@ -173,9 +221,141 @@ export class SettingsTerminalModalComponent implements OnInit {
     }
   }
 
+  public isCheckedCompanyOwned() {
+    this.terminalForm
+      .get('companyOwned')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (!value) {
+          this.inputService.changeValidators(
+            this.terminalForm.get('terminalName')
+          );
+          this.inputService.changeValidators(this.terminalForm.get('address'));
+          this.inputService.changeValidators(
+            this.terminalForm.get('terminalPhone'),
+            true,
+            [phoneRegex]
+          );
+        } else {
+          this.inputService.changeValidators(
+            this.terminalForm.get('terminalName'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.terminalForm.get('address'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.terminalForm.get('terminalPhone'),
+            false
+          );
+        }
+      });
+  }
+
+  public isCheckedOffice() {
+    this.terminalForm
+      .get('office')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (!value) {
+          this.inputService.changeValidators(
+            this.terminalForm.get('officePhone'),
+            true,
+            [phoneRegex]
+          );
+        } else {
+          this.inputService.changeValidators(
+            this.terminalForm.get('officePhone'),
+            false
+          );
+        }
+      });
+  }
+
+  public isCheckedParking() {
+    this.terminalForm
+      .get('parking')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (!value) {
+          this.inputService.changeValidators(
+            this.terminalForm.get('parkingPhone'),
+            true,
+            [phoneRegex]
+          );
+        } else {
+          this.inputService.changeValidators(
+            this.terminalForm.get('parkingPhone'),
+            false
+          );
+        }
+      });
+  }
+
+  public isCheckedWarehouse() {
+    this.terminalForm
+      .get('warehouse')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (!value) {
+          this.inputService.changeValidators(
+            this.terminalForm.get('warehousePhone'),
+            true,
+            [phoneRegex]
+          );
+        } else {
+          this.inputService.changeValidators(
+            this.terminalForm.get('warehousePhone'),
+            false
+          );
+        }
+      });
+  }
+
+  public isCheckedFuelStation() {
+    this.terminalForm
+      .get('fuelStation')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (!value) {
+          this.inputService.changeValidators(
+            this.terminalForm.get('fuelStationPhone'),
+            true,
+            [phoneRegex]
+          );
+        } else {
+          this.inputService.changeValidators(
+            this.terminalForm.get('fuelStationPhone'),
+            false
+          );
+        }
+      });
+  }
+
+  public changeGate(event: any) {
+    this.gateBtns = [...event];
+    this.gateBtns.forEach((item) => {
+      if (item.checked) {
+        this.terminalForm.get('gate').patchValue(item.label);
+      }
+    });
+  }
+
+  public changeCamera(event: any) {
+    this.cameraBtns = [...event];
+    this.cameraBtns.forEach((item) => {
+      if (item.checked) {
+        this.terminalForm.get('securityCamera').patchValue(item.label);
+      }
+    });
+  }
+
   private updateTerminal(id: number) {}
 
   private addTerminal() {}
 
   private deleteTerminalById(id: number) {}
+
+  ngOnDestroy() {}
 }

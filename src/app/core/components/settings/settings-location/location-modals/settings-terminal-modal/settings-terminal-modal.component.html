@@ -91,9 +91,9 @@
                   ></app-ta-input>
                 </div>
               </div>
-              <div class="phone-ext-email last-row">
+              <div class="phone-ext-email-user last-row">
                 <div
-                  class="phone-extension phone-ext-email-my-20"
+                  class="phone-extension phone-ext-email-user-my-20"
                   [ngClass]="{ 'active-phone-ext': isTerminalPhoneExtExist }"
                 >
                   <div class="phone-field">
@@ -169,7 +169,7 @@
             }"
           >
             <div *ngIf="!terminalForm.get('office').value">
-              <div class="phone-ext-email phone-ext-email-my-20 last-row">
+              <div class="phone-ext-email-user phone-ext-email-user-my-20 last-row">
                 <div
                   class="phone-extension"
                   [ngClass]="{ 'active-phone-ext': isOfficePhoneExtExist }"
@@ -247,7 +247,7 @@
             }"
           >
             <div *ngIf="!terminalForm.get('parking').value">
-              <div class="phone-ext-email phone-ext-email-my-20 last-row">
+              <div class="phone-ext-email-user phone-ext-email-user-my-20 last-row">
                 <div
                   class="phone-extension"
                   [ngClass]="{ 'active-phone-ext': isParkingPhoneExtExist }"
@@ -294,6 +294,52 @@
                   ></app-ta-input>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-12">
+                  <app-ta-input
+                    formControlName="parkingSlot"
+                    [inputConfig]="{
+                      name: 'Parking Slot',
+                      type: 'text',
+                      label: 'Parking Slot # (Truck)',
+                      textTransform: 'capitalize'
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <app-ta-input
+                    formControlName="fullParkingSlot"
+                    [inputConfig]="{
+                      name: 'Full Parking Slot',
+                      type: 'text',
+                      label: 'Full Parking Slot # (Semi Truck - Trailer)',
+                      textTransform: 'capitalize'
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+              <div class="parking-gate-securityCamera">
+                <div class="gate-field">
+                  <p>Gate</p>
+                  <div class="gate-radio">
+                    <app-ta-input-radiobuttons
+                      [buttons]="gateBtns"
+                      (changedValue)="changeGate($event)"
+                    ></app-ta-input-radiobuttons>
+                  </div>
+                </div>
+                <div class="camera-field">
+                  <p>Security Camera</p>
+                  <div class="camera-radio">
+                    <app-ta-input-radiobuttons
+                      [buttons]="cameraBtns"
+                      (changedValue)="changeCamera($event)"
+                    ></app-ta-input-radiobuttons>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -325,7 +371,7 @@
             }"
           >
             <div *ngIf="!terminalForm.get('warehouse').value">
-              <div class="phone-ext-email phone-ext-email-my-20 last-row">
+              <div class="phone-ext-email-user phone-ext-email-user-my-20 last-row">
                 <div
                   class="phone-extension"
                   [ngClass]="{ 'active-phone-ext': isWarehousePhoneExtExist }"
@@ -405,7 +451,7 @@
             }"
           >
             <div *ngIf="!terminalForm.get('fuelStation').value">
-              <div class="phone-ext-email phone-ext-email-my-20 last-row">
+              <div class="phone-ext-email-user phone-ext-email-user-my-20 last-row">
                 <div
                   class="phone-extension"
                   [ngClass]="{ 'active-phone-ext': isFuelStationPhoneExtExist }"

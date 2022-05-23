@@ -93,7 +93,7 @@
                   ></app-ta-input>
                 </div>
               </div>
-              <div class="phone-ext-email last-row">
+              <div class="phone-ext-email-user last-row">
                 <div
                   class="phone-extension"
                   [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
@@ -149,12 +149,17 @@
           [cardName]="'Service'"
           [isCardOpen]="true"
         >
-        <div class="repair-shop-services">
-          <div *ngFor="let repair of services; trackBy: identity" class="repair-shop-service" [class.active]="repair.active" (click)="onPickService(repair)">
-              <svg-icon src="{{repair.svg}}"></svg-icon>
-              <p>{{repair.name}}</p>
+          <div class="repair-shop-services">
+            <div
+              *ngFor="let repair of services; trackBy: identity"
+              class="repair-shop-service"
+              [class.active]="repair.active"
+              (click)="onPickService(repair)"
+            >
+              <svg-icon src="{{ repair.svg }}"></svg-icon>
+              <p>{{ repair.name }}</p>
+            </div>
           </div>
-        </div>
         </app-ta-custom-card>
       </div>
       <!-------------------------------- Additional Tab -------------------------------->

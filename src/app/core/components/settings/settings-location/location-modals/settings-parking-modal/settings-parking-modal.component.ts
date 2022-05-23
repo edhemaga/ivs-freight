@@ -1,10 +1,20 @@
-import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddressEntity } from 'appcoretruckassist';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { Address } from 'src/app/core/components/shared/model/address';
-import { emailRegex, phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+import {
+  emailRegex,
+  phoneRegex,
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
@@ -12,10 +22,9 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
   selector: 'app-settings-parking-modal',
   templateUrl: './settings-parking-modal.component.html',
   styleUrls: ['./settings-parking-modal.component.scss'],
-  animations: [tab_modal_animation('animationTabsModal')]
+  animations: [tab_modal_animation('animationTabsModal')],
 })
 export class SettingsParkingModalComponent implements OnInit, OnDestroy {
-
   @Input() editData: any;
 
   public parkingForm: FormGroup;
@@ -82,18 +91,18 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal,
     private notificationService: NotificationService
-  ) { }
- 
+  ) {}
 
   ngOnInit() {
     this.createForm();
+    this.isCheckedCompanyOwned();
   }
 
   private createForm() {
     this.parkingForm = this.formBuilder.group({
       companyOwned: [false],
-      parkingName: [null, Validators.required],
-      address: [null, Validators.required],
+      parkingName: [null],
+      address: [null],
       addressUnit: [null, Validators.maxLength(6)],
       phone: [null, phoneRegex],
       phoneExtension: [null],
@@ -104,8 +113,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       securityCamera: [null],
       rent: [null],
       payPeriod: [null],
-      day: [null]
-    })
+      day: [null],
+    });
   }
 
   public tabChange(event: any): void {
@@ -123,6 +132,29 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       event.stopPropagation();
       this.parkingForm.get('companyOwned').setValue(false);
     }
+  }
+
+  public isCheckedCompanyOwned() {
+    this.parkingForm
+      .get('companyOwned')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (!value) {
+          this.inputService.changeValidators(
+            this.parkingForm.get('parkingName')
+          );
+          this.inputService.changeValidators(this.parkingForm.get('address'));
+        } else {
+          this.inputService.changeValidators(
+            this.parkingForm.get('parkingName'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.parkingForm.get('address'),
+            false
+          );
+        }
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {

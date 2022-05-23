@@ -1,6 +1,6 @@
 import { FormArray, Validators } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -11,15 +11,16 @@ import {
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { AddressEntity } from 'appcoretruckassist';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-settings-office-modal',
   templateUrl: './settings-office-modal.component.html',
   styleUrls: ['./settings-office-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
-export class SettingsOfficeModalComponent implements OnInit {
+export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
 
   public officeForm: FormGroup;
@@ -59,15 +60,16 @@ export class SettingsOfficeModalComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+    this.isCheckedCompanyOwned();
   }
 
   private createForm() {
     this.officeForm = this.formBuilder.group({
       companyOwned: [false],
-      officeName: [null, Validators.required],
-      address: [null, Validators.required],
+      officeName: [null],
+      address: [null],
       addressUnit: [null, Validators.maxLength(6)],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null],
       phoneExtension: [null],
       email: [null, emailRegex],
       departmentContacts: this.formBuilder.array([]),
@@ -166,6 +168,24 @@ export class SettingsOfficeModalComponent implements OnInit {
     }
   }
 
+  private isCheckedCompanyOwned() {
+    this.officeForm
+      .get('companyOwned')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if(!value) {
+          this.inputService.changeValidators(this.officeForm.get('officeName'))
+          this.inputService.changeValidators(this.officeForm.get('address'))
+          this.inputService.changeValidators(this.officeForm.get('phone'), true, [phoneRegex])
+        }
+        else {
+          this.inputService.changeValidators(this.officeForm.get('officeName'), false)
+          this.inputService.changeValidators(this.officeForm.get('address'), false)
+          this.inputService.changeValidators(this.officeForm.get('phone'), false)
+        }
+      });
+  }
+
   public onSelectPayPeriod(event) {
     this.selectedPayPeriod = event;
   }
@@ -179,4 +199,6 @@ export class SettingsOfficeModalComponent implements OnInit {
   private addOffice() {}
 
   private deleteOfficeById(id: number) {}
+
+  ngOnDestroy(): void {}
 }
