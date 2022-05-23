@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -11,6 +12,7 @@ import {
 } from '@angular/core';
 import { ModalService } from './modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
 
 @Component({
   selector: 'app-ta-modal',
@@ -38,6 +40,12 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
   private timeout = null;
 
+  // Drag & Drop properties
+  public isDropZoneVisible: boolean = false;
+  public dropZoneCounter: number = 0;
+  public leavingDropZone: boolean = false;
+  public stopCoutingInDropZone = false;
+
   constructor(
     private ngbActiveModal: NgbActiveModal,
     private modalService: ModalService
@@ -49,6 +57,31 @@ export class TaModalComponent implements OnInit, OnDestroy {
       .subscribe((data: { name: string; status: boolean }) => {
         if (data?.name === 'deactivate') {
           this.isDeactivated = !this.isDeactivated;
+        }
+      });
+
+    this.modalService.documentsDropZoneSubject$
+      .pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          $(document).on('dragover', '.modal', (event) => {
+            event.preventDefault();
+            if (this.dropZoneCounter < 2 && !this.leavingDropZone) {
+              this.dropZoneCounter++;
+            }
+            this.isDropZoneVisible = true;
+          });
+
+          $(document).on('dragleave', '.modal', (event) => {
+            this.dropZoneCounter--;
+
+            if (this.dropZoneCounter < 0) {
+              this.isDropZoneVisible = false;
+              this.leavingDropZone = false;
+              this.dropZoneCounter = 0;
+              this.stopCoutingInDropZone = true;
+            }
+          });
         }
       });
   }
@@ -88,6 +121,40 @@ export class TaModalComponent implements OnInit, OnDestroy {
       }
       case 'delete': {
         this.modalActionTypeEmitter.emit({ action: action, bool: false });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public onDropFile(event: { files: UploadFile[]; action: string }) {
+    this.modalService.uploadDocumentsSubject$.next(event);
+  }
+
+
+  public onDropBackground(event: { action: string; value: boolean }) {
+    switch (event.action) {
+      case 'dragleave': {
+        if (!event.value && this.dropZoneCounter === 1) {
+          this.dropZoneCounter--;
+          this.leavingDropZone = true;
+          this.stopCoutingInDropZone = false;
+        }
+        break;
+      }
+      case 'drop': {
+        if (!event.value) {
+          this.isDropZoneVisible = false;
+        }
+        break;
+      }
+      case 'dragover': {
+        this.leavingDropZone = false;
+        if(!this.stopCoutingInDropZone)
+          this.dropZoneCounter ++;
+        this.stopCoutingInDropZone = true;
         break;
       }
       default: {

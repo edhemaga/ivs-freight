@@ -62,9 +62,9 @@
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
             active: option.id === activeItem?.id,
-            trailerContainer: option.name === 'Container',
-            semisleeper: option.name === 'Semi w/Sleeper',
-            lowboyrgn: option.name === 'Low Boy/RGN'
+            'trailerContainer': option.name === 'Container',
+            'semisleeper': option.name === 'Semi w/Sleeper',
+            'lowboyrgn': option.name === 'Low Boy/RGN'
           }"
           (click)="onActiveItem(option)"
         >
@@ -73,7 +73,7 @@
               option.name.trim().replace(' ', '').toLowerCase()
             }}"
             [ngClass]="{ active: option.id === activeItem?.id }"
-            [src]="option.svg | taSvg: option.folder:option?.subFolder"
+            [src]="option.logoName | taSvg: option.folder:option?.subFolder"
           ></svg-icon>
           <div
             class="svgtext-template-text"

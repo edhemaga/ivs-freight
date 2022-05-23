@@ -5,6 +5,9 @@ import { Subject, of } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 import { TruckInterface } from '../state/truck.modal';
 import { TruckTService } from '../state/truck.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 
 @Component({
   selector: 'app-truck-details',
@@ -21,7 +24,10 @@ export class TruckDetailsComponent implements OnInit {
   titleLength:number;
   public data:any;
   constructor(
-    private activated_route: ActivatedRoute
+    private truckQuery: TruckQuery,
+    private truckTService: TruckTService,
+    private activated_route: ActivatedRoute,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -59,14 +65,13 @@ export class TruckDetailsComponent implements OnInit {
         id: 4,
         name: 'Lease / Purchase',
         template: 'lease-purchase',
-       
       },
     ];
   }
   public identity(index: number, item: any): number {
     return item.id;
   }
-  
+
   public initTableOptions(): void {
     this.dataTest = {
       disabledMutedStyle: null,
@@ -118,7 +123,32 @@ export class TruckDetailsComponent implements OnInit {
       export: true,
     };
   }
-  
+
+  public onModalAction(action: string): void {
+    const truck_id = this.activated_route.snapshot.paramMap.get('id');
+    switch (action.toLowerCase()) {
+      case 'registration': {
+        this.modalService.openModal(
+          TtRegistrationModalComponent,
+          { size: 'small' },
+          { id: truck_id, type: 'add-registration', modal: 'truck' }
+        );
+        break;
+      }
+      case 'fhwa inspection': {
+        this.modalService.openModal(
+          TtFhwaInspectionModalComponent,
+          { size: 'small' },
+          { id: truck_id, type: 'add-inspection', modal: 'truck' }
+        );
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

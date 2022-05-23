@@ -6,6 +6,7 @@ import { ToDoRoutingModule } from './to-do-routing.module';
 import { ToDoListCardComponent } from './to-do-list-card/to-do-list-card.component';
 
 import { GridsterModule } from 'angular-gridster2';
+import { AppTooltipeModule } from '../shared/app-tooltip/app-tooltip.module';
 @NgModule({
   declarations: [
     ToDoListCardComponent
@@ -14,7 +15,8 @@ import { GridsterModule } from 'angular-gridster2';
     CommonModule,
     ToDoRoutingModule,
     AngularSvgIconModule,
-    GridsterModule
+    GridsterModule,
+    AppTooltipeModule
   ]
 })
 export class ToDoModule { }

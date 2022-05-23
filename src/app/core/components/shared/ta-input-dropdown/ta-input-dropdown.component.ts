@@ -56,6 +56,7 @@ export class TaInputDropdownComponent
     if (this.options) {
       this.originalOptions = [...this.options];
     }
+    console.log(this.options)
   }
 
   ngOnInit(): void {

@@ -237,6 +237,10 @@
       margin: 0;
     }
 
+    &.edit-mode {
+      padding: 0px !important;
+    }
+
     .ta-upload-file-ext {
       width: 32px;
       height: 18px;

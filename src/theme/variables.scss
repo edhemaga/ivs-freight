@@ -93,32 +93,6 @@ $th-start-date: #b93636;
 
 $trash-icon-color: #ff5d5d;
 
-// Truck type colors ///////////////////////////////////////////////////////////
-$semi-truck: #90BC6F;
-$semi-w-sleeper: #FFC061;
-$box-truck: #EF6E6E;
-$cargo-van: #78C7FC;
-$tow-truck: #90659B;
-$truck-hauler: #668888;
-$bus: #eed070;
-$motorcycle: #7081DB;
-$pars-vehicle: #78D1B5;
-////////////////////////////////////////////////////////////////////////////////
-
-// Trailer type colors /////////////////////////////////////////////////////////
-$reefer: #EF6E6E;
-$dry-van: #5673AA;
-$side-kit: #76A77D;
-$conestog: #484848;
-$dumper: #8FDEE1;
-$container: #FFBE7D;
-$tanker: #81CCFF;
-$trailer-hauler: #668888;
-$flat-bed: #AF88EA;
-$low-boy: #955FA2;
-$chassis: #547556;
-$step-deck: #F2DD75;
-////////////////////////////////////////////////////////////////////////////////
 
 // mixins
 @mixin border($direction, $width: 1px, $style: solid, $color: $gray-300) {

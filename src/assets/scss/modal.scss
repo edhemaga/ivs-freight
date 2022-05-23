@@ -18,6 +18,10 @@ ngb-modal-window[aria-hidden="true"] {
     transition: all 0.3s ease-out !important;
   }
 
+  // This class added through modal.service.ts
+  &.modal-animation {
+  }
+
   &.modal-animation .modal-dialog {
     opacity: 1;
     transform: scale(1) !important;
@@ -120,7 +124,7 @@ ngb-modal-window[aria-hidden="true"] {
           outline: none;
           border: none;
           margin: 0;
-          padding: 6px 0px;
+          padding: 0;
           border-radius: 2px;
           -webkit-user-select: none;
           -moz-user-select: none;
@@ -135,6 +139,7 @@ ngb-modal-window[aria-hidden="true"] {
         }
 
         .modal-deactivate-btn {
+          width: 128px;
           height: 32px;
           text-align: center;
           font-size: 14px;
@@ -145,7 +150,7 @@ ngb-modal-window[aria-hidden="true"] {
           border: none;
           margin: 0;
           margin-left: 6px;
-          padding: 6px 21px;
+          padding: 0;
           border-radius: 2px;
           -webkit-user-select: none;
           -moz-user-select: none;
@@ -167,11 +172,11 @@ ngb-modal-window[aria-hidden="true"] {
           color: #b7b7b7;
           font-weight: 700;
           font-size: 14px;
-          height: 32px;
           width: 150px;
+          height: 32px;
           text-align: center;
           margin: 0;
-          padding: 6px 0px;
+          padding: 0;
           -webkit-user-select: none;
           -moz-user-select: none;
           -ms-user-select: none;

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-trailer-details',
@@ -12,9 +15,7 @@ export class TrailerDetailsComponent implements OnInit {
   registrationLength:number;
   inspectionLength:number;
   titleLength:number;
-  constructor(
-    private activated_route: ActivatedRoute
-  ) { }
+  constructor(private activated_route: ActivatedRoute, private modalService: ModalService) { }
 
   ngOnInit(): void {
     this.data=this.activated_route.snapshot.data;
@@ -54,6 +55,31 @@ export class TrailerDetailsComponent implements OnInit {
       },
     ];
   }
+  public onModalAction(action: string): void {
+    const truck_id = this.activated_route.snapshot.paramMap.get('id');
+    switch (action.toLowerCase()) {
+      case 'registration': {
+        this.modalService.openModal(
+          TtRegistrationModalComponent,
+          { size: 'small' },
+          { id: truck_id, type: 'add-registration', modal: 'trailer' }
+        );
+        break;
+      }
+      case 'fhwa inspection': {
+        this.modalService.openModal(
+          TtFhwaInspectionModalComponent,
+          { size: 'small' },
+          { id: truck_id, type: 'add-inspection', modal: 'trailer' }
+        );
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   public identity(index: number, item: any): number {
     return item.id;
   }

@@ -348,6 +348,8 @@
           [hasArrow]="false"
           [hasLikeDislike]="true"
           [isCardOpen]="true"
+          [hasBodyData]="reviews.length"
+          [isCommentData]="true"
           [hasScrollBody]="reviews.length > 6"
           (onActionEvent)="addNewReview($event)"
         >

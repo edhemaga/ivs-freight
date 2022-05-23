@@ -1,6 +1,7 @@
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
+  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -180,9 +181,22 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: GetTrailerModalResponse) => {
-          this.trailerType = res.trailerTypes;
+          this.trailerType = res.trailerTypes.map(item => {
+            return {
+              ...item,
+              folder:'common', 
+              subFolder: 'trailers'
+            }
+          });
           this.trailerMakeType = res.trailerMakes;
-          this.colorType = res.colors;
+          this.colorType = res.colors.map(item => {
+            return {
+              ...item,
+              folder:'common', 
+              subFolder: 'colors',
+              logoName: 'ic_color.svg'
+            }
+          });
           this.trailerLengthType = res.trailerLengths;
           this.ownerType = res.owners;
           this.suspensionType = res.suspensions;
@@ -311,7 +325,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: TrailerResponse) => {
-          console.log(res)
           this.trailerForm.patchValue({
             companyOwned: res.companyOwned,
             trailerNumber: res.trailerNumber,

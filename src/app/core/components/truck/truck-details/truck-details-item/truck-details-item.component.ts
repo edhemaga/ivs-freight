@@ -251,36 +251,42 @@ export class TruckDetailsItemComponent implements OnInit {
     };
     this.buttonsArrayPerfomance = [
       {
+        id: 1,
         label: '1M',
         value: '1Mchart',
         name: 'chart',
         checked: false,
       },
       {
+        id: 2,
         label: '3M',
         value: '3Mchart',
         name: 'chart',
         checked: false,
       },
       {
+        id: 3,
         label: '6M',
         value: '6Mchart',
         name: 'chart',
         checked: false,
       },
       {
+        id: 4,
         label: '1Y',
         value: '1Ychart',
         name: 'chart',
         checked: false,
       },
       {
+        id: 5,
         label: 'YTD',
         value: 'YTDchart',
         name: 'chart',
         checked: false,
       },
       {
+        id: 6,
         label: 'ALL',
         value: 'ALLchart',
         name: 'chart',
@@ -289,36 +295,42 @@ export class TruckDetailsItemComponent implements OnInit {
     ];
     this.buttonsArrayRevenue = [
       {
+        id: 7,
         label: '1M',
         value: '1Mrev',
         name: 'rev',
         checked: false,
       },
       {
+        id: 8,
         label: '3M',
         value: '3Mrev',
         name: 'rev',
         checked: false,
       },
       {
+        id: 9,
         label: '6M',
         value: '6Mrev',
         name: 'rev',
         checked: false,
       },
       {
+        id: 10,
         label: '1Y',
         value: '1Yrev',
         name: 'rev',
         checked: true,
       },
       {
+        id: 11,
         label: 'YTD',
         value: 'YTDrev',
         name: 'rev',
         checked: false,
       },
       {
+        id: 12,
         label: 'ALL',
         value: 'ALLrev',
         name: 'rev',
@@ -327,36 +339,42 @@ export class TruckDetailsItemComponent implements OnInit {
     ];
     this.buttonsArrayFuel = [
       {
+        id: 13,
         label: '1M',
         value: '1Mfuel',
         name: 'fuel',
         checked: false,
       },
       {
+        id: 14,
         label: '3M',
         value: '3Mfuel',
         name: 'fuel',
         checked: false,
       },
       {
+        id: 15,
         label: '6M',
         value: '6Mfuel',
         name: 'fuel',
         checked: false,
       },
       {
+        id: 16,
         label: '1Y',
         value: '1Yfuel',
         name: 'fuel',
         checked: true,
       },
       {
+        id: 17,
         label: 'YTD',
         value: 'YTDfuel',
         name: 'fuel',
         checked: false,
       },
       {
+        id: 18,
         label: 'ALL',
         value: 'ALLfuel',
         name: 'fuel',

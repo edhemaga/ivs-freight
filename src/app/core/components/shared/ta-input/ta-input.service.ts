@@ -12,6 +12,9 @@ export class TaInputService {
   public onClearInputSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
+  public onFocusOutInputSubject: BehaviorSubject<boolean> =
+  new BehaviorSubject<boolean>(false);
+
   public dropDownShowHideSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 

@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs';
+import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
 import { ModalOptions } from './modal.options';
 @Injectable({
   providedIn: 'root',
 })
 export class ModalService {
+  public modalStatusChange: BehaviorSubject<{ name: string; status: boolean }> =
+    new BehaviorSubject<{ name: string; status: boolean }>(null);
 
-  public modalStatusChange: BehaviorSubject<{name: string, status: boolean}> = new BehaviorSubject<{name: string, status: boolean}>(null);
+  public documentsDropZoneSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  
+  public uploadDocumentsSubject$: BehaviorSubject<{ files: UploadFile[]; action: string }> = new BehaviorSubject<{ files: UploadFile[]; action: string }>(null);
 
   constructor(private ngbModal: NgbModal) {}
 
@@ -15,15 +20,15 @@ export class ModalService {
     return this.modalStatusChange.asObservable();
   }
 
-  public changeModalStatus({name: string, status: boolean}) {
-    this.modalStatusChange.next({name: string, status: boolean});
+  public changeModalStatus({ name: string, status: boolean }) {
+    this.modalStatusChange.next({ name: string, status: boolean });
   }
 
   public openModal(component: any, options: ModalOptions, editData?: any) {
     options = {
       ...options,
       backdrop: 'static',
-      backdropClass: "myDropback"
+      backdropClass: 'myDropback',
     };
 
     const modal = this.ngbModal.open(component, options);
@@ -38,14 +43,11 @@ export class ModalService {
     });
 
     const fx = (modal as any)._removeModalElements.bind(modal);
-    
-    if(fx) {
-      (modal as any)._removeModalElements = () => {
-        instance.windowClass = '';
-        setTimeout(fx, 50);
-      };
-    }
-   
+
+    (modal as any)._removeModalElements = () => {
+      instance.windowClass = '';
+      setTimeout(fx, 250);
+    };
 
     setTimeout(() => {
       document

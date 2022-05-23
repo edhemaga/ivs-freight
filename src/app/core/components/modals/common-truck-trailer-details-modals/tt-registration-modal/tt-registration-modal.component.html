@@ -1,0 +1,69 @@
+<app-ta-modal
+  [modalTitle]="
+    editData?.type !== 'edit'
+      ? 'Add new registration'
+      : 'Edit new registration'
+  "
+  [editData]="editData"
+  [isModalValid]="registrationForm.valid"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <form [formGroup]="registrationForm" class="form-container">
+    <div class="row last-row">
+      <div class="col-4">
+        <app-ta-input
+          formControlName="issueDate"
+          [inputConfig]="{
+            name: 'datepicker',
+            type: 'text',
+            label: 'Issue Date',
+            placeholderIcon: 'date',
+            isRequired: true,
+            customClass: 'datetimeclass'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-4">
+        <app-ta-input
+          formControlName="expDate"
+          [inputConfig]="{
+            name: 'datepicker',
+            type: 'text',
+            label: 'Expiry Date',
+            placeholderIcon: 'date',
+            customClass: 'datetimeclass'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-4">
+        <app-ta-input
+          formControlName="licensePlate"
+          [inputConfig]="{
+            name: 'License plate',
+            type: 'text',
+            label: 'License plate',
+            isRequired: true,
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="ta-card-body-overflow-none">
+      <app-ta-custom-card
+        [hasCounter]="documents.length ? documents.length : '0'"
+        [cardName]="'Documents'"
+        [isCardOpen]="documents.length"
+      >
+        <app-ta-modal-upload
+          [files]="[]"
+          (onFileEvent)="onFilesEvent($event)"
+        ></app-ta-modal-upload>
+      </app-ta-custom-card>
+    </div>
+
+    <app-ta-input-note
+      formControlName="note"
+      [isVisibleNote]="registrationForm.get('note').value"
+    ></app-ta-input-note>
+  </form>
+</app-ta-modal>
