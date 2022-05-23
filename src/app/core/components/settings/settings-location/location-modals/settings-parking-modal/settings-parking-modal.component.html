@@ -170,7 +170,7 @@
           <div class="parking-gate-securityCamera">
             <div class="gate-field">
               <p>Gate</p>
-              <div class="gate" style="width: 78px; height: 26px">
+              <div class="gate-radio">
                 <app-ta-input-radiobuttons
                   [buttons]="gateBtns"
                   (changedValue)="changeGate($event)"
@@ -179,7 +179,7 @@
             </div>
             <div class="camera-field">
               <p>Security Camera</p>
-              <div class="camera" style="width: 78px; height: 26px">
+              <div class="camera-radio">
                 <app-ta-input-radiobuttons
                   [buttons]="cameraBtns"
                   (changedValue)="changeCamera($event)"

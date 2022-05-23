@@ -1,3 +1,504 @@
-<p>
-  settings-terminal-modal works!
-</p>
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Terminal' : 'Edit Terminal'"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="terminalForm.valid"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <app-tab-switcher
+    (switchClicked)="tabChange($event)"
+    [tabs]="tabs"
+  ></app-tab-switcher>
+
+  <form
+    [formGroup]="terminalForm"
+    class="form-container"
+    [ngClass]="
+      selectedTab === 1
+        ? 'form-container-mt-12'
+        : 'row-settings-location-additional'
+    "
+  >
+    <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
+      <!-------------------------------- Basic Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 1">
+        <!-- Company owned -->
+        <div class="custom-checkbox-card">
+          <div class="divider"></div>
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: terminalForm.get('companyOwned').value }"
+            (click)="openCloseCheckboxCard($event, 'companyOwned')"
+          >
+            <app-ta-checkbox
+              formControlName="companyOwned"
+              [label]="'Company Owned'"
+            ></app-ta-checkbox>
+            <svg-icon
+              class="checkbox-card-header-arrow"
+              src="assets/svg/common/ic_arrow_down_updated.svg"
+              [ngClass]="{
+                visible: !terminalForm.get('companyOwned')?.value
+              }"
+            ></svg-icon>
+          </div>
+          <div
+            class="checkbox-card-body"
+            [ngClass]="{
+              'active-20': !terminalForm.get('companyOwned').value
+            }"
+          >
+            <div *ngIf="!terminalForm.get('companyOwned').value">
+              <div class="row">
+                <div class="col-12">
+                  <app-ta-input
+                    formControlName="terminalName"
+                    [inputConfig]="{
+                      name: 'Terminal Name',
+                      type: 'text',
+                      label: 'Terminal Name',
+                      isRequired: true,
+                      textTransform: 'capitalize',
+                      autoFocus: true
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-10">
+                  <app-ta-input-address
+                    formControlName="address"
+                    [inputConfig]="{
+                      name: 'Address',
+                      type: 'text',
+                      label: 'Address, City, State Zip',
+                      isRequired: true,
+                      placeholderIcon: 'address',
+                      textTransform: 'capitalize'
+                    }"
+                    (selectedAddress)="onHandleAddress($event)"
+                  ></app-ta-input-address>
+                </div>
+                <div class="col-2">
+                  <app-ta-input
+                    formControlName="addressUnit"
+                    [inputConfig]="{
+                      name: 'Address Unit',
+                      type: 'text',
+                      label: 'Unit #',
+                      maxLength: 6
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+              <div class="phone-ext-email last-row">
+                <div
+                  class="phone-extension"
+                  [ngClass]="{ 'active-phone-ext': isTerminalPhoneExtExist }"
+                >
+                  <div class="phone-field">
+                    <app-ta-input
+                      formControlName="terminalPhone"
+                      [inputConfig]="{
+                        name: 'Phone',
+                        type: 'text',
+                        label: 'Phone',
+                        placeholderIcon: 'phone',
+                        mask: '(000) 000-0000'
+                      }"
+                    ></app-ta-input>
+                  </div>
+                  <div
+                    class="extension-field"
+                    *ngIf="!isTerminalPhoneExtExist"
+                    (click)="isTerminalPhoneExtExist = !isTerminalPhoneExtExist"
+                  >
+                    <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+                  </div>
+                  <app-ta-input
+                    *ngIf="isTerminalPhoneExtExist"
+                    formControlName="terminalPhoneExtension"
+                    [inputConfig]="{
+                      name: 'Phone Extension',
+                      type: 'text',
+                      label: 'Ext.',
+                      maxLength: 3
+                    }"
+                  ></app-ta-input>
+                </div>
+                <div class="email-field">
+                  <app-ta-input
+                    formControlName="terminalEmail"
+                    [inputConfig]="{
+                      name: 'Email',
+                      type: 'text',
+                      label: 'Email',
+                      placeholderIcon: 'email'
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Office -->
+        <div class="custom-checkbox-card">
+          <div class="divider"></div>
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: terminalForm.get('office').value }"
+            (click)="openCloseCheckboxCard($event, 'office')"
+          >
+            <app-ta-checkbox
+              formControlName="office"
+              [label]="'Office'"
+            ></app-ta-checkbox>
+            <svg-icon
+              class="checkbox-card-header-arrow"
+              src="assets/svg/common/ic_arrow_down_updated.svg"
+              [ngClass]="{
+                visible: !terminalForm.get('office')?.value
+              }"
+            ></svg-icon>
+          </div>
+          <div
+            class="checkbox-card-body"
+            [ngClass]="{
+              'active-20': !terminalForm.get('office').value
+            }"
+          >
+            <div *ngIf="!terminalForm.get('office').value">
+              <div class="phone-ext-email last-row">
+                <div
+                  class="phone-extension"
+                  [ngClass]="{ 'active-phone-ext': isOfficePhoneExtExist }"
+                >
+                  <div class="phone-field">
+                    <app-ta-input
+                      formControlName="officePhone"
+                      [inputConfig]="{
+                        name: 'Phone',
+                        type: 'text',
+                        label: 'Phone',
+                        placeholderIcon: 'phone',
+                        mask: '(000) 000-0000'
+                      }"
+                    ></app-ta-input>
+                  </div>
+                  <div
+                    class="extension-field"
+                    *ngIf="!isOfficePhoneExtExist"
+                    (click)="isOfficePhoneExtExist = !isOfficePhoneExtExist"
+                  >
+                    <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+                  </div>
+                  <app-ta-input
+                    *ngIf="isTerminalPhoneExtExist"
+                    formControlName="officePhoneExtension"
+                    [inputConfig]="{
+                      name: 'Phone Extension',
+                      type: 'text',
+                      label: 'Ext.',
+                      maxLength: 3
+                    }"
+                  ></app-ta-input>
+                </div>
+                <div class="email-field">
+                  <app-ta-input
+                    formControlName="officeEmail"
+                    [inputConfig]="{
+                      name: 'Email',
+                      type: 'text',
+                      label: 'Email',
+                      placeholderIcon: 'email'
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Parking -->
+        <div class="custom-checkbox-card">
+          <div class="divider"></div>
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: terminalForm.get('parking').value }"
+            (click)="openCloseCheckboxCard($event, 'parking')"
+          >
+            <app-ta-checkbox
+              formControlName="parking"
+              [label]="'Parking'"
+            ></app-ta-checkbox>
+            <svg-icon
+              class="checkbox-card-header-arrow"
+              src="assets/svg/common/ic_arrow_down_updated.svg"
+              [ngClass]="{
+                visible: !terminalForm.get('parking')?.value
+              }"
+            ></svg-icon>
+          </div>
+          <div
+            class="checkbox-card-body"
+            [ngClass]="{
+              'active-20': !terminalForm.get('parking').value
+            }"
+          >
+            <div *ngIf="!terminalForm.get('parking').value">
+              <div class="phone-ext-email last-row">
+                <div
+                  class="phone-extension"
+                  [ngClass]="{ 'active-phone-ext': isParkingPhoneExtExist }"
+                >
+                  <div class="phone-field">
+                    <app-ta-input
+                      formControlName="parkingPhone"
+                      [inputConfig]="{
+                        name: 'Phone',
+                        type: 'text',
+                        label: 'Phone',
+                        placeholderIcon: 'phone',
+                        mask: '(000) 000-0000'
+                      }"
+                    ></app-ta-input>
+                  </div>
+                  <div
+                    class="extension-field"
+                    *ngIf="!isParkingPhoneExtExist"
+                    (click)="isParkingPhoneExtExist = !isParkingPhoneExtExist"
+                  >
+                    <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+                  </div>
+                  <app-ta-input
+                    *ngIf="isParkingPhoneExtExist"
+                    formControlName="parkingPhoneExtension"
+                    [inputConfig]="{
+                      name: 'Phone Extension',
+                      type: 'text',
+                      label: 'Ext.',
+                      maxLength: 3
+                    }"
+                  ></app-ta-input>
+                </div>
+                <div class="email-field">
+                  <app-ta-input
+                    formControlName="parkingEmail"
+                    [inputConfig]="{
+                      name: 'Email',
+                      type: 'text',
+                      label: 'Email',
+                      placeholderIcon: 'email'
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Warehouse -->
+        <div class="custom-checkbox-card">
+          <div class="divider"></div>
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: terminalForm.get('warehouse').value }"
+            (click)="openCloseCheckboxCard($event, 'warehouse')"
+          >
+            <app-ta-checkbox
+              formControlName="warehouse"
+              [label]="'Warehouse'"
+            ></app-ta-checkbox>
+            <svg-icon
+              class="checkbox-card-header-arrow"
+              src="assets/svg/common/ic_arrow_down_updated.svg"
+              [ngClass]="{
+                visible: !terminalForm.get('warehouse')?.value
+              }"
+            ></svg-icon>
+          </div>
+          <div
+            class="checkbox-card-body"
+            [ngClass]="{
+              'active-20': !terminalForm.get('warehouse').value
+            }"
+          >
+            <div *ngIf="!terminalForm.get('warehouse').value">
+              <div class="phone-ext-email last-row">
+                <div
+                  class="phone-extension"
+                  [ngClass]="{ 'active-phone-ext': isWarehousePhoneExtExist }"
+                >
+                  <div class="phone-field">
+                    <app-ta-input
+                      formControlName="warehousePhone"
+                      [inputConfig]="{
+                        name: 'Phone',
+                        type: 'text',
+                        label: 'Phone',
+                        placeholderIcon: 'phone',
+                        mask: '(000) 000-0000'
+                      }"
+                    ></app-ta-input>
+                  </div>
+                  <div
+                    class="extension-field"
+                    *ngIf="!isWarehousePhoneExtExist"
+                    (click)="
+                      isWarehousePhoneExtExist = !isWarehousePhoneExtExist
+                    "
+                  >
+                    <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+                  </div>
+                  <app-ta-input
+                    *ngIf="isTerminalPhoneExtExist"
+                    formControlName="warehousePhoneExtension"
+                    [inputConfig]="{
+                      name: 'Phone Extension',
+                      type: 'text',
+                      label: 'Ext.',
+                      maxLength: 3
+                    }"
+                  ></app-ta-input>
+                </div>
+                <div class="email-field">
+                  <app-ta-input
+                    formControlName="warehouseEmail"
+                    [inputConfig]="{
+                      name: 'Email',
+                      type: 'text',
+                      label: 'Email',
+                      placeholderIcon: 'email'
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Fuel Station -->
+        <div class="custom-checkbox-card">
+          <div class="divider"></div>
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: terminalForm.get('fuelStation').value }"
+            (click)="openCloseCheckboxCard($event, 'fuelStation')"
+          >
+            <app-ta-checkbox
+              formControlName="fuelStation"
+              [label]="'Fuel Station'"
+            ></app-ta-checkbox>
+            <svg-icon
+              class="checkbox-card-header-arrow"
+              src="assets/svg/common/ic_arrow_down_updated.svg"
+              [ngClass]="{
+                visible: !terminalForm.get('fuelStation')?.value
+              }"
+            ></svg-icon>
+          </div>
+          <div
+            class="checkbox-card-body"
+            [ngClass]="{
+              'active-20': !terminalForm.get('fuelStation').value
+            }"
+          >
+            <div *ngIf="!terminalForm.get('fuelStation').value">
+              <div class="phone-ext-email last-row">
+                <div
+                  class="phone-extension"
+                  [ngClass]="{ 'active-phone-ext': isFuelStationPhoneExtExist }"
+                >
+                  <div class="phone-field">
+                    <app-ta-input
+                      formControlName="fuelStationPhone"
+                      [inputConfig]="{
+                        name: 'Phone',
+                        type: 'text',
+                        label: 'Phone',
+                        placeholderIcon: 'phone',
+                        mask: '(000) 000-0000'
+                      }"
+                    ></app-ta-input>
+                  </div>
+                  <div
+                    class="extension-field"
+                    *ngIf="!isFuelStationPhoneExtExist"
+                    (click)="
+                      isFuelStationPhoneExtExist = !isFuelStationPhoneExtExist
+                    "
+                  >
+                    <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+                  </div>
+                  <app-ta-input
+                    *ngIf="isFuelStationPhoneExtExist"
+                    formControlName="fuelStationPhoneExtension"
+                    [inputConfig]="{
+                      name: 'Phone Extension',
+                      type: 'text',
+                      label: 'Ext.',
+                      maxLength: 3
+                    }"
+                  ></app-ta-input>
+                </div>
+                <div class="email-field">
+                  <app-ta-input
+                    formControlName="fuelStationEmail"
+                    [inputConfig]="{
+                      name: 'Email',
+                      type: 'text',
+                      label: 'Email',
+                      placeholderIcon: 'email'
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-------------------------------- Additional Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 2">
+        <div class="row row-no-m">
+          <div class="col-4">
+            <app-ta-input
+              formControlName="rent"
+              [inputConfig]="{
+                name: 'Rent',
+                type: 'text',
+                label: 'Rent',
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-4">
+            <app-ta-input-dropdown
+              formControlName="payPeriod"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Pay Period',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-4'
+              }"
+              [options]="[]"
+              (selectedItem)="onSelectPayPeriod($event)"
+            ></app-ta-input-dropdown>
+          </div>
+          <div class="col-4 no-p-left">
+            <app-ta-input-dropdown
+              formControlName="day"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Day',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-4'
+              }"
+              [options]="[]"
+              (selectedItem)="onSelectDay($event)"
+            ></app-ta-input-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-ta-modal>
