@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 interface RadioButton {
+  id: string;
   label: string;
   value: string;
   name: string; // must be same for all radio buttons

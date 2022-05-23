@@ -41,12 +41,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   public typeOfEmploye = [
     {
+      id: 1,
       label: 'User',
       value: 'user',
       name: 'employe',
       checked: true,
     },
     {
+      id: 2,
       label: 'Admin',
       value: 'admin',
       name: 'employe',
@@ -56,12 +58,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   public typeOfPayroll = [
     {
+      id: 3,
       label: '1099',
       value: '1099',
       name: 'payroll',
       checked: true,
     },
     {
+      id: 4,
       label: 'W-2',
       value: 'w-2',
       name: 'payroll',
