@@ -93,7 +93,7 @@
               </div>
               <div class="phone-ext-email last-row">
                 <div
-                  class="phone-extension"
+                  class="phone-extension phone-ext-email-my-20"
                   [ngClass]="{ 'active-phone-ext': isTerminalPhoneExtExist }"
                 >
                   <div class="phone-field">
@@ -152,6 +152,7 @@
             <app-ta-checkbox
               formControlName="office"
               [label]="'Office'"
+              [name]="'Office'"
             ></app-ta-checkbox>
             <svg-icon
               class="checkbox-card-header-arrow"
@@ -168,7 +169,7 @@
             }"
           >
             <div *ngIf="!terminalForm.get('office').value">
-              <div class="phone-ext-email last-row">
+              <div class="phone-ext-email phone-ext-email-my-20 last-row">
                 <div
                   class="phone-extension"
                   [ngClass]="{ 'active-phone-ext': isOfficePhoneExtExist }"
@@ -193,7 +194,7 @@
                     <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
                   </div>
                   <app-ta-input
-                    *ngIf="isTerminalPhoneExtExist"
+                    *ngIf="isOfficePhoneExtExist"
                     formControlName="officePhoneExtension"
                     [inputConfig]="{
                       name: 'Phone Extension',
@@ -229,6 +230,7 @@
             <app-ta-checkbox
               formControlName="parking"
               [label]="'Parking'"
+              [name]="'Parking'"
             ></app-ta-checkbox>
             <svg-icon
               class="checkbox-card-header-arrow"
@@ -245,7 +247,7 @@
             }"
           >
             <div *ngIf="!terminalForm.get('parking').value">
-              <div class="phone-ext-email last-row">
+              <div class="phone-ext-email phone-ext-email-my-20 last-row">
                 <div
                   class="phone-extension"
                   [ngClass]="{ 'active-phone-ext': isParkingPhoneExtExist }"
@@ -306,6 +308,7 @@
             <app-ta-checkbox
               formControlName="warehouse"
               [label]="'Warehouse'"
+              [name]="'Warehouse'"
             ></app-ta-checkbox>
             <svg-icon
               class="checkbox-card-header-arrow"
@@ -322,7 +325,7 @@
             }"
           >
             <div *ngIf="!terminalForm.get('warehouse').value">
-              <div class="phone-ext-email last-row">
+              <div class="phone-ext-email phone-ext-email-my-20 last-row">
                 <div
                   class="phone-extension"
                   [ngClass]="{ 'active-phone-ext': isWarehousePhoneExtExist }"
@@ -349,7 +352,7 @@
                     <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
                   </div>
                   <app-ta-input
-                    *ngIf="isTerminalPhoneExtExist"
+                    *ngIf="isWarehousePhoneExtExist"
                     formControlName="warehousePhoneExtension"
                     [inputConfig]="{
                       name: 'Phone Extension',
@@ -385,6 +388,7 @@
             <app-ta-checkbox
               formControlName="fuelStation"
               [label]="'Fuel Station'"
+              [name]="'Fuel Station'"
             ></app-ta-checkbox>
             <svg-icon
               class="checkbox-card-header-arrow"
@@ -401,7 +405,7 @@
             }"
           >
             <div *ngIf="!terminalForm.get('fuelStation').value">
-              <div class="phone-ext-email last-row">
+              <div class="phone-ext-email phone-ext-email-my-20 last-row">
                 <div
                   class="phone-extension"
                   [ngClass]="{ 'active-phone-ext': isFuelStationPhoneExtExist }"

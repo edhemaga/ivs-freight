@@ -718,6 +718,10 @@
   column-gap: 12px;
   margin: 32px 0px;
 
+  &.phone-ext-email-my-20 {
+    margin: 20px 0px !important;
+  }
+
   .phone-extension {
     display: grid;
     grid-template-columns: 232px 26px;
