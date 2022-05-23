@@ -1,3 +1,282 @@
-<p>
-  settings-office-modal works!
-</p>
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Office' : 'Edit Office'"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="officeForm.valid"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <app-tab-switcher
+    (switchClicked)="tabChange($event)"
+    [tabs]="tabs"
+  ></app-tab-switcher>
+
+  <form
+    [formGroup]="officeForm"
+    class="form-container"
+    [ngClass]="
+      selectedTab === 1
+        ? 'form-container-mt-12'
+        : 'row-settings-location-additional'
+    "
+  >
+    <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
+      <!-------------------------------- Basic Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 1">
+        <!-- Company owned -->
+        <div class="custom-checkbox-card">
+          <div class="divider"></div>
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: officeForm.get('companyOwned').value }"
+            (click)="openCloseCheckboxCard($event)"
+          >
+            <app-ta-checkbox
+              formControlName="companyOwned"
+              [label]="'Company Owned'"
+            ></app-ta-checkbox>
+            <svg-icon
+              class="checkbox-card-header-arrow"
+              src="assets/svg/common/ic_arrow_down_updated.svg"
+              [ngClass]="{ visible: !officeForm.get('companyOwned')?.value }"
+            ></svg-icon>
+          </div>
+          <div
+            class="checkbox-card-body"
+            [ngClass]="{ 'active-20': !officeForm.get('companyOwned').value }"
+          >
+            <div *ngIf="!officeForm.get('companyOwned').value">
+              <div class="row">
+                <div class="col-12">
+                  <app-ta-input
+                    formControlName="officeName"
+                    [inputConfig]="{
+                      name: 'Office Name',
+                      type: 'text',
+                      label: 'Office Name',
+                      isRequired: true,
+                      textTransform: 'capitalize',
+                      autoFocus: true
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-10">
+                  <app-ta-input-address
+                    formControlName="address"
+                    [inputConfig]="{
+                      name: 'Address',
+                      type: 'text',
+                      label: 'Address, City, State Zip',
+                      isRequired: true,
+                      placeholderIcon: 'address',
+                      textTransform: 'capitalize'
+                    }"
+                    (selectedAddress)="onHandleAddress($event)"
+                  ></app-ta-input-address>
+                </div>
+                <div class="col-2">
+                  <app-ta-input
+                    formControlName="addressUnit"
+                    [inputConfig]="{
+                      name: 'Address Unit',
+                      type: 'text',
+                      label: 'Unit #',
+                      maxLength: 6
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+              <div class="phone-ext-email-user last-row">
+                <div
+                  class="phone-extension"
+                  [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
+                >
+                  <div class="phone-field">
+                    <app-ta-input
+                      formControlName="phone"
+                      [inputConfig]="{
+                        name: 'Phone',
+                        type: 'text',
+                        label: 'Phone',
+                        isRequired: true,
+                        placeholderIcon: 'phone',
+                        mask: '(000) 000-0000'
+                      }"
+                    ></app-ta-input>
+                  </div>
+                  <div
+                    class="extension-field"
+                    *ngIf="!isPhoneExtExist"
+                    (click)="isPhoneExtExist = !isPhoneExtExist"
+                  >
+                    <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+                  </div>
+                  <app-ta-input
+                    *ngIf="isPhoneExtExist"
+                    formControlName="phoneExtension"
+                    [inputConfig]="{
+                      name: 'Phone Extension',
+                      type: 'text',
+                      label: 'Ext.',
+                      maxLength: 3
+                    }"
+                  ></app-ta-input>
+                </div>
+                <div class="email-field">
+                  <app-ta-input
+                    formControlName="email"
+                    [inputConfig]="{
+                      name: 'Email',
+                      type: 'text',
+                      label: 'Email',
+                      placeholderIcon: 'email'
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Department Contacts -->
+        <app-ta-custom-card
+          [hasCounter]="
+            departmentContacts.length ? departmentContacts.length : '0'
+          "
+          [cardName]="'Contact'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasArrow]="true"
+          [hasBodyData]="departmentContacts.length"
+          [isCardOpen]="departmentContacts.length"
+          [hasScrollBody]="departmentContacts.length > 10"
+          (onActionEvent)="addDepartmentContacts($event)"
+        >
+          <div
+            formArrayName="departmentContacts"
+            class="parking-office-department"
+            (scroll)="onScrollingDepartmentContacts($event)"
+            *ngIf="departmentContacts.length"
+          >
+            <div class="parking-contacts-label">
+              <p>DEPARTMENT <span>*</span></p>
+              <p>PHONE <span>*</span></p>
+              <p>EXT</p>
+              <p>EMAIL</p>
+            </div>
+            <div
+              *ngFor="
+                let departmentContact of departmentContacts.controls;
+                let ind = index
+              "
+            >
+              <div [formGroupName]="ind" class="parking-contacts-card">
+                <app-ta-input-dropdown
+                  formControlName="departmentId"
+                  [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-broker-department'
+                  }"
+                  [options]="[]"
+                  (selectedItem)="onSelectContactDepartment($event, ind)"
+                ></app-ta-input-dropdown>
+                <app-ta-input
+                  formControlName="phone"
+                  [inputConfig]="{
+                    name: 'Phone',
+                    type: 'text',
+                    mask: '(000) 000-0000'
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="extensionPhone"
+                  [inputConfig]="{
+                    name: 'Phone Extension',
+                    type: 'text',
+                    maxLength: 3
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="email"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'text'
+                  }"
+                ></app-ta-input>
+                <svg-icon
+                  class="parking-contacts-delete"
+                  [ngClass]="{
+                    'new-position':
+                      isContactCardsScrolling &&
+                      departmentContact.get('email').value,
+                    'new-position-without-email':
+                      isContactCardsScrolling &&
+                      !departmentContact.get('email').value
+                  }"
+                  src="assets/svg/common/ic_trash.svg"
+                  (click)="removeDepartmentContacts(ind)"
+                  [appTooltip]="'Delete'"
+                  [position]="'top-middle'"
+                  [tooltipBackground]="'#EF5350'"
+                  [tooltipColor]="'#FFFFFF'"
+                  [zIndex]="900"
+                  [borderRadius]="'2px'"
+                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+                  [fontWeight]="'bold'"
+                  [fontSize]="'11px'"
+                  [customPosition]="-11"
+                ></svg-icon>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+      </div>
+      <!-------------------------------- Additional Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 2">
+        <div class="row row-no-m">
+          <div class="col-4">
+            <app-ta-input
+              formControlName="rent"
+              [inputConfig]="{
+                name: 'Rent',
+                type: 'text',
+                label: 'Rent',
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-4">
+            <app-ta-input-dropdown
+              formControlName="payPeriod"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Pay Period',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-4'
+              }"
+              [options]="[]"
+              (selectedItem)="onSelectPayPeriod($event)"
+            ></app-ta-input-dropdown>
+          </div>
+          <div class="col-4 no-p-left">
+            <app-ta-input-dropdown
+              formControlName="day"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Day',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-4'
+              }"
+              [options]="[]"
+              (selectedItem)="onSelectDay($event)"
+            ></app-ta-input-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-ta-modal>
