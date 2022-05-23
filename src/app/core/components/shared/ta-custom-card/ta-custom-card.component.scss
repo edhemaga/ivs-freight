@@ -87,7 +87,8 @@
         }
 
         &.hovered,
-        &.data {
+        &.data,
+        &.comment {
           display: flex;
           align-items: center;
           justify-content: center;
@@ -113,7 +114,7 @@
           }
 
           .header-action-svg {
-            margin-right: 6px;
+            margin-right: 8px;
             align-self: start;
             position: relative;
             top: 1px;
@@ -163,12 +164,12 @@
 
       &.like-dislike-template {
         display: flex;
+        align-items: center;
         position: relative;
-        bottom: 3px;
+
         .ta-like-dislike {
           position: relative;
-          top: 3px;
-          margin-right: 10px;
+          margin-right: 8px;
         }
       }
     }

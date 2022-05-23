@@ -49,7 +49,7 @@ import { Ng5SliderModule } from 'ng5-slider';
 import { EditProfileImageComponent } from './edit-profile-image/edit-profile-image.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CroppieModule } from 'angular-croppie-module';
-import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
+
 import { TaCounterComponent } from './ta-counter/ta-counter.component';
 import { TaNgxSliderComponent } from './ta-ngx-slider/ta-ngx-slider.component';
 import { TaLogoChangeComponent } from './ta-logo-change/ta-logo-change.component';
@@ -98,6 +98,11 @@ import { UserModalComponent } from '../modals/user-modal/user-modal.component';
 import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.component';
 import { TaUploadFileComponent } from './ta-modal-upload/ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-files-carousel/ta-upload-files-carousel.component';
+import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
+import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
 
 @NgModule({
   declarations: [
@@ -138,6 +143,7 @@ import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-file
     TaUserReviewComponent,
     TaCurrencyProgressBarComponent,
     TaUploadFilesCarouselComponent,
+    TaUploadDropzoneComponent,
 
     // Modals Components
     TaModalComponent,
@@ -152,6 +158,9 @@ import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-file
     UserModalComponent,
     TaModalUploadComponent,
     TaUploadFileComponent,
+    TaskModalComponent,
+    TtRegistrationModalComponent,
+    TtFhwaInspectionModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -172,8 +181,8 @@ import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-file
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
-    DragDropFileDirective,
-    TextareaAutosizeDirective
+    TextareaAutosizeDirective,
+    DragDropFileDirective
   ],
   imports: [
     CommonModule,
@@ -265,6 +274,7 @@ import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-file
     TaUserReviewComponent,
     TaUploadFileComponent,
     TaUploadFilesCarouselComponent,
+    TaUploadDropzoneComponent,
 
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
@@ -298,6 +308,9 @@ import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-file
     OwnerModalComponent,
     UserModalComponent,
     TaModalUploadComponent,
+    TaskModalComponent,
+    TtRegistrationModalComponent,
+    TtFhwaInspectionModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -318,8 +331,8 @@ import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-file
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
-    DragDropFileDirective,
     TextareaAutosizeDirective,
+    DragDropFileDirective
   ],
   providers: [
     DatePipe,

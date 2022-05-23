@@ -2,7 +2,10 @@
   <div cdkDragHandle class="modal-header">
     <div class="modal-header-leftside">
       <h5 class="modal-title">{{ modalTitle }}</h5>
-      <h5 class="edit-name" *ngIf="editData?.type === 'edit' || specificCaseModalName">
+      <h5
+        class="edit-name"
+        *ngIf="editData?.type === 'edit' || specificCaseModalName"
+      >
         {{ editName }}
       </h5>
     </div>
@@ -12,80 +15,100 @@
       (click)="onAction('close')"
     ></svg-icon>
   </div>
-  <div class="divider"></div>
-  <div class="modal-body">
-    <ng-content></ng-content>
-  </div>
-  <div
-    class="modal-footer"
-    [ngClass]="{ 'mutliple-buttons': editData?.type === 'edit' }"
-  >
-    <div class="left-side" *ngIf="editData?.type === 'edit'">
+  <div class="dropzone-container">
+    <div
+      [hidden]="!isDropZoneVisible"
+      appDragDropFile
+      (onDropFile)="onDropFile($event)"
+      (onDropBackground)="onDropBackground($event)"
+      class="drop-zone-active"
+    >
+      <label for="pdf" class="ta-modal-dropzone-label2">
+        <svg-icon
+          class="ta-modal-dropzone-area2"
+          src="assets/svg/common/ic_modal_upload_dropzone.svg"
+        ></svg-icon>
+        <div class="ta-modal-dropzone-text2">
+          <span class="ta-modal-dropzone-text-big2">DRAG FILES HERE</span>
+          <span class="ta-modal-dropzone-text-small2">OR CLICK TO ADD</span>
+        </div>
+      </label>
+    </div>
+    <div class="divider"></div>
+    <div class="modal-body">
+      <ng-content></ng-content>
+    </div>
+    <div
+      class="modal-footer"
+      [ngClass]="{ 'mutliple-buttons': editData?.type === 'edit' }"
+    >
+      <div class="left-side" *ngIf="editData?.type === 'edit'">
+        <button
+          (click)="onAction('delete')"
+          class="modal-delete-btn"
+          ngbAutofocus
+          type="button"
+        >
+          Delete
+        </button>
+        <button
+          *ngIf="editData?.disableButton"
+          (click)="onAction('deactivate')"
+          class="modal-deactivate-btn"
+          ngbAutofocus
+          type="button"
+        >
+          {{ isDeactivated ? "Activate" : "Deactivate" }}
+        </button>
+        <button
+          *ngIf="editData?.dnuButton"
+          (click)="onAction('dnu')"
+          class="modal-deactivate-btn"
+          ngbAutofocus
+          type="button"
+          [appTooltip]="'Do Not Use List'"
+          [position]="'top-middle'"
+          [tooltipBackground]="'#6C6C6C'"
+          [tooltipColor]="'#FFFFFF'"
+          [zIndex]="900"
+          [borderRadius]="'2px'"
+          [fontWeight]="'bold'"
+          [fontSize]="'11px'"
+          [customPosition]="147"
+          [tatooltipvisible]="!isDNU"
+        >
+          {{ isDNU ? "Remove from DNU" : "Move to DNU" }}
+        </button>
+        <button
+          *ngIf="editData?.bfbButton"
+          (click)="onAction('bfb')"
+          class="modal-deactivate-btn"
+          ngbAutofocus
+          type="button"
+          [appTooltip]="'Banned from Broker List'"
+          [position]="'top-middle'"
+          [tooltipBackground]="'#6C6C6C'"
+          [tooltipColor]="'#FFFFFF'"
+          [zIndex]="900"
+          [borderRadius]="'2px'"
+          [fontWeight]="'bold'"
+          [fontSize]="'11px'"
+          [customPosition]="114"
+          [tatooltipvisible]="!isBFB"
+        >
+          {{ isBFB ? "Remove from BFB" : "Move to BFB" }}
+        </button>
+      </div>
+
       <button
-        (click)="onAction('delete')"
-        class="modal-delete-btn"
+        (click)="onAction('save')"
+        class="modal-save-btn"
+        [ngClass]="{ valid: isModalValid }"
         ngbAutofocus
         type="button"
       >
-        Delete
-      </button>
-      <button
-        *ngIf="editData?.disableButton"
-        (click)="onAction('deactivate')"
-        class="modal-deactivate-btn"
-        ngbAutofocus
-        type="button"
-      >
-        {{ isDeactivated ? "Activate" : "Deactivate" }}
-      </button>
-      <button
-        *ngIf="editData?.dnuButton"
-        (click)="onAction('dnu')"
-        class="modal-deactivate-btn"
-        ngbAutofocus
-        type="button"
-        [appTooltip]="'Do Not Use List'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6C6C6C'"
-        [tooltipColor]="'#FFFFFF'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="147"
-        [tatooltipvisible]="!isDNU"
-      >
-        {{ isDNU ? "Remove from DNU" : "Move to DNU" }}
-      </button>
-      <button
-        *ngIf="editData?.bfbButton"
-        (click)="onAction('bfb')"
-        class="modal-deactivate-btn"
-        ngbAutofocus
-        type="button"
-        [appTooltip]="'Banned from Broker List'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6C6C6C'"
-        [tooltipColor]="'#FFFFFF'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="114"
-        [tatooltipvisible]="!isBFB"
-      >
-        {{ isBFB ? "Remove from BFB" : "Move to BFB" }}
+        {{ editData ? "Save Changes" : "Save" }}
       </button>
     </div>
-
-    <button
-      (click)="onAction('save')"
-      class="modal-save-btn"
-      [ngClass]="{ valid: isModalValid }"
-      ngbAutofocus
-      type="button"
-    >
-      {{ editData ? "Save Changes" : "Save" }}
-    </button>
   </div>
 </div>

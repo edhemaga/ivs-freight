@@ -69,6 +69,25 @@
     transition: all 0.3s ease-in-out;
     background-color: #6c6c6c;
     color: #ffffff;
+
+    &::-webkit-input-placeholder {
+      color:  #AAAAAA;
+    }
+    &::-moz-placeholder {
+      color:  #AAAAAA;
+    }
+  
+    &:-ms-input-placeholder {
+      color:  #AAAAAA;
+    }
+  
+    &::-ms-input-placeholder {
+      color:  #AAAAAA;
+    }
+  
+    &::placeholder {
+      color:  #AAAAAA;
+    }
   }
 
   &.password-eye {
@@ -100,7 +119,7 @@
       background-color: #919191 !important;
     }
   }
-
+ 
   &.valid-focus-in,
   &.dropdown-placeholder-active {
     transition: all 0.3s ease-in-out;
@@ -110,7 +129,6 @@
     &::-webkit-input-placeholder {
       color: #97a8dc;
     }
-
     &::-moz-placeholder {
       color: #97a8dc;
     }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
+import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -299,16 +301,45 @@ export class TrailerTableComponent implements OnInit {
   }
 
   public onTableBodyActions(event: any) {
-    if (event.type === 'edit-trailer') {
-      this.modalService.openModal(
-        TrailerModalComponent,
-        { size: 'small' },
-        {
-          ...event,
-          type: 'edit',
-          disableButton: true
-        }
-      );
+    console.log(event);
+    switch(event.type){
+      case 'edit-trailer': {
+        this.modalService.openModal(
+          TrailerModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            type: 'edit',
+            disableButton: true
+          }
+        );
+        break;
+      }
+      case 'add-registration': {
+        this.modalService.openModal(
+          TtRegistrationModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            modal: 'trailer'
+          }
+        );
+        break;
+      }
+      case 'add-inspection': {
+        this.modalService.openModal(
+          TtFhwaInspectionModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            modal: 'trailer'
+          }
+        );
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 }

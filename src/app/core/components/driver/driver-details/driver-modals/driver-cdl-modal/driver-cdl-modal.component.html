@@ -4,6 +4,7 @@
   [editName]="modalName"
   [isModalValid]="cdlForm.valid"
   [specificCaseModalName]="true"
+  [customClass]="'modal-container-M'"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="cdlForm" class="form-container">
@@ -107,6 +108,7 @@
       >
         <app-ta-modal-upload
           [files]="[]"
+          [modalSize]="'modal-medium'"
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-modal-upload>
       </app-ta-custom-card>
