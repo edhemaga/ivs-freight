@@ -65,6 +65,14 @@ p {
                 font-weight: 500;
                 color: #919191;
                 padding-right: 6px;
+                &::-moz-selection {
+                    color: #919191;
+                    background: rgb(145, 145, 145, 0.2);
+                  }
+                  &::selection {
+                    color:#919191;
+                    background: rgb(145, 145, 145, 0.2);
+                  }
             }
             .icons-repair {
                 display: flex;
@@ -169,6 +177,14 @@ svg {
         height: 18px;
         padding-left: 15px;
         padding-top: 3px;
+        &::-moz-selection {
+            color: #6d82c7;
+            background: rgba(109, 130, 199, 0.2);
+        }
+        &::selection {
+            color: #6d82c7;
+            background: rgba(109, 130, 199, 0.2);
+        }
     }
 }
 .clicked{
@@ -181,4 +197,14 @@ svg {
 .hide-buttons{
     display: flex;
     align-items: center;
+}
+.header-arrow{
+    svg{
+        &:hover{
+            rect{
+
+                fill: #6c6c6c;
+            }
+        }
+    }
 }

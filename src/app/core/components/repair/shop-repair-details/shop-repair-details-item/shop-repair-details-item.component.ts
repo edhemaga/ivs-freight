@@ -15,6 +15,7 @@ export class ShopRepairDetailsItemComponent implements OnInit {
   public dummyData: any;
   public dummyDataRepair: any[] = [];
   public dummyDataVehicle: any[] = [];
+  public reviewsRepair: any[] = [];
   constructor(private _act_route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -110,5 +111,9 @@ export class ShopRepairDetailsItemComponent implements OnInit {
     ];
    
     console.log(this.dummyDataRepair);
+  }
+  public changeReviewsEvent(reviews: { data: any[]; action: string }) {
+    this.reviewsRepair = [...reviews.data];
+    // TODO: API CREATE OR DELETE
   }
 }

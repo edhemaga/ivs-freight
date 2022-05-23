@@ -1,3 +1,4 @@
+import { DriverDetailsCardComponent } from './../driver-details-card/driver-details-card.component';
 import { DriverDrugAlcoholModalComponent } from './driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { NgModule } from '@angular/core';
@@ -12,18 +13,20 @@ import { DriverMedicalModalComponent } from './driver-modals/driver-medical-moda
 import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import {NgApexchartsModule} from "ng-apexcharts";
+
 @NgModule({
   declarations: [
     DriverDetailsComponent,
     DriverDetailsItemComponent,
     RenderMultipleItemsPipe,
-
+    DriverDetailsCardComponent,
     // Modals
     DriverCdlModalComponent,
     DriverDrugAlcoholModalComponent,
     DriverMedicalModalComponent,
     DriverMvrModalComponent,
   ],
+  exports:[DriverDetailsCardComponent],
   imports: [
     CommonModule,
     DriverDetailsRoutes,
@@ -31,7 +34,6 @@ import {NgApexchartsModule} from "ng-apexcharts";
     MatButtonToggleModule,
     NgApexchartsModule,
     TruckassistProgressExpirationModule,
-    SharedModule,
   ],
 })
 export class DriverDetailsModule {}

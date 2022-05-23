@@ -63,6 +63,14 @@ $transition: all 0.3s ease-in-out;
                 font-weight: 400;
                 color: #6c6c6c;
                 padding-left: 6px;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                  }
+                  &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                  }
             }
             .repair-icon {
                 cursor: pointer;
@@ -125,6 +133,14 @@ $transition: all 0.3s ease-in-out;
             font-size: 14px;
             font-weight: $font-bold;
             color: $color-gray;
+            &::-moz-selection {
+                color: $color-gray;
+                background: rgb(183, 183, 183, 0.2);
+              }
+              &::selection {
+                color: $color-gray;
+                background: rgb(183, 183, 183, 0.2);
+              }
         }
     }
     .repair-items {
@@ -134,6 +150,14 @@ $transition: all 0.3s ease-in-out;
             font-size: $font-size14;
             font-weight: $font-bold;
             color: $color-gray-dark;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+              }
+              &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+              }
         }
         .items-header {
             padding: 0 4px;
@@ -159,11 +183,27 @@ $transition: all 0.3s ease-in-out;
             white-space: nowrap;
             text-overflow: ellipsis;
             width: 294px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+              }
+              &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+              }
         }
         .cost {
             font-size: $font-size14;
             font-weight: $font-semibold;
             color: $color-gray-dark;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+              }
+              &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+              }
         }
     }
 }
@@ -185,6 +225,14 @@ $transition: all 0.3s ease-in-out;
             font-size: $font-size14;
             font-weight: $font-bold;
             color: $color-gray;
+            &::-moz-selection {
+                color: $color-gray;
+                background: rgb(183, 183, 183, 0.2);
+              }
+              &::selection {
+                color: $color-gray;
+                background: rgb(183, 183, 183, 0.2);
+              }
         }
     }
     .repair-items-vehicle {
@@ -212,17 +260,51 @@ $transition: all 0.3s ease-in-out;
                 font-size: $font-size14;
                 font-weight: $font-bold;
                 color: $color-gray-dark;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                  }
+                  &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                  }
             }
             .date {
                 font-size: $font-size14;
                 font-weight: 400;
                 color: $color-gray-dark;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                  }
+                  &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                  }
             }
             .cost {
                 font-size: $font-size14;
                 font-weight: $font-semibold;
                 color: $color-gray-dark;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                  }
+                  &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                  }
             }
         }
     }
 }
+.vin-text {
+    &::-moz-selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }

@@ -20,6 +20,8 @@ $border-radius: 3px;
     background-color: $color-white;
     border-radius: $border-radius;
     margin-bottom: 8px;
+    max-width: 440px;
+    min-width: 352px;
     p {
         margin: 0px;
     }

@@ -242,6 +242,14 @@
           </div>
         </div>
       </div>
+      <div class="review-container">
+        <app-ta-user-review
+            *ngIf="reviewsRepair.length"
+            [reviewData]="reviewsRepair"
+            [isNewReview]="reviewsRepair[0].isNewReview"
+            (changeReviewsEvent)="changeReviewsEvent($event)"
+          ></app-ta-user-review>
+      </div>
     </div>
   </div>
 </div>
