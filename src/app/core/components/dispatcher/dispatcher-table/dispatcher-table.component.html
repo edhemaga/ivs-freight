@@ -143,10 +143,11 @@
                   <button
                     (click)="lockUnlockBoardAndStartTimer()"
                     *ngIf="!manualLock || dispatcher != -1"
-                    [appTooltip]="isBoardLocked ? 'Unlock table' : 'Lock table'"
+                    [mainTooltip]="isBoardLocked ? 'Unlock table' : 'Lock table'"
+                    ngbTooltip
                     [class.lockedBoardFromOtherUser]=""
                     class="open_load btn-transparent lock-unlock cursor-pointer history_board"
-                    position="bottom-right"
+                    position="bottom"
                   >
                     <svg-icon
                       *ngIf="isBoardLocked"
@@ -161,9 +162,10 @@
                   </button>
                   <button
                     (click)="openSideNav()"
-                    appTooltip="Vehicle Legend"
+                    mainTooltip="Vehicle Legend"
+                    ngbTooltip
                     class="open_load btn-transparent cursor-pointer history_board"
-                    position="bottom-right"
+                    position="bottom"
                   >
                     <svg-icon
                       [ngClass]="{ active: legendActive }"
@@ -176,9 +178,10 @@
                     (mouseenter)="loteEnter()"
                     (mouseleave)="loteLeave()"
                     *ngIf="dispatcher == -1"
-                    appTooltip="Live"
+                    mainTooltip="Live"
+                    ngbTooltip
                     class="btn-transparent open_load live_board"
-                    position="bottom-right"
+                    position="bottom"
                   >
                     <!-- <svg-icon
                         class="m-0"
@@ -190,9 +193,10 @@
                   </button>
                   <button
                     (click)="openDispatchHistory()"
-                    appTooltip="History"
+                    mainTooltip="History"
+                    ngbTooltip
                     class="btn-transparent open_load history_board"
-                    position="bottom-right"
+                    position="bottom"
                   >
                     <svg-icon
                       [svgStyle]="{ 'width.px': 18, 'height.px': 16 }"
@@ -203,9 +207,10 @@
                   </button>
                   <button
                     (click)="openDispatchHistory()"
-                    appTooltip="History"
+                    mainTooltip="History"
+                    ngbTooltip
                     class="btn-transparent open_load history_board"
-                    position="bottom-right"
+                    position="bottom"
                   >
                     <svg-icon
                       [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
@@ -216,9 +221,10 @@
                   </button>
                   <button
                     (click)="addLoad()"
-                    appTooltip="Add Dispatch"
+                    mainTooltip="Add Dispatch"
+                    ngbTooltip
                     class="btn-transparent open_load history_board"
-                    position="bottom-right"
+                    position="bottom"
                   >
                     <svg-icon
                       [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
@@ -229,9 +235,10 @@
                   </button>
                   <button
                     (click)="openParking()"
-                    appTooltip="Add Dispatch"
+                    mainTooltip="Add Dispatch"
+                    ngbTooltip
                     class="btn-transparent open_load history_board"
-                    position="bottom-right"
+                    position="bottom"
                   >
                     <svg-icon
                       [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
@@ -242,9 +249,10 @@
                   </button>
                   <button
                     (click)="addLoad()"
-                    appTooltip="Add Dispatch"
+                    mainTooltip="Add Dispatch"
+                    ngbTooltip
                     class="btn-transparent open_load history_board m-0"
-                    position="bottom-right"
+                    position="bottom"
                   >
                     <svg-icon
                       [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"

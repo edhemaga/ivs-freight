@@ -173,7 +173,7 @@ import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-file
     InputFocusDirective,
     InputRestrictionDirective,
     DragDropFileDirective,
-    TextareaAutosizeDirective,
+    TextareaAutosizeDirective
   ],
   imports: [
     CommonModule,
