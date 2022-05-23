@@ -31,6 +31,9 @@
     margin-bottom: 22px !important;
   }
 
+  &.form-container-mt-12 {
+    margin-top: 12px !important;
+  }
   // Custom
   .row-mt-12 {
     margin-top: 12px !important;
@@ -699,5 +702,27 @@
   margin: 0;
   margin-top: 26px;
   margin-bottom: 22px;
+}
+//---------------- Gate, Security Camera ----------------
+.parking-gate-securityCamera {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  grid-template-rows: 26px;
+  margin: 12px 0px;
+  padding-left: 6px;
+
+  .gate-field,
+  .camera-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: #919191;
+    }
+  }
 }
 // ------------------------------------------------ end ------------------------------------------------
