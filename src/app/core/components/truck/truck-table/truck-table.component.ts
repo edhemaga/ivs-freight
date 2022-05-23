@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
+import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -326,16 +328,44 @@ export class TruckTableComponent implements OnInit {
   }
 
   public onTableBodyActions(event: any) {
-    if (event.type === 'edit-truck') {
-      this.modalService.openModal(
-        TruckModalComponent,
-        { size: 'small' },
-        {
-          ...event,
-          type: 'edit',
-          disableButton: true
-        }
-      );
+    switch(event.type) {
+      case 'edit-truck': {
+        this.modalService.openModal(
+          TruckModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            type: 'edit',
+            disableButton: true
+          }
+        );
+        break;
+      }
+      case 'add-registration': {
+        this.modalService.openModal(
+          TtRegistrationModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            modal: 'truck'
+          }
+        );
+        break;
+      }
+      case 'add-inspection': {
+        this.modalService.openModal(
+          TtFhwaInspectionModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            modal: 'truck'
+          }
+        );
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 }

@@ -67,7 +67,6 @@
       [autoresize]="false"
       [original-size]="true"
       [fit-to-page]="true"
-      [stick-to-page]="true"
       style="display: block"
       (after-load-complete)="afterLoadComplete($event)"
     ></pdf-viewer>
@@ -110,8 +109,10 @@
   </div>
 
   <!-- File Footer Information -->
-  <div class="ta-upload-file-footer">
+  <div class="ta-upload-file-footer" [ngClass]="{'edit-mode': editFile}" (click)="onEditFile()">
+    <!-- No edit mode -->
     <div
+      *ngIf="!editFile"
       class="ta-upload-file-ext ta-upload-file-ext-{{
         file?.extension | lowercase
       }}"
@@ -130,6 +131,18 @@
     >
       {{ file?.extension | uppercase }}
     </div>
-    <p class="ta-upload-file-name">{{ file?.name }}</p>
+    <p *ngIf="!editFile" class="ta-upload-file-name">{{ file?.name }}</p>
+    <!-- Edit mode -->
+    <app-ta-input
+      *ngIf="editFile"
+      [formControl]="fileNewName"
+      [inputConfig]="{
+        name: 'File Name',
+        type: 'text',
+        label: null,
+        placeholder: file.name,
+        textTransform: 'capitalize'
+      }"
+    ></app-ta-input>
   </div>
 </div>

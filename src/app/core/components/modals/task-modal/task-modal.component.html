@@ -1,0 +1,113 @@
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Task' : 'Edit Task'"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="taskForm.valid"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <form [formGroup]="taskForm" class="form-container">
+    <div class="row">
+      <div class="col-12">
+        <app-ta-input
+          formControlName="title"
+          [inputConfig]="{
+            name: 'Title',
+            type: 'text',
+            label: 'Title',
+            isRequired: true,
+            textTransform: 'capitalize',
+            autoFocus: true
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <app-ta-input
+          formControlName="description"
+          [inputConfig]="{
+            name: 'Description',
+            type: 'text',
+            label: 'Description',
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-8">
+        <app-ta-input
+          formControlName="url"
+          [inputConfig]="{
+            name: 'Hyperlink',
+            type: 'text',
+            label: 'Hyperlink',
+            placeholderIcon: 'hyperlink',
+            isRequired: true,
+            maxLength: 400
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-4">
+        <app-ta-input
+          formControlName="deadline"
+          [inputConfig]="{
+            name: 'datepicker',
+            type: 'text',
+            label: 'Deadline',
+            placeholderIcon: 'date',
+            customClass: 'datetimeclass'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">Department</div>
+    </div>
+    <div class="row last-row">
+      <div class="col-12">Assing Task</div>
+    </div>
+    <app-ta-custom-card
+      [hasCounter]="comments.length ? comments.length : '0'"
+      [cardName]="'Comment'"
+      [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+      [hasArrow]="false"
+      [hasLikeDislike]="true"
+      [isCardOpen]="comments.length"
+      [hasBodyData]="comments.length"
+      [hasScrollBody]="comments.length > 6"
+      [isCommentData]="true"
+      (onActionEvent)="addComment($event)"
+    >
+      <div class="no-review-broker" *ngIf="!comments.length">
+        <svg-icon
+          class="no-review-svg"
+          src="assets/svg/common/ic_no_review.svg"
+        ></svg-icon>
+      </div>
+      <app-ta-user-review
+        *ngIf="comments.length"
+        [reviewData]="comments"
+        [isNewReview]="comments[0].isNewReview"
+        (changeReviewsEvent)="changeCommentEvent($event)"
+      ></app-ta-user-review>
+    </app-ta-custom-card>
+    <div class="ta-card-body-overflow-none">
+      <app-ta-custom-card
+        [hasCounter]="documents.length ? documents.length : '0'"
+        [cardName]="'Documents'"
+        [isCardOpen]="documents.length"
+      >
+        <app-ta-modal-upload
+          [files]="[]"
+          (onFileEvent)="onFilesEvent($event)"
+        ></app-ta-modal-upload>
+      </app-ta-custom-card>
+    </div>
+
+    <app-ta-input-note
+      formControlName="note"
+      [isVisibleNote]="taskForm.get('note').value"
+    ></app-ta-input-note>
+  </form>
+</app-ta-modal>
