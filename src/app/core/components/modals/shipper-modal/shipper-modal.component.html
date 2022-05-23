@@ -245,7 +245,8 @@
           [cardName]="'Contact'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="false"
-          [isCardOpen]="shipperContacts.length"
+          [isCommentData]="true"
+          [isCardOpen]="brokerContacts.length"
           [hasScrollBody]="shipperContacts.length > 10"
           (onActionEvent)="addShipperContacts($event)"
         >

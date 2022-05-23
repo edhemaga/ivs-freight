@@ -508,6 +508,16 @@ export class TaInputComponent
       }
     }
 
+    if (['full parking slot', 'parking slot'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[0-9,-]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
     this.input.nativeElement.value.trimEnd();
   }
 

@@ -361,6 +361,7 @@
           [cardName]="'Contact'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="false"
+          [isCommentData]="true"
           [isCardOpen]="brokerContacts.length"
           [hasScrollBody]="brokerContacts.length > 10"
           (onActionEvent)="addBrokerContacts($event)"
@@ -464,6 +465,8 @@
           [hasArrow]="false"
           [hasLikeDislike]="true"
           [isCardOpen]="true"
+          [isCommentData]="true"
+          [hasBodyData]="reviews.length"
           [hasScrollBody]="reviews.length > 6"
           (onActionEvent)="addNewReview($event)"
         >
