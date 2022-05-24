@@ -1,0 +1,51 @@
+<div class="profile-image-holder">
+  <div *ngIf="size == 'small' || size == 'medium'" class="small-medium-holder">
+    <div
+      class="profile-image-small"
+      [class.medium]="size == 'medium'"
+      [class.round]="type == 'user'"
+      [ngStyle]="{
+        'background-color': backgroundColors[indx],
+        color: textColors[indx]
+      }"
+    >
+      {{ name | nameInitials }}
+    </div>
+  </div>
+  <div *ngIf="size == 'large'" class="profile-image-large" [class.round]="type == 'user'">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="74"
+      height="82"
+      viewBox="0 0 74 82"
+    >
+      <g id="driver-color-03" transform="translate(18045 4052)">
+        <rect
+          id="Rectangle_64092"
+          data-name="Rectangle 64092"
+          width="74"
+          height="82"
+          rx="2"
+          transform="translate(-18045 -4052)"
+          [attr.fill]="backgroundColors[indx]"
+        />
+        <path
+          id="Intersection_7"
+          data-name="Intersection 7"
+          d="M19,82a2,2,0,0,1-2-2V64.667a54,54,0,0,1,74,0V80a2,2,0,0,1-2,2Z"
+          transform="translate(-18062 -4052)"
+          [attr.fill]="textColors[indx]"
+          opacity="0.5"
+        />
+        <path
+          id="Path_24411"
+          data-name="Path 24411"
+          d="M23,0A23,23,0,1,1,0,23,23,23,0,0,1,23,0Z"
+          transform="translate(-18031 -4038)"
+          [attr.fill]="textColors[indx]"
+          opacity="0.5"
+        />
+      </g>
+    </svg>
+  </div>
+</div>
