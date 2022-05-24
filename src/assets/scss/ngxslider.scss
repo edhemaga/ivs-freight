@@ -90,7 +90,15 @@
     width: 384px;
     position: relative;
     top: 5px;
-    
+
+    &.modal-container-M {
+      width: 540px;
+    }
+
+    &.modal-container-L {
+      width: 760px;
+    }
+
     .ngx-slider {
       margin: 0 !important;
 

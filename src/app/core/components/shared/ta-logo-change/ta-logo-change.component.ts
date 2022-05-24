@@ -1,4 +1,7 @@
-import { createBase64, getStringFromBase64 } from './../../../utils/base64.image';
+import {
+  createBase64,
+  getStringFromBase64,
+} from './../../../utils/base64.image';
 import {
   AfterViewInit,
   Component,
@@ -10,6 +13,7 @@ import {
 import * as Croppie from 'croppie';
 import { CroppieDirective } from 'angular-croppie-module';
 import { Options } from '@angular-slider/ngx-slider';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-ta-logo-change',
@@ -18,6 +22,7 @@ import { Options } from '@angular-slider/ngx-slider';
 })
 export class TaLogoChangeComponent implements AfterViewInit {
   @Input() imageUrl: string;
+  @Input() customClass: string;
   @Output() base64ImageEvent: EventEmitter<string> = new EventEmitter<string>();
 
   // croppie
@@ -54,6 +59,12 @@ export class TaLogoChangeComponent implements AfterViewInit {
   public file: any;
   public savedFile: any = null;
 
+  constructor(private sanitizer: DomSanitizer) {}
+
+  public get ngxSliderClass() {
+    return `custom-slider-logo-change ${this.customClass}`
+  }
+
   public ngAfterViewInit() {
     if (this.imageUrl) {
       this.croppieDirective.croppie.bind({
@@ -66,29 +77,17 @@ export class TaLogoChangeComponent implements AfterViewInit {
     }
   }
 
-  public async onSelect(event: any) {
-    this.file = event.addedFiles[0];
-    const url = await this.drawImage(this.file);
-
-    this.croppieDirective.croppie.bind({
-      url: url as string,
-      points: [188, 101, 260, 191],
-      zoom: this.imageScale,
-    });
-  }
-
-  public async drawImage(file: any) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.showUploadZone = false;
-        resolve(reader.result);
-      };
-      reader.onerror = (error) => {
-        reject(error);
-      };
-    });
+  public onSelect(event: any) {
+    const url = event.files[0].url;
+    this.showUploadZone = false;
+    const timeout = setTimeout(() => {
+      this.croppieDirective.croppie.bind({
+        url: url as string,
+        points: [188, 101, 260, 191],
+        zoom: this.imageScale,
+      });
+      clearTimeout(timeout);
+    },200)
   }
 
   public handleCroppieUpdate(event) {
@@ -103,7 +102,9 @@ export class TaLogoChangeComponent implements AfterViewInit {
   public saveImage() {
     this.croppieDirective.croppie.result('base64').then((base64) => {
       this.base64ImageEvent.emit(getStringFromBase64(base64));
-      this.savedFile = createBase64(getStringFromBase64(base64));
+      this.savedFile = this.sanitizer.bypassSecurityTrustUrl(
+        createBase64(getStringFromBase64(base64))
+      );
       this.showUploadZone = false;
     });
   }

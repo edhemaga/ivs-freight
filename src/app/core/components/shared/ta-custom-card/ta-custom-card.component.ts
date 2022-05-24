@@ -37,6 +37,8 @@ export class TaCustomCardComponent {
     false
   );
 
+  @Output() onOpenCard: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+
   public isHeaderHover: boolean = false;
 
   constructor(private modalService: ModalService){}
@@ -50,6 +52,7 @@ export class TaCustomCardComponent {
       this.isCardOpen = !this.isCardOpen;
     }
     this.modalService.documentsDropZoneSubject$.next(this.isCardOpen);
+    this.onOpenCard.emit(this.isCardOpen)
   }
 
   public onAdd(event: any): void {

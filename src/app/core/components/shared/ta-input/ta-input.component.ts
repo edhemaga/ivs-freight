@@ -155,8 +155,6 @@ export class TaInputComponent
     }
 
     this.focusInput = true;
-    console.log("FOCUS")
-    console.log(this.focusInput)
   }
 
   public onBlur(): void {

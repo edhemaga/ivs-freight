@@ -17,6 +17,8 @@ export const phoneRegex = Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/);
 export const einNumberRegex = Validators.pattern(/^\d{2}\-\d{7}$/);
 export const ssnNumberRegex = Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/);
 export const yearValidRegex = Validators.pattern(/^(19[0-9]\d|20[0-4]\d|2100)$/);
+export const monthsValidRegex = Validators.pattern(/^([1-9]|1[012])$/);
+export const daysValidRegex = Validators.pattern(/^([1-9][0-9]?|[12][0-9][0-9]|3[0-5][0-9]|36[0-5])$/);
 
 export const insurancePolicyRegex = [Validators.minLength(8), Validators.maxLength(14)];
 

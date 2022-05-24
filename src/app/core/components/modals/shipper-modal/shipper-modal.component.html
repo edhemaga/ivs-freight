@@ -241,22 +241,22 @@
       <!-------------------------------- Contact Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
         <app-ta-custom-card
-          [hasCounter]="shipperContacts.length ? shipperContacts.length : '0'"
+          [hasCounter]="shipperContacts ? shipperContacts.length : '0'"
           [cardName]="'Contact'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="false"
           [isCommentData]="true"
-          [isCardOpen]="brokerContacts.length"
+          [isCardOpen]="shipperContacts.length"
           [hasScrollBody]="shipperContacts.length > 10"
           (onActionEvent)="addShipperContacts($event)"
         >
           <div
             formArrayName="shipperContacts"
-            class="shipper-contacts"
+            class="common-fake-table-modal common-fake-table-modal-shipper"
             (scroll)="onScrollingShipperContacts($event)"
             *ngIf="shipperContacts.length"
           >
-            <div class="shipper-contacts-label">
+            <div class="common-fake-table-label">
               <p>FULL NAME <span>*</span></p>
               <p>DEPARTMENT</p>
               <p>PHONE <span>*</span></p>
@@ -269,7 +269,7 @@
                 let ind = index
               "
             >
-              <div [formGroupName]="ind" class="shipper-contacts-card">
+              <div [formGroupName]="ind" class="common-fake-table-card">
                 <app-ta-input
                   formControlName="fullName"
                   [inputConfig]="{
@@ -313,7 +313,7 @@
                   }"
                 ></app-ta-input>
                 <svg-icon
-                  class="shipperContacts-delete"
+                  class="common-fake-table-delete"
                   [ngClass]="{
                     'new-position':
                       isContactCardsScrolling &&

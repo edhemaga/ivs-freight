@@ -80,6 +80,10 @@
     content: "";
     border-radius: 1px;
     background-color: #f3f3f3;
+
+    &.divider-second {
+      margin-top: 3px;
+    }
   }
 
   //------------------------ TABS ---------------------------------------------------
@@ -141,6 +145,12 @@
             }
           }
         }
+      }
+
+      .grouping-checkboxes {
+        display: flex;
+        align-items: center;
+        gap: 22px;
       }
 
       .checkbox-card-header-arrow {
@@ -397,9 +407,8 @@
     }
   }
 
-  //---------------- Broker Contacts, Shipper Contacts ----------------
-  .broker-contacts,
-  .shipper-contacts {
+  //----------------  Common-fake-table-modal  ----------------
+  .common-fake-table-modal {
     overflow: hidden;
     overflow-x: scroll;
     margin-top: 10px;
@@ -409,6 +418,7 @@
     &::-webkit-scrollbar {
       width: 3px;
     }
+
     &::-webkit-scrollbar-thumb {
       background-color: #cccccc;
       border-left: 0px;
@@ -417,6 +427,7 @@
       border-bottom: 6px solid #ffffff;
       border-radius: 1px;
     }
+
     &::-webkit-scrollbar-track {
       padding: 5px;
       position: absolute;
@@ -425,125 +436,11 @@
       background: transparent;
     }
 
-    .broker-contacts-label,
-    .shipper-contacts-label {
-      padding: 0 5px;
-      display: flex;
-      align-items: center;
-      line-height: 15px;
-      margin-bottom: 6px;
-
-      p {
-        margin: 0;
-        font-size: 12px;
-        font-weight: 700;
-        color: #919191;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-
-        &:nth-child(2) {
-          margin-left: 98px;
-        }
-
-        &:nth-child(3) {
-          margin-left: 44px;
-        }
-
-        &:nth-child(4) {
-          margin-left: 87px;
-        }
-
-        &:nth-child(5) {
-          margin-left: 48px;
-        }
-
-        span {
-          color: #e57373;
-        }
-      }
+    &.hide-oveflow {
+      overflow: hidden !important;
     }
 
-    .broker-contacts-card,
-    .shipper-contacts-card {
-      display: grid;
-      grid-template-columns: 170px 120px 130px 60px 234px;
-      -moz-column-gap: 12px;
-      column-gap: 12px;
-      row-gap: 2px;
-      margin-bottom: 2px;
-      background-color: #f7f7f7;
-      padding-right: 6px;
-      position: relative;
-
-      .brokerContacts-delete,
-      .shipperContacts-delete {
-        width: 18px;
-        height: 18px;
-        position: absolute;
-        bottom: 7.5px;
-        right: 4.5px;
-        display: none;
-        cursor: pointer;
-        svg {
-          path {
-            fill: #aaaaaa;
-          }
-          &:hover {
-            transition: all 0.3s ease-in-out;
-
-            path {
-              fill: #ef5350;
-            }
-          }
-        }
-
-        &.new-position {
-          right: -120px;
-        }
-
-        &.new-position-without-email {
-          right: -142px;
-        }
-      }
-
-      &:hover .brokerContacts-delete,
-      &:hover .shipperContacts-delete {
-        display: inline-block;
-        transition: all 0.3s ease-in-out;
-      }
-    }
-  }
-
-  //---------------- Department Contact Office Parking ----------------
-  .parking-office-department {
-    overflow: hidden;
-    overflow-x: scroll;
-    margin-top: 10px;
-
-    scrollbar-width: none !important; /* Firefox */
-
-    &::-webkit-scrollbar {
-      width: 3px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #cccccc;
-      border-left: 0px;
-      border-right: 0px;
-      border-top: 6px solid #ffffff;
-      border-bottom: 6px solid #ffffff;
-      border-radius: 1px;
-    }
-    &::-webkit-scrollbar-track {
-      padding: 5px;
-      position: absolute;
-      right: -3rem;
-      top: -50rem;
-      background: transparent;
-    }
-
-    .parking-contacts-label {
+    .common-fake-table-label {
       padding: 0 5px;
       display: flex;
       align-items: center;
@@ -578,7 +475,7 @@
       }
     }
 
-    .parking-contacts-card {
+    .common-fake-table-card {
       display: grid;
       grid-template-columns: 120px 130px 60px 234px;
       grid-template-rows: 26px;
@@ -590,7 +487,43 @@
       padding-right: 6px;
       position: relative;
 
-      .parking-contacts-delete {
+      .common-fake-table-check {
+        width: 18px;
+        height: 18px;
+        svg {
+          width: 100%;
+          height: 100%;
+          path {
+            fill: #97a8dc;
+          }
+        }
+      }
+
+      .common-fake-table-status {
+        width: 72px;
+        height: 26px;
+        border-radius: 2px;
+        font-size: 12px;
+        font-weight: 500;
+        background-color: transparent;
+        text-align: center;
+        padding-top: 4px;
+
+        &-verified {
+          color: #97a8dc;
+        }
+
+        &-pending {
+          color: #ffcc80;
+        }
+
+        &-verify {
+          background-color: #6d82c7;
+          color: #ffffff;
+        }
+      }
+
+      .common-fake-table-delete {
         width: 18px;
         height: 18px;
         position: absolute;
@@ -620,9 +553,63 @@
         }
       }
 
-      &:hover .parking-contacts-delete {
+      &:hover .common-fake-table-delete {
         display: inline-block;
         transition: all 0.3s ease-in-out;
+      }
+    }
+
+    // Custom classes for common-fake-table
+    &-banks {
+      .common-fake-table-label {
+        p {
+          &:nth-child(2) {
+            margin-left: 94px;
+          }
+
+          &:nth-child(3) {
+            margin-left: 47px;
+          }
+        }
+      }
+      .common-fake-table-card {
+        grid-template-columns: 162px 100px 186px 18px 72px 30px;
+      }
+    }
+
+    &-shipper,
+    &-broker {
+      .common-fake-table-label {
+        p {
+          &:nth-child(2) {
+            margin-left: 98px;
+          }
+
+          &:nth-child(3) {
+            margin-left: 44px;
+          }
+
+          &:nth-child(4) {
+            margin-left: 87px;
+          }
+
+          &:nth-child(5) {
+            margin-left: 48px;
+          }
+        }
+      }
+      .common-fake-table-card {
+        grid-template-columns: 170px 120px 130px 60px 234px;
+      }
+
+      .common-fake-table-delete {
+        &.new-position {
+          right: -120px !important;
+        }
+
+        &.new-position-without-email {
+          right: -142px !important;
+        }
       }
     }
   }
@@ -717,8 +704,6 @@
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin: 32px 0px;
-
- 
 
   .phone-extension {
     display: grid;
@@ -908,6 +893,40 @@
           }
         }
       }
+    }
+  }
+}
+
+//---------------- Company IRP, IFTA, TOLL, SCAC  ----------------
+.company-irp-ifta-toll-scac {
+  display: grid;
+  grid-template-columns: 130px 170px 150px 130px;
+  grid-template-rows: 26px;
+  column-gap: 12px;
+  align-items: center;
+  margin: 32px 0px;
+}
+//---------------- Preferred Load Company Additional  ----------------
+.preferred-load-company-additional {
+  display: grid;
+  grid-template-columns: 26px;
+  grid-template-columns: 253px 145px 1fr;
+  margin: 32px 0px;
+  padding-left: 6px;
+
+  .preffered-field-one {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    .r-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #919191;
+    }
+    .r-btns {
+      width: 86px;
+      height: 26px;
     }
   }
 }

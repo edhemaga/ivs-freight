@@ -10,7 +10,7 @@
     </div>
   </div>
   <div *ngSwitchCase="'logo-change'">
-    <div class="ta-ngx-slider custom-slider-logo-change">
+    <div class="ta-ngx-slider custom-slider-logo-change {{ customClass }}">
       <ngx-slider
         [options]="sliderOptions"
         [(value)]="startedValue"

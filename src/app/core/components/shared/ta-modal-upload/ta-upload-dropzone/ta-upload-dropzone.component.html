@@ -1,20 +1,45 @@
-  <!-- Dropzone -->
-  <div class="ta-modal-dropzone">
-    <label for="pdf" class="ta-modal-dropzone-label">
-      <svg-icon
-        class="ta-modal-dropzone-area"
-        src="assets/svg/common/ic_modal_upload_dropzone.svg"
-      ></svg-icon>
-      <div class="ta-modal-dropzone-text">
-        <span class="ta-modal-dropzone-text-big">DRAG FILES HERE</span>
-        <span class="ta-modal-dropzone-text-small">OR CLICK TO ADD</span>
+<!-- Dropzone -->
+<div class="ta-modal-dropzone" *ngIf="!unSupporetedType">
+  <label for="pdf" class="ta-modal-dropzone-label">
+    <svg-icon class="ta-modal-dropzone-area" [src]="dropZoneAreSvg"></svg-icon>
+    <div class="ta-modal-dropzone-text" *ngIf="dropZoneType === 'files'">
+      <span class="ta-modal-dropzone-text-big">DRAG FILES HERE</span>
+      <span class="ta-modal-dropzone-text-small">OR CLICK TO ADD</span>
+    </div>
+    <div class="ta-modal-dropzone-text" *ngIf="dropZoneType === 'logo'">
+      <span class="ta-modal-dropzone-text-big"
+        >DRAG IMAGE HERE OR CLICK TO ADD</span
+      >
+    </div>
+  </label>
+  <input
+    id="pdf"
+    type="file"
+    [accept]="dropZoneAvailableFiles"
+    [multiple]="multiple"
+    (change)="onFileUpload($event.target.files)"
+  />
+</div>
+<!-- Dropzone Unsupported -->
+<div class="ta-modal-dropzone-unsupported" *ngIf="unSupporetedType">
+  <svg-icon
+    class="cancel-unsupported-zone"
+    src="assets/svg/common/ic_x.svg"
+    (click)="unSupporetedType = false"
+  ></svg-icon>
+  <label for="pdf" class="ta-modal-dropzone-label">
+    <div class="ta-modal-dropzone-text">
+      <span class="ta-modal-dropzone-text-big">UNSUPPORTED FILE TYPE</span>
+      <span class="ta-modal-dropzone-text-small"
+        >WE CURRENTLY SUPPORT THESE FORMATS</span
+      >
+      <div class="supported-extensions">
+        <span
+          class="extension extension-{{ ext }}"
+          *ngFor="let ext of supportedExtensions"
+          >{{ ext }}</span
+        >
       </div>
-    </label>
-    <input
-      id="pdf"
-      type="file"
-      [accept]="'application/pdf, application/png, application/jpg'"
-      multiple
-      (change)="onFileUpload($event.target.files)"
-    />
-  </div>
+    </div>
+  </label>
+</div>

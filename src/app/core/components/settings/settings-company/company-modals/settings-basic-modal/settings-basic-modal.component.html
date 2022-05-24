@@ -1,0 +1,539 @@
+<app-ta-modal
+  [modalTitle]="'Company'"
+  [editData]="editData"
+  [isModalValid]="companyForm.valid"
+  [customClass]="'modal-container-M'"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <app-tab-switcher
+    (switchClicked)="tabChange($event)"
+    [tabs]="tabs"
+  ></app-tab-switcher>
+
+  <form
+    [formGroup]="companyForm"
+    class="form-container"
+    [ngClass]="{ 'tab-2': selectedTab === 2 }"
+  >
+    <div class="animation-three-tabs" [@animationTabsModal]="animationObject">
+      <!-------------------------------- Basic Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 1">
+        <div class="row">
+          <div class="col-12">
+            <app-ta-input
+              formControlName="companyName"
+              [inputConfig]="{
+                name: 'Company name',
+                type: 'text',
+                label: 'Company Name',
+                isRequired: true,
+                textTransform: 'capitalize',
+                autoFocus: true
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <app-ta-input
+              formControlName="usdot"
+              [inputConfig]="{
+                name: 'USDOT',
+                type: 'text',
+                label: 'USDOT',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-4">
+            <app-ta-input
+              formControlName="ein"
+              [inputConfig]="{
+                name: 'EIN',
+                type: 'text',
+                label: 'EIN #',
+                mask: '00-0000000'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-4">
+            <app-ta-input
+              formControlName="mcNumber"
+              [inputConfig]="{
+                name: 'MC FF',
+                type: 'text',
+                label: 'MC/FF #',
+                textTransform: 'capitalize',
+                maxLength: 8
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5">
+            <app-ta-input
+              formControlName="phone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-7">
+            <app-ta-input
+              formControlName="email"
+              [inputConfig]="{
+                name: 'Email',
+                type: 'text',
+                label: 'Email',
+                placeholderIcon: 'email'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5">
+            <app-ta-input
+              formControlName="fax"
+              [inputConfig]="{
+                name: 'Fax',
+                type: 'text',
+                label: 'Fax',
+                placeholderIcon: 'fax'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-7">
+            <app-ta-input
+              formControlName="url"
+              [inputConfig]="{
+                name: 'Url',
+                type: 'text',
+                label: 'Hyperlink',
+                placeholderIcon: 'hyperlink'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <app-ta-input-address
+              formControlName="address"
+              [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Address, City, State Zip',
+                isRequired: true,
+                placeholderIcon: 'address',
+                textTransform: 'capitalize'
+              }"
+              (selectedAddress)="onHandleAddress($event)"
+            ></app-ta-input-address>
+          </div>
+          <div class="col-2">
+            <app-ta-input
+              formControlName="addressUnit"
+              [inputConfig]="{
+                name: 'Address Unit',
+                type: 'text',
+                label: 'Unit No.',
+                maxLength: 6
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="company-irp-ifta-toll-scac">
+          <app-ta-input
+            formControlName="irp"
+            [inputConfig]="{
+              name: 'IRP',
+              type: 'text',
+              label: 'IRP',
+              textTransform: 'capitalize'
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="ifta"
+            [inputConfig]="{
+              name: 'IFTA',
+              type: 'text',
+              label: 'IFTA',
+              textTransform: 'capitalize'
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="toll"
+            [inputConfig]="{
+              name: 'TOLL',
+              type: 'text',
+              label: 'TOLL',
+              textTransform: 'capitalize'
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="scac"
+            [inputConfig]="{
+              name: 'SCAC',
+              type: 'text',
+              label: 'SCAC',
+              textTransform: 'capitalize'
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="row last-row">
+          <div class="col-8">
+            <app-ta-input-dropdown
+              formControlName="timeZone"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Time Zone',
+                isDropdown: true,
+                isRequired: true,
+                dropdownWidthClass: 'w-col-medium-8'
+              }"
+              [options]="[]"
+              (selectedItem)="onSelectDropdown($event, 'timezone')"
+            ></app-ta-input-dropdown>
+          </div>
+          <div class="col-4">
+            <app-ta-input-dropdown
+              formControlName="currency"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Currency',
+                isDropdown: true,
+                isRequired: true,
+                dropdownWidthClass: 'w-col-medium-4'
+              }"
+              [options]="[]"
+              (selectedItem)="onSelectDropdown($event, 'currency')"
+            ></app-ta-input-dropdown>
+          </div>
+        </div>
+        <app-ta-custom-card
+          [cardName]="'Logo'"
+          (onOpenCard)="isLogoDropZoneVisibile = $event"
+        >
+          <app-ta-logo-change
+            *ngIf="isLogoDropZoneVisibile"
+            [customClass]="'modal-container-M'"
+            [imageUrl]="this.companyForm.get('avatar').value"
+            (base64ImageEvent)="onUploadImage($event)"
+          ></app-ta-logo-change>
+        </app-ta-custom-card>
+      </div>
+      <!-------------------------------- Additional Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 2">
+        <!-- Department Contacts -->
+        <app-ta-custom-card
+          [hasCounter]="
+            departmentContacts.length ? departmentContacts.length : '0'
+          "
+          [cardName]="'Department Contact'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasArrow]="true"
+          [hasBodyData]="departmentContacts.length"
+          [isCardOpen]="departmentContacts.length"
+          [hasScrollBody]="departmentContacts.length > 10"
+          (onActionEvent)="addDepartmentContacts($event)"
+        >
+          <div
+            formArrayName="departmentContact"
+            class="common-fake-table-modal hide-oveflow"
+            *ngIf="departmentContacts.length"
+          >
+            <div class="common-fake-table-label">
+              <p>DEPARTMENT <span>*</span></p>
+              <p>PHONE <span>*</span></p>
+              <p>EXT</p>
+              <p>EMAIL</p>
+            </div>
+            <div
+              *ngFor="
+                let departmentContact of departmentContacts.controls;
+                let ind = index
+              "
+            >
+              <div [formGroupName]="ind" class="common-fake-table-card">
+                <app-ta-input-dropdown
+                  formControlName="departmentId"
+                  [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-broker-department'
+                  }"
+                  [options]="[]"
+                  (selectedItem)="
+                    onSelectFakeTableData($event, ind, 'department')
+                  "
+                ></app-ta-input-dropdown>
+                <app-ta-input
+                  formControlName="phone"
+                  [inputConfig]="{
+                    name: 'Phone',
+                    type: 'text',
+                    mask: '(000) 000-0000'
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="extensionPhone"
+                  [inputConfig]="{
+                    name: 'Phone Extension',
+                    type: 'text',
+                    maxLength: 3
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="email"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'text'
+                  }"
+                ></app-ta-input>
+                <svg-icon
+                  class="common-fake-table-delete"
+                  src="assets/svg/common/ic_trash.svg"
+                  (click)="removeDepartmentContacts(ind)"
+                  [appTooltip]="'Delete'"
+                  [position]="'top-middle'"
+                  [tooltipBackground]="'#EF5350'"
+                  [tooltipColor]="'#FFFFFF'"
+                  [zIndex]="900"
+                  [borderRadius]="'2px'"
+                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+                  [fontWeight]="'bold'"
+                  [fontSize]="'11px'"
+                  [customPosition]="-11"
+                ></svg-icon>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <!-- Bank Account -->
+        <app-ta-custom-card
+          [hasCounter]="bankAccounts.length ? bankAccounts.length : '0'"
+          [cardName]="'Bank Account'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasArrow]="true"
+          [hasBodyData]="bankAccounts.length"
+          [isCardOpen]="bankAccounts.length"
+          [hasScrollBody]="bankAccounts.length > 10"
+          (onActionEvent)="addBankAccount($event)"
+        >
+          <div
+            formArrayName="bankAccount"
+            class="common-fake-table-modal common-fake-table-modal-banks hide-oveflow"
+            *ngIf="bankAccounts.length"
+          >
+            <div class="common-fake-table-label">
+              <p>BANK NAME</p>
+              <p>ROUTING <span>*</span></p>
+              <p>ACCOUNT <span>*</span></p>
+            </div>
+            <div
+              *ngFor="let bankAccount of bankAccounts.controls; let ind = index"
+            >
+              <div [formGroupName]="ind" class="common-fake-table-card">
+                <app-ta-input-dropdown
+                  formControlName="bankId"
+                  [template]="'banks'"
+                  [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-banks'
+                  }"
+                  [canAddNew]="true"
+                  [options]="[]"
+                  (selectedItem)="onSelectFakeTableData($event, ind, 'bank')"
+                ></app-ta-input-dropdown>
+                <app-ta-input
+                  formControlName="routing"
+                  [inputConfig]="{
+                    name: 'Routing Number',
+                    type: 'text',
+                    isDisabled: !isBankSelected,
+                    isRequired: isBankSelected,
+                    minLength: 9,
+                    maxLength: 9
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="account"
+                  [inputConfig]="{
+                    name: 'Account Number',
+                    type: 'password',
+                    placeholderIcon: 'password',
+                    isDisabled: !isBankSelected,
+                    isRequired: isBankSelected,
+                    maxLength: 17,
+                    minLength: 4
+                  }"
+                ></app-ta-input>
+                <svg-icon class="common-fake-table-check" src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                <div class="common-fake-table-status common-fake-table-status-pending">Pending</div>
+                <svg-icon
+                  class="common-fake-table-delete"
+                  src="assets/svg/common/ic_trash.svg"
+                  (click)="removeBankAccount(ind)"
+                  [appTooltip]="'Delete'"
+                  [position]="'top-middle'"
+                  [tooltipBackground]="'#EF5350'"
+                  [tooltipColor]="'#FFFFFF'"
+                  [zIndex]="900"
+                  [borderRadius]="'2px'"
+                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+                  [fontWeight]="'bold'"
+                  [fontSize]="'11px'"
+                  [customPosition]="-11"
+                ></svg-icon>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card
+          [cardName]="'Load Format and Customer Billing'"
+          [isCardOpen]="true"
+        >
+          <div class="row active-20">
+            <div class="col-4">
+              <app-ta-input
+                formControlName="prefix"
+                [inputConfig]="{
+                  name: 'Prefix',
+                  type: 'text',
+                  label: 'Prefix',
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4">
+              <app-ta-input
+                formControlName="startingNo"
+                [inputConfig]="{
+                  name: 'Starting No',
+                  type: 'text',
+                  label: 'Starting No',
+                  isRequired: true,
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4">
+              <app-ta-input
+                formControlName="suffix"
+                [inputConfig]="{
+                  name: 'Sufix',
+                  type: 'text',
+                  label: 'Sufix',
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+          <div class="preferred-load-company-additional">
+            <div class="preffered-field-one">
+              <span class="r-text">Preferred Load Type</span>
+              <div class="r-btns">
+                <app-ta-input-radiobuttons
+                  [buttons]="prefferedLoadBtns"
+                  (changedValue)="onPrefferedLoadCheck($event)"
+                ></app-ta-input-radiobuttons>
+              </div>
+            </div>
+            <div class="preffered-field">
+              <app-ta-checkbox
+                formControlName="autoInvoicing"
+                [label]="'Auto Invoicing'"
+                [name]="'AutoInvoicing'"
+                [customClass]="'medium'"
+              ></app-ta-checkbox>
+            </div>
+            <div class="preffered-field">
+              <app-ta-checkbox
+                formControlName="factorByDefault"
+                [label]="'Factor By Default'"
+                [name]="'FactorByDefault'"
+                [customClass]="'medium'"
+              ></app-ta-checkbox>
+            </div>
+          </div>
+          <div class="row last-row">
+            <div class="col-6">
+              <app-ta-input
+                formControlName="customerPayTerm"
+                [inputConfig]="{
+                  name: 'Customer Pay Term',
+                  type: 'text',
+                  label: 'Customer Pay Term',
+                  placeholderIcon: 'days'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-6">
+              <app-ta-input
+                formControlName="customerCredit"
+                [inputConfig]="{
+                  name: 'Customer Credit',
+                  type: 'text',
+                  label: 'Customer Credit',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Expiration'" [isCardOpen]="true">
+          <div class="row active-20 lat-row">
+            <div class="col-4">
+              <app-ta-input
+                formControlName="mvr"
+                [inputConfig]="{
+                  name: 'MVR',
+                  type: 'text',
+                  label: 'MVR',
+                  isRequired: true,
+                  placeholderIcon: 'months'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4">
+              <app-ta-input
+                formControlName="truckInspection"
+                [inputConfig]="{
+                  name: 'Truck Inspection',
+                  type: 'text',
+                  label: 'Truck Inspection',
+                  isRequired: true,
+                  placeholderIcon: 'months'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4">
+              <app-ta-input
+                formControlName="trailerInspection"
+                [inputConfig]="{
+                  name: 'Trailer Inspection',
+                  type: 'text',
+                  label: 'Trailer Inspection',
+                  isRequired: true,
+                  placeholderIcon: 'months'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+      </div>
+      <!-------------------------------- Payroll Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 3"></div>
+    </div>
+  </form>
+</app-ta-modal>

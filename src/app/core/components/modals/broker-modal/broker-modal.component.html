@@ -368,11 +368,11 @@
         >
           <div
             formArrayName="brokerContacts"
-            class="broker-contacts"
+            class="common-fake-table-modal common-fake-table-modal-broker"
             (scroll)="onScrollingBrokerContacts($event)"
             *ngIf="brokerContacts.length"
           >
-            <div class="broker-contacts-label">
+            <div class="common-fake-table-label">
               <p>FULL NAME <span>*</span></p>
               <p>DEPARTMENT</p>
               <p>PHONE <span>*</span></p>
@@ -385,7 +385,7 @@
                 let ind = index
               "
             >
-              <div [formGroupName]="ind" class="broker-contacts-card">
+              <div [formGroupName]="ind" class="common-fake-table-card">
                 <app-ta-input
                   formControlName="contactName"
                   [inputConfig]="{
@@ -429,7 +429,7 @@
                   }"
                 ></app-ta-input>
                 <svg-icon
-                  class="brokerContacts-delete"
+                  class="common-fake-table-delete"
                   [ngClass]="{
                     'new-position':
                       isContactCardsScrolling &&
