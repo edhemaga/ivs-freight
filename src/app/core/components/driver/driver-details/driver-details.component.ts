@@ -48,10 +48,13 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     this.detailCongif();
     
   }
-
+   
+     /**Function retrun id */
   public identity(index: number, item: any): number {
     return item.id;
   }
+  
+     /**Function template and names for header and other options in header */
   detailCongif() {
     this.driverDetailsConfig = [
       {
@@ -85,7 +88,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         }
     ];
   }
-
+  /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataTest = {
       disabledMutedStyle: null,

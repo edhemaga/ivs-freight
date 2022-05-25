@@ -105,3 +105,22 @@
         }
       }
 }
+.card-note {
+  margin-left: 8px;
+  height: 40px;
+  margin-top: 12px;
+  .note-body {
+    padding-left: 4px !important;
+  }
+  .note-textarea {
+    color: #6c6c6c !important;
+    &::-moz-selection {
+      color: #6c6c6c;
+      background: rgb(204, 204, 204, 0.2);
+    }
+    &::selection {
+      color: #6c6c6c;
+      background: rgb(204, 204, 204, 0.2);
+    }
+  }
+}

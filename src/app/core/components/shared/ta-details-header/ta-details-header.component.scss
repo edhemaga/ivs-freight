@@ -142,6 +142,7 @@ svg {
     }
     &:hover{
         background-color: #6d82c7;
+        border-radius: 2px;
         svg{
             path {
                 fill: #ffffff !important;

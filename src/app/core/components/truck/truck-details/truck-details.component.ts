@@ -68,10 +68,11 @@ export class TruckDetailsComponent implements OnInit {
       },
     ];
   }
+   /**Function retrun id */
   public identity(index: number, item: any): number {
     return item.id;
   }
-
+   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataTest = {
       disabledMutedStyle: null,

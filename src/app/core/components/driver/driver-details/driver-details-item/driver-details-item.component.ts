@@ -36,14 +36,14 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public mvrNote: FormControl = new FormControl();
   public toggler: boolean = false;
   private destroy$: Subject<void> = new Subject<void>();
-  public selectedValuePayroll: string = '';
+
   public arrayDrivers: any = [];
   public arrayDriverName: any = '';
   public currentDriverName: string = 'Milos Cirkovic';
   public driverId: number = 0;
   public showMoreEmployment: boolean = false;
-  public employmentHistory: any = [];
-  dataTest: any;
+
+  public dataTest: any;
   public driverData: any;
   constructor(
     private activated_route: ActivatedRoute,
@@ -118,52 +118,14 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     console.log(this.data);
     this.initTableOptions();
     this.getDriversList();
-    this.getEmploymentHistory();
+
     this.getDriverById();
  
   }
 
 
-  public getEmploymentHistory() {
-    this.employmentHistory = [
-      {
-        status: 'Employed',
-        fromTo: '08/10/21 - 04/23/22',
-        duration: '0y 204 d',
-        svgIcon: 'assets/svg/common/round_blue.svg',
-        hasDivider: true,
-      },
-      {
-        status: 'Deactivated',
-        fromTo: '04/24/22 - 07/05/23',
-        duration: '1y 103 d',
-        svgIcon: 'assets/svg/common/ic_circle_light_blue.svg',
-        hasDivider: true,
-      },
-      {
-        status: 'Employed',
-        fromTo: '07/06/23 - 07/21/24',
-        duration: '1y 16 d',
-        svgIcon: 'assets/svg/common/round_blue.svg',
-        hasDivider: true,
-      },
-      {
-        status: 'Deactivated',
-        fromTo: '07/22/24 - 09/04/24',
-        duration: '0y 53 d',
-        svgIcon: 'assets/svg/common/ic_circle_light_blue.svg',
-        hasDivider: true,
-      },
-      {
-        status: 'Employed',
-        fromTo: '09/05/24 - Today',
-        duration: '0y 247 d',
-        svgIcon: 'assets/svg/common/round_blue.svg',
-        hasDivider: false,
-      },
-    ];
-  }
-
+  
+  /**Function return driver by id */
   public getDriverById() {
     this.driverData = this.activated_route.snapshot.data;
   }
@@ -194,7 +156,8 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     this.arrayDriverName =
       this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]];
   }
-
+  
+   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataTest = {
       disabledMutedStyle: null,
@@ -295,10 +258,11 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public onShowDetails(componentData: any) {
     componentData.showDetails = !componentData.showDetails;
   }
-
+  /**Function format date */
   public formatDate(date: string) {
     return moment(date).format('MM/DD/YY');
   }
+  /**Function format phone number */
   public formatPhone(phoneNumberString: string) {
     const value = phoneNumberString;
     const number = value?.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
@@ -328,11 +292,13 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
         )}</span>` + item.endorsementName.substring(numOfCharacters)
     );
   }
-
+  
+  /**Function retrun id */
   public identity(index: number, item: any): number {
     return item.id;
   }
-
+  
+   /**Function for toggle page in cards */
   public toggleResizePage(value: boolean) {
     this.toggler = value;
     console.log(this.toggler);

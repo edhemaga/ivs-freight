@@ -1,52 +1,33 @@
-import { TrailerTService } from './../../state/trailer.service';
-import { ActivatedRoute } from '@angular/router';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
 
 @Component({
-  selector: 'app-trailer-details-item',
-  templateUrl: './trailer-details-item.component.html',
-  styleUrls: ['./trailer-details-item.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  selector: 'app-trailer-details-card',
+  templateUrl: './trailer-details-card.component.html',
+  styleUrls: ['./trailer-details-card.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
-export class TrailerDetailsItemComponent implements OnInit {
-  @Input() data: any = null;
+export class TrailerDetailsCardComponent implements OnInit {
+  @Input() data:any;
+  @Input() templateCard:boolean=false;
   public note: FormControl = new FormControl();
-  public trailerData: any;
-  public svgColorVar: string;
-  public toggleOwner: boolean = false;
-  public trailerName: string;
-  public dataTest:any;
   public toggler:boolean=false;
-  constructor(
-    private activated_route: ActivatedRoute,
-    private trailerTService: TrailerTService
-  ) {}
+  public dataEdit:any;
+  constructor() { }
 
   ngOnInit(): void {
-    this.getTrailerById();
+    this.note.patchValue(this.data.note);
     this.initTableOptions();
   }
-  /**Function return trailer by id */
-  public getTrailerById() {
-    this.trailerData = this.activated_route.snapshot.data;
-    this.note.patchValue(this.trailerData.trailer.note)
-
-  }
-   /**Function return format date from DB */
-  public formatDate(date: string) {
-    return moment(date).format('MM/DD/YY');
-  }
-   
-  /**Function for toggle page in cards */
+    /**Function for toggle page in cards */
   public toggleResizePage(value: boolean) {
     this.toggler = value;
     console.log(this.toggler);
   }
-   /**Function for dots in cards */
+    /**Function for dots in cards */
   public initTableOptions(): void {
-    this.dataTest = {
+    this.dataEdit = {
       disabledMutedStyle: null,
       toolbarActions: {
         hideViewMode: false,
@@ -78,4 +59,17 @@ export class TrailerDetailsItemComponent implements OnInit {
       export: true,
     };
   }
+
+   /**Function return format date from DB */
+   public formatDate(date: string) {
+    return moment(date).format('MM/DD/YY');
+  }
+
+    /**Function return format phone from DB */
+    public formatPhone(phoneNumberString: string) {
+      const value = phoneNumberString;
+      const number = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+      phoneNumberString = number;
+      return number;
+    }
 }

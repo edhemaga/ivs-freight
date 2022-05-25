@@ -5,7 +5,7 @@
     [searchName]="'Search Driver'"
     [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
     [cardDetailsName]="data.currentDriverName"
-    [cardDetailsDate]="formatDate(data.createdAt)"
+    [cardDetailsDate]="formatDate(data.hired)"
     [cardDetailsDateTerminated]="formatDate(data.dateTerminated)"
     [statusInactive]="data.status"
   >
@@ -327,8 +327,9 @@
 
             <div
               *ngIf="showMoreEmployment"
+              [@showHideCardBody]="showMoreEmployment ? 'true' : 'false'"
               class="status-container"
-            >
+             >
               <div class="status-header">
                 <div class="status-item">
                   <p class="p-status">STATUS</p>

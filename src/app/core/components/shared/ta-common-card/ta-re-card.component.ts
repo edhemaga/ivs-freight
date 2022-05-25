@@ -39,6 +39,9 @@ export class TaReCardComponent implements OnInit {
   /* To copy any Text */
   public copyText(val: any) {
     this.copied = true;
+    setTimeout(() => {
+      this.copied=false;
+    }, 1200);
     this.toggleCards();
 
     

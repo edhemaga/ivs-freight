@@ -2,12 +2,14 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import moment from 'moment';
+import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',
   styleUrls: ['./driver-details-card.component.scss'],
-  encapsulation:ViewEncapsulation.None
+  encapsulation:ViewEncapsulation.None,
+  animations: [card_modal_animation('showHideCardBody')],
 })
 export class DriverDetailsCardComponent implements OnInit {
   @Input() data:any;
@@ -79,6 +81,7 @@ export class DriverDetailsCardComponent implements OnInit {
       },
     ];
   }
+  /**Function return user image if have in DB or default image */
   public transformImage() {
     let img;
     if (this.data.avatar) {
@@ -88,12 +91,13 @@ export class DriverDetailsCardComponent implements OnInit {
     }
     return this.sanitazer.bypassSecurityTrustResourceUrl(img);
   }
-
+   /**Function for toggle page in cards */
   public toggleResizePage(value: boolean) {
     this.toggler = value;
     console.log(this.toggler);
   }
-
+  
+   /**Function return format date from DB */
   public formatDate(date: string) {
     return moment(date).format('MM/DD/YY');
   }
@@ -183,17 +187,19 @@ export class DriverDetailsCardComponent implements OnInit {
       }
       this.accountText = value;
     }
-
+    /**Function return format number phone */
     public formatPhone(phoneNumberString: string) {
       const value = phoneNumberString;
       const number = value?.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
       phoneNumberString = number;
       return number;
     }
+
+     /**Function retrun id */
     public identity(index: number, item: any): number {
       return item.id;
     }
-
+     /**Function for dots in cards */
     public initTableOptions(): void {
       this.dataEdit = {
         disabledMutedStyle: null,

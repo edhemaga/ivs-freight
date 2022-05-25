@@ -8,15 +8,17 @@ import { TruckassistProgressExpirationModule } from '../../shared/truckassist-pr
 import { TruckDetailsRoutes } from "./trailer-details.routing";
 import { TrailerDetailsComponent } from './trailer-details.component';
 import { TrailerDetailsItemComponent } from './trailer-details-item/trailer-details-item.component';
+import { TrailerDetailsCardComponent } from "../trailer-details-card/trailer-details-card.component";
 
 @NgModule({
     declarations:[
         TrailerDetailsComponent,
         TrailerDetailsItemComponent,
         RenderMultipleItemsPipe,
-
+        TrailerDetailsCardComponent
 
     ],
+    exports:[TrailerDetailsCardComponent],
     imports:[
         CommonModule,
         TruckDetailsRoutes,

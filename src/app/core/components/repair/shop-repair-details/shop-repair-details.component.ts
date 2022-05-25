@@ -16,17 +16,14 @@ export class ShopRepairDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.data=this._act_route.snapshot.data;
-    console.log(this.data);
-    console.log('Shop Data');
-    this.shopConf();
-    console.log(this.shopRepairConfig);
-    
+    this.shopConf();    
   }
-
+ 
+  /**Function return id */
   public identity(index: number, item: any): number {
     return item.id;
   }
-
+  /**Function for header names and array of icons */
   shopConf(){
     this.shopRepairConfig = [
       {

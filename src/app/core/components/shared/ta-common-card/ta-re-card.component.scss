@@ -262,3 +262,11 @@ p {
    position: relative;
    top: -5px;
 }
+.disable-selection {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: relative;
+    bottom: -1px;
+}

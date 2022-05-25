@@ -79,7 +79,7 @@ export class TrailerDetailsComponent implements OnInit {
       }
     }
   }
-
+  /**Function return id */
   public identity(index: number, item: any): number {
     return item.id;
   }

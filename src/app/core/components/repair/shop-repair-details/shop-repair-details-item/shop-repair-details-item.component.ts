@@ -25,14 +25,14 @@ export class ShopRepairDetailsItemComponent implements OnInit {
     this.dummyDataRep();
     this.dummyDataVeh()
   }
-
+ /**Function for format phone number */
   public formatPhone(phoneNumberString: string) {
     const value = phoneNumberString;
     const number = value?.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
     phoneNumberString = number;
     return number;
   }
-
+  /**Function for dots in cards */
   public initTableOptions(): void {
     this.dummyData = {
       disabledMutedStyle: null,
