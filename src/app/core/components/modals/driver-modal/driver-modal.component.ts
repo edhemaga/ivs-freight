@@ -309,12 +309,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .get('routing')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value) {
-          console.log(bankRoutingValidator(value))
+        if (value && value.split('').length > 8) {
           if (bankRoutingValidator(value)) {
             this.driverForm.get('routing').setErrors(null);
           } else {
             this.driverForm.get('routing').setErrors({ invalid: true });
+            this.inputService.triggerInvalidRoutingNumber$.next(true);
           }
         }
       });

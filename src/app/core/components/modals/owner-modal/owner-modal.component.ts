@@ -214,6 +214,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             this.ownerForm.get('routingNumber').setErrors(null);
           } else {
             this.ownerForm.get('routingNumber').setErrors({ invalid: true });
+            this.inputService.triggerInvalidRoutingNumber$.next(true);
           }
         }
       });

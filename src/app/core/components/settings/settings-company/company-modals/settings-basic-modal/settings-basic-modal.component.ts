@@ -138,7 +138,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
-    console.log(this.editData);
+
     if (this.editData?.type === 'payroll-tab') {
       const timeout = setTimeout(() => {
         this.selectedTab = 3;
@@ -360,6 +360,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         if (value) {
           if (bankRoutingValidator(value)) {
             this.bankAccounts.at(index).get('routing').setErrors(null);
+            this.inputService.triggerInvalidRoutingNumber$.next(true);
           } else {
             this.bankAccounts
               .at(index)

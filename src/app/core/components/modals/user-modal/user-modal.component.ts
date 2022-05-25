@@ -215,6 +215,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             this.userForm.get('routingNumber').setErrors(null);
           } else {
             this.userForm.get('routingNumber').setErrors({ invalid: true });
+            this.inputService.triggerInvalidRoutingNumber$.next(true);
           }
         }
       });

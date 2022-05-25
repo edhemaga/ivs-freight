@@ -13,6 +13,7 @@ import {
 import { ModalService } from './modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
+import { TaInputService } from '../ta-input/ta-input.service';
 
 @Component({
   selector: 'app-ta-modal',
@@ -48,7 +49,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private ngbActiveModal: NgbActiveModal,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private inputService: TaInputService
   ) {}
 
   ngOnInit(): void {
@@ -99,6 +101,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
           this.ngbActiveModal.dismiss();
           clearTimeout(this.timeout);
         }, 150);
+        this.inputService.triggerInvalidRoutingNumber$.next(false)
         break;
       }
       case 'deactivate': {
