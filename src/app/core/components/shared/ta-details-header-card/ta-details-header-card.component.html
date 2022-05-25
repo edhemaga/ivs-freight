@@ -2,7 +2,7 @@
   <div class="details-header-wrapper-switcher">
     <div class="inactive-icon-input">
       <svg-icon
-        *ngIf="statusInactive==0"
+        *ngIf="statusInactive == 0"
         class="inactive-status"
         src="assets/svg/truckassist-table/dropdown/content/activate-hover.svg"
       ></svg-icon>
@@ -18,15 +18,6 @@
         [options]="optionsCmp"
         [template]="'details-template'"
         (selectedItem)="onSelectDetail($event)"
-        [appTooltip]="searchName"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6c6c6c'"
-        [tooltipColor]="'#ffffff'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="-11"
       >
       </app-ta-input-dropdown>
     </div>
@@ -58,7 +49,7 @@
         [customPosition]="-11"
         class="arrow-right"
         (click)="onNextAction()"
-        src="assets/svg/common/arrow-right.svg"
+        src="assets/svg/common/arrow-left.svg"
       ></svg-icon>
     </div>
   </div>
@@ -95,7 +86,7 @@
         [fontWeight]="'bold'"
         [fontSize]="'11px'"
         [customPosition]="330"
-        *ngIf="cardDetailsDateTerminated"
+        *ngIf="statusInactive == 0"
         class="details-header-wrapper-data-item bottom"
       >
         <svg-icon

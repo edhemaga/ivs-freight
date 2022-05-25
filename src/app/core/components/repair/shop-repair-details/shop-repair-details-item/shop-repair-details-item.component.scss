@@ -1,177 +1,216 @@
-@import '../shop-repair-details.component.scss';
+@import "../shop-repair-details.component.scss";
 
-.working-hours-container{
-    padding: 0 10px;
-    .open-now-wrapper{
-        .open-now-icon-text{
-         display: flex;
-         align-items: baseline;
-        }
-       
-        .open-time{
-            font-size: $font-size18;
-            color: $color-gray-dark;
-            height: 18px;
-            position: relative;
-            bottom: 4px;
-            font-weight: $font-semibold;
-            &::-moz-selection {
-              color: $color-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-              color: $color-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
-            }
-        }
+.working-hours-container {
+  padding: 0 10px;
+  .open-now-wrapper {
+    .open-now-icon-text {
+      display: flex;
+      align-items: baseline;
     }
-    .open-header{
-        font-size: $font-size12;
-        font-weight: $font-semibold;
+
+    .open-time {
+      font-size: $font-size18;
+      color: $color-gray-dark;
+      height: 18px;
+      position: relative;
+      bottom: 4px;
+      font-weight: $font-semibold;
+      &::-moz-selection {
         color: $color-gray-dark;
-        padding-right: 4px;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
     }
-    .open-hours-wrapper{
-        display: grid;
-        grid-template-columns: 190px 180px;
-        margin-top: 12px;
-        
+  }
+  .open-header {
+    font-size: $font-size12;
+    font-weight: $font-semibold;
+    color: $color-gray-dark;
+    padding-right: 4px;
+    &::-moz-selection {
+      color: $color-gray-dark;
+      background: rgb(183, 183, 183, 0.2);
     }
-    .open-working-days-value{
-        font-size: 14px;
-        font-weight: 400;
-        color: #6c6c6c;
-        height: 18px;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
+    &::selection {
+      color: $color-gray-dark;
+      background: rgb(183, 183, 183, 0.2);
     }
-    .sunday{
-        margin-top: 12px;
+  }
+  .open-hours-wrapper {
+    display: grid;
+    grid-template-columns: 190px 180px;
+    margin-top: 12px;
+  }
+  .open-working-days-value {
+    font-size: 14px;
+    font-weight: 400;
+    color: #6c6c6c;
+    height: 18px;
+    &::-moz-selection {
+      color: $color-gray-dark;
+      background: rgb(183, 183, 183, 0.2);
     }
+    &::selection {
+      color: $color-gray-dark;
+      background: rgb(183, 183, 183, 0.2);
+    }
+  }
+  .sunday {
+    margin-top: 12px;
+  }
 }
 
 .note-cards {
-    .note-body {
-      height: 40px !important;
-      padding: 0 9px !important;
-      margin-bottom: 7px !important;
-      .note-textarea {
-        color: #6c6c6c !important;
-        font-weight: 400 !important;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(108, 108, 108, 0.2);
-        }
+  .note-body {
+    height: 40px !important;
+    padding: 0 9px !important;
+    margin-bottom: 7px !important;
+    .note-textarea {
+      color: #6c6c6c !important;
+      font-weight: 400 !important;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
       }
     }
   }
+}
 
-  .service-container{
-    padding: 0 23px;
-    display: grid;
-    grid-template-columns: 32px 32px 32px 32px;
-    column-gap: 78px;
-    row-gap: 13px;
-    .service-item{
+.service-container {
+  padding: 0 23px;
+  display: grid;
+  grid-template-columns: 32px 32px 32px 32px;
+  column-gap: 78px;
+  row-gap: 13px;
+  .service-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    svg {
+      width: 32px;
+      height: 32px;
+      path {
+        fill: #aaaaaa;
+      }
+    }
+    .service-type {
+      font-size: 12px;
+      font-weight: $font-semibold;
+      color: #aaaaaa;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(170, 170, 170, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(170, 170, 170, 0.2);
+      }
+    }
+  }
+}
+.likes-count-container {
+  max-width: 280px;
+  min-height: 48px;
+  background-color: $color-white;
+  border-radius: 3px;
+  .likes-item {
+    display: flex;
+    column-gap: 41px;
+    padding-left: 46px;
+    padding-right: 46px;
+    .ic-counter {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      svg{
-        width: 32px;
-        height: 32px;
-        path{
+      margin-top: 12px;
+    }
+    .like {
+      margin-right: 4px;
+      position: relative;
+      bottom: 3px;
+      svg {
+        width: 20px;
+        height: 20px;
+        transform: rotate(180deg);
+
+        path {
+          fill: #4db6a2;
+        }
+      }
+    }
+    .dislike {
+      margin-left: 4px;
+      position: relative;
+      svg {
+        width: 20px;
+        height: 20px;
+        path {
           fill: #aaaaaa;
         }
       }
-      .service-type{
-        font-size: 12px;
-        font-weight: $font-semibold;
-        color: #aaaaaa;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(170, 170, 170, 0.2);
-        }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(170, 170, 170, 0.2);
-        }
-      }
     }
   }
-  .likes-count-container{
-    max-width: 280px;
-    min-height: 48px;
-    background-color: $color-white;
-    border-radius: 3px;
-    .likes-item{
-      display: flex;
-      column-gap: 41px;
-      padding-left: 46px;
-      padding-right: 46px;
-      .ic-counter{
-        display: flex;
-        margin-top: 12px;
-      }
-      .like{
-        margin-right: 4px;
-        position: relative;
-        bottom: 3px;
-        svg{
-          width: 20px;
-          height: 20px;
-          transform: rotate(180deg);
-          
-          path{
-            fill: #4DB6A2;
-          }
-        }
-      }
-      .dislike{
-        margin-left: 4px;
-        position: relative;
-        svg{
-          width: 20px;
-          height: 20px;
-          path{
-            fill: #aaaaaa;
-          }
-        }
-      }
-    }
-  }
-  .border-vertical{
-    margin: 0;
-    width: 2px;
-    height: 28px;
-    border: none;
-    border-radius: 1px;
-    border-left: 2px solid #f3f3f3;
-    margin-top: 10px;
 }
-.review-container{
-   background-color: $color-white;
-   border-radius: 3px;
-   max-width: 280px;
-   height: fit-content;
-   min-height: 50px;
-   margin-top: 12px;
-   padding: 12px;
+.border-vertical {
+  margin: 0;
+  width: 2px;
+  height: 28px;
+  border: none;
+  border-radius: 1px;
+  border-left: 2px solid #f3f3f3;
+  margin-top: 10px;
+}
+.review-container {
+  background-color: $color-white;
+  border-radius: 3px;
+  max-width: 280px;
+  height: fit-content;
+  min-height: 50px;
+  margin-top: 12px;
+  padding: 12px;
+}
+.button-wrapper-shop {
+  text-align: right;
+  button {
+    display: inline-block;
+    border-radius: 2px;
+    background-color: #6d82c7;
+    color: #ffffff;
+    width: 94px;
+    height: 22px;
+    border: none;
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
+.finish-order-cont{
+  .repair-items{
+    .items-header{
+        background-color: #fff3e0;
+        border-radius: 2px;
+        height: 30px;
+        margin-bottom: 2px !important;
+        margin-top: 2px !important;
+    }
+  }
+  .dots-vertical{
+    top: -3px !important;
+  }
+  .date{
+    position: relative;
+    top: 3px;
+  }
+  .unit{
+    position: relative;
+    top: 3px;
+  }
+  .button-wrapper-shop{
+    position: relative;
+    bottom: 2px;
+  }
 }

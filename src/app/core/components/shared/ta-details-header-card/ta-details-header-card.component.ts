@@ -10,7 +10,7 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   
   @Input() cardDetailsName:string='';
   @Input() cardDetailsDate:string='';
-  @Input() cardDetailsDateTerminated:string='';
+  @Input() cardDetailsDateTerminated:string=null;
   @Input() hasSvgHeader:string='';
   @Input() tooltipNext:string='';
   @Input() tooltipPrevious:string='';

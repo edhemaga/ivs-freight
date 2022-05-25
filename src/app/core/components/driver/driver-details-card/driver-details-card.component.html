@@ -6,6 +6,7 @@
     [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
     [cardDetailsName]="data.currentDriverName"
     [cardDetailsDate]="formatDate(data.createdAt)"
+    [cardDetailsDateTerminated]="formatDate(data.dateTerminated)"
     [statusInactive]="data.status"
   >
     <div class="driver-container">
@@ -280,8 +281,8 @@
               </div>
             </div>
           </div>
-          <div *ngFor="let emp of data.employmentHistories; trackBy: identity">
-            <div *ngIf="emp.endDate" class="progress-employment-history">
+          <div >
+            <div class="progress-employment-history">
               <div class="progress-driver">
                 <div class="emp">
                   <div class="employment-tooltip">
@@ -325,7 +326,7 @@
             </div>
 
             <div
-              *ngIf="showMoreEmployment && emp.endDate"
+              *ngIf="showMoreEmployment"
               class="status-container"
             >
               <div class="status-header">
@@ -374,7 +375,7 @@
             </div>
             <svg-icon
               [ngClass]="{ 'transform-arrow': showMoreEmployment }"
-              *ngIf="emp.endDate"
+             
               (click)="showMoreEmployment = !showMoreEmployment"
               [appTooltip]="'Show More'"
               [position]="'top-middle'"
@@ -674,6 +675,7 @@
           [bodyTemplate]="'card'"
           [hasCounter]="data.cdls.length"
           [animationsDisabled]="false"
+          [hasPlusHeader]="true"
         >
           <div *ngFor="let cdl of data.cdls; trackBy: identity">
             <app-ta-re-card
@@ -832,6 +834,7 @@
           [bodyTemplate]="'card'"
           [hasCounter]="data.tests.length"
           [animationsDisabled]="false"
+          [hasPlusHeader]="true"
         >
           <div *ngFor="let test of data.tests; trackBy: identity">
             <app-ta-re-card
@@ -871,6 +874,7 @@
           [bodyTemplate]="'card'"
           [hasCounter]="data.medicals.length"
           [animationsDisabled]="false"
+          [hasPlusHeader]="true"
         >
         <div *ngFor="let med of data.medicals; trackBy: identity">
           <app-ta-re-card
@@ -906,6 +910,7 @@
           [bodyTemplate]="'card'"
           [hasCounter]="data.mvrs.length"
           [animationsDisabled]="false"
+          [hasPlusHeader]="true"
         >
         <div *ngFor="let mvr of data.mvrs; trackBy: identity">
           <app-ta-re-card

@@ -32,7 +32,7 @@ export class TaCustomCardComponent {
   @Input() hasBodyData: boolean = true;
   @Input() isCommentData: boolean = false;
   @Input() tooltipName: string = '';
-
+  @Input() hasPlusHeader:boolean=false;
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );

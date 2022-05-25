@@ -1,5 +1,5 @@
-<div class="row card-main-holder">
-    <div class="col-4 left-side">
+<div class="card-main-holder">
+    <div class="left-side">
         <div class="details">
             <app-driver-details-card
             [data]="selectedData"
@@ -9,7 +9,7 @@
             </app-driver-details-card>
         </div>
     </div>
-    <div class="col-8 right-side">
+    <div class="right-side">
         <div *ngFor="let item of viewData; let indx=index" class="card-frame">
             <div class="card-holder-frame" [class.active]="item.isSelected">
                 <div class="driver-dropdown">

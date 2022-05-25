@@ -63,13 +63,15 @@
           </app-ta-counter>
           <p class="header-name disable-selection">{{ headerText }}</p>
           <div *ngIf="hasIcon" class="repair-header-icons">
+            <span class="ic-hed" *ngFor="let ic of arrayIcons">
             <div class="border-line-left"></div>
             <svg-icon
               class="single-repair-icon"
-              src="assets/svg/common/ic_search.svg"
+              src="{{ic.icon}}"
             ></svg-icon>
-            <div class="border-line-left"></div>
-            <svg-icon
+          </span>
+          <div class="border-line-left"></div>
+            <!-- <svg-icon
               class="single-repair-icon"
               src="assets/svg/common/ic_clock.svg"
             ></svg-icon>
@@ -98,7 +100,7 @@
               class="single-repair-icon"
               src="assets/svg/common/ic_dollar.svg"
             ></svg-icon>
-            <div class="border-line-left"></div>
+            <div class="border-line-left"></div> -->
 
             <div class="total-cost">$ 77.58M</div>
           </div>

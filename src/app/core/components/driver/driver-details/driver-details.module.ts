@@ -11,7 +11,6 @@ import { RenderMultipleItemsPipe } from './driver-details-item/renderMultipleIte
 import { DriverMvrModalComponent } from './driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from './driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import {NgApexchartsModule} from "ng-apexcharts";
 
 @NgModule({
@@ -31,7 +30,6 @@ import {NgApexchartsModule} from "ng-apexcharts";
     CommonModule,
     DriverDetailsRoutes,
     SharedModule,
-    MatButtonToggleModule,
     NgApexchartsModule,
     TruckassistProgressExpirationModule,
   ],

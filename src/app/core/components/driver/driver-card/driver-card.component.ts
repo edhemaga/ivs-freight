@@ -1,6 +1,7 @@
 import { DriverTService } from './../state/driver.service';
 import { DriverDetailsCardComponent } from './../driver-details-card/driver-details-card.component';
 import { Component, OnInit, Input } from '@angular/core';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-driver-card',
@@ -16,15 +17,15 @@ export class DriverCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("DRIVER DATA");
-    console.log(this.viewData);
   }
 
   changeChatBox(e:number) {
     console.log(e);
-   this.selectedData = this.driverService.getDriverById(e);
-   console.log(this.selectedData);
-   
+    this.driverService.getDriverById(e).subscribe(
+      x=>this.selectedData=x,
+      err => console.error(err),
+      
+    );
     //this.driverBox[indx].checked = e.target.checked;
   }
 

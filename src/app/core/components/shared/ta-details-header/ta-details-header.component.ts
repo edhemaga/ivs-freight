@@ -26,6 +26,7 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() customText:string='Date';
   @Output() changeDataArrowUp=new EventEmitter<any>();
   @Output() changeDataArrowDown=new EventEmitter<any>();
+  @Input() arrayIcons:any[]=[];
   public up:boolean=false;
   public down:boolean=false;
   constructor(private routes: ActivatedRoute) {}

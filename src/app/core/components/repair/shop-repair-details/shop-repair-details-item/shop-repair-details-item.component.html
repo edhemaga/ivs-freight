@@ -160,10 +160,8 @@
         </div>
         <div class="divider"></div>
         <div class="repair-items-wrapper">
-          <div
-            class="repair-items"
-            *ngFor="let dummy of dummyDataRepair; let i = index"
-          >
+          <span *ngFor="let dummy of dummyDataRepair; let i = index" [ngClass]="{'finish-order-cont':dummy.finishOrder==false}">
+          <div  class="repair-items">
             <div class="items-header">
               <span class="unit">{{ dummy.unit }}</span>
               <span class="date">{{ dummy.date }}</span>
@@ -172,6 +170,11 @@
               <span *ngIf="dummy.finishOrder" class="cost"
                 >${{ dummy.cost }}</span
               >
+              <div *ngIf="!dummy.finishOrder" class="button-wrapper-shop">
+                <button  class="finish-button">
+                  Finish Order
+                </button>
+              </div>
               <div class="dots-vertical">
                 <app-table-dropdown
                   [options]="dummyData.actions"
@@ -182,6 +185,7 @@
             </div>
             <div class="divider"></div>
           </div>
+        </span>
         </div>
       </div>
     </div>
@@ -244,11 +248,11 @@
       </div>
       <div class="review-container">
         <app-ta-user-review
-            *ngIf="reviewsRepair.length"
-            [reviewData]="reviewsRepair"
-            [isNewReview]="reviewsRepair[0].isNewReview"
-            (changeReviewsEvent)="changeReviewsEvent($event)"
-          ></app-ta-user-review>
+          *ngIf="reviewsRepair.length"
+          [reviewData]="reviewsRepair"
+          [isNewReview]="reviewsRepair[0].isNewReview"
+          (changeReviewsEvent)="changeReviewsEvent($event)"
+        ></app-ta-user-review>
       </div>
     </div>
   </div>

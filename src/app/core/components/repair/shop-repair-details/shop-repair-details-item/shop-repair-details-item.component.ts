@@ -108,6 +108,14 @@ export class ShopRepairDetailsItemComponent implements OnInit {
         cost: '785.53',
         finishOrder: true,
       },
+      {
+        unit: 'R53202',
+        date: '08/10/20',
+        inv: '1001-18',
+        desc: 'Engine oil and filter ● Transmissioningddsadasdasdasdasdasdasdasdad',
+        cost: '785.53',
+        finishOrder: false,
+      },
     ];
    
     console.log(this.dummyDataRepair);

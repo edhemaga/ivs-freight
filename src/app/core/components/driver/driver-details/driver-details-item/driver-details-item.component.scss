@@ -332,7 +332,6 @@
   .employment-tooltip {
     width: 424px;
     height: 52px;
-    margin-left: -153px;
     display: none;
     background-color: #ffffff;
     position: relative;
@@ -400,7 +399,7 @@
         &:hover{
           .employment-tooltip {
             display: block;
-            margin-left: -8px !important;
+            transform: translate(-2%, -1%);
           }
         }
       }
@@ -412,6 +411,7 @@
           background-color: #97a8dc !important;
           .employment-tooltip {
             display: block;
+            transform: translate(-36%, -4%);
           }
         }
       }

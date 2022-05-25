@@ -40,7 +40,34 @@ export class ShopRepairDetailsComponent implements OnInit {
         template: 'repair',
         icon:true,
         data:25,
-        customText:'Date'
+        customText:'Date',
+        icons:[
+          {
+          id:Math.random() * 1000,
+          icon:'assets/svg/common/ic_clock.svg'
+          },
+          {
+            id:Math.random() * 1000,
+            icon:'assets/svg/common/ic_rubber.svg'
+            },
+            {
+              id:Math.random() * 1000,
+              icon:'assets/svg/common/ic_documents.svg'
+              },
+              {
+                id:Math.random() * 1000,
+                icon:'assets/svg/common/ic_sraf.svg'
+                },
+                {
+                  id:Math.random() * 1000,
+                  icon:'assets/svg/common/ic_funnel.svg'
+                  },
+                  {
+                    id:Math.random() * 1000,
+                    icon:'assets/svg/common/ic_dollar.svg'
+                    },
+                
+      ]
       },
       {
         id: 2,

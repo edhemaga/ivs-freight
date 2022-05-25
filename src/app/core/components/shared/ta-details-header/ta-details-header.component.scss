@@ -68,11 +68,11 @@ p {
                 &::-moz-selection {
                     color: #919191;
                     background: rgb(145, 145, 145, 0.2);
-                  }
-                  &::selection {
-                    color:#919191;
+                }
+                &::selection {
+                    color: #919191;
                     background: rgb(145, 145, 145, 0.2);
-                  }
+                }
             }
             .icons-repair {
                 display: flex;
@@ -93,7 +93,6 @@ p {
                                 fill: #6c6c6c;
                             }
                         }
-                       
                     }
                 }
                 .second-icon {
@@ -109,7 +108,6 @@ p {
                                 fill: #6c6c6c;
                             }
                         }
-
                     }
                 }
             }
@@ -137,11 +135,16 @@ svg {
     justify-content: center;
     margin: 2px;
     cursor: pointer;
-    &:hover {
+    svg {
+        path{
+            fill: #6d82c7;
+        }
+    }
+    &:hover{
         background-color: #6d82c7;
-        svg {
+        svg{
             path {
-                fill: #fff;
+                fill: #ffffff !important;
             }
         }
     }
@@ -187,24 +190,27 @@ svg {
         }
     }
 }
-.clicked{
-    svg{
-        path{
+.clicked {
+    svg {
+        path {
             fill: #6d82c7;
         }
     }
 }
-.hide-buttons{
+.hide-buttons {
     display: flex;
     align-items: center;
 }
-.header-arrow{
-    svg{
-        &:hover{
-            rect{
-
+.header-arrow {
+    svg {
+        &:hover {
+            rect {
                 fill: #6c6c6c;
             }
         }
     }
+}
+.ic-hed{
+    display: flex;
+    align-items: center;
 }

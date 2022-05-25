@@ -17,6 +17,7 @@ export class TrailerDetailsItemComponent implements OnInit {
   public svgColorVar: string;
   public toggleOwner: boolean = false;
   public trailerName: string;
+  public dataTest:any;
   constructor(
     private activated_route: ActivatedRoute,
     private trailerTService: TrailerTService
@@ -24,6 +25,7 @@ export class TrailerDetailsItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTrailerById();
+    this.initTableOptions();
   }
   public getTrailerById() {
     this.trailerData = this.activated_route.snapshot.data;
@@ -39,5 +41,38 @@ export class TrailerDetailsItemComponent implements OnInit {
     const number = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
     phoneNumberString = number;
     return number;
+  }
+  public initTableOptions(): void {
+    this.dataTest = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          class: 'regular-text',
+          contentType: 'edit',
+        },
+
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
+        },
+      ],
+      export: true,
+    };
   }
 }

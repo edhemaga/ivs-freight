@@ -302,5 +302,157 @@
         </div>
       </div>
     </div>
+      <!---------------------------- Registration TEMPLATE ----------------------------->
+      <div *ngSwitchCase="'registration'">
+        <div *ngFor="let reg of trailerData.trailer.registrations; trackBy: identity">
+          <app-ta-re-card
+            [cardDocumentCounter]="1"
+            (resizePage)="toggleResizePage($event)"
+            [cardNameCommon]="reg.licensePlate"
+            [hasCopyIcon]="true"
+            [options]="dataTest"
+            [expDateClose]="formatDate(reg.expDate)"
+          >
+            <div class="cards-container">
+              <div class="card-body-cdl">
+                <div class="card-row-endor">
+                  <div class="card-item">
+                    <div class="card-item-name">State</div>
+                    <div class="card-item-value">KV</div>
+                  </div>
+                  <div class="card-item">
+                    <div class="card-item-name">Issued</div>
+                    <div class="card-item-value">
+                      {{ formatDate(reg.issueDate) }}
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="card-row-progress"
+                  [ngClass]="{ 'second-progress': toggler }"
+                >
+                  <div class="card-details-progress-container">
+                    <app-truckassist-progress-expiration
+                      [expireDate]="formatDate(reg.expDate)"
+                      [startDate]="formatDate(reg.issueDate)"
+                      [expiresSettings]="'details'"
+                    >
+                    </app-truckassist-progress-expiration>
+                  </div>
+                </div>
+              </div>
+              <div class="divider" *ngIf="toggler"></div>
+              <div *ngIf="toggler" class="note-wrapper">
+                <app-ta-input-note
+                  [formControl]="registrationNote"
+                  [isVisibleDivider]="false"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [isVisibleNote]="true"
+                ></app-ta-input-note>
+              </div>
+            </div>
+          </app-ta-re-card>
+        </div>
+      </div>
+      <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
+      <div *ngSwitchCase="'fhwa-insepction'">
+        <div *ngFor="let fhwa of trailerData.trailer.inspections; trackBy: identity">
+          <app-ta-re-card
+            [options]="dataTest"
+            [cardNameCommon]="formatDate(fhwa.issueDate)"
+            [expDateClose]="formatDate('04/04/25')"
+          >
+            <div class="cards-container">
+              <div class="card-body-cdl">
+                <div
+                  class="card-row-progress"
+                  [ngClass]="{ 'second-progress': toggler }"
+                >
+                  <div class="card-details-progress-container">
+                    <app-truckassist-progress-expiration
+                      [expireDate]="'04/04/25'"
+                      [startDate]="formatDate(fhwa.issueDate)"
+                      [expiresSettings]="'details'"
+                    >
+                    </app-truckassist-progress-expiration>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="toggler" class="note-wrapper">
+                <app-ta-input-note
+                  [formControl]="fhwaNote"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [isVisibleNote]="true"
+                ></app-ta-input-note>
+              </div>
+            </div>
+          </app-ta-re-card>
+        </div>
+      </div>
+  
+      <!---------------------------- Title TEMPLATE ----------------------------->
+      <div *ngSwitchCase="'title'">
+        <div *ngFor="let title of trailerData.trailer.titles; trackBy: identity">
+          <app-ta-re-card
+            [cardDocumentCounter]="1"
+            (resizePage)="toggleResizePage($event)"
+            [cardNameCommon]="title.number"
+            [options]="dataTest"
+            [expDateClose]="formatDate('04/04/27')"
+          >
+            <div class="cards-container">
+              <div class="card-body-cdl">
+                <div class="card-row-endor">
+                  <div class="card-item">
+                    <div class="card-item-name">State</div>
+                    <div class="card-item-value">KV</div>
+                  </div>
+                  <div class="card-item">
+                    <div class="card-item-name">Issued</div>
+                    <div class="card-item-value">
+                      {{ formatDate(title.issueDate) }}
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="card-row-progress"
+                  [ngClass]="{ 'second-progress': toggler }"
+                >
+                  <div class="card-details-progress-container">
+                    <app-truckassist-progress-expiration
+                      [expireDate]="'04/04/27'"
+                      [startDate]="formatDate(title.issueDate)"
+                      [expiresSettings]="'details'"
+                    >
+                    </app-truckassist-progress-expiration>
+                  </div>
+                </div>
+              </div>
+              <div class="divider" *ngIf="toggler"></div>
+              <div *ngIf="toggler" class="note-wrapper">
+                <app-ta-input-note
+                  [formControl]="titleNote"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [isVisibleDivider]="false"
+                  [isVisibleNote]="true"
+                ></app-ta-input-note>
+              </div>
+            </div>
+          </app-ta-re-card>
+        </div>
+      </div>
+      <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
+      <div *ngSwitchCase="'lease-purchase'">
+          <div class="test" style="background-color: #ffffff; height:200px ;"></div>
+      </div>
   </div>
 </div>

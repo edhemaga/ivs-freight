@@ -40,6 +40,7 @@ $border-radius: 3px;
             .arrow-left {
                 cursor: pointer;
                 padding: 0 5px;
+               
                 &:hover {
                     background: #f3f3f3;
                     width: 28px;
@@ -56,6 +57,9 @@ $border-radius: 3px;
             .arrow-right {
                 cursor: pointer;
                 padding: 0 5px;
+                svg{
+                    transform: rotate(180deg);
+                }
                 &:hover {
                     background: #f3f3f3;
                     width: 28px;
