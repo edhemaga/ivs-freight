@@ -310,6 +310,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
         if (value) {
+          console.log(bankRoutingValidator(value))
           if (bankRoutingValidator(value)) {
             this.driverForm.get('routing').setErrors(null);
           } else {

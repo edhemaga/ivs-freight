@@ -125,7 +125,7 @@ export class SettingsPayrollComponent {
 
   constructor(private settingsStoreService: SettingsStoreService) {}
 
-  public onAction(modal: { type: boolean; modalName: string; action: string }) {
+  public onAction(modal: { modalName: string; action: string }) {
     this.settingsStoreService.onModalAction(modal);
   }
 }

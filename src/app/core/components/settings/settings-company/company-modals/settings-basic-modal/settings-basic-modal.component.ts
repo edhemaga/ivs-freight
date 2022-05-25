@@ -6,7 +6,7 @@ import {
   monthsValidRegex,
   routingBankRegex,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
@@ -20,6 +20,8 @@ import { Address } from 'src/app/core/components/shared/model/address';
 import { AddressEntity } from 'appcoretruckassist';
 import { distinctUntilChanged } from 'rxjs';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { Options } from '@angular-slider/ngx-slider';
+import { TabSwitcherComponent } from 'src/app/core/components/switchers/tab-switcher/tab-switcher.component';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -28,6 +30,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   animations: [tab_modal_animation('animationTabsModal')],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
+  @ViewChild(TabSwitcherComponent) tabSwitcher: any;
   @Input() editData: any;
 
   public companyForm: FormGroup;
@@ -65,11 +68,51 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public driverCommissionOptions: Options = {
+    floor: 5,
+    ceil: 50,
+    step: 1,
+    showSelectionBar: true,
+    hideLimitLabels: true,
+  };
+
+  public ownerCommissionOptions: Options = {
+    floor: 2,
+    ceil: 30,
+    step: 0.5,
+    showSelectionBar: true,
+    hideLimitLabels: true,
+  };
+
+  public commonOptions: Options = {
+    floor: 2,
+    ceil: 30,
+    step: 0.5,
+    showSelectionBar: true,
+    hideLimitLabels: true,
+  };
+
+  public dispatcherOptions: Options = {
+    floor: 0.1,
+    ceil: 10,
+    step: 0.1,
+    showSelectionBar: true,
+    hideLimitLabels: true,
+  };
+
+  public managerOptions: Options = {
+    floor: 0.1,
+    ceil: 5,
+    step: 0.05,
+    showSelectionBar: true,
+    hideLimitLabels: true,
+  };
+
   public animationObject = {
     value: this.selectedTab,
     params: { height: '0px' },
   };
-  
+
   public isLogoDropZoneVisibile: boolean = false;
 
   // Basic Tab
@@ -84,7 +127,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public selectedBankCardFormArray: any[] = [];
 
   // Payroll tab
-  public truckAssistText: string = "Use Truck Assist's ACH Payout"
+  public truckAssistText: string = "Use Truck Assist's ACH Payout";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -95,6 +138,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
+    console.log(this.editData);
+    if (this.editData?.type === 'payroll-tab') {
+      const timeout = setTimeout(() => {
+        this.selectedTab = 3;
+        this.tabSwitcher.activeTab = this.selectedTab;
+        clearTimeout(timeout)
+      },10)
+     
+    }
   }
 
   private createForm() {
@@ -134,12 +186,54 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       trailerInspection: [null, [Validators.required, monthsValidRegex]],
       // Payroll Tab
       useTruckAssist: [true],
-        // Driver & Owner
-      driveOwnerPayPeriod: ["Weekly"],
-      driverOwnerEndingIn: ["Monday"],
+      // Driver & Owner
+      driveOwnerPayPeriod: ['Weekly', Validators.required],
+      driverOwnerEndingIn: ['Monday', Validators.required],
+      driverEmptyMile: [null],
+      driverLoadedMile: [null],
       driverOwnerHasLoadedEmptyMiles: [false],
       driverDefaultCommission: [25],
-      ownerDefaultCommission: [15]
+      ownerDefaultCommission: [15],
+      // Accounting
+      accountingPayPeriod: ['Weekly', Validators.required],
+      accountingEndingIn: ['Monday', Validators.required],
+      accountingDefaultBase: [null],
+      accountingDefaultCommission: [25],
+      // Company Owner
+      companyOwnerPayPeriod: ['Weekly', Validators.required],
+      companyOwnerEndingIn: ['Monday', Validators.required],
+      companyOwnerDefaultBase: [null],
+      companyOwnerDefaultCommission: [25],
+      // Dispatch
+      dispatchPayPeriod: ['Weekly', Validators.required],
+      dispatchEndingIn: ['Monday', Validators.required],
+      dispatchDefaultBase: [null],
+      dispatchDefaultCommission: [25],
+      // Manager
+      managerPayPeriod: ['Weekly', Validators.required],
+      managerEndingIn: ['Monday', Validators.required],
+      managerDefaultBase: [null],
+      managerDefaultCommission: [25],
+      // Recruiting
+      recruitingPayPeriod: ['Weekly', Validators.required],
+      recruitingEndingIn: ['Monday', Validators.required],
+      recruitingDefaultBase: [null],
+      recruitingDefaultCommission: [25],
+      // Repair
+      repairPayPeriod: ['Weekly', Validators.required],
+      repairEndingIn: ['Monday', Validators.required],
+      repairDefaultBase: [null],
+      repairDefaultCommission: [25],
+      // Safety
+      safetyPayPeriod: ['Weekly', Validators.required],
+      safetyEndingIn: ['Monday', Validators.required],
+      safetyDefaultBase: [null],
+      safetyDefaultCommission: [25],
+      // Other
+      otherPayPeriod: ['Weekly', Validators.required],
+      otherEndingIn: ['Monday', Validators.required],
+      otherDefaultBase: [null],
+      otherDefaultCommission: [25],
     });
   }
 
