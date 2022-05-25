@@ -1,7 +1,10 @@
 import {
+  accountBankRegex,
+  bankRoutingValidator,
   daysValidRegex,
   emailRegex,
   monthsValidRegex,
+  routingBankRegex,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,6 +18,8 @@ import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { Address } from 'src/app/core/components/shared/model/address';
 import { AddressEntity } from 'appcoretruckassist';
+import { distinctUntilChanged } from 'rxjs';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -45,14 +50,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   public prefferedLoadBtns = [
     {
-      id: 1,
+      id: 322,
       label: 'FTL',
       value: 'FTL',
       name: 'credit',
       checked: true,
     },
     {
-      id: 2,
+      id: 323,
       label: 'LTL',
       value: 'LTL',
       name: 'credit',
@@ -64,15 +69,22 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     value: this.selectedTab,
     params: { height: '0px' },
   };
+  
+  public isLogoDropZoneVisibile: boolean = false;
 
+  // Basic Tab
   public selectedAddress: Address | AddressEntity;
   public selectedTimezone: any = null;
   public selectedCurrency: any = null;
 
+  // Additional Tab
   public selectedDepartmentFormArray: any[] = [];
   public selectedBankAccountFormArray: any[] = [];
+  public isBankFormArraySelected: any[] = [];
+  public selectedBankCardFormArray: any[] = [];
 
-  public isLogoDropZoneVisibile: boolean = false;
+  // Payroll tab
+  public truckAssistText: string = "Use Truck Assist's ACH Payout"
 
   constructor(
     private formBuilder: FormBuilder,
@@ -108,7 +120,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       // Additional Tab
       departmentContact: this.formBuilder.array([]),
       bankAccount: this.formBuilder.array([]),
-      bankCard: this.formBuilder.group([]),
+      bankCard: this.formBuilder.array([]),
       prefix: [null],
       startingNo: [null, Validators.required],
       suffix: [null],
@@ -120,6 +132,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       mvr: [null, [Validators.required, monthsValidRegex]],
       truckInspection: [null, [Validators.required, monthsValidRegex]],
       trailerInspection: [null, [Validators.required, monthsValidRegex]],
+      // Payroll Tab
+      useTruckAssist: [true],
+        // Driver & Owner
+      driveOwnerPayPeriod: ["Weekly"],
+      driverOwnerEndingIn: ["Monday"],
+      driverOwnerHasLoadedEmptyMiles: [false],
+      driverDefaultCommission: [25],
+      ownerDefaultCommission: [15]
     });
   }
 
@@ -160,24 +180,27 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectFakeTableData(event: any, index: number, action: string) {
-    switch(action) {
+    switch (action) {
       case 'department': {
         this.selectedDepartmentFormArray[index] = event;
         break;
       }
-      case 'bank': {
+      case 'bankaccount': {
         this.selectedBankAccountFormArray[index] = event;
+        this.onBankSelected(index);
+        break;
+      }
+      case 'bankcard': {
+        this.selectedBankCardFormArray[index] = event;
         break;
       }
       default: {
         break;
       }
     }
-  
   }
 
   // BankAccount FormArray
-
   public get bankAccounts(): FormArray {
     return this.companyForm.get('bankAccount') as FormArray;
   }
@@ -201,10 +224,82 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     this.selectedDepartmentFormArray.splice(id, 1);
   }
 
-  public onSelectBankAccount(event: any, index: number) {
-    this.selectedBankAccountFormArray[index] = event;
+  private onBankSelected(index: number): void {
+    this.bankAccounts
+      .at(index)
+      .get('bankId')
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.isBankFormArraySelected[index] = true;
+          this.inputService.changeValidators(
+            this.bankAccounts.at(index).get('routing'),
+            true,
+            routingBankRegex
+          );
+          this.routingNumberTyping(index);
+          this.inputService.changeValidators(
+            this.bankAccounts.at(index).get('account'),
+            true,
+            accountBankRegex
+          );
+        } else {
+          this.isBankFormArraySelected[index] = false;
+          this.inputService.changeValidators(
+            this.bankAccounts.get('routing'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.bankAccounts.at(index).get('account'),
+            false
+          );
+        }
+      });
   }
 
+  private routingNumberTyping(index: number) {
+    this.bankAccounts
+      .at(index)
+      .get('routing')
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          if (bankRoutingValidator(value)) {
+            this.bankAccounts.at(index).get('routing').setErrors(null);
+          } else {
+            this.bankAccounts
+              .at(index)
+              .get('routing')
+              .setErrors({ invalid: true });
+          }
+        }
+      });
+  }
+
+  // Bank Card Form Array
+  public get bankCards(): FormArray {
+    return this.companyForm.get('bankCard') as FormArray;
+  }
+
+  private createBankCard(): FormGroup {
+    return this.formBuilder.group({
+      nickname: [null],
+      cardNumber: [null, [Validators.minLength(16), Validators.maxLength(16)]],
+      cvc: [null, [Validators.minLength(3), Validators.maxLength(3)]],
+      exp: [null],
+    });
+  }
+
+  public addBankCard(event: any) {
+    if (event) {
+      this.bankCards.push(this.createBankCard());
+    }
+  }
+
+  public removeBankCard(id: number) {
+    this.bankCards.removeAt(id);
+    this.selectedBankCardFormArray.splice(id, 1);
+  }
 
   public onHandleAddress(event: any) {
     this.selectedAddress = event;
@@ -223,6 +318,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       default: {
         break;
       }
+    }
+  }
+
+  public useTruckAssist(event: any) {
+    if (this.companyForm.get('useTruckAssist').value) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.companyForm.get('useTruckAssist').setValue(false);
     }
   }
 

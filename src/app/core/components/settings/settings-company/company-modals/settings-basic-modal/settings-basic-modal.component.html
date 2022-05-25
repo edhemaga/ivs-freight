@@ -352,7 +352,9 @@
                   }"
                   [canAddNew]="true"
                   [options]="[]"
-                  (selectedItem)="onSelectFakeTableData($event, ind, 'bank')"
+                  (selectedItem)="
+                    onSelectFakeTableData($event, ind, 'bankaccount')
+                  "
                 ></app-ta-input-dropdown>
                 <app-ta-input
                   formControlName="routing"
@@ -377,12 +379,99 @@
                     minLength: 4
                   }"
                 ></app-ta-input>
-                <svg-icon class="common-fake-table-check" src="assets/svg/common/ic_confirm.svg"></svg-icon>
-                <div class="common-fake-table-status common-fake-table-status-pending">Pending</div>
+                <svg-icon
+                  class="common-fake-table-check"
+                  src="assets/svg/common/ic_confirm.svg"
+                ></svg-icon>
+                <div
+                  class="common-fake-table-status common-fake-table-status-pending"
+                >
+                  Pending
+                </div>
                 <svg-icon
                   class="common-fake-table-delete"
                   src="assets/svg/common/ic_trash.svg"
                   (click)="removeBankAccount(ind)"
+                  [appTooltip]="'Delete'"
+                  [position]="'top-middle'"
+                  [tooltipBackground]="'#EF5350'"
+                  [tooltipColor]="'#FFFFFF'"
+                  [zIndex]="900"
+                  [borderRadius]="'2px'"
+                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
+                  [fontWeight]="'bold'"
+                  [fontSize]="'11px'"
+                  [customPosition]="-11"
+                ></svg-icon>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <!-- Bank Card -->
+        <app-ta-custom-card
+          [hasCounter]="bankCards.length ? bankCards.length : '0'"
+          [cardName]="'Bank Card'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasArrow]="true"
+          [hasBodyData]="bankCards.length"
+          [isCardOpen]="bankCards.length"
+          [hasScrollBody]="bankCards.length > 10"
+          (onActionEvent)="addBankCard($event)"
+        >
+          <div
+            formArrayName="bankCard"
+            class="common-fake-table-modal common-fake-table-modal-bank-cards hide-oveflow"
+            *ngIf="bankCards.length"
+          >
+            <div class="common-fake-table-label">
+              <p>NICKNAME</p>
+              <p>CARD NO.</p>
+              <p>CVC</p>
+              <p>EXP</p>
+            </div>
+            <div *ngFor="let bankCard of bankCards.controls; let ind = index">
+              <div [formGroupName]="ind" class="common-fake-table-card">
+                <app-ta-input
+                  formControlName="nickname"
+                  [inputConfig]="{
+                    name: 'Nickname',
+                    type: 'text',
+                    textTransform: 'capitalize'
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="cardNumber"
+                  [inputConfig]="{
+                    name: 'Card Number',
+                    type: 'password',
+                    placeholderIcon: 'visa',
+                    maxLength: 16,
+                    minLength: 16
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="cvc"
+                  [inputConfig]="{
+                    name: 'CVC',
+                    type: 'password',
+                    placeholderIcon: 'password',
+                    maxLength: 3,
+                    minLength: 3
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="exp"
+                  [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    placeholderIcon: 'date',
+                    customClass: 'datetimeclass'
+                  }"
+                ></app-ta-input>
+                <svg-icon
+                  class="common-fake-table-delete"
+                  src="assets/svg/common/ic_trash.svg"
+                  (click)="removeBankCard(ind)"
                   [appTooltip]="'Delete'"
                   [position]="'top-middle'"
                   [tooltipBackground]="'#EF5350'"
@@ -426,7 +515,7 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="col-4">
+            <div class="col-4 no-p-left">
               <app-ta-input
                 formControlName="suffix"
                 [inputConfig]="{
@@ -533,7 +622,70 @@
         </app-ta-custom-card>
       </div>
       <!-------------------------------- Payroll Tab -------------------------------->
-      <div class="m-tab" *ngIf="selectedTab === 3"></div>
+      <div class="m-tab" *ngIf="selectedTab === 3">
+        <!-- Truck Assist -->
+        <div class="custom-checkbox-card">
+          <div class="divider"></div>
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: companyForm.get('useTruckAssist').value }"
+            (click)="useTruckAssist($event)"
+          >
+            <app-ta-checkbox
+              formControlName="useTruckAssist"
+              [label]="truckAssistText"
+            ></app-ta-checkbox>
+            <svg-icon
+              class="checkbox-card-header-arrow visible"
+              src="assets/svg/common/ic_arrow_down_updated.svg"
+            ></svg-icon>
+          </div>
+          <div class="checkbox-card-body active">
+            <div class="use-truck-assist-header">
+              THIS PROCESS MAY TAKE UP TO 5 DAYS.
+            </div>
+            <div class="use-truck-assist-text">
+              Example: Payments processed by Monday CST 7:00 PM will be
+              deposited Friday morning
+            </div>
+            <div class="use-truck-assist-price">Pricing</div>
+          </div>
+        </div>
+        <app-ta-custom-card [cardName]="'Driver & Owner'" [isCardOpen]="true">
+          <div class="row">
+            <div class="col-6">
+              <app-ta-input-dropdown
+                formControlName="driveOwnerPayPeriod"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Pay Period',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-6'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'pay-period')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-6">
+              <app-ta-input-dropdown
+                formControlName="driverOwnerEndingIn"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Ending In',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-6'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'ending-in')"
+              ></app-ta-input-dropdown>
+            </div>
+          </div>
+        </app-ta-custom-card>
+      </div>
     </div>
   </form>
 </app-ta-modal>

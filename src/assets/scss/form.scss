@@ -577,6 +577,7 @@
       }
     }
 
+    // Shipper & Broker Template
     &-shipper,
     &-broker {
       .common-fake-table-label {
@@ -610,6 +611,28 @@
         &.new-position-without-email {
           right: -142px !important;
         }
+      }
+    }
+
+    // Bank Card Template
+    &-bank-cards {
+      .common-fake-table-label {
+        p {
+          &:nth-child(2) {
+            margin-left: 75px;
+          }
+
+          &:nth-child(3) {
+            margin-left: 170px;
+          }
+
+          &:nth-child(4) {
+            margin-left: 80px;
+          }
+        }
+      }
+      .common-fake-table-card {
+        grid-template-columns: 132px 220px 94px 98px;
       }
     }
   }
