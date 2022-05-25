@@ -9,14 +9,18 @@ import { card_modal_animation } from '../animations/card-modal.animation';
   animations: [card_modal_animation('showHideCardBody')],
 })
 export class TaReCardComponent implements OnInit {
-  @Input() cardNameCommon: string;
-  @Input() cardDocumentCounter: number;
-  @Input() isCardOpen: boolean = true;
-  @Input() hasSvg: string = '';
-  @Input() options: any = [];
-  @Input() hasCopyIcon:boolean=false;
-  @Input() expDateClose:string='';
+  @Input() public cardNameCommon: string;
+  @Input() public cardDocumentCounter: number;
+  @Input() public isCardOpen: boolean = true;
+  @Input() public hasSvg: string = '';
+  @Input() public options: any = [];
+  @Input() public hasCopyIcon:boolean=false;
+  @Input() public expDateClose:string='';
+  @Input() public hasFooter:boolean=true;
+  @Input() public settingsIcon:boolean=false;
+  @Input() public haveHeaderText:boolean=false;
   @Output() resizePage = new EventEmitter<boolean>();
+  @Input() public animationsDisabled = false;
   public resPage: boolean = false;
   public copied: boolean = false;
   public toggleDropDown: boolean;

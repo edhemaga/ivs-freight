@@ -11,8 +11,8 @@
       ></app-ta-counter>
       <p>Parking</p>
     </div>
-
     <div class="settings-header-button">
+      <div class="border-left"></div>
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
@@ -20,43 +20,86 @@
       ></svg-icon>
     </div>
   </div>
-  <div
-    class="settings-body"
-    *ngFor="let item of parkingData; trackBy: identity"
-  >
-    <app-settings-tab-placeholder
-      [name]="item.name"
-      [companyOwnedSVG]="item.companyOwned"
-      [phone]="item.phone"
-      [email]="item.email"
-      [address]="item.address"
-    >
-    </app-settings-tab-placeholder>
+  <span class="settings-body">
+    <app-ta-re-card
+      *ngFor="let item of parkingData; trackBy: identity"
+      [settingsIcon]="item.companyOwned"
+      [cardNameCommon]="item.name"
+      [hasFooter]="false"
+      [haveHeaderText]="true"
 
-    <app-settings-card
-      [cardTemplate]="'parkingTemplate'"
-      [cardName]="'Parking Slot'"
-      [cardCount]="calculateParkingSlots(item)"
-      [hasLine]="item.rent"
-      [data]="{
-        parking_slot: item.parking_slot,
-        parking_slot_full: item.parking_slot_full,
-        security_camera: item.security_camera,
-        gate: item.gate,
-        rent: item.rent,
-        pay_period: item.pay_period,
-        day: item_day
-      }"
     >
-    </app-settings-card>
-    <div class="settings-progress-container">
-      <app-truckassist-progress-expiration
-        *ngIf="item.rent"
-        [expireDate]="'03/25/2023'"
-        [startDate]="'03/12/2023'"
-        [expiresSettings]="'settings-parking'"
-        [customText]="generateTextForProgressBar(item)"
-      ></app-truckassist-progress-expiration>
-    </div>
-  </div>
+      <div class="settings-body-items">
+        <div *ngIf="item.phone !== ''" class="single-item">
+          <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+          <span>{{ item.phone }}</span>
+        </div>
+        <div *ngIf="item.email !== ''" class="single-item">
+          <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+          <span>{{ item.email }}</span>
+        </div>
+        <div *ngIf="item.address !== ''" class="single-item">
+          <svg-icon
+            src="assets/svg/truckassist-table/location-icon.svg"
+          ></svg-icon>
+          <span>{{ item.address }}</span>
+        </div>
+      </div>
+      <app-ta-custom-card
+        [hasCounter]="calculateParkingSlots(item)"
+        [cardName]="'Parking Slot'"
+        [isCardOpen]="true"
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="parking-template-data">
+          <div class="parking-template-item">
+            <p class="parking-template-number">{{ item.parking_slot }}</p>
+            <p class="parking-template-text">Parking Slot</p>
+          </div>
+          <div class="parking-template-item">
+            <p class="parking-template-number">{{ item.parking_slot_full }}</p>
+            <p class="parking-template-text">Full Parking Slot</p>
+          </div>
+          <div class="parking-template-item">
+            <svg-icon
+              class="parking-template-svg"
+              [ngClass]="{ disabled: !item.security_camera }"
+              src="assets/svg/common/ic_security-camera.svg"
+            ></svg-icon>
+            <p
+              class="parking-template-text"
+              [ngClass]="{ 'cross-out': !item.security_camera }"
+            >
+              Security Camera
+            </p>
+          </div>
+          <div class="parking-template-item">
+            <svg-icon
+              class="parking-template-svg"
+              [ngClass]="{ disabled: !item.gate }"
+              src="assets/svg/common/ic_security-gate.svg"
+            ></svg-icon>
+            <p
+              class="parking-template-text"
+              [ngClass]="{ 'cross-out': !item.gate }"
+            >
+              Gate
+            </p>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <div *ngIf="item.rent" class="divider"></div>
+      <div class="settings-progress-container">
+        <app-truckassist-progress-expiration
+          *ngIf="item.rent"
+          [expireDate]="'03/25/2023'"
+          [startDate]="'03/12/2023'"
+          [expiresSettings]="'settings-parking'"
+          [customText]="generateTextForProgressBar(item)"
+        ></app-truckassist-progress-expiration>
+      </div>
+    </app-ta-re-card>
+  </span>
 </div>
