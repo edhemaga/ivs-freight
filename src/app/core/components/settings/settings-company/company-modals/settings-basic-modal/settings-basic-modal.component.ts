@@ -198,42 +198,36 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       accountingPayPeriod: ['Weekly', Validators.required],
       accountingEndingIn: ['Monday', Validators.required],
       accountingDefaultBase: [null],
-      accountingDefaultCommission: [25],
       // Company Owner
       companyOwnerPayPeriod: ['Weekly', Validators.required],
       companyOwnerEndingIn: ['Monday', Validators.required],
       companyOwnerDefaultBase: [null],
-      companyOwnerDefaultCommission: [25],
       // Dispatch
       dispatchPayPeriod: ['Weekly', Validators.required],
       dispatchEndingIn: ['Monday', Validators.required],
       dispatchDefaultBase: [null],
-      dispatchDefaultCommission: [25],
+      dispatchDefaultCommission: [5],
       // Manager
       managerPayPeriod: ['Weekly', Validators.required],
       managerEndingIn: ['Monday', Validators.required],
       managerDefaultBase: [null],
-      managerDefaultCommission: [25],
+      managerDefaultCommission: [2.5],
       // Recruiting
       recruitingPayPeriod: ['Weekly', Validators.required],
       recruitingEndingIn: ['Monday', Validators.required],
       recruitingDefaultBase: [null],
-      recruitingDefaultCommission: [25],
       // Repair
       repairPayPeriod: ['Weekly', Validators.required],
       repairEndingIn: ['Monday', Validators.required],
       repairDefaultBase: [null],
-      repairDefaultCommission: [25],
       // Safety
       safetyPayPeriod: ['Weekly', Validators.required],
       safetyEndingIn: ['Monday', Validators.required],
       safetyDefaultBase: [null],
-      safetyDefaultCommission: [25],
       // Other
       otherPayPeriod: ['Weekly', Validators.required],
       otherEndingIn: ['Monday', Validators.required],
       otherDefaultBase: [null],
-      otherDefaultCommission: [25],
     });
   }
 

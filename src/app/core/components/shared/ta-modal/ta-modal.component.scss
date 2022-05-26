@@ -4,8 +4,8 @@
   .table-container {
     padding-right: 16px;
   }
-  
-  &::-webkit-scrollbar-track { 
+
+  &::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0.3);
   }
 
@@ -18,74 +18,19 @@
   width: 480px;
   height: auto;
   overflow: hidden;
+  position: relative;
 
-  .dropzone-container {
-    position: relative;
+  .drop-zone-active {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    z-index: 99999999999;
 
-    .dragDropFile {
-      width: 100%;
-      height: 100%;
+    .ta-modal-dropzone {
       position: absolute;
-      top: 0%;
-      left: 0%;
-      z-index: 999999;
-
-      &.hovered {
-        .ta-modal-dropzone-label2 {
-          background-color: #eeeeee;
-          .ta-modal-dropzone-text2 {
-            color: #6c6c6c;
-          }
-        }
-      }
-    
-      .ta-modal-dropzone-label2 {
-        width: 456px;
-        height: 97%;
-        padding: 102px 0px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-        text-align: center;
-        border-radius: 2px;
-        outline: 3px dashed #e5e5e5;
-        background-color: #ffffff;
-        position: relative;
-        left: 12px;
-        outline-offset: 2px;
-    
-
-        .ta-modal-dropzone-area2 {
-          pointer-events: none;
-        }
-    
-        .ta-modal-dropzone-text2 {
-          margin: 0;
-          margin-top: 18px;
-          color: #b7b7b7;
-          font-size: 14px;
-          font-weight: 600;
-          position: relative;
-          left: 2px;
-          height: 32px;
-          display: flex;
-          flex-direction: column;
-          text-align: center;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-          pointer-events: none;
-        
-    
-          &-small {
-            font-size: 11px;
-            position: relative;
-            bottom: 3px;
-          }
-        }
-      }
+      top: 0;
     }
   }
 
@@ -95,12 +40,6 @@
     .divider {
       width: 615px;
     }
-
-    .dropzone-container {
-      .ta-modal-dropzone-label2 {
-        width: 616px;
-      }
-    }
   }
 
   &.modal-container-L {
@@ -108,12 +47,6 @@
 
     .divider {
       width: 836px;
-    }
-
-    .dropzone-container {
-      .ta-modal-dropzone-label2 {
-        width: 837px;
-      }
     }
   }
 

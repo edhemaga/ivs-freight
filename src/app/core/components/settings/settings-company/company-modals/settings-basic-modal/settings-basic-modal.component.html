@@ -752,8 +752,8 @@
           </div>
         </app-ta-custom-card>
         <app-ta-custom-card [cardName]="'Accounting'">
-          <div class="row">
-            <div class="col-6">
+          <div class="row last-row">
+            <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="accountingPayPeriod"
                 [inputConfig]="{
@@ -762,7 +762,7 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6'
+                  dropdownWidthClass: 'w-col-medium-4-col-1'
                 }"
                 [options]="[]"
                 (selectedItem)="
@@ -770,7 +770,7 @@
                 "
               ></app-ta-input-dropdown>
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="accountingEndingIn"
                 [inputConfig]="{
@@ -779,7 +779,7 @@
                   label: 'Ending In',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6-second-col'
+                  dropdownWidthClass: 'w-col-medium-4'
                 }"
                 [options]="[]"
                 (selectedItem)="
@@ -787,9 +787,7 @@
                 "
               ></app-ta-input-dropdown>
             </div>
-          </div>
-          <div class="row last-row">
-            <div class="col-6">
+            <div class="col-4 no-p-left">
               <app-ta-input
                 formControlName="accountingDefaultBase"
                 [inputConfig]="{
@@ -801,28 +799,11 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="col-6">
-              <app-ta-ngx-slider
-                [sliderName]="'Default Commission'"
-                [sliderOptions]="commonOptions"
-                [startedValue]="
-                  companyForm.get('accountingDefaultCommission')?.value
-                "
-                [customClass]="
-                  'custom-slider-with-percentage custom-driver-modal'
-                "
-                (onUserValueChange)="
-                  companyForm
-                    .get('accountingDefaultCommission')
-                    .setValue($event)
-                "
-              ></app-ta-ngx-slider>
-            </div>
           </div>
         </app-ta-custom-card>
         <app-ta-custom-card [cardName]="'Company Owner'">
-          <div class="row">
-            <div class="col-6">
+          <div class="row last-row">
+            <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="companyOwnerPayPeriod"
                 [inputConfig]="{
@@ -831,7 +812,7 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6'
+                  dropdownWidthClass: 'w-col-medium-4-col-1'
                 }"
                 [options]="[]"
                 (selectedItem)="
@@ -839,7 +820,7 @@
                 "
               ></app-ta-input-dropdown>
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="companyOwnerEndingIn"
                 [inputConfig]="{
@@ -848,7 +829,7 @@
                   label: 'Ending In',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6-second-col'
+                  dropdownWidthClass: 'w-col-medium-4'
                 }"
                 [options]="[]"
                 (selectedItem)="
@@ -856,9 +837,7 @@
                 "
               ></app-ta-input-dropdown>
             </div>
-          </div>
-          <div class="row last-row">
-            <div class="col-6">
+            <div class="col-4 no-p-left">
               <app-ta-input
                 formControlName="companyOwnerDefaultBase"
                 [inputConfig]="{
@@ -869,23 +848,6 @@
                   customClass: 'dollar-placeholderIcon'
                 }"
               ></app-ta-input>
-            </div>
-            <div class="col-6">
-              <app-ta-ngx-slider
-                [sliderName]="'Default Commission'"
-                [sliderOptions]="commonOptions"
-                [startedValue]="
-                  companyForm.get('companyOwnerDefaultCommission')?.value
-                "
-                [customClass]="
-                  'custom-slider-with-percentage custom-driver-modal'
-                "
-                (onUserValueChange)="
-                  companyForm
-                    .get('companyOwnerDefaultCommission')
-                    .setValue($event)
-                "
-              ></app-ta-ngx-slider>
             </div>
           </div>
         </app-ta-custom-card>
@@ -1016,8 +978,8 @@
           </div>
         </app-ta-custom-card>
         <app-ta-custom-card [cardName]="'Recruiting'">
-          <div class="row">
-            <div class="col-6">
+          <div class="row last-row">
+            <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="recruitingPayPeriod"
                 [inputConfig]="{
@@ -1026,7 +988,7 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6'
+                  dropdownWidthClass: 'w-col-medium-4-col-1'
                 }"
                 [options]="[]"
                 (selectedItem)="
@@ -1034,7 +996,7 @@
                 "
               ></app-ta-input-dropdown>
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="recruitingEndingIn"
                 [inputConfig]="{
@@ -1043,7 +1005,7 @@
                   label: 'Ending In',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6-second-col'
+                  dropdownWidthClass: 'w-col-medium-4'
                 }"
                 [options]="[]"
                 (selectedItem)="
@@ -1051,9 +1013,7 @@
                 "
               ></app-ta-input-dropdown>
             </div>
-          </div>
-          <div class="row last-row">
-            <div class="col-6">
+            <div class="col-4 no-p-left">
               <app-ta-input
                 formControlName="recruitingDefaultBase"
                 [inputConfig]="{
@@ -1065,28 +1025,11 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="col-6">
-              <app-ta-ngx-slider
-                [sliderName]="'Default Commission'"
-                [sliderOptions]="commonOptions"
-                [startedValue]="
-                  companyForm.get('recruitingDefaultCommission')?.value
-                "
-                [customClass]="
-                  'custom-slider-with-percentage custom-driver-modal'
-                "
-                (onUserValueChange)="
-                  companyForm
-                    .get('recruitingDefaultCommission')
-                    .setValue($event)
-                "
-              ></app-ta-ngx-slider>
-            </div>
           </div>
         </app-ta-custom-card>
         <app-ta-custom-card [cardName]="'Repair'">
-          <div class="row">
-            <div class="col-6">
+          <div class="row last-row">
+            <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="repairPayPeriod"
                 [inputConfig]="{
@@ -1095,13 +1038,13 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6'
+                  dropdownWidthClass: 'w-col-medium-4-col-1'
                 }"
                 [options]="[]"
                 (selectedItem)="onSelectDropdown($event, 'repair-pay-period')"
               ></app-ta-input-dropdown>
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="repairEndingIn"
                 [inputConfig]="{
@@ -1110,15 +1053,13 @@
                   label: 'Ending In',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6-second-col'
+                  dropdownWidthClass: 'w-col-medium-4'
                 }"
                 [options]="[]"
                 (selectedItem)="onSelectDropdown($event, 'repair-ending-in')"
               ></app-ta-input-dropdown>
             </div>
-          </div>
-          <div class="row last-row">
-            <div class="col-6">
+            <div class="col-4 no-p-left">
               <app-ta-input
                 formControlName="repairDefaultBase"
                 [inputConfig]="{
@@ -1130,26 +1071,11 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="col-6">
-              <app-ta-ngx-slider
-                [sliderName]="'Default Commission'"
-                [sliderOptions]="commonOptions"
-                [startedValue]="
-                  companyForm.get('repairDefaultCommission')?.value
-                "
-                [customClass]="
-                  'custom-slider-with-percentage custom-driver-modal'
-                "
-                (onUserValueChange)="
-                  companyForm.get('repairDefaultCommission').setValue($event)
-                "
-              ></app-ta-ngx-slider>
-            </div>
           </div>
         </app-ta-custom-card>
         <app-ta-custom-card [cardName]="'Safety'">
-          <div class="row">
-            <div class="col-6">
+          <div class="row last-row">
+            <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="safetyPayPeriod"
                 [inputConfig]="{
@@ -1158,13 +1084,13 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6'
+                  dropdownWidthClass: 'w-col-medium-4-col-1'
                 }"
                 [options]="[]"
                 (selectedItem)="onSelectDropdown($event, 'safety-pay-period')"
               ></app-ta-input-dropdown>
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="safetyEndingIn"
                 [inputConfig]="{
@@ -1173,15 +1099,13 @@
                   label: 'Ending In',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6-second-col'
+                  dropdownWidthClass: 'w-col-medium-4'
                 }"
                 [options]="[]"
                 (selectedItem)="onSelectDropdown($event, 'safety-ending-in')"
               ></app-ta-input-dropdown>
             </div>
-          </div>
-          <div class="row last-row">
-            <div class="col-6">
+            <div class="col-4 no-p-left">
               <app-ta-input
                 formControlName="safetyDefaultBase"
                 [inputConfig]="{
@@ -1193,26 +1117,11 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="col-6">
-              <app-ta-ngx-slider
-                [sliderName]="'Default Commission'"
-                [sliderOptions]="commonOptions"
-                [startedValue]="
-                  companyForm.get('safetyDefaultCommission')?.value
-                "
-                [customClass]="
-                  'custom-slider-with-percentage custom-driver-modal'
-                "
-                (onUserValueChange)="
-                  companyForm.get('safetyDefaultCommission').setValue($event)
-                "
-              ></app-ta-ngx-slider>
-            </div>
           </div>
         </app-ta-custom-card>
         <app-ta-custom-card [cardName]="'Other'">
-          <div class="row">
-            <div class="col-6">
+          <div class="row last-row">
+            <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="otherPayPeriod"
                 [inputConfig]="{
@@ -1221,13 +1130,13 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6'
+                  dropdownWidthClass: 'w-col-medium-4-col-1'
                 }"
                 [options]="[]"
                 (selectedItem)="onSelectDropdown($event, 'other-pay-period')"
               ></app-ta-input-dropdown>
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="otherEndingIn"
                 [inputConfig]="{
@@ -1236,15 +1145,13 @@
                   label: 'Ending In',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6-second-col'
+                  dropdownWidthClass: 'w-col-medium-4'
                 }"
                 [options]="[]"
                 (selectedItem)="onSelectDropdown($event, 'other-ending-in')"
               ></app-ta-input-dropdown>
             </div>
-          </div>
-          <div class="row last-row">
-            <div class="col-6">
+            <div class="col-4 no-p-left">
               <app-ta-input
                 formControlName="otherDefaultBase"
                 [inputConfig]="{
@@ -1255,21 +1162,6 @@
                   customClass: 'dollar-placeholderIcon'
                 }"
               ></app-ta-input>
-            </div>
-            <div class="col-6">
-              <app-ta-ngx-slider
-                [sliderName]="'Default Commission'"
-                [sliderOptions]="commonOptions"
-                [startedValue]="
-                  companyForm.get('otherDefaultCommission')?.value
-                "
-                [customClass]="
-                  'custom-slider-with-percentage custom-driver-modal'
-                "
-                (onUserValueChange)="
-                  companyForm.get('otherDefaultCommission').setValue($event)
-                "
-              ></app-ta-ngx-slider>
             </div>
           </div>
         </app-ta-custom-card>

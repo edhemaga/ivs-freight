@@ -3,7 +3,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   Component,
   EventEmitter,
-  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -44,8 +43,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
   // Drag & Drop properties
   public isDropZoneVisible: boolean = false;
   public dropZoneCounter: number = 0;
-  public leavingDropZone: boolean = false;
-  public stopCoutingInDropZone = false;
+  public isLeaveZone: boolean = false
 
   constructor(
     private ngbActiveModal: NgbActiveModal,
@@ -68,21 +66,34 @@ export class TaModalComponent implements OnInit, OnDestroy {
         if (value) {
           $(document).on('dragover', '.modal', (event) => {
             event.preventDefault();
-            if (this.dropZoneCounter < 2 && !this.leavingDropZone) {
+            event.stopPropagation();
+            if(this.dropZoneCounter < 1 && !this.isLeaveZone) {
               this.dropZoneCounter++;
             }
             this.isDropZoneVisible = true;
+            console.log("DRAG OVER ", this.dropZoneCounter)
           });
 
           $(document).on('dragleave', '.modal', (event) => {
-            this.dropZoneCounter--;
+            event.preventDefault();
+            event.stopPropagation();
+            const timeout = setTimeout(() => {
+              this.dropZoneCounter--;
 
-            if (this.dropZoneCounter < 0) {
-              this.isDropZoneVisible = false;
-              this.leavingDropZone = false;
-              this.dropZoneCounter = 0;
-              this.stopCoutingInDropZone = true;
-            }
+              // if(!this.isLeaveZone) {
+              //   this.dropZoneCounter--;
+              // }
+  
+              if (this.dropZoneCounter < 1) {
+                this.isDropZoneVisible = false;
+                this.dropZoneCounter = 0;
+                this.isLeaveZone = false;
+              }
+  
+              console.log("DRAG LEAVE ", this.dropZoneCounter)
+              clearTimeout(timeout);
+            }, 50)
+        
           });
         }
       });
@@ -101,7 +112,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
           this.ngbActiveModal.dismiss();
           clearTimeout(this.timeout);
         }, 150);
-        this.inputService.triggerInvalidRoutingNumber$.next(false)
+        this.inputService.triggerInvalidRoutingNumber$.next(false);
         break;
       }
       case 'deactivate': {
@@ -132,32 +143,33 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onDropFile(event: { files: UploadFile[]; action: string }) {
+  public onFilesEvent(event: { files: UploadFile[]; action: string }) {
+    console.log(event);
     this.modalService.uploadDocumentsSubject$.next(event);
   }
 
-
   public onDropBackground(event: { action: string; value: boolean }) {
+   
     switch (event.action) {
       case 'dragleave': {
-        if (!event.value && this.dropZoneCounter === 1) {
-          this.dropZoneCounter--;
-          this.leavingDropZone = true;
-          this.stopCoutingInDropZone = false;
-        }
+     
+        this.dropZoneCounter--;
+        this.isLeaveZone = true
+        console.log("DRAG LEAVE ZONE ", this.dropZoneCounter)
         break;
       }
       case 'drop': {
         if (!event.value) {
           this.isDropZoneVisible = false;
+          this.dropZoneCounter = 0;
         }
+        console.log(event);
         break;
       }
       case 'dragover': {
-        this.leavingDropZone = false;
-        if(!this.stopCoutingInDropZone)
-          this.dropZoneCounter ++;
-        this.stopCoutingInDropZone = true;
+        // console.log(event);
+        this.dropZoneCounter = 2;
+        console.log("DRAG OVER ZONE ", this.dropZoneCounter)
         break;
       }
       default: {

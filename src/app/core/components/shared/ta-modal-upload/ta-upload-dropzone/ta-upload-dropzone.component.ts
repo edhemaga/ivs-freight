@@ -1,6 +1,8 @@
 import {
   Component,
   EventEmitter,
+  HostBinding,
+  HostListener,
   Input,
   Output,
   ViewEncapsulation,
@@ -26,8 +28,35 @@ export class TaUploadDropzoneComponent {
   @Output() onFileEvent: EventEmitter<{ files: UploadFile[]; action: string }> =
     new EventEmitter<{ files: UploadFile[]; action: string }>(null);
 
+  @Output() onDropBackground = new EventEmitter<{
+    action: string;
+    value: boolean;
+  }>();
+
   public unSupporetedType: boolean = false;
   public supportedExtensions: string[] = [];
+
+  @HostListener('dragover', ['$event']) onDragOver(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.onDropBackground.emit({ action: 'dragover', value: true });
+  }
+
+  @HostListener('dragleave', ['$event'])
+  public onDragLeave(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.onDropBackground.emit({ action: 'dragleave', value: false });
+  }
+
+  @HostListener('drop', ['$event'])
+  public async ondrop(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.onDropBackground.emit({ action: 'drop', value: false });
+
+    await this.onFileUpload(evt.dataTransfer.files);
+  }
 
   public async onFileUpload(files: FileList) {
     await this.addFiles(files);
