@@ -280,3 +280,18 @@
     }
   }
 }
+.plus-custom-card{
+  svg{
+    margin-right: 11px;
+    width: 18px;
+    height: 18px;
+    path{
+      fill: #6d82c7;
+    }
+    &:hover {
+          path {
+              fill: #536bc2 !important;
+          }
+  }
+  }
+}

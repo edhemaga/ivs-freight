@@ -1,0 +1,311 @@
+// Constants
+$color-white-light: #f3f3f3;
+$color-white: #ffffff;
+$color-white-dark: #f7f7f7;
+
+$color-gray-light: #b7b7b7;
+$color-gray: #919191;
+$color-gray-dark: #6c6c6c;
+
+$color-blue-light: #778fbb;
+$color-blue: #5673aa;
+$settings-blue-dark: #6d82c7;
+$settings-blue-hover: #3551b7;
+
+$font-size12: 12px;
+$font-size14: 14px;
+$font-size18: 18px;
+$font-size20: 20px;
+
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+$font-extrabold: 800;
+
+$border-radius: 3px;
+
+$transition: all 0.3s ease-in-out;
+
+.repair-details-container {
+    display: grid;
+    grid-template-columns: 440px 732px 340px 280px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    row-gap: 12px;
+}
+.repair-details-cmp {
+    display: grid;
+    grid-template-columns: 440px 732px 340px 280px;
+    column-gap: 12px;
+    row-gap: 12px;
+}
+.repair-component {
+    display: grid;
+    row-gap: 12px;
+    p {
+        margin: 0 !important;
+    }
+    .repair-information-wrapper {
+        padding: 0 16px;
+        padding-top: 22px;
+        .repair-information-item {
+            display: flex;
+            align-items: baseline;
+            svg {
+                &:hover {
+                    path {
+                        fill: #6c6c6c;
+                    }
+                }
+            }
+            .repair-value {
+                font-size: $font-size14;
+                font-weight: 400;
+                color: #6c6c6c;
+                padding-left: 6px;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+            .repair-icon {
+                cursor: pointer;
+            }
+        }
+    }
+    .repair-cards {
+        border-radius: 3px;
+        overflow: hidden;
+        width: 440px;
+        background-color: $color-white;
+        padding: 9px 6px;
+    }
+}
+.divider {
+    margin: 0;
+    height: 2px;
+    width: 100%;
+    border-radius: 1px;
+    background-color: $color-white-light;
+}
+.repair-container {
+    padding: 8px 6px;
+    width: 732px;
+    background-color: $color-white;
+    max-height: 600px;
+    border-radius: 3px;
+    .repair-items-wrapper {
+        overflow-y: scroll;
+        max-height: 530px;
+        height: fit-content;
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+            border-radius: 1px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: #aaaaaa;
+            border-radius: 1px;
+            height: 20px;
+        }
+        &::-webkit-scrollbar-track-piece:end {
+            margin-bottom: 4px;
+        }
+
+        &::-webkit-scrollbar-track-piece:start {
+            margin-top: 4px;
+        }
+    }
+    .repair-header {
+        padding: 0 10px;
+        display: grid;
+        grid-template-columns: 36px 40px 40px 330px 50px;
+        column-gap: 46px;
+        height: 18px;
+        margin-bottom: 6px;
+        .repaier-headers {
+            font-size: 14px;
+            font-weight: $font-bold;
+            color: $color-gray;
+            &::-moz-selection {
+                color: $color-gray;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+    }
+    .repair-items {
+        padding: 0 6px;
+        max-height: 900px;
+        .unit {
+            font-size: $font-size14;
+            font-weight: $font-bold;
+            color: $color-gray-dark;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+        .items-header {
+            padding: 0 4px;
+            display: grid;
+            grid-template-columns: 82px 86px 86px 307px 108px;
+          
+            align-content: center;
+            grid-auto-flow: column;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            .dots-vertical {
+                width: 5px;
+                top: -5px;
+                position: relative;
+                margin-left: 12px;
+            }
+        }
+        .date {
+            font-size: $font-size14;
+            font-weight: 400;
+            color: $color-gray-dark;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 294px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+        .cost {
+            font-size: $font-size14;
+            font-weight: $font-semibold;
+            color: $color-gray-dark;
+            text-align: right;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+    }
+}
+.repaired-vehicle-container {
+    padding: 8px 8px;
+    max-width: 340px;
+    background-color: $color-white;
+    border-radius: 3px;
+    .repair-vehicle-header {
+        padding: 0 8px;
+        display: grid;
+        grid-template-columns: 40px 62px 58px 42px;
+        height: 18px;
+        grid-gap: 36px;
+        align-content: center;
+        margin-bottom: 4px;
+        margin-top: 2px;
+        .repaier-headers {
+            font-size: $font-size14;
+            font-weight: $font-bold;
+            color: $color-gray;
+            &::-moz-selection {
+                color: $color-gray;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+    }
+    .repair-items-vehicle {
+        padding: 0 4px;
+        .items-vehicle {
+            padding: 0px 4px;
+            display: grid;
+            grid-gap: 12px;
+            grid-template-columns: 65px 83px 46px 100px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            align-content: center;
+            .vehicle-icon {
+                position: relative;
+                bottom: 3px;
+                svg {
+                    width: 55px;
+                    height: 20px;
+                    path {
+                        fill: #aaaaaa;
+                    }
+                }
+            }
+            .unit {
+                font-size: $font-size14;
+                font-weight: $font-bold;
+                color: $color-gray-dark;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+            .date {
+                font-size: $font-size14;
+                font-weight: 400;
+                color: $color-gray-dark;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+            .cost {
+                font-size: $font-size14;
+                font-weight: $font-semibold;
+                color: $color-gray-dark;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+        }
+    }
+}
+.vin-text {
+    &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
+}

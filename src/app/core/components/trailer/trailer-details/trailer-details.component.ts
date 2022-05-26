@@ -11,9 +11,17 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 })
 export class TrailerDetailsComponent implements OnInit {
   public trailerDetailsConfig: any[] = [];
+  public data:any;
+  registrationLength:number;
+  inspectionLength:number;
+  titleLength:number;
   constructor(private activated_route: ActivatedRoute, private modalService: ModalService) { }
 
   ngOnInit(): void {
+    this.data=this.activated_route.snapshot.data;
+    this.registrationLength=this.data.trailer.registrations.length;
+    this.inspectionLength=this.data.trailer.inspections.length;
+    this.titleLength=this.data.trailer.titles.length;
     this.trailerDetailsConfig = [
       {
         id: 0,
@@ -24,17 +32,19 @@ export class TrailerDetailsComponent implements OnInit {
         id: 1,
         name: 'Registration',
         template: 'registration',
+        data:this.registrationLength
       },
       {
         id: 2,
         name: 'FHWA Inspection',
         template: 'fhwa-insepction',
-   
+        data:this.inspectionLength   
       },
       {
         id: 3,
         name: 'Title',
         template: 'title',
+        data:this.titleLength
      
       },
       {
@@ -69,7 +79,7 @@ export class TrailerDetailsComponent implements OnInit {
       }
     }
   }
-
+  /**Function return id */
   public identity(index: number, item: any): number {
     return item.id;
   }

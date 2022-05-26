@@ -103,6 +103,8 @@ import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-det
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
+import { ProfileImagesComponent } from './profile-images/profile-images.component';
+
 @NgModule({
   declarations: [
     HistoryDataComponent,
@@ -180,7 +182,8 @@ import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
-    TextareaAutosizeDirective
+    TextareaAutosizeDirective,
+    ProfileImagesComponent
   ],
   imports: [
     CommonModule,
@@ -331,7 +334,8 @@ import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
     InputFocusDirective,
     InputRestrictionDirective,
     TextareaAutosizeDirective,
-    AppTooltipeModule
+    AppTooltipeModule,
+    ProfileImagesComponent
   ],
   providers: [
     DatePipe,

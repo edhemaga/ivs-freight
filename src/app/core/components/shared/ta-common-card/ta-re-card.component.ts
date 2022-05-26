@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import moment from 'moment';
 import { card_modal_animation } from '../animations/card-modal.animation';
 
@@ -39,6 +39,9 @@ export class TaReCardComponent implements OnInit {
   /* To copy any Text */
   public copyText(val: any) {
     this.copied = true;
+    setTimeout(() => {
+      this.copied=false;
+    }, 1200);
     this.toggleCards();
 
     

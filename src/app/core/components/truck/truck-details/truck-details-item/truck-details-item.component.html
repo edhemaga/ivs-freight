@@ -2,369 +2,20 @@
   <div [ngSwitch]="data.template">
     <!---------------------------- GENERAL TEMPLATE ----------------------------->
     <div *ngSwitchCase="'general'">
-      <app-ta-details-header-card
-        [cardDetailsName]="truckName"
-        [cardDetailsDate]="'08/03/20'"
-        [tooltipNext]="'Next Truck'"
-        [tooltipPrevious]="'Previous Truck'"
-        [searchName]="'Search Truck'"
+      <app-truck-details-card
+        [data]="truckData.truck"
       >
-        <ng-container>
-          <div class="truck-details-wrapper">
-            <div class="details-header-avatar">
-              <div class="svg-truck-wrapper">
-                <svg-icon class="truck" src="assets/svg/common/semi-truck.svg">
-                </svg-icon>
-              </div>
-
-              <div class="model-name">
-                <div class="svg-wrapper">
-                  <svg-icon
-                    class="details-header-model"
-                    src="assets/svg/common/chevrolet.svg"
-                  >
-                  </svg-icon>
-                </div>
-                <p>{{ truckData.model }}</p>
-              </div>
-            </div>
-            <div class="details-header-data">
-              <div class="details-header-data-item">
-                <svg-icon src="assets/svg/common/vin.svg"></svg-icon>
-                <p class="vin-text">{{ truckData.vin }}</p>
-              </div>
-              <div class="details-header-data-item second">
-                <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
-                <p class="vin-text date">{{ truckData.year }}</p>
-                <div class="light-green">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                  >
-                    <g transform="translate(-725 -247)">
-                      <rect
-                        width="18"
-                        height="18"
-                        transform="translate(725 247)"
-                        fill="none"
-                      />
-                      <path
-                        d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
-                        transform="translate(712.181 241.886)"
-                        [attr.fill]="svgColorVar"
-                      />
-                    </g>
-                  </svg>
-                </div>
-                <p class="vin-text">{{ truckData.color.name }}</p>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-      </app-ta-details-header-card>
-
-      <div class="details-cards">
-        <!--------Assinged to--------->
-        <app-ta-custom-card
-          [bodyTemplate]="'card'"
-          [animationsDisabled]="false"
-          [hasDivider]="false"
-          [cardName]="'Assigned To'"
-          [tooltipName]="'Dispatch History'"
-          [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
-          [isCardOpen]="true"
-        >
-          <div class="assignTo">
-            <div class="assignTo-item first">
-              <svg-icon
-                class="assignTo-vehicle"
-                src="assets/svg/common/trailer.svg"
-              ></svg-icon>
-              <p class="assignTo-value">3243</p>
-            </div>
-            <div class="assignTo-item">
-              <svg-icon
-                class="assignTo-vehicle"
-                src="assets/svg/common/user-image.svg"
-              ></svg-icon>
-              <p class="assignTo-value">Pera Peric</p>
-            </div>
-          </div>
-        </app-ta-custom-card>
-
-        <!--------Additonal Details--------->
-        <app-ta-custom-card
-          class="item-cards"
-          [animationsDisabled]="false"
-          [bodyTemplate]="'card'"
-          [cardName]="'Additional Details'"
-        >
-          <div class="common-template">
-            <div class="common-template-item">
-              <div class="common-template-item-name">Gross Weight</div>
-              <div class="common-template-item-value">
-                {{ truckData.truckGrossWeight.name }}
-              </div>
-            </div>
-            <div class="common-template-item">
-              <div class="common-template-item-name">Starting Mileage</div>
-              <div class="common-template-item-value">
-                {{ truckData.mileage }} mi
-              </div>
-            </div>
-            <div class="common-template-item">
-              <div class="common-template-item-name">Empty Weight</div>
-              <div class="common-template-item-value">
-                {{ truckData.emptyWeight }}
-              </div>
-            </div>
-            <div class="common-template-item">
-              <div class="common-template-item-name">Engine Type</div>
-              <div class="common-template-item-value">
-                {{ truckData.truckEngineType.name }}
-              </div>
-            </div>
-            <div class="common-template-item">
-              <div class="common-template-item-name">Axles</div>
-              <div class="common-template-item-value">
-                {{ truckData.axles }}
-              </div>
-            </div>
-            <div class="common-template-item">
-              <div class="common-template-item-name">Tire size</div>
-              <div class="common-template-item-value">
-                {{ truckData.tireSize.name }}
-              </div>
-            </div>
-            <div class="common-template-item">
-              <div class="common-template-item-name">IPASS/EZPASS</div>
-              <div class="common-template-item-value">
-                {{ truckData.ipasEzpass }}
-              </div>
-            </div>
-            <div class="common-template-item">
-              <div class="common-template-item-name">Insurance Policy</div>
-              <div class="common-template-item-value">
-                {{ truckData.insurancePolicy }}
-              </div>
-            </div>
-          </div>
-        </app-ta-custom-card>
-
-        <!--------Owner--------->
-        <app-ta-custom-card
-          [animationsDisabled]="false"
-          class="item-cards"
-          [cardName]="'Owner'"
-          [bodyTemplate]="'card'"
-        >
-          <div class="common-template">
-            <div class="common-template-item">
-              <div class="common-template-item-name">Company</div>
-              <div class="common-template-item-value size18">
-                {{ truckData.owner.name }}
-              </div>
-            </div>
-            <div class="common-template-item">
-              <div class="common-template-item-name">Commission</div>
-              <div class="common-template-item-value size18">
-                {{ truckData.commission }}
-              </div>
-            </div>
-          </div>
-          <!-- <div class="single-icon-wrapper">
-            <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
-          </div> -->
-        </app-ta-custom-card>
-
-        <!--------Perfomance--------->
-        <app-ta-custom-card
-          [animationsDisabled]="false"
-          class="item-cards"
-          [cardName]="'Perfomance'"
-          [bodyTemplate]="'card'"
-        >
-          <div class="charts-template perfomance">
-            <app-ta-input-radiobuttons [buttons]="buttonsArrayPerfomance">
-            </app-ta-input-radiobuttons>
-
-            <div class="charts-item-wrapper revenue">
-              <div class="charts-template-item">
-                <div class="icon-name-item">
-                  <svg-icon src="assets/svg/common/mileage.svg"></svg-icon>
-                  <div class="charts-template-item-name">Mileage</div>
-                </div>
-                <div class="charts-template-item-value">300,456.3 mi</div>
-              </div>
-
-              <div class="charts-template-item fuel-item">
-                <div class="icon-name-item">
-                  <svg-icon src="assets/svg/common/fuel.svg"></svg-icon>
-                  <div class="charts-template-item-name">Fuel Cost</div>
-                </div>
-                <div class="charts-template-item-value">$190,221.48</div>
-              </div>
-            </div>
-          </div>
-        </app-ta-custom-card>
-        <!--------Fuel Consumption--------->
-        <app-ta-custom-card
-          [tooltipName]="'View in Modal'"
-          [bodyTemplate]="'card'"
-          [cardName]="'Fuel Consumption'"
-          [animationsDisabled]="false"
-          [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-          class="item-cards"
-        >
-          <div class="charts-template perfomance">
-            <app-ta-input-radiobuttons [buttons]="buttonsArrayFuel">
-            </app-ta-input-radiobuttons>
-            <div class="charts-item-wrapper revenue">
-              <div class="charts-template-item">
-                <div class="icon-name-item">
-                  <svg-icon src="assets/svg/common/round_yellow.svg"></svg-icon>
-                  <div class="charts-template-item-name">Miles per Gallon</div>
-                </div>
-                <div class="charts-template-item-value">5.75 mi</div>
-              </div>
-
-              <div class="charts-template-item fuel-item">
-                <div class="icon-name-item">
-                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                  <div class="charts-template-item-name">Cost per Gallon</div>
-                </div>
-                <div class="charts-template-item-value">$3.85</div>
-              </div>
-            </div>
-            <div id="chart">
-              <apx-chart
-                [series]="chartOptions.series"
-                [chart]="chartOptions.chart"
-                [xaxis]="chartOptions.xaxis"
-                [yaxis]="chartOptions.yaxis"
-                [labels]="chartOptions.labels"
-                [stroke]="chartOptions.stroke"
-                [title]="chartOptions.title"
-                [dataLabels]="chartOptions.dataLabels"
-                [fill]="chartOptions.fill"
-              ></apx-chart>
-            </div>
-          </div>
-        </app-ta-custom-card>
-
-        <!--------Revenue--------->
-        <app-ta-custom-card
-          [tooltipName]="'View in Modal'"
-          [cardName]="'Revenue'"
-          [bodyTemplate]="'card'"
-          [animationsDisabled]="false"
-          [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-          class="item-cards"
-        >
-          <div class="charts-template perfomance">
-            <app-ta-input-radiobuttons [buttons]="buttonsArrayRevenue">
-            </app-ta-input-radiobuttons>
-            <div class="charts-item-wrapper revenue">
-              <div class="charts-template-item">
-                <div class="icon-name-item">
-                  <svg-icon
-                    src="assets/svg/common/round_blue_light.svg"
-                  ></svg-icon>
-                  <div class="charts-template-item-name">Miles</div>
-                </div>
-                <div class="charts-template-item-value">50,257.7 mi</div>
-              </div>
-
-              <div class="charts-template-item fuel-item">
-                <div class="icon-name-item">
-                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                  <div class="charts-template-item-name">Revenue</div>
-                </div>
-                <div class="charts-template-item-value">$190,568.85</div>
-              </div>
-            </div>
-            <div id="chart">
-              <apx-chart
-                [series]="chartOptionsSecond.series"
-                [chart]="chartOptionsSecond.chart"
-                [xaxis]="chartOptionsSecond.xaxis"
-                [yaxis]="chartOptionsSecond.yaxis"
-                [labels]="chartOptionsSecond.labels"
-                [stroke]="chartOptionsSecond.stroke"
-                [title]="chartOptionsSecond.title"
-                [dataLabels]="chartOptionsSecond.dataLabels"
-                [fill]="chartOptionsSecond.fill"
-              ></apx-chart>
-            </div>
-          </div>
-        </app-ta-custom-card>
-
-        <!--------Owner History--------->
-        <app-ta-custom-card
-          [tooltipName]="'View in Modal'"
-          [cardName]="'Owner History'"
-          [bodyTemplate]="'card'"
-          [animationsDisabled]="false"
-          [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-          class="item-cards"
-        >
-          <div class="owner-history-container">
-            <div class="status-container">
-              <div class="status-header">
-                <div class="status-item">
-                  <p class="p-status">COMPANY</p>
-                </div>
-                <div class="status-item">
-                  <p class="p-status">FROM - TO</p>
-                </div>
-                <div class="status-item">
-                  <p class="p-status">DURATION</p>
-                </div>
-              </div>
-              <div class="truck-card-line"></div>
-              <div class="status-items">
-                <div
-                  class="item-wrapper"
-                  *ngFor="let owHist of truckData.ownerHistories"
-                >
-                  <p class="employment">{{ owHist.name }}</p>
-
-                  <p class="date-from-to">
-                    {{ formatDate(owHist.startDate) }} -
-                    {{
-                      owHist.endDate !== null
-                        ? formatDate(owHist.endDate)
-                        : "Today"
-                    }}
-                  </p>
-                  <p class="duration">1 y 200 d</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </app-ta-custom-card>
-
-        <!--------Note--------->
-        <div class="note-cards">
-          <app-ta-input-note
-            [formControl]="noteControl"
-            [isReadOnly]="true"
-            [isVisibleNote]="noteControl.value"
-          ></app-ta-input-note>
-        </div>
-      </div>
+      </app-truck-details-card>
     </div>
     <!---------------------------- Registration TEMPLATE ----------------------------->
     <div *ngSwitchCase="'registration'">
-      <div *ngFor="let reg of truckData.registrations">
+      <div *ngFor="let reg of truckData.truck.registrations; trackBy: identity">
         <app-ta-re-card
           [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage($event)"
           [cardNameCommon]="reg.licensePlate"
           [hasCopyIcon]="true"
-          [options]="dataTest"
+          [options]="dataEdit"
           [expDateClose]="formatDate(reg.expDate)"
         >
           <div class="cards-container">
@@ -413,9 +64,9 @@
     </div>
     <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
     <div *ngSwitchCase="'fhwa-insepction'">
-      <div *ngFor="let fhwa of truckData.inspections">
+      <div *ngFor="let fhwa of truckData.truck.inspections; trackBy: identity">
         <app-ta-re-card
-          [options]="dataTest"
+          [options]="dataEdit"
           [cardNameCommon]="formatDate(fhwa.issueDate)"
           [expDateClose]="formatDate('04/04/25')"
         >
@@ -452,12 +103,12 @@
 
     <!---------------------------- Title TEMPLATE ----------------------------->
     <div *ngSwitchCase="'title'">
-      <div *ngFor="let title of truckData.titles">
+      <div *ngFor="let title of truckData.truck.titles; trackBy: identity">
         <app-ta-re-card
           [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage($event)"
           [cardNameCommon]="title.number"
-          [options]="dataTest"
+          [options]="dataEdit"
           [expDateClose]="formatDate('04/04/27')"
         >
           <div class="cards-container">

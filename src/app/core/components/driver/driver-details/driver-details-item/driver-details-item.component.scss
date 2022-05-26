@@ -8,7 +8,7 @@
   margin-left: 16px;
   .driver-personal {
     display: grid;
-    grid-template-columns: 80px 239px;
+    grid-template-columns: 74px 280px;
     -moz-column-gap: 22px;
     column-gap: 22px;
     margin-top: 12px;
@@ -39,7 +39,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    bottom: -5px;
+    bottom: 3px;
 
     // Ovveride email information-item
     .information-item-email {
@@ -48,7 +48,7 @@
 
     .information-item {
       display: flex;
-      align-items: flex-end;
+      align-items: baseline;
       height: 18px;
       margin-bottom: 12px;
       cursor: pointer;
@@ -56,7 +56,7 @@
         display: none;
         position: relative;
         margin-left: 6px;
-        bottom: 7px;
+        bottom: 1px;
         height: 18px;
         svg {
           &:hover {
@@ -115,7 +115,7 @@
   grid-template-rows: repeat(1, 36px);
   grid-column-gap: 22px;
   padding: 0 10px;
-  margin-top: -7px;
+  // margin-top: -7px;
   .purchase-template-item {
     .purchase-icon-copy {
       display: flex;
@@ -189,6 +189,17 @@
   .note-body {
     padding-left: 4px !important;
   }
+  .note-textarea {
+    color: #6c6c6c !important;
+    &::-moz-selection {
+      color: #6c6c6c;
+      background: rgb(204, 204, 204, 0.2);
+    }
+    &::selection {
+      color: #6c6c6c;
+      background: rgb(204, 204, 204, 0.2);
+    }
+  }
 }
 .details-document-container {
   align-items: center;
@@ -259,8 +270,6 @@
   padding-right: 3px;
   .transform-arrow {
     bottom: 0 !important;
-    padding-bottom: 16px;
-    top: 12px;
     svg {
       transform: rotate(180deg);
       transition: all 0.3s ease-in-out;
@@ -285,7 +294,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 12px;
-    margin-top: -7px;
+    // margin-top: -7px;
     padding-left: 6px;
     .items-wrapper {
       flex-direction: column;
@@ -320,66 +329,92 @@
       }
     }
   }
+  .employment-tooltip {
+    width: 424px;
+    height: 52px;
+    display: none;
+    background-color: #ffffff;
+    position: relative;
+    bottom: 58px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.45);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.45);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.45);
+    .emp-tooltip {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      height: 52px;
+      .year-working {
+        font-size: 18px;
+        font-weight: 500;
+        color: #6c6c6c;
+        height: 22px;
+        margin-top: 3px;
+        margin-left: 8px;
+      }
+      .emp-tooltip-value {
+        display: flex;
+        justify-content: space-between;
+        height: 15px;
+        align-items: baseline;
+        width: 100%;
+        .emp-duration {
+          font-size: 12px;
+          font-weight: 600;
+          color: #6c6c6c;
+          margin-left: 8px;
+        }
+      }
+      .emp-text-icon {
+        display: flex;
+        align-items: baseline;
+        margin-right: 8px;
+        p {
+          font-size: 12px;
+          font-weight: 500;
+          color: #6c6c6c;
+          margin-right: 6px;
+        }
+      }
+    }
+  }
   .progress-employment-history {
     width: 100%;
-    display: flex;
     flex-direction: column;
     padding-left: 5px;
     padding-right: 6px;
-    &:hover {
-      .employment-tooltip {
-        display: block;
-      }
-    }
-    .employment-tooltip {
-      width: 424px;
-      height: 52px;
-      margin-left: -8px;
-      margin-right: 7px;
-      display: none;
-      background-color: #ffffff;
-      position: relative;
-      bottom: 60px;
-      .emp-tooltip {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        height: 52px;
-        padding: 6px 8px;
-        .year-working {
-          font-size: 18px;
-          font-weight: 500;
-          color: #6c6c6c;
-        }
-        .emp-tooltip-value {
-          display: flex;
-          justify-content: space-between;
-          height: 52px;
-          align-items: baseline;
-          width: 100%;
-          .emp-duration {
-            font-size: 12px;
-            font-weight: 600;
-            color: #6c6c6c;
-          }
-        }
-        .emp-text-icon {
-          display: flex;
-          align-items: baseline;
-          margin-right: 12px;
-          p {
-            font-size: 12px;
-            font-weight: 500;
-            color: #6c6c6c;
-            margin-right: 6px;
-          }
-        }
-      }
-    }
-    .progress {
+
+    .progress-driver {
       width: 100%;
+      background-color: #f3f3f3;
+      cursor: pointer;
       height: 18px;
-      background-color: #6d82c8;
+      overflow: visible;
+      display: flex;
+      border-radius: 2px;
+      .emp {
+        width: 35%;
+        background-color: #6d82c8;
+        border-radius: 0 2px 2px 0;
+        &:hover{
+          .employment-tooltip {
+            display: block;
+            transform: translate(-2%, -1%);
+          }
+        }
+      }
+      .unp {
+        width: 65%;
+        background-color: #d4dff4;
+        border-radius: 0 2px 2px 0;
+        &:hover {
+          background-color: #97a8dc !important;
+          .employment-tooltip {
+            display: block;
+            transform: translate(-36%, -4%);
+          }
+        }
+      }
     }
     .year-employer {
       display: flex;
@@ -391,6 +426,14 @@
         font-size: 14px;
         font-weight: 400;
         color: #6c6c6c;
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
+        }
       }
     }
   }

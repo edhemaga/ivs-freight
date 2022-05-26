@@ -1,13 +1,16 @@
 <div class="details-container-items">
-  <div *ngFor="let item of driverDetailsConfig">
+  <div *ngFor="let item of driverDetailsConfig; trackBy: identity">
     <app-ta-details-header
       [options]="dataTest"
       [route]="'/driver'"
       [tooltipHeaderName]="'Back to Driver List'"
       [headerText]="item.name"
+      [counterData]="item.data"
+      [hidePlus]="item.hide"
       (openModalAction)="onModalAction($event)"
     >
     </app-ta-details-header>
+  
   </div>
   <div class="details-item-cmp">
     <app-driver-details-item

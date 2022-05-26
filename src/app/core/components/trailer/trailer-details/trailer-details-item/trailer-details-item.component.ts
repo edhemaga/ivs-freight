@@ -12,37 +12,70 @@ import moment from 'moment';
 })
 export class TrailerDetailsItemComponent implements OnInit {
   @Input() data: any = null;
-  public note:FormControl=new FormControl();
-  public trailerData:any;
-  public svgColorVar:string;
-  public toggleOwner:boolean=false;
-  public trailerName:string;
+  public note: FormControl = new FormControl();
+  public trailerData: any;
+  public svgColorVar: string;
+  public toggleOwner: boolean = false;
+  public trailerName: string;
+  public dataTest:any;
+  public toggler:boolean=false;
   constructor(
-    private activated_route:ActivatedRoute,
-    private trailerTService:TrailerTService
-
-  ) { }
+    private activated_route: ActivatedRoute,
+    private trailerTService: TrailerTService
+  ) {}
 
   ngOnInit(): void {
-    this.getTrailerById()
+    this.getTrailerById();
+    this.initTableOptions();
   }
-  public getTrailerById(){
-      const trailer_id=this.activated_route.snapshot.paramMap.get("id");
-      this.trailerTService.getTruckById(+trailer_id).subscribe((data)=>{
-        this.trailerData=data;
-        this.note.patchValue(this.trailerData.note);
-        this.trailerName=this.trailerData.trailerNumber
-        this.svgColorVar=data.color.code
-        console.log(this.trailerData);
-      })
+  /**Function return trailer by id */
+  public getTrailerById() {
+    this.trailerData = this.activated_route.snapshot.data;
+    this.note.patchValue(this.trailerData.trailer.note)
+
   }
+   /**Function return format date from DB */
   public formatDate(date: string) {
     return moment(date).format('MM/DD/YY');
   }
-  public formatPhone(phoneNumberString: string) {
-    const value = phoneNumberString;
-    const number = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-    phoneNumberString = number;
-    return number;
+   
+  /**Function for toggle page in cards */
+  public toggleResizePage(value: boolean) {
+    this.toggler = value;
+    console.log(this.toggler);
+  }
+   /**Function for dots in cards */
+  public initTableOptions(): void {
+    this.dataTest = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          class: 'regular-text',
+          contentType: 'edit',
+        },
+
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
+        },
+      ],
+      export: true,
+    };
   }
 }

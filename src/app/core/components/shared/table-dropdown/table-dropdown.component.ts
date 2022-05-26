@@ -7,12 +7,14 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ViewEncapsulation,
 } from '@angular/core';
 
 @Component({
   selector: 'app-table-dropdown',
   templateUrl: './table-dropdown.component.html',
   styleUrls: ['./table-dropdown.component.scss'],
+  encapsulation:ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableDropdownComponent implements OnInit, OnChanges {

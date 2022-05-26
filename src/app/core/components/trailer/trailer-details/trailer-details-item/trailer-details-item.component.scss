@@ -2,7 +2,7 @@
 
 .owner-container{
     padding: 0 10px;
-    margin-top: -7px;
+    // margin-top: -7px;
     .owner-items-name{
         .firm-name{
             font-size: $font-size18;
@@ -42,13 +42,17 @@
     .icon-show{
          display: flex;
          align-items: flex-end;
-         margin-top: 12px;
+         margin-top: 14px;
          height: 18px;
+         justify-content: center;
          cursor: pointer;
         .arrow-down-employment{
             svg{
                 path{
-                    fill: #536BC2;
+                    fill: #aaaaaa;
+                    &:hover{
+                      fill: #6c6c6c;
+                    }
                 }
             }
         }
@@ -72,6 +76,12 @@
         svg {
           transform: rotate(180deg);
           transition: all 0.3s ease-in-out;
+          path{
+            fill: #536BC2 !important;
+          }
+        }
+        .icon-show{
+          justify-content: flex-start !important;
         }
       }
 }
@@ -94,4 +104,23 @@
           font-weight: $font-semibold !important;
         }
       }
+}
+.card-note {
+  margin-left: 8px;
+  height: 40px;
+  margin-top: 12px;
+  .note-body {
+    padding-left: 4px !important;
+  }
+  .note-textarea {
+    color: #6c6c6c !important;
+    &::-moz-selection {
+      color: #6c6c6c;
+      background: rgb(204, 204, 204, 0.2);
+    }
+    &::selection {
+      color: #6c6c6c;
+      background: rgb(204, 204, 204, 0.2);
+    }
+  }
 }

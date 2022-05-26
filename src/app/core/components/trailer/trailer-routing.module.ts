@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TrailerItemResolver } from './state/trailer.items.resolver';
 import { TrailerTableComponent } from './trailer-table/trailer-table.component';
 
 const routes: Routes = [
@@ -14,6 +15,9 @@ const routes: Routes = [
     import('./trailer-details/trailer-details.module').then(
       (m) => m.TrailerDetailsModule
     ),
+    resolve:{
+      trailer:TrailerItemResolver
+    },
     data:{title:'Trailer details'}
   }
 ];
