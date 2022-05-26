@@ -93,7 +93,7 @@
   </div>
 
   <!-- DropZone -->
-  <div class="drop-zone-active" [hidden]="!isDropZoneVisible">
+  <div class="drop-zone-active" [class.drop-zone-active-hovered]="hoverZone" [hidden]="!isDropZoneVisible">
     <app-ta-upload-dropzone
       (onFileEvent)="onFilesEvent($event)"
       (onDropBackground)="onDropBackground($event)"

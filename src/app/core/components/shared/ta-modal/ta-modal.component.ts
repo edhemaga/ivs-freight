@@ -43,7 +43,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
   // Drag & Drop properties
   public isDropZoneVisible: boolean = false;
   public dropZoneCounter: number = 0;
-  public isLeaveZone: boolean = false
+  public isLeaveZone: boolean = false;
+  public hoverZone: boolean = false;
 
   constructor(
     private ngbActiveModal: NgbActiveModal,
@@ -77,22 +78,19 @@ export class TaModalComponent implements OnInit, OnDestroy {
           $(document).on('dragleave', '.modal', (event) => {
             event.preventDefault();
             event.stopPropagation();
-            const timeout = setTimeout(() => {
+            if(this.timeout) {
+              clearTimeout(this.timeout)
+            }
+            this.timeout = setTimeout(() => {
               this.dropZoneCounter--;
-
-              // if(!this.isLeaveZone) {
-              //   this.dropZoneCounter--;
-              // }
-  
               if (this.dropZoneCounter < 1) {
                 this.isDropZoneVisible = false;
                 this.dropZoneCounter = 0;
                 this.isLeaveZone = false;
               }
-  
               console.log("DRAG LEAVE ", this.dropZoneCounter)
-              clearTimeout(timeout);
-            }, 50)
+              clearTimeout(this.timeout)
+            }, 150)
         
           });
         }
@@ -144,7 +142,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: { files: UploadFile[]; action: string }) {
-    console.log(event);
     this.modalService.uploadDocumentsSubject$.next(event);
   }
 
@@ -152,10 +149,17 @@ export class TaModalComponent implements OnInit, OnDestroy {
    
     switch (event.action) {
       case 'dragleave': {
-     
-        this.dropZoneCounter--;
-        this.isLeaveZone = true
-        console.log("DRAG LEAVE ZONE ", this.dropZoneCounter)
+        this.hoverZone = false;
+        if(this.timeout) {
+          clearTimeout(this.timeout)
+        }
+        this.timeout = setTimeout(() => {
+          this.dropZoneCounter = 1;
+          this.isLeaveZone = true;
+          console.log("DRAG LEAVE ZONE ", this.dropZoneCounter)
+          clearTimeout(this.timeout)
+        },100)
+      
         break;
       }
       case 'drop': {
@@ -163,12 +167,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
           this.isDropZoneVisible = false;
           this.dropZoneCounter = 0;
         }
-        console.log(event);
         break;
       }
       case 'dragover': {
-        // console.log(event);
         this.dropZoneCounter = 2;
+        this.hoverZone = true;
         console.log("DRAG OVER ZONE ", this.dropZoneCounter)
         break;
       }

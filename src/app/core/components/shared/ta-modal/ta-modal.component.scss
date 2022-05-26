@@ -31,6 +31,24 @@
     .ta-modal-dropzone {
       position: absolute;
       top: 0;
+      border: 4px dashed #e5e5e5;
+    }
+
+    &-hovered {
+      .ta-modal-dropzone {
+        position: absolute;
+        top: 0;
+        border: 4px dashed #FFFFFF;
+        background-color: #EEEEEE;
+
+        .ta-modal-dropzone-label {
+          background-color: #EEEEEE;
+        }
+
+        .ta-modal-dropzone-text {
+          color: #6C6C6C;
+        }
+      }
     }
   }
 
