@@ -74,7 +74,6 @@ export class TaLogoChangeComponent implements AfterViewInit, OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((data: { files: UploadFile[]; action: string }) => {
         if (data) {
-          console.log('DATAAAA ', data);
           this.onSelect(data);
         }
       });
@@ -97,8 +96,6 @@ export class TaLogoChangeComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   public onSelect(event: any) {
-    console.log(event);
-    console.log('IMAGE UPLOAD');
     const url = event.files[0].url;
     this.showUploadZone = false;
     const timeout = setTimeout(() => {

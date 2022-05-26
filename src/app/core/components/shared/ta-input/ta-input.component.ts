@@ -123,8 +123,6 @@ export class TaInputComponent
           this.inputService.triggerInvalidRoutingNumber$
             .pipe(distinctUntilChanged(), untilDestroyed(this))
             .subscribe((valid: boolean) => {
-              console.log(valid);
-              console.log(value);
               if (valid && value) {
                 this.waitValidation = true;
               } else {

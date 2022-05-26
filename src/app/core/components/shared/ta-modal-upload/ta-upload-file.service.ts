@@ -18,7 +18,6 @@ export class TaUploadFileService {
   }
 
   public visibilityDropZone(action: boolean) {
-    console.log('SERVICE ', action);
     this.visibilityDropZoneSubject.next(action);
   }
 

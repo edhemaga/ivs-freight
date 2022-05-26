@@ -63,7 +63,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.dropZoneConfig)
     this.modalService.modalStatus$
       .pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((data: { name: string; status: boolean }) => {
@@ -75,12 +74,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     this.uploadFileService.visibilityDropZone$
       .subscribe((value) => {
         if (value) {
-          console.log("MODAL  ", value)
          this.dragOver();
          this.dragLeave();
-        }
-        else {
-          console.log("INVALID")
         }
       });
   }
@@ -93,7 +88,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
         this.dropZoneCounter++;
       }
       this.isDropZoneVisible = true;
-      console.log('DRAG OVER ', this.dropZoneCounter);
     });
   }
 
@@ -111,7 +105,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
           this.dropZoneCounter = 0;
           this.isLeaveZone = false;
         }
-        console.log('DRAG LEAVE ', this.dropZoneCounter);
         clearTimeout(this.timeout);
       }, 150);
     });
@@ -165,7 +158,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: { files: UploadFile[]; action: string }) {
     this.uploadFileService.uploadFiles(event);
-    console.log(event);
   }
 
   public onDropBackground(event: { action: string; value: boolean }) {
@@ -178,7 +170,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
         this.timeout = setTimeout(() => {
           this.dropZoneCounter = 1;
           this.isLeaveZone = true;
-          console.log('DRAG LEAVE ZONE ', this.dropZoneCounter);
           clearTimeout(this.timeout);
         }, 40);
 
@@ -194,7 +185,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
       case 'dragover': {
         this.dropZoneCounter = 2;
         this.hoverZone = true;
-        console.log('DRAG OVER ZONE ', this.dropZoneCounter);
         break;
       }
       default: {

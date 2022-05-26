@@ -41,7 +41,6 @@ export class TaModalUploadComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((data: { files: UploadFile[]; action: string }) => {
         if(data) {
-          console.log("DATAAAA ", data)
           this.onUploadFiles(data);
         }
       });
