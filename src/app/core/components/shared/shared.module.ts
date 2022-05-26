@@ -102,6 +102,7 @@ import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
 import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 @NgModule({
   declarations: [
     HistoryDataComponent,
@@ -220,7 +221,8 @@ import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/
     CroppieModule,
     PdfViewerModule,
     DirectivesModule,
-    TruckassistTableModule
+    TruckassistTableModule,
+    AppTooltipeModule
   ],
   exports: [
     // Modules
@@ -328,7 +330,8 @@ import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
-    TextareaAutosizeDirective
+    TextareaAutosizeDirective,
+    AppTooltipeModule
   ],
   providers: [
     DatePipe,

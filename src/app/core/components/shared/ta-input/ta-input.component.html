@@ -91,31 +91,26 @@
         !isDropdownAddModeActive,
       'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye
     }"
-    [appTooltip]="'Clear'"
-    [position]="'top-middle'"
-    [tooltipBackground]="'#6C6C6C'"
-    [tooltipColor]="'#FFFFFF'"
-    [zIndex]="900"
-    [borderRadius]="'2px'"
-    [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-    [fontWeight]="'bold'"
-    [fontSize]="'11px'"
-    [customPosition]="-6"
-    [tatooltipvisible]="
-      !(
-        inputConfig.isRequired &&
-        getSuperControl.invalid &&
-        waitValidation &&
-        !focusInput &&
-        !inputConfig.placeholderIcon &&
-        !isVisiblePasswordEye &&
-        !inputConfig.isDropdown
-      )
-    "
+    ngbTooltip
+    mainTooltip="Clear"
+    tooltipBackground="#6c6c6c"
+    position="top"
     (click)="clearInput()"
   >
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>
+
+  <!-- [tatooltipvisible]="
+  !(
+    inputConfig.isRequired &&
+    getSuperControl.invalid &&
+    waitValidation &&
+    !focusInput &&
+    !inputConfig.placeholderIcon &&
+    !isVisiblePasswordEye &&
+    !inputConfig.isDropdown
+  )
+" -->
 
   <!-- Input Required Check -->
   <svg-icon
@@ -133,46 +128,37 @@
   ></svg-icon>
 
   <!-- Input Password Eye -->
-  <svg-icon
+  <div
     *ngIf="inputConfig.type === 'password'"
     class="input-password-eye {{ inputConfig.customClass }}"
     [ngClass]="{
       'visible': isVisiblePasswordEye,
       'valid': getSuperControl.valid && !focusInput && !isVisiblePasswordEye
     }"
-    src="{{
-      togglePassword
-        ? 'assets/svg/common/ic_eye-visible.svg'
-        : 'assets/svg/common/ic_eye-hidden.svg'
-    }}"
-    [appTooltip]="!togglePassword ? 'Show Password' : 'Hide Password'"
-    [position]="'top-middle'"
-    [tooltipBackground]="'#6C6C6C'"
-    [tooltipColor]="'#FFFFFF'"
-    [zIndex]="900"
-    [borderRadius]="'2px'"
-    [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-    [fontWeight]="'bold'"
-    [fontSize]="'11px'"
-    [customPosition]="-22"
+    ngbTooltip
+    mainTooltip="{{ !togglePassword ? 'Show Password' : 'Hide Password' }}"
+    tooltipBackground="#6c6c6c"
+    position="top"
     (click)="onTogglePassword()"
-  ></svg-icon>
+  >
+    <svg-icon
+      src="{{
+        togglePassword
+          ? 'assets/svg/common/ic_eye-visible.svg'
+          : 'assets/svg/common/ic_eye-hidden.svg'
+      }}"
+    ></svg-icon>
+  </div>
 
   <!-- Input Confirm New Item in Dropdown -->
   <div
     *ngIf="isDropdownAddModeActive && inputConfig.isDropdown"
     class="input-dropdown-confirm"
-    [appTooltip]="'Confirm'"
-    [position]="'top-middle'"
-    [tooltipBackground]="'#536BC2'"
-    [tooltipColor]="'#FFFFFF'"
-    [zIndex]="900"
-    [borderRadius]="'2px'"
-    [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-    [fontWeight]="'bold'"
-    [fontSize]="'11px'"
-    [customPosition]="-15"
     (click)="onAddItemInDropdown()"
+    ngbTooltip
+    mainTooltip="Confirm"
+    tooltipBackground="#536BC2"
+    position="top"
   >
     <svg-icon
       class="input-dropdow-confirm-svg"

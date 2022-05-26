@@ -59,29 +59,24 @@
         !focusInput &&
         !inputConfig.placeholderIcon
     }"
-    [appTooltip]="'Clear'"
-    [position]="'top-middle'"
-    [tooltipBackground]="'#6C6C6C'"
-    [tooltipColor]="'#FFFFFF'"
-    [zIndex]="900"
-    [borderRadius]="'2px'"
-    [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-    [fontWeight]="'bold'"
-    [fontSize]="'11px'"
-    [customPosition]="-6"
-    [tatooltipvisible]="
-      !(
-        inputConfig.isRequired &&
-        getSuperControl.invalid &&
-        waitValidation &&
-        !focusInput &&
-        !inputConfig.placeholderIcon
-      )
-    "
+    ngbTooltip
+    mainTooltip="Clear"
+    tooltipBackground="#6c6c6c"
+    position="top"
     (click)="clearInput()"
   >
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>
+
+  <!-- [tatooltipvisible]="
+  !(
+    inputConfig.isRequired &&
+    getSuperControl.invalid &&
+    waitValidation &&
+    !focusInput &&
+    !inputConfig.placeholderIcon
+  )
+" -->
 
   <!-- Input Icon Placeholder -->
   <svg-icon

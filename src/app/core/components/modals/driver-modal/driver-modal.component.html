@@ -240,22 +240,16 @@
                   }"
                   (selectedAddress)="onHandleAddressFormArray($event, ind)"
                 ></app-ta-input-address>
-
-                <svg-icon
+                <div
+                  ngbTooltip
+                  mainTooltip="Delete"
+                  position="top"
+                  tooltipBackground="#EF5350"
                   class="offDutyLocation-delete"
-                  src="assets/svg/common/ic_trash.svg"
                   (click)="removeOffDutyLocation(ind)"
-                  [appTooltip]="'Delete'"
-                  [position]="'top-middle'"
-                  [tooltipBackground]="'#EF5350'"
-                  [tooltipColor]="'#FFFFFF'"
-                  [zIndex]="900"
-                  [borderRadius]="'2px'"
-                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-                  [fontWeight]="'bold'"
-                  [fontSize]="'11px'"
-                  [customPosition]="-11"
-                ></svg-icon>
+                >
+                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                </div>
               </div>
             </div>
           </div>

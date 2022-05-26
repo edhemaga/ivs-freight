@@ -204,7 +204,11 @@
                     type: 'text'
                   }"
                 ></app-ta-input>
-                <svg-icon
+                <div
+                  ngbTooltip
+                  mainTooltip="Delete"
+                  tooltipBackground="#EF5350"
+                  position="top"
                   class="common-fake-table-delete"
                   [ngClass]="{
                     'new-position':
@@ -214,19 +218,10 @@
                       isContactCardsScrolling &&
                       !departmentContact.get('email').value
                   }"
-                  src="assets/svg/common/ic_trash.svg"
                   (click)="removeDepartmentContacts(ind)"
-                  [appTooltip]="'Delete'"
-                  [position]="'top-middle'"
-                  [tooltipBackground]="'#EF5350'"
-                  [tooltipColor]="'#FFFFFF'"
-                  [zIndex]="900"
-                  [borderRadius]="'2px'"
-                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-                  [fontWeight]="'bold'"
-                  [fontSize]="'11px'"
-                  [customPosition]="-11"
-                ></svg-icon>
+                >
+                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                </div>
               </div>
             </div>
           </div>

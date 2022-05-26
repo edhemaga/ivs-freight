@@ -168,6 +168,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   private createBrokerContacts(): FormGroup {
     return this.formBuilder.group({
+      contactName: [null],
       departmentId: [null],
       phone: [null],
       extensionPhone: [null],
