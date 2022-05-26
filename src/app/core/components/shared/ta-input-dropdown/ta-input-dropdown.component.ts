@@ -1,4 +1,4 @@
-import { debounceTime, distinctUntilChanged, shareReplay } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
@@ -12,9 +12,7 @@ import {
   Output,
   Self,
   SimpleChanges,
-  TemplateRef,
   ViewChild,
-  ViewEncapsulation,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -56,7 +54,6 @@ export class TaInputDropdownComponent
     if (this.options) {
       this.originalOptions = [...this.options];
     }
-    console.log(this.options)
   }
 
   ngOnInit(): void {
@@ -118,7 +115,6 @@ export class TaInputDropdownComponent
     this.inputService.dropDownNavigatorSubject
       .pipe(untilDestroyed(this))
       .subscribe((keyEvent) => {
-        console.log(keyEvent);
         if (keyEvent === 40) {
           this.dropdownNavigation(1);
         }

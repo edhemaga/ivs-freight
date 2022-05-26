@@ -17,6 +17,7 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 
 import moment from 'moment';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-ta-input',
@@ -110,6 +111,26 @@ export class TaInputComponent
         clearTimeout(timeout);
       }, 300);
     }
+
+    if (
+      ['routing', 'routingnumber', 'routing number'].includes(
+        this.inputConfig.name.toLocaleLowerCase()
+      )
+    ) {
+      this.getSuperControl.valueChanges
+        .pipe(distinctUntilChanged(), untilDestroyed(this))
+        .subscribe((value) => {
+          this.inputService.triggerInvalidRoutingNumber$
+            .pipe(distinctUntilChanged(), untilDestroyed(this))
+            .subscribe((valid: boolean) => {
+              if (valid && value) {
+                this.waitValidation = true;
+              } else {
+                this.waitValidation = false;
+              }
+            });
+        });
+    }
   }
 
   get getSuperControl() {
@@ -155,8 +176,6 @@ export class TaInputComponent
     }
 
     this.focusInput = true;
-    console.log("FOCUS")
-    console.log(this.focusInput)
   }
 
   public onBlur(): void {
@@ -508,7 +527,11 @@ export class TaInputComponent
       }
     }
 
-    if (['full parking slot', 'parking slot'].includes(this.inputConfig.name.toLowerCase())) {
+    if (
+      ['full parking slot', 'parking slot'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
       if (/^[0-9,-]*$/.test(String.fromCharCode(event.charCode))) {
         this.disableConsecutivelySpaces(event);
         return true;

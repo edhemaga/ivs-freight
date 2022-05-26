@@ -4,7 +4,6 @@ import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -13,16 +12,16 @@ export class TaInputService {
     new BehaviorSubject<boolean>(false);
 
   public onFocusOutInputSubject: BehaviorSubject<boolean> =
-  new BehaviorSubject<boolean>(false);
+    new BehaviorSubject<boolean>(false);
 
   public dropDownShowHideSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
   public dropDownNavigatorSubject: BehaviorSubject<number> =
-  new BehaviorSubject<number>(0);
+    new BehaviorSubject<number>(0);
 
   public isDropDownItemSelectedOnEnter: BehaviorSubject<boolean> =
-  new BehaviorSubject<boolean>(false); 
+    new BehaviorSubject<boolean>(false);
 
   public dropdownAddModeSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
@@ -30,13 +29,13 @@ export class TaInputService {
   public addDropdownItemSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
+  public triggerInvalidRoutingNumber$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
 
   constructor(
     public notificationService: NotificationService,
     private spinnerService: SpinnerService
   ) {}
-
-
 
   /**
    * @param formGroup FormGroup - The form group to touch
@@ -45,7 +44,7 @@ export class TaInputService {
     if (!isSpecialCase) {
       this.spinnerService.show(true);
     }
-  
+
     if (formGroup.invalid) {
       (Object as any).values(formGroup.controls).forEach((control: any) => {
         control.markAsTouched();

@@ -1,22 +1,73 @@
-import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import { UploadFile } from '../ta-upload-file/ta-upload-file.component';
+
+export interface DropZoneConfig {
+  dropZoneType: string;
+  dropZoneSvg: string;
+  dropZoneAvailableFiles: string;
+  multiple: boolean;
+}
 
 @Component({
   selector: 'app-ta-upload-dropzone',
   templateUrl: './ta-upload-dropzone.component.html',
   styleUrls: ['./ta-upload-dropzone.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class TaUploadDropzoneComponent {
-
   private files: UploadFile[] = [];
+
+  @Input() dropZoneConfig: DropZoneConfig = {
+    dropZoneType: 'files', // files | logo
+    dropZoneSvg: 'assets/svg/common/ic_modal_upload_dropzone.svg',
+    dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
+    multiple: true,
+  };
+
+  @Input() disableUnsupportedPreview: boolean = false; // only for modals upload
 
   @Output() onFileEvent: EventEmitter<{ files: UploadFile[]; action: string }> =
     new EventEmitter<{ files: UploadFile[]; action: string }>(null);
 
+  @Output() onDropBackground = new EventEmitter<{
+    action: string;
+    value: boolean;
+  }>();
+
+  public unSupporetedType: boolean = false;
+  public supportedExtensions: string[] = [];
+
+  @HostListener('dragover', ['$event']) onDragOver(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.onDropBackground.emit({ action: 'dragover', value: true });
+  }
+
+  @HostListener('dragleave', ['$event'])
+  public onDragLeave(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.onDropBackground.emit({ action: 'dragleave', value: false });
+  }
+
+  @HostListener('drop', ['$event'])
+  public async ondrop(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.onDropBackground.emit({ action: 'drop', value: false });
+
+    await this.onFileUpload(evt.dataTransfer.files);
+  }
+
   public async onFileUpload(files: FileList) {
     await this.addFiles(files);
-    this.onFileEvent.emit({files:this.files , action: 'add'});
     this.files = [];
   }
 
@@ -37,6 +88,23 @@ export class TaUploadDropzoneComponent {
     try {
       const base64Content = await this.getBase64(file);
       const fileNameArray = file.name.split('.');
+      this.supportedExtensions = this.dropZoneConfig.dropZoneAvailableFiles
+        .split(',')
+        .map((item) => item.split('/')[1]);
+
+      if (
+        !this.supportedExtensions.includes(
+          fileNameArray[fileNameArray.length - 1]
+        )
+      ) {
+        if (!this.disableUnsupportedPreview) {
+          this.unSupporetedType = true;
+        }
+
+        return;
+      }
+
+      this.unSupporetedType = false;
       this.files = [
         ...this.files,
         {
@@ -47,6 +115,7 @@ export class TaUploadDropzoneComponent {
           size: file.size,
         },
       ];
+      this.onFileEvent.emit({ files: this.files, action: 'add' });
     } catch (err) {
       console.error(`Can't upload ${file.name} ${err}`);
     }

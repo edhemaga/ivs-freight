@@ -21,7 +21,11 @@ import {
   CreateBrokerCommand,
   UpdateBrokerCommand,
 } from 'appcoretruckassist';
-import { einNumberRegex, emailRegex, phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  einNumberRegex,
+  emailRegex,
+  phoneRegex,
+} from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-broker-modal',
@@ -133,14 +137,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       dbaName: [null],
       mcNumber: [null, Validators.maxLength(8)],
       ein: [null, [einNumberRegex]],
-      email: [
-        null,
-        [emailRegex],
-      ],
-      phone: [
-        null,
-        [Validators.required, phoneRegex],
-      ],
+      email: [null, [emailRegex]],
+      phone: [null, [Validators.required, phoneRegex]],
       // Physical Address
       physicalAddress: [null],
       physicalAddressUnit: [null],
@@ -187,6 +185,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public removeBrokerContacts(id: number) {
     this.brokerContacts.removeAt(id);
     this.selectedContractDepartmentFormArray.splice(id, 1);
+  }
+
+  public onScrollingBrokerContacts(event: any) {
+    if (event.target.scrollLeft > 1) {
+      this.isContactCardsScrolling = true;
+    } else {
+      this.isContactCardsScrolling = false;
+    }
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -296,31 +302,37 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandlePhysicalAddress(event: {address: Address, valid: boolean}) {
+  public onHandlePhysicalAddress(event: { address: Address; valid: boolean }) {
     this.selectedPhysicalAddress = event.address;
-    if(!event.valid) {
-      this.brokerForm.setErrors({'invalid': event.valid})
+    if (!event.valid) {
+      this.brokerForm.setErrors({ invalid: event.valid });
     }
   }
 
-  public onHandlePhysicalPoBoxCityAddress(event: {address: Address, valid: boolean}) {
+  public onHandlePhysicalPoBoxCityAddress(event: {
+    address: Address;
+    valid: boolean;
+  }) {
     this.selectedPhysicalPoBox = event.address;
-    if(!event.valid) {
-      this.brokerForm.setErrors({'invalid': event.valid})
+    if (!event.valid) {
+      this.brokerForm.setErrors({ invalid: event.valid });
     }
   }
 
-  public onHandleBillingAddress(event: {address: Address, valid: boolean}) {
+  public onHandleBillingAddress(event: { address: Address; valid: boolean }) {
     this.selectedBillingAddress = event.address;
-    if(!event.valid) {
-      this.brokerForm.setErrors({'invalid': event.valid})
+    if (!event.valid) {
+      this.brokerForm.setErrors({ invalid: event.valid });
     }
   }
 
-  public onHandleBillingPoBoxCityAddress(event: {address: Address, valid: boolean}) {
+  public onHandleBillingPoBoxCityAddress(event: {
+    address: Address;
+    valid: boolean;
+  }) {
     this.selectedBillingPoBox = event.address;
-    if(!event.valid) {
-      this.brokerForm.setErrors({'invalid': event.valid})
+    if (!event.valid) {
+      this.brokerForm.setErrors({ invalid: event.valid });
     }
   }
 
@@ -412,12 +424,24 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     let newData: CreateBrokerCommand = {
       ...form,
       mainAddress: {
-        address: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.address : null,
-        city: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.city : null,
-        state: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.state : null,
-        country: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.country : null,
-        zipCode: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.zipCode : null,
-        stateShortName: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.stateShortName : null,
+        address: this.selectedPhysicalAddress
+          ? this.selectedPhysicalAddress.address
+          : null,
+        city: this.selectedPhysicalAddress
+          ? this.selectedPhysicalAddress.city
+          : null,
+        state: this.selectedPhysicalAddress
+          ? this.selectedPhysicalAddress.state
+          : null,
+        country: this.selectedPhysicalAddress
+          ? this.selectedPhysicalAddress.country
+          : null,
+        zipCode: this.selectedPhysicalAddress
+          ? this.selectedPhysicalAddress.zipCode
+          : null,
+        stateShortName: this.selectedPhysicalAddress
+          ? this.selectedPhysicalAddress.stateShortName
+          : null,
         addressUnit: physicalAddressUnit,
       },
       billingAddress: {
@@ -512,17 +536,29 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       mcNumber,
       ...form
     } = this.brokerForm.value;
-    console.log(this.selectedBillingAddress)
+    console.log(this.selectedBillingAddress);
     let newData: UpdateBrokerCommand = {
       id: id,
       ...form,
       mainAddress: {
-          address: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.address : null,
-        city: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.city : null,
-        state: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.state : null,
-        country: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.country : null,
-        zipCode: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.zipCode : null,
-        stateShortName: this.selectedPhysicalAddress ? this.selectedPhysicalAddress.stateShortName : null,
+        address: this.selectedPhysicalAddress
+          ? this.selectedPhysicalAddress.address
+          : null,
+        city: this.selectedPhysicalAddress
+          ? this.selectedPhysicalAddress.city
+          : null,
+        state: this.selectedPhysicalAddress
+          ? this.selectedPhysicalAddress.state
+          : null,
+        country: this.selectedPhysicalAddress
+          ? this.selectedPhysicalAddress.country
+          : null,
+        zipCode: this.selectedPhysicalAddress
+          ? this.selectedPhysicalAddress.zipCode
+          : null,
+        stateShortName: this.selectedPhysicalAddress
+          ? this.selectedPhysicalAddress.stateShortName
+          : null,
         addressUnit: physicalAddressUnit,
       },
       billingAddress: {
@@ -723,14 +759,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Broker can't be loaded.", 'Error:');
         },
       });
-  }
-
-  public onScrollingBrokerContacts(event: any) {
-    if (event.target.scrollLeft > 1) {
-      this.isContactCardsScrolling = true;
-    } else {
-      this.isContactCardsScrolling = false;
-    }
   }
 
   ngOnDestroy(): void {}
