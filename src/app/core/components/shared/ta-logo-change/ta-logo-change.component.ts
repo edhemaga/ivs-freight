@@ -1,3 +1,4 @@
+import { TaUploadFileService } from './../ta-modal-upload/ta-upload-file.service';
 import {
   createBase64,
   getStringFromBase64,
@@ -7,6 +8,8 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
+  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -14,13 +17,15 @@ import * as Croppie from 'croppie';
 import { CroppieDirective } from 'angular-croppie-module';
 import { Options } from '@angular-slider/ngx-slider';
 import { DomSanitizer } from '@angular/platform-browser';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
 
 @Component({
   selector: 'app-ta-logo-change',
   templateUrl: './ta-logo-change.component.html',
-  styleUrls: ['./ta-logo-change.component.scss'],
+  styleUrls: ['./ta-logo-change.component.scss']
 })
-export class TaLogoChangeComponent implements AfterViewInit {
+export class TaLogoChangeComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() imageUrl: string;
   @Input() customClass: string;
   @Output() base64ImageEvent: EventEmitter<string> = new EventEmitter<string>();
@@ -59,10 +64,24 @@ export class TaLogoChangeComponent implements AfterViewInit {
   public file: any;
   public savedFile: any = null;
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private uploadFileService: TaUploadFileService
+  ) {}
+
+  ngOnInit(): void {
+    this.uploadFileService.uploadedFiles$
+      .pipe(untilDestroyed(this))
+      .subscribe((data: { files: UploadFile[]; action: string }) => {
+        if (data) {
+          console.log('DATAAAA ', data);
+          this.onSelect(data);
+        }
+      });
+  }
 
   public get ngxSliderClass() {
-    return `custom-slider-logo-change ${this.customClass}`
+    return `custom-slider-logo-change ${this.customClass}`;
   }
 
   public ngAfterViewInit() {
@@ -78,6 +97,8 @@ export class TaLogoChangeComponent implements AfterViewInit {
   }
 
   public onSelect(event: any) {
+    console.log(event);
+    console.log('IMAGE UPLOAD');
     const url = event.files[0].url;
     this.showUploadZone = false;
     const timeout = setTimeout(() => {
@@ -87,7 +108,7 @@ export class TaLogoChangeComponent implements AfterViewInit {
         zoom: this.imageScale,
       });
       clearTimeout(timeout);
-    },200)
+    }, 200);
   }
 
   public handleCroppieUpdate(event) {
@@ -118,4 +139,6 @@ export class TaLogoChangeComponent implements AfterViewInit {
   public onCancel() {
     this.showUploadZone = true;
   }
+
+  ngOnDestroy(): void {}
 }

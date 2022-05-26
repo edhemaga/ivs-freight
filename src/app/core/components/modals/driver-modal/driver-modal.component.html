@@ -3,6 +3,12 @@
   [editName]="driverFullName"
   [editData]="editData"
   [isModalValid]="driverForm.valid"
+  [dropZoneConfig]="{
+    dropZoneType: 'logo',
+    dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
+    dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
+    multiple: false
+  }"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher
@@ -470,9 +476,7 @@
         <!-- Pay Type Commission -->
         <div
           class="paytype-commission"
-          *ngIf="
-            driverForm.get('payType').value?.toLowerCase() === 'commision'
-          "
+          *ngIf="driverForm.get('payType').value?.toLowerCase() === 'commision'"
           [class.active]="
             driverForm.get('payType').value?.toLowerCase() === 'commision'
           "
@@ -511,7 +515,7 @@
           [imageUrl]="this.driverForm.get('avatar').value"
           (base64ImageEvent)="onUploadImage($event)"
         ></app-ta-logo-change>
-        <div class="row last-row">
+        <div class="row first-row last-row">
           <div class="col-2 twic-driver">
             <app-ta-checkbox
               formControlName="twic"

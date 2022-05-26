@@ -28,6 +28,17 @@
     left: 0%;
     z-index: 99999999999;
 
+    .drop-zone-title {
+        position: absolute;
+        z-index: 9999;
+        top: 15px;
+        left: 12px;
+        color: #6c6c6c;
+        font-size: 18px;
+        font-weight: 800;
+        margin: 0;
+    }
+
     .ta-modal-dropzone {
       position: absolute;
       top: 0;

@@ -94,7 +94,10 @@
 
   <!-- DropZone -->
   <div class="drop-zone-active" [class.drop-zone-active-hovered]="hoverZone" [hidden]="!isDropZoneVisible">
+    <h5 class="drop-zone-title">{{ modalTitle }}</h5>
     <app-ta-upload-dropzone
+      [dropZoneConfig]="dropZoneConfig"
+      [disableUnsupportedPreview]="true"
       (onFileEvent)="onFilesEvent($event)"
       (onDropBackground)="onDropBackground($event)"
     ></app-ta-upload-dropzone>

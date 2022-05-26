@@ -1,6 +1,5 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import {
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -10,15 +9,15 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { ModalService } from '../ta-modal/modal.service';
 import { UploadFile } from './ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-upload-files-carousel.component';
+import { TaUploadFileService } from './ta-upload-file.service';
 
 @Component({
   selector: 'app-ta-modal-upload',
   templateUrl: './ta-modal-upload.component.html',
   styleUrls: ['./ta-modal-upload.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class TaModalUploadComponent implements OnInit, OnDestroy {
   @ViewChild(TaUploadFilesCarouselComponent)
@@ -34,15 +33,15 @@ export class TaModalUploadComponent implements OnInit, OnDestroy {
   public currentSlide: number = 0;
 
   constructor(
-    private changeDetectionRef: ChangeDetectorRef,
-    private modalService: ModalService
+    private uploadFileService: TaUploadFileService
   ) {}
 
   ngOnInit() {
-    this.modalService.uploadDocumentsSubject$
+    this.uploadFileService.uploadedFiles$
       .pipe(untilDestroyed(this))
       .subscribe((data: { files: UploadFile[]; action: string }) => {
         if(data) {
+          console.log("DATAAAA ", data)
           this.onUploadFiles(data);
         }
       });
@@ -71,8 +70,6 @@ export class TaModalUploadComponent implements OnInit, OnDestroy {
           this.modalCarousel.translateXMultipleSlides = 0;
           this.modalCarousel.multipleCurrentSlide = 0;
         }
-
-        this.changeDetectionRef.detectChanges();
         break;
       }
       default: {
@@ -85,13 +82,6 @@ export class TaModalUploadComponent implements OnInit, OnDestroy {
     switch (data.action) {
       case 'add': {
         this.files = [...this.files, ...data.files];
-        const timeout = setTimeout(() => {
-          this.changeDetectionRef.detectChanges();
-          clearTimeout(timeout);
-        }, 200);
-
-        console.log(this.files);
-
         break;
       }
     }

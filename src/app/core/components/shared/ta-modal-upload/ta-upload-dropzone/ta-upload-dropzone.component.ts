@@ -1,14 +1,19 @@
 import {
   Component,
   EventEmitter,
-  HostBinding,
   HostListener,
   Input,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { exec } from 'child_process';
 import { UploadFile } from '../ta-upload-file/ta-upload-file.component';
+
+export interface DropZoneConfig {
+  dropZoneType: string;
+  dropZoneSvg: string;
+  dropZoneAvailableFiles: string;
+  multiple: boolean;
+}
 
 @Component({
   selector: 'app-ta-upload-dropzone',
@@ -18,12 +23,15 @@ import { UploadFile } from '../ta-upload-file/ta-upload-file.component';
 })
 export class TaUploadDropzoneComponent {
   private files: UploadFile[] = [];
-  @Input() dropZoneType: string = 'files'; // files | logo
-  @Input() dropZoneAreSvg: string =
-    'assets/svg/common/ic_modal_upload_dropzone.svg';
-  @Input() dropZoneAvailableFiles: string =
-    'application/pdf, application/png, application/jpg';
-  @Input() multiple: boolean = true;
+
+  @Input() dropZoneConfig: DropZoneConfig = {
+    dropZoneType: 'files', // files | logo
+    dropZoneSvg: 'assets/svg/common/ic_modal_upload_dropzone.svg',
+    dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
+    multiple: true,
+  };
+
+  @Input() disableUnsupportedPreview: boolean = false; // only for modals upload
 
   @Output() onFileEvent: EventEmitter<{ files: UploadFile[]; action: string }> =
     new EventEmitter<{ files: UploadFile[]; action: string }>(null);
@@ -80,7 +88,7 @@ export class TaUploadDropzoneComponent {
     try {
       const base64Content = await this.getBase64(file);
       const fileNameArray = file.name.split('.');
-      this.supportedExtensions = this.dropZoneAvailableFiles
+      this.supportedExtensions = this.dropZoneConfig.dropZoneAvailableFiles
         .split(',')
         .map((item) => item.split('/')[1]);
 
@@ -89,7 +97,10 @@ export class TaUploadDropzoneComponent {
           fileNameArray[fileNameArray.length - 1]
         )
       ) {
-        this.unSupporetedType = true;
+        if (!this.disableUnsupportedPreview) {
+          this.unSupporetedType = true;
+        }
+
         return;
       }
 
