@@ -3,6 +3,12 @@
   [editName]="driverFullName"
   [editData]="editData"
   [isModalValid]="driverForm.valid"
+  [dropZoneConfig]="{
+    dropZoneType: 'logo',
+    dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
+    dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
+    multiple: false
+  }"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher
@@ -234,22 +240,16 @@
                   }"
                   (selectedAddress)="onHandleAddressFormArray($event, ind)"
                 ></app-ta-input-address>
-
-                <svg-icon
+                <div
+                  ngbTooltip
+                  mainTooltip="Delete"
+                  position="top"
+                  tooltipBackground="#EF5350"
                   class="offDutyLocation-delete"
-                  src="assets/svg/common/ic_trash.svg"
                   (click)="removeOffDutyLocation(ind)"
-                  [appTooltip]="'Delete'"
-                  [position]="'top-middle'"
-                  [tooltipBackground]="'#EF5350'"
-                  [tooltipColor]="'#FFFFFF'"
-                  [zIndex]="900"
-                  [borderRadius]="'2px'"
-                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-                  [fontWeight]="'bold'"
-                  [fontSize]="'11px'"
-                  [customPosition]="-11"
-                ></svg-icon>
+                >
+                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                </div>
               </div>
             </div>
           </div>
@@ -470,9 +470,7 @@
         <!-- Pay Type Commission -->
         <div
           class="paytype-commission"
-          *ngIf="
-            driverForm.get('payType').value?.toLowerCase() === 'commision'
-          "
+          *ngIf="driverForm.get('payType').value?.toLowerCase() === 'commision'"
           [class.active]="
             driverForm.get('payType').value?.toLowerCase() === 'commision'
           "
@@ -511,7 +509,7 @@
           [imageUrl]="this.driverForm.get('avatar').value"
           (base64ImageEvent)="onUploadImage($event)"
         ></app-ta-logo-change>
-        <div class="row last-row">
+        <div class="row first-row last-row">
           <div class="col-2 twic-driver">
             <app-ta-checkbox
               formControlName="twic"

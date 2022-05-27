@@ -1,0 +1,1162 @@
+<app-ta-modal
+  [modalTitle]="'Company'"
+  [editData]="editData"
+  [isModalValid]="companyForm.valid"
+  [customClass]="'modal-container-M'"
+  [dropZoneConfig]="{
+    dropZoneType: 'logo',
+    dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
+    dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
+    multiple: false
+  }"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <app-tab-switcher
+    (switchClicked)="tabChange($event)"
+    [tabs]="tabs"
+  ></app-tab-switcher>
+
+  <form
+    [formGroup]="companyForm"
+    class="form-container"
+    [ngClass]="{ 'tab-2': selectedTab !== 1 }"
+  >
+    <div class="animation-three-tabs" [@animationTabsModal]="animationObject">
+      <!-------------------------------- Basic Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 1">
+        <div class="row">
+          <div class="col-12">
+            <app-ta-input
+              formControlName="companyName"
+              [inputConfig]="{
+                name: 'Company name',
+                type: 'text',
+                label: 'Company Name',
+                isRequired: true,
+                textTransform: 'capitalize',
+                autoFocus: true
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <app-ta-input
+              formControlName="usdot"
+              [inputConfig]="{
+                name: 'USDOT',
+                type: 'text',
+                label: 'USDOT',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-4">
+            <app-ta-input
+              formControlName="ein"
+              [inputConfig]="{
+                name: 'EIN',
+                type: 'text',
+                label: 'EIN #',
+                mask: '00-0000000'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-4">
+            <app-ta-input
+              formControlName="mcNumber"
+              [inputConfig]="{
+                name: 'MC FF',
+                type: 'text',
+                label: 'MC/FF #',
+                textTransform: 'capitalize',
+                maxLength: 8
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5">
+            <app-ta-input
+              formControlName="phone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-7">
+            <app-ta-input
+              formControlName="email"
+              [inputConfig]="{
+                name: 'Email',
+                type: 'text',
+                label: 'Email',
+                placeholderIcon: 'email'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5">
+            <app-ta-input
+              formControlName="fax"
+              [inputConfig]="{
+                name: 'Fax',
+                type: 'text',
+                label: 'Fax',
+                placeholderIcon: 'fax'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-7">
+            <app-ta-input
+              formControlName="url"
+              [inputConfig]="{
+                name: 'Url',
+                type: 'text',
+                label: 'Hyperlink',
+                placeholderIcon: 'hyperlink'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <app-ta-input-address
+              formControlName="address"
+              [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Address, City, State Zip',
+                isRequired: true,
+                placeholderIcon: 'address',
+                textTransform: 'capitalize'
+              }"
+              (selectedAddress)="onHandleAddress($event)"
+            ></app-ta-input-address>
+          </div>
+          <div class="col-2">
+            <app-ta-input
+              formControlName="addressUnit"
+              [inputConfig]="{
+                name: 'Address Unit',
+                type: 'text',
+                label: 'Unit No.',
+                maxLength: 6
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="company-irp-ifta-toll-scac">
+          <app-ta-input
+            formControlName="irp"
+            [inputConfig]="{
+              name: 'IRP',
+              type: 'text',
+              label: 'IRP',
+              textTransform: 'capitalize'
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="ifta"
+            [inputConfig]="{
+              name: 'IFTA',
+              type: 'text',
+              label: 'IFTA',
+              textTransform: 'capitalize'
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="toll"
+            [inputConfig]="{
+              name: 'TOLL',
+              type: 'text',
+              label: 'TOLL',
+              textTransform: 'capitalize'
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="scac"
+            [inputConfig]="{
+              name: 'SCAC',
+              type: 'text',
+              label: 'SCAC',
+              textTransform: 'capitalize'
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="row last-row">
+          <div class="col-8">
+            <app-ta-input-dropdown
+              formControlName="timeZone"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Time Zone',
+                isDropdown: true,
+                isRequired: true,
+                dropdownWidthClass: 'w-col-medium-8'
+              }"
+              [options]="[]"
+              (selectedItem)="onSelectDropdown($event, 'timezone')"
+            ></app-ta-input-dropdown>
+          </div>
+          <div class="col-4">
+            <app-ta-input-dropdown
+              formControlName="currency"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Currency',
+                isDropdown: true,
+                isRequired: true,
+                dropdownWidthClass: 'w-col-medium-4'
+              }"
+              [options]="[]"
+              (selectedItem)="onSelectDropdown($event, 'currency')"
+            ></app-ta-input-dropdown>
+          </div>
+        </div>
+        <app-ta-custom-card
+          [cardName]="'Logo'"
+          (onOpenCard)="isLogoDropZoneVisibile = $event"
+        >
+          <app-ta-logo-change
+            *ngIf="isLogoDropZoneVisibile"
+            [customClass]="'modal-container-M'"
+            [imageUrl]="this.companyForm.get('avatar').value"
+            (base64ImageEvent)="onUploadImage($event)"
+          ></app-ta-logo-change>
+        </app-ta-custom-card>
+      </div>
+      <!-------------------------------- Additional Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 2">
+        <!-- Department Contacts -->
+        <app-ta-custom-card
+          [hasCounter]="
+            departmentContacts.length ? departmentContacts.length : '0'
+          "
+          [cardName]="'Department Contact'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasArrow]="true"
+          [hasBodyData]="departmentContacts.length"
+          [isCardOpen]="departmentContacts.length"
+          [hasScrollBody]="departmentContacts.length > 10"
+          (onActionEvent)="addDepartmentContacts($event)"
+        >
+          <div
+            formArrayName="departmentContact"
+            class="common-fake-table-modal hide-oveflow"
+            *ngIf="departmentContacts.length"
+          >
+            <div class="common-fake-table-label">
+              <p>DEPARTMENT <span>*</span></p>
+              <p>PHONE <span>*</span></p>
+              <p>EXT</p>
+              <p>EMAIL</p>
+            </div>
+            <div
+              *ngFor="
+                let departmentContact of departmentContacts.controls;
+                let ind = index
+              "
+            >
+              <div [formGroupName]="ind" class="common-fake-table-card">
+                <app-ta-input-dropdown
+                  formControlName="departmentId"
+                  [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-broker-department'
+                  }"
+                  [options]="[]"
+                  (selectedItem)="
+                    onSelectFakeTableData($event, ind, 'department')
+                  "
+                ></app-ta-input-dropdown>
+                <app-ta-input
+                  formControlName="phone"
+                  [inputConfig]="{
+                    name: 'Phone',
+                    type: 'text',
+                    mask: '(000) 000-0000'
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="extensionPhone"
+                  [inputConfig]="{
+                    name: 'Phone Extension',
+                    type: 'text',
+                    maxLength: 3
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="email"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'text'
+                  }"
+                ></app-ta-input>
+                <div
+                  ngbTooltip
+                  mainTooltip="Delete"
+                  tooltipBackground="#EF5350"
+                  position="top"
+                  class="common-fake-table-delete"
+                  (click)="removeDepartmentContacts(ind)"
+                >
+                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <!-- Bank Account -->
+        <app-ta-custom-card
+          [hasCounter]="bankAccounts.length ? bankAccounts.length : '0'"
+          [cardName]="'Bank Account'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasArrow]="true"
+          [hasBodyData]="bankAccounts.length"
+          [isCardOpen]="bankAccounts.length"
+          [hasScrollBody]="bankAccounts.length > 10"
+          (onActionEvent)="addBankAccount($event)"
+        >
+          <div
+            formArrayName="bankAccount"
+            class="common-fake-table-modal common-fake-table-modal-banks hide-oveflow"
+            *ngIf="bankAccounts.length"
+          >
+            <div class="common-fake-table-label">
+              <p>BANK NAME</p>
+              <p>ROUTING <span>*</span></p>
+              <p>ACCOUNT <span>*</span></p>
+            </div>
+            <div
+              *ngFor="let bankAccount of bankAccounts.controls; let ind = index"
+            >
+              <div [formGroupName]="ind" class="common-fake-table-card">
+                <app-ta-input-dropdown
+                  formControlName="bankId"
+                  [template]="'banks'"
+                  [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-banks'
+                  }"
+                  [canAddNew]="true"
+                  [options]="[]"
+                  (selectedItem)="
+                    onSelectFakeTableData($event, ind, 'bankaccount')
+                  "
+                ></app-ta-input-dropdown>
+                <app-ta-input
+                  formControlName="routing"
+                  [inputConfig]="{
+                    name: 'Routing Number',
+                    type: 'text',
+                    isDisabled: !isBankSelected,
+                    isRequired: isBankSelected,
+                    minLength: 9,
+                    maxLength: 9
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="account"
+                  [inputConfig]="{
+                    name: 'Account Number',
+                    type: 'password',
+                    placeholderIcon: 'password',
+                    isDisabled: !isBankSelected,
+                    isRequired: isBankSelected,
+                    maxLength: 17,
+                    minLength: 4
+                  }"
+                ></app-ta-input>
+                <svg-icon
+                  class="common-fake-table-check"
+                  src="assets/svg/common/ic_confirm.svg"
+                ></svg-icon>
+                <div
+                  class="common-fake-table-status common-fake-table-status-pending"
+                >
+                  Pending
+                </div>
+                <div
+                  class="common-fake-table-delete"
+                  (click)="removeBankAccount(ind)"
+                  ngbTooltip
+                  mainTooltip="Delete"
+                  tooltipBackground="#EF5350"
+                  position="top"
+                >
+                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <!-- Bank Card -->
+        <app-ta-custom-card
+          [hasCounter]="bankCards.length ? bankCards.length : '0'"
+          [cardName]="'Bank Card'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [hasArrow]="true"
+          [hasBodyData]="bankCards.length"
+          [isCardOpen]="bankCards.length"
+          [hasScrollBody]="bankCards.length > 10"
+          (onActionEvent)="addBankCard($event)"
+        >
+          <div
+            formArrayName="bankCard"
+            class="common-fake-table-modal common-fake-table-modal-bank-cards hide-oveflow"
+            *ngIf="bankCards.length"
+          >
+            <div class="common-fake-table-label">
+              <p>NICKNAME</p>
+              <p>CARD NO.</p>
+              <p>CVC</p>
+              <p>EXP</p>
+            </div>
+            <div *ngFor="let bankCard of bankCards.controls; let ind = index">
+              <div [formGroupName]="ind" class="common-fake-table-card">
+                <app-ta-input
+                  formControlName="nickname"
+                  [inputConfig]="{
+                    name: 'Nickname',
+                    type: 'text',
+                    textTransform: 'capitalize'
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="cardNumber"
+                  [inputConfig]="{
+                    name: 'Card Number',
+                    type: 'password',
+                    placeholderIcon: 'visa',
+                    maxLength: 16,
+                    minLength: 16
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="cvc"
+                  [inputConfig]="{
+                    name: 'CVC',
+                    type: 'password',
+                    placeholderIcon: 'password',
+                    maxLength: 3,
+                    minLength: 3
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="exp"
+                  [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    placeholderIcon: 'date',
+                    customClass: 'datetimeclass'
+                  }"
+                ></app-ta-input>
+                <div
+                  ngbTooltip
+                  mainTooltip="Delete"
+                  tooltipBackground="#EF5350"
+                  position="top"
+                  class="common-fake-table-delete"
+                  (click)="removeBankCard(ind)"
+                >
+                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card
+          [cardName]="'Load Format and Customer Billing'"
+          [isCardOpen]="true"
+        >
+          <div class="row active-20">
+            <div class="col-4">
+              <app-ta-input
+                formControlName="prefix"
+                [inputConfig]="{
+                  name: 'Prefix',
+                  type: 'text',
+                  label: 'Prefix',
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4">
+              <app-ta-input
+                formControlName="startingNo"
+                [inputConfig]="{
+                  name: 'Starting No',
+                  type: 'text',
+                  label: 'Starting No',
+                  isRequired: true,
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4 no-p-left">
+              <app-ta-input
+                formControlName="suffix"
+                [inputConfig]="{
+                  name: 'Sufix',
+                  type: 'text',
+                  label: 'Sufix',
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+          <div class="preferred-load-company-additional">
+            <div class="preffered-field-one">
+              <span class="r-text">Preferred Load Type</span>
+              <div class="r-btns">
+                <app-ta-input-radiobuttons
+                  [buttons]="prefferedLoadBtns"
+                  (changedValue)="onPrefferedLoadCheck($event)"
+                ></app-ta-input-radiobuttons>
+              </div>
+            </div>
+            <div class="preffered-field">
+              <app-ta-checkbox
+                formControlName="autoInvoicing"
+                [label]="'Auto Invoicing'"
+                [name]="'AutoInvoicing'"
+                [customClass]="'medium'"
+              ></app-ta-checkbox>
+            </div>
+            <div class="preffered-field">
+              <app-ta-checkbox
+                formControlName="factorByDefault"
+                [label]="'Factor By Default'"
+                [name]="'FactorByDefault'"
+                [customClass]="'medium'"
+              ></app-ta-checkbox>
+            </div>
+          </div>
+          <div class="row last-row">
+            <div class="col-6">
+              <app-ta-input
+                formControlName="customerPayTerm"
+                [inputConfig]="{
+                  name: 'Customer Pay Term',
+                  type: 'text',
+                  label: 'Customer Pay Term',
+                  placeholderIcon: 'days'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-6">
+              <app-ta-input
+                formControlName="customerCredit"
+                [inputConfig]="{
+                  name: 'Customer Credit',
+                  type: 'text',
+                  label: 'Customer Credit',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Expiration'" [isCardOpen]="true">
+          <div class="row">
+            <div class="col-4">
+              <app-ta-input
+                formControlName="mvr"
+                [inputConfig]="{
+                  name: 'MVR',
+                  type: 'text',
+                  label: 'MVR',
+                  isRequired: true,
+                  placeholderIcon: 'months'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4">
+              <app-ta-input
+                formControlName="truckInspection"
+                [inputConfig]="{
+                  name: 'Truck Inspection',
+                  type: 'text',
+                  label: 'Truck Inspection',
+                  isRequired: true,
+                  placeholderIcon: 'months'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4">
+              <app-ta-input
+                formControlName="trailerInspection"
+                [inputConfig]="{
+                  name: 'Trailer Inspection',
+                  type: 'text',
+                  label: 'Trailer Inspection',
+                  isRequired: true,
+                  placeholderIcon: 'months'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+      </div>
+      <!-------------------------------- Payroll Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 3">
+        <!-- Truck Assist -->
+        <div class="custom-checkbox-card">
+          <div class="divider"></div>
+          <div
+            class="checkbox-card-header"
+            [ngClass]="{ pointer: companyForm.get('useTruckAssist').value }"
+            (click)="useTruckAssist($event)"
+          >
+            <app-ta-checkbox
+              formControlName="useTruckAssist"
+              [label]="truckAssistText"
+            ></app-ta-checkbox>
+            <svg-icon
+              class="checkbox-card-header-arrow visible"
+              src="assets/svg/common/ic_arrow_down_updated.svg"
+            ></svg-icon>
+          </div>
+          <div class="checkbox-card-body active">
+            <div class="use-truck-assist-header">
+              THIS PROCESS MAY TAKE UP TO 5 DAYS.
+            </div>
+            <div class="use-truck-assist-text">
+              Example: Payments processed by Monday CST 7:00 PM will be
+              deposited Friday morning
+            </div>
+            <div class="use-truck-assist-price">Pricing</div>
+          </div>
+        </div>
+        <app-ta-custom-card [cardName]="'Driver & Owner'" [isCardOpen]="true">
+          <div class="row">
+            <div class="col-6">
+              <app-ta-input-dropdown
+                formControlName="driveOwnerPayPeriod"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Pay Period',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-6'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'driver-pay-period')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-6">
+              <app-ta-input-dropdown
+                formControlName="driverOwnerEndingIn"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Ending In',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-6-second-col'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'driver-ending-in')"
+              ></app-ta-input-dropdown>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <app-ta-input
+                formControlName="driverEmptyMile"
+                [inputConfig]="{
+                  name: 'Empty Mile',
+                  type: 'text',
+                  label: 'Default Empty Mile',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  maxLength: 2,
+                  mask: '00'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-6">
+              <app-ta-input
+                formControlName="driverLoadedMile"
+                [inputConfig]="{
+                  name: 'Loaded Mile',
+                  type: 'text',
+                  label: 'Default Loaded Mile',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  maxLength: 2,
+                  mask: '00'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+          <div class="custom-p-modal-container">
+            <app-ta-checkbox
+              formControlName="driverOwnerHasLoadedEmptyMiles"
+              [label]="'Loaded and empty miles have same rate'"
+              [name]="'LoadedEmptyMiles'"
+              [customClass]="'medium'"
+            ></app-ta-checkbox>
+            <div class="row row-mt-8 last-row">
+              <div class="col-6">
+                <app-ta-ngx-slider
+                  [sliderName]="'Default Driver Commission'"
+                  [sliderOptions]="driverCommissionOptions"
+                  [startedValue]="
+                    companyForm.get('driverDefaultCommission')?.value
+                  "
+                  [customClass]="'custom-slider-with-percentage'"
+                  (onUserValueChange)="
+                    companyForm.get('driverDefaultCommission').setValue($event)
+                  "
+                ></app-ta-ngx-slider>
+              </div>
+              <div class="col-6">
+                <app-ta-ngx-slider
+                  [sliderName]="'Default Owner Commission'"
+                  [sliderOptions]="ownerCommissionOptions"
+                  [startedValue]="
+                    companyForm.get('ownerDefaultCommission')?.value
+                  "
+                  [customClass]="'custom-slider-with-percentage'"
+                  (onUserValueChange)="
+                    companyForm.get('ownerDefaultCommission').setValue($event)
+                  "
+                ></app-ta-ngx-slider>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Accounting'">
+          <div class="row last-row">
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="accountingPayPeriod"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Pay Period',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-4-col-1'
+                }"
+                [options]="[]"
+                (selectedItem)="
+                  onSelectDropdown($event, 'accounting-pay-period')
+                "
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="accountingEndingIn"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Ending In',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-4'
+                }"
+                [options]="[]"
+                (selectedItem)="
+                  onSelectDropdown($event, 'accounting-ending-in')
+                "
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-4 no-p-left">
+              <app-ta-input
+                formControlName="accountingDefaultBase"
+                [inputConfig]="{
+                  name: 'Default Base',
+                  type: 'text',
+                  label: 'Default Base',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Company Owner'">
+          <div class="row last-row">
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="companyOwnerPayPeriod"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Pay Period',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-4-col-1'
+                }"
+                [options]="[]"
+                (selectedItem)="
+                  onSelectDropdown($event, 'companyOwner-pay-period')
+                "
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="companyOwnerEndingIn"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Ending In',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-4'
+                }"
+                [options]="[]"
+                (selectedItem)="
+                  onSelectDropdown($event, 'companyOwner-ending-in')
+                "
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-4 no-p-left">
+              <app-ta-input
+                formControlName="companyOwnerDefaultBase"
+                [inputConfig]="{
+                  name: 'Default Base',
+                  type: 'text',
+                  label: 'Default Base',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Dispatch'">
+          <div class="row">
+            <div class="col-6">
+              <app-ta-input-dropdown
+                formControlName="dispatchPayPeriod"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Pay Period',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-6'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'dispatch-pay-period')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-6">
+              <app-ta-input-dropdown
+                formControlName="dispatchEndingIn"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Ending In',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-6-second-col'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'dispatch-ending-in')"
+              ></app-ta-input-dropdown>
+            </div>
+          </div>
+          <div class="row last-row">
+            <div class="col-6">
+              <app-ta-input
+                formControlName="dispatchDefaultBase"
+                [inputConfig]="{
+                  name: 'Default Base',
+                  type: 'text',
+                  label: 'Default Base',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-6">
+              <app-ta-ngx-slider
+                [sliderName]="'Default Commission'"
+                [sliderOptions]="dispatcherOptions"
+                [startedValue]="
+                  companyForm.get('dispatchDefaultCommission')?.value
+                "
+                [customClass]="
+                  'custom-slider-with-percentage custom-driver-modal'
+                "
+                (onUserValueChange)="
+                  companyForm.get('dispatchDefaultCommission').setValue($event)
+                "
+              ></app-ta-ngx-slider>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Manager'">
+          <div class="row">
+            <div class="col-6">
+              <app-ta-input-dropdown
+                formControlName="managerPayPeriod"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Pay Period',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-6'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'manager-pay-period')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-6">
+              <app-ta-input-dropdown
+                formControlName="managerEndingIn"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Ending In',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-6-second-col'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'manager-ending-in')"
+              ></app-ta-input-dropdown>
+            </div>
+          </div>
+          <div class="row last-row">
+            <div class="col-6">
+              <app-ta-input
+                formControlName="managerDefaultBase"
+                [inputConfig]="{
+                  name: 'Default Base',
+                  type: 'text',
+                  label: 'Default Base',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-6">
+              <app-ta-ngx-slider
+                [sliderName]="'Default Commission'"
+                [sliderOptions]="managerOptions"
+                [startedValue]="
+                  companyForm.get('managerDefaultCommission')?.value
+                "
+                [customClass]="
+                  'custom-slider-with-percentage custom-driver-modal'
+                "
+                (onUserValueChange)="
+                  companyForm.get('managerDefaultCommission').setValue($event)
+                "
+              ></app-ta-ngx-slider>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Recruiting'">
+          <div class="row last-row">
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="recruitingPayPeriod"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Pay Period',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-4-col-1'
+                }"
+                [options]="[]"
+                (selectedItem)="
+                  onSelectDropdown($event, 'recruiting-pay-period')
+                "
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="recruitingEndingIn"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Ending In',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-4'
+                }"
+                [options]="[]"
+                (selectedItem)="
+                  onSelectDropdown($event, 'recruiting-ending-in')
+                "
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-4 no-p-left">
+              <app-ta-input
+                formControlName="recruitingDefaultBase"
+                [inputConfig]="{
+                  name: 'Default Base',
+                  type: 'text',
+                  label: 'Default Base',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Repair'">
+          <div class="row last-row">
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="repairPayPeriod"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Pay Period',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-4-col-1'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'repair-pay-period')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="repairEndingIn"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Ending In',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-4'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'repair-ending-in')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-4 no-p-left">
+              <app-ta-input
+                formControlName="repairDefaultBase"
+                [inputConfig]="{
+                  name: 'Default Base',
+                  type: 'text',
+                  label: 'Default Base',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Safety'">
+          <div class="row last-row">
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="safetyPayPeriod"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Pay Period',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-4-col-1'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'safety-pay-period')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="safetyEndingIn"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Ending In',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-4'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'safety-ending-in')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-4 no-p-left">
+              <app-ta-input
+                formControlName="safetyDefaultBase"
+                [inputConfig]="{
+                  name: 'Default Base',
+                  type: 'text',
+                  label: 'Default Base',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Other'">
+          <div class="row last-row">
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="otherPayPeriod"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Pay Period',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-4-col-1'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'other-pay-period')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-4">
+              <app-ta-input-dropdown
+                formControlName="otherEndingIn"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Ending In',
+                  isDropdown: true,
+                  isRequired: true,
+                  dropdownWidthClass: 'w-col-medium-4'
+                }"
+                [options]="[]"
+                (selectedItem)="onSelectDropdown($event, 'other-ending-in')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="col-4 no-p-left">
+              <app-ta-input
+                formControlName="otherDefaultBase"
+                [inputConfig]="{
+                  name: 'Default Base',
+                  type: 'text',
+                  label: 'Default Base',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+      </div>
+    </div>
+  </form>
+</app-ta-modal>

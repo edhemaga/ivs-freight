@@ -17,7 +17,6 @@ export class SettingsNodataComponent implements OnInit {
 
   public openModal() {
     this.settingsService.onModalAction({
-      type: true,
       modalName: 'basic',
       action: 'new',
     });

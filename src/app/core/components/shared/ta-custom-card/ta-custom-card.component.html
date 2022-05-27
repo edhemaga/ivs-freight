@@ -22,20 +22,16 @@
       <span class="header-text" [ngClass]="{ 'no-counter': !hasCounter }">
         {{ cardName }}
       </span>
-      <svg-icon
+      <div
         *ngIf="hasHeaderSvg && isCardOpen"
-        class="header-svg"
+        ngbTooltip
+        mainTooltip="{{ tooltipName }}"
+        tooltipBackground="#6c6c6c"
+        position="top"
         src="{{ hasHeaderSvg }}"
-        [appTooltip]="tooltipName"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6c6c6c'"
-        [tooltipColor]="'#ffffff'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="-35"
-      ></svg-icon>
+      >
+        <svg-icon class="header-svg"></svg-icon>
+      </div>
     </div>
     <div
       class="header-actions"

@@ -1,0 +1,87 @@
+<app-ta-modal
+  [modalTitle]="
+    editData?.type !== 'edit'
+      ? 'New Factoring Company'
+      : 'Edit Factoring Company'
+  "
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="factoringForm.valid"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <form [formGroup]="factoringForm" class="form-container">
+    <div class="row">
+      <div class="col-12">
+        <app-ta-input
+          formControlName="companyName"
+          [inputConfig]="{
+            name: 'Company Name',
+            type: 'text',
+            label: 'Company Name',
+            isRequired: true,
+            textTransform: 'capitalize',
+            autoFocus: true
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-5">
+        <app-ta-input
+          formControlName="phone"
+          [inputConfig]="{
+            name: 'Phone',
+            type: 'text',
+            label: 'Phone',
+            placeholderIcon: 'phone',
+            mask: '(000) 000-0000'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-7">
+        <app-ta-input
+          formControlName="email"
+          [inputConfig]="{
+            name: 'Email',
+            type: 'text',
+            label: 'Email',
+            placeholderIcon: 'email'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row last-row">
+      <div class="col-10">
+        <app-ta-input-address
+          formControlName="address"
+          [inputConfig]="{
+            name: 'Address',
+            type: 'text',
+            label: 'Address, City, State Zip',
+            placeholderIcon: 'address',
+            textTransform: 'capitalize'
+          }"
+          (selectedAddress)="onHandleAddress($event)"
+        ></app-ta-input-address>
+      </div>
+      <div class="col-2">
+        <app-ta-input
+          formControlName="addressUnit"
+          [inputConfig]="{
+            name: 'Address Unit',
+            type: 'text',
+            label: 'Unit #',
+            maxLength: 6
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <app-ta-custom-card [cardName]="'Notice of Assignment'">
+      Reausable Component edit Note
+    </app-ta-custom-card>
+    <app-ta-input-note
+      formControlName="note"
+      [isVisibleNote]="factoringForm.get('note').value"
+    ></app-ta-input-note>
+  </form>
+</app-ta-modal>

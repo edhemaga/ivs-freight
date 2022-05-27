@@ -1,235 +1,227 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import {FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  phoneRegex,
+  emailRegex,
+} from './../../../../shared/ta-input/ta-input.regex-validations';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
-import { Address } from 'src/app/core/model/address';
-
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
-import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
-
-
+import { Address } from 'src/app/core/components/shared/ta-input-address/ta-input-address.component';
+import { AddressEntity } from 'appcoretruckassist';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 @Component({
   selector: 'app-settings-insurance-policy-modal',
   templateUrl: './settings-insurance-policy-modal.component.html',
-  styleUrls: ['./settings-insurance-policy-modal.component.scss']
+  styleUrls: ['./settings-insurance-policy-modal.component.scss'],
 })
-export class SettingsInsurancePolicyModalComponent {
-  @Input() inputData: any;
-  modalTitle: string;
-  subscription: Subscription[] = [];
-  newItem = false;
-  isValidAddress = false;
-  textRows = 1;
-  loaded = false;
-  public fomratType = /^[!#$%^&*()_+\-=\[\]{};':"\\|,<>\/?]*$/;
-  files = [];
-  attachments: any = [];
-  /* Office Variables */
-  officeForm: FormGroup;
-  /* Producer Details */
-  openProductDetailsDropDown = true;
-  @ViewChild('addressInput') addressInput: ElementRef;
-  address: Address;
-  optionsAddress = {
-    componentRestrictions: {country: ['US', 'CA']},
-  };
-  insuranceDate: any;
-  /* Policy Details */
-  openPolicyDetailsDropDown = true;
-  /* Note */
-  showNote = false;
-  @ViewChild('note') note: ElementRef;
+export class SettingsInsurancePolicyModalComponent
+  implements OnInit, OnDestroy
+{
+  @Input() editData: any;
+
+  public insurancePolicyForm: FormGroup;
+
+  public selectedAddress: Address | AddressEntity;
+
+  public selectedCommericalRating: any = null;
+  public selectedAutomobileRating: any = null;
+  public selectedMotorRating: any = null;
+  public selectedPhysicalDamageRating: any = null;
+  public selectedTrailerRating: any = null;
+
+  public documents: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
-    private sharedService: SharedService,
-    private companyService: SharedService,
-    private shared: SharedService,
-    private spinner: SpinnerService,
-    private activeModal: NgbActiveModal,
-    private notification: NotificationService
-  ) {
-  }
+    private inputService: TaInputService,
+    private ngbActiveModal: NgbActiveModal,
+    private notificationService: NotificationService
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.createForm();
-
-    if (this.inputData.type === 'edit') {
-      this.setForm(this.inputData.company.doc.insurancePolicy[this.inputData.id]);
-    }
   }
 
-  setForm(data: any) {
-    this.modalTitle = 'Edit Insurance Policy';
-    this.officeForm.patchValue({
-      producer: data.producer,
-      phone: data.phone,
-      email: data.email,
-      address: data.address && data.address.address ? data.address.address : '',
-      addressUnit: data.addressUnit,
-      startDate: new Date(data.startDate),
-      endDate: new Date(data.endDate)
+  private createForm() {
+    this.insurancePolicyForm = this.formBuilder.group({
+      producerName: [null, Validators.required],
+      issued: [null, Validators.required],
+      expires: [null, Validators.required],
+      phone: [null, phoneRegex],
+      email: [null, emailRegex],
+      address: [null],
+      addressUnit: [null, Validators.maxLength(6)],
+      // Commerical General Liability
+      commericalGeneralLiability: [false],
+      commericalPolicy: [null],
+      commericalInsurerName: [null],
+      commericalRating: [null],
+      commericalOccurrence: [null],
+      commericalDamage: [null],
+      commericalInj: [null],
+      commericalMedical: [null],
+      commericalGeneralAggregate: [null],
+      commericalProducts: [null],
+      // Automobile Liability
+      automobileLiability: [false],
+      automobilePolicy: [null],
+      automobileInsurerName: [null],
+      automobileRating: [null],
+      automobileAccident: [null],
+      automobileInjuryPerson: [null],
+      automobileLimit: [null],
+      automobileDamage: [null],
+      // Moto Truck & Reefer Breakdown
+      motorTruckCargo: [false],
+      reeferBreakdown: [false],
+      motorPolicy: [null],
+      motorInsurerName: [null],
+      motorRating: [null],
+      motorConveyance: [null],
+      motorDeductable: [null],
+      // Physical Damage
+      physicalDamage: [false],
+      physicalPolicy: [null],
+      physicalInsurerName: [null],
+      physicalRating: [null],
+      physicalCollision: [null],
+      physicalDeductable: [null],
+      // Trailer Interchange
+      trailerInterchange: [false],
+      trailerPolicy: [null],
+      trailerInsurerName: [null],
+      trailerRating: [null],
+      trailerValue: [null],
+      note: [null],
     });
-
-    this.insuranceDate = data.insuranceType;
-
-    this.shared.touchFormFields(this.officeForm);
   }
 
-  /* Open Selected Modal */
-  onOpenDropDown(dropName: string) {
-    switch (dropName) {
-      case 'Producer':
-        this.openProductDetailsDropDown = !this.openProductDetailsDropDown;
+  public onModalAction(event: any) {}
+
+  public onHandleAddress(event: { address: Address; valid: boolean }): void {
+    this.selectedAddress = event.address;
+    if (!event.valid) {
+      this.insurancePolicyForm.setErrors({ invalid: event.valid });
+    }
+  }
+
+  public openCloseCheckboxCard(event: any, action) {
+    switch (action) {
+      case 'commericalGeneralLiability': {
+        if (this.insurancePolicyForm.get('commericalGeneralLiability').value) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.insurancePolicyForm
+            .get('commericalGeneralLiability')
+            .setValue(false);
+        }
+        this.isChecked(
+          'commericalGeneralLiability',
+          'commericalPolicy',
+          'commericalInsurerName'
+        );
         break;
-      case 'Policy':
-        this.openPolicyDetailsDropDown = !this.openPolicyDetailsDropDown;
+      }
+      case 'automobileLiability': {
+        if (this.insurancePolicyForm.get('automobileLiability').value) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.insurancePolicyForm.get('automobileLiability').setValue(false);
+        }
+        this.isChecked(
+          'automobileLiability',
+          'automobilePolicy',
+          'automobileInsurerName'
+        );
         break;
+      }
+      case 'motorTruckCargo': {
+        if (this.insurancePolicyForm.get('motorTruckCargo').value) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.insurancePolicyForm.get('motorTruckCargo').setValue(false);
+        }
+        this.isChecked('motorTruckCargo', 'motorPolicy', 'motorInsurerName');
+        break;
+      }
+      case 'physicalDamage': {
+        if (this.insurancePolicyForm.get('physicalDamage').value) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.insurancePolicyForm.get('physicalDamage').setValue(false);
+        }
+        this.isChecked(
+          'physicalDamage',
+          'physicalPolicy',
+          'physicalInsurerName'
+        );
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 
-  createForm() {
-    this.modalTitle = 'Add Insurance Policy';
-
-    this.officeForm = this.formBuilder.group({
-      producer: ['', Validators.required],
-      phone: null,
-      email: ['', Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)],
-      address: '',
-      addressUnit: '',
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
-    });
-
-    this.transformInputData();
+  private isChecked(
+    formControlName: string,
+    validation_first: string,
+    validation_second: string
+  ) {
+    this.insurancePolicyForm
+      .get(formControlName)
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.inputService.changeValidators(
+            this.insurancePolicyForm.get(validation_first)
+          );
+          this.inputService.changeValidators(
+            this.insurancePolicyForm.get(validation_second)
+          );
+        } else {
+          this.inputService.changeValidators(
+            this.insurancePolicyForm.get(validation_first),
+            false
+          );
+          this.inputService.changeValidators(
+            this.insurancePolicyForm.get(validation_second),
+            false
+          );
+        }
+      });
   }
 
-  onInsuranceCreated(insurance: any) {
-    this.insuranceDate = insurance;
-  }
-
-  /* Save Office Data */
-  saveInsurancePolicy() {
-    if (!this.shared.markInvalid(this.officeForm)) {
-      return false;
-    }
-
-    if (!this.insuranceDate?.length) {
-      this.notification.warning('Insurance type must be added', 'Warning:');
-      this.spinner.show(false);
-      return false;
-    }
-
-    const officeData = this.officeForm.getRawValue();
-
-    const saveData = {
-      producer: officeData.producer,
-      phone: officeData.phone,
-      email: officeData.email,
-      address: this.address,
-      addressUnit: officeData.addressUnit,
-      startDate: officeData.startDate,
-      endDate: officeData.endDate,
-      note: '',
-      attachments: [],
-      insuranceType: this.insuranceDate,
-    };
-
-    const dataOfCompany = {
-      activeTrailerCount: this.inputData.company.activeTrailerCount,
-      activeTruckCount: this.inputData.company.activeTruckCount,
-      autoInvoiced: this.inputData.company.autoInvoiced,
-      category: this.inputData.company.category,
-      categoryId: this.inputData.company.categoryId,
-      companyDivision: this.inputData.company.companyDivision,
-      createdAt: this.inputData.company.createdAt,
-      doc: {
-        additional: this.inputData.company.doc.additional,
-        factoringCompany: this.inputData.company.doc.factoringCompany,
-        offices: this.inputData.company.doc.offices,
-        insurancePolicy: this.inputData.company.doc.insurancePolicy ? this.inputData.company.doc.insurancePolicy : []
-      },
-      factoringCompany: this.inputData.company.factoringCompany,
-      offices: this.inputData.company.offices,
-      driverCommission: this.inputData.company.driverCommission,
-      driverEmptyMilePrice: this.inputData.company.driverEmptyMilePrice,
-      driverLoadedMilePrice: this.inputData.company.driverLoadedMilePrice,
-      endingIn: this.inputData.company.endingIn,
-      endingInId: this.inputData.company.endingInId,
-      guid: this.inputData.company.guid,
-      id: this.inputData.company.id,
-      inactiveTrailerCount: this.inputData.company.inactiveTrailerCount,
-      inactiveTruckCount: this.inputData.company.inactiveTruckCount,
-      invoicingDay: this.inputData.company.invoicingDay,
-      isOwner: this.inputData.company.isOwner,
-      name: this.inputData.company.name,
-      ownerCommission: this.inputData.company.ownerCommission,
-      parentId: this.inputData.company.parentId,
-      payPeriod: this.inputData.company.payPeriod,
-      payPeriodId: this.inputData.company.payPeriodId,
-      protected: this.inputData.company.protected,
-      secretKey: this.inputData.company.secretKey,
-      startLoadNumber: this.inputData.company.startLoadNumber,
-      subscribed: this.inputData.company.subscribed,
-      subscribedUntil: this.inputData.company.subscribedUntil,
-      subscriptionExpired: this.inputData.company.subscriptionExpired,
-      subscriptionRemainingDays: this.inputData.company.subscriptionRemainingDays,
-      taxNumber: this.inputData.company.taxNumber,
-      trailerStatByType: this.inputData.company.trailerStatByType,
-      trialExpired: this.inputData.company.trialExpired,
-      trialRemainingDays: this.inputData.company.trialRemainingDays,
-      trialUntil: this.inputData.company.trialUntil,
-      truckStatByType: this.inputData.company.truckStatByType,
-      updatedAt: this.inputData.company.updatedAt,
-      used: this.inputData.company.used,
-    };
-
-
-    if (this.inputData.type === 'new') {
-      dataOfCompany.doc.insurancePolicy.push(saveData);
-    } else {
-      dataOfCompany.doc.insurancePolicy[this.inputData.id] = saveData;
-    }
-
-    //this.companyService.saveCompany(dataOfCompany);
-    //this.closeInsurancePolicyModal();
-  }
-
-  /* Get Address */
-  public handleAddressChange(address: any) {
-    this.address = this.shared.selectAddress(this.officeForm, address);
-  }
-
-  /* Set Files */
-  setFiles(files: any) {
-    this.files = files;
-  }
-
-  /* Open Dropdown */
-  openNote() {
-    this.showNote = !this.showNote;
-    if (this.showNote) {
-      setTimeout(() => {
-        this.note.nativeElement.focus();
-      }, 250);
+  public onSelectRating(event: any, action: string) {
+    switch (action) {
+      case 'commercial': {
+        this.selectedCommericalRating = event;
+        break;
+      }
+      case 'automobile': {
+        this.selectedAutomobileRating = event;
+        break;
+      }
+      case 'motor': {
+        this.selectedMotorRating = event;
+        break;
+      }
+      case 'physical damage': {
+        this.selectedPhysicalDamageRating = event;
+      }
+      case 'trailer interchange': {
+        this.selectedTrailerRating = event;
+      }
+      default: {
+        break;
+      }
     }
   }
 
-  closeModal() {
-    this.activeModal.close();
+  public onFilesEvent(event) {
+    console.log(event);
   }
 
-  ngOnDestroy() {
-  }
-
-  private transformInputData() {
-    const data = {
-      producer: 'upper',
-      email: 'lower',
-      addressUnit: 'upper',
-    };
-
-    this.shared.handleInputValues(this.officeForm, data);
-  }
+  ngOnDestroy(): void {}
 }

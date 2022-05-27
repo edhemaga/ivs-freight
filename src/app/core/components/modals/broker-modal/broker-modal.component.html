@@ -368,11 +368,11 @@
         >
           <div
             formArrayName="brokerContacts"
-            class="broker-contacts"
+            class="common-fake-table-modal common-fake-table-modal-broker"
             (scroll)="onScrollingBrokerContacts($event)"
             *ngIf="brokerContacts.length"
           >
-            <div class="broker-contacts-label">
+            <div class="common-fake-table-label">
               <p>FULL NAME <span>*</span></p>
               <p>DEPARTMENT</p>
               <p>PHONE <span>*</span></p>
@@ -385,7 +385,7 @@
                 let ind = index
               "
             >
-              <div [formGroupName]="ind" class="broker-contacts-card">
+              <div [formGroupName]="ind" class="common-fake-table-card">
                 <app-ta-input
                   formControlName="contactName"
                   [inputConfig]="{
@@ -428,8 +428,12 @@
                     type: 'text'
                   }"
                 ></app-ta-input>
-                <svg-icon
-                  class="brokerContacts-delete"
+                <div
+                  ngbTooltip
+                  mainTooltip="Delete"
+                  position="top"
+                  tooltipBackground="#EF5350"
+                  class="common-fake-table-delete"
                   [ngClass]="{
                     'new-position':
                       isContactCardsScrolling &&
@@ -438,19 +442,12 @@
                       isContactCardsScrolling &&
                       !brokerContact.get('email').value
                   }"
-                  src="assets/svg/common/ic_trash.svg"
-                  (click)="removeBrokerContacts(ind)"
-                  [appTooltip]="'Delete'"
-                  [position]="'top-middle'"
-                  [tooltipBackground]="'#EF5350'"
-                  [tooltipColor]="'#FFFFFF'"
-                  [zIndex]="900"
-                  [borderRadius]="'2px'"
-                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-                  [fontWeight]="'bold'"
-                  [fontSize]="'11px'"
-                  [customPosition]="-11"
-                ></svg-icon>
+                >
+                  <svg-icon
+                    src="assets/svg/common/ic_trash.svg"
+                    (click)="removeBrokerContacts(ind)"
+                  ></svg-icon>
+                </div>
               </div>
             </div>
           </div>

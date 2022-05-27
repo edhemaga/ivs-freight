@@ -102,7 +102,7 @@ import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
 import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
-import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
+import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 import { ProfileImagesComponent } from './profile-images/profile-images.component';
 
 @NgModule({
@@ -183,7 +183,6 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     InputFocusDirective,
     InputRestrictionDirective,
     TextareaAutosizeDirective,
-    DragDropFileDirective,
     ProfileImagesComponent
   ],
   imports: [
@@ -225,7 +224,8 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     CroppieModule,
     PdfViewerModule,
     DirectivesModule,
-    TruckassistTableModule
+    TruckassistTableModule,
+    AppTooltipeModule
   ],
   exports: [
     // Modules
@@ -334,7 +334,7 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     InputFocusDirective,
     InputRestrictionDirective,
     TextareaAutosizeDirective,
-    DragDropFileDirective,
+    AppTooltipeModule,
     ProfileImagesComponent
   ],
   providers: [
@@ -347,7 +347,7 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     CdkIdPipe,
     HighlightSearchPipe,
     HosTimePipe,
-    NameInitialsPipe,
+    NameInitialsPipe
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -213,12 +213,24 @@
         width: 308px;
       }
 
+      &.w-col-medium-8 {
+        width: 403px;
+      }
+
       &.w-col-7 {
         width: 256px;
       }
 
       &.w-col-6 {
         width: 228px;
+      }
+
+      &.w-col-medium-6 {
+        width: 297px;
+      }
+
+      &.w-col-medium-6-second-col {
+        width: 308px;
       }
 
       &.w-col-6-companyOwned {
@@ -235,6 +247,18 @@
 
       &.w-col-4 {
         width: 148px;
+      }
+
+      &.w-col-medium-4 {
+        width: 201px;
+      }
+
+      &.w-col-medium-4-col-1 {
+        width: 189px;
+      }
+
+      &.w-col-3 {
+        width: 108px;
       }
 
       &.w-test-types {

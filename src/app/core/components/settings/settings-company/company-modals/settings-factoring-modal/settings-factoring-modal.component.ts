@@ -1,11 +1,53 @@
-import { Component } from '@angular/core';
-
+import { AddressEntity } from './../../../../../../../../appcoretruckassist/model/addressEntity';
+import { emailRegex } from './../../../../shared/ta-input/ta-input.regex-validations';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+import { Address } from 'src/app/core/components/shared/ta-input-address/ta-input-address.component';
 
 @Component({
   selector: 'app-settings-factoring-modal',
   templateUrl: './settings-factoring-modal.component.html',
-  styleUrls: ['./settings-factoring-modal.component.scss']
+  styleUrls: ['./settings-factoring-modal.component.scss'],
 })
-export class SettingsFactoringModalComponent{
+export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
+  @Input() editData: any;
 
+  public factoringForm: FormGroup;
+
+  public selectedAddress: Address | AddressEntity = null;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private ngbActiveModal: NgbActiveModal,
+    private notificationService: NotificationService
+  ) {}
+
+  ngOnInit(): void {
+    this.createForm();
+  }
+
+  private createForm() {
+    this.factoringForm = this.formBuilder.group({
+      companyName: [null, Validators.required],
+      phone: [null, phoneRegex],
+      email: [null, emailRegex],
+      address: [null],
+      addressUnit: [null],
+      noticeAssignment: [null],
+      note: [null],
+    });
+  }
+
+  public onHandleAddress(event) {
+    this.selectedAddress = event;
+  }
+
+  public onModalAction(event) {}
+
+  ngOnDestroy(): void {}
 }

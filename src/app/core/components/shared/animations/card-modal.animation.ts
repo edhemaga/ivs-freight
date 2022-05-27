@@ -6,7 +6,7 @@ import {
   trigger,
 } from '@angular/animations';
 
-export const card_modal_animation = (type: string, mt: string = '7px', mb: string = '12px') =>
+export const card_modal_animation = (type: string, mt: string = '12px', mb: string = '12px') =>
   trigger(type, [
     state(
       'true',

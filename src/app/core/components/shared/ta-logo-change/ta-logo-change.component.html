@@ -20,7 +20,7 @@
         [sliderTemplate]="'logo-change'"
         [sliderOptions]="ngxLogoOptions"
         [startedValue]="ngxSliderPosition"
-        [customClass]="'custom-slider-logo-change'"
+        [customClass]="ngxSliderClass"
         (onUserValueChange)="zooming($event)"
       ></app-ta-ngx-slider>
 
@@ -63,14 +63,19 @@
 
   <!------------------------ DROP ZONE ------------------------>
   <div
-    id="image-upload-wrapper"
-    class="ta-logo-upload-area"
-    ngx-dropzone
-    [accept]="'image/gif, image/jpeg, image/png'"
-    [multiple]="false"
+    class="dropzone-logo-container {{ customClass }}"
     [hidden]="!showUploadZone || savedFile || imageUrl"
-    (change)="onSelect($event)"
-  ></div>
+  >
+    <app-ta-upload-dropzone
+      [dropZoneConfig]="{
+        dropZoneType: 'logo',
+        dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
+        dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
+        multiple: false
+      }"
+      (onFileEvent)="onSelect($event)"
+    ></app-ta-upload-dropzone>
+  </div>
 
   <!------------------------ Saved File ------------------------>
   <div class="ta-logo-saved-image" *ngIf="savedFile || imageUrl">
@@ -93,6 +98,10 @@
         src="assets/svg/common/ic_trash.svg"
       ></svg-icon>
     </div>
-    <img [src]="savedFile || imageUrl" alt="croppie image" class="ta-logo-image" />
+    <img
+      [src]="savedFile || imageUrl"
+      alt="croppie image"
+      class="ta-logo-image"
+    />
   </div>
 </div>
