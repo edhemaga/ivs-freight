@@ -103,6 +103,7 @@ import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-det
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
+import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 
 @NgModule({
   declarations: [
@@ -189,6 +190,7 @@ import { DragDropFileDirective } from '../../directives/dragDropFile.directive';
     FormsModule,
     ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
     NgSelectModule,
+    AppTooltipeModule,
     NgbModule,
     RouterModule,
     AngularSvgIconModule.forRoot(),

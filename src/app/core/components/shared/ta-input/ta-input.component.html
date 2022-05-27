@@ -367,9 +367,10 @@
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
-      >mm</span
+      [innerHTML]="inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
+      ></span
     >
-    <span (click)="setSelection($event)">/</span>
+    <span (click)="setSelection($event)" [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ':'">/</span>
     <span
       #span2
       class="main"
@@ -378,10 +379,12 @@
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
-      >dd</span
+      [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
+      ></span
     >
-    <span (click)="setSelection($event)">/</span>
+    <span (click)="setSelection($event)" *ngIf="inputConfig.name === 'datepicker'">/</span>
     <span
+      *ngIf="inputConfig.name === 'datepicker'"
       #span3
       class="main"
       tabindex="2"
@@ -448,7 +451,7 @@
 <ng-template #dateTimePopover let-data="data">
   <div class="datetime-dropdown-holder">
     <app-custom-datetime-pickers
-      [calendarType]="'date'"
+      [calendarType]="inputConfig.name === 'datepicker' ? 'date' : 'time'"
       [placeholder]="'MM/DD/YY'"
       [dateTime]="dateTimeInputDate"
     ></app-custom-datetime-pickers>

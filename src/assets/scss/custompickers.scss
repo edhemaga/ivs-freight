@@ -127,6 +127,10 @@
   border-radius: 3px;
   overflow: hidden;
 
+  .time_picker{
+    width: 167px;
+  }
+
   .date_picker {
     display: flex;
 
@@ -212,15 +216,15 @@
       justify-content: space-between;
 
       .selected_time {
-        font-size: 10px;
-        font-weight: 600;
+        font-size: 14px;
+        font-weight: 800;
         color: #919191;
       }
 
       .sel_now {
-        color: #5673aab3;
-        font-size: 10px;
-        font-weight: 600;
+        color: #536BC2;
+        font-size: 12px;
+        font-weight: 700;
 
         &:hover {
           cursor: pointer;
@@ -243,7 +247,7 @@
 
           font-size: 10px;
           font-weight: 600;
-          color: #b7b7b7;
+          color: #919191;
 
           &.active {
             color: #919191;
@@ -311,7 +315,8 @@
           }
 
           &:hover {
-            background-color: #f3f3f366;
+            //background-color: #f3f3f366;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.15);
           }
         }
       }
@@ -319,14 +324,17 @@
 
     .picker_buttons {
       display: flex;
-      background-color: #f9f9f9;
-
+      padding: 12px;
+      justify-content: space-between;
+     
       .pick_button {
         display: flex;
         align-items: center;
-        justify-content: center;
-        flex: 0 0 50%;
-        height: 23px;
+        justify-content: space-between;
+        height: 32px;
+        padding: 0 12px;
+        text-align: center;
+        border-radius: 2px;
 
         font-size: 12px;
         font-weight: 700;
@@ -339,11 +347,13 @@
         }
 
         &.set_button {
-          color: #5673aab3;
+          width: 57px;
+          text-align: center;
+          background-color: #5673aab3;
+          color: #fff;
 
           &:hover {
-            background-color: #5673aa;
-            color: #fff;
+            background-color: #5673aa; 
           }
         }
       }
@@ -500,5 +510,5 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 .datetimepopovermain{
-  width: 220px;
+  width: 5px;
 }
