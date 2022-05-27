@@ -340,7 +340,7 @@ export const fuelNavigationData: NavigationModal[] = [
   {
     id: 16,
     name: 'Stop',
-    path: 'stop',
+    path: 'fuel-stop',
   },
 ];
 

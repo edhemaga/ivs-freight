@@ -33,7 +33,7 @@
           }"
           [canAddNew]="true"
           [options]="contactLabels"
-          (selectedItem)="onSelectLabel($event)"
+          (selectedItem)="onSelectDropdown($event, 'label')"
         ></app-ta-input-dropdown>
       </div>
     </div>
@@ -125,7 +125,7 @@
                   dropdownWidthClass: 'w-col-12'
                 }"
                 [options]="sharedDepartments"
-                (selectedItem)="onSelectDepartment($event)"
+                (selectedItem)="onSelectDropdown($event, 'departments')"
               ></app-ta-input-dropdown>
             </div>
           </div>

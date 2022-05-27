@@ -1,0 +1,98 @@
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Fuel Stop' : 'Edit Fuel Stop'"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="fuelStopForm.valid"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <form [formGroup]="fuelStopForm" class="form-container">
+    <div class="row">
+      <div class="col-7">
+        <app-ta-input-dropdown
+        formControlName="name"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          label: 'Fuel Stop Name',
+          isDropdown: true,
+          isRequired: true,
+          dropdownWidthClass: 'w-col-7'
+        }"
+        [options]="fuelStops"
+        (selectedItem)="onSelectDropdown($event, 'fuel-stop')"
+      ></app-ta-input-dropdown>
+      </div>
+      <div class="col-4">
+        <app-ta-input
+        formControlName="store"
+        [inputConfig]="{
+          name: 'Full name',
+          type: 'text',
+          label: 'Store #',
+          textTransform: 'capitalize'
+        }"
+      ></app-ta-input>
+      </div>
+      <div class="col-1 no-p-left">
+        <svg-icon class="fuelstop-star" src="assets/svg/common/ic_star.svg"></svg-icon>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <app-ta-input
+          formControlName="phone"
+          [inputConfig]="{
+            name: 'Phone',
+            type: 'text',
+            label: 'Phone',
+            placeholderIcon: 'phone',
+            mask: '(000) 000-0000'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-6">
+        <app-ta-input
+          formControlName="fax"
+          [inputConfig]="{
+            name: 'Fax',
+            type: 'text',
+            label: 'Fax',
+            placeholderIcon: 'fax'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row last-row">
+      <div class="col-10">
+        <app-ta-input-address
+          formControlName="address"
+          [inputConfig]="{
+            name: 'Address',
+            type: 'text',
+            label: 'Address, City, State Zip',
+            isRequired: true,
+            placeholderIcon: 'address',
+            textTransform: 'capitalize'
+          }"
+          (selectedAddress)="onSelectDropdown($event, 'address')"
+        ></app-ta-input-address>
+      </div>
+      <div class="col-2">
+        <app-ta-input
+          formControlName="addressUnit"
+          [inputConfig]="{
+            name: 'Address Unit',
+            type: 'text',
+            label: 'Unit #',
+            maxLength: 6
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <!-- Note -->
+    <app-ta-input-note
+      formControlName="note"
+      [isVisibleNote]="fuelStopForm.get('note').value"
+    ></app-ta-input-note>
+  </form>
+</app-ta-modal>

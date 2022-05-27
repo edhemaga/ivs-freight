@@ -639,6 +639,56 @@
         grid-template-columns: 132px 220px 94px 98px;
       }
     }
+
+    // Fuel Transactions
+    &-fuel-transaction {
+      .common-fake-table-label {
+        p {
+          &:nth-child(1) {
+            margin-left: 4px;
+          }
+
+          &:nth-child(2) {
+            margin-left: 18px;
+          }
+
+          &:nth-child(3) {
+            margin-left: 85px;
+          }
+          &:nth-child(4) {
+            margin-left: 48px;
+          }
+          &:nth-child(5) {
+            margin-left: 63px;
+          }
+        }
+      }
+      .common-fake-table-card {
+        grid-template-columns: 18px 114px 70px 80px 90px;
+        align-items: center;
+        p {
+          margin: 0;
+          padding: 0;
+          font-size: 14px;
+          font-weight: 600;
+          color: #919191;
+          &:nth-child(1) {
+            padding-left: 11px;
+          }
+
+          &::-moz-selection {
+            background-color: #919191 !important;
+          }
+        
+          &::selection {
+            background-color: #919191 !important;
+          }
+        }
+        .fuel-subtotal {
+          justify-self: flex-end;
+        }
+      }
+    }
   }
 
   //---------------- TireSize & Axles ----------------

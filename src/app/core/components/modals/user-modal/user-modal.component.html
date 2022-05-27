@@ -106,8 +106,8 @@
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-4-department-user'
                 }"
-                [options]="[]"
-                (selectedItem)="onSelectDepartment($event)"
+                [options]="departments"
+                (selectedItem)="onSelectDropdown($event, 'department')"
               ></app-ta-input-dropdown>
             </div>
             <div class="col-5">
@@ -120,8 +120,8 @@
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-5'
                 }"
-                [options]="[]"
-                (selectedItem)="onSelectOffice($event)"
+                [options]="offices"
+                (selectedItem)="onSelectDropdown($event, 'office')"
               ></app-ta-input-dropdown>
             </div>
             <div class="col-3 no-p-left">
@@ -255,7 +255,7 @@
                   }"
                   [canAddNew]="true"
                   [options]="labelsBank"
-                  (selectedItem)="onSelectBank($event)"
+                  (selectedItem)="onSelectDropdown($event, 'bank')"
                 ></app-ta-input-dropdown>
               </div>
               <div class="bank-field">

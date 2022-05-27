@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { FuelModalComponent } from './fuel-modal.component';
+import { FuelPurchaseModalComponent } from './fuel-purchase-modal.component';
 
-describe('FuelModalComponent', () => {
-  let component: FuelModalComponent;
-  let fixture: ComponentFixture<FuelModalComponent>;
+describe('FuelPurchaseModalComponent', () => {
+  let component: FuelPurchaseModalComponent;
+  let fixture: ComponentFixture<FuelPurchaseModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FuelModalComponent ]
+      declarations: [ FuelPurchaseModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FuelModalComponent);
+    fixture = TestBed.createComponent(FuelPurchaseModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

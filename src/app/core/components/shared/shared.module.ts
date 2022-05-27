@@ -104,7 +104,9 @@ import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-d
 import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 import { ProfileImagesComponent } from './profile-images/profile-images.component';
-import { FuelModalComponent } from '../modals/fuel-modal/fuel-modal.component';
+import { FuelTotalPipe } from '../modals/fuel-modals/fuel-total.pipe';
+import { FuelPurchaseModalComponent } from '../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { FuelStopModalComponent } from '../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 
 @NgModule({
   declarations: [
@@ -163,7 +165,8 @@ import { FuelModalComponent } from '../modals/fuel-modal/fuel-modal.component';
     TaskModalComponent,
     TtRegistrationModalComponent,
     TtFhwaInspectionModalComponent,
-    FuelModalComponent,
+    FuelPurchaseModalComponent,
+    FuelStopModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -179,6 +182,7 @@ import { FuelModalComponent } from '../modals/fuel-modal/fuel-modal.component';
     TaSvgPipe,
     DropdownCountPipe,
     ReviewsSortPipe,
+    FuelTotalPipe,
 
     // Directive
     AutoFocusDirective,
@@ -315,7 +319,8 @@ import { FuelModalComponent } from '../modals/fuel-modal/fuel-modal.component';
     TaskModalComponent,
     TtRegistrationModalComponent,
     TtFhwaInspectionModalComponent,
-    FuelModalComponent,
+    FuelPurchaseModalComponent,
+    FuelStopModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -331,6 +336,7 @@ import { FuelModalComponent } from '../modals/fuel-modal/fuel-modal.component';
     TaSvgPipe,
     DropdownCountPipe,
     ReviewsSortPipe,
+    FuelTotalPipe,
 
     // Directive
     AutoFocusDirective,

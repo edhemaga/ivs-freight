@@ -225,6 +225,10 @@
         width: 228px;
       }
 
+      &.w-col-8-fuelstop {
+        width: 296px;
+      }
+
       &.w-col-medium-6 {
         width: 297px;
       }
@@ -233,7 +237,8 @@
         width: 308px;
       }
 
-      &.w-col-6-companyOwned {
+      &.w-col-6-companyOwned,
+      &.w-col-6-truckType {
         width: 216px;
       }
 
@@ -311,6 +316,10 @@
         width: 366px;
         height: 142px;
         overflow: auto;
+      }
+
+      &.w-col-custom-fuel-modal-dropdown {
+        width: 114px;
       }
 
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------

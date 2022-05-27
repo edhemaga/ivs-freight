@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getAccountingFuelColumnDefinition } from 'src/assets/utils/settings/accounting-fuel-columns';
-import { FuelModalComponent } from '../../modals/fuel-modal/fuel-modal.component';
+import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
@@ -183,7 +184,7 @@ export class FuelTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      this.modalService.openModal(FuelModalComponent, {
+      this.modalService.openModal(FuelPurchaseModalComponent, {
         size: 'small',
       });
     } else if (event.action === 'tab-selected') {
@@ -196,7 +197,7 @@ export class FuelTableComponent implements OnInit {
     console.log(event)
     if (event.type === 'edit') {
       this.modalService.openModal(
-        FuelModalComponent,
+        FuelPurchaseModalComponent,
         { size: 'small' },
         {
           ...event

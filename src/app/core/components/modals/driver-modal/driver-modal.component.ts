@@ -729,13 +729,21 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onSelectBank(event: any): void {
-    this.selectedBank = event;
-  }
-
-  public onSelectPayType(event: any): void {
-    console.log(event);
-    this.selectedPayType = event;
+  public onSelectDropdown(event: any, action: string): void {
+    switch(action) {
+      case 'bank': {
+        this.selectedBank = event;
+        break;
+      }
+      case 'paytype': {
+        this.selectedPayType = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+    
   }
 
   public onUploadImage(event: any) {

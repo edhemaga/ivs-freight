@@ -1,0 +1,208 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+
+@Component({
+  selector: 'app-fuel-purchase-modal',
+  templateUrl: './fuel-purchase-modal.component.html',
+  styleUrls: ['./fuel-purchase-modal.component.scss'],
+})
+export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
+  @Input() editData: any;
+
+  public fuelForm: FormGroup;
+
+  public truckType: any[] = [];
+  public fuelStops: any[] = [];
+  public storeType: any[] = [];
+
+  public fuelItemsDropdown: any[] = [];
+
+  public selectedTruckType: any = null;
+  public selectedFuelStop: any = null;
+  public selectedStoreType: any = null;
+
+  public selectedFuelItemsFormArray: any[] = [];
+  public fuelItemsCounter: number = 0;
+
+  public subtotal: { id: number; value: number }[] = [];
+  public quantity: any[] = [];
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private ngbActiveModal: NgbActiveModal,
+    private notificationService: NotificationService
+  ) {}
+
+  ngOnInit() {
+    this.createForm();
+    // this.fuelItemFormArrayValues();
+
+    if (this.editData) {
+      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
+      this.editData = {
+        ...this.editData,
+        id: 1,
+      };
+      this.editFuel(this.editData.id);
+    }
+  }
+
+  private createForm() {
+    this.fuelForm = this.formBuilder.group({
+      truckTypeId: [null, Validators.required],
+      fullName: [null],
+      date: [null, Validators.required],
+      time: [null, Validators.required],
+      fuelStopId: [null, Validators.required],
+      storeId: [null],
+      fuelItems: this.formBuilder.array([]),
+    });
+  }
+
+  public get fuelItems(): FormArray {
+    return this.fuelForm.get('fuelItems') as FormArray;
+  }
+  private createFuelItems(id: number): FormGroup {
+    return this.formBuilder.group({
+      id: [id],
+      itemId: [null], // Validators.required
+      qty: [null, Validators.required],
+      price: [null, Validators.required],
+      subtotal: [null],
+    });
+  }
+
+  public addFuelItems(event: any) {
+    if (event) {
+      this.fuelItems.push(this.createFuelItems(++this.fuelItemsCounter));
+      this.subtotal = [
+        ...this.subtotal,
+        { id: this.fuelItemsCounter, value: 0 },
+      ];
+    }
+  }
+
+  public removeFuelItems(id: number) {
+    this.fuelItems.removeAt(id);
+    this.selectedFuelItemsFormArray.splice(id, 1);
+  }
+
+  public onChange(formControlName: string, index: number) {
+    if (formControlName === 'qty') {
+      this.fuelItems
+        .at(index)
+        .get(formControlName)
+        .valueChanges.pipe(untilDestroyed(this))
+        .subscribe((value) => {
+          this.quantity[index] = value;
+          this.subtotal = [...this.subtotal];
+          const price = parseFloat(
+            this.fuelItems
+              .at(index)
+              .get('price')
+              .value.toString()
+              .replace(/,/g, '')
+          );
+          this.subtotal[index].value = this.quantity[index] * price;
+        });
+    } else {
+      this.fuelItems
+        .at(index)
+        .get(formControlName)
+        .valueChanges.pipe(untilDestroyed(this))
+        .subscribe((value) => {
+          if (!this.quantity[index] || this.quantity[index] === 0) {
+            this.quantity[index] = 1;
+            this.fuelItems.at(index).get('qty').patchValue(1);
+          }
+          if (!value) {
+            value = 0;
+          }
+          const price = parseFloat(value.toString().replace(/,/g, ''));
+          this.subtotal = [...this.subtotal];
+          this.subtotal[index].value = this.quantity[index] * price;
+        });
+    }
+  }
+
+  public onModalAction(data: { action: string; bool: boolean }) {
+    if (data.action === 'close') {
+      this.fuelForm.reset();
+    } else {
+      // Save & Update
+      if (data.action === 'save') {
+        if (this.fuelForm.invalid) {
+          this.inputService.markInvalid(this.fuelForm);
+          return;
+        }
+        if (this.editData) {
+          this.updateFuel(this.editData.id);
+        } else {
+          this.addFuel();
+        }
+      }
+      // Delete
+      if (data.action === 'delete' && this.editData) {
+        this.deleteFuelById(this.editData.id);
+      }
+
+      this.ngbActiveModal.close();
+    }
+  }
+
+  public onSelectDropdown(event: any, action: string, index?: number) {
+    switch (action) {
+      case 'truck': {
+        this.selectedTruckType = event;
+        break;
+      }
+      case 'fuel': {
+        this.selectedFuelStop = event;
+        break;
+      }
+      case 'store': {
+        this.selectedStoreType = event;
+        break;
+      }
+      case 'fuel-items': {
+        this.selectedFuelItemsFormArray[index] = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public drop(event: CdkDragDrop<any[]>) {
+    moveItemInArray(
+      this.fuelItems.controls,
+      event.previousIndex,
+      event.currentIndex
+    );
+
+    moveItemInArray(this.subtotal, event.previousIndex, event.currentIndex);
+  }
+
+  private updateFuel(id: number) {}
+
+  private addFuel() {}
+
+  private deleteFuelById(id: number) {}
+
+  private editFuel(id: number) {}
+
+  ngOnDestroy(): void {}
+}
