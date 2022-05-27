@@ -15,6 +15,7 @@
         ></svg-icon>
       </div>
       <div class="settings-header-button">
+        <div class="border-left"></div>
         <svg-icon
           src="assets/svg/common/ic_trash.svg"
           class="settings-trash-button"
@@ -22,20 +23,49 @@
       </div>
     </div>
   </div>
-  <div class="settings-body" [ngClass]="{ gradient: !factoringData }">
-    <svg-icon
-      *ngIf="!factoringData"
-      src="assets/svg/common/ic_factoring.svg"
-    ></svg-icon>
-
-    <app-settings-tab-placeholder
-      *ngIf="factoringData"
-      [name]="'TRIUMPH BUSINESS CAPITA…'"
-      [phone]="'(123) 456-7890'"
-      [email]="'contact@windsor-brokers.com'"
-      [address]="'5462 N East River Rd apt 611 Chicago, IL 60656'"
-      [hasDots]="false"
-    >
-    </app-settings-tab-placeholder>
+  <div class="settings-body">
+    <app-ta-re-card
+    [cardNameCommon]="'TRIUMPH BUSINESS CAPITAL'"
+    [haveHeaderText]="true"
+    [haveDots]="false"
+    [hasFooter]="false"
+  >
+    <div class="settings-body-items">
+      <div *ngIf="factoringData.phone !== ''" class="single-item">
+        <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+        <span>{{ factoringData.phone }}</span>
+      </div>
+      <div *ngIf="factoringData.email !== ''" class="single-item">
+        <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+        <span>{{ factoringData.email }}</span>
+      </div>
+      <div *ngIf="factoringData.address !== ''" class="single-item">
+        <svg-icon
+          src="assets/svg/truckassist-table/location-icon.svg"
+        ></svg-icon>
+        <span class="single-item-address">{{ factoringData.address }}</span>
+      </div>
+    </div>
+    <app-ta-custom-card
+      [cardName]="'Notice of Assigment'"
+      [bodyTemplate]="'card'"
+      [isCardOpen]="true"
+      [hasDivider]="true"
+      [animationsDisabled]="false"
+      [textBottomPossiton]="'-2px'"
+    > 
+      <div class="notice-template-data">
+        <div class="notice-template-item">
+          <div class="notice-item-value">{{factoringData.noticeAssigment.text}}</div>
+        </div>
+        <div class="notice-template-item">
+          <div class="notice-item-value">{{factoringData.noticeAssigment.param1}}</div>
+        </div>
+        <div class="notice-template-item">
+          <div class="notice-item-value">{{factoringData.noticeAssigment.param2}}</div>
+        </div>
+      </div>
+    </app-ta-custom-card>
+  </app-ta-re-card>
   </div>
 </div>

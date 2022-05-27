@@ -1,5 +1,70 @@
 @import "../../settings.global.scss";
 
+
+.additional-template-data {
+  display: grid;
+  grid-template-columns: repeat(3, 130px);
+  column-gap: 64px;
+  row-gap: 12px;
+  padding-left: 10px;
+  .additional-template-item {
+    display: flex;
+    flex-direction: column;
+  }
+  .additional-template-value-name {
+    font-size: 12px;
+    font-weight: $settings-font-semibold;
+    color: $settings-gray-dark;
+  }
+  .additional-template-value {
+    font-size: 14px;
+    font-weight: 400;
+    color: $settings-gray-dark;
+  }
+}
+.bank-card-template-data {
+  display: grid;
+  grid-template-columns: 72px 160px 65px 50px;
+  row-gap: 12px;
+  column-gap: 65px;
+  padding-left: 10px;
+  .bank-card-name-header {
+    font-size: 12px;
+    font-weight: $settings-font-semibold;
+    color: $settings-gray-dark;
+  }
+  .bank-card-template-item {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.bank-card-template-data-body {
+  display: grid;
+  grid-template-columns: 72px 160px 65px 50px;
+  row-gap: 12px;
+  column-gap: 65px;
+  padding-left: 10px;
+  .bank-card-template-item-body {
+    display: grid;
+    grid-template-columns: 106px 194px 98px 50px;
+    row-gap: 12px;
+    column-gap: 31px;
+    .item-body-nick-name{
+      font-size: 14px;
+      font-weight: 400;
+      color: $settings-gray-dark;
+    }
+    // .item-body-cvc{
+    // }
+    .item-body-icon-text{
+      display: flex;
+      align-items: center;
+      .svg-bank{
+        margin-right: 6px;
+      }
+    }
+  }
+}
 .settings-general {
   width: 100%;
   display: grid;
@@ -8,19 +73,22 @@
 
   .settings-body {
     // Basic Info & Logo
+    background-color: $settings-background;
+    border-radius: 3px;
     .basic-details {
       width: 100%;
       height: 256px;
       margin-bottom: 15px;
-
+      border-radius: 3px;
       .basic-header {
         width: 100%;
         height: 111px;
         display: flex;
         flex-direction: column;
-        margin-bottom: 11px;
         user-select: none;
-
+        background-color: $settings-background;
+        padding: 12px;
+        border-radius: 3px;
         .basic-header-logo-top {
           display: flex;
           justify-content: flex-end;
@@ -90,8 +158,9 @@
         display: grid;
         grid-template-columns: 162px 292px;
         row-gap: 12px;
-        margin: 12px 0px;
-
+        padding: 12px 0px;
+        padding-left: 16px;
+        background-color: $settings-background;
         .basic-data {
           display: flex;
           align-items: center;
@@ -104,7 +173,11 @@
           &:nth-child(1) {
             grid-column: 1 / -1;
           }
-
+          .basic-data-value {
+            font-size: 14px;
+            font-weight: 400;
+            color: $settings-gray-dark;
+          }
           .basic-data-svg {
             margin-right: 6px;
             position: relative;
@@ -115,18 +188,18 @@
 
       .basic-bottom {
         display: grid;
-        grid-template-columns: repeat(3, 144px);
+        grid-template-columns: repeat(3, 180px);
         -moz-column-gap: 12px;
         column-gap: 12px;
-        margin-bottom: 12px;
-
+        padding-left: 12px;
+        padding-bottom: 12px;
+        background-color: $settings-background;
         .basic-bottom-card {
-          background-color: $settings-white-light;
+          background-color: #f9f9f9;
           color: $settings-gray-dark;
-          border-radius: 3px;
+          border-radius: 2px;
           height: 30px;
           padding: 0px 6px;
-
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -151,5 +224,26 @@
         }
       }
     }
+  }
+}
+.cards-custom {
+  padding: 0 6px;
+  .ta-card-header {
+    padding: 0 6px !important;
+  }
+}
+.show-hide{
+  display: flex;
+  align-items: center;
+  .hidden-svg-eye{
+    cursor: pointer;
+    svg{
+      &:hover{
+        path{
+          fill: #6c6c6c;
+        }
+      }
+    }
+    margin-left: 6px;
   }
 }

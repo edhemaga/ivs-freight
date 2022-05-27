@@ -54,7 +54,7 @@
         </svg-icon>
       </div>
     </div>
-    <div class="drop-comm" [ngClass]="{ 'dropdown-common': !isCardOpen }">
+    <div *ngIf="haveDots" class="drop-comm" [ngClass]="{ 'dropdown-common': !isCardOpen }">
       <app-table-dropdown
         [options]="options.actions"
         [customClassDropDown]="'table-dropdown-container-vertical'"

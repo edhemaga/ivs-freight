@@ -56,7 +56,7 @@
         [animationsDisabled]="false"
         [textBottomPossiton]="'-2px'"
       >
-        <div class="repair-shop-template-data">
+        <div class="repair-shop-template-data" [ngClass]="{'no-divider':!item.rent}">
           <div
             class="repair-shop-template-item"
             *ngFor="let ser of item.services; trackBy: identity"
@@ -75,7 +75,7 @@
           </div>
         </div>
       </app-ta-custom-card>
-      <div class="divider"></div>
+      <div *ngIf="item.rent" class="divider"></div>
       <div *ngIf="item.rent" class="settings-progress-container">
         <app-truckassist-progress-expiration
           *ngIf="item.rent"

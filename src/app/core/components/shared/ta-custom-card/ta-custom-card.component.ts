@@ -34,6 +34,7 @@ export class TaCustomCardComponent {
   @Input() tooltipName: string = '';
   @Input() hasPlusHeader:boolean=false;
   @Input() textBottomPossiton:string;
+  @Input() hasWeeklyStatus:string=null;
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );

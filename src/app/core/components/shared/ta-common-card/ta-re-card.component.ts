@@ -19,6 +19,7 @@ export class TaReCardComponent implements OnInit {
   @Input() public hasFooter:boolean=true;
   @Input() public settingsIcon:boolean=false;
   @Input() public haveHeaderText:boolean=false;
+  @Input() public haveDots:boolean=true;
   @Output() resizePage = new EventEmitter<boolean>();
   @Input() public animationsDisabled = false;
   public resPage: boolean = false;

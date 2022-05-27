@@ -112,6 +112,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background-color: $settings-background;
   }
 
   // Single Button
@@ -186,7 +187,10 @@ p {
   }
 }
 // Settings Body
+
 .settings-body {
+  // background-color: $settings-background;
+  border-radius: 3px;
   .card-container-cmp {
     padding: 0 6px;
   }
@@ -342,4 +346,28 @@ p {
   .parking-template-email {
     grid-column: 1 / -1;
   }
+}
+.payroll-template-data{
+  display: grid;
+  column-gap: 20px;
+  row-gap: 12px;
+  padding: 0 10px;
+  .payroll-template-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .payroll-name{
+      font-size: 14px;
+      font-weight: $settings-font-medium;
+      color: $settings-gray-dark;
+    }
+    .payroll-value{
+      font-size: 14px;
+      font-weight: $settings-font-semibold;
+      color: $settings-gray-dark;
+    }
+  }
+}
+.no-divider{
+  padding-bottom: 16px;
 }

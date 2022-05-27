@@ -80,9 +80,9 @@
         </div>
       </app-ta-custom-card>
       <div *ngIf="item.rent" class="divider"></div>
-      <div class="settings-progress-container">
+      <div   *ngIf="item.rent" class="settings-progress-container">
         <app-truckassist-progress-expiration
-          *ngIf="item.rent"
+        
           [expireDate]="'03/25/2023'"
           [startDate]="'03/12/2023'"
           [expiresSettings]="'settings-parking'"
