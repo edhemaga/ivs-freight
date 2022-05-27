@@ -60,9 +60,7 @@
               *ngIf="!isPhoneExtExist"
               (click)="isPhoneExtExist = !isPhoneExtExist"
             >
-              <svg-icon
-                src="assets/svg/common/ic_plus.svg"
-              ></svg-icon>
+              <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
             </div>
             <app-ta-input
               *ngIf="isPhoneExtExist"
@@ -236,26 +234,30 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-input-note formControlName="note" [isVisibleNote]="shipperForm.get('note').value"></app-ta-input-note>
+        <app-ta-input-note
+          formControlName="note"
+          [isVisibleNote]="shipperForm.get('note').value"
+        ></app-ta-input-note>
       </div>
       <!-------------------------------- Contact Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
         <app-ta-custom-card
-          [hasCounter]="shipperContacts.length ? shipperContacts.length : '0'"
+          [hasCounter]="shipperContacts ? shipperContacts.length : '0'"
           [cardName]="'Contact'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="false"
+          [isCommentData]="true"
           [isCardOpen]="shipperContacts.length"
           [hasScrollBody]="shipperContacts.length > 10"
           (onActionEvent)="addShipperContacts($event)"
         >
           <div
             formArrayName="shipperContacts"
-            class="shipper-contacts"
+            class="common-fake-table-modal common-fake-table-modal-shipper"
             (scroll)="onScrollingShipperContacts($event)"
             *ngIf="shipperContacts.length"
           >
-            <div class="shipper-contacts-label">
+            <div class="common-fake-table-label">
               <p>FULL NAME <span>*</span></p>
               <p>DEPARTMENT</p>
               <p>PHONE <span>*</span></p>
@@ -268,7 +270,7 @@
                 let ind = index
               "
             >
-              <div [formGroupName]="ind" class="shipper-contacts-card">
+              <div [formGroupName]="ind" class="common-fake-table-card">
                 <app-ta-input
                   formControlName="fullName"
                   [inputConfig]="{
@@ -311,8 +313,12 @@
                     type: 'text'
                   }"
                 ></app-ta-input>
-                <svg-icon
-                  class="shipperContacts-delete"
+                <div
+                  ngbTooltip
+                  mainTooltip="Delete"
+                  position="top"
+                  tooltipBackground="#EF5350"
+                  class="common-fake-table-delete"
                   [ngClass]="{
                     'new-position':
                       isContactCardsScrolling &&
@@ -321,19 +327,10 @@
                       isContactCardsScrolling &&
                       !shipperContact.get('email').value
                   }"
-                  src="assets/svg/common/ic_trash.svg"
                   (click)="removeShipperContacts(ind)"
-                  [appTooltip]="'Delete'"
-                  [position]="'top-middle'"
-                  [tooltipBackground]="'#EF5350'"
-                  [tooltipColor]="'#FFFFFF'"
-                  [zIndex]="900"
-                  [borderRadius]="'2px'"
-                  [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-                  [fontWeight]="'bold'"
-                  [fontSize]="'11px'"
-                  [customPosition]="-11"
-                ></svg-icon>
+                >
+                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                </div>
               </div>
             </div>
           </div>

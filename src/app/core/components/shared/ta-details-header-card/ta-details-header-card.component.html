@@ -1,16 +1,11 @@
 <div class="details-header-wrapper">
   <div class="details-header-wrapper-switcher">
-    <div
-      [appTooltip]="searchName"
-      [position]="'top-middle'"
-      [tooltipBackground]="'#6c6c6c'"
-      [tooltipColor]="'#ffffff'"
-      [zIndex]="900"
-      [borderRadius]="'2px'"
-      [fontWeight]="'bold'"
-      [fontSize]="'11px'"
-      [customPosition]="-11"
-    >
+    <div class="inactive-icon-input">
+      <svg-icon
+        *ngIf="statusInactive == 0"
+        class="inactive-status"
+        src="assets/svg/truckassist-table/dropdown/content/activate-hover.svg"
+      ></svg-icon>
       <app-ta-input-dropdown
         class="dropInput"
         [formControl]="inputFormControl"
@@ -18,8 +13,7 @@
           name: 'Input Dropdown',
           type: 'text',
           isDropdown: true,
-          dropdownWidthClass: 'w-col-details-template',
-          placeholder:cardDetailsName
+          dropdownWidthClass: 'w-col-details-template'
         }"
         [options]="optionsCmp"
         [template]="'details-template'"
@@ -27,7 +21,7 @@
       >
       </app-ta-input-dropdown>
     </div>
-      <div class="arrows">
+    <div class="arrows">
       <svg-icon
         [appTooltip]="tooltipPrevious"
         [position]="'top-middle'"
@@ -55,7 +49,7 @@
         [customPosition]="-11"
         class="arrow-right"
         (click)="onNextAction()"
-        src="assets/svg/common/arrow-right.svg"
+        src="assets/svg/common/arrow-left.svg"
       ></svg-icon>
     </div>
   </div>
@@ -92,7 +86,7 @@
         [fontWeight]="'bold'"
         [fontSize]="'11px'"
         [customPosition]="330"
-        *ngIf="cardDetailsDateTerminated"
+        *ngIf="statusInactive == 0"
         class="details-header-wrapper-data-item bottom"
       >
         <svg-icon

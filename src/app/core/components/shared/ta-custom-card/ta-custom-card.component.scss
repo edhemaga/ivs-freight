@@ -280,3 +280,34 @@
     }
   }
 }
+.plus-custom-card{
+  svg{
+    margin-right: 11px;
+    width: 18px;
+    height: 18px;
+    path{
+      fill: #6d82c7;
+    }
+    &:hover {
+          path {
+              fill: #536bc2 !important;
+          }
+  }
+  }
+}
+.status-icon-weekly{
+    display: flex;
+    align-items: center;
+  .weekly-status{
+    background-color: #f3f3f3;
+    height: 20px;
+    padding: 2.5px 6px;
+    border-radius: 2px;
+    margin-right: 12px;
+    .weekly-status-value{
+      font-size: 12px;
+      font-weight: 700;
+      color: #919191;
+    }
+  }
+}

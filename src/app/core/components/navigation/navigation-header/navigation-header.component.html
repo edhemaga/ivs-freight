@@ -9,70 +9,51 @@
     class="nav-header-bottom"
     [ngClass]="{ 'expand-width': isNavigationHovered }"
   >
-    <svg-icon
+    <div
       class="nav-header-bottom-plus"
-      src="assets/svg/common/ic_plus.svg"
       (click)="onAction('Open Panel')"
-      [appTooltip]="'Add New'"
-      [position]="'middle-right'"
-      [tooltipBackground]="'#6C6C6C'"
-      [tooltipColor]="'#FFFFFF'"
-      [zIndex]="900"
-      [borderRadius]="'2px'"
-      [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-      [fontWeight]="'bold'"
-      [fontSize]="'11px'"
-    ></svg-icon>
+      ngbTooltip
+      mainTooltip="Add New"
+      tooltipBackground="#6c6c6c"
+      position="right"
+    >
+      <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+    </div>
 
     <div
       class="nav-header-bottom-rightSide"
       [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
     >
-      <svg-icon
+      <div
+        ngbTooltip
+        mainTooltip="Find Anything"
+        tooltipBackground="#6c6c6c"
+        position="top"
         class="nav-header-bottom-rightSide-search"
-        src="assets/svg/common/ic_search.svg"
         (click)="onAction('Search')"
-        [appTooltip]="'Find Anything'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6C6C6C'"
-        [tooltipColor]="'#FFFFFF'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-      ></svg-icon>
-
-      <svg-icon
+      >
+        <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+      </div>
+      <div
+        ngbTooltip
+        mainTooltip="Notes"
+        tooltipBackground="#6c6c6c"
+        position="top"
         class="nav-header-bottom-rightSide-notes"
-        src="assets/svg/common/ic_note.svg"
         (click)="onAction('Notes')"
-        [appTooltip]="'Note'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6C6C6C'"
-        [tooltipColor]="'#FFFFFF'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="20"
-      ></svg-icon>
-
-      <svg-icon
+      >
+        <svg-icon src="assets/svg/common/ic_note.svg"></svg-icon>
+      </div>
+      <div
+        ngbTooltip
+        mainTooltip="Notification"
+        tooltipBackground="#6c6c6c"
+        position="top"
         class="nav-header-bottom-rightSide-bell"
-        src="assets/svg/common/ic_bell.svg"
         (click)="onAction('Bell')"
-        [appTooltip]="'Notification'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6C6C6C'"
-        [tooltipColor]="'#FFFFFF'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-      ></svg-icon>
+      >
+        <svg-icon src="assets/svg/common/ic_bell.svg"></svg-icon>
+      </div>
     </div>
   </div>
 </div>

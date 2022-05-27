@@ -3,17 +3,17 @@ import {
   Input,
   Output,
   EventEmitter,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
-import { ModalService } from '../ta-modal/modal.service';
+import { TaUploadFileService } from '../ta-modal-upload/ta-upload-file.service';
 
 @Component({
   selector: 'app-ta-custom-card',
   templateUrl: './ta-custom-card.component.html',
   styleUrls: ['./ta-custom-card.component.scss'],
   animations: [card_modal_animation('showHideCardBody')],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class TaCustomCardComponent {
   @Input()
@@ -32,16 +32,21 @@ export class TaCustomCardComponent {
   @Input() hasBodyData: boolean = true;
   @Input() isCommentData: boolean = false;
   @Input() tooltipName: string = '';
-
+  @Input() hasPlusHeader:boolean=false;
+  @Input() textBottomPossiton:string;
+  @Input() hasWeeklyStatus:string=null;
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );
 
+  @Output() onOpenCard: EventEmitter<boolean> = new EventEmitter<boolean>(
+    false
+  );
+
   public isHeaderHover: boolean = false;
+  public zoneTriger: boolean = false;
 
-  constructor(private modalService: ModalService){}
-
-
+  constructor(private uploadFileService: TaUploadFileService) {}
 
   public isCardOpenEvent(event: any) {
     event.preventDefault();
@@ -49,7 +54,9 @@ export class TaCustomCardComponent {
     if (this.hasBodyData) {
       this.isCardOpen = !this.isCardOpen;
     }
-    this.modalService.documentsDropZoneSubject$.next(this.isCardOpen);
+    this.zoneTriger = !this.zoneTriger;
+    this.uploadFileService.visibilityDropZone(this.zoneTriger);
+    this.onOpenCard.emit(this.isCardOpen);
   }
 
   public onAdd(event: any): void {

@@ -20,6 +20,8 @@ $border-radius: 3px;
     background-color: $color-white;
     border-radius: $border-radius;
     margin-bottom: 8px;
+    max-width: 440px;
+    min-width: 352px;
     p {
         margin: 0px;
     }
@@ -38,6 +40,7 @@ $border-radius: 3px;
             .arrow-left {
                 cursor: pointer;
                 padding: 0 5px;
+               
                 &:hover {
                     background: #f3f3f3;
                     width: 28px;
@@ -54,6 +57,9 @@ $border-radius: 3px;
             .arrow-right {
                 cursor: pointer;
                 padding: 0 5px;
+                svg{
+                    transform: rotate(180deg);
+                }
                 &:hover {
                     background: #f3f3f3;
                     width: 28px;
@@ -97,7 +103,7 @@ $border-radius: 3px;
             align-content: center;
             height: 18px;
             .vin-text {
-                margin-left: 6px;
+                margin-left: 6px !important;
                 font-size: $font-size14;
                 font-weight: 400;
                 position: relative;
@@ -203,4 +209,25 @@ $border-radius: 3px;
             }
         }
     }
+}
+.inactive-status {
+    cursor: pointer;
+    padding-left: 6px;
+    padding-right: 6px;
+    svg {
+        height: 22px;
+        width: 22px;
+        path {
+            fill: #aaaaaa;
+        }
+        &:hover {
+            path {
+                fill: #6c6c6c;
+            }
+        }
+    }
+}
+.inactive-icon-input{
+    display: flex;
+    align-items: center;
 }

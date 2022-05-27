@@ -13,7 +13,7 @@ export class TrailerTService{
     constructor(private trailerStore:TrailerStore, private trailerService:TrailerService){}
 
     
-    public getTruckById(id:number):Observable<TrailerResponse>{
+    public getTrailerById(id:number):Observable<TrailerResponse>{
        return this.trailerService.apiTrailerIdGet(id);
     }
 }

@@ -31,12 +31,22 @@
     margin-bottom: 22px !important;
   }
 
+  // Specific Classes to add on settings/location/modals
   &.form-container-mt-12 {
     margin-top: 12px !important;
   }
+  &.row-settings-location-additional {
+    margin-top: 26px !important;
+    margin-bottom: 10px !important;
+  }
+
   // Custom
   .row-mt-12 {
     margin-top: 12px !important;
+  }
+
+  .row-mt-8 {
+    margin-top: 8px !important;
   }
 
   .row-mt-20 {
@@ -45,6 +55,11 @@
 
   .row-mb-10 {
     margin-bottom: 10px !important;
+  }
+
+  .row-no-m {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
   }
 
   .row-mb-modal-upload {
@@ -69,6 +84,10 @@
     content: "";
     border-radius: 1px;
     background-color: #f3f3f3;
+
+    &.divider-second {
+      margin-top: 3px;
+    }
   }
 
   //------------------------ TABS ---------------------------------------------------
@@ -130,6 +149,12 @@
             }
           }
         }
+      }
+
+      .grouping-checkboxes {
+        display: flex;
+        align-items: center;
+        gap: 22px;
       }
 
       .checkbox-card-header-arrow {
@@ -386,9 +411,8 @@
     }
   }
 
-  //---------------- Broker Contacts, Shipper Contacts ----------------
-  .broker-contacts,
-  .shipper-contacts {
+  //----------------  Common-fake-table-modal  ----------------
+  .common-fake-table-modal {
     overflow: hidden;
     overflow-x: scroll;
     margin-top: 10px;
@@ -398,6 +422,7 @@
     &::-webkit-scrollbar {
       width: 3px;
     }
+
     &::-webkit-scrollbar-thumb {
       background-color: #cccccc;
       border-left: 0px;
@@ -406,6 +431,7 @@
       border-bottom: 6px solid #ffffff;
       border-radius: 1px;
     }
+
     &::-webkit-scrollbar-track {
       padding: 5px;
       position: absolute;
@@ -414,8 +440,11 @@
       background: transparent;
     }
 
-    .broker-contacts-label,
-    .shipper-contacts-label {
+    &.hide-oveflow {
+      overflow: hidden !important;
+    }
+
+    .common-fake-table-label {
       padding: 0 5px;
       display: flex;
       align-items: center;
@@ -433,19 +462,15 @@
         user-select: none;
 
         &:nth-child(2) {
-          margin-left: 98px;
+          margin-left: 36px;
         }
 
         &:nth-child(3) {
-          margin-left: 44px;
+          margin-left: 86px;
         }
 
         &:nth-child(4) {
-          margin-left: 87px;
-        }
-
-        &:nth-child(5) {
-          margin-left: 48px;
+          margin-left: 49px;
         }
 
         span {
@@ -454,10 +479,10 @@
       }
     }
 
-    .broker-contacts-card,
-    .shipper-contacts-card {
+    .common-fake-table-card {
       display: grid;
-      grid-template-columns: 170px 120px 130px 60px 234px;
+      grid-template-columns: 120px 130px 60px 234px;
+      grid-template-rows: 26px;
       -moz-column-gap: 12px;
       column-gap: 12px;
       row-gap: 2px;
@@ -466,8 +491,43 @@
       padding-right: 6px;
       position: relative;
 
-      .brokerContacts-delete,
-      .shipperContacts-delete {
+      .common-fake-table-check {
+        width: 18px;
+        height: 18px;
+        svg {
+          width: 100%;
+          height: 100%;
+          path {
+            fill: #97a8dc;
+          }
+        }
+      }
+
+      .common-fake-table-status {
+        width: 72px;
+        height: 26px;
+        border-radius: 2px;
+        font-size: 12px;
+        font-weight: 500;
+        background-color: transparent;
+        text-align: center;
+        padding-top: 4px;
+
+        &-verified {
+          color: #97a8dc;
+        }
+
+        &-pending {
+          color: #ffcc80;
+        }
+
+        &-verify {
+          background-color: #6d82c7;
+          color: #ffffff;
+        }
+      }
+
+      .common-fake-table-delete {
         width: 18px;
         height: 18px;
         position: absolute;
@@ -489,18 +549,94 @@
         }
 
         &.new-position {
-          right: -120px;
+          right: -97px;
         }
 
         &.new-position-without-email {
-          right: -142px;
+          right: -119px;
         }
       }
 
-      &:hover .brokerContacts-delete,
-      &:hover .shipperContacts-delete {
+      &:hover .common-fake-table-delete {
         display: inline-block;
         transition: all 0.3s ease-in-out;
+      }
+    }
+
+    // Custom classes for common-fake-table
+    &-banks {
+      .common-fake-table-label {
+        p {
+          &:nth-child(2) {
+            margin-left: 94px;
+          }
+
+          &:nth-child(3) {
+            margin-left: 47px;
+          }
+        }
+      }
+      .common-fake-table-card {
+        grid-template-columns: 162px 100px 186px 18px 72px 30px;
+      }
+    }
+
+    // Shipper & Broker Template
+    &-shipper,
+    &-broker {
+      .common-fake-table-label {
+        p {
+          &:nth-child(2) {
+            margin-left: 98px;
+          }
+
+          &:nth-child(3) {
+            margin-left: 44px;
+          }
+
+          &:nth-child(4) {
+            margin-left: 87px;
+          }
+
+          &:nth-child(5) {
+            margin-left: 48px;
+          }
+        }
+      }
+      .common-fake-table-card {
+        grid-template-columns: 170px 120px 130px 60px 234px;
+      }
+
+      .common-fake-table-delete {
+        &.new-position {
+          right: -120px !important;
+        }
+
+        &.new-position-without-email {
+          right: -142px !important;
+        }
+      }
+    }
+
+    // Bank Card Template
+    &-bank-cards {
+      .common-fake-table-label {
+        p {
+          &:nth-child(2) {
+            margin-left: 75px;
+          }
+
+          &:nth-child(3) {
+            margin-left: 170px;
+          }
+
+          &:nth-child(4) {
+            margin-left: 80px;
+          }
+        }
+      }
+      .common-fake-table-card {
+        grid-template-columns: 132px 220px 94px 98px;
       }
     }
   }
@@ -643,6 +779,10 @@
   margin: 32px 0px;
   margin-bottom: 22px;
 
+  &.phone-ext-email-user-my-20 {
+    margin: 20px 0px !important;
+  }
+
   .phone-extension {
     display: grid;
     grid-template-columns: 150px 26px;
@@ -722,6 +862,98 @@
       font-size: 14px;
       font-weight: 500;
       color: #919191;
+    }
+  }
+}
+//---------------- Repair Shop Services ----------------
+.repair-shop-services {
+  display: grid;
+  grid-template-columns: repeat(4, 105px);
+  grid-template-rows: repeat(2, 26px);
+  column-gap: 12px;
+  row-gap: 6px;
+
+  .repair-shop-service {
+    background-color: #f3f3f3;
+    color: #b7b7b7;
+    width: 100%;
+    height: 100%;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    p {
+      margin: 0;
+      line-height: 15px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    svg-icon {
+      height: 19px;
+      width: 18px;
+      line-height: 18px;
+      svg {
+        width: 100%;
+        height: 100%;
+        path {
+          fill: #b7b7b7;
+        }
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+
+    &.active {
+      background-color: #6d82c7;
+      color: #ffffff;
+
+      svg-icon {
+        svg {
+          path {
+            fill: #ffffff;
+          }
+        }
+      }
+    }
+  }
+}
+
+//---------------- Company IRP, IFTA, TOLL, SCAC  ----------------
+.company-irp-ifta-toll-scac {
+  display: grid;
+  grid-template-columns: 130px 170px 150px 130px;
+  grid-template-rows: 26px;
+  column-gap: 12px;
+  align-items: center;
+  margin: 32px 0px;
+}
+//---------------- Preferred Load Company Additional  ----------------
+.preferred-load-company-additional {
+  display: grid;
+  grid-template-columns: 26px;
+  grid-template-columns: 253px 145px 1fr;
+  margin: 32px 0px;
+  padding-left: 6px;
+
+  .preffered-field-one {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    .r-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #919191;
+    }
+    .r-btns {
+      width: 86px;
+      height: 26px;
     }
   }
 }

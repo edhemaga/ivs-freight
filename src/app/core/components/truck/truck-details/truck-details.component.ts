@@ -18,7 +18,11 @@ export class TruckDetailsComponent implements OnInit {
   // @Input() data:any=null;
   public truckDetailsConfig: any[] = [];
   private destroy$: Subject<void> = new Subject<void>();
-  public dataTest: any;
+  public dataTest:any;
+  registrationLength:number;
+  inspectionLength:number;
+  titleLength:number;
+  public data:any;
   constructor(
     private truckQuery: TruckQuery,
     private truckTService: TruckTService,
@@ -28,6 +32,10 @@ export class TruckDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initTableOptions();
+    this.data=this.activated_route.snapshot.data;
+    this.registrationLength=this.data.truck.registrations.length;
+    this.inspectionLength=this.data.truck.inspections.length;
+    this.titleLength=this.data.truck.titles.length;
     this.truckDetailsConfig = [
       {
         id: 0,
@@ -38,16 +46,20 @@ export class TruckDetailsComponent implements OnInit {
         id: 1,
         name: 'Registration',
         template: 'registration',
+        data:this.registrationLength
       },
       {
         id: 2,
         name: 'FHWA Inspection',
         template: 'fhwa-insepction',
+        data:this.inspectionLength
       },
       {
         id: 3,
         name: 'Title',
         template: 'title',
+        data:this.titleLength
+     
       },
       {
         id: 4,
@@ -56,10 +68,11 @@ export class TruckDetailsComponent implements OnInit {
       },
     ];
   }
+   /**Function retrun id */
   public identity(index: number, item: any): number {
     return item.id;
   }
-
+   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataTest = {
       disabledMutedStyle: null,

@@ -5,96 +5,188 @@
     </div>
 
     <div class="settings-header-button">
+      <div class="border-left"></div>
       <svg-icon
         src="assets/svg/common/ic_pen.svg"
         class="settings-edit-button"
         (click)="
-          onAction({ type: true, modalName: 'basic', action: 'edit-payroll' })
+          onAction({ type: true, modalName: 'basic', action: 'payroll-tab' })
         "
       ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
     <!-- Driver & Owner -->
-    <app-settings-card
-      [cardTemplate]="'payrollTemplate'"
-      [cardName]="'Driver & Owner'"
-      [cardStatus]="'Weekly'"
-      [data]="payrollData.driverOwner"
-    >
-    </app-settings-card>
+    <div class="cards-custom">
+      <app-ta-custom-card
+        [cardName]="'Driver & Owner'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [hasDivider]="false"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+        [hasWeeklyStatus]="'Weekly'"
+      >
+        <div class="payroll-template-data">
+          <div
+            *ngFor="let payroll of payrollData.driverOwner"
+            class="payroll-template-item"
+          >
+            <p class="payroll-name">{{ payroll.name }}</p>
+            <p class="payroll-value">{{ payroll.value }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [cardName]="'Accounting'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [hasWeeklyStatus]="'By-Weekly'"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="payroll-template-data">
+          <div
+            *ngFor="let payroll of payrollData.accounting"
+            class="payroll-template-item"
+          >
+            <p class="payroll-name">{{ payroll.name }}</p>
+            <p class="payroll-value">{{ payroll.value }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
 
-    <!-- Accounting -->
-    <app-settings-card
-      [cardTemplate]="'payrollTemplate'"
-      [cardName]="'Accounting'"
-      [cardStatus]="'Bi-Weekly'"
-      [data]="payrollData.accounting"
-    >
-    </app-settings-card>
+      <app-ta-custom-card
+        [cardName]="'Company Owner'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [hasWeeklyStatus]="'Monthly'"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="payroll-template-data">
+          <div
+            *ngFor="let payroll of payrollData.companyOwner"
+            class="payroll-template-item"
+          >
+            <p class="payroll-name">{{ payroll.name }}</p>
+            <p class="payroll-value">{{ payroll.value }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
 
-    <!-- Company Owner -->
-    <app-settings-card
-      [cardTemplate]="'payrollTemplate'"
-      [cardName]="'Company Owner'"
-      [cardStatus]="'Monthly'"
-      [data]="payrollData.companyOwner"
-    >
-    </app-settings-card>
+      <app-ta-custom-card
+        [cardName]="'Dispatch'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [hasWeeklyStatus]="'Monthly'"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="payroll-template-data">
+          <div
+            *ngFor="let payroll of payrollData.dispatch"
+            class="payroll-template-item"
+          >
+            <p class="payroll-name">{{ payroll.name }}</p>
+            <p class="payroll-value">{{ payroll.value }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [cardName]="'Manager'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [hasWeeklyStatus]="'Monthly'"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="payroll-template-data">
+          <div
+            *ngFor="let payroll of payrollData.manager"
+            class="payroll-template-item"
+          >
+            <p class="payroll-name">{{ payroll.name }}</p>
+            <p class="payroll-value">{{ payroll.value }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
 
-    <!-- Dispatch -->
-    <app-settings-card
-      [cardTemplate]="'payrollTemplate'"
-      [cardName]="'Dispatch'"
-      [cardStatus]="'Monthly'"
-      [data]="payrollData.dispatch"
-    >
-    </app-settings-card>
+      <app-ta-custom-card
+        [cardName]="'Recruting'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [hasWeeklyStatus]="'Semi-Monthly'"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="payroll-template-data">
+          <div
+            *ngFor="let payroll of payrollData.recruiting"
+            class="payroll-template-item"
+          >
+            <p class="payroll-name">{{ payroll.name }}</p>
+            <p class="payroll-value">{{ payroll.value }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
 
-    <!-- Manager -->
-    <app-settings-card
-      [cardTemplate]="'payrollTemplate'"
-      [cardName]="'Manager'"
-      [cardStatus]="'Monthly'"
-      [data]="payrollData.manager"
-    >
-    </app-settings-card>
+      <app-ta-custom-card
+        [cardName]="'Repair'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [hasWeeklyStatus]="'Semi-Monthly'"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="payroll-template-data">
+          <div
+            *ngFor="let payroll of payrollData.repair"
+            class="payroll-template-item"
+          >
+            <p class="payroll-name">{{ payroll.name }}</p>
+            <p class="payroll-value">{{ payroll.value }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
 
-    <!-- Recruiting -->
-    <app-settings-card
-      [cardTemplate]="'payrollTemplate'"
-      [cardName]="'Recruiting'"
-      [cardStatus]="'Semi-Monthly'"
-      [data]="payrollData.recruiting"
-    >
-    </app-settings-card>
+      <app-ta-custom-card
+        [cardName]="'Safety'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [hasWeeklyStatus]="'Semi-Monthly'"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="payroll-template-data">
+          <div
+            *ngFor="let payroll of payrollData.safety"
+            class="payroll-template-item"
+          >
+            <p class="payroll-name">{{ payroll.name }}</p>
+            <p class="payroll-value">{{ payroll.value }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
 
-    <!-- Repair -->
-    <app-settings-card
-      [cardTemplate]="'payrollTemplate'"
-      [cardName]="'Repair'"
-      [cardStatus]="'Semi-Monthly'"
-      [data]="payrollData.repair"
-    >
-    </app-settings-card>
-
-    <!-- Safety -->
-    <app-settings-card
-      [cardTemplate]="'payrollTemplate'"
-      [cardName]="'Safety'"
-      [cardStatus]="'Semi-Monthly'"
-      [data]="payrollData.safety"
-    >
-    </app-settings-card>
-
-    <!-- Other -->
-    <app-settings-card
-      [cardTemplate]="'payrollTemplate'"
-      [cardName]="'Other'"
-      [cardStatus]="'Semi-Monthly'"
-      [hasLine]="false"
-      [data]="payrollData.other"
-    >
-    </app-settings-card>
+      <app-ta-custom-card
+        [cardName]="'Other'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [hasWeeklyStatus]="'Semi-Monthly'"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="payroll-template-data">
+          <div
+            *ngFor="let payroll of payrollData.other"
+            class="payroll-template-item"
+          >
+            <p class="payroll-name">{{ payroll.name }}</p>
+            <p class="payroll-value">{{ payroll.value }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
+    </div>
   </div>
 </div>

@@ -30,6 +30,7 @@ import {
   bankRoutingValidator,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TaUploadFileService } from '../../shared/ta-modal-upload/ta-upload-file.service';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -37,7 +38,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   animations: [
     tab_modal_animation('animationTabsModal'),
     card_modal_animation('showHidePayroll', '6px'),
-  ],
+  ]
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -113,7 +114,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     private mockModalService: MockModalService,
     private driverModalService: DriverModalService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private uploadFileService: TaUploadFileService
   ) {}
 
   ngOnInit(): void {
@@ -132,7 +134,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
-
     if (data.action === 'close') {
       this.driverForm.reset();
     }
@@ -309,11 +310,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .get('routing')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value) {
+        if (value && value.split('').length > 8) {
           if (bankRoutingValidator(value)) {
             this.driverForm.get('routing').setErrors(null);
           } else {
             this.driverForm.get('routing').setErrors({ invalid: true });
+            this.inputService.triggerInvalidRoutingNumber$.next(true);
           }
         }
       });
@@ -396,6 +398,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
+    
+    this.uploadFileService.visibilityDropZone(this.selectedTab === 3)
+
     let dotAnimation = document.querySelector('.animation-three-tabs');
     this.animationObject = {
       value: this.selectedTab,
@@ -435,7 +440,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .subscribe({
               next: (res: CheckOwnerSsnEinResponse) => {
                 this.owner = res?.name ? res : null;
-                
+
                 if (this.owner) {
                   this.driverForm
                     .get('bussinesName')
@@ -534,7 +539,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         ? new Date(this.driverForm.get('twicExpDate').value).toISOString()
         : null,
     };
-    console.log(newData)
+    console.log(newData);
     // this.driverModalService
     //   .addDriver(newData)
     //   .pipe(untilDestroyed(this))
@@ -729,7 +734,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectPayType(event: any): void {
-    console.log(event)
+    console.log(event);
     this.selectedPayType = event;
   }
 

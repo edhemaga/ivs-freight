@@ -15,6 +15,7 @@
         ></svg-icon>
       </div>
       <div class="settings-header-button">
+        <div class="border-left"></div>
         <svg-icon
           src="assets/svg/common/ic_plus.svg"
           class="settings-plus-button"
@@ -48,7 +49,7 @@
           "
         >
           <svg-icon class="basic-data-svg" src="{{ item.svg }}"></svg-icon>
-          <p>{{ item.value }}</p>
+          <p class="basic-data-value">{{ item.value }}</p>
         </div>
       </div>
       <!-- Bottom -->
@@ -64,50 +65,138 @@
           <p class="bottom-card-right">{{ item.value }}</p>
         </div>
       </div>
-
-      <div class="settings-line"></div>
     </div>
+    <div class="cards-custom">
+      <app-ta-custom-card
+        [cardName]="'Additional Details'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="additional-template-data">
+          <div
+            *ngFor="let additional of generalData.additionalDetails"
+            class="additional-template-item"
+          >
+            <p class="additional-template-value-name">{{ additional.name }}</p>
+            <p class="additional-template-value">{{ additional.value }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [cardName]="'Bank Account'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="additional-template-data">
+          <div
+            *ngFor="let bank of generalData.bankAccount"
+            class="additional-template-item"
+          >
+            <p class="additional-template-value-name">{{ bank.name }}</p>
+            <svg-icon
+              *ngIf="bank.svg"
+              class="additional-template-value"
+              src="{{ bank.svg }}"
+            ></svg-icon>
+            <div class="show-hide">
+            <p *ngIf="bank.value" class="additional-template-value">
+              {{ bank.hide ? hiddenPassword(bank.value,4) : bank.value  }}
+            </p>
+            <svg-icon
+                *ngIf="bank.hide"
+                class="hidden-svg-eye"    
+                (click)="showHideValue(bank.value)"
+                src="{{
+                  isAccountVisible
+                    ? 'assets/svg/common/ic_eye-visible.svg'
+                    : 'assets/svg/common/ic_eye-hidden.svg'
+                }}"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [cardName]="'Bank Card'"
+        [bodyTemplate]="'card'"
+        [hasCounter]="2"
+        [isCardOpen]="true"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="bank-card-template-data">
+          <div class="bank-card-template-item">
+            <p class="bank-card-name-header">Nickname</p>
+          </div>
+          <div class="bank-card-template-item">
+            <p class="bank-card-name-header">Card #</p>
+          </div>
+          <div class="bank-card-template-item">
+            <p class="bank-card-name-header">CVC</p>
+          </div>
+          <div class="bank-card-template-item">
+            <p class="bank-card-name-header">Exp.</p>
+          </div>
+        </div>
+        <div
+          class="bank-card-template-data-body"
+          *ngFor="let bankC of generalData.bankCard"
+        >
+          <div class="bank-card-template-item-body">
+            <p class="item-body-nick-name">{{ bankC.nickName }}</p>
+            <div class="item-body-icon-text">
+              <svg-icon
+                class="svg-bank"
+                src="{{ bankC.cardPicture }}"
+              ></svg-icon>
 
-    <!-- Additional Details -->
-    <app-settings-card
-      [cardTemplate]="'commonTemplate'"
-      [cardName]="'Additional Details'"
-      [data]="generalData.additionalDetails"
-    >
-    </app-settings-card>
-
-    <!-- Bank Account -->
-    <app-settings-card
-      [cardTemplate]="'bankAccountTemplate'"
-      [cardName]="'Bank Account'"
-      [data]="generalData.bankAccount"
-    >
-    </app-settings-card>
-
-    <!-- Bank Card -->
-    <app-settings-card
-      [cardTemplate]="'bankCardTemplate'"
-      [cardName]="'Bank Card'"
-      [cardCount]="generalData.bankCard.length"
-      [data]="generalData.bankCard"
-    >
-    </app-settings-card>
-
-    <!-- Load Format & Customer Billing -->
-    <app-settings-card
-      [cardTemplate]="'commonTemplate'"
-      [cardName]="'Load Format & Customer Billing'"
-      [data]="generalData.loadFormat"
-    >
-    </app-settings-card>
-
-    <!-- Expiration -->
-    <app-settings-card
-      [cardTemplate]="'commonTemplate'"
-      [cardName]="'Expiration'"
-      [hasLine]="false"
-      [data]="generalData.mvr"
-    >
-    </app-settings-card>
+              <p class="item-body-cvc">
+                {{ cardHide(bankC.cardNumber)}}
+              </p>
+            </div>
+            <p class="item-body-cvc">{{ cvcHide(bankC.cvc)}}</p>
+            <p class="item-body-nick-name">{{ bankC.expiration }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [cardName]="'Load Format & Customer Billing'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="additional-template-data">
+          <div
+            *ngFor="let load of generalData.loadFormat"
+            class="additional-template-item"
+          >
+            <p class="additional-template-value-name">{{ load.name }}</p>
+            <p class="additional-template-value">{{ load.value }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [cardName]="'Expiration'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="additional-template-data">
+          <div
+            *ngFor="let mvr of generalData.mvr"
+            class="additional-template-item"
+          >
+            <p class="additional-template-value-name">{{ mvr.name }}</p>
+            <p class="additional-template-value">{{ mvr.value }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
+    </div>
   </div>
 </div>

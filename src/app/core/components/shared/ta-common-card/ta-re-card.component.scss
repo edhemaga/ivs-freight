@@ -1,7 +1,10 @@
 .card-flex {
-    align-items: baseline !important;
     height: 32px;
+    .table-dropdown-container-vertical {
+        top: 0 !important;
+    }
 }
+
 .card-header-cmp {
     display: flex;
     align-items: center;
@@ -13,13 +16,12 @@
     width: 300px;
     &:hover {
         cursor: pointer;
-        
     }
     .text-icon-common {
         display: flex;
         align-items: flex-start;
-        
-        .card-icon {
+
+        .card-icon-common {
             visibility: hidden;
             position: relative;
             margin-left: 6px;
@@ -27,20 +29,19 @@
             height: 18px;
             svg {
                 &:hover {
-                    
                     path {
                         fill: #6c6c6c;
                     }
                 }
             }
         }
-       
+
         .icon-common {
             margin-left: 12px;
             margin-right: -6px;
             margin-top: 12px;
         }
-       
+
         .card-close-title {
             margin-top: 7px !important;
             margin-bottom: 7px !important;
@@ -50,24 +51,22 @@
             &::-moz-selection {
                 color: #6c6c6c;
                 background: rgb(108, 108, 108, 0.2);
-              }
-              &::selection {
+            }
+            &::selection {
                 color: #6c6c6c;
                 background: rgb(108, 108, 108, 0.2);
-              }
-            
+            }
         }
         &:hover {
-            .card-icon {
+            .card-icon-common {
                 visibility: visible;
                 position: relative;
                 bottom: -10px;
             }
-            .card-close-title{
+            .card-close-title {
                 color: #3c3c3c !important;
             }
         }
-
     }
     .card-name-cmp {
         font-size: 18px;
@@ -75,15 +74,15 @@
         color: #6c6c6c;
         height: 22px;
         margin-top: 10px !important;
-        margin-left: 12px !important;
+        margin-left: 12px;
         &::-moz-selection {
             color: #6c6c6c;
             background: rgb(108, 108, 108, 0.2);
-          }
-          &::selection {
+        }
+        &::selection {
             color: #6c6c6c;
             background: rgb(108, 108, 108, 0.2);
-          }
+        }
     }
     .icon-dots {
         svg {
@@ -96,11 +95,15 @@
     border-radius: 3px;
     background-color: #ffffff;
     margin-bottom: 8px;
-    width: 335px;
+    width: 100%;
     .card-body-cmp {
         flex-direction: column;
         background-color: #ffffff;
         margin-top: 0px !important;
+        &.active {
+            max-height: 1200px;
+            transition: all 0.4s ease-in-out;
+          }
         .dates {
             display: flex;
             align-items: center;
@@ -133,17 +136,17 @@
         .icon-counter {
             display: flex;
             align-items: baseline;
-           .note-icon{
-            svg{
-                path{
-                    fill: #cccccc;
+            .note-icon {
+                svg {
+                    path {
+                        fill: #cccccc;
+                    }
                 }
             }
-           }
             .attachment-icon {
                 margin-left: 12px;
-                svg{
-                    path{
+                svg {
+                    path {
                         fill: #cccccc;
                     }
                 }
@@ -156,11 +159,11 @@
                 &::-moz-selection {
                     color: #cccccc;
                     background: rgb(204, 204, 204, 0.2);
-                  }
-                  &::selection {
+                }
+                &::selection {
                     color: #cccccc;
                     background: rgb(204, 204, 204, 0.2);
-                  }
+                }
             }
         }
     }
@@ -184,7 +187,7 @@ p {
     margin-bottom: 7px;
     margin-right: 7px !important;
 }
-.rotate {
+.rotate-common {
     svg {
         transform: rotate(180deg);
         transition: all 0.3s ease-in-out;
@@ -199,8 +202,17 @@ p {
     font-weight: 600;
     margin-right: 6px;
     cursor: pointer;
+
+    &::-moz-selection {
+        color: #6d82c7;
+        background: rgba(109, 130, 199, 0.2);
+    }
+    &::selection {
+        color: #6d82c7;
+        background: rgba(109, 130, 199, 0.2);
+    }
 }
-.icon-dots{
+.icon-dots {
     cursor: pointer;
     svg {
         &:hover {
@@ -211,42 +223,59 @@ p {
     }
 }
 .copied {
-    .card-icon {
-      svg {
-        path {
-          &:hover {
-            fill: #3551b7 !important;
-          }
+    .card-icon-common {
+        svg {
+            path {
+                &:hover {
+                    fill: #3551b7 !important;
+                }
+            }
         }
-      }
     }
-  }
-  .hide-footer{
-      display: none;
-  }
-  .name-dots{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      z-index: 70;
-  }
-  .rezise-icon{
-      height: 18px;
-  }
-  .resize-icon-svg{
-      svg{
-          path{
-              fill: #aaaaaa;
-          }
-      }
-  }
-  .open-name{
+}
+.hide-footer {
+    display: none;
+}
+.name-dots {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 70;
+}
+.rezise-icon {
+    height: 18px;
+}
+.resize-icon-svg {
+    svg {
+        path {
+            fill: #aaaaaa;
+        }
+    }
+}
+.open-name {
     &::-moz-selection {
         color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);
-      }
-      &::selection {
+    }
+    &::selection {
         color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);
-      }
-  }
+    }
+}
+.dropdown-common {
+   position: relative;
+   top: -5px;
+}
+.disable-selection {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: relative;
+    bottom: -1px;
+}
+.settings-icon{
+    position: relative;
+    top: 15px;
+    left: 6px;
+}

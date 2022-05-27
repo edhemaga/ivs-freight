@@ -14,3 +14,21 @@
     }
   }
 }
+.settings-trash-button{
+  svg{
+    path{
+      fill: #b7b7b7;
+    }
+  }
+}
+.notice-template-data{
+  display: grid;
+  grid-template-columns: 245px;
+  row-gap: 15px;
+  padding: 0 10px;
+  .notice-item-value{
+    font-size: 14px;
+    font-weight: 400;
+    color: #6c6c6c;
+  }
+}

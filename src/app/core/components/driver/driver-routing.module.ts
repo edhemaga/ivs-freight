@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DriverCardComponent } from './driver-card/driver-card.component';
 import { DriverTableComponent } from './driver-table/driver-table.component';
+import { DriverItemResolver } from './state/driver.items.resolver';
 
 const routes: Routes = [
   {
@@ -15,6 +16,9 @@ const routes: Routes = [
       import('./driver-details/driver-details.module').then(
         (m) => m.DriverDetailsModule
       ),
+      resolve:{
+        driver:DriverItemResolver
+      },
     data: { title: 'Driver Details' },
   },
   {

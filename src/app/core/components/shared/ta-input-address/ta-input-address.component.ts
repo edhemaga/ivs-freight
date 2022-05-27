@@ -64,7 +64,6 @@ export class TaInputAddressComponent
       this.getSuperControl.valueChanges
         .pipe(untilDestroyed(this))
         .subscribe((value) => {
-          console.log(value)
           if (value !== this.activeAddress?.address) {
             this.invalidAddress = true;
             this.selectedAddress.emit({address: null, valid: false});

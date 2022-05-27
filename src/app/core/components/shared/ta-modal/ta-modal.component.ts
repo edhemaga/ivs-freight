@@ -1,9 +1,8 @@
-import { distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   Component,
   EventEmitter,
-  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -13,6 +12,9 @@ import {
 import { ModalService } from './modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
+import { TaInputService } from '../ta-input/ta-input.service';
+import { DropZoneConfig } from '../ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadFileService } from '../ta-modal-upload/ta-upload-file.service';
 
 @Component({
   selector: 'app-ta-modal',
@@ -33,6 +35,13 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
   @Input() specificCaseModalName: boolean = false;
 
+  @Input() dropZoneConfig: DropZoneConfig = {
+    dropZoneType: 'files', // files | logo
+    dropZoneSvg: 'assets/svg/common/ic_modal_upload_dropzone.svg',
+    dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
+    multiple: true,
+  };
+
   @Output() modalActionTypeEmitter: EventEmitter<{
     action: string;
     bool: boolean;
@@ -43,12 +52,14 @@ export class TaModalComponent implements OnInit, OnDestroy {
   // Drag & Drop properties
   public isDropZoneVisible: boolean = false;
   public dropZoneCounter: number = 0;
-  public leavingDropZone: boolean = false;
-  public stopCoutingInDropZone = false;
+  public isLeaveZone: boolean = false;
+  public hoverZone: boolean = false;
 
   constructor(
     private ngbActiveModal: NgbActiveModal,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private uploadFileService: TaUploadFileService,
+    private inputService: TaInputService
   ) {}
 
   ngOnInit(): void {
@@ -60,30 +71,43 @@ export class TaModalComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.modalService.documentsDropZoneSubject$
-      .pipe(distinctUntilChanged(), untilDestroyed(this))
+    this.uploadFileService.visibilityDropZone$
       .subscribe((value) => {
         if (value) {
-          $(document).on('dragover', '.modal', (event) => {
-            event.preventDefault();
-            if (this.dropZoneCounter < 2 && !this.leavingDropZone) {
-              this.dropZoneCounter++;
-            }
-            this.isDropZoneVisible = true;
-          });
-
-          $(document).on('dragleave', '.modal', (event) => {
-            this.dropZoneCounter--;
-
-            if (this.dropZoneCounter < 0) {
-              this.isDropZoneVisible = false;
-              this.leavingDropZone = false;
-              this.dropZoneCounter = 0;
-              this.stopCoutingInDropZone = true;
-            }
-          });
+         this.dragOver();
+         this.dragLeave();
         }
       });
+  }
+
+  public dragOver() {
+    $(document).on('dragover', '.modal', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
+        this.dropZoneCounter++;
+      }
+      this.isDropZoneVisible = true;
+    });
+  }
+
+  public dragLeave() {
+    $(document).on('dragleave', '.modal', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+      this.timeout = setTimeout(() => {
+        this.dropZoneCounter--;
+        if (this.dropZoneCounter < 1) {
+          this.isDropZoneVisible = false;
+          this.dropZoneCounter = 0;
+          this.isLeaveZone = false;
+        }
+        clearTimeout(this.timeout);
+      }, 150);
+    });
   }
 
   public onAction(action: string) {
@@ -98,7 +122,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
         this.timeout = setTimeout(() => {
           this.ngbActiveModal.dismiss();
           clearTimeout(this.timeout);
-        }, 150);
+        }, 50);
+        this.inputService.triggerInvalidRoutingNumber$.next(false);
+        this.uploadFileService.visibilityDropZone(false);
+        this.uploadFileService.uploadFiles(null);
         break;
       }
       case 'deactivate': {
@@ -129,32 +156,35 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onDropFile(event: { files: UploadFile[]; action: string }) {
-    this.modalService.uploadDocumentsSubject$.next(event);
+  public onFilesEvent(event: { files: UploadFile[]; action: string }) {
+    this.uploadFileService.uploadFiles(event);
   }
-
 
   public onDropBackground(event: { action: string; value: boolean }) {
     switch (event.action) {
       case 'dragleave': {
-        if (!event.value && this.dropZoneCounter === 1) {
-          this.dropZoneCounter--;
-          this.leavingDropZone = true;
-          this.stopCoutingInDropZone = false;
+        this.hoverZone = false;
+        if (this.timeout) {
+          clearTimeout(this.timeout);
         }
+        this.timeout = setTimeout(() => {
+          this.dropZoneCounter = 1;
+          this.isLeaveZone = true;
+          clearTimeout(this.timeout);
+        }, 40);
+
         break;
       }
       case 'drop': {
         if (!event.value) {
           this.isDropZoneVisible = false;
+          this.dropZoneCounter = 0;
         }
         break;
       }
       case 'dragover': {
-        this.leavingDropZone = false;
-        if(!this.stopCoutingInDropZone)
-          this.dropZoneCounter ++;
-        this.stopCoutingInDropZone = true;
+        this.dropZoneCounter = 2;
+        this.hoverZone = true;
         break;
       }
       default: {

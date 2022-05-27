@@ -10,12 +10,13 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   
   @Input() cardDetailsName:string='';
   @Input() cardDetailsDate:string='';
-  @Input() cardDetailsDateTerminated:string='';
+  @Input() cardDetailsDateTerminated:string=null;
   @Input() hasSvgHeader:string='';
   @Input() tooltipNext:string='';
   @Input() tooltipPrevious:string='';
   @Input() searchName:string='';
   @Input() optionsCmp:any=[];
+  @Input() statusInactive:number=1;
   @Output() selectValue=new EventEmitter<string>();
   @Output() nextValue=new EventEmitter<any>();
   @Output() previousValue=new EventEmitter<any>();

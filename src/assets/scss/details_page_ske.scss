@@ -29,6 +29,16 @@ $transition: all 0.3s ease-in-out;
 p {
   margin-bottom: 0 !important;
 }
+.desc {
+  &::-moz-selection {
+    color: $color-gray-dark;
+    background: rgb(108, 108, 108, 0.2);
+  }
+  &::selection {
+    color: $color-gray-dark;
+    background: rgb(108, 108, 108, 0.2);
+  }
+}
 .details-item-cmp {
   display: grid;
   grid-template-columns: 440px repeat(4, 335px);
@@ -222,7 +232,8 @@ p {
 }
 .item-cards {
   .ta-card-header {
-    padding: 6px 0 !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
     padding-right: 6px !important;
   }
 }
@@ -243,13 +254,13 @@ p {
             font-size: 14px !important;
             font-weight: 400 !important;
             color: #6c6c6c;
-            
           }
           &:not(:first-child) {
             .value-name:before {
               content: ", ";
             }
           }
+          
         }
       }
     }
@@ -394,6 +405,7 @@ p {
   padding: 0 10px;
   margin-bottom: 16px;
   padding-bottom: 16px;
+  transition:all 0.4s ease-in-out;
 }
 // Progress bar details
 .card-details-progress-container {
@@ -424,16 +436,26 @@ p {
   padding-top: 12px;
   display: flex;
   flex-direction: column;
+  margin-bottom: -12px !important;
   .status-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     .status-item {
       height: 18px;
+
       .p-status {
         font-size: $font-size14;
         font-weight: 700;
         color: #919191;
+        &::-moz-selection {
+          color: #919191;
+          background: rgb(145, 145, 145, 0.2);
+        }
+        &::selection {
+          color: #919191;
+          background: rgb(145, 145, 145, 0.2);
+        }
         .note-textarea {
           color: #6c6c6c !important;
           font-weight: 400 !important;
@@ -450,16 +472,21 @@ p {
     }
   }
   .status-items {
-  
+   
     .item-wrapper {
       display: grid;
       grid-template-columns: 119px 137px 78px;
       grid-column-gap: 40px;
+      align-content: center;
+      justify-content: center;
+     
       .svg-text {
         display: flex;
-        align-items: baseline;
+        align-items: center;
         .employment {
           margin-left: 6px;
+          position: relative;
+          bottom: -2px;
         }
       }
       .duration {
@@ -501,7 +528,7 @@ p {
 
     .icon-name-item {
       display: flex;
-      align-items: center;
+      align-items: baseline;
       height: 18px;
       .charts-template-item-name {
         margin-left: 6px;
@@ -573,11 +600,7 @@ p {
     align-items: center;
     height: 48px;
     margin-top: 14px;
-    svg {
-      &:hover {
-        stroke: #7ea6f1;
-      }
-    }
+
     .model-name {
       flex-direction: column;
       margin-left: 12px;
@@ -645,10 +668,9 @@ p {
     }
   }
   .vin-text {
-    margin-left: 6px;
+    margin-left: 6px !important;
     position: relative;
-    bottom: -1px;
-   
+    bottom: -1px !important;
   }
 }
 .common-template {
@@ -656,7 +678,7 @@ p {
   grid-template-columns: 215px 1fr;
   row-gap: 12px;
   padding: 0 10px;
-  margin-top: -7px;
+  // margin-top: -7px;
   .common-item-wrapper {
     display: flex;
     align-items: center;
@@ -757,7 +779,7 @@ p {
     }
   }
 }
-.vin-text{
+.vin-text {
   &::-moz-selection {
     color: $color-gray-dark;
     background: rgb(108, 108, 108, 0.2);
@@ -766,4 +788,7 @@ p {
     color: $color-gray-dark;
     background: rgb(108, 108, 108, 0.2);
   }
+}
+.card-name-cmp{
+  margin-left: 12px !important;
 }

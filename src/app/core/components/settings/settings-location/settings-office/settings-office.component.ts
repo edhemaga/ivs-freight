@@ -52,6 +52,7 @@ export class SettingsOfficeComponent implements OnInit {
       companyOwned: '',
       departments: [
         {
+          id:26,
           name: 'Accounting Department',
           check: true,
           phone: '(987) 654-3210',
@@ -59,6 +60,7 @@ export class SettingsOfficeComponent implements OnInit {
           email: 'contact@windsor-brokers.com',
         },
         {
+          id:18,
           name: 'Dispatch Department',
           check: false,
           phone: '(987) 654-3210',
@@ -66,6 +68,7 @@ export class SettingsOfficeComponent implements OnInit {
           email: 'contact@windsor-brokers.com',
         },
         {
+          id:4,
           name: 'Safety Department',
           check: true,
           phone: '(987) 654-3210',

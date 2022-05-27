@@ -3,19 +3,20 @@
 
 
 .note-item {
-  &::-moz-selection {
-    color: $color-gray-dark;
-    background: rgb(108, 108, 108, 0.2);
-  }
-  &::selection {
-    color: $color-gray-dark;
-    background: rgb(108, 108, 108, 0.2);
-  }
+
   .note-body {
     margin-left: 4px;
   }
   .note-textarea{
-    color: #6c6c6c;
+    color: #6c6c6c !important;
+    &::-moz-selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
   }
 }
 
@@ -103,5 +104,12 @@
   margin-top: 8px;
   .item-wrapper{
     grid-template-columns: 113px 137px 79px !important;
+    grid-template-rows: 18px;
+    &:last-child{
+      .divider-employment{
+        visibility: hidden;
+      }
+    }    
   }
+  
 }

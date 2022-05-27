@@ -8,14 +8,16 @@ import { TruckassistProgressExpirationModule } from '../../shared/truckassist-pr
 import { TruckDetailsRoutes } from './truck-details.routing';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import {NgApexchartsModule} from "ng-apexcharts";
+import { TruckDetailsCardComponent } from '../truck-details-card/truck-details-card.component';
 @NgModule({
     declarations:[
         TruckDetailsComponent,
         TruckDetailsItemComponent,
         RenderMultipleItemsPipe,
-
+        TruckDetailsCardComponent
      
     ],
+    exports:[TruckDetailsCardComponent],
     imports:[
         CommonModule,
         TruckDetailsRoutes,

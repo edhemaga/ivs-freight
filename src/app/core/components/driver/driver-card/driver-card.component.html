@@ -1,8 +1,15 @@
-<div class="row card-main-holder">
-    <div class="col-4 left-side">
-        <div class="details"></div>
+<div class="card-main-holder">
+    <div class="left-side">
+        <div class="details">
+            <app-driver-details-card
+            [data]="selectedData"
+            [templateCard]="true"
+            >
+
+            </app-driver-details-card>
+        </div>
     </div>
-    <div class="col-8 right-side">
+    <div class="right-side">
         <div *ngFor="let item of viewData; let indx=index" class="card-frame">
             <div class="card-holder-frame" [class.active]="item.isSelected">
                 <div class="driver-dropdown">
@@ -14,7 +21,7 @@
                             <svg-icon src="assets/svg/common/ic_driver-owner.svg"></svg-icon>
                         </div>
                         <label class="container1">
-                            <input (change)="changeChatBox($event, indx)" [checked]="item.isSelected" type="checkbox">
+                            <input (change)="changeChatBox(item.id)" [checked]="item.isSelected" type="checkbox">
                             <span class="checkmark"></span>
                         </label>                           
                         <svg-icon [src]="'assets/svg/truckassist-table/no-profile-avatar.svg'"></svg-icon>
