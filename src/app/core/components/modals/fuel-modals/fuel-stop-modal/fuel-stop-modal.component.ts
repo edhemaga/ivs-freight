@@ -22,6 +22,8 @@ export class FuelStopModalComponent implements OnInit {
   public selectedFuelStop: any = null;
   public selectedAddress: Address | AddressEntity;
 
+  public isFavouriteFuelStop: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -46,6 +48,7 @@ export class FuelStopModalComponent implements OnInit {
     this.fuelStopForm = this.formBuilder.group({
       name: [null, Validators.required],
       store: [null],
+      favourite: [null],
       phone: [null, [Validators.required, phoneRegex]],
       fax: [null],
       address: [null, Validators.required],
@@ -77,6 +80,11 @@ export class FuelStopModalComponent implements OnInit {
 
       this.ngbActiveModal.close();
     }
+  }
+
+  public favouriteFuelStop() {
+    this.isFavouriteFuelStop = !this.isFavouriteFuelStop;
+    this.fuelStopForm.get('favourite').patchValue(this.isFavouriteFuelStop);
   }
 
   public onSelectDropdown(event: any, action) {

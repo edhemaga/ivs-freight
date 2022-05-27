@@ -107,6 +107,7 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
 import { FuelTotalPipe } from '../modals/fuel-modals/fuel-total.pipe';
 import { FuelPurchaseModalComponent } from '../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
+import { ViolationModalComponent } from '../safety/violation/violation-modal/violation-modal.component';
 
 @NgModule({
   declarations: [
@@ -167,6 +168,7 @@ import { FuelStopModalComponent } from '../modals/fuel-modals/fuel-stop-modal/fu
     TtFhwaInspectionModalComponent,
     FuelPurchaseModalComponent,
     FuelStopModalComponent,
+    ViolationModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -321,6 +323,7 @@ import { FuelStopModalComponent } from '../modals/fuel-modals/fuel-stop-modal/fu
     TtFhwaInspectionModalComponent,
     FuelPurchaseModalComponent,
     FuelStopModalComponent,
+    ViolationModalComponent,
 
     // Pipes
     InputErrorPipe,

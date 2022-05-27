@@ -47,7 +47,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    // this.fuelItemFormArrayValues();
 
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA

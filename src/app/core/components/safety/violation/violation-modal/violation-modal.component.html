@@ -1,0 +1,351 @@
+<app-ta-modal
+  [modalTitle]="'Edit Roadside Inspection'"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="violationForm.valid"
+  [customClass]="'modal-container-L'"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <app-tab-switcher
+    (switchClicked)="tabChange($event)"
+    [tabs]="tabs"
+  ></app-tab-switcher>
+  <form
+    [formGroup]="violationForm"
+    class="form-container"
+    [ngClass]="{ 'tab-2': selectedTab !== 1 }"
+  >
+    <div class="'animation-two-tabs'" [@animationTabsModal]="animationObject">
+      <!-------------------------------- Basic Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 1">
+        <div class="violation-modal-row-1">
+          <app-ta-input
+            formControlName="report"
+            [inputConfig]="{
+              name: 'Violation Report',
+              type: 'text',
+              label: 'Report',
+              isRequired: true,
+              textTransform: 'capitalize',
+              autoFocus: true
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="inspectionLevel"
+            [inputConfig]="{
+              name: 'Inspection Level',
+              type: 'text',
+              label: 'Inspection Level',
+              isRequired: true,
+              isDisabled: true,
+              textTransform: 'capitalize',
+              autoFocus: true
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="hmInspectionLevel"
+            [inputConfig]="{
+              name: 'Inspection Level',
+              type: 'text',
+              label: 'HM Inspection Level',
+              isRequired: true,
+              isDisabled: true,
+              textTransform: 'capitalize',
+              autoFocus: true
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="violation-modal-row-2">
+          <app-ta-input-dropdown
+            formControlName="country"
+            [inputConfig]="{
+              name: 'Input Dropdown',
+              type: 'text',
+              label: 'Country',
+              isDisabled: true,
+              isDropdown: true,
+              dropdownWidthClass: 'w-col-4'
+            }"
+          ></app-ta-input-dropdown>
+          <app-ta-input-dropdown
+            formControlName="state"
+            [inputConfig]="{
+              name: 'Input Dropdown',
+              type: 'text',
+              label: 'State',
+              isDisabled: true,
+              isDropdown: true,
+              dropdownWidthClass: 'w-col-4'
+            }"
+          ></app-ta-input-dropdown>
+          <app-ta-input
+            formControlName="date"
+            [inputConfig]="{
+              name: 'datepicker',
+              type: 'text',
+              label: 'Date',
+              placeholderIcon: 'date',
+              isDisabled: true,
+              customClass: 'datetimeclass'
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="start"
+            [inputConfig]="{
+              name: 'datepicker',
+              type: 'text',
+              label: 'Start',
+              placeholderIcon: 'date',
+              isDisabled: true,
+              customClass: 'datetimeclass'
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="end"
+            [inputConfig]="{
+              name: 'datepicker',
+              type: 'text',
+              label: 'End',
+              placeholderIcon: 'date',
+              isDisabled: true,
+              customClass: 'datetimeclass'
+            }"
+          ></app-ta-input>
+        </div>
+        <app-ta-custom-card [cardName]="'Driver'" [isCardOpen]="true">
+          <div class="violation-modal-row-3">
+            <app-ta-input
+              formControlName="driverName"
+              [inputConfig]="{
+                name: 'Full Name',
+                type: 'text',
+                label: 'Driver',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="driverLicenceNumber"
+              [inputConfig]="{
+                name: 'Licence Number',
+                type: 'text',
+                label: 'Licence No.',
+                isDisabled: true
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="driverState"
+              [inputConfig]="{
+                name: 'State',
+                type: 'text',
+                label: 'State',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="driverDOB"
+              [inputConfig]="{
+                name: 'datepicker',
+                type: 'text',
+                label: 'DoB',
+                placeholderIcon: 'date',
+                isDisabled: true,
+                customClass: 'datetimeclass'
+              }"
+            ></app-ta-input>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Co-Driver'" [isCardOpen]="true">
+          <div class="violation-modal-row-4">
+            <app-ta-input
+              formControlName="coDriverName"
+              [inputConfig]="{
+                name: 'Full Name',
+                type: 'text',
+                label: 'Driver',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="coDriverLicenceNumber"
+              [inputConfig]="{
+                name: 'Licence Number',
+                type: 'text',
+                label: 'Licence No.',
+                isDisabled: true
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="coDriverState"
+              [inputConfig]="{
+                name: 'State',
+                type: 'text',
+                label: 'State',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="coDriverDOB"
+              [inputConfig]="{
+                name: 'datepicker',
+                type: 'text',
+                label: 'DoB',
+                placeholderIcon: 'date',
+                isDisabled: true,
+                customClass: 'datetimeclass'
+              }"
+            ></app-ta-input>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Truck'" [isCardOpen]="true">
+          <div class="violation-modal-row-5">
+            <app-ta-input
+              formControlName="truckUnit"
+              [inputConfig]="{
+                name: 'Truck Number',
+                type: 'text',
+                label: 'Unit',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="truckType"
+              [inputConfig]="{
+                name: 'Truck Type',
+                type: 'text',
+                label: 'Type',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="truckMake"
+              [inputConfig]="{
+                name: 'Truck Make',
+                type: 'text',
+                label: 'Make',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="truckPlateNumber"
+              [inputConfig]="{
+                name: 'Truck Plate Make',
+                type: 'text',
+                label: 'Plate No.',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="truckState"
+              [inputConfig]="{
+                name: 'Truck State',
+                type: 'text',
+                label: 'State',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="truckVIN"
+              [inputConfig]="{
+                name: 'VIN',
+                type: 'text',
+                label: 'VIN',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Trailer'" [isCardOpen]="true">
+          <div class="violation-modal-row-6">
+            <app-ta-input
+              formControlName="trailerUnit"
+              [inputConfig]="{
+                name: 'Trailer Number',
+                type: 'text',
+                label: 'Unit',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="trailerType"
+              [inputConfig]="{
+                name: 'Trailer Type',
+                type: 'text',
+                label: 'Type',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="trailerMake"
+              [inputConfig]="{
+                name: 'Trailer Make',
+                type: 'text',
+                label: 'Make',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="trailerPlateNumber"
+              [inputConfig]="{
+                name: 'Trailer Plate Make',
+                type: 'text',
+                label: 'Plate No.',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="trailerState"
+              [inputConfig]="{
+                name: 'Trailer State',
+                type: 'text',
+                label: 'State',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="trailerVIN"
+              [inputConfig]="{
+                name: 'VIN',
+                type: 'text',
+                label: 'VIN',
+                isDisabled: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card
+          [hasCounter]="documents.length ? documents.length : '0'"
+          [cardName]="'Documents'"
+          [isCardOpen]="documents.length"
+        >
+          <app-ta-modal-upload
+            [files]="[]"
+            [modalSize]="'modal-large'"
+            (onFileEvent)="onFilesEvent($event)"
+          ></app-ta-modal-upload>
+        </app-ta-custom-card>
+        <app-ta-input-note
+          formControlName="note"
+          [isVisibleNote]="violationForm.get('note').value"
+        ></app-ta-input-note>
+      </div>
+      <!-------------------------------- Additional Tab -------------------------------->
+      <div class="m-tab" *ngIf="selectedTab === 2"></div>
+    </div>
+  </form>
+</app-ta-modal>

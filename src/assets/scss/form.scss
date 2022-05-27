@@ -1007,4 +1007,35 @@
     }
   }
 }
+//---------------- Violation Report, Inspection Level, HM Inspection Type  ----------------
+.violation-modal-row-1 {
+  display: grid;
+  grid-template-columns: 292px repeat(2, 260px);
+  grid-template-rows: 26px;
+  column-gap: 12px;
+  margin: 0;
+  margin-top: 26px;
+  margin-bottom: 32px;
+}
+.violation-modal-row-2 {
+  display: grid;
+  grid-template-columns: 274px 60px repeat(3, 150px);
+  grid-template-rows: 26px;
+  column-gap: 12px;
+  margin-bottom: 22px;
+}
+.violation-modal-row-3,
+.violation-modal-row-4 {
+  display: grid;
+  grid-template-columns: 320px 210px 120px 150px;
+  grid-template-rows: 26px;
+  column-gap: 12px;
+}
+.violation-modal-row-5,
+.violation-modal-row-6 {
+  display: grid;
+  grid-template-columns: 100px 178px 138px 110px 60px 190px;
+  grid-template-rows: 26px;
+  column-gap: 12px;
+}
 // ------------------------------------------------ end ------------------------------------------------

@@ -9,32 +9,37 @@
     <div class="row">
       <div class="col-7">
         <app-ta-input-dropdown
-        formControlName="name"
-        [inputConfig]="{
-          name: 'Input Dropdown',
-          type: 'text',
-          label: 'Fuel Stop Name',
-          isDropdown: true,
-          isRequired: true,
-          dropdownWidthClass: 'w-col-7'
-        }"
-        [options]="fuelStops"
-        (selectedItem)="onSelectDropdown($event, 'fuel-stop')"
-      ></app-ta-input-dropdown>
+          formControlName="name"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Fuel Stop Name',
+            isDropdown: true,
+            isRequired: true,
+            dropdownWidthClass: 'w-col-7'
+          }"
+          [options]="fuelStops"
+          (selectedItem)="onSelectDropdown($event, 'fuel-stop')"
+        ></app-ta-input-dropdown>
       </div>
       <div class="col-4">
         <app-ta-input
-        formControlName="store"
-        [inputConfig]="{
-          name: 'Full name',
-          type: 'text',
-          label: 'Store #',
-          textTransform: 'capitalize'
-        }"
-      ></app-ta-input>
+          formControlName="store"
+          [inputConfig]="{
+            name: 'Full name',
+            type: 'text',
+            label: 'Store #',
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input>
       </div>
       <div class="col-1 no-p-left">
-        <svg-icon class="fuelstop-star" src="assets/svg/common/ic_star.svg"></svg-icon>
+        <svg-icon
+          class="fuelstop-star"
+          [class.active]="isFavouriteFuelStop"
+          src="assets/svg/common/ic_star.svg"
+          (click)="favouriteFuelStop()"
+        ></svg-icon>
       </div>
     </div>
     <div class="row">
