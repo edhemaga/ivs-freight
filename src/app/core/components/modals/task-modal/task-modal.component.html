@@ -1,6 +1,6 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Task' : 'Edit Task'"
-  [editData]="editData"
+
   [editName]="editData?.id"
   [isModalValid]="taskForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
@@ -89,7 +89,7 @@
         *ngIf="comments.length"
         [reviewData]="comments"
         [isNewReview]="comments[0].isNewReview"
-        (changeReviewsEvent)="changeCommentEvent($event)"
+        (changeReviewsEvent)="changeCommentsEvent($event)"
       ></app-ta-user-review>
     </app-ta-custom-card>
     <div class="ta-card-body-overflow-none">

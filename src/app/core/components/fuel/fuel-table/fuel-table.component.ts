@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getAccountingFuelColumnDefinition } from 'src/assets/utils/settings/accounting-fuel-columns';
+import { FuelModalComponent } from '../../modals/fuel-modal/fuel-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-fuel-table',
@@ -11,7 +12,7 @@ import { getAccountingFuelColumnDefinition } from 'src/assets/utils/settings/acc
 })
 export class FuelTableComponent implements OnInit {
   private destroy$: Subject<void> = new Subject<void>();
-  
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -19,22 +20,25 @@ export class FuelTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService,  private tableService: TruckassistTableService) {}
+  constructor(
+    private modalService: ModalService,
+    private tableService: TruckassistTableService
+  ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
     this.getFuelData();
 
-     // Reset Columns
-     this.tableService.currentResetColumns
-     .pipe(takeUntil(this.destroy$))
-     .subscribe((response: boolean) => {
-       if (response) {
-         this.resetColumns = response;
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.resetColumns = response;
 
-         this.sendFuelData();
-       }
-     });
+          this.sendFuelData();
+        }
+      });
   }
 
   public initTableOptions(): void {
@@ -56,7 +60,7 @@ export class FuelTableComponent implements OnInit {
           title: 'Edit',
           name: 'edit',
           class: 'regular-text',
-          contentType: 'edit', 
+          contentType: 'edit',
         },
         {
           title: 'Delete',
@@ -179,10 +183,25 @@ export class FuelTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba modal da se uradi!');
+      this.modalService.openModal(FuelModalComponent, {
+        size: 'small',
+      });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setFuelData(event.tabData);
+    }
+  }
+
+  public onTableBodyActions(event: any) {
+    console.log(event)
+    if (event.type === 'edit') {
+      this.modalService.openModal(
+        FuelModalComponent,
+        { size: 'small' },
+        {
+          ...event
+        }
+      );
     }
   }
 }

@@ -20,6 +20,7 @@ import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
 import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
 import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
+import { FuelModalComponent } from '../../modals/fuel-modal/fuel-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -63,6 +64,7 @@ export class NavigationModalsComponent {
   }
 
   private openModal(navItem: NavigationModal) {
+    console.log(navItem)
     const path = navItem.path;
     switch (path) {
       case 'driver': {
@@ -121,6 +123,15 @@ export class NavigationModalsComponent {
         this.modalService.openModal(TaskModalComponent, {
           size: 'small',
         });
+        break;
+      }
+      case 'purchase': {
+        this.modalService.openModal(FuelModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
+      default: {
         break;
       }
     }

@@ -104,6 +104,7 @@ import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-d
 import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 import { ProfileImagesComponent } from './profile-images/profile-images.component';
+import { FuelModalComponent } from '../modals/fuel-modal/fuel-modal.component';
 
 @NgModule({
   declarations: [
@@ -162,6 +163,7 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     TaskModalComponent,
     TtRegistrationModalComponent,
     TtFhwaInspectionModalComponent,
+    FuelModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -313,6 +315,7 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     TaskModalComponent,
     TtRegistrationModalComponent,
     TtFhwaInspectionModalComponent,
+    FuelModalComponent,
 
     // Pipes
     InputErrorPipe,
