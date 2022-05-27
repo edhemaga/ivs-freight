@@ -25,6 +25,7 @@
   >
     <div class="left-side" *ngIf="editData?.type === 'edit'">
       <button
+        *ngIf="!disableDelete"
         (click)="onAction('delete')"
         class="modal-delete-btn"
         ngbAutofocus

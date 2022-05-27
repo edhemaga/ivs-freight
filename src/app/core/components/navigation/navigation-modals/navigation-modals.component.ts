@@ -87,13 +87,13 @@ export class NavigationModalsComponent {
       }
       case 'broker': {
         this.modalService.openModal(BrokerModalComponent, {
-          size: 'small',
+          size: 'medium',
         });
         break;
       }
       case 'shipper': {
         this.modalService.openModal(ShipperModalComponent, {
-          size: 'small',
+          size: 'medium',
         });
         break;
       }

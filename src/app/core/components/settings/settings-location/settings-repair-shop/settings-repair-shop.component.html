@@ -34,7 +34,7 @@
       [address]="item.address"
     >
     </app-settings-tab-placeholder>
-    
+
     <app-settings-card
       [cardTemplate]="'repairShopTemplate'"
       [cardName]="'Service'"
@@ -43,15 +43,14 @@
       [data]="item.services"
     >
     </app-settings-card>
-<div class="settings-progress-container">
-  <app-truckassist-progress-expiration
-  *ngIf="item.rent"
-  [expireDate]="'03/25/2023'"
-  [startDate]="'03/12/2023'"
-  [expiresSettings]="'settings-parking'"
-  [customText]="generateTextForProgressBar(item)"
-></app-truckassist-progress-expiration>
-</div>
-
+    <div class="settings-progress-container">
+      <app-truckassist-progress-expiration
+        *ngIf="item.rent"
+        [expireDate]="'03/25/2023'"
+        [startDate]="'03/12/2023'"
+        [expiresSettings]="'settings-parking'"
+        [customText]="generateTextForProgressBar(item)"
+      ></app-truckassist-progress-expiration>
+    </div>
   </div>
 </div>

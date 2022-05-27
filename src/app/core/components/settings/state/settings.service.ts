@@ -35,7 +35,7 @@ export class SettingsStoreService {
         this.modalService.openModal(
           SettingsBasicModalComponent,
           {
-            size: 'small',
+            size: 'medium',
           },
           {
             type: data.action,

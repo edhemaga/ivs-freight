@@ -1,9 +1,11 @@
+import { Address } from 'src/app/core/model/address';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { AddressEntity } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-violation-modal',
@@ -86,6 +88,13 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     params: { height: '0px' },
   };
 
+  public selectedAuthorityAddress: Address | AddressEntity;
+  public selectedAuthorityOrigin: Address | AddressEntity;
+  public selectedAuthorityDestination: Address | AddressEntity;
+
+  public selectedViolationCustomer: any = null;
+  public labelsViolationCustomer: any[] = [];
+
   public documents: any[] = [];
 
   constructor(
@@ -149,9 +158,9 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       facility: [null],
       highway: [null],
       milePost: [null],
-      origin: [null],
-      destination: [null],
-      ustomer: [null],
+      originAddress: [null],
+      destinationAddress: [null],
+      customer: [null],
       bol: [null],
       cargo: [null],
     });
@@ -181,8 +190,37 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     this.ngbActiveModal.close();
   }
 
+  public onHandleAddress(event: any, action) {
+    switch(action) {
+      case 'address-authority': {
+        this.selectedAuthorityAddress = event;
+        break;
+      }
+      case 'address-origin': {
+        this.selectedAuthorityOrigin = event;
+        break;
+      }
+      case 'address-destination': {
+        this.selectedAuthorityDestination = event;
+        break;
+      }
+    }
+  }
+
+  public onSelectDropDown(event: any) {
+    this.selectedViolationCustomer = event;
+  }
+
   public onFilesEvent(event) {
     console.log(event)
+  }
+
+  public pickedSpecialChecks() {
+    return this.specialChecks.filter(item => item.active).length;
+  }
+
+  public identity(index: number, item: any): number {
+    return item.id;
   }
 
   private updateViolation(id: number) {}

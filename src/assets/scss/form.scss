@@ -679,7 +679,7 @@
           &::-moz-selection {
             background-color: #919191 !important;
           }
-        
+
           &::selection {
             background-color: #919191 !important;
           }
@@ -916,14 +916,16 @@
   }
 }
 //---------------- Repair Shop Services ----------------
-.repair-shop-services {
+.repair-shop-services,
+.violation-special-checks {
   display: grid;
   grid-template-columns: repeat(4, 105px);
   grid-template-rows: repeat(2, 26px);
   column-gap: 12px;
   row-gap: 6px;
 
-  .repair-shop-service {
+  .repair-shop-service,
+  .violation-special-check {
     background-color: #f3f3f3;
     color: #b7b7b7;
     width: 100%;
@@ -974,6 +976,10 @@
   }
 }
 
+.violation-special-checks {
+  grid-template-columns: repeat(5, 158px);
+}
+
 //---------------- Company IRP, IFTA, TOLL, SCAC  ----------------
 .company-irp-ifta-toll-scac {
   display: grid;
@@ -1014,7 +1020,6 @@
   grid-template-rows: 26px;
   column-gap: 12px;
   margin: 0;
-  margin-top: 26px;
   margin-bottom: 32px;
 }
 .violation-modal-row-2 {
@@ -1035,6 +1040,22 @@
 .violation-modal-row-6 {
   display: grid;
   grid-template-columns: 100px 178px 138px 110px 60px 190px;
+  grid-template-rows: 26px;
+  column-gap: 12px;
+}
+.violation-modal-autority-details-row {
+  display: grid;
+  grid-template-columns: 452px 200px 160px;
+  grid-template-rows: 26px;
+  column-gap: 12px;
+
+  &-1 {
+    margin-bottom: 32px;
+  }
+}
+.violation-modal-location-shipping-row-3 {
+  display: grid;
+  grid-template-columns: 272px 210px 330px;
   grid-template-rows: 26px;
   column-gap: 12px;
 }

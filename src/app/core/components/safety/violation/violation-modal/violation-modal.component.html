@@ -4,6 +4,7 @@
   [editName]="editData?.id"
   [isModalValid]="violationForm.valid"
   [customClass]="'modal-container-L'"
+  [disableDelete]="true"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher
@@ -15,7 +16,7 @@
     class="form-container"
     [ngClass]="{ 'tab-2': selectedTab !== 1 }"
   >
-    <div class="'animation-two-tabs'" [@animationTabsModal]="animationObject">
+    <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
         <div class="violation-modal-row-1">
@@ -36,10 +37,8 @@
               name: 'Inspection Level',
               type: 'text',
               label: 'Inspection Level',
-              isRequired: true,
               isDisabled: true,
-              textTransform: 'capitalize',
-              autoFocus: true
+              textTransform: 'capitalize'
             }"
           ></app-ta-input>
           <app-ta-input
@@ -48,10 +47,8 @@
               name: 'Inspection Level',
               type: 'text',
               label: 'HM Inspection Level',
-              isRequired: true,
               isDisabled: true,
-              textTransform: 'capitalize',
-              autoFocus: true
+              textTransform: 'capitalize'
             }"
           ></app-ta-input>
         </div>
@@ -345,7 +342,197 @@
         ></app-ta-input-note>
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
-      <div class="m-tab" *ngIf="selectedTab === 2"></div>
+      <div class="m-tab" *ngIf="selectedTab === 2">
+        <app-ta-custom-card
+          [cardName]="'Authority Details'"
+          [isCardOpen]="true"
+        >
+          <div
+            class="violation-modal-autority-details-row violation-modal-autority-details-row-1"
+          >
+            <app-ta-input
+              formControlName="policeDepartment"
+              [inputConfig]="{
+                name: 'Police Report',
+                type: 'text',
+                label: 'Police Department',
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="policeOfficer"
+              [inputConfig]="{
+                name: 'Police Officer',
+                type: 'text',
+                label: 'Police Officer',
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="badgeNumber"
+              [inputConfig]="{
+                name: 'Badge Number',
+                type: 'text',
+                label: 'Badge Number',
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="violation-modal-autority-details-row">
+            <app-ta-input-address
+              formControlName="addressAuthority"
+              [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Address, City, State Zip',
+                placeholderIcon: 'address',
+                textTransform: 'capitalize'
+              }"
+              (selectedAddress)="onHandleAddress($event, 'address-authority')"
+            ></app-ta-input-address>
+            <app-ta-input
+              formControlName="phoneAuthority"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                isRequired: true,
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="faxAuthority"
+              [inputConfig]="{
+                name: 'Fax',
+                type: 'text',
+                label: 'Fax',
+                placeholderIcon: 'fax'
+              }"
+            ></app-ta-input>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card
+          [cardName]="'Location & Shipping Info'"
+          [isCardOpen]="true"
+        >
+          <div class="row">
+            <div class="col-4">
+              <app-ta-input
+                formControlName="facility"
+                [inputConfig]="{
+                  name: 'Facility',
+                  type: 'text',
+                  label: 'Facility',
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4">
+              <app-ta-input
+                formControlName="highway"
+                [inputConfig]="{
+                  name: 'Highway',
+                  type: 'text',
+                  label: 'Highway',
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4">
+              <app-ta-input
+                formControlName="milePost"
+                [inputConfig]="{
+                  name: 'Mile Post',
+                  type: 'text',
+                  label: 'Mile Post',
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <app-ta-input-address
+                formControlName="originAddress"
+                [inputConfig]="{
+                  name: 'Address',
+                  type: 'text',
+                  label: 'Origin',
+                  placeholderIcon: 'address',
+                  textTransform: 'capitalize'
+                }"
+                (selectedAddress)="onHandleAddress($event, 'address-origin')"
+              ></app-ta-input-address>
+            </div>
+            <div class="col-6">
+              <app-ta-input-address
+                formControlName="destinationAddress"
+                [inputConfig]="{
+                  name: 'Address',
+                  type: 'text',
+                  label: 'Destination',
+                  placeholderIcon: 'address',
+                  textTransform: 'capitalize'
+                }"
+                (selectedAddress)="
+                  onHandleAddress($event, 'address-destination')
+                "
+              ></app-ta-input-address>
+            </div>
+          </div>
+          <div class="violation-modal-location-shipping-row-3">
+            <app-ta-input-dropdown
+              formControlName="customer"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Customer',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-large-modal-cutomer'
+              }"
+              [options]="labelsViolationCustomer"
+              (selectedItem)="
+                onSelectDropDown($event)
+              "
+            ></app-ta-input-dropdown>
+            <app-ta-input
+              formControlName="bol"
+              [inputConfig]="{
+                name: 'BoL',
+                type: 'text',
+                label: 'BoL',
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="cargo"
+              [inputConfig]="{
+                name: 'Cargo',
+                type: 'text',
+                label: 'Cargo',
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card
+          [hasCounter]="pickedSpecialChecks() ? pickedSpecialChecks() : '0'"
+          [cardName]="'Special Checks'"
+          [isCardOpen]="true"
+        >
+          <div class="violation-special-checks">
+            <div
+              *ngFor="let specialCheck of specialChecks; trackBy: identity"
+              class="violation-special-check"
+              [class.active]="specialCheck.active"
+              (click)="specialCheck.active = !specialCheck.active"
+            >
+              <p>{{ specialCheck.name }}</p>
+            </div>
+          </div>
+        </app-ta-custom-card>
+      </div>
     </div>
   </form>
 </app-ta-modal>
