@@ -1,6 +1,6 @@
 import { Address } from 'src/app/core/model/address';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
@@ -147,7 +147,15 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       trailerPlateNumber: [null],
       trailerState: [null],
       trailerVIN: [null],
-      violations: this.formBuilder.array([]),
+      violations: this.formBuilder.array([this.formBuilder.group({
+        code: ["392.2-SLLS3"],
+        categoryId: ["Vehicle Maintenance"],
+        unit: ["Trailer"],
+        sw: ["10+2"],
+        oos: [true],
+        sms: [false],
+        description: ["Allowing or requiring a driver to use i…"]
+      })]),
       note: [null],
       policeDepartment: [null],
       policeOfficer: [null],
@@ -188,6 +196,10 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     }
 
     this.ngbActiveModal.close();
+  }
+
+  public get violations(): FormArray {
+    return this.violationForm.get('violations') as FormArray;
   }
 
   public onHandleAddress(event: any, action) {
