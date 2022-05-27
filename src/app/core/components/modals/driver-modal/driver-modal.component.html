@@ -209,10 +209,10 @@
         >
           <div
             formArrayName="offDutyLocations"
-            class="offDutyLocations"
+            class="common-fake-table-modal common-fake-table-modal-off-duty-locations"
             *ngIf="offDutyLocations.length"
           >
-            <div class="offDutyLocations-label">
+            <div class="common-fake-table-label">
               <p>NICKNAME</p>
               <p>ADDRESS, CITY, STATE ZIP</p>
             </div>
@@ -222,7 +222,7 @@
                 let ind = index
               "
             >
-              <div [formGroupName]="ind" class="offDutyLocations-card">
+              <div [formGroupName]="ind" class="common-fake-table-card">
                 <app-ta-input
                   formControlName="nickname"
                   [inputConfig]="{
@@ -245,7 +245,7 @@
                   mainTooltip="Delete"
                   position="top"
                   tooltipBackground="#EF5350"
-                  class="offDutyLocation-delete"
+                  class="common-fake-table-delete"
                   (click)="removeOffDutyLocation(ind)"
                 >
                   <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
@@ -287,7 +287,7 @@
               }"
               [canAddNew]="true"
               [options]="labelsBank"
-              (selectedItem)="onSelectBank($event)"
+              (selectedItem)="onSelectDropdown($event, 'bank')"
             ></app-ta-input-dropdown>
           </div>
           <div class="bank-field">
@@ -340,7 +340,7 @@
               }"
               [canAddNew]="true"
               [options]="labelsPayType"
-              (selectedItem)="onSelectPayType($event)"
+              (selectedItem)="onSelectPayType($event, 'paytype')"
             ></app-ta-input-dropdown>
           </div>
           <div class="paytype-field-notification">

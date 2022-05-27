@@ -20,6 +20,8 @@ import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
 import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
 import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
+import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -63,8 +65,8 @@ export class NavigationModalsComponent {
   }
 
   private openModal(navItem: NavigationModal) {
-    const path = navItem.path;
-    switch (path) {
+    console.log(navItem)
+    switch (navItem.path) {
       case 'driver': {
         this.modalService.openModal(DriverModalComponent, {
           size: 'small',
@@ -85,13 +87,13 @@ export class NavigationModalsComponent {
       }
       case 'broker': {
         this.modalService.openModal(BrokerModalComponent, {
-          size: 'small',
+          size: 'medium',
         });
         break;
       }
       case 'shipper': {
         this.modalService.openModal(ShipperModalComponent, {
-          size: 'small',
+          size: 'medium',
         });
         break;
       }
@@ -121,6 +123,21 @@ export class NavigationModalsComponent {
         this.modalService.openModal(TaskModalComponent, {
           size: 'small',
         });
+        break;
+      }
+      case 'purchase': {
+        this.modalService.openModal(FuelPurchaseModalComponent, {
+          size: 'small',
+        });
+        break;
+      } 
+      case 'fuel-stop': {
+        this.modalService.openModal(FuelStopModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
+      default: {
         break;
       }
     }

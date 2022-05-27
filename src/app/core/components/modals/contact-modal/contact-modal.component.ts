@@ -1,10 +1,5 @@
 import { ContactModalService } from './contact-modal.service';
-import {
-  Component,
-  Input,
-  OnInit,
-  OnDestroy,
-} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -18,7 +13,10 @@ import {
 } from 'appcoretruckassist';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import { Address } from '../../shared/ta-input-address/ta-input-address.component';
-import { emailRegex, phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  emailRegex,
+  phoneRegex,
+} from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-contact-modal',
@@ -64,10 +62,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required, Validators.maxLength(23)]],
       companyContactLabelId: [null],
       phone: [null, [phoneRegex]],
-      email: [
-        null,
-        [emailRegex],
-      ],
+      email: [null, [emailRegex]],
       address: [null],
       addressUnit: [null, [Validators.maxLength(6)]],
       shared: [false],
@@ -76,7 +71,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onModalAction(data: {action: string, bool: boolean}) {
+  public onModalAction(data: { action: string; bool: boolean }) {
     if (data.action === 'close') {
       this.contactForm.reset();
     } else {
@@ -137,7 +132,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         next: (res: CompanyContactResponse) => {
           this.contactForm.patchValue({
             name: res.name,
-            companyContactLabelId: res.companyContactLabel ? res.companyContactLabel.name : null,
+            companyContactLabelId: res.companyContactLabel
+              ? res.companyContactLabel.name
+              : null,
             phone: res.phone,
             email: res.email,
             address: res.address ? res.address.address : null,
@@ -147,7 +144,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             note: res.note,
           });
           this.selectedContactLabel = res.companyContactLabel;
-          this.selectedAddress = res.address
+          this.selectedAddress = res.address;
           // TODO: shared departments label selected
         },
         error: () => {
@@ -162,7 +159,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     const newData: CreateCompanyContactCommand = {
       ...form,
-      companyContactLabelId: this.selectedContactLabel ? this.selectedContactLabel.id : null,
+      companyContactLabelId: this.selectedContactLabel
+        ? this.selectedContactLabel.id
+        : null,
       address: {
         ...address,
         addressUnit,
@@ -193,11 +192,13 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     const newData: UpdateCompanyContactCommand = {
       id: id,
       ...form,
-      companyContactLabelId: this.selectedContactLabel ? this.selectedContactLabel.id : null,
+      companyContactLabelId: this.selectedContactLabel
+        ? this.selectedContactLabel.id
+        : null,
       address: {
         ...address,
         addressUnit,
-      }
+      },
     };
     this.contactModalService
       .updateCompanyContact(newData)
@@ -236,18 +237,26 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onSelectLabel(event: any): void {
-    this.selectedContactLabel = event;
+  public onSelectDropdown(event: any, action): void {
+    switch (action) {
+      case 'label': {
+        this.selectedContactLabel = event;
+        break;
+      }
+      case 'departments': {
+        this.selectedSharedDepartment = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
-  public onSelectDepartment(event: any): void {
-    this.selectedSharedDepartment = event;
-  }
-
-  public onHandleAddress(event: {address: Address, valid: boolean}): void {
+  public onHandleAddress(event: { address: Address; valid: boolean }): void {
     this.selectedAddress = event.address;
-    if(!event.valid) {
-      this.contactForm.setErrors({'invalid': event.valid})
+    if (!event.valid) {
+      this.contactForm.setErrors({ invalid: event.valid });
     }
   }
 

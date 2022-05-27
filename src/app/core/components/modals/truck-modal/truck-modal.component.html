@@ -42,7 +42,7 @@
                 dropdownWidthClass: 'w-col-8'
               }"
               [options]="truckType"
-              (selectedItem)="onSelectTruckType($event)"
+              (selectedItem)="onSelectDropdown($event, 'truck-type')"
             ></app-ta-input-dropdown>
           </div>
         </div>
@@ -73,7 +73,7 @@
                 dropdownWidthClass: 'w-col-6'
               }"
               [options]="truckMakeType"
-              (selectedItem)="onSelectTruckMake($event)"
+              (selectedItem)="onSelectDropdown($event, 'truck-make')"
             ></app-ta-input-dropdown>
           </div>
         </div>
@@ -115,7 +115,7 @@
                 dropdownWidthClass: 'w-col-4'
               }"
               [options]="colorType"
-              (selectedItem)="onSelectColor($event)"
+              (selectedItem)="onSelectDropdown($event, 'color')"
             ></app-ta-input-dropdown>
           </div>
         </div>
@@ -158,7 +158,7 @@
                       dropdownWidthClass: 'w-col-6-companyOwned'
                     }"
                     [options]="ownerType"
-                    (selectedItem)="onSelectOwner($event)"
+                    (selectedItem)="onSelectDropdown($event, 'owner')"
                   ></app-ta-input-dropdown>
                 </div>
                 <div class="col-6">
@@ -192,7 +192,7 @@
                 dropdownWidthClass: 'w-col-7'
               }"
               [options]="grossWeight"
-              (selectedItem)="onSelectTruckGrossWeight($event)"
+              (selectedItem)="onSelectDropdown($event, 'gross-weight')"
             ></app-ta-input-dropdown>
           </div>
           <div class="col-5">
@@ -220,7 +220,7 @@
                 dropdownWidthClass: 'w-col-7'
               }"
               [options]="engineType"
-              (selectedItem)="onSelectTruckEngineType($event)"
+              (selectedItem)="onSelectDropdown($event, 'engine-type')"
             ></app-ta-input-dropdown>
           </div>
           <div class="col-5 tireSize-axles">
@@ -234,7 +234,7 @@
                 dropdownWidthClass: 'w-col-5-tireSize'
               }"
               [options]="tireSize"
-              (selectedItem)="onSelectTireSize($event)"
+              (selectedItem)="onSelectDropdown($event, 'tire-size')"
             ></app-ta-input-dropdown>
             <app-ta-input
               formControlName="axles"

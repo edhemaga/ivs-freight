@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getViolationsColums } from 'src/assets/utils/settings/safety-columns';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ViolationModalComponent } from '../violation-modal/violation-modal.component';
 
 @Component({
   selector: 'app-violation-table',
@@ -16,7 +18,10 @@ export class ViolationTableComponent implements OnInit, OnDestroy {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private tableService: TruckassistTableService) {}
+  constructor(
+    private tableService: TruckassistTableService,
+    private modalService: ModalService
+  ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -527,6 +532,18 @@ export class ViolationTableComponent implements OnInit, OnDestroy {
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setViolationData(event.tabData);
+    }
+  }
+
+  public onTableBodyActions(event: any) {
+    switch (event.type) {
+      case 'edit-violation': {
+        this.modalService.openModal(
+          ViolationModalComponent,
+          { size: 'large' },
+          { id: 1, type: 'edit' }
+        );
+      }
     }
   }
 
