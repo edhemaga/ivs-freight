@@ -22,18 +22,18 @@
         >
           <svg-icon *ngIf="hasSvg" [src]="hasSvg"></svg-icon>
         </span>
-        <p
+        <span
           class="card-name-cmp"
           [ngClass]="{ 'has-svgIcon': hasSvg, 'card-close-title': !isCardOpen }"
         >
-          <span *ngIf="isCardOpen" class="open-name disable-selection">{{ cardNameCommon }}</span>
+          <span *ngIf="isCardOpen || haveHeaderText" class="open-name disable-selection">{{ cardNameCommon }}</span>
           <span
             class="exp-text"
-            *ngIf="!isCardOpen"
+            *ngIf="!isCardOpen && expDateClose"
             [ngClass]="{ 'card-close-title': !isCardOpen }"
             >Exp. {{ expDateClose }}
           </span>
-        </p>
+        </span>
         <svg-icon
           *ngIf="isCardOpen && hasCopyIcon"
           (click)="copyText(cardNameCommon)"
@@ -49,9 +49,12 @@
           [fontSize]="'11px'"
           [customPosition]="-2"
         ></svg-icon>
+        <svg-icon *ngIf="settingsIcon && isCardOpen" src="{{settingsIcon}}" class="settings-icon">
+
+        </svg-icon>
       </div>
     </div>
-    <div [ngClass]="{ 'dropdown-common': !isCardOpen }">
+    <div *ngIf="haveDots" class="drop-comm" [ngClass]="{ 'dropdown-common': !isCardOpen }">
       <app-table-dropdown
         [options]="options.actions"
         [customClassDropDown]="'table-dropdown-container-vertical'"
@@ -60,12 +63,15 @@
     </div>
   </div>
   <div
-    [@showHideCardBody]="isCardOpen ? 'true' : 'false'"
+    [@.disabled]="animationsDisabled"
+    [ngClass]="{ active: isCardOpen }"
     class="card-body-cmp"
-  >
+  > 
+  <div [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
     <ng-content></ng-content>
   </div>
-  <div class="card-footer-cmp" *ngIf="isCardOpen">
+  </div>
+  <div class="card-footer-cmp" *ngIf="isCardOpen && hasFooter">
     <div class="icon-counter">
       <svg-icon
         *ngIf="!resPage"

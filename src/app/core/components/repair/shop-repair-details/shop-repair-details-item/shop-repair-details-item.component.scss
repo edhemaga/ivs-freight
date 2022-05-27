@@ -103,14 +103,14 @@
     .service-type {
       font-size: 12px;
       font-weight: $font-semibold;
-      color: #aaaaaa;
+      color: #6c6c6c;
       &::-moz-selection {
         color: $color-gray-dark;
-        background: rgb(170, 170, 170, 0.2);
+        background: rgb(108, 108, 108, 0.2);
       }
       &::selection {
         color: $color-gray-dark;
-        background: rgb(170, 170, 170, 0.2);
+        background: rgb(108, 108, 108, 0.2);
       }
     }
   }
@@ -214,4 +214,24 @@
     bottom: 1px;
     left: 2px;
   }
+}
+.disabled {
+  svg {
+    path {
+      fill: #dadada !important;
+    }
+  }
+}
+.cross-out {
+  text-decoration: line-through;
+  color: #b7b7b7 !important;
+  &::-moz-selection {
+    color: #6c6c6c !important;
+    background: rgb(183, 183, 183, 0.2) !important;
+  }
+  &::selection {
+    color: #6c6c6c !important;
+    background: rgb(183, 183, 183, 0.2) !important;
+  }
+
 }

@@ -84,13 +84,15 @@
             </div>
           </div>
         </app-ta-custom-card>
+
         <app-ta-custom-card
           [bodyTemplate]="'card'"
           [animationsDisabled]="false"
           [cardName]="'Service'"
-          [hasCounter]="shopData.shop.serviceTypes.length"
+          [hasCounter]="count"
           [isCardOpen]="true"
         >
+     
           <div class="service-container">
             <div
               *ngFor="
@@ -101,39 +103,17 @@
             >
               <div class="service-item">
                 <svg-icon
-                  *ngIf="i == 0"
-                  src="assets/svg/truckassist-table/repair/active-shop-types/Truck.svg"
-                ></svg-icon>
-                <svg-icon
-                  *ngIf="i == 1"
-                  src="assets/svg/truckassist-table/repair/ic_repair-trailer.svg"
-                ></svg-icon>
-                <svg-icon
-                  *ngIf="i == 2"
-                  src="assets/svg/truckassist-table/repair/ic_mobile-repair.svg"
-                ></svg-icon>
-                <svg-icon
-                  *ngIf="i == 3"
-                  src="assets/svg/truckassist-table/repair/ic_shop-repair.svg"
-                ></svg-icon>
-                <svg-icon
-                  *ngIf="i == 4"
-                  src="assets/svg/truckassist-table/repair/selected-row-regular-shop-types/Towing.svg"
-                ></svg-icon>
-                <svg-icon
-                  *ngIf="i == 5"
-                  src="assets/svg/truckassist-table/repair/selected-row-regular-shop-types/Parts.svg"
-                ></svg-icon>
-                <svg-icon
-                  *ngIf="i == 6"
-                  src="assets/svg/truckassist-table/repair/selected-row-regular-shop-types/Tire.svg"
-                ></svg-icon>
-                <svg-icon
-                  *ngIf="i == 7"
-                  src="assets/svg/truckassist-table/repair/ic_dealer-repair.svg"
+                  [ngClass]="{ disabled: !service.active }"
+                  src="assets/svg/truckassist-table/repair/{{
+                    service.logoName
+                  }}"
                 ></svg-icon>
 
-                <span class="service-type">{{ service.serviceType }}</span>
+                <span
+                  [ngClass]="{ 'cross-out': !service.active }"
+                  class="service-type"
+                  >{{ service.serviceType }}</span
+                >
               </div>
             </div>
           </div>
@@ -160,32 +140,33 @@
         </div>
         <div class="divider"></div>
         <div class="repair-items-wrapper">
-          <span *ngFor="let dummy of dummyDataRepair; let i = index" [ngClass]="{'finish-order-cont':dummy.finishOrder==false}">
-          <div  class="repair-items">
-            <div class="items-header">
-              <span class="unit">{{ dummy.unit }}</span>
-              <span class="date">{{ dummy.date }}</span>
-              <span class="date">{{ dummy.inv }}</span>
-              <span class="date">{{ dummy.desc }}</span>
-              <span *ngIf="dummy.finishOrder" class="cost"
-                >${{ dummy.cost }}</span
-              >
-              <div *ngIf="!dummy.finishOrder" class="button-wrapper-shop">
-                <button  class="finish-button">
-                  Finish Order
-                </button>
-              </div>
-              <div class="dots-vertical">
-                <app-table-dropdown
-                  [options]="dummyData.actions"
-                  [customClassDropDown]="'table-dropdown-container-vertical'"
+          <span
+            *ngFor="let dummy of dummyDataRepair; let i = index"
+            [ngClass]="{ 'finish-order-cont': dummy.finishOrder == false }"
+          >
+            <div class="repair-items">
+              <div class="items-header">
+                <span class="unit">{{ dummy.unit }}</span>
+                <span class="date">{{ dummy.date }}</span>
+                <span class="date">{{ dummy.inv }}</span>
+                <span class="date">{{ dummy.desc }}</span>
+                <span *ngIf="dummy.finishOrder" class="cost"
+                  >${{ dummy.cost }}</span
                 >
-                </app-table-dropdown>
+                <div *ngIf="!dummy.finishOrder" class="button-wrapper-shop">
+                  <button class="finish-button">Finish Order</button>
+                </div>
+                <div class="dots-vertical">
+                  <app-table-dropdown
+                    [options]="dummyData.actions"
+                    [customClassDropDown]="'table-dropdown-container-vertical'"
+                  >
+                  </app-table-dropdown>
+                </div>
               </div>
+              <div class="divider"></div>
             </div>
-            <div class="divider"></div>
-          </div>
-        </span>
+          </span>
         </div>
       </div>
     </div>

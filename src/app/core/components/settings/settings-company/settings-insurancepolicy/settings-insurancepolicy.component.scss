@@ -5,23 +5,45 @@
   display: grid;
   grid-template-rows: 32px auto;
   row-gap: 12px;
+}
+.settings-insuarnce{
+  .settings-progress-container{
+    padding-bottom: 0px !important;
+  }
+}
+.single-item-address{
+    width: 256px;
+    position: relative;
+    top: 12px; 
+}
+.insuarance-card-top-container{
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+  .number-of-policy{
+    font-size: 14px;
+    font-weight: 700;
+    color: $settings-gray-dark
+  }
+  .name-div-wrapper{
+    display: flex;
+    align-items: center;
+    .insurer-name{
+      font-size: 18px;
+      font-weight:$settings-font-medium;
+      color: $settings-gray-dark
 
-  .settings-body {
-    &.gradient {
-      background-image: linear-gradient(180deg, #f1f1f1, #ffffff);
     }
-
-    .show-details {
-      color: $settings-blue-light;
-      font-size: 12px;
-      font-weight: $settings-font-bold;
-      margin-top: 12px;
-      user-select: none;
-
-      &:hover {
-        transition: $settings-transition;
-        color: $settings-blue;
-        cursor: pointer;
+    .rating{
+      background-color: #f3f3f3;
+      padding: 2.5px 6px;
+      margin-left: 6px;
+      border-radius: 2px;
+      .rating-value{
+        font-size: 12px;
+        font-weight: 700;
+        color: #919191;
       }
     }
   }

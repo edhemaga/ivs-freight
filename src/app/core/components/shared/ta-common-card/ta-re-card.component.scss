@@ -74,7 +74,7 @@
         color: #6c6c6c;
         height: 22px;
         margin-top: 10px !important;
-        margin-left: 12px !important;
+        margin-left: 12px;
         &::-moz-selection {
             color: #6c6c6c;
             background: rgb(108, 108, 108, 0.2);
@@ -100,6 +100,10 @@
         flex-direction: column;
         background-color: #ffffff;
         margin-top: 0px !important;
+        &.active {
+            max-height: 1200px;
+            transition: all 0.4s ease-in-out;
+          }
         .dates {
             display: flex;
             align-items: center;
@@ -269,4 +273,9 @@ p {
     user-select: none;
     position: relative;
     bottom: -1px;
+}
+.settings-icon{
+    position: relative;
+    top: 15px;
+    left: 6px;
 }

@@ -13,6 +13,7 @@
     </div>
 
     <div class="settings-header-button">
+      <div class="border-left"></div>
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
@@ -20,41 +21,74 @@
       ></svg-icon>
     </div>
   </div>
-  <div
-    class="settings-body"
-    *ngFor="let item of officeData; trackBy: identityOfficeData"
-  >
-    <app-settings-tab-placeholder
-      [name]="item.name"
-      [companyOwnedSVG]="item.companyOwned"
-      [phone]="item.phone"
-      [email]="item.email"
-      [address]="item.address"
+  <div class="settings-body">
+    <app-ta-re-card
+      *ngFor="let item of officeData; trackBy: identityOfficeData"
+      [settingsIcon]="item.companyOwned"
+      [cardNameCommon]="item.name"
+      [hasFooter]="false"
+      [haveHeaderText]="true"
+      
     >
-    </app-settings-tab-placeholder>
-
-    <app-settings-card
-      *ngFor="
-        let department of item.departments;
-        let ind = index;
-        trackBy: identityCardData
-      "
-      [cardTemplate]="'officeTemplate'"
-      [hasCard]="department.check"
-      [cardName]="department.name"
-      [data]="department"
-      [hasLine]="!(ind === item.departments.length - 1 && !item.rent)"
-    >
-    </app-settings-card>
-<div class="settings-progress-container">
-  <app-truckassist-progress-expiration
-      *ngIf="item.rent"
-      [expireDate]="'03/25/2023'"
-      [startDate]="'03/12/2023'"
-      [expiresSettings]="'settings-parking'"
-      [customText]="generateTextForProgressBar(item)"
-    ></app-truckassist-progress-expiration>
+      <div class="settings-body-items">
+        <div *ngIf="item.phone !== ''" class="single-item">
+          <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+          <span>{{ item.phone }}</span>
+        </div>
+        <div *ngIf="item.email !== ''" class="single-item">
+          <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+          <span>{{ item.email }}</span>
+        </div>
+        <div *ngIf="item.address !== ''" class="single-item">
+          <svg-icon
+            src="assets/svg/truckassist-table/location-icon.svg"
+          ></svg-icon>
+          <span>{{ item.address }}</span>
+        </div>
+      </div>
+      <app-ta-custom-card
+        *ngFor="let dep of item.departments; trackBy: identityOfficeData"
+        [cardName]="dep.name"
+        [isCardOpen]="true"
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+        
+      >
+        <div class="office-template-data">
+          <div class="office-template-item">
+            <svg-icon
+              class="office-template-svg"
+              src="assets/svg/common/ic_phone.svg"
+            ></svg-icon>
+            <p class="office-template-value">{{ dep.phone }}</p>
+          </div>
+          <div class="office-template-item">
+            <svg-icon
+              class="office-template-svg"
+              src="assets/svg/common/ic_phone-extension.svg"
+            ></svg-icon>
+            <p class="office-template-value">{{ dep.phone_ext }}</p>
+          </div>
+          <div class="office-template-item office-template-email">
+            <svg-icon
+              class="office-template-svg"
+              src="assets/svg/common/ic_email.svg"
+            ></svg-icon>
+            <p class="office-template-value">{{ dep.email }}</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <div *ngIf="item.rent" class="divider"></div>
+      <div   *ngIf="item.rent" class="settings-progress-container">
+        <app-truckassist-progress-expiration
+        
+          [expireDate]="'03/25/2023'"
+          [startDate]="'03/12/2023'"
+          [expiresSettings]="'settings-parking'"
+          [customText]="generateTextForProgressBar(item)"
+        ></app-truckassist-progress-expiration>
+      </div>
+    </app-ta-re-card>
   </div>
-</div>
-  
 </div>

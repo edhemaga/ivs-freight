@@ -16,6 +16,7 @@ export class ShopRepairDetailsItemComponent implements OnInit {
   public dummyDataRepair: any[] = [];
   public dummyDataVehicle: any[] = [];
   public reviewsRepair: any[] = [];
+  public count:number;
   constructor(private _act_route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -23,7 +24,8 @@ export class ShopRepairDetailsItemComponent implements OnInit {
     this.noteControl.patchValue('Neki notee');
     this.initTableOptions();
     this.dummyDataRep();
-    this.dummyDataVeh()
+    this.dummyDataVeh();
+    this.getActiveServices()
   }
  /**Function for format phone number */
   public formatPhone(phoneNumberString: string) {
@@ -123,5 +125,13 @@ export class ShopRepairDetailsItemComponent implements OnInit {
   public changeReviewsEvent(reviews: { data: any[]; action: string }) {
     this.reviewsRepair = [...reviews.data];
     // TODO: API CREATE OR DELETE
+  }
+  public getActiveServices(){
+     
+    let res= this.shopData.shop.serviceTypes.filter((item) => item.active);
+    this.count=res.length;
+    console.log(res.length);
+    return this.count
+    
   }
 }

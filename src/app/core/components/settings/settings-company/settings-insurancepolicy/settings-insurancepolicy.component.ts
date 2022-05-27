@@ -8,8 +8,13 @@ import { SettingsStoreService } from '../../state/settings.service';
 })
 export class SettingsInsurancepolicyComponent {
   public insuranceData = {
+     
+      phone:'(123) 456-7890',
+      email:'peraperic@gmail.com',
+      address:'5462 N East River Rd apt 611,Chicago, IL 60656, USA',
+    
     generalLiability: {
-      insurerName: 'Lloyds of London',
+      insurerName: 'LLOYDS OF LONDON',
       rating: 'A++',
       numberOfPolicy: 'WGL000695-00',
       fields: [
@@ -46,8 +51,8 @@ export class SettingsInsurancepolicyComponent {
       ],
     },
     automobileLiability: {
-      insurerName: 'Unique Insurance Co',
-      rating: 'NR',
+      insurerName: 'UNIQUE INSURANCE CO',
+      rating: '',
       numberOfPolicy: 'KBG5675678-01',
       fields: [
         {
@@ -125,6 +130,8 @@ export class SettingsInsurancepolicyComponent {
   public onAction(modal: { type: boolean; modalName: string; action: string }) {
     this.settingsStoreService.onModalAction(modal);
   }
-
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
   public onShowDetails() {}
 }

@@ -323,6 +323,7 @@
         <app-ta-input-note
           [formControl]="noteControl"
           [isReadOnly]="true"
+          [isVisibleSecondDivider]="false"
           [isVisibleNote]="noteControl.value"
         ></app-ta-input-note>
       </div>
@@ -381,6 +382,7 @@
                   <app-ta-input-note
                     [formControl]="registrationNote"
                     [isVisibleDivider]="false"
+                    [isVisibleSecondDivider]="false"
                     [placeholder]="'Write something.'"
                     [customClass]="'note-small'"
                     [isVisibleArrow]="false"
@@ -430,6 +432,7 @@
                   <app-ta-input-note
                     [formControl]="fhwaNote"
                     [placeholder]="'Write something.'"
+                    [isVisibleSecondDivider]="false"
                     [customClass]="'note-small'"
                     [isVisibleArrow]="false"
                     [minRows]="1"
@@ -493,6 +496,7 @@
                   <app-ta-input-note
                     [formControl]="titleNote"
                     [placeholder]="'Write something.'"
+                    [isVisibleSecondDivider]="false"
                     [customClass]="'note-small'"
                     [isVisibleArrow]="false"
                     [minRows]="1"

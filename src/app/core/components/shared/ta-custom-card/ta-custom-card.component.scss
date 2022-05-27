@@ -295,3 +295,19 @@
   }
   }
 }
+.status-icon-weekly{
+    display: flex;
+    align-items: center;
+  .weekly-status{
+    background-color: #f3f3f3;
+    height: 20px;
+    padding: 2.5px 6px;
+    border-radius: 2px;
+    margin-right: 12px;
+    .weekly-status-value{
+      font-size: 12px;
+      font-weight: 700;
+      color: #919191;
+    }
+  }
+}

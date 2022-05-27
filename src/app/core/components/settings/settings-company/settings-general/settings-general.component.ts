@@ -7,6 +7,8 @@ import { SettingsStoreService } from '../../state/settings.service';
   styleUrls: ['./settings-general.component.scss'],
 })
 export class SettingsGeneralComponent {
+  public isAccountVisible: boolean = true;
+  public accountText: string = null;
   public companyBasicMiddleData = [
     {
       id: 1,
@@ -97,35 +99,40 @@ export class SettingsGeneralComponent {
       {
         id: 1,
         name: 'Bank Name',
-        value:
-          'assets/svg/common/ic_bankAccount_dummy.svg',
+        svg:'assets/svg/common/ic_bankAccount_dummy.svg',
+        value:'',
+        hide:false,
       },
       {
         id: 2,
         name: 'Routing',
+        svg:'',
         value: '052001633',
+        hide:false,
       },
       {
         id: 3,
         name: 'Account',
+        svg:'',
         value: '00000006213',
+        hide:true,
       },
     ],
     bankCard: [
       {
         id: 1,
         nickName: 'Main Card',
-        cardNumber: '********1633',
+        cardNumber: '4539222634968590',
         cardPicture: 'assets/svg/common/ic_visa.svg',
-        cvc: '***',
+        cvc: '321',
         expiration: '04/24',
       },
       {
         id: 1,
         nickName: 'Do Not Use',
-        cardNumber: '********5687',
+        cardNumber: '4539222634968590',
         cardPicture: 'assets/svg/common/ic_visa2.svg',
-        cvc: '***',
+        cvc: '123',
         expiration: '04/24',
       },
     ],
@@ -188,6 +195,49 @@ export class SettingsGeneralComponent {
 
   public identityCompanyBasicMiddle(index: number, item: any): number {
     return item.id;
+  }
+  public cvcHide(card) {
+    let hideNum = [];
+    for(let i = 0; i < card.length; i++){
+      if(i < card.length){
+        hideNum.push("●");
+      }
+      else{
+        hideNum.push(card[i]);
+      }
+    }
+    return hideNum.join("");
+  }
+  public cardHide(card) {
+    let hideNum = [];
+    for(let i = 0; i < card.length; i++){
+      if(i < card.length-4){
+        hideNum.push("●");
+      }else{
+        hideNum.push(card[i]);
+      }
+    }
+    return hideNum.join("");
+  }
+  
+  public hiddenPassword(value: any, numberOfCharacterToHide: number): string {
+    const lastFourCharaters = value.substring(
+      value.length - numberOfCharacterToHide
+    );
+    let hiddenCharacter = '';
+    for (let i = 0; i < numberOfCharacterToHide; i++) {
+      hiddenCharacter += '●';
+    }
+    return hiddenCharacter + lastFourCharaters;
+  }
+
+  public showHideValue(value: string) {
+    this.isAccountVisible = !this.isAccountVisible;
+    if (!this.isAccountVisible) {
+      this.accountText = this.hiddenPassword(value,4);
+      return;
+    }
+    this.accountText = value;
   }
 
   public identityCompanyBasicBottom(index: number, item: any): number {

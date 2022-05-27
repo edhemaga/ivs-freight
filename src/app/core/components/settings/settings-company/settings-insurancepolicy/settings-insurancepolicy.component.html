@@ -5,6 +5,7 @@
     </div>
 
     <div class="settings-header-button">
+      <div class="border-left"></div>
       <svg-icon
         src="assets/svg/common/ic_pen.svg"
         class="settings-edit-button"
@@ -14,68 +15,132 @@
       ></svg-icon>
     </div>
   </div>
-  <div class="settings-body" [ngClass]="{ gradient: !insuranceData }">
-    <svg-icon
-      *ngIf="!insuranceData"
-      src="assets/svg/common/ic_insurancepolicy.svg"
-    ></svg-icon>
+  <div class="settings-body">
+    <div class="settings-insuarnce">
+      <app-ta-re-card
+        [cardNameCommon]="'KNIGHTBROOK INS CO.'"
+        [haveHeaderText]="true"
+        [cardDocumentCounter]="1"
+      >
+        <div class="settings-body-items">
+          <div *ngIf="insuranceData.phone !== ''" class="single-item">
+            <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+            <span>{{ insuranceData.phone }}</span>
+          </div>
+          <div *ngIf="insuranceData.email !== ''" class="single-item">
+            <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+            <span>{{ insuranceData.email }}</span>
+          </div>
+          <div *ngIf="insuranceData.address !== ''" class="single-item">
+            <svg-icon
+              src="assets/svg/truckassist-table/location-icon.svg"
+            ></svg-icon>
+            <span class="single-item-address">{{ insuranceData.address }}</span>
+          </div>
+        </div>
+        <app-ta-custom-card
+          [cardName]="'Commercial General Liabillty'"
+          [bodyTemplate]="'card'"
+          [isCardOpen]="true"
+          [hasDivider]="true"
+          [animationsDisabled]="false"
+          [textBottomPossiton]="'-2px'"
+        >
+          <div class="insuarance-card-top-container">
+            <div class="name-div-wrapper">
+              <span class="insurer-name">{{
+                insuranceData.generalLiability.insurerName
+              }}</span>
+              <div class="rating">
+                <div class="rating-value">
+                  {{ insuranceData.generalLiability.rating }}
+                </div>
+              </div>
+            </div>
+            <div class="number-of-policy">
+              {{ insuranceData.generalLiability.numberOfPolicy }}
+            </div>
+          </div>
+          <div class="payroll-template-data">
+            <div
+              *ngFor="let insur of insuranceData.generalLiability.fields"
+              class="payroll-template-item"
+            >
+              <p class="payroll-name">{{ insur.name }}</p>
+              <p class="payroll-value">{{ insur.value }}</p>
+            </div>
+          </div>
+        </app-ta-custom-card>
 
-    <div *ngIf="insuranceData">
-      <app-settings-tab-placeholder
-        [name]="'Knightbrook Ins Co.'"
-        [phone]="'(123) 456-7890'"
-        [email]="'contact@windsor-brokers.com'"
-        [address]="'5462 N East River Rd apt 611 Chicago, IL 60656'"
-        [hasAttachment]="true"
-        [hasNote]="true"
-      >
-      </app-settings-tab-placeholder>
-
-      <!-- Commercial General Liability -->
-      <app-settings-card
-        [cardTemplate]="'insuranceTemplate'"
-        [cardName]="'Commercial General Liability'"
-        [data]="insuranceData.generalLiability"
-      >
-      </app-settings-card>
-      <!-- Automobile Liability -->
-      <app-settings-card
-        [cardTemplate]="'insuranceTemplate'"
-        [cardName]="'Automobile Liability'"
-        [data]="insuranceData.automobileLiability"
-      >
-      </app-settings-card>
-      <!-- Motor Truck Cargo / Reefer Breakdown -->
-      <app-settings-card
-        [cardTemplate]="'insuranceTemplate'"
-        [cardName]="'Motor Truck Cargo / Reefer Breakdown'"
-        [data]="insuranceData.motorTruckCargo"
-      >
-      </app-settings-card>
-      <!-- Physical Damage -->
-      <app-settings-card
-        [cardTemplate]="'insuranceTemplate'"
-        [cardName]="'Physical Damage'"
-        [data]="insuranceData.physicalDamage"
-      >
-      </app-settings-card>
-      <!-- Trailer Interchange -->
-      <app-settings-card
-        [cardTemplate]="'insuranceTemplate'"
-        [cardName]="'Trailer Interchange'"
-        [data]="insuranceData.trailerInterchange"
-      >
-      </app-settings-card>
-      <!-- Expires..... -->
-      <div class="settings-progress-container">
-        <app-truckassist-progress-expiration
-          [expireDate]="'03/31/2023'"
-          [startDate]="'03/12/2023'"
-          [expiresSettings]="'settings-insurance-policy'"
-        ></app-truckassist-progress-expiration>
-      </div>
-
-      <p class="show-details" (click)="onShowDetails()">Show Details</p>
+        <app-ta-custom-card
+          [cardName]="'Automobile Liabillty'"
+          [bodyTemplate]="'card'"
+          [isCardOpen]="true"
+          [hasDivider]="true"
+          [animationsDisabled]="false"
+          [textBottomPossiton]="'-2px'"
+        >
+          <div class="insuarance-card-top-container">
+            <div class="name-div-wrapper">
+              <span class="insurer-name">{{
+                insuranceData.automobileLiability.insurerName
+              }}</span>
+              <div *ngIf="insuranceData.automobileLiability.rating " class="rating">
+                <div class="rating-value">
+                  {{ insuranceData.automobileLiability.rating }}
+                </div>
+              </div>
+            </div>
+            <div class="number-of-policy">
+              {{ insuranceData.automobileLiability.numberOfPolicy }}
+            </div>
+          </div>
+          <div class="payroll-template-data">
+            <div
+              *ngFor="let insur of insuranceData.automobileLiability.fields"
+              class="payroll-template-item"
+            >
+              <p class="payroll-name">{{ insur.name }}</p>
+              <p class="payroll-value">{{ insur.value }}</p>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card
+          [cardName]="'Motor Truck Cargo / Reefer Breakdown'"
+          [bodyTemplate]="'card'"
+         
+          [hasDivider]="true"
+          [animationsDisabled]="false"
+          [textBottomPossiton]="'-2px'"
+        >
+        </app-ta-custom-card>
+        <app-ta-custom-card
+          [cardName]="'Psysical Damage'"
+          [bodyTemplate]="'card'"
+        
+          [hasDivider]="true"
+          [animationsDisabled]="false"
+          [textBottomPossiton]="'-2px'"
+        >
+        </app-ta-custom-card>
+        <app-ta-custom-card
+          [cardName]="'Traller Interchange'"
+          [bodyTemplate]="'card'"
+        
+          [hasDivider]="true"
+          [animationsDisabled]="false"
+          [textBottomPossiton]="'-2px'"
+        >
+        </app-ta-custom-card>
+        <div class="divider"></div>
+        <div class="settings-progress-container">
+          <app-truckassist-progress-expiration
+            [expireDate]="'03/25/2023'"
+            [startDate]="'03/12/2023'"
+            [expiresSettings]="'settings-parking'"
+          ></app-truckassist-progress-expiration>
+        </div>
+      </app-ta-re-card>
     </div>
   </div>
 </div>

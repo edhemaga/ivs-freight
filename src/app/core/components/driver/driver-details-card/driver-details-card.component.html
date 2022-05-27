@@ -407,7 +407,7 @@
             <div class="purchase-template-item-name">Company</div>
             <div class="purchase-icon-copy">
               <div class="purchase-template-item-value">
-                {{ data.owner.name }}
+                {{ data.owner ? data.owner.name   : 'No Owner' }}
               </div>
               <svg-icon
                 class="card-icon"
@@ -428,9 +428,10 @@
             <div class="purchase-template-item-name">EIN</div>
             <div class="purchase-icon-copy" [ngClass]="{ copied: copiedEin }">
               <div class="purchase-template-item-value">
-                {{ data.owner.ssnEin }}
+                {{ data.owner ? data.owner.ssnEin : 'No Ein' }}
               </div>
               <svg-icon
+                *ngIf="data.owner"
                 (click)="copyText(data.owner.ssnEin, 'ein')"
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
@@ -659,6 +660,7 @@
             [isVisibleNote]="true"
             [isVisibleArrow]="true"
             [minRows]="1"
+            [isVisibleSecondDivider]="false"
             [placeholder]="'Write something.'"
             [customClass]="'note-small'"
           >
@@ -814,6 +816,7 @@
                     [isVisibleDivider]="false"
                     [isVisibleNote]="true"
                     [isVisibleArrow]="false"
+                    [isVisibleSecondDivider]="false"
                     [minRows]="1"
                     [placeholder]="'Write something.'"
                     [customClass]="'note-small'"
@@ -990,6 +993,7 @@
                 <app-ta-input-note
                   [formControl]="mvrNote"
                   [isVisibleDivider]="false"
+                  [isVisibleSecondDivider]="false"
                   [isVisibleNote]="true"
                   [isVisibleArrow]="false"
                   [minRows]="1"
