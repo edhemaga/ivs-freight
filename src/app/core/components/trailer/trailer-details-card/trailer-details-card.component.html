@@ -295,6 +295,7 @@
         <app-ta-input-note
           [formControl]="note"
           [isReadOnly]="true"
+          [isVisibleSecondDivider]="false"
           [isVisibleNote]="note.value"
         ></app-ta-input-note>
       </div>
@@ -353,6 +354,7 @@
                   <app-ta-input-note
                     [formControl]="registrationNote"
                     [isVisibleDivider]="false"
+                    [isVisibleSecondDivider]="false"
                     [placeholder]="'Write something.'"
                     [customClass]="'note-small'"
                     [isVisibleArrow]="false"
@@ -402,6 +404,7 @@
                 <div *ngIf="toggler" class="note-wrapper">
                   <app-ta-input-note
                     [formControl]="fhwaNote"
+                    [isVisibleSecondDivider]="false"
                     [placeholder]="'Write something.'"
                     [customClass]="'note-small'"
                     [isVisibleArrow]="false"
@@ -467,6 +470,7 @@
                   <app-ta-input-note
                     [formControl]="titleNote"
                     [placeholder]="'Write something.'"
+                    [isVisibleSecondDivider]="false"
                     [customClass]="'note-small'"
                     [isVisibleArrow]="false"
                     [minRows]="1"
