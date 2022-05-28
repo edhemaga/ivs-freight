@@ -35,7 +35,7 @@ export class TaReCardComponent implements OnInit {
   public toggleCards() {
     this.isCardOpen = !this.isCardOpen;
   }
-  public toggleResizePage(val: boolean) {
+  public toggleResizePage(val: any) {
     this.resPage = !this.resPage;
     val = this.resPage;
     this.resizePage.emit(val);
