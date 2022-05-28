@@ -44,7 +44,7 @@
         width: 18px;
         height: 18px;
         position: relative;
-        bottom: 4px;
+        bottom: 1px;
         &:hover {
           svg {
             path {
@@ -310,4 +310,8 @@
       color: #919191;
     }
   }
+}
+.arrow-down-plus{
+  display: flex;
+  align-items: center;
 }

@@ -24,6 +24,7 @@ export class DriverDetailsCardComponent implements OnInit {
   public isAccountVisible: boolean = true;
   public accountText: string = null;
   public buttonsArray: any;
+  public duttyLocationCounter:number=0;
   @Input() templateCard:boolean=false;
   public toggler:boolean=false;
   public dataEdit:any;
@@ -96,7 +97,7 @@ export class DriverDetailsCardComponent implements OnInit {
     this.toggler = value;
     console.log(this.toggler);
   }
-  
+ 
    /**Function return format date from DB */
   public formatDate(date: string) {
     return moment(date).format('MM/DD/YY');
@@ -109,48 +110,48 @@ export class DriverDetailsCardComponent implements OnInit {
           this.copiedPhone = true;
           setTimeout(() => {
             this.copiedPhone = false;
-          }, 1000);
+          }, 2100);
           break;
   
         case 'bankAcc':
           this.copiedBankAccount = true;
           setTimeout(() => {
              this.copiedBankAccount=false;
-          }, 1000);
+          }, 2100);
           break;
   
         case 'bankRouting':
           this.copiedBankRouting = true;
           setTimeout(() => {
             this.copiedBankRouting=false;
-         }, 1000);
+         }, 2100);
           break;
   
         case 'ein':
           this.copiedEin = true;
           setTimeout(() => {
             this.copiedEin=false;
-         }, 1000);
+         }, 2100);
           break;
   
         case 'ssn':
           this.copiedSSN = true;
           setTimeout(() => {
             this.copiedSSN=false;
-         }, 1000);
+         }, 2100);
           break;
   
         case 'driver-phone':
           this.copiedDriverPhone = true;
           setTimeout(() => {
             this.copiedDriverPhone=false;
-         }, 1000);
+         }, 2100);
           break;
         case 'driver-email':
           this.copiedDriverEmail = true;
           setTimeout(() => {
             this.copiedDriverEmail=false;
-         }, 1000);
+         }, 2100);
           break;
       }
   

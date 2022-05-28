@@ -37,41 +37,23 @@ $border-radius: 3px;
             width: 100%;
             justify-content: flex-end;
             margin-left: 9px;
+            span{
+             height: 100%;
+             width: 100%;
+             &:hover{
+                background: #f3f3f3;
+                border-radius: 2px;
+             }
+            }
             .arrow-left {
                 cursor: pointer;
                 padding: 0 5px;
-               
-                &:hover {
-                    background: #f3f3f3;
-                    width: 28px;
-                    border-radius: 2px;
-                    margin-top: 2px;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    height: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
             }
             .arrow-right {
                 cursor: pointer;
                 padding: 0 5px;
                 svg{
                     transform: rotate(180deg);
-                }
-                &:hover {
-                    background: #f3f3f3;
-                    width: 28px;
-                    border-radius: 2px;
-                    margin-top: 2px;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    height: 100%;
-                    display: flex;
-                    position: relative;
-                    align-items: center;
-                    justify-content: center;
                 }
             }
         }
@@ -93,9 +75,9 @@ $border-radius: 3px;
         justify-content: flex-start;
         align-items: flex-start;
         margin-left: 16px;
-        .date-terminated {
-            margin-left: 130px;
-        }
+        // .date-terminated {
+        //     margin-left: 130px;
+        // }
         .details-header-wrapper-data-item {
             display: flex;
             justify-content: center;

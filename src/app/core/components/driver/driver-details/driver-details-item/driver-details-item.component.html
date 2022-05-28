@@ -18,20 +18,20 @@
         >
           <div class="cards-container">
             <div class="card-body-cdl">
-              <div class="card-row-issued">
-                <div class="card-item">
+              <div class="card-restriction-endorsment card-restriction-class">
+                <!-- <div class="card-item">
                   <div class="card-item-name">State</div>
                   <div class="card-item-value">
                     {{ cdl.state.stateShortName }}
                   </div>
+                </div> -->
+                <div class="card-restriction">
+                  <div class="restriction-name">Class</div>
+                  <div class="restriction-item-value">{{ cdl?.classType }}</div>
                 </div>
-                <div class="card-item">
-                  <div class="card-item-name">Class</div>
-                  <div class="card-item-value">{{ cdl?.classType }}</div>
-                </div>
-                <div class="card-item">
-                  <div class="card-item-name">Issued</div>
-                  <div class="card-item-value">
+                <div class="card-restriction">
+                  <div class="restriction-name">Issued</div>
+                  <div class="restriction-item-value">
                     {{ formatDate(cdl?.issueDate) }}
                   </div>
                 </div>
@@ -158,16 +158,16 @@
         >
           <div class="cards-container">
             <div class="card-body-cdl">
-              <div class="card-row-endor">
-                <div class="card-item">
-                  <div class="card-item-name">Reason</div>
-                  <div class="card-item-value">
+              <div class="card-restriction-endorsment card-restriction-class">
+                <div class="card-restriction">
+                  <div class="restriction-name">Reason</div>
+                  <div class="restriction-item-value">
                     {{ test?.testReason.reason }}
                   </div>
                 </div>
-                <div class="card-item">
-                  <div class="card-item-name">Issued</div>
-                  <div class="card-item-value">
+                <div class="card-restriction">
+                  <div class="restriction-name">Issued</div>
+                  <div class="restriction-item-value">
                     {{ formatDate(test?.testingDate) }}
                   </div>
                 </div>
