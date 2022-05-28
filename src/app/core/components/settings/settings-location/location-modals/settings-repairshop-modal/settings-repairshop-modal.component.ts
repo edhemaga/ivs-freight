@@ -168,10 +168,6 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     this.selectedDay = event;
   }
 
-  public onPickService(repair: any) {
-    repair.active = !repair.active;
-  }
-
   public pickedServices() {
     return this.services.filter(item => item.active).length;
   }

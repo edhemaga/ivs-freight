@@ -377,12 +377,20 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onSelectContactDepartment(event: any, index: number) {
-    this.selectedContractDepartmentFormArray[index] = event;
-  }
-
-  public onSelectPayType(event: any) {
-    this.selectedPayTerm = event;
+  public onSelectDropDown(event: any, action: string, index?: number) {
+    switch(action) {
+      case 'paytype': {
+        this.selectedPayTerm = event;
+        break;
+      }
+      case 'contact-department': {
+        this.selectedContractDepartmentFormArray[index] = event;
+      }
+      default: {
+        break;
+      }
+    }
+   
   }
 
   private getBrokerDropdown() {

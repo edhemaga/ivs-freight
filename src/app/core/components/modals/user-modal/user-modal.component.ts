@@ -1,6 +1,17 @@
-import { accountBankRegex, bankRoutingValidator, emailRegex, routingBankRegex } from './../../shared/ta-input/ta-input.regex-validations';
+import {
+  accountBankRegex,
+  bankRoutingValidator,
+  emailRegex,
+  routingBankRegex,
+} from './../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Address } from '../../shared/ta-input-address/ta-input-address.component';
@@ -72,6 +83,13 @@ export class UserModalComponent implements OnInit, OnDestroy {
       checked: false,
     },
   ];
+
+  public departments: any[] = [];
+  public offices: any[] = [];
+
+  public selectedDepartment: any = null;
+  public selectedOffice: any = null;
+  public selectedBank: any = null;
 
   public selectedAddress: Address | AddressEntity = null;
   public isPhoneExtExist: boolean = false;
@@ -158,10 +176,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  public onHandleAddress(event: {address: Address, valid: boolean}): void {
+  public onHandleAddress(event: { address: Address; valid: boolean }): void {
     this.selectedAddress = event.address;
-    if(!event.valid) {
-      this.userForm.get('address').setErrors({'invalid': true})
+    if (!event.valid) {
+      this.userForm.get('address').setErrors({ invalid: true });
     }
   }
 
@@ -225,9 +243,25 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   public onTypeOfPayroll(event: any) {}
 
-  public onSelectDepartment(event: any) {}
-
-  public onSelectOffice(event: any) {}
+  public onSelectDropdown(event: any, action: string) {
+    switch (action) {
+      case 'department': {
+        this.selectedDepartment = event;
+        break;
+      }
+      case 'office': {
+        this.selectedOffice = event;
+        break;
+      }
+      case 'bank': {
+        this.selectedBank = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
 
   private updateUser(id: number) {}
 
@@ -239,7 +273,5 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   private getUserDropdowns() {}
 
-  ngOnDestroy():void {
-
-  }
+  ngOnDestroy(): void {}
 }
