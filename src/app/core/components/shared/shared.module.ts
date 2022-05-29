@@ -105,6 +105,10 @@ import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 import { ProfileImagesComponent } from './profile-images/profile-images.component';
 import { FilterComponent } from './filter/filter.component';
+import { FuelTotalPipe } from '../modals/fuel-modals/fuel-total.pipe';
+import { FuelPurchaseModalComponent } from '../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { FuelStopModalComponent } from '../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
+import { ViolationModalComponent } from '../safety/violation/violation-modal/violation-modal.component';
 
 @NgModule({
   declarations: [
@@ -163,6 +167,9 @@ import { FilterComponent } from './filter/filter.component';
     TaskModalComponent,
     TtRegistrationModalComponent,
     TtFhwaInspectionModalComponent,
+    FuelPurchaseModalComponent,
+    FuelStopModalComponent,
+    ViolationModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -178,6 +185,7 @@ import { FilterComponent } from './filter/filter.component';
     TaSvgPipe,
     DropdownCountPipe,
     ReviewsSortPipe,
+    FuelTotalPipe,
 
     // Directive
     AutoFocusDirective,
@@ -315,6 +323,9 @@ import { FilterComponent } from './filter/filter.component';
     TaskModalComponent,
     TtRegistrationModalComponent,
     TtFhwaInspectionModalComponent,
+    FuelPurchaseModalComponent,
+    FuelStopModalComponent,
+    ViolationModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -330,6 +341,7 @@ import { FilterComponent } from './filter/filter.component';
     TaSvgPipe,
     DropdownCountPipe,
     ReviewsSortPipe,
+    FuelTotalPipe,
 
     // Directive
     AutoFocusDirective,

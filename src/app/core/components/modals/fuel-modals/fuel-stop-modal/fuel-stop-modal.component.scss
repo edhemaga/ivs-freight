@@ -1,0 +1,31 @@
+.fuelstop-star {
+  position: relative;
+  bottom: 1px;
+  cursor: pointer;
+
+  &:hover {
+    transition: all 0.3s ease-in-out;
+    svg {
+      path {
+        fill: #6c6c6c;
+      }
+    }
+  }
+
+  &.active {
+    svg {
+      path {
+        fill: #6d82c7;
+      }
+    }
+
+    &:hover {
+      transition: all 0.3s ease-in-out;
+      svg {
+        path {
+          fill: #536bc2;
+        }
+      }
+    }
+  }
+}

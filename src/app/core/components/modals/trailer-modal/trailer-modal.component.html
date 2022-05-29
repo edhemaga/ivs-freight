@@ -42,7 +42,7 @@
                 dropdownWidthClass: 'w-col-9'
               }"
               [options]="trailerType"
-              (selectedItem)="onSelectTruckType($event)"
+              (selectedItem)="onSelectDropdown($event, 'trailer-type')"
             ></app-ta-input-dropdown>
           </div>
         </div>
@@ -73,7 +73,7 @@
                 dropdownWidthClass: 'w-col-5'
               }"
               [options]="trailerMakeType"
-              (selectedItem)="onSelectTruckMake($event)"
+              (selectedItem)="onSelectDropdown($event, 'trailer-make')"
             ></app-ta-input-dropdown>
           </div>
         </div>
@@ -103,7 +103,7 @@
                 dropdownWidthClass: 'w-col-trailerColor'
               }"
               [options]="colorType"
-              (selectedItem)="onSelectColor($event)"
+              (selectedItem)="onSelectDropdown($event, 'color')"
             ></app-ta-input-dropdown>
           </div>
           <div class="modelColorYearLentgh-field">
@@ -130,7 +130,7 @@
                 dropdownWidthClass: 'w-col-trailerLength'
               }"
               [options]="trailerLengthType"
-              (selectedItem)="onSelectTrailerLength($event)"
+              (selectedItem)="onSelectDropdown($event, 'trailer-length')"
             ></app-ta-input-dropdown>
           </div>
         </div>
@@ -170,7 +170,7 @@
                       dropdownWidthClass: 'w-col-12'
                     }"
                     [options]="ownerType"
-                    (selectedItem)="onSelectOwner($event)"
+                    (selectedItem)="onSelectDropdown($event, 'owner')"
                   ></app-ta-input-dropdown>
                 </div>
               </div>
@@ -200,7 +200,7 @@
                 dropdownWidthClass: 'w-col-4-reeferUnit'
               }"
               [options]="reeferUnitType"
-              (selectedItem)="onSelectReeferUnit($event)"
+              (selectedItem)="onSelectDropdown($event, 'reefer-unit')"
             ></app-ta-input-dropdown>
           </div>
           <div class="col-2">
@@ -234,7 +234,7 @@
                     : 'w-col-3-suspension'
               }"
               [options]="suspensionType"
-              (selectedItem)="onSelectSuspension($event)"
+              (selectedItem)="onSelectDropdown($event, 'suspension')"
             ></app-ta-input-dropdown>
           </div>
           <div
@@ -251,7 +251,7 @@
                 dropdownWidthClass: 'w-col-4'
               }"
               [options]="tireSize"
-              (selectedItem)="onSelectTireSize($event)"
+              (selectedItem)="onSelectDropdown($event, 'tire-size')"
             ></app-ta-input-dropdown>
           </div>
           <div
@@ -268,7 +268,7 @@
                 dropdownWidthClass: 'w-col-3-doortype'
               }"
               [options]="doorType"
-              (selectedItem)="onSelectDoorType($event)"
+              (selectedItem)="onSelectDropdown($event, 'door-type')"
             ></app-ta-input-dropdown>
           </div>
         </div>

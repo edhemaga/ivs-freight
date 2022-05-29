@@ -71,7 +71,6 @@
             isDropdown: true,
             dropdownWidthClass: 'w-col-4'
           }"
-          [canAddNew]="true"
           [options]="countryTypes"
           (selectedItem)="onSelectCountryType($event)"
         ></app-ta-input-dropdown>
@@ -88,7 +87,6 @@
             isDropdown: true,
             dropdownWidthClass: 'w-col-4'
           }"
-          [canAddNew]="true"
           [options]="stateTypes"
           (selectedItem)="onSelectStateType($event)"
         ></app-ta-input-dropdown>

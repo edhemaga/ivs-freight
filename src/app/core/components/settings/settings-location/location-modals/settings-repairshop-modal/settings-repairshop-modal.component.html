@@ -154,7 +154,7 @@
               *ngFor="let repair of services; trackBy: identity"
               class="repair-shop-service"
               [class.active]="repair.active"
-              (click)="onPickService(repair)"
+              (click)="repair.active = !repair.active"
             >
               <svg-icon src="{{ repair.svg }}"></svg-icon>
               <p>{{ repair.name }}</p>

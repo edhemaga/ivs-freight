@@ -297,9 +297,9 @@ export class CustomerTableComponent implements OnInit {
       console.log(this.selectedTab);
 
       if (this.selectedTab === 'broker') {
-        this.modalService.openModal(BrokerModalComponent, { size: 'small' });
+        this.modalService.openModal(BrokerModalComponent, { size: 'medium' });
       } else { 
-        this.modalService.openModal(ShipperModalComponent, { size: 'small' });
+        this.modalService.openModal(ShipperModalComponent, { size: 'medium' });
       }
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;

@@ -19,15 +19,16 @@ import {
   TrailerResponse,
   UpdateTrailerCommand,
 } from 'appcoretruckassist';
-import { insurancePolicyRegex, yearValidRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  insurancePolicyRegex,
+  yearValidRegex,
+} from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-trailer-modal',
   templateUrl: './trailer-modal.component.html',
   styleUrls: ['./trailer-modal.component.scss'],
-  animations: [
-    tab_modal_animation('animationTabsModal')
-  ],
+  animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
@@ -66,7 +67,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public animationObject = {value: this.selectedTab, params: {height: "0px"}}
+  public animationObject = {
+    value: this.selectedTab,
+    params: { height: '0px' },
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -112,10 +116,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       emptyWeight: [null],
       mileage: [null],
       volume: [null],
-      insurancePolicy: [
-        null,
-        insurancePolicyRegex,
-      ],
+      insurancePolicy: [null, insurancePolicyRegex],
     });
   }
 
@@ -135,7 +136,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onModalAction(data: {action: string, bool: boolean}): void {
+  public onModalAction(data: { action: string; bool: boolean }): void {
     if (data.action === 'close') {
       this.trailerForm.reset();
     } else {
@@ -163,8 +164,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-    let dotAnimation = document.querySelector(".animation-two-tabs");
-    this.animationObject = {value: this.selectedTab, params: {height: `${dotAnimation.getClientRects()[0].height}px`}}
+    let dotAnimation = document.querySelector('.animation-two-tabs');
+    this.animationObject = {
+      value: this.selectedTab,
+      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+    };
   }
 
   public openCloseCheckboxCard(event: any) {
@@ -181,21 +185,21 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: GetTrailerModalResponse) => {
-          this.trailerType = res.trailerTypes.map(item => {
+          this.trailerType = res.trailerTypes.map((item) => {
             return {
               ...item,
-              folder:'common', 
-              subFolder: 'trailers'
-            }
+              folder: 'common',
+              subFolder: 'trailers',
+            };
           });
           this.trailerMakeType = res.trailerMakes;
-          this.colorType = res.colors.map(item => {
+          this.colorType = res.colors.map((item) => {
             return {
               ...item,
-              folder:'common', 
+              folder: 'common',
               subFolder: 'colors',
-              logoName: 'ic_color.svg'
-            }
+              logoName: 'ic_color.svg',
+            };
           });
           this.trailerLengthType = res.trailerLengths;
           this.ownerType = res.owners;
@@ -215,21 +219,32 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
   private addTrailer(): void {
     const newData: CreateTrailerCommand = {
-       ...this.trailerForm.value,
-       trailerTypeId: this.selectedTrailerType.id,
-       trailerMakeId: this.selectedTrailerMake.id,
-       colorId: this.selectedColor ? this.selectedColor.id : null,
-       year: parseInt(this.trailerForm.get('year').value),
-       trailerLengthId: this.selectedTrailerLength.id,
-       ownerId: this.trailerForm.get('companyOwned').value ? null : this.selectedOwner.id,
-       axles: this.trailerForm.get('axles').value ? parseInt(this.trailerForm.get('axles').value) : null,
-       suspension: this.selectedSuspension ? this.selectedSuspension.value : null,
-       tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
-       doorType: this.selectedDoorType ? this.selectedDoorType.value : null,
-       reeferUnit: this.selectedReeferType ? this.selectedReeferType.value : null,
-       emptyWeight: this.trailerForm.get('emptyWeight').value
+      ...this.trailerForm.value,
+      trailerTypeId: this.selectedTrailerType.id,
+      trailerMakeId: this.selectedTrailerMake.id,
+      colorId: this.selectedColor ? this.selectedColor.id : null,
+      year: parseInt(this.trailerForm.get('year').value),
+      trailerLengthId: this.selectedTrailerLength.id,
+      ownerId: this.trailerForm.get('companyOwned').value
+        ? null
+        : this.selectedOwner.id,
+      axles: this.trailerForm.get('axles').value
+        ? parseInt(this.trailerForm.get('axles').value)
+        : null,
+      suspension: this.selectedSuspension
+        ? this.selectedSuspension.value
+        : null,
+      tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
+      doorType: this.selectedDoorType ? this.selectedDoorType.value : null,
+      reeferUnit: this.selectedReeferType
+        ? this.selectedReeferType.value
+        : null,
+      emptyWeight: this.trailerForm.get('emptyWeight').value
         ? parseFloat(
-            this.trailerForm.get('emptyWeight').value.toString().replace(/,/g, '')
+            this.trailerForm
+              .get('emptyWeight')
+              .value.toString()
+              .replace(/,/g, '')
           )
         : null,
       mileage: this.trailerForm.get('mileage').value
@@ -245,17 +260,17 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     };
 
     this.trailerModalService
-        .addTrailer(newData)
-        .pipe(untilDestroyed(this))
-        .subscribe({
-          next: () =>
+      .addTrailer(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () =>
           this.notificationService.success(
             'Trailer successfully added.',
             'Success:'
           ),
         error: () =>
           this.notificationService.error("Trailer can't be added.", 'Error:'),
-        })
+      });
   }
 
   private deleteTrailerById(id: number): void {
@@ -282,29 +297,40 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       colorId: this.selectedColor ? this.selectedColor.id : null,
       year: parseInt(this.trailerForm.get('year').value),
       trailerLengthId: this.selectedTrailerLength.id,
-      ownerId: this.trailerForm.get('companyOwned').value ? null : this.selectedOwner.id,
-      axles: this.trailerForm.get('axles').value ? parseInt(this.trailerForm.get('axles').value) : null,
+      ownerId: this.trailerForm.get('companyOwned').value
+        ? null
+        : this.selectedOwner.id,
+      axles: this.trailerForm.get('axles').value
+        ? parseInt(this.trailerForm.get('axles').value)
+        : null,
       tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
-      suspension: this.selectedSuspension ? this.selectedSuspension.value : null,
+      suspension: this.selectedSuspension
+        ? this.selectedSuspension.value
+        : null,
       doorType: this.selectedDoorType ? this.selectedDoorType.value : null,
-      reeferUnit: this.selectedReeferType ? this.selectedReeferType.value : null,
+      reeferUnit: this.selectedReeferType
+        ? this.selectedReeferType.value
+        : null,
       emptyWeight: this.trailerForm.get('emptyWeight').value
-       ? parseFloat(
-           this.trailerForm.get('emptyWeight').value.toString().replace(/,/g, '')
-         )
-       : null,
-     mileage: this.trailerForm.get('mileage').value
-       ? parseFloat(
-           this.trailerForm.get('mileage').value.toString().replace(/,/g, '')
-         )
-       : null,
-     volume: this.trailerForm.get('volume').value
-       ? parseFloat(
-           this.trailerForm.get('volume').value.toString().replace(/,/g, '')
-         )
-       : null,
+        ? parseFloat(
+            this.trailerForm
+              .get('emptyWeight')
+              .value.toString()
+              .replace(/,/g, '')
+          )
+        : null,
+      mileage: this.trailerForm.get('mileage').value
+        ? parseFloat(
+            this.trailerForm.get('mileage').value.toString().replace(/,/g, '')
+          )
+        : null,
+      volume: this.trailerForm.get('volume').value
+        ? parseFloat(
+            this.trailerForm.get('volume').value.toString().replace(/,/g, '')
+          )
+        : null,
     };
-   
+
     this.trailerModalService
       .updateTrailer(newData)
       .pipe(untilDestroyed(this))
@@ -347,10 +373,16 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             volume: res.volume,
             insurancePolicy: res.insurancePolicy,
           });
-          this.selectedTrailerType = res.trailerType.name ? res.trailerType : null;
-          this.selectedTrailerMake = res.trailerMake.name ? res.trailerMake : null;
+          this.selectedTrailerType = res.trailerType.name
+            ? res.trailerType
+            : null;
+          this.selectedTrailerMake = res.trailerMake.name
+            ? res.trailerMake
+            : null;
           this.selectedColor = res.color.name ? res.color : null;
-          this.selectedTrailerLength = res.trailerLength.name ? res.trailerLength : null;
+          this.selectedTrailerLength = res.trailerLength.name
+            ? res.trailerLength
+            : null;
           this.selectedOwner = res.owner.name ? res.owner : null;
           this.selectedSuspension = res.suspension.name ? res.suspension : null;
           this.selectedTireSize = res.tireSize.name ? res.tireSize : null;
@@ -363,40 +395,48 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onSelectTruckType(event: any) {
-    this.selectedTrailerType = event;
-  }
-
-  public onSelectTruckMake(event: any) {
-    this.selectedTrailerMake = event;
-  }
-
-  public onSelectColor(event: any) {
-    this.selectedColor = event;
-  }
-
-  public onSelectTrailerLength(event: any) {
-    this.selectedTrailerLength = event;
-  }
-
-  public onSelectOwner(event: any) {
-    this.selectedOwner = event;
-  }
-
-  public onSelectReeferUnit(event: any) {
-    this.selectedReeferType = event;
-  }
-
-  public onSelectSuspension(event: any) {
-    this.selectedSuspension = event;
-  }
-
-  public onSelectTireSize(event: any) {
-    this.selectedTireSize = event;
-  }
-
-  public onSelectDoorType(event: any) {
-    this.selectedDoorType = event;
+  public onSelectDropdown(event: any, action: string) {
+    switch (action) {
+      case 'trailer-type': {
+        this.selectedTrailerType = event;
+        break;
+      }
+      case 'trailer-make': {
+        this.selectedTrailerMake = event;
+        break;
+      }
+      case 'color': {
+        this.selectedColor = event;
+        break;
+      }
+      case 'trailer-length': {
+        this.selectedTrailerLength = event;
+        break;
+      }
+      case 'owner': {
+        this.selectedOwner = event;
+        break;
+      }
+      case 'reefer-unit': {
+        this.selectedReeferType = event;
+        break;
+      }
+      case 'suspension': {
+        this.selectedSuspension = event;
+        break;
+      }
+      case 'tire-size': {
+        this.selectedTireSize = event;
+        break;
+      }
+      case 'door-type': {
+        this.selectedDoorType = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   ngOnDestroy(): void {}

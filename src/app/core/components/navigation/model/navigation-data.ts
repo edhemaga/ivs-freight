@@ -305,12 +305,12 @@ export const generalNavigationData: NavigationModal[] = [
 
 export const toolsNavigationData: NavigationModal[] = [
   {
-    id: 1,
+    id: 11,
     name: 'Event',
     path: 'event',
   },
   {
-    id: 2,
+    id: 12,
     name: 'Task',
     path: 'task',
   },
@@ -319,12 +319,12 @@ export const toolsNavigationData: NavigationModal[] = [
 // Repair Navigation Data
 export const repairNavigationData: NavigationModal[] = [
   {
-    id: 1,
+    id: 13,
     name: 'Order',
     path: 'order',
   },
   {
-    id: 2,
+    id: 14,
     name: 'Shop',
     path: 'shop',
   },
@@ -333,26 +333,26 @@ export const repairNavigationData: NavigationModal[] = [
 // Fuel Navigation Data
 export const fuelNavigationData: NavigationModal[] = [
   {
-    id: 1,
+    id: 15,
     name: 'Purchase',
     path: 'purchase',
   },
   {
-    id: 2,
+    id: 16,
     name: 'Stop',
-    path: 'stop',
+    path: 'fuel-stop',
   },
 ];
 
 // Safety Navigation Data
 export const safetyNavigationData: NavigationModal[] = [
   {
-    id: 1,
+    id: 17,
     name: 'Violation',
     path: 'violation',
   },
   {
-    id: 2,
+    id: 18,
     name: 'Accident',
     path: 'accident',
   },
@@ -361,22 +361,22 @@ export const safetyNavigationData: NavigationModal[] = [
 // Accounting Navigation Data
 export const accountingNavigationData: NavigationModal[] = [
   {
-    id: 1,
+    id: 19,
     name: 'Credit',
     path: 'credit',
   },
   {
-    id: 2,
+    id: 20,
     name: 'Bonus',
     path: 'bonus',
   },
   {
-    id: 3,
+    id: 21,
     name: 'Deduction',
     path: 'deduction',
   },
   {
-    id: 4,
+    id: 22,
     name: 'Fuel',
     path: 'fuel',
   },
@@ -385,31 +385,31 @@ export const accountingNavigationData: NavigationModal[] = [
 // User Navigation Data
 export const userNavigationData: NavigationUserPanel[] = [
   {
-    id: 1,
+    id: 23,
     name: 'Profile Update',
     image: 'assets/svg/common/ic_pen.svg',
     action: 'update',
   },
   {
-    id: 2,
+    id: 24,
     name: 'User status',
     image: 'assets/svg/common/ic_disable-status.svg',
     action: 'status',
   },
   {
-    id: 3,
+    id: 25,
     name: 'Switch Company',
     image: 'assets/svg/common/ic_company.svg',
     action: 'company',
   },
   {
-    id: 4,
+    id: 26,
     name: 'Help Center',
     image: 'assets/svg/common/ic_helpcenter.svg',
     action: 'help',
   },
   {
-    id: 5,
+    id: 27,
     name: 'Logout',
     image: 'assets/svg/common/ic_logout.svg',
     action: 'logout',
@@ -419,21 +419,21 @@ export const userNavigationData: NavigationUserPanel[] = [
 export const footerData: FooterData[] = [
   // ROUTE WHAT'S NEW ?
   {
-    id: 1,
+    id: 29,
     image: 'assets/svg/common/ic_info.svg',
     text: "What's New",
     route: '/whatsnew',
     isRouteActive: false,
   },
   {
-    id: 2,
+    id: 30,
     image: 'assets/svg/common/ic_settings.svg',
     text: 'Settings',
     route: '/settings',
     isRouteActive: false,
   },
   {
-    id: 3,
+    id: 31,
     image: 'assets/svg/common/ic_profile.svg',
     text: {
       companyName: '',
