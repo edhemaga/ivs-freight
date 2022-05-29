@@ -104,6 +104,7 @@ import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-d
 import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 import { ProfileImagesComponent } from './profile-images/profile-images.component';
+import { FilterComponent } from './filter/filter.component';
 
 @NgModule({
   declarations: [
@@ -183,7 +184,8 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     InputFocusDirective,
     InputRestrictionDirective,
     TextareaAutosizeDirective,
-    ProfileImagesComponent
+    ProfileImagesComponent,
+    FilterComponent
   ],
   imports: [
     CommonModule,
@@ -335,7 +337,8 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     InputRestrictionDirective,
     TextareaAutosizeDirective,
     AppTooltipeModule,
-    ProfileImagesComponent
+    ProfileImagesComponent,
+    FilterComponent
   ],
   providers: [
     DatePipe,
