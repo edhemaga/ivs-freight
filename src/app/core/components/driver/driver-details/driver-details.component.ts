@@ -22,39 +22,35 @@ import { DriverTService } from '../state/driver.service';
 })
 export class DriverDetailsComponent implements OnInit, OnDestroy {
   public driverDetailsConfig: any[] = [];
-  dataTest: any;
-  cdlLength:number;
-  mvrLength:number;
-  testLength:number;
-  medicalLength:number;
-  public data:any;
-  private destroy$: Subject<void> = new Subject<void>();
+  public dataTest: any;
+  public cdlLength: number;
+  public mvrLength: number;
+  public testLength: number;
+  public medicalLength: number;
+  public data: any;
+
   constructor(
-    private driversQuery: DriversQuery,
     private activated_route: ActivatedRoute,
-    private driverTService: DriverTService,
-    private modalService: ModalService,
-    private activatedRoute: ActivatedRoute
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
     this.initTableOptions();
-    this.data=this.activated_route.snapshot.data;
-    this.cdlLength=this.data.driver.cdls.length
-    this.mvrLength=this.data.driver.mvrs.length
-    this.medicalLength=this.data.driver.medicals.length
-    this.testLength=this.data.driver.tests.length
-    
+    this.data = this.activated_route.snapshot.data;
+    this.cdlLength = this.data.driver.cdls.length;
+    this.mvrLength = this.data.driver.mvrs.length;
+    this.medicalLength = this.data.driver.medicals.length;
+    this.testLength = this.data.driver.tests.length;
+
     this.detailCongif();
-    
   }
-   
-     /**Function retrun id */
+
+  /**Function retrun id */
   public identity(index: number, item: any): number {
     return item.id;
   }
-  
-     /**Function template and names for header and other options in header */
+
+  /**Function template and names for header and other options in header */
   detailCongif() {
     this.driverDetailsConfig = [
       {
@@ -66,26 +62,26 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         id: 1,
         name: 'CDL',
         template: 'cdl',
-        data:this.cdlLength
+        data: this.cdlLength,
       },
       {
         id: 2,
         name: 'Drug & Alcohol',
         template: 'drug-alcohol',
-        data:this.testLength
+        data: this.testLength,
       },
       {
         id: 3,
         name: 'Medical',
         template: 'medical',
-        data:this.medicalLength
+        data: this.medicalLength,
       },
       {
         id: 4,
         name: 'MVR',
         template: 'mvr',
-        data:this.mvrLength
-        }
+        data: this.mvrLength,
+      },
     ];
   }
   /**Function for dots in cards */
@@ -115,7 +111,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           class: 'regular-text',
           contentType: 'print',
         },
-       
+
         {
           title: 'Edit',
           name: 'edit',
@@ -142,26 +138,41 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(action: string): void {
-    const driver_id=this.activated_route.snapshot.paramMap.get('id');
-    if(action.includes('Drug')) {
-      action = 'DrugAlcohol'
+    const driver_id = this.activated_route.snapshot.paramMap.get('id');
+    if (action.includes('Drug')) {
+      action = 'DrugAlcohol';
     }
-    console.log(action)
     switch (action) {
       case 'CDL': {
-        this.modalService.openModal(DriverCdlModalComponent, {size: 'small'}, {id: driver_id, type: 'new-licence'})
+        this.modalService.openModal(
+          DriverCdlModalComponent,
+          { size: 'small' },
+          { id: driver_id, type: 'new-licence' }
+        );
         break;
       }
       case 'DrugAlcohol': {
-        this.modalService.openModal(DriverDrugAlcoholModalComponent, {size: 'small'}, {id: driver_id, type: 'new-drug'})
+        this.modalService.openModal(
+          DriverDrugAlcoholModalComponent,
+          { size: 'small' },
+          { id: driver_id, type: 'new-drug' }
+        );
         break;
       }
       case 'Medical': {
-        this.modalService.openModal(DriverMedicalModalComponent, {size: 'small'}, {id: driver_id, type: 'new-medical'})
+        this.modalService.openModal(
+          DriverMedicalModalComponent,
+          { size: 'small' },
+          { id: driver_id, type: 'new-medical' }
+        );
         break;
       }
       case 'MVR': {
-        this.modalService.openModal(DriverMvrModalComponent, {size: 'small'}, {id: driver_id, type: 'new-mvr'})
+        this.modalService.openModal(
+          DriverMvrModalComponent,
+          { size: 'small' },
+          { id: driver_id, type: 'new-mvr' }
+        );
         break;
       }
       default: {
@@ -170,8 +181,5 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  ngOnDestroy(): void {}
 }

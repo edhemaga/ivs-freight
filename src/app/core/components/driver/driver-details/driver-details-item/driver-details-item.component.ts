@@ -11,23 +11,16 @@ import {
 } from '@angular/core';
 import moment from 'moment';
 import { Subject } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
-import { driver_details_animation } from '../driver-details.animation';
 
-import { DriversQuery } from '../../state/driver.query';
 import { ActivatedRoute } from '@angular/router';
-import { DriverTService } from '../../state/driver.service';
-import { DomSanitizer } from '@angular/platform-browser';
-
-
+import { DriverShortResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-driver-details-item',
   templateUrl: './driver-details-item.component.html',
   styleUrls: ['./driver-details-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  animations: [driver_details_animation('showHideDetails')],
+  encapsulation: ViewEncapsulation.None
 })
 export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
@@ -35,7 +28,6 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public cdlNote: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
   public toggler: boolean = false;
-  private destroy$: Subject<void> = new Subject<void>();
 
   public arrayDrivers: any = [];
   public arrayDriverName: any = '';
@@ -44,7 +36,8 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public showMoreEmployment: boolean = false;
 
   public dataTest: any;
-  public driverData: any;
+  public driverData: DriverShortResponse;
+
   constructor(
     private activated_route: ActivatedRoute,
   ) {
@@ -124,11 +117,11 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   }
 
 
-  
   /**Function return driver by id */
   public getDriverById() {
     this.driverData = this.activated_route.snapshot.data;
   }
+
   public getDriversList() {
     for (let i = 0; i < this.arrayDrivers.length; i++) {
       this.arrayDrivers[i];
@@ -264,10 +257,12 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   }
   /**Function format date */
   public formatDate(date: string) {
+    console.log("FORMAT DATE RENDER")
     return moment(date).format('MM/DD/YY');
   }
   /**Function format phone number */
   public formatPhone(phoneNumberString: string) {
+    console.log("FORMAT PHONE RENDER")
     const value = phoneNumberString;
     const number = value?.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
     phoneNumberString = number;
@@ -331,8 +326,6 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
       });
     });
   }
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+
+  ngOnDestroy(): void {}
 }
