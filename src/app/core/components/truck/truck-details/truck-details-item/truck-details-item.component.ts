@@ -34,7 +34,7 @@ export class TruckDetailsItemComponent implements OnInit {
   public titleNote: FormControl = new FormControl();
 
   private destory$: Subject<void> = new Subject<void>();
-  public toggler: boolean = false;
+  public toggler: boolean[] = [];
   cardNumberFake: string = '1234567890';
   truckName: string = '';
   isAccountVisible: boolean = true;
@@ -126,9 +126,14 @@ export class TruckDetailsItemComponent implements OnInit {
   }
   
   /**Function for toggle page in cards */
-  public toggleResizePage(value: boolean) {
-    this.toggler = value;
+  public toggleResizePage(value: number) {
+    this.toggler[value] = !this.toggler[value];
     console.log(this.toggler);
+  }
+
+  public optionsEv(any:any,action:string){
+    const option={id:any.id, type:action}
+    console.log(option);
   }
 
   public onFileAction(action: string) {

@@ -103,19 +103,36 @@
               src="{{ bank.svg }}"
             ></svg-icon>
             <div class="show-hide">
-            <p *ngIf="bank.value" class="additional-template-value">
-              {{ bank.hide ? hiddenPassword(bank.value,4) : bank.value  }}
-            </p>
-            <svg-icon
-                *ngIf="bank.hide"
-                class="hidden-svg-eye"    
-                (click)="showHideValue(bank.value)"
-                src="{{
+              <p class="additional-template-value">
+                <span *ngIf="bank.hide">
+                  {{
+                    accountText ? accountText : hiddenPassword(bank.value, 4)
+                  }}</span
+                >
+                <span *ngIf="!bank.hide"> {{ bank.value }}</span>
+              </p>
+              <span
+                *ngIf="bank.hide !== null"
+                tooltipBackground="#6c6c6c"
+                ngbTooltip
+                [mainTooltip]="
                   isAccountVisible
-                    ? 'assets/svg/common/ic_eye-visible.svg'
-                    : 'assets/svg/common/ic_eye-hidden.svg'
-                }}"
-              ></svg-icon>
+                    ? 'Hide Account Number'
+                    : 'Show Account Number'
+                "
+                position="top"
+              >
+                <svg-icon
+                  *ngIf="bank.hide"
+                  class="hidden-svg-eye"
+                  (click)="showHideValue(bank.value)"
+                  src="{{
+                    isAccountVisible
+                      ? 'assets/svg/common/ic_eye-visible.svg'
+                      : 'assets/svg/common/ic_eye-hidden.svg'
+                  }}"
+                ></svg-icon>
+              </span>
             </div>
           </div>
         </div>
@@ -155,10 +172,10 @@
               ></svg-icon>
 
               <p class="item-body-cvc">
-                {{ cardHide(bankC.cardNumber)}}
+                {{ cardHide(bankC.cardNumber) }}
               </p>
             </div>
-            <p class="item-body-cvc">{{ cvcHide(bankC.cvc)}}</p>
+            <p class="item-body-cvc">{{ cvcHide(bankC.cvc) }}</p>
             <p class="item-body-nick-name">{{ bankC.expiration }}</p>
           </div>
         </div>

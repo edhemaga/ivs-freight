@@ -15,23 +15,25 @@
           [cardNameCommon]="cdl?.cdlNumber"
           [expDateClose]="formatDate(cdl?.expDate)"
           [hasCopyIcon]="true"
+          [optionsId]="cdl.id"
+          (dropActions)="optionsEv($event,'edit-licence')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
-              <div class="card-row-issued">
-                <div class="card-item">
+              <div class="card-restriction-endorsment card-restriction-class">
+                <!-- <div class="card-item">
                   <div class="card-item-name">State</div>
                   <div class="card-item-value">
                     {{ cdl.state.stateShortName }}
                   </div>
+                </div> -->
+                <div class="card-restriction">
+                  <div class="restriction-name">Class</div>
+                  <div class="restriction-item-value">{{ cdl?.classType }}</div>
                 </div>
-                <div class="card-item">
-                  <div class="card-item-name">Class</div>
-                  <div class="card-item-value">{{ cdl?.classType }}</div>
-                </div>
-                <div class="card-item">
-                  <div class="card-item-name">Issued</div>
-                  <div class="card-item-value">
+                <div class="card-restriction">
+                  <div class="restriction-name">Issued</div>
+                  <div class="restriction-item-value">
                     {{ formatDate(cdl?.issueDate) }}
                   </div>
                 </div>
@@ -155,19 +157,21 @@
           [cardNameCommon]="test.testType"
           (resizePage)="toggleResizePage($event)"
           [expDateClose]="formatDate(test?.testingDate)"
+          [optionsId]="test.id"
+          (dropActions)="optionsEv($event,'edit-drug')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
-              <div class="card-row-endor">
-                <div class="card-item">
-                  <div class="card-item-name">Reason</div>
-                  <div class="card-item-value">
+              <div class="card-restriction-endorsment card-restriction-class">
+                <div class="card-restriction">
+                  <div class="restriction-name">Reason</div>
+                  <div class="restriction-item-value">
                     {{ test?.testReason.reason }}
                   </div>
                 </div>
-                <div class="card-item">
-                  <div class="card-item-name">Issued</div>
-                  <div class="card-item-value">
+                <div class="card-restriction">
+                  <div class="restriction-name">Issued</div>
+                  <div class="restriction-item-value">
                     {{ formatDate(test?.testingDate) }}
                   </div>
                 </div>
@@ -183,6 +187,8 @@
           [options]="dataTest"
           [cardNameCommon]="formatDate(med?.issueDate)"
           [expDateClose]="formatDate(med?.expDate)"
+          [optionsId]="med.id"
+          (dropActions)="optionsEv($event,'edit-medical')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -209,6 +215,8 @@
           (resizePage)="toggleResizePage($event)"
           [cardNameCommon]="formatDate(mvr?.issueDate)"
           [expDateClose]="formatDate(mvr?.issueDate)"
+          [optionsId]="mvr.id"
+          (dropActions)="optionsEv($event,'edit-mvr')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">

@@ -10,23 +10,23 @@
       ].includes(headerText)
     "
   >
-    <div class="icon-text-wrapper">
+    <div
+    
+     class="icon-text-wrapper">
+     <span
+     ngbTooltip
+     [mainTooltip]="tooltipHeaderName"
+     position="bottom"
+     tooltipBackground="#6C6C6C"
+     >
       <svg-icon
-        [appTooltip]="tooltipHeaderName"
-        [position]="'bottom-right'"
-        [tooltipBackground]="'#6c6c6c'"
-        [tooltipColor]="'#ffffff'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="-100"
+        
         routerLink="{{ route }}"
         class="header-arrow"
         src="assets/svg/common/ic_arrow-left.svg"
       >
       </svg-icon>
+    </span>
       <p class="disable-selection">{{ headerText }}</p>
     </div>
     <div class="icon-right">
@@ -38,40 +38,39 @@
     </div>
   </div>
 
- 
-    <div>
+  <div>
+    <div
+      class="header-toolbar"
+      *ngIf="
+        ![
+          'Truck Details',
+          'Driver Details',
+          'Trailer Details',
+          'Repair Shop Details'
+        ].includes(headerText)
+      "
+    >
       <div
-        class="header-toolbar"
-        *ngIf="
-          !['Truck Details', 'Driver Details', 'Trailer Details','Repair Shop Details'].includes(
-            headerText
-          )
-        "
+        class="counter-text"
+        [ngClass]="{ 'has-counter-header': counterData }"
       >
-        <div
-          class="counter-text"
-          [ngClass]="{ 'has-counter-header': counterData }"
+        <app-ta-counter
+          *ngIf="counterData"
+          [countBackgroud]="'#F3F3F3'"
+          [countColor]="'#919191'"
+          [countHeight]="'24px'"
+          [countWidth]="'24px'"
+          [count]="counterData"
         >
-          <app-ta-counter
-            *ngIf="counterData"
-            [countBackgroud]="'#F3F3F3'"
-            [countColor]="'#919191'"
-            [countHeight]="'24px'"
-            [countWidth]="'24px'"
-            [count]="counterData"
-          >
-          </app-ta-counter>
-          <p class="header-name disable-selection">{{ headerText }}</p>
-          <div *ngIf="hasIcon" class="repair-header-icons">
-            <span class="ic-hed" *ngFor="let ic of arrayIcons">
+        </app-ta-counter>
+        <p class="header-name disable-selection">{{ headerText }}</p>
+        <div *ngIf="hasIcon" class="repair-header-icons">
+          <span class="ic-hed" *ngFor="let ic of arrayIcons">
             <div class="border-line-left"></div>
-            <svg-icon
-              class="single-repair-icon"
-              src="{{ic.icon}}"
-            ></svg-icon>
+            <svg-icon class="single-repair-icon" src="{{ ic.icon }}"></svg-icon>
           </span>
           <div class="border-line-left"></div>
-            <!-- <svg-icon
+          <!-- <svg-icon
               class="single-repair-icon"
               src="assets/svg/common/ic_clock.svg"
             ></svg-icon>
@@ -102,18 +101,28 @@
             ></svg-icon>
             <div class="border-line-left"></div> -->
 
-            <div class="total-cost">$ 77.58M</div>
+          <div class="total-cost">$ 77.58M</div>
+        </div>
+      </div>
+      <div class="header-plus-button">
+        <div *ngIf="hasDateArrow" class="date-arrow-repair">
+          <p class="date-repair">{{ customText }}</p>
+          <div class="icons-repair">
+            <svg-icon
+              [ngClass]="{ clicked: up }"
+              (click)="changeDataArrowUpFun($event)"
+              class="first-icon"
+              src="assets/svg/common/fill_arrow_down.svg"
+            ></svg-icon>
+            <svg-icon
+              [ngClass]="{ clicked: down }"
+              (click)="changeDataArrowDownFun($event)"
+              class="second-icon"
+              src="assets/svg/common/fill_arrow_down.svg"
+            ></svg-icon>
           </div>
         </div>
-        <div class="header-plus-button">
-          <div *ngIf="hasDateArrow" class="date-arrow-repair">
-             <p class="date-repair">{{customText}}</p>
-             <div class="icons-repair">
-               <svg-icon [ngClass]="{'clicked':up}" (click)="changeDataArrowUpFun($event)" class="first-icon" src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
-               <svg-icon [ngClass]="{'clicked':down}" (click)="changeDataArrowDownFun($event)" class="second-icon" src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
-             </div>
-          </div>
-          <div class="hide-buttons" *ngIf="!hidePlus">
+        <div class="hide-buttons" *ngIf="!hidePlus">
           <div class="border-line-left"></div>
           <svg-icon
             class="icon-plus-header"
@@ -122,8 +131,7 @@
           >
           </svg-icon>
         </div>
-        </div>
       </div>
     </div>
-    </div>
-
+  </div>
+</div>
