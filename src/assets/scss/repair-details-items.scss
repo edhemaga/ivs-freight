@@ -96,13 +96,13 @@ $transition: all 0.3s ease-in-out;
     padding: 8px 6px;
     width: 732px;
     background-color: $color-white;
-    max-height: 600px;
     border-radius: 3px;
+    height: calc(100vh - 62px);
     .repair-items-wrapper {
         overflow-y: scroll;
-        max-height: 530px;
+        height: calc(96vh - 62px);
         overflow-x: hidden;
-        height: fit-content;
+
         &::-webkit-scrollbar {
             width: 4px;
         }
@@ -146,7 +146,6 @@ $transition: all 0.3s ease-in-out;
     }
     .repair-items {
         padding: 0 6px;
-        max-height: 900px;
         .unit {
             font-size: $font-size14;
             font-weight: $font-bold;
