@@ -1,3 +1,4 @@
+
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,6 +8,7 @@ import {
   EditMedicalCommand,
   MedicalResponse,
 } from 'appcoretruckassist';
+import moment from 'moment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -149,9 +151,9 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: MedicalResponse) => {
           this.medicalForm.patchValue({
-            issueDate: res.issueDate,
-            expDate: res.expDate,
-            note: null,
+            issueDate:  moment(new Date(res.issueDate)).format('YYYY-MM-DD'), 
+            expDate:moment(new Date(res.expDate)).format('YYYY-MM-DD'),
+            note: res.note,
           });
         },
         error: () => {

@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TodoStatus } from './todoStatus';
 
 
 export interface CreateTodoCommand { 
     departmentIds?: Array<number> | null;
     title?: string | null;
     description?: string | null;
-    status?: TodoStatus;
     url?: string | null;
     deadline?: string;
     companyUserIds?: Array<number> | null;

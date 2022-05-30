@@ -236,7 +236,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     .subscribe({
       next: (res: TestResponse) => {
         this.drugForm.patchValue({
-          testType: res.testType,
+          testType: res.testType.name,
           testReasonId: res.testReason.reason,
           testingDate: moment(new Date(res.testingDate)).format('YYYY-MM-DD'),
           note: res.note

@@ -14,13 +14,18 @@ import { Subject } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
 import { DriverShortResponse } from 'appcoretruckassist';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { DriverCdlModalComponent } from '../driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from '../driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from '../driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from '../driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 
 @Component({
   selector: 'app-driver-details-item',
   templateUrl: './driver-details-item.component.html',
   styleUrls: ['./driver-details-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
@@ -40,6 +45,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
 
   constructor(
     private activated_route: ActivatedRoute,
+    private modalService: ModalService
   ) {
     this.arrayDrivers = [
       {
@@ -103,19 +109,14 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
         folder: null,
       },
     ];
-
-   
   }
 
   ngOnInit(): void {
-    console.log(this.data);
     this.initTableOptions();
     this.getDriversList();
 
     this.getDriverById();
- 
   }
-
 
   /**Function return driver by id */
   public getDriverById() {
@@ -135,22 +136,21 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     this.driverId < this.arrayDrivers.length - 1
       ? this.driverId++
       : (this.driverId = 0);
-    console.log(this.driverId);
+
     this.arrayDriverName =
       this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]];
-    console.log(this.arrayDrivers.length);
   }
 
   public previousDriver() {
     this.driverId < 1
       ? (this.driverId = this.arrayDrivers.length)
       : this.driverId--;
-    console.log(this.driverId);
+
     this.arrayDriverName =
       this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]];
   }
-  
-   /**Function for dots in cards */
+
+  /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataTest = {
       disabledMutedStyle: null,
@@ -184,57 +184,57 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
       export: true,
     };
   }
-  
-  public optionsEv(any:any,action:string){
-    const option={id:any.id, type:action}
-    console.log(option);
-  }
-  public onModalAction() {
-    // const data = {
-    //   type: 'new',
-    //   vehicle: 'truck',
-    // };
-    // switch (this.data.template) {
-    //   case 'cdl': {
-    //     this.customModalService.openModal(
-    //       DriverCdlModalComponent,
-    //       { data },
-    //       null,
-    //       { size: 'small' }
-    //     );
-    //     break;
-    //   }
-    //   case 'drugAlcohol': {
-    //     this.customModalService.openModal(
-    //       DriverDrugAlcoholModalComponent,
-    //       { data },
-    //       null,
-    //       { size: 'small' }
-    //     );
-    //     break;
-    //   }
-    //   case 'medical': {
-    //     this.customModalService.openModal(
-    //       DriverMedicalModalComponent,
-    //       { data },
-    //       null,
-    //       { size: 'small' }
-    //     );
-    //     break;
-    //   }
-    //   case 'mvr': {
-    //     this.customModalService.openModal(
-    //       DriverMvrModalComponent,
-    //       { data },
-    //       null,
-    //       { size: 'small' }
-    //     );
-    //     break;
-    //   }
-    //   default: {
-    //     break;
-    //   }
-    // }
+
+  public optionsEvent(any: any, action: string) {
+    switch (action) {
+      case 'edit-licence': {
+        this.modalService.openModal(
+          DriverCdlModalComponent,
+          { size: 'small' },
+          {
+            id: any.id,
+            type: action,
+          }
+        );
+        break;
+      }
+      case 'edit-drug': {
+        this.modalService.openModal(
+          DriverDrugAlcoholModalComponent,
+          { size: 'small' },
+          {
+            id: any.id,
+            type: action,
+          }
+        );
+        break;
+      }
+      case 'edit-medical': {
+        this.modalService.openModal(
+          DriverMedicalModalComponent,
+          { size: 'small' },
+          {
+            id: any.id,
+            type: action,
+          }
+        );
+        break;
+      }
+      case 'edit-mvr': {
+        this.modalService.openModal(
+          DriverMvrModalComponent,
+          { size: 'small' },
+          {
+            id: any.id,
+            type: action,
+          }
+        );
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   public onButtonAction(data: { template: string; action: string }) {
@@ -257,12 +257,10 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   }
   /**Function format date */
   public formatDate(date: string) {
-    console.log("FORMAT DATE RENDER")
     return moment(date).format('MM/DD/YY');
   }
   /**Function format phone number */
   public formatPhone(phoneNumberString: string) {
-    console.log("FORMAT PHONE RENDER")
     const value = phoneNumberString;
     const number = value?.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
     phoneNumberString = number;
@@ -274,7 +272,6 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     const dateC = moment().format();
     const year = dateB.diff(dateC, 'year');
     const days = dateB.diff(dateC, 'days');
-    console.log(year);
   }
 
   public formatText(data: any, type: boolean, numOfCharacters: string) {
@@ -291,16 +288,15 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
         )}</span>` + item.endorsementName.substring(numOfCharacters)
     );
   }
-  
+
   /**Function retrun id */
   public identity(index: number, item: any): number {
     return item.id;
   }
-  
-   /**Function for toggle page in cards */
+
+  /**Function for toggle page in cards */
   public toggleResizePage(value: boolean) {
     this.toggler = value;
-    console.log(this.toggler);
   }
   public onFileAction(action: string) {
     switch (action) {

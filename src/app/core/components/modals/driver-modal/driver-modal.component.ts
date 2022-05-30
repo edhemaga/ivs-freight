@@ -38,7 +38,7 @@ import { DriverTService } from '../../driver/state/driver.service';
   animations: [
     tab_modal_animation('animationTabsModal'),
     card_modal_animation('showHidePayroll', '6px'),
-  ]
+  ],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -395,8 +395,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-    
-    this.uploadFileService.visibilityDropZone(this.selectedTab === 3)
+
+    this.uploadFileService.visibilityDropZone(this.selectedTab === 3);
 
     let dotAnimation = document.querySelector('.animation-three-tabs');
     this.animationObject = {
@@ -727,7 +727,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string): void {
-    switch(action) {
+    switch (action) {
       case 'bank': {
         console.log(event);
         this.selectedBank = event;
@@ -741,7 +741,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    
   }
 
   public onUploadImage(event: any) {

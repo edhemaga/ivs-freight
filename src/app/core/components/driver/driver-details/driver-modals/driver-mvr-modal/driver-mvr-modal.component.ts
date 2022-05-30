@@ -12,6 +12,7 @@ import {
 import { DriverTService } from '../../../state/driver.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MvrTService } from '../../../state/mvr.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-driver-mvr-modal',
@@ -145,8 +146,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: MvrResponse) => {
           this.mvrForm.patchValue({
-            issueDate: res.issueDate,
-            note: null,
+            issueDate: moment(new Date(res.issueDate)).format('YYYY-MM-DD'),
+            note: res.note,
           });
         },
         error: () => {
