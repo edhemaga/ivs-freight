@@ -104,6 +104,7 @@ import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-d
 import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 import { ProfileImagesComponent } from './profile-images/profile-images.component';
+import { FilterComponent } from './filter/filter.component';
 import { FuelTotalPipe } from '../modals/fuel-modals/fuel-total.pipe';
 import { FuelPurchaseModalComponent } from '../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
@@ -191,7 +192,8 @@ import { ViolationModalComponent } from '../safety/violation/violation-modal/vio
     InputFocusDirective,
     InputRestrictionDirective,
     TextareaAutosizeDirective,
-    ProfileImagesComponent
+    ProfileImagesComponent,
+    FilterComponent
   ],
   imports: [
     CommonModule,
@@ -347,7 +349,8 @@ import { ViolationModalComponent } from '../safety/violation/violation-modal/vio
     InputRestrictionDirective,
     TextareaAutosizeDirective,
     AppTooltipeModule,
-    ProfileImagesComponent
+    ProfileImagesComponent,
+    FilterComponent
   ],
   providers: [
     DatePipe,

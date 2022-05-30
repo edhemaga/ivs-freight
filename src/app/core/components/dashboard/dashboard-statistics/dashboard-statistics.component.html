@@ -44,7 +44,7 @@
                [ngStyle]="{ width: (dayOfPercentage[item.name] + '%') }"
                class="percentage_item"></div>
         </div>
-        <div class="other_groups d-flex">
+        <div class="other_groups d-flex"> 
           <div [innerHTML]="data[item.name] ? data[item.name]['applicants' + item.sufix] : 0" class="group_item">0</div>
           <div [innerHTML]="data[item.name] ? data[item.name]['drivers' + item.sufix] : 0" class="group_item"></div>
           <div [innerHTML]="data[item.name] ? data[item.name]['trucks' + item.sufix] : 0" class="group_item"></div>
