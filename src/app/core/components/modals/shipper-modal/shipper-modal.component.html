@@ -37,7 +37,7 @@
             ></app-ta-input>
           </div>
         </div>
-        <div class="phone-ext-email">
+        <div class="phone-extension-medium-modal">
           <div
             class="phone-extension"
             [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
@@ -58,6 +58,10 @@
             <div
               class="extension-field"
               *ngIf="!isPhoneExtExist"
+              ngbTooltip
+              mainTooltip="Add Extension"
+              position="top"
+              tooltipBackground="#6c6c6c"
               (click)="isPhoneExtExist = !isPhoneExtExist"
             >
               <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
@@ -69,7 +73,8 @@
                 name: 'Phone Extension',
                 type: 'text',
                 label: 'Ext.',
-                maxLength: 3
+                maxLength: 3,
+                placeholderIcon: 'phone-extension'
               }"
             ></app-ta-input>
           </div>

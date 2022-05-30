@@ -14,5 +14,6 @@
 export interface MvrResponse { 
     id?: number;
     issueDate?: string;
+    note?: string | null;
 }
 

@@ -10,7 +10,6 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
-import { DriverModalService } from './driver-modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   CheckOwnerSsnEinResponse,
@@ -31,6 +30,7 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-modal-upload/ta-upload-file.service';
+import { DriverTService } from '../../driver/state/driver.service';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -38,7 +38,7 @@ import { TaUploadFileService } from '../../shared/ta-modal-upload/ta-upload-file
   animations: [
     tab_modal_animation('animationTabsModal'),
     card_modal_animation('showHidePayroll', '6px'),
-  ]
+  ],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -49,7 +49,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public labelsPayType: any[] = [];
 
   public isOwner: boolean = false;
-  public isBankSelected: boolean = false;
 
   public selectedTab: number = 1;
   public selectedOwnerTab: any = null;
@@ -112,7 +111,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal,
     private mockModalService: MockModalService,
-    private driverModalService: DriverModalService,
+    private driverTService: DriverTService,
     private notificationService: NotificationService,
     private modalService: ModalService,
     private uploadFileService: TaUploadFileService
@@ -139,7 +138,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
     // Change Driver Status
     if (data.action === 'deactivate' && this.editData) {
-      this.driverModalService
+      this.driverTService
         .changeDriverStatus(this.editData.id)
         .pipe(untilDestroyed(this))
         .subscribe({
@@ -278,8 +277,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .get('bankId')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value) {
-          this.isBankSelected = true;
+        if (this.selectedBank) {
           this.inputService.changeValidators(
             this.driverForm.get('routing'),
             true,
@@ -292,7 +290,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             accountBankRegex
           );
         } else {
-          this.isBankSelected = false;
           this.inputService.changeValidators(
             this.driverForm.get('routing'),
             false
@@ -398,8 +395,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-    
-    this.uploadFileService.visibilityDropZone(this.selectedTab === 3)
+
+    this.uploadFileService.visibilityDropZone(this.selectedTab === 3);
 
     let dotAnimation = document.querySelector('.animation-three-tabs');
     this.animationObject = {
@@ -434,7 +431,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       )
       .subscribe((value) => {
         if (value) {
-          this.driverModalService
+          this.driverTService
             .checkOwnerEinNumber(value)
             .pipe(untilDestroyed(this))
             .subscribe({
@@ -467,7 +464,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   private getDriverDropdowns(): void {
-    this.driverModalService
+    this.driverTService
       .getDriverDropdowns()
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -540,18 +537,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         : null,
     };
     console.log(newData);
-    // this.driverModalService
-    //   .addDriver(newData)
-    //   .pipe(untilDestroyed(this))
-    //   .subscribe({
-    //     next: () =>
-    //       this.notificationService.success(
-    //         'Driver successfully added.',
-    //         'Success:'
-    //       ),
-    //     error: () =>
-    //       this.notificationService.error("Driver can't be added.", 'Error:'),
-    //   });
+    this.driverTService
+      .addDriver(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () =>
+          this.notificationService.success(
+            'Driver successfully added.',
+            'Success:'
+          ),
+        error: () =>
+          this.notificationService.error("Driver can't be added.", 'Error:'),
+      });
   }
 
   private updateDriver(id: number): void {
@@ -613,7 +610,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     console.log(newData);
 
-    this.driverModalService
+    this.driverTService
       .updateDriver(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -628,7 +625,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   private editDriverById(id: number): void {
-    this.driverModalService
+    this.driverTService
       .getDriverById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -713,8 +710,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   private deleteDriverById(id: number): void {
-    this.driverModalService
-      .deleteDriverByid(id)
+    this.driverTService
+      .deleteDriverById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
@@ -730,8 +727,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string): void {
-    switch(action) {
+    switch (action) {
       case 'bank': {
+        console.log(event);
         this.selectedBank = event;
         break;
       }
@@ -743,7 +741,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    
   }
 
   public onUploadImage(event: any) {

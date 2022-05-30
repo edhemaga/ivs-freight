@@ -11,6 +11,7 @@
  */
 import { BrokerContactResponse } from './brokerContactResponse';
 import { BrokerReviewResponse } from './brokerReviewResponse';
+import { EnumValue } from './enumValue';
 import { PoBoxEntity } from './poBoxEntity';
 import { CreditType } from './creditType';
 import { AddressEntity } from './addressEntity';
@@ -29,8 +30,9 @@ export interface BrokerResponse {
     mainPoBox?: PoBoxEntity;
     billingPoBox?: PoBoxEntity;
     creditType?: CreditType;
+    creditLimit?: number | null;
     availableCredit?: number | null;
-    payTerm?: number | null;
+    payTerm?: EnumValue;
     ban?: boolean;
     dnu?: boolean;
     note?: string | null;

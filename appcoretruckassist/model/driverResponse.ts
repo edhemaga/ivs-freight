@@ -35,6 +35,7 @@ export interface DriverResponse {
     avatar?: string | null;
     address?: AddressEntity;
     dateOfBirth?: string | null;
+    dateTerminated?: string | null;
     bank?: BankResponse;
     account?: string | null;
     routing?: string | null;
@@ -47,7 +48,7 @@ export interface DriverResponse {
     team?: PerMileEntity;
     commissionSolo?: number | null;
     commissionTeam?: number | null;
-    createdAt?: string;
+    hired?: string | null;
     twic?: boolean;
     twicExpDate?: string | null;
     fuelCard?: string | null;
