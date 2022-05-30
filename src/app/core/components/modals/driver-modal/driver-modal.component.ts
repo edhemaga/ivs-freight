@@ -49,7 +49,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public labelsPayType: any[] = [];
 
   public isOwner: boolean = false;
-  public isBankSelected: boolean = false;
 
   public selectedTab: number = 1;
   public selectedOwnerTab: any = null;
@@ -278,8 +277,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .get('bankId')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value) {
-          this.isBankSelected = true;
+        if (this.selectedBank) {
           this.inputService.changeValidators(
             this.driverForm.get('routing'),
             true,
@@ -292,7 +290,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             accountBankRegex
           );
         } else {
-          this.isBankSelected = false;
           this.inputService.changeValidators(
             this.driverForm.get('routing'),
             false
@@ -732,6 +729,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public onSelectDropdown(event: any, action: string): void {
     switch(action) {
       case 'bank': {
+        console.log(event);
         this.selectedBank = event;
         break;
       }

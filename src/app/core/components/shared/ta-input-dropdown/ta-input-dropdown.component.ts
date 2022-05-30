@@ -234,16 +234,18 @@ export class TaInputDropdownComponent
       ...this.inputConfig,
       placeholder: '',
     };
+    this.selectedItem.emit(null);
   }
 
   public addNewItem(): void {
     const newItem = {
-      id: uuidv4(),
+      id: this.options.length,
       name: this.getSuperControl.value,
     };
     this.originalOptions = [...this.originalOptions, newItem];
     this.options = this.originalOptions;
     this.activeItem = newItem;
+    this.selectedItem.emit(newItem);
   }
 
   private dropdownNavigation(step: number) {

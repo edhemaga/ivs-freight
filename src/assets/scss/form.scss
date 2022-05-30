@@ -428,7 +428,7 @@
 }
 
 //---------------- Phone, Phone Extension, Email ----------------
-.phone-ext-email {
+.phone-extension-medium-modal {
   display: grid;
   grid-template-columns: 258px 1fr;
   grid-template-rows: 26px;
@@ -449,47 +449,54 @@
       padding: 1px 4.5px;
       cursor: pointer;
 
-      svg {
-        position: relative;
-        bottom: 1px;
-        path {
-          fill: #b7b7b7;
+      svg-icon {
+        svg {
+          position: relative;
+          bottom: 1px;
+          left: 1.5px;
+          width: 15px;
+          height: 14px;
+          path {
+            fill: #b7b7b7;
+          }
         }
       }
 
       &:hover {
         background-color: #eeeeee;
         transition: all 0.3s ease-in-out;
-        svg {
-          path {
-            fill: #919191;
+        svg-icon {
+          svg {
+            path {
+              fill: #919191;
+            }
           }
         }
       }
     }
 
     &.active-phone-ext {
-      grid-template-columns: 207px 51px;
+      grid-template-columns: 172px 86px;
     }
   }
 }
 //---------------- Phone, Phone Extension, Email User Modal----------------
-.phone-ext-email-user {
+.phone-ext-email-small-modal {
   display: grid;
-  grid-template-columns: 178px 1fr;
+  grid-template-columns: 180px 1fr;
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin: 32px 0px;
   margin-bottom: 22px;
 
-  &.phone-ext-email-user-my-20 {
+  &.phone-ext-email-small-modal-my-20 {
     margin: 20px 0px !important;
   }
 
   .phone-extension {
     display: grid;
-    grid-template-columns: 150px 26px;
+    grid-template-columns: 152px 26px;
     align-items: center;
     -moz-column-gap: 2px;
     column-gap: 2px;
@@ -518,9 +525,12 @@
         }
       }
     }
+  }
 
-    &.active-phone-ext {
-      grid-template-columns: 127px 51px;
+  &.active-phone-ext {
+    grid-template-columns: 1fr 214px;
+    .phone-extension {
+      grid-template-columns: 142px 86px;
     }
   }
 }
