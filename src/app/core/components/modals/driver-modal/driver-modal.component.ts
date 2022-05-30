@@ -10,7 +10,6 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
-import { DriverModalService } from './driver-modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   CheckOwnerSsnEinResponse,
@@ -31,6 +30,7 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-modal-upload/ta-upload-file.service';
+import { DriverTService } from '../../driver/state/driver.service';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -112,7 +112,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal,
     private mockModalService: MockModalService,
-    private driverModalService: DriverModalService,
+    private driverTService: DriverTService,
     private notificationService: NotificationService,
     private modalService: ModalService,
     private uploadFileService: TaUploadFileService
@@ -139,7 +139,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
     // Change Driver Status
     if (data.action === 'deactivate' && this.editData) {
-      this.driverModalService
+      this.driverTService
         .changeDriverStatus(this.editData.id)
         .pipe(untilDestroyed(this))
         .subscribe({
@@ -434,7 +434,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       )
       .subscribe((value) => {
         if (value) {
-          this.driverModalService
+          this.driverTService
             .checkOwnerEinNumber(value)
             .pipe(untilDestroyed(this))
             .subscribe({
@@ -467,7 +467,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   private getDriverDropdowns(): void {
-    this.driverModalService
+    this.driverTService
       .getDriverDropdowns()
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -540,18 +540,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         : null,
     };
     console.log(newData);
-    // this.driverModalService
-    //   .addDriver(newData)
-    //   .pipe(untilDestroyed(this))
-    //   .subscribe({
-    //     next: () =>
-    //       this.notificationService.success(
-    //         'Driver successfully added.',
-    //         'Success:'
-    //       ),
-    //     error: () =>
-    //       this.notificationService.error("Driver can't be added.", 'Error:'),
-    //   });
+    this.driverTService
+      .addDriver(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () =>
+          this.notificationService.success(
+            'Driver successfully added.',
+            'Success:'
+          ),
+        error: () =>
+          this.notificationService.error("Driver can't be added.", 'Error:'),
+      });
   }
 
   private updateDriver(id: number): void {
@@ -613,7 +613,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     console.log(newData);
 
-    this.driverModalService
+    this.driverTService
       .updateDriver(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -628,7 +628,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   private editDriverById(id: number): void {
-    this.driverModalService
+    this.driverTService
       .getDriverById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -713,8 +713,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   private deleteDriverById(id: number): void {
-    this.driverModalService
-      .deleteDriverByid(id)
+    this.driverTService
+      .deleteDriverById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {

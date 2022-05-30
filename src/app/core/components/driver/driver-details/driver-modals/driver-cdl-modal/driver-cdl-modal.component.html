@@ -4,7 +4,6 @@
   [editName]="modalName"
   [isModalValid]="cdlForm.valid"
   [specificCaseModalName]="true"
-  [customClass]="'modal-container-M'"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="cdlForm" class="form-container">
@@ -57,7 +56,7 @@
           }"
           [canAddNew]="true"
           [options]="classTypes"
-          (selectedItem)="onSelectClassType($event)"
+          (selectedItem)="onSelectDropdown($event, 'class')"
         ></app-ta-input-dropdown>
       </div>
       <div class="col-4">
@@ -72,7 +71,7 @@
             dropdownWidthClass: 'w-col-4'
           }"
           [options]="countryTypes"
-          (selectedItem)="onSelectCountryType($event)"
+          (selectedItem)="onSelectDropdown($event, 'country')"
         ></app-ta-input-dropdown>
       </div>
       <div class="col-4 no-p-left">
@@ -82,13 +81,13 @@
             name: 'Input Dropdown',
             type: 'text',
             label: 'State',
-            isRequired: true,
+            isRequired: cdlForm.get('countryType').value,
             isDisabled: !cdlForm.get('countryType').value,
             isDropdown: true,
             dropdownWidthClass: 'w-col-4'
           }"
           [options]="stateTypes"
-          (selectedItem)="onSelectStateType($event)"
+          (selectedItem)="onSelectDropdown($event, 'state')"
         ></app-ta-input-dropdown>
       </div>
     </div>
@@ -106,7 +105,6 @@
       >
         <app-ta-modal-upload
           [files]="[]"
-          [modalSize]="'modal-medium'"
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-modal-upload>
       </app-ta-custom-card>

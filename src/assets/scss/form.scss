@@ -527,7 +527,7 @@
 //---------------- CDL, Issue & Exp Date Modal----------------
 .cdl-issue-exp-date {
   display: grid;
-  grid-template-columns: 1fr repeat(2, 120px);
+  grid-template-columns: 1fr repeat(2, 122px);
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
@@ -539,7 +539,7 @@
 //---------------- Drug, Type, Reason Modal----------------
 .drug-type-reason-date {
   display: grid;
-  grid-template-columns: 144px 168px 120px;
+  grid-template-columns: 140px 168px 124px;
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;

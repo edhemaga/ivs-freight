@@ -1,10 +1,19 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DriverResponse, GetTestModalResponse } from 'appcoretruckassist';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  CreateTestCommand,
+  DriverResponse,
+  EditTestCommand,
+  GetTestModalResponse,
+  TestResponse,
+} from 'appcoretruckassist';
+import moment from 'moment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { DrugModalService } from './drug-modal.service';
+import { DriverTService } from '../../../state/driver.service';
+import { TestTService } from '../../../state/test.service';
 @Component({
   selector: 'app-driver-drugAlcohol-modal',
   templateUrl: './driver-drugAlcohol-modal.component.html',
@@ -29,18 +38,21 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private drugModalService: DrugModalService,
+    private driverService: DriverTService,
+    private testService: TestTService,
     private inputService: TaInputService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private ngbActiveModal: NgbActiveModal
   ) {}
 
   ngOnInit(): void {
     this.createForm();
     this.getDrugDropdowns();
     this.testStateChange();
-
-    if (this.editData) {
-      this.getDriverById(this.editData.id);
+    this.getDriverById(this.editData.id);
+    if (this.editData.type === 'edit-drug') {
+      this.getTestById();
+      
     }
   }
 
@@ -53,10 +65,30 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onModalAction($event) {}
+  public onModalAction(data: { action: string; bool: boolean }) {
+    if (data.action === 'close') {
+      this.drugForm.reset();
+    } else {
+      // Save & Update
+      if (data.action === 'save') {
+        // If Form not valid
+        if (this.drugForm.invalid) {
+          this.inputService.markInvalid(this.drugForm);
+          return;
+        }
+        if (this.editData.type === 'edit-drug') {
+          this.updateTest();
+        } else {
+          this.addTest();
+        }
+      }
+
+      this.ngbActiveModal.close();
+    }
+  }
 
   private getDriverById(id: number) {
-    this.drugModalService
+    this.driverService
       .getDriverById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -70,8 +102,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   }
 
   private getDrugDropdowns() {
-    this.drugModalService
-      .getDrugDropdowns()
+    this.testService
+      .getTestDropdowns()
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: GetTestModalResponse) => {
@@ -114,25 +146,108 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onSelectTestType(event: any) {
-    this.selectedTestType = event;
-    this.inputService.changeValidators(
-      this.drugForm.get('testReasonId'),
-      false
-    );
-    if (this.selectedTestType.name.toLowerCase() === 'drug') {
-      this.reasonTypes = this.drugTests;
-    } else {
-      this.reasonTypes = this.alcoholTests;
+  public onSelectDropdown(event: any, action: string) {
+    switch (action) {
+      case 'test': {
+        this.selectedTestType = event;
+        this.inputService.changeValidators(
+          this.drugForm.get('testReasonId'),
+          false
+        );
+        if (this.selectedTestType.name.toLowerCase() === 'drug') {
+          this.reasonTypes = this.drugTests;
+        } else {
+          this.reasonTypes = this.alcoholTests;
+        }
+        break;
+      }
+      case 'reason': {
+        this.selectedReasonType = event;
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 
-  public onSelectReasonType(event: any) {
-    this.selectedReasonType = event;
+  public onFilesEvent(event: any) {
+    console.log(event);
   }
 
-  public onFilesEvent(event: any) {
-    
+  public updateTest() {
+    const { testingDate } = this.drugForm.value;
+
+    const newData: EditTestCommand = {
+      id: this.editData.id,
+      ...this.drugForm.value,
+      testingDate: new Date(testingDate).toISOString(),
+      testReasonId: this.selectedReasonType.id,
+      testType: this.selectedTestType.id,
+    };
+
+    this.testService
+      .updateTest(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Test successfully added.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Test can't be added.", 'Error:');
+        },
+      });
+  }
+
+  public addTest() {
+    const { testingDate } = this.drugForm.value;
+
+    const newData: CreateTestCommand = {
+      driverId: this.editData.id,
+      ...this.drugForm.value,
+      testingDate: new Date(testingDate).toISOString(),
+      testReasonId: this.selectedReasonType.id,
+      testType: this.selectedTestType.id,
+    };
+
+    this.testService
+      .addTest(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Test successfully added.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Test can't be added.", 'Error:');
+        },
+      });
+  }
+
+  public getTestById() {
+    this.testService
+    .getTestById(this.editData.id)
+    .pipe(untilDestroyed(this))
+    .subscribe({
+      next: (res: TestResponse) => {
+        this.drugForm.patchValue({
+          testType: res.testType,
+          testReasonId: res.testReason.reason,
+          testingDate: moment(new Date(res.testingDate)).format('YYYY-MM-DD'),
+          note: res.note
+        });
+        this.selectedTestType = res.testType
+        this.selectedReasonType = res.testReason;
+      },
+      error: () => {
+        this.notificationService.error("Can't get Test", 'Error:');
+      },
+    });
   }
 
   ngOnDestroy(): void {}

@@ -1,14 +1,14 @@
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
 import { Observable} from 'rxjs';
-import { DriverListResponse, DriverResponse } from 'appcoretruckassist';
+import { CheckOwnerSsnEinResponse, CreateDriverCommand, CreateDriverResponse, DriverListResponse, DriverResponse, GetDriverModalResponse, OwnerService, UpdateDriverCommand } from 'appcoretruckassist';
 import { DriversState, DriversStore } from './driver.store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DriverTService {
-  constructor(private driverService: DriverService, private driverStore:DriversStore) {}
+  constructor(private driverService: DriverService, private driverStore:DriversStore, private ownerService: OwnerService) {}
 
   // Create Driver
   public getDrivers(
@@ -24,11 +24,34 @@ export class DriverTService {
     return this.driverService.apiDriverListGet(active, pageIndex, pageSize);
   }
 
-  // Delete Driver
+  public addDriver(
+    data: CreateDriverCommand
+  ): Observable<CreateDriverResponse> {
+    return this.driverService.apiDriverPost(data);
+  }
+
   public deleteDriverById(id: number): Observable<any> {
     return this.driverService.apiDriverIdDelete(id);
   }
-  public getDriverById(id:number): Observable<DriverResponse>{
-       return this.driverService.apiDriverIdGet(id);
+
+  public updateDriver(data: UpdateDriverCommand): Observable<object> {
+    return this.driverService.apiDriverPut(data);
+  }
+
+  public getDriverById(id: number): Observable<DriverResponse> {
+    return this.driverService.apiDriverIdGet(id);
+  }
+
+  public getDriverDropdowns(): Observable<GetDriverModalResponse> {
+    return this.driverService.apiDriverModalGet();
+  }
+
+  public checkOwnerEinNumber(number: string): Observable<CheckOwnerSsnEinResponse> {
+    return this.ownerService.apiOwnerCheckSsnEinGet(number)
+  }
+
+  public changeDriverStatus(id: number): Observable<any> {
+    return this.driverService.apiDriverStatusIdPut(id, 'response');
   }
 }
+ 
