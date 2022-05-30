@@ -1,10 +1,19 @@
+
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DriverResponse } from 'appcoretruckassist';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  CreateMedicalCommand,
+  DriverResponse,
+  EditMedicalCommand,
+  MedicalResponse,
+} from 'appcoretruckassist';
+import moment from 'moment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { MedicalModalService } from './medical-modal.service';
+import { DriverTService } from '../../../state/driver.service';
+import { MedicalTService } from '../../../state/medical.service';
 @Component({
   selector: 'app-driver-medical-modal',
   templateUrl: './driver-medical-modal.component.html',
@@ -21,16 +30,18 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private medicalModalService: MedicalModalService,
+    private driverService: DriverTService,
     private inputService: TaInputService,
-    private notificationService: NotificationService
+    private medicalService: MedicalTService,
+    private notificationService: NotificationService,
+    private ngbActiveModal: NgbActiveModal
   ) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    if (this.editData) {
-      this.getDriverById(this.editData.id);
+    this.getDriverById(this.editData.id);
+    if (this.editData.type === 'edit-medical') {
+      this.getMedicalById();
     }
   }
 
@@ -43,7 +54,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   }
 
   private getDriverById(id: number) {
-    this.medicalModalService
+    this.driverService
       .getDriverById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -56,8 +67,99 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public onModalAction(data: { action: string; bool: boolean }) {
+    if (data.action === 'close') {
+      this.medicalForm.reset();
+    } else {
+      // Save & Update
+      if (data.action === 'save') {
+        // If Form not valid
+        if (this.medicalForm.invalid) {
+          this.inputService.markInvalid(this.medicalForm);
+          return;
+        }
+        if (this.editData.type === 'edit-medical') {
+          this.updateMedical(this.editData.id);
+        } else {
+          this.addMedical();
+        }
+      }
+
+      this.ngbActiveModal.close();
+    }
+  }
+
   public onFilesEvent(event: any) {
     console.log(event);
+  }
+
+  private updateMedical(id: number) {
+    const { issueDate, expDate } = this.medicalForm.value;
+
+    const newData: EditMedicalCommand = {
+      id: this.editData.id,
+      ...this.medicalForm.value,
+      issueDate: new Date(issueDate).toISOString(),
+      expDate: new Date(expDate).toISOString(),
+    };
+
+    this.medicalService
+      .updateMedical(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Medical successfully updated.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Medical can't be updated.", 'Error:');
+        },
+      });
+  }
+
+  private addMedical() {
+    const { issueDate, expDate } = this.medicalForm.value;
+    const newData: CreateMedicalCommand = {
+      driverId: this.editData.id,
+      ...this.medicalForm.value,
+      issueDate: new Date(issueDate).toISOString(),
+      expDate: new Date(expDate).toISOString(),
+    };
+
+    this.medicalService
+      .addMedical(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Medical successfully added.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Medical can't be added.", 'Error:');
+        },
+      });
+  }
+
+  public getMedicalById() {
+    this.medicalService
+      .getMedicalById(this.editData.id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: MedicalResponse) => {
+          this.medicalForm.patchValue({
+            issueDate:  moment(new Date(res.issueDate)).format('YYYY-MM-DD'), 
+            expDate:moment(new Date(res.expDate)).format('YYYY-MM-DD'),
+            note: res.note,
+          });
+        },
+        error: () => {
+          this.notificationService.error("Can't get Test", 'Error:');
+        },
+      });
   }
 
   ngOnDestroy(): void {}

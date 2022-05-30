@@ -18,7 +18,7 @@
           [options]="dataEdit"
           [expDateClose]="formatDate(reg.expDate)"
           [optionsId]="reg.id"
-          (dropActions)="optionsEv($event,'edit-registration')"
+          (dropActions)="optionsEvent($event,'edit-registration')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -74,7 +74,7 @@
           (resizePage)="toggleResizePage(i)"
           [expDateClose]="formatDate('04/04/25')"
           [optionsId]="fhwa.id"
-          (dropActions)="optionsEv($event,'edit-inspection')"
+          (dropActions)="optionsEvent($event,'edit-inspection')"
           
         >
           <div class="cards-container">
@@ -119,7 +119,7 @@
           [options]="dataEdit"
           [expDateClose]="formatDate('04/04/27')"
           [optionsId]="title.id"
-          (dropActions)="optionsEv($event,'edit-title')"
+          (dropActions)="optionsEvent($event,'edit-title')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">

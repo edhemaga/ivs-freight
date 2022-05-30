@@ -93,11 +93,11 @@
                   ></app-ta-input>
                 </div>
               </div>
-              <div class="phone-ext-email-user last-row">
-                <div
-                  class="phone-extension"
-                  [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
-                >
+              <div
+                class="phone-ext-email-small-modal last-row"
+                [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
+              >
+                <div class="phone-extension">
                   <div class="phone-field">
                     <app-ta-input
                       formControlName="phone"
@@ -114,6 +114,10 @@
                     class="extension-field"
                     *ngIf="!isPhoneExtExist"
                     (click)="isPhoneExtExist = !isPhoneExtExist"
+                    ngbTooltip
+                    mainTooltip="Add Extension"
+                    position="top"
+                    tooltipBackground="#6c6c6c"
                   >
                     <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
                   </div>
@@ -124,7 +128,8 @@
                       name: 'Phone Extension',
                       type: 'text',
                       label: 'Ext.',
-                      maxLength: 3
+                      maxLength: 3,
+                      placeholderIcon: 'phone-extension'
                     }"
                   ></app-ta-input>
                 </div>
@@ -173,7 +178,8 @@
                 type: 'text',
                 label: 'Rent',
                 placeholderIcon: 'dollar',
-                customClass: 'dollar-placeholderIcon'
+                customClass: 'dollar-placeholderIcon',
+                mask: 'separator.2'
               }"
             ></app-ta-input>
           </div>

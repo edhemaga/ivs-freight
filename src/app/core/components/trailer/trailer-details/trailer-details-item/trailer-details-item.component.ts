@@ -1,8 +1,10 @@
-import { TrailerTService } from './../../state/trailer.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
+import { TtRegistrationModalComponent } from '../../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-trailer-details-item',
@@ -21,7 +23,7 @@ export class TrailerDetailsItemComponent implements OnInit {
   public toggler:boolean=false;
   constructor(
     private activated_route: ActivatedRoute,
-    private trailerTService: TrailerTService
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -77,5 +79,40 @@ export class TrailerDetailsItemComponent implements OnInit {
       ],
       export: true,
     };
+  }
+
+  public optionsEvent(any: any, action: string) {
+    switch (action) {
+      case 'edit-registration': {
+        this.modalService.openModal(
+          TtRegistrationModalComponent,
+          { size: 'small' },
+          {
+            id: any.id,
+            type: action,
+            modal: 'trailer',
+          }
+        );
+        break;
+      }
+      case 'edit-inspection': {
+        this.modalService.openModal(
+          TtFhwaInspectionModalComponent,
+          { size: 'small' },
+          {
+            id: any.id,
+            type: action,
+            modal: 'trailer',
+          }
+        );
+        break;
+      }
+      case 'edit-title': {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 }

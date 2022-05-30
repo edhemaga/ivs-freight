@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { RepairShopOpenHoursCommand } from './repairShopOpenHoursCommand';
+import { RepairShopServiceTypeCommand } from './repairShopServiceTypeCommand';
 import { AddressEntity } from './addressEntity';
 
 
@@ -19,9 +20,13 @@ export interface UpdateRepairShopCommand {
     phone?: string | null;
     email?: string | null;
     address?: AddressEntity;
-    pinned?: boolean;
+    pinned?: boolean | null;
     note?: string | null;
-    serviceTypeIds?: Array<number> | null;
+    companyOwned?: boolean;
+    bankId?: number | null;
+    account?: string | null;
+    routing?: string | null;
+    serviceTypes?: Array<RepairShopServiceTypeCommand> | null;
     openHours?: Array<RepairShopOpenHoursCommand> | null;
 }
 

@@ -104,6 +104,7 @@ export class DriverDetailsCardComponent implements OnInit {
   }
    /**Function return format date from DB */
   public formatDate(date: string) {
+    console.log("CARD RENDER")
     return moment(date).format('MM/DD/YY');
   }
 

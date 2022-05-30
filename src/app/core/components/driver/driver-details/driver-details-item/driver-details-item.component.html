@@ -16,7 +16,7 @@
           [expDateClose]="formatDate(cdl?.expDate)"
           [hasCopyIcon]="true"
           [optionsId]="cdl.id"
-          (dropActions)="optionsEv($event,'edit-licence')"
+          (dropActions)="optionsEvent($event,'edit-licence')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -158,7 +158,7 @@
           (resizePage)="toggleResizePage($event)"
           [expDateClose]="formatDate(test?.testingDate)"
           [optionsId]="test.id"
-          (dropActions)="optionsEv($event,'edit-drug')"
+          (dropActions)="optionsEvent($event,'edit-drug')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -188,7 +188,7 @@
           [cardNameCommon]="formatDate(med?.issueDate)"
           [expDateClose]="formatDate(med?.expDate)"
           [optionsId]="med.id"
-          (dropActions)="optionsEv($event,'edit-medical')"
+          (dropActions)="optionsEvent($event,'edit-medical')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -216,7 +216,7 @@
           [cardNameCommon]="formatDate(mvr?.issueDate)"
           [expDateClose]="formatDate(mvr?.issueDate)"
           [optionsId]="mvr.id"
-          (dropActions)="optionsEv($event,'edit-mvr')"
+          (dropActions)="optionsEvent($event,'edit-mvr')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
