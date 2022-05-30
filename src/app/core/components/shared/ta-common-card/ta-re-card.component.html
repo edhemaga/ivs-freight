@@ -3,10 +3,9 @@
     <div
       (click)="toggleCards()"
       ngbTooltip
-      [mainTooltip]="isCardOpen ? 'Close Card':'Open Card'"
+      [mainTooltip]="isCardOpen ? 'Close Card' : 'Open Card'"
       position="top"
       tooltipBackground="#6C6C6C"
-      
       class="card-header-cmp"
       [ngClass]="{ 'card-flex': !isCardOpen }"
     >
@@ -34,21 +33,19 @@
             >Exp. {{ expDateClose }}
           </span>
         </span>
-        <svg-icon
-          *ngIf="isCardOpen && hasCopyIcon"
-          (click)="copyText(cardNameCommon)"
-          class="card-icon-common"
-          src="assets/svg/common/ic_copy.svg"
-          [appTooltip]="copied ? 'Copied' : 'Copy'"
-          [position]="'top-middle'"
+        <span
+          ngbTooltip
+          [mainTooltip]="copied ? 'Copied' : 'Copy'"
+          position="top"
           [tooltipBackground]="copied ? '#536BC2' : '#6c6c6c'"
-          [tooltipColor]="'#ffffff'"
-          [zIndex]="900"
-          [borderRadius]="'2px'"
-          [fontWeight]="'bold'"
-          [fontSize]="'11px'"
-          [customPosition]="-2"
-        ></svg-icon>
+        >
+          <svg-icon
+            *ngIf="isCardOpen && hasCopyIcon"
+            (click)="copyText(cardNameCommon)"
+            class="card-icon-common"
+            src="assets/svg/common/ic_copy.svg"
+          ></svg-icon>
+        </span>
         <svg-icon
           *ngIf="settingsIcon && isCardOpen"
           src="{{ settingsIcon }}"
@@ -64,6 +61,8 @@
     >
       <app-table-dropdown
         [options]="options.actions"
+        [id]="optionsId"
+        (dropDownActions)="dropAct($event)"
         [customClassDropDown]="'table-dropdown-container-vertical'"
       >
       </app-table-dropdown>

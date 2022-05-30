@@ -131,6 +131,11 @@ export class TruckDetailsItemComponent implements OnInit {
     console.log(this.toggler);
   }
 
+  public optionsEv(any:any,action:string){
+    const option={id:any.id, type:action}
+    console.log(option);
+  }
+
   public onFileAction(action: string) {
     switch (action) {
       case 'download': {

@@ -1,5 +1,5 @@
 .card-flex {
-    height: 32px;
+    height: 42px;
     .table-dropdown-container-vertical {
         top: 0 !important;
     }
@@ -69,7 +69,7 @@
         }
     }
     .card-name-cmp {
-        font-size: 18px;
+        font-size: 14px;
         font-weight: 500;
         color: #6c6c6c;
         height: 22px;
@@ -182,11 +182,11 @@ p {
         margin-top: 0 !important;
     }
 }
-.card-close-icon {
-    margin-top: 7px !important;
-    margin-bottom: 7px;
-    margin-right: 7px !important;
-}
+// .card-close-icon {
+//     margin-top: 7px !important;
+//     margin-bottom: 7px;
+//     margin-right: 7px !important;
+// }
 .rotate-common {
     svg {
         transform: rotate(180deg);

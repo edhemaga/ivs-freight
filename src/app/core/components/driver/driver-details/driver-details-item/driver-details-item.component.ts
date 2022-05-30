@@ -191,7 +191,11 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
       export: true,
     };
   }
-
+  
+  public optionsEv(any:any,action:string){
+    const option={id:any.id, type:action}
+    console.log(option);
+  }
   public onModalAction() {
     // const data = {
     //   type: 'new',

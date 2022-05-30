@@ -17,6 +17,8 @@
           [hasCopyIcon]="true"
           [options]="dataEdit"
           [expDateClose]="formatDate(reg.expDate)"
+          [optionsId]="reg.id"
+          (dropActions)="optionsEv($event,'edit-registration')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -71,6 +73,9 @@
           [cardNameCommon]="formatDate(fhwa.issueDate)"
           (resizePage)="toggleResizePage(i)"
           [expDateClose]="formatDate('04/04/25')"
+          [optionsId]="fhwa.id"
+          (dropActions)="optionsEv($event,'edit-inspection')"
+          
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -113,6 +118,8 @@
           [cardNameCommon]="title.number"
           [options]="dataEdit"
           [expDateClose]="formatDate('04/04/27')"
+          [optionsId]="title.id"
+          (dropActions)="optionsEv($event,'edit-title')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -167,6 +174,7 @@
         [cardNameCommon]="'KSKA FREIGHT, INC'"
         [isCardOpen]="true"
         [expDateClose]="formatDate('04/04/27')"
+        
       >
         <div class="purchase-container">
           <div class="purchase-template">
