@@ -15,7 +15,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
-import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig, NgbModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 
 import moment from 'moment';
@@ -38,6 +38,9 @@ export class TaInputComponent
   @ViewChild('t2') t2: any;
 
   @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild(NgbPopover)
+  private ngbMainPopover: NgbPopover;
 
   public focusInput: boolean = false;
   public waitValidation: boolean = false;
@@ -827,6 +830,12 @@ export class TaInputComponent
   onPopoverHidden() {
     this.focusInput = false;
     this.blurOnDateTime();
+  }
+
+  closePopover(){
+    if(this.ngbMainPopover){
+      this.ngbMainPopover.close();
+    }
   }
 
   private blurOnDateTime() {

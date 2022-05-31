@@ -442,6 +442,7 @@
       [calendarType]="inputConfig.name === 'datepicker' ? 'date' : 'time'"
       [placeholder]="'MM/DD/YY'"
       [dateTime]="dateTimeInputDate"
+      (closePopover)="closePopover()"
     ></app-custom-datetime-pickers>
   </div>
 </ng-template>
