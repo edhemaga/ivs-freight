@@ -16,7 +16,7 @@ import moment from 'moment';
 @Component({
   selector: 'app-tt-fhwa-inspection-modal',
   templateUrl: './tt-fhwa-inspection-modal.component.html',
-  styleUrls: ['./tt-fhwa-inspection-modal.component.scss'],
+  styleUrls: ['./tt-fhwa-inspection-modal.component.scss']
 })
 export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -63,7 +63,10 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
         if (this.editData.type === 'edit-inspection') {
           this.updateInspection();
         }
-        this.addInspection();
+        else {
+          this.addInspection();
+        }
+        
       }
 
       this.ngbActiveModal.close();
@@ -72,7 +75,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
   private getInspectionById() {
     this.commonTruckTrailerService
-      .getInspectionById(this.editData.id)
+      .getInspectionById(this.editData.file_id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: InspectionResponse) => {
@@ -90,9 +93,9 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     const newData: UpdateInspectionCommand = {
       ...this.fhwaInspectionForm.value,
       issueDate: new Date(issueDate).toISOString(),
-      truckId: this.editData.modal === 'truck' ? this.editData.id : null,
-      trailerId: this.editData.modal === 'trailer' ? this.editData.id : null,
+      id: this.editData.file_id,
     };
+    console.log(this.editData.file_id)
     this.commonTruckTrailerService
       .updateInspection(newData)
       .pipe(untilDestroyed(this))
