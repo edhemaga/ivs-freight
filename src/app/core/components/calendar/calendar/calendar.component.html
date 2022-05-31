@@ -15,8 +15,8 @@
     </div>
     <div class="calendar-header">
         <app-ta-custom-card
-        [cardName]="'Important Events'"
-        [hasPlusHeader]="true"
+        [cardName]="'07/03/2022'"
+        [hasPlusHeader]="false"
         >
         <div class="calendar-body">
             <div class="calendar-years-holder">
@@ -226,6 +226,7 @@
                 <div *ngIf='day.events' class="calendar_events">
                     <div class="event_outlay">
                         <div *ngFor="let ev of day.events; let indx1=index" class="event_type" [ngStyle]="{'background-color': event_colors[ev.type]}">
+                                <div *ngIf="ev.type == 'personal'" class="event_box"></div>
                                 <div class="event_title" [ngStyle]="{'color': ev.eventTextColor}">{{ev.title}}</div>
                         </div>
                     </div>
