@@ -179,7 +179,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     const { testingDate } = this.drugForm.value;
 
     const newData: EditTestCommand = {
-      id: this.editData.id,
+      id: this.editData.file_id,
       ...this.drugForm.value,
       testingDate: new Date(testingDate).toISOString(),
       testReasonId: this.selectedReasonType.id,
@@ -231,7 +231,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
   public getTestById() {
     this.testService
-    .getTestById(this.editData.id)
+    .getTestById(this.editData.file_id)
     .pipe(untilDestroyed(this))
     .subscribe({
       next: (res: TestResponse) => {

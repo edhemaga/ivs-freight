@@ -97,7 +97,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     const { issueDate, expDate } = this.medicalForm.value;
 
     const newData: EditMedicalCommand = {
-      id: this.editData.id,
+      id: this.editData.file_id,
       ...this.medicalForm.value,
       issueDate: new Date(issueDate).toISOString(),
       expDate: new Date(expDate).toISOString(),
@@ -146,7 +146,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
   public getMedicalById() {
     this.medicalService
-      .getMedicalById(this.editData.id)
+      .getMedicalById(this.editData.file_id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: MedicalResponse) => {
