@@ -1,9 +1,11 @@
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.scss']
+  styleUrls: ['./filter.component.scss'],
+  providers: [NgbDropdownConfig]
 })
 export class FilterComponent implements OnInit {
 
