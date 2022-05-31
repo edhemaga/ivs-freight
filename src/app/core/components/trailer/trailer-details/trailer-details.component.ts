@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({

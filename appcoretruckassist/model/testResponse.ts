@@ -9,14 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 import { TestReasonShortResponse } from './testReasonShortResponse';
-import { TestType } from './testType';
 
 
 export interface TestResponse { 
     id?: number;
     testReason?: TestReasonShortResponse;
-    testType?: TestType;
+    testType?: EnumValue;
     testingDate?: string;
     note?: string | null;
 }

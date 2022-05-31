@@ -33,15 +33,15 @@
       
     >
       <div class="settings-body-items">
-        <div *ngIf="item.phone !== ''" class="single-item">
+        <div *ngIf="item.phone" class="single-item">
           <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
           <span>{{ item.phone }}</span>
         </div>
-        <div *ngIf="item.email !== ''" class="single-item">
+        <div *ngIf="item.email" class="single-item">
           <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
           <span>{{ item.email }}</span>
         </div>
-        <div *ngIf="item.address !== ''" class="single-item">
+        <div *ngIf="item.address" class="single-item">
           <svg-icon
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>

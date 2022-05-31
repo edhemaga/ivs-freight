@@ -106,8 +106,8 @@
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-4-department-user'
                 }"
-                [options]="[]"
-                (selectedItem)="onSelectDepartment($event)"
+                [options]="departments"
+                (selectedItem)="onSelectDropdown($event, 'department')"
               ></app-ta-input-dropdown>
             </div>
             <div class="col-5">
@@ -120,8 +120,8 @@
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-5'
                 }"
-                [options]="[]"
-                (selectedItem)="onSelectOffice($event)"
+                [options]="offices"
+                (selectedItem)="onSelectDropdown($event, 'office')"
               ></app-ta-input-dropdown>
             </div>
             <div class="col-3 no-p-left">
@@ -131,11 +131,11 @@
               ></app-ta-input-radiobuttons>
             </div>
           </div>
-          <div class="phone-ext-email-user">
-            <div
-              class="phone-extension"
-              [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
-            >
+          <div
+            class="phone-ext-email-small-modal"
+            [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
+          >
+            <div class="phone-extension">
               <div class="phone-field">
                 <app-ta-input
                   formControlName="employePhone"
@@ -151,6 +151,10 @@
               <div
                 class="extension-field"
                 *ngIf="!isPhoneExtExist"
+                ngbTooltip
+                mainTooltip="Add Extension"
+                position="top"
+                tooltipBackground="#6c6c6c"
                 (click)="isPhoneExtExist = !isPhoneExtExist"
               >
                 <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
@@ -162,7 +166,8 @@
                   name: 'Phone Extension',
                   type: 'text',
                   label: 'Ext.',
-                  maxLength: 3
+                  maxLength: 3,
+                  placeholderIcon: 'phone-extension'
                 }"
               ></app-ta-input>
             </div>
@@ -212,7 +217,8 @@
                     label: 'Salary',
                     isRequired: true,
                     placeholderIcon: 'dollar',
-                    customClass: 'dollar-placeholderIcon'
+                    customClass: 'dollar-placeholderIcon',
+                    mask: 'separator.2'
                   }"
                 ></app-ta-input>
               </div>
@@ -255,7 +261,7 @@
                   }"
                   [canAddNew]="true"
                   [options]="labelsBank"
-                  (selectedItem)="onSelectBank($event)"
+                  (selectedItem)="onSelectDropdown($event, 'bank')"
                 ></app-ta-input-dropdown>
               </div>
               <div class="bank-field">

@@ -17,6 +17,8 @@
             [hasCopyIcon]="true"
             [options]="dataTest"
             [expDateClose]="formatDate(reg.expDate)"
+            [optionsId]="reg.id"
+            (dropActions)="optionsEvent($event,'edit-registration')"
           >
             <div class="cards-container">
               <div class="card-body-cdl">
@@ -70,6 +72,8 @@
             [options]="dataTest"
             [cardNameCommon]="formatDate(fhwa.issueDate)"
             [expDateClose]="formatDate('04/04/25')"
+            [optionsId]="fhwa.id"
+            (dropActions)="optionsEvent($event,'edit-inspection')"
           >
             <div class="cards-container">
               <div class="card-body-cdl">
@@ -112,6 +116,8 @@
             [cardNameCommon]="title.number"
             [options]="dataTest"
             [expDateClose]="formatDate('04/04/27')"
+            [optionsId]="title.id"
+            (dropActions)="optionsEvent($event,'edit-inspection')"
           >
             <div class="cards-container">
               <div class="card-body-cdl">

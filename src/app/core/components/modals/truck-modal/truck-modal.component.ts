@@ -17,8 +17,12 @@ import {
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { insurancePolicyRegex, yearValidRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  insurancePolicyRegex,
+  yearValidRegex,
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckModalService } from './truck-modal.service';
 
 @Component({
@@ -78,7 +82,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal,
     private truckModalService: TruckModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -90,7 +95,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 1,
+        id: 5,
       };
       this.editTruckById(this.editData.id);
     }
@@ -112,11 +117,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       model: [null, [Validators.required, Validators.maxLength(22)]],
       year: [
         null,
-        [
-          Validators.required,
-          Validators.maxLength(4),
-          yearValidRegex,
-        ],
+        [Validators.required, Validators.maxLength(4), yearValidRegex],
       ],
       colorId: [null],
       companyOwned: [true],
@@ -128,10 +129,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       truckEngineTypeId: [null],
       tireSizeId: [null],
       axles: [null, Validators.maxLength(1)],
-      insurancePolicy: [
-        null,
-        insurancePolicyRegex,
-      ],
+      insurancePolicy: [null, insurancePolicyRegex],
       mileage: [null, Validators.maxLength(10)],
       ipasEzpass: [null, Validators.maxLength(14)],
     });
@@ -150,25 +148,48 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     if (data.action === 'close') {
       this.truckForm.reset();
     } else {
-      // Save & Update
-      if (data.action === 'save') {
-        if (this.truckForm.invalid) {
-          this.inputService.markInvalid(this.truckForm);
-          return;
+      if (data.action === 'deactivate' && this.editData) {
+        this.truckModalService
+          .changeTruckStatus(this.editData.id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: any) => {
+              console.log(res);
+              if (res.status === '200' || res.status === '204') {
+                this.modalService.changeModalStatus({
+                  name: 'deactivate',
+                  status: null,
+                });
+              }
+            },
+            error: () => {
+              this.notificationService.error(
+                "Driver status can't be changed.",
+                'Error:'
+              );
+            },
+          });
+      } else {
+        // Save & Update
+        if (data.action === 'save') {
+          if (this.truckForm.invalid) {
+            this.inputService.markInvalid(this.truckForm);
+            return;
+          }
+          if (this.editData) {
+            this.updateTruck(this.editData.id);
+          } else {
+            this.addTruck();
+          }
         }
-        if (this.editData) {
-          this.updateTruck(this.editData.id);
-        } else {
-          this.addTruck();
+
+        // Delete
+        if (data.action === 'delete' && this.editData) {
+          this.deleteTruckById(this.editData.id);
         }
-      }
 
-      // Delete
-      if (data.action === 'delete' && this.editData) {
-        this.deleteTruckById(this.editData.id);
+        this.ngbActiveModal.close();
       }
-
-      this.ngbActiveModal.close();
     }
   }
 
@@ -202,22 +223,22 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: GetTruckModalResponse) => {
-          this.truckType = res.truckTypes.map(item => {
+          this.truckType = res.truckTypes.map((item) => {
             return {
               ...item,
               folder: 'common',
-              subFolder: 'trucks'
-            }
+              subFolder: 'trucks',
+            };
           });
           this.truckMakeType = res.truckMakes;
-          this.colorType = res.colors.map(item => {
+          this.colorType = res.colors.map((item) => {
             return {
               ...item,
               folder: 'common',
               subFolder: 'colors',
-              logoName: 'ic_color.svg'
-            }
-          });;
+              logoName: 'ic_color.svg',
+            };
+          });
           this.ownerType = res.owners;
           this.grossWeight = res.truckGrossWeights;
           this.engineType = res.truckEngineTypes;
@@ -386,6 +407,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             ? res.truckEngineType
             : null;
           this.selectedTireSize = res.tireSize.name ? res.tireSize : null;
+
+          this.modalService.changeModalStatus({
+            name: 'deactivate',
+            status: res.status === 0 ? false : true,
+          });
         },
         error: () => {
           this.notificationService.error("Cant't get truck.", 'Error:');
@@ -393,32 +419,40 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onSelectTruckType(event: any) {
-    this.selectedTruckType = event;
-  }
-
-  public onSelectTruckMake(event: any) {
-    this.selectedTruckMake = event;
-  }
-
-  public onSelectColor(event: any) {
-    this.selectedColor = event;
-  }
-
-  public onSelectOwner(event: any) {
-    this.selectedOwner = event;
-  }
-
-  public onSelectTruckGrossWeight(event: any) {
-    this.selectedTruckGrossWeight = event;
-  }
-
-  public onSelectTruckEngineType(event: any) {
-    this.selectedEngineType = event;
-  }
-
-  public onSelectTireSize(event: any) {
-    this.selectedTireSize = event;
+  public onSelectDropdown(event: any, action: string) {
+    switch (action) {
+      case 'truck-type': {
+        this.selectedTruckType = event;
+        break;
+      }
+      case 'truck-make': {
+        this.selectedTruckMake = event;
+        break;
+      }
+      case 'color': {
+        this.selectedColor = event;
+        break;
+      }
+      case 'owner': {
+        this.selectedOwner = event;
+        break;
+      }
+      case 'gross-weight': {
+        this.selectedTruckGrossWeight = event;
+        break;
+      }
+      case 'engine-type': {
+        this.selectedEngineType = event;
+        break;
+      }
+      case 'tire-size': {
+        this.selectedTireSize = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   ngOnDestroy(): void {}

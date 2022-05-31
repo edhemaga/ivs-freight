@@ -4,8 +4,6 @@ import {
   CdlService,
   CreateCdlCommand,
   CreateCdlResponse,
-  DriverResponse,
-  DriverService,
   EditCdlCommand,
   GetCdlModalResponse,
 } from 'appcoretruckassist';
@@ -14,12 +12,8 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class CdlModalService {
-  constructor(private cdlService: CdlService, private driverService: DriverService) {}
-
-  public getDriverById(id: number): Observable<DriverResponse> {
-    return this.driverService.apiDriverIdGet(id);
-  }
+export class CdlTService {
+  constructor(private cdlService: CdlService) {}
 
   public addCdl(data: CreateCdlCommand): Observable<CreateCdlResponse> {
     return this.cdlService.apiCdlPost(data);

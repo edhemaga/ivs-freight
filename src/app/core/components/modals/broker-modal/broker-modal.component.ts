@@ -72,14 +72,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   public billingCredit = [
     {
-      id: 1,
+      id: 111,
       label: 'Enable',
       value: 'enable',
       name: 'credit',
       checked: true,
     },
     {
-      id: 2,
+      id: 112,
       label: 'Disable',
       value: 'disable',
       name: 'credit',
@@ -121,7 +121,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 7,
+        id: 14,
       };
       this.editBrokerById(this.editData.id);
       this.tabs.push({
@@ -245,7 +245,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     this.selectedPhysicalAddressTab = event.find(
       (item) => item.checked === true
     );
-
     if (
       this.selectedPhysicalAddressTab?.name.toLowerCase() === 'physical address'
     ) {
@@ -266,7 +265,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         false
       );
       this.brokerForm.get('physicalAddressUnit').reset();
-
       this.inputService.changeValidators(this.brokerForm.get('physicalPoBox'));
       this.inputService.changeValidators(
         this.brokerForm.get('physicalPoBoxCity')
@@ -346,13 +344,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     if (this.brokerForm.get('creditType').value === 'Enable') {
       this.inputService.changeValidators(this.brokerForm.get('creditLimit'));
-      this.inputService.changeValidators(this.brokerForm.get('payTerm'));
     } else {
       this.inputService.changeValidators(
         this.brokerForm.get('creditLimit'),
         false
       );
-      this.inputService.changeValidators(this.brokerForm.get('payTerm'), false);
     }
   }
 
@@ -377,12 +373,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onSelectContactDepartment(event: any, index: number) {
-    this.selectedContractDepartmentFormArray[index] = event;
-  }
-
-  public onSelectPayType(event: any) {
-    this.selectedPayTerm = event;
+  public onSelectDropDown(event: any, action: string, index?: number) {
+    switch (action) {
+      case 'paytype': {
+        this.selectedPayTerm = event;
+        break;
+      }
+      case 'contact-department': {
+        this.selectedContractDepartmentFormArray[index] = event;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   private getBrokerDropdown() {
@@ -407,91 +410,39 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   private addBroker(): void {
     const {
+      // Physical address
       physicalAddress,
       physicalAddressUnit,
       physicalPoBox,
       physicalPoBoxCity,
+      // Billing address
       billingAddress,
       billingAddressUnit,
       billingPoBox,
       billingPoBoxCity,
-      isCredit,
+      creditLimit,
+      payTerm,
       isCheckedBillingAddress,
       brokerContacts,
       mcNumber,
+      availableCredit,
       ...form
     } = this.brokerForm.value;
+
+    let brAddresses = this.selectedBrokerAddress();
+
     let newData: CreateBrokerCommand = {
       ...form,
-      mainAddress: {
-        address: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.address
-          : null,
-        city: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.city
-          : null,
-        state: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.state
-          : null,
-        country: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.country
-          : null,
-        zipCode: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.zipCode
-          : null,
-        stateShortName: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.stateShortName
-          : null,
-        addressUnit: physicalAddressUnit,
-      },
-      billingAddress: {
-        address: isCheckedBillingAddress
-          ? this.selectedPhysicalAddress.address
-          : this.selectedBillingAddress.address,
-        city: isCheckedBillingAddress
-          ? this.selectedPhysicalAddress.city
-          : this.selectedBillingAddress.city,
-        state: isCheckedBillingAddress
-          ? this.selectedPhysicalAddress.state
-          : this.selectedBillingAddress.state,
-        country: isCheckedBillingAddress
-          ? this.selectedPhysicalAddress.country
-          : this.selectedBillingAddress.country,
-        zipCode: isCheckedBillingAddress
-          ? this.selectedPhysicalAddress.zipCode
-          : this.selectedBillingAddress.zipCode,
-        stateShortName: isCheckedBillingAddress
-          ? this.selectedPhysicalAddress.stateShortName
-          : this.selectedBillingAddress.stateShortName,
-        addressUnit: isCheckedBillingAddress
-          ? physicalAddressUnit
-          : billingAddressUnit,
-      },
-      mainPoBox: {
-        city: this.selectedPhysicalPoBox
-          ? this.selectedPhysicalPoBox.city
-          : null,
-        state: this.selectedPhysicalPoBox
-          ? this.selectedPhysicalPoBox.state
-          : null,
-        zipCode: this.selectedPhysicalPoBox
-          ? this.selectedPhysicalPoBox.zipCode
-          : null,
-        poBox: this.selectedPhysicalPoBox ? physicalPoBox : null,
-      },
-      billingPoBox: {
-        city: this.selectedBillingPoBox ? this.selectedBillingPoBox.city : null,
-        state: this.selectedBillingPoBox
-          ? this.selectedBillingPoBox.state
-          : null,
-        zipCode: this.selectedBillingPoBox
-          ? this.selectedBillingPoBox.zipCode
-          : null,
-        poBox: billingPoBox,
-      },
       isCheckedBillingAddress: isCheckedBillingAddress,
-      isCredit: isCredit,
+      mainAddress: brAddresses.mainAddress,
+      mainPoBox: brAddresses.mainPoBox,
+      billingAddress: brAddresses.billingAddress,
+      billingPoBox: brAddresses.billingPoBox,
       mcNumber: mcNumber,
+      creditLimit: creditLimit
+        ? parseFloat(creditLimit.toString().replace(/,/g, ''))
+        : null,
+      payTerm: this.selectedPayTerm ? this.selectedPayTerm.id : null,
     };
 
     for (let index = 0; index < brokerContacts.length; index++) {
@@ -534,80 +485,28 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       isCheckedBillingAddress,
       brokerContacts,
       mcNumber,
+      availableCredit,
+      creditLimit,
       ...form
     } = this.brokerForm.value;
-    console.log(this.selectedBillingAddress);
+
+    let brAddresses = this.selectedBrokerAddress();
+
     let newData: UpdateBrokerCommand = {
       id: id,
       ...form,
-      mainAddress: {
-        address: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.address
-          : null,
-        city: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.city
-          : null,
-        state: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.state
-          : null,
-        country: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.country
-          : null,
-        zipCode: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.zipCode
-          : null,
-        stateShortName: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.stateShortName
-          : null,
-        addressUnit: physicalAddressUnit,
-      },
-      billingAddress: {
-        address: isCheckedBillingAddress
-          ? this.selectedPhysicalAddress.address
-          : this.selectedBillingAddress.address,
-        city: isCheckedBillingAddress
-          ? this.selectedPhysicalAddress.city
-          : this.selectedBillingAddress.city,
-        state: isCheckedBillingAddress
-          ? this.selectedPhysicalAddress.state
-          : this.selectedBillingAddress.state,
-        country: isCheckedBillingAddress
-          ? this.selectedPhysicalAddress.country
-          : this.selectedBillingAddress.country,
-        zipCode: isCheckedBillingAddress
-          ? this.selectedPhysicalAddress.zipCode
-          : this.selectedBillingAddress.zipCode,
-        stateShortName: isCheckedBillingAddress
-          ? this.selectedPhysicalAddress.stateShortName
-          : this.selectedBillingAddress.stateShortName,
-        addressUnit: isCheckedBillingAddress
-          ? physicalAddressUnit
-          : billingAddressUnit,
-      },
-      mainPoBox: {
-        city: this.selectedPhysicalPoBox
-          ? this.selectedPhysicalPoBox.city
-          : null,
-        state: this.selectedPhysicalPoBox
-          ? this.selectedPhysicalPoBox.state
-          : null,
-        zipCode: this.selectedPhysicalPoBox
-          ? this.selectedPhysicalPoBox.zipCode
-          : null,
-        poBox: this.selectedPhysicalPoBox ? physicalPoBox : null,
-      },
-      billingPoBox: {
-        city: this.selectedBillingPoBox ? this.selectedBillingPoBox.city : null,
-        state: this.selectedBillingPoBox
-          ? this.selectedBillingPoBox.state
-          : null,
-        zipCode: this.selectedBillingPoBox
-          ? this.selectedBillingPoBox.zipCode
-          : null,
-        poBox: billingPoBox,
-      },
+
       isCheckedBillingAddress: isCheckedBillingAddress,
+      mainAddress: brAddresses.mainAddress,
+      mainPoBox: brAddresses.mainPoBox,
+      billingAddress: brAddresses.billingAddress,
+      billingPoBox: brAddresses.billingPoBox,
+
       mcNumber: mcNumber,
+      creditLimit: creditLimit
+        ? parseFloat(creditLimit.toString().replace(/,/g, ''))
+        : null,
+      payTerm: this.selectedPayTerm ? this.selectedPayTerm.id : null,
     };
 
     for (let index = 0; index < brokerContacts.length; index++) {
@@ -697,10 +596,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
               ? reasponse.billingPoBox.city
               : null,
             creditType: reasponse.creditType,
-            creditLimit: reasponse.creditType === 'Enable' ? 200000 : null,
+            creditLimit:
+              reasponse.creditType === 'Enable' ? reasponse.creditLimit : null,
             availableCredit: reasponse.availableCredit,
             payTerm:
-              reasponse.creditType === 'Enable' ? reasponse.payTerm : null,
+              reasponse.creditType === 'Enable' ? reasponse.payTerm.name : null,
             note: reasponse.note,
             ban: reasponse.ban,
             dnu: reasponse.dnu,
@@ -759,6 +659,259 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Broker can't be loaded.", 'Error:');
         },
       });
+  }
+
+  public selectedBrokerAddress(): { mainAddress, billingAddress, mainPoBox, billingPoBox } {
+    let mainAddress = null;
+    let billingAddress = null;
+    let mainPoBox = null;
+    let billingPoBox = null;
+    // If same billing address
+    if (this.brokerForm.get('isCheckedBillingAddress').value) {
+      if (this.selectedPhysicalAddressTab.id === 'physicaladdress') {
+        mainAddress = {
+          address: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.address
+            : null,
+          city: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.city
+            : null,
+          state: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.state
+            : null,
+          country: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.country
+            : null,
+          zipCode: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.zipCode
+            : null,
+          stateShortName: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.stateShortName
+            : null,
+          addressUnit: this.brokerForm.get('physicalAddressUnit').value,
+        };
+        mainPoBox = null;
+        billingAddress = {
+          address: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.address
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.address
+            : null,
+          city: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.city
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.city
+            : null,
+          state: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.state
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.state
+            : null,
+          country: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.country
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.country
+            : null,
+          zipCode: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.zipCode
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.zipCode
+            : null,
+          stateShortName: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.stateShortName
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.stateShortName
+            : null,
+          addressUnit: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.brokerForm.get('physicalAddressUnit').value
+            : this.brokerForm.get('billingAddressUnit').value,
+        };
+        billingPoBox = null;
+      } else {
+        mainAddress = null;
+        mainPoBox = {
+          city: this.selectedPhysicalPoBox
+            ? this.selectedPhysicalPoBox.city
+            : null,
+          state: this.selectedPhysicalPoBox
+            ? this.selectedPhysicalPoBox.state
+            : null,
+          zipCode: this.selectedPhysicalPoBox
+            ? this.selectedPhysicalPoBox.zipCode
+            : null,
+          poBox: this.selectedPhysicalPoBox
+            ? this.brokerForm.get('physicalPoBox').value
+            : null,
+        };
+        billingPoBox = {
+          city: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalPoBox
+              ? this.selectedPhysicalPoBox.city
+              : null
+            : this.selectedBillingPoBox
+            ? this.selectedBillingPoBox.city
+            : null,
+          state: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalPoBox
+              ? this.selectedPhysicalPoBox.state
+              : null
+            : this.selectedBillingPoBox
+            ? this.selectedBillingPoBox.state
+            : null,
+          zipCode: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalPoBox
+              ? this.selectedPhysicalPoBox.zipCode
+              : null
+            : this.selectedBillingPoBox
+            ? this.selectedBillingPoBox.zipCode
+            : null,
+          poBox: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalPoBox
+              ? this.brokerForm.get('physicalPoBox').value
+              : null
+            : this.brokerForm.get('billingPoBox').value,
+        };
+        billingAddress = null;
+      }
+    }
+    // if not same 
+    else {
+      if (this.selectedPhysicalAddressTab.id === 'physicaladdress') {
+        mainAddress = {
+          address: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.address
+            : null,
+          city: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.city
+            : null,
+          state: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.state
+            : null,
+          country: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.country
+            : null,
+          zipCode: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.zipCode
+            : null,
+          stateShortName: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.stateShortName
+            : null,
+          addressUnit: this.brokerForm.get('physicalAddressUnit').value,
+        };
+        mainPoBox = null;
+      } else {
+        mainAddress = null;
+        mainPoBox = {
+          city: this.selectedPhysicalPoBox
+            ? this.selectedPhysicalPoBox.city
+            : null,
+          state: this.selectedPhysicalPoBox
+            ? this.selectedPhysicalPoBox.state
+            : null,
+          zipCode: this.selectedPhysicalPoBox
+            ? this.selectedPhysicalPoBox.zipCode
+            : null,
+          poBox: this.selectedPhysicalPoBox
+            ? this.brokerForm.get('physicalPoBox').value
+            : null,
+        };
+      }
+
+      if (this.selectedBillingAddressTab.id === 'billingaddress') {
+        billingAddress = {
+          address: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.address
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.address
+            : null,
+          city: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.city
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.city
+            : null,
+          state: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.state
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.state
+            : null,
+          country: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.country
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.country
+            : null,
+          zipCode: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.zipCode
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.zipCode
+            : null,
+          stateShortName: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.stateShortName
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.stateShortName
+            : null,
+          addressUnit: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.brokerForm.get('physicalAddressUnit').value
+            : this.brokerForm.get('billingAddressUnit').value,
+        };
+        billingPoBox = null;
+      } else {
+        billingPoBox = {
+          city: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalPoBox
+              ? this.selectedPhysicalPoBox.city
+              : null
+            : this.selectedBillingPoBox
+            ? this.selectedBillingPoBox.city
+            : null,
+          state: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalPoBox
+              ? this.selectedPhysicalPoBox.state
+              : null
+            : this.selectedBillingPoBox
+            ? this.selectedBillingPoBox.state
+            : null,
+          zipCode: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalPoBox
+              ? this.selectedPhysicalPoBox.zipCode
+              : null
+            : this.selectedBillingPoBox
+            ? this.selectedBillingPoBox.zipCode
+            : null,
+          poBox: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalPoBox
+              ? this.brokerForm.get('physicalPoBox').value
+              : null
+            : this.brokerForm.get('billingPoBox').value,
+        };
+        billingAddress = null;
+      }
+    }
+
+    return { mainAddress, billingAddress, mainPoBox, billingPoBox };
   }
 
   ngOnDestroy(): void {}

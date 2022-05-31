@@ -309,6 +309,7 @@
     &.active {
       max-height: 600px !important;
       margin-top: 32px;
+      overflow: visible;
       transition: all 0.3s ease-in-out;
     }
 
@@ -343,302 +344,6 @@
     height: 36px;
     margin-top: 26px;
     transition: all 0.3s ease-in-out;
-  }
-
-  //---------------- Off Duty Locations ----------------
-  .offDutyLocations {
-    margin-top: 6px;
-    .offDutyLocations-label {
-      padding: 0 6px;
-      display: flex;
-      align-items: center;
-      line-height: 15px;
-      margin-bottom: 6px;
-
-      p {
-        margin: 0;
-        font-size: 12px;
-        font-weight: 700;
-        color: #919191;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-
-        &:nth-child(2) {
-          margin-left: 52px;
-        }
-      }
-    }
-
-    .offDutyLocations-card {
-      background-color: #f7f7f7;
-      padding-right: 6px;
-      display: grid;
-      grid-template-columns: 110px 304px 1fr;
-      grid-template-rows: 26px;
-      -moz-column-gap: 12px;
-      column-gap: 12px;
-      margin-bottom: 2px;
-      align-items: center;
-
-      .offDutyLocation-delete {
-        width: 18px;
-        height: 18px;
-        position: relative;
-        bottom: 3.5px;
-        right: 4.5px;
-        display: none;
-        cursor: pointer;
-        svg {
-          path {
-            fill: #aaaaaa;
-          }
-          &:hover {
-            transition: all 0.3s ease-in-out;
-
-            path {
-              fill: #ef5350;
-            }
-          }
-        }
-      }
-
-      &:hover .offDutyLocation-delete {
-        display: inline-block;
-        transition: all 0.3s ease-in-out;
-      }
-    }
-  }
-
-  //----------------  Common-fake-table-modal  ----------------
-  .common-fake-table-modal {
-    overflow: hidden;
-    overflow-x: scroll;
-    margin-top: 10px;
-
-    scrollbar-width: none !important; /* Firefox */
-
-    &::-webkit-scrollbar {
-      width: 3px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: #cccccc;
-      border-left: 0px;
-      border-right: 0px;
-      border-top: 6px solid #ffffff;
-      border-bottom: 6px solid #ffffff;
-      border-radius: 1px;
-    }
-
-    &::-webkit-scrollbar-track {
-      padding: 5px;
-      position: absolute;
-      right: -3rem;
-      top: -50rem;
-      background: transparent;
-    }
-
-    &.hide-oveflow {
-      overflow: hidden !important;
-    }
-
-    .common-fake-table-label {
-      padding: 0 5px;
-      display: flex;
-      align-items: center;
-      line-height: 15px;
-      margin-bottom: 6px;
-
-      p {
-        margin: 0;
-        font-size: 12px;
-        font-weight: 700;
-        color: #919191;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-
-        &:nth-child(2) {
-          margin-left: 36px;
-        }
-
-        &:nth-child(3) {
-          margin-left: 86px;
-        }
-
-        &:nth-child(4) {
-          margin-left: 49px;
-        }
-
-        span {
-          color: #e57373;
-        }
-      }
-    }
-
-    .common-fake-table-card {
-      display: grid;
-      grid-template-columns: 120px 130px 60px 234px;
-      grid-template-rows: 26px;
-      -moz-column-gap: 12px;
-      column-gap: 12px;
-      row-gap: 2px;
-      margin-bottom: 2px;
-      background-color: #f7f7f7;
-      padding-right: 6px;
-      position: relative;
-
-      .common-fake-table-check {
-        width: 18px;
-        height: 18px;
-        svg {
-          width: 100%;
-          height: 100%;
-          path {
-            fill: #97a8dc;
-          }
-        }
-      }
-
-      .common-fake-table-status {
-        width: 72px;
-        height: 26px;
-        border-radius: 2px;
-        font-size: 12px;
-        font-weight: 500;
-        background-color: transparent;
-        text-align: center;
-        padding-top: 4px;
-
-        &-verified {
-          color: #97a8dc;
-        }
-
-        &-pending {
-          color: #ffcc80;
-        }
-
-        &-verify {
-          background-color: #6d82c7;
-          color: #ffffff;
-        }
-      }
-
-      .common-fake-table-delete {
-        width: 18px;
-        height: 18px;
-        position: absolute;
-        bottom: 7.5px;
-        right: 4.5px;
-        display: none;
-        cursor: pointer;
-        svg {
-          path {
-            fill: #aaaaaa;
-          }
-          &:hover {
-            transition: all 0.3s ease-in-out;
-
-            path {
-              fill: #ef5350;
-            }
-          }
-        }
-
-        &.new-position {
-          right: -97px;
-        }
-
-        &.new-position-without-email {
-          right: -119px;
-        }
-      }
-
-      &:hover .common-fake-table-delete {
-        display: inline-block;
-        transition: all 0.3s ease-in-out;
-      }
-    }
-
-    // Custom classes for common-fake-table
-    &-banks {
-      .common-fake-table-label {
-        p {
-          &:nth-child(2) {
-            margin-left: 94px;
-          }
-
-          &:nth-child(3) {
-            margin-left: 47px;
-          }
-        }
-      }
-      .common-fake-table-card {
-        grid-template-columns: 162px 100px 186px 18px 72px 30px;
-      }
-    }
-
-    // Shipper & Broker Template
-    &-shipper,
-    &-broker {
-      .common-fake-table-label {
-        p {
-          &:nth-child(2) {
-            margin-left: 98px;
-          }
-
-          &:nth-child(3) {
-            margin-left: 44px;
-          }
-
-          &:nth-child(4) {
-            margin-left: 87px;
-          }
-
-          &:nth-child(5) {
-            margin-left: 48px;
-          }
-        }
-      }
-      .common-fake-table-card {
-        grid-template-columns: 170px 120px 130px 60px 234px;
-      }
-
-      .common-fake-table-delete {
-        &.new-position {
-          right: -120px !important;
-        }
-
-        &.new-position-without-email {
-          right: -142px !important;
-        }
-      }
-    }
-
-    // Bank Card Template
-    &-bank-cards {
-      .common-fake-table-label {
-        p {
-          &:nth-child(2) {
-            margin-left: 75px;
-          }
-
-          &:nth-child(3) {
-            margin-left: 170px;
-          }
-
-          &:nth-child(4) {
-            margin-left: 80px;
-          }
-        }
-      }
-      .common-fake-table-card {
-        grid-template-columns: 132px 220px 94px 98px;
-      }
-    }
   }
 
   //---------------- TireSize & Axles ----------------
@@ -724,7 +429,7 @@
 }
 
 //---------------- Phone, Phone Extension, Email ----------------
-.phone-ext-email {
+.phone-extension-medium-modal {
   display: grid;
   grid-template-columns: 258px 1fr;
   grid-template-rows: 26px;
@@ -745,47 +450,54 @@
       padding: 1px 4.5px;
       cursor: pointer;
 
-      svg {
-        position: relative;
-        bottom: 1px;
-        path {
-          fill: #b7b7b7;
+      svg-icon {
+        svg {
+          position: relative;
+          bottom: 1px;
+          left: 1.5px;
+          width: 15px;
+          height: 14px;
+          path {
+            fill: #b7b7b7;
+          }
         }
       }
 
       &:hover {
         background-color: #eeeeee;
         transition: all 0.3s ease-in-out;
-        svg {
-          path {
-            fill: #919191;
+        svg-icon {
+          svg {
+            path {
+              fill: #919191;
+            }
           }
         }
       }
     }
 
     &.active-phone-ext {
-      grid-template-columns: 207px 51px;
+      grid-template-columns: 172px 86px;
     }
   }
 }
 //---------------- Phone, Phone Extension, Email User Modal----------------
-.phone-ext-email-user {
+.phone-ext-email-small-modal {
   display: grid;
-  grid-template-columns: 178px 1fr;
+  grid-template-columns: 180px 1fr;
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin: 32px 0px;
   margin-bottom: 22px;
 
-  &.phone-ext-email-user-my-20 {
+  &.phone-ext-email-small-modal-my-20 {
     margin: 20px 0px !important;
   }
 
   .phone-extension {
     display: grid;
-    grid-template-columns: 150px 26px;
+    grid-template-columns: 152px 26px;
     align-items: center;
     -moz-column-gap: 2px;
     column-gap: 2px;
@@ -814,16 +526,19 @@
         }
       }
     }
+  }
 
-    &.active-phone-ext {
-      grid-template-columns: 127px 51px;
+  &.active-phone-ext {
+    grid-template-columns: 1fr 214px;
+    .phone-extension {
+      grid-template-columns: 142px 86px;
     }
   }
 }
 //---------------- CDL, Issue & Exp Date Modal----------------
 .cdl-issue-exp-date {
   display: grid;
-  grid-template-columns: 1fr repeat(2, 120px);
+  grid-template-columns: 1fr repeat(2, 122px);
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
@@ -835,7 +550,7 @@
 //---------------- Drug, Type, Reason Modal----------------
 .drug-type-reason-date {
   display: grid;
-  grid-template-columns: 144px 168px 120px;
+  grid-template-columns: 140px 168px 124px;
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
@@ -866,14 +581,17 @@
   }
 }
 //---------------- Repair Shop Services ----------------
-.repair-shop-services {
+.repair-shop-services,
+.violation-special-checks {
   display: grid;
   grid-template-columns: repeat(4, 105px);
   grid-template-rows: repeat(2, 26px);
+  -moz-column-gap: 12px;
   column-gap: 12px;
   row-gap: 6px;
 
-  .repair-shop-service {
+  .repair-shop-service,
+  .violation-special-check {
     background-color: #f3f3f3;
     color: #b7b7b7;
     width: 100%;
@@ -924,11 +642,16 @@
   }
 }
 
+.violation-special-checks {
+  grid-template-columns: repeat(5, 158px);
+}
+
 //---------------- Company IRP, IFTA, TOLL, SCAC  ----------------
 .company-irp-ifta-toll-scac {
   display: grid;
   grid-template-columns: 130px 170px 150px 130px;
   grid-template-rows: 26px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   align-items: center;
   margin: 32px 0px;
@@ -956,5 +679,57 @@
       height: 26px;
     }
   }
+}
+//---------------- Violation Report, Inspection Level, HM Inspection Type  ----------------
+.violation-modal-row-1 {
+  display: grid;
+  grid-template-columns: 292px repeat(2, 260px);
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin: 0;
+  margin-bottom: 32px;
+}
+.violation-modal-row-2 {
+  display: grid;
+  grid-template-columns: 274px 60px repeat(3, 150px);
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 22px;
+}
+.violation-modal-row-3,
+.violation-modal-row-4 {
+  display: grid;
+  grid-template-columns: 320px 210px 120px 150px;
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+}
+.violation-modal-row-5,
+.violation-modal-row-6 {
+  display: grid;
+  grid-template-columns: 100px 178px 138px 110px 60px 190px;
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+}
+.violation-modal-autority-details-row {
+  display: grid;
+  grid-template-columns: 452px 200px 160px;
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+
+  &-1 {
+    margin-bottom: 32px;
+  }
+}
+.violation-modal-location-shipping-row-3 {
+  display: grid;
+  grid-template-columns: 272px 210px 330px;
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
 }
 // ------------------------------------------------ end ------------------------------------------------

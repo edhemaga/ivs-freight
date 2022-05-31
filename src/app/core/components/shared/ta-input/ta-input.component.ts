@@ -2,9 +2,11 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   Self,
   ViewChild,
 } from '@angular/core';
@@ -34,6 +36,8 @@ export class TaInputComponent
   @ViewChild('span3', { static: false }) span3: ElementRef;
   @Input() inputConfig: ITaInput;
   @ViewChild('t2') t2: any;
+
+  @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
 
   public focusInput: boolean = false;
   public waitValidation: boolean = false;
@@ -140,6 +144,7 @@ export class TaInputComponent
 
   public writeValue(obj: any): void {
     this.input.nativeElement.value = obj;
+    this.changeInput.emit(this.input.nativeElement.value);
   }
 
   public registerOnChange(fn: any): void {
@@ -442,6 +447,8 @@ export class TaInputComponent
         'ipas ezpass',
         'credit limit',
         'phone extension',
+        'qty',
+        'price'
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {

@@ -22,35 +22,21 @@
       </app-ta-input-dropdown>
     </div>
     <div class="arrows">
+      <span  ngbTooltip [mainTooltip]="tooltipPrevious" position="top" tooltipBackground="#6C6C6C">
+        <svg-icon
+          class="arrow-left"
+          (click)="onPreviousAction($event)"
+          src="assets/svg/common/arrow-left.svg"
+        >
+        </svg-icon>
+      </span>
+      <span tooltipBackground="#6C6C6C" ngbTooltip [mainTooltip]="tooltipNext" position="top">
       <svg-icon
-        [appTooltip]="tooltipPrevious"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6c6c6c'"
-        [tooltipColor]="'#ffffff'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="-11"
-        class="arrow-left"
-        (click)="onPreviousAction($event)"
-        src="assets/svg/common/arrow-left.svg"
-      >
-      </svg-icon>
-      <svg-icon
-        [appTooltip]="tooltipNext"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6c6c6c'"
-        [tooltipColor]="'#ffffff'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="-11"
         class="arrow-right"
         (click)="onNextAction()"
         src="assets/svg/common/arrow-left.svg"
       ></svg-icon>
+      </span>
     </div>
   </div>
   <div class="details-header-wrapper-container">
@@ -60,32 +46,15 @@
 
     <div class="border-line"></div>
     <div class="details-header-wrapper-data">
-      <div
-        [appTooltip]="'Date Added'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6c6c6c'"
-        [tooltipColor]="'#ffffff'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="80"
-        class="arrow-right"
-        class="details-header-wrapper-data-item bottom"
+      <span tooltipBackground="#6C6C6C" ngbTooltip mainTooltip="Date Added" position="top">
+      <div class="details-header-wrapper-data-item bottom"
       >
         <svg-icon class="date-add" src="assets/svg/common/date.svg"></svg-icon>
         <p class="vin-text">{{ cardDetailsDate }}</p>
-      </div>
+        </div>
+      </span>
+      <span style="margin-left:130px ;" *ngIf="statusInactive == 0" tooltipBackground="#6C6C6C" ngbTooltip mainTooltip="Date Terminated" position="top">
       <div
-        [appTooltip]="'Date Terminated'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6c6c6c'"
-        [tooltipColor]="'#ffffff'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="330"
         *ngIf="statusInactive == 0"
         class="details-header-wrapper-data-item bottom"
       >
@@ -95,6 +64,7 @@
         ></svg-icon>
         <p class="vin-text">{{ cardDetailsDateTerminated }}</p>
       </div>
+    </span>
     </div>
   </div>
 </div>

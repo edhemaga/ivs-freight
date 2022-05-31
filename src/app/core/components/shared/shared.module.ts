@@ -99,13 +99,19 @@ import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.compon
 import { TaUploadFileComponent } from './ta-modal-upload/ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-files-carousel/ta-upload-files-carousel.component';
 import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
-import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
-import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 
 import { ProfileImagesComponent } from './profile-images/profile-images.component';
+import { FilterComponent } from './filter/filter.component';
+import { FuelTotalPipe } from '../modals/fuel-modals/fuel-total.pipe';
+import { FuelPurchaseModalComponent } from '../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { FuelStopModalComponent } from '../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
+import { ViolationModalComponent } from '../safety/violation/violation-modal/violation-modal.component';
+import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { HidePasswordPipe } from '../../pipes/hide-password.pipe';
 
 @NgModule({
   declarations: [
@@ -164,6 +170,9 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     TaskModalComponent,
     TtRegistrationModalComponent,
     TtFhwaInspectionModalComponent,
+    FuelPurchaseModalComponent,
+    FuelStopModalComponent,
+    ViolationModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -179,13 +188,16 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     TaSvgPipe,
     DropdownCountPipe,
     ReviewsSortPipe,
+    FuelTotalPipe,
+    HidePasswordPipe,
 
     // Directive
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
     TextareaAutosizeDirective,
-    ProfileImagesComponent
+    ProfileImagesComponent,
+    FilterComponent
   ],
   imports: [
     CommonModule,
@@ -316,6 +328,9 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     TaskModalComponent,
     TtRegistrationModalComponent,
     TtFhwaInspectionModalComponent,
+    FuelPurchaseModalComponent,
+    FuelStopModalComponent,
+    ViolationModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -331,6 +346,8 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     TaSvgPipe,
     DropdownCountPipe,
     ReviewsSortPipe,
+    FuelTotalPipe,
+    HidePasswordPipe,
 
     // Directive
     AutoFocusDirective,
@@ -338,7 +355,8 @@ import { ProfileImagesComponent } from './profile-images/profile-images.componen
     InputRestrictionDirective,
     TextareaAutosizeDirective,
     AppTooltipeModule,
-    ProfileImagesComponent
+    ProfileImagesComponent,
+    FilterComponent
   ],
   providers: [
     DatePipe,

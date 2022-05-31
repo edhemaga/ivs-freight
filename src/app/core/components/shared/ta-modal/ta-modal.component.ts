@@ -1,4 +1,4 @@
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   Component,
@@ -29,6 +29,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() customClass: string;
   @Input() isModalValid: boolean;
 
+  @Input() disableDelete: boolean = false;
   @Input() isDeactivated: boolean = false;
   @Input() isDNU: boolean = false;
   @Input() isBFB: boolean = false;
@@ -67,7 +68,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
       .pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((data: { name: string; status: boolean }) => {
         if (data?.name === 'deactivate') {
-          this.isDeactivated = !this.isDeactivated;
+          if(data.status !== null || data.status !== undefined) {
+            this.isDeactivated = data.status;
+          }
+           this.isDeactivated = !this.isDeactivated;
         }
       });
 

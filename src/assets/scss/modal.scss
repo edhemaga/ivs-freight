@@ -18,13 +18,18 @@ ngb-modal-window[aria-hidden="true"] {
     transition: all 0.3s ease-out !important;
   }
 
-  // This class added through modal.service.ts
-  &.modal-animation {
-  }
-
   &.modal-animation .modal-dialog {
     opacity: 1;
     transform: scale(1) !important;
+  }
+
+
+  .modal-dialog {
+    max-width: max-content !important;
+    @media (min-width: 576px) {
+      max-width: max-content !important;
+      margin: 0.5rem auto !important;
+    }
   }
 
   scrollbar-width: none !important; /* Firefox */
@@ -151,6 +156,7 @@ ngb-modal-window[aria-hidden="true"] {
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+          line-height: 18px;
 
           &:hover {
             transition: all 0.3s ease-in-out;
@@ -177,6 +183,7 @@ ngb-modal-window[aria-hidden="true"] {
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+          line-height: 18px;
 
           &:hover {
             transition: all 0.3s ease-in-out;
@@ -203,6 +210,7 @@ ngb-modal-window[aria-hidden="true"] {
           -ms-user-select: none;
           user-select: none;
           pointer-events: none;
+          line-height: 18px;
 
           &.valid {
             background-color: #6d82c7;

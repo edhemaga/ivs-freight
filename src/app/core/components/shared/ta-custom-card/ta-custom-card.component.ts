@@ -1,3 +1,4 @@
+import { FormControl } from '@angular/forms';
 import {
   Component,
   Input,
@@ -31,10 +32,12 @@ export class TaCustomCardComponent {
   @Input() hasScrollBody: boolean = false;
   @Input() hasBodyData: boolean = true;
   @Input() isCommentData: boolean = false;
+  @Input() hasCheckbox: boolean = false;
   @Input() tooltipName: string = '';
   @Input() hasPlusHeader:boolean=false;
   @Input() textBottomPossiton:string;
   @Input() hasWeeklyStatus:string=null;
+  @Input() controlName:FormControl;
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );

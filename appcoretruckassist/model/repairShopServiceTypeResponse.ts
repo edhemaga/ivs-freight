@@ -9,9 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ServiceType } from './serviceType';
 
 
 export interface RepairShopServiceTypeResponse { 
-    serviceType?: string | null;
+    serviceType?: ServiceType;
+    active?: boolean;
+    logoName?: string | null;
 }
 

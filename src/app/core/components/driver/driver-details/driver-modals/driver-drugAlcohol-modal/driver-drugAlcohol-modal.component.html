@@ -20,7 +20,7 @@
         }"
         [canAddNew]="true"
         [options]="testTypes"
-        (selectedItem)="onSelectTestType($event)"
+        (selectedItem)="onSelectDropdown($event, 'test')"
       ></app-ta-input-dropdown>
       <app-ta-input-dropdown
         formControlName="testReasonId"
@@ -35,7 +35,7 @@
         }"
         [canAddNew]="true"
         [options]="reasonTypes"
-        (selectedItem)="onSelectReasonType($event)"
+        (selectedItem)="onSelectDropdown($event, 'reason')"
       ></app-ta-input-dropdown>
       <app-ta-input
         formControlName="testingDate"

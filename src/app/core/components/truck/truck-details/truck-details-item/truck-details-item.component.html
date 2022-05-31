@@ -9,14 +9,16 @@
     </div>
     <!---------------------------- Registration TEMPLATE ----------------------------->
     <div *ngSwitchCase="'registration'">
-      <div *ngFor="let reg of truckData.truck.registrations; trackBy: identity">
+      <div *ngFor="let reg of truckData.truck.registrations; let i=index; trackBy: identity">
         <app-ta-re-card
           [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage($event)"
+          (resizePage)="toggleResizePage(i)"
           [cardNameCommon]="reg.licensePlate"
           [hasCopyIcon]="true"
           [options]="dataEdit"
           [expDateClose]="formatDate(reg.expDate)"
+          [optionsId]="reg.id"
+          (dropActions)="optionsEvent($event,'edit-registration')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -34,7 +36,7 @@
               </div>
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler }"
+                [ngClass]="{ 'second-progress': toggler[i] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
@@ -46,8 +48,8 @@
                 </div>
               </div>
             </div>
-            <div class="divider" *ngIf="toggler"></div>
-            <div *ngIf="toggler" class="note-wrapper">
+            <div class="divider" *ngIf="toggler[i]"></div>
+            <div *ngIf="toggler[i]" class="note-wrapper">
               <app-ta-input-note
                 [formControl]="registrationNote"
                 [isVisibleDivider]="false"
@@ -65,17 +67,21 @@
     </div>
     <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
     <div *ngSwitchCase="'fhwa-insepction'">
-      <div *ngFor="let fhwa of truckData.truck.inspections; trackBy: identity">
+      <div *ngFor="let fhwa of truckData.truck.inspections; let i = index; trackBy: identity">
         <app-ta-re-card
           [options]="dataEdit"
           [cardNameCommon]="formatDate(fhwa.issueDate)"
+          (resizePage)="toggleResizePage(i)"
           [expDateClose]="formatDate('04/04/25')"
+          [optionsId]="fhwa.id"
+          (dropActions)="optionsEvent($event,'edit-inspection')"
+          
         >
           <div class="cards-container">
             <div class="card-body-cdl">
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler }"
+                [ngClass]="{ 'second-progress': toggler[i] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
@@ -87,7 +93,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="toggler" class="note-wrapper">
+            <div *ngIf="toggler[i]" class="note-wrapper">
               <app-ta-input-note
                 [formControl]="fhwaNote"
                 [placeholder]="'Write something.'"
@@ -105,13 +111,15 @@
 
     <!---------------------------- Title TEMPLATE ----------------------------->
     <div *ngSwitchCase="'title'">
-      <div *ngFor="let title of truckData.truck.titles; trackBy: identity">
+      <div *ngFor="let title of truckData.truck.titles; let i=index; trackBy: identity">
         <app-ta-re-card
           [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage($event)"
+          (resizePage)="toggleResizePage(i)"
           [cardNameCommon]="title.number"
           [options]="dataEdit"
           [expDateClose]="formatDate('04/04/27')"
+          [optionsId]="title.id"
+          (dropActions)="optionsEvent($event,'edit-title')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -129,7 +137,7 @@
               </div>
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler }"
+                [ngClass]="{ 'second-progress': toggler[i] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
@@ -141,8 +149,8 @@
                 </div>
               </div>
             </div>
-            <div class="divider" *ngIf="toggler"></div>
-            <div *ngIf="toggler" class="note-wrapper">
+            <div class="divider" *ngIf="toggler[i]"></div>
+            <div *ngIf="toggler[i]" class="note-wrapper">
               <app-ta-input-note
                 [formControl]="titleNote"
                 [placeholder]="'Write something.'"
@@ -166,6 +174,7 @@
         [cardNameCommon]="'KSKA FREIGHT, INC'"
         [isCardOpen]="true"
         [expDateClose]="formatDate('04/04/27')"
+        
       >
         <div class="purchase-container">
           <div class="purchase-template">

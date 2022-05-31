@@ -234,6 +234,7 @@ export class TaInputDropdownComponent
       ...this.inputConfig,
       placeholder: '',
     };
+    this.selectedItem.emit(null);
   }
 
   public addNewItem(): void {
@@ -244,6 +245,7 @@ export class TaInputDropdownComponent
     this.originalOptions = [...this.originalOptions, newItem];
     this.options = this.originalOptions;
     this.activeItem = newItem;
+    this.selectedItem.emit(newItem);
   }
 
   private dropdownNavigation(step: number) {

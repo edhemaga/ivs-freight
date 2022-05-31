@@ -329,7 +329,7 @@
                   dropdownWidthClass: 'w-col-broker-payterm'
                 }"
                 [options]="labelsPayTerms"
-                (selectedItem)="onSelectPayType($event)"
+                (selectedItem)="onSelectDropDown($event, 'paytype')"
               ></app-ta-input-dropdown>
             </div>
             <div
@@ -403,7 +403,9 @@
                     dropdownWidthClass: 'w-col-broker-department'
                   }"
                   [options]="labelsDepartments"
-                  (selectedItem)="onSelectContactDepartment($event, ind)"
+                  (selectedItem)="
+                    onSelectDropDown($event, 'contact-department', ind)
+                  "
                 ></app-ta-input-dropdown>
                 <app-ta-input
                   formControlName="phone"

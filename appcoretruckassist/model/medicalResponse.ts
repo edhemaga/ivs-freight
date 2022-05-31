@@ -13,6 +13,7 @@
 
 export interface MedicalResponse { 
     id?: number;
+    note?: string | null;
     issueDate?: string;
     expDate?: string;
 }

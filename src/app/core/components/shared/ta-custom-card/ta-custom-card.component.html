@@ -10,6 +10,13 @@
     (click)="isCardOpenEvent($event)"
   >
     <div class="header-content" [class.counter]="hasCounter">
+      <app-ta-checkbox
+        *ngIf="hasCheckbox"
+        [formControl]="controlName"
+        [label]="''"
+      >
+      </app-ta-checkbox>
+
       <app-ta-counter
         *ngIf="hasCounter"
         [count]="hasCounter"
@@ -25,12 +32,11 @@
       <div
         *ngIf="hasHeaderSvg && isCardOpen"
         ngbTooltip
-        mainTooltip="{{ tooltipName }}"
-        tooltipBackground="#6c6c6c"
+        [mainTooltip]="tooltipName"
+        [tooltipBackground]="tooltipName? '#6c6c6c' :'#ffffff'"
         position="top"
-        src="{{ hasHeaderSvg }}"
       >
-        <svg-icon class="header-svg"></svg-icon>
+        <svg-icon class="header-svg" src="{{ hasHeaderSvg }}"></svg-icon>
       </div>
     </div>
     <div

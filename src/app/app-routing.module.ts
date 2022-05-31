@@ -117,6 +117,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'calendar',
+    loadChildren: () =>
+      import('./core/components/calendar/calendar.module').then(
+        (m) => m.CalendarModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'safety/violation',
     loadChildren: () =>
       import('./core/components/safety/violation/violation.module').then(

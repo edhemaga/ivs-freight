@@ -1,5 +1,5 @@
 <div class="ta-checkbox-container {{ customClass }}" [ngClass]="{'disabled': disabled}">
-  <label *ngIf="label" for="{{ name }}">
+  <label for="{{ name }}">
     <input
       type="checkbox"
       class="ta-checkbox"
@@ -8,8 +8,8 @@
       [checked]="getSuperControl.value"
       (change)="onChange($event.target.checked)"
     />
-    <span *ngIf="!disabled" class="ta-mark"></span>
+    <span *ngIf="!disabled" class="ta-mark" [ngClass]="{'invalid': invalid}"></span>
     <svg-icon *ngIf="disabled" src="assets/svg/common/ic_disable.svg"></svg-icon>
-    <span class="ta-checkbox-label">{{ label }}</span>
+    <span class="ta-checkbox-label">{{ label }} <span class="ta-checkbox-label-required" *ngIf="required">*</span></span>
   </label>
 </div>

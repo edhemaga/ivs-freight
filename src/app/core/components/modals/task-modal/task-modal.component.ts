@@ -1,6 +1,6 @@
 import { Validators } from '@angular/forms';
 import { TaskModalService } from './task-modal.service';
-import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -57,6 +57,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: {action: string, bool: boolean}) {
+    console.log(data)
     if (data.action === 'close') {
       this.taskForm.reset();
     } else {
