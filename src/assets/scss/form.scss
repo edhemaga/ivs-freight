@@ -309,6 +309,7 @@
     &.active {
       max-height: 600px !important;
       margin-top: 32px;
+      overflow: visible;
       transition: all 0.3s ease-in-out;
     }
 

@@ -140,7 +140,7 @@
 
   <!-- Input Confirm New Item in Dropdown -->
   <div
-    *ngIf="isDropdownAddModeActive && inputConfig.isDropdown"
+    *ngIf="isDropdownAddModeActive && inputConfig.isDropdown && focusInput"
     class="input-dropdown-confirm"
     (click)="onAddItemInDropdown()"
     ngbTooltip
@@ -248,7 +248,7 @@
     *ngIf="inputConfig.placeholderText && getSuperControl.value"
     class="placeholder-text"
     [class.focused]="focusInput"
-    [style.left]="11 + (getSuperControl.value.length*7) + 'px'"
+    [style.left]="11 + (getSuperControl.value.toString().length*7) + 'px'"
     [src]="inputConfig.placeholderText?.toLowerCase() | taSvg: 'common'"
   >
   </svg-icon>

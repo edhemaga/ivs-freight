@@ -705,10 +705,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
               ? reasponse.billingPoBox.city
               : null,
             creditType: reasponse.creditType,
-            creditLimit: reasponse.creditType === 'Enable' ? 200000 : null,
+            creditLimit: reasponse.creditType === 'Enable' ? reasponse.creditLimit : null,
             availableCredit: reasponse.availableCredit,
             payTerm:
-              reasponse.creditType === 'Enable' ? reasponse.payTerm : null,
+              reasponse.creditType === 'Enable' ? reasponse.payTerm.name : null,
             note: reasponse.note,
             ban: reasponse.ban,
             dnu: reasponse.dnu,
