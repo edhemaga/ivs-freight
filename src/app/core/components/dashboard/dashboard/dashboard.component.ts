@@ -22,7 +22,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dashboardStats: Observable<DashboardStats[]>;
 
   color: string = "#eee";
-  variabla: string = "Mikica Mikicic";
   dispatchStatuses: any = [
     {
       id: 40,
