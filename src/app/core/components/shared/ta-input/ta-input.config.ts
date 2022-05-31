@@ -4,6 +4,7 @@ export interface ITaInput {
   label: string;
   placeholder?: string; // only for dropdown, otherwise placeholder is label !!!
   placeholderIcon?: string;
+  placeholderText?: string;
   isRequired?: boolean;
   isDisabled?: boolean;
   pattern?: string;
@@ -14,6 +15,6 @@ export interface ITaInput {
   textTransform?: string | 'capitalize' | 'uppercase' | 'lowercase';
   customClass?: string; // 'input-big' -> height: 32px
   isDropdown?: boolean;
-  dropdownWidthClass?: string; // Look in ta-input-drodown.scss
+  dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class
   autoFocus?: boolean; // focus first input in form
 }

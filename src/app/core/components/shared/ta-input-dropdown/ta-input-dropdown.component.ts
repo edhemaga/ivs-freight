@@ -239,7 +239,7 @@ export class TaInputDropdownComponent
 
   public addNewItem(): void {
     const newItem = {
-      id: this.options.length,
+      id: uuidv4(),
       name: this.getSuperControl.value,
     };
     this.originalOptions = [...this.originalOptions, newItem];

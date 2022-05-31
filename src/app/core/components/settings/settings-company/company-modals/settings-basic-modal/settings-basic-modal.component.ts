@@ -181,9 +181,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       factorByDefault: [false],
       customerPayTerm: [null, daysValidRegex],
       customerCredit: [null],
-      mvr: [null, [Validators.required, monthsValidRegex]],
-      truckInspection: [null, [Validators.required, monthsValidRegex]],
-      trailerInspection: [null, [Validators.required, monthsValidRegex]],
+      mvr: [12, [Validators.required, monthsValidRegex]],
+      truckInspection: [12, [Validators.required, monthsValidRegex]],
+      trailerInspection: [12, [Validators.required, monthsValidRegex]],
       // Payroll Tab
       useTruckAssist: [true],
       // Driver & Owner

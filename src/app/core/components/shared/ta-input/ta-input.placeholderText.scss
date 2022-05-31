@@ -1,0 +1,16 @@
+.placeholder-text {
+  position: absolute;
+  svg {
+    text {
+      fill: #aaaaaa;
+    }
+  }
+
+  &.focused {
+    svg {
+      text {
+        fill: #ffffff;
+      }
+    }
+  }
+}
