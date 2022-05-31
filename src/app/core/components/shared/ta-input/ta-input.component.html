@@ -257,7 +257,7 @@
   <!-- Input Control -->
   <input
     #input
-    [type]="getInputType(inputConfig.type)"
+    [type]="inputConfig.type | inputType:togglePassword"
     [id]="inputConfig.name"
     [name]="inputConfig.name"
     [disabled]="inputConfig.isDisabled"
