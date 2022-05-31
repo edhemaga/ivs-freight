@@ -321,17 +321,6 @@ export class TaInputComponent
     }, 150);
   }
 
-  public getInputType(type: string): string {
-    if (type === 'password') {
-      if (this.togglePassword) {
-        return 'text';
-      } else {
-        return 'password';
-      }
-    }
-    return type;
-  }
-
   public onKeyUp(event): void {
     if (event.keyCode == 8) {
       this.numberOfSpaces = 0;

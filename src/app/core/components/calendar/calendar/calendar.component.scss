@@ -146,6 +146,14 @@
                     box-sizing: border-box;
                 }
 
+                .ta-custom-card .ta-card-header.active .header-text{
+                    color: #919191;
+                }
+
+                .ta-custom-card .ta-card-header.active:hover .header-text{
+                    color: #919191;
+                }
+
             }
 
             .calendar-body{
@@ -374,6 +382,10 @@
                 .divider{
                     height: 0px;
                 }
+
+                .ta-custom-card .ta-card-header .header-content .header-text{
+                    color: #6C6C6C;
+                }
             }
 
             .event-info-holder{
@@ -430,7 +442,8 @@
             align-items: center;
 
             .calendar_view_title{
-                padding-right: 27px;
+                padding-right: 12px;
+                box-sizing: border-box;
     
                 font-size: 26px;
                 font-weight: 900;
@@ -459,6 +472,7 @@
 
                 svg-icon{
                     svg{
+                        display: flex;
                         width: 16px;
                         height: 16px;
 
@@ -491,7 +505,6 @@
             display: flex;
             flex-wrap: wrap;
             width: 100%;
-            background-color: #fff;
 
             .calendar_date{
                 position: relative;
@@ -501,6 +514,8 @@
 
                 height: 163px;
                 flex: 0 0 14.28%;
+                background-color: #fff;
+                transform: scale(0.99);
 
                 .date_number{
                     font-size: 52px;
@@ -547,6 +562,14 @@
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
+                        }
+
+                        .event_box{
+                            width: 14px;
+                            height: 14px;
+                            border-radius: 2px;
+                            background-color: #FFCC80;
+                            margin-right: 4px;
                         }
                     }
                 }
