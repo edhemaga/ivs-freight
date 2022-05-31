@@ -16,6 +16,8 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 })
 export class TaCheckboxComponent implements OnChanges, ControlValueAccessor {
   @Input() label: string;
+  @Input() required: boolean = false;
+  @Input() invalid: boolean = false;
   @Input() disabled: boolean = false;
   @Input() name: string = 'ta-checkbox'; // if have multiple checkboxes on same page, forward different name 
   @Input() customClass: string;

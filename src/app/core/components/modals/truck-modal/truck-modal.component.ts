@@ -22,6 +22,7 @@ import {
   yearValidRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckModalService } from './truck-modal.service';
 
 @Component({
@@ -81,7 +82,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal,
     private truckModalService: TruckModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -93,7 +95,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 1,
+        id: 5,
       };
       this.editTruckById(this.editData.id);
     }
@@ -146,25 +148,48 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     if (data.action === 'close') {
       this.truckForm.reset();
     } else {
-      // Save & Update
-      if (data.action === 'save') {
-        if (this.truckForm.invalid) {
-          this.inputService.markInvalid(this.truckForm);
-          return;
+      if (data.action === 'deactivate' && this.editData) {
+        this.truckModalService
+          .changeTruckStatus(this.editData.id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: any) => {
+              console.log(res);
+              if (res.status === '200' || res.status === '204') {
+                this.modalService.changeModalStatus({
+                  name: 'deactivate',
+                  status: null,
+                });
+              }
+            },
+            error: () => {
+              this.notificationService.error(
+                "Driver status can't be changed.",
+                'Error:'
+              );
+            },
+          });
+      } else {
+        // Save & Update
+        if (data.action === 'save') {
+          if (this.truckForm.invalid) {
+            this.inputService.markInvalid(this.truckForm);
+            return;
+          }
+          if (this.editData) {
+            this.updateTruck(this.editData.id);
+          } else {
+            this.addTruck();
+          }
         }
-        if (this.editData) {
-          this.updateTruck(this.editData.id);
-        } else {
-          this.addTruck();
+
+        // Delete
+        if (data.action === 'delete' && this.editData) {
+          this.deleteTruckById(this.editData.id);
         }
-      }
 
-      // Delete
-      if (data.action === 'delete' && this.editData) {
-        this.deleteTruckById(this.editData.id);
+        this.ngbActiveModal.close();
       }
-
-      this.ngbActiveModal.close();
     }
   }
 
@@ -382,6 +407,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             ? res.truckEngineType
             : null;
           this.selectedTireSize = res.tireSize.name ? res.tireSize : null;
+
+          this.modalService.changeModalStatus({
+            name: 'deactivate',
+            status: res.status === 0 ? false : true,
+          });
         },
         error: () => {
           this.notificationService.error("Cant't get truck.", 'Error:');

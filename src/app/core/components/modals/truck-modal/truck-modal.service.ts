@@ -31,6 +31,10 @@ export class TruckModalService {
     return this.truckService.apiTruckIdGet(id);
   }
 
+  public changeTruckStatus(id: number): Observable<any> {
+    return this.truckService.apiTruckStatusIdPut(id);
+  }
+
   public getTruckDropdowns(): Observable<GetTruckModalResponse> {
     return this.truckService.apiTruckModalGet();
   }
