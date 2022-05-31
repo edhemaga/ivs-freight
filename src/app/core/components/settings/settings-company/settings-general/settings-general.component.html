@@ -45,7 +45,7 @@
           *ngFor="
             let item of companyBasicMiddleData;
             let ind = index;
-            trackBy: identityCompanyBasicMiddle
+            trackBy: identity
           "
         >
           <svg-icon class="basic-data-svg" src="{{ item.svg }}"></svg-icon>
@@ -58,7 +58,7 @@
           class="basic-bottom-card"
           *ngFor="
             let item of companyBasicBottomData;
-            trackBy: identityCompanyBasicBottom
+            trackBy: identity
           "
         >
           <p class="bottom-card-left">{{ item.name }}</p>
@@ -76,7 +76,7 @@
       >
         <div class="additional-template-data">
           <div
-            *ngFor="let additional of generalData.additionalDetails"
+            *ngFor="let additional of generalData.additionalDetails; trackBy: identity"
             class="additional-template-item"
           >
             <p class="additional-template-value-name">{{ additional.name }}</p>
@@ -93,7 +93,7 @@
       >
         <div class="additional-template-data">
           <div
-            *ngFor="let bank of generalData.bankAccount"
+            *ngFor="let bank of generalData.bankAccount; trackBy: identity"
             class="additional-template-item"
           >
             <p class="additional-template-value-name">{{ bank.name }}</p>
@@ -103,29 +103,27 @@
               src="{{ bank.svg }}"
             ></svg-icon>
             <div class="show-hide">
-              <p class="additional-template-value">
-                <span *ngIf="bank.hide">
-                  {{
-                    accountText ? accountText : hiddenPassword(bank.value, 4)
-                  }}</span
-                >
-                <span *ngIf="!bank.hide"> {{ bank.value }}</span>
+              <p *ngIf="bank.name === 'Routing'" class="additional-template-value">
+                <span> {{ bank.value }}</span>
+              </p>
+              <p *ngIf="bank.name === 'Account'" class="additional-template-value">
+                <span> {{ bank.value | hidePassword:'account':isAccountVisible }}</span>
               </p>
               <span
-                *ngIf="bank.hide !== null"
+              *ngIf="bank.name === 'Account'"
                 tooltipBackground="#6c6c6c"
-                ngbTooltip
+                ngbTooltip 
                 [mainTooltip]="
                   isAccountVisible
                     ? 'Hide Account Number'
                     : 'Show Account Number'
                 "
                 position="top"
+                (click)="isAccountVisible = !isAccountVisible"
               >
                 <svg-icon
                   *ngIf="bank.hide"
                   class="hidden-svg-eye"
-                  (click)="showHideValue(bank.value)"
                   src="{{
                     isAccountVisible
                       ? 'assets/svg/common/ic_eye-visible.svg'
@@ -161,7 +159,7 @@
         </div>
         <div
           class="bank-card-template-data-body"
-          *ngFor="let bankC of generalData.bankCard"
+          *ngFor="let bankC of generalData.bankCard; trackBy: identity"
         >
           <div class="bank-card-template-item-body">
             <p class="item-body-nick-name">{{ bankC.nickName }}</p>
@@ -172,10 +170,11 @@
               ></svg-icon>
 
               <p class="item-body-cvc">
-                {{ cardHide(bankC.cardNumber) }}
+                {{ bankC.cardNumber | hidePassword:'card' }}
               </p>
             </div>
-            <p class="item-body-cvc">{{ cvcHide(bankC.cvc) }}</p>
+            <!-- cvcHide(bankC.cvc) -->
+            <p class="item-body-cvc">{{ bankC.cvc | hidePassword:'cvc' }}</p>
             <p class="item-body-nick-name">{{ bankC.expiration }}</p>
           </div>
         </div>
@@ -189,7 +188,7 @@
       >
         <div class="additional-template-data">
           <div
-            *ngFor="let load of generalData.loadFormat"
+            *ngFor="let load of generalData.loadFormat; trackBy: identity"
             class="additional-template-item"
           >
             <p class="additional-template-value-name">{{ load.name }}</p>
@@ -206,7 +205,7 @@
       >
         <div class="additional-template-data">
           <div
-            *ngFor="let mvr of generalData.mvr"
+            *ngFor="let mvr of generalData.mvr; trackBy: identity"
             class="additional-template-item"
           >
             <p class="additional-template-value-name">{{ mvr.name }}</p>

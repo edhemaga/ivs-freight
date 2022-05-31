@@ -143,10 +143,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         .pipe(untilDestroyed(this))
         .subscribe({
           next: (res: any) => {
+            console.log(res);
             if (res.status === '200' || res.status === '204') {
               this.modalService.changeModalStatus({
                 name: 'deactivate',
-                status: true,
+                status: null
               });
             }
           },
@@ -681,6 +682,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.onHandleAddress({
             address: res.address,
             valid: res.address ? true : false,
+          });
+          console.log(res.status)
+          this.modalService.changeModalStatus({
+            name: 'deactivate',
+            status: res.status === 0 ? false : true,
           });
 
           if (res.offDutyLocations.length) {

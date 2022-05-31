@@ -156,6 +156,7 @@ ngb-modal-window[aria-hidden="true"] {
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+          line-height: 18px;
 
           &:hover {
             transition: all 0.3s ease-in-out;
@@ -182,6 +183,7 @@ ngb-modal-window[aria-hidden="true"] {
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+          line-height: 18px;
 
           &:hover {
             transition: all 0.3s ease-in-out;
@@ -208,6 +210,7 @@ ngb-modal-window[aria-hidden="true"] {
           -ms-user-select: none;
           user-select: none;
           pointer-events: none;
+          line-height: 18px;
 
           &.valid {
             background-color: #6d82c7;
