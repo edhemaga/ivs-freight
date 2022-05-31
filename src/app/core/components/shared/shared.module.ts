@@ -112,6 +112,7 @@ import { ViolationModalComponent } from '../safety/violation/violation-modal/vio
 import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { HidePasswordPipe } from '../../pipes/hide-password.pipe';
+import { InputTypePipe } from './ta-input/input-type.pipe';
 
 @NgModule({
   declarations: [
@@ -190,6 +191,7 @@ import { HidePasswordPipe } from '../../pipes/hide-password.pipe';
     ReviewsSortPipe,
     FuelTotalPipe,
     HidePasswordPipe,
+    InputTypePipe,
 
     // Directive
     AutoFocusDirective,
@@ -348,6 +350,7 @@ import { HidePasswordPipe } from '../../pipes/hide-password.pipe';
     ReviewsSortPipe,
     FuelTotalPipe,
     HidePasswordPipe,
+    InputTypePipe,
 
     // Directive
     AutoFocusDirective,

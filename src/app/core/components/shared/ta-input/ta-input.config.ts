@@ -20,4 +20,5 @@ export interface ITaInput {
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class
   autoFocus?: boolean; // focus first input in form,
   hideClear?:boolean;
+  hideErrorMessage?: boolean;
 }
