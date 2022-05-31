@@ -1,3 +1,19 @@
+.user-icon{
+    width: 18px;
+    height: 18px;
+
+    svg-icon{
+        svg{
+            width: 14.4px;
+            height: 16.2px;        
+            display: flex;
+
+            path{
+                fill: #6D82C7;
+            }
+        }
+    }
+}
 .filter-holder{
     width: 194px;
     border-radius: 3px;

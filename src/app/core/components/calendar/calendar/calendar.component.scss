@@ -1,0 +1,402 @@
+.calendar-holder{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .calendar-info-holder{
+        width: 347px;
+        padding: 12px 18px 0px 18px;
+        box-sizing: border-box;
+        background-color: #fff;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+
+        .search-holder{
+            width: 100%;
+            height: 32px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            border-radius: 3px;
+            background-color: #F9F9F9;
+            margin-bottom: 12px;
+
+            .search-icon{
+                width: 31px;
+                height: 32px;
+                background-color: #F9F9F9;
+                border-radius: 3px 0px 0px 3px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                svg-icon{
+                    svg{
+                        width: 18px;
+                        height: 18px;
+                        display: flex;
+
+                        path{
+                            fill: #B7B7B7;
+                        }
+                    }
+                }
+            }
+
+            .search{
+                width: 292px;
+                height: 32px;
+                border: none;
+                outline: none; 
+                border-radius: 0px 3px 3px 0px;
+                background-color: #F9F9F9;  
+                font-size: 14px;
+                font-weight: 400;
+                color: #AAAAAA;
+                line-height: 19px;  
+                
+                &::placeholder{
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #AAAAAA;     
+                }    
+            }
+        }
+
+        .calendar-items-holder{
+            width: 100%;
+            height: 32px;
+            border-radius: 3px;
+            background-color: #F9F9F9;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 2px;
+            box-sizing: border-box;
+            margin-bottom: 12px;
+
+            .day-holder{
+                width: 45px;
+                height: 28px;
+                background-color: #EEEEEE00;
+                border-radius: 2px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 14px;
+                font-weight: 400;
+                color: #B7B7B7;
+                line-height: 19px;
+                margin-right: 2px;
+
+                &.week{
+                    width: 60px;
+                    background-color: #5673AA00;
+                }
+
+                &.month{
+                    width: 74px;
+                }
+
+                &.year{
+                    width: 49px;
+                    background-color: #5673AA00;
+                }
+
+                &.schedule{
+                    width: 86px;
+                    background-color: #5673AA00;
+                    margin-right: 0px;
+                }
+
+                &.active{
+                    background-color: #EEEEEE;
+                    color: #919191;
+                }
+            }
+        }
+
+        .calendar-header{
+            position: relative;
+            width: 100%;
+            height: 32px;
+            border-radius: 3px;
+            background-color: #F9F9F9;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 12px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-weight: 400;
+            color: #919191;
+            line-height: 19px;
+            margin-bottom: 2px;
+
+            .arrow-top{
+                position: absolute;
+                width: 18px;
+                height: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                top: 7px;
+                right: 7px;
+                transform: rotate(180deg);
+
+                svg-icon{
+                    svg{
+                        width: 13px;
+                        height: 8.15px;
+                        display: flex;
+
+                        path{
+                            fill: #AAAAAA;
+                        }
+                    }
+                }
+            }
+        }
+
+        .calendar-body{
+            width: 100%;
+            height: 300px;
+            border-radius: 2px;
+            background-color: #F9F9F9;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-bottom: 8px;
+
+            .calendar-years-holder{
+                position: relative;
+                width: 48px;
+                height: 300px;
+                border-radius: 2px;
+                background-color: #F1F1F1;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                flex-direction: column;
+                overflow: hidden;
+
+                .current-year-holder{
+                    position: absolute;
+                    width: 48px;
+                    height: 30px;
+                    background-color: #fff;
+                    top: 50%;
+                    left: 0px;
+                    transform: translateY(-50%);
+                    
+                }
+
+                .year-holder{
+                    width: 100%;
+                    height: 22px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #919191;
+                    line-height: 19px;
+                    margin: 4px 0px;
+
+                    &:hover{
+                        cursor: pointer;
+                        background-color: #fff;
+                        color: #3C3C3C;
+                    }
+
+                    &.active{
+                        position: relative;
+                        color: #536BC2;
+                        z-index: 10;
+                    }
+                }
+            }
+
+            .calendar-month-holder{
+                width: 275px;
+                height: 300px;
+                padding: 0px 12px;
+                box-sizing: border-box;
+                overflow: hidden;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                flex-direction: column;
+
+                .current-year-holder{
+                    width: 100%;
+                    height: 19px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin: 11px 0px 19px 0px;
+                    box-sizing: border-box;
+
+                    .current-year{
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: #6C6C6C;
+                        line-height: 19px;
+
+                        &:hover{
+                            cursor: pointer;
+                            color: #3551B7;
+                        }
+                    }
+
+                }
+
+                .calendar-body-holder{
+                    width: 100%;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    flex-direction: column;
+                    overflow: auto;
+
+                    .calendar-current-month{
+                        width: 100%;
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: flex-start;
+                        flex-direction: column;
+    
+                        
+                        .calendar-holder{
+                            width: 100%;
+                            padding-bottom: 16px;
+                            box-sizing: border-box;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+    
+                            .calendar-items{
+                                width: 50px;
+                                height: 24px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                border-radius: 2px;
+                                background-color: #91919100;
+                                font-size: 14px;
+                                font-weight: 500;
+                                color: #6C6C6C;
+                                line-height: 19px;
+    
+                                &.current-month{
+                                    color: #536BC2;
+                                }
+    
+                                &.event{
+                                    background-color: #CCCCCC;
+                                    color: #fff;
+                                }
+    
+                                &.active{
+                                    background-color: #919191;
+                                    color: #fff;
+                                }
+
+                                &.inactiv{
+                                    color: #B7B7B7;   
+                                }        
+                            }
+                        }
+                    } 
+                    
+                    .year-holder-inactiv{
+                        width: 100%;
+                        height: 19px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin: 11px 0px 19px 0px;
+                        box-sizing: border-box;   
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: #B7B7B7;
+                        line-height: 19px; 
+                    }
+                }
+
+            }
+        }
+
+        .important-event-holder{
+            width: 100%;
+            height: 38px;
+            border-radius: 3px;
+            background-color: #F9F9F9;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 12px;
+            box-sizing: border-box;
+            margin-bottom: 8px;
+
+            .container1 {
+                position: relative;
+                position: absolute;
+                width: 14px;
+                height: 14px;
+                display: none;
+                cursor: pointer;
+                user-select: none;
+                top: 2px;
+                left: 2px;
+              }
+  
+              .container1 .checkmark {
+                position: absolute;
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                border-radius: 2px;
+                background-color: #fff;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 0px;
+              }
+  
+              .container1 input:checked~.checkmark {
+                background-color: #fff;
+              }
+  
+              .checkmark:after {
+                content: "";
+                position: absolute;
+                display: none;
+              }
+  
+              .container1 input:checked~.checkmark:after {
+                display: block;
+              }
+  
+              .container1 .checkmark:after {
+                left: 5px;
+                top: 1.4px;
+                width: 5px;
+                height: 10px;
+                border: solid #919191;
+                border-width: 0 3px 3px 0;
+                transform: rotate(45deg);
+              }
+  
+              .check-box {
+                width: 14px;
+                height: 14px;
+                border-radius: 2px;
+                background-color: #CCCCCC;
+              } 
+  
+        }
+    }
+}
