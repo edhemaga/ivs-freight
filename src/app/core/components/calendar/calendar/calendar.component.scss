@@ -418,4 +418,139 @@
             }
         }
     }
+    /* Calendar View code */
+
+    .calendar_view_holder{
+        width: 100%;
+        padding: 18px 18px 17px 12px;
+        box-sizing: border-box;
+        .calendar_view_title_line{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .calendar_view_title{
+                padding-right: 27px;
+    
+                font-size: 26px;
+                font-weight: 900;
+                line-height: 36px;
+                color: #919191;
+            }
+    
+            .calendar_input_line{
+                flex: 1;
+                height: 32px;
+                background-color:  #fff;
+                border-radius: 3px;
+            }
+
+            .calendar_input_icon{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                width: 32px;
+                height: 32px;
+                margin-left: 4px;
+
+                background-color: #fff;
+                border-radius: 3px;
+
+                svg-icon{
+                    svg{
+                        width: 16px;
+                        height: 16px;
+
+                        path{
+                            fill: #6D82C7;
+                        }
+                    }
+                }
+            }
+        }
+
+        .calendar_days_line{
+            display: flex;
+            margin: 5px 0 6px 0;
+
+            .calendar_day{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex: 0 0 14.28%;
+
+                font-size: 14px;
+                font-weight: 700;
+                line-height: 19px;
+                color: #6C6C6C;
+            }
+        }
+
+        .calendar_date_holder{
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            background-color: #fff;
+
+            .calendar_date{
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                height: 163px;
+                flex: 0 0 14.28%;
+
+                .date_number{
+                    font-size: 52px;
+                    font-weight: 700;
+                    line-height: 69px;
+                    color: #B7B7B7;
+
+                    &.prevOrNext{
+                        color: #F3F3F3;
+                    }
+
+                    &.weekend{
+                        color: #E5E5E5;
+                    }
+
+                    &.currentDay{
+                        color: #97A8DC;
+                    }
+                }
+
+                .event_outlay{
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+
+                    .event_type{
+                        display: flex;
+                        align-items: center;
+                        padding: 0 6px;
+
+                        margin: 1px;
+                        height: 26px;
+
+                        background-color: #BA68C8;
+                        border-radius: 3px;
+
+                        .event_title{
+                            font-size: 14px;
+                            font-weight: 500;
+                            line-height: 19px;
+                            color: #fff;
+
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
