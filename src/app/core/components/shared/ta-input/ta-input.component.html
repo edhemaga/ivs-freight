@@ -368,9 +368,8 @@
       [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
       ></span
     >
-    <span (click)="setSelection($event)" *ngIf="inputConfig.name === 'datepicker'">/</span>
+    <span (click)="setSelection($event)" [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ' '">/</span>
     <span
-      *ngIf="inputConfig.name === 'datepicker'"
       #span3
       class="main"
       tabindex="2"
@@ -378,7 +377,8 @@
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
-      >yy</span
+      [innerHTML]="inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
+      ></span
     >
   </div>
 

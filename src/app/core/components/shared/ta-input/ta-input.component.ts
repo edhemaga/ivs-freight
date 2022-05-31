@@ -23,7 +23,7 @@ import { distinctUntilChanged } from 'rxjs';
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
   styleUrls: ['./ta-input.component.scss'],
-  providers: [NgbDropdownConfig],
+  providers: [NgbDropdownConfig, CalendarScrollService],
 })
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor
@@ -353,8 +353,6 @@ export class TaInputComponent
   }
 
   public manipulateWithInput(event: KeyboardEvent): boolean {
-    console.log("keypresss");
-    console.log(event);
     // Disable first character to be space
     if (
       !this.input.nativeElement.value &&
