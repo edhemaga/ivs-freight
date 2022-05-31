@@ -408,6 +408,7 @@
 
   <!-- Input Error Message -->
   <span
+    *ngIf="!inputConfig.hideErrorMessage"
     class="input-error {{ inputConfig.customClass }}"
     [ngClass]="{
       'invalid-focus-out':
