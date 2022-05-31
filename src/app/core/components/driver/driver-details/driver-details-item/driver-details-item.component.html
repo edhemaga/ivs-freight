@@ -3,20 +3,22 @@
     <!---------------------- GENERAL TEMPLATE ------------------>
     <div *ngSwitchCase="'general'">
       <app-driver-details-card
-      [data]="driverData.driver"
+        [data]="driverData.driver"
       ></app-driver-details-card>
     </div>
     <div *ngSwitchCase="'cdl'">
-      <div *ngFor="let cdl of driverData.driver.cdls; trackBy: identity">
+      <div *ngFor="let cdl of driverData.driver.cdls;let i=index; trackBy: identity">
         <app-ta-re-card
           [options]="dataTest"
           [cardDocumentCounter]="6"
-          (resizePage)="toggleResizePage($event)"
+          (resizePage)="toggleResizePage(i)"
           [cardNameCommon]="cdl?.cdlNumber"
-          [expDateClose]="formatDate(cdl?.expDate)"
+          [expDateClose]="cdl?.expDate | formatDateP"
           [hasCopyIcon]="true"
           [optionsId]="cdl.id"
-          (dropActions)="optionsEvent($event,'edit-licence')"
+          [stateTooltipName]="cdl.state.stateName"
+          [shortName]="cdl.state.stateShortName"
+          (dropActions)="optionsEvent($event, 'edit-licence')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -34,20 +36,23 @@
                 <div class="card-restriction">
                   <div class="restriction-name">Issued</div>
                   <div class="restriction-item-value">
-                    {{ formatDate(cdl?.issueDate) }}
+                    {{ cdl?.issueDate | formatDateP }}
                   </div>
                 </div>
               </div>
-              <div [ngClass]="{ 'card-restriction-endorsment': !toggler }">
+              <div [ngClass]="{ 'card-restriction-endorsment': !toggler[i] }">
                 <div class="card-restriction">
                   <p class="restriction-name">Restriction</p>
                   <div class="item-card-wrapper">
                     <p
                       class="restriction-item-value"
-                      *ngFor="let rest of cdl.cdlRestrictions; trackBy: identity"
+                      *ngFor="
+                        let rest of cdl.cdlRestrictions;
+                        trackBy: identity
+                      "
                     >
                       <span class="value-name">{{ rest?.code }}</span>
-                      <span class="desc" *ngIf="toggler"
+                      <span class="desc" *ngIf="toggler[i]"
                         >- {{ rest?.description }}
                       </span>
                     </p>
@@ -58,125 +63,121 @@
                   <div class="item-card-wrapper">
                     <p
                       class="restriction-item-value"
-                      *ngFor="let endors of cdl.cdlEndorsements; trackBy: identity"
+                      *ngFor="
+                        let endors of cdl.cdlEndorsements;
+                        trackBy: identity
+                      "
                     >
+                    <span class="span-value" *ngIf="endors" >
                       <span class="value-name">{{ endors?.code }}</span>
-                      <span class="desc" *ngIf="toggler"
+                      <span *ngIf="toggler[i]" class="desc"
                         >- {{ endors?.description }}</span
                       >
-                    </p>
+                    </span>
+                  </p>
+                  <span class="no-data" *ngIf="endors ==''">None</span>
                   </div>
                 </div>
               </div>
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler }"
+                [ngClass]="{ 'second-progress': toggler[i] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="formatDate(cdl?.expDate)"
-                    [startDate]="formatDate(cdl?.issueDate)"
+                    [expireDate]="cdl?.expDate | formatDateP"
+                    [startDate]="cdl?.issueDate | formatDateP"
                     [expiresSettings]="'details'"
+                    [customText]="'Exp. in'"
                   >
                   </app-truckassist-progress-expiration>
                 </div>
               </div>
             </div>
+            <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+              <div class="divider"></div>
 
-            <div class="divider" *ngIf="toggler"></div>
-            <div *ngIf="toggler" class="details-document-container">
-              <div class="icon-counter-wrapper">
-                <div class="counter-text-wrapper">
-                  <app-ta-counter
-                    [countBackgroud]="'#F3F3F3'"
-                    [countHeight]="'24px'"
-                    [countWidth]="'24px'"
-                    [count]="6"
+              <div class="details-document-container">
+                <div class="icon-counter-wrapper">
+                  <div class="counter-text-wrapper">
+                    <app-ta-counter
+                      [countBackgroud]="'#F3F3F3'"
+                      [countHeight]="'24px'"
+                      [countWidth]="'24px'"
+                      [count]="6"
+                    >
+                    </app-ta-counter>
+                    <p class="details-document-name">Document</p>
+                  </div>
+                  <svg-icon
+                    (click)="onFileAction('download')"
+                    src="assets/svg/common/ic_download.svg"
                   >
-                  </app-ta-counter>
-                  <p class="details-document-name">Document</p>
+                  </svg-icon>
                 </div>
-                <svg-icon
-                  (click)="onFileAction('download')"
-                  src="assets/svg/common/ic_download.svg"
-                >
-                </svg-icon>
               </div>
-            </div>
-            <div *ngIf="toggler" class="card-pdf">
-              <app-ta-files
-                [files]="[
-                  {
-                    fileName: 'truckassist0',
-                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                    extension: 'pdf'
-                  },
-                  {
-                    fileName: 'truckassist0',
-                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                    extension: 'pdf'
-                  },
-                  {
-                    fileName: 'truckassist0',
-                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                    extension: 'pdf'
-                  },
-                  {
-                    fileName: 'truckassist0',
-                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                    extension: 'pdf'
-                  }
-                ]"
-                [fileType]="'multiple-pdf'"
-                [customClassName]="'driver-details-multiple-pdf'"
-              >
-              </app-ta-files>
-            </div>
-            <div *ngIf="toggler" class="divider"></div>
-            <div *ngIf="toggler" class="card-note">
-              <app-ta-input-note
-                [formControl]="cdlNote"
-                [isVisibleDivider]="false"
-                [isVisibleNote]="true"
-                [isVisibleSecondDivider]="false"
-                [isVisibleArrow]="false"
-                [minRows]="1"
-                [placeholder]="'Write something.'"
-                [customClass]="'note-small'"
-              >
-              </app-ta-input-note>
+              <div class="card-pdf">
+                <app-ta-files
+                  [files]="[
+                    {
+                      fileName: 'truckassist0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      fileName: 'truckassist0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      fileName: 'truckassist0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      fileName: 'truckassist0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    }
+                  ]"
+                  [fileType]="'multiple-pdf'"
+                  [customClassName]="'driver-details-multiple-pdf'"
+                >
+                </app-ta-files>
+              </div>
+              <div class="divider"></div>
+              <div class="card-note">
+                <app-ta-input-note
+                  [formControl]="cdlNote"
+                  [isVisibleDivider]="false"
+                  [isVisibleNote]="true"
+                  [isVisibleSecondDivider]="false"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                >
+                </app-ta-input-note>
+              </div>
             </div>
           </div>
         </app-ta-re-card>
       </div>
     </div>
     <div *ngSwitchCase="'drug-alcohol'">
-      <div *ngFor="let test of driverData.driver.tests; trackBy: identity">
+      <div *ngFor="let test of driverData.driver.tests; let i=index; trackBy: identity">
         <app-ta-re-card
           [options]="dataTest"
-          [cardNameCommon]="test.testType"
-          (resizePage)="toggleResizePage($event)"
-          [expDateClose]="formatDate(test?.testingDate)"
+          [cardNameCommon]="test?.testingDate | formatDateP"
+          (resizePage)="toggleResizePage(i)"
           [optionsId]="test.id"
-          (dropActions)="optionsEvent($event,'edit-drug')"
+          [cardSecondName]="test?.testReason.reason"
+          [shortName]="test.testType.name[0]"
+          [stateTooltipName]="test.testType.name + ' Test'"
+          (dropActions)="optionsEvent($event, 'edit-drug')"
         >
           <div class="cards-container">
-            <div class="card-body-cdl">
-              <div class="card-restriction-endorsment card-restriction-class">
-                <div class="card-restriction">
-                  <div class="restriction-name">Reason</div>
-                  <div class="restriction-item-value">
-                    {{ test?.testReason.reason }}
-                  </div>
-                </div>
-                <div class="card-restriction">
-                  <div class="restriction-name">Issued</div>
-                  <div class="restriction-item-value">
-                    {{ formatDate(test?.testingDate) }}
-                  </div>
-                </div>
-              </div>
-            </div>
+          
           </div>
         </app-ta-re-card>
       </div>
@@ -185,18 +186,18 @@
       <div *ngFor="let med of driverData.driver.medicals; trackBy: identity">
         <app-ta-re-card
           [options]="dataTest"
-          [cardNameCommon]="formatDate(med?.issueDate)"
-          [expDateClose]="formatDate(med?.expDate)"
+          [cardNameCommon]="med?.issueDate | formatDateP"
+          [expDateClose]="med?.expDate | formatDateP"
           [optionsId]="med.id"
-          (dropActions)="optionsEvent($event,'edit-medical')"
+          (dropActions)="optionsEvent($event, 'edit-medical')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
               <div class="card-row-progress">
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="formatDate(med?.expDate)"
-                    [startDate]="formatDate(med?.issueDate)"
+                    [expireDate]="med?.expDate | formatDateP"
+                    [startDate]="med?.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -213,10 +214,10 @@
           [options]="dataTest"
           [cardDocumentCounter]="6"
           (resizePage)="toggleResizePage($event)"
-          [cardNameCommon]="formatDate(mvr?.issueDate)"
-          [expDateClose]="formatDate(mvr?.issueDate)"
+          [cardNameCommon]="mvr?.issueDate | formatDateP"
+          [expDateClose]="mvr?.issueDate | formatDateP"
           [optionsId]="mvr.id"
-          (dropActions)="optionsEvent($event,'edit-mvr')"
+          (dropActions)="optionsEvent($event, 'edit-mvr')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -226,7 +227,7 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [startDate]="formatDate(mvr?.issueDate)"
+                    [startDate]="mvr?.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>

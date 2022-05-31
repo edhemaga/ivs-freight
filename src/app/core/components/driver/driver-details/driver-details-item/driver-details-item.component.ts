@@ -10,7 +10,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import moment from 'moment';
-import { Subject } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
 import { DriverShortResponse } from 'appcoretruckassist';
@@ -19,6 +18,7 @@ import { DriverCdlModalComponent } from '../driver-modals/driver-cdl-modal/drive
 import { DriverDrugAlcoholModalComponent } from '../driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { card_component_animation } from '../../../shared/animations/card-component.animations';
 
 @Component({
   selector: 'app-driver-details-item',
@@ -26,13 +26,14 @@ import { DriverMvrModalComponent } from '../driver-modals/driver-mvr-modal/drive
   styleUrls: ['./driver-details-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  animations: [card_component_animation('showHideCardBody')],
 })
 export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
   @Input() data: any = null;
   public cdlNote: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
-  public toggler: boolean = false;
+  public toggler: boolean[] = [];
 
   public arrayDrivers: any = [];
   public arrayDriverName: any = '';
@@ -42,7 +43,6 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
 
   public dataTest: any;
   public driverData: DriverShortResponse;
-
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService
@@ -114,7 +114,6 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initTableOptions();
     this.getDriversList();
-
     this.getDriverById();
   }
 
@@ -295,8 +294,8 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   }
 
   /**Function for toggle page in cards */
-  public toggleResizePage(value: boolean) {
-    this.toggler = value;
+  public toggleResizePage(value: number) {
+    this.toggler[value] = !this.toggler[value];
   }
   public onFileAction(action: string) {
     switch (action) {

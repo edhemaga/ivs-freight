@@ -1,3 +1,4 @@
+import { formatDatePipe } from './../../../pipes/formatDate.pipe';
 import { DriverDetailsCardComponent } from './../driver-details-card/driver-details-card.component';
 import { DriverDrugAlcoholModalComponent } from './driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
@@ -12,7 +13,6 @@ import { DriverMvrModalComponent } from './driver-modals/driver-mvr-modal/driver
 import { DriverMedicalModalComponent } from './driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import {NgApexchartsModule} from "ng-apexcharts";
-
 @NgModule({
   declarations: [
     DriverDetailsComponent,
@@ -24,8 +24,9 @@ import {NgApexchartsModule} from "ng-apexcharts";
     DriverDrugAlcoholModalComponent,
     DriverMedicalModalComponent,
     DriverMvrModalComponent,
+    formatDatePipe,
   ],
-  exports:[DriverDetailsCardComponent],
+  exports:[DriverDetailsCardComponent,formatDatePipe],
   imports: [
     CommonModule,
     DriverDetailsRoutes,

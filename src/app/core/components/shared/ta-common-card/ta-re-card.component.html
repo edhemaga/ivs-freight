@@ -1,21 +1,37 @@
-<div class="card-container-cmp">
-  <div [ngClass]="{ 'card-flex': !isCardOpen }" class="name-dots">
-    <div
-      (click)="toggleCards()"
-      ngbTooltip
-      [mainTooltip]="isCardOpen ? 'Close Card' : 'Open Card'"
-      position="top"
-      tooltipBackground="#6C6C6C"
-      class="card-header-cmp"
-      [ngClass]="{ 'card-flex': !isCardOpen }"
-    >
-      <div class="text-icon-common" [ngClass]="{ copied: copied }">
+<div class="card-container-cmp" [ngClass]="{ 'card-flex': !isCardOpen }">
+  <div
+    ngbTooltip
+    [mainTooltip]="isCardOpen ? '' : 'Open Card'"
+    position="top"
+    [tooltipBackground]="isCardOpen? 'rgba(0,0,0,0)' : '#6C6C6C'"
+    class="tooltipClose"
+   
+  >
+    <div class="name-dots disable-selection">
+      <div
+        class="text-icon-common"
+        [ngClass]="{ copied: copied }"
+        (click)="toggleCards()"
+      >
+        <span
+          ngbTooltip
+          [mainTooltip]="stateTooltipName"
+          position="top"
+          tooltipBackground="#6C6C6C"
+          class="tooltipShortName"
+        >
+          <div *ngIf="shortName" class="weekly-status">
+            <div class="weekly-status-value">
+              {{ shortName }}
+            </div>
+          </div>
+        </span>
         <span
           *ngIf="hasSvg && isCardOpen"
           [ngClass]="{ 'card-close-icon': !isCardOpen }"
           class="icon-common"
         >
-          <svg-icon *ngIf="hasSvg" [src]="hasSvg"></svg-icon>
+          <svg-icon class="svg-left" *ngIf="hasSvg" [src]="hasSvg"></svg-icon>
         </span>
         <span
           class="card-name-cmp"
@@ -26,14 +42,16 @@
             class="open-name disable-selection"
             >{{ cardNameCommon }}</span
           >
-          <span
-            class="exp-text"
-            *ngIf="!isCardOpen && expDateClose"
-            [ngClass]="{ 'card-close-title': !isCardOpen }"
-            >Exp. {{ expDateClose }}
+
+          <span [ngClass]="{'card-close-title': !isCardOpen }" class="open-name" *ngIf="!isCardOpen && expDateClose"
+            >Expired on {{ expDateClose }}
           </span>
+          <span *ngIf="cardSecondName && isCardOpen" class="second-name">{{
+            cardSecondName
+          }}</span>
         </span>
         <span
+          *ngIf="hasCopyIcon"
           ngbTooltip
           [mainTooltip]="copied ? 'Copied' : 'Copy'"
           position="top"
@@ -53,12 +71,7 @@
         >
         </svg-icon>
       </div>
-    </div>
-    <div
-      *ngIf="haveDots"
-      class="drop-comm"
-      [ngClass]="{ 'dropdown-common': !isCardOpen }"
-    >
+
       <app-table-dropdown
         [options]="options.actions"
         [id]="optionsId"
@@ -69,9 +82,9 @@
     </div>
   </div>
   <div
+    class="card-body-cmp"
     [@.disabled]="animationsDisabled"
     [ngClass]="{ active: isCardOpen }"
-    class="card-body-cmp"
   >
     <div [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
       <ng-content></ng-content>

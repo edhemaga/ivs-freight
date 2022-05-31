@@ -362,6 +362,16 @@ p {
           background: rgb(108, 108, 108, 0.2);
         }
       }
+      .span-value{
+        &::-moz-selection {
+          color: #6c6c6c !important;
+          background: rgb(108, 108, 108, 0.2) !important;
+        }
+        &::selection {
+          color: #6c6c6c !important;
+          background: rgb(108, 108, 108, 0.2) !important;
+        }
+      }
       .restriction-item-value {
         font-size: $font-size14;
         font-weight: 400;
@@ -369,9 +379,18 @@ p {
         height: 18px;
         margin-bottom: 2px;
         margin-top: 2px;
+        &::-moz-selection {
+          color: #6c6c6c !important;
+          background: rgb(108, 108, 108, 0.2) !important;
+        }
+        &::selection {
+          color: #6c6c6c !important;
+          background: rgb(108, 108, 108, 0.2) !important;
+        }
         .value-name {
           font-size: $font-size14;
           font-weight: $font-semibold;
+        
           color: #6c6c6c;
           &::-moz-selection {
             color: #6c6c6c;
@@ -406,7 +425,6 @@ p {
   padding: 0 10px;
   margin-bottom: 16px;
   padding-bottom: 16px;
-  transition:all 0.4s ease-in-out;
 }
 // Progress bar details
 .card-details-progress-container {
@@ -504,6 +522,16 @@ p {
         &::selection {
           color: $color-gray-dark;
           background: rgb(108, 108, 108, 0.2);
+        }
+        span{
+          &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+          }
+          &::selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
       }
     }
@@ -789,9 +817,6 @@ p {
     color: $color-gray-dark;
     background: rgb(108, 108, 108, 0.2);
   }
-}
-.card-name-cmp{
-  margin-left: 12px !important;
 }
 .no-data{
   font-size: 14px;

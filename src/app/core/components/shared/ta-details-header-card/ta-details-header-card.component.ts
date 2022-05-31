@@ -9,7 +9,7 @@ import { FormControl } from '@angular/forms';
 export class TaDetailsHeaderCardComponent implements OnInit {
   
   @Input() cardDetailsName:string='';
-  @Input() cardDetailsDate:string='';
+  @Input() cardDetailsDate:any;
   @Input() cardDetailsDateTerminated:string=null;
   @Input() hasSvgHeader:string='';
   @Input() tooltipNext:string='';

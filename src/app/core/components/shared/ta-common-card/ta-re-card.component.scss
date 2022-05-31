@@ -1,31 +1,17 @@
 .card-flex {
-    height: 42px;
-    .table-dropdown-container-vertical {
-        top: 0 !important;
-    }
+    height: 42px !important; 
+    transition: all 0.3s ease-in-out;
 }
 
-.card-header-cmp {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #ffffff;
-    border-radius: 3px;
-    padding: 0 !important;
-    z-index: 10;
-    width: 300px;
-    &:hover {
-        cursor: pointer;
-    }
+
     .text-icon-common {
         display: flex;
-        align-items: flex-start;
-
+        align-items: center;
+        width: 290px;
         .card-icon-common {
-            visibility: hidden;
+            display: none;
             position: relative;
             margin-left: 6px;
-            bottom: -14px;
             height: 18px;
             svg {
                 &:hover {
@@ -37,44 +23,29 @@
         }
 
         .icon-common {
-            margin-left: 12px;
-            margin-right: -6px;
-            margin-top: 12px;
+            margin-right: 6px;
         }
 
         .card-close-title {
-            margin-top: 7px !important;
-            margin-bottom: 7px !important;
-            font-size: 14px !important;
-            color: #aaaaaa !important;
-            font-weight: 500 !important;
-            &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
+           
+            color: #919191 !important;
         }
         &:hover {
             .card-icon-common {
-                visibility: visible;
+                display: block;
                 position: relative;
-                bottom: -10px;
+                bottom: 5px;
             }
             .card-close-title {
-                color: #3c3c3c !important;
+                color: #6c6c6c !important;
             }
         }
     }
     .card-name-cmp {
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 800;
         color: #6c6c6c;
         height: 22px;
-        margin-top: 10px !important;
-        margin-left: 12px;
         &::-moz-selection {
             color: #6c6c6c;
             background: rgb(108, 108, 108, 0.2);
@@ -84,13 +55,6 @@
             background: rgb(108, 108, 108, 0.2);
         }
     }
-    .icon-dots {
-        svg {
-            margin-right: 7px;
-            margin-top: 13px;
-        }
-    }
-}
 .card-container-cmp {
     border-radius: 3px;
     background-color: #ffffff;
@@ -99,7 +63,10 @@
     .card-body-cmp {
         flex-direction: column;
         background-color: #ffffff;
-        margin-top: 0px !important;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.4s ease-in-out;
+        // margin-top: -12px !important;
         &.active {
             max-height: 1200px;
             transition: all 0.4s ease-in-out;
@@ -129,7 +96,7 @@
         margin-left: 17px;
         margin-right: 10px;
         padding-bottom: 11px;
-        // margin-top: 12px;
+        padding-top: 11px;
         svg {
             cursor: pointer;
         }
@@ -182,11 +149,7 @@ p {
         margin-top: 0 !important;
     }
 }
-// .card-close-icon {
-//     margin-top: 7px !important;
-//     margin-bottom: 7px;
-//     margin-right: 7px !important;
-// }
+
 .rotate-common {
     svg {
         transform: rotate(180deg);
@@ -212,25 +175,20 @@ p {
         background: rgba(109, 130, 199, 0.2);
     }
 }
-.icon-dots {
-    cursor: pointer;
-    svg {
-        &:hover {
-            path {
-                fill: #6c6c6c;
-            }
-        }
-    }
-}
+
 .copied {
     .card-icon-common {
         svg {
             path {
+                fill: #536BC2 !important;
                 &:hover {
-                    fill: #3551b7 !important;
+                    fill: #536BC2 !important;
                 }
             }
         }
+    }
+    .open-name{
+        color: #3551b7 !important;
     }
 }
 .hide-footer {
@@ -241,6 +199,11 @@ p {
     align-items: center;
     justify-content: space-between;
     z-index: 70;
+    padding-top: 12px;
+    padding-left: 12px;
+}
+.drop-common{
+    height: 21px;
 }
 .rezise-icon {
     height: 18px;
@@ -253,6 +216,10 @@ p {
     }
 }
 .open-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: #6c6c6c;
+    cursor: pointer;
     &::-moz-selection {
         color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);
@@ -261,10 +228,13 @@ p {
         color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);
     }
+    &:hover{
+        color: #3c3c3c !important;
+    }
 }
 .dropdown-common {
    position: relative;
-   top: -5px;
+   height: 21px;
 }
 .disable-selection {
     -webkit-user-select: none;
@@ -272,10 +242,44 @@ p {
     -ms-user-select: none;
     user-select: none;
     position: relative;
-    bottom: -1px;
+
 }
+.weekly-status{
+    background-color: #f3f3f3;
+    height: 18px;
+    width: 28px;
+    padding: 2px 0px;
+    border-radius: 2px;
+    margin-right: 6px;
+    text-align: center;
+    position: relative;
+    bottom: 1.5px;
+    .weekly-status-value{
+      font-size: 11px;
+      font-weight: 800;
+      color: #6c6c6c;
+      line-height: 15px;
+      &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(145, 145, 145, 0.2);
+      }
+      &::selection {
+        color: #919191;
+        background: rgb(145, 145, 145, 0.2);
+      }
+    }
+  }
 .settings-icon{
     position: relative;
-    top: 15px;
+    top: 0px;
     left: 6px;
+}
+.second-name{
+    font-size: 14px;
+    color: #6c6c6c;
+    font-weight: 400;
+    margin-left: 12px;
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

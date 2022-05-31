@@ -103,7 +103,7 @@ export class ShopRepairDetailsItemComponent implements OnInit {
    
      this.dummyDataRepair = [
       {
-        unit: 'R53202',
+        unit: 'R53201',
         date: '08/10/20',
         inv: '1001-18',
         desc: 'Engine oil and filter ● Transmissioningddsadasdasdasdasdasdasdasdad',
@@ -383,7 +383,7 @@ export class ShopRepairDetailsItemComponent implements OnInit {
         finishOrder: true,
       },
       {
-        unit: 'R53202',
+        unit: 'R53205',
         date: '08/10/20',
         inv: '1001-18',
         desc: 'Engine oil and filter ● Transmissioningddsadasdasdasdasdasdasdasdad',

@@ -11,8 +11,7 @@
       <span *ngIf="expiresSettings === 'settings-insurance-policy' || expiresSettings === 'settings-parking'"
         class="expires-settings">{{ customText }}</span>
       <span *ngIf="expiresSettings !== 'settings-parking'"
-        [ngClass]="{ 'expires-settings-bold': expiresSettings }">Exp.in {{ progresDay }} {{ progresDay > 1 ? "days" :
-        "day" }}</span>
+        [ngClass]="{ 'expires-settings-bold': expiresSettings }">  {{ progresDay > 1 ? "days" :"day" }}</span>
     </span>
 
     <!-- EXPIRED -->
@@ -22,7 +21,7 @@
 
     <!-- EXPIRED AGO -->
     <span *ngIf="negative" class="progress-text">
-      <span>{{ progresDay }} days ago</span>
+      <span>Expired {{ progresDay }} days ago</span>
     </span>
 
     <!-- DAYS -->

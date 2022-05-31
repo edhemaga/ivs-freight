@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import moment from 'moment';
-import { card_modal_animation } from '../animations/card-modal.animation';
+import { card_component_animation } from '../animations/card-component.animations';
 
 @Component({
   selector: 'app-ta-re-card',
   templateUrl: './ta-re-card.component.html',
   styleUrls: ['./ta-re-card.component.scss'],
-  animations: [card_modal_animation('showHideCardBody')],
+  animations: [card_component_animation('showHideCardBody')],
 })
 export class TaReCardComponent implements OnInit {
   @Input() public cardNameCommon: string;
@@ -25,19 +25,33 @@ export class TaReCardComponent implements OnInit {
   @Input() public stateNameShort:string='';
   @Input() public stateNameLong:string='';
   @Input() public optionsId:number;
+  @Input() public shortName:string='';
+  @Input() public stateTooltipName:string='';
+  @Input() public cardSecondName:string='';
   @Output() public dropActions = new EventEmitter<any>();
   public resPage: boolean = false;
   public copied: boolean = false;
   public toggleDropDown: boolean;
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.CloseCard();
+  }
 
   public toggleDrop() {
     this.toggleDropDown = !this.toggleDropDown;
   }
+  public CloseCard(){
+    let currentDate=moment().format('MM/DD/YYYY')
+    if(moment(this.expDateClose).isBefore(currentDate)){
+      this.isCardOpen=false
+    }
+  }
   public toggleCards() {
-    this.isCardOpen = !this.isCardOpen;
+    let currentDate=moment().format('MM/DD/YYYY')
+     if(moment(this.expDateClose).isBefore(currentDate)){
+      this.isCardOpen = !this.isCardOpen;
+    }
   }
   public toggleResizePage(val: any) {
     this.resPage = !this.resPage;
@@ -54,7 +68,7 @@ export class TaReCardComponent implements OnInit {
     this.copied = true;
     setTimeout(() => {
       this.copied=false;
-    }, 1200);
+    }, 2200);
     this.toggleCards();
 
     

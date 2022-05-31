@@ -5,8 +5,8 @@
     [searchName]="'Search Driver'"
     [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
     [cardDetailsName]="data.currentDriverName"
-    [cardDetailsDate]="formatDate(data.hired)"
-    [cardDetailsDateTerminated]="formatDate(data.dateTerminated)"
+    [cardDetailsDate]="data.hired | formatDateP"
+    [cardDetailsDateTerminated]=" data.dateTerminated | formatDateP"
     [statusInactive]="data.status"
   >
     <div class="driver-container">
@@ -200,7 +200,7 @@
           <div class="addres-wrapper addres-second">
             <div class="addres-name">Date of Birth</div>
             <div class="addres-value">
-              {{ formatDate(data.dateOfBirth) }}
+              {{  data.dateOfBirth | formatDateP }}
             </div>
           </div>
         </div>
@@ -352,10 +352,9 @@
                     </p>
                   </div>
                   <p class="date-from-to">
-                    {{ formatDate(empH.startDate) }} -
-                    {{
-                      empH.endDate !== null ? formatDate(empH.endDate) : "Today"
-                    }}
+                    {{ empH.startDate | formatDateP }} -
+                    <span *ngIf="empH.endDate">{{empH.endDate | formatDateP }}</span>
+                    <span *ngIf="!empH.endDate">Today</span>
                   </p>
                   <p class="duration">1 y 20 d</p>
                   <div class="divider-employment"></div>
@@ -654,7 +653,7 @@
               [cardDocumentCounter]="6"
               (resizePage)="toggleResizePage($event)"
               [cardNameCommon]="cdl?.cdlNumber"
-              [expDateClose]="formatDate(cdl?.expDate)"
+              [expDateClose]="cdl?.expDate | formatDateP"
               [hasCopyIcon]="true"
             >
               <div class="cards-container">
@@ -673,7 +672,7 @@
                     <div class="card-item">
                       <div class="card-item-name">Issued</div>
                       <div class="card-item-value">
-                        {{ formatDate(cdl?.issueDate) }}
+                        {{cdl?.issueDate | formatDateP}}
                       </div>
                     </div>
                   </div>
@@ -719,8 +718,8 @@
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [expireDate]="formatDate(cdl?.expDate)"
-                        [startDate]="formatDate(cdl?.issueDate)"
+                        [expireDate]="cdl?.expDate | formatDateP"
+                        [startDate]="cdl?.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
@@ -811,9 +810,9 @@
           <div *ngFor="let test of data.tests; trackBy: identity">
             <app-ta-re-card
               [options]="dataEdit"
-              [cardNameCommon]="test.testType"
+              [cardNameCommon]="test.testType.name"
               (resizePage)="toggleResizePage($event)"
-              [expDateClose]="formatDate(test?.testingDate)"
+              [expDateClose]="test?.testingDate | formatDateP"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -827,7 +826,7 @@
                     <div class="card-item">
                       <div class="card-item-name">Issued</div>
                       <div class="card-item-value">
-                        {{ formatDate(test?.testingDate) }}
+                        {{ test?.testingDate | formatDateP }}
                       </div>
                     </div>
                   </div>
@@ -851,16 +850,16 @@
           <div *ngFor="let med of data.medicals; trackBy: identity">
             <app-ta-re-card
               [options]="dataEdit"
-              [cardNameCommon]="formatDate(med?.issueDate)"
-              [expDateClose]="formatDate(med?.expDate)"
+              [cardNameCommon]=" med?.issueDate | formatDateP"
+              [expDateClose]="med?.expDate | formatDateP"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
                   <div class="card-row-progress">
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [expireDate]="formatDate(med?.expDate)"
-                        [startDate]="formatDate(med?.issueDate)"
+                        [expireDate]=" med?.expDate | formatDateP"
+                        [startDate]="med?.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
@@ -889,8 +888,8 @@
               [options]="dataEdit"
               [cardDocumentCounter]="6"
               (resizePage)="toggleResizePage($event)"
-              [cardNameCommon]="formatDate(mvr?.issueDate)"
-              [expDateClose]="formatDate(mvr?.issueDate)"
+              [cardNameCommon]=" mvr?.issueDate | formatDateP"
+              [expDateClose]="mvr?.issueDate | formatDateP"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -900,7 +899,7 @@
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [startDate]="formatDate(mvr?.issueDate)"
+                        [startDate]=" mvr?.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
