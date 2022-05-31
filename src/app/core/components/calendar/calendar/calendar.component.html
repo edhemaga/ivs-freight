@@ -84,4 +84,34 @@
             </label>  
         </div>
     </div>
+    <div class="calendar_view_holder">
+        <div class="calendar_view_title_line">
+            <div class="calendar_view_title">Calendar</div>
+            <div class="calendar_input_line"></div>
+            <div class="calendar_input_icon">
+                <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+            </div>
+         </div>
+         <div class="calendar_days_line">
+                <div class="calendar_day">SUNDAY</div>
+                <div class="calendar_day">MONDAY</div>
+                <div class="calendar_day">TUESDAY</div>
+                <div class="calendar_day">WEDNESDAY</div>
+                <div class="calendar_day">THURSDAY</div>
+                <div class="calendar_day">FRIDAY</div>
+                <div class="calendar_day">SATURDAY</div>
+         </div>
+         <div class="calendar_date_holder">
+            <div *ngFor="let day of monthDays; let indx=index" class="calendar_date">
+                <div *ngIf='day.events' class="calendar_events">
+                    <div class="event_outlay">
+                        <div *ngFor="let ev of day.events; let indx1=index" class="event_type" [ngStyle]="{'background-color': event_colors[ev.type]}">
+                                <div class="event_title" [ngStyle]="{'color': ev.eventTextColor}">{{ev.title}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="date_number" [class.prevOrNext]="day.prevOrNext" [class.weekend]="day.weekend && !day.prevOrNext" [class.currentDay]="day.currentDay">{{day.number}}</div>
+            </div>
+         </div>
+    </div>
 </div>
