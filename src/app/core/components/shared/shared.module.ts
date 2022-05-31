@@ -100,7 +100,9 @@ import { TaUploadFileComponent } from './ta-modal-upload/ta-upload-file/ta-uploa
 import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-files-carousel/ta-upload-files-carousel.component';
 import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
 import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
+
 import { ProfileImagesComponent } from './profile-images/profile-images.component';
 import { FilterComponent } from './filter/filter.component';
 import { FuelTotalPipe } from '../modals/fuel-modals/fuel-total.pipe';
@@ -204,6 +206,7 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
     FormsModule,
     ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
     NgSelectModule,
+    AppTooltipeModule,
     NgbModule,
     RouterModule,
     AngularSvgIconModule.forRoot(),

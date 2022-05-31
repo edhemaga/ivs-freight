@@ -1,0 +1,29 @@
+<button
+  (click)="setResizeGpsMain(rowIndex)"
+  *ngIf="!note_expanded"
+  class="custom-rounded-btn note-btn"
+  [ngClass]="{
+    'note-normal-icon': note && !openedAll,
+    'note-note-empty': !note && !openedAll,
+    'note-all-expanded': openedAll
+  }"
+>
+  <!-- <svg-icon
+    *ngIf="note && !openedAll"
+    [src]="'assets/img/svgs/table/note.svg'"
+    [svgStyle]="{ 'width.px': '16', 'height.px': '18' }"
+    class="normal-icon"
+  ></svg-icon>
+  <svg-icon
+    *ngIf="!note && !openedAll"
+    [src]="'assets/svg/truckassist-table/note/Note - Empty.svg'"
+    [svgStyle]="{ 'width.px': '16', 'height.px': '18' }"
+    class="empty-icon"
+  ></svg-icon>
+  <svg-icon
+    *ngIf="openedAll"
+    [src]="'assets/img/svgs/table/note_all_expanded.svg'"
+    [svgStyle]="{ 'width.px': '16', 'height.px': '18' }"
+    class="all-expanded-icon"
+  ></svg-icon> -->
+</button>

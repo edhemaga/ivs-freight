@@ -10,6 +10,13 @@
     (click)="isCardOpenEvent($event)"
   >
     <div class="header-content" [class.counter]="hasCounter">
+      <app-ta-checkbox
+        *ngIf="hasCheckbox"
+        [formControl]="controlName"
+        [label]="''"
+      >
+      </app-ta-checkbox>
+
       <app-ta-counter
         *ngIf="hasCounter"
         [count]="hasCounter"

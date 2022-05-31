@@ -1,83 +1,97 @@
-<div *ngIf="type == 'userFilter'" class="filter-holder">
-    <div class="filter-header">
-        <div class="user-filter-box">4</div>
-        <div class="user-title-text">User Filter</div>
-        <div class="close">
-            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-    </div>
-    <div class="border-filter"></div>
-    <div class="search-holder">
-        <input class="search-user-holder" type="text" placeholder="Search User"/>
-        <div class="search-icons">
-            <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
-        </div>
-    </div>
-    <div class="border-filter"></div>
-    <div class="selected-user-holder">
-        <div *ngFor="let item of selectedUser; let indx=index" class="selected-user-frame">{{item.name}}
-            <div class="selected-icon">
-                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
-            </div>
-            <div 
-                ngbTooltip
-                mainTooltip="Remove User"
-                position="top"
-                tooltipBackground="#6C6C6C"
-                (click)="removeFromSelectedUser(item, indx)" 
-                class="icon-delete">
+<div
+class="user-icon"
+#t2="ngbPopover"
+[ngbPopover]="filterPopover"
+[placement]="['bottom']"
+[popoverClass]="'filterpopovermain'"
+autoClose="outside"
+[container]="'body'"
+>
+    <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon>
+</div>
+
+<ng-template #filterPopover>
+    <div *ngIf="type == 'userFilter'" class="filter-holder">
+        <div class="filter-header">
+            <div class="user-filter-box">4</div>
+            <div class="user-title-text">User Filter</div>
+            <div class="close">
                 <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
             </div>
         </div>
-    </div>
-    <div *ngIf="selectedUser.length > 0" class="border-filter"></div>
-    <div class="user-holder">
-        <div *ngFor="let item of unselectedUser; let indx=index" (click)="addToSelectedUser(item, indx)" class="user-frame">{{item.name}}</div>
-    </div>
-    <div class="border-filter"></div>
-    <div class="buttons-holder">
-        <div (click)="clearAll()" class="button-clear">Clear All</div>
-        <div class="button-set">Set</div>
-    </div>
-</div>
-<div *ngIf="type == 'timeFilter'" class="time-filter-holder">
-    <div class="time-header">Time Filter
-        <div class="close">
-            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+        <div class="border-filter"></div>
+        <div class="search-holder">
+            <input class="search-user-holder" type="text" placeholder="Search User"/>
+            <div class="search-icons">
+                <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+            </div>
+        </div>
+        <div class="border-filter"></div>
+        <div class="selected-user-holder">
+            <div *ngFor="let item of selectedUser; let indx=index" class="selected-user-frame">{{item.name}}
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove User"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeFromSelectedUser(item, indx)" 
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="selectedUser.length > 0" class="border-filter"></div>
+        <div class="user-holder">
+            <div *ngFor="let item of unselectedUser; let indx=index" (click)="addToSelectedUser(item, indx)" class="user-frame">{{item.name}}</div>
+        </div>
+        <div class="border-filter"></div>
+        <div class="buttons-holder">
+            <div (click)="clearAll()" class="button-clear">Clear All</div>
+            <div class="button-set">Set</div>
         </div>
     </div>
-    <div class="border-filter"></div>
-    <div class="time-items-holder">
-        <div class="time-items">Today</div>
-        <div class="time-items">Yesterday</div>
+    <div *ngIf="type == 'timeFilter'" class="time-filter-holder">
+        <div class="time-header">Time Filter
+            <div class="close">
+                <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+            </div>
+        </div>
+        <div class="border-filter"></div>
+        <div class="time-items-holder">
+            <div class="time-items">Today</div>
+            <div class="time-items">Yesterday</div>
+        </div>
+        <div class="border-filter"></div>
+        <div class="time-items-holder">
+            <div class="time-items">This week</div>
+            <div class="time-items">Last week</div>
+            <div class="time-items">1 week</div>
+        </div>
+        <div class="border-filter"></div>
+        <div class="time-items-holder">
+            <div class="time-items">This month</div>
+            <div class="time-items">Last month</div>
+            <div class="time-items">1 month</div>
+            <div class="time-items">3 months</div>
+        </div>
+        <div class="border-filter"></div>
+        <div class="time-items-holder">
+            <div class="time-items">This quarter</div>
+            <div class="time-items">Last quarter </div>
+        </div>
+        <div class="border-filter"></div>
+        <div class="time-items-holder">
+            <div class="time-items">This year</div>
+            <div class="time-items">1 year</div>
+            <div class="time-items">2020</div>
+            <div class="time-items">2019</div>
+        </div>
+        <div class="border-filter"></div>
+        <div class="time-items-holder">
+            <div class="time-items">Custom</div>
+        </div>
     </div>
-    <div class="border-filter"></div>
-    <div class="time-items-holder">
-        <div class="time-items">This week</div>
-        <div class="time-items">Last week</div>
-        <div class="time-items">1 week</div>
-    </div>
-    <div class="border-filter"></div>
-    <div class="time-items-holder">
-        <div class="time-items">This month</div>
-        <div class="time-items">Last month</div>
-        <div class="time-items">1 month</div>
-        <div class="time-items">3 months</div>
-    </div>
-    <div class="border-filter"></div>
-    <div class="time-items-holder">
-        <div class="time-items">This quarter</div>
-        <div class="time-items">Last quarter </div>
-    </div>
-    <div class="border-filter"></div>
-    <div class="time-items-holder">
-        <div class="time-items">This year</div>
-        <div class="time-items">1 year</div>
-        <div class="time-items">2020</div>
-        <div class="time-items">2019</div>
-    </div>
-    <div class="border-filter"></div>
-    <div class="time-items-holder">
-        <div class="time-items">Custom</div>
-    </div>
-</div>
+</ng-template>

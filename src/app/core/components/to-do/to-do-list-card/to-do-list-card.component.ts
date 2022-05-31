@@ -1,6 +1,6 @@
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridsterItemComponent, GridType } from 'angular-gridster2';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridsterItemComponent, GridsterPush, GridType } from 'angular-gridster2';
 import { Subject, takeUntil } from 'rxjs';
 import { TodoTService } from '../state/todo.service';
 import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
@@ -12,6 +12,7 @@ import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
   encapsulation: ViewEncapsulation.None
 })
 export class ToDoListCardComponent implements OnInit {
+  @ViewChild('mainGridster') mainGridster: any;
 
   options: GridsterConfig;
 
@@ -24,6 +25,48 @@ export class ToDoListCardComponent implements OnInit {
   public toDoTasks: any[] = [];
   public inProgressTasks: any[] = [];
   public doneTasks: any[] = [];
+
+  reviews: any = [
+    {
+      id: 1,
+      companyUser: {
+        id: 2,
+        fullName: 'Angela Martin',
+        image: 'https://picsum.photos/id/237/200/300',
+        reaction: '',
+      },
+      comment: 'test test test test test',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      isNewReview: false,
+    },
+    {
+      id: 3,
+      companyUser: {
+        id: 4,
+        fullName: 'Angela Martin',
+        image: 'https://picsum.photos/id/237/200/300',
+        reaction: '',
+      },
+      comment: 'new test new test new test',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      isNewReview: false,
+    },
+    {
+      id: 5,
+      companyUser: {
+        id: 6,
+        fullName: 'Angela Martin',
+        image: 'https://picsum.photos/id/237/200/300',
+        reaction: '',
+      },
+      comment: 'comment comment comment',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      isNewReview: false,
+    }
+  ];
 
   worldClockHolder: any = [
     {
@@ -108,8 +151,6 @@ export class ToDoListCardComponent implements OnInit {
 
 
   changedRow = (e) => {
-    console.log("CHANGE ROW");
-    console.log(e);
     if (!this.startChangingStatus) {
       let newStatus = TodoStatus.Todo;
       this.startChangingStatus = true;
@@ -217,10 +258,43 @@ export class ToDoListCardComponent implements OnInit {
     });
   }
 
+  toggleComment(e: Event, indx: number){
+    e.preventDefault();
+    e.stopPropagation();
+    this.cardData[indx]['commentActive'] = !this.cardData[indx]['commentActive'];
+    
+    this.toggleExpandControll(indx, this.cardData[indx]['commentActive']);
+  }
+
+  toggleExpandControll(indx: number, isOpen: boolean ) {
+   
+    const push = new GridsterPush(this.dashboardItems[indx]);
+    console.log(isOpen);
+    if (isOpen) {
+      this.dashboardItems[indx].$item.rows += 1; // move/resize your item
+      push.pushItems(push.fromNorth);
+
+      push.checkPushBack(); // check for items can restore to original position
+      push.setPushedItems();
+      this.dashboardItems[indx].setSize();
+      this.dashboardItems[indx].updateItemSize();
+    } else {
+      this.dashboardItems[indx].$item.rows -= 1; // move/resize your item
+      push.restoreItems();
+    }
+    push.destroy();
+
+  }
+
 
   initItem(ind: number, item: GridsterItem, itemComponent: GridsterItemComponent): void {
-    console.log(item);
     this.dashboardItems[ind] = itemComponent;
+  }
+
+  toggleLinkShow(e: Event, indx: number){
+    e.preventDefault();
+    e.stopPropagation();
+    this.cardData[indx]['linkActive'] = !this.cardData[indx]['linkActive'];
   }
 
 }

@@ -32,5 +32,6 @@ export class AppTooltipComponent implements AfterViewInit {
   }
   constructor(@Host() private ngbTooltop: NgbTooltip) {
     this.ngbTooltop.openDelay = 300;
+    this.ngbTooltop.container = "body";
   }
 }

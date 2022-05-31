@@ -20,6 +20,8 @@ import { FormControl } from '@angular/forms';
 export class DashboardComponent implements OnInit, OnDestroy {
   public inputDate: FormControl = new FormControl();
   dashboardStats: Observable<DashboardStats[]>;
+
+  color: string = "#eee";
   dispatchStatuses: any = [
     {
       id: 40,

@@ -142,10 +142,10 @@
               <app-ta-input
                 formControlName="receivingFrom"
                 [inputConfig]="{
-                  name: 'datepicker',
+                  name: 'timepicker',
                   type: 'text',
-                  label: 'DOB',
-                  placeholderIcon: 'date',
+                  label: 'From',
+                  placeholderIcon: 'time',
                   isDisabled:
                     shipperForm.get('receiving24h').value &&
                     shipperForm.get('receivingAppointment').value,
@@ -158,10 +158,10 @@
               <app-ta-input
                 formControlName="receivingTo"
                 [inputConfig]="{
-                  name: 'datepicker',
+                  name: 'timepicker',
                   type: 'text',
-                  label: 'DOB',
-                  placeholderIcon: 'date',
+                  label: 'To',
+                  placeholderIcon: 'time',
                   isDisabled:
                     shipperForm.get('receiving24h').value &&
                     shipperForm.get('receivingAppointment').value,
@@ -209,10 +209,10 @@
                 <app-ta-input
                   formControlName="shippingFrom"
                   [inputConfig]="{
-                    name: 'datepicker',
+                    name: 'timepicker',
                     type: 'text',
-                    label: 'DOB',
-                    placeholderIcon: 'date',
+                    label: 'From',
+                    placeholderIcon: 'time',
                     isDisabled:
                       shipperForm.get('shipping24h').value &&
                       shipperForm.get('shippingAppointment').value,
@@ -225,10 +225,10 @@
                 <app-ta-input
                   formControlName="shippingTo"
                   [inputConfig]="{
-                    name: 'datepicker',
+                    name: 'timepicker',
                     type: 'text',
-                    label: 'DOB',
-                    placeholderIcon: 'date',
+                    label: 'To',
+                    placeholderIcon: 'time',
                     isDisabled:
                       shipperForm.get('shipping24h').value &&
                       shipperForm.get('shippingAppointment').value,
