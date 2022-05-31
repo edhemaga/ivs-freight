@@ -35,6 +35,7 @@
 >
   <!-- Input Clear -->
   <div
+    *ngIf="!inputConfig.hideClear"
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
       disabled: inputConfig.isDisabled,
@@ -266,11 +267,14 @@
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
     [mask]="inputConfig.mask"
+    [min]="0"
+    [max]="inputConfig.max"
     thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
     inputformat="dd-mm-yy"
-    class="input-control {{ inputConfig.textTransform }} {{
-      inputConfig.customClass
-    }}"
+    class="input-control 
+    {{ inputConfig.textTransform }} 
+    {{ inputConfig.textAlign }} 
+    {{ inputConfig.customClass }}"
     [ngClass]="{
       disabled: !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
