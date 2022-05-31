@@ -1,11 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  styleUrls: ['./calendar.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CalendarComponent implements OnInit {
+
+  public inputDate: FormControl = new FormControl();
+
 
   calendarYears: any[] = [
     {
@@ -41,6 +46,15 @@ export class CalendarComponent implements OnInit {
     },
     {
       year: 2027
+    },
+    {
+      year: 2028
+    },
+    {
+      year: 2029
+    },
+    {
+      year: 2030
     }
   ]
 
