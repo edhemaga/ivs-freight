@@ -57,6 +57,7 @@ model/companyContactModalResponse.ts
 model/companyContactResponse.ts
 model/companyContactResponsePagination.ts
 model/companyShortResponse.ts
+model/companyUserListResponse.ts
 model/companyUserShortResponse.ts
 model/countryType.ts
 model/createBrokerCommand.ts
@@ -161,9 +162,11 @@ model/repairShopOpenHoursResponse.ts
 model/repairShopResponse.ts
 model/repairShopResponsePagination.ts
 model/repairShopReviewResponse.ts
+model/repairShopServiceTypeCommand.ts
 model/repairShopServiceTypeResponse.ts
 model/selectCompanyCommand.ts
 model/selectCompanyResponse.ts
+model/serviceType.ts
 model/setNewPasswordCommand.ts
 model/shipperContactCommand.ts
 model/shipperContactDepartmentResponse.ts

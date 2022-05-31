@@ -101,6 +101,7 @@ $transition: all 0.3s ease-in-out;
     .repair-items-wrapper {
         overflow-y: scroll;
         max-height: 530px;
+        overflow-x: hidden;
         height: fit-content;
         &::-webkit-scrollbar {
             width: 4px;

@@ -4,6 +4,7 @@
   [editName]="modalName"
   [isModalValid]="medicalForm.valid"
   [specificCaseModalName]="true"
+  (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="medicalForm" class="form-container">
     <div class="row first-row last-row">

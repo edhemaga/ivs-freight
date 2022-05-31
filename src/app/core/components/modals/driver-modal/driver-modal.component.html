@@ -297,8 +297,8 @@
                 name: 'Routing Number',
                 type: 'text',
                 label: 'Routing #',
-                isDisabled: !isBankSelected,
-                isRequired: isBankSelected,
+                isDisabled: !selectedBank,
+                isRequired: selectedBank,
                 minLength: 9,
                 maxLength: 9
               }"
@@ -311,8 +311,8 @@
                 name: 'Account Number',
                 type: 'text',
                 label: 'Account #',
-                isDisabled: !isBankSelected,
-                isRequired: isBankSelected,
+                isDisabled: !selectedBank,
+                isRequired: selectedBank,
                 maxLength: 17,
                 minLength: 4
               }"

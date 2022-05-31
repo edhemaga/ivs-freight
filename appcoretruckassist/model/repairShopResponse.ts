@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
+import { BankResponse } from './bankResponse';
 import { RepairShopReviewResponse } from './repairShopReviewResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
 import { AddressEntity } from './addressEntity';
@@ -31,6 +32,11 @@ export interface RepairShopResponse {
     order?: number;
     cost?: number;
     openHoursToday?: string | null;
+    note?: string | null;
+    companyOwned?: boolean;
+    bank?: BankResponse;
+    routing?: string | null;
+    account?: string | null;
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
     openHours?: Array<RepairShopOpenHoursResponse> | null;
     reviews?: Array<RepairShopReviewResponse> | null;

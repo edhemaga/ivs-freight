@@ -1,11 +1,18 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { MvrModalService } from './mvr-modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { DriverResponse } from 'appcoretruckassist';
+import {
+  CreateMvrCommand,
+  DriverResponse,
+  EditMvrCommand,
+  MvrResponse,
+} from 'appcoretruckassist';
+import { DriverTService } from '../../../state/driver.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { MvrTService } from '../../../state/mvr.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-driver-mvr-modal',
@@ -23,16 +30,18 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private mvrModalService: MvrModalService,
+    private driverService: DriverTService,
     private inputService: TaInputService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private ngbActiveModal: NgbActiveModal,
+    private mvrService: MvrTService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    if (this.editData) {
-      this.getDriverById(this.editData.id);
+    this.getDriverById(this.editData.id);
+    if (this.editData.type === 'edit-mvr') {
+      this.getMVRById()
     }
   }
 
@@ -44,7 +53,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   }
 
   private getDriverById(id: number) {
-    this.mvrModalService
+    this.driverService
       .getDriverById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -57,8 +66,94 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public onModalAction(data: { action: string; bool: boolean }) {
+    if (data.action === 'close') {
+      this.mvrForm.reset();
+    } else {
+      // Save & Update
+      if (data.action === 'save') {
+        // If Form not valid
+        if (this.mvrForm.invalid) {
+          this.inputService.markInvalid(this.mvrForm);
+          return;
+        }
+        if (this.editData.type === 'edit-mvr') {
+          this.updateMVR();
+        } else {
+          this.addMVR();
+        }
+      }
+
+      this.ngbActiveModal.close();
+    }
+  }
+
   public onFilesEvent(event: any) {
     console.log(event);
+  }
+
+  private updateMVR() {
+    const { issueDate } = this.mvrForm.value;
+    const newData: EditMvrCommand = {
+      driverId: this.editData.id,
+      ...this.mvrForm.value,
+      issueDate: new Date(issueDate).toISOString(),
+    };
+
+    this.mvrService
+      .addMvr(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'MVR successfully updated.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("MVR can't be updated.", 'Error:');
+        },
+      });
+  }
+
+  private addMVR() {
+    const { issueDate } = this.mvrForm.value;
+    const newData: CreateMvrCommand = {
+      driverId: this.editData.id,
+      ...this.mvrForm.value,
+      issueDate: new Date(issueDate).toISOString(),
+    };
+    this.mvrService
+      .addMvr(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'MVR successfully added.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("MVR can't be added.", 'Error:');
+        },
+      });
+  }
+
+  public getMVRById() {
+    this.mvrService
+      .getMvrById(this.editData.id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: MvrResponse) => {
+          this.mvrForm.patchValue({
+            issueDate: moment(new Date(res.issueDate)).format('YYYY-MM-DD'),
+            note: res.note,
+          });
+        },
+        error: () => {
+          this.notificationService.error("Can't get Test", 'Error:');
+        },
+      });
   }
 
   ngOnDestroy(): void {}

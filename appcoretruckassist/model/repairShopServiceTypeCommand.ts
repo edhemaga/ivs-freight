@@ -9,15 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
-import { TestReasonShortResponse } from './testReasonShortResponse';
+import { ServiceType } from './serviceType';
 
 
-export interface TestResponse { 
-    id?: number;
-    testReason?: TestReasonShortResponse;
-    testType?: EnumValue;
-    testingDate?: string;
-    note?: string | null;
+export interface RepairShopServiceTypeCommand { 
+    serviceType?: ServiceType;
+    active?: boolean;
 }
 

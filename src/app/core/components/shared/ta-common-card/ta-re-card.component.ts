@@ -22,6 +22,10 @@ export class TaReCardComponent implements OnInit {
   @Input() public haveDots:boolean=true;
   @Output() resizePage = new EventEmitter<boolean>();
   @Input() public animationsDisabled = false;
+  @Input() public stateNameShort:string='';
+  @Input() public stateNameLong:string='';
+  @Input() public optionsId:number;
+  @Output() public dropActions = new EventEmitter<any>();
   public resPage: boolean = false;
   public copied: boolean = false;
   public toggleDropDown: boolean;
@@ -35,11 +39,15 @@ export class TaReCardComponent implements OnInit {
   public toggleCards() {
     this.isCardOpen = !this.isCardOpen;
   }
-  public toggleResizePage(val: boolean) {
+  public toggleResizePage(val: any) {
     this.resPage = !this.resPage;
     val = this.resPage;
     this.resizePage.emit(val);
     console.log(val);
+  }
+  /**Function for drop acitons */
+  public dropAct(action:any){
+    this.dropActions.emit(action);
   }
   /* To copy any Text */
   public copyText(val: any) {

@@ -6,8 +6,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TruckInterface } from '../state/truck.modal';
 import { TruckTService } from '../state/truck.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-details-modals/tt-registration-modal/tt-registration-modal.component';
-import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-details-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 
 @Component({
   selector: 'app-truck-details',

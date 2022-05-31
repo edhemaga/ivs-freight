@@ -16,6 +16,9 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
 import { TruckTService } from '../../state/truck.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TtRegistrationModalComponent } from '../../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 
 @Component({
   selector: 'app-truck-details-item',
@@ -34,20 +37,18 @@ export class TruckDetailsItemComponent implements OnInit {
   public titleNote: FormControl = new FormControl();
 
   private destory$: Subject<void> = new Subject<void>();
-  public toggler: boolean = false;
+  public toggler: boolean[] = [];
   cardNumberFake: string = '1234567890';
   truckName: string = '';
   isAccountVisible: boolean = true;
   accountText: string = null;
   public truckData: any;
   public dataEdit: any;
+
   constructor(
-    private customModalService: CustomModalService,
-    private activated_route: ActivatedRoute,
-    private truckTService: TruckTService
-  ) {
-   
-  }
+    private modalService: ModalService,
+    private activated_route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -61,11 +62,11 @@ export class TruckDetailsItemComponent implements OnInit {
   public onShowDetails(componentData: any) {
     componentData.showDetails = !componentData.showDetails;
   }
- /** return truck by id, truckData.trcuk value from resolver for id truck */
+  /** return truck by id, truckData.trcuk value from resolver for id truck */
   public getTruckById() {
     this.truckData = this.activated_route.snapshot.data;
   }
-  
+
   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataEdit = {
@@ -101,7 +102,6 @@ export class TruckDetailsItemComponent implements OnInit {
     };
   }
 
-  public onModalAction() {}
   /**Function return format date from DB */
   public formatDate(date: string) {
     return moment(date).format('MM/DD/YY');
@@ -124,11 +124,46 @@ export class TruckDetailsItemComponent implements OnInit {
   public identity(index: number, item: any): number {
     return item.id;
   }
-  
+
   /**Function for toggle page in cards */
-  public toggleResizePage(value: boolean) {
-    this.toggler = value;
+  public toggleResizePage(value: number) {
+    this.toggler[value] = !this.toggler[value];
     console.log(this.toggler);
+  }
+
+  public optionsEvent(any: any, action: string) {
+    switch (action) {
+      case 'edit-registration': {
+        this.modalService.openModal(
+          TtRegistrationModalComponent,
+          { size: 'small' },
+          {
+            id: any.id,
+            type: action,
+            modal: 'truck',
+          }
+        );
+        break;
+      }
+      case 'edit-inspection': {
+        this.modalService.openModal(
+          TtFhwaInspectionModalComponent,
+          { size: 'small' },
+          {
+            id: any.id,
+            type: action,
+            modal: 'truck',
+          }
+        );
+        break;
+      }
+      case 'edit-title': {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   public onFileAction(action: string) {
