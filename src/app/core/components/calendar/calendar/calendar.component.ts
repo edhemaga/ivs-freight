@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { CalendarOptions } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
 
 @Component({
   selector: 'app-calendar',
@@ -10,7 +12,6 @@ import { FormControl } from '@angular/forms';
 export class CalendarComponent implements OnInit {
 
   public inputDate: FormControl = new FormControl();
-
 
   calendarYears: any[] = [
     {
@@ -242,6 +243,41 @@ export class CalendarComponent implements OnInit {
       weekend: true
     }
   ]
+
+  calendarOptions: CalendarOptions = {
+    plugins: [ ], 
+    initialView: 'dayGridMonth',
+    dayHeaderFormat:{
+      weekday: 'long'
+    },
+    headerToolbar: {
+      left: '',
+      center: '',
+      right: ''
+    }, 
+    events: [
+      {
+        title: 'event 1',
+        color: '#FF5733',
+        date: '2021-07-31'
+      },
+      { 
+        title: 'event 2', 
+        date: '2021-07-28' 
+      },
+      { 
+        title: 'event 3', 
+        date: '2021-07-01' 
+      }
+    ],
+    views: {
+      day: {
+          titleFormat: {
+              year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
+          },
+      },
+   },
+  };
 
   event_colors: any = {
     'important': '#BA68C8B3',

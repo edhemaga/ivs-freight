@@ -430,7 +430,7 @@
             align-items: center;
 
             .calendar_view_title{
-                padding-right: 27px;
+                padding-right: 12px;
     
                 font-size: 26px;
                 font-weight: 900;
@@ -459,6 +459,7 @@
 
                 svg-icon{
                     svg{
+                        display: flex;
                         width: 16px;
                         height: 16px;
 
@@ -553,4 +554,56 @@
             }
         }
     }
+}
+
+.fc-scrollgrid-section-header .fc-col-header-cell-cushion {
+    padding: 0;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 19px;
+    color: #6C6C6C;
+
+    text-decoration: none;
+    text-transform: uppercase;
+
+    .fc-col-header-cell{
+        border: none;
+    }
+}
+
+.fc-daygrid-body .fc-scrollgrid-sync-inner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #fff;
+
+    .fc-daygrid-day-number{
+        font-size: 52px;
+        font-weight: 700;
+        line-height: 69px;
+        color: #B7B7B7;
+
+        text-decoration: none;
+    }
+}
+
+.fc-theme-standard td, .fc-theme-standard th, .fc-theme-standard .fc-scrollgrid{
+    border-color: #F1F1F1 !important;
+}
+
+.fc-theme-standard td, .fc-theme-standard th{
+    border: 1px solid #F1F1F1 !important;
+}
+
+.fc-scrollgrid-section-header .fc-theme-standard td, .fc-theme-standard th{
+   border: none !important; 
+}
+
+.fc-scrollgrid-liquid{
+    border: none !important;
+}
+
+.fc .fc-toolbar.fc-header-toolbar{
+    margin: 0 !important;
 }
