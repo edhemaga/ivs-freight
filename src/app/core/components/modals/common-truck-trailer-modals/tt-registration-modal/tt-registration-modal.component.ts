@@ -15,7 +15,7 @@ import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 @Component({
   selector: 'app-tt-registration-modal',
   templateUrl: './tt-registration-modal.component.html',
-  styleUrls: ['./tt-registration-modal.component.scss'],
+  styleUrls: ['./tt-registration-modal.component.scss']
 })
 export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -62,9 +62,13 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type === 'edit-registration') {
+          console.log("UPDATE MODAL")
           this.updateRegistration();
         }
-        this.addRegistration();
+        else {
+          this.addRegistration();
+        }
+       
       }
 
       this.ngbActiveModal.close();
@@ -72,9 +76,10 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   }
 
   private updateRegistration() {
+    console.log("UPDATE REGISTRATION")
     const { issueDate, expDate } = this.registrationForm.value;
     const newData: UpdateRegistrationCommand = {
-      id: this.editData.id,
+      id: this.editData.file_id,
       ...this.registrationForm.value,
       issueDate: new Date(issueDate).toISOString(),
       expDate: new Date(expDate).toISOString(),
@@ -84,7 +89,9 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       .updateRegistration(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () => {
+        next: (res: any) => {
+          console.log(res)
+          console.log("UPDATE REGISTRATION UPLOAD")
           this.notificationService.success(
             'Registration successfully updated.',
             'Success:'
@@ -130,7 +137,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
   private getRegistrationById() {
     this.commonTruckTrailerService
-      .getRegistrationById(this.editData.id)
+      .getRegistrationById(this.editData.file_id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RegistrationResponse) => {
