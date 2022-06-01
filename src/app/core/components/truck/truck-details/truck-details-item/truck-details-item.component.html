@@ -16,7 +16,7 @@
           [cardNameCommon]="reg.licensePlate"
           [hasCopyIcon]="false"
           [options]="dataEdit"
-          [expDateClose]="formatDate(reg.expDate)"
+          [expDateClose]=" reg.expDate | formatDateP "
           [optionsId]="reg.id"
           (dropActions)="optionsEvent($event,'edit-registration')"
         >
@@ -30,7 +30,7 @@
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
                   <div class="card-item-value">
-                    {{ formatDate(reg.issueDate) }}
+                    {{reg.issueDate | formatDateP }}
                   </div>
                 </div>
               </div>
@@ -40,8 +40,8 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="formatDate(reg.expDate)"
-                    [startDate]="formatDate(reg.issueDate)"
+                    [expireDate]=" reg.expDate | formatDateP"
+                    [startDate]="reg.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -70,9 +70,9 @@
       <div *ngFor="let fhwa of truckData.truck.inspections; let i = index; trackBy: identity">
         <app-ta-re-card
           [options]="dataEdit"
-          [cardNameCommon]="formatDate(fhwa.issueDate)"
+          [cardNameCommon]="fhwa.issueDate | formatDateP"
           (resizePage)="toggleResizePage(i)"
-          [expDateClose]="formatDate('04/04/25')"
+          [expDateClose]=" '04/04/25' | formatDateP"
           [optionsId]="fhwa.id"
           (dropActions)="optionsEvent($event,'edit-inspection')"
           
@@ -86,7 +86,7 @@
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
                     [expireDate]="'04/04/25'"
-                    [startDate]="formatDate(fhwa.issueDate)"
+                    [startDate]="fhwa.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -117,7 +117,7 @@
           (resizePage)="toggleResizePage(i)"
           [cardNameCommon]="title.number"
           [options]="dataEdit"
-          [expDateClose]="formatDate('04/04/27')"
+          [expDateClose]="'04/04/27' | formatDateP"
           [optionsId]="title.id"
           (dropActions)="optionsEvent($event,'edit-title')"
         >
@@ -131,7 +131,7 @@
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
                   <div class="card-item-value">
-                    {{ formatDate(title.issueDate) }}
+                    {{title.issueDate | formatDateP }}
                   </div>
                 </div>
               </div>
@@ -142,7 +142,7 @@
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
                     [expireDate]="'04/04/27'"
-                    [startDate]="formatDate(title.issueDate)"
+                    [startDate]="title.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -173,7 +173,7 @@
         (resizePage)="toggleResizePage($event)"
         [cardNameCommon]="'KSKA FREIGHT, INC'"
         [isCardOpen]="true"
-        [expDateClose]="formatDate('04/04/27')"
+        [expDateClose]="'04/04/27' | formatDateP"
         
       >
         <div class="purchase-container">

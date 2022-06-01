@@ -176,43 +176,47 @@
 }
 .button-wrapper-shop {
   text-align: right;
-  button {
+  position: relative;
+  bottom: 0.2px;
+  display: flex;
+  left: 14px;
+  cursor: pointer;
+  margin: auto;
+  .finish-button {
     display: inline-block;
     border-radius: 2px;
+    position: relative;
+    top: 0.1px;
     background-color: #6d82c7;
     color: #ffffff;
-    width: 94px;
-    height: 22px;
+    width: fit-content;
+    padding: 3px 8px;
     border: none;
+    text-align: center;
     font-size: 12px;
     font-weight: 700;
   }
 }
-.finish-order-cont{
-  .repair-items{
-    .items-header{
-        background-color: #fff3e0;
-        border-radius: 2px;
-        height: 30px;
-        margin-bottom: 2px !important;
-        margin-top: 2px !important;
+.finish-order-cont {
+  
+  .repair-items {
+    .items-header {
+      background-color: #fff3e0;
+      border-radius: 2px;
+      padding: 2.5px 0;
+      margin-bottom: 2px !important;
+      margin-top: 2px !important;
     }
   }
-  .dots-vertical{
-    top: -3px !important;
-  }
-  .date{
+  .date {
     position: relative;
-    top: 3px;
+    top: 2px;
+    padding-left: 4px;
   }
-  .unit{
+  .unit {
     position: relative;
-    top: 3px;
-  }
-  .button-wrapper-shop{
-    position: relative;
-    bottom: 1px;
-    left: 2px;
+    top: 2px;
+    padding-left: 4px;
   }
 }
 .disabled {
@@ -233,8 +237,7 @@
     color: #b7b7b7 !important;
     background: rgb(183, 183, 183, 0.2) !important;
   }
-
 }
-.note-cards{
+.note-cards {
   padding-right: 1px;
 }

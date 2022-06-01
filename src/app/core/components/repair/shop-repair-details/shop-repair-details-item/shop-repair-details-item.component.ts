@@ -21,18 +21,13 @@ export class ShopRepairDetailsItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.shopData = this._act_route.snapshot.data;
+    console.log(this.shopData);
+    
     this.noteControl.patchValue('Neki notee');
     this.initTableOptions();
     this.dummyDataRep();
     this.dummyDataVeh();
     this.getActiveServices()
-  }
- /**Function for format phone number */
-  public formatPhone(phoneNumberString: string) {
-    const value = phoneNumberString;
-    const number = value?.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-    phoneNumberString = number;
-    return number;
   }
   /**Function for dots in cards */
   public initTableOptions(): void {
@@ -95,15 +90,13 @@ export class ShopRepairDetailsItemComponent implements OnInit {
         key: '42',
         cost: '132,567,25',
       },
-    ];
-    console.log(this.dummyDataVehicle);
-    
+    ];    
   }
   public dummyDataRep() {
    
      this.dummyDataRepair = [
       {
-        unit: 'R53201',
+        unit: 'R53201', 
         date: '08/10/20',
         inv: '1001-18',
         desc: 'Engine oil and filter ● Transmissioningddsadasdasdasdasdasdasdasdad',
@@ -391,9 +384,7 @@ export class ShopRepairDetailsItemComponent implements OnInit {
         finishOrder: false,
       },
 
-    ];
-   
-    console.log(this.dummyDataRepair);
+    ]; 
   }
   public changeReviewsEvent(reviews: { data: any[]; action: string }) {
     this.reviewsRepair = [...reviews.data];
@@ -403,7 +394,6 @@ export class ShopRepairDetailsItemComponent implements OnInit {
      
     let res= this.shopData.shop.serviceTypes.filter((item) => item.active);
     this.count=res.length;
-    console.log(res.length);
     return this.count
     
   }

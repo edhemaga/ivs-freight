@@ -64,7 +64,10 @@ export class TrailerDetailsCardComponent implements OnInit {
    public formatDate(date: string) {
     return moment(date).format('MM/DD/YY');
   }
-
+    /**Function retrun id */
+    public identity(index: number, item: any): number {
+      return item.id;
+    }
     /**Function return format phone from DB */
     public formatPhone(phoneNumberString: string) {
       const value = phoneNumberString;

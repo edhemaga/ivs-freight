@@ -196,10 +196,6 @@ export class TruckDetailsCardComponent implements OnInit {
     this.toggler = value;
     console.log(this.toggler);
   }
-  /**Function return format date from DB */
-  public formatDate(date: string) {
-    return moment(date).format('MM/DD/YY');
-  }
    /**Function retrun id */
   public identity(index: number, item: any): number {
     return item.id;

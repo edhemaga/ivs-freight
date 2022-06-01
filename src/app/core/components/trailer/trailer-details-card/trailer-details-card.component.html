@@ -218,7 +218,7 @@
             <div class="owner-items">
               <svg-icon src="assets/svg/common/ic_address.svg"></svg-icon>
               <p class="information-value">
-                {{ data.owner.address }}
+                {{ data.owner.address.address }}
               </p>
             </div>
           </div>
@@ -276,7 +276,7 @@
                 <p class="employment">{{ owHist.name }}</p>
 
                 <p class="date-from-to">
-                  {{ formatDate(owHist.startDate) }} -
+                  {{owHist.startDate | formatDateP }} -
                   {{
                     owHist.endDate !== null
                       ? formatDate(owHist.endDate)
@@ -312,14 +312,22 @@
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let reg of data.registrations; trackBy: identity">
+          <div
+            *ngFor="
+              let reg of data.registrations;
+              let i = index;
+              trackBy: identity
+            "
+          >
             <app-ta-re-card
               [cardDocumentCounter]="1"
-              (resizePage)="toggleResizePage($event)"
+              (resizePage)="toggleResizePage(i)"
               [cardNameCommon]="reg.licensePlate"
               [hasCopyIcon]="true"
               [options]="dataEdit"
-              [expDateClose]="formatDate(reg.expDate)"
+              [expDateClose]="reg.expDate | formatDateP"
+              [optionsId]="reg.id"
+              (dropActions)="optionsEvent($event, 'edit-registration')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -331,36 +339,38 @@
                     <div class="card-item">
                       <div class="card-item-name">Issued</div>
                       <div class="card-item-value">
-                        {{ formatDate(reg.issueDate) }}
+                        {{ reg.issueDate | formatDateP }}
                       </div>
                     </div>
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler }"
+                    [ngClass]="{ 'second-progress': toggler[i] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [expireDate]="formatDate(reg.expDate)"
-                        [startDate]="formatDate(reg.issueDate)"
+                        [expireDate]="reg.expDate | formatDateP"
+                        [startDate]="reg.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
                     </div>
                   </div>
                 </div>
-                <div class="divider" *ngIf="toggler"></div>
-                <div *ngIf="toggler" class="note-wrapper">
-                  <app-ta-input-note
-                    [formControl]="registrationNote"
-                    [isVisibleDivider]="false"
-                    [isVisibleSecondDivider]="false"
-                    [placeholder]="'Write something.'"
-                    [customClass]="'note-small'"
-                    [isVisibleArrow]="false"
-                    [minRows]="1"
-                    [isVisibleNote]="true"
-                  ></app-ta-input-note>
+                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                  <div class="divider"></div>
+                  <div class="card-note">
+                    <app-ta-input-note
+                      [formControl]="registrationNote"
+                      [isVisibleDivider]="false"
+                      [isVisibleSecondDivider]="false"
+                      [placeholder]="'Write something.'"
+                      [customClass]="'note-small'"
+                      [isVisibleArrow]="false"
+                      [minRows]="1"
+                      [isVisibleNote]="true"
+                    ></app-ta-input-note>
+                  </div>
                 </div>
               </div>
             </app-ta-re-card>
@@ -379,11 +389,19 @@
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let fhwa of data.inspections; trackBy: identity">
+          <div
+            *ngFor="
+              let fhwa of data.inspections;
+              let i = index;
+              trackBy: identity
+            "
+          >
             <app-ta-re-card
               [options]="dataEdit"
-              [cardNameCommon]="formatDate(fhwa.issueDate)"
-              [expDateClose]="formatDate('04/04/25')"
+              [cardNameCommon]="fhwa.issueDate | formatDateP"
+              [optionsId]="fhwa.id"
+              (resizePage)="toggleResizePage(i)"
+              (dropActions)="optionsEvent($event, 'edit-inspection')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -394,23 +412,27 @@
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
                         [expireDate]="'04/04/25'"
-                        [startDate]="formatDate(fhwa.issueDate)"
+                        [startDate]="fhwa.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
                     </div>
                   </div>
                 </div>
-                <div *ngIf="toggler" class="note-wrapper">
-                  <app-ta-input-note
-                    [formControl]="fhwaNote"
-                    [isVisibleSecondDivider]="false"
-                    [placeholder]="'Write something.'"
-                    [customClass]="'note-small'"
-                    [isVisibleArrow]="false"
-                    [minRows]="1"
-                    [isVisibleNote]="true"
-                  ></app-ta-input-note>
+                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                  <div class="divider"></div>
+                  <div class="card-note">
+                    <app-ta-input-note
+                      [formControl]="registrationNote"
+                      [isVisibleDivider]="false"
+                      [isVisibleSecondDivider]="false"
+                      [placeholder]="'Write something.'"
+                      [customClass]="'note-small'"
+                      [isVisibleArrow]="false"
+                      [minRows]="1"
+                      [isVisibleNote]="true"
+                    ></app-ta-input-note>
+                  </div>
                 </div>
               </div>
             </app-ta-re-card>
@@ -429,13 +451,16 @@
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let title of data.titles; trackBy: identity">
+          <div
+            *ngFor="let title of data.titles; let i = index; trackBy: identity"
+          >
             <app-ta-re-card
               [cardDocumentCounter]="1"
-              (resizePage)="toggleResizePage($event)"
+              (resizePage)="toggleResizePage(i)"
               [cardNameCommon]="title.number"
               [options]="dataEdit"
-              [expDateClose]="formatDate('04/04/27')"
+              [optionsId]="title.id"
+              (dropActions)="optionsEvent($event, 'edit-inspection')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -447,36 +472,39 @@
                     <div class="card-item">
                       <div class="card-item-name">Issued</div>
                       <div class="card-item-value">
-                        {{ formatDate(title.issueDate) }}
+                        {{ title.issueDate | formatDateP }}
                       </div>
                     </div>
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler }"
+                    [ngClass]="{ 'second-progress': toggler[i] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
                         [expireDate]="'04/04/27'"
-                        [startDate]="formatDate(title.issueDate)"
+                        [startDate]="title.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
                     </div>
                   </div>
                 </div>
-                <div class="divider" *ngIf="toggler"></div>
-                <div *ngIf="toggler" class="note-wrapper">
-                  <app-ta-input-note
-                    [formControl]="titleNote"
-                    [placeholder]="'Write something.'"
-                    [isVisibleSecondDivider]="false"
-                    [customClass]="'note-small'"
-                    [isVisibleArrow]="false"
-                    [minRows]="1"
-                    [isVisibleDivider]="false"
-                    [isVisibleNote]="true"
-                  ></app-ta-input-note>
+                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                  <div class="divider"></div>
+
+                  <div class="card-note">
+                    <app-ta-input-note
+                      [formControl]="titleNote"
+                      [placeholder]="'Write something.'"
+                      [customClass]="'note-small'"
+                      [isVisibleArrow]="false"
+                      [isVisibleSecondDivider]="false"
+                      [minRows]="1"
+                      [isVisibleDivider]="false"
+                      [isVisibleNote]="true"
+                    ></app-ta-input-note>
+                  </div>
                 </div>
               </div>
             </app-ta-re-card>

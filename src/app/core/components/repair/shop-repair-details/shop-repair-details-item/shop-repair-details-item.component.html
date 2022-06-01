@@ -15,7 +15,7 @@
               class="repair-icon"
               src="assets/svg/common/ic_phone.svg"
             ></svg-icon>
-            <p class="repair-value">{{ formatPhone(shopData?.shop.phone) }}</p>
+            <p class="repair-value">{{shopData?.shop.phone | formatPhoneP  }}</p>
           </div>
           <div class="repair-information-item">
             <svg-icon
@@ -67,8 +67,8 @@
               <div class="working-days">
                 <div class="open-header">Saturday</div>
                 <div class="open-working-days-value">
-                  {{ shopData.shop.openHours[6].startTime }} AM -
-                  {{ shopData.shop.openHours[6].endTime }} PM
+                  {{ shopData.shop.openHours[5].startTime }} AM -
+                  {{ shopData.shop.openHours[5].endTime }} PM
                 </div>
               </div>
             </div>
@@ -77,8 +77,8 @@
               <div class="open-working-days-value">
                 {{
                   shopData.shop.openHours[0].startTime
-                    ? shopData.shop.openHours[0].startTime !== null
-                    : "Closed"
+                    ?  "Closed" : shopData.shop.openHours[0].startTime
+                    
                 }}
               </div>
             </div>
@@ -155,9 +155,9 @@
                   >${{ dummy.cost }}</span
                 >
                 <div *ngIf="!dummy.finishOrder" class="button-wrapper-shop">
-                  <button class="finish-button">Finish Order</button>
+                  <div class="finish-button">Finish Order</div>
                 </div>
-                <div class="dots-vertical">
+                <div class="dots-vertical" [ngClass]="{ 'dots-top': dummy.finishOrder == false }">
                   <app-table-dropdown
                     [options]="dummyData.actions"
                     [customClassDropDown]="'table-dropdown-container-vertical'"
@@ -165,8 +165,10 @@
                   </app-table-dropdown>
                 </div>
               </div>
+             
               <div class="divider"></div>
             </div>
+           
           </span>
         </div>
       </div>

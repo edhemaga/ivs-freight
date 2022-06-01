@@ -11,7 +11,7 @@
       <div
         class="text-icon-common"
         [ngClass]="{ copied: copied }"
-        (click)="toggleCards()"
+        (click)="onAction('toggle-card')"
       >
         <span
           ngbTooltip
@@ -21,7 +21,7 @@
           class="tooltipShortName"
         >
           <div *ngIf="shortName" class="weekly-status">
-            <div class="weekly-status-value">
+            <div  [ngClass]="{'card-close-title': !isCardOpen }" class="weekly-status-value">
               {{ shortName }}
             </div>
           </div>
@@ -107,7 +107,7 @@
       </p>
     </div>
     <div
-      (click)="toggleResizePage($event.value)"
+      (click)="onAction('resize')"
       [ngClass]="{ 'rotate-common': resPage }"
       class="resize-icon"
     >

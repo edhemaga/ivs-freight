@@ -68,14 +68,14 @@
                         trackBy: identity
                       "
                     >
-                    <span class="span-value" *ngIf="endors" >
+                    <span class="span-value" *ngIf="endors.description && endors.code" >
                       <span class="value-name">{{ endors?.code }}</span>
                       <span *ngIf="toggler[i]" class="desc"
                         >- {{ endors?.description }}</span
                       >
                     </span>
                   </p>
-                  <span class="no-data" *ngIf="endors ==''">None</span>
+                  <span class="no-data" style="padding: 0 !important;" *ngIf="cdl.cdlEndorsements.length==0">None</span>
                   </div>
                 </div>
               </div>
@@ -176,24 +176,90 @@
           [stateTooltipName]="test.testType.name + ' Test'"
           (dropActions)="optionsEvent($event, 'edit-drug')"
         >
-          <div class="cards-container">
-          
+        <div [ngClass]="{ 'second-progress': toggler[i] }"></div>
+          <div class="cards-container" >
+            <div   [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+              <div  class="divider"></div>
+              <div  class="details-document-container">
+                <div class="icon-counter-wrapper">
+                  <div class="counter-text-wrapper">
+                    <app-ta-counter
+                      [countBackgroud]="'#F3F3F3'"
+                      [countHeight]="'24px'"
+                      [countWidth]="'24px'"
+                      [count]="6"
+                    >
+                    </app-ta-counter>
+                    <p class="details-document-name">Document</p>
+                  </div>
+                  <svg-icon
+                    (click)="onFileAction('download')"
+                    src="assets/svg/common/ic_download.svg"
+                  >
+                  </svg-icon>
+                </div>
+              </div>
+              <div class="card-pdf">
+                <app-ta-files
+                  [files]="[
+                    {
+                      fileName: 'truckassist0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      fileName: 'truckassist0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      fileName: 'truckassist0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      fileName: 'truckassist0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    }
+                  ]"
+                  [fileType]="'multiple-pdf'"
+                  [customClassName]="'driver-details-multiple-pdf'"
+                >
+                </app-ta-files>
+              </div>
+              <div class="divider"></div>
+              <div class="card-note">
+                <app-ta-input-note
+                  [formControl]="cdlNote"
+                  [isVisibleDivider]="false"
+                  [isVisibleNote]="true"
+                  [isVisibleSecondDivider]="false"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                >
+                </app-ta-input-note>
+              </div>
+              </div>
           </div>
         </app-ta-re-card>
       </div>
     </div>
     <div *ngSwitchCase="'medical'">
-      <div *ngFor="let med of driverData.driver.medicals; trackBy: identity">
+      <div *ngFor="let med of driverData.driver.medicals; let i=index; trackBy: identity">
         <app-ta-re-card
           [options]="dataTest"
           [cardNameCommon]="med?.issueDate | formatDateP"
           [expDateClose]="med?.expDate | formatDateP"
           [optionsId]="med.id"
+          (resizePage)="toggleResizePage(i)"
           (dropActions)="optionsEvent($event, 'edit-medical')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
-              <div class="card-row-progress">
+              <div class="card-row-progress"  [ngClass]="{ 'second-progress': toggler[i] }">
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
                     [expireDate]="med?.expDate | formatDateP"
@@ -204,16 +270,81 @@
                 </div>
               </div>
             </div>
+            <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+              <div class="divider"></div>
+              <div  class="details-document-container">
+                <div class="icon-counter-wrapper">
+                  <div class="counter-text-wrapper">
+                    <app-ta-counter
+                      [countBackgroud]="'#F3F3F3'"
+                      [countHeight]="'24px'"
+                      [countWidth]="'24px'"
+                      [count]="6"
+                    >
+                    </app-ta-counter>
+                    <p class="details-document-name">Document</p>
+                  </div>
+                  <svg-icon
+                    (click)="onFileAction('download')"
+                    src="assets/svg/common/ic_download.svg"
+                  >
+                  </svg-icon>
+                </div>
+              </div>
+              <div class="card-pdf">
+                <app-ta-files
+                  [files]="[
+                    {
+                      fileName: 'truckassist0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      fileName: 'truckassist0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      fileName: 'truckassist0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      fileName: 'truckassist0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    }
+                  ]"
+                  [fileType]="'multiple-pdf'"
+                  [customClassName]="'driver-details-multiple-pdf'"
+                >
+                </app-ta-files>
+              </div>
+              <div class="divider"></div>
+              <div class="card-note">
+                <app-ta-input-note
+                  [formControl]="cdlNote"
+                  [isVisibleDivider]="false"
+                  [isVisibleNote]="true"
+                  [isVisibleSecondDivider]="false"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                >
+                </app-ta-input-note>
+              </div>
+              </div>
           </div>
         </app-ta-re-card>
       </div>
     </div>
     <div *ngSwitchCase="'mvr'">
-      <div *ngFor="let mvr of driverData.driver.mvrs; trackBy: identity">
+      <div *ngFor="let mvr of driverData.driver.mvrs; let i=index; trackBy: identity">
         <app-ta-re-card
           [options]="dataTest"
           [cardDocumentCounter]="6"
-          (resizePage)="toggleResizePage($event)"
+          (resizePage)="toggleResizePage(i)"
           [cardNameCommon]="mvr?.issueDate | formatDateP"
           [expDateClose]="mvr?.issueDate | formatDateP"
           [optionsId]="mvr.id"
@@ -223,7 +354,7 @@
             <div class="card-body-cdl">
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler }"
+                [ngClass]="{ 'second-progress': toggler[i] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
@@ -234,8 +365,9 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="toggler" class="divider"></div>
-            <div *ngIf="toggler" class="details-document-container">
+            <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+            <div class="divider"></div>
+            <div  class="details-document-container">
               <div class="icon-counter-wrapper">
                 <div class="counter-text-wrapper">
                   <app-ta-counter
@@ -254,7 +386,7 @@
                 </svg-icon>
               </div>
             </div>
-            <div *ngIf="toggler" class="card-pdf">
+            <div class="card-pdf">
               <app-ta-files
                 [files]="[
                   {
@@ -283,8 +415,8 @@
               >
               </app-ta-files>
             </div>
-            <div *ngIf="toggler" class="divider"></div>
-            <div *ngIf="toggler" class="card-note">
+            <div class="divider"></div>
+            <div class="card-note">
               <app-ta-input-note
                 [formControl]="cdlNote"
                 [isVisibleDivider]="false"
@@ -296,6 +428,7 @@
                 [customClass]="'note-small'"
               >
               </app-ta-input-note>
+            </div>
             </div>
           </div>
         </app-ta-re-card>

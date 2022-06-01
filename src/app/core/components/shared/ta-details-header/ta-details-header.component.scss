@@ -86,9 +86,10 @@ p {
                     svg {
                         transform: rotate(180deg);
                         height: 14px;
-                        width: 12px;
+                        width: 12.5px;
                         position: relative;
                         bottom: -3px;
+                    
                         &:hover {
                             path {
                                 fill: #6c6c6c;
@@ -104,6 +105,7 @@ p {
                         width: 12px;
                         position: relative;
                         top: -3px;
+                        left: 0.1px;
                         &:hover {
                             path {
                                 fill: #6c6c6c;

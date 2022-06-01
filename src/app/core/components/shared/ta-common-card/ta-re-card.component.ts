@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import moment from 'moment';
 import { card_component_animation } from '../animations/card-component.animations';
 
@@ -38,26 +38,25 @@ export class TaReCardComponent implements OnInit {
     this.CloseCard();
   }
 
-  public toggleDrop() {
-    this.toggleDropDown = !this.toggleDropDown;
-  }
   public CloseCard(){
     let currentDate=moment().format('MM/DD/YYYY')
     if(moment(this.expDateClose).isBefore(currentDate)){
       this.isCardOpen=false
     }
   }
-  public toggleCards() {
-    let currentDate=moment().format('MM/DD/YYYY')
-     if(moment(this.expDateClose).isBefore(currentDate)){
-      this.isCardOpen = !this.isCardOpen;
-    }
-  }
-  public toggleResizePage(val: any) {
-    this.resPage = !this.resPage;
-    val = this.resPage;
-    this.resizePage.emit(val);
-    console.log(val);
+  public onAction(val:string){
+      switch(val){
+        case 'resize':
+          this.resPage = !this.resPage;
+          this.resizePage.emit(this.resPage);
+          break;
+        case 'toggle-card':
+          let currentDate=moment().format('MM/DD/YYYY')
+          if(moment(this.expDateClose).isBefore(currentDate)){
+           this.isCardOpen = !this.isCardOpen;
+         }
+         break;
+      }
   }
   /**Function for drop acitons */
   public dropAct(action:any){
@@ -68,10 +67,7 @@ export class TaReCardComponent implements OnInit {
     this.copied = true;
     setTimeout(() => {
       this.copied=false;
-    }, 2200);
-    this.toggleCards();
-
-    
+    }, 2200);    
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -83,8 +79,5 @@ export class TaReCardComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-  }
-  public formatDate(date: string) {
-    return moment(date).format('MM/DD/YY');
   }
 }
