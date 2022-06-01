@@ -1,6 +1,6 @@
 import {CalendarScrollService} from './calendar-scroll.service';
 import {DateCalendarsComponent} from './date-calendars/date-calendars.component';
-import {Component, ElementRef, Input, OnInit, ViewChild, ViewContainerRef, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef, ViewEncapsulation} from '@angular/core';
 import calendarJson from '../../../../../assets/calendarjson/calendar.json';
 import {NgbDropdown, NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 
@@ -13,6 +13,9 @@ import {NgbDropdown, NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 export class CustomDatetimePickersComponent implements OnInit {
   @Input() dateTime: any;
   @ViewChild("ref", {read: ViewContainerRef}) ref: ViewContainerRef;
+
+  @Output() closePopover: EventEmitter<any> = new EventEmitter();
+
   selectedDateTime: any;
   calendarMainType: string;
   outputType: any;
@@ -424,7 +427,16 @@ export class CustomDatetimePickersComponent implements OnInit {
     this.outputType[4] = this.timeOfDay[this.scrollTypes.pmAmScroll];
 
     this.selectedDateTime = this.createStringFromOutput();
+    console.log(this.selectedDateTime);
     //this.dropdown.close();
+
+
+
+    this.closePopover.emit();
+  }
+
+  closePopup(){
+    this.closePopover.emit();
   }
 
   setDateTimeModel(direction: string, index?: any): void {

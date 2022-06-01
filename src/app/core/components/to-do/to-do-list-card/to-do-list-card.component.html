@@ -153,24 +153,44 @@
         </div>
     </div>
     <div class="card-main-holder">
-        <gridster [options]="options" style="height: 200px">
+        <gridster [options]="options" style="height: 200px" #mainGridster>
             <gridster-item *ngFor="let item of cardData; let indx = index" [item]="item">
                 <div class="list-holder">
                     <div class="list-top-holder">
                         <div class="list-items-frame">
                             <div class="list-title">{{item.title}}</div>
                             <div class="icons-frame">
-                                <div class="icon-box" [class.blue-icons]="item.linkActive">
+                                <div 
+                                    (mousedown)="toggleLinkShow($event, indx)"
+                                    ngbTooltip
+                                    mainTooltip="Hyperlink"
+                                    position="bottom"
+                                    tooltipBackground="#6C6C6C"
+                                    class="icon-box" 
+                                    [class.blue-icons]="item.linkActive">
                                     <svg-icon src="assets/svg/common/ic_web.svg"></svg-icon>
-                                </div>
-                                <div class="icon-box" [class.blue-icons]="item.commentActive">
+                                </div> 
+                                <div 
+                                    class="icon-box" 
+                                    ngbTooltip
+                                    mainTooltip="Comments"
+                                    position="bottom"
+                                    tooltipBackground="#6C6C6C"
+                                    (mousedown)="toggleComment($event, indx)"
+                                    [class.blue-icons]="item.commentActive">
                                     <svg-icon src="assets/svg/detail-cards/comment - count.svg"></svg-icon>
                                     <div class="number-comments">0</div>
                                 </div>
-                                <div class="icon-box">
+                                <div 
+                                    class="icon-box"
+                                    ngbTooltip
+                                    mainTooltip="Documents"
+                                    position="bottom"
+                                    tooltipBackground="#6C6C6C"
+                                    >
                                     <svg-icon src="assets/svg/common/ic_attachment.svg"></svg-icon>
                                 </div>
-                                <div class="icon-box">
+                                <div class="icon-box dots">
                                     <svg-icon src="assets/svg/common/ic_horizontal-dots.svg"></svg-icon>
                                 </div>
                             </div>
@@ -181,78 +201,12 @@
                         <div class="list-text">{{item.description}}</div>
                         <div class="link" *ngIf="item.linkActive">{{item.url}}</div>
                     </div>
-                    <!-- <div class="chat-holder">
-                        <div class="chat-frame">
-                            <div class="user-frame">
-                                <div class="user-img">
-                                    <svg-icon src="assets/svg/truckassist-table/user1.svg"></svg-icon>
-                                </div>
-                                <div class="user-name-holder">
-                                    <div class="user-name">Kevin Malone</div>
-                                    <div class="time-and-date">08/23/24  03:08 PM</div>
-                                </div>
-                            </div>
-                            <div class="messages">Lorem ipsum dolor sit</div>
-                        </div>
-                        <div class="icons-holder">
-                            <div class="icons">
-                                <svg-icon src="assets/svg/common/ic_pen.svg"></svg-icon>
-                            </div>
-                            <div class="icons">
-                                <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
-                            </div>
-                        </div>
+                    <div class="comment-holder" *ngIf="reviews.length && item.commentActive">
+                        <app-ta-user-review
+                            [reviewData]="reviews"
+                            [isNewReview]="reviews[0].isNewReview"
+                        ></app-ta-user-review>
                     </div>
-                    <div class="chat-holder">
-                        <div class="chat-frame">
-                            <div class="user-frame">
-                                <div class="user-img">
-                                    <svg-icon src="assets/svg/truckassist-table/user1.svg"></svg-icon>
-                                </div>
-                                <div class="user-name-holder">
-                                    <div class="user-name">Vlade Divac</div>
-                                    <div class="time-and-date">08/23/24  03:08 PM</div>
-                                </div>
-                            </div>
-                            <div class="messages">Lorem ipsum dolor sit amet, consetetur sadipscing elit.</div>
-                        </div>
-                        <div class="icons-holder">
-                            <div class="icons">
-                                <svg-icon src="assets/svg/common/ic_pen.svg"></svg-icon>
-                            </div>
-                            <div class="icons">
-                                <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-holder">
-                        <div class="chat-frame">
-                            <div class="user-frame">
-                                <div class="user-img">
-                                    <svg-icon src="assets/svg/truckassist-table/user1.svg"></svg-icon>
-                                </div>
-                                <div class="user-name-holder">
-                                    <div class="user-name">Angela Martin</div>
-                                    <div class="time-and-date">03/16/24  09:15 AM</div>
-                                </div>
-                            </div>
-                            <div class="messages">Lorem ipsum dolor sit amet, consetetur sadipscing elit dolor sit amet, consete tur sadipscing elit.</div>
-                        </div>
-                        <div class="icons-holder">
-                            <div class="icons">
-                                <svg-icon src="assets/svg/common/ic_pen.svg"></svg-icon>
-                            </div>
-                            <div class="icons">
-                                <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="comment-holder">
-                        <div class="comment-user-img">
-                            <svg-icon src="assets/svg/truckassist-table/user1.svg"></svg-icon>
-                        </div>
-                        <div class="comment">Add Comment</div>
-                    </div> -->
                     <div class="list-items-frame">
                         <div class="list-time">Deadline in 2 days</div>
                         <div class="icons-frame">

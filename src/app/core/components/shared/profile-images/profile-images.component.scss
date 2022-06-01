@@ -8,8 +8,6 @@
         display: flex;
         justify-content: flex-start;
         align-items: flex-end;
-        padding-bottom: 12px;
-        box-sizing: border-box;
 
         .profile-image-small{
             width: 18px;
@@ -22,13 +20,20 @@
             font-size: 7px;
             font-weight: 800;
             color: #6D82C7;
-            line-height: 9px;
+            user-select: none;
+
+            &.small{
+                &:hover{
+                    cursor: pointer;
+                    transform: scale(1.7);
+                    transition: all 0.3s;
+                }
+            }
 
             &.medium{
                 width: 28px;
                 height: 30px;
                 font-size: 11px;
-                line-height: 14px;
 
                 &.round{
                     height: 28px;
@@ -48,11 +53,16 @@
         border-radius: 2px;
 
         svg{
+            width: 74px;
+            height: 82px;
             display: flex;
         }
 
         &.round{
+            height: 74px;
+            border-radius: 100%;
             svg{
+                height: 74px;
                 border-radius: 100%;
             }
         }

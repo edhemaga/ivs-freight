@@ -39,6 +39,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
+    console.log(" MVR")
+    console.log(this.editData)
     this.getDriverById(this.editData.id);
     if (this.editData.type === 'edit-mvr') {
       this.getMVRById()
@@ -95,11 +97,12 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   private updateMVR() {
     const { issueDate } = this.mvrForm.value;
     const newData: EditMvrCommand = {
-      driverId: this.editData.id,
+      id: this.editData.file_id,
       ...this.mvrForm.value,
       issueDate: new Date(issueDate).toISOString(),
     };
 
+    console.log(newData)
     this.mvrService
       .addMvr(newData)
       .pipe(untilDestroyed(this))
@@ -141,7 +144,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   public getMVRById() {
     this.mvrService
-      .getMvrById(this.editData.id)
+      .getMvrById(this.editData.file_id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: MvrResponse) => {

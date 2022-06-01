@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Subject} from 'rxjs';
 import {animate, style, transition, trigger} from '@angular/animations';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
@@ -7,6 +7,7 @@ import { SharedService } from 'src/app/core/services/shared/shared.service';
   selector: 'app-ta-note',
   templateUrl: './ta-note.component.html',
   styleUrls: ['./ta-note.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('pickupAnimation', [
       transition(':enter', [

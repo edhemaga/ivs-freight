@@ -42,7 +42,12 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public showMoreEmployment: boolean = false;
 
   public dataTest: any;
+<<<<<<< HEAD
   public driverData: DriverShortResponse;
+=======
+  public driverData: any;
+
+>>>>>>> develop
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService
@@ -185,13 +190,16 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   }
 
   public optionsEvent(any: any, action: string) {
+    console.log(any)
+    console.log(this.driverData)
     switch (action) {
       case 'edit-licence': {
         this.modalService.openModal(
           DriverCdlModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            file_id: any.id,
+            id: this.driverData.driver.id,
             type: action,
           }
         );
@@ -202,7 +210,8 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           DriverDrugAlcoholModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            file_id: any.id,
+            id: this.driverData.driver.id,
             type: action,
           }
         );
@@ -213,7 +222,8 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           DriverMedicalModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            file_id: any.id,
+            id: this.driverData.driver.id,
             type: action,
           }
         );
@@ -224,7 +234,8 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           DriverMvrModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            file_id: any.id,
+            id: this.driverData.driver.id,
             type: action,
           }
         );

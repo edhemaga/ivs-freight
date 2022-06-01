@@ -88,7 +88,8 @@ export class TrailerDetailsItemComponent implements OnInit {
           TtRegistrationModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            id: this.trailerData.trailer.id,
+            file_id: any.id,
             type: action,
             modal: 'trailer',
           }
@@ -100,7 +101,8 @@ export class TrailerDetailsItemComponent implements OnInit {
           TtFhwaInspectionModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            id: this.trailerData.trailer.id,
+            file_id: any.id,
             type: action,
             modal: 'trailer',
           }

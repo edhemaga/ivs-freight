@@ -23,6 +23,7 @@ import {
   insurancePolicyRegex,
   yearValidRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-trailer-modal',
@@ -77,7 +78,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private ngbActiveModal: NgbActiveModal,
     private trailerModalService: TrailerModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -89,7 +91,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 1,
+        id: 2,
       };
       this.editTrailerById(this.editData.id);
     }
@@ -106,7 +108,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       colorId: [null],
       year: [null, [Validators.required, yearValidRegex]],
       trailerLengthId: [null, [Validators.required]],
-      ownerId: [null],
+      ownerId: [null, Validators.required],
       note: [null],
       axles: [null],
       suspension: [null],
@@ -140,25 +142,48 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     if (data.action === 'close') {
       this.trailerForm.reset();
     } else {
-      // Save & Update
-      if (data.action === 'save') {
-        if (this.trailerForm.invalid) {
-          this.inputService.markInvalid(this.trailerForm);
-          return;
+      if (data.action === 'deactivate' && this.editData) {
+        this.trailerModalService
+          .changeTrailerStatus(this.editData.id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: any) => {
+              console.log(res);
+              if (res.status === '200' || res.status === '204') {
+                this.modalService.changeModalStatus({
+                  name: 'deactivate',
+                  status: null,
+                });
+              }
+            },
+            error: () => {
+              this.notificationService.error(
+                "Driver status can't be changed.",
+                'Error:'
+              );
+            },
+          });
+      } else {
+        // Save & Update
+        if (data.action === 'save') {
+          if (this.trailerForm.invalid) {
+            this.inputService.markInvalid(this.trailerForm);
+            return;
+          }
+          if (this.editData) {
+            this.updateTrailer(this.editData.id);
+          } else {
+            this.addTrailer();
+          }
         }
-        if (this.editData) {
-          this.updateTrailer(this.editData.id);
-        } else {
-          this.addTrailer();
+
+        // Delete
+        if (data.action === 'delete' && this.editData) {
+          this.deleteTrailerById(this.editData.id);
         }
-      }
 
-      // Delete
-      if (data.action === 'delete' && this.editData) {
-        this.deleteTrailerById(this.editData.id);
+        this.ngbActiveModal.close();
       }
-
-      this.ngbActiveModal.close();
     }
   }
 
@@ -388,6 +413,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           this.selectedTireSize = res.tireSize.name ? res.tireSize : null;
           this.selectedDoorType = res.doorType.name ? res.doorType : null;
           this.selectedReeferType = res.reeferUnit.name ? res.reeferUnit : null;
+
+          this.modalService.changeModalStatus({
+            name: 'deactivate',
+            status: res.status === 0 ? false : true,
+          });
         },
         error: (err) => {
           this.notificationService.error("Cant't get trailer.", 'Error:');

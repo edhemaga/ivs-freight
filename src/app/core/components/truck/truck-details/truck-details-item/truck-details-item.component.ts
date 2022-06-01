@@ -111,13 +111,16 @@ export class TruckDetailsItemComponent implements OnInit {
   }
 
   public optionsEvent(any: any, action: string) {
+
+  
     switch (action) {
       case 'edit-registration': {
         this.modalService.openModal(
           TtRegistrationModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            id: this.truckData.truck.id,
+            file_id: any.id,
             type: action,
             modal: 'truck',
           }
@@ -129,7 +132,8 @@ export class TruckDetailsItemComponent implements OnInit {
           TtFhwaInspectionModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            id: this.truckData.truck.id,
+            file_id: any.id,
             type: action,
             modal: 'truck',
           }

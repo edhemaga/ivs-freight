@@ -2,6 +2,7 @@
   <div *ngIf="size == 'small' || size == 'medium'" class="small-medium-holder">
     <div
       class="profile-image-small"
+      [class.small]="size == 'small'"
       [class.medium]="size == 'medium'"
       [class.round]="type == 'user'"
       [ngStyle]="{
@@ -12,8 +13,13 @@
       {{ name | nameInitials }}
     </div>
   </div>
-  <div *ngIf="size == 'large'" class="profile-image-large" [class.round]="type == 'user'">
+  <div
+    *ngIf="size == 'large'"
+    class="profile-image-large"
+    [class.round]="type == 'user'"
+  >
     <svg
+      *ngIf="type == 'driver'"
       xmlns="http://www.w3.org/2000/svg"
       width="74"
       height="82"
@@ -34,7 +40,7 @@
           data-name="Intersection 7"
           d="M19,82a2,2,0,0,1-2-2V64.667a54,54,0,0,1,74,0V80a2,2,0,0,1-2,2Z"
           transform="translate(-18062 -4052)"
-          [attr.fill]="textColors[indx]"
+          [attr.fill]="imageColor[indx]"
           opacity="0.5"
         />
         <path
@@ -42,9 +48,53 @@
           data-name="Path 24411"
           d="M23,0A23,23,0,1,1,0,23,23,23,0,0,1,23,0Z"
           transform="translate(-18031 -4038)"
-          [attr.fill]="textColors[indx]"
+          [attr.fill]="imageColor[indx]"
           opacity="0.5"
         />
+      </g>
+    </svg>
+    <svg
+    *ngIf="type == 'user'"
+      xmlns="http://www.w3.org/2000/svg"
+      width="74"
+      height="74"
+      viewBox="0 0 74 74"
+    >
+      <g
+        id="Group_86739"
+        data-name="Group 86739"
+        transform="translate(-1086 -612)"
+      >
+        <g id="Group_86738" data-name="Group 86738">
+          <g
+            id="Profile_Pic"
+            data-name="Profile Pic"
+            transform="translate(1086 612)"
+          >
+            <path
+              id="Path_24414"
+              data-name="Path 24414"
+              d="M37,0A37,37,0,1,1,0,37,37,37,0,0,1,37,0Z"
+              [attr.fill]="backgroundColors[indx]"
+              />
+            <path
+              id="Intersection_4"
+              data-name="Intersection 4"
+              d="M0,8.767a53.223,53.223,0,0,1,58.529,0A36.936,36.936,0,0,1,29.265,23.125,36.941,36.941,0,0,1,0,8.767Z"
+              transform="translate(7.737 50.876)"
+              [attr.fill]="imageColor[indx]"
+              opacity="0.5"
+            />
+            <path
+              id="Path_24411"
+              data-name="Path 24411"
+              d="M23.125,0A23.125,23.125,0,1,1,0,23.125,23.125,23.125,0,0,1,23.125,0Z"
+              transform="translate(13.875 13.875)"
+              [attr.fill]="imageColor[indx]"
+              opacity="0.5"
+            />
+          </g>
+        </g>
       </g>
     </svg>
   </div>

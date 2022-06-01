@@ -7,6 +7,7 @@ import { formatPhonePipe } from './formatPhone.pipe';
 import { formatSsnPipe } from './formatSsn.pipe';
 
 @NgModule({
+<<<<<<< HEAD
   declarations: [		SafeHtmlPipe,
     formatDatePipe,
     formatPhonePipe,
@@ -18,5 +19,10 @@ import { formatSsnPipe } from './formatSsn.pipe';
     formatPhonePipe,
     formatEinPipe,
     formatSsnPipe]
+=======
+  declarations: [SafeHtmlPipe],
+  imports: [CommonModule],
+  exports: [SafeHtmlPipe],
+>>>>>>> develop
 })
 export class PipesModule {}

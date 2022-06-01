@@ -23,6 +23,7 @@ import { DashboardStatusesComponent } from './dashboard-statuses/dashboard-statu
 import { DashboardVehicleChartComponent } from './dashboard-vehicle-chart/dashboard-vehicle-chart.component';
 import { DashboardLoadingChartComponent } from './dashboard-loading-chart/dashboard-loading-chart.component';
 import { DashboardInvChartComponent } from './dashboard-inv-chart/dashboard-inv-chart.component';
+import { TruckassistProgressExpirationModule } from '../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { DashboardInvChartComponent } from './dashboard-inv-chart/dashboard-inv-
     DashboardRoutingModule,
     ReactiveFormsModule,
     SharedModule,
-    ChartModule
+    ChartModule,
+    TruckassistProgressExpirationModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
