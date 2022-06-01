@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { CalendarOptions } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import { start } from 'repl';
 
 @Component({
   selector: 'app-calendar',
@@ -10,7 +13,6 @@ import { FormControl } from '@angular/forms';
 export class CalendarComponent implements OnInit {
 
   public inputDate: FormControl = new FormControl(true);
-
 
   calendarYears: any[] = [
     {
@@ -242,7 +244,6 @@ export class CalendarComponent implements OnInit {
       weekend: true
     }
   ]
-
   event_colors: any = {
     'important': '#BA68C8B3',
     'company': '#6D82C7B3',
@@ -251,9 +252,68 @@ export class CalendarComponent implements OnInit {
     'holiday': '#4DB6A2B3'
   }
 
+  currentEvents: any = [
+    {
+      title: 'event 1',
+      color: this.event_colors['important'],
+      start: '2022-06-02',
+      end: '2022-06-20',
+      textColor: '#fff'
+    },
+    { 
+      title: 'event 2',
+      color: this.event_colors['company'],
+      start: '2022-06-02',
+      end: '2022-06-07',
+      textColor: '#fff'
+    },
+    { 
+      title: 'event 3',
+      color: this.event_colors['personal'],
+      start: '2022-06-05',
+      end: '2022-06-14',
+      textColor: '#000'
+    }
+  ]
+
+  calendarOptions: CalendarOptions;
+
+  
+
   constructor() { }
 
   ngOnInit(): void {
+    this.setCalendarOptions(this.currentEvents);
+  }
+
+  setCalendarOptions(ev) {
+    this.calendarOptions = {
+      plugins: [], 
+      initialView: 'dayGridMonth',
+      dayHeaderFormat:{
+        weekday: 'long'
+      },
+      headerToolbar: {
+        left: '',
+        center: '',
+        right: ''
+      }, 
+      events: ev,
+      editable: true,
+      eventResizableFromStart: true,
+      views: {
+        day: {
+            titleFormat: {
+                year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
+            },
+        },
+     },
+     eventResize: this.resizeEvent.bind(this),
+    };
+  }
+
+  resizeEvent(mod) {
+    console.log(mod, 'resized');
   }
 
 }
