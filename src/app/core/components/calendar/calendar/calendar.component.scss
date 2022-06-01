@@ -6,7 +6,7 @@
 
     .calendar-info-holder{
         width: 347px;
-        padding: 12px 18px 0px 18px;
+        padding: 18px 12px 0px 12px;
         box-sizing: border-box;
         background-color: #fff;
         display: flex;
@@ -87,10 +87,11 @@
                 justify-content: center;
                 align-items: center;
                 font-size: 14px;
-                font-weight: 400;
+                font-weight: 800;
                 color: #B7B7B7;
                 line-height: 19px;
                 margin-right: 2px;
+                user-select: none;
 
                 &.week{
                     width: 60px;
@@ -132,6 +133,7 @@
             color: #919191;
             line-height: 19px;
             margin-bottom: 2px;
+            user-select: none;
 
             app-ta-custom-card{
                 width: 100%;
@@ -153,7 +155,6 @@
                 .ta-custom-card .ta-card-header.active:hover .header-text{
                     color: #919191;
                 }
-
             }
 
             .calendar-body{
@@ -214,6 +215,7 @@
                             line-height: 19px;
                             margin: 2.5px 0px;
                             z-index: 10;
+                            user-select: none;
         
                             &:hover{
                                 cursor: pointer;
@@ -260,6 +262,7 @@
                             font-weight: 700;
                             color: #6C6C6C;
                             line-height: 19px;
+                            user-select: none;
     
                             &:hover{
                                 cursor: pointer;
@@ -307,6 +310,7 @@
                                     font-weight: 500;
                                     color: #6C6C6C;
                                     line-height: 19px;
+                                    user-select: none;
         
                                     &.current-month{
                                         color: #536BC2;
@@ -341,6 +345,7 @@
                             font-weight: 700;
                             color: #B7B7B7;
                             line-height: 19px; 
+                            user-select: none;
                         }
 
                         &::-webkit-scrollbar{
@@ -373,6 +378,18 @@
             &.company-event{
                 .ta-checkbox-container .ta-checkbox:checked ~ .ta-mark{
                     background-color: #6D82C7;
+                }     
+            }
+
+            &.personal-event{
+                .ta-checkbox-container .ta-checkbox:checked ~ .ta-mark{
+                    background-color: #FFB74D;
+                }     
+            }
+
+            &.holiday{
+                .ta-checkbox-container .ta-checkbox:checked ~ .ta-mark{
+                    background-color: #4DB6A2;
                 }     
             }
             
@@ -413,6 +430,7 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
+                        user-select: none;
                     }
 
                     .date-text{
@@ -420,6 +438,7 @@
                         font-weight: 700;
                         color: #919191;
                         line-height: 13px;
+                        user-select: none;
                     }
 
                     &:last-child{

@@ -90,15 +90,13 @@
               class="td-content"
             >
               <div class="avatar-container">
-                <img
-                  alt="avatar"
-                  [src]="
-                    row.avatar
-                      ? row.avatar
-                      : 'assets/svg/truckassist-table/no-profile-avatar.svg'
-                  "
-                  class="avatar"
-                />
+                <app-profile-images 
+                [indx]="i"
+                [size]="'small'"
+                [name]="row.fullName"
+                [type]="'driver'"
+                >
+                </app-profile-images>
                 <img
                   alt="avatar"
                   *ngIf="row.isOwner"
@@ -728,15 +726,13 @@
               class="td-content"
             >
               <div class="avatar-container">
-                <img
-                  alt="avatar"
-                  [src]="
-                    row.avatar
-                      ? row.avatar
-                      : 'assets/svg/truckassist-table/no-profile-avatar.svg'
-                  "
-                  class="avatar"
-                />
+                <app-profile-images 
+                [indx]="i"
+                [size]="'small'"
+                [name]="row[column.field]"
+                [type]="'driver'"
+                >
+                </app-profile-images>
                 <img
                   alt="avatar"
                   *ngIf="row.isOwner"

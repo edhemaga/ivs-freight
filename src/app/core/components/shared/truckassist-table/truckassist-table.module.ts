@@ -1,3 +1,4 @@
+import { ProfileImagesModule } from './../profile-images/profile-images.module';
 import { AppNoteModule } from './../app-note/app-note.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -35,7 +36,9 @@ import { DirectivesModule } from 'src/app/core/directives/directives.module';
     TaNoteModule,
     DragDropModule,
     DirectivesModule,
-    AppNoteModule
+    AppNoteModule,
+    ProfileImagesModule
+    
   ],
   exports: [
     TruckassistTableBodyComponent,

@@ -9,7 +9,7 @@ import { FormControl } from '@angular/forms';
 })
 export class CalendarComponent implements OnInit {
 
-  public inputDate: FormControl = new FormControl();
+  public inputDate: FormControl = new FormControl(true);
 
 
   calendarYears: any[] = [
