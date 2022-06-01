@@ -88,59 +88,41 @@
           <div class="assignTo-item first">
             <svg-icon
               class="assignTo-vehicle"
-              [appTooltip]="'Semi Truck'"
-              [position]="'top-middle'"
-              [tooltipBackground]="'#6c6c6c'"
-              [tooltipColor]="'#ffffff'"
-              [zIndex]="900"
-              [borderRadius]="'2px'"
-              [fontWeight]="'bold'"
-              [fontSize]="'11px'"
-              [customPosition]="38"
+              
             >
             </svg-icon>
             <p class="assignTo-value">No truck</p>
-            <svg-icon
-              class="open-modal-icon"
-              src="assets/svg/common/arrow_top_right.svg"
-              [appTooltip]="'View in Modal'"
-              [position]="'top-middle'"
-              [tooltipBackground]="'#6c6c6c'"
-              [tooltipColor]="'#ffffff'"
-              [zIndex]="900"
-              [borderRadius]="'2px'"
-              [fontWeight]="'bold'"
-              [fontSize]="'11px'"
-              [customPosition]="-26"
-            ></svg-icon>
+            <span
+              tooltipBackground="#6c6c6c"
+              ngbTooltip
+              mainTooltip="View in Modal"
+              position="top"
+              class="semi-tooltip"
+            >
+              <svg-icon
+                class="open-modal-icon"
+                src="assets/svg/common/arrow_top_right.svg"
+              ></svg-icon>
+            </span>
           </div>
           <div class="assignTo-item second">
             <svg-icon
               class="assignTo-vehicle"
-              [appTooltip]="'Container'"
-              [position]="'top-middle'"
-              [tooltipBackground]="'#6c6c6c'"
-              [tooltipColor]="'#ffffff'"
-              [zIndex]="900"
-              [borderRadius]="'2px'"
-              [fontWeight]="'bold'"
-              [fontSize]="'11px'"
-              [customPosition]="40"
+              
             ></svg-icon>
             <p class="assignTo-value">No driver</p>
-            <svg-icon
-              class="open-modal-icon2"
-              src="assets/svg/common/arrow_top_right.svg"
-              [appTooltip]="'View in Modal'"
-              [position]="'top-middle'"
-              [tooltipBackground]="'#6c6c6c'"
-              [tooltipColor]="'#ffffff'"
-              [zIndex]="900"
-              [borderRadius]="'2px'"
-              [fontWeight]="'bold'"
-              [fontSize]="'11px'"
-              [customPosition]="-26"
-            ></svg-icon>
+            <span
+              tooltipBackground="#6c6c6c"
+              ngbTooltip
+              mainTooltip="View in Modal"
+              position="top"
+              class="semi-tooltip"
+            >
+              <svg-icon
+                class="open-modal-icon2"
+                src="assets/svg/common/arrow_top_right.svg"
+              ></svg-icon>
+            </span>
           </div>
         </div>
       </app-ta-custom-card>
@@ -206,7 +188,7 @@
             <div class="owner-items">
               <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
               <p class="information-value">
-                {{ formatPhone(data.owner.phone) }}
+                {{   data.owner.phone | formatPhoneP }}
               </p>
             </div>
             <div class="owner-items">
@@ -224,19 +206,17 @@
           </div>
           <div [ngClass]="{ 'transform-arrow': toggleOwner }">
             <div (click)="toggleOwner = !toggleOwner" class="icon-show">
+              <span
+              tooltipBackground="#6c6c6c"
+              ngbTooltip
+              [mainTooltip]="toggleOwner ? 'HIDE CONTACT' : 'Show More'"
+              position="top"
+              >
               <svg-icon
-                [appTooltip]="toggleOwner ? 'HIDE CONTACT' : ''"
-                [position]="'top-middle'"
-                [tooltipBackground]="'#6c6c6c'"
-                [tooltipColor]="'#ffffff'"
-                [zIndex]="900"
-                [borderRadius]="'2px'"
-                [fontWeight]="'bold'"
-                [fontSize]="'11px'"
-                [customPosition]="0"
                 class="arrow-down-employment"
                 src="assets/svg/common/fill_arrow_down.svg"
               ></svg-icon>
+              </span>
               <p class="hide-show">
                 {{ toggleOwner ? "HIDE CONTACT" : "" }}
               </p>
@@ -276,12 +256,9 @@
                 <p class="employment">{{ owHist.name }}</p>
 
                 <p class="date-from-to">
-                  {{owHist.startDate | formatDateP }} -
-                  {{
-                    owHist.endDate !== null
-                      ? formatDate(owHist.endDate)
-                      : "Today"
-                  }}
+                  {{ owHist.startDate | formatDateP }} -
+                 <span *ngIf="owHist.endDate">{{owHist.endDate | formatDateP}}</span>
+                 <span *ngIf="!owHist.endDate">Today</span>
                 </p>
                 <p class="duration">1 y 200 d</p>
               </div>

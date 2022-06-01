@@ -111,8 +111,6 @@ export class TruckDetailsItemComponent implements OnInit {
   }
 
   public optionsEvent(any: any, action: string) {
-
-  
     switch (action) {
       case 'edit-registration': {
         this.modalService.openModal(

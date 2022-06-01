@@ -21,6 +21,7 @@
     padding: 2px 0px;
     margin-right: 1px;
     margin-left: 1px;
+    transition: left 0.25s ease-out !important;
     &.checked {
       background-color: #ffffff !important;
       transition: left 0.25s ease-out !important;
@@ -48,4 +49,12 @@
       }
     }
   }
+}
+.ta-input-radiobutons a {
+  position: absolute;
+  left: 50%;
+  z-index: 1;
+  height: 100%;
+  width: 50%;
+  transition: left 0.25s ease-out;
 }

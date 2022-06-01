@@ -278,3 +278,30 @@ fieldset legend {
 app-ta-tab-switch {
   margin-bottom: 0.5rem;
 }
+
+/*CSS FOR TABS IN DRIVER*/
+.chart-tabs{
+  margin-top: 0px !important;
+  .slide-container{
+      background-color: #f3f3f3 ;
+      color: #b7b7b7;
+      height: 26px ;
+      
+  }
+  .slide-container label {
+    font-size: 11px;
+    font-weight: 700 !important;
+    height: 22px !important;
+    padding: 2px 0;
+    &:hover{
+      color: #919191;
+    }
+  }
+ 
+}
+.chart-tabs input:checked ~ a {
+  left: 2px;
+  height: 21px !important;
+  bottom: 3px;
+  width: 67px !important;
+}

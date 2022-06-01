@@ -131,6 +131,7 @@
               mainTooltip="View in Modal"
               position="top"
               style="margin-left: 40px"
+            
             >
               <svg-icon
                 class="open-modal-icon"
@@ -145,13 +146,14 @@
                 ngbTooltip
                 mainTooltip="Container"
                 position="top"
+                class="semi-tooltip"
               >
                 <svg-icon
                   class="assignTo-vehicle"
                   src="assets/svg/common/trailers/ic_trailer_container.svg"
                 ></svg-icon>
               </span>
-              <p class="assignTo-value">R4578</p>
+              <p class="assignTo-value" style="margin-left: 6px !important;">R4578</p>
             </div>
             <span
               style="margin-left: 33px"
@@ -469,8 +471,13 @@
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
       >
         <div class="charts-template perfomance">
-          <app-ta-input-radiobuttons [buttons]="buttonsArray">
-          </app-ta-input-radiobuttons>
+          <app-tab-switcher
+           [tabs]="tabs"
+           [customClass]="'chart-tabs'"
+          >
+          </app-tab-switcher>
+          <!-- <app-ta-input-radiobuttons [buttons]="buttonsArray">
+          </app-ta-input-radiobuttons> -->
           <div class="charts-item-wrapper revenue">
             <div class="charts-template-item">
               <div class="icon-name-item">

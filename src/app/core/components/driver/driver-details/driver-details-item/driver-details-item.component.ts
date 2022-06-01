@@ -42,12 +42,8 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public showMoreEmployment: boolean = false;
 
   public dataTest: any;
-<<<<<<< HEAD
-  public driverData: DriverShortResponse;
-=======
   public driverData: any;
 
->>>>>>> develop
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService
