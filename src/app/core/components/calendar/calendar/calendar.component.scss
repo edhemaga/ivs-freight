@@ -424,6 +424,7 @@
         width: 100%;
         padding: 18px 18px 17px 12px;
         box-sizing: border-box;
+        user-select: none;
         .calendar_view_title_line{
             display: flex;
             justify-content: space-between;
@@ -606,4 +607,28 @@
 
 .fc .fc-toolbar.fc-header-toolbar{
     margin: 0 !important;
+}
+
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events{
+    position: absolute !important;
+    top: 0;
+    left: 0;
+
+    height: 26px;
+    width: 100%;
+    margin: 1px !important;
+
+    border-radius: 2px;
+}
+
+.fc-day-sun .fc-daygrid-day-number, .fc-day-sat .fc-daygrid-day-number{
+    color: #E5E5E5 !important;
+}
+
+.fc-day-past .fc-daygrid-day-number, .fc-day-other .fc-daygrid-day-number{
+    color: #F3F3F3 !important;
+}
+
+.fc .fc-day-other .fc-daygrid-day-top{
+    opacity: 1 !important;
 }
