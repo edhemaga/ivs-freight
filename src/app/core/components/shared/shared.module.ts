@@ -44,7 +44,6 @@ import { CdkConnectPipe } from '../../pipes/cdkconnect.pipe';
 import { CdkIdPipe } from '../../pipes/cdkid.pipe';
 import { HighlightSearchPipe } from '../../pipes/highlight-search.pipe';
 import { HosTimePipe } from '../../pipes/hostime';
-import { NameInitialsPipe } from '../../pipes/nameinitials';
 import { Ng5SliderModule } from 'ng5-slider';
 import { EditProfileImageComponent } from './edit-profile-image/edit-profile-image.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
@@ -179,7 +178,6 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
     SortPipe,
     StatusPipePipe,
     HighlightSearchPipe,
-    NameInitialsPipe,
     HosTimePipe,
     CdkIdPipe,
     CdkConnectPipe,
@@ -337,7 +335,6 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
     SortPipe,
     StatusPipePipe,
     HighlightSearchPipe,
-    NameInitialsPipe,
     HosTimePipe,
     CdkIdPipe,
     CdkConnectPipe,
@@ -367,8 +364,7 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
     CalendarMonthsPipe,
     CdkIdPipe,
     HighlightSearchPipe,
-    HosTimePipe,
-    NameInitialsPipe
+    HosTimePipe
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

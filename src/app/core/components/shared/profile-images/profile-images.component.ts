@@ -1,9 +1,11 @@
+import { NameInitialsPipe } from './../../../pipes/nameinitials';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-profile-images',
   templateUrl: './profile-images.component.html',
-  styleUrls: ['./profile-images.component.scss']
+  styleUrls: ['./profile-images.component.scss'],
+  providers: [NameInitialsPipe]
 })
 export class ProfileImagesComponent implements OnInit {
 
