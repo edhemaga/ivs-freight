@@ -103,7 +103,6 @@ import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/
 
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 
-import { ProfileImagesComponent } from './profile-images/profile-images.component';
 import { FilterComponent } from './filter/filter.component';
 import { FuelTotalPipe } from '../modals/fuel-modals/fuel-total.pipe';
 import { FuelPurchaseModalComponent } from '../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
@@ -198,7 +197,6 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
     InputFocusDirective,
     InputRestrictionDirective,
     TextareaAutosizeDirective,
-    ProfileImagesComponent,
     FilterComponent
   ],
   imports: [
@@ -358,7 +356,6 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
     InputRestrictionDirective,
     TextareaAutosizeDirective,
     AppTooltipeModule,
-    ProfileImagesComponent,
     FilterComponent
   ],
   providers: [
