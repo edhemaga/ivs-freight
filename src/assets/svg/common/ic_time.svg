@@ -1,0 +1,3 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19">
+  <path id="clock" d="M17,8a9,9,0,1,0,9,9A9,9,0,0,0,17,8Zm2.072,12.705-3.2-2.326a.438.438,0,0,1-.178-.352V11.919a.437.437,0,0,1,.435-.435h1.742a.437.437,0,0,1,.435.435v5l2.3,1.677a.435.435,0,0,1,.094.61l-1.023,1.408a.438.438,0,0,1-.61.094Z" transform="translate(-7.5 -7.5)" fill="#b7b7b7" stroke="rgba(0,0,0,0)" stroke-miterlimit="10" stroke-width="1"/>
+</svg>

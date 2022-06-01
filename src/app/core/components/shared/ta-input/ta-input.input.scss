@@ -22,6 +22,10 @@
     background-color: #919191 !important;
   }
 
+  &.center {
+    text-align: center;
+  }
+
   &.capitalize {
     text-transform: capitalize;
   }
@@ -65,28 +69,29 @@
     color: #3c3c3c;
   }
 
-  &:focus, &.focused {
+  &:focus,
+  &.focused {
     transition: all 0.3s ease-in-out;
     background-color: #6c6c6c;
     color: #ffffff;
 
     &::-webkit-input-placeholder {
-      color:  #AAAAAA;
+      color: #aaaaaa;
     }
     &::-moz-placeholder {
-      color:  #AAAAAA;
+      color: #aaaaaa;
     }
-  
+
     &:-ms-input-placeholder {
-      color:  #AAAAAA;
+      color: #aaaaaa;
     }
-  
+
     &::-ms-input-placeholder {
-      color:  #AAAAAA;
+      color: #aaaaaa;
     }
-  
+
     &::placeholder {
-      color:  #AAAAAA;
+      color: #aaaaaa;
     }
   }
 
@@ -119,7 +124,7 @@
       background-color: #919191 !important;
     }
   }
- 
+
   &.valid-focus-in,
   &.dropdown-placeholder-active {
     transition: all 0.3s ease-in-out;
@@ -154,7 +159,7 @@
     }
   }
 
-  &.invalid-focus-in{
+  &.invalid-focus-in {
     transition: all 0.3s ease-in-out;
     background-color: #ef5350;
 
@@ -167,17 +172,35 @@
     }
   }
 
-  // &:focus ~ .input-icon, &.focused ~ .input-icon {
-  //   transition: all 0.3s ease-in-out;
-  //   svg {
-  //     path {
-  //       fill: #b7b7b7;
-  //     }
-  //   }
-  // }
-
   //------------------------- Custom class -------------------------
   &.input-big {
     height: 32px;
   }
+}
+
+ //------------------------- Input Number Hide Arrows -------------------------
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0 !important;
+}
+
+input[type="number"]::-webkit-inner-spin-button:hover,
+input[type="number"]::-webkit-outer-spin-button:hover,
+input[type="number"]::-webkit-inner-spin-button:focus,
+input[type="number"]::-webkit-outer-spin-button:focus {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0 !important;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield !important;
+}
+input[type="number"]:hover,
+input[type="number"]:focus {
+  -moz-appearance: textfield !important;
 }

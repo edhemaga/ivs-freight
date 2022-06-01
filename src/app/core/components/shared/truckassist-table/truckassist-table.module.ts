@@ -1,3 +1,4 @@
+import { AppNoteModule } from './../app-note/app-note.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TruckassistTableBodyComponent } from './truckassist-table-body/truckassist-table-body.component';
@@ -33,7 +34,8 @@ import { DirectivesModule } from 'src/app/core/directives/directives.module';
     NgbModule,
     TaNoteModule,
     DragDropModule,
-    DirectivesModule
+    DirectivesModule,
+    AppNoteModule
   ],
   exports: [
     TruckassistTableBodyComponent,

@@ -56,7 +56,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     this.getCdlDropdowns();
     this.countryStateChange();
     this.getDriverById(this.editData.id);
-
+    console.log(this.editData)
     if (this.editData.type === 'edit-licence') {
       this.getCdlById();
     }
@@ -99,6 +99,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string) {
+
     switch (action) {
       case 'class': {
         this.selectedClassType = event;
@@ -190,7 +191,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
   public getCdlById() {
     this.cdlService
-      .getCdlById(this.editData.id)
+      .getCdlById(this.editData.file_id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: CdlResponse) => {
@@ -205,6 +206,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             endorsements: res.cdlEndorsements,
             note: res.note,
           });
+         
           this.selectedClassType = res.classType;
           this.selectedCountryType = res.countryType;
           this.selectedStateType = res.state;
@@ -219,7 +221,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     const { issueDate, expDate } = this.cdlForm.value;
 
     const newData: EditCdlCommand = {
-      id: this.editData.id,
+      id: this.editData.file_id,
       ...this.cdlForm.value,
       issueDate: new Date(issueDate).toISOString(),
       expDate: new Date(expDate).toISOString(),
@@ -229,6 +231,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       restrictions: null,
       endorsements: null,
     };
+
+    console.log(newData);
 
     this.cdlService
       .addCdl(newData)

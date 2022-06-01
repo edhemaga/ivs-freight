@@ -33,6 +33,10 @@ export class TrailerModalService {
     return this.trailerService.apiTrailerIdGet(id);
   }
 
+  public changeTrailerStatus(id: number): Observable<any> {
+    return this.trailerService.apiTrailerStatusIdPut(id);
+  }
+
   public getTrailerDropdowns(): Observable<GetTrailerModalResponse> {
     return this.trailerService.apiTrailerModalGet();
   }

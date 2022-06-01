@@ -15,7 +15,7 @@
       <div *ngIf="calendarMainType == 'time'" class="time_picker">
         <div class="time_picker_head d-flex">
           <div class="selected_time">{{selectedTime}}</div>
-          <div class="sel_now">Now</div>
+          <div class="sel_now">Default</div>
         </div>
         <div class="time_picker_body">
           <div class="picker_body_head">
@@ -56,7 +56,7 @@
             </div>
           </div>
           <div class="picker_buttons">
-            <div (click)="actionDrop.close()" class="pick_button">Cancel</div>
+            <div (click)="closePopup()" class="pick_button">Cancel</div>
             <div (click)="setTime()" class="pick_button set_button">Set</div>
           </div>
         </div>

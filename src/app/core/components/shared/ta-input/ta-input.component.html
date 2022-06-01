@@ -6,7 +6,7 @@
       inputConfig.type === 'password' &&
       getSuperControl.valid &&
       getSuperControl.value,
-    'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput,
+    invalid: getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required-dropdown':
       inputConfig.isRequired &&
       !getSuperControl.value &&
@@ -24,7 +24,7 @@
       !getSuperControl.value &&
       getSuperControl.invalid &&
       focusInput,
-    'valid': getSuperControl.value && getSuperControl.valid && !focusInput,
+    valid: getSuperControl.value && getSuperControl.valid && !focusInput,
     'valid-dropdown':
       getSuperControl.value &&
       getSuperControl.valid &&
@@ -35,9 +35,10 @@
 >
   <!-- Input Clear -->
   <div
+    *ngIf="!inputConfig.hideClear"
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
-      'disabled': inputConfig.isDisabled,
+      disabled: inputConfig.isDisabled,
       'focus-typing': getSuperControl.value && focusInput,
       'valid-focus-in':
         getSuperControl.value &&
@@ -100,18 +101,6 @@
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>
 
-  <!-- [tatooltipvisible]="
-  !(
-    inputConfig.isRequired &&
-    getSuperControl.invalid &&
-    waitValidation &&
-    !focusInput &&
-    !inputConfig.placeholderIcon &&
-    !isVisiblePasswordEye &&
-    !inputConfig.isDropdown
-  )
-" -->
-
   <!-- Input Required Check -->
   <svg-icon
     class="input-required-check {{ inputConfig.customClass }}"
@@ -132,8 +121,8 @@
     *ngIf="inputConfig.type === 'password'"
     class="input-password-eye {{ inputConfig.customClass }}"
     [ngClass]="{
-      'visible': isVisiblePasswordEye,
-      'valid': getSuperControl.valid && !focusInput && !isVisiblePasswordEye
+      visible: isVisiblePasswordEye,
+      valid: getSuperControl.valid && !focusInput && !isVisiblePasswordEye
     }"
     ngbTooltip
     mainTooltip="{{ !togglePassword ? 'Show Password' : 'Hide Password' }}"
@@ -152,7 +141,7 @@
 
   <!-- Input Confirm New Item in Dropdown -->
   <div
-    *ngIf="isDropdownAddModeActive && inputConfig.isDropdown"
+    *ngIf="isDropdownAddModeActive && inputConfig.isDropdown && focusInput"
     class="input-dropdown-confirm"
     (click)="onAddItemInDropdown()"
     ngbTooltip
@@ -175,8 +164,8 @@
       !isDropdownAddModeActive
     "
     [ngClass]="{
-      'active': inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
-      'valid':
+      active: inputConfig.isDropdown && !inputConfig.isDisabled && focusInput,
+      valid:
         inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.valid &&
@@ -255,10 +244,20 @@
     [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg: 'common'"
   ></svg-icon>
 
+  <!-- Input Placeholder Text -->
+  <svg-icon
+    *ngIf="inputConfig.placeholderText && getSuperControl.value"
+    class="placeholder-text"
+    [class.focused]="focusInput"
+    [style.left]="11 + (getSuperControl.value.toString().length*7) + 'px'"
+    [src]="inputConfig.placeholderText?.toLowerCase() | taSvg: 'common'"
+  >
+  </svg-icon>
+
   <!-- Input Control -->
   <input
     #input
-    [type]="getInputType(inputConfig.type)"
+    [type]="inputConfig.type | inputType:togglePassword"
     [id]="inputConfig.name"
     [name]="inputConfig.name"
     [disabled]="inputConfig.isDisabled"
@@ -268,13 +267,16 @@
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
     [mask]="inputConfig.mask"
+    [min]="0"
+    [max]="inputConfig.max"
     thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
     inputformat="dd-mm-yy"
-    class="input-control {{ inputConfig.textTransform }} {{
-      inputConfig.customClass
-    }}"
+    class="input-control 
+    {{ inputConfig.textTransform }} 
+    {{ inputConfig.textAlign }} 
+    {{ inputConfig.customClass }}"
     [ngClass]="{
-      'disabled': !getSuperControl.value && inputConfig.isDisabled,
+      disabled: !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-focus-in':
         getSuperControl.value &&
@@ -319,7 +321,7 @@
     [class.active]="showDateInput"
     (click)="showDateTimePlaceholder()"
     [ngClass]="{
-      'focused': focusInput,
+      focused: focusInput,
       'invalid-focus-out':
         inputConfig.isRequired &&
         getSuperControl.value &&
@@ -353,9 +355,10 @@
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
-      >mm</span
+      [innerHTML]="inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
+      ></span
     >
-    <span (click)="setSelection($event)">/</span>
+    <span (click)="setSelection($event)" [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ':'">/</span>
     <span
       #span2
       class="main"
@@ -364,9 +367,10 @@
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
-      >dd</span
+      [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
+      ></span
     >
-    <span (click)="setSelection($event)">/</span>
+    <span (click)="setSelection($event)" [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ' '">/</span>
     <span
       #span3
       class="main"
@@ -375,7 +379,8 @@
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
-      >yy</span
+      [innerHTML]="inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
+      ></span
     >
   </div>
 
@@ -384,7 +389,7 @@
     [for]="inputConfig.name"
     class="input-label {{ inputConfig.customClass }}"
     [ngClass]="{
-      'required': inputConfig.isRequired && !inputConfig.isDisabled,
+      required: inputConfig.isRequired && !inputConfig.isDisabled,
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'up-label': getSuperControl.value || focusInput || showDateInput,
@@ -403,6 +408,7 @@
 
   <!-- Input Error Message -->
   <span
+    *ngIf="!inputConfig.hideErrorMessage"
     class="input-error {{ inputConfig.customClass }}"
     [ngClass]="{
       'invalid-focus-out':
@@ -434,9 +440,10 @@
 <ng-template #dateTimePopover let-data="data">
   <div class="datetime-dropdown-holder">
     <app-custom-datetime-pickers
-      [calendarType]="'date'"
+      [calendarType]="inputConfig.name === 'datepicker' ? 'date' : 'time'"
       [placeholder]="'MM/DD/YY'"
       [dateTime]="dateTimeInputDate"
+      (closePopover)="closePopover()"
     ></app-custom-datetime-pickers>
   </div>
 </ng-template>

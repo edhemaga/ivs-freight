@@ -86,25 +86,26 @@
               customClass: 'datetimeclass'
             }"
           ></app-ta-input>
+          <!-- Time Picker -->
           <app-ta-input
             formControlName="start"
             [inputConfig]="{
-              name: 'datepicker',
+              name: 'timepicker',
               type: 'text',
               label: 'Start',
-              placeholderIcon: 'date',
-              isDisabled: true,
+              placeholderIcon: 'time',
               customClass: 'datetimeclass'
             }"
           ></app-ta-input>
+
+          <!-- Time Picker -->
           <app-ta-input
             formControlName="end"
             [inputConfig]="{
-              name: 'datepicker',
+              name: 'timepicker',
               type: 'text',
               label: 'End',
-              placeholderIcon: 'date',
-              isDisabled: true,
+              placeholderIcon: 'time',
               customClass: 'datetimeclass'
             }"
           ></app-ta-input>
@@ -362,8 +363,23 @@
                 </p>
                 <p class="violation-unit">{{ violation.get("unit").value }}</p>
                 <p class="violation-sw">{{ violation.get("sw").value }}</p>
-                <svg-icon class="violation-oos" [class.active]="violation.get('oos').value" src="{{violation.get('oos').value ? 'assets/svg/common/ic_confirm.svg' : 'assets/svg/common/ic_x.svg'}}"></svg-icon>
-                <svg-icon class="violation-sms" src="{{violation.get('sms').value ? 'assets/svg/common/ic_confirm.svg' : 'assets/svg/common/ic_x.svg'}}"></svg-icon>
+                <svg-icon
+                  class="violation-oos"
+                  [class.active]="violation.get('oos').value"
+                  src="{{
+                    violation.get('oos').value
+                      ? 'assets/svg/common/ic_confirm.svg'
+                      : 'assets/svg/common/ic_x.svg'
+                  }}"
+                ></svg-icon>
+                <svg-icon
+                  class="violation-sms"
+                  src="{{
+                    violation.get('sms').value
+                      ? 'assets/svg/common/ic_confirm.svg'
+                      : 'assets/svg/common/ic_x.svg'
+                  }}"
+                ></svg-icon>
                 <app-ta-input
                   formControlName="description"
                   [inputConfig]="{

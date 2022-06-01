@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
 
 @Component({
@@ -7,8 +7,8 @@ import { SettingsStoreService } from '../../state/settings.service';
   styleUrls: ['./settings-general.component.scss'],
 })
 export class SettingsGeneralComponent {
-  public isAccountVisible: boolean = true;
-  public accountText: string = null;
+  public isAccountVisible: boolean = false;
+
   public companyBasicMiddleData = [
     {
       id: 1,
@@ -99,23 +99,23 @@ export class SettingsGeneralComponent {
       {
         id: 1,
         name: 'Bank Name',
-        svg:'assets/svg/common/ic_bankAccount_dummy.svg',
-        value:'',
-        hide:false,
+        svg: 'assets/svg/common/ic_bankAccount_dummy.svg',
+        value: '',
+        hide: false,
       },
       {
         id: 2,
         name: 'Routing',
-        svg:'',
+        svg: '',
         value: '052001633',
-        hide:false,
+        hide: false,
       },
       {
         id: 3,
         name: 'Account',
-        svg:'',
+        svg: '',
         value: '00000006213',
-        hide:true,
+        hide: true,
       },
     ],
     bankCard: [
@@ -193,54 +193,7 @@ export class SettingsGeneralComponent {
     this.settingsStoreService.onModalAction(modal);
   }
 
-  public identityCompanyBasicMiddle(index: number, item: any): number {
-    return item.id;
-  }
-  public cvcHide(card) {
-    let hideNum = [];
-    for(let i = 0; i < card.length; i++){
-      if(i < card.length){
-        hideNum.push("●");
-      }
-      else{
-        hideNum.push(card[i]);
-      }
-    }
-    return hideNum.join("");
-  }
-  public cardHide(card) {
-    let hideNum = [];
-    for(let i = 0; i < card.length; i++){
-      if(i < card.length-4){
-        hideNum.push("●");
-      }else{
-        hideNum.push(card[i]);
-      }
-    }
-    return hideNum.join("");
-  }
-  
-  public hiddenPassword(value: any, numberOfCharacterToHide: number): string {
-    const lastFourCharaters = value.substring(
-      value.length - numberOfCharacterToHide
-    );
-    let hiddenCharacter = '';
-    for (let i = 0; i < numberOfCharacterToHide; i++) {
-      hiddenCharacter += '●';
-    }
-    return hiddenCharacter + lastFourCharaters;
-  }
-
-  public showHideValue(value: string) {
-    this.isAccountVisible = !this.isAccountVisible;
-    if (!this.isAccountVisible) {
-      this.accountText = this.hiddenPassword(value,4);
-      return;
-    }
-    this.accountText = value;
-  }
-
-  public identityCompanyBasicBottom(index: number, item: any): number {
+  public identity(index: number, item: any): number {
     return item.id;
   }
 }

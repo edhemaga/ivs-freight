@@ -323,9 +323,8 @@
                 type: 'text',
                 label: 'Volume',
                 maxLength: 6,
-                mask: 'separator.2',
-                placeholderIcon: !trailerForm.get('volume').value ? '' : 'gal',
-                customClass: 'gal-placeholderIcon'
+                placeholderText: !trailerForm.get('volume').value ? '' : 'gal',
+                mask: 'separator.2'
               }"
             ></app-ta-input>
           </div>
@@ -347,10 +346,9 @@
                 label: 'Empty Weight',
                 maxLength: 6,
                 mask: 'separator.2',
-                placeholderIcon: !trailerForm.get('emptyWeight').value
+                placeholderText: !trailerForm.get('emptyWeight').value
                   ? ''
-                  : 'ibs',
-                customClass: 'ibs-placeholderIcon'
+                  : 'ibs'
               }"
             ></app-ta-input>
           </div>
