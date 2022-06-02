@@ -687,7 +687,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
+    
     background-color: #fff;
 
     .fc-daygrid-day-number{
@@ -742,4 +742,37 @@
 
 .fc .fc-day-other .fc-daygrid-day-top{
     opacity: 1 !important;
+}
+
+.fc-direction-ltr .fc-daygrid-event.fc-event-start, .fc-direction-rtl .fc-daygrid-event.fc-event-end{
+    margin: 0 !important;
+}
+
+.fc .fc-daygrid-event{
+    margin: 0 !important;
+    border: none;
+}
+
+.fc .fc-daygrid-day-bottom{
+    padding: 0 !important;
+}
+
+.fc-day-today .fc-daygrid-day-number{
+    color: #97A8DC !important;
+}
+
+.fc-daygrid-block-event .fc-event-time, .fc-daygrid-block-event .fc-event-title{
+    padding: 0 !important;
+}
+
+.fc-event-title{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.fc-event-title-container{
+    display: flex;
+    align-items: center;
+    height: 26px;
 }

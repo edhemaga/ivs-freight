@@ -254,10 +254,10 @@ export class CalendarComponent implements OnInit {
 
   currentEvents: any = [
     {
-      title: 'event 1',
+      title: 'event 1 very long name check',
       color: this.event_colors['important'],
       start: '2022-06-02',
-      end: '2022-06-20',
+      end: '2022-06-03',
       textColor: '#fff'
     },
     { 
