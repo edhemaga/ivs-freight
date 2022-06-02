@@ -33,6 +33,7 @@ export class DriverDetailsCardComponent implements OnInit {
   @Input() templateCard:boolean=false;
   public toggler:boolean[]=[];
   public dataEdit:any;
+  selectedTab:number=1;
   public tabs: any[] = [
     {
       id: 53333,
@@ -47,7 +48,7 @@ export class DriverDetailsCardComponent implements OnInit {
       name: '6M',
     },
     {
-      id: 121,
+      id: 1005,
       name: '1Y',
     },
     {
@@ -127,6 +128,11 @@ export class DriverDetailsCardComponent implements OnInit {
    /**Function for toggle page in cards */
   public toggleResizePage(value: number) {
     this.toggler[value] = !this.toggler[value];
+  }
+  public changeTab(ev:any){
+    console.log(ev.id);
+    
+      this.selectedTab=ev.id;
   }
    
   public optionsEvent(any: any, action: string) {

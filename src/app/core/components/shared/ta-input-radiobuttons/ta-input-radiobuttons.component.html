@@ -1,7 +1,6 @@
 <div class="ta-input-radiobutons">
-  <ng-container *ngFor="let button of buttons; trackBy: identity">
   <label
-    
+    *ngFor="let button of buttons; trackBy: identity"
     class="radio-button-label"
     [ngClass]="{'checked': button.checked}"
     for="{{ button.id }}"
@@ -17,6 +16,4 @@
     />
     <span class="radio-button-text">{{ button.label }}</span>
   </label>
-  </ng-container>
-  <a *ngIf="!checked" aria-hidden="true" class="slide"></a>
 </div>
