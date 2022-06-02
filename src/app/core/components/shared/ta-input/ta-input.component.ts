@@ -53,7 +53,7 @@ export class TaInputComponent
   public numberOfSpaces: number = 0;
 
   // Dropdown
-  public isDropdownOptionsActive: boolean = false;
+  public dropdownToggler: boolean = false;
   public isDropdownAddModeActive: boolean = false;
 
   // Date Timer
@@ -91,10 +91,10 @@ export class TaInputComponent
       this.inputService.dropdownAddModeSubject
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
+          console.log("Input ADD MODE ", action)
           if (action) {
-            this.isDropdownOptionsActive = false;
+            this.dropdownToggler = false;
             this.isDropdownAddModeActive = action;
-            clearTimeout(this.timeout);
             this.focusInput = true;
             this.setInputCursorAtTheEnd(this.input.nativeElement);
           }
@@ -103,8 +103,9 @@ export class TaInputComponent
       this.inputService.isDropDownItemSelectedOnEnter
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
+          console.log("Input SELECT WITH ENTER ", action)
           if (action) {
-            this.isDropdownOptionsActive = false;
+            this.dropdownToggler = false;
             this.input.nativeElement.blur();
             this.blurOnDropDownArrow();
           }
@@ -163,8 +164,7 @@ export class TaInputComponent
 
     // Dropdown
     if (this.inputConfig.isDropdown && !this.isDropdownAddModeActive) {
-      this.inputService.dropDownShowHideSubject.next(true);
-      this.isDropdownOptionsActive = true;
+      this.dropdownToggler = true;
     }
 
     this.focusInput = true;
@@ -212,16 +212,9 @@ export class TaInputComponent
   }
 
   private blurOnDropDownArrow() {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-
     this.timeout = setTimeout(() => {
-      this.inputService.dropDownShowHideSubject.next(false);
-      this.isDropdownOptionsActive = false;
+      this.dropdownToggler = false;
       this.focusInput = false;
-
-      this.changeDetection.detectChanges();
       clearTimeout(this.timeout);
     }, 150);
   }
@@ -250,13 +243,13 @@ export class TaInputComponent
   }
 
   public toggleDropdownOptions() {
-    this.isDropdownOptionsActive = !this.isDropdownOptionsActive;
+    this.dropdownToggler = !this.dropdownToggler;
 
     this.inputService.dropDownShowHideSubject.next(
-      this.isDropdownOptionsActive
+      this.dropdownToggler
     );
 
-    if (this.isDropdownOptionsActive) {
+    if (this.dropdownToggler) {
       clearTimeout(this.timeout);
       this.input.nativeElement.focus();
       this.focusInput = true;

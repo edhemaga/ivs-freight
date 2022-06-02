@@ -142,7 +142,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         .pipe(untilDestroyed(this))
         .subscribe({
           next: (res: any) => {
-            console.log(res);
             if (res.status === '200' || res.status === '204') {
               this.modalService.changeModalStatus({
                 name: 'deactivate',
@@ -547,7 +546,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         : null,
       offDutyLocations: this.premmapedOffDutyLocation()
     };
-    console.log(newData);
+
     this.driverTService
       .addDriver(newData)
       .pipe(untilDestroyed(this))
@@ -620,7 +619,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       offDutyLocations: this.premmapedOffDutyLocation()
     };
 
-    console.log(newData);
 
     this.driverTService
       .updateDriver(newData)
@@ -694,7 +692,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             address: res.address,
             valid: res.address ? true : false,
           });
-          console.log(res.status);
+
           this.modalService.changeModalStatus({
             name: 'deactivate',
             status: res.status === 0 ? false : true,
@@ -746,7 +744,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public onSelectDropdown(event: any, action: string): void {
     switch (action) {
       case 'bank': {
-        console.log(event);
         this.selectedBank = event;
         if (this.selectedBank) {
           this.onBankSelected();

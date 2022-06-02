@@ -6,12 +6,10 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   Self,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
@@ -29,7 +27,7 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
   animations: [input_dropdown_animation('showHideDropdownOptions')],
 })
 export class TaInputDropdownComponent
-  implements OnInit, OnChanges, OnDestroy, ControlValueAccessor
+  implements OnInit, OnDestroy, ControlValueAccessor
 {
   @ViewChild('t2') public popover: NgbPopover;
   @Input() template: string;
@@ -50,12 +48,6 @@ export class TaInputDropdownComponent
     this.superControl.valueAccessor = this;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.options) {
-      this.originalOptions = [...this.options];
-    }
-  }
-
   ngOnInit(): void {
     if (this.options) {
       this.originalOptions = [...this.options];
@@ -68,18 +60,21 @@ export class TaInputDropdownComponent
       });
 
     this.inputService.onClearInputSubject
-      .pipe(debounceTime(50), untilDestroyed(this))
+      .pipe(debounceTime(50),untilDestroyed(this))
       .subscribe((action: boolean) => {
+        console.log("DROPDOWN CLEAR EVENT ", action);
         if (action) {
-          this.onClearSearch();
+            this.popover.close();
+            this.onClearSearch();
         }
       });
 
     this.inputService.dropDownShowHideSubject
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
-
+        console.log("DROPDOWN SHOW HIDE ", action);
         if (!action) {
+          this.popover.open();
           if (this.activeItem) {
             this.getSuperControl.setValue(this.activeItem.name);
             this.changeDetectionRef.detectChanges();
@@ -92,6 +87,7 @@ export class TaInputDropdownComponent
             }
           }
         } else {
+          this.popover.close();
           this.inputConfig = {
             ...this.inputConfig,
             placeholder: this.getSuperControl.value
