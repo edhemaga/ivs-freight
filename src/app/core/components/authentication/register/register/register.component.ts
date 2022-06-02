@@ -6,7 +6,7 @@ import moment from "moment";
 import {SharedService} from "../../../../services/shared/shared.service";
 import {SpinnerService} from "../../../../services/spinner/spinner.service";
 import {NotificationService} from "../../../../services/notification/notification.service";
-import {Address} from "../../../../model/address";
+import { AddressEntity } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-register',
@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit {
   public regPass: any;
   public passwordStrength: any;
   isValidAddress = false;
-  address: Address | null;
+  address: AddressEntity | null;
 
   public passwordType = 'text';
 

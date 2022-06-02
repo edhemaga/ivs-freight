@@ -17,7 +17,6 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerModalService } from './owner-modal.service';
-import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 import { AddressEntity } from 'appcoretruckassist';
 import { distinctUntilChanged } from 'rxjs';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
@@ -50,7 +49,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   public labelsBank: any[] = [];
 
-  public selectedAddress: Address | AddressEntity = null;
+  public selectedAddress: AddressEntity = null;
 
   public selectedBank: any = null;
   public isBankSelected: boolean = false;
@@ -161,7 +160,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandleAddress(event: {address: Address, valid: boolean}) {
+  public onHandleAddress(event: {address: AddressEntity, valid: boolean}) {
     this.selectedAddress = event.address;
     if(!event.valid) {
       this.ownerForm.setErrors({invalid: event.valid})
@@ -214,7 +213,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             this.ownerForm.get('routingNumber').setErrors(null);
           } else {
             this.ownerForm.get('routingNumber').setErrors({ invalid: true });
-            this.inputService.triggerInvalidRoutingNumber$.next(true);
           }
         }
       });
@@ -239,7 +237,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.selectedTab === 1 ? bussinesName : firstName.concat(' ', lastName),
       ssnEin: this.selectedTab === 1 ? ein : ssn,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
-      bankId: 1, //this.selectedBank ? this.selectedBank.id : null,
+      bankId: this.selectedBank ? this.selectedBank.id : null,
       ...form,
     };
 

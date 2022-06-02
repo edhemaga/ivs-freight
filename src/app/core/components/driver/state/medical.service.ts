@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
   CreateMedicalCommand,
-  CreateMedicalResponse,
   EditMedicalCommand,
   MedicalResponse,
   MedicalService,
 } from 'appcoretruckassist';
+import { CreateMedicalResponse } from 'appcoretruckassist/model/createMedicalResponse';
 import { Observable } from 'rxjs';
 
 @Injectable({

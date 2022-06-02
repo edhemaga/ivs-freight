@@ -39,7 +39,7 @@
   }
 
   &.disabled {
-    background-color: #f9f9f9 !important;
+    background-color: #fbfbfb !important;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -48,7 +48,7 @@
   }
 
   &.disabled-filled {
-    background-color: #f9f9f9 !important;
+    background-color: #fbfbfb !important;
     color: #919191 !important;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -112,18 +112,18 @@
     padding-left: 37px;
   }
 
-  &.dropdown-add-mode {
-    background-color: #6c6c6c !important;
-    color: #ffffff;
+  // &.dropdown-add-mode {
+  //   background-color: #6c6c6c !important;
+  //   color: #ffffff;
 
-    &::-moz-selection {
-      background-color: #919191 !important;
-    }
+  //   &::-moz-selection {
+  //     background-color: #919191 !important;
+  //   }
 
-    &::selection {
-      background-color: #919191 !important;
-    }
-  }
+  //   &::selection {
+  //     background-color: #919191 !important;
+  //   }
+  // }
 
   &.valid-focus-in,
   &.dropdown-placeholder-active {
@@ -172,13 +172,26 @@
     }
   }
 
+  &.dropdown {
+    background-color: #6c6c6c !important;
+    color: #ffffff;
+
+    &::-moz-selection {
+      background-color: #919191 !important;
+    }
+
+    &::selection {
+      background-color: #919191 !important;
+    }
+  }
+
   //------------------------- Custom class -------------------------
   &.input-big {
     height: 32px;
   }
 }
 
- //------------------------- Input Number Hide Arrows -------------------------
+//------------------------- Input Number Hide Arrows -------------------------
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;

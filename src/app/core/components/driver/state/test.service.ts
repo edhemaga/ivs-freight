@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
   CreateTestCommand,
-  CreateTestResponse,
   EditTestCommand,
   GetTestModalResponse,
   TestResponse,
   TestService,
 } from 'appcoretruckassist';
+import { CreateTestResponse } from 'appcoretruckassist/model/createTestResponse';
 import { Observable } from 'rxjs';
 
 @Injectable({

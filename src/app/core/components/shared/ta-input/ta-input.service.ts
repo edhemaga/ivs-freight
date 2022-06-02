@@ -29,9 +29,6 @@ export class TaInputService {
   public addDropdownItemSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
-  public triggerInvalidRoutingNumber$: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
-
   constructor(
     public notificationService: NotificationService,
     private spinnerService: SpinnerService

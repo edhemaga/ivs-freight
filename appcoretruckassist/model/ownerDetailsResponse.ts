@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AddressEntity } from './addressEntity';
 
 
 export interface OwnerDetailsResponse { 
@@ -16,12 +17,6 @@ export interface OwnerDetailsResponse {
     name?: string | null;
     phone?: string | null;
     email?: string | null;
-    city?: string | null;
-    state?: string | null;
-    address?: string | null;
-    country?: string | null;
-    zipCode?: string | null;
-    stateShortName?: string | null;
-    addressUnit?: string | null;
+    address?: AddressEntity;
 }
 

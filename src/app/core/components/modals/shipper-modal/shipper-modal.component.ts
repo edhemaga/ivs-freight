@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 import {
   AddressEntity,
   CreateShipperCommand,
@@ -52,7 +51,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     params: { height: '0px' },
   };
 
-  public selectedAddress: Address | AddressEntity = null;
+  public selectedAddress: AddressEntity = null;
 
   public isAppointmentReceiving: boolean = false;
   public isAppointmentShipping: boolean = false;
@@ -188,7 +187,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandleAddress(event: {address: Address, valid: boolean}) {
+  public onHandleAddress(event: {address: AddressEntity, valid: boolean}) {
     this.selectedAddress = event.address;
     if(!event.valid) {
       this.shipperForm.setErrors({'invalid': event.valid})
