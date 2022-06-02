@@ -473,6 +473,7 @@
         <div class="charts-template perfomance">
           <app-tab-switcher
            [tabs]="tabs"
+           (switchClicked)="changeTab($event)"
            [customClass]="'chart-tabs'"
           >
           </app-tab-switcher>
