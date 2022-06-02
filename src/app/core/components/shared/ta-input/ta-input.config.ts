@@ -11,6 +11,7 @@ export interface ITaInput {
   autocomplete?: string;
   minLength?: number;
   maxLength?: number;
+  min?: number;
   max?: number;
   mask?: string;
   textTransform?: string | 'capitalize' | 'uppercase' | 'lowercase';

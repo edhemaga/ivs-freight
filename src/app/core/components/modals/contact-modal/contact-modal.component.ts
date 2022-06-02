@@ -6,13 +6,13 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import {
+  AddressEntity,
   CompanyContactModalResponse,
   CompanyContactResponse,
   CreateCompanyContactCommand,
   UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
-import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 import {
   emailRegex,
   phoneRegex,
@@ -253,7 +253,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandleAddress(event: { address: Address; valid: boolean }): void {
+  public onHandleAddress(event: { address: AddressEntity; valid: boolean }): void {
     this.selectedAddress = event.address;
     if (!event.valid) {
       this.contactForm.setErrors({ invalid: event.valid });

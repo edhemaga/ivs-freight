@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
   CreateTrailerCommand,
-  CreateTrailerResponse,
   GetTrailerModalResponse,
   TrailerResponse,
   TrailerService,
   UpdateTrailerCommand,
 } from 'appcoretruckassist';
+import { CreateTrailerResponse } from 'appcoretruckassist/model/createTrailerResponse';
 import { Observable } from 'rxjs';
 
 @Injectable({

@@ -14,7 +14,6 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 import { AddressEntity } from 'appcoretruckassist';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
@@ -91,7 +90,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
   public selectedOffice: any = null;
   public selectedBank: any = null;
 
-  public selectedAddress: Address | AddressEntity = null;
+  public selectedAddress: AddressEntity = null;
   public isPhoneExtExist: boolean = false;
 
   public isBankSelected: boolean = false;
@@ -176,7 +175,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  public onHandleAddress(event: { address: Address; valid: boolean }): void {
+  public onHandleAddress(event: { address: AddressEntity; valid: boolean }): void {
     this.selectedAddress = event.address;
     if (!event.valid) {
       this.userForm.get('address').setErrors({ invalid: true });
@@ -233,7 +232,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             this.userForm.get('routingNumber').setErrors(null);
           } else {
             this.userForm.get('routingNumber').setErrors({ invalid: true });
-            this.inputService.triggerInvalidRoutingNumber$.next(true);
           }
         }
       });

@@ -18,7 +18,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { CreateMedicalCommand } from '../model/models';
-import { CreateMedicalResponse } from '../model/models';
+import { CreateResponse } from '../model/models';
 import { EditMedicalCommand } from '../model/models';
 import { MedicalResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
@@ -253,9 +253,9 @@ export class MedicalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiMedicalPost(createMedicalCommand?: CreateMedicalCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateMedicalResponse>;
-    public apiMedicalPost(createMedicalCommand?: CreateMedicalCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateMedicalResponse>>;
-    public apiMedicalPost(createMedicalCommand?: CreateMedicalCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateMedicalResponse>>;
+    public apiMedicalPost(createMedicalCommand?: CreateMedicalCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiMedicalPost(createMedicalCommand?: CreateMedicalCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiMedicalPost(createMedicalCommand?: CreateMedicalCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
     public apiMedicalPost(createMedicalCommand?: CreateMedicalCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -297,7 +297,7 @@ export class MedicalService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateMedicalResponse>(`${this.configuration.basePath}/api/medical`,
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/medical`,
             createMedicalCommand,
             {
                 responseType: <any>responseType,

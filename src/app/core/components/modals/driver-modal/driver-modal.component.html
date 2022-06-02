@@ -268,8 +268,6 @@
           <app-ta-checkbox
             formControlName="payroll"
             [label]="'Include in Payroll'"
-            [required]="true"
-            [invalid]="true"
           ></app-ta-checkbox>
         </div>
         <div
@@ -279,7 +277,7 @@
           <div class="bank-field">
             <app-ta-input-dropdown
               formControlName="bankId"
-              [template]="'banks'"
+              [template]="'svg-template'"
               [inputConfig]="{
                 name: 'Input Dropdown',
                 type: 'text',

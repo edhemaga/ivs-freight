@@ -17,8 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { CreateResponse } from '../model/models';
 import { CreateTestCommand } from '../model/models';
-import { CreateTestResponse } from '../model/models';
 import { EditTestCommand } from '../model/models';
 import { GetTestModalResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
@@ -302,9 +302,9 @@ export class TestService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTestPost(createTestCommand?: CreateTestCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateTestResponse>;
-    public apiTestPost(createTestCommand?: CreateTestCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateTestResponse>>;
-    public apiTestPost(createTestCommand?: CreateTestCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateTestResponse>>;
+    public apiTestPost(createTestCommand?: CreateTestCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiTestPost(createTestCommand?: CreateTestCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiTestPost(createTestCommand?: CreateTestCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
     public apiTestPost(createTestCommand?: CreateTestCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -346,7 +346,7 @@ export class TestService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateTestResponse>(`${this.configuration.basePath}/api/test`,
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/test`,
             createTestCommand,
             {
                 responseType: <any>responseType,

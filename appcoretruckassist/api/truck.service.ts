@@ -17,8 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { CreateResponse } from '../model/models';
 import { CreateTruckCommand } from '../model/models';
-import { CreateTruckResponse } from '../model/models';
 import { DeleteMultipleTruckCommand } from '../model/models';
 import { GetTruckModalResponse } from '../model/models';
 import { MultipleChangeTruckStatusCommand } from '../model/models';
@@ -492,9 +492,9 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckPost(createTruckCommand?: CreateTruckCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateTruckResponse>;
-    public apiTruckPost(createTruckCommand?: CreateTruckCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateTruckResponse>>;
-    public apiTruckPost(createTruckCommand?: CreateTruckCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateTruckResponse>>;
+    public apiTruckPost(createTruckCommand?: CreateTruckCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiTruckPost(createTruckCommand?: CreateTruckCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiTruckPost(createTruckCommand?: CreateTruckCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
     public apiTruckPost(createTruckCommand?: CreateTruckCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -536,7 +536,7 @@ export class TruckService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateTruckResponse>(`${this.configuration.basePath}/api/truck`,
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/truck`,
             createTruckCommand,
             {
                 responseType: <any>responseType,

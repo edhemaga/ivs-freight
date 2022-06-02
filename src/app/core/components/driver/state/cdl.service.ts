@@ -3,10 +3,10 @@ import {
   CdlResponse,
   CdlService,
   CreateCdlCommand,
-  CreateCdlResponse,
   EditCdlCommand,
   GetCdlModalResponse,
 } from 'appcoretruckassist';
+import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse';
 import { Observable } from 'rxjs';
 
 @Injectable({

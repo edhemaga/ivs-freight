@@ -12,6 +12,7 @@
 import { CreateOffDutyLocationCommand } from './createOffDutyLocationCommand';
 import { OwnerType } from './ownerType';
 import { PerMileEntity } from './perMileEntity';
+import { AddressEntity } from './addressEntity';
 
 
 export interface CreateDriverCommand { 
@@ -29,13 +30,7 @@ export interface CreateDriverCommand {
     ownerType?: OwnerType;
     ein?: string | null;
     bussinesName?: string | null;
-    city?: string | null;
-    state?: string | null;
-    address?: string | null;
-    country?: string | null;
-    zipCode?: string | null;
-    stateShortName?: string | null;
-    addressUnit?: string | null;
+    address?: AddressEntity;
     bankId?: number | null;
     account?: string | null;
     routing?: string | null;

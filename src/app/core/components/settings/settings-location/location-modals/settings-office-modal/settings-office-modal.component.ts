@@ -8,7 +8,6 @@ import {
   emailRegex,
   phoneRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { AddressEntity } from 'appcoretruckassist';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -26,7 +25,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   public officeForm: FormGroup;
 
   public selectedTab: number = 1;
-  public selectedAddress: Address | AddressEntity = null;
+  public selectedAddress: AddressEntity = null;
   public isPhoneExtExist: boolean = false;
 
   public selectedPayPeriod: any = null;
@@ -143,7 +142,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   }
 
   public onHandleAddress(event: {
-    address: Address | any;
+    address: AddressEntity | any;
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;

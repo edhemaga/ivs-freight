@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
   CreateInspectionCommand,
-  CreateInspectionResponse,
   CreateRegistrationCommand,
-  CreateRegistrationResponse,
   CreateTitleCommand,
-  CreateTitleResponse,
   InspectionResponse,
   InspectionService,
   RegistrationResponse,
@@ -16,6 +13,9 @@ import {
   UpdateRegistrationCommand,
   UpdateTitleCommand,
 } from 'appcoretruckassist';
+import { CreateInspectionResponse } from 'appcoretruckassist/model/createInspectionResponse';
+import { CreateRegistrationResponse } from 'appcoretruckassist/model/createRegistrationResponse';
+import { CreateTitleResponse } from 'appcoretruckassist/model/createTitleResponse';
 import { Observable } from 'rxjs';
 
 @Injectable({

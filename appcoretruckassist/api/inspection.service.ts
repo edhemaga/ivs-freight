@@ -18,7 +18,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { CreateInspectionCommand } from '../model/models';
-import { CreateInspectionResponse } from '../model/models';
+import { CreateResponse } from '../model/models';
 import { InspectionResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { UpdateInspectionCommand } from '../model/models';
@@ -258,9 +258,9 @@ export class InspectionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiInspectionPost(createInspectionCommand?: CreateInspectionCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateInspectionResponse>;
-    public apiInspectionPost(createInspectionCommand?: CreateInspectionCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateInspectionResponse>>;
-    public apiInspectionPost(createInspectionCommand?: CreateInspectionCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateInspectionResponse>>;
+    public apiInspectionPost(createInspectionCommand?: CreateInspectionCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiInspectionPost(createInspectionCommand?: CreateInspectionCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiInspectionPost(createInspectionCommand?: CreateInspectionCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
     public apiInspectionPost(createInspectionCommand?: CreateInspectionCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -302,7 +302,7 @@ export class InspectionService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateInspectionResponse>(`${this.configuration.basePath}/api/inspection`,
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/inspection`,
             createInspectionCommand,
             {
                 responseType: <any>responseType,

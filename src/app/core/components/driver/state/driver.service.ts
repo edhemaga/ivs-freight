@@ -1,8 +1,9 @@
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
 import { Observable} from 'rxjs';
-import { CheckOwnerSsnEinResponse, CreateDriverCommand, CreateDriverResponse, DriverListResponse, DriverResponse, GetDriverModalResponse, OwnerService, UpdateDriverCommand } from 'appcoretruckassist';
-import { DriversState, DriversStore } from './driver.store';
+import { CheckOwnerSsnEinResponse, CreateDriverCommand,  DriverListResponse, DriverResponse, GetDriverModalResponse, OwnerService, UpdateDriverCommand } from 'appcoretruckassist';
+import { DriversStore } from './driver.store';
+import { CreateDriverResponse } from 'appcoretruckassist/model/createDriverResponse';
 
 @Injectable({
   providedIn: 'root',

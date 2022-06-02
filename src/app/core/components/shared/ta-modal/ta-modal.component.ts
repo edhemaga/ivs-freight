@@ -127,7 +127,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
           this.ngbActiveModal.dismiss();
           clearTimeout(this.timeout);
         }, 50);
-        this.inputService.triggerInvalidRoutingNumber$.next(false);
         this.uploadFileService.visibilityDropZone(false);
         this.uploadFileService.uploadFiles(null);
         break;

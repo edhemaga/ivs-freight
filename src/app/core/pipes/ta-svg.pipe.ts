@@ -21,6 +21,7 @@ export class TaSvgPipe implements PipeTransform {
     if (!subFolder) {
       return `assets/svg/${folder}/${svgPath}`;
     }
+    console.log(`assets/svg/${folder}/${subFolder}/${svgPath}`)
     return `assets/svg/${folder}/${subFolder}/${svgPath}`;
   }
 }

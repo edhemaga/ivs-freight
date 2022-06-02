@@ -18,7 +18,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { CreateDriverCommand } from '../model/models';
-import { CreateDriverResponse } from '../model/models';
+import { CreateResponse } from '../model/models';
 import { DeleteMultipleDriverCommand } from '../model/models';
 import { DriverListResponse } from '../model/models';
 import { DriverMinimalListResponse } from '../model/models';
@@ -492,9 +492,9 @@ export class DriverService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDriverPost(createDriverCommand?: CreateDriverCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateDriverResponse>;
-    public apiDriverPost(createDriverCommand?: CreateDriverCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateDriverResponse>>;
-    public apiDriverPost(createDriverCommand?: CreateDriverCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateDriverResponse>>;
+    public apiDriverPost(createDriverCommand?: CreateDriverCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiDriverPost(createDriverCommand?: CreateDriverCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiDriverPost(createDriverCommand?: CreateDriverCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
     public apiDriverPost(createDriverCommand?: CreateDriverCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -536,7 +536,7 @@ export class DriverService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateDriverResponse>(`${this.configuration.basePath}/api/driver`,
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/driver`,
             createDriverCommand,
             {
                 responseType: <any>responseType,

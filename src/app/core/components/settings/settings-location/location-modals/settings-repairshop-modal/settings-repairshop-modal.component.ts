@@ -8,7 +8,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddressEntity } from 'appcoretruckassist';
-import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -41,7 +40,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     params: { height: '0px' },
   };
 
-  public selectedAddress: Address | AddressEntity = null;
+  public selectedAddress: AddressEntity = null;
   public selectedPayPeriod: any = null;
   public selectedDay: any = null;
 
@@ -173,7 +172,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   }
 
   public onHandleAddress(event: {
-    address: Address | any;
+    address: AddressEntity | any;
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;
