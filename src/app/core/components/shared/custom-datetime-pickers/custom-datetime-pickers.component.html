@@ -31,7 +31,7 @@
               (scroll)="onScroll($event, 'hourScroll')"
               class="scroll_pickers"
             >
-              <div *ngFor="let hour of hourTimes" class="scroll_item">{{hour}}</div>
+              <div *ngFor="let hour of hourTimes; let indx = index" class="scroll_item" (click)="onScroll($event, 'hourScroll', indx)">{{hour}}</div>
             </div>
             <div
               #minutesScroll
@@ -39,8 +39,8 @@
               (mouseover)="hoveredItem = 'minutes'"
               (scroll)="onScroll($event, 'minutesScroll')"
               class="scroll_pickers">
-              <div *ngFor="let minutes of timeMinutes; let indx = index" class="scroll_item">
-                <span>{{minutes}}</span>
+              <div *ngFor="let minutes of timeMinutes; let indx = index" class="scroll_item" (click)="onScroll($event, 'minutesScroll', indx)">
+                {{minutes}}
               </div>
             </div>
             <div
@@ -49,7 +49,7 @@
               (mouseover)="hoveredItem = 'times'"
               (scroll)="onScroll($event, 'pmAmScroll')"
               class="scroll_pickers">
-              <div *ngFor="let when of timeOfDay" class="scroll_item">{{when}}</div>
+              <div *ngFor="let when of timeOfDay; let indx = index" class="scroll_item" (click)="onScroll($event, 'pmAmScroll', indx)">{{when}}</div>
             </div>
             <div class="picker_line">
               <span>:</span>
