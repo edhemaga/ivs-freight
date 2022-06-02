@@ -186,7 +186,6 @@
 .card-note {
   margin-left: 6px;
   height: 40px;
-  transition: all 0.4s ease-in-out;
   .note-body {
     padding-left: 4px !important;
   }
@@ -207,7 +206,6 @@
   flex-direction: column;
   margin-bottom: 13px;
   width: 100%;
-  transition:all 0.4s ease-in-out;
   .icon-counter-wrapper {
     display: flex;
     align-items: center;
@@ -459,6 +457,6 @@
   padding-left: 2px !important;
 }
 .card-restriction-class{
-  margin-top: -9px;
+  // margin-top: -9px;
   margin-bottom: 2px;
 }

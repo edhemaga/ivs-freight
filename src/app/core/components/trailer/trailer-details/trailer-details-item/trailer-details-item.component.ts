@@ -5,12 +5,14 @@ import moment from 'moment';
 import { TtRegistrationModalComponent } from '../../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { card_component_animation } from '../../../shared/animations/card-component.animations';
 
 @Component({
   selector: 'app-trailer-details-item',
   templateUrl: './trailer-details-item.component.html',
   styleUrls: ['./trailer-details-item.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  animations:[card_component_animation('showHideCardBody')]
 })
 export class TrailerDetailsItemComponent implements OnInit {
   @Input() data: any = null;
@@ -20,7 +22,7 @@ export class TrailerDetailsItemComponent implements OnInit {
   public toggleOwner: boolean = false;
   public trailerName: string;
   public dataTest:any;
-  public toggler:boolean=false;
+  public toggler:boolean[]=[];
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService
@@ -36,15 +38,10 @@ export class TrailerDetailsItemComponent implements OnInit {
     this.note.patchValue(this.trailerData.trailer.note)
 
   }
-   /**Function return format date from DB */
-  public formatDate(date: string) {
-    return moment(date).format('MM/DD/YY');
-  }
    
   /**Function for toggle page in cards */
-  public toggleResizePage(value: boolean) {
-    this.toggler = value;
-    console.log(this.toggler);
+  public toggleResizePage(value: number) {
+    this.toggler[value] = !this.toggler[value];
   }
    /**Function for dots in cards */
   public initTableOptions(): void {
@@ -80,7 +77,10 @@ export class TrailerDetailsItemComponent implements OnInit {
       export: true,
     };
   }
-
+   /**Function retrun id */
+   public identity(index: number, item: any): number {
+    return item.id;
+  }
   public optionsEvent(any: any, action: string) {
     switch (action) {
       case 'edit-registration': {

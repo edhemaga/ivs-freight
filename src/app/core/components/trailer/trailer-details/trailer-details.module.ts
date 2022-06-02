@@ -9,21 +9,23 @@ import { TruckDetailsRoutes } from "./trailer-details.routing";
 import { TrailerDetailsComponent } from './trailer-details.component';
 import { TrailerDetailsItemComponent } from './trailer-details-item/trailer-details-item.component';
 import { TrailerDetailsCardComponent } from "../trailer-details-card/trailer-details-card.component";
+import { formatDatePipe } from "src/app/core/pipes/formatDate.pipe";
+import { PipesModule } from "src/app/core/pipes/pipes.module";
 
 @NgModule({
     declarations:[
         TrailerDetailsComponent,
         TrailerDetailsItemComponent,
         RenderMultipleItemsPipe,
-        TrailerDetailsCardComponent
-
+        TrailerDetailsCardComponent,
     ],
-    exports:[TrailerDetailsCardComponent],
+    exports:[TrailerDetailsCardComponent,PipesModule],
     imports:[
         CommonModule,
         TruckDetailsRoutes,
         TruckassistProgressExpirationModule,
         SharedModule,
+        PipesModule
     ]
 })
 export class TrailerDetailsModule{}

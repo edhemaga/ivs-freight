@@ -88,59 +88,41 @@
           <div class="assignTo-item first">
             <svg-icon
               class="assignTo-vehicle"
-              [appTooltip]="'Semi Truck'"
-              [position]="'top-middle'"
-              [tooltipBackground]="'#6c6c6c'"
-              [tooltipColor]="'#ffffff'"
-              [zIndex]="900"
-              [borderRadius]="'2px'"
-              [fontWeight]="'bold'"
-              [fontSize]="'11px'"
-              [customPosition]="38"
+              
             >
             </svg-icon>
             <p class="assignTo-value">No truck</p>
-            <svg-icon
-              class="open-modal-icon"
-              src="assets/svg/common/arrow_top_right.svg"
-              [appTooltip]="'View in Modal'"
-              [position]="'top-middle'"
-              [tooltipBackground]="'#6c6c6c'"
-              [tooltipColor]="'#ffffff'"
-              [zIndex]="900"
-              [borderRadius]="'2px'"
-              [fontWeight]="'bold'"
-              [fontSize]="'11px'"
-              [customPosition]="-26"
-            ></svg-icon>
+            <span
+              tooltipBackground="#6c6c6c"
+              ngbTooltip
+              mainTooltip="View in Modal"
+              position="top"
+              class="semi-tooltip"
+            >
+              <svg-icon
+                class="open-modal-icon"
+                src="assets/svg/common/arrow_top_right.svg"
+              ></svg-icon>
+            </span>
           </div>
           <div class="assignTo-item second">
             <svg-icon
               class="assignTo-vehicle"
-              [appTooltip]="'Container'"
-              [position]="'top-middle'"
-              [tooltipBackground]="'#6c6c6c'"
-              [tooltipColor]="'#ffffff'"
-              [zIndex]="900"
-              [borderRadius]="'2px'"
-              [fontWeight]="'bold'"
-              [fontSize]="'11px'"
-              [customPosition]="40"
+              
             ></svg-icon>
             <p class="assignTo-value">No driver</p>
-            <svg-icon
-              class="open-modal-icon2"
-              src="assets/svg/common/arrow_top_right.svg"
-              [appTooltip]="'View in Modal'"
-              [position]="'top-middle'"
-              [tooltipBackground]="'#6c6c6c'"
-              [tooltipColor]="'#ffffff'"
-              [zIndex]="900"
-              [borderRadius]="'2px'"
-              [fontWeight]="'bold'"
-              [fontSize]="'11px'"
-              [customPosition]="-26"
-            ></svg-icon>
+            <span
+              tooltipBackground="#6c6c6c"
+              ngbTooltip
+              mainTooltip="View in Modal"
+              position="top"
+              class="semi-tooltip"
+            >
+              <svg-icon
+                class="open-modal-icon2"
+                src="assets/svg/common/arrow_top_right.svg"
+              ></svg-icon>
+            </span>
           </div>
         </div>
       </app-ta-custom-card>
@@ -206,7 +188,7 @@
             <div class="owner-items">
               <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
               <p class="information-value">
-                {{ formatPhone(data.owner.phone) }}
+                {{   data.owner.phone | formatPhoneP }}
               </p>
             </div>
             <div class="owner-items">
@@ -218,25 +200,23 @@
             <div class="owner-items">
               <svg-icon src="assets/svg/common/ic_address.svg"></svg-icon>
               <p class="information-value">
-                {{ data.owner.address }}
+                {{ data.owner.address.address }}
               </p>
             </div>
           </div>
           <div [ngClass]="{ 'transform-arrow': toggleOwner }">
             <div (click)="toggleOwner = !toggleOwner" class="icon-show">
+              <span
+              tooltipBackground="#6c6c6c"
+              ngbTooltip
+              [mainTooltip]="toggleOwner ? 'HIDE CONTACT' : 'Show More'"
+              position="top"
+              >
               <svg-icon
-                [appTooltip]="toggleOwner ? 'HIDE CONTACT' : ''"
-                [position]="'top-middle'"
-                [tooltipBackground]="'#6c6c6c'"
-                [tooltipColor]="'#ffffff'"
-                [zIndex]="900"
-                [borderRadius]="'2px'"
-                [fontWeight]="'bold'"
-                [fontSize]="'11px'"
-                [customPosition]="0"
                 class="arrow-down-employment"
                 src="assets/svg/common/fill_arrow_down.svg"
               ></svg-icon>
+              </span>
               <p class="hide-show">
                 {{ toggleOwner ? "HIDE CONTACT" : "" }}
               </p>
@@ -276,12 +256,9 @@
                 <p class="employment">{{ owHist.name }}</p>
 
                 <p class="date-from-to">
-                  {{ formatDate(owHist.startDate) }} -
-                  {{
-                    owHist.endDate !== null
-                      ? formatDate(owHist.endDate)
-                      : "Today"
-                  }}
+                  {{ owHist.startDate | formatDateP }} -
+                 <span *ngIf="owHist.endDate">{{owHist.endDate | formatDateP}}</span>
+                 <span *ngIf="!owHist.endDate">Today</span>
                 </p>
                 <p class="duration">1 y 200 d</p>
               </div>
@@ -312,14 +289,22 @@
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let reg of data.registrations; trackBy: identity">
+          <div
+            *ngFor="
+              let reg of data.registrations;
+              let i = index;
+              trackBy: identity
+            "
+          >
             <app-ta-re-card
               [cardDocumentCounter]="1"
-              (resizePage)="toggleResizePage($event)"
+              (resizePage)="toggleResizePage(i)"
               [cardNameCommon]="reg.licensePlate"
               [hasCopyIcon]="true"
               [options]="dataEdit"
-              [expDateClose]="formatDate(reg.expDate)"
+              [expDateClose]="reg.expDate | formatDateP"
+              [optionsId]="reg.id"
+              (dropActions)="optionsEvent($event, 'edit-registration')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -331,36 +316,38 @@
                     <div class="card-item">
                       <div class="card-item-name">Issued</div>
                       <div class="card-item-value">
-                        {{ formatDate(reg.issueDate) }}
+                        {{ reg.issueDate | formatDateP }}
                       </div>
                     </div>
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler }"
+                    [ngClass]="{ 'second-progress': toggler[i] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [expireDate]="formatDate(reg.expDate)"
-                        [startDate]="formatDate(reg.issueDate)"
+                        [expireDate]="reg.expDate | formatDateP"
+                        [startDate]="reg.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
                     </div>
                   </div>
                 </div>
-                <div class="divider" *ngIf="toggler"></div>
-                <div *ngIf="toggler" class="note-wrapper">
-                  <app-ta-input-note
-                    [formControl]="registrationNote"
-                    [isVisibleDivider]="false"
-                    [isVisibleSecondDivider]="false"
-                    [placeholder]="'Write something.'"
-                    [customClass]="'note-small'"
-                    [isVisibleArrow]="false"
-                    [minRows]="1"
-                    [isVisibleNote]="true"
-                  ></app-ta-input-note>
+                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                  <div class="divider"></div>
+                  <div class="card-note">
+                    <app-ta-input-note
+                      [formControl]="registrationNote"
+                      [isVisibleDivider]="false"
+                      [isVisibleSecondDivider]="false"
+                      [placeholder]="'Write something.'"
+                      [customClass]="'note-small'"
+                      [isVisibleArrow]="false"
+                      [minRows]="1"
+                      [isVisibleNote]="true"
+                    ></app-ta-input-note>
+                  </div>
                 </div>
               </div>
             </app-ta-re-card>
@@ -379,11 +366,19 @@
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let fhwa of data.inspections; trackBy: identity">
+          <div
+            *ngFor="
+              let fhwa of data.inspections;
+              let i = index;
+              trackBy: identity
+            "
+          >
             <app-ta-re-card
               [options]="dataEdit"
-              [cardNameCommon]="formatDate(fhwa.issueDate)"
-              [expDateClose]="formatDate('04/04/25')"
+              [cardNameCommon]="fhwa.issueDate | formatDateP"
+              [optionsId]="fhwa.id"
+              (resizePage)="toggleResizePage(i)"
+              (dropActions)="optionsEvent($event, 'edit-inspection')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -394,23 +389,27 @@
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
                         [expireDate]="'04/04/25'"
-                        [startDate]="formatDate(fhwa.issueDate)"
+                        [startDate]="fhwa.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
                     </div>
                   </div>
                 </div>
-                <div *ngIf="toggler" class="note-wrapper">
-                  <app-ta-input-note
-                    [formControl]="fhwaNote"
-                    [isVisibleSecondDivider]="false"
-                    [placeholder]="'Write something.'"
-                    [customClass]="'note-small'"
-                    [isVisibleArrow]="false"
-                    [minRows]="1"
-                    [isVisibleNote]="true"
-                  ></app-ta-input-note>
+                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                  <div class="divider"></div>
+                  <div class="card-note">
+                    <app-ta-input-note
+                      [formControl]="registrationNote"
+                      [isVisibleDivider]="false"
+                      [isVisibleSecondDivider]="false"
+                      [placeholder]="'Write something.'"
+                      [customClass]="'note-small'"
+                      [isVisibleArrow]="false"
+                      [minRows]="1"
+                      [isVisibleNote]="true"
+                    ></app-ta-input-note>
+                  </div>
                 </div>
               </div>
             </app-ta-re-card>
@@ -429,13 +428,16 @@
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let title of data.titles; trackBy: identity">
+          <div
+            *ngFor="let title of data.titles; let i = index; trackBy: identity"
+          >
             <app-ta-re-card
               [cardDocumentCounter]="1"
-              (resizePage)="toggleResizePage($event)"
+              (resizePage)="toggleResizePage(i)"
               [cardNameCommon]="title.number"
               [options]="dataEdit"
-              [expDateClose]="formatDate('04/04/27')"
+              [optionsId]="title.id"
+              (dropActions)="optionsEvent($event, 'edit-inspection')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -447,36 +449,39 @@
                     <div class="card-item">
                       <div class="card-item-name">Issued</div>
                       <div class="card-item-value">
-                        {{ formatDate(title.issueDate) }}
+                        {{ title.issueDate | formatDateP }}
                       </div>
                     </div>
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler }"
+                    [ngClass]="{ 'second-progress': toggler[i] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
                         [expireDate]="'04/04/27'"
-                        [startDate]="formatDate(title.issueDate)"
+                        [startDate]="title.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
                     </div>
                   </div>
                 </div>
-                <div class="divider" *ngIf="toggler"></div>
-                <div *ngIf="toggler" class="note-wrapper">
-                  <app-ta-input-note
-                    [formControl]="titleNote"
-                    [placeholder]="'Write something.'"
-                    [isVisibleSecondDivider]="false"
-                    [customClass]="'note-small'"
-                    [isVisibleArrow]="false"
-                    [minRows]="1"
-                    [isVisibleDivider]="false"
-                    [isVisibleNote]="true"
-                  ></app-ta-input-note>
+                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                  <div class="divider"></div>
+
+                  <div class="card-note">
+                    <app-ta-input-note
+                      [formControl]="titleNote"
+                      [placeholder]="'Write something.'"
+                      [customClass]="'note-small'"
+                      [isVisibleArrow]="false"
+                      [isVisibleSecondDivider]="false"
+                      [minRows]="1"
+                      [isVisibleDivider]="false"
+                      [isVisibleNote]="true"
+                    ></app-ta-input-note>
+                  </div>
                 </div>
               </div>
             </app-ta-re-card>

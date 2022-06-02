@@ -11,7 +11,8 @@
     margin-top: 8px;
 }
 .wrapper-additional-cards{
-    max-height: 1080px;
+    max-height: calc(82vh - 74px);
+    min-height: calc(33vh - 10px);
     display: grid;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
@@ -25,9 +26,13 @@
 }
 .cards-item-wrapper-1{
     overflow: hidden;
+    height: calc(100vh -62px);
 }
 .details-cards{
     background-color: #ffffff;
     width: 440px;
     padding: 9px 6px;
+}
+.owner-name{
+    text-transform: uppercase;
 }

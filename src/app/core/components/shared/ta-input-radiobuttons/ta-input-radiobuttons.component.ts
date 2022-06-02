@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 interface RadioButton {
   id: string;
@@ -14,16 +14,15 @@ interface RadioButton {
   templateUrl: './ta-input-radiobuttons.component.html',
   styleUrls: ['./ta-input-radiobuttons.component.scss'],
 })
-export class TaInputRadiobuttonsComponent {
+export class TaInputRadiobuttonsComponent implements OnInit {
   @Input() buttons: RadioButton[] = null;
-  @Output() changedValue: EventEmitter<RadioButton[]> = new EventEmitter<
-    RadioButton[]
-  >(null);
-
+  @Output() changedValue: EventEmitter<RadioButton[]> = new EventEmitter< RadioButton[]>(null);
   public onChange(button: RadioButton): void {
     this.buttons.filter((item) => (item.checked = false));
     button.checked = true;
     this.changedValue.emit(this.buttons);
+  }
+  ngOnInit(){
   }
 
   public identity(index: number, item: any): string {

@@ -35,3 +35,15 @@
 .status-container{
  padding-bottom: 12px;
 }
+.date-from-to{
+    span{
+    &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+    }
+}

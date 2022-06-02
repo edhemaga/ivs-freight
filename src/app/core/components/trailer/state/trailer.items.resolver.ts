@@ -3,7 +3,7 @@ import { TrailerResponse } from './../../../../../../appcoretruckassist/model/tr
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, take } from 'rxjs/operators';
 import { TrailerTService } from './trailer.service';
 import { TrailerState, TrailerStore } from './trailer.store';
 
@@ -25,12 +25,9 @@ export class TrailerItemResolver implements Resolve<TrailerState> {
      const trailer_id=route.paramMap.get('id')    
     return this.trailerService.getTrailerById(+trailer_id).pipe(
         catchError((error)=>{
-            this.trailerStore.set({ entities: [] });
             return of('No trailer data for...' + trailer_id);
         }),
-        tap((trailerRespon: TrailerResponse) => {
-            this.trailerStore.set({ entities: trailerRespon[trailer_id] })
-          })
+        take(1)
     );
   }
 }
