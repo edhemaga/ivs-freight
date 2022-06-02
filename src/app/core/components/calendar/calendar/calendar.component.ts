@@ -278,8 +278,6 @@ export class CalendarComponent implements OnInit {
 
   calendarOptions: CalendarOptions;
 
-  
-
   constructor() { }
 
   ngOnInit(): void {
