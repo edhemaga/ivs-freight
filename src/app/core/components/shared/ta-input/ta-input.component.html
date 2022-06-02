@@ -242,9 +242,8 @@
       'dropdown-placeholder-active':
         inputConfig.isDropdown &&
         inputConfig.placeholder &&
-        isDropdownOptionsActive &&
-        focusInput,
-      'dropdown-add-mode': isDropdownAddModeActive && inputConfig.isDropdown
+        dropdownToggler &&
+        focusInput
     }"
     [(ngModel)]="input.value"
     (keypress)="manipulateWithInput($event)"

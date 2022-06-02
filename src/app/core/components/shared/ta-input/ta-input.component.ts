@@ -274,7 +274,7 @@ export class TaInputComponent
   }
 
   public onKeyUp(event): void {
-    if (event.keyCode == 8) {
+    if (event.keyCode == 8 && !this.inputConfig.isDropdown) {
       this.numberOfSpaces = 0;
       if (!this.input.nativeElement.value) {
         this.clearInput();
