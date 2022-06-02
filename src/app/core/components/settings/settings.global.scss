@@ -194,10 +194,12 @@ p {
   .card-container-cmp {
     padding: 0 6px;
   }
+  .name-dots{
+    padding-left: 6px !important;
+    }
   .card-name-cmp {
     font-weight: 600 !important;
     text-transform: uppercase;
-    margin-left: 6px !important;
   }
   .drop-comm {
     position: relative;

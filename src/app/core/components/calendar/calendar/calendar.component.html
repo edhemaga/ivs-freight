@@ -1,8 +1,21 @@
 <div class="calendar-holder">
   <div class="calendar-info-holder">
+    <div class="title-holder">
+      <div class="title">Calendar</div>
+      <div class="selected-month">July</div>
+      <div class="arrow-left">
+        <svg-icon src="assets/svg/common/ic_arrow-right.svg"></svg-icon>
+      </div>
+      <div class="arrow-left arrow-right">
+        <svg-icon src="assets/svg/common/ic_arrow-right.svg"></svg-icon>
+      </div>
+    </div>
     <div class="search-holder">
       <div class="search-icon">
         <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+      </div>
+      <div class="border-frame">
+        <div class="border"></div>
       </div>
       <input class="search" type="text" placeholder="Find Event" />
     </div>
@@ -14,218 +27,226 @@
       <div class="day-holder schedule">Schedule</div>
     </div>
     <div class="calendar-header">
-        <app-ta-custom-card
-        [cardName]="'07/03/2022'"
-        [hasPlusHeader]="false"
-        >
+      <app-ta-custom-card [cardName]="'07/03/2022'" [hasPlusHeader]="false">
         <div class="calendar-body">
-            <div class="calendar-years-holder">
-              <div class="current-year-holder"></div>
-              <div class="years-frame">
-                <div
+          <div class="calendar-years-holder">
+            <div class="current-year-holder"></div>
+            <div class="years-frame">
+              <div
                 *ngFor="let item of calendarYears; let indx = index"
                 [class.active]="item.active"
                 class="year-holder"
               >
                 {{ item.year }}
               </div>
-              </div>
             </div>
-            <div class="calendar-month-holder">
-              <div class="current-year-holder">
-                <div class="current-year">2022</div>
-                <div class="current-year">Today</div>
-              </div>
-              <div class="calendar-body-holder">
-                <div class="calendar-current-month">
-                  <div class="calendar-holder">
-                    <div class="calendar-items">JAN</div>
-                    <div class="calendar-items">FEB</div>
-                    <div class="calendar-items">MAR</div>
-                  </div>
-                  <div class="calendar-holder">
-                    <div class="calendar-items">APR</div>
-                    <div class="calendar-items current-month">MAY</div>
-                    <div class="calendar-items">JUN</div>
-                  </div>
-                  <div class="calendar-holder">
-                    <div class="calendar-items active">JUL</div>
-                    <div class="calendar-items">AUG</div>
-                    <div class="calendar-items event">SEP</div>
-                  </div>
-                  <div class="calendar-holder">
-                    <div class="calendar-items">OCT</div>
-                    <div class="calendar-items">NOV</div>
-                    <div class="calendar-items">DEC</div>
-                  </div>
+          </div>
+          <div class="calendar-month-holder">
+            <div class="current-year-holder">
+              <div class="current-year">2022</div>
+              <div class="current-year">Today</div>
+            </div>
+            <div class="calendar-body-holder">
+              <div class="calendar-current-month">
+                <div class="calendar-holder">
+                  <div class="calendar-items">JAN</div>
+                  <div class="calendar-items">FEB</div>
+                  <div class="calendar-items">MAR</div>
                 </div>
-                <div class="year-holder-inactiv">2023</div>
-                <div class="calendar-current-month">
-                  <div class="calendar-holder">
-                    <div class="calendar-items inactiv">JAN</div>
-                    <div class="calendar-items inactiv">FEB</div>
-                    <div class="calendar-items inactiv">MAR</div>
-                  </div>
-                  <div class="calendar-holder">
-                    <div class="calendar-items inactiv">APR</div>
-                    <div class="calendar-items inactiv">MAY</div>
-                    <div class="calendar-items inactiv">JUN</div>
-                  </div>
-                  <div class="calendar-holder">
-                    <div class="calendar-items inactiv">JUL</div>
-                    <div class="calendar-items inactiv">AUG</div>
-                    <div class="calendar-items inactiv">SEP</div>
-                  </div>
-                  <div class="calendar-holder">
-                    <div class="calendar-items inactiv">OCT</div>
-                    <div class="calendar-items inactiv">NOV</div>
-                    <div class="calendar-items inactiv">DEC</div>
-                  </div>
+                <div class="calendar-holder">
+                  <div class="calendar-items">APR</div>
+                  <div class="calendar-items current-month">MAY</div>
+                  <div class="calendar-items">JUN</div>
+                </div>
+                <div class="calendar-holder">
+                  <div class="calendar-items active">JUL</div>
+                  <div class="calendar-items">AUG</div>
+                  <div class="calendar-items event">SEP</div>
+                </div>
+                <div class="calendar-holder">
+                  <div class="calendar-items">OCT</div>
+                  <div class="calendar-items">NOV</div>
+                  <div class="calendar-items">DEC</div>
+                </div>
+              </div>
+              <div class="year-holder-inactiv">2023</div>
+              <div class="calendar-current-month">
+                <div class="calendar-holder">
+                  <div class="calendar-items inactiv">JAN</div>
+                  <div class="calendar-items inactiv">FEB</div>
+                  <div class="calendar-items inactiv">MAR</div>
+                </div>
+                <div class="calendar-holder">
+                  <div class="calendar-items inactiv">APR</div>
+                  <div class="calendar-items inactiv">MAY</div>
+                  <div class="calendar-items inactiv">JUN</div>
+                </div>
+                <div class="calendar-holder">
+                  <div class="calendar-items inactiv">JUL</div>
+                  <div class="calendar-items inactiv">AUG</div>
+                  <div class="calendar-items inactiv">SEP</div>
+                </div>
+                <div class="calendar-holder">
+                  <div class="calendar-items inactiv">OCT</div>
+                  <div class="calendar-items inactiv">NOV</div>
+                  <div class="calendar-items inactiv">DEC</div>
                 </div>
               </div>
             </div>
           </div>
-        </app-ta-custom-card>
+        </div>
+      </app-ta-custom-card>
     </div>
     <div class="important-event-holder">
-        <app-ta-custom-card
+      <app-ta-custom-card
         [cardName]="'Important Events'"
         [hasPlusHeader]="true"
         [hasCheckbox]="true"
         [controlName]="inputDate"
-        >
+      >
         <div class="event-info-holder">
-            <div class="event-items-info-holder">
-                <div class="event-text">Lorem Ipsum Dolor Sit</div>
-                <div class="date-text">July 3rd</div>
+          <div class="event-items-info-holder">
+            <div class="event-text">Lorem Ipsum Dolor Sit</div>
+            <div class="date-text">July 3rd</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">9am Event - Lorem Ipsum</div>
+            <div class="date-text">July 6th 9:00 AM - 3:00 PM</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">Q3 - Event - Management</div>
+            <div class="date-text">July 11th - July 14th</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">Drivers Organization</div>
+            <div class="date-text">July 11th - July 12th</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">
+              Consetetur sadipscing elitr, sed diam sadipscing
             </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">9am Event - Lorem Ipsum</div>
-                <div class="date-text">July 6th  9:00 AM - 3:00 PM</div>
-            </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">Q3 - Event - Management</div>
-                <div class="date-text">July 11th - July 14th</div>
-            </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">Drivers Organization</div>
-                <div class="date-text">July 11th - July 12th</div>
-            </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">Consetetur sadipscing elitr, sed diam sadipscing</div>
-                <div class="date-text">July 12th</div>
-            </div>
+            <div class="date-text">July 12th</div>
+          </div>
         </div>
       </app-ta-custom-card>
     </div>
-    <div class="important-event-holder">
-        <app-ta-custom-card
+    <div class="important-event-holder company-event">
+      <app-ta-custom-card
         [cardName]="'Company Events'"
         [hasPlusHeader]="true"
         [hasCheckbox]="true"
         [controlName]="inputDate"
-        >
+      >
         <div class="event-info-holder">
-            <div class="event-items-info-holder">
-                <div class="event-text">Lorem Ipsum Dolor Sit</div>
-                <div class="date-text">July 3rd</div>
+          <div class="event-items-info-holder">
+            <div class="event-text">Lorem Ipsum Dolor Sit</div>
+            <div class="date-text">July 3rd</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">9am Event - Lorem Ipsum</div>
+            <div class="date-text">July 6th 9:00 AM - 3:00 PM</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">Q3 - Event - Management</div>
+            <div class="date-text">July 11th - July 14th</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">Drivers Organization</div>
+            <div class="date-text">July 11th - July 12th</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">
+              Consetetur sadipscing elitr, sed diam sadipscing
             </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">9am Event - Lorem Ipsum</div>
-                <div class="date-text">July 6th  9:00 AM - 3:00 PM</div>
-            </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">Q3 - Event - Management</div>
-                <div class="date-text">July 11th - July 14th</div>
-            </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">Drivers Organization</div>
-                <div class="date-text">July 11th - July 12th</div>
-            </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">Consetetur sadipscing elitr, sed diam sadipscing</div>
-                <div class="date-text">July 12th</div>
-            </div>
+            <div class="date-text">July 12th</div>
+          </div>
         </div>
       </app-ta-custom-card>
     </div>
-    <div class="important-event-holder">
-        <app-ta-custom-card
+    <div class="important-event-holder personal-event">
+      <app-ta-custom-card
         [cardName]="'Personal Events'"
         [hasPlusHeader]="true"
         [hasCheckbox]="true"
         [controlName]="inputDate"
-        >
+      >
         <div class="event-info-holder">
-            <div class="event-items-info-holder">
-                <div class="event-text">Consetetur sadipscing elitr, sed diam</div>
-                <div class="date-text">July 3rd   9:00 AM - 3:00 PM</div>
+          <div class="event-items-info-holder">
+            <div class="event-text">Consetetur sadipscing elitr, sed diam</div>
+            <div class="date-text">July 3rd 9:00 AM - 3:00 PM</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">Lorem ipsum</div>
+            <div class="date-text">July 6th 9:00 AM - 3:00 PM</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">At vero eos et accusam</div>
+            <div class="date-text">July 6th 9:00 AM - 3:00 PM</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">
+              Sed diam nonumy eirmod tempor inviction
             </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">Lorem ipsum</div>
-                <div class="date-text">July 6th  9:00 AM - 3:00 PM</div>
-            </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">At vero eos et accusam</div>
-                <div class="date-text">July 6th  9:00 AM - 3:00 PM</div>
-            </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">Sed diam nonumy eirmod tempor inviction</div>
-                <div class="date-text">July 11th</div>
-            </div>
+            <div class="date-text">July 11th</div>
+          </div>
         </div>
       </app-ta-custom-card>
     </div>
-    <div class="important-event-holder">
-        <app-ta-custom-card
+    <div class="important-event-holder holiday">
+      <app-ta-custom-card
         [cardName]="'Holidays'"
         [hasPlusHeader]="true"
         [hasCheckbox]="true"
         [controlName]="inputDate"
-        >
+      >
         <div class="event-info-holder">
-            <div class="event-items-info-holder">
-                <div class="event-text">Consetetur sadipscing elitr, sed diam</div>
-                <div class="date-text">July 3rd   9:00 AM - 3:00 PM</div>
+          <div class="event-items-info-holder">
+            <div class="event-text">Consetetur sadipscing elitr, sed diam</div>
+            <div class="date-text">July 3rd 9:00 AM - 3:00 PM</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">Lorem ipsum</div>
+            <div class="date-text">July 6th 9:00 AM - 3:00 PM</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">At vero eos et accusam</div>
+            <div class="date-text">July 6th 9:00 AM - 3:00 PM</div>
+          </div>
+          <div class="event-items-info-holder">
+            <div class="event-text">
+              Sed diam nonumy eirmod tempor inviction
             </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">Lorem ipsum</div>
-                <div class="date-text">July 6th  9:00 AM - 3:00 PM</div>
-            </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">At vero eos et accusam</div>
-                <div class="date-text">July 6th  9:00 AM - 3:00 PM</div>
-            </div>
-            <div class="event-items-info-holder">
-                <div class="event-text">Sed diam nonumy eirmod tempor inviction</div>
-                <div class="date-text">July 11th</div>
-            </div>
+            <div class="date-text">July 11th</div>
+          </div>
         </div>
       </app-ta-custom-card>
     </div>
   </div>
-    <div class="calendar_view_holder">
-        <div class="calendar_view_title_line">
-            <div class="calendar_view_title">Calendar</div>
-            <div class="calendar_input_line"></div>
-            <div class="calendar_input_icon">
-                <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
-            </div>
-         </div>
+  <div class="calendar_view_holder">
+    <div class="calendar_view_title_line">
+      <div class="calendar_view_title">Calendar</div>
+      <div class="calendar_input_line"></div>
+      <div class="calendar_input_icon">
+        <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+      </div>
+    </div>
+    <full-calendar [options]="calendarOptions"></full-calendar>
+    <!--
          <div class="calendar_days_line">
-                <div class="calendar_day">SUNDAY</div>
-                <div class="calendar_day">MONDAY</div>
-                <div class="calendar_day">TUESDAY</div>
-                <div class="calendar_day">WEDNESDAY</div>
-                <div class="calendar_day">THURSDAY</div>
-                <div class="calendar_day">FRIDAY</div>
-                <div class="calendar_day">SATURDAY</div>
+            <div class="calendar_day">SUNDAY</div>
+            <div class="calendar_day">MONDAY</div>
+            <div class="calendar_day">TUESDAY</div>
+            <div class="calendar_day">WEDNESDAY</div>
+            <div class="calendar_day">THURSDAY</div>
+            <div class="calendar_day">FRIDAY</div>
+            <div class="calendar_day">SATURDAY</div>
          </div>
          <div class="calendar_date_holder">
             <div *ngFor="let day of monthDays; let indx=index" class="calendar_date">
                 <div *ngIf='day.events' class="calendar_events">
                     <div class="event_outlay">
                         <div *ngFor="let ev of day.events; let indx1=index" class="event_type" [ngStyle]="{'background-color': event_colors[ev.type]}">
+                            <div class="event_title" [ngStyle]="{'color': ev.eventTextColor}">{{ev.title}}</div>
                                 <div *ngIf="ev.type == 'personal'" class="event_box"></div>
                                 <div class="event_title" [ngStyle]="{'color': ev.eventTextColor}">{{ev.title}}</div>
                         </div>
@@ -233,8 +254,6 @@
                 </div>
                 <div class="date_number" [class.prevOrNext]="day.prevOrNext" [class.weekend]="day.weekend && !day.prevOrNext" [class.currentDay]="day.currentDay">{{day.number}}</div>
             </div>
-         </div>
-    </div>
+         </div> -->
+  </div>
 </div>
-
-

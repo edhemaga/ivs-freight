@@ -1,6 +1,9 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
+import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-truck-details-card',
@@ -17,7 +20,7 @@ export class TruckDetailsCardComponent implements OnInit {
   public dataEdit:any;
   @Input() templateCard:boolean=false;
   @Input() data:any;
-  constructor() { }
+  constructor(private modalService:ModalService) { }
 
   ngOnInit(): void {
     this.noteControl.patchValue(this.data.note);
@@ -196,9 +199,42 @@ export class TruckDetailsCardComponent implements OnInit {
     this.toggler = value;
     console.log(this.toggler);
   }
-  /**Function return format date from DB */
-  public formatDate(date: string) {
-    return moment(date).format('MM/DD/YY');
+
+  public optionsEvent(any: any, action: string) {
+    switch (action) {
+      case 'edit-registration': {
+        this.modalService.openModal(
+          TtRegistrationModalComponent,
+          { size: 'small' },
+          {
+            id: this.data.id,
+            file_id: any.id,
+            type: action,
+            modal: 'truck',
+          }
+        );
+        break;
+      }
+      case 'edit-inspection': {
+        this.modalService.openModal(
+          TtFhwaInspectionModalComponent,
+          { size: 'small' },
+          {
+            id: this.data.id,
+            file_id: any.id,
+            type: action,
+            modal: 'truck',
+          }
+        );
+        break;
+      }
+      case 'edit-title': {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
    /**Function retrun id */
   public identity(index: number, item: any): number {

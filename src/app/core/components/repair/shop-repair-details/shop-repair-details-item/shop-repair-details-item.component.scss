@@ -175,44 +175,39 @@
   padding: 12px;
 }
 .button-wrapper-shop {
-  text-align: right;
-  button {
-    display: inline-block;
-    border-radius: 2px;
-    background-color: #6d82c7;
-    color: #ffffff;
-    width: 94px;
-    height: 22px;
-    border: none;
-    font-size: 12px;
-    font-weight: 700;
-  }
+  position: relative;
+  display: flex;
+  left: 14px;
+  background-color: #6d82c7;
+  color: #ffffff;
+  cursor: pointer;
+  margin: auto;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 2px;
+  text-align: center;
+  border: none;
+  padding: 2px 8px;
 }
-.finish-order-cont{
-  .repair-items{
-    .items-header{
-        background-color: #fff3e0;
-        border-radius: 2px;
-        height: 30px;
-        margin-bottom: 2px !important;
-        margin-top: 2px !important;
+.finish-order-cont {
+  .repair-items {
+    .items-header {
+      background-color: #fff3e0;
+      border-radius: 2px;
+      padding: 4px 0;
+      margin-bottom: 2px !important;
+      margin-top: 2px !important;
     }
   }
-  .dots-vertical{
-    top: -3px !important;
-  }
-  .date{
+  .date {
     position: relative;
-    top: 3px;
+    top: 1px;
+    padding-left: 4px;
   }
-  .unit{
+  .unit {
     position: relative;
-    top: 3px;
-  }
-  .button-wrapper-shop{
-    position: relative;
-    bottom: 1px;
-    left: 2px;
+    top: 1px;
+    padding-left: 4px;
   }
 }
 .disabled {
@@ -233,5 +228,7 @@
     color: #b7b7b7 !important;
     background: rgb(183, 183, 183, 0.2) !important;
   }
-
+}
+.note-cards {
+  padding-right: 1px;
 }

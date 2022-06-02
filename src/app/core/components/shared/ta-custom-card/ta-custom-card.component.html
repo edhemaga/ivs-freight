@@ -98,7 +98,7 @@
     [@.disabled]="animationsDisabled"
     [ngClass]="{ active: isCardOpen, scroll: hasScrollBody }"
   >
-    <div [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
+    <div [@showHideCardBody]="isCardOpen ? 'true' : 'false'" class="content-holder">
       <ng-content></ng-content>
     </div>
   </div>

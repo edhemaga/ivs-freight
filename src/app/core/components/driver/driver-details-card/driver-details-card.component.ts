@@ -1,8 +1,13 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import moment from 'moment';
+import { createBase64 } from 'src/app/core/utils/base64.image';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 
 @Component({
   selector: 'app-driver-details-card',
@@ -26,17 +31,45 @@ export class DriverDetailsCardComponent implements OnInit {
   public buttonsArray: any;
   public duttyLocationCounter:number=0;
   @Input() templateCard:boolean=false;
-  public toggler:boolean=false;
+  public toggler:boolean[]=[];
   public dataEdit:any;
+  selectedTab:number=1;
+  public tabs: any[] = [
+    {
+      id: 53333,
+      name: '1M',
+    },
+    {
+      id: 53,
+      name: '3M',
+    },
+    {
+      id: 42,
+      name: '6M',
+    },
+    {
+      id: 1005,
+      name: '1Y',
+    },
+    {
+      id: 8932,
+      name: 'YTD',
+    },
+    {
+      id: 1111,
+      name: 'ALL',
+    },
+   
+  ];
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
-  constructor( private sanitazer: DomSanitizer) { }
+  constructor( private sanitazer: DomSanitizer,  private modalService: ModalService) { }
 
   ngOnInit(): void {
     console.log(this.data);
     console.log('data from cards');
     this.initTableOptions();
-    
+     
     this.buttonsArray = [
       {
         id: 444,
@@ -86,26 +119,78 @@ export class DriverDetailsCardComponent implements OnInit {
   public transformImage() {
     let img;
     if (this.data.avatar) {
-      img= 'data:image/*;base64,' + this.data.avatar;
+      img= createBase64(this.data.avatar) ;
     } else {
       img = 'assets/svg/common/ic_no_avatar_driver.svg';
     }
     return this.sanitazer.bypassSecurityTrustResourceUrl(img);
   }
    /**Function for toggle page in cards */
-  public toggleResizePage(value: boolean) {
-    this.toggler = value;
-    console.log(this.toggler);
+  public toggleResizePage(value: number) {
+    this.toggler[value] = !this.toggler[value];
+  }
+  public changeTab(ev:any){
+    console.log(ev.id);
+    
+      this.selectedTab=ev.id;
   }
    
-  public optionsEv(any:any,action:string){
-    const option={id:any.id, type:action}
-    console.log(option);
-  }
-   /**Function return format date from DB */
-  public formatDate(date: string) {
-    console.log("CARD RENDER")
-    return moment(date).format('MM/DD/YY');
+  public optionsEvent(any: any, action: string) {
+    console.log(any)
+    console.log(this.data)
+    switch (action) {
+      case 'edit-licence': {
+        this.modalService.openModal(
+          DriverCdlModalComponent,
+          { size: 'small' },
+          {
+            file_id: any.id,
+            id: this.data.id,
+            type: action,
+          }
+        );
+        break;
+      }
+      case 'edit-drug': {
+        this.modalService.openModal(
+          DriverDrugAlcoholModalComponent,
+          { size: 'small' },
+          {
+            file_id: any.id,
+            id: this.data.id,
+            type: action,
+          }
+        );
+        break;
+      }
+      case 'edit-medical': {
+        this.modalService.openModal(
+          DriverMedicalModalComponent,
+          { size: 'small' },
+          {
+            file_id: any.id,
+            id: this.data.id,
+            type: action,
+          }
+        );
+        break;
+      }
+      case 'edit-mvr': {
+        this.modalService.openModal(
+          DriverMvrModalComponent,
+          { size: 'small' },
+          {
+            file_id: any.id,
+            id: this.data.id,
+            type: action,
+          }
+        );
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
     /* To copy any Text */
@@ -193,13 +278,7 @@ export class DriverDetailsCardComponent implements OnInit {
       }
       this.accountText = value;
     }
-    /**Function return format number phone */
-    public formatPhone(phoneNumberString: string) {
-      const value = phoneNumberString;
-      const number = value?.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-      phoneNumberString = number;
-      return number;
-    }
+
 
      /**Function retrun id */
     public identity(index: number, item: any): number {

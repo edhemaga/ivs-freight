@@ -304,12 +304,9 @@
                 <p class="employment">{{ owHist.name }}</p>
 
                 <p class="date-from-to">
-                  {{ formatDate(owHist.startDate) }} -
-                  {{
-                    owHist.endDate !== null
-                      ? formatDate(owHist.endDate)
-                      : "Today"
-                  }}
+                  {{  owHist.startDate | formatDateP }} -
+                  <span *ngIf="owHist.endDate">{{ owHist.endDate | formatDateP}}</span>
+                  <span *ngIf="!owHist.endDate">Today</span>
                 </p>
                 <p class="duration">1 y 200 d</p>
               </div>
@@ -347,7 +344,7 @@
               [cardNameCommon]="reg.licensePlate"
               [hasCopyIcon]="true"
               [options]="dataEdit"
-              [expDateClose]="formatDate(reg.expDate)"
+              [expDateClose]=" reg.expDate | formatDateP"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -359,7 +356,7 @@
                     <div class="card-item">
                       <div class="card-item-name">Issued</div>
                       <div class="card-item-value">
-                        {{ formatDate(reg.issueDate) }}
+                        {{ reg.issueDate | formatDateP }}
                       </div>
                     </div>
                   </div>
@@ -369,8 +366,8 @@
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [expireDate]="formatDate(reg.expDate)"
-                        [startDate]="formatDate(reg.issueDate)"
+                        [expireDate]="reg.expDate | formatDateP"
+                        [startDate]="reg.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
@@ -409,8 +406,8 @@
           <div *ngFor="let fhwa of data.inspections; trackBy: identity">
             <app-ta-re-card
               [options]="dataEdit"
-              [cardNameCommon]="formatDate(fhwa.issueDate)"
-              [expDateClose]="formatDate('04/04/25')"
+              [cardNameCommon]=" fhwa.issueDate | formatDateP"
+              [expDateClose]="'04/04/24' | formatDateP"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -461,7 +458,7 @@
               (resizePage)="toggleResizePage($event)"
               [cardNameCommon]="title.number"
               [options]="dataEdit"
-              [expDateClose]="formatDate('04/04/27')"
+              [expDateClose]="'04/04/27' | formatDateP"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -473,7 +470,7 @@
                     <div class="card-item">
                       <div class="card-item-name">Issued</div>
                       <div class="card-item-value">
-                        {{ formatDate(title.issueDate) }}
+                        {{ title.issueDate | formatDateP }}
                       </div>
                     </div>
                   </div>
@@ -484,7 +481,7 @@
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
                         [expireDate]="'04/04/27'"
-                        [startDate]="formatDate(title.issueDate)"
+                        [startDate]="title.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>

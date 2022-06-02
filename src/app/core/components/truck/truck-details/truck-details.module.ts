@@ -9,6 +9,7 @@ import { TruckDetailsRoutes } from './truck-details.routing';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import {NgApexchartsModule} from "ng-apexcharts";
 import { TruckDetailsCardComponent } from '../truck-details-card/truck-details-card.component';
+import { PipesModule } from 'src/app/core/pipes/pipes.module';
 @NgModule({
     declarations:[
         TruckDetailsComponent,
@@ -17,14 +18,15 @@ import { TruckDetailsCardComponent } from '../truck-details-card/truck-details-c
         TruckDetailsCardComponent
      
     ],
-    exports:[TruckDetailsCardComponent],
+    exports:[TruckDetailsCardComponent,PipesModule],
     imports:[
         CommonModule,
         TruckDetailsRoutes,
         TruckassistProgressExpirationModule,
         SharedModule,
         MatButtonToggleModule,
-        NgApexchartsModule
+        NgApexchartsModule,
+        PipesModule
     ],
    
 })

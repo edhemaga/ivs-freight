@@ -67,7 +67,8 @@
       font-size: $font-size14;
       font-weight: 400;
       color: #6c6c6c;
-      white-space: nowrap;
+      white-space: pre-line;
+      max-width: 364px;
       &::-moz-selection {
         color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);

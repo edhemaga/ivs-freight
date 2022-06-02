@@ -12,12 +12,12 @@
 }
 .table-dropdown-container-vertical{
   width: 18px;
-  height: 20px;
+  height: 22px;
   background-image: url("../../../../../assets/svg/common/ic_dots.svg") !important;
   background-repeat: no-repeat;
   background-position: center;
   position: relative;
-  top: 5px;
+  background-size: contain;
   right: 7px;
   cursor: pointer;
 

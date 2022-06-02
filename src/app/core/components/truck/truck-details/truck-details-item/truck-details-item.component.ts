@@ -36,7 +36,6 @@ export class TruckDetailsItemComponent implements OnInit {
   public registrationNote: FormControl = new FormControl();
   public titleNote: FormControl = new FormControl();
 
-  private destory$: Subject<void> = new Subject<void>();
   public toggler: boolean[] = [];
   cardNumberFake: string = '1234567890';
   truckName: string = '';
@@ -55,8 +54,6 @@ export class TruckDetailsItemComponent implements OnInit {
     this.getTruckById();
   }
   ngOnDestroy(): void {
-    this.destory$.next();
-    this.destory$.complete();
   }
 
   public onShowDetails(componentData: any) {
@@ -102,24 +99,6 @@ export class TruckDetailsItemComponent implements OnInit {
     };
   }
 
-  /**Function return format date from DB */
-  public formatDate(date: string) {
-    return moment(date).format('MM/DD/YY');
-  }
-  /**Function formating text */
-  public formatText(data: any, type: boolean, numOfCharacters: string) {
-    if (!type) {
-      return data.map((item) =>
-        item.endorsementName?.substring(0, numOfCharacters)
-      );
-    }
-    return data.map(
-      (item) =>
-        `<span class='first-character'>
-    ${item.endorsmentName?.substring(0, numOfCharacters)}</span> ` +
-        item.endorsementName.substring(0, numOfCharacters)
-    );
-  }
   /**Function retrun id */
   public identity(index: number, item: any): number {
     return item.id;
@@ -132,8 +111,6 @@ export class TruckDetailsItemComponent implements OnInit {
   }
 
   public optionsEvent(any: any, action: string) {
-
-  
     switch (action) {
       case 'edit-registration': {
         this.modalService.openModal(

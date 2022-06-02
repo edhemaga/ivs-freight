@@ -5,29 +5,79 @@
     align-items: flex-start;
 
     .calendar-info-holder{
-        width: 347px;
-        padding: 12px 18px 0px 18px;
-        box-sizing: border-box;
-        background-color: #fff;
+        width: 326px;
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
         flex-direction: column;
 
+        .title-holder{
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+
+            .title{
+                font-size: 26px;
+                font-weight: 900;
+                color: #919191;
+            }
+
+            .selected-month{
+                font-size: 20px;
+                font-weight: 700;
+                color: #6C6C6C;
+                padding-right: 56px;
+                box-sizing: border-box;
+            }
+
+            .arrow-left{
+                position: absolute;
+                width: 18px;
+                height: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                top: 50%;
+                transform: translateY(-50%) rotate(180deg);
+                right: 28px;
+
+                svg-icon{
+                    svg{
+                        display: flex;
+                        width: 8.15px;
+                        height: 13px;
+
+                        path{
+                            fill: #AAAAAA;
+                        }
+                    }
+                }
+
+                &.arrow-right{
+                    right: 0px;
+                    transform: translateY(-50%) rotate(0deg);
+                }
+            }
+        }
+
         .search-holder{
             width: 100%;
             height: 32px;
+            padding-left: 7px;
+            box-sizing: border-box;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             border-radius: 3px;
-            background-color: #F9F9F9;
-            margin-bottom: 12px;
+            background-color: #fff;
+            margin-bottom: 8px;
 
             .search-icon{
-                width: 31px;
-                height: 32px;
-                background-color: #F9F9F9;
+                width: 18px;
+                height: 18px;
                 border-radius: 3px 0px 0px 3px;
                 display: flex;
                 justify-content: center;
@@ -46,13 +96,28 @@
                 }
             }
 
+            .border-frame{
+                width: 4px;
+                height: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0px 2px 0px 6px;
+
+                .border{
+                    width: 1px;
+                    height: 13px;
+                    border-radius: 2px;
+                    background-color: #DADADA;
+                }    
+            }
+
             .search{
                 width: 292px;
                 height: 32px;
                 border: none;
                 outline: none; 
                 border-radius: 0px 3px 3px 0px;
-                background-color: #F9F9F9;  
                 font-size: 14px;
                 font-weight: 400;
                 color: #AAAAAA;
@@ -70,13 +135,13 @@
             width: 100%;
             height: 32px;
             border-radius: 3px;
-            background-color: #F9F9F9;
+            background-color: #fff;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             padding: 2px;
             box-sizing: border-box;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
 
             .day-holder{
                 width: 45px;
@@ -87,10 +152,11 @@
                 justify-content: center;
                 align-items: center;
                 font-size: 14px;
-                font-weight: 400;
+                font-weight: 800;
                 color: #B7B7B7;
                 line-height: 19px;
                 margin-right: 2px;
+                user-select: none;
 
                 &.week{
                     width: 60px;
@@ -123,7 +189,7 @@
             position: relative;
             width: 100%;
             border-radius: 3px;
-            background-color: #F9F9F9;
+            background-color: #fff;
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -131,10 +197,15 @@
             font-weight: 400;
             color: #919191;
             line-height: 19px;
-            margin-bottom: 2px;
+            margin-bottom: 8px;
+            user-select: none;
 
             app-ta-custom-card{
                 width: 100%;
+
+                .content-holder{
+                    margin: 0px !important;
+                }
 
                 .divider{
                     height: 0px;
@@ -151,23 +222,22 @@
                 }
 
                 .ta-custom-card .ta-card-header.active:hover .header-text{
-                    color: #919191;
+                    color: #919191 !important;
                 }
 
+                .ta-custom-card .ta-card-body.active{
+                    border-top: 2px solid #F1F1F1;
+                }
             }
 
             .calendar-body{
                 width: 100%;
                 height: 300px;
                 border-radius: 2px;
-                background-color: #F9F9F9;
                 display: flex;
                 justify-content: flex-start;
                 align-items: flex-start;
-                margin-bottom: 8px;
 
-
-    
                 .calendar-years-holder{
                     position: relative;
                     width: 48px;
@@ -214,6 +284,7 @@
                             line-height: 19px;
                             margin: 2.5px 0px;
                             z-index: 10;
+                            user-select: none;
         
                             &:hover{
                                 cursor: pointer;
@@ -238,6 +309,7 @@
                 .calendar-month-holder{
                     width: 275px;
                     height: 300px;
+                    background-color: #fff;
                     padding: 0px 12px;
                     box-sizing: border-box;
                     overflow: hidden;
@@ -260,6 +332,7 @@
                             font-weight: 700;
                             color: #6C6C6C;
                             line-height: 19px;
+                            user-select: none;
     
                             &:hover{
                                 cursor: pointer;
@@ -307,6 +380,7 @@
                                     font-weight: 500;
                                     color: #6C6C6C;
                                     line-height: 19px;
+                                    user-select: none;
         
                                     &.current-month{
                                         color: #536BC2;
@@ -341,6 +415,7 @@
                             font-weight: 700;
                             color: #B7B7B7;
                             line-height: 19px; 
+                            user-select: none;
                         }
 
                         &::-webkit-scrollbar{
@@ -357,7 +432,7 @@
             position: relative;
             width: 100%;
             border-radius: 3px;
-            background-color: #F9F9F9;
+            background-color: #fff;
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -373,6 +448,18 @@
             &.company-event{
                 .ta-checkbox-container .ta-checkbox:checked ~ .ta-mark{
                     background-color: #6D82C7;
+                }     
+            }
+
+            &.personal-event{
+                .ta-checkbox-container .ta-checkbox:checked ~ .ta-mark{
+                    background-color: #FFB74D;
+                }     
+            }
+
+            &.holiday{
+                .ta-checkbox-container .ta-checkbox:checked ~ .ta-mark{
+                    background-color: #4DB6A2;
                 }     
             }
             
@@ -413,6 +500,7 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
+                        user-select: none;
                     }
 
                     .date-text{
@@ -420,6 +508,7 @@
                         font-weight: 700;
                         color: #919191;
                         line-height: 13px;
+                        user-select: none;
                     }
 
                     &:last-child{
@@ -436,6 +525,7 @@
         width: 100%;
         padding: 18px 18px 17px 12px;
         box-sizing: border-box;
+        user-select: none;
         .calendar_view_title_line{
             display: flex;
             justify-content: space-between;
@@ -576,4 +666,80 @@
             }
         }
     }
+}
+
+.fc-scrollgrid-section-header .fc-col-header-cell-cushion {
+    padding: 0;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 19px;
+    color: #6C6C6C;
+
+    text-decoration: none;
+    text-transform: uppercase;
+
+    .fc-col-header-cell{
+        border: none;
+    }
+}
+
+.fc-daygrid-body .fc-scrollgrid-sync-inner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #fff;
+
+    .fc-daygrid-day-number{
+        font-size: 52px;
+        font-weight: 700;
+        line-height: 69px;
+        color: #B7B7B7;
+
+        text-decoration: none;
+    }
+}
+
+.fc-theme-standard td, .fc-theme-standard th, .fc-theme-standard .fc-scrollgrid{
+    border-color: #F1F1F1 !important;
+}
+
+.fc-theme-standard td, .fc-theme-standard th{
+    border: 1px solid #F1F1F1 !important;
+}
+
+.fc-scrollgrid-section-header .fc-theme-standard td, .fc-theme-standard th{
+   border: none !important; 
+}
+
+.fc-scrollgrid-liquid{
+    border: none !important;
+}
+
+.fc .fc-toolbar.fc-header-toolbar{
+    margin: 0 !important;
+}
+
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events{
+    position: absolute !important;
+    top: 0;
+    left: 0;
+
+    height: 26px;
+    width: 100%;
+    margin: 1px !important;
+
+    border-radius: 2px;
+}
+
+.fc-day-sun .fc-daygrid-day-number, .fc-day-sat .fc-daygrid-day-number{
+    color: #E5E5E5 !important;
+}
+
+.fc-day-past .fc-daygrid-day-number, .fc-day-other .fc-daygrid-day-number{
+    color: #F3F3F3 !important;
+}
+
+.fc .fc-day-other .fc-daygrid-day-top{
+    opacity: 1 !important;
 }
