@@ -5,29 +5,79 @@
     align-items: flex-start;
 
     .calendar-info-holder{
-        width: 347px;
-        padding: 18px 12px 0px 12px;
-        box-sizing: border-box;
-        background-color: #fff;
+        width: 326px;
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
         flex-direction: column;
 
+        .title-holder{
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+
+            .title{
+                font-size: 26px;
+                font-weight: 900;
+                color: #919191;
+            }
+
+            .selected-month{
+                font-size: 20px;
+                font-weight: 700;
+                color: #6C6C6C;
+                padding-right: 56px;
+                box-sizing: border-box;
+            }
+
+            .arrow-left{
+                position: absolute;
+                width: 18px;
+                height: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                top: 50%;
+                transform: translateY(-50%) rotate(180deg);
+                right: 28px;
+
+                svg-icon{
+                    svg{
+                        display: flex;
+                        width: 8.15px;
+                        height: 13px;
+
+                        path{
+                            fill: #AAAAAA;
+                        }
+                    }
+                }
+
+                &.arrow-right{
+                    right: 0px;
+                    transform: translateY(-50%) rotate(0deg);
+                }
+            }
+        }
+
         .search-holder{
             width: 100%;
             height: 32px;
+            padding-left: 7px;
+            box-sizing: border-box;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             border-radius: 3px;
-            background-color: #F9F9F9;
-            margin-bottom: 12px;
+            background-color: #fff;
+            margin-bottom: 8px;
 
             .search-icon{
-                width: 31px;
-                height: 32px;
-                background-color: #F9F9F9;
+                width: 18px;
+                height: 18px;
                 border-radius: 3px 0px 0px 3px;
                 display: flex;
                 justify-content: center;
@@ -46,13 +96,28 @@
                 }
             }
 
+            .border-frame{
+                width: 4px;
+                height: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0px 2px 0px 6px;
+
+                .border{
+                    width: 1px;
+                    height: 13px;
+                    border-radius: 2px;
+                    background-color: #DADADA;
+                }    
+            }
+
             .search{
                 width: 292px;
                 height: 32px;
                 border: none;
                 outline: none; 
                 border-radius: 0px 3px 3px 0px;
-                background-color: #F9F9F9;  
                 font-size: 14px;
                 font-weight: 400;
                 color: #AAAAAA;
@@ -70,13 +135,13 @@
             width: 100%;
             height: 32px;
             border-radius: 3px;
-            background-color: #F9F9F9;
+            background-color: #fff;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             padding: 2px;
             box-sizing: border-box;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
 
             .day-holder{
                 width: 45px;
@@ -124,7 +189,7 @@
             position: relative;
             width: 100%;
             border-radius: 3px;
-            background-color: #F9F9F9;
+            background-color: #fff;
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -132,11 +197,15 @@
             font-weight: 400;
             color: #919191;
             line-height: 19px;
-            margin-bottom: 2px;
+            margin-bottom: 8px;
             user-select: none;
 
             app-ta-custom-card{
                 width: 100%;
+
+                .content-holder{
+                    margin: 0px !important;
+                }
 
                 .divider{
                     height: 0px;
@@ -153,7 +222,11 @@
                 }
 
                 .ta-custom-card .ta-card-header.active:hover .header-text{
-                    color: #919191;
+                    color: #919191 !important;
+                }
+
+                .ta-custom-card .ta-card-body.active{
+                    border-top: 2px solid #F1F1F1;
                 }
             }
 
@@ -161,14 +234,10 @@
                 width: 100%;
                 height: 300px;
                 border-radius: 2px;
-                background-color: #F9F9F9;
                 display: flex;
                 justify-content: flex-start;
                 align-items: flex-start;
-                margin-bottom: 8px;
 
-
-    
                 .calendar-years-holder{
                     position: relative;
                     width: 48px;
@@ -240,6 +309,7 @@
                 .calendar-month-holder{
                     width: 275px;
                     height: 300px;
+                    background-color: #fff;
                     padding: 0px 12px;
                     box-sizing: border-box;
                     overflow: hidden;
@@ -362,7 +432,7 @@
             position: relative;
             width: 100%;
             border-radius: 3px;
-            background-color: #F9F9F9;
+            background-color: #fff;
             display: flex;
             justify-content: flex-start;
             align-items: center;
