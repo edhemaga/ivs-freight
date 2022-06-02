@@ -24,7 +24,13 @@
                             <input (change)="changeChatBox(item.id)" [checked]="item.isSelected" type="checkbox">
                             <span class="checkmark"></span>
                         </label>                           
-                        <svg-icon [src]="'assets/svg/truckassist-table/no-profile-avatar.svg'"></svg-icon>
+                        <div class="driver-avatar">
+                            <img
+                              class="driver-avatar-svg"
+                              [src]="transformImage()"
+                              alt="Driver Image"
+                            />
+                          </div>
                     </div>
                     <div class="driver-card-info-frame">
                         <div class="driver-card-name">{{item.fullName}}</div>
@@ -32,7 +38,7 @@
                             <div class="driver-phone-img">
                                 <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
                             </div>
-                            <div class="driver-phone">{{item.phone}}</div>
+                            <div class="driver-phone">{{item.phone | formatPhoneP}}</div>
                         </div>
                         <div class="driver-card-phone-frame">
                             <div class="driver-phone-img">

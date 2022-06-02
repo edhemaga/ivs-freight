@@ -46,7 +46,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initTableOptions();
     this.getDriversData();
-
+    this.viewData
     // Reset Columns
     this.tableService.currentResetColumns
       .pipe(takeUntil(this.destroy$))

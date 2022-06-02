@@ -231,9 +231,10 @@
             <div class="addres-name">{{ offDuty?.nickname }}</div>
             <div class="addres-value-icon">
               <div class="addres-value">
-                {{ offDuty?.address.address }}
-                {{ offDuty?.address.addressUnit }},
-                {{ offDuty?.address.city }},{{ offDuty.address.state }}
+          
+
+                {{ offDuty?.address.addressUnit }} {{ offDuty?.address.address }},    
+                {{ offDuty?.address.city }}, {{ offDuty.address.stateShortName }}
                 {{ offDuty?.address.zipCode }}, {{ offDuty?.address.country }}
               </div>
               <span
@@ -249,6 +250,7 @@
                 </svg-icon>
               </span>
             </div>
+            <span *ngIf="!offDuty">No Added Location</span>
           </div>
         </div>
       </app-ta-custom-card>
@@ -389,15 +391,16 @@
         class="item-cards"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
-        [cardName]="'Owner Details'"
-        [isCardOpen]="true"
+        [cardName]="data.owner ? 'Owner Details' : 'Owner - Sole Proprietor'"
+        [isCardOpen]="data.owner ? true:false"
+        [hasArrow]="data.owner ? true:false"
       >
-        <div class="purchase-template">
-          <div class="purchase-template-item">
+        <div *ngIf="data.owner"  class="purchase-template">
+          <div  class="purchase-template-item">
             <div class="purchase-template-item-name">Company</div>
             <div class="purchase-icon-copy">
-              <div class="purchase-template-item-value owner-name">
-                {{ data.owner ? data.owner.name : "No Owner" }}
+              <div  class="purchase-template-item-value owner-name">
+                {{data.owner.name }}
               </div>
               <span
                 tooltipBackground="#6c6c6c"
@@ -413,9 +416,9 @@
             </div>
           </div>
           <div class="purchase-template-item second-name">
-            <div class="purchase-template-item-name">EIN</div>
+            <div  class="purchase-template-item-name">EIN</div>
             <div class="purchase-icon-copy" [ngClass]="{ copied: copiedEin }">
-              <div class="purchase-template-item-value">
+              <div  class="purchase-template-item-value">
                 {{ data.owner.ssnEin | formatEinP }}
               </div>
               <span
@@ -423,9 +426,10 @@
                 ngbTooltip
                 [mainTooltip]="copiedEin ? 'Copied' : 'Copy'"
                 position="top"
+                
               >
                 <svg-icon
-                  *ngIf="data.owner"
+                 
                   (click)="copyText(data.owner.ssnEin, 'ein')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
@@ -472,7 +476,7 @@
       >
         <div class="charts-template perfomance">
           <app-tab-switcher
-           [tabs]="tabs"
+           [tabs]="tabsDriver"
            (switchClicked)="changeTab($event)"
            [customClass]="'chart-tabs'"
           >
