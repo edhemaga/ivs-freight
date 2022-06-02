@@ -9,17 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateOffDutyLocationCommand { 
     id?: number;
     nickname?: string | null;
-    city?: string | null;
-    state?: string | null;
-    address?: string | null;
-    country?: string | null;
-    zipCode?: string | null;
-    stateShortName?: string | null;
-    addressUnit?: string | null;
+    address?: AddressEntity;
 }
 
