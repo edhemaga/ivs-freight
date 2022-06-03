@@ -139,13 +139,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       email: [null, [emailRegex]],
       phone: [null, [Validators.required, phoneRegex]],
       // Physical Address
-      physicalAddress: [null],
+      physicalAddress: [null, Validators.required],
       physicalAddressUnit: [null],
       physicalPoBox: [null],
       physicalPoBoxCity: [null],
       // Billing Address
       isCheckedBillingAddress: [false],
-      billingAddress: [null],
+      billingAddress: [null, Validators.required],
       billingAddressUnit: [null],
       billingPoBox: [null],
       billingPoBoxCity: [null],
@@ -315,9 +315,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }) {
     this.selectedPhysicalAddress = event.address;
-    if (!event.valid) {
-      this.brokerForm.setErrors({ invalid: event.valid });
-    }
+
   }
 
   public onHandlePhysicalPoBoxCityAddress(event: {
@@ -325,9 +323,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }) {
     this.selectedPhysicalPoBox = event.address;
-    if (!event.valid) {
-      this.brokerForm.setErrors({ invalid: event.valid });
-    }
+
   }
 
   public onHandleBillingAddress(event: {
@@ -335,9 +331,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }) {
     this.selectedBillingAddress = event.address;
-    if (!event.valid) {
-      this.brokerForm.setErrors({ invalid: event.valid });
-    }
+
   }
 
   public onHandleBillingPoBoxCityAddress(event: {
@@ -345,9 +339,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }) {
     this.selectedBillingPoBox = event.address;
-    if (!event.valid) {
-      this.brokerForm.setErrors({ invalid: event.valid });
-    }
   }
 
   public isCredit(event: any) {

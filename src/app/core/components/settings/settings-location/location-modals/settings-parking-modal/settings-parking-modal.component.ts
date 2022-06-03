@@ -189,9 +189,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;
-    if (!event.valid) {
-      this.parkingForm.get('addres').setErrors({ invalid: true });
-    }
   }
 
   public onAction(event: any, action: string) {

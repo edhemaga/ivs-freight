@@ -186,9 +186,6 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;
-    if (!event.valid) {
-      this.repairShopForm.get('addres').setErrors({ invalid: true });
-    }
   }
 
   public openCloseCheckboxCard(event: any) {

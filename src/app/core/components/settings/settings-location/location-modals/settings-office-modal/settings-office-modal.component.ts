@@ -159,9 +159,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;
-    if (!event.valid) {
-      this.officeForm.get('addres').setErrors({ invalid: true });
-    }
   }
 
   public onScrollingDepartmentContacts(event: any) {

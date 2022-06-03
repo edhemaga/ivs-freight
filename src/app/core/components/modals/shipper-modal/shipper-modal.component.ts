@@ -190,9 +190,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   public onHandleAddress(event: { address: AddressEntity; valid: boolean }) {
     this.selectedAddress = event.address;
-    if (!event.valid) {
-      this.shipperForm.setErrors({ invalid: event.valid });
-    }
   }
 
   public onSelectContactDepartment(event: any, ind: number) {

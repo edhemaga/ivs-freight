@@ -361,10 +361,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }): void {
 
     this.selectedAddress = event.address;
-    
-    // if (!event.valid) {
-    //   this.driverForm.get('address').setErrors({ invalid: true });
-    // }
   }
 
   public onHandleAddressFormArray(
