@@ -2,12 +2,14 @@
 class="user-icon"
 #t2="ngbPopover"
 [ngbPopover]="filterPopover"
-[placement]="['bottom']"
+[placement]="['bottom-left']"
 [popoverClass]="'filterpopovermain'"
 autoClose="outside"
 [container]="'body'"
+[ngClass]="{ 'active-options': t2?.isOpen() }"
 >
-    <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon>
+    <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
+    <svg-icon [src]=" icon | taSvg: 'common'"></svg-icon>
 </div>
 
 <ng-template #filterPopover>

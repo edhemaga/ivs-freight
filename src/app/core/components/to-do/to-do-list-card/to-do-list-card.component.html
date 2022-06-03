@@ -22,10 +22,12 @@
                         position="bottom"
                         tooltipBackground="#6C6C6C"
                     >
-                        <svg-icon 
-                            src="assets/svg/common/ic_pending.svg"
-                        ></svg-icon>
-                    </div>
+                        <app-filter
+                        [type]="'timeFilter'"
+                        [icon]="'pending'"
+                        >
+                        </app-filter>
+                </div>
                     <div class="border-right"></div>
                     <div
                         ngbTooltip
@@ -33,7 +35,10 @@
                         position="bottom"
                         tooltipBackground="#6C6C6C"
                         class="box-icons">
-                        <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon>
+                        <app-filter
+                        [type]="'userFilter'"
+                        >
+                        </app-filter>
                     </div>
                     <div class="border-right"></div>
                     <div 
@@ -78,7 +83,11 @@
                         position="bottom"
                         tooltipBackground="#6C6C6C"
                         class="box-icons">
-                        <svg-icon src="assets/svg/common/ic_pending.svg"></svg-icon>
+                        <app-filter
+                        [type]="'timeFilter'"
+                        [icon]="'pending'"
+                        >
+                        </app-filter>
                     </div>
                     <div class="border-right"></div>
                     <div 
@@ -87,7 +96,10 @@
                         position="bottom"
                         tooltipBackground="#6C6C6C"
                         class="box-icons">
-                        <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon>
+                        <app-filter
+                        [type]="'userFilter'"
+                        >
+                        </app-filter>
                     </div>
                     <div class="border-right"></div>
                     <div 
@@ -127,7 +139,11 @@
                         position="bottom"
                         tooltipBackground="#6C6C6C"
                         >
-                        <svg-icon src="assets/svg/common/ic_pending.svg"></svg-icon>
+                        <app-filter
+                        [type]="'timeFilter'"
+                        [icon]="'pending'"
+                        >
+                        </app-filter>
                     </div>
                     <div class="border-right"></div>
                     <div 
@@ -136,7 +152,10 @@
                         position="bottom"
                         tooltipBackground="#6C6C6C"
                         class="box-icons">
-                        <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon>
+                        <app-filter
+                        [type]="'userFilter'"
+                        >
+                        </app-filter>
                     </div>
                     <div class="border-right"></div>
                     <div 

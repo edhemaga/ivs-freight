@@ -36,12 +36,28 @@ export class FilterComponent implements OnInit {
     },
     {
       name: 'James Halpert'
+    },
+    {
+      name: 'Aleksandar Djordjevic'
+    },
+    {
+      name: 'Denis Rodman'
+    },
+    {
+      name: 'Eric Halpert'
+    },
+    {
+      name: 'Jacob Forman'
+    },
+    {
+      name: 'James Robertson'
     }
    ];
 
    selectedUser: any[] = [];
 
-   @Input() type: string;
+   @Input() type: string = 'userFilter';
+   @Input() icon: string = 'user';
 
   constructor() { }
 

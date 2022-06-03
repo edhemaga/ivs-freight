@@ -175,3 +175,14 @@ body {
   margin-top: 4px;
 }
 
+.filterpopovermain{
+  margin-top: 10px;
+
+  .filter-holder .user-holder{
+    &::-webkit-scrollbar-thumb {
+      background-color: #AAAAAA;
+      border: 6px solid #fff;
+      border-radius: 1px;
+    }
+  }
+}
