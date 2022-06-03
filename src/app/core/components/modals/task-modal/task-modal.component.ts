@@ -2,16 +2,16 @@ import { Validators } from '@angular/forms';
 import { TaskModalService } from './task-modal.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TodoModalResponse } from 'appcoretruckassist';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-task-modal',
   templateUrl: './task-modal.component.html',
-  styleUrls: ['./task-modal.component.scss']
+  styleUrls: ['./task-modal.component.scss'],
 })
 export class TaskModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -26,7 +26,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private taskModalService: TaskModalService,
     private notificationService: NotificationService
   ) {}
@@ -56,30 +56,34 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onModalAction(data: {action: string, bool: boolean}) {
-    console.log(data)
-    if (data.action === 'close') {
-      this.taskForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+  public onModalAction(data: { action: string; bool: boolean }) {
+    switch (data.action) {
+      case 'close': {
+        this.taskForm.reset();
+        break;
+      }
+      case 'save': {
         if (this.taskForm.invalid) {
           this.inputService.markInvalid(this.taskForm);
           return;
         }
         if (this.editData) {
           this.updateTaskById(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addTask();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
+        break;
       }
-
-      // Delete
-      if (data.action === 'delete' && this.editData) {
+      case 'delete': {
         this.deleteTaskById(this.editData.id);
+        this.modalService.setModalSpinner({ action: 'delete', status: true });
+        break;
       }
-
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
@@ -105,38 +109,30 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event)
+    console.log(event);
   }
 
-  private updateTaskById(id: number) {
+  private updateTaskById(id: number) {}
 
-  }
+  private addTask() {}
 
-  private addTask() {
+  private deleteTaskById(id: number) {}
 
-  }
-
-  private deleteTaskById(id: number) {
-
-  }
-
-  private editTask(id: number) {
-
-  }
+  private editTask(id: number) {}
 
   private getTaskDropdowns() {
-    this.taskModalService.getTaskDropdowns().pipe(untilDestroyed(this)).subscribe({
-      next: (res: TodoModalResponse) => {
-        this.departments = res.departments;
-      },
-      error: () => {
-        this.notificationService.error(
-          "Can't get task dropdowns.",
-          'Error:'
-        );
-      }
-    })
+    this.taskModalService
+      .getTaskDropdowns()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: TodoModalResponse) => {
+          this.departments = res.departments;
+        },
+        error: () => {
+          this.notificationService.error("Can't get task dropdowns.", 'Error:');
+        },
+      });
   }
 
-  ngOnDestroy():void {}
+  ngOnDestroy(): void {}
 }

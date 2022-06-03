@@ -11,11 +11,12 @@ import moment from 'moment';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-tt-registration-modal',
   templateUrl: './tt-registration-modal.component.html',
-  styleUrls: ['./tt-registration-modal.component.scss']
+  styleUrls: ['./tt-registration-modal.component.scss'],
 })
 export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -29,12 +30,11 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     private commonTruckTrailerService: CommonTruckTrailerService,
     private notificationService: NotificationService,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
     this.createForm();
-    console.log(this.editData);
 
     if (this.editData.type === 'edit-registration') {
       this.getRegistrationById();
@@ -51,32 +51,33 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
-    if (data.action === 'close') {
-      this.registrationForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'close': {
+        this.registrationForm.reset();
+        break;
+      }
+      case 'save': {
         // If Form not valid
         if (this.registrationForm.invalid) {
           this.inputService.markInvalid(this.registrationForm);
           return;
         }
         if (this.editData.type === 'edit-registration') {
-          console.log("UPDATE MODAL")
           this.updateRegistration();
-        }
-        else {
+          this.modalService.setModalSpinner({ action: null, status: true });
+        } else {
           this.addRegistration();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
-       
+        break;
       }
-
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
   private updateRegistration() {
-    console.log("UPDATE REGISTRATION")
     const { issueDate, expDate } = this.registrationForm.value;
     const newData: UpdateRegistrationCommand = {
       id: this.editData.file_id,
@@ -89,13 +90,15 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       .updateRegistration(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: (res: any) => {
-          console.log(res)
-          console.log("UPDATE REGISTRATION UPLOAD")
+        next: () => {
           this.notificationService.success(
             'Registration successfully updated.',
             'Success:'
           );
+          this.modalService.setModalSpinner({
+            action: null,
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error(
@@ -125,6 +128,10 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             'Registration successfully added.',
             'Success:'
           );
+          this.modalService.setModalSpinner({
+            action: null,
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error(

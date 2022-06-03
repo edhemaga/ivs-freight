@@ -6,11 +6,11 @@ import { Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddressEntity } from 'appcoretruckassist';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-settings-repairshop-modal',
@@ -51,56 +51,56 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
       id: 1,
       name: 'Truck',
       svg: 'assets/svg/common/ic_truck.svg',
-      active: false
+      active: false,
     },
     {
       id: 2,
       name: 'Trailer',
       svg: 'assets/svg/common/ic_trailer.svg',
-      active: false
+      active: false,
     },
     {
       id: 3,
       name: 'Mobile',
       svg: 'assets/svg/common/ic_mobile.svg',
-      active: false
+      active: false,
     },
     {
       id: 4,
       name: 'Shop',
       svg: 'assets/svg/common/ic_shop.svg',
-      active: false
+      active: false,
     },
     {
       id: 5,
       name: 'Towing',
       svg: 'assets/svg/common/ic_towing.svg',
-      active: false
+      active: false,
     },
     {
       id: 6,
       name: 'Parts',
       svg: 'assets/svg/common/ic_parts.svg',
-      active: false
+      active: false,
     },
     {
       id: 7,
       name: 'Tire',
       svg: 'assets/svg/common/ic_tire.svg',
-      active: false
+      active: false,
     },
     {
       id: 8,
       name: 'Dealer',
       svg: 'assets/svg/common/ic_dealer.svg',
-      active: false
-    }
-  ]
+      active: false,
+    },
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private notificationService: NotificationService
   ) {}
 
@@ -115,7 +115,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
       shopName: [null],
       address: [null],
       addressUnit: [null, Validators.maxLength(6)],
-      phone: [null],
+      phone: [null, phoneRegex],
       phoneExtension: [null],
       email: [null, emailRegex],
       rent: [null],
@@ -134,41 +134,51 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
-    if (data.action === 'close') {
-      this.repairShopForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'close': {
+        this.repairShopForm.reset();
+        break;
+      }
+      case 'save': {
         if (this.repairShopForm.invalid) {
           this.inputService.markInvalid(this.repairShopForm);
           return;
         }
         if (this.editData) {
           this.updateRepariShop(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addRepairShop();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
+        break;
       }
-
-      // Delete
-      if (data.action === 'delete' && this.editData) {
-        this.deleteRepairShopById(this.editData.id);
+      case 'delete': {
+        if (this.editData) {
+          this.deleteRepairShopById(this.editData.id);
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
+        }
+        break;
       }
-
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
-  public onSelectPayPeriod(event) {
-    this.selectedPayPeriod = event;
-  }
-
-  public onSelectDay(event) {
-    this.selectedDay = event;
+  public onAction(event: any, action: string) {
+    switch (action) {
+      case 'pay-period': {
+        this.selectedPayPeriod = event;
+      }
+      case 'day': {
+        this.selectedDay = event;
+      }
+    }
   }
 
   public pickedServices() {
-    return this.services.filter(item => item.active).length;
+    return this.services.filter((item) => item.active).length;
   }
 
   public onHandleAddress(event: {
@@ -198,14 +208,27 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
           this.inputService.changeValidators(
             this.repairShopForm.get('shopName')
           );
-          this.inputService.changeValidators(this.repairShopForm.get('address'));
-          this.inputService.changeValidators(this.repairShopForm.get('phone'), true, [phoneRegex])
+          this.inputService.changeValidators(
+            this.repairShopForm.get('address')
+          );
+          this.inputService.changeValidators(
+            this.repairShopForm.get('phone'),
+            true,
+            [phoneRegex]
+          );
         } else {
           this.inputService.changeValidators(
-            this.repairShopForm.get('shopName'),false
+            this.repairShopForm.get('shopName'),
+            false
           );
-          this.inputService.changeValidators(this.repairShopForm.get('address'),false);
-          this.inputService.changeValidators(this.repairShopForm.get('phone'),false)
+          this.inputService.changeValidators(
+            this.repairShopForm.get('address'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.repairShopForm.get('phone'),
+            false
+          );
         }
       });
   }
