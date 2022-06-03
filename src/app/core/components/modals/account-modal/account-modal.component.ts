@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -18,6 +17,7 @@ import {
 import { AccountModalService } from './account-modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-account-modal',
@@ -35,9 +35,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
     private accountModalService: AccountModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -65,12 +65,13 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onModalAction(data: {action: string, bool: boolean}) {
-    if (data.action === 'close') {
-      this.accountForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+  public onModalAction(data: { action: string; bool: boolean }) {
+    switch (data.action) {
+      case 'close': {
+        this.accountForm.reset();
+        break;
+      }
+      case 'save': {
         // If Form not valid
         if (this.accountForm.invalid) {
           this.inputService.markInvalid(this.accountForm);
@@ -78,17 +79,23 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         }
         if (this.editData) {
           this.updateCompanyAccount(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addCompanyAccount();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
+        break;
       }
-
-      // Delete
-      if (data.action === 'delete' && this.editData) {
-        this.deleteCompanyAccountById(this.editData.id);
+      case 'delete': {
+        if (this.editData) {
+          this.deleteCompanyAccountById(this.editData.id);
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
+        }
+        break;
       }
-
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
@@ -107,7 +114,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             username: res.username,
             password: res.password,
             url: res.url,
-            companyAccountLabelId: res.companyAccountLabel ? res.companyAccountLabel.name : null,
+            companyAccountLabelId: res.companyAccountLabel
+              ? res.companyAccountLabel.name
+              : null,
             note: res.note,
           });
           this.selectedAccountLabel = res.companyAccountLabel;
@@ -123,17 +132,21 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.selectedAccountLabel ? this.selectedAccountLabel.id : null,
+      companyAccountLabelId: this.selectedAccountLabel
+        ? this.selectedAccountLabel.id
+        : null,
     };
     this.accountModalService
       .addCompanyAccount(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Company Account successfully created.',
             'Success:'
-          ),
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
         error: () =>
           this.notificationService.error(
             "Company Account can't be created.",
@@ -148,17 +161,21 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.selectedAccountLabel ? this.selectedAccountLabel.id : null,
+      companyAccountLabelId: this.selectedAccountLabel
+        ? this.selectedAccountLabel.id
+        : null,
     };
     this.accountModalService
       .updateCompanyAccount(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Company Account successfully edit..',
             'Success:'
-          ),
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
         error: () =>
           this.notificationService.error(
             "Company Account can't be edit.",
@@ -172,11 +189,16 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       .deleteCompanyAccountById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Company Account successfully deleted.',
             'Success:'
-          ),
+          );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
+        },
         error: () =>
           this.notificationService.error(
             "Company Account can't be deleted.",

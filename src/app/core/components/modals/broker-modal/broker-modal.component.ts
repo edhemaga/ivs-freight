@@ -9,7 +9,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -25,6 +24,7 @@ import {
   emailRegex,
   phoneRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-broker-modal',
@@ -105,7 +105,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private mockModalService: MockModalService,
     private brokerModalService: BrokerModalService,
     private notificationService: NotificationService
@@ -169,9 +169,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       contactName: [null],
       departmentId: [null],
-      phone: [null],
+      phone: [null, phoneRegex],
       extensionPhone: [null],
-      email: [null],
+      email: [null, emailRegex],
     });
   }
 
@@ -216,15 +216,26 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           }
           if (this.editData) {
             this.updateBroker(this.editData.id);
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+            });
           } else {
             this.addBroker();
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+            });
           }
         }
         // Delete
         if (data.action === 'delete' && this.editData) {
           this.deleteBrokerById(this.editData.id);
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: true,
+          });
         }
-        this.ngbActiveModal.close();
       }
     }
   }
@@ -299,7 +310,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandlePhysicalAddress(event: { address: AddressEntity; valid: boolean }) {
+  public onHandlePhysicalAddress(event: {
+    address: AddressEntity;
+    valid: boolean;
+  }) {
     this.selectedPhysicalAddress = event.address;
     if (!event.valid) {
       this.brokerForm.setErrors({ invalid: event.valid });
@@ -316,7 +330,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandleBillingAddress(event: { address: AddressEntity; valid: boolean }) {
+  public onHandleBillingAddress(event: {
+    address: AddressEntity;
+    valid: boolean;
+  }) {
     this.selectedBillingAddress = event.address;
     if (!event.valid) {
       this.brokerForm.setErrors({ invalid: event.valid });
@@ -463,6 +480,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'Broker successfully created.',
             'Success:'
           );
+          this.modalService.setModalSpinner({
+            action: null,
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error("Broker can't be created.", 'Error:');
@@ -527,6 +548,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'Broker successfully updated.',
             'Success:'
           );
+          this.modalService.setModalSpinner({
+            action: null,
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error("Broker can't be updated.", 'Error:');
@@ -544,6 +569,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'Broker successfully deleted.',
             'Success:'
           );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error("Broker can't be deleted.", 'Error:');
@@ -557,7 +586,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (reasponse: BrokerResponse) => {
-          console.log(reasponse);
+
           this.brokerForm.patchValue({
             businessName: reasponse.businessName,
             dbaName: reasponse.dbaName,
@@ -605,7 +634,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             dnu: reasponse.dnu,
             brokerContacts: [],
           });
-          console.log(reasponse.availableCredit)
+
           this.selectedPhysicalAddress = reasponse.mainAddress
             ? reasponse.mainAddress
             : null;
@@ -660,7 +689,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public selectedBrokerAddress(): { mainAddress, billingAddress, mainPoBox, billingPoBox } {
+  public selectedBrokerAddress(): {
+    mainAddress;
+    billingAddress;
+    mainPoBox;
+    billingPoBox;
+  } {
     let mainAddress = null;
     let billingAddress = null;
     let mainPoBox = null;
@@ -688,11 +722,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             ? this.selectedPhysicalAddress.stateShortName
             : null,
           street: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.street
-          : null,
+            ? this.selectedPhysicalAddress.street
+            : null,
           streetNumber: this.selectedPhysicalAddress
-          ? this.selectedPhysicalAddress.streetNumber
-          : null,
+            ? this.selectedPhysicalAddress.streetNumber
+            : null,
           addressUnit: this.brokerForm.get('physicalAddressUnit').value,
         };
         mainPoBox = null;
@@ -741,15 +775,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             : null,
           street: this.brokerForm.get('isCheckedBillingAddress').value
             ? this.selectedPhysicalAddress
-            ? this.selectedPhysicalAddress.street
-            : null
+              ? this.selectedPhysicalAddress.street
+              : null
             : this.selectedBillingAddress
             ? this.selectedBillingAddress.street
             : null,
           streetNumber: this.brokerForm.get('isCheckedBillingAddress').value
             ? this.selectedPhysicalAddress
-            ? this.selectedPhysicalAddress.streetNumber
-            : null
+              ? this.selectedPhysicalAddress.streetNumber
+              : null
             : this.selectedBillingAddress
             ? this.selectedBillingAddress.streetNumber
             : null,
@@ -805,7 +839,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         billingAddress = null;
       }
     }
-    // if not same 
+    // if not same
     else {
       if (this.selectedPhysicalAddressTab.id === 'physicaladdress') {
         mainAddress = {

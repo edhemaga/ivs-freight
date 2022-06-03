@@ -10,7 +10,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   AddressEntity,
   CreateShipperCommand,
@@ -21,6 +20,7 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 import { ShipperModalService } from './shipper-modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-shipper-modal',
@@ -69,7 +69,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private shipperModalService: ShipperModalService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private notificationService: NotificationService
   ) {}
 
@@ -94,15 +94,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.shipperForm = this.formBuilder.group({
       businessName: [null, Validators.required],
-      phone: [
-        null,
-        [Validators.required, phoneRegex],
-      ],
+      phone: [null, [Validators.required, phoneRegex]],
       phoneExt: [null],
-      email: [
-        null,
-        emailRegex,
-      ],
+      email: [null, emailRegex],
       address: [null, Validators.required],
       addressUnit: [null],
       receivingAppointment: [false],
@@ -120,26 +114,33 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
-    if (data.action === 'close') {
-      this.shipperForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'close': {
+        this.shipperForm.reset();
+        break;
+      }
+      case 'save': {
         if (this.shipperForm.invalid) {
           this.inputService.markInvalid(this.shipperForm);
           return;
         }
         if (this.editData) {
           this.updateShipper(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addShipper();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
+        break;
       }
-      // Delete
-      if (data.action === 'delete' && this.editData) {
+      case 'delete': {
         this.deleteShipperById(this.editData.id);
+        this.modalService.setModalSpinner({ action: 'delete', status: true });
+        break;
       }
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
@@ -162,9 +163,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       fullName: [null],
       departmentId: [null],
-      phone: [null],
+      phone: [null, phoneRegex],
       phoneExt: [null],
-      email: [null],
+      email: [null, emailRegex],
     });
   }
 
@@ -187,10 +188,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandleAddress(event: {address: AddressEntity, valid: boolean}) {
+  public onHandleAddress(event: { address: AddressEntity; valid: boolean }) {
     this.selectedAddress = event.address;
-    if(!event.valid) {
-      this.shipperForm.setErrors({'invalid': event.valid})
+    if (!event.valid) {
+      this.shipperForm.setErrors({ invalid: event.valid });
     }
   }
 
@@ -231,13 +232,25 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       shippingAppointment,
       ...form
     } = this.shipperForm.value;
-    
+
     let newData: CreateShipperCommand = {
       ...form,
-      address: {...this.selectedAddress, addressUnit: this.shipperForm.get('addressUnit').value},
-      shippingFrom: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingFrom').value : shippingFrom,
-      shippingTo: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingTo').value : shippingTo,
-      shippingAppointment: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingAppointment').value : shippingAppointment
+      address: {
+        ...this.selectedAddress,
+        addressUnit: this.shipperForm.get('addressUnit').value,
+      },
+      shippingFrom: this.shipperForm.get('isShippingHoursSameLikeReceiving')
+        .value
+        ? this.shipperForm.get('receivingFrom').value
+        : shippingFrom,
+      shippingTo: this.shipperForm.get('isShippingHoursSameLikeReceiving').value
+        ? this.shipperForm.get('receivingTo').value
+        : shippingTo,
+      shippingAppointment: this.shipperForm.get(
+        'isShippingHoursSameLikeReceiving'
+      ).value
+        ? this.shipperForm.get('receivingAppointment').value
+        : shippingAppointment,
     };
 
     for (let index = 0; index < shipperContacts.length; index++) {
@@ -259,6 +272,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             'Shipper successfully added.',
             'Error:'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Shipper can't be added.", 'Error:');
@@ -281,10 +295,22 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     let newData: UpdateShipperCommand = {
       id: id,
       ...form,
-      address: {...this.selectedAddress, addressUnit: this.shipperForm.get('addressUnit').value},
-      shippingFrom: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingFrom').value : shippingFrom,
-      shippingTo: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingTo').value : shippingTo,
-      shippingAppointment: this.shipperForm.get('isShippingHoursSameLikeReceiving').value ? this.shipperForm.get('receivingAppointment').value : shippingAppointment
+      address: {
+        ...this.selectedAddress,
+        addressUnit: this.shipperForm.get('addressUnit').value,
+      },
+      shippingFrom: this.shipperForm.get('isShippingHoursSameLikeReceiving')
+        .value
+        ? this.shipperForm.get('receivingFrom').value
+        : shippingFrom,
+      shippingTo: this.shipperForm.get('isShippingHoursSameLikeReceiving').value
+        ? this.shipperForm.get('receivingTo').value
+        : shippingTo,
+      shippingAppointment: this.shipperForm.get(
+        'isShippingHoursSameLikeReceiving'
+      ).value
+        ? this.shipperForm.get('receivingAppointment').value
+        : shippingAppointment,
     };
 
     for (let index = 0; index < shipperContacts.length; index++) {
@@ -306,6 +332,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             'Shipper successfully updated.',
             'Error:'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Shipper can't be updated.", 'Error:');
@@ -323,6 +350,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             'Shipper successfully deleted.',
             'Error:'
           );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error("Shipper can't be deleted.", 'Error:');
@@ -366,7 +397,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
               this.shipperContacts.push(
                 this.formBuilder.group({
                   fullName: contact.fullName,
-                  departmentId: contact.department ? contact.department.name : null,
+                  departmentId: contact.department
+                    ? contact.department.name
+                    : null,
                   phone: contact.phone,
                   phoneExt: contact.phoneExt,
                   email: contact.email,

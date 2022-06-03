@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { ModalOptions } from './modal.options';
 @Injectable({
   providedIn: 'root',
@@ -9,7 +9,17 @@ export class ModalService {
   public modalStatusChange: BehaviorSubject<{ name: string; status: boolean }> =
     new BehaviorSubject<{ name: string; status: boolean }>(null);
 
+  public modalSpinner: Subject<{action: string, status: boolean}> = new Subject<{action: string, status: boolean}>();
+
   constructor(private ngbModal: NgbModal) {}
+
+  public get modalSpinner$() {
+    return this.modalSpinner.asObservable();
+  }
+
+  public setModalSpinner({action: string, status: boolean}) {
+    this.modalSpinner.next({action: string, status: boolean});
+  }
 
   public get modalStatus$() {
     return this.modalStatusChange.asObservable();

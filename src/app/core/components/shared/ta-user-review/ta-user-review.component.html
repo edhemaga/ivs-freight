@@ -29,38 +29,28 @@
       </div>
     </div>
     <div class="ta-user-actions">
-      <svg-icon
-        *ngIf="!data.isEditMode"
-        class="action-edit"
-        src="assets/svg/common/ic_pen.svg"
+      <div
         ngbTooltip
         mainTooltip="Edit"
         position="top"
         tooltipBackground="#6C6C6C"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="-8"
-        (click)="onAction(data, 'edit', ind)"
-      ></svg-icon>
-      <svg-icon
         *ngIf="!data.isEditMode"
-        class="action-delete"
-        src="assets/svg/common/ic_trash.svg"
+        class="action-edit"
+        (click)="onAction(data, 'edit', ind)"
+      >
+        <svg-icon src="assets/svg/common/ic_pen.svg"></svg-icon>
+      </div>
+      <div
         ngbTooltip
         mainTooltip="Delete"
         position="top"
         tooltipBackground="#EF5350"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="-14"
+        *ngIf="!data.isEditMode"
+        class="action-delete"
         (click)="onAction(data, 'delete', ind)"
-      ></svg-icon>
+      >
+        <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+      </div>
     </div>
   </div>
   <div class="ta-review-message">
