@@ -32,6 +32,7 @@
         type="button"
       >
         Delete
+        <div *ngIf="deleteSpinnerVisibility" class="spinner-border" role="status"></div>
       </button>
       <button
         *ngIf="editData?.disableButton"
@@ -90,6 +91,8 @@
       type="button"
     >
       {{ editData ? "Save Changes" : "Save" }}
+      <div *ngIf="saveSpinnerVisibility" class="spinner-border" role="status">
+      </div>
     </button>
   </div>
 

@@ -341,7 +341,7 @@
                   <div class="gate-radio">
                     <app-ta-input-radiobuttons
                       [buttons]="gateBtns"
-                      (changedValue)="changeGate($event)"
+                      (changedValue)="onAction($event, 'gate')"
                     ></app-ta-input-radiobuttons>
                   </div>
                 </div>
@@ -350,7 +350,7 @@
                   <div class="camera-radio">
                     <app-ta-input-radiobuttons
                       [buttons]="cameraBtns"
-                      (changedValue)="changeCamera($event)"
+                      (changedValue)="onAction($event, 'camera')"
                     ></app-ta-input-radiobuttons>
                   </div>
                 </div>

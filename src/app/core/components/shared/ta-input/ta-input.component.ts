@@ -18,12 +18,18 @@ import { TaInputService } from './ta-input.service';
 import { NgbDropdownConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
+import { TitleCasePipe, UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
   styleUrls: ['./ta-input.component.scss'],
-  providers: [NgbDropdownConfig, CalendarScrollService],
+  providers: [
+    NgbDropdownConfig,
+    CalendarScrollService,
+    TitleCasePipe,
+    UpperCasePipe,
+  ],
 })
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor
@@ -63,7 +69,9 @@ export class TaInputComponent
     @Self() public superControl: NgControl,
     private changeDetection: ChangeDetectorRef,
     private inputService: TaInputService,
-    private calendarService: CalendarScrollService
+    private calendarService: CalendarScrollService,
+    private titlecasePipe: TitleCasePipe,
+    private uppercasePipe: UpperCasePipe
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -100,7 +108,7 @@ export class TaInputComponent
       this.inputService.dropdownAddModeSubject
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
-          console.log("Input ADD MODE ", action)
+          console.log('Input ADD MODE ', action);
           if (action) {
             this.dropdownToggler = false;
             this.isDropdownAddModeActive = action;
@@ -112,7 +120,7 @@ export class TaInputComponent
       this.inputService.isDropDownItemSelectedOnEnter
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
-          console.log("Input SELECT WITH ENTER ", action)
+          console.log('Input SELECT WITH ENTER ', action);
           if (action) {
             this.dropdownToggler = false;
             this.input.nativeElement.blur();
@@ -157,7 +165,7 @@ export class TaInputComponent
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
     }
-    
+
     // Datepicker
     if (
       this.inputConfig.name === 'datepicker' ||
@@ -228,7 +236,9 @@ export class TaInputComponent
     }, 150);
   }
 
-  public clearInput(): void {
+  public clearInput(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
     this.input.nativeElement.value = null;
     this.getSuperControl.setValue(null);
     this.numberOfSpaces = 0;
@@ -264,9 +274,7 @@ export class TaInputComponent
   public toggleDropdownOptions() {
     this.dropdownToggler = !this.dropdownToggler;
 
-    this.inputService.dropDownShowHideSubject.next(
-      this.dropdownToggler
-    );
+    this.inputService.dropDownShowHideSubject.next(this.dropdownToggler);
 
     if (this.dropdownToggler) {
       clearTimeout(this.timeout);
@@ -296,7 +304,7 @@ export class TaInputComponent
     if (event.keyCode == 8 && !this.inputConfig.isDropdown) {
       this.numberOfSpaces = 0;
       if (!this.input.nativeElement.value) {
-        this.clearInput();
+        this.clearInput(event);
       }
     }
 
@@ -317,6 +325,30 @@ export class TaInputComponent
         this.inputService.dropDownNavigatorSubject.next(event.keyCode);
       }
     }
+  }
+
+  public transformText(event: any) {
+    switch (this.inputConfig.textTransform) {
+      case 'capitalize': {
+        this.input.nativeElement.value = this.titleCaseInput(event);
+        break;
+      }
+      case 'uppercase': {
+        this.input.nativeElement.value = this.upperCaseInput(event);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public titleCaseInput(value: string) {
+    return this.titlecasePipe.transform(value);
+  }
+
+  public upperCaseInput(value: string) {
+    return this.uppercasePipe.transform(value);
   }
 
   public manipulateWithInput(event: KeyboardEvent): boolean {

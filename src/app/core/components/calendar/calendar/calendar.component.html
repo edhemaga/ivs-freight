@@ -61,7 +61,19 @@
                 <div class="calendar-holder">
                   <div class="calendar-items active">JUL</div>
                   <div class="calendar-items">AUG</div>
-                  <div class="calendar-items event">SEP</div>
+                  <div 
+                    class="calendar-items event"
+                    #t2="ngbPopover"
+                    [ngbPopover]="eventsPopover"
+                    [placement]="['bottom-left']"
+                    [popoverClass]="'eventspopovermain'"
+                    autoclose="outside"
+                    [container]="'body'"
+                  >
+                    SEP
+                  </div>
+
+                  
                 </div>
                 <div class="calendar-holder">
                   <div class="calendar-items">OCT</div>
@@ -250,3 +262,29 @@
          </div> -->
   </div>
 </div>
+
+<ng-template #eventsPopover let-data="data">
+  <div class="events-popover">
+    <div class="event-title-frame">
+      <div class="event-box">20</div>
+      <div class="event-title">Events</div>
+    </div>
+    <div class="border-event"></div>
+    <div class="event-items-holder">
+      <div class="event-items-box">6</div>
+      <div class="event-text">Important Events</div>
+    </div>
+    <div class="event-items-holder">
+      <div class="event-items-box company-box">4</div>
+      <div class="event-text">Company Events</div>
+    </div>
+    <div class="event-items-holder">
+      <div class="event-items-box personal-box">7</div>
+      <div class="event-text">Personal Events</div>
+    </div>
+    <div class="event-items-holder different-padding">
+      <div class="event-items-box holiday-box">3</div>
+      <div class="event-text">Holiday</div>
+    </div>
+  </div>
+</ng-template>
