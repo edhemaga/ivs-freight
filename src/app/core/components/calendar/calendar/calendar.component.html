@@ -2,12 +2,12 @@
   <div class="calendar-info-holder">
     <div class="title-holder">
       <div class="title">Calendar</div>
-      <div class="selected-month">July</div>
+      <div class="selected-month">{{ calendarTitle }}</div>
       <div class="arrow-left">
-        <svg-icon src="assets/svg/common/ic_arrow-right.svg"></svg-icon>
+        <svg-icon (click)="changeMonth('prev')" src="assets/svg/common/ic_arrow-right.svg"></svg-icon>
       </div>
       <div class="arrow-left arrow-right">
-        <svg-icon src="assets/svg/common/ic_arrow-right.svg"></svg-icon>
+        <svg-icon (click)="changeMonth('next')" src="assets/svg/common/ic_arrow-right.svg"></svg-icon>
       </div>
     </div>
     <div class="search-holder">
@@ -20,11 +20,11 @@
       <input class="search" type="text" placeholder="Find Event" />
     </div>
     <div class="calendar-items-holder">
-      <div class="day-holder">Day</div>
-      <div class="day-holder week">Week</div>
-      <div class="day-holder month active">Month</div>
-      <div class="day-holder year">Year</div>
-      <div class="day-holder schedule">Schedule</div>
+      <div class="day-holder" [class.active]="currentCalendarView == 'day'" (click)="changeCalendarView('day')">Day</div>
+      <div class="day-holder week" [class.active]="currentCalendarView == 'week'" (click)="changeCalendarView('week')">Week</div>
+      <div class="day-holder month" [class.active]="currentCalendarView == 'month'" (click)="changeCalendarView('month')">Month</div>
+      <div class="day-holder year" [class.active]="currentCalendarView == 'year'" (click)="changeCalendarView('year')">Year</div>
+      <div class="day-holder schedule" [class.active]="currentCalendarView == 'schedule'" (click)="changeCalendarView('schedule')">Schedule</div>
     </div>
     <div class="calendar-header">
       <app-ta-custom-card [cardName]="'07/03/2022'" [hasPlusHeader]="false">
@@ -235,31 +235,7 @@
     </div>
   </div>
   <div class="calendar_view_holder">
-    <full-calendar [options]="calendarOptions"></full-calendar>
-    <!--
-         <div class="calendar_days_line">
-            <div class="calendar_day">SUNDAY</div>
-            <div class="calendar_day">MONDAY</div>
-            <div class="calendar_day">TUESDAY</div>
-            <div class="calendar_day">WEDNESDAY</div>
-            <div class="calendar_day">THURSDAY</div>
-            <div class="calendar_day">FRIDAY</div>
-            <div class="calendar_day">SATURDAY</div>
-         </div>
-         <div class="calendar_date_holder">
-            <div *ngFor="let day of monthDays; let indx=index" class="calendar_date">
-                <div *ngIf='day.events' class="calendar_events">
-                    <div class="event_outlay">
-                        <div *ngFor="let ev of day.events; let indx1=index" class="event_type" [ngStyle]="{'background-color': event_colors[ev.type]}">
-                            <div class="event_title" [ngStyle]="{'color': ev.eventTextColor}">{{ev.title}}</div>
-                                <div *ngIf="ev.type == 'personal'" class="event_box"></div>
-                                <div class="event_title" [ngStyle]="{'color': ev.eventTextColor}">{{ev.title}}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="date_number" [class.prevOrNext]="day.prevOrNext" [class.weekend]="day.weekend && !day.prevOrNext" [class.currentDay]="day.currentDay">{{day.number}}</div>
-            </div>
-         </div> -->
+    <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
   </div>
 </div>
 

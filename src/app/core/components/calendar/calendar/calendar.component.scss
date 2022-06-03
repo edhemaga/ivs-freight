@@ -819,12 +819,14 @@
     background-color: #fff;
 }
 
+.fc-dayGridMonth-view .fc-daygrid-body .fc-scrollgrid-sync-inner{
+    height: 163px;
+}
+
 .fc-daygrid-body .fc-scrollgrid-sync-inner{
     display: flex;
     justify-content: center;
     align-items: center;
-
-    height: 163px;
 
     .fc-daygrid-day-number{
         font-size: 52px;
@@ -853,7 +855,7 @@
 
 .fc-scrollgrid-section-header .fc-theme-standard td, .fc-theme-standard th{
     border-top: none !important;
-    border-bottom: 4px solid #F1F1F1 !important;
+    border-bottom: 2.5px solid #F1F1F1 !important;
 } 
 
 .fc-scrollgrid-liquid{
@@ -924,4 +926,58 @@
 
 .fc-scroller{
     height: auto !important;
+}
+
+.fc-view-harness{
+    height: 1025px !important;
+}
+
+.fc-daygrid-dot-event .fc-event-title{
+    color: #000 !important;
+    font-weight: 400 !important;
+}
+
+.fc-daygrid-event-dot{
+    margin: 0 0 0 6px !important;
+    width: 14px !important;
+    height: 14px !important;
+
+    border-radius: 2px !important;
+    background-color: #97A8DC;
+    border: none !important;
+}
+
+.fc-col-header .fc-day-sun .fc-scrollgrid-sync-inner{
+    border-radius: 3px 0 0 3px !important;
+}
+
+.fc-col-header .fc-day-sat .fc-scrollgrid-sync-inner{
+    border-radius: 0 3px 3px 0 !important;
+}
+
+.fc-timeGridWeek-view{
+    .fc-timegrid-axis-cushion{
+        max-width: none !important;
+        width: 100% !important;
+
+        font-size: 14px;
+        line-height: 19px;
+        color: #6C6C6C;
+        font-weight: 400;
+    }
+
+    .fc-daygrid-body .fc-scrollgrid-sync-inner{
+        height: 131px;
+    }
+
+    .fc-scrollgrid-section table{
+        background-color: #fff !important;
+    }
+
+    .fc .fc-timegrid-slot-label-cushion{
+        font-size: 14px;
+        line-height: 19px;
+        color: #6C6C6C;
+        font-weight: 400;
+    }
 }
