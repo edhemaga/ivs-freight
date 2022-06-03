@@ -94,8 +94,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.parkingForm = this.formBuilder.group({
       companyOwned: [false],
-      parkingName: [null],
-      address: [null],
+      parkingName: [null, Validators.required],
+      address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       phone: [null, phoneRegex],
       phoneExtension: [null],

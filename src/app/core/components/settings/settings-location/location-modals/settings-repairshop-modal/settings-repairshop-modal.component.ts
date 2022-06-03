@@ -112,8 +112,8 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.repairShopForm = this.formBuilder.group({
       companyOwned: [false],
-      shopName: [null],
-      address: [null],
+      shopName: [null, Validators.required],
+      address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       phone: [null, phoneRegex],
       phoneExtension: [null],

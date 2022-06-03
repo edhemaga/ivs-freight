@@ -71,10 +71,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.officeForm = this.formBuilder.group({
       companyOwned: [false],
-      officeName: [null],
-      address: [null],
+      officeName: [null, Validators.required],
+      address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
-      phone: [null],
+      phone: [null, Validators.required, phoneRegex],
       phoneExtension: [null],
       email: [null, emailRegex],
       departmentContacts: this.formBuilder.array([]),
