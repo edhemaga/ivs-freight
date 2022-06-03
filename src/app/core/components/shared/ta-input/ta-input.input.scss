@@ -159,19 +159,6 @@
     }
   }
 
-  &.dropdown {
-    background-color: #6c6c6c !important;
-    color: #ffffff;
-
-    &::-moz-selection {
-      background-color: #919191 !important;
-    }
-
-    &::selection {
-      background-color: #919191 !important;
-    }
-  }
-
   //------------------------- Custom class -------------------------
   &.input-big {
     height: 32px;

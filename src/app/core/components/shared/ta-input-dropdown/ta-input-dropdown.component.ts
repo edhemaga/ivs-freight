@@ -60,19 +60,17 @@ export class TaInputDropdownComponent
       });
 
     this.inputService.onClearInputSubject
-      .pipe(debounceTime(50),untilDestroyed(this))
+      .pipe(debounceTime(50), untilDestroyed(this))
       .subscribe((action: boolean) => {
-        console.log("DROPDOWN CLEAR EVENT ", action);
         if (action) {
-            this.popover.close();
-            this.onClearSearch();
+          this.popover.close();
+          this.onClearSearch();
         }
       });
 
     this.inputService.dropDownShowHideSubject
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
-        console.log("DROPDOWN SHOW HIDE ", action);
         if (!action) {
           this.popover.open();
           if (this.activeItem) {
@@ -86,15 +84,17 @@ export class TaInputDropdownComponent
               this.onClearSearch();
             }
           }
-        } else {
           this.popover.close();
+        } else {
           this.inputConfig = {
             ...this.inputConfig,
             placeholder: this.getSuperControl.value
               ? this.getSuperControl.value
               : this.activeItem?.name,
           };
+
           this.getSuperControl.setValue(null);
+          this.popover.close();
         }
       });
 
@@ -131,7 +131,7 @@ export class TaInputDropdownComponent
           this.inputService.isDropDownItemSelectedOnEnter.next(true);
         }
 
-        if(keyEvent === 9) {
+        if (keyEvent === 9) {
           this.popover.open();
         }
       });

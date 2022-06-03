@@ -359,10 +359,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     address: AddressEntity | any;
     valid: boolean;
   }): void {
+
     this.selectedAddress = event.address;
-    if (!event.valid) {
-      this.driverForm.get('addres').setErrors({ invalid: true });
-    }
+    
+    // if (!event.valid) {
+    //   this.driverForm.get('address').setErrors({ invalid: true });
+    // }
   }
 
   public onHandleAddressFormArray(

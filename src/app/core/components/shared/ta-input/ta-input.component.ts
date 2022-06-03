@@ -173,6 +173,7 @@ export class TaInputComponent
     // Dropdown
     if (this.inputConfig.isDropdown && !this.isDropdownAddModeActive) {
       this.dropdownToggler = true;
+      this.inputService.dropDownShowHideSubject.next(true);
     }
 
     this.focusInput = true;
@@ -223,6 +224,7 @@ export class TaInputComponent
     this.timeout = setTimeout(() => {
       this.dropdownToggler = false;
       this.focusInput = false;
+      this.inputService.dropDownShowHideSubject.next(false);
       clearTimeout(this.timeout);
     }, 150);
   }
@@ -247,7 +249,9 @@ export class TaInputComponent
     this.inputService.onClearInputSubject.next(true);
   }
 
-  public onAddItemInDropdown() {
+  public onAddItemInDropdown(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
     this.isDropdownAddModeActive = false;
     this.inputService.addDropdownItemSubject.next(true);
   }

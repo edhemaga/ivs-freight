@@ -2,7 +2,7 @@
   class="input-custom-group"
   [ngClass]="{
     'hover-focus-out': !focusInput,
-    'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput,
+    invalid: getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required':
       inputConfig.isRequired &&
       !getSuperControl.value &&
@@ -13,9 +13,22 @@
       !getSuperControl.value &&
       getSuperControl.invalid &&
       focusInput,
-    'valid': getSuperControl.value && getSuperControl.valid && !focusInput
+    valid: getSuperControl.value && getSuperControl.valid && !focusInput
   }"
 >
+  <!-- Input Invalid Danger Mark -->
+  <svg-icon
+    *ngIf="
+      touchedInput &&
+      getSuperControl.value &&
+      getSuperControl.invalid &&
+      !focusInput
+    "
+    class="input-invalid-danger-mark"
+    src="assets/svg/common/ic_danger.svg"
+  >
+  </svg-icon>
+
   <!-- Input Clear -->
   <div
     *ngIf="!inputConfig.isDisabled"
@@ -74,7 +87,7 @@
       inputConfig.customClass
     }}"
     [ngClass]="{
-      'disabled': !getSuperControl.value && inputConfig.isDisabled,
+      disabled: !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-focus-in':
         activeAddress &&
@@ -96,7 +109,7 @@
     [for]="inputConfig.name"
     class="input-label {{ inputConfig.customClass }}"
     [ngClass]="{
-      'required': inputConfig.isRequired && !inputConfig.isDisabled,
+      required: inputConfig.isRequired && !inputConfig.isDisabled,
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'up-label': getSuperControl.value || focusInput,
@@ -112,11 +125,7 @@
 
   <!-- Input Error Message -->
   <span
-    *ngIf="
-      !(!getSuperControl.value && focusInput) &&
-      (touchedInput || getSuperControl.value) &&
-      invalidAddress
-    "
+    *ngIf="!(!getSuperControl.value && focusInput) && (touchedInput || getSuperControl.value) && invalidAddress"
     class="input-error {{ inputConfig.customClass }}"
   >
     {{ getSuperControl.errors | inputError: inputConfig.name }}
