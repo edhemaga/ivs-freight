@@ -17,8 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { CreateResponse } from '../model/models';
 import { CreateTrailerCommand } from '../model/models';
-import { CreateTrailerResponse } from '../model/models';
 import { DeleteMultipleTrailerCommand } from '../model/models';
 import { GetTrailerModalResponse } from '../model/models';
 import { MultipleChangeTrailerStatusCommand } from '../model/models';
@@ -492,9 +492,9 @@ export class TrailerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTrailerPost(createTrailerCommand?: CreateTrailerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateTrailerResponse>;
-    public apiTrailerPost(createTrailerCommand?: CreateTrailerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateTrailerResponse>>;
-    public apiTrailerPost(createTrailerCommand?: CreateTrailerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateTrailerResponse>>;
+    public apiTrailerPost(createTrailerCommand?: CreateTrailerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiTrailerPost(createTrailerCommand?: CreateTrailerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiTrailerPost(createTrailerCommand?: CreateTrailerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
     public apiTrailerPost(createTrailerCommand?: CreateTrailerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -536,7 +536,7 @@ export class TrailerService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateTrailerResponse>(`${this.configuration.basePath}/api/trailer`,
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/trailer`,
             createTrailerCommand,
             {
                 responseType: <any>responseType,

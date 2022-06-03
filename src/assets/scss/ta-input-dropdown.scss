@@ -67,7 +67,8 @@
           cursor: pointer;
           transition: all 0.3s ease-in-out;
 
-          .banks-logo {
+          .svg-template-logo,
+          .svg-template-grayscale {
             svg {
               -webkit-filter: grayscale(0);
               filter: grayscale(0);
@@ -178,8 +179,8 @@
            }
          }
 
-        //------------------------ Bank Template ------------------------
-        .banks-logo {
+        //------------------------ SVG Template ------------------------
+        .svg-template-logo {
           height: 12px;
 
           svg {

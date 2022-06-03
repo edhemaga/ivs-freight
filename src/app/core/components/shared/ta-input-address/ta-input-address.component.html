@@ -1,7 +1,7 @@
 <div
   class="input-custom-group"
   [ngClass]="{
-    'hover-out-of-focus': !focusInput,
+    'hover-focus-out': !focusInput,
     'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required':
       inputConfig.isRequired &&
@@ -18,46 +18,14 @@
 >
   <!-- Input Clear -->
   <div
+    *ngIf="!inputConfig.isDisabled"
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
-      'disabled': inputConfig.isDisabled,
-      'focus-typing': getSuperControl.value && focusInput,
       'valid-focus-in':
         activeAddress?.address === getSuperControl.value &&
         !invalidAddress &&
         focusInput,
-      'invalid-focus-in':
-        !inputConfig.isRequired &&
-        getSuperControl.value &&
-        invalidAddress &&
-        waitValidation &&
-        focusInput,
-      'invalid-focus-in-required':
-        inputConfig.isRequired &&
-        getSuperControl.value &&
-        invalidAddress &&
-        waitValidation &&
-        focusInput,
-      'invalid-focus-in-empty-required':
-        inputConfig.isRequired &&
-        !getSuperControl.value &&
-        invalidAddress &&
-        waitValidation &&
-        focusInput &&
-        !inputConfig.placeholderIcon,
-      'invalid-focus-out':
-        !inputConfig.isRequired &&
-        getSuperControl.value &&
-        invalidAddress &&
-        waitValidation &&
-        !focusInput &&
-        !inputConfig.placeholderIcon,
-      'invalid-focus-out-required':
-        inputConfig.isRequired &&
-        invalidAddress &&
-        waitValidation &&
-        !focusInput &&
-        !inputConfig.placeholderIcon
+      'invalid-focus-in': getSuperControl.value && invalidAddress && focusInput
     }"
     ngbTooltip
     mainTooltip="Clear"
@@ -80,19 +48,13 @@
       'valid-required-out':
         getSuperControl.value && !invalidAddress && !focusInput,
       'invalid-required-in':
-        getSuperControl.value && invalidAddress && waitValidation && focusInput,
+        getSuperControl.value && invalidAddress && focusInput,
       'invalid-required-empty':
         !getSuperControl.value &&
-        invalidAddress &&
-        waitValidation &&
-        !focusInput,
-      'invalid-required-empty-focus':
-        inputConfig.isRequired &&
-        !getSuperControl.value &&
-        invalidAddress &&
-        waitValidation &&
-        focusInput,
-      'invalid-required-filled':
+        getSuperControl.invalid &&
+        !focusInput &&
+        touchedInput,
+      'invalid-required-filled-out':
         getSuperControl.value && invalidAddress && !focusInput
     }"
     [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg: 'common'"
@@ -117,10 +79,8 @@
       'valid-focus-in':
         activeAddress &&
         activeAddress?.address === getSuperControl.value &&
-        waitValidation &&
         focusInput,
-      'invalid-focus-in':
-        getSuperControl.value && invalidAddress && waitValidation && focusInput,
+      'invalid-focus-in': getSuperControl.value && invalidAddress && focusInput,
       'has-input-icon': inputConfig.placeholderIcon
     }"
     (keyup)="onBackspace($event)"
@@ -144,7 +104,7 @@
       'valid-focus-out':
         getSuperControl.value && !invalidAddress && !focusInput,
       'invalid-focus-out':
-        getSuperControl.value && invalidAddress && waitValidation && !focusInput
+        getSuperControl.value && invalidAddress && !focusInput
     }"
   >
     {{ inputConfig.label }}
@@ -152,21 +112,12 @@
 
   <!-- Input Error Message -->
   <span
+    *ngIf="
+      !(!getSuperControl.value && focusInput) &&
+      (touchedInput || getSuperControl.value) &&
+      invalidAddress
+    "
     class="input-error {{ inputConfig.customClass }}"
-    [ngClass]="{
-      'invalid-focus-out':
-        getSuperControl.value &&
-        invalidAddress &&
-        waitValidation &&
-        !focusInput,
-      'invalid-empty-focus-out-required':
-        inputConfig.isRequired &&
-        !getSuperControl.value &&
-        invalidAddress &&
-        waitValidation &&
-        !focusInput,
-      'invalid-focus-in': invalidAddress && focusInput && waitValidation
-    }"
   >
     {{ getSuperControl.errors | inputError: inputConfig.name }}
   </span>

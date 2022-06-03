@@ -154,7 +154,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: any) => {
-              console.log(res);
               if (res.status === '200' || res.status === '204') {
                 this.modalService.changeModalStatus({
                   name: 'deactivate',
@@ -230,7 +229,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
               subFolder: 'trucks',
             };
           });
-          this.truckMakeType = res.truckMakes;
+          this.truckMakeType = res.truckMakes.map((item) => {
+            return {
+              ...item,
+              folder: 'common',
+              subFolder: 'trucksmake',
+            }
+          });
           this.colorType = res.colors.map((item) => {
             return {
               ...item,

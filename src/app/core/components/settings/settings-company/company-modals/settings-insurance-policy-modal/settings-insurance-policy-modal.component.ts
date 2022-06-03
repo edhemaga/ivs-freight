@@ -7,7 +7,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { Address } from 'src/app/core/components/shared/ta-input-address/ta-input-address.component';
 import { AddressEntity } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 @Component({
@@ -22,7 +21,7 @@ export class SettingsInsurancePolicyModalComponent
 
   public insurancePolicyForm: FormGroup;
 
-  public selectedAddress: Address | AddressEntity;
+  public selectedAddress: AddressEntity;
 
   public selectedCommericalRating: any = null;
   public selectedAutomobileRating: any = null;
@@ -99,7 +98,7 @@ export class SettingsInsurancePolicyModalComponent
 
   public onModalAction(event: any) {}
 
-  public onHandleAddress(event: { address: Address; valid: boolean }): void {
+  public onHandleAddress(event: { address: AddressEntity; valid: boolean }): void {
     this.selectedAddress = event.address;
     if (!event.valid) {
       this.insurancePolicyForm.setErrors({ invalid: event.valid });

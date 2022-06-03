@@ -1,4 +1,3 @@
-import { Address } from 'src/app/core/model/address';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -20,7 +19,7 @@ export class FuelStopModalComponent implements OnInit {
   public fuelStops: any[] = [];
 
   public selectedFuelStop: any = null;
-  public selectedAddress: Address | AddressEntity;
+  public selectedAddress: AddressEntity | AddressEntity;
 
   public isFavouriteFuelStop: boolean = false;
 
@@ -88,11 +87,7 @@ export class FuelStopModalComponent implements OnInit {
   }
 
   public onSelectDropdown(event: any, action) {
-    switch(action) {
-      case 'address': {
-        this.selectedAddress = event;
-        break;
-      }
+    switch (action) {
       case 'fuel-stop': {
         this.selectedFuelStop = event;
         break;
@@ -101,7 +96,16 @@ export class FuelStopModalComponent implements OnInit {
         break;
       }
     }
+  }
 
+  public onHandleAddress(event: {
+    address: AddressEntity | any;
+    valid: boolean;
+  }): void {
+    this.selectedAddress = event.address;
+    if (!event.valid) {
+      this.fuelStopForm.get('addres').setErrors({ invalid: true });
+    }
   }
 
   private updateFuelStop(id: number) {}

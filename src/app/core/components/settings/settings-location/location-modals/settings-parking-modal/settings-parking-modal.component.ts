@@ -10,7 +10,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddressEntity } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
-import { Address } from 'src/app/core/components/shared/model/address';
 import {
   emailRegex,
   phoneRegex,
@@ -80,7 +79,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public selectedAddress: Address | AddressEntity = null;
+  public selectedAddress: AddressEntity = null;
   public selectedPayPeriod: any = null;
   public selectedDay: any = null;
 
@@ -184,7 +183,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   }
 
   public onHandleAddress(event: {
-    address: Address | any;
+    address: AddressEntity | any;
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;

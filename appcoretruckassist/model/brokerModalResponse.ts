@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PayTermsResponse } from './payTermsResponse';
+import { EnumValue } from './enumValue';
 import { DepartmentResponse } from './departmentResponse';
 
 
 export interface BrokerModalResponse { 
     departments?: Array<DepartmentResponse> | null;
-    payTerms?: Array<PayTermsResponse> | null;
+    payTerms?: Array<EnumValue> | null;
 }
 

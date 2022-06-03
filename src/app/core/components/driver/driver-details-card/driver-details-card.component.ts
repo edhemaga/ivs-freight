@@ -33,34 +33,8 @@ export class DriverDetailsCardComponent implements OnInit {
   @Input() templateCard:boolean=false;
   public toggler:boolean[]=[];
   public dataEdit:any;
-  selectedTab:number=1;
-  public tabs: any[] = [
-    {
-      id: 53333,
-      name: '1M',
-    },
-    {
-      id: 53,
-      name: '3M',
-    },
-    {
-      id: 42,
-      name: '6M',
-    },
-    {
-      id: 1005,
-      name: '1Y',
-    },
-    {
-      id: 8932,
-      name: 'YTD',
-    },
-    {
-      id: 1111,
-      name: 'ALL',
-    },
-   
-  ];
+  public selectedTab:number;
+  public tabsDriver:any[]=[];
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
   constructor( private sanitazer: DomSanitizer,  private modalService: ModalService) { }
@@ -69,7 +43,40 @@ export class DriverDetailsCardComponent implements OnInit {
     console.log(this.data);
     console.log('data from cards');
     this.initTableOptions();
+   
+      this.tabsDriver= [
+      {
+        id: 53333,
+        name: '1M',
+        checked:true
+      },
+      {
+        id: 53,
+        name: '3M',
+        checked:false
+      },
+      {
+        id: 42,
+        name: '6M',
+        checked:false
+      },
+      {
+        id: 36,
+        name: '1Y',
+        checked:false
+      },
+      {
+        id: 8932,
+        name: 'YTD',
+        checked:false
+      },
+      {
+        id: 1111,
+        name: 'ALL',
+        checked:false
+      },
      
+    ];
     this.buttonsArray = [
       {
         id: 444,

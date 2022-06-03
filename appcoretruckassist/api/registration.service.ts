@@ -18,7 +18,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { CreateRegistrationCommand } from '../model/models';
-import { CreateRegistrationResponse } from '../model/models';
+import { CreateResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { RegistrationResponse } from '../model/models';
 import { UpdateRegistrationCommand } from '../model/models';
@@ -258,9 +258,9 @@ export class RegistrationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateRegistrationResponse>;
-    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateRegistrationResponse>>;
-    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateRegistrationResponse>>;
+    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
     public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -302,7 +302,7 @@ export class RegistrationService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateRegistrationResponse>(`${this.configuration.basePath}/api/registration`,
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/registration`,
             createRegistrationCommand,
             {
                 responseType: <any>responseType,

@@ -33,8 +33,8 @@
   padding: 0 10px;
   display: grid;
   column-gap: 12px;
-  row-gap: 12px;
   .addres-wrapper {
+    padding-bottom: 9px;
     .address-icon {
       display: none;
       position: relative;
@@ -68,7 +68,7 @@
       font-weight: 400;
       color: #6c6c6c;
       white-space: pre-line;
-      max-width: 364px;
+      width: 360px;
       &::-moz-selection {
         color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);

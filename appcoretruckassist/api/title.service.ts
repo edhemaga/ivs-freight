@@ -17,8 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { CreateResponse } from '../model/models';
 import { CreateTitleCommand } from '../model/models';
-import { CreateTitleResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { TitleResponse } from '../model/models';
 import { UpdateTitleCommand } from '../model/models';
@@ -258,9 +258,9 @@ export class TitleService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTitlePost(createTitleCommand?: CreateTitleCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateTitleResponse>;
-    public apiTitlePost(createTitleCommand?: CreateTitleCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateTitleResponse>>;
-    public apiTitlePost(createTitleCommand?: CreateTitleCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateTitleResponse>>;
+    public apiTitlePost(createTitleCommand?: CreateTitleCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiTitlePost(createTitleCommand?: CreateTitleCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiTitlePost(createTitleCommand?: CreateTitleCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
     public apiTitlePost(createTitleCommand?: CreateTitleCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -302,7 +302,7 @@ export class TitleService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateTitleResponse>(`${this.configuration.basePath}/api/title`,
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/title`,
             createTitleCommand,
             {
                 responseType: <any>responseType,
