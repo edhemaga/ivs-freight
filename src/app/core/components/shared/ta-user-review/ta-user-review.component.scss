@@ -105,6 +105,13 @@
     }
 
     .ta-user-actions {
+      display: flex;
+      align-items: center;
+      line-height: 18px;
+      width: 36px;
+      height: 18px;
+      justify-content: center;
+      text-align: center;
       .action-edit,
       .action-delete {
         width: 22px;

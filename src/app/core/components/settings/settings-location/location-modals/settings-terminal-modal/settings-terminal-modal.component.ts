@@ -4,11 +4,11 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Address } from 'src/app/core/components/shared/model/address';
 import { AddressEntity } from 'appcoretruckassist';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-settings-terminal-modal',
@@ -84,7 +84,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private notificationService: NotificationService
   ) {}
 
@@ -143,28 +143,33 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
-    if (data.action === 'close') {
-      this.terminalForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'close': {
+        this.terminalForm.reset();
+        break;
+      }
+      case 'save': {
         if (this.terminalForm.invalid) {
           this.inputService.markInvalid(this.terminalForm);
           return;
         }
         if (this.editData) {
           this.updateTerminal(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addTerminal();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
+        break;
       }
-
-      // Delete
-      if (data.action === 'delete' && this.editData) {
+      case 'delete': {
         this.deleteTerminalById(this.editData.id);
+        this.modalService.setModalSpinner({ action: 'delete', status: true });
+        break;
       }
-
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
@@ -333,22 +338,30 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public changeGate(event: any) {
-    this.gateBtns = [...event];
-    this.gateBtns.forEach((item) => {
-      if (item.checked) {
-        this.terminalForm.get('gate').patchValue(item.label);
+  public onAction(event: any, action: string) {
+    switch (action) {
+      case 'gate': {
+        this.gateBtns = [...event];
+        this.gateBtns.forEach((item) => {
+          if (item.checked) {
+            this.terminalForm.get('gate').patchValue(item.label);
+          }
+        });
+        break;
       }
-    });
-  }
-
-  public changeCamera(event: any) {
-    this.cameraBtns = [...event];
-    this.cameraBtns.forEach((item) => {
-      if (item.checked) {
-        this.terminalForm.get('securityCamera').patchValue(item.label);
+      case 'camera': {
+        this.cameraBtns = [...event];
+        this.cameraBtns.forEach((item) => {
+          if (item.checked) {
+            this.terminalForm.get('securityCamera').patchValue(item.label);
+          }
+        });
+        break;
       }
-    });
+      default: {
+        break;
+      }
+    }
   }
 
   private updateTerminal(id: number) {}

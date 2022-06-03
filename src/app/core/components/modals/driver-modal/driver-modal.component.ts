@@ -3,7 +3,6 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
@@ -109,7 +108,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
     private mockModalService: MockModalService,
     private driverTService: DriverTService,
     private notificationService: NotificationService,
@@ -156,25 +154,24 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             );
           },
         });
-    } else {
+    } else if (data.action === 'save') {
       // Save & Update
-      if (data.action === 'save') {
-        if (this.driverForm.invalid) {
-          this.inputService.markInvalid(this.driverForm);
-          return;
-        }
-        if (this.editData) {
-          this.updateDriver(this.editData.id);
-        } else {
-          this.addDriver();
-        }
+      if (this.driverForm.invalid) {
+        this.inputService.markInvalid(this.driverForm);
+        return;
       }
-
-      // Delete
-      if (data.action === 'delete' && this.editData) {
-        this.deleteDriverById(this.editData.id);
+      if (this.editData) {
+        this.updateDriver(this.editData.id);
+        this.modalService.setModalSpinner({ action: null, status: true });
+      } else {
+        this.addDriver();
+        this.modalService.setModalSpinner({ action: null, status: true });
       }
-      this.ngbActiveModal.close();
+    }
+    // Delete
+    else if (data.action === 'delete' && this.editData) {
+      this.deleteDriverById(this.editData.id);
+      this.modalService.setModalSpinner({ action: 'delete', status: true });
     }
   }
 
@@ -391,7 +388,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public premmapedOffDutyLocation() {
-    return this.offDutyLocations.controls.map(item => {
+    return this.offDutyLocations.controls.map((item) => {
       return {
         nickname: item.get('nickname').value,
         address: {
@@ -403,10 +400,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           zipCode: item.get('zipCode').value,
           addressUnit: item.get('addressUnit').value,
           street: item.get('street').value,
-          streetNumber: item.get('streetNumber').value
-        }
-      }
-    })
+          streetNumber: item.get('streetNumber').value,
+        },
+      };
+    });
   }
 
   public tabChange(event: any): void {
@@ -415,6 +412,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.uploadFileService.visibilityDropZone(this.selectedTab === 3);
 
     let dotAnimation = document.querySelector('.animation-three-tabs');
+
     this.animationObject = {
       value: this.selectedTab,
       params: { height: `${dotAnimation.getClientRects()[0].height}px` },
@@ -544,18 +542,20 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       twicExpDate: this.driverForm.get('twic').value
         ? new Date(this.driverForm.get('twicExpDate').value).toISOString()
         : null,
-      offDutyLocations: this.premmapedOffDutyLocation()
+      offDutyLocations: this.premmapedOffDutyLocation(),
     };
 
     this.driverTService
       .addDriver(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Driver successfully added.',
             'Success:'
           ),
+            this.modalService.setModalSpinner({ action: null, status: false });
+        },
         error: () =>
           this.notificationService.error("Driver can't be added.", 'Error:'),
       });
@@ -616,19 +616,20 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       twicExpDate: this.driverForm.get('twic').value
         ? new Date(this.driverForm.get('twicExpDate').value).toISOString()
         : null,
-      offDutyLocations: this.premmapedOffDutyLocation()
+      offDutyLocations: this.premmapedOffDutyLocation(),
     };
-
 
     this.driverTService
       .updateDriver(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Driver successfully updated.',
             'Success:'
-          ),
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
         error: () =>
           this.notificationService.error("Driver can't be updated.", 'Error:'),
       });
@@ -734,6 +735,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             'Driver successfully deleted.',
             'Success:'
           );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error("Driver can't be deleted.", 'Error:');

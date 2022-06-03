@@ -40,7 +40,7 @@ export class TaUserReviewComponent implements OnInit, OnChanges {
         this.reviewData[0].isEditMode = true;
         this.reviewData[0].isNewReview = false;
         clearTimeout(timeout);
-      }, 50);
+      }, 150);
     }
   }
 

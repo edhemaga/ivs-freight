@@ -56,7 +56,7 @@
     mainTooltip="Clear"
     tooltipBackground="#6c6c6c"
     position="top"
-    (click)="clearInput()"
+    (click)="clearInput($event)"
   >
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>
@@ -134,7 +134,7 @@
     ></svg-icon>
   </div>
 
-  <!-- Input Drodown Array -->
+  <!-- Input Drodown Arrow -->
   <svg-icon
     class="input-dropdown-arrow"
     *ngIf="
@@ -167,7 +167,7 @@
     [disablePopover]="
       inputConfig.name !== 'datepicker' && inputConfig.name !== 'timepicker'
     "
-    [placement]="['left']"
+    [placement]="['left', 'left-top']"
     [popoverClass]="'datetimepopovermain'"
     autoClose="outside"
     [container]="'body'"
@@ -248,7 +248,7 @@
     [(ngModel)]="input.value"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"
-    (input)="onChange($event.target.value)"
+    (input)="onChange($event.target.value); transformText($event.target.value)"
     (blur)="onBlur()"
     (focus)="onFocus()"
     (paste)="onPaste($event, inputConfig.maxLength)"

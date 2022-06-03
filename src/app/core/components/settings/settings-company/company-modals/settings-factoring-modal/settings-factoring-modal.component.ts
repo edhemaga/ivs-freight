@@ -3,9 +3,9 @@ import { emailRegex } from './../../../../shared/ta-input/ta-input.regex-validat
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-settings-factoring-modal',
@@ -22,7 +22,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private notificationService: NotificationService
   ) {}
 

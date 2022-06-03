@@ -17,6 +17,7 @@ import {
   emailRegex,
   phoneRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-contact-modal',
@@ -37,7 +38,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private contactModalService: ContactModalService,
     private notificationService: NotificationService,
     private mockModalService: MockModalService
@@ -72,28 +73,35 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
-    if (data.action === 'close') {
-      this.contactForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'close': {
+        this.contactForm.reset();
+        break;
+      }
+      case 'save': {
         if (this.contactForm.invalid) {
           this.inputService.markInvalid(this.contactForm);
           return;
         }
         if (this.editData) {
           this.updateCompanyContact(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addCompanyContact();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
+        break;
       }
-
-      // Delete
-      if (data.action === 'delete' && this.editData) {
-        this.deleteCompanyContactById(this.editData.id);
+      case 'delete': {
+        if (this.editData) {
+          this.deleteCompanyContactById(this.editData.id);
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
+        }
+        break;
       }
-
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
@@ -176,6 +184,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             'Company Contact successfully created.',
             'Success:'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -209,6 +218,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             'Company Contact successfully updated.',
             'Success:'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -224,11 +234,13 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       .deleteCompanyContactById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Company Contact successfully deleted.',
             'Success:'
-          ),
+          );
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
+        },
         error: () =>
           this.notificationService.error(
             "Company Contact can't be deleted.",
@@ -253,7 +265,10 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandleAddress(event: { address: AddressEntity; valid: boolean }): void {
+  public onHandleAddress(event: {
+    address: AddressEntity;
+    valid: boolean;
+  }): void {
     this.selectedAddress = event.address;
     if (!event.valid) {
       this.contactForm.setErrors({ invalid: event.valid });
