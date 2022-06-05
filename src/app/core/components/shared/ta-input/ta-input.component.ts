@@ -77,15 +77,24 @@ export class TaInputComponent
   }
 
   ngOnInit(): void {
-    if (this.inputConfig.name === 'datepicker') {
+    if (this.inputConfig.name === 'datepicker' || this.inputConfig.name === 'timepicker') {
       this.calendarService.dateChanged
         .pipe(untilDestroyed(this))
         .subscribe((date) => {
-          const text = moment(new Date(date)).format('MM/DD/YY');
+          let text, dateFormat, timeFormat;
+          if( this.inputConfig.name === 'datepicker' ){
+            text = moment(new Date(date)).format('MM/DD/YY');
+            dateFormat = text.split('/');
+            
+          }else{
+            text = moment(new Date(date)).format('HH:mm');
+            timeFormat = moment(new Date(date)).format('hh/mm/A');
+            dateFormat = timeFormat.split('/');
+          }
+
           this.input.nativeElement.value = text;
           this.onChange(this.input.nativeElement.value);
           this.focusInput = false;
-          const dateFormat = text.split('/');
 
           this.span1.nativeElement.innerHTML = dateFormat[0];
           this.span2.nativeElement.innerHTML = dateFormat[1];
@@ -245,6 +254,16 @@ export class TaInputComponent
       this.span2.nativeElement.innerHTML = 'dd';
       this.span3.nativeElement.innerHTML = 'yy';
     }
+
+    if (this.inputConfig.name === 'timepicker') {
+      this.focusInput = false;
+      this.showDateInput = false; 
+      this.span1.nativeElement.innerHTML = 'HH';
+      this.span2.nativeElement.innerHTML = 'MM';
+      this.span3.nativeElement.innerHTML = 'AM';
+    }
+
+
 
     this.inputService.onClearInputSubject.next(true);
   }
@@ -818,6 +837,7 @@ export class TaInputComponent
   private blurOnDateTime() {
     clearTimeout(this.dateTimeMainTimer);
     this.dateTimeMainTimer = setTimeout(() => {
+      console.log('SELECTED DATE PICKER');
       if (this.inputConfig.name === 'datepicker') {
         if (
           !isNaN(this.span1.nativeElement.innerHTML) &&
@@ -832,7 +852,7 @@ export class TaInputComponent
           this.showDateInput = false;
         }
       } else {
-        console.log('TIME PICKER');
+        
         if (
           !isNaN(this.span1.nativeElement.innerHTML) &&
           !isNaN(this.span2.nativeElement.innerHTML)

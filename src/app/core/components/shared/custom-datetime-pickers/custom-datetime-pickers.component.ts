@@ -14,6 +14,8 @@ import {
 import calendarJson from '../../../../../assets/calendarjson/calendar.json';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
+import moment from "moment";
+
 @Component({
   selector: 'app-custom-datetime-pickers',
   templateUrl: './custom-datetime-pickers.component.html',
@@ -479,7 +481,10 @@ export class CustomDatetimePickersComponent implements OnInit {
     this.outputType[4] = this.timeOfDay[this.scrollTypes.pmAmScroll];
 
     this.selectedDateTime = this.createStringFromOutput();
-    console.log(this.selectedDateTime);
+  
+    let currentDate=moment().format('MM/DD/YYYY');
+    
+    this.calendarService.dateChanged.next(new Date(currentDate + " " + this.selectedDateTime));
     //this.dropdown.close();
 
     this.closePopover.emit();

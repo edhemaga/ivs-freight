@@ -146,6 +146,7 @@
                   type: 'text',
                   label: 'From',
                   placeholderIcon: 'time',
+                  isDropdown: true,
                   isDisabled:
                     shipperForm.get('receiving24h').value &&
                     shipperForm.get('receivingAppointment').value,
@@ -162,6 +163,7 @@
                   type: 'text',
                   label: 'To',
                   placeholderIcon: 'time',
+                  isDropdown: true,
                   isDisabled:
                     shipperForm.get('receiving24h').value &&
                     shipperForm.get('receivingAppointment').value,
@@ -213,6 +215,7 @@
                     type: 'text',
                     label: 'From',
                     placeholderIcon: 'time',
+                    isDropdown: true,
                     isDisabled:
                       shipperForm.get('shipping24h').value &&
                       shipperForm.get('shippingAppointment').value,
@@ -229,6 +232,7 @@
                     type: 'text',
                     label: 'To',
                     placeholderIcon: 'time',
+                    isDropdown: true,
                     isDisabled:
                       shipperForm.get('shipping24h').value &&
                       shipperForm.get('shippingAppointment').value,
