@@ -1,3 +1,4 @@
+import { SumArraysPipe } from './../../pipes/sum-arrays.pipe';
 import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
@@ -103,7 +104,6 @@ import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 
 import { FilterComponent } from './filter/filter.component';
-import { FuelTotalPipe } from '../modals/fuel-modals/fuel-total.pipe';
 import { FuelPurchaseModalComponent } from '../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { ViolationModalComponent } from '../safety/violation/violation-modal/violation-modal.component';
@@ -186,7 +186,7 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
     TaSvgPipe,
     DropdownCountPipe,
     ReviewsSortPipe,
-    FuelTotalPipe,
+    SumArraysPipe,
     HidePasswordPipe,
     InputTypePipe,
 
@@ -343,7 +343,7 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
     TaSvgPipe,
     DropdownCountPipe,
     ReviewsSortPipe,
-    FuelTotalPipe,
+    SumArraysPipe,
     HidePasswordPipe,
     InputTypePipe,
 

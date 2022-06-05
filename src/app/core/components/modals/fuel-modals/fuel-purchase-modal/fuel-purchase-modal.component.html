@@ -183,7 +183,7 @@
       <div class="row fuel-total-row">
         <p class="fuel-total">
           <span class="fuel-total-text">TOTAL</span>
-          {{ subtotal | fuelTotal | currency }}
+          {{ subtotal | sumArrays | currency }}
         </p>
       </div>
     </app-ta-custom-card>

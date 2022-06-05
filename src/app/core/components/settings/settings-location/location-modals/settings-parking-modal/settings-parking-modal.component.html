@@ -136,7 +136,7 @@
         </div>
         <!-- Parking Slot -->
         <app-ta-custom-card
-          [hasCounter]="'0'"
+          [hasCounter]="(parkingSlots | sumArrays) === 0 ? '0' : (parkingSlots | sumArrays)"
           [cardName]="'Parking Slot'"
           [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
           [isCardOpen]="true"
