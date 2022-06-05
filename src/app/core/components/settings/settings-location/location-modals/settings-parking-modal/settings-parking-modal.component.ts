@@ -1,8 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -78,6 +76,17 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       value: 'no',
       name: 'camera',
       checked: false,
+    },
+  ];
+
+  public parkingSlots: any[] = [
+    {
+      id: 1,
+      value: 0,
+    },
+    {
+      id: 2,
+      value: 0,
     },
   ];
 
@@ -235,17 +244,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public parkingSlots: any[] = [
-    {
-      id: 1,
-      value: 0,
-    },
-    {
-      id: 2,
-      value: 0,
-    },
-  ];
-
   private parkingSlot() {
     this.parkingForm
       .get('parkingSlot')
@@ -259,7 +257,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public fullParkingSlot() {
+  private fullParkingSlot() {
     this.parkingForm
       .get('fullParkingSlot')
       .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
