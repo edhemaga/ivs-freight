@@ -13,6 +13,7 @@ export interface ITaInput {
   maxLength?: number;
   min?: number;
   max?: number;
+  step?: any; // step for input type="number";
   mask?: string;
   textTransform?: string | 'capitalize' | 'uppercase' | 'lowercase';
   textAlign?: string | 'center';
