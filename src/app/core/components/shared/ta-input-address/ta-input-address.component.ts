@@ -51,7 +51,8 @@ export class TaInputAddressComponent
   }
 
   ngOnInit(): void {
-    this.getSuperControl.valueChanges
+    if(this.activeAddress) {
+      this.getSuperControl.valueChanges
       .pipe(untilDestroyed(this))
       .subscribe((value) => {
         console.log(value);
@@ -62,6 +63,8 @@ export class TaInputAddressComponent
           this.getSuperControl.setErrors({ invalid: true });
         }
       });
+    }
+    
   }
 
   public handleAddressChange(address: AddressEntity) {

@@ -131,8 +131,8 @@
             </div>
             <div class="shipper-work-hours-field">
               <app-ta-checkbox
-                formControlName="receiving24h"
-                [name]="'receiving24h'"
+                formControlName="receivingOpenTwentyFourHours"
+                [name]="'receivingOpenTwentyFourHours'"
                 [customClass]="'medium'"
                 [label]="'Open 24h'"
               ></app-ta-checkbox>
@@ -148,7 +148,7 @@
                   placeholderIcon: 'time',
                   isDropdown: true,
                   isDisabled:
-                    shipperForm.get('receiving24h').value &&
+                    shipperForm.get('receivingOpenTwentyFourHours').value &&
                     shipperForm.get('receivingAppointment').value,
                   customClass: 'datetimeclass'
                 }"
@@ -165,7 +165,7 @@
                   placeholderIcon: 'time',
                   isDropdown: true,
                   isDisabled:
-                    shipperForm.get('receiving24h').value &&
+                    shipperForm.get('receivingOpenTwentyFourHours').value &&
                     shipperForm.get('receivingAppointment').value,
                   customClass: 'datetimeclass'
                 }"
@@ -175,20 +175,20 @@
         </app-ta-custom-card>
 
         <app-ta-checkbox
-          formControlName="isShippingHoursSameLikeReceiving"
+          formControlName="shippingHoursSameReceiving"
           [customClass]="'medium shipper-hours'"
           [label]="'Shipping hours is same as receiving hours'"
         ></app-ta-checkbox>
 
         <app-ta-custom-card
           [cardName]="'Shipping Work Hours'"
-          *ngIf="!shipperForm.get('isShippingHoursSameLikeReceiving').value"
+          *ngIf="!shipperForm.get('shippingHoursSameReceiving').value"
           [isCardOpen]="
-            !shipperForm.get('isShippingHoursSameLikeReceiving').value
+            !shipperForm.get('shippingHoursSameReceiving').value
           "
         >
           <div
-            *ngIf="!shipperForm.get('isShippingHoursSameLikeReceiving').value"
+            *ngIf="!shipperForm.get('shippingHoursSameReceiving').value"
           >
             <div class="shipper-work-hours row-mt-20 last-row">
               <div
@@ -200,8 +200,8 @@
               </div>
               <div class="shipper-work-hours-field">
                 <app-ta-checkbox
-                  formControlName="shipping24h"
-                  [name]="'shipping24h'"
+                  formControlName="shippingOpenTwentyFourHours"
+                  [name]="'shippingOpenTwentyFourHours'"
                   [customClass]="'medium'"
                   [label]="'Open 24h'"
                 ></app-ta-checkbox>
@@ -217,7 +217,7 @@
                     placeholderIcon: 'time',
                     isDropdown: true,
                     isDisabled:
-                      shipperForm.get('shipping24h').value &&
+                      shipperForm.get('shippingOpenTwentyFourHours').value &&
                       shipperForm.get('shippingAppointment').value,
                     customClass: 'datetimeclass'
                   }"
@@ -234,7 +234,7 @@
                     placeholderIcon: 'time',
                     isDropdown: true,
                     isDisabled:
-                      shipperForm.get('shipping24h').value &&
+                      shipperForm.get('shippingOpenTwentyFourHours').value &&
                       shipperForm.get('shippingAppointment').value,
                     customClass: 'datetimeclass'
                   }"
