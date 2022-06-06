@@ -1,21 +1,14 @@
-import {
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddressEntity } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
-import { Address } from 'src/app/core/components/shared/model/address';
 import {
   emailRegex,
   phoneRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
 @Component({
@@ -65,14 +58,14 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
   public cameraBtns = [
     {
-      id: 3,
+      id: 363,
       label: 'Yes',
       value: 'yes',
       name: 'camera',
       checked: false,
     },
     {
-      id: 4,
+      id: 367,
       label: 'No',
       value: 'no',
       name: 'camera',
@@ -80,7 +73,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public selectedAddress: Address | AddressEntity = null;
+  public selectedAddress: AddressEntity = null;
   public selectedPayPeriod: any = null;
   public selectedDay: any = null;
 
@@ -89,7 +82,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private notificationService: NotificationService
   ) {}
 
@@ -158,33 +151,41 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
-    if (data.action === 'close') {
-      this.parkingForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'close': {
+        this.parkingForm.reset();
+        break;
+      }
+      case 'save': {
         if (this.parkingForm.invalid) {
           this.inputService.markInvalid(this.parkingForm);
           return;
         }
         if (this.editData) {
           this.updateParking(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addParking();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
+        break;
       }
+      case 'delete': {
+        if (this.editData) {
+          this.deleteParkingById(this.editData.id);
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
+        }
 
-      // Delete
-      if (data.action === 'delete' && this.editData) {
-        this.deleteParkingById(this.editData.id);
+        break;
       }
-
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
   public onHandleAddress(event: {
-    address: Address | any;
+    address: AddressEntity | any;
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;
@@ -193,30 +194,38 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSelectPayPeriod(event) {
-    this.selectedPayPeriod = event;
-  }
-
-  public onSelectDay(event) {
-    this.selectedDay = event;
-  }
-
-  public changeGate(event: any) {
-    this.gateBtns = [...event];
-    this.gateBtns.forEach((item) => {
-      if (item.checked) {
-        this.parkingForm.get('gate').patchValue(item.label);
+  public onAction(event: any, action: string) {
+    switch (action) {
+      case 'pay-period': {
+        this.selectedPayPeriod = event;
+        break;
       }
-    });
-  }
-
-  public changeCamera(event: any) {
-    this.cameraBtns = [...event];
-    this.cameraBtns.forEach((item) => {
-      if (item.checked) {
-        this.parkingForm.get('securityCamera').patchValue(item.label);
+      case 'day': {
+        this.selectedDay = event;
+        break;
       }
-    });
+      case 'gate': {
+        this.gateBtns = [...event];
+        this.gateBtns.forEach((item) => {
+          if (item.checked) {
+            this.parkingForm.get('gate').patchValue(item.label);
+          }
+        });
+        break;
+      }
+      case 'camera': {
+        this.cameraBtns = [...event];
+        this.cameraBtns.forEach((item) => {
+          if (item.checked) {
+            this.parkingForm.get('securityCamera').patchValue(item.label);
+          }
+        });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   private updateParking(id: number) {}

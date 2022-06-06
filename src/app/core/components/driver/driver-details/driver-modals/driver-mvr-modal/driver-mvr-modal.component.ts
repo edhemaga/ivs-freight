@@ -10,9 +10,9 @@ import {
   MvrResponse,
 } from 'appcoretruckassist';
 import { DriverTService } from '../../../state/driver.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MvrTService } from '../../../state/mvr.service';
 import moment from 'moment';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-driver-mvr-modal',
@@ -33,17 +33,15 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     private driverService: DriverTService,
     private inputService: TaInputService,
     private notificationService: NotificationService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private mvrService: MvrTService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
-    console.log(" MVR")
-    console.log(this.editData)
     this.getDriverById(this.editData.id);
     if (this.editData.type === 'edit-mvr') {
-      this.getMVRById()
+      this.getMVRById();
     }
   }
 
@@ -69,11 +67,12 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
-    if (data.action === 'close') {
-      this.mvrForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'close': {
+        this.mvrForm.reset();
+        break;
+      }
+      case 'save': {
         // If Form not valid
         if (this.mvrForm.invalid) {
           this.inputService.markInvalid(this.mvrForm);
@@ -81,12 +80,17 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         }
         if (this.editData.type === 'edit-mvr') {
           this.updateMVR();
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addMVR();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
-      }
 
-      this.ngbActiveModal.close();
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 
@@ -102,7 +106,6 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       issueDate: new Date(issueDate).toISOString(),
     };
 
-    console.log(newData)
     this.mvrService
       .addMvr(newData)
       .pipe(untilDestroyed(this))
@@ -112,6 +115,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             'MVR successfully updated.',
             'Success:'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("MVR can't be updated.", 'Error:');
@@ -135,6 +139,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             'MVR successfully added.',
             'Success:'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("MVR can't be added.", 'Error:');

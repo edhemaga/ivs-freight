@@ -1,4 +1,7 @@
-import { accountBankRegex, bankRoutingValidator } from './../../shared/ta-input/ta-input.regex-validations';
+import {
+  accountBankRegex,
+  bankRoutingValidator,
+} from './../../shared/ta-input/ta-input.regex-validations';
 import { UpdateOwnerCommand } from './../../../../../../appcoretruckassist/model/updateOwnerCommand';
 import { CreateOwnerCommand } from './../../../../../../appcoretruckassist/model/createOwnerCommand';
 import { OwnerResponse } from './../../../../../../appcoretruckassist/model/ownerResponse';
@@ -15,13 +18,18 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerModalService } from './owner-modal.service';
-import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 import { AddressEntity } from 'appcoretruckassist';
 import { distinctUntilChanged } from 'rxjs';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
-import { einNumberRegex, emailRegex, phoneRegex, routingBankRegex, ssnNumberRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  einNumberRegex,
+  emailRegex,
+  phoneRegex,
+  routingBankRegex,
+  ssnNumberRegex,
+} from '../../shared/ta-input/ta-input.regex-validations';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-owner-modal',
@@ -50,7 +58,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   public labelsBank: any[] = [];
 
-  public selectedAddress: Address | AddressEntity = null;
+  public selectedAddress: AddressEntity = null;
 
   public selectedBank: any = null;
   public isBankSelected: boolean = false;
@@ -58,7 +66,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private ownerModalService: OwnerModalService,
     private notificationService: NotificationService
   ) {}
@@ -87,17 +95,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       ein: [null, [Validators.required, einNumberRegex]],
       address: [null, Validators.required],
       addressUnit: [null, [Validators.maxLength(6)]],
-      phone: [
-        null,
-        [Validators.required, phoneRegex],
-      ],
-      email: [
-        null,
-        [
-          Validators.required,
-          emailRegex,
-        ],
-      ],
+      phone: [null, [Validators.required, phoneRegex]],
+      email: [null, [Validators.required, emailRegex]],
       bankId: [null],
       accountNumber: [null],
       routingNumber: [null],
@@ -138,33 +137,41 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
-    if (data.action === 'close') {
-      this.ownerForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'close': {
+        this.ownerForm.reset();
+        break;
+      }
+      case 'save': {
         if (this.ownerForm.invalid) {
           this.inputService.markInvalid(this.ownerForm);
           return;
         }
         if (this.editData) {
           this.updateOwner(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addOwner();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
+
+        break;
       }
-      // Delete
-      if (data.action === 'delete' && this.editData) {
+      case 'delete': {
         this.deleteOwnerById(this.editData.id);
+        this.modalService.setModalSpinner({ action: 'delete', status: true });
+        break;
       }
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
-  public onHandleAddress(event: {address: Address, valid: boolean}) {
+  public onHandleAddress(event: { address: AddressEntity; valid: boolean }) {
     this.selectedAddress = event.address;
-    if(!event.valid) {
-      this.ownerForm.setErrors({invalid: event.valid})
+    if (!event.valid) {
+      this.ownerForm.setErrors({ invalid: event.valid });
     }
   }
 
@@ -214,12 +221,11 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             this.ownerForm.get('routingNumber').setErrors(null);
           } else {
             this.ownerForm.get('routingNumber').setErrors({ invalid: true });
-            this.inputService.triggerInvalidRoutingNumber$.next(true);
           }
         }
       });
   }
-  
+
   private updateOwner(id: number) {
     const {
       bussinesName,
@@ -239,7 +245,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.selectedTab === 1 ? bussinesName : firstName.concat(' ', lastName),
       ssnEin: this.selectedTab === 1 ? ein : ssn,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
-      bankId: 1, //this.selectedBank ? this.selectedBank.id : null,
+      bankId: this.selectedBank ? this.selectedBank.id : null,
       ...form,
     };
 
@@ -252,6 +258,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             'Owner successfully updated.',
             'Success:'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Owner can't be updated.", 'Error:');
@@ -269,6 +276,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             'Owner successfully deleted.',
             'Success:'
           );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error("Owner can't be deleted.", 'Error:');
@@ -295,7 +306,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.selectedTab === 1 ? bussinesName : firstName.concat(' ', lastName),
       ssnEin: this.selectedTab === 1 ? ein : ssn,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
-      bankId:  this.selectedBank ? this.selectedBank.id : null,
+      bankId: this.selectedBank ? this.selectedBank.id : null,
     };
 
     this.ownerModalService
@@ -307,6 +318,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             'Owner successfully added.',
             'Success:'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Owner can't be added.", 'Error:');

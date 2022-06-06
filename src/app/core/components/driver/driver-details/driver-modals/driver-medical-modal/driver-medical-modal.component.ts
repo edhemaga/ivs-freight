@@ -1,7 +1,5 @@
-
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   CreateMedicalCommand,
   DriverResponse,
@@ -11,6 +9,7 @@ import {
 import moment from 'moment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DriverTService } from '../../../state/driver.service';
 import { MedicalTService } from '../../../state/medical.service';
@@ -34,7 +33,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private medicalService: MedicalTService,
     private notificationService: NotificationService,
-    private ngbActiveModal: NgbActiveModal
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -68,11 +67,12 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
-    if (data.action === 'close') {
-      this.medicalForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'close': {
+        this.medicalForm.reset();
+        break;
+      }
+      case 'save': {
         // If Form not valid
         if (this.medicalForm.invalid) {
           this.inputService.markInvalid(this.medicalForm);
@@ -80,12 +80,17 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         }
         if (this.editData.type === 'edit-medical') {
           this.updateMedical(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addMedical();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
-      }
 
-      this.ngbActiveModal.close();
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 
@@ -112,6 +117,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             'Medical successfully updated.',
             'Success:'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Medical can't be updated.", 'Error:');
@@ -137,6 +143,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             'Medical successfully added.',
             'Success:'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Medical can't be added.", 'Error:');
@@ -151,8 +158,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: MedicalResponse) => {
           this.medicalForm.patchValue({
-            issueDate:  moment(new Date(res.issueDate)).format('YYYY-MM-DD'), 
-            expDate:moment(new Date(res.expDate)).format('YYYY-MM-DD'),
+            issueDate: moment(new Date(res.issueDate)).format('YYYY-MM-DD'),
+            expDate: moment(new Date(res.expDate)).format('YYYY-MM-DD'),
             note: res.note,
           });
         },

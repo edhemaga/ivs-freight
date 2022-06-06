@@ -4,7 +4,6 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import {
   CdlResponse,
   CreateCdlCommand,
-  CreateCdlResponse,
   DriverResponse,
   EditCdlCommand,
   GetCdlModalResponse,
@@ -13,8 +12,8 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { CdlTService } from '../../../state/cdl.service';
 import { DriverTService } from '../../../state/driver.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -47,7 +46,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     private driverService: DriverTService,
     private cdlService: CdlTService,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private notificationService: NotificationService
   ) {}
 
@@ -56,7 +55,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     this.getCdlDropdowns();
     this.countryStateChange();
     this.getDriverById(this.editData.id);
-    console.log(this.editData)
+
     if (this.editData.type === 'edit-licence') {
       this.getCdlById();
     }
@@ -77,11 +76,12 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
-    if (data.action === 'close') {
-      this.cdlForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'close': {
+        this.cdlForm.reset();
+        break;
+      }
+      case 'save': {
         // If Form not valid
         if (this.cdlForm.invalid) {
           this.inputService.markInvalid(this.cdlForm);
@@ -89,17 +89,20 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         }
         if (this.editData.type === 'edit-licence') {
           this.updateCdl();
+          this.modalService.setModalSpinner({action: null, status: true});
         } else {
           this.addCdl();
+          this.modalService.setModalSpinner({action: null, status: true});
         }
+        break;
       }
-
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
   public onSelectDropdown(event: any, action: string) {
-
     switch (action) {
       case 'class': {
         this.selectedClassType = event;
@@ -206,7 +209,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             endorsements: res.cdlEndorsements,
             note: res.note,
           });
-         
+
           this.selectedClassType = res.classType;
           this.selectedCountryType = res.countryType;
           this.selectedStateType = res.state;
@@ -232,8 +235,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       endorsements: null,
     };
 
-    console.log(newData);
-
     this.cdlService
       .addCdl(newData)
       .pipe(untilDestroyed(this))
@@ -243,6 +244,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             'CDL successfully updated.',
             'Success:'
           );
+          this.modalService.setModalSpinner({action: null, status: false});
         },
         error: () => {
           this.notificationService.error("CDL can't be updated.", 'Error:');
@@ -274,6 +276,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             'CDL successfully added.',
             'Success:'
           );
+          this.modalService.setModalSpinner({action: null, status: false});
         },
         error: () => {
           this.notificationService.error("CDL can't be added.", 'Error:');

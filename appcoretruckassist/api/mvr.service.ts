@@ -18,7 +18,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { CreateMvrCommand } from '../model/models';
-import { CreateMvrResponse } from '../model/models';
+import { CreateResponse } from '../model/models';
 import { EditMvrCommand } from '../model/models';
 import { MvrResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
@@ -253,9 +253,9 @@ export class MvrService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiMvrPost(createMvrCommand?: CreateMvrCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateMvrResponse>;
-    public apiMvrPost(createMvrCommand?: CreateMvrCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateMvrResponse>>;
-    public apiMvrPost(createMvrCommand?: CreateMvrCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateMvrResponse>>;
+    public apiMvrPost(createMvrCommand?: CreateMvrCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiMvrPost(createMvrCommand?: CreateMvrCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiMvrPost(createMvrCommand?: CreateMvrCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
     public apiMvrPost(createMvrCommand?: CreateMvrCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -297,7 +297,7 @@ export class MvrService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateMvrResponse>(`${this.configuration.basePath}/api/mvr`,
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/mvr`,
             createMvrCommand,
             {
                 responseType: <any>responseType,

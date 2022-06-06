@@ -1,11 +1,11 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "../notification/notification.service";
-import {Address} from "../../model/address";
 import {Observable, Subject, tap} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {SpinnerService} from "../spinner/spinner.service";
+import { AddressEntity } from 'appcoretruckassist';
 
 class OwnerData {
 }
@@ -199,10 +199,10 @@ export class SharedService {
   }
 
   public selectAddress(form: FormGroup, address: any) {
-    const ret: Address = {
+    const ret: AddressEntity = {
       address: address.formatted_address,
       streetNumber: this.retrieveAddressComponents(address.address_components, 'street_number', 'long_name'),
-      streetName: this.retrieveAddressComponents(address.address_components, 'route', 'long_name'),
+      street: this.retrieveAddressComponents(address.address_components, 'route', 'long_name'),
       city: this.retrieveAddressComponents(address.address_components, 'locality', 'long_name'),
       state: this.retrieveAddressComponents(
         address.address_components,
@@ -220,6 +220,7 @@ export class SharedService {
         'postal_code',
         'long_name'
       ),
+
     };
     return ret;
   }

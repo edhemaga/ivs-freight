@@ -1,15 +1,24 @@
 .user-icon{
-    width: 18px;
+    width: 32px;
     height: 18px;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
     svg-icon{
         svg{
-            width: 14.4px;
-            height: 16.2px;        
+            width: 18px;
+            height: 18px;        
             display: flex;
 
-            path{
-                fill: #6D82C7;
+        }
+    }
+
+    &.active-options{
+        svg-icon{
+            svg{
+                path{
+                    fill: #6D82C7 !important;
+                }
             }
         }
     }
@@ -241,7 +250,7 @@
         }
     }
 
-    .user-holder{
+    .user-holder{ 
         width: 100%;
         height: 224px;
         background-color: #fff;
@@ -252,6 +261,9 @@
         flex-direction: column;
         padding: 2px 2px 0px 2px;
         box-sizing: border-box;
+        -ms-overflow-style: none;
+        scrollbar-width: none; 
+
 
         .user-frame{
             position: relative;
@@ -326,7 +338,6 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
-    margin-top: 10px;
 
     .time-header{
         position: relative;
@@ -402,3 +413,4 @@
         }
     }
 }
+

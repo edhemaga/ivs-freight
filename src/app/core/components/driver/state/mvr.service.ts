@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   CreateMvrCommand,
-  CreateMvrResponse,
   EditMvrCommand,
   MvrResponse,
 } from 'appcoretruckassist';
+import { CreateMvrResponse } from 'appcoretruckassist/model/createMvrResponse';
 
 @Injectable({
   providedIn: 'root',

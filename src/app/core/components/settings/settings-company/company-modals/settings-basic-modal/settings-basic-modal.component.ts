@@ -8,7 +8,6 @@ import {
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import {
   einNumberRegex,
@@ -16,12 +15,12 @@ import {
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { Address } from 'src/app/core/components/shared/model/address';
 import { AddressEntity } from 'appcoretruckassist';
 import { distinctUntilChanged } from 'rxjs';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Options } from '@angular-slider/ngx-slider';
 import { TabSwitcherComponent } from 'src/app/core/components/switchers/tab-switcher/tab-switcher.component';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -116,7 +115,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public isLogoDropZoneVisibile: boolean = false;
 
   // Basic Tab
-  public selectedAddress: Address | AddressEntity;
+  public selectedAddress: AddressEntity;
   public selectedTimezone: any = null;
   public selectedCurrency: any = null;
 
@@ -132,7 +131,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private notificationService: NotificationService
   ) {}
 
@@ -143,9 +142,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       const timeout = setTimeout(() => {
         this.selectedTab = 3;
         this.tabSwitcher.activeTab = this.selectedTab;
-        clearTimeout(timeout)
-      },10)
-     
+        clearTimeout(timeout);
+      }, 10);
     }
   }
 
@@ -250,9 +248,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   private createDepartmentContacts(): FormGroup {
     return this.formBuilder.group({
       departmentId: [null],
-      phone: [null],
+      phone: [null, phoneRegex],
       extensionPhone: [null],
-      email: [null],
+      email: [null, emailRegex],
     });
   }
 
@@ -354,7 +352,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         if (value) {
           if (bankRoutingValidator(value)) {
             this.bankAccounts.at(index).get('routing').setErrors(null);
-            this.inputService.triggerInvalidRoutingNumber$.next(true);
           } else {
             this.bankAccounts
               .at(index)
@@ -390,7 +387,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     this.selectedBankCardFormArray.splice(id, 1);
   }
 
-  public onHandleAddress(event: any) {
+  public onHandleAddress(event: {
+    address: AddressEntity | any;
+    valid: boolean;
+  }) {
     this.selectedAddress = event;
   }
 

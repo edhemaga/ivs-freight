@@ -50,6 +50,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
   private timeout = null;
 
+  public saveSpinnerVisibility: boolean = false;
+  public deleteSpinnerVisibility: boolean = false;
+
   // Drag & Drop properties
   public isDropZoneVisible: boolean = false;
   public dropZoneCounter: number = 0;
@@ -68,19 +71,42 @@ export class TaModalComponent implements OnInit, OnDestroy {
       .pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((data: { name: string; status: boolean }) => {
         if (data?.name === 'deactivate') {
-          if(data.status !== null || data.status !== undefined) {
+          if (data.status !== null || data.status !== undefined) {
             this.isDeactivated = data.status;
           }
-           this.isDeactivated = !this.isDeactivated;
+          this.isDeactivated = !this.isDeactivated;
         }
       });
 
     this.uploadFileService.visibilityDropZone$
+      .pipe(untilDestroyed(this))
       .subscribe((value) => {
         if (value) {
-         this.dragOver();
-         this.dragLeave();
+          this.dragOver();
+          this.dragLeave();
         }
+      });
+
+    this.modalService.modalSpinner$
+      .pipe(untilDestroyed(this))
+      .subscribe((data: { action: string; status: boolean }) => {
+        switch (data.action) {
+          case 'delete': {
+            this.deleteSpinnerVisibility = data.status;
+            break;
+          }
+          default: {
+            this.saveSpinnerVisibility = data.status;
+            break;
+          }
+        }
+        if (this.timeout) {
+          clearTimeout(this.timeout);
+        }
+        this.timeout = setTimeout(() => {
+          this.ngbActiveModal.close();
+          clearTimeout(this.timeout);
+        }, 1000);
       });
   }
 
@@ -127,7 +153,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
           this.ngbActiveModal.dismiss();
           clearTimeout(this.timeout);
         }, 50);
-        this.inputService.triggerInvalidRoutingNumber$.next(false);
         this.uploadFileService.visibilityDropZone(false);
         this.uploadFileService.uploadFiles(null);
         break;
@@ -197,5 +222,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    clearTimeout(this.timeout);
+  }
 }

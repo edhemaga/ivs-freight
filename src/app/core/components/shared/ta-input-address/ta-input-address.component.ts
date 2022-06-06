@@ -10,21 +10,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { AddressEntity } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { ITaInput } from '../ta-input/ta-input.config';
-
-export interface Address {
-  address: string;
-  city: string;
-  state: string;
-  stateShortName: string;
-  country: string;
-  zipCode: number | string;
-  addressUnit?: number | string;
-  // streetNumber?: string;
-  // streetName?: string;
-}
 
 @Component({
   selector: 'app-ta-input-address',
@@ -37,15 +26,16 @@ export class TaInputAddressComponent
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
 
-  @Output() selectedAddress: EventEmitter<{address: Address, valid: boolean}> = new EventEmitter<{address: Address, valid: boolean}>(
+  @Output() selectedAddress: EventEmitter<{address: AddressEntity, valid: boolean}> = new EventEmitter<{address: AddressEntity, valid: boolean}>(
     null
   );
 
   public focusInput: boolean = false;
-  public waitValidation: boolean = false;
+  public touchedInput: boolean = false;
+
   public numberOfSpaces: number = 0;
 
-  public activeAddress: Address = null;
+  public activeAddress: AddressEntity = null;
   public invalidAddress: boolean = false;
 
   public options = {
@@ -72,11 +62,11 @@ export class TaInputAddressComponent
     }
   }
 
-  public handleAddressChange(address: Address) {
+  public handleAddressChange(address: AddressEntity) {
     this.activeAddress = this.sharedService.selectAddress(null, address);
     this.invalidAddress = false;
     this.selectedAddress.emit({address: this.activeAddress, valid: true});
-
+    console.log(this.activeAddress)
     this.getSuperControl.setValue(
       this.sharedService.selectAddress(null, address).address
     );
@@ -103,13 +93,10 @@ export class TaInputAddressComponent
   }
 
   public onFocus(): void {
-    // Skip valid focus in, if do not have value
-    if (this.getSuperControl.value) {
-      this.waitValidation = true;
-    }
+
     this.focusInput = true;
 
-    if (!this.activeAddress && this.waitValidation) {
+    if (!this.activeAddress) {
       this.invalidAddress = true;
       this.selectedAddress.emit({address: null, valid: false});
     }
@@ -133,21 +120,14 @@ export class TaInputAddressComponent
       this.getSuperControl.setErrors({ invalid: true });
     }
 
-    // Required Field
-    if (!this.focusInput && this.getSuperControl.errors) {
-      this.waitValidation = true;
-    } else {
-      this.waitValidation = false;
-    }
+    this.touchedInput = true;
   }
 
   public clearInput(): void {
     this.input.nativeElement.value = null;
     this.getSuperControl.setValue(null);
     this.numberOfSpaces = 0;
-    this.inputConfig.isRequired && this.getSuperControl.errors
-      ? (this.waitValidation = true)
-      : (this.waitValidation = false);
+    this.touchedInput = true;
     this.activeAddress = null;
     this.invalidAddress = false;
     if(!this.inputConfig.isRequired) {
@@ -161,9 +141,8 @@ export class TaInputAddressComponent
   public onBackspace(event): void {
     if (event.keyCode == 8) {
       this.numberOfSpaces = 0;
-      if (!this.getSuperControl.value) {
+      if (!this.input.nativeElement.value) {
         this.clearInput();
-        this.waitValidation = false;
       }
     }
     if (this.activeAddress?.address !== this.getSuperControl.value) {

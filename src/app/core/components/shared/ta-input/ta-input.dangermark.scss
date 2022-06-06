@@ -1,0 +1,22 @@
+.input-invalid-danger-mark {
+  position: absolute;
+  right: 6px;
+  top: 0px;
+  line-height: 24px;
+  svg {
+    width: 17px;
+    height: 17px;
+    path {
+      fill: #e57373;
+    }
+  }
+
+  &:hover ~ .input-label {
+    color: #3c3c3c;
+  }
+
+  &:hover ~ .input-control {
+    background-color: #eeeeee;
+    color: #3c3c3c;
+  }
+}

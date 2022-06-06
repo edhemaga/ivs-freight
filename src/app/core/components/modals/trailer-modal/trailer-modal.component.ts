@@ -1,7 +1,6 @@
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -76,7 +75,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
     private trailerModalService: TrailerModalService,
     private notificationService: NotificationService,
     private modalService: ModalService
@@ -148,7 +146,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: any) => {
-              console.log(res);
               if (res.status === '200' || res.status === '204') {
                 this.modalService.changeModalStatus({
                   name: 'deactivate',
@@ -172,17 +169,18 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           }
           if (this.editData) {
             this.updateTrailer(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
           } else {
             this.addTrailer();
+            this.modalService.setModalSpinner({ action: null, status: true });
           }
         }
 
         // Delete
         if (data.action === 'delete' && this.editData) {
           this.deleteTrailerById(this.editData.id);
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
         }
-
-        this.ngbActiveModal.close();
       }
     }
   }
@@ -217,7 +215,14 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
               subFolder: 'trailers',
             };
           });
-          this.trailerMakeType = res.trailerMakes;
+          this.trailerMakeType = res.trailerMakes.map((item) => {
+            return {
+              ...item,
+              folder: 'common',
+              subFolder: 'trailermake',
+            };
+          });
+
           this.colorType = res.colors.map((item) => {
             return {
               ...item,
@@ -288,11 +293,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .addTrailer(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Trailer successfully added.',
             'Success:'
-          ),
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
         error: () =>
           this.notificationService.error("Trailer can't be added.", 'Error:'),
       });
@@ -303,11 +310,16 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .deleteTrailerById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Trailer successfully deleted.',
             'Success:'
-          ),
+          );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
+        },
         error: () =>
           this.notificationService.error("Trailer can't be deleted.", 'Error:'),
       });
@@ -360,11 +372,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .updateTrailer(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Trailer successfully updated.',
             'Success:'
-          ),
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
         error: () =>
           this.notificationService.error("Trailer can't be updated.", 'Error:'),
       });

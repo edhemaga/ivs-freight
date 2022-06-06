@@ -9,10 +9,8 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
-import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { BrokerModalService } from './broker-modal.service';
 import { BrokerModalResponse } from './../../../../../../appcoretruckassist/model/brokerModalResponse';
@@ -26,6 +24,7 @@ import {
   emailRegex,
   phoneRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-broker-modal',
@@ -72,14 +71,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   public billingCredit = [
     {
-      id: 111,
+      id: 301,
       label: 'Enable',
       value: 'enable',
       name: 'credit',
       checked: true,
     },
     {
-      id: 112,
+      id: 300,
       label: 'Disable',
       value: 'disable',
       name: 'credit',
@@ -89,10 +88,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   public reviews: any[] = [];
 
-  public selectedPhysicalAddress: Address | AddressEntity = null;
-  public selectedPhysicalPoBox: Address | AddressEntity = null;
-  public selectedBillingAddress: Address | AddressEntity = null;
-  public selectedBillingPoBox: Address | AddressEntity = null;
+  public selectedPhysicalAddress: AddressEntity = null;
+  public selectedPhysicalPoBox: AddressEntity = null;
+  public selectedBillingAddress: AddressEntity = null;
+  public selectedBillingPoBox: AddressEntity = null;
 
   public labelsPayTerms: any[] = [];
   public labelsDepartments: any[] = [];
@@ -106,7 +105,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private mockModalService: MockModalService,
     private brokerModalService: BrokerModalService,
     private notificationService: NotificationService
@@ -121,7 +120,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 14,
+        id: 2,
       };
       this.editBrokerById(this.editData.id);
       this.tabs.push({
@@ -170,9 +169,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       contactName: [null],
       departmentId: [null],
-      phone: [null],
+      phone: [null, phoneRegex],
       extensionPhone: [null],
-      email: [null],
+      email: [null, emailRegex],
     });
   }
 
@@ -217,15 +216,26 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           }
           if (this.editData) {
             this.updateBroker(this.editData.id);
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+            });
           } else {
             this.addBroker();
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+            });
           }
         }
         // Delete
         if (data.action === 'delete' && this.editData) {
           this.deleteBrokerById(this.editData.id);
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: true,
+          });
         }
-        this.ngbActiveModal.close();
       }
     }
   }
@@ -300,7 +310,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandlePhysicalAddress(event: { address: Address; valid: boolean }) {
+  public onHandlePhysicalAddress(event: {
+    address: AddressEntity;
+    valid: boolean;
+  }) {
     this.selectedPhysicalAddress = event.address;
     if (!event.valid) {
       this.brokerForm.setErrors({ invalid: event.valid });
@@ -308,7 +321,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public onHandlePhysicalPoBoxCityAddress(event: {
-    address: Address;
+    address: AddressEntity;
     valid: boolean;
   }) {
     this.selectedPhysicalPoBox = event.address;
@@ -317,7 +330,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onHandleBillingAddress(event: { address: Address; valid: boolean }) {
+  public onHandleBillingAddress(event: {
+    address: AddressEntity;
+    valid: boolean;
+  }) {
     this.selectedBillingAddress = event.address;
     if (!event.valid) {
       this.brokerForm.setErrors({ invalid: event.valid });
@@ -325,7 +341,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public onHandleBillingPoBoxCityAddress(event: {
-    address: Address;
+    address: AddressEntity;
     valid: boolean;
   }) {
     this.selectedBillingPoBox = event.address;
@@ -464,6 +480,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'Broker successfully created.',
             'Success:'
           );
+          this.modalService.setModalSpinner({
+            action: null,
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error("Broker can't be created.", 'Error:');
@@ -528,6 +548,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'Broker successfully updated.',
             'Success:'
           );
+          this.modalService.setModalSpinner({
+            action: null,
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error("Broker can't be updated.", 'Error:');
@@ -545,6 +569,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'Broker successfully deleted.',
             'Success:'
           );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error("Broker can't be deleted.", 'Error:');
@@ -558,7 +586,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (reasponse: BrokerResponse) => {
-          console.log(reasponse);
+
           this.brokerForm.patchValue({
             businessName: reasponse.businessName,
             dbaName: reasponse.dbaName,
@@ -661,7 +689,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public selectedBrokerAddress(): { mainAddress, billingAddress, mainPoBox, billingPoBox } {
+  public selectedBrokerAddress(): {
+    mainAddress;
+    billingAddress;
+    mainPoBox;
+    billingPoBox;
+  } {
     let mainAddress = null;
     let billingAddress = null;
     let mainPoBox = null;
@@ -687,6 +720,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             : null,
           stateShortName: this.selectedPhysicalAddress
             ? this.selectedPhysicalAddress.stateShortName
+            : null,
+          street: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.street
+            : null,
+          streetNumber: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.streetNumber
             : null,
           addressUnit: this.brokerForm.get('physicalAddressUnit').value,
         };
@@ -733,6 +772,20 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
               : null
             : this.selectedBillingAddress
             ? this.selectedBillingAddress.stateShortName
+            : null,
+          street: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.street
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.street
+            : null,
+          streetNumber: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.streetNumber
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.streetNumber
             : null,
           addressUnit: this.brokerForm.get('isCheckedBillingAddress').value
             ? this.brokerForm.get('physicalAddressUnit').value
@@ -786,7 +839,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         billingAddress = null;
       }
     }
-    // if not same 
+    // if not same
     else {
       if (this.selectedPhysicalAddressTab.id === 'physicaladdress') {
         mainAddress = {
@@ -807,6 +860,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             : null,
           stateShortName: this.selectedPhysicalAddress
             ? this.selectedPhysicalAddress.stateShortName
+            : null,
+          street: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.street
+            : null,
+          streetNumber: this.selectedPhysicalAddress
+            ? this.selectedPhysicalAddress.streetNumber
             : null,
           addressUnit: this.brokerForm.get('physicalAddressUnit').value,
         };
@@ -872,6 +931,20 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
               : null
             : this.selectedBillingAddress
             ? this.selectedBillingAddress.stateShortName
+            : null,
+          street: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.street
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.street
+            : null,
+          streetNumber: this.brokerForm.get('isCheckedBillingAddress').value
+            ? this.selectedPhysicalAddress
+              ? this.selectedPhysicalAddress.streetNumber
+              : null
+            : this.selectedBillingAddress
+            ? this.selectedBillingAddress.streetNumber
             : null,
           addressUnit: this.brokerForm.get('isCheckedBillingAddress').value
             ? this.brokerForm.get('physicalAddressUnit').value

@@ -1,17 +1,22 @@
 import { FormArray, Validators } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   emailRegex,
   phoneRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { AddressEntity } from 'appcoretruckassist';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-settings-office-modal',
@@ -26,7 +31,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   public officeForm: FormGroup;
 
   public selectedTab: number = 1;
-  public selectedAddress: Address | AddressEntity = null;
+  public selectedAddress: AddressEntity = null;
   public isPhoneExtExist: boolean = false;
 
   public selectedPayPeriod: any = null;
@@ -54,7 +59,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private notificationService: NotificationService
   ) {}
 
@@ -89,28 +94,35 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
-    if (data.action === 'close') {
-      this.officeForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'clsoe': {
+        this.officeForm.reset();
+        break;
+      }
+      case 'save': {
         if (this.officeForm.invalid) {
           this.inputService.markInvalid(this.officeForm);
           return;
         }
         if (this.editData) {
           this.updateOffice(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addOffice();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
+        break;
       }
-
-      // Delete
-      if (data.action === 'delete' && this.editData) {
-        this.deleteOfficeById(this.editData.id);
+      case 'delete': {
+        if (this.editData) {
+          this.deleteOfficeById(this.editData.id);
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
+        }
+        break;
       }
-
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
@@ -121,9 +133,9 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   private createDepartmentContacts(): FormGroup {
     return this.formBuilder.group({
       departmentId: [null],
-      phone: [null],
+      phone: [null, phoneRegex],
       extensionPhone: [null],
-      email: [null],
+      email: [null, emailRegex],
     });
   }
 
@@ -143,7 +155,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   }
 
   public onHandleAddress(event: {
-    address: Address | any;
+    address: AddressEntity | any;
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;
@@ -173,25 +185,45 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       .get('companyOwned')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
-        if(!value) {
-          this.inputService.changeValidators(this.officeForm.get('officeName'))
-          this.inputService.changeValidators(this.officeForm.get('address'))
-          this.inputService.changeValidators(this.officeForm.get('phone'), true, [phoneRegex])
-        }
-        else {
-          this.inputService.changeValidators(this.officeForm.get('officeName'), false)
-          this.inputService.changeValidators(this.officeForm.get('address'), false)
-          this.inputService.changeValidators(this.officeForm.get('phone'), false)
+        if (!value) {
+          this.inputService.changeValidators(this.officeForm.get('officeName'));
+          this.inputService.changeValidators(this.officeForm.get('address'));
+          this.inputService.changeValidators(
+            this.officeForm.get('phone'),
+            true,
+            [phoneRegex]
+          );
+        } else {
+          this.inputService.changeValidators(
+            this.officeForm.get('officeName'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.officeForm.get('address'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.officeForm.get('phone'),
+            false
+          );
         }
       });
   }
 
-  public onSelectPayPeriod(event) {
-    this.selectedPayPeriod = event;
-  }
-
-  public onSelectDay(event) {
-    this.selectedDay = event;
+  public onAction(event: any, action: string) {
+    switch (action) {
+      case 'pay-period': {
+        this.selectedPayPeriod = event;
+        break;
+      }
+      case 'day': {
+        this.selectedDay = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   private updateOffice(id: number) {}

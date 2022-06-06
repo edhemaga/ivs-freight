@@ -15,17 +15,21 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
-import { NgbDropdownConfig, NgbModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
-
 import moment from 'moment';
-import { distinctUntilChanged } from 'rxjs';
+import { TitleCasePipe, UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
   styleUrls: ['./ta-input.component.scss'],
-  providers: [NgbDropdownConfig, CalendarScrollService],
+  providers: [
+    NgbDropdownConfig,
+    CalendarScrollService,
+    TitleCasePipe,
+    UpperCasePipe,
+  ],
 })
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor
@@ -43,9 +47,11 @@ export class TaInputComponent
   private ngbMainPopover: NgbPopover;
 
   public focusInput: boolean = false;
-  public waitValidation: boolean = false;
+  public touchedInput: boolean = false;
+
   public togglePassword: boolean = false;
   public isVisiblePasswordEye: boolean = false;
+
   public showDateInput: boolean = false;
   public dateTimeInputDate: Date = new Date();
 
@@ -53,7 +59,7 @@ export class TaInputComponent
   public numberOfSpaces: number = 0;
 
   // Dropdown
-  public isDropdownOptionsActive: boolean = false;
+  public dropdownToggler: boolean = false;
   public isDropdownAddModeActive: boolean = false;
 
   // Date Timer
@@ -63,22 +69,33 @@ export class TaInputComponent
     @Self() public superControl: NgControl,
     private changeDetection: ChangeDetectorRef,
     private inputService: TaInputService,
-    private calendarService: CalendarScrollService
+    private calendarService: CalendarScrollService,
+    private titlecasePipe: TitleCasePipe,
+    private uppercasePipe: UpperCasePipe
   ) {
     this.superControl.valueAccessor = this;
   }
 
   ngOnInit(): void {
-    if (this.inputConfig.name === 'datepicker') {
+    if (this.inputConfig.name === 'datepicker' || this.inputConfig.name === 'timepicker') {
       this.calendarService.dateChanged
         .pipe(untilDestroyed(this))
         .subscribe((date) => {
-          const text = moment(new Date(date)).format('MM/DD/YY');
+          let text, dateFormat, timeFormat;
+          if( this.inputConfig.name === 'datepicker' ){
+            text = moment(new Date(date)).format('MM/DD/YY');
+            dateFormat = text.split('/');
+            
+          }else{
+            text = moment(new Date(date)).format('HH:mm');
+            timeFormat = moment(new Date(date)).format('hh/mm/A');
+            dateFormat = timeFormat.split('/');
+          }
+
           this.input.nativeElement.value = text;
           this.onChange(this.input.nativeElement.value);
           this.focusInput = false;
-          const dateFormat = text.split('/');
-       
+
           this.span1.nativeElement.innerHTML = dateFormat[0];
           this.span2.nativeElement.innerHTML = dateFormat[1];
           this.span3.nativeElement.innerHTML = dateFormat[2];
@@ -91,10 +108,10 @@ export class TaInputComponent
       this.inputService.dropdownAddModeSubject
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
+          console.log('Input ADD MODE ', action);
           if (action) {
-            this.isDropdownOptionsActive = false;
+            this.dropdownToggler = false;
             this.isDropdownAddModeActive = action;
-            clearTimeout(this.timeout);
             this.focusInput = true;
             this.setInputCursorAtTheEnd(this.input.nativeElement);
           }
@@ -103,8 +120,9 @@ export class TaInputComponent
       this.inputService.isDropDownItemSelectedOnEnter
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
+          console.log('Input SELECT WITH ENTER ', action);
           if (action) {
-            this.isDropdownOptionsActive = false;
+            this.dropdownToggler = false;
             this.input.nativeElement.blur();
             this.blurOnDropDownArrow();
           }
@@ -118,26 +136,6 @@ export class TaInputComponent
         this.input.nativeElement.focus();
         clearTimeout(timeout);
       }, 300);
-    }
-
-    if (
-      ['routing', 'routingnumber', 'routing number'].includes(
-        this.inputConfig.name.toLocaleLowerCase()
-      )
-    ) {
-      this.getSuperControl.valueChanges
-        .pipe(distinctUntilChanged(), untilDestroyed(this))
-        .subscribe((value) => {
-          this.inputService.triggerInvalidRoutingNumber$
-            .pipe(distinctUntilChanged(), untilDestroyed(this))
-            .subscribe((valid: boolean) => {
-              if (valid && value) {
-                this.waitValidation = true;
-              } else {
-                this.waitValidation = false;
-              }
-            });
-        });
     }
   }
 
@@ -163,23 +161,18 @@ export class TaInputComponent
   }
 
   public onFocus(): void {
-    // Skip valid focus in, if do not have value
-    if (this.getSuperControl.value) {
-      this.waitValidation = true;
-    }
-
     // Password
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
     }
 
-   
-
     // Datepicker
-    if (this.inputConfig.name === 'datepicker' || this.inputConfig.name === 'timepicker') {
+    if (
+      this.inputConfig.name === 'datepicker' ||
+      this.inputConfig.name === 'timepicker'
+    ) {
+      clearTimeout(this.dateTimeMainTimer);
 
-       clearTimeout(this.dateTimeMainTimer);
-      
       this.showDateInput = true;
       this.span1.nativeElement.focus();
       this.selectionInput = 0;
@@ -188,8 +181,7 @@ export class TaInputComponent
 
     // Dropdown
     if (this.inputConfig.isDropdown && !this.isDropdownAddModeActive) {
-      this.inputService.dropDownShowHideSubject.next(true);
-      this.isDropdownOptionsActive = true;
+      this.dropdownToggler = true;
     }
 
     this.focusInput = true;
@@ -205,13 +197,6 @@ export class TaInputComponent
       let selection = window.getSelection();
       selection.removeAllRanges();
 
-      // Wait Validation
-      if (!this.focusInput && this.getSuperControl.invalid) {
-        this.waitValidation = true;
-      } else {
-        this.waitValidation = false;
-      }
-
       // Password
       if (this.inputConfig.type === 'password') {
         this.blurOnPassword();
@@ -225,7 +210,7 @@ export class TaInputComponent
         }
       }
 
-      if ( this.inputConfig.name === 'timepicker') {
+      if (this.inputConfig.name === 'timepicker') {
         if (!this.getSuperControl.value) {
           this.inputConfig.type = 'text';
           this.blurOnDateTime();
@@ -233,6 +218,7 @@ export class TaInputComponent
       }
     }
     this.inputService.onFocusOutInputSubject.next(true);
+    this.touchedInput = true;
   }
 
   private blurOnPassword() {
@@ -243,36 +229,21 @@ export class TaInputComponent
   }
 
   private blurOnDropDownArrow() {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-
     this.timeout = setTimeout(() => {
-      this.inputService.dropDownShowHideSubject.next(false);
-      this.isDropdownOptionsActive = false;
+      this.dropdownToggler = false;
       this.focusInput = false;
-
-      // Wait Validation
-      if (!this.focusInput && this.getSuperControl.invalid) {
-        this.waitValidation = true;
-      } else {
-        this.waitValidation = false;
-      }
-
-      this.changeDetection.detectChanges();
       clearTimeout(this.timeout);
     }, 150);
   }
 
-  public clearInput(): void {
+  public clearInput(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
     this.input.nativeElement.value = null;
     this.getSuperControl.setValue(null);
     this.numberOfSpaces = 0;
     this.isDropdownAddModeActive = false;
-
-    this.inputConfig.isRequired && this.getSuperControl.errors
-      ? (this.waitValidation = true)
-      : (this.waitValidation = false);
+    this.touchedInput = true;
 
     if (this.inputConfig.name === 'datepicker') {
       this.focusInput = false;
@@ -281,6 +252,16 @@ export class TaInputComponent
       this.span2.nativeElement.innerHTML = 'dd';
       this.span3.nativeElement.innerHTML = 'yy';
     }
+
+    if (this.inputConfig.name === 'timepicker') {
+      this.focusInput = false;
+      this.showDateInput = false; 
+      this.span1.nativeElement.innerHTML = 'HH';
+      this.span2.nativeElement.innerHTML = 'MM';
+      this.span3.nativeElement.innerHTML = 'AM';
+    }
+
+
 
     this.inputService.onClearInputSubject.next(true);
   }
@@ -291,13 +272,11 @@ export class TaInputComponent
   }
 
   public toggleDropdownOptions() {
-    this.isDropdownOptionsActive = !this.isDropdownOptionsActive;
+    this.dropdownToggler = !this.dropdownToggler;
 
-    this.inputService.dropDownShowHideSubject.next(
-      this.isDropdownOptionsActive
-    );
+    this.inputService.dropDownShowHideSubject.next(this.dropdownToggler);
 
-    if (this.isDropdownOptionsActive) {
+    if (this.dropdownToggler) {
       clearTimeout(this.timeout);
       this.input.nativeElement.focus();
       this.focusInput = true;
@@ -322,11 +301,10 @@ export class TaInputComponent
   }
 
   public onKeyUp(event): void {
-    if (event.keyCode == 8) {
+    if (event.keyCode == 8 && !this.inputConfig.isDropdown) {
       this.numberOfSpaces = 0;
-      if (!this.getSuperControl.value) {
-        this.clearInput();
-        this.waitValidation = false;
+      if (!this.input.nativeElement.value) {
+        this.clearInput(event);
       }
     }
 
@@ -347,6 +325,30 @@ export class TaInputComponent
         this.inputService.dropDownNavigatorSubject.next(event.keyCode);
       }
     }
+  }
+
+  public transformText(event: any) {
+    switch (this.inputConfig.textTransform) {
+      case 'capitalize': {
+        this.input.nativeElement.value = this.titleCaseInput(event);
+        break;
+      }
+      case 'uppercase': {
+        this.input.nativeElement.value = this.upperCaseInput(event);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public titleCaseInput(value: string) {
+    return this.titlecasePipe.transform(value);
+  }
+
+  public upperCaseInput(value: string) {
+    return this.uppercasePipe.transform(value);
   }
 
   public manipulateWithInput(event: KeyboardEvent): boolean {
@@ -440,7 +442,7 @@ export class TaInputComponent
         'credit limit',
         'phone extension',
         'qty',
-        'price'
+        'price',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
@@ -679,7 +681,7 @@ export class TaInputComponent
     e.preventDefault();
     e.stopPropagation();
 
-    console.log("NEXT ONEEEEE"); 
+    console.log('NEXT ONEEEEE');
     console.log(e.keyCode);
 
     if (
@@ -698,16 +700,17 @@ export class TaInputComponent
           this.selectionInput = this.selectionInput - 1;
           this.selectSpanByTabIndex(this.selectionInput);
         }
-      } else if (e.keyCode == 39 || e.keyCode == 9 ) {
-       
+      } else if (e.keyCode == 39 || e.keyCode == 9) {
         if (this.selectionInput != 2) {
           this.selectionInput = this.selectionInput + 1;
           this.selectSpanByTabIndex(this.selectionInput);
-        }else if(e.keyCode == 9){
-          console.log("NEXT ONEEEEE"); 
+        } else if (e.keyCode == 9) {
+          console.log('NEXT ONEEEEE');
           //this.input.nativeElement.focus();
           //this.input.nativeElement.dispatchEvent(new KeyboardEvent('keydown',{'keyCode': 9}));
-          this.input.nativeElement.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9}));
+          this.input.nativeElement.dispatchEvent(
+            new KeyboardEvent('keydown', { keyCode: 9 })
+          );
         }
       } else if (e.keyCode == 38) {
         this.setDateTimeModel('up');
@@ -821,8 +824,8 @@ export class TaInputComponent
     this.blurOnDateTime();
   }
 
-  closePopover(){
-    if(this.ngbMainPopover){
+  closePopover() {
+    if (this.ngbMainPopover) {
       this.ngbMainPopover.close();
     }
   }
@@ -830,7 +833,8 @@ export class TaInputComponent
   private blurOnDateTime() {
     clearTimeout(this.dateTimeMainTimer);
     this.dateTimeMainTimer = setTimeout(() => {
-      if(this.inputConfig.name === 'datepicker'){
+      console.log('SELECTED DATE PICKER');
+      if (this.inputConfig.name === 'datepicker') {
         if (
           !isNaN(this.span1.nativeElement.innerHTML) &&
           !isNaN(this.span2.nativeElement.innerHTML) &&
@@ -843,8 +847,8 @@ export class TaInputComponent
           this.span3.nativeElement.innerHTML = 'yy';
           this.showDateInput = false;
         }
-      }else{
-        console.log("TIME PICKER");
+      } else {
+        
         if (
           !isNaN(this.span1.nativeElement.innerHTML) &&
           !isNaN(this.span2.nativeElement.innerHTML)
@@ -856,6 +860,7 @@ export class TaInputComponent
           this.showDateInput = false;
         }
       }
+      clearTimeout(this.dateTimeMainTimer);
     }, 100);
   }
 }

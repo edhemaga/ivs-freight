@@ -1,4 +1,3 @@
-import { Address } from 'src/app/core/model/address';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -88,9 +87,9 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     params: { height: '0px' },
   };
 
-  public selectedAuthorityAddress: Address | AddressEntity;
-  public selectedAuthorityOrigin: Address | AddressEntity;
-  public selectedAuthorityDestination: Address | AddressEntity;
+  public selectedAuthorityAddress: AddressEntity;
+  public selectedAuthorityOrigin: AddressEntity;
+  public selectedAuthorityDestination: AddressEntity;
 
   public selectedViolationCustomer: any = null;
   public labelsViolationCustomer: any[] = [];
@@ -202,7 +201,10 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     return this.violationForm.get('violations') as FormArray;
   }
 
-  public onHandleAddress(event: any, action) {
+  public onHandleAddress(event: {
+    address: AddressEntity | any;
+    valid: boolean;
+  }, action) {
     switch(action) {
       case 'address-authority': {
         this.selectedAuthorityAddress = event;

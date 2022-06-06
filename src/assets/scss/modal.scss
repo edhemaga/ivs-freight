@@ -211,6 +211,7 @@ ngb-modal-window[aria-hidden="true"] {
           user-select: none;
           pointer-events: none;
           line-height: 18px;
+          position: relative;
 
           &.valid {
             background-color: #6d82c7;
@@ -223,6 +224,14 @@ ngb-modal-window[aria-hidden="true"] {
               color: #ffffff;
               background-color: #536bc2;
             }
+          }
+        }
+
+        button {
+          position: relative;
+          .modal-save-spinner {
+            position: absolute;
+            right: 12px;
           }
         }
       }

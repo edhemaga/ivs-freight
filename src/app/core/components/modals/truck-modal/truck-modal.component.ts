@@ -7,7 +7,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   CreateTruckCommand,
   GetTruckModalResponse,
@@ -80,7 +79,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
     private truckModalService: TruckModalService,
     private notificationService: NotificationService,
     private modalService: ModalService
@@ -154,7 +152,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: any) => {
-              console.log(res);
               if (res.status === '200' || res.status === '204') {
                 this.modalService.changeModalStatus({
                   name: 'deactivate',
@@ -178,17 +175,18 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           }
           if (this.editData) {
             this.updateTruck(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
           } else {
             this.addTruck();
+            this.modalService.setModalSpinner({ action: null, status: true });
           }
         }
 
         // Delete
         if (data.action === 'delete' && this.editData) {
           this.deleteTruckById(this.editData.id);
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
         }
-
-        this.ngbActiveModal.close();
       }
     }
   }
@@ -230,7 +228,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
               subFolder: 'trucks',
             };
           });
-          this.truckMakeType = res.truckMakes;
+          this.truckMakeType = res.truckMakes.map((item) => {
+            return {
+              ...item,
+              folder: 'common',
+              subFolder: 'trucksmake',
+            };
+          });
           this.colorType = res.colors.map((item) => {
             return {
               ...item,
@@ -291,11 +295,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .addTruck(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Truck successfully created.',
             'Success:'
-          ),
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
         error: () =>
           this.notificationService.error("Truck can't be created.", 'Error:'),
       });
@@ -340,11 +346,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .updateTruck(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Truck successfully updated.',
             'Success:'
-          ),
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
         error: () =>
           this.notificationService.error("Truck can't be updated.", 'Error:'),
       });
@@ -355,11 +363,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .deleteTruckById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Truck successfully deleted.',
             'Success:'
-          ),
+          );
+          this.modalService.setModalSpinner({ action: 'delete', status: false });
+        },
         error: () =>
           this.notificationService.error("Truck can't be deleted.", 'Error:'),
       });

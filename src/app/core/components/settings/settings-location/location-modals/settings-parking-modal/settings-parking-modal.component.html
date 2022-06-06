@@ -178,7 +178,7 @@
               <div class="gate-radio">
                 <app-ta-input-radiobuttons
                   [buttons]="gateBtns"
-                  (changedValue)="changeGate($event)"
+                  (changedValue)="onAction($event, 'gate')"
                 ></app-ta-input-radiobuttons>
               </div>
             </div>
@@ -187,7 +187,7 @@
               <div class="camera-radio">
                 <app-ta-input-radiobuttons
                   [buttons]="cameraBtns"
-                  (changedValue)="changeCamera($event)"
+                  (changedValue)="onAction($event, 'camera')"
                 ></app-ta-input-radiobuttons>
               </div>
             </div>
@@ -219,7 +219,7 @@
                   dropdownWidthClass: 'w-col-4'
                 }"
                 [options]="[]"
-                (selectedItem)="onSelectPayPeriod($event)"
+                (selectedItem)="onAction($event, 'pay-period')"
               ></app-ta-input-dropdown>
             </div>
             <div class="col-4 no-p-left">
@@ -233,7 +233,7 @@
                   dropdownWidthClass: 'w-col-4'
                 }"
                 [options]="[]"
-                (selectedItem)="onSelectDay($event)"
+                (selectedItem)="onAction($event, 'pay-period')"
               ></app-ta-input-dropdown>
             </div>
           </div>

@@ -1,7 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CalendarOptions } from '@fullcalendar/angular';
+import { Calendar } from '@fullcalendar/core';
+import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+
 import { start } from 'repl';
 
 @Component({
@@ -11,7 +14,7 @@ import { start } from 'repl';
   encapsulation: ViewEncapsulation.None
 })
 export class CalendarComponent implements OnInit {
-
+  @ViewChild('fullcalendar', {static: false}) fullcalendar: FullCalendarComponent;
   public inputDate: FormControl = new FormControl(true);
 
   calendarYears: any[] = [
@@ -60,197 +63,13 @@ export class CalendarComponent implements OnInit {
     }
   ];
 
-  monthDays: any = [
-    {
-      number: 25,
-      prevOrNext: true,
-      weekend: true
-    },
-    {
-      number: 26,
-      prevOrNext: true
-    },
-    {
-      number: 27,
-      prevOrNext: true
-    },
-    {
-      number: 28,
-      prevOrNext: true
-    },
-    {
-      number: 29,
-      prevOrNext: true
-    },
-    {
-      number: 30,
-      prevOrNext: true
-    },
-    {
-      number: 1,
-      weekend: true
-    },
-    {
-      number: 2,
-      weekend: true
-    },
-    {
-      number: 3,
-      currentDay: true
-    },
-    {
-      number: 4
-    },
-    {
-      number: 5
-    },
-    {
-      number: 6
-    },
-    {
-      number: 7
-    },
-    {
-      number: 8,
-      weekend: true
-    },
-    {
-      number: 9,
-      weekend: true
-    },
-    {
-      number: 10
-    },
-    {
-      number: 11
-    },
-    {
-      number: 12
-    },
-    {
-      number: 13
-    },
-    {
-      number: 14
-    },
-    {
-      number: 15,
-      weekend: true
-    },
-    {
-      number: 16,
-      weekend: true
-    },
-    {
-      number: 17
-    },
-    {
-      number: 18
-    },
-    {
-      number: 19
-    },
-    {
-      number: 20
-    },
-    {
-      number: 21
-    },
-    {
-      number: 22,
-      weekend: true
-    },
-    {
-      number: 23,
-      weekend: true
-    },
-    {
-      number: 24
-    },
-    {
-      number: 25
-    },
-    {
-      number: 26
-    },
-    {
-      number: 27
-    },
-    {
-      number: 28
-    },
-    {
-      number: 29,
-      weekend: true
-    },
-    {
-      number: 30,
-      weekend: true
-    },
-    {
-      number: 31,
-      events: [
-        {
-          type: 'important',
-          title: 'IFTA Report - Deadline',
-          eventTextColor: '#fff'
-        },
-       {
-          type: 'important',
-          title: 'Important Events',
-          eventTextColor: '#fff'
-        },
-        {
-          type: 'company',
-          title: 'Company Events',
-          eventTextColor: '#fff'
-        },
-        {
-          type: 'personal',
-          title: 'Personal Events',
-          eventTextColor: '#6C6C6C'
-        },
-        {
-          type: 'moreEvents',
-          title: '5 More Events',
-          eventTextColor: '#fff'
-        },
-        {
-          type: 'holiday',
-          title: 'Holiday',
-          eventTextColor: '#fff'
-        }
-      ]
-    },
-    {
-      number: 1,
-      prevOrNext: true,
-    },
-    {
-      number: 2,
-      prevOrNext: true,
-    },
-    {
-      number: 3,
-      prevOrNext: true,
-    },
-    {
-      number: 4,
-      prevOrNext: true,
-    },
-    {
-      number: 5,
-      prevOrNext: true,
-      weekend: true
-    }
-  ]
   event_colors: any = {
     'important': '#BA68C8B3',
     'company': '#6D82C7B3',
-    'personal': '#F3F3F3B3',
+    'personal': '#FFB74DB3',
     'moreEvents': '#AAAAAAB3',
     'holiday': '#4DB6A2B3'
-  }
+  };
 
   currentEvents: any = [
     {
@@ -268,37 +87,67 @@ export class CalendarComponent implements OnInit {
       textColor: '#fff'
     },
     { 
-      title: 'event 3',
+      title: 'Event 3',
       color: this.event_colors['personal'],
-      start: '2022-06-05',
-      end: '2022-06-14',
-      textColor: '#000'
+      start: '2022-06-18',
+      end: '2022-06-26',
+      textColor: '#000',
+      display: 'list-item'
+    },
+    { 
+      title: 'Personal Event',
+      color: this.event_colors['personal'],
+      start: '2022-06-03T00:30:00',
+      end: '2022-06-03T23:30:00',
+      textColor: '#fff'
     }
-  ]
+  ];
+
+  headerBarInfo: Object = {
+      weekday: 'long'
+  }
+
+  currentCalendarView = 'month';
+  calendarTitle: String = '';
+  calendarGridView: String = 'dayGridMonth';
 
   calendarOptions: CalendarOptions;
 
-  constructor() { }
+  constructor() {
+    const name = Calendar.name
+   }
 
   ngOnInit(): void {
-    this.setCalendarOptions(this.currentEvents);
+    
   }
 
-  setCalendarOptions(ev) {
+  ngAfterViewInit(): void {
+    this.checkCalendarTitle();
+    this.setCalendarOptions(this.currentEvents, this.calendarGridView, this.headerBarInfo);
+  }
+
+  setCalendarOptions(ev, type, headerInfo) {
+    console.log(ev, type, headerInfo, 'setcalendaroptions');
     this.calendarOptions = {
-      plugins: [], 
-      initialView: 'dayGridMonth',
-      dayHeaderFormat:{
-        weekday: 'long'
-      },
+      plugins: [ dayGridPlugin, timeGridPlugin ], 
+      initialView: type,
+      dayHeaderFormat: headerInfo,
       headerToolbar: {
         left: '',
         center: '',
         right: ''
-      }, 
+      },
       events: ev,
       editable: true,
       eventResizableFromStart: true,
+      slotLabelInterval: '00:30',
+      allDayText: 'All Day',
+      slotLabelFormat: {
+        hour: 'numeric',
+        minute: '2-digit',
+        omitZeroMinute: false,
+        meridiem: 'short'
+      },
       views: {
         day: {
             titleFormat: {
@@ -308,10 +157,61 @@ export class CalendarComponent implements OnInit {
      },
      eventResize: this.resizeEvent.bind(this),
     };
+    this.changeViewCalendar(type);
+  }
+
+  public changeMonth(mod) {
+    const calendar = this.fullcalendar.getApi();
+    if ( mod == 'next' ) { calendar.next(); }
+    else { calendar.prev(); }
+
+    console.log(calendar, 'allcalendarinfo');
+
+    this.checkCalendarTitle();
+  }
+
+  public checkCalendarTitle() {
+    const calendarApi = this.fullcalendar.getApi();
+    console.log(calendarApi.currentData, 'viewitle');
+    this.calendarTitle = this.calendarGridView == 'timeGridWeek' ? calendarApi.currentData.viewTitle.split(",")[0] : this.calendarTitle = calendarApi.currentData.viewTitle.split(" ")[0];
   }
 
   resizeEvent(mod) {
     console.log(mod, 'resized');
+  }
+
+  changeCalendarView(view) {
+    if ( this.currentCalendarView == 'view' ) { return false; }
+
+    this.currentCalendarView = view;
+    var gridType = view == 'month' ? 'dayGridMonth' : view == 'week' ? 'timeGridWeek' : 'dayGridMonth';
+    this.calendarGridView = gridType;
+    var headerInfo = view == 'week' ? {
+      weekday: 'long',
+      month: 'numeric',
+      day: 'numeric', omitCommas: true 
+    }
+    :
+    {
+      weekday: 'long'
+    };
+
+    this.headerBarInfo = headerInfo;
+    console.log(this.calendarGridView, this.headerBarInfo)
+    this.setCalendarOptions(this.currentEvents, this.calendarGridView, this.headerBarInfo);
+  }
+
+  public changeViewCalendar(view: any) {
+    // const checkedView = view.find((item: any) => item.checked);
+    // const calendarApi = this.fullcalendar.getApi();
+    // if (checkedView.name == 'Week' || checkedView.name == 'Day') {
+    //   calendarApi.setOption('selectMinDistance', 25);
+    // } else {
+    //   calendarApi.setOption('selectMinDistance', 150);
+    // }
+    const calendarApi = this.fullcalendar.getApi();
+    calendarApi.changeView(view);
+    this.calendarTitle = this.calendarGridView == 'timeGridWeek' ? calendarApi.currentData.viewTitle.split(",")[0] : this.calendarTitle = calendarApi.currentData.viewTitle.split(" ")[0];
   }
 
 }

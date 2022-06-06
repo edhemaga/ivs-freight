@@ -50,12 +50,12 @@
     transition: all 0.3s ease-in-out;
     svg {
       path {
-        fill: #BDCAEB !important;
+        fill: #bdcaeb !important;
       }
     }
 
     text {
-      fill: #BDCAEB !important;
+      fill: #bdcaeb !important;
     }
   }
 
@@ -76,17 +76,17 @@
     transition: all 0.3s ease-in-out;
     svg {
       path {
-        fill: #FFCDD2 !important;
+        fill: #ffcdd2 !important;
       }
     }
 
     text {
-      fill: #FFCDD2 !important;
+      fill: #ffcdd2 !important;
     }
   }
 
   &.invalid-required-empty,
-  &.invalid-required-filled {
+  &.invalid-required-filled-out {
     transition: all 0.3s ease-in-out;
     svg {
       path {

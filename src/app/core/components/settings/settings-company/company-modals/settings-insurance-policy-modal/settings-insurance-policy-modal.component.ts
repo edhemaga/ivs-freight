@@ -4,12 +4,11 @@ import {
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { Address } from 'src/app/core/components/shared/ta-input-address/ta-input-address.component';
 import { AddressEntity } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 @Component({
   selector: 'app-settings-insurance-policy-modal',
   templateUrl: './settings-insurance-policy-modal.component.html',
@@ -22,7 +21,7 @@ export class SettingsInsurancePolicyModalComponent
 
   public insurancePolicyForm: FormGroup;
 
-  public selectedAddress: Address | AddressEntity;
+  public selectedAddress: AddressEntity;
 
   public selectedCommericalRating: any = null;
   public selectedAutomobileRating: any = null;
@@ -35,7 +34,7 @@ export class SettingsInsurancePolicyModalComponent
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private notificationService: NotificationService
   ) {}
 
@@ -99,7 +98,10 @@ export class SettingsInsurancePolicyModalComponent
 
   public onModalAction(event: any) {}
 
-  public onHandleAddress(event: { address: Address; valid: boolean }): void {
+  public onHandleAddress(event: {
+    address: AddressEntity;
+    valid: boolean;
+  }): void {
     this.selectedAddress = event.address;
     if (!event.valid) {
       this.insurancePolicyForm.setErrors({ invalid: event.valid });

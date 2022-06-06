@@ -3,15 +3,14 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
+  AddressEntity,
   CheckOwnerSsnEinResponse,
   CreateDriverCommand,
   DriverResponse,
@@ -52,7 +51,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public selectedTab: number = 1;
   public selectedOwnerTab: any = null;
-  public selectedAddress: Address = null;
+  public selectedAddress: AddressEntity = null;
   public selectedBank: any = null;
   public selectedPayType: any = null;
 
@@ -109,7 +108,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
     private mockModalService: MockModalService,
     private driverTService: DriverTService,
     private notificationService: NotificationService,
@@ -119,7 +117,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
-    this.onBankSelected();
     this.onIncludePayroll();
     this.onPayTypeSelected();
     this.onTwicTypeSelected();
@@ -143,11 +140,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         .pipe(untilDestroyed(this))
         .subscribe({
           next: (res: any) => {
-            console.log(res);
             if (res.status === '200' || res.status === '204') {
               this.modalService.changeModalStatus({
                 name: 'deactivate',
-                status: null
+                status: null,
               });
             }
           },
@@ -158,25 +154,24 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             );
           },
         });
-    } else {
+    } else if (data.action === 'save') {
       // Save & Update
-      if (data.action === 'save') {
-        if (this.driverForm.invalid) {
-          this.inputService.markInvalid(this.driverForm);
-          return;
-        }
-        if (this.editData) {
-          this.updateDriver(this.editData.id);
-        } else {
-          this.addDriver();
-        }
+      if (this.driverForm.invalid) {
+        this.inputService.markInvalid(this.driverForm);
+        return;
       }
-
-      // Delete
-      if (data.action === 'delete' && this.editData) {
-        this.deleteDriverById(this.editData.id);
+      if (this.editData) {
+        this.updateDriver(this.editData.id);
+        this.modalService.setModalSpinner({ action: null, status: true });
+      } else {
+        this.addDriver();
+        this.modalService.setModalSpinner({ action: null, status: true });
       }
-      this.ngbActiveModal.close();
+    }
+    // Delete
+    else if (data.action === 'delete' && this.editData) {
+      this.deleteDriverById(this.editData.id);
+      this.modalService.setModalSpinner({ action: 'delete', status: true });
     }
   }
 
@@ -237,9 +232,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       country: [null],
       zipCode: [null],
       addressUnit: [null],
-      // TODO: WAIT BACKEND
-      // streetNumber: [null],
-      // streetName: [null],
+      street: [null],
+      streetNumber: [null],
     });
   }
 
@@ -276,7 +270,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private onBankSelected(): void {
     this.driverForm
       .get('bankId')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         if (this.selectedBank) {
           this.inputService.changeValidators(
@@ -313,7 +307,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.driverForm.get('routing').setErrors(null);
           } else {
             this.driverForm.get('routing').setErrors({ invalid: true });
-            this.inputService.triggerInvalidRoutingNumber$.next(true);
           }
         }
       });
@@ -363,7 +356,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onHandleAddress(event: {
-    address: Address | any;
+    address: AddressEntity | any;
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;
@@ -373,10 +366,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onHandleAddressFormArray(
-    event: { address: Address | any; valid: boolean },
+    event: { address: AddressEntity | any; valid: boolean },
     index: number
   ) {
-    const address: Address = event.address;
+    const address: AddressEntity = event.address;
     if (!event.valid) {
       this.offDutyLocations.at(index).setErrors({ invalid: true });
     } else {
@@ -387,11 +380,30 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         stateShortName: address.stateShortName,
         country: address.country,
         zipCode: address.zipCode,
-        addressUnit: address.addressUnit,
-        // streetNumber: address,
-        // streetName: address,
+        addressUnit: this.offDutyLocations.at(index).get('addressUnit').value,
+        street: address.street,
+        streetNumber: address.streetNumber,
       });
     }
+  }
+
+  public premmapedOffDutyLocation() {
+    return this.offDutyLocations.controls.map((item) => {
+      return {
+        nickname: item.get('nickname').value,
+        address: {
+          address: item.get('address').value,
+          city: item.get('city').value,
+          state: item.get('state').value,
+          stateShortName: item.get('stateShortName').value,
+          country: item.get('country').value,
+          zipCode: item.get('zipCode').value,
+          addressUnit: item.get('addressUnit').value,
+          street: item.get('street').value,
+          streetNumber: item.get('streetNumber').value,
+        },
+      };
+    });
   }
 
   public tabChange(event: any): void {
@@ -400,6 +412,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.uploadFileService.visibilityDropZone(this.selectedTab === 3);
 
     let dotAnimation = document.querySelector('.animation-three-tabs');
+
     this.animationObject = {
       value: this.selectedTab,
       params: { height: `${dotAnimation.getClientRects()[0].height}px` },
@@ -511,14 +524,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bussinesName: this.owner
         ? null
         : this.driverForm.get('bussinesName').value,
-      city: this.selectedAddress ? this.selectedAddress.city : null,
-      state: this.selectedAddress ? this.selectedAddress.state : null,
-      address: this.selectedAddress ? this.selectedAddress.address : null,
-      country: this.selectedAddress ? this.selectedAddress.country : null,
-      zipCode: this.selectedAddress ? this.selectedAddress.zipCode : null,
-      stateShortName: this.selectedAddress
-        ? this.selectedAddress.stateShortName
-        : null,
+      address: this.selectedAddress,
       bankId: this.selectedBank ? this.selectedBank.id : null,
       payType: this.selectedPayType ? this.selectedPayType.name : null,
       solo: {
@@ -536,17 +542,20 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       twicExpDate: this.driverForm.get('twic').value
         ? new Date(this.driverForm.get('twicExpDate').value).toISOString()
         : null,
+      offDutyLocations: this.premmapedOffDutyLocation(),
     };
-    console.log(newData);
+
     this.driverTService
       .addDriver(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Driver successfully added.',
             'Success:'
           ),
+            this.modalService.setModalSpinner({ action: null, status: false });
+        },
         error: () =>
           this.notificationService.error("Driver can't be added.", 'Error:'),
       });
@@ -607,19 +616,20 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       twicExpDate: this.driverForm.get('twic').value
         ? new Date(this.driverForm.get('twicExpDate').value).toISOString()
         : null,
+      offDutyLocations: this.premmapedOffDutyLocation(),
     };
-
-    console.log(newData);
 
     this.driverTService
       .updateDriver(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () =>
+        next: () => {
           this.notificationService.success(
             'Driver successfully updated.',
             'Success:'
-          ),
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
         error: () =>
           this.notificationService.error("Driver can't be updated.", 'Error:'),
       });
@@ -683,7 +693,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             address: res.address,
             valid: res.address ? true : false,
           });
-          console.log(res.status)
+
           this.modalService.changeModalStatus({
             name: 'deactivate',
             status: res.status === 0 ? false : true,
@@ -695,15 +705,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 this.formBuilder.group({
                   id: offDuty.id,
                   nickname: offDuty.nickname,
-                  address: offDuty.address.address,
-                  city: offDuty.address.city,
-                  state: offDuty.address.state,
-                  stateShortName: offDuty.address.stateShortName,
-                  country: offDuty.address.country,
-                  zipCode: offDuty.address.zipCode,
-                  addressUnit: offDuty.address.addressUnit,
-                  // streetNumber: null,
-                  // streetName: null,
+                  address: res.address.address,
+                  city: res.address.city,
+                  state: res.address.state,
+                  stateShortName: res.address.stateShortName,
+                  country: res.address.country,
+                  zipCode: res.address.zipCode,
+                  addressUnit: res.address.addressUnit,
+                  street: res.address.street,
+                  streetNumber: res.address.streetNumber,
                 })
               );
             }
@@ -725,6 +735,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             'Driver successfully deleted.',
             'Success:'
           );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error("Driver can't be deleted.", 'Error:');
@@ -735,8 +749,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public onSelectDropdown(event: any, action: string): void {
     switch (action) {
       case 'bank': {
-        console.log(event);
         this.selectedBank = event;
+        if (this.selectedBank) {
+          this.onBankSelected();
+        }
+
         break;
       }
       case 'paytype': {

@@ -88,6 +88,14 @@
     margin: 0 auto;
   }
 
+  .spinner-border {
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    bottom: 4px;
+    right: 18px;
+  }
+
   //   Ovveride global settings for row > columns
   .form-container {
     .row {

@@ -1,11 +1,10 @@
-import { Address } from 'src/app/core/model/address';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { phoneRegex } from '../../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-fuel-stop-modal',
@@ -20,14 +19,14 @@ export class FuelStopModalComponent implements OnInit {
   public fuelStops: any[] = [];
 
   public selectedFuelStop: any = null;
-  public selectedAddress: Address | AddressEntity;
+  public selectedAddress: AddressEntity | AddressEntity;
 
   public isFavouriteFuelStop: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private notificationService: NotificationService
   ) {}
 
@@ -58,27 +57,35 @@ export class FuelStopModalComponent implements OnInit {
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
-    if (data.action === 'close') {
-      this.fuelStopForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'close': {
+        this.fuelStopForm.reset();
+        break;
+      }
+      case 'save': {
         if (this.fuelStopForm.invalid) {
           this.inputService.markInvalid(this.fuelStopForm);
           return;
         }
         if (this.editData) {
           this.updateFuelStop(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addFuelStop();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
+        break;
       }
-      // Delete
-      if (data.action === 'delete' && this.editData) {
-        this.deleteFuelStopById(this.editData.id);
+      case 'delete': {
+        if (this.editData) {
+          this.deleteFuelStopById(this.editData.id);
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
+        }
+        break;
       }
-
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
@@ -88,11 +95,7 @@ export class FuelStopModalComponent implements OnInit {
   }
 
   public onSelectDropdown(event: any, action) {
-    switch(action) {
-      case 'address': {
-        this.selectedAddress = event;
-        break;
-      }
+    switch (action) {
       case 'fuel-stop': {
         this.selectedFuelStop = event;
         break;
@@ -101,7 +104,16 @@ export class FuelStopModalComponent implements OnInit {
         break;
       }
     }
+  }
 
+  public onHandleAddress(event: {
+    address: AddressEntity | any;
+    valid: boolean;
+  }): void {
+    this.selectedAddress = event.address;
+    if (!event.valid) {
+      this.fuelStopForm.get('addres').setErrors({ invalid: true });
+    }
   }
 
   private updateFuelStop(id: number) {}

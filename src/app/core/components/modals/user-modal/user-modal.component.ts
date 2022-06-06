@@ -14,12 +14,12 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Address } from '../../shared/ta-input-address/ta-input-address.component';
 import { AddressEntity } from 'appcoretruckassist';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { distinctUntilChanged } from 'rxjs';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-user-modal',
@@ -52,14 +52,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   public typeOfEmploye = [
     {
-      id: 1,
+      id: 998,
       label: 'User',
       value: 'user',
       name: 'employe',
       checked: true,
     },
     {
-      id: 2,
+      id: 999,
       label: 'Admin',
       value: 'admin',
       name: 'employe',
@@ -69,14 +69,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   public typeOfPayroll = [
     {
-      id: 3,
+      id: 300,
       label: '1099',
       value: '1099',
       name: 'payroll',
       checked: true,
     },
     {
-      id: 4,
+      id: 301,
       label: 'W-2',
       value: 'w-2',
       name: 'payroll',
@@ -91,7 +91,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
   public selectedOffice: any = null;
   public selectedBank: any = null;
 
-  public selectedAddress: Address | AddressEntity = null;
+  public selectedAddress: AddressEntity = null;
   public isPhoneExtExist: boolean = false;
 
   public isBankSelected: boolean = false;
@@ -99,7 +99,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -142,28 +142,35 @@ export class UserModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
-    if (data.action === 'close') {
-      this.userForm.reset();
-    } else {
-      // Save & Update
-      if (data.action === 'save') {
+    switch (data.action) {
+      case 'close': {
+        this.userForm.reset();
+        break;
+      }
+      case 'save': {
         if (this.userForm.invalid) {
           this.inputService.markInvalid(this.userForm);
           return;
         }
         if (this.editData) {
           this.updateUser(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addUser();
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
+        break;
       }
-
-      // Delete
-      if (data.action === 'delete' && this.editData) {
-        this.deleteUserById(this.editData.id);
+      case 'delete': {
+        if (this.editData) {
+          this.deleteUserById(this.editData.id);
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
+        }
+        break;
       }
-
-      this.ngbActiveModal.close();
+      default: {
+        break;
+      }
     }
   }
 
@@ -176,7 +183,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  public onHandleAddress(event: { address: Address; valid: boolean }): void {
+  public onHandleAddress(event: {
+    address: AddressEntity;
+    valid: boolean;
+  }): void {
     this.selectedAddress = event.address;
     if (!event.valid) {
       this.userForm.get('address').setErrors({ invalid: true });
@@ -233,7 +243,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             this.userForm.get('routingNumber').setErrors(null);
           } else {
             this.userForm.get('routingNumber').setErrors({ invalid: true });
-            this.inputService.triggerInvalidRoutingNumber$.next(true);
           }
         }
       });

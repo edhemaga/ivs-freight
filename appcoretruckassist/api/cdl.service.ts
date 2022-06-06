@@ -19,7 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { CdlResponse } from '../model/models';
 import { CreateCdlCommand } from '../model/models';
-import { CreateCdlResponse } from '../model/models';
+import { CreateResponse } from '../model/models';
 import { EditCdlCommand } from '../model/models';
 import { GetCdlModalResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
@@ -302,9 +302,9 @@ export class CdlService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCdlPost(createCdlCommand?: CreateCdlCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateCdlResponse>;
-    public apiCdlPost(createCdlCommand?: CreateCdlCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateCdlResponse>>;
-    public apiCdlPost(createCdlCommand?: CreateCdlCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateCdlResponse>>;
+    public apiCdlPost(createCdlCommand?: CreateCdlCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiCdlPost(createCdlCommand?: CreateCdlCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiCdlPost(createCdlCommand?: CreateCdlCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
     public apiCdlPost(createCdlCommand?: CreateCdlCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -346,7 +346,7 @@ export class CdlService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateCdlResponse>(`${this.configuration.basePath}/api/cdl`,
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/cdl`,
             createCdlCommand,
             {
                 responseType: <any>responseType,

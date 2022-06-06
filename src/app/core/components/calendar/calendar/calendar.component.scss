@@ -14,6 +14,7 @@
         .title-holder{
             position: relative;
             width: 100%;
+            height: 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -43,6 +44,7 @@
                 top: 50%;
                 transform: translateY(-50%) rotate(180deg);
                 right: 28px;
+                cursor: pointer;
 
                 svg-icon{
                     svg{
@@ -225,8 +227,16 @@
                     color: #919191 !important;
                 }
 
+                .ta-custom-card .ta-card-header:hover .header-text{
+                    color: #919191 !important;
+                }
+
                 .ta-custom-card .ta-card-body.active{
                     border-top: 2px solid #F1F1F1;
+                }
+
+                .ta-custom-card .ta-card-header.active{
+                    border-radius: 3px;
                 }
             }
 
@@ -264,6 +274,8 @@
                     .years-frame{
                         width: 100%;
                         height: 300px;
+                        background-color: #F1F1F1;
+                        border-radius: 2px;
                         display: flex;
                         justify-content: flex-start;
                         align-items: flex-start;
@@ -307,7 +319,7 @@
                 }
     
                 .calendar-month-holder{
-                    width: 275px;
+                    flex: 1;
                     height: 300px;
                     background-color: #fff;
                     padding: 0px 12px;
@@ -350,7 +362,9 @@
                         flex-direction: column;
                         overflow: auto;
                         -ms-overflow-style: none;
-                        scrollbar-width: none;    
+                        scrollbar-width: none; 
+                        padding: 0px 20px;
+                        box-sizing: border-box;   
     
                         .calendar-current-month{
                             width: 100%;
@@ -381,6 +395,7 @@
                                     color: #6C6C6C;
                                     line-height: 19px;
                                     user-select: none;
+                                    cursor: pointer;
         
                                     &.current-month{
                                         color: #536BC2;
@@ -472,6 +487,14 @@
 
                 .ta-custom-card .ta-card-header .header-content .header-text{
                     color: #6C6C6C;
+                }
+
+                .ta-custom-card .ta-card-header.active:hover .header-text{
+                    color: #6C6C6C !important;
+                }
+
+                .plus-custom-card svg{
+                    margin-right: 12px;
                 }
             }
 
@@ -668,6 +691,108 @@
     }
 }
 
+.events-popover{
+    width: 175px;
+    border-radius: 3px;
+    background-color: #fff;
+    padding: 8px 0px 4px 0px;
+    box-sizing: border-box;
+    box-shadow: 0 0 4px #00000026;
+    margin-top: 2px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+
+    .event-title-frame{
+        width: 100%;
+        padding-left: 12px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .event-box{
+            min-width: 26px;
+            height: 24px;
+            padding: 0px 4px;
+            box-sizing: border-box; 
+            background-color: #F3F3F3;
+            border-radius: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 800;
+            color: #6C6C6C;           
+        }
+
+        .event-title{
+            font-size: 18px;
+            font-weight: 800;
+            color: #6C6C6C; 
+            padding-left: 4px;
+            box-sizing: border-box;          
+        }
+    }
+
+    .border-event{
+        width: calc(100% - 12px);
+        height: 2px;
+        border-radius: 1px;
+        background-color: #F3F3F3;
+        margin: 7px 6px 4px 6px;
+    }
+
+    .event-items-holder{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0px 0px 6px 10px;
+        box-sizing: border-box;
+
+        .event-items-box{
+            min-width: 22px;
+            height: 22px;
+            padding: 0px 6px;
+            box-sizing: border-box;
+            border-radius: 2px;
+            background-color: #CE93D8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff; 
+
+            &.company-box{
+                background-color: #97A8DC;
+            }
+
+            &.personal-box{
+                background-color: #FFCC80;
+            }
+
+            &.holiday-box{
+                background-color: #80CBBA;
+            }
+        }
+
+        .event-text{
+            font-size: 14px;
+            font-weight: 400;
+            color: #6C6C6C; 
+            padding-left: 4px;
+            box-sizing: border-box;          
+        }
+
+        &.different-padding{
+            padding: 0px 0px 0px 10px;
+        }
+    }
+}
+
 .fc-scrollgrid-section-header .fc-col-header-cell-cushion {
     padding: 0;
     font-size: 14px;
@@ -695,12 +820,14 @@
     background-color: #fff;
 }
 
+.fc-dayGridMonth-view .fc-daygrid-body .fc-scrollgrid-sync-inner{
+    height: 163px;
+}
+
 .fc-daygrid-body .fc-scrollgrid-sync-inner{
     display: flex;
     justify-content: center;
     align-items: center;
-
-    height: 163px;
 
     .fc-daygrid-day-number{
         font-size: 52px;
@@ -729,7 +856,7 @@
 
 .fc-scrollgrid-section-header .fc-theme-standard td, .fc-theme-standard th{
     border-top: none !important;
-    border-bottom: 4px solid #F1F1F1 !important;
+    border-bottom: 2.5px solid #F1F1F1 !important;
 } 
 
 .fc-scrollgrid-liquid{
@@ -800,4 +927,58 @@
 
 .fc-scroller{
     height: auto !important;
+}
+
+.fc-view-harness{
+    height: 1025px !important;
+}
+
+.fc-daygrid-dot-event .fc-event-title{
+    color: #000 !important;
+    font-weight: 400 !important;
+}
+
+.fc-daygrid-event-dot{
+    margin: 0 0 0 6px !important;
+    width: 14px !important;
+    height: 14px !important;
+
+    border-radius: 2px !important;
+    background-color: #97A8DC;
+    border: none !important;
+}
+
+.fc-col-header .fc-day-sun .fc-scrollgrid-sync-inner{
+    border-radius: 3px 0 0 3px !important;
+}
+
+.fc-col-header .fc-day-sat .fc-scrollgrid-sync-inner{
+    border-radius: 0 3px 3px 0 !important;
+}
+
+.fc-timeGridWeek-view{
+    .fc-timegrid-axis-cushion{
+        max-width: none !important;
+        width: 100% !important;
+
+        font-size: 14px;
+        line-height: 19px;
+        color: #6C6C6C;
+        font-weight: 400;
+    }
+
+    .fc-daygrid-body .fc-scrollgrid-sync-inner{
+        height: 131px;
+    }
+
+    .fc-scrollgrid-section table{
+        background-color: #fff !important;
+    }
+
+    .fc .fc-timegrid-slot-label-cushion{
+        font-size: 14px;
+        line-height: 19px;
+        color: #6C6C6C;
+        font-weight: 400;
+    }
 }

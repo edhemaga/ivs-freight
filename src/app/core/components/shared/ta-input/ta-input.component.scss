@@ -3,10 +3,11 @@
   position: relative;
 
   //--------------- Classes on all INPUT ELEMENTS ---------------
-  &.hover-out-of-focus {
+  &.hover-focus-out {
     &:hover {
+      transition: all 0.3s ease-in-out;
+
       .input-icon {
-        transition: all 0.3s ease-in-out;
         svg {
           path {
             fill: #aaaaaa;
@@ -14,22 +15,19 @@
         }
 
         &:hover ~ .input-label {
-          transition: all 0.3s ease-in-out;
           color: #3c3c3c;
         }
 
         &:hover ~ .input-control {
-          transition: all 0.3s ease-in-out;
           background-color: #eeeeee;
           color: #3c3c3c;
         }
       }
 
       .input-dropdown-arrow {
-        transition: all 0.3s ease-in-out;
         svg {
           path {
-            fill: #919191;
+            fill: #aaaaaa;
           }
         }
       }
@@ -46,9 +44,10 @@
 
   &.invalid {
     &:hover {
+      transition: all 0.3s ease-in-out;
       .input-icon {
         &.invalid-required-empty-focus,
-        &.invalid-required-filled {
+        &.invalid-required-filled-out {
           svg {
             path {
               fill: #ff5050 !important;
@@ -59,7 +58,6 @@
 
       .input-clear {
         display: inline-block;
-        transition: all 0.3s ease-in-out;
         cursor: pointer !important;
         pointer-events: auto !important;
         .input-clear-x {
@@ -74,8 +72,8 @@
         }
 
         &:hover {
+          transition: all 0.3s ease-in-out;
           .input-clear-x {
-            transition: all 0.3s ease-in-out;
             svg {
               path {
                 fill: #eeeeee;
@@ -88,25 +86,22 @@
         }
 
         &:hover ~ .input-label {
-          transition: all 0.3s ease-in-out;
           color: #3c3c3c;
         }
 
         &:hover ~ .input-control {
-          transition: all 0.3s ease-in-out;
           background-color: #eeeeee;
           color: #3c3c3c;
         }
       }
 
       .input-error {
-        transition: all 0.3s ease-in-out;
-        color: #ef5350;
+        color: #f44336 !important;
       }
     }
   }
 
-  &.invalid-empty-required-dropdown {
+  &.invalid-empty-dropdown {
     &:hover {
       .input-dropdown-arrow {
         transition: all 0.3s ease-in-out;
@@ -129,9 +124,10 @@
 
   &.invalid-empty-required {
     &:hover {
+      transition: all 0.3s ease-in-out;
+
       .input-icon {
         &.invalid-required-empty {
-          transition: all 0.3s ease-in-out;
           svg {
             path {
               fill: #ef5350;
@@ -144,27 +140,31 @@
         .input-clear-x {
           svg {
             path {
-              transition: all 0.3s ease-in-out;
               fill: #ef5350;
             }
           }
         }
 
         &:hover ~ .input-label {
-          transition: all 0.3s ease-in-out;
           color: #3c3c3c;
         }
 
         &:hover ~ .input-control {
-          transition: all 0.3s ease-in-out;
           background-color: #eeeeee;
           color: #3c3c3c;
         }
       }
 
+      .input-invalid-danger-mark {
+        svg {
+          path {
+            fill: #ef5350 !important;
+          }
+        }
+      }
+
       .input-error {
-        transition: all 0.3s ease-in-out;
-        color: #ef5350;
+        color: #f44336 !important;
       }
     }
   }
@@ -175,11 +175,12 @@
         transition: all 0.3s ease-in-out;
         svg {
           path {
-            fill: #B7B7B7 !important;
+            fill: #b7b7b7 !important;
           }
         }
       }
     }
+
     .input-clear {
       .input-clear-x {
         svg {
@@ -190,17 +191,19 @@
         }
       }
     }
+
     .input-error {
+      color: #f44336 !important;
       transition: all 0.3s ease-in-out;
-      color: #ef5350 !important;
     }
   }
 
   &.valid {
     &:hover {
+      transition: all 0.3s ease-in-out;
+
       .input-icon {
         &.valid-required-out {
-          transition: all 0.3s ease-in-out;
           svg {
             path {
               fill: #6d82c7;
@@ -208,8 +211,8 @@
           }
         }
       }
+
       .input-clear {
-        transition: all 0.3s ease-in-out;
         display: inline-block;
         &:hover {
           transition: all 0.3s ease-in-out;
@@ -224,12 +227,10 @@
         }
 
         &:hover ~ .input-label {
-          transition: all 0.3s ease-in-out;
           color: #3c3c3c;
         }
 
         &:hover ~ .input-control {
-          transition: all 0.3s ease-in-out;
           background-color: #eeeeee;
           color: #3c3c3c;
         }
@@ -250,11 +251,7 @@
           }
         }
       }
-    }
-  }
 
-  &.valid-dropdown {
-    &:hover {
       .input-dropdown-arrow {
         transition: all 0.3s ease-in-out;
         svg {
@@ -273,6 +270,7 @@
       }
     }
   }
+
   //--------------- end ---------------
 
   @import "./ta-input.label.scss";
@@ -285,4 +283,5 @@
   @import "./ta-input.passwordeye.scss";
   @import "./ta-input.datepicker.scss";
   @import "./ta-input.placeholderText.scss";
+  @import "./ta-input.dangermark.scss";
 }

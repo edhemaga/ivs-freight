@@ -2,12 +2,12 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
   CreateTruckCommand,
-  CreateTruckResponse,
   GetTruckModalResponse,
   TruckResponse,
   TruckService,
   UpdateTruckCommand,
 } from 'appcoretruckassist';
+import { CreateTruckResponse } from 'appcoretruckassist/model/createTruckResponse';
 
 @Injectable({
   providedIn: 'root',
