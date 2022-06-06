@@ -30,7 +30,7 @@ export class TaReCardComponent implements OnInit {
   @Input() public cardSecondName:string='';
   @Output() public dropActions = new EventEmitter<any>();
   public resPage: boolean = false;
-  public copied: boolean = false;
+  public copiedCommon: boolean = false;
   public toggleDropDown: boolean;
   constructor() {}
 
@@ -64,10 +64,10 @@ export class TaReCardComponent implements OnInit {
   }
   /* To copy any Text */
   public copyText(val: any) {
-    this.copied = true;
+    this.copiedCommon = true;
     setTimeout(() => {
-      this.copied=false;
-    }, 2200);    
+      this.copiedCommon=false;
+    }, 300);    
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';

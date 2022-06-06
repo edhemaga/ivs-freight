@@ -359,6 +359,7 @@
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
                     [startDate]="mvr?.issueDate | formatDateP"
+                    [expireDate]="mvr?.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>

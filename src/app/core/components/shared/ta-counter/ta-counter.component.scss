@@ -5,8 +5,12 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   p {
     margin: 0 !important;
     position: relative;
+    line-height: 17px;
   }
 }

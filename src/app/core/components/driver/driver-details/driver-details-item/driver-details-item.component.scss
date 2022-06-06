@@ -37,9 +37,9 @@
 
   .driver-information {
     display: flex;
+    height: 80px;
+    margin-top: 2px;
     flex-direction: column;
-    position: relative;
-    bottom: 3px;
 
     // Ovveride email information-item
     .information-item-email {
@@ -48,7 +48,7 @@
 
     .information-item {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       height: 18px;
       margin-bottom: 12px;
       cursor: pointer;
@@ -70,6 +70,7 @@
         font-size: 14px;
         font-weight: 400;
         color: #6c6c6c;
+        line-height: 17px;
         &::-moz-selection {
           color: #6c6c6c;
           background: rgb(108, 108, 108, 0.2);
@@ -81,12 +82,14 @@
       }
       .ssn {
         font-size: 18px !important;
-        position: relative;
-        bottom: -2px;
+
       }
 
       .information-svg {
         margin-right: 6px;
+        svg{
+          display: flex;
+        }
       }
 
       .information-email-value {
@@ -255,7 +258,9 @@
   }
   .card-icon {
     svg {
+  
       path {
+        fill: #3551b7 !important;
         &:hover {
           fill: #3551b7 !important;
         }
@@ -336,9 +341,11 @@
     background-color: #ffffff;
     position: relative;
     bottom: 58px;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.45);
-    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.45);
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.45);
+    border-radius: 2px;
+    // -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.45);
+    // -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.45);
+    // box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.45);
+    filter: drop-shadow(0 0 2px #e7e7e7);
     .emp-tooltip {
       display: flex;
       flex-direction: column;
@@ -393,7 +400,7 @@
       display: flex;
       border-radius: 2px;
       .emp {
-        width: 35%;
+        
         background-color: #6d82c8;
         border-radius: 0 2px 2px 0;
         &:hover{
@@ -404,7 +411,6 @@
         }
       }
       .unp {
-        width: 65%;
         background-color: #d4dff4;
         border-radius: 0 2px 2px 0;
         &:hover {

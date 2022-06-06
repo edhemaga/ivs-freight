@@ -7,24 +7,21 @@
   border-radius: 2px;
   position: relative;
   width: 100%;
-  min-height: 26px;
-  max-height: 26px;
-  transition: 0.25s;
+  height: 26px;
   .radio-button-label {
     width: 60px;
+    height: 22px;
     cursor: pointer;
-    border-radius: 1px;
+    border-radius: 2px;
     background: #f3f3f3;
-    font-size: 11px;
+    font-size: 12px;
     text-align: center;
     font-weight: 700;
     padding: 2px 0px;
-    margin-right: 1px;
-    margin-left: 1px;
-    transition: left 0.25s ease-out !important;
+
     &.checked {
       background-color: #ffffff !important;
-      transition: left 0.25s ease-out !important;
+      transition: all 0.3 ease-in-out !important;
     }
 
     .radio-button {
@@ -34,27 +31,12 @@
 
     .radio-button:checked ~ .radio-button-text {
       color: #536bc2;
-      transition: left 0.25s ease-out;
-      &:hover{
-        color: #536bc2 !important;
-      }
-
+      transition: all 0.3 ease-in-out;
     }
 
     .radio-button-text {
       color: #b7b7b7;
       user-select: none !important;
-      &:hover{
-        color: #6c6c6c !important;
-      }
     }
   }
-}
-.ta-input-radiobutons a {
-  position: absolute;
-  left: 50%;
-  z-index: 1;
-  height: 100%;
-  width: 50%;
-  transition: left 0.25s ease-out;
 }

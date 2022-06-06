@@ -48,11 +48,9 @@ p {
         padding-left: 8px;
         font-size: 14px;
         font-weight: 800;
-        height: 18px;
         padding-right: 12px;
-        line-height: 15px;
-        position: relative;
-        bottom: -3px;
+        line-height: 17px;
+      
     }
     .header-plus-button {
         display: flex;
@@ -158,8 +156,6 @@ svg {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    position: relative;
-    bottom: -1px;
 }
 
 .repair-header-icons {

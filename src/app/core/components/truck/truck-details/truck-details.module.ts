@@ -16,7 +16,7 @@ import { PipesModule } from 'src/app/core/pipes/pipes.module';
         TruckDetailsItemComponent,
         RenderMultipleItemsPipe,
         TruckDetailsCardComponent
-     
+       
     ],
     exports:[TruckDetailsCardComponent,PipesModule],
     imports:[

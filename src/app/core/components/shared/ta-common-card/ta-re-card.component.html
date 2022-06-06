@@ -3,14 +3,13 @@
     ngbTooltip
     [mainTooltip]="isCardOpen ? '' : 'Open Card'"
     position="top"
-    [tooltipBackground]="isCardOpen? 'rgba(0,0,0,0)' : '#6C6C6C'"
+    [tooltipBackground]="isCardOpen ? 'rgba(0,0,0,0)' : '#6C6C6C'"
     class="tooltipClose"
-   
   >
     <div class="name-dots disable-selection">
       <div
         class="text-icon-common"
-        [ngClass]="{ copied: copied }"
+        [ngClass]="{ copied: copiedCommon }"
         (click)="onAction('toggle-card')"
       >
         <span
@@ -20,10 +19,12 @@
           tooltipBackground="#6C6C6C"
           class="tooltipShortName"
         >
-          <div *ngIf="shortName" class="weekly-status">
-            <div  [ngClass]="{'card-close-title': !isCardOpen }" class="weekly-status-value">
-              {{ shortName }}
-            </div>
+          <div
+            *ngIf="shortName"
+            [ngClass]="{ 'card-close-title': !isCardOpen }"
+            class="weekly-status"
+          >
+            {{ shortName }}
           </div>
         </span>
         <span
@@ -43,7 +44,10 @@
             >{{ cardNameCommon }}</span
           >
 
-          <span [ngClass]="{'card-close-title': !isCardOpen }" class="open-name" *ngIf="!isCardOpen && expDateClose"
+          <span
+            [ngClass]="{ 'card-close-title': !isCardOpen }"
+            class="open-name"
+            *ngIf="!isCardOpen && expDateClose"
             >Expired on {{ expDateClose }}
           </span>
           <span *ngIf="cardSecondName && isCardOpen" class="second-name">{{
@@ -53,9 +57,9 @@
         <span
           *ngIf="hasCopyIcon"
           ngbTooltip
-          [mainTooltip]="copied ? 'Copied' : 'Copy'"
+          [mainTooltip]="copiedCommon ? 'Copied' : 'Copy'"
           position="top"
-          [tooltipBackground]="copied ? '#536BC2' : '#6c6c6c'"
+          [tooltipBackground]="copiedCommon ? '#536BC2' : '#6c6c6c'"
         >
           <svg-icon
             *ngIf="isCardOpen && hasCopyIcon"
@@ -75,6 +79,7 @@
       <app-table-dropdown
         [options]="options.actions"
         [id]="optionsId"
+        [placement]="'bottom-left'"
         (dropDownActions)="dropAct($event)"
         [customClassDropDown]="'table-dropdown-container-vertical'"
       >

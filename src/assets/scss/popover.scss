@@ -1,6 +1,7 @@
 // Table Dropdown Popup
 .table-dropdown-popover {
   .popover-body {
+    z-index: 60;
     .table-dropdown {
       width: fit-content;
       height: auto;
