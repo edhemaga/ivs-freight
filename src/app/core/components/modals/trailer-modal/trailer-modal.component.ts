@@ -1,3 +1,4 @@
+import { HttpResponseBase } from '@angular/common/http';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -72,6 +73,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     params: { height: '0px' },
   };
 
+  public trailerStatus: boolean = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -89,7 +92,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 2,
+        id: 1,
       };
       this.editTrailerById(this.editData.id);
     }
@@ -145,12 +148,19 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           .changeTrailerStatus(this.editData.id)
           .pipe(untilDestroyed(this))
           .subscribe({
-            next: (res: any) => {
-              if (res.status === '200' || res.status === '204') {
+            next: (res: HttpResponseBase) => {
+              if (res.status === 200 || res.status === 204) {
+                this.trailerStatus = !this.trailerStatus;
+
                 this.modalService.changeModalStatus({
                   name: 'deactivate',
-                  status: null,
+                  status: this.trailerStatus,
                 });
+                
+                this.notificationService.success(
+                  `Trailer status changed to ${this.trailerStatus ? 'deactivate' : 'activate'}.`,
+                  'Success:'
+                );
               }
             },
             error: () => {
@@ -412,26 +422,27 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             volume: res.volume,
             insurancePolicy: res.insurancePolicy,
           });
-          this.selectedTrailerType = res.trailerType.name
+          this.selectedTrailerType = res.trailerType
             ? res.trailerType
             : null;
-          this.selectedTrailerMake = res.trailerMake.name
+          this.selectedTrailerMake = res.trailerMake
             ? res.trailerMake
             : null;
-          this.selectedColor = res.color.name ? res.color : null;
-          this.selectedTrailerLength = res.trailerLength.name
+          this.selectedColor = res.color ? res.color : null;
+          this.selectedTrailerLength = res.trailerLength
             ? res.trailerLength
             : null;
-          this.selectedOwner = res.owner.name ? res.owner : null;
-          this.selectedSuspension = res.suspension.name ? res.suspension : null;
-          this.selectedTireSize = res.tireSize.name ? res.tireSize : null;
-          this.selectedDoorType = res.doorType.name ? res.doorType : null;
-          this.selectedReeferType = res.reeferUnit.name ? res.reeferUnit : null;
+          this.selectedOwner = res.owner ? res.owner : null;
+          this.selectedSuspension = res.suspension ? res.suspension : null;
+          this.selectedTireSize = res.tireSize ? res.tireSize : null;
+          this.selectedDoorType = res.doorType ? res.doorType : null;
+          this.selectedReeferType = res.reeferUnit ? res.reeferUnit : null;
 
           this.modalService.changeModalStatus({
             name: 'deactivate',
-            status: res.status === 0 ? false : true,
+            status: res.status === 1 ? false : true,
           });
+          this.trailerStatus = res.status === 1 ? false : true;
         },
         error: (err) => {
           this.notificationService.error("Cant't get trailer.", 'Error:');

@@ -82,12 +82,24 @@ export class TaModalComponent implements OnInit, OnDestroy {
     this.modalService.modalStatus$
       .pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((data: { name: string; status: boolean }) => {
-        if (data?.name === 'deactivate') {
-          if (data.status !== null || data.status !== undefined) {
+        switch(data?.name) {
+          case 'deactivate': {
             this.isDeactivated = data.status;
+            break;
           }
-          this.isDeactivated = !this.isDeactivated;
+          case 'dnu': {
+            this.isDNU = data.status;
+            break;
+          }
+          case 'bfb': {
+            this.isBFB = data.status;
+            break;
+          }
+          default: {
+            break;
+          }
         }
+        
       });
 
     this.uploadFileService.visibilityDropZone$

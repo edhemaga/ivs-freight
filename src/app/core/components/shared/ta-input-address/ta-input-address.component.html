@@ -87,7 +87,7 @@
       inputConfig.customClass
     }}"
     [ngClass]="{
-      disabled: !getSuperControl.value && inputConfig.isDisabled,
+      'disabled': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-focus-in':
         activeAddress &&

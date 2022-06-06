@@ -36,8 +36,10 @@ export class TaInputAddressComponent
 
   public numberOfSpaces: number = 0;
 
-  public activeAddress: AddressEntity = null;
+  public activeAddress: AddressEntity;
   public invalidAddress: boolean = false;
+
+  private initValidAddress: boolean = false;
 
   public options = {
     componentRestrictions: { country: ['US', 'CA'] },
@@ -51,20 +53,19 @@ export class TaInputAddressComponent
   }
 
   ngOnInit(): void {
-    if(this.activeAddress) {
-      this.getSuperControl.valueChanges
+    this.getSuperControl.valueChanges
       .pipe(untilDestroyed(this))
       .subscribe((value) => {
-        console.log(value);
-        console.log(this.activeAddress?.address);
+        if (value && !this.initValidAddress) {
+          this.initValidAddress = true;
+          this.activeAddress = { ...this.activeAddress, address: value };
+        }
         if (value !== this.activeAddress?.address) {
           this.invalidAddress = true;
           this.selectedAddress.emit({ address: null, valid: false });
           this.getSuperControl.setErrors({ invalid: true });
         }
       });
-    }
-    
   }
 
   public handleAddressChange(address: AddressEntity) {
@@ -113,13 +114,6 @@ export class TaInputAddressComponent
       this.activeAddress?.address !== this.getSuperControl.value
     ) {
       this.invalidAddress = true;
-      // this.selectedAddress.emit({address: null, valid: false});
-    }
-
-    if (
-      this.activeAddress &&
-      this.activeAddress?.address !== this.getSuperControl.value
-    ) {
       this.getSuperControl.setErrors({ invalid: true });
     }
 
@@ -188,5 +182,7 @@ export class TaInputAddressComponent
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.initValidAddress = false;
+  }
 }
