@@ -9,6 +9,7 @@ import {
   Output,
   Self,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -29,7 +30,7 @@ import { TitleCasePipe, UpperCasePipe } from '@angular/common';
     CalendarScrollService,
     TitleCasePipe,
     UpperCasePipe,
-  ],
+  ]
 })
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor

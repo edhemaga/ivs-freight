@@ -46,7 +46,8 @@
         getSuperControl.value &&
         inputConfig.isDropdown &&
         !inputConfig.isDisabled &&
-        !isDropdownAddModeActive,
+        !isDropdownAddModeActive &&
+        !inputConfig.multiSelectDropdownActive,
       'password-eye': 
         inputConfig.type === 'password' && 
         isVisiblePasswordEye &&
@@ -133,11 +134,20 @@
     *ngIf="
       inputConfig.isDropdown &&
       !inputConfig.isDisabled &&
-      !isDropdownAddModeActive
+      !isDropdownAddModeActive &&
+      !inputConfig.multiSelectDropdownActive
     "
     [ngClass]="{
-      'active': !inputConfig.isDisabled && focusInput,
-      'valid': getSuperControl.value && getSuperControl.valid && focusInput,
+      'active': 
+      (!inputConfig.isDisabled && focusInput) || 
+      (inputConfig.multiselectDropdown && 
+       inputConfig.multiSelectDropdownActive &&
+       focusInput),
+      'valid':
+      (getSuperControl.value && getSuperControl.valid && focusInput) ||
+      (inputConfig.multiselectDropdown && 
+       inputConfig.multiSelectDropdownActive &&
+       focusInput),
       'valid-focus-out-required':
         getSuperControl.value && getSuperControl.valid && !focusInput,
       'focus-out-hover': !focusInput,
@@ -235,6 +245,10 @@
         inputConfig.isDropdown &&
         inputConfig.placeholder &&
         dropdownToggler &&
+        focusInput,
+      'multiSelect-dropdown-active': 
+        inputConfig.multiselectDropdown && 
+        inputConfig.multiSelectDropdownActive &&
         focusInput
     }"
     [(ngModel)]="input.value"

@@ -391,7 +391,8 @@
               width: 16px;
               height: 16px;
               border-radius: 50%;
-              object-fit: fill;
+              -o-object-fit: fill;
+                 object-fit: fill;
               margin-right: 4px;
             }
 

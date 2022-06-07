@@ -18,7 +18,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   public taskForm: FormGroup;
 
-  public departments: any[] = [];
+  public resDepartments: any[] = [];
 
   public comments: any[] = [];
   public documents: any[] = [];
@@ -50,8 +50,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       description: [null],
       url: [null, Validators.maxLength(400)],
       deadline: [null],
-      departmentIds: this.formBuilder.array([]),
-      companyUserIds: this.formBuilder.array([]),
+      departmentIds: [null],
+      companyUserIds: [null],
       note: [null],
     });
   }
@@ -126,12 +126,29 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: TodoModalResponse) => {
-          this.departments = res.departments;
+          this.resDepartments = res.departments;
+          console.log(this.resDepartments)
         },
         error: () => {
           this.notificationService.error("Can't get task dropdowns.", 'Error:');
         },
       });
+  }
+
+  public onSelectDropDown(event: any, action: string) {
+    switch(action) {
+      case 'res-department': {
+        console.log(event);
+        break;
+      }
+      case 'assign-task': {
+        console.log(event)
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   ngOnDestroy(): void {}
