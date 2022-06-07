@@ -21,7 +21,7 @@
     pointer-events: all !important;
 
     .required-label-multiselect {
-      color: #E57373;
+      color: #e57373;
     }
   }
 
@@ -70,6 +70,9 @@
       font-weight: 400;
       line-height: 18px;
       position: relative;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       &-clear {
         position: absolute;

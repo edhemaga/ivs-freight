@@ -6,17 +6,22 @@ import { formatEinPipe } from './formatEin.pipe';
 import { formatPhonePipe } from './formatPhone.pipe';
 import { formatSsnPipe } from './formatSsn.pipe';
 
+
 @NgModule({
-  declarations: [		SafeHtmlPipe,
+  declarations: [
+    SafeHtmlPipe,
     formatDatePipe,
     formatPhonePipe,
     formatEinPipe,
-    formatSsnPipe ],
+    formatSsnPipe
+  ],
   imports: [CommonModule],
-  exports: [SafeHtmlPipe,
+  exports: [
+    SafeHtmlPipe,
     formatDatePipe,
     formatPhonePipe,
     formatEinPipe,
-    formatSsnPipe]
+    formatSsnPipe
+  ],
 })
 export class PipesModule {}

@@ -35,6 +35,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public endorsements: any[] = [];
   public restrictions: any[] = [];
 
+  public selectedRestrictions: any[] = [];
+  public selectedEndorsment: any[] = [];
   public selectedClassType: any = null;
   public selectedCountryType: any = null;
   public selectedStateType: any = null;
@@ -122,6 +124,14 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         this.selectedStateType = event;
         break;
       }
+      case 'restrictions': {
+        this.selectedRestrictions = event ? event.map((item) => item.id) : [];
+        break;
+      }
+      case 'endorsments': {
+        this.selectedEndorsment = event ? event.map((item) => item.id) : [];
+        break;
+      }
       default: {
         break;
       }
@@ -168,6 +178,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
           this.countryTypes = res.countryTypes;
           this.endorsements = res.endorsements;
           this.restrictions = res.restrictions;
+          console.log(res.endorsements)
+          console.log(res.restrictions)
         },
         error: () => {
           this.notificationService.error(

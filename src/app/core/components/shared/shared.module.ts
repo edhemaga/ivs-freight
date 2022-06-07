@@ -111,6 +111,7 @@ import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-mod
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { HidePasswordPipe } from '../../pipes/hide-password.pipe';
 import { InputTypePipe } from './ta-input/input-type.pipe';
+import { FormatRestrictionEndorsmentPipe } from '../../pipes/formatRestrictionEndorsment.pipe';
 
 @NgModule({
   declarations: [
@@ -189,6 +190,7 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
     SumArraysPipe,
     HidePasswordPipe,
     InputTypePipe,
+    FormatRestrictionEndorsmentPipe,
 
     // Directive
     AutoFocusDirective,
@@ -346,6 +348,7 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
     SumArraysPipe,
     HidePasswordPipe,
     InputTypePipe,
+    FormatRestrictionEndorsmentPipe,
 
     // Directive
     AutoFocusDirective,
