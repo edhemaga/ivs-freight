@@ -117,6 +117,9 @@ export class TaInputDropdownComponent
     this.inputService.dropDownShowHideSubject
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
+
+        this.isMultiSelectInputFocus = action;
+
         if (!action) {
           this.popoverRef.open();
           if (this.activeItem) {
@@ -142,8 +145,6 @@ export class TaInputDropdownComponent
           this.getSuperControl.setValue(null);
           this.popoverRef.close();
         }
-
-        this.isMultiSelectInputFocus = action;
       });
   }
 
@@ -368,7 +369,6 @@ export class TaInputDropdownComponent
     if (!this.multiselectItems.length) {
       this.inputConfig.multiSelectDropdownActive = null;
       this.inputConfig.label = this.multiSelectLabel;
-      console.log(this.inputConfig.label);
     }
 
     this.selectedItems.emit(
@@ -380,6 +380,20 @@ export class TaInputDropdownComponent
         };
       })
     );
+  }
+
+  public delteAllMultiSelectItems(event: any) {
+    this.multiselectItems = [];
+    this.inputConfig.multiSelectDropdownActive = null;
+    this.inputConfig.label = this.multiSelectLabel;
+    this.options = this.options.map(item => {
+      return {
+        ...item,
+        active: false
+      }
+    });
+    this.originalOptions = this.options;
+    this.selectedItems.emit([]);
   }
 
   public toggleMultiselectDropdown(event: any) {

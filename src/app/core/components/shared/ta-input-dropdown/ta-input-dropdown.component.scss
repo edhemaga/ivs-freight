@@ -1,3 +1,4 @@
+@import "../ta-input/ta-input.clear.scss";
 .multiselect-dropdown {
   display: flex;
   flex-direction: column;
@@ -133,6 +134,30 @@
         svg {
           path {
             fill: #6d82c7;
+          }
+        }
+      }
+    }
+
+    // Ovveride input clear class
+    .input-clear-multiselect {
+      top: auto !important;
+      bottom: 2px !important;
+      display: inline-block !important;
+
+      &:hover {
+        .input-clear-x {
+          svg {
+            path {
+              fill: #eeeeee !important;
+            }
+          }
+          &:hover {
+            svg {
+              rect {
+                fill: #6c6c6c !important;
+              }
+            }
           }
         }
       }
