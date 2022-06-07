@@ -400,8 +400,6 @@
       display: flex;
       border-radius: 2px;
       .emp {
-        
-        background-color: #6d82c8;
         border-radius: 0 2px 2px 0;
         &:hover{
           .employment-tooltip {
@@ -411,7 +409,6 @@
         }
       }
       .unp {
-        background-color: #d4dff4;
         border-radius: 0 2px 2px 0;
         &:hover {
           background-color: #97a8dc !important;
