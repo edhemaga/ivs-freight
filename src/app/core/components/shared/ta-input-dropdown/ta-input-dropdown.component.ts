@@ -13,7 +13,6 @@ import {
   Self,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -66,6 +65,10 @@ export class TaInputDropdownComponent
   }
 
   ngOnInit(): void {
+    if (this.inputConfig.multiselectDropdown) {
+      this.multiSelectLabel = this.inputConfig.label;
+    }
+
     if (this.options) {
       this.originalOptions = [...this.options];
     }
@@ -114,6 +117,9 @@ export class TaInputDropdownComponent
     this.inputService.dropDownShowHideSubject
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
+
+        this.isMultiSelectInputFocus = action;
+
         if (!action) {
           this.popoverRef.open();
           if (this.activeItem) {
@@ -139,8 +145,6 @@ export class TaInputDropdownComponent
           this.getSuperControl.setValue(null);
           this.popoverRef.close();
         }
-
-        this.isMultiSelectInputFocus = action;
       });
   }
 
@@ -276,7 +280,6 @@ export class TaInputDropdownComponent
   // Multiselect Dropdown
   public onMultiselectSelect(option: any, action: string): void {
     this.isMultiSelectInputFocus = false;
-    this.multiSelectLabel = this.inputConfig.label;
     this.inputConfig.label = null;
     switch (action) {
       case 'multiselect': {
@@ -340,10 +343,13 @@ export class TaInputDropdownComponent
         break;
       }
     }
+    this.inputRef.focusInput = false;
+    this.inputRef.input.nativeElement.blur();
+
     const timeout = setTimeout(() => {
       this.inputConfig.multiSelectDropdownActive = true;
       clearTimeout(timeout);
-    }, 50);
+    }, 150);
   }
 
   public removeMultiSelectItem(index: number) {
@@ -358,12 +364,13 @@ export class TaInputDropdownComponent
     });
 
     this.originalOptions = this.options;
-
     this.multiselectItems.splice(index, 1);
+
     if (!this.multiselectItems.length) {
       this.inputConfig.multiSelectDropdownActive = null;
       this.inputConfig.label = this.multiSelectLabel;
     }
+
     this.selectedItems.emit(
       this.multiselectItems.map((item) => {
         const { active, id, name } = item;
@@ -373,6 +380,20 @@ export class TaInputDropdownComponent
         };
       })
     );
+  }
+
+  public delteAllMultiSelectItems(event: any) {
+    this.multiselectItems = [];
+    this.inputConfig.multiSelectDropdownActive = null;
+    this.inputConfig.label = this.multiSelectLabel;
+    this.options = this.options.map(item => {
+      return {
+        ...item,
+        active: false
+      }
+    });
+    this.originalOptions = this.options;
+    this.selectedItems.emit([]);
   }
 
   public toggleMultiselectDropdown(event: any) {

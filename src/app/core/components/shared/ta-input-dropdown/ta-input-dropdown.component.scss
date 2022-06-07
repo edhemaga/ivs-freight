@@ -1,3 +1,4 @@
+@import "../ta-input/ta-input.clear.scss";
 .multiselect-dropdown {
   display: flex;
   flex-direction: column;
@@ -138,6 +139,30 @@
       }
     }
 
+    // Ovveride input clear class
+    .input-clear-multiselect {
+      top: auto !important;
+      bottom: 2px !important;
+      display: inline-block !important;
+
+      &:hover {
+        .input-clear-x {
+          svg {
+            path {
+              fill: #eeeeee !important;
+            }
+          }
+          &:hover {
+            svg {
+              rect {
+                fill: #6c6c6c !important;
+              }
+            }
+          }
+        }
+      }
+    }
+
     .multiselect-items {
       .multiselect-item {
         color: #3c3c3c;
@@ -162,6 +187,39 @@
         }
       }
     }
+
+    // Ovveride input clear class
+    .input-clear-multiselect {
+      top: auto !important;
+      bottom: 2px !important;
+      display: inline-block !important;
+
+      &:hover {
+        .input-clear-x {
+          svg {
+            path {
+              fill: #536bc2 !important;
+            }
+          }
+          &:hover {
+            svg {
+              rect {
+                fill: #bdcaeb !important;
+              }
+            }
+          }
+
+          &:hover {
+            svg {
+              rect {
+                fill: #f5fafc !important;
+              }
+            }
+          }
+        }
+      }
+    }
+
     .multiselect-items {
       .multiselect-item {
         background-color: #6d82c7;

@@ -114,7 +114,6 @@
   &.valid-focus-in,
   &.dropdown-placeholder-active,
   &.multiSelect-dropdown-active {
-    transition: all 0.3s ease-in-out;
     background-color: #536bc2 !important;
     color: #ffffff !important;
 
@@ -147,7 +146,6 @@
   }
 
   &.invalid-focus-in {
-    transition: all 0.3s ease-in-out;
     background-color: #ef5350 !important;
 
     &::-moz-selection {
