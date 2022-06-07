@@ -31,7 +31,7 @@
     right: 4px;
     svg {
       transform: rotate(0deg);
-      transition: all 0.2s ease-in-out;
+      transition: all 0.3s ease-in-out;
     }
 
     &:hover {
@@ -156,7 +156,7 @@
     .multiselect-arrow {
       svg {
         transform: rotate(180deg);
-        transition: all 0.2s ease-in-out;
+        transition: all 0.3s ease-in-out;
         path {
           fill: #f5fafc !important;
         }

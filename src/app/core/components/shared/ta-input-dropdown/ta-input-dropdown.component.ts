@@ -49,6 +49,7 @@ export class TaInputDropdownComponent
   // Multiselect dropdown options
   public multiselectItems: any[] = [];
   public isMultiSelectInputFocus: boolean = false;
+  public multiSelectLabel: string = null;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -274,6 +275,9 @@ export class TaInputDropdownComponent
 
   // Multiselect Dropdown
   public onMultiselectSelect(option: any, action: string): void {
+    this.isMultiSelectInputFocus = false;
+    this.multiSelectLabel = this.inputConfig.label;
+    this.inputConfig.label = null;
     switch (action) {
       case 'multiselect': {
         if (this.multiselectItems.some((item) => item.id === option.id)) {
@@ -292,7 +296,6 @@ export class TaInputDropdownComponent
 
         this.multiselectItems = this.options.filter((item) => item.active);
         this.originalOptions = this.options;
-        this.inputConfig.multiSelectDropdownActive = true;
         this.selectedItems.emit(
           this.multiselectItems.map((item) => {
             const { active, id, name } = item;
@@ -321,7 +324,6 @@ export class TaInputDropdownComponent
 
         this.multiselectItems = this.options.filter((item) => item.active);
         this.originalOptions = this.options;
-        this.inputConfig.multiSelectDropdownActive = true;
         this.selectedItems.emit(
           this.multiselectItems.map((item) => {
             const { active, id, code, description } = item;
@@ -338,6 +340,10 @@ export class TaInputDropdownComponent
         break;
       }
     }
+    const timeout = setTimeout(() => {
+      this.inputConfig.multiSelectDropdownActive = true;
+      clearTimeout(timeout);
+    }, 50);
   }
 
   public removeMultiSelectItem(index: number) {
@@ -356,6 +362,7 @@ export class TaInputDropdownComponent
     this.multiselectItems.splice(index, 1);
     if (!this.multiselectItems.length) {
       this.inputConfig.multiSelectDropdownActive = null;
+      this.inputConfig.label = this.multiSelectLabel;
     }
     this.selectedItems.emit(
       this.multiselectItems.map((item) => {
@@ -377,8 +384,7 @@ export class TaInputDropdownComponent
       const timeout = setTimeout(() => {
         this.popoverRef.open();
         clearTimeout(timeout);
-      }, 150)
-      
+      }, 150);
     } else {
       this.inputRef.focusInput = false;
       this.popoverRef.close();

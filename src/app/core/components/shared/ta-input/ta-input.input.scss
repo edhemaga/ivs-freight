@@ -58,7 +58,6 @@
   }
 
   &:hover {
-    // transition: all 0.3s ease-in-out;
     background-color: #eeeeee;
     color: #3c3c3c;
   }
@@ -71,7 +70,7 @@
 
   &:focus,
   &.focused {
-    // transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     background-color: #6c6c6c;
     color: #ffffff;
 
@@ -148,8 +147,8 @@
   }
 
   &.invalid-focus-in {
-    // transition: all 0.3s ease-in-out;
-    background-color: #ef5350;
+    transition: all 0.3s ease-in-out;
+    background-color: #ef5350 !important;
 
     &::-moz-selection {
       background-color: #e57373 !important;
