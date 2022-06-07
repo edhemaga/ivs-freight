@@ -2,152 +2,204 @@
 
 $gray07: rgba(145, 145, 145, 0.7);
 
-.password-not-same-notice {
-  position: absolute;
-  font-size: 10px;
-  color: #ff5d5d;
-}
-
 *:not(i) {
-  font-family: $main-font;
+    font-family: $main-font;
 }
 
 p {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .sign-up-container {
-  background-color: white;
-  height: 100vh;
-  min-height: 900px;
+    background-color: white;
+    height: 100vh;
+    min-height: 900px;
 
-  svg-icon#register-logo {
-    margin-top: 50px;
-    width: 134px;
-  }
+    .sign-up-text {
+        margin-top: 60px;
 
-  .sign-up-text {
-    margin-top: 80px;
+        h1 {
+            width: 862px;
+            height: 126px;
+            font-size: 52px;
+            font-weight: 800;
+            color: $bw6-2;
+            line-height: 63px;
+            margin-bottom: 40px;
 
-    p {
-      font: 300 20px/24px Montserrat;
-      color: $app-main-gray;
+            span {
+                color: $light-blue;
+            }
+        }
 
-      &:first-of-type {
-        font: 700 32px/39px Montserrat;
-        color: $light-blue;
-      }
-    }
-  }
+        h2 {
+            width: 674px;
+            height: 64px;
+            font-size: 26px;
+            font-weight: 600;
+            color: $bw6-2;
+            line-height: 32px;
+            margin-bottom: 10px;
+        }
 
-  form {
-    max-width: 431px;
-    width: 100%;
-    outline: none;
-    margin-top: 40px;
-
-    .company-two-fields {
-      width: 100%;
-    }
-
-    .address-two-fields {
-      width: 100%;
-    }
-
-    button {
-      margin: 12px auto 22px;
-      max-width: 160px;
-      width: 100%;
-      height: 34px;
-      border-radius: 3px;
-      background: rgba(145, 145, 145, 0.4);
-      border: none;
-      outline: none;
-      transition: 0.3s;
-
-      p {
-        font-weight: bold;
-        font-size: 14px;
-        line-height: 18px;
-        color: $white;
-        transition: 0.3s;
-        margin: 0;
-      }
-
-      &:hover {
-        transition: 0.3s;
-        background: $light-blue;
-      }
+        h3 {
+            width: 192px;
+            height: 18px;
+            font-size: 14px;
+            font-weight: 400;
+            color: $bw6-2;
+            line-height: 22px;
+            margin-bottom: 55px;
+        }
     }
 
-    p {
-      font: 400 14px/18px Montserrat;
-      text-align: center;
-      color: $gray07;
-      margin-bottom: 50px;
-
-      &:first-of-type {
-        margin-bottom: 12px;
-      }
-
-      span {
-        font: 600 14px/18px Montserrat;
-        cursor: pointer;
+    form {
+        max-width: 622px;
+        width: 100%;
         outline: none;
 
-        &:hover {
-          color: $light-blue;
+        .form-label-group {
+            margin-bottom: 30px;
+            margin-right: 22px;
+
+            &:last-child {
+                margin-right: 0;
+                margin-bottom: 0;
+            }
         }
-      }
+
+        .first-name-group,
+        .last-name-group {
+            width: 300px;
+        }
+
+        .company-name-group {
+            width: 450px;
+        }
+
+        .company-two-fields {
+            width: 100%;
+        }
+
+        .ein-group {
+            width: 150px;
+        }
+
+        .address-group {
+            width: 492px;
+        }
+
+        .address-unit-group {
+            width: 107px;
+        }
+
+        .phone-group {
+            width: 258px;
+        }
+
+        .email-group {
+            width: 342px;
+        }
+
+        .password-group {
+            width: 300px;
+
+            margin-bottom: 0;
+        }
+
+        .submit-btn {
+            width: 320px;
+            margin: 20px auto;
+            height: 50px;
+            border-radius: 3px;
+            background-color: $light-blue;
+            border: none;
+            outline: none;
+            transition: 0.3s;
+            /*       pointer-events: none; */
+
+            &:hover {
+                transition: 0.3s;
+                background: $light-blue;
+            }
+
+            p {
+                font-weight: 600;
+                font-size: 14px;
+                height: 18px;
+                color: $white;
+                margin: 0;
+            }
+        }
+
+        p {
+            font: 400 14px/18px Montserrat;
+            text-align: center;
+            color: $gray07;
+            margin-bottom: 119px;
+
+            &:first-of-type {
+                margin-bottom: 10px;
+            }
+
+            span {
+                font: 600 14px/18px Montserrat;
+                cursor: pointer;
+                outline: none;
+
+                &:hover {
+                    color: $light-blue;
+                }
+            }
+        }
+
+        #password-strenght-info {
+            height: 18px;
+            padding-left: 10px;
+        }
     }
 
-    #password-strenght-info {
-      height: 18px;
-      padding-left: 10px;
-    }
-  }
+    .copyright {
+        background: $light-blue;
+        height: 46px;
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
 
-  .copyright {
-    background: $light-blue;
-    height: 46px;
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-
-    p {
-      color: white;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 18px;
+        p {
+            color: white;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 18px;
+        }
     }
-  }
 }
 
 .register-new-field {
-  svg-icon {
-    position: absolute;
-    right: 10px;
-    bottom: 4px;
-    transition: 0.2s;
-  }
-
-  &:hover {
     svg-icon {
-      bottom: 8px;
-      transition: 0.2s;
-
-      svg {
-        path {
-          fill: $light-blue;
-        }
-
-        .a {
-          fill: $light-blue;
-          opacity: 1;
-        }
-      }
+        position: absolute;
+        right: 10px;
+        bottom: 4px;
+        transition: 0.2s;
     }
-  }
+
+    &:hover {
+        svg-icon {
+            bottom: 8px;
+            transition: 0.2s;
+
+            svg {
+                path {
+                    fill: $light-blue;
+                }
+
+                .a {
+                    fill: $light-blue;
+                    opacity: 1;
+                }
+            }
+        }
+    }
 }
