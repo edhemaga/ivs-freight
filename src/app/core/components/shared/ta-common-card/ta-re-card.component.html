@@ -6,11 +6,11 @@
     [tooltipBackground]="isCardOpen ? 'rgba(0,0,0,0)' : '#6C6C6C'"
     class="tooltipClose"
   >
-    <div class="name-dots disable-selection">
+    <div  class="name-dots disable-selection">
       <div
         class="text-icon-common"
         [ngClass]="{ copied: copiedCommon }"
-        (click)="onAction('toggle-card')"
+        (click)="onAction('toggle-card','')"
       >
         <span
           ngbTooltip
@@ -63,7 +63,7 @@
         >
           <svg-icon
             *ngIf="isCardOpen && hasCopyIcon"
-            (click)="copyText(cardNameCommon)"
+            (click)="onAction('copy',cardNameCommon)"
             class="card-icon-common"
             src="assets/svg/common/ic_copy.svg"
           ></svg-icon>
@@ -112,7 +112,7 @@
       </p>
     </div>
     <div
-      (click)="onAction('resize')"
+      (click)="onAction('resize','')"
       [ngClass]="{ 'rotate-common': resPage }"
       class="resize-icon"
     >

@@ -34,13 +34,12 @@ export class DriverDetailsCardComponent implements OnInit {
   public buttonsArray: any;
   public duttyLocationCounter: number = 0;
   public widthEmployment: string;
-  public widthUnEmployment: string;
   public toggler: boolean[] = [];
   public dataEdit: any;
   public selectedTab: number;
-  public yearsService: number;
-  public daysService: number;
-  public dateHistory:any;
+  public yearsService: number = 0;
+  public daysService: number = 0;
+  public activePercentage: number = 0;
   public tabsDriver: any[] = [];
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
@@ -60,23 +59,23 @@ export class DriverDetailsCardComponent implements OnInit {
         name: '1M',
       },
       {
-        id: 53,
+        id: 513,
         name: '3M',
       },
       {
-        id: 42,
+        id: 412,
         name: '6M',
       },
       {
-        id: 55,
+        id: 515,
         name: '1Y',
       },
       {
-        id: 120,
+        id: 1210,
         name: 'YTD',
       },
       {
-        id: 101,
+        id: 1011,
         name: 'ALL',
       },
     ];
@@ -327,27 +326,38 @@ export class DriverDetailsCardComponent implements OnInit {
       export: true,
     };
   }
-  
-  public ArraySum(ar) {
-    var sum = 0;
-    for (var i = 0; i < ar.length; i++) {
-      sum += ar[i];
-    }
-    return sum;
-  }
-  
-  public widthOfProgress(){
-    const data=this.data.employmentHistories;
-    let countYears;
-    let unEmp = data.filter((res)=>{
-        let year= res.duration.Years
-        let days=res.duration.Days;
-        countYears=year * 365 + days;
-        let total= this.ArraySum([countYears]); 
-        console.log(total);
-        console.log('total');
-     })
-     return unEmp
+
+  public widthOfProgress() {
+    const data = this.data.employmentHistories;
+
+    const sum = data.reduce((accumulator, object) => {
+      return (
+        accumulator + object.duration.Years * 365.25 + object.duration.Days
+      );
+    }, 0);
+
+    data.forEach((element) => {
+      let res = element.duration.Years * 365.25 + element.duration.Days;
+      this.activePercentage = (res / sum) * 100;
+
+      console.log(this.widthEmployment);
+      if (this.activePercentage > 0 && this.activePercentage < 15) {
+        this.widthEmployment = this.activePercentage.toFixed(1);
+      } else if (this.activePercentage > 15 && this.activePercentage < 30) {
+        this.widthEmployment = this.activePercentage.toFixed(1);
+      } else if (this.activePercentage > 30 && this.activePercentage < 50) {
+        this.widthEmployment = this.activePercentage.toFixed(1);
+      } else if (this.activePercentage > 50 && this.activePercentage < 70) {
+        this.widthEmployment = this.activePercentage.toFixed(1);
+      } else if (this.activePercentage > 70 && this.activePercentage < 90) {
+        this.widthEmployment = this.activePercentage.toFixed(1);
+      } else if (this.activePercentage > 90 && this.activePercentage < 95) {
+        this.widthEmployment = this.activePercentage.toFixed(1);
+      } else if (this.activePercentage > 95 && this.activePercentage <= 100) {
+        this.widthEmployment = this.activePercentage.toFixed(1);
+      } else if (this.activePercentage >= 0 && this.activePercentage <= 0) {
+      }
+    });
   }
 
   public getYearsAndDays() {
@@ -356,9 +366,10 @@ export class DriverDetailsCardComponent implements OnInit {
     let sum2 = 0;
     arr.forEach((element) => {
       sum += element.duration.Years;
-      sum2 += element.duration.Days;   
+      sum2 += element.duration.Days;
     });
-    this.yearsService = sum;
-    this.daysService = sum2;
+    let sum3 = sum * 365.25 + sum2;
+    this.yearsService = Math.trunc(sum3 / 365.25);
+    this.daysService = Math.trunc(sum3 % 365.25);
   }
 }

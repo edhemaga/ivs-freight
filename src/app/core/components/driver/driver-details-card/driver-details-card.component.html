@@ -259,7 +259,7 @@
       <!-- Employment history-->
       <app-ta-custom-card
         [cardName]="'Employment History'"
-        [isCardOpen]="false"
+        [isCardOpen]="true"
         class="item-cards"
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
@@ -276,65 +276,14 @@
           <div>
             <div class="progress-employment-history">
               <div class="progress-driver">
-                <div
-                  *ngFor="
-                    let emp of data.employmentHistories.endDate;
-                    let i = index;
-                    trackBy: identity
-                  "
-                >
-                  <div
-                    [style.width.%]="widthEmployment"
-                    *ngIf="emp"
-                    class="emp"
-                  >
-                    <div class="employment-tooltip">
-                      <div class="emp-tooltip">
-                        <div class="emp-tooltip-value">
-                          <p class="emp-duration">10 September, 2021 - Today</p>
-                          <div class="emp-text-icon">
-                            <p>Employed</p>
-                            <svg-icon
-                              src="assets/svg/common/round_blue.svg"
-                            ></svg-icon>
-                          </div>
-                        </div>
-                        <p class="year-working">1 year 103 days</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <div [ngStyle]="{
+                  'background-color': data.employmentHistories.isDeactivate ? '#d4dff4'  : '6d82c8' ,
+                  width: activePercentage + '%',
+                  height: '100%'
+                }"
+                  class="emp"></div>
 
-                <div
-                  *ngFor="
-                    let unEmp of data.employmentHistories.endDate;
-                    let i = index;
-                    trackBy: identity
-                  "
-                >
-                  <div
-                    [style.width.px]="widthUnEmployment"
-                    *ngIf="!unEmp"
-                    class="unp"
-                  >
-                    <div class="employment-tooltip">
-                      <div class="emp-tooltip">
-                        <div class="emp-tooltip-value">
-                          <p class="emp-duration">
-                            10 September, 2021 - 04 January, 2023
-                          </p>
-                          <div class="emp-text-icon">
-                            <p>Deactivated</p>
-                            <svg-icon
-                              src="assets/svg/common/ic_circle_light_blue.svg"
-                            ></svg-icon>
-                          </div>
-                        </div>
-                        <p class="year-working">1 year 103 days</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <!-- <div [style.width.%]="widthEmployment"  class="unp"></div> -->
               </div>
               <div *ngIf="!showMoreEmployment" class="year-employer">
                 <p>05/23/21</p>
@@ -370,13 +319,15 @@
                     <svg-icon
                       class="svg-blue"
                       src="{{
-                        empH.endDate
+                        empH.durationDeactivated
                           ? 'assets/svg/common/ic_circle_light_blue.svg'
                           : '  assets/svg/common/round_blue.svg'
                       }}"
                     ></svg-icon>
                     <p class="employment">
-                      {{ empH.endDate ? "Deactivated " : "Employed" }}
+                      {{
+                        empH.durationDeactivated ? "Deactivated " : "Employed"
+                      }}
                     </p>
                   </div>
                   <p class="date-from-to">
@@ -386,8 +337,12 @@
                     }}</span>
                     <span *ngIf="!empH.endDate">Today</span>
                   </p>
-                  <p class="duration">
+                  <p *ngIf="empH.duration" class="duration">
                     {{ empH.duration.Years }} y {{ empH.duration.Days }} d
+                  </p>
+                  <p *ngIf="!empH.duration" class="duration">
+                    {{ empH.durationDeactivated.Years }} y
+                    {{ empH.durationDeactivated.Days }} d
                   </p>
                   <div class="divider-employment"></div>
                 </div>

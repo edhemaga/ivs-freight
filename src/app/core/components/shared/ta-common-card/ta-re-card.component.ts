@@ -14,20 +14,20 @@ export class TaReCardComponent implements OnInit {
   @Input() public isCardOpen: boolean = true;
   @Input() public hasSvg: string = '';
   @Input() public options: any = [];
-  @Input() public hasCopyIcon:boolean=false;
-  @Input() public expDateClose:string='';
-  @Input() public hasFooter:boolean=true;
-  @Input() public settingsIcon:boolean=false;
-  @Input() public haveHeaderText:boolean=false;
-  @Input() public haveDots:boolean=true;
+  @Input() public hasCopyIcon: boolean = false;
+  @Input() public expDateClose: string = '';
+  @Input() public hasFooter: boolean = true;
+  @Input() public settingsIcon: boolean = false;
+  @Input() public haveHeaderText: boolean = false;
+  @Input() public haveDots: boolean = true;
   @Output() resizePage = new EventEmitter<boolean>();
   @Input() public animationsDisabled = false;
-  @Input() public stateNameShort:string='';
-  @Input() public stateNameLong:string='';
-  @Input() public optionsId:number;
-  @Input() public shortName:string='';
-  @Input() public stateTooltipName:string='';
-  @Input() public cardSecondName:string='';
+  @Input() public stateNameShort: string = '';
+  @Input() public stateNameLong: string = '';
+  @Input() public optionsId: number;
+  @Input() public shortName: string = '';
+  @Input() public stateTooltipName: string = '';
+  @Input() public cardSecondName: string = '';
   @Output() public dropActions = new EventEmitter<any>();
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
@@ -38,36 +38,49 @@ export class TaReCardComponent implements OnInit {
     this.CloseCard();
   }
 
-  public CloseCard(){
-    let currentDate=moment().format('MM/DD/YYYY')
-    if(moment(this.expDateClose).isBefore(currentDate)){
-      this.isCardOpen=false
+  public CloseCard() {
+    let currentDate = moment().format('MM/DD/YYYY');
+    if (moment(this.expDateClose).isBefore(currentDate)) {
+      this.isCardOpen = false;
     }
   }
-  public onAction(val:string){
-      switch(val){
-        case 'resize':
-          this.resPage = !this.resPage;
-          this.resizePage.emit(this.resPage);
-          break;
-        case 'toggle-card':
-          let currentDate=moment().format('MM/DD/YYYY')
-          if(moment(this.expDateClose).isBefore(currentDate)){
-           this.isCardOpen = !this.isCardOpen;
-         }
-         break;
+  public onAction(val: string,res:string) {
+    console.log(val);
+    if(val==='copy'){
+       this.isCardOpen=true;
+    }
+    switch (val) {
+      case 'resize':
+        this.resPage = !this.resPage;
+        this.resizePage.emit(this.resPage);
+        break;
+      case 'copy':
+        this.copyText(res);
+        break;
+      case 'toggle-card':
+        
+        let currentDate = moment().format('MM/DD/YYYY');
+        if (moment(this.expDateClose).isBefore(currentDate)) {
+          this.isCardOpen = !this.isCardOpen;
       }
+        break;
+        default:
+          this.isCardOpen=true;
+          break;
+    }
   }
   /**Function for drop acitons */
-  public dropAct(action:any){
+  public dropAct(action: any) {
     this.dropActions.emit(action);
   }
   /* To copy any Text */
   public copyText(val: any) {
+    console.log(val);
+
     this.copiedCommon = true;
     setTimeout(() => {
-      this.copiedCommon=false;
-    }, 300);    
+      this.copiedCommon = false;
+    }, 300);
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
