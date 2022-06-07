@@ -188,9 +188,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;
-    if (!event.valid) {
-      this.userForm.get('address').setErrors({ invalid: true });
-    }
   }
 
   public openCloseCheckboxCard(event: any) {

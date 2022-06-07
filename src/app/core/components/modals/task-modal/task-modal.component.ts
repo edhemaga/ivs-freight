@@ -1,3 +1,4 @@
+import { CreateTodoCommand } from './../../../../../../appcoretruckassist/model/createTodoCommand';
 import { Validators } from '@angular/forms';
 import { TaskModalService } from './task-modal.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
@@ -18,10 +19,13 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   public taskForm: FormGroup;
 
-  public departments: any[] = [];
+  public resDepartments: any[] = [];
 
   public comments: any[] = [];
   public documents: any[] = [];
+
+  public selectedDepartments: any[] = [];
+  public selectedCompanyUsers: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,8 +54,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       description: [null],
       url: [null, Validators.maxLength(400)],
       deadline: [null],
-      departmentIds: this.formBuilder.array([]),
-      companyUserIds: this.formBuilder.array([]),
+      departmentIds: [null],
+      companyUserIds: [null, Validators.required],
       note: [null],
     });
   }
@@ -114,7 +118,31 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   private updateTaskById(id: number) {}
 
-  private addTask() {}
+  private addTask() {
+    const { departmentIds, deadline, companyUserIds, ...form } = this.taskForm.value;
+    const newData: CreateTodoCommand = {
+      ...form,
+      deadline: new Date(deadline).toISOString(),
+      departmentIds: this.selectedDepartments,
+      companyUserIds: this.selectedCompanyUsers,
+    };
+    console.log(newData);
+    this.taskModalService
+      .addTask(this.taskForm.value)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Task successfully added.',
+            'Success:'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: () => {
+          this.notificationService.error("Task can't be added.", 'Error:');
+        },
+      });
+  }
 
   private deleteTaskById(id: number) {}
 
@@ -126,12 +154,48 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: TodoModalResponse) => {
-          this.departments = res.departments;
+          this.resDepartments = res.departments;
         },
         error: () => {
           this.notificationService.error("Can't get task dropdowns.", 'Error:');
         },
       });
+  }
+
+  public onSelectDropDown(event: any[], action: string) {
+    switch (action) {
+      case 'res-department': {
+        if (event) {
+          this.inputService.changeValidators(
+            this.taskForm.get('departmentIds'),
+            false
+          );
+          this.selectedDepartments = event.map(item => item.id);
+        } else {
+          this.inputService.changeValidators(
+            this.taskForm.get('departmentIds')
+          );
+        }
+        break;
+      }
+      case 'assign-task': {
+        if (event) {
+          this.inputService.changeValidators(
+            this.taskForm.get('companyUserIds'),
+            false
+          );
+          this.selectedCompanyUsers = event.map(item => item.id);
+        } else {
+          this.inputService.changeValidators(
+            this.taskForm.get('companyUserIds')
+          );
+        }
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   ngOnDestroy(): void {}

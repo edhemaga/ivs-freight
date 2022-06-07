@@ -44,7 +44,7 @@
 
   &:focus {
     .common-fake-table-card {
-        background-color: red !important;
+      background-color: red !important;
     }
   }
 
@@ -149,6 +149,17 @@
       &.new-position-without-email {
         right: -119px;
       }
+    }
+
+    &-transfer-svg {
+      padding-left: 6px;
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+    &:hover {
+      cursor: grab;
     }
 
     &:hover .common-fake-table-delete {

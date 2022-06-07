@@ -9,6 +9,8 @@ import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.reg
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { calculateParkingSlot } from 'src/app/core/utils/methods.calculations';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-settings-terminal-modal',
@@ -66,6 +68,17 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public parkingSlots: any[] = [
+    {
+      id: 1,
+      value: 0,
+    },
+    {
+      id: 2,
+      value: 0,
+    },
+  ];
+
   public animationObject = {
     value: this.selectedTab,
     params: { height: '0px' },
@@ -90,6 +103,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
+    this.parkingSlot();
+    this.fullParkingSlot();
   }
 
   private createForm() {
@@ -338,6 +353,13 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public onHandleAddress(event: {
+    address: AddressEntity;
+    valid: boolean;
+  }): void {
+    this.selectedAddress = event.address;
+  }
+
   public onAction(event: any, action: string) {
     switch (action) {
       case 'gate': {
@@ -362,6 +384,32 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  private parkingSlot() {
+    this.terminalForm
+      .get('parkingSlot')
+      .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
+      .subscribe((value) => {
+        this.parkingSlots = [...this.parkingSlots];
+        this.parkingSlots[0].value = calculateParkingSlot(
+          value,
+          this.terminalForm.get('parkingSlot')
+        );
+      });
+  }
+
+  private fullParkingSlot() {
+    this.terminalForm
+      .get('fullParkingSlot')
+      .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
+      .subscribe((value) => {
+        this.parkingSlots = [...this.parkingSlots];
+        this.parkingSlots[1].value = calculateParkingSlot(
+          value,
+          this.terminalForm.get('fullParkingSlot')
+        );
+      });
   }
 
   private updateTerminal(id: number) {}

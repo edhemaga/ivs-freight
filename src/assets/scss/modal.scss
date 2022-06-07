@@ -166,7 +166,7 @@ ngb-modal-window[aria-hidden="true"] {
         }
 
         .modal-deactivate-btn {
-          width: 128px;
+          min-width: 128px;
           height: 32px;
           text-align: center;
           font-size: 14px;
@@ -184,6 +184,7 @@ ngb-modal-window[aria-hidden="true"] {
           -ms-user-select: none;
           user-select: none;
           line-height: 18px;
+          padding: 0 20px;
 
           &:hover {
             transition: all 0.3s ease-in-out;

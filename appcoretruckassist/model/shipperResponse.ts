@@ -27,7 +27,10 @@ export interface ShipperResponse {
     shippingAppointment?: boolean | null;
     shippingFrom?: string | null;
     shippingTo?: string | null;
+    receivingOpenTwentyFourHours?: boolean;
+    shippingOpenTwentyFourHours?: boolean;
     note?: string | null;
+    shippingHoursSameReceiving?: boolean;
     shipperContacts?: Array<ShipperContactResponse> | null;
     shipperReviews?: Array<ShipperReviewResponse> | null;
     status?: number;

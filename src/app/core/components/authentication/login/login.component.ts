@@ -13,6 +13,7 @@ import moment from 'moment';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { SpinnerService } from '../../../services/spinner/spinner.service';
 import { AccountService, SignInCommand } from 'appcoretruckassist';
+import { emailRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-login',
@@ -92,8 +93,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   private createForm() {
     this.loginForm = this.formBuilder.group({
-      email: [null, [Validators.required, Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)]],
-      password: [null, [Validators.required, Validators.minLength(5)]],
+      email: [null, [Validators.required, emailRegex]],
+      password: [null, [Validators.required]],
     });
   }
 

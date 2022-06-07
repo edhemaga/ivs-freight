@@ -340,7 +340,7 @@
               }"
               [canAddNew]="true"
               [options]="labelsPayType"
-              (selectedItem)="onSelectPayType($event, 'paytype')"
+              (selectedItem)="onSelectDropdown($event, 'paytype')"
             ></app-ta-input-dropdown>
           </div>
           <div class="paytype-field-notification">
@@ -391,38 +391,41 @@
               formControlName="soloEmptyMile"
               [inputConfig]="{
                 name: 'Empty Mile',
-                type: 'text',
+                type: 'number',
                 label: 'Empty Mi',
                 isRequired: true,
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                maxLength: 2,
-                mask: '00'
+                step: .1,
+                min: 0,
+                max: 10
               }"
             ></app-ta-input>
             <app-ta-input
               formControlName="soloLoadedMile"
               [inputConfig]="{
                 name: 'Loaded Mile',
-                type: 'text',
+                type: 'number',
                 label: 'Loaded Mi',
                 isRequired: true,
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                maxLength: 2,
-                mask: '00'
+                step: .1,
+                min: 0,
+                max: 10
               }"
             ></app-ta-input>
             <app-ta-input
               formControlName="soloPerStop"
               [inputConfig]="{
                 name: 'Per Stop',
-                type: 'text',
+                type: 'number',
                 label: 'Per Stop',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                maxLength: 2,
-                mask: '00'
+                step: .1,
+                min: 0,
+                max: 10
               }"
             ></app-ta-input>
           </div>
@@ -432,36 +435,39 @@
               formControlName="teamEmptyMile"
               [inputConfig]="{
                 name: 'Empty Mile',
-                type: 'text',
+                type: 'number',
                 label: 'Empty Mi',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                maxLength: 2,
-                mask: '00'
+                step: .1,
+                min: 0,
+                max: 10
               }"
             ></app-ta-input>
             <app-ta-input
               formControlName="teamLoadedMile"
               [inputConfig]="{
                 name: 'Loaded Mile',
-                type: 'text',
+                type: 'number',
                 label: 'Loaded Mi',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                maxLength: 2,
-                mask: '00'
+                step: .1,
+                min: 0,
+                max: 10
               }"
             ></app-ta-input>
             <app-ta-input
               formControlName="teamPerStop"
               [inputConfig]="{
                 name: 'Per Stop',
-                type: 'text',
+                type: 'number',
                 label: 'Per Stop',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                maxLength: 2,
-                mask: '00'
+                step: .1,
+                min: 0,
+                max: 10
               }"
             ></app-ta-input>
           </div>

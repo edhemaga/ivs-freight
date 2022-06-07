@@ -15,12 +15,24 @@ import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.com
 import { TaInputService } from '../ta-input/ta-input.service';
 import { DropZoneConfig } from '../ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../ta-modal-upload/ta-upload-file.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-ta-modal',
   templateUrl: './ta-modal.component.html',
   styleUrls: ['./ta-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  animations: [
+    trigger('widthGrow', [
+        state('closed', style({
+            transform: 'scale(0)',
+        })),
+        state('open', style({
+          transform: 'scale(1)',
+        })),
+        transition('closed => open', animate(250))
+    ]),
+]
 })
 export class TaModalComponent implements OnInit, OnDestroy {
   @Input() modalTitle: string;
@@ -70,12 +82,24 @@ export class TaModalComponent implements OnInit, OnDestroy {
     this.modalService.modalStatus$
       .pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((data: { name: string; status: boolean }) => {
-        if (data?.name === 'deactivate') {
-          if (data.status !== null || data.status !== undefined) {
+        switch(data?.name) {
+          case 'deactivate': {
             this.isDeactivated = data.status;
+            break;
           }
-          this.isDeactivated = !this.isDeactivated;
+          case 'dnu': {
+            this.isDNU = data.status;
+            break;
+          }
+          case 'bfb': {
+            this.isBFB = data.status;
+            break;
+          }
+          default: {
+            break;
+          }
         }
+        
       });
 
     this.uploadFileService.visibilityDropZone$
