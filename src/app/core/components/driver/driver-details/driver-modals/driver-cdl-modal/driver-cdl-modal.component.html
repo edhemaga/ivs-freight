@@ -92,10 +92,40 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12">Restriction</div>
+      <div class="col-12">
+        <app-ta-input-dropdown
+          formControlName="restrictions"
+          [template]="'multiselect-res-endors'"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            isDropdown: true,
+            label: 'Restrictions',
+            multiselectDropdown: true,
+            dropdownWidthClass: 'w-col-12'
+          }"
+          [options]="restrictions"
+          (selectedItems)="onSelectDropdown($event, 'restrictions')"
+        ></app-ta-input-dropdown>
+      </div>
     </div>
-    <div class="row">
-      <div class="col-12">Endorsment</div>
+    <div class="row last-row">
+      <div class="col-12">
+        <app-ta-input-dropdown
+          formControlName="endorsements"
+          [template]="'multiselect-res-endors'"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            isDropdown: true,
+            label: 'Endorsements',
+            multiselectDropdown: true,
+            dropdownWidthClass: 'w-col-12'
+          }"
+          [options]="endorsements"
+          (selectedItems)="onSelectDropdown($event, 'endorsments')"
+        ></app-ta-input-dropdown>
+      </div>
     </div>
     <div class="ta-card-body-overflow-none">
       <app-ta-custom-card

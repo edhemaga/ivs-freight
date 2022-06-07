@@ -71,7 +71,7 @@
 
   &:focus,
   &.focused {
-    transition: all 0.3s ease-in-out;
+    // transition: all 0.3s ease-in-out;
     background-color: #6c6c6c;
     color: #ffffff;
 
@@ -115,7 +115,7 @@
   &.valid-focus-in,
   &.dropdown-placeholder-active,
   &.multiSelect-dropdown-active {
-    // transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     background-color: #536bc2 !important;
     color: #ffffff !important;
 

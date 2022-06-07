@@ -55,7 +55,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       url: [null, Validators.maxLength(400)],
       deadline: [null],
       departmentIds: [null],
-      companyUserIds: [null, Validators.required],
+      companyUserIds: [null],
       note: [null],
     });
   }
@@ -119,16 +119,18 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   private updateTaskById(id: number) {}
 
   private addTask() {
-    const { departmentIds, deadline, companyUserIds, ...form } = this.taskForm.value;
+    const { departmentIds, deadline, companyUserIds, ...form } =
+      this.taskForm.value;
+      
     const newData: CreateTodoCommand = {
       ...form,
       deadline: new Date(deadline).toISOString(),
       departmentIds: this.selectedDepartments,
       companyUserIds: this.selectedCompanyUsers,
     };
-    console.log(newData);
+
     this.taskModalService
-      .addTask(this.taskForm.value)
+      .addTask(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
@@ -165,31 +167,11 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   public onSelectDropDown(event: any[], action: string) {
     switch (action) {
       case 'res-department': {
-        if (event) {
-          this.inputService.changeValidators(
-            this.taskForm.get('departmentIds'),
-            false
-          );
-          this.selectedDepartments = event.map(item => item.id);
-        } else {
-          this.inputService.changeValidators(
-            this.taskForm.get('departmentIds')
-          );
-        }
+        this.selectedDepartments = event ? event.map((item) => item.id) : [];
         break;
       }
       case 'assign-task': {
-        if (event) {
-          this.inputService.changeValidators(
-            this.taskForm.get('companyUserIds'),
-            false
-          );
-          this.selectedCompanyUsers = event.map(item => item.id);
-        } else {
-          this.inputService.changeValidators(
-            this.taskForm.get('companyUserIds')
-          );
-        }
+        this.selectedCompanyUsers = event ? event.map((item) => item.id) : [];
         break;
       }
       default: {

@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CommentResponse } from './commentResponse';
 import { TodoStatus } from './todoStatus';
 import { TodoUserResponse } from './todoUserResponse';
 import { DepartmentResponse } from './departmentResponse';
@@ -24,5 +25,6 @@ export interface TodoResponse {
     deadline?: string;
     note?: string | null;
     todoUsers?: Array<TodoUserResponse> | null;
+    comments?: Array<CommentResponse> | null;
 }
 

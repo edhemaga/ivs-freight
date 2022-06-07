@@ -16,5 +16,6 @@ export interface OwnerHistoryResponse {
     name?: string | null;
     startDate?: string;
     endDate?: string | null;
+    duration?: { [key: string]: number; } | null;
 }
 

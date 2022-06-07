@@ -19,4 +19,11 @@
     background-color: #eeeeee;
     color: #3c3c3c;
   }
+
+  // Custom class
+  &.input-big {
+    position: absolute;
+    right: 6px;
+    top: 4px;
+  }
 }

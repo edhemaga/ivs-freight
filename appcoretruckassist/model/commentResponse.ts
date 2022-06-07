@@ -9,13 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ShipperResponsePagination } from './shipperResponsePagination';
+import { EnumValue } from './enumValue';
+import { CompanyUserShortResponse } from './companyUserShortResponse';
 
 
-export interface ShipperListResponse { 
-    pagination?: ShipperResponsePagination;
-    count?: number;
-    banCount?: number;
-    dnuCount?: number;
+export interface CommentResponse { 
+    id?: number;
+    companyUser?: CompanyUserShortResponse;
+    entityTypeComment?: EnumValue;
+    commentContent?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

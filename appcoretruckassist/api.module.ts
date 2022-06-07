@@ -3,8 +3,10 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 import { AccountService } from './api/account.service';
+import { BankService } from './api/bank.service';
 import { BrokerService } from './api/broker.service';
 import { CdlService } from './api/cdl.service';
+import { CommentService } from './api/comment.service';
 import { CompanyAccountService } from './api/companyAccount.service';
 import { CompanyAccountLabelService } from './api/companyAccountLabel.service';
 import { CompanyContactService } from './api/companyContact.service';

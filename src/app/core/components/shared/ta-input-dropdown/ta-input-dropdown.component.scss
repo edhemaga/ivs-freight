@@ -21,7 +21,7 @@
     pointer-events: all !important;
 
     .required-label-multiselect {
-      color: #E57373;
+      color: #e57373;
     }
   }
 
@@ -70,6 +70,13 @@
       font-weight: 400;
       line-height: 18px;
       position: relative;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
 
       &-clear {
         position: absolute;
@@ -117,6 +124,7 @@
     }
   }
 
+  // multiselect dropdown hover
   &:hover {
     background-color: #eeeeee;
     .multiselect-arrow {
@@ -144,6 +152,7 @@
   // Focused Multiple Dropdowns
   &.focus {
     background-color: #536bc2;
+    transition: all 0.3s ease-in-out;
     .multiselect-arrow {
       svg {
         transform: rotate(180deg);
@@ -190,7 +199,6 @@
 
     &:hover {
       background-color: #536bc2 !important;
-      transition: all 0.3s ease-in-out;
       .multiselect-items {
         .multiselect-item {
           color: #ffffff !important;
@@ -199,6 +207,7 @@
 
       // Ovveride input class
       ::ng-deep .input-custom-group .input-control {
+        transition: all 0.3s ease-in-out;
         background-color: #536bc2 !important;
       }
     }
