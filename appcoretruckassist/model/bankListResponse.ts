@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ShipperResponsePagination } from './shipperResponsePagination';
+import { BankResponsePagination } from './bankResponsePagination';
 
 
-export interface ShipperListResponse { 
-    pagination?: ShipperResponsePagination;
-    count?: number;
-    banCount?: number;
-    dnuCount?: number;
+export interface BankListResponse { 
+    pagination?: BankResponsePagination;
 }
 

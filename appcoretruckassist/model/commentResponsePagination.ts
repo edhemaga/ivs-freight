@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ShipperResponsePagination } from './shipperResponsePagination';
+import { CommentResponse } from './commentResponse';
 
 
-export interface ShipperListResponse { 
-    pagination?: ShipperResponsePagination;
+export interface CommentResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
     count?: number;
-    banCount?: number;
-    dnuCount?: number;
+    data?: Array<CommentResponse> | null;
 }
 
