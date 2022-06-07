@@ -19,6 +19,10 @@
     -ms-user-select: auto !important;
     user-select: auto !important;
     pointer-events: all !important;
+
+    .required-label-multiselect {
+      color: #E57373;
+    }
   }
 
   .multiselect-arrow {

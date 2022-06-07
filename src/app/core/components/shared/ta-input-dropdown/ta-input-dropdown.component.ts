@@ -40,6 +40,7 @@ export class TaInputDropdownComponent
   @Input() canAddNew: boolean = false;
   @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
   @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
 
   public activeItem: any;
   public originalOptions: any[] = [];
@@ -48,7 +49,6 @@ export class TaInputDropdownComponent
   // Multiselect dropdown options
   public multiselectItems: any[] = [];
   public isMultiSelectInputFocus: boolean = false;
-  public multiSelectLabel: string = null;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -65,8 +65,6 @@ export class TaInputDropdownComponent
   }
 
   ngOnInit(): void {
-    this.multiSelectLabel = this.inputConfig.label;
-
     if (this.options) {
       this.originalOptions = [...this.options];
     }
@@ -289,10 +287,18 @@ export class TaInputDropdownComponent
       return item;
     });
 
-    this.inputConfig.label = null;
     this.multiselectItems = this.options.filter((item) => item.active);
     this.originalOptions = this.options;
     this.inputConfig.multiSelectDropdownActive = true;
+    this.selectedItems.emit(
+      this.multiselectItems.map((item) => {
+        const { active, id, name } = item;
+        return {
+          id,
+          name
+        };
+      })
+    );
   }
 
   public removeMultiSelectItem(index: number) {
@@ -311,8 +317,17 @@ export class TaInputDropdownComponent
     this.multiselectItems.splice(index, 1);
     if (!this.multiselectItems.length) {
       this.inputConfig.multiSelectDropdownActive = null;
-      this.inputConfig.label = this.multiSelectLabel;
     }
+    this.selectedItems.emit(
+      this.multiselectItems.map((item) => {
+        const { active, id, name } = item;
+        return {
+          id,
+          name
+        };
+      })
+    );
+  
   }
 
   public toggleMultiselectDropdown(event: any) {

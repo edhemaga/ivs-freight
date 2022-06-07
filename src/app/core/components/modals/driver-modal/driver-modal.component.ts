@@ -369,8 +369,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     address: AddressEntity | any;
     valid: boolean;
   }): void {
-
-    this.selectedAddress = event.address;
+    if(event.valid) {
+      this.selectedAddress = event.address;
+    }
   }
 
   public onHandleAddressFormArray(
@@ -756,6 +757,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string): void {
+    console.log(event);
     switch (action) {
       case 'bank': {
         this.selectedBank = event;

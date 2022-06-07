@@ -6,7 +6,7 @@
   }"
 >
   <p *ngIf="multiselectItems.length > 0" class="multiselect-label">
-    {{ multiSelectLabel }}
+    {{ inputConfig.label }} <span class="required-label-multiselect" *ngIf="inputConfig.isRequired">*</span>
   </p>
   <!-- Multiselect arrow -->
   <svg-icon

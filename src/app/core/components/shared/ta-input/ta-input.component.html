@@ -321,6 +321,7 @@
 
   <!-- Input Label -->
   <label
+    *ngIf="!inputConfig.multiSelectDropdownActive"
     [for]="inputConfig.name"
     class="input-label {{ inputConfig.customClass }}"
     [ngClass]="{
