@@ -26,6 +26,8 @@ export interface UpdateShipperCommand {
     shippingAppointment?: boolean;
     shippingFrom?: string | null;
     shippingTo?: string | null;
+    receivingOpenTwentyFourHours?: boolean;
+    shippingOpenTwentyFourHours?: boolean;
     note?: string | null;
     shipperContacts?: Array<ShipperContactCommand> | null;
 }

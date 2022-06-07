@@ -158,7 +158,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       email: [null, emailRegex],
       fax: [null],
       url: [null],
-      address: [null],
+      address: [null, Validators.required],
       addressUnit: [null],
       irp: [null],
       ifta: [null],
@@ -294,8 +294,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   private createBankAccount(): FormGroup {
     return this.formBuilder.group({
       bankId: [null],
-      routing: [null],
-      account: [null],
+      routing: [null, routingBankRegex],
+      account: [null, accountBankRegex],
     });
   }
 

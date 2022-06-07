@@ -9,6 +9,7 @@ import {
   Output,
   Self,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -29,7 +30,7 @@ import { TitleCasePipe, UpperCasePipe } from '@angular/common';
     CalendarScrollService,
     TitleCasePipe,
     UpperCasePipe,
-  ],
+  ]
 })
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor
@@ -182,6 +183,7 @@ export class TaInputComponent
     // Dropdown
     if (this.inputConfig.isDropdown && !this.isDropdownAddModeActive) {
       this.dropdownToggler = true;
+      this.inputService.dropDownShowHideSubject.next(true);
     }
 
     this.focusInput = true;
@@ -232,6 +234,7 @@ export class TaInputComponent
     this.timeout = setTimeout(() => {
       this.dropdownToggler = false;
       this.focusInput = false;
+      this.inputService.dropDownShowHideSubject.next(false);
       clearTimeout(this.timeout);
     }, 150);
   }
@@ -266,7 +269,9 @@ export class TaInputComponent
     this.inputService.onClearInputSubject.next(true);
   }
 
-  public onAddItemInDropdown() {
+  public onAddItemInDropdown(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
     this.isDropdownAddModeActive = false;
     this.inputService.addDropdownItemSubject.next(true);
   }

@@ -30,6 +30,14 @@ export class BrokerModalService {
     return this.brokerService.apiBrokerIdDelete(id);
   }
 
+  public changeBanStatus(id: number): Observable<any> {
+    return this.brokerService.apiBrokerBanIdPut(id, 'response');
+  }
+
+  public changeDnuStatus(id: number): Observable<any> {
+    return this.brokerService.apiBrokerDnuIdPut(id, 'response');
+  }
+
   public getBrokerById(id: number): Observable<BrokerResponse> {
     return this.brokerService.apiBrokerIdGet(id);
   }

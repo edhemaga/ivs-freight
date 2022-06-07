@@ -81,7 +81,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 5,
+        id: 4,
       };
       this.editShipperById(this.editData.id);
       this.tabs.push({
@@ -100,12 +100,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       address: [null, Validators.required],
       addressUnit: [null],
       receivingAppointment: [false],
-      receiving24h: [false],
+      receivingOpenTwentyFourHours: [false],
       receivingFrom: [null],
       receivingTo: [null],
-      isShippingHoursSameLikeReceiving: [false],
+      shippingHoursSameReceiving: [false],
       shippingAppointment: [false],
-      shipping24h: [false],
+      shippingOpenTwentyFourHours: [false],
       shippingFrom: [null],
       shippingTo: [null],
       note: [null],
@@ -190,9 +190,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   public onHandleAddress(event: { address: AddressEntity; valid: boolean }) {
     this.selectedAddress = event.address;
-    if (!event.valid) {
-      this.shipperForm.setErrors({ invalid: event.valid });
-    }
   }
 
   public onSelectContactDepartment(event: any, ind: number) {
@@ -221,36 +218,22 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   }
 
   private addShipper() {
-    const {
-      address,
-      receiving24h,
-      isShippingHoursSameLikeReceiving,
-      shipping24h,
-      shipperContacts,
-      shippingFrom,
-      shippingTo,
-      shippingAppointment,
-      ...form
-    } = this.shipperForm.value;
-
+    const { address, addressUnit, shipperContacts, ...form } =
+      this.shipperForm.value;
+    let receivingShipping = this.receivingShippingObject();
     let newData: CreateShipperCommand = {
       ...form,
       address: {
         ...this.selectedAddress,
         addressUnit: this.shipperForm.get('addressUnit').value,
       },
-      shippingFrom: this.shipperForm.get('isShippingHoursSameLikeReceiving')
-        .value
-        ? this.shipperForm.get('receivingFrom').value
-        : shippingFrom,
-      shippingTo: this.shipperForm.get('isShippingHoursSameLikeReceiving').value
-        ? this.shipperForm.get('receivingTo').value
-        : shippingTo,
-      shippingAppointment: this.shipperForm.get(
-        'isShippingHoursSameLikeReceiving'
-      ).value
-        ? this.shipperForm.get('receivingAppointment').value
-        : shippingAppointment,
+      receivingFrom: receivingShipping.receiving.receivingFrom,
+      receivingTo: receivingShipping.receiving.receivingTo,
+      shippingAppointment: receivingShipping.shipping.shippingAppointment,
+      shippingOpenTwentyFourHours:
+        receivingShipping.shipping.shippingOpenTwentyFourHours,
+      shippingFrom: receivingShipping.shipping.shippingFrom,
+      shippingTo: receivingShipping.shipping.shippingTo,
     };
 
     for (let index = 0; index < shipperContacts.length; index++) {
@@ -283,9 +266,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   private updateShipper(id: number) {
     const {
       address,
-      receiving24h,
-      isShippingHoursSameLikeReceiving,
-      shipping24h,
+      addressUnit,
+      receivingOpenTwentyFourHours,
+      shippingHoursSameReceiving,
+      shippingOpenTwentyFourHours,
       shipperContacts,
       shippingFrom,
       shippingTo,
@@ -299,16 +283,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         ...this.selectedAddress,
         addressUnit: this.shipperForm.get('addressUnit').value,
       },
-      shippingFrom: this.shipperForm.get('isShippingHoursSameLikeReceiving')
-        .value
+      shippingFrom: this.shipperForm.get('shippingHoursSameReceiving').value
         ? this.shipperForm.get('receivingFrom').value
         : shippingFrom,
-      shippingTo: this.shipperForm.get('isShippingHoursSameLikeReceiving').value
+      shippingTo: this.shipperForm.get('shippingHoursSameReceiving').value
         ? this.shipperForm.get('receivingTo').value
         : shippingTo,
-      shippingAppointment: this.shipperForm.get(
-        'isShippingHoursSameLikeReceiving'
-      ).value
+      shippingAppointment: this.shipperForm.get('shippingHoursSameReceiving')
+        .value
         ? this.shipperForm.get('receivingAppointment').value
         : shippingAppointment,
     };
@@ -375,12 +357,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             address: reasponse.address.address,
             addressUnit: reasponse.address.addressUnit,
             receivingAppointment: reasponse.receivingAppointment,
-            receiving24h: false,
+            receivingOpenTwentyFourHours:
+              reasponse.receivingOpenTwentyFourHours,
             receivingFrom: reasponse.receivingFrom,
             receivingTo: reasponse.receivingTo,
-            isShippingHoursSameLikeReceiving: false,
+            shippingHoursSameReceiving: reasponse.shippingHoursSameReceiving,
             shippingAppointment: reasponse.shippingAppointment,
-            shipping24h: false,
+            shippingOpenTwentyFourHours: false,
             shippingFrom: reasponse.shippingFrom,
             shippingTo: reasponse.shippingTo,
             note: reasponse.note,
@@ -460,6 +443,66 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     this.shipperForm
       .get('receivingAppointment')
       .patchValue(this.isAppointmentReceiving);
+  }
+
+  public receivingShippingObject(): {
+    receiving;
+    shipping;
+  } {
+    let receiving: any = null;
+    let shipping: any = null;
+
+    if (
+      this.shipperForm.get('receivingAppointment').value &&
+      this.shipperForm.get('receivingOpenTwentyFourHours').value
+    ) {
+      receiving = {
+        receivingFrom: null,
+        receivingTo: null,
+      };
+    } else {
+      receiving = {
+        receivingFrom: this.shipperForm.get('receivingFrom').value,
+        receivingTo: this.shipperForm.get('receivingTo').value,
+      };
+    }
+
+    if (this.shipperForm.get('shippingHoursSameReceiving').value) {
+      shipping = {
+        shippingAppointment: this.shipperForm.get('receivingAppointment').value,
+        shippingOpenTwentyFourHours: this.shipperForm.get(
+          'receivingOpenTwentyFourHours'
+        ).value,
+        shippingFrom: receiving.receivingFrom,
+        shippingTo: receiving.receivingTo,
+      };
+    } else {
+      if (
+        this.shipperForm.get('shippingOpenTwentyFourHours').value &&
+        this.shipperForm.get('shippingAppointment').value
+      ) {
+        shipping = {
+          shippingAppointment: this.shipperForm.get('shippingAppointment')
+            .value,
+          shippingOpenTwentyFourHours: this.shipperForm.get(
+            'shippingOpenTwentyFourHours'
+          ).value,
+          shippingFrom: null,
+          shippingTo: null,
+        };
+      } else {
+        shipping = {
+          shippingAppointment: this.shipperForm.get('shippingAppointment')
+            .value,
+          shippingOpenTwentyFourHours: this.shipperForm.get(
+            'shippingOpenTwentyFourHours'
+          ).value,
+          shippingFrom: this.shipperForm.get('shippingFrom').value,
+          shippingTo: this.shipperForm.get('shippingTo').value,
+        };
+      }
+    }
+    return { receiving, shipping };
   }
 
   ngOnDestroy(): void {}

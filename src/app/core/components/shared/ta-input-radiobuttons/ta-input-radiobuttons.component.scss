@@ -22,6 +22,19 @@
     &.checked {
       background-color: #ffffff !important;
       transition: all 0.3 ease-in-out !important;
+<<<<<<< HEAD
+=======
+    }
+
+    &.no-checked {
+      &:hover {
+        .radio-button-text {
+          color: #6c6c6c !important;
+          transition: all 0.3 ease-in-out !important;
+        }
+        
+      }
+>>>>>>> develop
     }
 
     .radio-button {
@@ -39,4 +52,8 @@
       user-select: none !important;
     }
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> develop

@@ -276,6 +276,17 @@
       .fuel-subtotal {
         justify-self: flex-end;
       }
+
+      &-transfer-svg {
+        padding-left: 6px;
+        svg {
+          width: 18px;
+          height: 18px;
+        }
+      }
+      &:hover {
+        cursor: grab;
+      }
     }
   }
 

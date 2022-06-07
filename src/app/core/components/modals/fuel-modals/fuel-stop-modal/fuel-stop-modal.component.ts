@@ -111,9 +111,6 @@ export class FuelStopModalComponent implements OnInit {
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;
-    if (!event.valid) {
-      this.fuelStopForm.get('addres').setErrors({ invalid: true });
-    }
   }
 
   private updateFuelStop(id: number) {}

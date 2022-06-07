@@ -270,9 +270,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;
-    if (!event.valid) {
-      this.contactForm.setErrors({ invalid: event.valid });
-    }
   }
 
   ngOnDestroy(): void {}

@@ -32,7 +32,7 @@ export class TruckModalService {
   }
 
   public changeTruckStatus(id: number): Observable<any> {
-    return this.truckService.apiTruckStatusIdPut(id);
+    return this.truckService.apiTruckStatusIdPut(id, 'response');
   }
 
   public getTruckDropdowns(): Observable<GetTruckModalResponse> {

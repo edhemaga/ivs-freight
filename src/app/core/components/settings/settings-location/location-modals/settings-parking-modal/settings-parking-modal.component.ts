@@ -1,7 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { debounceTime } from 'rxjs';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import {
   emailRegex,
@@ -10,6 +15,7 @@ import {
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { calculateParkingSlot } from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-settings-parking-modal',
@@ -73,6 +79,17 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public parkingSlots: any[] = [
+    {
+      id: 1,
+      value: 0,
+    },
+    {
+      id: 2,
+      value: 0,
+    },
+  ];
+
   public selectedAddress: AddressEntity = null;
   public selectedPayPeriod: any = null;
   public selectedDay: any = null;
@@ -89,13 +106,15 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.isCheckedCompanyOwned();
+    this.parkingSlot();
+    this.fullParkingSlot();
   }
 
   private createForm() {
     this.parkingForm = this.formBuilder.group({
       companyOwned: [false],
-      parkingName: [null],
-      address: [null],
+      parkingName: [null, Validators.required],
+      address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       phone: [null, phoneRegex],
       phoneExtension: [null],
@@ -189,9 +208,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;
-    if (!event.valid) {
-      this.parkingForm.get('addres').setErrors({ invalid: true });
-    }
   }
 
   public onAction(event: any, action: string) {
@@ -226,6 +242,32 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  private parkingSlot() {
+    this.parkingForm
+      .get('parkingSlot')
+      .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
+      .subscribe((value) => {
+        this.parkingSlots = [...this.parkingSlots];
+        this.parkingSlots[0].value = calculateParkingSlot(
+          value,
+          this.parkingForm.get('parkingSlot')
+        );
+      });
+  }
+
+  private fullParkingSlot() {
+    this.parkingForm
+      .get('fullParkingSlot')
+      .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
+      .subscribe((value) => {
+        this.parkingSlots = [...this.parkingSlots];
+        this.parkingSlots[1].value = calculateParkingSlot(
+          value,
+          this.parkingForm.get('fullParkingSlot')
+        );
+      });
   }
 
   private updateParking(id: number) {}

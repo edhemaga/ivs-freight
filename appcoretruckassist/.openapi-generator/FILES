@@ -3,8 +3,10 @@ README.md
 api.module.ts
 api/account.service.ts
 api/api.ts
+api/bank.service.ts
 api/broker.service.ts
 api/cdl.service.ts
+api/comment.service.ts
 api/companyAccount.service.ts
 api/companyAccountLabel.service.ts
 api/companyContact.service.ts
@@ -31,7 +33,9 @@ git_push.sh
 index.ts
 model/addressEntity.ts
 model/apiCategory.ts
+model/bankListResponse.ts
 model/bankResponse.ts
+model/bankResponsePagination.ts
 model/brokerContactCommand.ts
 model/brokerContactResponse.ts
 model/brokerModalResponse.ts
@@ -45,6 +49,9 @@ model/cdlRestrictionResponse.ts
 model/checkOwnerSsnEinResponse.ts
 model/classType.ts
 model/colorResponse.ts
+model/commentByEntityTypeListResponse.ts
+model/commentResponse.ts
+model/commentResponsePagination.ts
 model/companyAccountLabelCountResponse.ts
 model/companyAccountLabelCountResponsePagination.ts
 model/companyAccountLabelResponse.ts
@@ -60,9 +67,11 @@ model/companyShortResponse.ts
 model/companyUserListResponse.ts
 model/companyUserShortResponse.ts
 model/countryType.ts
+model/createBankCommand.ts
 model/createBrokerCommand.ts
 model/createBrokerReviewCommand.ts
 model/createCdlCommand.ts
+model/createCommentCommand.ts
 model/createCompanyAccountCommand.ts
 model/createCompanyAccountLabelCommand.ts
 model/createCompanyContactCommand.ts
@@ -111,6 +120,7 @@ model/enumValue.ts
 model/forgotPasswordCommand.ts
 model/getBrokerListResponse.ts
 model/getCdlModalResponse.ts
+model/getCommentModalResponse.ts
 model/getCompanyAccountLabelListResponse.ts
 model/getCompanyContactLabelListResponse.ts
 model/getCompanyContactListResponse.ts
@@ -124,7 +134,9 @@ model/inspectionResponse.ts
 model/medicalResponse.ts
 model/models.ts
 model/multipleChangeBanFlagCommand.ts
+model/multipleChangeBanFlagShippersCommand.ts
 model/multipleChangeDnuFlagCommand.ts
+model/multipleChangeDnuFlagShippersCommand.ts
 model/multipleChangeTrailerStatusCommand.ts
 model/multipleChangeTruckStatusCommand.ts
 model/mvrResponse.ts
@@ -206,8 +218,10 @@ model/truckResponse.ts
 model/truckShortResponse.ts
 model/truckShortResponsePagination.ts
 model/truckTypeResponse.ts
+model/updateBankCommand.ts
 model/updateBrokerCommand.ts
 model/updateBrokerReviewCommand.ts
+model/updateCommentCommand.ts
 model/updateCompanyAccountCommand.ts
 model/updateCompanyAccountLabelCommand.ts
 model/updateCompanyContactCommand.ts

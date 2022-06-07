@@ -30,6 +30,7 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-modal-upload/ta-upload-file.service';
 import { DriverTService } from '../../driver/state/driver.service';
+import { HttpResponseBase } from '@angular/common/http';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -105,6 +106,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     params: { height: '0px' },
   };
 
+  public driverStatus: boolean = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -139,12 +142,19 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         .changeDriverStatus(this.editData.id)
         .pipe(untilDestroyed(this))
         .subscribe({
-          next: (res: any) => {
-            if (res.status === '200' || res.status === '204') {
+          next: (res: HttpResponseBase) => {
+            if (res.status === 200 || res.status === 204) {
+              this.driverStatus = !this.driverStatus;
+
               this.modalService.changeModalStatus({
                 name: 'deactivate',
-                status: null,
+                status: this.driverStatus,
               });
+              
+              this.notificationService.success(
+                `Driver status changed to ${this.driverStatus ? 'deactivate' : 'activate'}.`,
+                'Success:'
+              );
             }
           },
           error: () => {
@@ -359,9 +369,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     address: AddressEntity | any;
     valid: boolean;
   }): void {
-    this.selectedAddress = event.address;
-    if (!event.valid) {
-      this.driverForm.get('addres').setErrors({ invalid: true });
+    if(event.valid) {
+      this.selectedAddress = event.address;
     }
   }
 
@@ -696,8 +705,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
           this.modalService.changeModalStatus({
             name: 'deactivate',
-            status: res.status === 0 ? false : true,
+            status: res.status === 1 ? false : true,
           });
+          this.driverStatus = res.status === 1 ? false : true;
 
           if (res.offDutyLocations.length) {
             for (const offDuty of res.offDutyLocations) {
@@ -747,6 +757,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string): void {
+    console.log(event);
     switch (action) {
       case 'bank': {
         this.selectedBank = event;
