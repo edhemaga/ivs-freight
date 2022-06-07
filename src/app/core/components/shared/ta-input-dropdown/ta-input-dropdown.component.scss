@@ -187,6 +187,39 @@
         }
       }
     }
+
+    // Ovveride input clear class
+    .input-clear-multiselect {
+      top: auto !important;
+      bottom: 2px !important;
+      display: inline-block !important;
+
+      &:hover {
+        .input-clear-x {
+          svg {
+            path {
+              fill: #536bc2 !important;
+            }
+          }
+          &:hover {
+            svg {
+              rect {
+                fill: #bdcaeb !important;
+              }
+            }
+          }
+
+          &:hover {
+            svg {
+              rect {
+                fill: #f5fafc !important;
+              }
+            }
+          }
+        }
+      }
+    }
+
     .multiselect-items {
       .multiselect-item {
         background-color: #6d82c7;
