@@ -13,7 +13,6 @@ import {
   Self,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -66,6 +65,10 @@ export class TaInputDropdownComponent
   }
 
   ngOnInit(): void {
+    if (this.inputConfig.multiselectDropdown) {
+      this.multiSelectLabel = this.inputConfig.label;
+    }
+
     if (this.options) {
       this.originalOptions = [...this.options];
     }
@@ -276,7 +279,6 @@ export class TaInputDropdownComponent
   // Multiselect Dropdown
   public onMultiselectSelect(option: any, action: string): void {
     this.isMultiSelectInputFocus = false;
-    this.multiSelectLabel = this.inputConfig.label;
     this.inputConfig.label = null;
     switch (action) {
       case 'multiselect': {
@@ -340,10 +342,13 @@ export class TaInputDropdownComponent
         break;
       }
     }
+    this.inputRef.focusInput = false;
+    this.inputRef.input.nativeElement.blur();
+
     const timeout = setTimeout(() => {
       this.inputConfig.multiSelectDropdownActive = true;
       clearTimeout(timeout);
-    }, 50);
+    }, 150);
   }
 
   public removeMultiSelectItem(index: number) {
@@ -358,12 +363,14 @@ export class TaInputDropdownComponent
     });
 
     this.originalOptions = this.options;
-
     this.multiselectItems.splice(index, 1);
+
     if (!this.multiselectItems.length) {
       this.inputConfig.multiSelectDropdownActive = null;
       this.inputConfig.label = this.multiSelectLabel;
+      console.log(this.inputConfig.label);
     }
+
     this.selectedItems.emit(
       this.multiselectItems.map((item) => {
         const { active, id, name } = item;

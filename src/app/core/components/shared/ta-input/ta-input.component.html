@@ -140,13 +140,11 @@
     [ngClass]="{
       'active': 
       (!inputConfig.isDisabled && focusInput) || 
-      (inputConfig.multiselectDropdown && 
-       inputConfig.multiSelectDropdownActive &&
+      (inputConfig.multiSelectDropdownActive &&
        focusInput),
       'valid':
       (getSuperControl.value && getSuperControl.valid && focusInput) ||
-      (inputConfig.multiselectDropdown && 
-       inputConfig.multiSelectDropdownActive &&
+      (inputConfig.multiSelectDropdownActive &&
        focusInput),
       'valid-focus-out-required':
         getSuperControl.value && getSuperControl.valid && !focusInput,
@@ -247,7 +245,6 @@
         dropdownToggler &&
         focusInput,
       'multiSelect-dropdown-active': 
-        inputConfig.multiselectDropdown && 
         inputConfig.multiSelectDropdownActive &&
         focusInput
     }"
