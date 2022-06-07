@@ -84,7 +84,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        // If Form not valid
         if (this.cdlForm.invalid) {
           this.inputService.markInvalid(this.cdlForm);
           return;
@@ -178,8 +177,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
           this.countryTypes = res.countryTypes;
           this.endorsements = res.endorsements;
           this.restrictions = res.restrictions;
-          console.log(res.endorsements)
-          console.log(res.restrictions)
         },
         error: () => {
           this.notificationService.error(
@@ -275,8 +272,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       classType: this.selectedClassType.name,
       countryType: this.selectedCountryType.name,
       stateId: this.selectedStateType.id,
-      restrictions: null,
-      endorsements: null,
+      restrictions: this.selectedRestrictions,
+      endorsements: this.selectedEndorsment,
     };
 
     this.cdlService

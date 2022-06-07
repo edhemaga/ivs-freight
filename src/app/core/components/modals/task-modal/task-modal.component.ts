@@ -121,6 +121,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   private addTask() {
     const { departmentIds, deadline, companyUserIds, ...form } =
       this.taskForm.value;
+      
     const newData: CreateTodoCommand = {
       ...form,
       deadline: new Date(deadline).toISOString(),

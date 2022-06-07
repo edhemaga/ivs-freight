@@ -113,7 +113,6 @@ export class TaInputDropdownComponent
     this.inputService.dropDownShowHideSubject
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
-        this.isMultiSelectInputFocus = action;
         if (!action) {
           this.popoverRef.open();
           if (this.activeItem) {
@@ -139,6 +138,8 @@ export class TaInputDropdownComponent
           this.getSuperControl.setValue(null);
           this.popoverRef.close();
         }
+
+        this.isMultiSelectInputFocus = action;
       });
   }
 
@@ -301,8 +302,6 @@ export class TaInputDropdownComponent
             };
           })
         );
-        console.log("MULTISELECT")
-        console.log(this.multiselectItems)
         break;
       }
       case 'multiselect-res-endors': {
@@ -333,8 +332,6 @@ export class TaInputDropdownComponent
             };
           })
         );
-        console.log("MULTISELECT RES ENDORS")
-        console.log(this.multiselectItems)
         break;
       }
       default: {
@@ -375,10 +372,16 @@ export class TaInputDropdownComponent
     this.isMultiSelectInputFocus = !this.isMultiSelectInputFocus;
 
     if (this.isMultiSelectInputFocus) {
+      this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
+
       const timeout = setTimeout(() => {
-        this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
+        this.popoverRef.open();
         clearTimeout(timeout);
-      }, 300);
+      }, 150)
+      
+    } else {
+      this.inputRef.focusInput = false;
+      this.popoverRef.close();
     }
   }
 
