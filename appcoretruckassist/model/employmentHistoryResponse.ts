@@ -17,6 +17,5 @@ export interface EmploymentHistoryResponse {
     endDate?: string | null;
     isDeactivate?: boolean;
     duration?: { [key: string]: number; } | null;
-    durationDeactivated?: { [key: string]: number; } | null;
 }
 

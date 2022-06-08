@@ -13,7 +13,6 @@ import {
   Self,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -44,11 +43,12 @@ export class TaInputDropdownComponent
 
   public activeItem: any;
   public originalOptions: any[] = [];
-  private dropdownPosition: number = 0;
+  private dropdownPosition: number = -1;
 
   // Multiselect dropdown options
   public multiselectItems: any[] = [];
   public isMultiSelectInputFocus: boolean = false;
+  public multiSelectLabel: string = null;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -65,6 +65,10 @@ export class TaInputDropdownComponent
   }
 
   ngOnInit(): void {
+    if (this.inputConfig.multiselectDropdown) {
+      this.multiSelectLabel = this.inputConfig.label;
+    }
+
     if (this.options) {
       this.originalOptions = [...this.options];
     }
@@ -113,6 +117,8 @@ export class TaInputDropdownComponent
     this.inputService.dropDownShowHideSubject
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
+        this.isMultiSelectInputFocus = action;
+
         if (!action) {
           this.popoverRef.open();
           if (this.activeItem) {
@@ -138,8 +144,6 @@ export class TaInputDropdownComponent
           this.getSuperControl.setValue(null);
           this.popoverRef.close();
         }
-
-        this.isMultiSelectInputFocus = action;
       });
   }
 
@@ -147,6 +151,7 @@ export class TaInputDropdownComponent
     this.inputService.dropDownNavigatorSubject
       .pipe(untilDestroyed(this))
       .subscribe((keyEvent) => {
+
         if (keyEvent === 40) {
           this.dropdownNavigation(1);
         }
@@ -156,15 +161,35 @@ export class TaInputDropdownComponent
         }
 
         if (keyEvent === 13) {
-          const selectedItem = $('.dropdown-option-hovered > div').text();
-          const existItem = this.options.find(
-            (item) => item.name.toLowerCase() === selectedItem.toLowerCase()
-          );
-          this.activeItem = existItem;
-          this.getSuperControl.setValue(existItem.name);
-          this.selectedItem.emit(existItem);
+          const selectedItem = $('.dropdown-option-hovered').text();
+          const existItem = this.options
+            .map((item) => {
+              if (item.name) {
+                return {
+                  id: item.id,
+                  name: item.name,
+                };
+              } else if (item.code) {
+                return {
+                  id: item.id,
+                  name: item.code.concat(' - ', item.description),
+                };
+              }
+            })
+            .find(
+              (item) => item.name.toLowerCase() === selectedItem.toLowerCase()
+            );
+
+          if (this.inputConfig.multiselectDropdown) {
+            this.onMultiselectSelect(existItem, this.template);
+          } 
+          else {
+            this.getSuperControl.setValue(existItem.name);
+            this.selectedItem.emit(existItem);
+            this.activeItem = existItem;
+            this.inputService.isDropDownItemSelectedOnEnter.next(true);
+          }
           this.popoverRef.close();
-          this.inputService.isDropDownItemSelectedOnEnter.next(true);
         }
 
         if (keyEvent === 9) {
@@ -181,7 +206,12 @@ export class TaInputDropdownComponent
         this.activeItem?.name !== this.getSuperControl.value
       ) {
         this.options = this.originalOptions.filter((item) =>
-          item.name.toLowerCase().includes(term.toLowerCase())
+          item.name
+            ? item.name.toLowerCase().includes(term.toLowerCase())
+            : item.code
+                .concat(' - ', item.description)
+                .toLowerCase()
+                .includes(term.toLowerCase())
         );
 
         if (!this.options.length && !this.canAddNew) {
@@ -272,8 +302,10 @@ export class TaInputDropdownComponent
     this.selectedItem.emit(newItem);
   }
 
-  // Multiselect Dropdown
+  // ----------------------------------  Multiselect Dropdown ----------------------------------
   public onMultiselectSelect(option: any, action: string): void {
+    this.isMultiSelectInputFocus = false;
+    this.inputConfig.label = null;
     switch (action) {
       case 'multiselect': {
         if (this.multiselectItems.some((item) => item.id === option.id)) {
@@ -283,7 +315,7 @@ export class TaInputDropdownComponent
         this.options = this.originalOptions.map((item) => {
           if (item.id === option.id) {
             return {
-              ...option,
+              ...item,
               active: true,
             };
           }
@@ -292,7 +324,6 @@ export class TaInputDropdownComponent
 
         this.multiselectItems = this.options.filter((item) => item.active);
         this.originalOptions = this.options;
-        this.inputConfig.multiSelectDropdownActive = true;
         this.selectedItems.emit(
           this.multiselectItems.map((item) => {
             const { active, id, name } = item;
@@ -312,7 +343,7 @@ export class TaInputDropdownComponent
         this.options = this.originalOptions.map((item) => {
           if (item.id === option.id) {
             return {
-              ...option,
+              ...item,
               active: true,
             };
           }
@@ -321,7 +352,6 @@ export class TaInputDropdownComponent
 
         this.multiselectItems = this.options.filter((item) => item.active);
         this.originalOptions = this.options;
-        this.inputConfig.multiSelectDropdownActive = true;
         this.selectedItems.emit(
           this.multiselectItems.map((item) => {
             const { active, id, code, description } = item;
@@ -338,6 +368,13 @@ export class TaInputDropdownComponent
         break;
       }
     }
+    this.inputRef.focusInput = false;
+    this.inputRef.input.nativeElement.blur();
+
+    const timeout = setTimeout(() => {
+      this.inputConfig.multiSelectDropdownActive = true;
+      clearTimeout(timeout);
+    }, 150);
   }
 
   public removeMultiSelectItem(index: number) {
@@ -352,11 +389,13 @@ export class TaInputDropdownComponent
     });
 
     this.originalOptions = this.options;
-
     this.multiselectItems.splice(index, 1);
+
     if (!this.multiselectItems.length) {
       this.inputConfig.multiSelectDropdownActive = null;
+      this.inputConfig.label = this.multiSelectLabel;
     }
+
     this.selectedItems.emit(
       this.multiselectItems.map((item) => {
         const { active, id, name } = item;
@@ -368,6 +407,20 @@ export class TaInputDropdownComponent
     );
   }
 
+  public delteAllMultiSelectItems(event: any) {
+    this.multiselectItems = [];
+    this.inputConfig.multiSelectDropdownActive = null;
+    this.inputConfig.label = this.multiSelectLabel;
+    this.options = this.options.map((item) => {
+      return {
+        ...item,
+        active: false,
+      };
+    });
+    this.originalOptions = this.options;
+    this.selectedItems.emit([]);
+  }
+
   public toggleMultiselectDropdown(event: any) {
     this.isMultiSelectInputFocus = !this.isMultiSelectInputFocus;
 
@@ -377,8 +430,7 @@ export class TaInputDropdownComponent
       const timeout = setTimeout(() => {
         this.popoverRef.open();
         clearTimeout(timeout);
-      }, 150)
-      
+      }, 150);
     } else {
       this.inputRef.focusInput = false;
       this.popoverRef.close();
@@ -391,7 +443,7 @@ export class TaInputDropdownComponent
    */
   private dropdownNavigation(step: number) {
     this.dropdownPosition += step;
-
+    console.log(this.dropdownPosition)
     if (this.dropdownPosition > this.options.length - 1) {
       this.dropdownPosition = 0;
     }

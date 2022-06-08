@@ -65,7 +65,6 @@ export class NavigationModalsComponent {
   }
 
   private openModal(navItem: NavigationModal) {
-    console.log(navItem)
     switch (navItem.path) {
       case 'driver': {
         this.modalService.openModal(DriverModalComponent, {
