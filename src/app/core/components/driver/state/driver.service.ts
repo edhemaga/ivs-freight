@@ -32,7 +32,10 @@ export class DriverTService {
   }
 
   public deleteDriverById(id: number): Observable<any> {
-    return this.driverService.apiDriverIdDelete(id);
+
+    console.log('Poziva se servis za prisanje drivera za id');
+    return;
+    /* return this.driverService.apiDriverIdDelete(id); */
   }
 
   public updateDriver(data: UpdateDriverCommand): Observable<object> {

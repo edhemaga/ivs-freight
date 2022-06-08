@@ -11,7 +11,7 @@ import { DatePipe } from '@angular/common';
 import { DriverTService } from '../state/driver.service';
 import { catchError, tap } from 'rxjs/operators';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { DriversState } from '../state/driver.store';
+import { DriversState, DriversStore } from '../state/driver.store';
 import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
@@ -40,13 +40,15 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     private tableService: TruckassistTableService,
     public datePipe: DatePipe,
     private driverTService: DriverTService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private driversStore: DriversStore,
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
     this.getDriversData();
-    this.viewData
+
+    
     // Reset Columns
     this.tableService.currentResetColumns
       .pipe(takeUntil(this.destroy$))
@@ -163,6 +165,9 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     ];
 
     const td = this.tableData.find((t) => t.field === this.selectedTab);
+
+    console.log('Podaci za renderovanje');
+    console.log(td);
 
     this.setDriverData(td);
   }
