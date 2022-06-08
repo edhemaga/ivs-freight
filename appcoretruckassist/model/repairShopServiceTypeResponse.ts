@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ServiceType } from './serviceType';
+import { EnumValue } from './enumValue';
 
 
 export interface RepairShopServiceTypeResponse { 
-    serviceType?: ServiceType;
+    serviceType?: EnumValue;
     active?: boolean;
     logoName?: string | null;
 }

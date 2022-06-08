@@ -11,9 +11,8 @@
  */
 import { CdlEndorsementResponse } from './cdlEndorsementResponse';
 import { CdlRestrictionResponse } from './cdlRestrictionResponse';
-import { CountryType } from './countryType';
+import { EnumValue } from './enumValue';
 import { StateResponse } from './stateResponse';
-import { ClassType } from './classType';
 
 
 export interface CdlResponse { 
@@ -22,8 +21,8 @@ export interface CdlResponse {
     cdlNumber?: string | null;
     issueDate?: string;
     expDate?: string;
-    classType?: ClassType;
-    countryType?: CountryType;
+    classType?: EnumValue;
+    countryType?: EnumValue;
     cdlRestrictions?: Array<CdlRestrictionResponse> | null;
     cdlEndorsements?: Array<CdlEndorsementResponse> | null;
     note?: string | null;
