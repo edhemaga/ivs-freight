@@ -3,12 +3,12 @@ import {
   emailRegex,
 } from './../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-accident-modal',
@@ -42,8 +42,15 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   public media: any[] = [];
 
   public labelsViolationCustomer: any[] = [];
+  public labelsTrailerUnits: any[] = [];
+  public labelsInsuranceType: any[] = [];
 
-  public selectedLocation: AddressEntity = null;
+  public selectedInsuranceType: any[] = [];
+
+  public selectedViolationCustomer: any = null;
+  public selectedTrailerUnit: any = null;
+
+  public addressLocation: AddressEntity = null;
   public addressDestination: AddressEntity = null;
   public addressOrigin: AddressEntity = null;
   public addressAuthority: AddressEntity = null;
@@ -51,8 +58,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -91,7 +98,15 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       trailerPlateNumber: [null],
       trailerState: [null],
       trailerVIN: [null],
-      // Vioaltion
+      violations: this.formBuilder.array([
+        this.formBuilder.group({
+          categoryId: ['Crash Indicator'],
+          sw: ['2'],
+          hm: [true],
+          description: ['Involves tow-away but no injury or fatality'],
+        }),
+      ]),
+      insurance: this.formBuilder.array([]),
       insuranceType: [null],
       insuranceClaimNumber: [null],
       insuranceAdjuster: [null],
@@ -126,11 +141,74 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  public onModalAction(data: { action: string; bool: boolean }): void {}
+  public get violations(): FormArray {
+    return this.accidentForm.get('violations') as FormArray;
+  }
+
+  public get insurances(): FormArray {
+    return this.accidentForm.get('insurance') as FormArray;
+  }
+
+  private createInsurance(): FormGroup {
+    return this.formBuilder.group({
+      insuranceType: [null],
+      claimNumber: [null],
+      insuranceAdjuster: [null],
+      phone: [null, phoneRegex],
+      email: [null, emailRegex],
+    });
+  }
+
+  public addInsurance(event: any) {
+    if (event) {
+      this.insurances.push(this.createInsurance());
+    }
+  }
+
+  public removeInsurance(id: number) {
+    this.insurances.removeAt(id);
+    this.selectedInsuranceType.splice(id, 1);
+  }
+
+  public onModalAction(data: { action: string; bool: boolean }): void {
+    switch (data.action) {
+      case 'close': {
+        this.accidentForm.reset();
+        break;
+      }
+      case 'save': {
+        if (this.accidentForm.invalid) {
+          this.inputService.markInvalid(this.accidentForm);
+          return;
+        }
+        if (this.editData) {
+          this.updateAccident(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
+        } else {
+          this.addAccident();
+          this.modalService.setModalSpinner({ action: null, status: true });
+        }
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
 
   public editAccidentById(id: number) {}
 
-  public onHandleAddress(event: any, action: string) {
+  private updateAccident(id: number) {}
+
+  private addAccident() {}
+
+  public onHandleAddress(
+    event: {
+      address: AddressEntity | any;
+      valid: boolean;
+    },
+    action
+  ) {
     switch (action) {
       case 'address-authority': {
         this.addressAuthority = event;
@@ -145,7 +223,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'location': {
-        this.selectedLocation = event;
+        this.addressLocation = event;
         break;
       }
       default: {
@@ -170,9 +248,21 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSelectDropDown(event: any, action: string) {
-    switch(action) {
+  public onSelectDropDown(event: any, action: string, index?: number) {
+    switch (action) {
       case 'shipping-customer': {
+        this.selectedViolationCustomer = event;
+        break;
+      }
+      case 'trailer-unit': {
+        this.selectedTrailerUnit = event;
+        break;
+      }
+      case 'insurance-type': {
+        break;
+      }
+      case 'insurance-type': {
+        this.selectedInsuranceType[index] = event;
         break;
       }
       default: {
