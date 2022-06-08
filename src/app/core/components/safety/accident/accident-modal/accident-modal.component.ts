@@ -41,7 +41,12 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   public documents: any[] = [];
   public media: any[] = [];
 
+  public labelsViolationCustomer: any[] = [];
+
   public selectedLocation: AddressEntity = null;
+  public addressDestination: AddressEntity = null;
+  public addressOrigin: AddressEntity = null;
+  public addressAuthority: AddressEntity = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -127,6 +132,18 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
 
   public onHandleAddress(event: any, action: string) {
     switch (action) {
+      case 'address-authority': {
+        this.addressAuthority = event;
+        break;
+      }
+      case 'address-origin': {
+        this.addressOrigin = event;
+        break;
+      }
+      case 'address-destination': {
+        this.addressDestination = event;
+        break;
+      }
       case 'location': {
         this.selectedLocation = event;
         break;
@@ -145,6 +162,17 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       }
       case 'media': {
         this.media = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public onSelectDropDown(event: any, action: string) {
+    switch(action) {
+      case 'shipping-customer': {
         break;
       }
       default: {

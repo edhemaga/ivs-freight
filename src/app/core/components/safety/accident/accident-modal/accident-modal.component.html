@@ -323,6 +323,7 @@
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
+        
         <app-ta-custom-card
           [hasCounter]="documents.length ? documents.length : '0'"
           [cardName]="'Documents'"
@@ -353,6 +354,70 @@
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
         <app-ta-custom-card
+          [cardName]="'Crash Environment'"
+          [isCardOpen]="true"
+        >
+          <div class="row">
+            <div class="col-8">
+              <app-ta-input
+                formControlName="roadwayTrafficWay"
+                [inputConfig]="{
+                  name: 'Roadway Trafficway',
+                  type: 'text',
+                  label: 'Roadway Trafficway',
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4">
+              <app-ta-input
+                formControlName="weatherCondition"
+                [inputConfig]="{
+                  name: 'Weather Condition',
+                  type: 'text',
+                  label: 'Weather Condition',
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+          <div class="row last-row">
+            <div class="col-4">
+              <app-ta-input
+                formControlName="roadAccessControl"
+                [inputConfig]="{
+                  name: 'Road Access Control',
+                  type: 'text',
+                  label: 'Road Access Control',
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4">
+              <app-ta-input
+                formControlName="roadSurfaceCondition"
+                [inputConfig]="{
+                  name: 'Road Surface Condition',
+                  type: 'text',
+                  label: 'Road Surface Condition',
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-4 no-p-left">
+              <app-ta-input
+                formControlName="lightCondition"
+                [inputConfig]="{
+                  name: 'Light Condition',
+                  type: 'text',
+                  label: 'Light Condition',
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card
           [cardName]="'Authority Details'"
           [isCardOpen]="true"
         >
@@ -364,6 +429,7 @@
               [inputConfig]="{
                 name: 'Reporting Agency',
                 type: 'text',
+                isDisabled: editData?.type === 'edit',
                 label: 'Reporting Agency',
                 textTransform: 'capitalize'
               }"
@@ -378,10 +444,11 @@
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="badgeNumber"
+              formControlName="authorityBadgeNumber"
               [inputConfig]="{
                 name: 'Badge Number',
                 type: 'text',
+                isDisabled: editData?.type === 'edit',
                 label: 'Badge Number',
                 textTransform: 'capitalize'
               }"
@@ -389,7 +456,7 @@
           </div>
           <div class="violation-modal-autority-details-row">
             <app-ta-input-address
-              formControlName="addressAuthority"
+              formControlName="authorityAddress"
               [inputConfig]="{
                 name: 'Address',
                 type: 'text',
@@ -400,7 +467,7 @@
               (selectedAddress)="onHandleAddress($event, 'address-authority')"
             ></app-ta-input-address>
             <app-ta-input
-              formControlName="phoneAuthority"
+              formControlName="authorityPhone"
               [inputConfig]="{
                 name: 'Phone',
                 type: 'text',
@@ -411,12 +478,76 @@
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="faxAuthority"
+              formControlName="authorityFax"
               [inputConfig]="{
                 name: 'Fax',
                 type: 'text',
                 label: 'Fax',
                 placeholderIcon: 'fax'
+              }"
+            ></app-ta-input>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card  [cardName]="'Location & Shipping info'" [isCardOpen]="true">
+          <div class="row">
+            <div class="col-6">
+              <app-ta-input-address
+                formControlName="shippingOriginLocation"
+                [inputConfig]="{
+                  name: 'Address',
+                  type: 'text',
+                  label: 'Origin',
+                  placeholderIcon: 'address',
+                  textTransform: 'capitalize'
+                }"
+                (selectedAddress)="onHandleAddress($event, 'address-origin')"
+              ></app-ta-input-address>
+            </div>
+            <div class="col-6">
+              <app-ta-input-address
+                formControlName="shippingDestinationLocation"
+                [inputConfig]="{
+                  name: 'Address',
+                  type: 'text',
+                  label: 'Destination',
+                  placeholderIcon: 'address',
+                  textTransform: 'capitalize'
+                }"
+                (selectedAddress)="
+                  onHandleAddress($event, 'address-destination')
+                "
+              ></app-ta-input-address>
+            </div>
+          </div>
+          <div class="violation-modal-location-shipping-row-3">
+            <app-ta-input-dropdown
+              formControlName="shippingCustomer"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Customer',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-large-modal-cutomer'
+              }"
+              [options]="labelsViolationCustomer"
+              (selectedItem)="onSelectDropDown($event, 'shipping-customer')"
+            ></app-ta-input-dropdown>
+            <app-ta-input
+              formControlName="shippingBOL"
+              [inputConfig]="{
+                name: 'BoL',
+                type: 'text',
+                label: 'BoL',
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="shippingCargo"
+              [inputConfig]="{
+                name: 'Cargo',
+                type: 'text',
+                label: 'Cargo',
+                textTransform: 'capitalize'
               }"
             ></app-ta-input>
           </div>
