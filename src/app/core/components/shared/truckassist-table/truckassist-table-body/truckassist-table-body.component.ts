@@ -130,23 +130,15 @@ export class TruckassistTableBodyComponent
         this.actionsMinWidth += c.width;
       }
     });
-
-    console.log('In ngOnInit, tableData:');
-    console.log(this.tableData);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('In ngOnChanges');
-    
     if (!changes?.viewData?.firstChange && changes?.viewData) {
       this.viewData = changes.viewData.currentValue;
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
       this.tableData = changes.tableData.currentValue;
-
-      console.log('tableData:');
-      console.log(this.tableData);
     }
 
     if (

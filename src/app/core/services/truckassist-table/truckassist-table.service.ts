@@ -41,7 +41,16 @@ export class TruckassistTableService {
   private showingScroll = new BehaviorSubject<boolean>(null);
   public currentShowingScroll = this.showingScroll.asObservable();
 
+  /* Delete Selected Rows */
+  private deleteSelectedRows = new BehaviorSubject<any>([]);
+  public currentDeleteSelectedRows = this.deleteSelectedRows.asObservable();
+
   constructor() {}
+
+  /* Delete Selected Rows */
+  public sendDeleteSelectedRows(deleteSelectedRows: any[]) {
+    this.deleteSelectedRows.next(deleteSelectedRows);
+  }
 
   /* Showing Scroll */
   public sendShowingScroll(showingScroll: boolean) {

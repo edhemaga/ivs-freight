@@ -67,9 +67,10 @@ export class TruckassistTableToolbarComponent
         path: 'assets/svg/truckassist-table/arrow-columns-drop.svg',
         width: 6,
         height: 8,
-      }
+      },
     },
   ];
+  tableRowsSelected: any[] = [];
 
   constructor(private tableService: TruckassistTableService) {}
 
@@ -90,6 +91,15 @@ export class TruckassistTableToolbarComponent
             return c;
           });
         }
+      });
+
+    // Rows Selected
+    this.tableService.currentRowsSelected
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any[]) => {
+        this.tableRowsSelected = response;
+
+        /* this.changeDetectorRef.detectChanges(); */
       });
   }
 
@@ -128,11 +138,15 @@ export class TruckassistTableToolbarComponent
     });
   }
 
-  changeModeView(modeView: string){
+  changeModeView(modeView: string) {
     this.toolBarAction.emit({
       action: 'view-mode',
-      mode: modeView
+      mode: modeView,
     });
+  }
+
+  deleteSelectedRows(){
+    this.tableService.sendDeleteSelectedRows(this.tableRowsSelected);
   }
 
   onShowOptions(optionsPopup: any) {
@@ -169,9 +183,9 @@ export class TruckassistTableToolbarComponent
   onToaggleColumn(column: any, index: number) {
     column.hidden = !column.hidden;
 
-     this.tableService.sendToaggleColumn({
+    this.tableService.sendToaggleColumn({
       column: column,
-      index: index
+      index: index,
     });
   }
 
