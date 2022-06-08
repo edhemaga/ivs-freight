@@ -107,18 +107,13 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     this.createForm();
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 1,
-      };
       this.editViolationById(this.editData.id);
     }
   }
 
   private createForm() {
     this.violationForm = this.formBuilder.group({
-      report: [null],
+      report: [null, Validators.required],
       inspectionLevel: [null],
       hmInspectionLevel: [null],
       country: [null],
