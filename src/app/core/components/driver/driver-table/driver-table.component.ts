@@ -66,7 +66,17 @@ export class DriverTableComponent implements OnInit, OnDestroy {
           this.driverTService
             .deleteDriverList(response)
             .pipe(untilDestroyed(this))
-            .subscribe((response: any) => {});
+            .subscribe(() => {
+              this.viewData = this.viewData.map((driver: any) => {
+                response.map((r: any) => {
+                  if(driver.id === r.id){
+                    driver.actionAnimation = 'delete'
+                  }
+                })
+
+                return driver;
+              })
+            });
         }
       });
   }
@@ -298,7 +308,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
               'Success:'
             );
 
-            /* this.viewData */
+            this.viewData = this.viewData
           },
           error: () => {
             this.notificationService.error(

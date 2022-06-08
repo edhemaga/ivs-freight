@@ -15,7 +15,6 @@ import {
 import { DriversStore } from './driver.store';
 import { CreateDriverResponse } from 'appcoretruckassist/model/createDriverResponse';
 import { DriversQuery } from './driver.query';
-import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +24,7 @@ export class DriverTService {
     private driverService: DriverService,
     private driversQuery: DriversQuery,
     private driverStore: DriversStore,
-    private ownerService: OwnerService,
-    private http: HttpClient
+    private ownerService: OwnerService
   ) {}
 
   // Create Driver
