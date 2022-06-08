@@ -194,6 +194,7 @@
                 class="d-flex justify-content-center align-items-center submit-btn"
                 (click)="registerUser()"
                 type="submit"
+                [ngClass]="{ disabled: registerForm.invalid }"
             >
                 <p>SIGN UP</p>
             </button>

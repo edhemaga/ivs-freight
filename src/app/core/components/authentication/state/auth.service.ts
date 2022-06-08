@@ -1,18 +1,16 @@
-import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { AuthStore } from './auth.store';
 import { map, Observable } from 'rxjs';
 
-import { AccountService, SignupUserCommand } from 'appcoretruckassist';
+import { AccountService, SignUpCompanyCommand } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStoreService {
     constructor(
         private authStore: AuthStore,
         private http: HttpClient,
-        private sharedService: SharedService,
         private accountService: AccountService
     ) {}
 
@@ -36,7 +34,10 @@ export class AuthStoreService {
             );
     }
 
-    public signUpCompany(data: SignupUserCommand): Observable<any> {
-        return this.accountService.apiAccountSignupuserPut(data, 'response');
+    public signUpCompany(data: SignUpCompanyCommand): Observable<any> {
+        return this.accountService.apiAccountSignupcompanyPost(
+            data,
+            'response'
+        );
     }
 }
