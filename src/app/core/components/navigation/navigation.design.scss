@@ -1,5 +1,5 @@
 //------------ Colors constants
-$nav-background: #ffffff;
+$nav-white: #ffffff;
 
 $nav-svg: #b7b7b7;
 $nav-svg-hover: #919191;
@@ -11,6 +11,9 @@ $nav-text-color: #6c6c6c;
 $nav-text-color-darker: #919191;
 $nav-text-color-hover: #3c3c3c;
 
+$nav-blue-1: #E0EAF8;
+$nav-blue-2: #97A8DC;
+$nav-blue-3: #6D82C7;
 $nav-active-lighter: #536bc2;
 $nav-active: #3551b7;
 
@@ -72,23 +75,23 @@ $user-active-status-hover: #26a690;
   position: absolute;
   bottom: 2px;
   left: 23px;
-  background: $nav-background;
+  background: $nav-white;
 
   .status-marker {
     width: 10px;
     height: 10px;
     border-radius: 6px;
-    border: 0 solid $nav-background;
-    background: $nav-background;
+    border: 0 solid $nav-white;
+    background: $nav-white;
   }
 
   .status-online {
     border: 3px solid $user-active-status;
-    background: $nav-background !important;
+    background: $nav-white !important;
   }
 
   .status-active {
-    border: 0 solid $nav-background;
+    border: 0 solid $nav-white;
     background: $user-active-status !important;
   }
 

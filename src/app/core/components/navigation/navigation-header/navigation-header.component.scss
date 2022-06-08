@@ -34,7 +34,7 @@
   }
 
   .nav-header-bottom-plus {
-    background: $nav-background;
+    background: $nav-white;
     border-radius: 50%;
     padding: 8px;
     width: 32px;
@@ -54,7 +54,7 @@
       background-image: linear-gradient(#6d82c7, #3551b7);
       svg {
         path {
-          fill: $nav-background;
+          fill: $nav-white;
         }
       }
     }
