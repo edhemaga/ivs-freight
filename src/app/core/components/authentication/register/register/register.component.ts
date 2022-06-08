@@ -40,7 +40,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     public regPass: any;
     public passwordStrength: any;
 
-    copyrightYear!: number;
+    public copyrightYear!: number;
 
     public selectedAddress: AddressEntity = null;
 
@@ -130,7 +130,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         const addressUnit = this.registerForm.get('addressUnit').value;
         this.selectedAddress.addressUnit = addressUnit;
 
-        console.log(addressUnit);
+        console.log(this.selectedAddress);
 
         const saveData = {
             firstName: userData.firstName,
@@ -226,6 +226,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
         ); */
     }
 
+    public keyDownFunction(event: any) {
+        if (
+            event.keyCode === 13 &&
+            event.target.localName !== 'textarea' &&
+            event.path !== undefined &&
+            event.path !== null &&
+            event.path[3].className !== 'ng-select-container ng-has-value'
+        ) {
+            this.registerUser();
+        }
+    }
+
     public randomPassword(length: number = 18) {
         const chars =
             '+_)(*&^%$#@!=-0987654321}{POIUYTREWQ|":LKIJUHGFDSA?><MNBVCXZ][poiuytrewq\';lkjhgfdsa/.,mnbvcxz';
@@ -259,16 +271,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
         }
     }
 
-    public keyDownFunction(event: any) {
-        if (
-            event.keyCode === 13 &&
-            event.target.localName !== 'textarea' &&
-            event.path !== undefined &&
-            event.path !== null &&
-            event.path[3].className !== 'ng-select-container ng-has-value'
-        ) {
-            this.registerUser();
-        }
+    sameLength() {
+        console.log(
+            this.registerForm.get('password')!.value.length ===
+                this.registerForm.get('confirmPassword')!.value.length
+        );
+        return (
+            this.registerForm.get('password')!.value.length ===
+            this.registerForm.get('confirmPassword')!.value.length
+        );
     }
 
     checkPasswords(registerForm: FormGroup) {
@@ -282,17 +293,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
         console.log('not same', this.registerForm.errors);
         // this.sameLength();
         return this.registerForm.errors;
-    }
-
-    sameLength() {
-        console.log(
-            this.registerForm.get('password')!.value.length ===
-                this.registerForm.get('confirmPassword')!.value.length
-        );
-        return (
-            this.registerForm.get('password')!.value.length ===
-            this.registerForm.get('confirmPassword')!.value.length
-        );
     }
 
     private transformInputData() {

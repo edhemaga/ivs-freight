@@ -1,18 +1,34 @@
-<div class="container-fluid thanks-container m-0 p-0">
-  <div class="container d-flex align-items-center justify-content-center">
-    <div class="d-flex flex-column align-items-center justify-content-center">
-      <svg-icon src="../../../../../assets/img/svgs/thank-you.svg"></svg-icon>
-      <div class="thank-you-text d-flex flex-column justify-content-center">
-        <p>Thank you for choosing us!</p>
-        <p>Confirmation email has been sent to:</p>
-        <p><b>{{email}}</b></p>
-        <p>Click on the button in the email to activate your account</p>
-      </div>
+<div class="thank-you-container thanks-container m-0 p-0">
+    <div class="container d-flex align-items-center justify-content-center">
+        <div class="d-flex flex-column align-items-center">
+            <h1 class="text-center">Thank you <span>for choosing us!</span></h1>
+            <h2 class="text-center">
+                Confirmation email has been sent to:<br /><span
+                    ><!-- {{
+                    email
+                }} -->talikadic@gmail.com</span
+                >
+            </h2>
+
+            <p class="text-center">
+                Click on the button in the email to activate your account
+            </p>
+
+            <svg-icon
+                class="thank-you-img"
+                src="assets/svg/authentication/thank-you.svg"
+                [svgStyle]="{ 'width.px': '446.83', 'height.px': '354.91' }"
+            ></svg-icon>
+
+            <button
+                type="button"
+                class="d-flex align-items-center justify-content-center thank-you-btn"
+            >
+                <p>SIGN IN</p>
+            </button>
+        </div>
     </div>
-  </div>
-  <div class="copyright">
-    <p>Copyright © TruckAssist {{copyrightYear}}.</p>
-  </div>
+    <div class="d-flex align-items-center justify-content-center copyright">
+        <p>Copyright © TruckAssist {{ copyrightYear }}.</p>
+    </div>
 </div>
-
-
