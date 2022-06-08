@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
+import { CompanyUserShortResponse } from './companyUserShortResponse';
 import { DepartmentResponse } from './departmentResponse';
 
 
 export interface TodoModalResponse { 
-    todoStatuses?: Array<EnumValue> | null;
     departments?: Array<DepartmentResponse> | null;
+    companyUsers?: Array<CompanyUserShortResponse> | null;
 }
 

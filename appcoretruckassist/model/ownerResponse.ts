@@ -9,14 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 import { AddressEntity } from './addressEntity';
 
 
 export interface OwnerResponse { 
     id?: number;
     name?: string | null;
-    ownerType?: string | null;
-    ownerTypeId?: number;
+    ownerType?: EnumValue;
     trailerCount?: number;
     truckCount?: number;
     ssnEin?: string | null;

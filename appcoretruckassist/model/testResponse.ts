@@ -10,12 +10,11 @@
  * Do not edit the class manually.
  */
 import { EnumValue } from './enumValue';
-import { TestReasonShortResponse } from './testReasonShortResponse';
 
 
 export interface TestResponse { 
     id?: number;
-    testReason?: TestReasonShortResponse;
+    testReason?: EnumValue;
     testType?: EnumValue;
     testingDate?: string;
     note?: string | null;

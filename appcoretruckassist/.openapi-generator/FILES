@@ -186,7 +186,6 @@ model/stateResponse.ts
 model/statusSetMultipleBrokerCommand.ts
 model/statusSetMultipleDriverCommand.ts
 model/statusSetMultipleShipperCommand.ts
-model/testReasonShortResponse.ts
 model/testResponse.ts
 model/testType.ts
 model/tireSizeResponse.ts
