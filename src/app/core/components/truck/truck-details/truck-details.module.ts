@@ -18,7 +18,7 @@ import { PipesModule } from 'src/app/core/pipes/pipes.module';
         TruckDetailsCardComponent
        
     ],
-    exports:[TruckDetailsCardComponent,PipesModule],
+    exports:[TruckDetailsCardComponent,SharedModule],
     imports:[
         CommonModule,
         TruckDetailsRoutes,
@@ -26,7 +26,6 @@ import { PipesModule } from 'src/app/core/pipes/pipes.module';
         SharedModule,
         MatButtonToggleModule,
         NgApexchartsModule,
-        PipesModule
     ],
    
 })

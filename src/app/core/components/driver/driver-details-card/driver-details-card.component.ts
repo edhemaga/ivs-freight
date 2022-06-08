@@ -1,4 +1,3 @@
-import { filter } from 'rxjs';
 import { card_component_animation } from './../../shared/animations/card-component.animations';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -33,13 +32,17 @@ export class DriverDetailsCardComponent implements OnInit {
   public accountText: string = null;
   public buttonsArray: any;
   public duttyLocationCounter: number = 0;
-  public widthEmployment: string;
+  public widthEmployment: any[] = [];
+  public widthUnEmployment: any[] = [];
   public toggler: boolean[] = [];
   public dataEdit: any;
   public selectedTab: number;
   public yearsService: number = 0;
   public daysService: number = 0;
   public activePercentage: number = 0;
+  public active: any;
+  public firstDate;
+  public inactive: any;
   public tabsDriver: any[] = [];
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
@@ -50,6 +53,7 @@ export class DriverDetailsCardComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.data);
+
     this.getYearsAndDays();
     this.initTableOptions();
     this.widthOfProgress();
@@ -329,47 +333,64 @@ export class DriverDetailsCardComponent implements OnInit {
 
   public widthOfProgress() {
     const data = this.data.employmentHistories;
+    if (data) {
+      const sum = data.reduce((accumulator, object) => {
+        return (
+          accumulator + object.duration.Years * 365.25 + object.duration.Days
+        );
+      }, 0);
+      console.log(sum);
+      data.forEach((element) => {
+        let res = element.duration.Years * 365.25 + element.duration.Days;
+        this.activePercentage = (res / sum) * 100;
+        // this.firstDate=moment.min(element.startDate);
+        if (!element.isDeactivate) {
+          this.widthEmployment[element.isDeactivate] =this.activePercentage.toFixed(1);
+          } else if (element.isDeactivate) {
+            this.widthUnEmployment[element.isDeactivate] =this.activePercentage.toFixed(1);
+          }
+          // if(this.activePercentage>0 && this.activePercentage<20){
+          //   this.widthEmployment[element]='10';
+          //   this.widthUnEmployment[element]='10'
+          // }else if(this.activePercentage>20 && this.activePercentage<40){
+          //   this.widthEmployment[element]='20';
+          //   this.widthUnEmployment[element]='20'
+          // }
+          // else if(this.activePercentage>40 && this.activePercentage<60){
+          //   this.widthEmployment[element]='40';
+          //   this.widthUnEmployment[element]='40'
+          // }
+          // else if(this.activePercentage>60 && this.activePercentage<80){
+          //   this.widthEmployment[element]='60';
+          //   this.widthUnEmployment[element]='60'
+          // }
+          // else if(this.activePercentage>80 && this.activePercentage<90){
+          //   this.widthEmployment[element]='70';
+          //   this.widthUnEmployment[element]='70'
+          // }
+          // else if(this.activePercentage>90 && this.activePercentage<99){
+          //   this.widthEmployment[element]='80';
+          //   this.widthUnEmployment[element]='80'
+          // }
+          // console.log(this.widthEmployment);
 
-    const sum = data.reduce((accumulator, object) => {
-      return (
-        accumulator + object.duration.Years * 365.25 + object.duration.Days
-      );
-    }, 0);
-
-    data.forEach((element) => {
-      let res = element.duration.Years * 365.25 + element.duration.Days;
-      this.activePercentage = (res / sum) * 100;
-
-      console.log(this.widthEmployment);
-      if (this.activePercentage > 0 && this.activePercentage < 15) {
-        this.widthEmployment = this.activePercentage.toFixed(1);
-      } else if (this.activePercentage > 15 && this.activePercentage < 30) {
-        this.widthEmployment = this.activePercentage.toFixed(1);
-      } else if (this.activePercentage > 30 && this.activePercentage < 50) {
-        this.widthEmployment = this.activePercentage.toFixed(1);
-      } else if (this.activePercentage > 50 && this.activePercentage < 70) {
-        this.widthEmployment = this.activePercentage.toFixed(1);
-      } else if (this.activePercentage > 70 && this.activePercentage < 90) {
-        this.widthEmployment = this.activePercentage.toFixed(1);
-      } else if (this.activePercentage > 90 && this.activePercentage < 95) {
-        this.widthEmployment = this.activePercentage.toFixed(1);
-      } else if (this.activePercentage > 95 && this.activePercentage <= 100) {
-        this.widthEmployment = this.activePercentage.toFixed(1);
-      } else if (this.activePercentage >= 0 && this.activePercentage <= 0) {
-      }
-    });
+      });
+      
+    }
   }
 
   public getYearsAndDays() {
     const arr = this.data.employmentHistories;
     let sum = 0;
     let sum2 = 0;
-    arr.forEach((element) => {
-      sum += element.duration.Years;
-      sum2 += element.duration.Days;
-    });
-    let sum3 = sum * 365.25 + sum2;
-    this.yearsService = Math.trunc(sum3 / 365.25);
-    this.daysService = Math.trunc(sum3 % 365.25);
+    if (arr) {
+      arr.forEach((element) => {
+        sum += element.duration.Years;
+        sum2 += element.duration.Days;
+      });
+      let sum3 = sum * 365.25 + sum2;
+      this.yearsService = Math.trunc(sum3 / 365.25);
+      this.daysService = Math.trunc(sum3 % 365.25);
+    }
   }
 }

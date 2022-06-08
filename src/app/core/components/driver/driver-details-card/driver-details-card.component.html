@@ -185,10 +185,10 @@
           <div class="addres-wrapper">
             <div class="addres-name">Address</div>
             <div class="addres-value-icon">
-              <div class="addres-value">
-                {{ data.address.addressUnit }} {{ data.address.address }},
-                {{ data.address.city }}, {{ data.address.stateShortName }}
-                {{ data.address.zipCode }}, {{ data.address.country }}
+              <div *ngIf="data.address" class="addres-value">
+                {{ data?.address.addressUnit }} {{ data?.address.address }},
+                {{ data?.address.city }}, {{ data?.address.stateShortName }}
+                {{ data?.address.zipCode }}, {{ data?.address.country }}
               </div>
               <span
                 tooltipBackground="#6c6c6c"
@@ -218,6 +218,7 @@
         [hasCounter]="data.offDutyLocations.length"
         [cardName]="'Off Duty Location'"
         [isCardOpen]="false"
+        *ngIf="data.offDutyLocations"
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
         class="item-cards"
@@ -269,21 +270,21 @@
             <div class="items-wrapper">
               <div class="service-years-name">Years of Service</div>
               <div class="service-year-value">
-                {{ yearsService }} years {{ daysService }} days
+                {{ yearsService }} {{ yearsService > 1 ? "years" : "year" }}
+                {{ daysService }} {{ daysService > 1 ? "days" : "day" }}
               </div>
             </div>
           </div>
           <div>
-            <div class="progress-employment-history">
+            <div
+              *ngIf="data.employmentHistories.endDate !== null"
+              class="progress-employment-history"
+            >
               <div class="progress-driver">
-                <div [ngStyle]="{
-                  'background-color': data.employmentHistories.isDeactivate ? '#d4dff4'  : '6d82c8' ,
-                  width: activePercentage + '%',
-                  height: '100%'
-                }"
-                  class="emp"></div>
-
-                <!-- <div [style.width.%]="widthEmployment"  class="unp"></div> -->
+                
+                  <div *ngFor="let dat of data.employmentHistories; let i = index" [style.width.%]="widthEmployment[dat.isDeactivate]" class="emp"></div>
+                
+                <div *ngFor="let dat of data.employmentHistories; let i = index" [style.width.%]="widthUnEmployment[dat.isDeactivate]" class="unp"></div>
               </div>
               <div *ngIf="!showMoreEmployment" class="year-employer">
                 <p>05/23/21</p>
@@ -319,15 +320,13 @@
                     <svg-icon
                       class="svg-blue"
                       src="{{
-                        empH.durationDeactivated
+                        empH.isDeactivate
                           ? 'assets/svg/common/ic_circle_light_blue.svg'
                           : '  assets/svg/common/round_blue.svg'
                       }}"
                     ></svg-icon>
                     <p class="employment">
-                      {{
-                        empH.durationDeactivated ? "Deactivated " : "Employed"
-                      }}
+                      {{ empH.isDeactivate ? "Deactivated " : "Employed" }}
                     </p>
                   </div>
                   <p class="date-from-to">
@@ -340,10 +339,6 @@
                   <p *ngIf="empH.duration" class="duration">
                     {{ empH.duration.Years }} y {{ empH.duration.Days }} d
                   </p>
-                  <p *ngIf="!empH.duration" class="duration">
-                    {{ empH.durationDeactivated.Years }} y
-                    {{ empH.durationDeactivated.Days }} d
-                  </p>
                   <div class="divider-employment"></div>
                 </div>
               </div>
@@ -353,6 +348,7 @@
               ngbTooltip
               [mainTooltip]="showMoreEmployment ? 'Show Less' : 'Show More'"
               position="top"
+              *ngIf="data.employmentHistories.endDate !== null"
             >
               <svg-icon
                 [ngClass]="{ 'transform-arrow': showMoreEmployment }"
@@ -485,7 +481,7 @@
       <!-- Bank Info-->
       <app-ta-custom-card
         *ngIf="data.account"
-        [hasHeaderSvg]="'assets/svg/common/ic_bankAccount_dummy.svg'"
+        [hasHeaderSvg]="'assets/svg/common/banks/' + data.bank.logoName"
         [cardName]="'Bank Info'"
         [isCardOpen]="false"
         class="item-cards"
@@ -690,7 +686,7 @@
                     <div class="card-restriction">
                       <div class="restriction-name">Class</div>
                       <div class="restriction-item-value">
-                        {{ cdl?.classType }}
+                        {{ cdl?.classType.name }}
                       </div>
                     </div>
                     <div class="card-restriction">

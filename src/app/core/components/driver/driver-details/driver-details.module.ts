@@ -12,7 +12,6 @@ import { DriverMvrModalComponent } from './driver-modals/driver-mvr-modal/driver
 import { DriverMedicalModalComponent } from './driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import {NgApexchartsModule} from "ng-apexcharts";
-import { PipesModule } from 'src/app/core/pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -27,14 +26,13 @@ import { PipesModule } from 'src/app/core/pipes/pipes.module';
     DriverMvrModalComponent,
    
   ],
-  exports:[DriverDetailsCardComponent,PipesModule],
+  exports:[DriverDetailsCardComponent,SharedModule],
 
   imports: [
     CommonModule,
     DriverDetailsRoutes,
     SharedModule,
     NgApexchartsModule,
-    PipesModule,
     TruckassistProgressExpirationModule,
   ],
 })

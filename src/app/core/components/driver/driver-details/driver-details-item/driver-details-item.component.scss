@@ -258,7 +258,6 @@
   }
   .card-icon {
     svg {
-  
       path {
         fill: #3551b7 !important;
         &:hover {
@@ -401,6 +400,7 @@
       border-radius: 2px;
       .emp {
         border-radius: 0 2px 2px 0;
+        background-color: #6d82c8;
         &:hover{
           .employment-tooltip {
             display: block;
@@ -410,6 +410,7 @@
       }
       .unp {
         border-radius: 0 2px 2px 0;
+        background-color: #d4dff4;
         &:hover {
           background-color: #97a8dc !important;
           .employment-tooltip {

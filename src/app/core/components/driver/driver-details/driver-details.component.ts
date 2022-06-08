@@ -23,10 +23,10 @@ import { DriverTService } from '../state/driver.service';
 export class DriverDetailsComponent implements OnInit, OnDestroy {
   public driverDetailsConfig: any[] = [];
   public dataTest: any;
-  public cdlLength: number;
-  public mvrLength: number;
-  public testLength: number;
-  public medicalLength: number;
+  public cdlLength: number=0;
+  public mvrLength: number=0;
+  public testLength: number=0;
+  public medicalLength: number=0;
   public data: any;
 
   constructor(
@@ -37,10 +37,13 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initTableOptions();
     this.data = this.activated_route.snapshot.data;
-    this.cdlLength = this.data.driver.cdls.length;
-    this.mvrLength = this.data.driver.mvrs.length;
-    this.medicalLength = this.data.driver.medicals.length;
-    this.testLength = this.data.driver.tests.length;
+    // if(this.data.driver?.cdls.length){
+
+    //   this.cdlLength = this.data.driver?.cdls.length;
+    // }
+    // this.mvrLength = this.data.driver?.mvrs.length;
+    // this.medicalLength = this.data.driver?.medicals.length;
+    // this.testLength = this.data.driver?.tests.length;
 
     this.detailCongif();
   }
