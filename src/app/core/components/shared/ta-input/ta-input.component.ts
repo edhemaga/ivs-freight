@@ -312,7 +312,7 @@ export class TaInputComponent
         this.clearInput(event);
       }
     }
-
+    console.log(event.keyCode)
     if (this.inputConfig.isDropdown) {
       if (event.keyCode === 40 || event.keyCode === 38) {
         this.inputService.dropDownNavigatorSubject.next(event.keyCode);
