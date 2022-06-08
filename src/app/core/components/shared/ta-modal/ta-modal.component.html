@@ -94,7 +94,7 @@
       ngbAutofocus
       type="button"
     >
-      {{ editData ? "Save Changes" : "Save" }}
+      {{ editData?.type === 'edit' ? "Save Changes" : "Save" }}
       <div
         *ngIf="saveSpinnerVisibility"
         class="spinner-border"

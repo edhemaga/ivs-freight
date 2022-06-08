@@ -1,3 +1,4 @@
+import { Validators } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -43,9 +44,9 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.registrationForm = this.formBuilder.group({
-      issueDate: [null],
+      issueDate: [null, Validators.required],
       expDate: [null],
-      licensePlate: [null],
+      licensePlate: [null, Validators.required],
       note: [null],
     });
   }
