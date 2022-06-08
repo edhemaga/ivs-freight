@@ -63,6 +63,14 @@
       span {
         color: #e57373;
       }
+
+      &::-moz-selection {
+        background-color: rgb(145, 145, 145, .2) !important;
+      }
+    
+      &::selection {
+        background-color: rgb(145, 145, 145, .2) !important;
+      }
     }
   }
 
@@ -77,6 +85,16 @@
     background-color: #f7f7f7;
     padding-right: 6px;
     position: relative;
+
+    p {
+      &::-moz-selection {
+        background-color: rgba(145, 145, 145, 0.2) !important;
+      }
+
+      &::selection {
+        background-color: rgba(145, 145, 145, 0.2) !important;
+      }
+    }
 
     .common-fake-table-check {
       width: 18px;
@@ -102,15 +120,37 @@
 
       &-verified {
         color: #97a8dc;
+        &::-moz-selection {
+          background-color: rgb(151, 168, 220, .2) !important;
+        }
+
+        &::selection {
+          background-color: rgb(151, 168, 220, .2) !important;
+        }
       }
 
       &-pending {
         color: #ffcc80;
+        &::-moz-selection {
+          background-color: rgb(255, 204, 128, .2) !important;
+        }
+
+        &::selection {
+          background-color: rgb(255, 204, 128, .2) !important;
+        }
       }
 
       &-verify {
         background-color: #6d82c7;
         color: #ffffff;
+
+        &::-moz-selection {
+          background-color: rgba(151, 168, 220, 0.2) !important;
+        }
+
+        &::selection {
+          background-color: rgba(151, 168, 220, 0.2) !important;
+        }
       }
     }
 
@@ -266,11 +306,11 @@
         }
 
         &::-moz-selection {
-          background-color: #919191 !important;
+          background-color: rgb(145, 145, 145, .2) !important;
         }
 
         &::selection {
-          background-color: #919191 !important;
+          background-color: rgb(145, 145, 145, .2) !important;
         }
       }
       .fuel-subtotal {

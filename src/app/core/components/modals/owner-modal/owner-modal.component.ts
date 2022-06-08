@@ -329,14 +329,14 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: OwnerResponse) => {
-          const splitName = res.ownerTypeId === 2 ? res.name.split(' ') : null;
+          const splitName = res.ownerType.id === 2 ? res.name.split(' ') : null;
 
           this.ownerForm.patchValue({
-            bussinesName: res.ownerTypeId === 1 ? res.name : null,
-            firstName: res.ownerTypeId === 2 ? splitName[0] : null,
-            lastName: res.ownerTypeId === 2 ? splitName[1] : null,
-            ssn: res.ownerTypeId === 2 ? res.ssnEin : null,
-            ein: res.ownerTypeId === 1 ? res.ssnEin : null,
+            bussinesName: res.ownerType.id === 1 ? res.name : null,
+            firstName: res.ownerType.id === 2 ? splitName[0] : null,
+            lastName: res.ownerType.id === 2 ? splitName[1] : null,
+            ssn: res.ownerType.id === 2 ? res.ssnEin : null,
+            ein: res.ownerType.id === 1 ? res.ssnEin : null,
             address: res.address.address,
             addressUnit: res.address.addressUnit,
             phone: res.phone,
@@ -348,7 +348,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           });
           this.selectedAddress = res.address;
           this.selectedBank = res.bankName;
-          this.tabChange(this.tabs.find((item) => item.id === res.ownerTypeId));
+          this.tabChange(this.tabs.find((item) => item.id === res.ownerType.id));
         },
         error: () => {
           this.notificationService.error("Owner can't be loaded.", 'Error:');

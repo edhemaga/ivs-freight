@@ -2,22 +2,37 @@
   [ngClass]="{
     'multiselect-dropdown':
       inputConfig.multiselectDropdown && multiselectItems.length > 0,
-    'focus': isMultiSelectInputFocus
+    focus: isMultiSelectInputFocus
   }"
 >
   <p *ngIf="multiselectItems.length > 0" class="multiselect-label">
-    {{ inputConfig.label }}
+    {{ multiSelectLabel }}
   </p>
   <!-- Multiselect arrow -->
   <svg-icon
     *ngIf="inputConfig.multiSelectDropdownActive"
     class="multiselect-arrow"
     [ngClass]="{
-      'valid': !isMultiSelectInputFocus && multiselectItems.length > 0
+      valid: !isMultiSelectInputFocus && multiselectItems.length > 0
     }"
     src="assets/svg/common/ic_arrow_down_updated.svg"
     (click)="toggleMultiselectDropdown($event)"
   ></svg-icon>
+  <!-- Multiselect clear all -->
+  <div
+    *ngIf="multiselectItems.length > 0"
+    class="input-clear input-clear-multiselect"
+    [ngClass]="{
+      'valid-focus-in': !getSuperControl.value && isMultiSelectInputFocus
+    }"
+    ngbTooltip
+    mainTooltip="Clear All"
+    tooltipBackground="#6c6c6c"
+    position="bottom"
+    (click)="delteAllMultiSelectItems($event)"
+  >
+    <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
+  </div>
   <!-- Multiselect items -->
   <div
     *ngIf="
@@ -96,7 +111,7 @@
     *ngIf="!inputConfig.isDisabled"
     class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
     [ngClass]="{
-      'scroll': options | taDropdownCount: template,
+      scroll: options | taDropdownCount: template,
       'dropdown-options-groups': template === 'groups'
     }"
   >
@@ -107,18 +122,18 @@
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option"
           [ngClass]="{
-            'disabled': option?.disabled,
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            'active': option.id === activeItem?.id
+            active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
         >
           <svg-icon
             *ngIf="option.logoName"
             class="svg-template-logo"
-            [ngClass]="{ 'active': option.id === activeItem?.id }"
+            [ngClass]="{ active: option.id === activeItem?.id }"
             [src]="option.logoName | taSvg: option.folder:option?.subFolder"
           ></svg-icon>
           <div
@@ -138,14 +153,14 @@
             option.name.trim().replace(' ', '').toLowerCase()
           }}"
           [ngClass]="{
-            'disabled': option?.disabled,
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            'active': option.id === activeItem?.id,
-            'trailerContainer': option.name === 'Container',
-            'semisleeper': option.name === 'Semi w/Sleeper',
-            'lowboyrgn': option.name === 'Low Boy/RGN'
+            active: option.id === activeItem?.id,
+            trailerContainer: option.name === 'Container',
+            semisleeper: option.name === 'Semi w/Sleeper',
+            lowboyrgn: option.name === 'Low Boy/RGN'
           }"
           (click)="onActiveItem(option)"
         >
@@ -153,7 +168,7 @@
             class="svgtext-template-logo {{
               option.name.trim().replace(' ', '').toLowerCase()
             }}"
-            [ngClass]="{ 'active': option.id === activeItem?.id }"
+            [ngClass]="{ active: option.id === activeItem?.id }"
             [src]="option.logoName | taSvg: option.folder:option?.subFolder"
           ></svg-icon>
           <div
@@ -172,10 +187,10 @@
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option details-template"
           [ngClass]="{
-            'disabled': option?.disabled,
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            'active': option.id === activeItem?.id
+            active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
         >
@@ -188,7 +203,7 @@
           ></div>
           <svg-icon
             class="details-template-logo"
-            [ngClass]="{ 'active': option.id === activeItem?.id }"
+            [ngClass]="{ active: option.id === activeItem?.id }"
             [src]="option.svg | taSvg: option.folder"
           ></svg-icon>
         </div>
@@ -222,7 +237,7 @@
             <div
               class="dropdown-subgroup-text"
               [ngClass]="{
-                'active': item.id === activeItem?.id,
+                active: item.id === activeItem?.id,
                 'no-result': options.length === 1 && item.name === 'No Results'
               }"
               [innerHtml]="
@@ -239,10 +254,10 @@
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option"
           [ngClass]="{
-            'disabled': option?.disabled,
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            'active': option?.active
+            active: option?.active
           }"
           (click)="onMultiselectSelect(option, 'multiselect')"
           [innerHtml]="
@@ -258,10 +273,10 @@
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option"
           [ngClass]="{
-            'disabled': option?.disabled,
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            'active': option?.active
+            active: option?.active
           }"
           (click)="onMultiselectSelect(option, 'multiselect')"
           [innerHtml]="
@@ -276,11 +291,11 @@
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option"
           [ngClass]="{
-            'disabled': option?.disabled,
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            'active': option.id === activeItem?.id
+            active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
           [innerHtml]="

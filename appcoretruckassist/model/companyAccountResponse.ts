@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ApiCategory } from './apiCategory';
+import { EnumValue } from './enumValue';
 import { CompanyAccountLabelResponse } from './companyAccountLabelResponse';
 
 
@@ -20,7 +20,7 @@ export interface CompanyAccountResponse {
     username?: string | null;
     password?: string | null;
     api?: number;
-    apiCategory?: ApiCategory;
+    apiCategory?: EnumValue;
     note?: string | null;
     companyAccountLabel?: CompanyAccountLabelResponse;
 }
