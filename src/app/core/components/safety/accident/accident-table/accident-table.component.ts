@@ -3,6 +3,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { AccidentModalComponent } from '../accident-modal/accident-modal.component';
 
 @Component({
   selector: 'app-accident-table',
@@ -11,7 +13,7 @@ import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
 })
 export class AccidentTableComponent implements OnInit {
   private destroy$: Subject<void> = new Subject<void>();
-  
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -19,7 +21,10 @@ export class AccidentTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService,  private tableService: TruckassistTableService) {}
+  constructor(
+    private modalService: ModalService,
+    private tableService: TruckassistTableService
+  ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -192,10 +197,23 @@ export class AccidentTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba da se odradi modal!');
-    } else if (event.action === 'tab-selected') {
+      this.modalService.openModal(AccidentModalComponent, { size: 'large' });
+    } 
+    else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setAccidentData(event.tabData);
+    }
+  }
+
+  public onTableBodyActions(event: any) {
+    switch (event.type) {
+      case 'edit-accident': {
+        this.modalService.openModal(
+          AccidentModalComponent,
+          { size: 'large' },
+          { id: 21, type: 'edit' }
+        );
+      }
     }
   }
 }

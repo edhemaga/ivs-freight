@@ -1,3 +1,4 @@
+import { AccidentModalComponent } from './../safety/accident/accident-modal/accident-modal.component';
 import { SumArraysPipe } from './../../pipes/sum-arrays.pipe';
 import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
@@ -173,6 +174,7 @@ import { FormatRestrictionEndorsmentPipe } from '../../pipes/formatRestrictionEn
     FuelPurchaseModalComponent,
     FuelStopModalComponent,
     ViolationModalComponent,
+    AccidentModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -331,6 +333,7 @@ import { FormatRestrictionEndorsmentPipe } from '../../pipes/formatRestrictionEn
     FuelPurchaseModalComponent,
     FuelStopModalComponent,
     ViolationModalComponent,
+    AccidentModalComponent,
 
     // Pipes
     InputErrorPipe,

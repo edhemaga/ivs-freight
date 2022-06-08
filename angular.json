@@ -28,6 +28,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/assets",
+              "src/assets/favicon/favicon.png",
+              "src/favicon.ico",
               "src/assets/favicon/*"
             ],
             "styles": [
@@ -111,6 +113,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/assets",
+              "src/assets/favicon/favicon.png",
+              "src/favicon.ico",
               "src/assets/favicon/*"
             ],
             "styles": [
