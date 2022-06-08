@@ -1,5 +1,12 @@
 @import "../driver-details.component.scss";
-
+@keyframes change {
+  from { color: #6c6c6c }
+  to   { color: #3551b7 }
+}
+@keyframes changeSVG {
+  from { fill: #6c6c6c }
+  to   { fill: #3551b7 }
+}
 // DRIVER GENERAL PERSONAL DATA
 .details-header-wrapper {
   margin-bottom: 12px !important;
@@ -71,6 +78,7 @@
         font-weight: 400;
         color: #6c6c6c;
         line-height: 17px;
+        width: fit-content;
         &::-moz-selection {
           color: #6c6c6c;
           background: rgb(108, 108, 108, 0.2);
@@ -106,7 +114,7 @@
       }
       &:hover {
         .card-icon {
-          display: block;
+          display: flex;
         }
       }
     }
@@ -248,20 +256,25 @@
 }
 .copied {
   .card-item-value {
-    color: #3551b7 !important;
+    animation-duration: 300ms;
+    animation-name: change;
   }
   .purchase-template-item-value {
-    color: #3551b7 !important;
+    animation-duration: 300ms;
+    animation-name: change;
   }
   .information-value {
-    color: #3551b7 !important;
+    animation-duration: 300ms;
+    animation-name: change;
   }
   .card-icon {
     svg {
       path {
-        fill: #3551b7 !important;
+        animation-duration: 300ms;
+        animation-name: changeSVG;
         &:hover {
-          fill: #3551b7 !important;
+          animation-duration: 300ms;
+          animation-name: changeSVG;
         }
       }
     }
@@ -400,7 +413,6 @@
       border-radius: 2px;
       .emp {
         border-radius: 0 2px 2px 0;
-        background-color: #6d82c8;
         &:hover{
           .employment-tooltip {
             display: block;
@@ -410,7 +422,6 @@
       }
       .unp {
         border-radius: 0 2px 2px 0;
-        background-color: #d4dff4;
         &:hover {
           background-color: #97a8dc !important;
           .employment-tooltip {

@@ -81,7 +81,8 @@ import { TaSvgPipe } from './ta-svg.pipe';
     CalendarMonthsPipe,
     CdkIdPipe,
     HighlightSearchPipe,
-    HosTimePipe
+    HosTimePipe,
+    SumArraysPipe
   ]
 })
 export class PipesModule {}

@@ -9,6 +9,7 @@ import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
+import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
 
 @Component({
   selector: 'app-driver-details-card',
@@ -16,6 +17,7 @@ import moment from 'moment';
   styleUrls: ['./driver-details-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
+  providers: [SumArraysPipe],
 })
 export class DriverDetailsCardComponent implements OnInit {
   @Input() data: any;
@@ -32,23 +34,21 @@ export class DriverDetailsCardComponent implements OnInit {
   public accountText: string = null;
   public buttonsArray: any;
   public duttyLocationCounter: number = 0;
-  public widthEmployment: any[] = [];
-  public widthUnEmployment: any[] = [];
   public toggler: boolean[] = [];
   public dataEdit: any;
   public selectedTab: number;
   public yearsService: number = 0;
   public daysService: number = 0;
   public activePercentage: number = 0;
-  public active: any;
-  public firstDate;
-  public inactive: any;
+  public firstDate: any;
+ public deactivatePeriod:boolean;
   public tabsDriver: any[] = [];
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
   constructor(
     private sanitazer: DomSanitizer,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private sumArr: SumArraysPipe
   ) {}
 
   ngOnInit(): void {
@@ -210,50 +210,45 @@ export class DriverDetailsCardComponent implements OnInit {
     switch (copVal) {
       case 'phone':
         this.copiedPhone = true;
-        setTimeout(() => {
+        setInterval(() => {
           this.copiedPhone = false;
-        }, 300);
+        }, 100);
         break;
-
       case 'bankAcc':
         this.copiedBankAccount = true;
-        setTimeout(() => {
+        setInterval(() => {
           this.copiedBankAccount = false;
-        }, 300);
+        }, 100);
         break;
-
       case 'bankRouting':
         this.copiedBankRouting = true;
-        setTimeout(() => {
+        setInterval(() => {
           this.copiedBankRouting = false;
-        }, 300);
+        }, 100);
         break;
-
       case 'ein':
         this.copiedEin = true;
-        setTimeout(() => {
+        setInterval(() => {
           this.copiedEin = false;
-        }, 300);
+        }, 100);
         break;
-
       case 'ssn':
         this.copiedSSN = true;
-        setTimeout(() => {
+        setInterval(() => {
           this.copiedSSN = false;
-        }, 300);
+        }, 100);
         break;
-
       case 'driver-phone':
         this.copiedDriverPhone = true;
-        setTimeout(() => {
+        setInterval(() => {
           this.copiedDriverPhone = false;
-        }, 300);
+        }, 100);
         break;
       case 'driver-email':
         this.copiedDriverEmail = true;
-        setTimeout(() => {
+        setInterval(() => {
           this.copiedDriverEmail = false;
-        }, 300);
+        }, 100);
         break;
     }
 
@@ -264,7 +259,7 @@ export class DriverDetailsCardComponent implements OnInit {
     selBox.style.opacity = '0';
     selBox.value = val;
     document.body.appendChild(selBox);
-    selBox.focus();
+    // selBox.focus();
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
@@ -332,59 +327,47 @@ export class DriverDetailsCardComponent implements OnInit {
   }
 
   public widthOfProgress() {
-    const data = this.data.employmentHistories;
-    if (data) {
-      const sum = data.reduce((accumulator, object) => {
-        return (
-          accumulator + object.duration.Years * 365.25 + object.duration.Days
-        );
-      }, 0);
-      console.log(sum);
-      data.forEach((element) => {
-        let res = element.duration.Years * 365.25 + element.duration.Days;
-        this.activePercentage = (res / sum) * 100;
-        // this.firstDate=moment.min(element.startDate);
-        if (!element.isDeactivate) {
-          this.widthEmployment[element.isDeactivate] =this.activePercentage.toFixed(1);
-          } else if (element.isDeactivate) {
-            this.widthUnEmployment[element.isDeactivate] =this.activePercentage.toFixed(1);
+    let arrMinDate = [];
+    if (this.data.employmentHistories) {
+      const sum = this.sumArr.transform(
+        this.data.employmentHistories.map((item) => {
+          return {
+            id: item.id,
+            value: item.duration.Years * 365.25 + item.duration.Days,
+          };
+        })
+      );
+      this.data.employmentHistories = this.data.employmentHistories.map(
+        (element) => {
+          let res = element.duration.Years * 365.25 + element.duration.Days;
+          this.activePercentage = (res / sum) * 100;
+          let dates = moment(element.startDate)
+            .min(element.startDate)
+            .format('MM/DD/YY');
+          arrMinDate.push(new Date(dates));
+          if(element.isDeactivate==true){
+            this.deactivatePeriod=true;
+          }else{
+            this.deactivatePeriod=false;
           }
-          // if(this.activePercentage>0 && this.activePercentage<20){
-          //   this.widthEmployment[element]='10';
-          //   this.widthUnEmployment[element]='10'
-          // }else if(this.activePercentage>20 && this.activePercentage<40){
-          //   this.widthEmployment[element]='20';
-          //   this.widthUnEmployment[element]='20'
-          // }
-          // else if(this.activePercentage>40 && this.activePercentage<60){
-          //   this.widthEmployment[element]='40';
-          //   this.widthUnEmployment[element]='40'
-          // }
-          // else if(this.activePercentage>60 && this.activePercentage<80){
-          //   this.widthEmployment[element]='60';
-          //   this.widthUnEmployment[element]='60'
-          // }
-          // else if(this.activePercentage>80 && this.activePercentage<90){
-          //   this.widthEmployment[element]='70';
-          //   this.widthUnEmployment[element]='70'
-          // }
-          // else if(this.activePercentage>90 && this.activePercentage<99){
-          //   this.widthEmployment[element]='80';
-          //   this.widthUnEmployment[element]='80'
-          // }
-          // console.log(this.widthEmployment);
-
-      });
+          return {
+            ...element,
+            activePercentage: this.activePercentage.toFixed(1),
+          };
+        }
+      );
+      let dateRes = new Date(Math.min.apply(null, arrMinDate)).toISOString();
+      console.log(this.deactivatePeriod);
       
+      this.firstDate = moment(dateRes).format('MM/DD/YY');
     }
   }
 
   public getYearsAndDays() {
-    const arr = this.data.employmentHistories;
     let sum = 0;
     let sum2 = 0;
-    if (arr) {
-      arr.forEach((element) => {
+    if (this.data.employmentHistories) {
+      this.data.employmentHistories.forEach((element) => {
         sum += element.duration.Years;
         sum2 += element.duration.Days;
       });

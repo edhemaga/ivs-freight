@@ -44,29 +44,21 @@ export class TaReCardComponent implements OnInit {
       this.isCardOpen = false;
     }
   }
-  public onAction(val: string,res:string) {
-    console.log(val);
-    if(val==='copy'){
-       this.isCardOpen=true;
-    }
+
+  public toggleCard(event:any){
+    event.preventDefault();
+    event.stopPropagation();
+    let currentDate = moment().format('MM/DD/YYYY');
+    if (moment(this.expDateClose).isBefore(currentDate)) {
+      this.isCardOpen = !this.isCardOpen;
+  }
+  }
+  public onAction(val: string,res:any) {    
     switch (val) {
       case 'resize':
         this.resPage = !this.resPage;
         this.resizePage.emit(this.resPage);
         break;
-      case 'copy':
-        this.copyText(res);
-        break;
-      case 'toggle-card':
-        
-        let currentDate = moment().format('MM/DD/YYYY');
-        if (moment(this.expDateClose).isBefore(currentDate)) {
-          this.isCardOpen = !this.isCardOpen;
-      }
-        break;
-        default:
-          this.isCardOpen=true;
-          break;
     }
   }
   /**Function for drop acitons */
@@ -74,13 +66,13 @@ export class TaReCardComponent implements OnInit {
     this.dropActions.emit(action);
   }
   /* To copy any Text */
-  public copyText(val: any) {
-    console.log(val);
-
+  public copyText(val: any,event:any) {
+    event.preventDefault();
+    event.stopPropagation();
     this.copiedCommon = true;
-    setTimeout(() => {
+    setInterval(() => {
       this.copiedCommon = false;
-    }, 300);
+    }, 150);
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -88,7 +80,7 @@ export class TaReCardComponent implements OnInit {
     selBox.style.opacity = '0';
     selBox.value = val;
     document.body.appendChild(selBox);
-    selBox.focus();
+    // selBox.focus();
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);

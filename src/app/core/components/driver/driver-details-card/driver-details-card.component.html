@@ -33,11 +33,12 @@
               [mainTooltip]="copiedSSN ? 'Copied' : 'Copy'"
               position="top"
               class="tooltip-copy"
+              (click)="copyText(data.ssn, 'ssn')"
             >
               <svg-icon
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
-                (click)="copyText(data.ssn, 'ssn')"
+                
               ></svg-icon>
             </span>
           </div>
@@ -57,9 +58,11 @@
               ngbTooltip
               [mainTooltip]="copiedDriverPhone ? 'Copied' : 'Copy'"
               position="top"
+              class="tooltip-copy"
+              (click)="copyText(data.phone, 'driver-phone')"
             >
               <svg-icon
-                (click)="copyText(data.phone, 'driver-phone')"
+               
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
               >
@@ -82,9 +85,11 @@
               ngbTooltip
               [mainTooltip]="copiedDriverEmail ? 'Copied' : 'Copy'"
               position="top"
+              class="tooltip-copy"
+              (click)="copyText(data.email, 'driver-email')"
             >
               <svg-icon
-                (click)="copyText(data.email, 'driver-email')"
+                
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
               ></svg-icon>
@@ -260,7 +265,7 @@
       <!-- Employment history-->
       <app-ta-custom-card
         [cardName]="'Employment History'"
-        [isCardOpen]="true"
+        [isCardOpen]="false"
         class="item-cards"
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
@@ -277,17 +282,22 @@
           </div>
           <div>
             <div
-              *ngIf="data.employmentHistories.endDate !== null"
+              *ngIf="deactivatePeriod"
               class="progress-employment-history"
             >
               <div class="progress-driver">
-                
-                  <div *ngFor="let dat of data.employmentHistories; let i = index" [style.width.%]="widthEmployment[dat.isDeactivate]" class="emp"></div>
-                
-                <div *ngFor="let dat of data.employmentHistories; let i = index" [style.width.%]="widthUnEmployment[dat.isDeactivate]" class="unp"></div>
+                <div
+                  *ngFor="let dat of data.employmentHistories; trackBy: identity"
+                  [ngStyle]="{
+                    'background-color':
+                      dat.isDeactivate === true ? '#d4dff4' : '#6d82c8',
+                      width: dat.activePercentage + '%'
+                  }"
+                  [ngClass]="{'emp':dat.isDeactivate==false, 'unp':dat.isDeactivate==true}"
+                ></div>
               </div>
               <div *ngIf="!showMoreEmployment" class="year-employer">
-                <p>05/23/21</p>
+                <p>{{firstDate}}</p>
                 <p>Today</p>
               </div>
             </div>
@@ -348,7 +358,7 @@
               ngbTooltip
               [mainTooltip]="showMoreEmployment ? 'Show Less' : 'Show More'"
               position="top"
-              *ngIf="data.employmentHistories.endDate !== null"
+              *ngIf="deactivatePeriod"
             >
               <svg-icon
                 [ngClass]="{ 'transform-arrow': showMoreEmployment }"
@@ -402,9 +412,11 @@
                 ngbTooltip
                 [mainTooltip]="copiedEin ? 'Copied' : 'Copy'"
                 position="top"
+                class="tooltip-ein"
+                (click)="copyText(data.owner.ssnEin, 'ein')"
               >
                 <svg-icon
-                  (click)="copyText(data.owner.ssnEin, 'ein')"
+                 
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -503,9 +515,11 @@
                 ngbTooltip
                 [mainTooltip]="copiedBankRouting ? 'Copied' : 'Copy'"
                 position="top"
+                class="tooltip-ein"
+                (click)="copyText(data?.routing, 'bankRouting')"
               >
                 <svg-icon
-                  (click)="copyText(data?.routing, 'bankRouting')"
+                 
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -557,15 +571,11 @@
                 ngbTooltip
                 [mainTooltip]="copiedBankAccount ? 'Copied' : 'Copy'"
                 position="top"
+                class="tooltip-ein"
+                (click)="copyText(data.account,'bankAcc')"
               >
                 <svg-icon
-                  *ngIf="data?.account !== null"
-                  (click)="
-                    copyText(
-                      data.account ? data.account : 'No account',
-                      'bankAcc'
-                    )
-                  "
+                  *ngIf="data?.account !== null"               
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -619,9 +629,10 @@
                 ngbTooltip
                 [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
                 position="top"
+                (click)="copyText(data.emergencyContactPhone, 'phone')"
               >
                 <svg-icon
-                  (click)="copyText(data.emergencyContactPhone, 'phone')"
+                  
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>

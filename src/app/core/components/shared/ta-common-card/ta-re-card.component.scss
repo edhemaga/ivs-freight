@@ -1,13 +1,30 @@
+@keyframes change {
+    from {
+        color: #6c6c6c;
+    }
+    to {
+        color: #3551b7;
+    }
+}
+@keyframes changeSVG {
+    from {
+        fill: #6c6c6c;
+    }
+    to {
+        fill: #536bc2 ;
+    }
+}
 .card-flex {
     height: 42px !important;
     transition: all 0.3s ease-in-out;
-   
 }
 
 .text-icon-common {
     display: flex;
     align-items: center;
     width: 290px;
+    z-index: 1;
+    width: 280px;
     .card-icon-common {
         display: none;
         position: relative;
@@ -32,11 +49,7 @@
         color: #919191 !important;
     }
     &:hover {
-        .card-icon-common {
-            display: block;
-            position: relative;
-            bottom: 5px;
-        }
+        
         .card-close-title {
             color: #6c6c6c !important;
         }
@@ -157,7 +170,7 @@ p {
         transition: all 0.3s ease-in-out;
         path {
             fill: #6d82c7 !important;
-            &:hover{
+            &:hover {
                 fill: #3551b7 !important;
             }
         }
@@ -169,7 +182,7 @@ p {
     font-weight: 600;
     margin-right: 6px;
     cursor: pointer;
-    &:hover{
+    &:hover {
         color: #3551b7 !important;
     }
     &::-moz-selection {
@@ -186,15 +199,18 @@ p {
     .card-icon-common {
         svg {
             path {
-                fill: #536bc2 !important;
+                animation-duration: 300ms;
+                animation-name: changeSVG;
                 &:hover {
-                    fill: #536bc2 !important;
+                    animation-duration: 300ms;
+                    animation-name: changeSVG;
                 }
             }
         }
     }
     .open-name {
-        color: #3551b7 !important;
+        animation-duration: 300ms;
+        animation-name: change;
     }
 }
 .hide-footer {
@@ -218,7 +234,7 @@ p {
     svg {
         path {
             fill: #aaaaaa;
-            &:hover{
+            &:hover {
                 fill: #6c6c6c;
             }
         }
@@ -288,4 +304,16 @@ p {
     width: 150px;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.content-wrapper{
+    display: flex;
+    align-items: center;
+    z-index: 100;
+    &:hover{
+        .card-icon-common {
+            display: flex;
+            position: relative;
+            bottom: 1px;
+        }
+    }
 }

@@ -58,7 +58,7 @@
                 </g>
               </svg>
             </div>
-            <p class="vin-text">{{ data.color.name }}</p>
+            <p class="vin-text">{{ data?.color.name }}</p>
           </div>
         </div>
       </div>
@@ -100,52 +100,53 @@
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
         [cardName]="'Additional Details'"
+        *ngIf="data.truckGrossWeight"
       >
         <div class="common-template">
           <div class="common-template-item">
             <div class="common-template-item-name">Gross Weight</div>
             <div class="common-template-item-value">
-              {{ data.truckGrossWeight.name }}
+              {{ data?.truckGrossWeight.name }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Starting Mileage</div>
-            <div class="common-template-item-value">{{ data.mileage }} mi</div>
+            <div class="common-template-item-value">{{ data?.mileage }} mi</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Empty Weight</div>
             <div class="common-template-item-value">
-              {{ data.emptyWeight }}
+              {{ data?.emptyWeight }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Engine Type</div>
             <div class="common-template-item-value">
-              {{ data.truckEngineType.name }}
+              {{ data?.truckEngineType.name }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Axles</div>
             <div class="common-template-item-value">
-              {{ data.axles }}
+              {{ data?.axles }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Tire size</div>
             <div class="common-template-item-value">
-              {{ data.tireSize.name }}
+              {{ data?.tireSize.name }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">IPASS/EZPASS</div>
             <div class="common-template-item-value">
-              {{ data.ipasEzpass }}
+              {{ data?.ipasEzpass }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Insurance Policy</div>
             <div class="common-template-item-value">
-              {{ data.insurancePolicy }}
+              {{ data?.insurancePolicy }}
             </div>
           </div>
         </div>

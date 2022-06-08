@@ -165,7 +165,6 @@ import { PipesModule } from '../../pipes/pipes.module';
     FormsModule,
     ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
     NgSelectModule,
-    AppTooltipeModule,
     NgbModule,
     RouterModule,
     PipesModule,
@@ -207,6 +206,7 @@ import { PipesModule } from '../../pipes/pipes.module';
   exports: [
     // Modules
     FormsModule,
+    AppTooltipeModule,
     ReactiveFormsModule,
     NgSelectModule,
     AngularSvgIconModule,
