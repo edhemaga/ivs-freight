@@ -257,15 +257,18 @@
         </app-ta-custom-card>
         <app-ta-custom-card [cardName]="'Trailer'" [isCardOpen]="true">
           <div class="violation-modal-row-6">
-            <app-ta-input
+            <app-ta-input-dropdown
               formControlName="trailerUnit"
               [inputConfig]="{
-                name: 'Trailer Number',
+                name: 'Input Dropdown',
                 type: 'text',
                 label: 'Unit',
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                dropdownWidthClass: 'w-col-large-modal-cutomer'
               }"
-            ></app-ta-input>
+              [options]="labelsTrailerUnits"
+              (selectedItem)="onSelectDropDown($event, 'trailer-unit')"
+            ></app-ta-input-dropdown>
             <app-ta-input
               formControlName="trailerType"
               [inputConfig]="{
@@ -323,7 +326,149 @@
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        
+        <div class="violation-card">
+          <app-ta-custom-card
+            [cardName]="'Violation'"
+            [isCardOpen]="violations.length"
+            [hasScrollBody]="violations.length > 10"
+          >
+            <div
+              formArrayName="violations"
+              class="common-fake-table-modal common-fake-table-modal-accident-violations"
+              *ngIf="violations.length"
+            >
+              <div class="common-fake-table-label">
+                <p>CATEGORY</p>
+                <p>SW</p>
+                <p>HM</p>
+                <p>DESCRIPTION</p>
+              </div>
+              <div
+                *ngFor="let violation of violations.controls; let ind = index"
+              >
+                <div [formGroupName]="ind" class="common-fake-table-card">
+                  <p class="violation-category">
+                    <svg-icon
+                      class="violation-category-svg"
+                      src="assets/svg/common/ic_crash_indicator.svg"
+                    ></svg-icon>
+                    <span lass="violation-category-text">{{
+                      violation.get("categoryId").value
+                    }}</span>
+                  </p>
+                  <p class="violation-sw">{{ violation.get("sw").value }}</p>
+                  <svg-icon
+                    class="violation-hm"
+                    [class.active]="violation.get('hm').value"
+                    src="{{
+                      violation.get('hm').value
+                        ? 'assets/svg/common/ic_confirm.svg'
+                        : 'assets/svg/common/ic_x.svg'
+                    }}"
+                  ></svg-icon>
+                  <app-ta-input
+                    formControlName="description"
+                    [inputConfig]="{
+                      name: 'Description',
+                      type: 'text',
+                      textTransform: 'capitalize'
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+            </div>
+          </app-ta-custom-card>
+        </div>
+
+        <div class="insurance-card">
+          <app-ta-custom-card
+            [hasCounter]="insurances.length ? insurances.length : '0'"
+            [cardName]="'Insurance'"
+            [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
+            [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+            [isCardOpen]="insurances.length"
+            [hasBodyData]="insurances.length"
+            (onActionEvent)="addInsurance($event)"
+          >
+            <div
+              formArrayName="insurance"
+              class="common-fake-table-modal common-fake-table-modal-accident-insurance"
+              *ngIf="insurances.length"
+            >
+              <div class="common-fake-table-label">
+                <p>INS. TYPE</p>
+                <p>CLAIM NO.</p>
+                <p>INS. ADJUSTER</p>
+                <p>PHONE</p>
+                <p>EMAIL</p>
+              </div>
+              <div
+                *ngFor="let insurance of insurances.controls; let ind = index"
+              >
+                <div [formGroupName]="ind" class="common-fake-table-card">
+                  <app-ta-input-dropdown
+                    formControlName="insuranceType"
+                    [inputConfig]="{
+                      name: 'Input Dropdown',
+                      type: 'text',
+                      isDropdown: true,
+                      dropdownWidthClass: 'w-col-4-insuranceType'
+                    }"
+                    [options]="labelsInsuranceType"
+                    (selectedItem)="onSelectDropDown($event, 'insurance-type', ind)"
+                  ></app-ta-input-dropdown>
+
+                  <app-ta-input
+                    formControlName="claimNumber"
+                    [inputConfig]="{
+                      name: 'Claim Number',
+                      type: 'text',
+                      textTransform: 'capitalize'
+                    }"
+                  ></app-ta-input>
+
+                  <app-ta-input
+                    formControlName="insuranceAdjuster"
+                    [inputConfig]="{
+                      name: 'Insurance Adjuster',
+                      type: 'text',
+                      textTransform: 'capitalize'
+                    }"
+                  ></app-ta-input>
+
+                  <app-ta-input
+                    formControlName="phone"
+                    [inputConfig]="{
+                      name: 'Phone',
+                      type: 'text',
+                      mask: '(000) 000-0000'
+                    }"
+                  ></app-ta-input>
+
+                  <app-ta-input
+                    formControlName="email"
+                    [inputConfig]="{
+                      name: 'Email',
+                      type: 'text'
+                    }"
+                  ></app-ta-input>
+
+                  <div
+                    ngbTooltip
+                    mainTooltip="Delete"
+                    position="top"
+                    tooltipBackground="#EF5350"
+                    class="common-fake-table-delete"
+                    (click)="removeInsurance(ind)"
+                  >
+                    <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </app-ta-custom-card>
+        </div>
+
         <app-ta-custom-card
           [hasCounter]="documents.length ? documents.length : '0'"
           [cardName]="'Documents'"
@@ -335,6 +480,7 @@
             (onFileEvent)="onFilesEvent($event, 'documents')"
           ></app-ta-modal-upload>
         </app-ta-custom-card>
+
         <app-ta-custom-card
           [hasCounter]="media.length ? media.length : '0'"
           [cardName]="'Media'"
@@ -346,6 +492,7 @@
             (onFileEvent)="onFilesEvent($event, 'media')"
           ></app-ta-modal-upload>
         </app-ta-custom-card>
+
         <app-ta-input-note
           formControlName="note"
           [isVisibleNote]="accidentForm.get('note').value"
@@ -488,7 +635,10 @@
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card  [cardName]="'Location & Shipping info'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Location & Shipping info'"
+          [isCardOpen]="true"
+        >
           <div class="row">
             <div class="col-6">
               <app-ta-input-address
