@@ -80,7 +80,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
                         );
 
                         this.router.navigate([
-                            '/login/forgot-password/check-email',
+                            '/forgot-password/check-email',
                         ]);
 
                         console.log(
