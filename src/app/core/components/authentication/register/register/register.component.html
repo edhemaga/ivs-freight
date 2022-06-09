@@ -1,9 +1,7 @@
 <div
     class="sign-up-container container-fluid d-flex flex-column justify-content-between"
 >
-    <div
-        class="container d-flex flex-column justify-content-center align-items-center"
-    >
+    <div class="d-flex flex-column justify-content-center align-items-center">
         <!-- SIGN UP -->
 
         <div class="sign-up-text d-flex flex-column align-items-center">
@@ -12,7 +10,7 @@
             </h1>
 
             <h2 class="text-center">
-                We are so grateful for the pleasure of serving your <br />
+                We are so grateful for the pleasure of serving you<br />
                 and hope we met your expectations.
             </h2>
 
@@ -105,7 +103,7 @@
                             textTransform: 'capitalize',
                             customClass: 'input-big'
                         }"
-                        (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+                        (selectedAddress)="handleAddressChange($event)"
                     ></app-ta-input-address>
                 </div>
                 <div class="form-label-group address-unit-group">
@@ -194,14 +192,16 @@
                 class="d-flex justify-content-center align-items-center submit-btn"
                 (click)="registerUser()"
                 type="submit"
-                [ngClass]="{ disabled: registerForm.invalid }"
+                [ngClass]="{
+                    disabled: registerForm.invalid
+                }"
             >
-                <p>SIGN UP</p>
+                Sign Up
             </button>
 
             <!-- INFO -->
 
-            <p>
+            <p class="m-0 text-center">
                 By continuing, you are agreeing to our<span>
                     Terms of Service</span
                 >
@@ -209,15 +209,17 @@
                 and <span>Privacy Policy</span>
             </p>
 
-            <p>
+            <p class="m-0 text-center">
                 Already have an account?<span routerLink="/login"> Login</span>
             </p>
         </form>
     </div>
 
+    <!-- COPYRIGHT -->
+
     <div class="row">
-        <div class="copyright">
-            <p>Copyright © TruckAssist {{ copyrightYear }}.</p>
+        <div class="d-flex justify-content-center align-items-center copyright">
+            <p class="m-0">Copyright © TruckAssist {{ copyrightYear }}.</p>
         </div>
     </div>
 </div>

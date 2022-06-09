@@ -1,23 +1,10 @@
 @import 'src/theme/variables';
 
-$gray07: rgba(145, 145, 145, 0.7);
-
-*:not(i) {
-    font-family: $main-font;
-}
-
-p {
-    margin: 0;
-    padding: 0;
-}
-
 .sign-up-container {
-    background-color: white;
-    height: 100vh;
-    min-height: 900px;
+    background-color: $white;
 
     .sign-up-text {
-        margin-top: 60px;
+        margin-top: 120px;
 
         h1 {
             width: 862px;
@@ -26,42 +13,38 @@ p {
             font-weight: 800;
             color: $bw6-2;
             line-height: 63px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
 
             span {
-                color: $light-blue;
+                color: $ta-blue;
             }
         }
 
         h2 {
-            width: 674px;
-            height: 64px;
-            font-size: 26px;
-            font-weight: 600;
+            height: 48px;
+            font-size: 20px;
+            font-weight: bold;
             color: $bw6-2;
-            line-height: 32px;
+            line-height: 24px;
             margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
         h3 {
-            width: 192px;
-            height: 18px;
-            font-size: 14px;
+            width: 228px;
+            height: 22px;
+            font-size: 18px;
             font-weight: 400;
             color: $bw6-2;
             line-height: 22px;
-            margin-bottom: 55px;
+            margin-bottom: 40px;
         }
     }
 
     form {
-        max-width: 622px;
-        width: 100%;
-        outline: none;
-
         .form-label-group {
-            margin-bottom: 30px;
-            margin-right: 22px;
+            margin-bottom: 32px;
+            margin-right: 12px;
 
             &:last-child {
                 margin-right: 0;
@@ -69,17 +52,16 @@ p {
             }
         }
 
-        .first-name-group,
+        .first-name-group {
+            width: 310px;
+        }
+
         .last-name-group {
             width: 300px;
         }
 
         .company-name-group {
-            width: 450px;
-        }
-
-        .company-two-fields {
-            width: 100%;
+            width: 460px;
         }
 
         .ein-group {
@@ -87,7 +69,7 @@ p {
         }
 
         .address-group {
-            width: 492px;
+            width: 502px;
         }
 
         .address-unit-group {
@@ -95,7 +77,7 @@ p {
         }
 
         .phone-group {
-            width: 258px;
+            width: 268px;
         }
 
         .email-group {
@@ -103,110 +85,76 @@ p {
         }
 
         .password-group {
-            width: 300px;
+            width: 305px;
 
             margin-bottom: 0;
         }
 
         .submit-btn {
-            width: 320px;
-            margin: 20px auto;
-            height: 50px;
-            border-radius: 3px;
-            background-color: $light-blue;
+            width: 240px;
+            margin: 32px auto 24px auto;
+            height: 42px;
+            border-radius: 2px;
+            font-weight: 600;
+            font-size: 14px;
             border: none;
             outline: none;
-            transition: 0.3s;
+            transition: background 0.3s ease-in-out;
+
+            background-color: $ta-light-blue;
+            color: $white;
+
+            &:hover {
+                background: $ta-blue;
+            }
 
             &.disabled {
-                pointer-events: none !important;
                 -webkit-user-select: none !important;
                 -moz-user-select: none !important;
                 -ms-user-select: none !important;
                 user-select: none !important;
-            }
 
-            &:hover {
-                transition: 0.3s;
-                background: $light-blue;
-            }
-
-            p {
-                font-weight: 600;
-                font-size: 14px;
-                height: 18px;
-                color: $white;
-                margin: 0;
-            }
-        }
-
-        p {
-            font: 400 14px/18px Montserrat;
-            text-align: center;
-            color: $gray07;
-            margin-bottom: 119px;
-
-            &:first-of-type {
-                margin-bottom: 10px;
-            }
-
-            span {
-                font: 600 14px/18px Montserrat;
-                cursor: pointer;
-                outline: none;
+                transition: color 0.2s ease-in-out;
+                background-color: $ta-gray-01;
+                color: $bw5;
 
                 &:hover {
-                    color: $light-blue;
+                    color: $bw6-2;
                 }
             }
         }
 
-        #password-strenght-info {
-            height: 18px;
-            padding-left: 10px;
+        p {
+            font-size: 14px;
+            font-weight: 400;
+            color: $bw6-2;
+            line-height: 18px;
+            margin-bottom: 119px !important;
+
+            &:first-of-type {
+                margin-bottom: 10px !important;
+            }
+
+            span {
+                font-weight: bold;
+                cursor: pointer;
+                transition: color 0.1s ease-in-out;
+
+                &:hover {
+                    color: $ta-blue-2;
+                }
+            }
         }
     }
 
     .copyright {
-        background: $light-blue;
-        height: 46px;
-        display: flex;
-        flex: 1;
-        justify-content: center;
-        align-items: center;
+        height: 42px;
+        border-top: 0.1rem solid $ta-gray-02;
 
         p {
-            color: white;
+            color: $ta-blue-2;
             font-weight: 400;
             font-size: 14px;
-            line-height: 18px;
-        }
-    }
-}
-
-.register-new-field {
-    svg-icon {
-        position: absolute;
-        right: 10px;
-        bottom: 4px;
-        transition: 0.2s;
-    }
-
-    &:hover {
-        svg-icon {
-            bottom: 8px;
-            transition: 0.2s;
-
-            svg {
-                path {
-                    fill: $light-blue;
-                }
-
-                .a {
-                    fill: $light-blue;
-                    opacity: 1;
-                }
-            }
         }
     }
 }

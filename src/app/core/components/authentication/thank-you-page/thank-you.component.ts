@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import moment from 'moment';
 
@@ -9,20 +9,18 @@ import { Router } from '@angular/router';
     templateUrl: './thank-you.component.html',
     styleUrls: ['./thank-you.component.scss'],
 })
-export class ThankYouComponent implements OnInit {
-    public email: string = null;
+export class ThankYouComponent implements OnInit, OnDestroy {
+    public email: string;
     public copyrightYear: number;
 
     constructor(private router: Router) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.email = JSON.parse(localStorage.getItem('thankYouEmail'));
         this.copyrightYear = moment().year();
     }
 
-    public onSignIn(): void {
+    ngOnDestroy(): void {
         localStorage.removeItem('thankYouEmail');
-
-        this.router.navigate(['/login']);
     }
 }

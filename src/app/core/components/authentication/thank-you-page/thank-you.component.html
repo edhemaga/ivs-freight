@@ -1,34 +1,33 @@
-<div class="thank-you-container thanks-container m-0 p-0">
-    <div class="container d-flex align-items-center justify-content-center">
-        <div class="d-flex flex-column align-items-center">
+<div
+    class="thank-you-container container-fluid d-flex flex-column justify-content-between"
+>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <div class="thank-you-text d-flex flex-column align-items-center">
             <h1 class="text-center">Thank you <span>for choosing us!</span></h1>
+
             <h2 class="text-center">
-                Confirmation email has been sent to:<br /><span
-                    ><!-- {{
+                Confirmation email has been sent to:<br /><span>{{
                     email
-                }} -->talikadic@gmail.com</span
-                >
+                }}</span>
             </h2>
 
-            <p class="text-center">
+            <p class="m-0 text-center">
                 Click on the button in the email to activate your account
             </p>
-
-            <svg-icon
-                class="thank-you-img"
-                src="assets/svg/authentication/thank-you.svg"
-                [svgStyle]="{ 'width.px': '446.83', 'height.px': '354.91' }"
-            ></svg-icon>
-
-            <button
-                type="button"
-                class="d-flex align-items-center justify-content-center thank-you-btn"
-            >
-                <p>SIGN IN</p>
-            </button>
         </div>
+
+        <svg-icon
+            class="thank-you-img"
+            src="assets/svg/authentication/thank-you.svg"
+            [svgStyle]="{ 'width.px': '446.83', 'height.px': '354.91' }"
+        ></svg-icon>
     </div>
-    <div class="d-flex align-items-center justify-content-center copyright">
-        <p>Copyright © TruckAssist {{ copyrightYear }}.</p>
+
+    <!-- COPYRIGHT -->
+
+    <div class="row">
+        <div class="d-flex justify-content-center align-items-center copyright">
+            <p class="m-0">Copyright © TruckAssist {{ copyrightYear }}.</p>
+        </div>
     </div>
 </div>

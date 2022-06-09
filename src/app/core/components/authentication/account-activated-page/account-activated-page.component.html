@@ -1,0 +1,40 @@
+<div
+    class="account-activated-container container-fluid d-flex flex-column justify-content-between"
+>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <div
+            class="account-activated-text d-flex flex-column align-items-center"
+        >
+            <h1 class="text-center"><span>Account</span> activated!</h1>
+
+            <h2 class="text-center">
+                Thanks for verifying your email address. Your account is now
+                active.<br />To continue, use the link below.
+            </h2>
+        </div>
+
+        <svg-icon
+            class="account-activated-img"
+            src="assets/svg/authentication/activated.svg"
+            [svgStyle]="{ 'width.px': '417', 'height.px': '355' }"
+        ></svg-icon>
+
+        <!-- SIGN IN BUTTON -->
+
+        <button
+            class="d-flex justify-content-center align-items-center sign-in-btn"
+            type="button"
+            [routerLink]="['/login']"
+        >
+            Sign In
+        </button>
+    </div>
+
+    <!-- COPYRIGHT -->
+
+    <div class="row">
+        <div class="d-flex justify-content-center align-items-center copyright">
+            <p class="m-0">Copyright © TruckAssist {{ copyrightYear }}.</p>
+        </div>
+    </div>
+</div>

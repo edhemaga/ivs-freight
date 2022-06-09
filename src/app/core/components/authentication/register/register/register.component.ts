@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpResponseBase } from '@angular/common/http';
+
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import { AuthStoreService } from '../../state/auth.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
@@ -8,20 +11,13 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
 import moment from 'moment';
 
-import {
-    AddressEntity,
-    SignUpCompanyCommand,
-    SignupUserCommand,
-} from 'appcoretruckassist';
+import { AddressEntity, SignUpCompanyCommand } from 'appcoretruckassist';
 
 import {
     einNumberRegex,
     emailRegex,
     phoneRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-
-import { untilDestroyed } from 'ngx-take-until-destroy';
-import { HttpResponseBase } from '@angular/common/http';
 
 @Component({
     selector: 'app-register',
@@ -51,7 +47,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.copyrightYear = moment().year();
     }
 
-    private createForm() {
+    private createForm(): void {
         this.registerForm = this.formBuilder.group({
             firstName: [null, Validators.required],
             lastName: [null, Validators.required],
@@ -66,21 +62,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
         });
     }
 
-    public handleInputSelect(event: any, action: string): void {
-        switch (action) {
-            case 'ADDRESS':
-                if (event.valid) {
-                    this.selectedAddress = event.address;
-                }
-
-                break;
-
-            default:
-                break;
+    public handleAddressChange(event: any): void {
+        if (event.valid) {
+            this.selectedAddress = event.address;
         }
     }
 
-    public passwordsNotSame() {
+    public passwordsNotSame(): void {
         this.registerForm
             .get('confirmPassword')
             .valueChanges.pipe(untilDestroyed(this))
@@ -98,7 +86,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             });
     }
 
-    public registerUser() {
+    public registerUser(): void {
         if (this.registerForm.invalid) {
             this.inputService.markInvalid(this.registerForm);
             return;
@@ -114,8 +102,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
             ...registerForm,
             address: this.selectedAddress,
         };
-
-        console.log(saveData);
 
         this.authStoreService
             .signUpCompany(saveData)
@@ -133,17 +119,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
                             JSON.stringify(this.registerForm.get('email').value)
                         );
 
-                        this.router.navigate(['/register/thanks']);
+                        this.router.navigate(['login/register/thank-you']);
                     }
                 },
                 error: err => {
                     this.notification.error(err, 'Error');
-                    console.log(err);
                 },
             });
     }
 
-    public keyDownFunction(event: any) {
+    public keyDownFunction(event: any): void {
         if (
             event.keyCode === 13 &&
             event.target.localName !== 'textarea' &&

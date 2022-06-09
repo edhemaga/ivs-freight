@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register/register.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ThankYouComponent } from './thank-you-page/thank-you.component';
+import { AccountActivatedPageComponent } from './account-activated-page/account-activated-page.component';
 
 const routes: Routes = [
     {
@@ -18,9 +19,14 @@ const routes: Routes = [
         data: { title: 'Register' },
     },
     {
-        path: 'register/thanks',
+        path: 'register/thank-you',
         component: ThankYouComponent,
-        data: { title: 'Register' },
+        data: { title: 'Thank You' },
+    },
+    {
+        path: 'register/activated',
+        component: AccountActivatedPageComponent,
+        data: { title: 'Account Activated' },
     },
     {
         path: 'forgot-password',

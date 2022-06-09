@@ -34,7 +34,7 @@ export class AuthStoreService {
             );
     }
 
-    public signUpCompany(data: SignUpCompanyCommand): Observable<any> {
+    public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
         return this.accountService.apiAccountSignupcompanyPost(
             data,
             'response'
