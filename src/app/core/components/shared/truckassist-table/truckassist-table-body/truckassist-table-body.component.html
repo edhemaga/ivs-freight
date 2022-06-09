@@ -9,7 +9,10 @@
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
-            !row.active && !row['status'] && !options.disabledMutedStyle
+            !row.active && !row['status'] && !options.disabledMutedStyle,
+          'delete-animation': row.actionAnimation === 'delete',
+          'add-animation': row.actionAnimation === 'add',
+          'update-animation': row.actionAnimation === 'update'
         }"
         class="pined-tr-container"
       >
@@ -90,11 +93,11 @@
               class="td-content"
             >
               <div class="avatar-container">
-                <app-profile-images 
-                [indx]="i"
-                [size]="'small'"
-                [name]="row.fullName"
-                [type]="'driver'"
+                <app-profile-images
+                  [indx]="i"
+                  [size]="'small'"
+                  [name]="row.fullName"
+                  [type]="'driver'"
                 >
                 </app-profile-images>
                 <img
@@ -104,7 +107,9 @@
                   src="assets/img/table-svgs/owner-badge-new.svg"
                 />
               </div>
-              <span (click)="goToDetails(column, row)" class="table-avatar-name"
+              <span
+                (click)="goToDetails(column, row)"
+                class="table-avatar-name"
                 >{{ row[column.field] }}</span
               >
             </div>
@@ -698,7 +703,10 @@
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
-            !row.active && !row['status'] && !options.disabledMutedStyle
+            !row.active && !row['status'] && !options.disabledMutedStyle,
+          'delete-animation': row.actionAnimation === 'delete',
+          'add-animation': row.actionAnimation === 'add',
+          'update-animation': row.actionAnimation === 'update'
         }"
         class="not-pined-tr-container"
       >
@@ -726,11 +734,11 @@
               class="td-content"
             >
               <div class="avatar-container">
-                <app-profile-images 
-                [indx]="i"
-                [size]="'small'"
-                [name]="row[column.field]"
-                [type]="'driver'"
+                <app-profile-images
+                  [indx]="i"
+                  [size]="'small'"
+                  [name]="row[column.field]"
+                  [type]="'driver'"
                 >
                 </app-profile-images>
                 <img
@@ -740,7 +748,9 @@
                   src="assets/img/table-svgs/owner-badge-new.svg"
                 />
               </div>
-              <span (click)="goToDetails(column, row)" class="table-avatar-name"
+              <span
+                (click)="goToDetails(column, row)"
+                class="table-avatar-name"
                 >{{ row[column.field] }}</span
               >
             </div>
@@ -1271,10 +1281,9 @@
               [ngStyle]="{ width: column.width + 'px' }"
               class="td-content"
             >
-              <span
-                class="table-text table-text-state"
-                >{{ row[column.field] ? row[column.field] : "" }}</span
-              >
+              <span class="table-text table-text-state">{{
+                row[column.field] ? row[column.field] : ""
+              }}</span>
             </div>
 
             <!-- PROGRESS COLUMN TEMPLATE -->
@@ -1326,7 +1335,10 @@
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
-            !row.active && !row['status'] && !options.disabledMutedStyle
+            !row.active && !row['status'] && !options.disabledMutedStyle,
+          'delete-animation': row.actionAnimation === 'delete',
+          'add-animation': row.actionAnimation === 'add',
+          'update-animation': row.actionAnimation === 'update'
         }"
         class="actions-tr-container"
       >
@@ -1356,7 +1368,6 @@
                 "
               ></app-ta-note> -->
 
-
               <!-- <app-dispatcher-note
                 (saveNoteValue)="saveNote($event, row)"
                 [note]="row.additionalData?.note ? row.additionalData?.note : ''"
@@ -1364,7 +1375,9 @@
                 [rowIndex]="i"
               ></app-dispatcher-note> -->
               <app-app-note
-                [note]="row.additionalData?.note ? row.additionalData?.note : ''"
+                [note]="
+                  row.additionalData?.note ? row.additionalData?.note : ''
+                "
                 [note_expanded]="false"
                 [rowIndex]="i"
               ></app-app-note>

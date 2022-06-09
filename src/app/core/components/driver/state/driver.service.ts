@@ -1,15 +1,33 @@
+import { DriverShortResponse } from './../../../../../../appcoretruckassist/model/driverShortResponse';
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
-import { Observable} from 'rxjs';
-import { CheckOwnerSsnEinResponse, CreateDriverCommand,  DriverListResponse, DriverResponse, GetDriverModalResponse, OwnerService, UpdateDriverCommand } from 'appcoretruckassist';
+import { Observable, tap } from 'rxjs';
+import {
+  CheckOwnerSsnEinResponse,
+  CreateDriverCommand,
+  DeleteMultipleDriverCommand,
+  DriverListResponse,
+  DriverResponse,
+  GetDriverModalResponse,
+  OwnerService,
+  UpdateDriverCommand,
+} from 'appcoretruckassist';
 import { DriversStore } from './driver.store';
 import { CreateDriverResponse } from 'appcoretruckassist/model/createDriverResponse';
+import { DriversQuery } from './driver.query';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DriverTService {
-  constructor(private driverService: DriverService, private driverStore:DriversStore, private ownerService: OwnerService) {}
+  constructor(
+    private driverService: DriverService,
+    private driversQuery: DriversQuery,
+    private driverStore: DriversStore,
+    private ownerService: OwnerService,
+    private tableService: TruckassistTableService,
+  ) {}
 
   // Create Driver
   public getDrivers(
@@ -28,11 +46,56 @@ export class DriverTService {
   public addDriver(
     data: CreateDriverCommand
   ): Observable<CreateDriverResponse> {
-    return this.driverService.apiDriverPost(data);
+    return this.driverService.apiDriverPost(data).pipe(
+      tap((res: any) => {
+        const subDriver = this.getDriverById(res.id).subscribe({
+          next: (driver: DriverShortResponse | any) => {
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
+
+            this.driverStore.add(driver);
+
+            this.tableService.sendActionAnimation({
+              animation: 'add',
+              data: driver,
+              id: driver.id
+            })
+
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );
   }
 
   public deleteDriverById(id: number): Observable<any> {
-    return this.driverService.apiDriverIdDelete(id);
+    return this.driverService.apiDriverIdDelete(id).pipe(
+      tap(() => {
+        this.driverStore.remove(({ id }) => id === id);
+      })
+    );
+  }
+
+  public deleteDriverList(driversToDelete: any[]): Observable<any> {
+    let deleteOnBack = driversToDelete.map((driver: any) => {
+      return driver.id;
+    });
+
+    return this.driverService.apiDriverListDelete({ ids: deleteOnBack }).pipe(
+      tap(() => {
+        let storeDrivers = this.driversQuery.getAll();
+
+        storeDrivers.map((driver: any) => {
+          deleteOnBack.map((d) => {
+            if (d === driver.id) {
+              this.driverStore.remove(({ id }) => id === driver.id);
+            }
+          });
+        });
+      })
+    );
   }
 
   public updateDriver(data: UpdateDriverCommand): Observable<object> {
@@ -47,12 +110,13 @@ export class DriverTService {
     return this.driverService.apiDriverModalGet();
   }
 
-  public checkOwnerEinNumber(number: string): Observable<CheckOwnerSsnEinResponse> {
-    return this.ownerService.apiOwnerCheckSsnEinGet(number)
+  public checkOwnerEinNumber(
+    number: string
+  ): Observable<CheckOwnerSsnEinResponse> {
+    return this.ownerService.apiOwnerCheckSsnEinGet(number);
   }
 
   public changeDriverStatus(id: number): Observable<any> {
     return this.driverService.apiDriverStatusIdPut(id, 'response');
   }
 }
- 

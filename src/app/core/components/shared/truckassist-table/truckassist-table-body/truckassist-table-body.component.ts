@@ -32,6 +32,7 @@ export class TruckassistTableBodyComponent
   @Input() viewData: any[];
   @Input() columns: any[];
   @Input() options: any[];
+  @Input() tableData: any[];
   @Input() selectedTab: string;
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
@@ -134,6 +135,10 @@ export class TruckassistTableBodyComponent
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {
       this.viewData = changes.viewData.currentValue;
+    }
+
+    if (!changes?.tableData?.firstChange && changes?.tableData) {
+      this.tableData = changes.tableData.currentValue;
     }
 
     if (
