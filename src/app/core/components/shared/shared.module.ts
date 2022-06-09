@@ -1,3 +1,5 @@
+import { AccidentModalComponent } from './../safety/accident/accident-modal/accident-modal.component';
+import { SumArraysPipe } from './../../pipes/sum-arrays.pipe';
 import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
@@ -156,6 +158,7 @@ import { PipesModule } from '../../pipes/pipes.module';
     FuelPurchaseModalComponent,
     FuelStopModalComponent,
     ViolationModalComponent,
+    AccidentModalComponent,
 
   
     FilterComponent
@@ -294,6 +297,7 @@ import { PipesModule } from '../../pipes/pipes.module';
     FuelPurchaseModalComponent,
     FuelStopModalComponent,
     ViolationModalComponent,
+    AccidentModalComponent,
 
     FilterComponent
   ],

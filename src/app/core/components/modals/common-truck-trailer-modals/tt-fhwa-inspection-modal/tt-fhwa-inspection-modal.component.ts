@@ -1,5 +1,5 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -43,7 +43,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.fhwaInspectionForm = this.formBuilder.group({
-      issueDate: [null],
+      issueDate: [null, Validators.required],
       note: [null],
     });
   }

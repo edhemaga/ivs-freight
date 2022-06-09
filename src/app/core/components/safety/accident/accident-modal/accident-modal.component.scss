@@ -1,0 +1,6 @@
+.violation-card,
+.insurance-card {
+   ::ng-deep .content-holder {
+        margin-bottom: 0px !important;
+    }
+}
