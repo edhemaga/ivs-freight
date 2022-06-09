@@ -1,23 +1,26 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import moment from "moment";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
+import moment from 'moment';
+
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-thank-you-component',
-  templateUrl: './thank-you.component.html',
-  styleUrls: ['./thank-you.component.scss']
+    selector: 'app-thank-you-component',
+    templateUrl: './thank-you.component.html',
+    styleUrls: ['./thank-you.component.scss'],
 })
-export class ThankYouComponent implements OnInit {
-  email = null;
-  copyrightYear!: number;
+export class ThankYouComponent implements OnInit, OnDestroy {
+    public email: string;
+    public copyrightYear: number;
 
-  @HostListener('window:beforeunload', ['$event'])
-  clearLocalStorage() {
-    localStorage.removeItem('thankYouEmail');
-  }
+    constructor(private router: Router) {}
 
-  ngOnInit() {
-    // @ts-ignore
-    this.email = localStorage.getItem('thankYouEmail');
-    this.copyrightYear = moment().year();
-  }
+    ngOnInit(): void {
+        this.email = JSON.parse(localStorage.getItem('thankYouEmail'));
+        this.copyrightYear = moment().year();
+    }
+
+    ngOnDestroy(): void {
+        localStorage.removeItem('thankYouEmail');
+    }
 }

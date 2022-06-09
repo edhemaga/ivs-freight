@@ -2,15 +2,29 @@ import { TodoService } from './../../../../../../appcoretruckassist/api/todo.ser
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UpdateTodoStatusCommand } from 'appcoretruckassist';
+import {
+  CommentByEntityTypeListResponse,
+  CommentService,
+  CreateCommentCommand,
+  CreateResponse,
+  CreateTodoCommand,
+  GetCommentModalResponse,
+  TodoModalResponse,
+  TodoResponse,
+  UpdateCommentCommand,
+  UpdateTodoCommand,
+  UpdateTodoStatusCommand,
+} from 'appcoretruckassist';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoTService {
-  constructor(private todoService: TodoService) {}
+  constructor(
+    private todoService: TodoService,
+    private commentService: CommentService
+  ) {}
 
-  // Create Driver
   public getTodoList(
     title?: string,
     status?: string,
@@ -25,7 +39,46 @@ export class TodoTService {
     return this.todoService.apiTodoListGet(title, status, pageIndex, pageSize);
   }
 
-  public updateTodoItem(todo: UpdateTodoStatusCommand): Observable<TodoListResponse>{
-      return this.todoService.apiTodoStatusPut(todo);
+  public updateTodoItem(
+    todo: UpdateTodoStatusCommand
+  ): Observable<TodoListResponse> {
+    return this.todoService.apiTodoStatusPut(todo);
+  }
+
+  public updateTodo(data: UpdateTodoCommand): Observable<any> {
+    return this.todoService.apiTodoPut(data);
+  }
+
+  public addTodo(data: CreateTodoCommand): Observable<CreateResponse> {
+    return this.todoService.apiTodoPost(data);
+  }
+
+  public deleteTodoById(id: number): Observable<any> {
+    return this.todoService.apiTodoIdDelete(id);
+  }
+
+  public getTodoById(id: number): Observable<TodoResponse> {
+    return this.todoService.apiTodoIdGet(id);
+  }
+
+  public getTodoDropdowns(): Observable<TodoModalResponse> {
+    return this.todoService.apiTodoModalGet();
+  }
+
+  // Comments
+  public createComment(data: CreateCommentCommand): Observable<CreateResponse> {
+    return this.commentService.apiCommentPost(data);
+  }
+
+  public deleteCommentById(id: number): Observable<any> {
+    return this.commentService.apiCommentIdDelete(id);
+  }
+
+  public updateComment(data: UpdateCommentCommand): Observable<any> {
+    return this.commentService.apiCommentPut(data);
+  }
+
+  public getModalComments(): Observable<GetCommentModalResponse> {
+    return this.commentService.apiCommentModalGet();
   }
 }

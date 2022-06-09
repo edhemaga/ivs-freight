@@ -1,153 +1,160 @@
 @import 'src/theme/variables';
 
-$gray07: rgba(145, 145, 145, 0.7);
-
-.password-not-same-notice {
-  position: absolute;
-  font-size: 10px;
-  color: #ff5d5d;
-}
-
-*:not(i) {
-  font-family: $main-font;
-}
-
-p {
-  margin: 0;
-  padding: 0;
-}
-
 .sign-up-container {
-  background-color: white;
-  height: 100vh;
-  min-height: 900px;
+    background-color: $white;
 
-  svg-icon#register-logo {
-    margin-top: 50px;
-    width: 134px;
-  }
+    .sign-up-text {
+        margin-top: 120px;
 
-  .sign-up-text {
-    margin-top: 80px;
+        h1 {
+            width: 862px;
+            height: 126px;
+            font-size: 52px;
+            font-weight: 800;
+            color: $bw6-2;
+            line-height: 63px;
+            margin-bottom: 30px;
 
-    p {
-      font: 300 20px/24px Montserrat;
-      color: $app-main-gray;
-
-      &:first-of-type {
-        font: 700 32px/39px Montserrat;
-        color: $light-blue;
-      }
-    }
-  }
-
-  form {
-    max-width: 431px;
-    width: 100%;
-    outline: none;
-    margin-top: 40px;
-
-    .company-two-fields {
-      width: 100%;
-    }
-
-    .address-two-fields {
-      width: 100%;
-    }
-
-    button {
-      margin: 12px auto 22px;
-      max-width: 160px;
-      width: 100%;
-      height: 34px;
-      border-radius: 3px;
-      background: rgba(145, 145, 145, 0.4);
-      border: none;
-      outline: none;
-      transition: 0.3s;
-
-      p {
-        font-weight: bold;
-        font-size: 14px;
-        line-height: 18px;
-        color: $white;
-        transition: 0.3s;
-        margin: 0;
-      }
-
-      &:hover {
-        transition: 0.3s;
-        background: $light-blue;
-      }
-    }
-
-    p {
-      font: 400 14px/18px Montserrat;
-      text-align: center;
-      color: $gray07;
-      margin-bottom: 50px;
-
-      &:first-of-type {
-        margin-bottom: 12px;
-      }
-
-      span {
-        font: 600 14px/18px Montserrat;
-        cursor: pointer;
-        outline: none;
-
-        &:hover {
-          color: $light-blue;
-        }
-      }
-    }
-
-    #password-strenght-info {
-      height: 18px;
-      padding-left: 10px;
-    }
-  }
-
-  .copyright {
-    background: $light-blue;
-    height: 46px;
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-
-    p {
-      color: white;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 18px;
-    }
-  }
-}
-
-.register-new-field {
-  svg-icon {
-    position: absolute;
-    right: 10px;
-    bottom: 4px;
-    transition: 0.2s;
-  }
-
-  &:hover {
-    svg-icon {
-      bottom: 8px;
-      transition: 0.2s;
-
-      svg {
-        path {
-          fill: $light-blue;
+            span {
+                color: $ta-blue;
+            }
         }
 
-        .a {
-          fill: $light-blue;
-          opacity: 1;
+        h2 {
+            height: 48px;
+            font-size: 20px;
+            font-weight: bold;
+            color: $bw6-2;
+            line-height: 24px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
-      }
+
+        h3 {
+            width: 228px;
+            height: 22px;
+            font-size: 18px;
+            font-weight: 400;
+            color: $bw6-2;
+            line-height: 22px;
+            margin-bottom: 40px;
+        }
     }
-  }
+
+    form {
+        .form-label-group {
+            margin-bottom: 32px;
+            margin-right: 12px;
+
+            &:last-child {
+                margin-right: 0;
+                margin-bottom: 0;
+            }
+        }
+
+        .first-name-group {
+            width: 310px;
+        }
+
+        .last-name-group {
+            width: 300px;
+        }
+
+        .company-name-group {
+            width: 460px;
+        }
+
+        .ein-group {
+            width: 150px;
+        }
+
+        .address-group {
+            width: 502px;
+        }
+
+        .address-unit-group {
+            width: 107px;
+        }
+
+        .phone-group {
+            width: 268px;
+        }
+
+        .email-group {
+            width: 342px;
+        }
+
+        .password-group {
+            width: 305px;
+
+            margin-bottom: 0;
+        }
+
+        .submit-btn {
+            width: 240px;
+            margin: 32px auto 24px auto;
+            height: 42px;
+            border-radius: 2px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            outline: none;
+            transition: background 0.3s ease-in-out;
+
+            background-color: $ta-light-blue;
+            color: $white;
+
+            &:hover {
+                background: $ta-blue;
+            }
+
+            &.disabled {
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                user-select: none !important;
+
+                transition: color 0.2s ease-in-out;
+                background-color: $ta-gray-01;
+                color: $bw5;
+
+                &:hover {
+                    color: $bw6-2;
+                }
+            }
+        }
+
+        p {
+            font-size: 14px;
+            font-weight: 400;
+            color: $bw6-2;
+            line-height: 18px;
+            margin-bottom: 119px !important;
+
+            &:first-of-type {
+                margin-bottom: 10px !important;
+            }
+
+            span {
+                font-weight: bold;
+                cursor: pointer;
+                transition: color 0.1s ease-in-out;
+
+                &:hover {
+                    color: $ta-blue-2;
+                }
+            }
+        }
+    }
+
+    .copyright {
+        height: 42px;
+        border-top: 0.1rem solid $ta-gray-02;
+
+        p {
+            color: $ta-blue-2;
+            font-weight: 400;
+            font-size: 14px;
+        }
+    }
 }

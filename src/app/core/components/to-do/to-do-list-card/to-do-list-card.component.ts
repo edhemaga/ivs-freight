@@ -1,15 +1,25 @@
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridsterItemComponent, GridsterPush, GridType } from 'angular-gridster2';
+import {
+  CompactType,
+  DisplayGrid,
+  GridsterConfig,
+  GridsterItem,
+  GridsterItemComponent,
+  GridsterPush,
+  GridType,
+} from 'angular-gridster2';
 import { Subject, takeUntil } from 'rxjs';
 import { TodoTService } from '../state/todo.service';
 import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
 
 @Component({
   selector: 'app-to-do-list-card',
   templateUrl: './to-do-list-card.component.html',
   styleUrls: ['./to-do-list-card.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class ToDoListCardComponent implements OnInit {
   @ViewChild('mainGridster') mainGridster: any;
@@ -65,7 +75,7 @@ export class ToDoListCardComponent implements OnInit {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       isNewReview: false,
-    }
+    },
   ];
 
   worldClockHolder: any = [
@@ -75,7 +85,7 @@ export class ToDoListCardComponent implements OnInit {
       day: 'SAT',
       date: 'May 6th',
       time: '02:36',
-      partDay: "A M"
+      partDay: 'A M',
     },
     {
       city: 'Belgrade',
@@ -83,7 +93,7 @@ export class ToDoListCardComponent implements OnInit {
       day: 'FRI',
       date: 'May 4th',
       time: '06:36',
-      partDay: "P M"
+      partDay: 'P M',
     },
     {
       city: 'Chicago',
@@ -91,7 +101,7 @@ export class ToDoListCardComponent implements OnInit {
       day: 'FRI',
       date: 'May 4th',
       time: '11:36',
-      partDay: "A M"
+      partDay: 'A M',
     },
     {
       city: 'San Francisco',
@@ -99,14 +109,16 @@ export class ToDoListCardComponent implements OnInit {
       day: 'FRI',
       date: 'May 4th',
       time: '09:36',
-      partDay: "A M"
-    }
-  ]
+      partDay: 'A M',
+    },
+  ];
 
-  constructor(private todoTService: TodoTService) { }
+  constructor(
+    private todoTService: TodoTService,
+    private modalService: ModalService
+  ) {}
 
   ngOnInit(): void {
-
     this.options = {
       gridType: GridType.VerticalFixed,
       displayGrid: DisplayGrid.None,
@@ -127,28 +139,25 @@ export class ToDoListCardComponent implements OnInit {
         dragHandleClass: 'drag-handler',
         start: this.dragStart,
         stop: this.dragStoped,
-        dropOverItems: false
+        dropOverItems: false,
       },
       resizable: {
-        enabled: false
-      }
+        enabled: false,
+      },
     };
 
     this.getTodoList();
-
   }
-
 
   dragStart = (e) => {
-    console.log("DRAG HAS START");
+    console.log('DRAG HAS START');
     this.dragStarted = true;
-  }
+  };
 
   dragStoped = () => {
-    console.log("DRAG HAS Stopped");
+    console.log('DRAG HAS Stopped');
     this.dragStarted = false;
-  }
-
+  };
 
   changedRow = (e) => {
     if (!this.startChangingStatus) {
@@ -168,34 +177,36 @@ export class ToDoListCardComponent implements OnInit {
 
       this.updatedStatusData = {
         id: e.id,
-        status: newStatus
+        status: newStatus,
       };
       this.updateStatus(this.updatedStatusData);
     }
-  }
+  };
 
   private getTodoList() {
     this.todoTService
       .getTodoList()
       .pipe(takeUntil(this.destroy$))
       .subscribe((resp: TodoListResponse) => {
-        console.log("WHAT IS RESPONSE FROM TODO");
+        console.log('WHAT IS RESPONSE FROM TODO');
         console.log(resp);
         this.updateTodosList(resp.pagination.data);
       });
   }
 
-
+  public openModalTodo() {
+    this.modalService.openModal(TaskModalComponent, { size: 'small' }, {type: 'edit', id: 1});
+  }
 
   public updateStatus(todo) {
     this.todoTService
       .updateTodoItem(todo)
       .pipe(takeUntil(this.destroy$))
       .subscribe((resp: TodoListResponse) => {
-        console.log("WHAT IS RESPONSE FROM TODO");
+        console.log('WHAT IS RESPONSE FROM TODO');
         console.log(resp);
         this.startChangingStatus = false;
-       // this.notification.success('Task status updated successfully.', 'Success:');
+        // this.notification.success('Task status updated successfully.', 'Success:');
         //this.updateTodosList(resp.pagination.data);
       });
   }
@@ -212,7 +223,7 @@ export class ToDoListCardComponent implements OnInit {
             x: 0,
             minItemRows: 1,
             minItemCols: 1,
-            initCallback: this.initItem.bind(this, this.cardData.length)
+            initCallback: this.initItem.bind(this, this.cardData.length),
           });
         }
         return true;
@@ -230,7 +241,7 @@ export class ToDoListCardComponent implements OnInit {
             x: 1,
             minItemRows: 1,
             minItemCols: 1,
-            initCallback: this.initItem.bind(this, this.cardData.length)
+            initCallback: this.initItem.bind(this, this.cardData.length),
           });
         }
         return true;
@@ -249,25 +260,24 @@ export class ToDoListCardComponent implements OnInit {
             x: 2,
             minItemRows: 1,
             minItemCols: 1,
-            initCallback: this.initItem.bind(this, this.cardData.length)
+            initCallback: this.initItem.bind(this, this.cardData.length),
           });
-
         }
         return true;
       }
     });
   }
 
-  toggleComment(e: Event, indx: number){
+  toggleComment(e: Event, indx: number) {
     e.preventDefault();
     e.stopPropagation();
-    this.cardData[indx]['commentActive'] = !this.cardData[indx]['commentActive'];
-    
+    this.cardData[indx]['commentActive'] =
+      !this.cardData[indx]['commentActive'];
+
     this.toggleExpandControll(indx, this.cardData[indx]['commentActive']);
   }
 
-  toggleExpandControll(indx: number, isOpen: boolean ) {
-   
+  toggleExpandControll(indx: number, isOpen: boolean) {
     const push = new GridsterPush(this.dashboardItems[indx]);
     console.log(isOpen);
     if (isOpen) {
@@ -283,18 +293,19 @@ export class ToDoListCardComponent implements OnInit {
       push.restoreItems();
     }
     push.destroy();
-
   }
 
-
-  initItem(ind: number, item: GridsterItem, itemComponent: GridsterItemComponent): void {
+  initItem(
+    ind: number,
+    item: GridsterItem,
+    itemComponent: GridsterItemComponent
+  ): void {
     this.dashboardItems[ind] = itemComponent;
   }
 
-  toggleLinkShow(e: Event, indx: number){
+  toggleLinkShow(e: Event, indx: number) {
     e.preventDefault();
     e.stopPropagation();
     this.cardData[indx]['linkActive'] = !this.cardData[indx]['linkActive'];
   }
-
 }

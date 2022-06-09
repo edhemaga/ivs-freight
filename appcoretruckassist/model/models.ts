@@ -152,7 +152,6 @@ export * from './stateResponse';
 export * from './statusSetMultipleBrokerCommand';
 export * from './statusSetMultipleDriverCommand';
 export * from './statusSetMultipleShipperCommand';
-export * from './testReasonShortResponse';
 export * from './testResponse';
 export * from './testType';
 export * from './tireSizeResponse';

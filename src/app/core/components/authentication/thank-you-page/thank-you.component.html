@@ -1,18 +1,33 @@
-<div class="container-fluid thanks-container m-0 p-0">
-  <div class="container d-flex align-items-center justify-content-center">
-    <div class="d-flex flex-column align-items-center justify-content-center">
-      <svg-icon src="../../../../../assets/img/svgs/thank-you.svg"></svg-icon>
-      <div class="thank-you-text d-flex flex-column justify-content-center">
-        <p>Thank you for choosing us!</p>
-        <p>Confirmation email has been sent to:</p>
-        <p><b>{{email}}</b></p>
-        <p>Click on the button in the email to activate your account</p>
-      </div>
+<div
+    class="thank-you-container container-fluid d-flex flex-column justify-content-between"
+>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <div class="thank-you-text d-flex flex-column align-items-center">
+            <h1 class="text-center">Thank you <span>for choosing us!</span></h1>
+
+            <h2 class="text-center">
+                Confirmation email has been sent to:<br /><span>{{
+                    email
+                }}</span>
+            </h2>
+
+            <p class="m-0 text-center">
+                Click on the button in the email to activate your account
+            </p>
+        </div>
+
+        <svg-icon
+            class="thank-you-img"
+            src="assets/svg/authentication/thank-you.svg"
+            [svgStyle]="{ 'width.px': '446.83', 'height.px': '354.91' }"
+        ></svg-icon>
     </div>
-  </div>
-  <div class="copyright">
-    <p>Copyright © TruckAssist {{copyrightYear}}.</p>
-  </div>
+
+    <!-- COPYRIGHT -->
+
+    <div class="row">
+        <div class="d-flex justify-content-center align-items-center copyright">
+            <p class="m-0">Copyright © TruckAssist {{ copyrightYear }}.</p>
+        </div>
+    </div>
 </div>
-
-

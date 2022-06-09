@@ -13,6 +13,7 @@ import { DriverTService } from '../../../state/driver.service';
 import { MvrTService } from '../../../state/mvr.service';
 import moment from 'moment';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-driver-mvr-modal',
@@ -103,7 +104,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     const newData: EditMvrCommand = {
       id: this.editData.file_id,
       ...this.mvrForm.value,
-      issueDate: new Date(issueDate).toISOString(),
+      issueDate: convertDateToBackend(issueDate),
     };
 
     this.mvrService
@@ -128,7 +129,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     const newData: CreateMvrCommand = {
       driverId: this.editData.id,
       ...this.mvrForm.value,
-      issueDate: new Date(issueDate).toISOString(),
+      issueDate: convertDateToBackend(issueDate),
     };
     this.mvrService
       .addMvr(newData)
@@ -154,7 +155,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: MvrResponse) => {
           this.mvrForm.patchValue({
-            issueDate: moment(new Date(res.issueDate)).format('YYYY-MM-DD'),
+            issueDate: convertDateFromBackend(res.issueDate),
             note: res.note,
           });
         },

@@ -10,12 +10,11 @@
  * Do not edit the class manually.
  */
 import { EnumValue } from './enumValue';
-import { TestReasonShortResponse } from './testReasonShortResponse';
 
 
 export interface GetTestModalResponse { 
-    drugTestReasons?: Array<TestReasonShortResponse> | null;
-    alcoholTestReasons?: Array<TestReasonShortResponse> | null;
+    drugTestReasons?: Array<EnumValue> | null;
+    alcoholTestReasons?: Array<EnumValue> | null;
     testTypes?: Array<EnumValue> | null;
 }
 

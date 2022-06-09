@@ -12,6 +12,7 @@ import { RegisterComponent } from './register/register/register.component';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import * as $ from 'jquery';
+import { AccountActivatedPageComponent } from './account-activated-page/account-activated-page.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { PleaseCheckEmailPageComponent } from './please-check-email-page/please-check-email-page.component';
 import { CreateNewPasswordPageComponent } from './create-new-password-page/create-new-password-page.component';
@@ -25,6 +26,7 @@ import { PasswordChangedPageComponent } from './password-changed-page/password-c
         ThankYouComponent,
         SelectCompanyComponent,
         RegisterComponent,
+        AccountActivatedPageComponent,
         PleaseCheckEmailPageComponent,
         CreateNewPasswordPageComponent,
         PasswordChangedPageComponent,

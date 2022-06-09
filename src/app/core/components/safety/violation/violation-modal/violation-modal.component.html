@@ -326,13 +326,11 @@
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card
+        <div class="violation-card">
+          <app-ta-custom-card
           [hasCounter]="violations.length ? violations.length : '0'"
           [cardName]="'Violation'"
-          [hasArrow]="false"
-          [isCommentData]="true"
           [isCardOpen]="violations.length"
-          [hasBodyData]="violations.length"
           [hasScrollBody]="violations.length > 10"
         >
           <div
@@ -392,6 +390,8 @@
             </div>
           </div>
         </app-ta-custom-card>
+        </div>
+       
         <app-ta-custom-card
           [hasCounter]="documents.length ? documents.length : '0'"
           [cardName]="'Documents'"

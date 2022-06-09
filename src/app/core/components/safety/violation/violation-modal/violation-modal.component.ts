@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-violation-modal',
@@ -99,7 +99,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private ngbActiveModal: NgbActiveModal,
+    private modalService: ModalService,
     private notificationService: NotificationService
   ) {}
 
@@ -107,18 +107,13 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     this.createForm();
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 1,
-      };
       this.editViolationById(this.editData.id);
     }
   }
 
   private createForm() {
     this.violationForm = this.formBuilder.group({
-      report: [null],
+      report: [null, Validators.required],
       inspectionLevel: [null],
       hmInspectionLevel: [null],
       country: [null],
@@ -184,17 +179,26 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
   public onModalAction(data: { action: string; bool: boolean }): void {
     // Update
-    if (data.action === 'save') {
-      if (this.violationForm.invalid) {
-        this.inputService.markInvalid(this.violationForm);
-        return;
+    switch(data.action) {
+      case 'close': {
+        this.violationForm.reset();
+        break;
       }
-      if (this.editData) {
-        this.updateViolation(this.editData.id);
+      case 'save': {
+        if (this.violationForm.invalid) {
+          this.inputService.markInvalid(this.violationForm);
+          return;
+        }
+        if (this.editData) {
+          this.updateViolation(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
+        }
+        break;
+      }
+      default: {
+        break;
       }
     }
-
-    this.ngbActiveModal.close();
   }
 
   public get violations(): FormArray {

@@ -38,6 +38,7 @@ export class TaInputDropdownComponent
   @Input() inputConfig: ITaInput;
   @Input() canAddNew: boolean = false;
   @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
+  @Input() preloadMultiselectItems: any[] = [];
   @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
 
@@ -59,12 +60,33 @@ export class TaInputDropdownComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.options) {
+    // Options from backend
+    if (this.options.length) {
       this.originalOptions = [...this.options];
+    }
+    // MultiSelect Selected Items From Backend
+    if (
+      this.preloadMultiselectItems.length &&
+      this.inputConfig.multiselectDropdown
+    ) {
+      const timeout = setTimeout(() => {
+        this.preloadMultiselectItems.forEach((item) => {
+          this.onMultiselectSelect(item, this.template);
+        });
+        clearTimeout(timeout);
+      }, 50);
     }
   }
 
   ngOnInit(): void {
+    if (
+      this.preloadMultiselectItems.length &&
+      this.inputConfig.multiselectDropdown
+    ) {
+      this.preloadMultiselectItems.forEach((item) => {
+        this.onMultiselectSelect(item, this.template);
+      });
+    }
     if (this.inputConfig.multiselectDropdown) {
       this.multiSelectLabel = this.inputConfig.label;
     }
@@ -151,7 +173,6 @@ export class TaInputDropdownComponent
     this.inputService.dropDownNavigatorSubject
       .pipe(untilDestroyed(this))
       .subscribe((keyEvent) => {
-
         if (keyEvent === 40) {
           this.dropdownNavigation(1);
         }
@@ -182,8 +203,7 @@ export class TaInputDropdownComponent
 
           if (this.inputConfig.multiselectDropdown) {
             this.onMultiselectSelect(existItem, this.template);
-          } 
-          else {
+          } else {
             this.getSuperControl.setValue(existItem.name);
             this.selectedItem.emit(existItem);
             this.activeItem = existItem;
@@ -351,6 +371,7 @@ export class TaInputDropdownComponent
         });
 
         this.multiselectItems = this.options.filter((item) => item.active);
+
         this.originalOptions = this.options;
         this.selectedItems.emit(
           this.multiselectItems.map((item) => {
@@ -443,7 +464,7 @@ export class TaInputDropdownComponent
    */
   private dropdownNavigation(step: number) {
     this.dropdownPosition += step;
-    console.log(this.dropdownPosition)
+    console.log(this.dropdownPosition);
     if (this.dropdownPosition > this.options.length - 1) {
       this.dropdownPosition = 0;
     }

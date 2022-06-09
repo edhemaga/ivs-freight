@@ -25,6 +25,14 @@ export class ShipperModalService {
     return this.shipperService.apiShipperIdGet(id);
   }
 
+  public changeBanStatus(id: number): Observable<any> {
+    return this.shipperService.apiShipperBanIdPut(id, 'response');
+  }
+
+  public changeDnuStatus(id: number): Observable<any> {
+    return this.shipperService.apiShipperDnuIdPut(id, 'response');
+  }
+
   public getShipperDropdowns(): Observable<ShipperModalResponse> {
     return this.shipperService.apiShipperModalGet();
   }
