@@ -27,7 +27,7 @@ import { TaInputComponent } from '../ta-input/ta-input.component';
   templateUrl: './ta-input-dropdown.component.html',
   styleUrls: ['./ta-input-dropdown.component.scss'],
   providers: [TaInputService],
-  animations: [input_dropdown_animation('showHideDropdownOptions')]
+  animations: [input_dropdown_animation('showHideDropdownOptions')],
 })
 export class TaInputDropdownComponent
   implements OnInit, OnDestroy, OnChanges, ControlValueAccessor
@@ -60,18 +60,33 @@ export class TaInputDropdownComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // Options from backend
     if (this.options.length) {
       this.originalOptions = [...this.options];
     }
-    if(this.preloadMultiselectItems.length && this.inputConfig.multiselectDropdown) {
-      this.preloadMultiselectItems.forEach(item => {
-        this.onMultiselectSelect(item, this.template)
-      })
-      
+    // MultiSelect Selected Items From Backend
+    if (
+      this.preloadMultiselectItems.length &&
+      this.inputConfig.multiselectDropdown
+    ) {
+      const timeout = setTimeout(() => {
+        this.preloadMultiselectItems.forEach((item) => {
+          this.onMultiselectSelect(item, this.template);
+        });
+        clearTimeout(timeout);
+      }, 50);
     }
   }
 
   ngOnInit(): void {
+    if (
+      this.preloadMultiselectItems.length &&
+      this.inputConfig.multiselectDropdown
+    ) {
+      this.preloadMultiselectItems.forEach((item) => {
+        this.onMultiselectSelect(item, this.template);
+      });
+    }
     if (this.inputConfig.multiselectDropdown) {
       this.multiSelectLabel = this.inputConfig.label;
     }
@@ -354,9 +369,9 @@ export class TaInputDropdownComponent
           }
           return item;
         });
-        console.log(" PRE  ", this.multiselectItems)
+
         this.multiselectItems = this.options.filter((item) => item.active);
-        console.log(" AFTER  ", this.multiselectItems)
+
         this.originalOptions = this.options;
         this.selectedItems.emit(
           this.multiselectItems.map((item) => {

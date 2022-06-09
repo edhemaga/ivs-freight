@@ -1,13 +1,22 @@
 import { CreateTodoCommand } from './../../../../../../appcoretruckassist/model/createTodoCommand';
 import { Validators } from '@angular/forms';
-import { TaskModalService } from './task-modal.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { TodoModalResponse, TodoResponse } from 'appcoretruckassist';
+import {
+  EnumValue,
+  TodoModalResponse,
+  TodoResponse,
+  UpdateTodoCommand,
+} from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
+import { TodoTService } from '../../to-do/state/todo.service';
 
 @Component({
   selector: 'app-task-modal',
@@ -22,29 +31,26 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   public resDepartments: any[] = [];
   public resCompanyUsers: any[] = [];
 
-  public comments: any[] = [];
-  public documents: any[] = [];
-
   public selectedDepartments: any[] = [];
   public selectedCompanyUsers: any[] = [];
+
+  public taskStatus: EnumValue = null;
+  public comments: any[] = [];
+  public documents: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private taskModalService: TaskModalService,
+    private todoService: TodoTService,
     private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
     this.createForm();
     this.getTaskDropdowns();
+    console.log(this.editData);
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 1,
-      };
       this.editTask(this.editData.id);
     }
   }
@@ -117,21 +123,57 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     console.log(event);
   }
 
-  private updateTaskById(id: number) {}
+  private updateTaskById(id: number) {
+    const { departmentIds, deadline, companyUserIds, ...form } =
+      this.taskForm.value;
+
+    const newData: UpdateTodoCommand = {
+      id: id,
+      ...form,
+      deadline: convertDateToBackend(deadline),
+      departmentIds: this.selectedDepartments
+        ? this.selectedDepartments.map((item) => item.id)
+        : [],
+      companyUserIds: this.selectedCompanyUsers
+        ? this.selectedCompanyUsers.map((item) => item.id)
+        : [],
+      status: this.taskStatus.name,
+    };
+
+    this.todoService
+      .updateTodo(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Task successfully updated.',
+            'Success:'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: () => {
+          this.notificationService.error("Task can't be updated.", 'Error:');
+        },
+      });
+  }
 
   private addTask() {
     const { departmentIds, deadline, companyUserIds, ...form } =
       this.taskForm.value;
-      
+
     const newData: CreateTodoCommand = {
       ...form,
-      deadline: new Date(deadline).toISOString(),
-      departmentIds: this.selectedDepartments,
-      companyUserIds: this.selectedCompanyUsers,
+      deadline: convertDateToBackend(deadline),
+      departmentIds: this.selectedDepartments
+        ? this.selectedDepartments.map((item) => item.id)
+        : [],
+      companyUserIds: this.selectedCompanyUsers
+        ? this.selectedCompanyUsers.map((item) => item.id)
+        : [],
     };
 
-    this.taskModalService
-      .addTask(newData)
+    this.todoService
+      .addTodo(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
@@ -147,42 +189,70 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private deleteTaskById(id: number) {}
+  private deleteTaskById(id: number) {
+    this.todoService
+      .deleteTodoById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Task successfully deleted.',
+            'Success:'
+          );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
+        },
+        error: () => {
+          this.notificationService.error("Task can't be deleted.", 'Error:');
+        },
+      });
+  }
 
   private editTask(id: number) {
-    this.taskModalService
-        .getTaskById(id)
-        .pipe(untilDestroyed(this))
-        .subscribe({
-          next: (res: TodoResponse) => {
-            this.taskForm.patchValue({
-              title: res.title,
-              description: res.description,
-              url: res.url,
-              deadline: res.deadline,
-              departmentIds: [null],
-              companyUserIds: [null],
-              note: res.note,
-            })
-          },
-          error: () => {
-            this.notificationService.error("Can't get task.", 'Error:');
-          }
-        })
+    this.todoService
+      .getTodoById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: TodoResponse) => {
+          this.taskForm.patchValue({
+            title: res.title,
+            description: res.description,
+            url: res.url,
+            deadline: convertDateFromBackend(res.deadline),
+            departmentIds: null,
+            companyUserIds: null,
+            note: res.note,
+          });
+          this.selectedDepartments = res.departments;
+          this.selectedCompanyUsers = res.todoUsers.map((item) => {
+            return {
+              id: item.companyUserId,
+              name: item.firstName.concat(' ', item.lastName),
+            };
+          });
+          this.comments = res.comments;
+          this.taskStatus = res.status;
+        },
+        error: () => {
+          this.notificationService.error("Can't get task.", 'Error:');
+        },
+      });
   }
 
   private getTaskDropdowns() {
-    this.taskModalService
-      .getTaskDropdowns()
+    this.todoService
+      .getTodoDropdowns()
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: TodoModalResponse) => {
           this.resDepartments = res.departments;
-          this.resCompanyUsers = res.companyUsers.map(item => {
+          this.resCompanyUsers = res.companyUsers.map((item) => {
             return {
               id: item.id,
-              name: item.fullName
-            }
+              name: item.fullName,
+            };
           });
         },
         error: () => {
@@ -194,11 +264,12 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   public onSelectDropDown(event: any[], action: string) {
     switch (action) {
       case 'res-department': {
-        this.selectedDepartments = event ? event.map((item) => item.id) : [];
+        this.selectedDepartments = event;
         break;
       }
       case 'assign-task': {
-        this.selectedCompanyUsers = event ? event.map((item) => item.id) : [];
+        this.selectedCompanyUsers = event;
+        console.log(this.selectedCompanyUsers);
         break;
       }
       default: {

@@ -12,6 +12,7 @@ import {
 } from 'appcoretruckassist';
 import moment from 'moment';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-tt-fhwa-inspection-modal',
@@ -81,7 +82,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: InspectionResponse) => {
           this.fhwaInspectionForm.patchValue({
-            issueDate: moment(new Date(res.issueDate)).format('YYYY-MM-DD'),
+            issueDate: convertDateFromBackend(res.issueDate),
             note: res.note,
           });
         },
@@ -93,7 +94,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     const { issueDate } = this.fhwaInspectionForm.value;
     const newData: UpdateInspectionCommand = {
       ...this.fhwaInspectionForm.value,
-      issueDate: new Date(issueDate).toISOString(),
+      issueDate: convertDateToBackend(issueDate),
       id: this.editData.file_id,
     };
 
@@ -124,7 +125,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     const { issueDate } = this.fhwaInspectionForm.value;
     const newData: CreateInspectionCommand = {
       ...this.fhwaInspectionForm.value,
-      issueDate: new Date(issueDate).toISOString(),
+      issueDate: convertDateToBackend(issueDate),
       truckId: this.editData.modal === 'truck' ? this.editData.id : null,
       trailerId: this.editData.modal === 'trailer' ? this.editData.id : null,
     };

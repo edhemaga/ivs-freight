@@ -74,6 +74,7 @@
             dropdownWidthClass: 'w-col-12'
           }"
           [options]="resDepartments"
+          [preloadMultiselectItems]="selectedDepartments"
           (selectedItems)="onSelectDropDown($event, 'res-department')"
         ></app-ta-input-dropdown>
       </div>
@@ -92,6 +93,7 @@
             dropdownWidthClass: 'w-col-12'
           }"
           [options]="resCompanyUsers"
+          [preloadMultiselectItems]="selectedCompanyUsers"
           (selectedItems)="onSelectDropDown($event, 'assign-task')"
         ></app-ta-input-dropdown>
       </div>

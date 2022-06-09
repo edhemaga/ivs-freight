@@ -14,6 +14,7 @@ import { CdlTService } from '../../../state/cdl.service';
 import { DriverTService } from '../../../state/driver.service';
 import moment from 'moment';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -209,8 +210,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         next: (res: CdlResponse) => {
           this.cdlForm.patchValue({
             cdlNumber: res.cdlNumber,
-            issueDate: moment(new Date(res.issueDate)).format('YYYY-MM-DD'),
-            expDate: moment(new Date(res.expDate)).format('YYYY-MM-DD'),
+            issueDate: convertDateFromBackend(res.issueDate),
+            expDate: convertDateFromBackend(res.expDate),
             classType: res.classType.name,
             countryType: res.countryType.name,
             stateId: res.state.stateName,
@@ -236,8 +237,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     const newData: EditCdlCommand = {
       id: this.editData.file_id,
       ...this.cdlForm.value,
-      issueDate: new Date(issueDate).toISOString(),
-      expDate: new Date(expDate).toISOString(),
+      issueDate: convertDateToBackend(issueDate),
+      expDate: convertDateToBackend(expDate),
       classType: this.selectedClassType.name,
       countryType: this.selectedCountryType.name,
       stateId: this.selectedStateType.id,
@@ -268,8 +269,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     const newData: CreateCdlCommand = {
       driverId: this.editData.id,
       ...this.cdlForm.value,
-      issueDate: new Date(issueDate).toISOString(),
-      expDate: new Date(expDate).toISOString(),
+      issueDate: convertDateToBackend(issueDate),
+      expDate: convertDateToBackend(expDate),
       classType: this.selectedClassType.name,
       countryType: this.selectedCountryType.name,
       stateId: this.selectedStateType.id,

@@ -13,6 +13,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-tt-registration-modal',
@@ -83,8 +84,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     const newData: UpdateRegistrationCommand = {
       id: this.editData.file_id,
       ...this.registrationForm.value,
-      issueDate: new Date(issueDate).toISOString(),
-      expDate: new Date(expDate).toISOString(),
+      issueDate: convertDateToBackend(issueDate),
+      expDate: convertDateToBackend(expDate),
     };
 
     this.commonTruckTrailerService
@@ -114,8 +115,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     const { issueDate, expDate } = this.registrationForm.value;
     const newData: CreateRegistrationCommand = {
       ...this.registrationForm.value,
-      issueDate: new Date(issueDate).toISOString(),
-      expDate: new Date(expDate).toISOString(),
+      issueDate: convertDateToBackend(issueDate),
+      expDate: convertDateToBackend(expDate),
       trailerId: this.editData.modal === 'trailer' ? this.editData.id : null,
       truckId: this.editData.modal === 'truck' ? this.editData.id : null,
     };
@@ -150,8 +151,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: RegistrationResponse) => {
           this.registrationForm.patchValue({
-            issueDate: moment(new Date(res.issueDate)).format('YYYY-MM-DD'),
-            expDate: moment(new Date(res.expDate)).format('YYYY-MM-DD'),
+            issueDate: convertDateFromBackend(res.issueDate),
+            expDate: convertDateFromBackend(res.expDate),
             licensePlate: res.licensePlate,
             note: res.note,
           });
