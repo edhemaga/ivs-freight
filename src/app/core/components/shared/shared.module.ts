@@ -38,7 +38,6 @@ import { NgxMaskModule } from "ngx-mask";
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
-import { TaSelectComponent } from './ta-select/ta-select.component';
 import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
 import { TaStatusSwitchComponent } from './ta-status-switch/ta-status-switch.component';
 import { StatusPipePipe } from '../../pipes/status-pipe.pipe';
@@ -122,7 +121,6 @@ import { FormatRestrictionEndorsmentPipe } from '../../pipes/formatRestrictionEn
     TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
-    TaSelectComponent,
     DeleteDialogComponent,
     EditProfileImageComponent,
     EditProfileImageComponent,
@@ -280,7 +278,6 @@ import { FormatRestrictionEndorsmentPipe } from '../../pipes/formatRestrictionEn
     TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
-    TaSelectComponent,
     DeleteDialogComponent,
     SvgDefinitionsComponent,
     CustomDatetimePickersComponent,

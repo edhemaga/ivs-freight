@@ -4,6 +4,7 @@
   (mouseleave)="onHoveredNavigation(false)"
 >
   <div class="navigation-top">
+
     <app-navigation-header
       [isNavigationHovered]="isNavigationHovered"
     ></app-navigation-header>
@@ -13,6 +14,7 @@
         isModalPanelOpen && isNavigationHovered
       "
     ></app-navigation-modals>
+    
     <div
       class="wrapper-container"
       [ngClass]="{ 'wrapper-container-nohover': !isNavigationHovered }"

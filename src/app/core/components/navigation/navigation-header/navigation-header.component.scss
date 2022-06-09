@@ -31,113 +31,119 @@
     &.expand-width {
       width: 177px;
     }
-  }
 
-  .nav-header-bottom-plus {
-    background: $nav-white;
-    border-radius: 50%;
-    padding: 8px;
-    width: 32px;
-    height: 32px;
-    box-shadow: 0 0 4px rgb(0 0 0 / 20%);
-    position: relative;
-    svg {
-      position: relative;
-      left: 50%;
-      bottom: 4px;
-      transform: translate(-50%, 3%);
-    }
-
-    &:hover {
-      cursor: pointer;
-      transition: $nav-transition;
-      background-image: linear-gradient(#6d82c7, #3551b7);
-      svg {
-        path {
-          fill: $nav-white;
-        }
-      }
-    }
-  }
-
-  .nav-header-bottom-rightSide {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    .nav-header-bottom-rightSide-search {
-      background: #f9f9f9;
+    .nav-header-bottom-plus {
+      background: $nav-white;
       border-radius: 50%;
-      padding: 7px;
-      position: relative;
+      padding: 8px;
       width: 32px;
       height: 32px;
+      box-shadow: 0 0 4px rgb(0 0 0 / 20%);
+      position: relative;
       svg {
-        position: absolute;
-        top: 50%;
+        position: relative;
         left: 50%;
-        transform: translate(-50%, -50%);
+        bottom: 4px;
+        transform: translate(-50%, 3%);
       }
+
       &:hover {
+        cursor: pointer;
         transition: $nav-transition;
-        background-color: #f3f3f3;
+        background-image: linear-gradient($nav-blue-3, $nav-active);
         svg {
-          #Path_35719 {
-            fill: $nav-svg-hover !important;
+          path {
+            fill: $nav-white;
           }
         }
       }
     }
 
-    .nav-header-bottom-rightSide-notes {
-      margin: 0 6px;
-      background: #f9f9f9;
-      border-radius: 50%;
-      padding: 7px;
-      position: relative;
-      width: 32px;
-      height: 32px;
-      svg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
+    .nav-header-bottom-rightSide {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-      &:hover {
-        transition: $nav-transition;
-        background-color: #f3f3f3;
+      &-search {
+        background: $nav-hover-darker;
+        border-radius: 50%;
+        padding: 7px;
+        position: relative;
+        width: 32px;
+        height: 32px;
         svg {
-          #Path_35726 {
-            fill: $nav-svg-hover !important;
-          }
-
-          #Path_35727 {
-            fill: $nav-svg-hover !important;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+        &:hover {
+          transition: $nav-transition;
+          background-color: $nav-hover-lightcolor;
+          svg {
+            #Path_35719 {
+              fill: $nav-svg-hover !important;
+            }
           }
         }
       }
-    }
 
-    .nav-header-bottom-rightSide-bell {
-      background: #f9f9f9;
-      border-radius: 50%;
-      padding: 7px;
-      position: relative;
-      width: 32px;
-      height: 32px;
-      svg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+      &-notes {
+        margin: 0 6px;
+        background: $nav-hover-darker;
+        border-radius: 50%;
+        padding: 7px;
+        position: relative;
+        width: 32px;
+        height: 32px;
+
+        svg-icon {
+          svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
+
+        &:hover {
+          transition: $nav-transition;
+          background-color: $nav-hover-lightcolor;
+
+          svg-icon {
+            svg {
+              #Path_35726 {
+                fill: $nav-svg-hover !important;
+              }
+
+              #Path_35727 {
+                fill: $nav-svg-hover !important;
+              }
+            }
+          }
+        }
       }
-      &:hover {
-        transition: $nav-transition;
-        background-color: #f3f3f3;
+
+      &-bell {
+        background: $nav-hover-darker;
+        border-radius: 50%;
+        padding: 7px;
+        position: relative;
+        width: 32px;
+        height: 32px;
         svg {
-          #Path_35724 {
-            fill: $nav-svg-hover !important;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+        &:hover {
+          transition: $nav-transition;
+          background-color: $nav-hover-lightcolor;
+          svg {
+            #Path_35724 {
+              fill: $nav-svg-hover !important;
+            }
           }
         }
       }

@@ -12,6 +12,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 import { DriverTService } from '../../../state/driver.service';
 import { TestTService } from '../../../state/test.service';
 @Component({
@@ -175,7 +176,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     const newData: EditTestCommand = {
       id: this.editData.file_id,
       ...this.drugForm.value,
-      testingDate: new Date(testingDate).toISOString(),
+      testingDate: convertDateToBackend(testingDate),
       testReasonId: this.selectedReasonType.id,
       testType: this.selectedTestType.id,
     };
@@ -203,7 +204,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     const newData: CreateTestCommand = {
       driverId: this.editData.id,
       ...this.drugForm.value,
-      testingDate: new Date(testingDate).toISOString(),
+      testingDate: convertDateToBackend(testingDate),
       testReasonId: this.selectedReasonType.id,
       testType: this.selectedTestType.id,
     };
@@ -234,7 +235,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
           this.drugForm.patchValue({
             testType: res.testType.name,
             testReasonId: res.testReason.id,
-            testingDate: moment(new Date(res.testingDate)).format('YYYY-MM-DD'),
+            testingDate: convertDateFromBackend(res.testingDate),
             note: res.note,
           });
           this.selectedTestType = res.testType;

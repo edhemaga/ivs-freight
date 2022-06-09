@@ -105,6 +105,7 @@
             dropdownWidthClass: 'w-col-12'
           }"
           [options]="restrictions"
+          [preloadMultiselectItems]="selectedRestrictions"
           (selectedItems)="onSelectDropdown($event, 'restrictions')"
         ></app-ta-input-dropdown>
       </div>
@@ -123,6 +124,7 @@
             dropdownWidthClass: 'w-col-12'
           }"
           [options]="endorsements"
+          [preloadMultiselectItems]="selectedEndorsment"
           (selectedItems)="onSelectDropdown($event, 'endorsments')"
         ></app-ta-input-dropdown>
       </div>

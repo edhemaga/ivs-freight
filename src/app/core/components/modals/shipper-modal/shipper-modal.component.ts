@@ -21,6 +21,7 @@ import { ShipperModalService } from './shipper-modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { HttpResponseBase } from '@angular/common/http';
 
 @Component({
   selector: 'app-shipper-modal',
@@ -65,6 +66,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   public isPhoneExtExist: boolean = false;
 
+  public shipperDnuStatus: boolean = true;
+  public shipperBanStatus: boolean = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -81,7 +85,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 4,
+        id: 2,
       };
       this.editShipperById(this.editData.id);
       this.tabs.push({
@@ -98,7 +102,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       phoneExt: [null],
       email: [null, emailRegex],
       address: [null, Validators.required],
-      addressUnit: [null],
+      addressUnit: [null, Validators.maxLength(6)],
       receivingAppointment: [false],
       receivingOpenTwentyFourHours: [false],
       receivingFrom: [null],
@@ -114,32 +118,102 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
-    switch (data.action) {
-      case 'close': {
+    if (data.action === 'bfb' || data.action === 'dnu') {
+      // DNU
+      if (data.action === 'dnu' && this.editData) {
+        this.shipperModalService
+          .changeDnuStatus(this.editData.id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: HttpResponseBase) => {
+              if (res.status === 200 || res.status === 204) {
+                this.shipperDnuStatus = !this.shipperDnuStatus;
+                this.modalService.changeModalStatus({
+                  name: 'dnu',
+                  status: this.shipperDnuStatus,
+                });
+                this.notificationService.success(
+                  `Shipper ${
+                    this.shipperDnuStatus
+                      ? 'status changed to DNU'
+                      : 'removed from DNU'
+                  }.`,
+                  'Success:'
+                );
+              }
+            },
+            error: () => {
+              this.notificationService.error(
+                "Shipper status can't be changed.",
+                'Success:'
+              );
+            },
+          });
+      }
+      // BFB
+      if (data.action === 'bfb' && this.editData) {
+        this.shipperForm.get('ban').patchValue(data.bool);
+        this.shipperModalService
+          .changeBanStatus(this.editData.id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: HttpResponseBase) => {
+              if (res.status === 200 || res.status === 204) {
+                this.shipperBanStatus = !this.shipperBanStatus;
+                this.modalService.changeModalStatus({
+                  name: 'bfb',
+                  status: this.shipperBanStatus,
+                });
+                this.notificationService.success(
+                  `Shipper ${
+                    this.shipperBanStatus
+                      ? 'status changed to BAN'
+                      : 'removed from BAN'
+                  } .`,
+                  'Success:'
+                );
+              }
+            },
+            error: () => {
+              this.notificationService.error(
+                "Shipper status can't be changed.",
+                'Success:'
+              );
+            },
+          });
+      }
+    } else {
+      if (data.action === 'close') {
         this.shipperForm.reset();
-        break;
-      }
-      case 'save': {
-        if (this.shipperForm.invalid) {
-          this.inputService.markInvalid(this.shipperForm);
-          return;
+      } else {
+        // Save & Update
+        if (data.action === 'save') {
+          if (this.shipperForm.invalid) {
+            this.inputService.markInvalid(this.shipperForm);
+            return;
+          }
+          if (this.editData) {
+            this.updateShipper(this.editData.id);
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+            });
+          } else {
+            this.addShipper();
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+            });
+          }
         }
-        if (this.editData) {
-          this.updateShipper(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
-        } else {
-          this.addShipper();
-          this.modalService.setModalSpinner({ action: null, status: true });
+        // Delete
+        if (data.action === 'delete' && this.editData) {
+          this.deleteShipperById(this.editData.id);
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: true,
+          });
         }
-        break;
-      }
-      case 'delete': {
-        this.deleteShipperById(this.editData.id);
-        this.modalService.setModalSpinner({ action: 'delete', status: true });
-        break;
-      }
-      default: {
-        break;
       }
     }
   }
@@ -264,18 +338,11 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   }
 
   private updateShipper(id: number) {
-    const {
-      address,
-      addressUnit,
-      receivingOpenTwentyFourHours,
-      shippingHoursSameReceiving,
-      shippingOpenTwentyFourHours,
-      shipperContacts,
-      shippingFrom,
-      shippingTo,
-      shippingAppointment,
-      ...form
-    } = this.shipperForm.value;
+    const { address, addressUnit, shipperContacts, ...form } =
+      this.shipperForm.value;
+
+    let receivingShipping = this.receivingShippingObject();
+
     let newData: UpdateShipperCommand = {
       id: id,
       ...form,
@@ -283,16 +350,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         ...this.selectedAddress,
         addressUnit: this.shipperForm.get('addressUnit').value,
       },
-      shippingFrom: this.shipperForm.get('shippingHoursSameReceiving').value
-        ? this.shipperForm.get('receivingFrom').value
-        : shippingFrom,
-      shippingTo: this.shipperForm.get('shippingHoursSameReceiving').value
-        ? this.shipperForm.get('receivingTo').value
-        : shippingTo,
-      shippingAppointment: this.shipperForm.get('shippingHoursSameReceiving')
-        .value
-        ? this.shipperForm.get('receivingAppointment').value
-        : shippingAppointment,
+      receivingFrom: receivingShipping.receiving.receivingFrom,
+      receivingTo: receivingShipping.receiving.receivingTo,
+      shippingAppointment: receivingShipping.shipping.shippingAppointment,
+      shippingOpenTwentyFourHours:
+        receivingShipping.shipping.shippingOpenTwentyFourHours,
+      shippingFrom: receivingShipping.shipping.shippingFrom,
+      shippingTo: receivingShipping.shipping.shippingTo,
     };
 
     for (let index = 0; index < shipperContacts.length; index++) {

@@ -171,7 +171,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             },
             error: () => {
               this.notificationService.error(
-                "Driver status can't be changed.",
+                "Truck status can't be changed.",
                 'Error:'
               );
             },

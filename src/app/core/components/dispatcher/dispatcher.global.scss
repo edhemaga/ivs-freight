@@ -99,20 +99,6 @@
     }
   }
 
-  app-ta-select .ng-dropdown-panel.ng-select-bottom {
-    //animation: growDown 200ms forwards;
-    //transform-origin: top center;
-    margin-top: 1px !important;
-    top: calc(100% - 1px) !important;
-    border-radius: 0 0 3px 3px !important;
-
-    .ng-dropdown-panel-items {
-      height: 100%;
-      overflow: auto;
-      animation: heightChange ease-in-out 300ms;
-    }
-  }
-
   .ng-select-container {
     position: static !important;
     background-color: transparent;
