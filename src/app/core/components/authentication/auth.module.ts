@@ -8,7 +8,6 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ThankYouComponent } from './thank-you-page/thank-you.component';
 import { SelectCompanyComponent } from './select-company/select-company.component';
-import { RegisterComponent } from './register/register/register.component';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import * as $ from 'jquery';
@@ -17,6 +16,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { PleaseCheckEmailPageComponent } from './please-check-email-page/please-check-email-page.component';
 import { CreateNewPasswordPageComponent } from './create-new-password-page/create-new-password-page.component';
 import { PasswordChangedPageComponent } from './password-changed-page/password-changed-page.component';
+import { RegisterComponent } from './register/register/register.component';
 
 @NgModule({
     declarations: [
@@ -25,11 +25,11 @@ import { PasswordChangedPageComponent } from './password-changed-page/password-c
         ChangePasswordComponent,
         ThankYouComponent,
         SelectCompanyComponent,
-        RegisterComponent,
         AccountActivatedPageComponent,
         PleaseCheckEmailPageComponent,
         CreateNewPasswordPageComponent,
         PasswordChangedPageComponent,
+        RegisterComponent
     ],
     imports: [
         CommonModule,

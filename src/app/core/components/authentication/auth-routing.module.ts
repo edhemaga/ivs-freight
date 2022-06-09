@@ -13,8 +13,18 @@ import { AccountActivatedPageComponent } from './account-activated-page/account-
 const routes: Routes = [
     {
         path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
+    },
+    {
+        path: 'login',
         component: LoginComponent,
         data: { title: 'Login' },
+    },
+    {
+        path: 'register',
+        component: RegisterComponent,
+        data: { title: 'Register' },
     },
     {
         path: 'forgot-password',
@@ -37,12 +47,7 @@ const routes: Routes = [
         data: { title: 'Password Changed' },
     },
     {
-        path: 'register',
-        component: RegisterComponent,
-        data: { title: 'Register' },
-    },
-    {
-        path: 'register/thank-you',
+        path: 'thank-you',
         component: ThankYouComponent,
         data: { title: 'Thank You' },
     },

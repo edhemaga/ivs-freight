@@ -1,225 +1,222 @@
-<div
-    class="sign-up-container container-fluid d-flex flex-column justify-content-between"
->
-    <div class="d-flex flex-column justify-content-center align-items-center">
+<div class="container-fluid">
+  <div class="row">
+    <div class="sign-up-container container-fluid d-flex flex-column justify-content-between">
+      <div class="d-flex flex-column align-items-center">
         <!-- SIGN UP -->
 
         <div class="sign-up-text d-flex flex-column align-items-center">
-            <h1 class="text-center">
-                Sign up for a full-featured <span>free<br />14-day trial</span>
-            </h1>
+          <h1 class="text-center">
+            Sign up for a full-featured <span>free<br />14-day trial</span>
+          </h1>
 
-            <h2 class="text-center">
-                We are so grateful for the pleasure of serving you<br />
-                and hope we met your expectations.
-            </h2>
+          <h2 class="text-center">
+            We are so grateful for the pleasure of serving you<br />
+            and hope we met your expectations.
+          </h2>
 
-            <h3 class="text-center">Please fill form to sign up</h3>
+          <h3 class="text-center">Please fill form to sign up</h3>
         </div>
 
         <!-- FORM SECTION -->
 
         <form
-            (keydown)="keyDownFunction($event)"
-            [formGroup]="registerForm"
-            class="d-flex flex-column"
-            id="login"
-            tabindex="500"
+          (keydown)="keyDownFunction($event)"
+          [formGroup]="registerForm"
+          class="d-flex flex-column"
         >
-            <!-- FIRST NAME, LAST NAME -->
-
-            <div class="d-flex">
-                <div class="form-label-group first-name-group">
-                    <app-ta-input
-                        formControlName="firstName"
-                        [inputConfig]="{
-                            name: 'First Name',
-                            type: 'text',
-                            label: 'First Name',
-                            isRequired: true,
-                            textTransform: 'capitalize',
-                            autoFocus: true,
-                            customClass: 'input-big'
-                        }"
-                    ></app-ta-input>
-                </div>
-                <div class="form-label-group last-name-group">
-                    <app-ta-input
-                        formControlName="lastName"
-                        [inputConfig]="{
-                            name: 'Last Name',
-                            type: 'text',
-                            label: 'Last Name',
-                            isRequired: true,
-                            textTransform: 'capitalize',
-                            customClass: 'input-big'
-                        }"
-                    ></app-ta-input>
-                </div>
-            </div>
-
-            <!-- COMPANY NAME, EIN -->
-
-            <div class="d-flex">
-                <div class="form-label-group company-name-group">
-                    <app-ta-input
-                        formControlName="companyName"
-                        [inputConfig]="{
-                            name: 'Company Name',
-                            type: 'text',
-                            label: 'Company Name',
-                            isRequired: true,
-                            textTransform: 'capitalize',
-                            customClass: 'input-big'
-                        }"
-                    ></app-ta-input>
-                </div>
-                <div class="form-label-group ein-group">
-                    <app-ta-input
-                        formControlName="taxNumber"
-                        [inputConfig]="{
-                            name: 'EIN',
-                            type: 'text',
-                            label: 'EIN #',
-                            mask: '00-0000000',
-                            customClass: 'input-big'
-                        }"
-                    ></app-ta-input>
-                </div>
-            </div>
-
-            <!-- ADDRESS -->
-
-            <div class="d-flex">
-                <div class="form-label-group address-group">
-                    <app-ta-input-address
-                        formControlName="address"
-                        [inputConfig]="{
-                            name: 'Address',
-                            type: 'text',
-                            label: 'Address, City, State Zip',
-                            isRequired: true,
-                            placeholderIcon: 'address',
-                            textTransform: 'capitalize',
-                            customClass: 'input-big'
-                        }"
-                        (selectedAddress)="handleAddressChange($event)"
-                    ></app-ta-input-address>
-                </div>
-                <div class="form-label-group address-unit-group">
-                    <app-ta-input
-                        formControlName="addressUnit"
-                        [inputConfig]="{
-                            name: 'Address Unit',
-                            type: 'text',
-                            label: 'Unit #',
-                            maxLength: 6,
-                            customClass: 'input-big'
-                        }"
-                    ></app-ta-input>
-                </div>
-            </div>
-
-            <!-- PHONE, EMAIL -->
-
-            <div class="d-flex">
-                <div class="form-label-group phone-group">
-                    <app-ta-input
-                        formControlName="phone"
-                        [inputConfig]="{
-                            name: 'Phone',
-                            type: 'text',
-                            label: 'Phone',
-                            isRequired: true,
-                            placeholderIcon: 'phone',
-                            mask: '(000) 000-0000',
-                            customClass: 'input-big'
-                        }"
-                    ></app-ta-input>
-                </div>
-                <div class="form-label-group email-group">
-                    <app-ta-input
-                        formControlName="email"
-                        [inputConfig]="{
-                            name: 'Email',
-                            type: 'text',
-                            label: 'Email',
-                            isRequired: true,
-                            placeholderIcon: 'email',
-                            autocomplete: 'off',
-                            customClass: 'input-big'
-                        }"
-                    ></app-ta-input>
-                </div>
-            </div>
-
-            <!-- PASSWORD, CONFIRM PASSWORD -->
-
-            <div class="d-flex">
-                <div class="form-label-group password-group">
-                    <app-ta-input
-                        formControlName="password"
-                        [inputConfig]="{
-                            name: 'Password',
-                            type: 'password',
-                            label: 'Password',
-                            placeholderIcon: 'password',
-                            isRequired: true,
-                            autocomplete: 'off',
-                            customClass: 'input-big'
-                        }"
-                    ></app-ta-input>
-                </div>
-                <div class="form-label-group password-group">
-                    <app-ta-input
-                        formControlName="confirmPassword"
-                        [inputConfig]="{
-                            name: 'Password',
-                            type: 'password',
-                            label: 'Confirm Password',
-                            placeholderIcon: 'password',
-                            isRequired: true,
-                            autocomplete: 'off',
-                            customClass: 'input-big'
-                        }"
-                    ></app-ta-input>
-                </div>
-            </div>
-
-            <!-- REGISTER BUTTON -->
-
-            <button
-                class="d-flex justify-content-center align-items-center submit-btn"
-                (click)="registerUser()"
-                type="submit"
-                [ngClass]="{
-                    disabled: registerForm.invalid
+          <!-- FIRST NAME, LAST NAME -->
+          <div class="d-flex">
+            <div class="form-label-group first-name-group">
+              <app-ta-input
+                formControlName="firstName"
+                [inputConfig]="{
+                  name: 'First Name',
+                  type: 'text',
+                  label: 'First Name',
+                  isRequired: true,
+                  textTransform: 'capitalize',
+                  autoFocus: true,
+                  customClass: 'input-big'
                 }"
-            >
-                Sign Up
-            </button>
+              ></app-ta-input>
+            </div>
+            <div class="form-label-group last-name-group">
+              <app-ta-input
+                formControlName="lastName"
+                [inputConfig]="{
+                  name: 'Last Name',
+                  type: 'text',
+                  label: 'Last Name',
+                  isRequired: true,
+                  textTransform: 'capitalize',
+                  customClass: 'input-big'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
 
-            <!-- INFO -->
+          <!-- COMPANY NAME, EIN -->
 
-            <p class="m-0 text-center">
-                By continuing, you are agreeing to our<span>
-                    Terms of Service</span
-                >
-                <br />
-                and <span>Privacy Policy</span>
-            </p>
+          <div class="d-flex">
+            <div class="form-label-group company-name-group">
+              <app-ta-input
+                formControlName="companyName"
+                [inputConfig]="{
+                  name: 'Company Name',
+                  type: 'text',
+                  label: 'Company Name',
+                  isRequired: true,
+                  textTransform: 'capitalize',
+                  customClass: 'input-big'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="form-label-group ein-group">
+              <app-ta-input
+                formControlName="taxNumber"
+                [inputConfig]="{
+                  name: 'EIN',
+                  type: 'text',
+                  label: 'EIN #',
+                  mask: '00-0000000',
+                  customClass: 'input-big'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
 
-            <p class="m-0 text-center">
-                Already have an account?<span routerLink="/login"> Login</span>
-            </p>
+          <!-- ADDRESS -->
+
+          <div class="d-flex">
+            <div class="form-label-group address-group">
+              <app-ta-input-address
+                formControlName="address"
+                [inputConfig]="{
+                  name: 'Address',
+                  type: 'text',
+                  label: 'Address, City, State Zip',
+                  isRequired: true,
+                  placeholderIcon: 'address',
+                  textTransform: 'capitalize',
+                  customClass: 'input-big'
+                }"
+                (selectedAddress)="handleAddressChange($event)"
+              ></app-ta-input-address>
+            </div>
+            <div class="form-label-group address-unit-group">
+              <app-ta-input
+                formControlName="addressUnit"
+                [inputConfig]="{
+                  name: 'Address Unit',
+                  type: 'text',
+                  label: 'Unit #',
+                  maxLength: 6,
+                  customClass: 'input-big'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+
+          <!-- PHONE, EMAIL -->
+
+          <div class="d-flex">
+            <div class="form-label-group phone-group">
+              <app-ta-input
+                formControlName="phone"
+                [inputConfig]="{
+                  name: 'Phone',
+                  type: 'text',
+                  label: 'Phone',
+                  isRequired: true,
+                  placeholderIcon: 'phone',
+                  mask: '(000) 000-0000',
+                  customClass: 'input-big'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="form-label-group email-group">
+              <app-ta-input
+                formControlName="email"
+                [inputConfig]="{
+                  name: 'Email',
+                  type: 'text',
+                  label: 'Email',
+                  isRequired: true,
+                  placeholderIcon: 'email',
+                  autocomplete: 'off',
+                  customClass: 'input-big'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+
+          <!-- PASSWORD, CONFIRM PASSWORD -->
+
+          <div class="d-flex">
+            <div class="form-label-group password-group">
+              <app-ta-input
+                formControlName="password"
+                [inputConfig]="{
+                  name: 'Password',
+                  type: 'password',
+                  label: 'Password',
+                  placeholderIcon: 'password',
+                  isRequired: true,
+                  autocomplete: 'off',
+                  customClass: 'input-big'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="form-label-group password-group">
+              <app-ta-input
+                formControlName="confirmPassword"
+                [inputConfig]="{
+                  name: 'Password',
+                  type: 'password',
+                  label: 'Confirm Password',
+                  placeholderIcon: 'password',
+                  isRequired: true,
+                  autocomplete: 'off',
+                  customClass: 'input-big'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+
+          <!-- REGISTER BUTTON -->
+
+          <button
+            class="d-flex justify-content-center align-items-center submit-btn"
+            (click)="registerUser()"
+            type="submit"
+            [ngClass]="{
+              disabled: registerForm.invalid
+            }"
+          >
+            Sign Up
+          </button>
+
+          <!-- INFO -->
+
+          <p class="m-0 text-center">
+            By continuing, you are agreeing to our<span> Terms of Service</span>
+            <br />
+            and <span>Privacy Policy</span>
+          </p>
+
+          <p class="m-0 text-center">
+            Already have an account?<span routerLink="/login"> Login</span>
+          </p>
         </form>
-    </div>
+      </div>
 
-    <!-- COPYRIGHT -->
+      <!-- COPYRIGHT -->
 
-    <div class="row">
+      <div class="row">
         <div class="d-flex justify-content-center align-items-center copyright">
-            <p class="m-0">Copyright © TruckAssist {{ copyrightYear }}.</p>
+          <p class="m-0">Copyright © TruckAssist {{ copyrightYear }}.</p>
         </div>
+      </div>
     </div>
+  </div>
 </div>

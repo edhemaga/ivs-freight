@@ -1,93 +1,78 @@
 <div class="container-fluid">
-    <div class="row">
-        <div
-            class="login-container container-fluid d-flex justify-content-center"
-        >
-            <div class="d-flex flex-column align-items-center">
-                <img
-                    class="login-logo"
-                    src="assets/png/ic_truckassist-logo.png"
-                    alt="Truck Assist"
-                />
+  <div class="row">
+    <div class="login-container container-fluid d-flex justify-content-center">
+      <div class="d-flex flex-column align-items-center">
+        <img
+          class="login-logo"
+          src="assets/png/ic_truckassist-logo.png"
+          alt="Truck Assist"
+        />
 
-                <div class="login-text d-flex flex-column align-items-center">
-                    <p>
-                        <span class="color_welcome_to">Welcome to</span> Truck
-                        Assist
-                    </p>
-                    <p>To Sign In please enter your email and password</p>
-                </div>
-                <form
-                    [formGroup]="loginForm"
-                    class="d-flex flex-column login-form"
-                >
-                    <div class="form-container">
-                        <div class="row">
-                            <div class="col-12">
-                                <app-ta-input
-                                    formControlName="email"
-                                    [inputConfig]="{
-                                        name: 'Email',
-                                        type: 'email',
-                                        label: 'Email',
-                                        placeholderIcon: 'email',
-                                        isRequired: true,
-                                        autocomplete: 'off',
-                                        customClass: 'input-big'
-                                    }"
-                                ></app-ta-input>
-                            </div>
-                        </div>
-                        <div class="row last-row">
-                            <div class="col-12">
-                                <app-ta-input
-                                    formControlName="password"
-                                    [inputConfig]="{
-                                        name: 'Password',
-                                        type: 'password',
-                                        label: 'Password',
-                                        placeholderIcon: 'password',
-                                        isRequired: true,
-                                        autocomplete: 'off',
-                                        customClass: 'input-big'
-                                    }"
-                                ></app-ta-input>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p
-                        class="forgot-password"
-                        routerLink="/login/forgot-password"
-                    >
-                        FORGOT PASSWORD?
-                    </p>
-                    <button
-                        (click)="userLogin($event)"
-                        class="login-btn"
-                        [ngClass]="{ 'invalid-btn': !loginForm.valid }"
-                        type="submit"
-                    >
-                        SIGN IN
-                    </button>
-                    <p class="login-sign-up">
-                        Don't have an account?
-                        <a
-                            class="sign-up-link"
-                            href="https://truckassist.io/startfreetrial"
-                            >SIGN UP</a
-                        >
-                    </p>
-                </form>
+        <div class="login-text d-flex flex-column align-items-center">
+          <p><span class="color_welcome_to">Welcome to</span> Truck Assist</p>
+          <p>To Sign In please enter your email and password</p>
+        </div>
+        <form [formGroup]="loginForm" class="d-flex flex-column login-form">
+          <div class="form-container">
+            <div class="row">
+              <div class="col-12">
+                <app-ta-input
+                  formControlName="email"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'email',
+                    label: 'Email',
+                    placeholderIcon: 'email',
+                    isRequired: true,
+                    autocomplete: 'off',
+                    customClass: 'input-big'
+                  }"
+                ></app-ta-input>
+              </div>
             </div>
-        </div>
+            <div class="row last-row">
+              <div class="col-12">
+                <app-ta-input
+                  formControlName="password"
+                  [inputConfig]="{
+                    name: 'Password',
+                    type: 'password',
+                    label: 'Password',
+                    placeholderIcon: 'password',
+                    isRequired: true,
+                    autocomplete: 'off',
+                    customClass: 'input-big'
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+          </div>
+
+          <p class="forgot-password" [routerLink]="['/forgot-password']">
+            FORGOT PASSWORD?
+          </p>
+          <button
+            (click)="userLogin($event)"
+            class="login-btn"
+            [ngClass]="{ 'invalid-btn': !loginForm.valid }"
+            type="submit"
+          >
+            SIGN IN
+          </button>
+          <p class="login-sign-up">
+            Don't have an account?
+            <a class="sign-up-link" [routerLink]="['/register']">SIGN UP</a>
+          </p>
+          <!-- href="https://truckassist.io/startfreetrial" -->
+        </form>
+      </div>
     </div>
-    <div class="row">
-        <div class="copyright">
-            <p>
-                © Copyright {{ copyrightYear }} TruckAssist, Inc. All rights
-                reserved.
-            </p>
-        </div>
+  </div>
+  <div class="row">
+    <div class="copyright">
+      <p>
+        © Copyright {{ copyrightYear }} TruckAssist, Inc. All rights reserved.
+      </p>
     </div>
+  </div>
 </div>

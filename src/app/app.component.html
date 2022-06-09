@@ -1,4 +1,4 @@
-<app-navigation *ngIf="currentPage !== 'login'"> </app-navigation>
+<app-navigation *ngIf="!['login','register','thank you'].includes(currentPage)"> </app-navigation>
 <div style="display: none">
   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
@@ -25,7 +25,7 @@
 
 <div
   id="top"
-  class="{{ currentPage === 'login' ? 'login-page' : 'content-page' }}"
+  class="{{ ['login','register','thank you'].includes(currentPage) ? 'login-page' : 'content-page' }}"
 >
   <router-outlet></router-outlet>
 
