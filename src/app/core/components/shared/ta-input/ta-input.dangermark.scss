@@ -1,6 +1,6 @@
 .input-invalid-danger-mark {
   position: absolute;
-  right: 6px;
+  right: 5px;
   top: 0px;
   line-height: 24px;
   svg {
@@ -18,5 +18,12 @@
   &:hover ~ .input-control {
     background-color: #eeeeee;
     color: #3c3c3c;
+  }
+
+  // Custom class
+  &.input-big {
+    position: absolute;
+    right: 6px;
+    top: 4px;
   }
 }

@@ -1,4 +1,5 @@
 import { Options } from '@angular-slider/ngx-slider';
+import { HttpResponseBase } from '@angular/common/http';
 import {
   Component,
   Input,
@@ -30,6 +31,7 @@ import { TruckModalService } from './truck-modal.service';
   styleUrls: ['./truck-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService] 
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -76,6 +78,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     params: { height: '0px' },
   };
 
+  public truckStatus: boolean = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -93,7 +97,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 5,
+        id: 1,
       };
       this.editTruckById(this.editData.id);
     }
@@ -151,12 +155,18 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           .changeTruckStatus(this.editData.id)
           .pipe(untilDestroyed(this))
           .subscribe({
-            next: (res: any) => {
-              if (res.status === '200' || res.status === '204') {
+            next: (res: HttpResponseBase) => {
+              if (res.status === 200 || res.status === 204) {
+                this.truckStatus = !this.truckStatus;
+
                 this.modalService.changeModalStatus({
                   name: 'deactivate',
-                  status: null,
+                  status: this.truckStatus,
                 });
+                this.notificationService.success(
+                  `Truck status changed to ${this.truckStatus ? 'deactivate' : 'activate'}.`,
+                  'Success:'
+                );
               }
             },
             error: () => {
@@ -406,22 +416,23 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             mileage: res.mileage,
             ipasEzpass: res.ipasEzpass,
           });
-          this.selectedTruckType = res.truckType.name ? res.truckType : null;
-          this.selectedTruckMake = res.truckMake.name ? res.truckMake : null;
-          this.selectedColor = res.color.name ? res.color : null;
-          this.selectedOwner = res.owner.name ? res.owner : null;
-          this.selectedTruckGrossWeight = res.truckGrossWeight.name
+          this.selectedTruckType = res.truckType ? res.truckType : null;
+          this.selectedTruckMake = res.truckMake ? res.truckMake : null;
+          this.selectedColor = res.color ? res.color : null;
+          this.selectedOwner = res.owner ? res.owner : null;
+          this.selectedTruckGrossWeight = res.truckGrossWeight
             ? res.truckGrossWeight
             : null;
-          this.selectedEngineType = res.truckEngineType.name
+          this.selectedEngineType = res.truckEngineType
             ? res.truckEngineType
             : null;
-          this.selectedTireSize = res.tireSize.name ? res.tireSize : null;
+          this.selectedTireSize = res.tireSize ? res.tireSize : null;
 
           this.modalService.changeModalStatus({
             name: 'deactivate',
-            status: res.status === 0 ? false : true,
+            status: res.status === 1 ? false : true,
           });
+          this.truckStatus = res.status === 1 ? false : true;
         },
         error: () => {
           this.notificationService.error("Cant't get truck.", 'Error:');

@@ -35,6 +35,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public endorsements: any[] = [];
   public restrictions: any[] = [];
 
+  public selectedRestrictions: any[] = [];
+  public selectedEndorsment: any[] = [];
   public selectedClassType: any = null;
   public selectedCountryType: any = null;
   public selectedStateType: any = null;
@@ -82,7 +84,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        // If Form not valid
         if (this.cdlForm.invalid) {
           this.inputService.markInvalid(this.cdlForm);
           return;
@@ -120,6 +121,14 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       }
       case 'state': {
         this.selectedStateType = event;
+        break;
+      }
+      case 'restrictions': {
+        this.selectedRestrictions = event ? event.map((item) => item.id) : [];
+        break;
+      }
+      case 'endorsments': {
+        this.selectedEndorsment = event ? event.map((item) => item.id) : [];
         break;
       }
       default: {
@@ -263,8 +272,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       classType: this.selectedClassType.name,
       countryType: this.selectedCountryType.name,
       stateId: this.selectedStateType.id,
-      restrictions: null,
-      endorsements: null,
+      restrictions: this.selectedRestrictions,
+      endorsements: this.selectedEndorsment,
     };
 
     this.cdlService

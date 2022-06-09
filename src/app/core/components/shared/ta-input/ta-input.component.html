@@ -46,7 +46,8 @@
         getSuperControl.value &&
         inputConfig.isDropdown &&
         !inputConfig.isDisabled &&
-        !isDropdownAddModeActive,
+        !isDropdownAddModeActive &&
+        !inputConfig.multiSelectDropdownActive,
       'password-eye': 
         inputConfig.type === 'password' && 
         isVisiblePasswordEye &&
@@ -66,17 +67,10 @@
     *ngIf="
     !inputConfig.isDropdown &&
     (touchedInput && 
-     inputConfig.isRequired && 
-     getSuperControl.invalid && 
-     !inputConfig.placeholderIcon && 
-     !focusInput) || 
-    (touchedInput && 
-     !inputConfig.isRequired && 
      getSuperControl.value && 
      getSuperControl.invalid && 
-     !inputConfig.placeholderIcon && 
      !focusInput)"
-    class="input-invalid-danger-mark"
+    class="input-invalid-danger-mark  {{ inputConfig.customClass }}"
     src="assets/svg/common/ic_danger.svg"
   >
   </svg-icon>
@@ -122,7 +116,7 @@
   <div
     *ngIf="isDropdownAddModeActive && inputConfig.isDropdown && focusInput"
     class="input-dropdown-confirm"
-    (click)="onAddItemInDropdown()"
+    (click)="onAddItemInDropdown($event)"
     ngbTooltip
     mainTooltip="Confirm"
     tooltipBackground="#536BC2"
@@ -140,15 +134,21 @@
     *ngIf="
       inputConfig.isDropdown &&
       !inputConfig.isDisabled &&
-      !isDropdownAddModeActive
+      !isDropdownAddModeActive &&
+      !inputConfig.multiSelectDropdownActive
     "
     [ngClass]="{
-      'active': !inputConfig.isDisabled && focusInput,
-      'valid': getSuperControl.value && getSuperControl.valid && focusInput,
+      'active': 
+      (!inputConfig.isDisabled && focusInput) || 
+      (inputConfig.multiSelectDropdownActive &&
+       focusInput),
+      'valid':
+      (getSuperControl.value && getSuperControl.valid && focusInput) ||
+      (inputConfig.multiSelectDropdownActive &&
+       focusInput),
       'valid-focus-out-required':
         getSuperControl.value && getSuperControl.valid && !focusInput,
       'focus-out-hover': !focusInput,
-
       'invalid-focus-out-required':
         inputConfig.isRequired &&
         !getSuperControl.value &&
@@ -220,6 +220,7 @@
     [mask]="inputConfig.mask"
     [min]="inputConfig.min ? inputConfig.min : 0"
     [max]="inputConfig.max"
+    [step]="inputConfig.step ? inputConfig.step : null"
     thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
     inputformat="dd-mm-yy"
     class="input-control 
@@ -238,11 +239,13 @@
         getSuperControl.value && getSuperControl.invalid && focusInput,
       'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye,
       'has-input-icon': inputConfig.placeholderIcon,
-    
       'dropdown-placeholder-active':
         inputConfig.isDropdown &&
         inputConfig.placeholder &&
         dropdownToggler &&
+        focusInput,
+      'multiSelect-dropdown-active': 
+        inputConfig.multiSelectDropdownActive &&
         focusInput
     }"
     [(ngModel)]="input.value"
@@ -315,6 +318,7 @@
 
   <!-- Input Label -->
   <label
+    *ngIf="!inputConfig.multiSelectDropdownActive"
     [for]="inputConfig.name"
     class="input-label {{ inputConfig.customClass }}"
     [ngClass]="{

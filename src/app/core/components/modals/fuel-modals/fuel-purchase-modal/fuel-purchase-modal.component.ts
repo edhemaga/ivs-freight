@@ -37,6 +37,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   public subtotal: { id: number; value: number }[] = [];
   public quantity: any[] = [];
 
+  public hoverRowTable: boolean[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -89,12 +91,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         ...this.subtotal,
         { id: this.fuelItemsCounter, value: 0 },
       ];
+      this.hoverRowTable.push(false);
     }
   }
 
   public removeFuelItems(id: number) {
     this.fuelItems.removeAt(id);
     this.selectedFuelItemsFormArray.splice(id, 1);
+    this.hoverRowTable.splice(id, 1);
   }
 
   public onChange(formControlName: string, index: number) {

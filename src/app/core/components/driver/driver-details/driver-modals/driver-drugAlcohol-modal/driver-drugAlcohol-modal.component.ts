@@ -112,18 +112,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: GetTestModalResponse) => {
           this.testTypes = res.testTypes;
-          this.alcoholTests = res.alcoholTestReasons.map((item) => {
-            return {
-              id: item.id,
-              name: item.reason,
-            };
-          });
-          this.drugTests = res.drugTestReasons.map((item) => {
-            return {
-              id: item.id,
-              name: item.reason,
-            };
-          });
+          this.alcoholTests = res.alcoholTestReasons
+          this.drugTests = res.drugTestReasons
         },
         error: () => {
           this.notificationService.error(
@@ -243,7 +233,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
         next: (res: TestResponse) => {
           this.drugForm.patchValue({
             testType: res.testType.name,
-            testReasonId: res.testReason.reason,
+            testReasonId: res.testReason.id,
             testingDate: moment(new Date(res.testingDate)).format('YYYY-MM-DD'),
             note: res.note,
           });

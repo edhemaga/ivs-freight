@@ -1,6 +1,5 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Task' : 'Edit Task'"
-
   [editName]="editData?.id"
   [isModalValid]="taskForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
@@ -62,10 +61,40 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12">Department</div>
+      <div class="col-12">
+        <app-ta-input-dropdown
+          formControlName="departmentIds"
+          [template]="'multiselect'"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            isDropdown: true,
+            label: 'Restrictions',
+            multiselectDropdown: true,
+            dropdownWidthClass: 'w-col-12'
+          }"
+          [options]="resDepartments"
+          (selectedItems)="onSelectDropDown($event, 'res-department')"
+        ></app-ta-input-dropdown>
+      </div>
     </div>
     <div class="row last-row">
-      <div class="col-12">Assing Task</div>
+      <div class="col-12">
+        <app-ta-input-dropdown
+          formControlName="companyUserIds"
+          [template]="'multiselect'"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            isDropdown: true,
+            label: 'Assign task',
+            multiselectDropdown: true,
+            dropdownWidthClass: 'w-col-12'
+          }"
+          [options]="resDepartments"
+          (selectedItems)="onSelectDropDown($event, 'assign-task')"
+        ></app-ta-input-dropdown>
+      </div>
     </div>
     <app-ta-custom-card
       [hasCounter]="comments.length ? comments.length : '0'"

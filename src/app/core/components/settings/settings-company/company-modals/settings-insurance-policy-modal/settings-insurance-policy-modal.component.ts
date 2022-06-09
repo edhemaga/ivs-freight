@@ -103,9 +103,6 @@ export class SettingsInsurancePolicyModalComponent
     valid: boolean;
   }): void {
     this.selectedAddress = event.address;
-    if (!event.valid) {
-      this.insurancePolicyForm.setErrors({ invalid: event.valid });
-    }
   }
 
   public openCloseCheckboxCard(event: any, action) {

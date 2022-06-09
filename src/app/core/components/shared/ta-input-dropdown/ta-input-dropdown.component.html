@@ -1,13 +1,110 @@
-<!-- Dropdown search, select item -->
-<app-ta-input
-  [formControl]="getSuperControl"
-  [inputConfig]="inputConfig"
-  #t2="ngbPopover"
-  [ngbPopover]="taInputDropdownPopover"
-  [placement]="['bottom-left']"
-  popoverClass="ta-input-dropdown"
-  [container]="'body'"
-></app-ta-input>
+<div
+  [ngClass]="{
+    'multiselect-dropdown':
+      inputConfig.multiselectDropdown && multiselectItems.length > 0,
+    focus: isMultiSelectInputFocus
+  }"
+>
+  <p *ngIf="multiselectItems.length > 0" class="multiselect-label">
+    {{ multiSelectLabel }}
+  </p>
+  <!-- Multiselect arrow -->
+  <svg-icon
+    *ngIf="inputConfig.multiSelectDropdownActive"
+    class="multiselect-arrow"
+    [ngClass]="{
+      valid: !isMultiSelectInputFocus && multiselectItems.length > 0
+    }"
+    src="assets/svg/common/ic_arrow_down_updated.svg"
+    (click)="toggleMultiselectDropdown($event)"
+  ></svg-icon>
+  <!-- Multiselect clear all -->
+  <div
+    *ngIf="multiselectItems.length > 0"
+    class="input-clear input-clear-multiselect"
+    [ngClass]="{
+      'valid-focus-in': !getSuperControl.value && isMultiSelectInputFocus
+    }"
+    ngbTooltip
+    mainTooltip="Clear All"
+    tooltipBackground="#6c6c6c"
+    position="bottom"
+    (click)="delteAllMultiSelectItems($event)"
+  >
+    <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
+  </div>
+  <!-- Multiselect items -->
+  <div
+    *ngIf="
+      inputConfig.multiselectDropdown &&
+      multiselectItems.length > 0 &&
+      template === 'multiselect'
+    "
+    class="multiselect-items"
+  >
+    <span
+      class="multiselect-item"
+      *ngFor="
+        let multiSelect of multiselectItems;
+        trackBy: identity;
+        let ind = index
+      "
+    >
+      {{ multiSelect.name }}
+      <div
+        ngbTooltip
+        mainTooltip="Clear"
+        tooltipBackground="#6c6c6c"
+        position="top"
+        class="multiselect-item-clear"
+        (click)="removeMultiSelectItem(ind)"
+      >
+        <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
+      </div>
+    </span>
+  </div>
+  <!-- Multiselect items Restrictions & Endorsments -->
+  <div
+    *ngIf="
+      inputConfig.multiselectDropdown &&
+      multiselectItems.length > 0 &&
+      template === 'multiselect-res-endors'
+    "
+    class="multiselect-items"
+  >
+    <span
+      class="multiselect-item"
+      *ngFor="
+        let multiSelect of multiselectItems;
+        trackBy: identity;
+        let ind = index
+      "
+    >
+      {{ multiSelect.code | formatRestEndor: multiSelect.description }}
+      <div
+        ngbTooltip
+        mainTooltip="Clear"
+        tooltipBackground="#6c6c6c"
+        position="top"
+        class="multiselect-item-clear"
+        (click)="removeMultiSelectItem(ind)"
+      >
+        <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
+      </div>
+    </span>
+  </div>
+  <!-- Dropdown search -->
+  <app-ta-input
+    [formControl]="getSuperControl"
+    [inputConfig]="inputConfig"
+    #t2="ngbPopover"
+    [ngbPopover]="taInputDropdownPopover"
+    [placement]="['bottom-left']"
+    popoverClass="ta-input-dropdown"
+    [container]="'body'"
+  ></app-ta-input>
+</div>
+
 <ng-template #taInputDropdownPopover>
   <!--------------------------- Dropdown options --------------------------->
   <div
@@ -25,11 +122,11 @@
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option"
           [ngClass]="{
-            'disabled': option?.disabled,
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            'active': option.id === activeItem?.id
+            active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
         >
@@ -150,6 +247,43 @@
             ></div>
           </div>
         </div>
+      </div>
+      <!--------------------------- Multiselect Template --------------------------->
+      <div *ngSwitchCase="'multiselect-res-endors'">
+        <div
+          *ngFor="let option of options; trackBy: identity"
+          class="dropdown-option"
+          [ngClass]="{
+            disabled: option?.disabled,
+            'no-result':
+              options.length === 1 && options[0].name === 'No Results',
+            active: option?.active
+          }"
+          (click)="onMultiselectSelect(option, 'multiselect')"
+          [innerHtml]="
+            option.code
+              | formatRestEndor: option.description
+              | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+          "
+        ></div>
+      </div>
+      <!--------------------------- Multiselect Template --------------------------->
+      <div *ngSwitchCase="'multiselect'">
+        <div
+          *ngFor="let option of options; trackBy: identity"
+          class="dropdown-option"
+          [ngClass]="{
+            disabled: option?.disabled,
+            'no-result':
+              options.length === 1 && options[0].name === 'No Results',
+            active: option?.active
+          }"
+          (click)="onMultiselectSelect(option, 'multiselect')"
+          [innerHtml]="
+            option.name
+              | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+          "
+        ></div>
       </div>
       <!--------------------------- Default Template - Render Only Text --------------------------->
       <div *ngSwitchDefault>

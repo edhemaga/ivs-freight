@@ -138,6 +138,26 @@
       color: #3c3c3c;
     }
   }
+
+  &.dropdown {
+    svg {
+      transform: rotate(180deg);
+      transition: all 0.2s ease-in-out;
+      path {
+        fill: #dadada;
+        transition: all 0.2s ease-in-out;
+      }
+    }
+
+    &:hover {
+      svg {
+        path {
+          fill: #f7f7f7;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+    }
+  }
 }
 
 //-------------------- Input Dropdwon confirmation ----------

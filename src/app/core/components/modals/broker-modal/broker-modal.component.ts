@@ -25,6 +25,7 @@ import {
   phoneRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { HttpResponseBase } from '@angular/common/http';
 
 @Component({
   selector: 'app-broker-modal',
@@ -102,6 +103,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   public isContactCardsScrolling: boolean = false;
 
+  public brokerBanStatus: boolean = true;
+  public brokerDnuStatus: boolean = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -139,13 +143,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       email: [null, [emailRegex]],
       phone: [null, [Validators.required, phoneRegex]],
       // Physical Address
-      physicalAddress: [null],
+      physicalAddress: [null, Validators.required],
       physicalAddressUnit: [null],
       physicalPoBox: [null],
       physicalPoBoxCity: [null],
       // Billing Address
       isCheckedBillingAddress: [false],
-      billingAddress: [null],
+      billingAddress: [null, Validators.required],
       billingAddressUnit: [null],
       billingPoBox: [null],
       billingPoBoxCity: [null],
@@ -199,10 +203,59 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       // DNU
       if (data.action === 'dnu' && this.editData) {
         this.brokerForm.get('dnu').patchValue(data.bool);
+        
+        this.brokerModalService
+          .changeDnuStatus(this.editData.id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: HttpResponseBase) => {
+              if (res.status === 200 || res.status === 204) {
+                this.brokerDnuStatus = !this.brokerDnuStatus;
+                this.modalService.changeModalStatus({
+                  name: 'dnu',
+                  status: this.brokerDnuStatus,
+                });
+                this.notificationService.success(
+                  `Broker ${this.brokerDnuStatus ? 'status changed to DNU' : 'removed from DNU'}.`,
+                  'Success:'
+                );
+              }
+            },
+            error: () => {
+              this.notificationService.error(
+                "Driver status can't be changed.",
+                'Success:'
+              );
+            },
+          });
       }
       // BFB
       if (data.action === 'bfb' && this.editData) {
         this.brokerForm.get('ban').patchValue(data.bool);
+        this.brokerModalService
+          .changeBanStatus(this.editData.id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: HttpResponseBase) => {
+              if (res.status === 200 || res.status === 204) {
+                this.brokerBanStatus = !this.brokerBanStatus;
+                this.modalService.changeModalStatus({
+                  name: 'bfb',
+                  status: this.brokerBanStatus,
+                });
+                this.notificationService.success(
+                  `Broker ${this.brokerBanStatus ? 'status changed to BAN' : 'removed from BAN'} .`,
+                  'Success:'
+                );
+              }
+            },
+            error: () => {
+              this.notificationService.error(
+                "Driver status can't be changed.",
+                'Success:'
+              );
+            },
+          });
       }
     } else {
       if (data.action === 'close') {
@@ -315,9 +368,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }) {
     this.selectedPhysicalAddress = event.address;
-    if (!event.valid) {
-      this.brokerForm.setErrors({ invalid: event.valid });
-    }
   }
 
   public onHandlePhysicalPoBoxCityAddress(event: {
@@ -325,9 +375,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }) {
     this.selectedPhysicalPoBox = event.address;
-    if (!event.valid) {
-      this.brokerForm.setErrors({ invalid: event.valid });
-    }
   }
 
   public onHandleBillingAddress(event: {
@@ -335,9 +382,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }) {
     this.selectedBillingAddress = event.address;
-    if (!event.valid) {
-      this.brokerForm.setErrors({ invalid: event.valid });
-    }
   }
 
   public onHandleBillingPoBoxCityAddress(event: {
@@ -345,9 +389,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }) {
     this.selectedBillingPoBox = event.address;
-    if (!event.valid) {
-      this.brokerForm.setErrors({ invalid: event.valid });
-    }
   }
 
   public isCredit(event: any) {
@@ -586,7 +627,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (reasponse: BrokerResponse) => {
-
           this.brokerForm.patchValue({
             businessName: reasponse.businessName,
             dbaName: reasponse.dbaName,
@@ -634,6 +674,18 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             dnu: reasponse.dnu,
             brokerContacts: [],
           });
+
+          this.modalService.changeModalStatus({
+            name: 'dnu',
+            status: reasponse.dnu,
+          });
+          this.brokerDnuStatus = reasponse.dnu;
+
+          this.modalService.changeModalStatus({
+            name: 'bfb',
+            status: reasponse.ban,
+          });
+          this.brokerBanStatus = reasponse.ban;
 
           this.selectedPhysicalAddress = reasponse.mainAddress
             ? reasponse.mainAddress

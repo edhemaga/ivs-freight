@@ -9,7 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TodoStatus } from './todoStatus';
+import { CommentResponse } from './commentResponse';
+import { EnumValue } from './enumValue';
 import { TodoUserResponse } from './todoUserResponse';
 import { DepartmentResponse } from './departmentResponse';
 
@@ -19,10 +20,11 @@ export interface TodoResponse {
     title?: string | null;
     description?: string | null;
     url?: string | null;
-    status?: TodoStatus;
+    status?: EnumValue;
     departments?: Array<DepartmentResponse> | null;
     deadline?: string;
     note?: string | null;
     todoUsers?: Array<TodoUserResponse> | null;
+    comments?: Array<CommentResponse> | null;
 }
 

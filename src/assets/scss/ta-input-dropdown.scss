@@ -65,7 +65,7 @@
           color: #3c3c3c;
           border-radius: 2px;
           cursor: pointer;
-          transition: all 0.3s ease-in-out;
+          // transition: all 0.2s ease-in-out;
 
           .svg-template-logo,
           .svg-template-grayscale {
@@ -279,7 +279,8 @@
       &.w-col-4-doortype,
       &.w-col-4-reeferUnit,
       &.w-col-4-classType,
-      &.w-col-4-department-user {
+      &.w-col-4-department-user,
+      &.w-col-4-insuranceType {
         width: 136px;
       }
 
@@ -391,7 +392,8 @@
               width: 16px;
               height: 16px;
               border-radius: 50%;
-              object-fit: fill;
+              -o-object-fit: fill;
+                 object-fit: fill;
               margin-right: 4px;
             }
 

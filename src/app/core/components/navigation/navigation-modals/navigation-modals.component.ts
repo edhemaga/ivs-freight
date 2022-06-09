@@ -22,6 +22,7 @@ import { UserModalComponent } from '../../modals/user-modal/user-modal.component
 import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
+import { AccidentModalComponent } from '../../safety/accident/accident-modal/accident-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -65,7 +66,6 @@ export class NavigationModalsComponent {
   }
 
   private openModal(navItem: NavigationModal) {
-    console.log(navItem)
     switch (navItem.path) {
       case 'driver': {
         this.modalService.openModal(DriverModalComponent, {
@@ -136,6 +136,12 @@ export class NavigationModalsComponent {
           size: 'small',
         });
         break;
+      }
+      case 'accident': {
+        this.modalService.openModal(AccidentModalComponent, {
+          size: 'large',
+        });
+        break; 
       }
       default: {
         break;

@@ -495,6 +495,11 @@
     margin: 20px 0px !important;
   }
 
+  &.phone-ext-email-mt20-mb-32 {
+    margin-top: 20px !important;
+    margin-bottom: 32px !important;
+  }
+
   .phone-extension {
     display: grid;
     grid-template-columns: 152px 26px;
@@ -509,8 +514,6 @@
       cursor: pointer;
 
       svg {
-        position: relative;
-        bottom: 1px;
         path {
           fill: #b7b7b7;
         }
@@ -544,7 +547,7 @@
   column-gap: 12px;
   margin: 0px;
   margin-top: 26px;
-  margin-bottom: 22px;
+  margin-bottom: 32px;
 }
 
 //---------------- Drug, Type, Reason Modal----------------
@@ -705,6 +708,7 @@
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
+  margin-bottom: 22px;
 }
 .violation-modal-row-5,
 .violation-modal-row-6 {
@@ -713,6 +717,7 @@
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
+  margin-bottom: 22px;
 }
 .violation-modal-autority-details-row {
   display: grid;
@@ -720,7 +725,7 @@
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
-
+  margin-bottom: 22px;
   &-1 {
     margin-bottom: 32px;
   }
@@ -731,5 +736,25 @@
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
+  margin-bottom: 22px;
+}
+
+//---------------- Accident Report, Federally, Recordable  ----------------
+.report-federally-recordable {
+  display: grid;
+  grid-template-columns: 292px repeat(2, 260px);
+  grid-template-rows: 26px;
+  column-gap: 12px;
+  margin-bottom: 32px;
+}
+
+//---------------- Injury, fatality, towing, hazmat, vehicle number ----------------
+.inj-fat-tow-hazmat-vehNumber {
+  display: grid;
+  grid-template-columns: repeat(5,157px);
+  align-items: center;
+  grid-template-rows: 26px;
+  column-gap: 12px;
+  margin-bottom: 32px;
 }
 // ------------------------------------------------ end ------------------------------------------------
