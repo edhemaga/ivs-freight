@@ -41,7 +41,25 @@ export class TruckassistTableService {
   private showingScroll = new BehaviorSubject<boolean>(null);
   public currentShowingScroll = this.showingScroll.asObservable();
 
+  /* Delete Selected Rows */
+  private deleteSelectedRows = new BehaviorSubject<any>([]);
+  public currentDeleteSelectedRows = this.deleteSelectedRows.asObservable();
+
+  /* Table Action Animation */
+  private actionAnimation = new BehaviorSubject<any>({});
+  public currentActionAnimation = this.actionAnimation.asObservable();
+
   constructor() {}
+
+  /* Delete Selected Rows */
+  public sendActionAnimation(actionAnimation: any) {
+    this.actionAnimation.next(actionAnimation);
+  }
+
+  /* Delete Selected Rows */
+  public sendDeleteSelectedRows(deleteSelectedRows: any[]) {
+    this.deleteSelectedRows.next(deleteSelectedRows);
+  }
 
   /* Showing Scroll */
   public sendShowingScroll(showingScroll: boolean) {

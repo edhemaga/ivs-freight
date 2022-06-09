@@ -16,32 +16,18 @@ export class DriverResolver implements Resolve<DriversState> {
     private driversStore: DriversStore,
     private driversQuery: DriversQuery
   ) {}
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<DriversState> | Observable<any> {
-    // if (this.driversStore.getValue().ids.length) {
-    //   return of(true);
-    // } else {
-    //   return this.driverService.getDrivers(1, 1, 25).pipe(
-    //     catchError((error) => {
-    //       return of('No drivers data...');
-    //     }),
-    //     tap((driverPagination: DriverListResponse) => {
-    //       this.driversStore.set({ entities: driverPagination.pagination.data });
-    //     })
-    //   );
-    // }
-
-    return this.driverService.getDrivers(1, 1, 25).pipe(
-      catchError((error) => {
-        this.driversStore.set({ entities: [] });
-        return of('No drivers data...');
-      }),
-      tap((driverPagination: DriverListResponse) => {
-        console.log('On Resolver');
-        console.log(driverPagination);
-        this.driversStore.set({ entities: driverPagination.pagination.data });
-      })
-    );
+  resolve(route: ActivatedRouteSnapshot): Observable<DriversState | boolean> {
+    if (this.driversStore.getValue().ids?.length) {
+      return of(true);
+    } else {
+      return this.driverService.getDrivers(1, 1, 25).pipe(
+        catchError((error) => {
+          return of('No drivers data...');
+        }),
+        tap((driverPagination: DriverListResponse) => {
+          this.driversStore.set(driverPagination.pagination.data);
+        })
+      );
+    }
   }
 }
