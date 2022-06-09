@@ -22,6 +22,7 @@
               *ngIf="shortName"
               [ngClass]="{ 'card-close-title': !isCardOpen }"
               class="weekly-status"
+              [style.width.px]="weeklyWidth"
             >
               {{ shortName }}
             </div>

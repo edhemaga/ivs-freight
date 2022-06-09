@@ -1,5 +1,5 @@
 import { card_component_animation } from './../../shared/animations/card-component.animations';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterContentInit, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { createBase64 } from 'src/app/core/utils/base64.image';
@@ -19,7 +19,7 @@ import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
   animations: [card_component_animation('showHideCardBody')],
   providers: [SumArraysPipe],
 })
-export class DriverDetailsCardComponent implements OnInit {
+export class DriverDetailsCardComponent implements OnInit,AfterContentInit {
   @Input() data: any;
   @Input() templateCard: boolean = false;
   public note: FormControl = new FormControl();
@@ -35,7 +35,7 @@ export class DriverDetailsCardComponent implements OnInit {
   public buttonsArray: any;
   public duttyLocationCounter: number = 0;
   public toggler: boolean[] = [];
-  public dataEdit: any;
+  public dataTest: any;
   public selectedTab: number;
   public yearsService: number = 0;
   public daysService: number = 0;
@@ -51,12 +51,14 @@ export class DriverDetailsCardComponent implements OnInit {
     private sumArr: SumArraysPipe
   ) {}
 
+  ngAfterContentInit() {
+    this.getYearsAndDays();
+    this.widthOfProgress();
+  }
+
   ngOnInit(): void {
     console.log(this.data);
-
-    this.getYearsAndDays();
-    this.initTableOptions();
-    this.widthOfProgress();
+    this.initTableOptions(); 
     this.tabsDriver = [
       {
         id: 223,
@@ -83,50 +85,6 @@ export class DriverDetailsCardComponent implements OnInit {
         name: 'ALL',
       },
     ];
-    // this.buttonsArray = [
-    //   {
-    //     id: 444,
-    //     label: '1M',
-    //     value: '1M',
-    //     name: 'chart',
-    //     checked: false,
-    //   },
-    //   {
-    //     id: 555,
-    //     label: '3M',
-    //     value: '3M',
-    //     name: 'chart',
-    //     checked: false,
-    //   },
-    //   {
-    //     id: 6666,
-    //     label: '6M',
-    //     value: '6M',
-    //     name: 'chart',
-    //     checked: false,
-    //   },
-    //   {
-    //     id: 7777,
-    //     label: '1Y',
-    //     value: '1Y',
-    //     name: 'chart',
-    //     checked: false,
-    //   },
-    //   {
-    //     id: 7774,
-    //     label: 'YTD',
-    //     value: 'YTD',
-    //     name: 'chart',
-    //     checked: false,
-    //   },
-    //   {
-    //     id: 8888,
-    //     label: 'ALL',
-    //     value: 'ALL',
-    //     name: 'chart',
-    //     checked: true,
-    //   },
-    // ];
   }
   /**Function return user image if have in DB or default image */
   public transformImage() {
@@ -293,7 +251,7 @@ export class DriverDetailsCardComponent implements OnInit {
 
   /**Function for dots in cards */
   public initTableOptions(): void {
-    this.dataEdit = {
+    this.dataTest = {
       disabledMutedStyle: null,
       toolbarActions: {
         hideViewMode: false,
@@ -328,6 +286,7 @@ export class DriverDetailsCardComponent implements OnInit {
 
   public widthOfProgress() {
     let arrMinDate = [];
+    let dateDeactivate=[];
     if (this.data.employmentHistories) {
       const sum = this.sumArr.transform(
         this.data.employmentHistories.map((item) => {
@@ -345,11 +304,9 @@ export class DriverDetailsCardComponent implements OnInit {
             .min(element.startDate)
             .format('MM/DD/YY');
           arrMinDate.push(new Date(dates));
-          if(element.isDeactivate==true){
-            this.deactivatePeriod=true;
-          }else{
-            this.deactivatePeriod=false;
-          }
+          let deactivate=element.isDeactivate;
+          dateDeactivate.push(deactivate)
+           
           return {
             ...element,
             activePercentage: this.activePercentage.toFixed(1),
@@ -357,8 +314,11 @@ export class DriverDetailsCardComponent implements OnInit {
         }
       );
       let dateRes = new Date(Math.min.apply(null, arrMinDate)).toISOString();
-      console.log(this.deactivatePeriod);
-      
+      if(dateDeactivate.includes(true)){
+        this.deactivatePeriod=true
+      }else{
+        this.deactivatePeriod=false;
+      }
       this.firstDate = moment(dateRes).format('MM/DD/YY');
     }
   }

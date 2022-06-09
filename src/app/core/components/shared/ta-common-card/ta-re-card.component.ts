@@ -29,6 +29,7 @@ export class TaReCardComponent implements OnInit {
   @Input() public stateTooltipName: string = '';
   @Input() public cardSecondName: string = '';
   @Output() public dropActions = new EventEmitter<any>();
+  @Input() public weeklyWidth:string='';
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
   public toggleDropDown: boolean;

@@ -1,16 +1,17 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { DriverTService } from './../state/driver.service';
 import { DriverDetailsCardComponent } from './../driver-details-card/driver-details-card.component';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { map } from 'rxjs';
 import { createBase64 } from 'src/app/core/utils/base64.image';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-driver-card',
   templateUrl: './driver-card.component.html',
   styleUrls: ['./driver-card.component.scss'],
 })
-export class DriverCardComponent implements OnInit {
+export class DriverCardComponent implements OnInit, OnDestroy {
   @Input() viewData : any;
   public selectedData:any;
 
@@ -20,10 +21,10 @@ export class DriverCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.viewData);
     console.log('Data from card');
-    this.transformImage();
+    console.log(this.selectedData);
     
+    this.transformImage(); 
   }
   public transformImage() {
     let img;
@@ -34,15 +35,16 @@ export class DriverCardComponent implements OnInit {
     }
     return this.sanitazer.bypassSecurityTrustResourceUrl(img);
   }
-
-  changeChatBox(e:number) {
+   changeChatBox(e:number) {
     console.log(e);
-    this.driverService.getDriverById(e).subscribe(
+     this.driverService.getDriverById(e).pipe(untilDestroyed(this)).subscribe(
       x=>this.selectedData=x,
       err => console.error(err),
       
-    );
+      );
+  console.log(this.selectedData);
+  
     //this.driverBox[indx].checked = e.target.checked;
   }
-
+  ngOnDestroy(): void {}
 }

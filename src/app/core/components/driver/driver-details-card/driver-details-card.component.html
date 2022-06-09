@@ -38,7 +38,6 @@
               <svg-icon
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
-                
               ></svg-icon>
             </span>
           </div>
@@ -61,11 +60,7 @@
               class="tooltip-copy"
               (click)="copyText(data.phone, 'driver-phone')"
             >
-              <svg-icon
-               
-                class="card-icon"
-                src="assets/svg/common/ic_copy.svg"
-              >
+              <svg-icon class="card-icon" src="assets/svg/common/ic_copy.svg">
               </svg-icon>
             </span>
           </div>
@@ -89,7 +84,6 @@
               (click)="copyText(data.email, 'driver-email')"
             >
               <svg-icon
-                
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
               ></svg-icon>
@@ -281,23 +275,51 @@
             </div>
           </div>
           <div>
-            <div
-              *ngIf="deactivatePeriod"
-              class="progress-employment-history"
-            >
+            <div *ngIf="deactivatePeriod" class="progress-employment-history">
               <div class="progress-driver">
                 <div
-                  *ngFor="let dat of data.employmentHistories; trackBy: identity"
+                  *ngFor="
+                    let dat of data.employmentHistories;
+                    trackBy: identity
+                  "
                   [ngStyle]="{
                     'background-color':
                       dat.isDeactivate === true ? '#d4dff4' : '#6d82c8',
-                      width: dat.activePercentage + '%'
+                    width: dat.activePercentage + '%'
                   }"
-                  [ngClass]="{'emp':dat.isDeactivate==false, 'unp':dat.isDeactivate==true}"
-                ></div>
+                  [ngClass]="{
+                    emp: dat.isDeactivate == false,
+                    unp: dat.isDeactivate == true
+                  }"
+                >
+                  <div class="employment-tooltip">
+                    <div class="emp-tooltip">
+                      <div class="emp-tooltip-value">
+                        <p class="emp-duration">10 September, 2021 - Today</p>
+                        <div class="emp-text-icon">
+                          <p>
+                            {{ dat.isDeactivate ? "Deactivated " : "Employed" }}
+                          </p>
+                          <svg-icon
+                            class="svg-blue"
+                            src="{{
+                              dat.isDeactivate
+                                ? 'assets/svg/common/ic_circle_light_blue.svg'
+                                : '  assets/svg/common/round_blue.svg'
+                            }}"
+                          ></svg-icon>
+                        </div>
+                      </div>
+                      <p class="year-working">
+                        {{ dat.duration.Years }} year
+                        {{ dat.duration.Days }} days
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div *ngIf="!showMoreEmployment" class="year-employer">
-                <p>{{firstDate}}</p>
+                <p>{{ firstDate }}</p>
                 <p>Today</p>
               </div>
             </div>
@@ -416,7 +438,6 @@
                 (click)="copyText(data.owner.ssnEin, 'ein')"
               >
                 <svg-icon
-                 
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -519,7 +540,6 @@
                 (click)="copyText(data?.routing, 'bankRouting')"
               >
                 <svg-icon
-                 
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -572,10 +592,10 @@
                 [mainTooltip]="copiedBankAccount ? 'Copied' : 'Copy'"
                 position="top"
                 class="tooltip-ein"
-                (click)="copyText(data.account,'bankAcc')"
+                (click)="copyText(data.account, 'bankAcc')"
               >
                 <svg-icon
-                  *ngIf="data?.account !== null"               
+                  *ngIf="data?.account !== null"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -632,7 +652,6 @@
                 (click)="copyText(data.emergencyContactPhone, 'phone')"
               >
                 <svg-icon
-                  
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -672,13 +691,14 @@
         >
           <div *ngFor="let cdl of data.cdls; let i = index; trackBy: identity">
             <app-ta-re-card
-              [options]="dataEdit"
+              [options]="dataTest"
               [cardDocumentCounter]="6"
               (resizePage)="toggleResizePage(i)"
               [cardNameCommon]="cdl?.cdlNumber"
               [expDateClose]="cdl?.expDate | formatDateP"
               [hasCopyIcon]="true"
               [optionsId]="cdl.id"
+              [weeklyWidth]="'28'"
               [stateTooltipName]="cdl.state.stateName"
               [shortName]="cdl.state.stateShortName"
               (dropActions)="optionsEvent($event, 'edit-licence')"
@@ -850,10 +870,11 @@
             *ngFor="let test of data.tests; let i = index; trackBy: identity"
           >
             <app-ta-re-card
-              [options]="dataEdit"
+              [options]="dataTest"
               [cardNameCommon]="test?.testingDate | formatDateP"
               (resizePage)="toggleResizePage(i)"
               [optionsId]="test.id"
+              [weeklyWidth]="'18'"
               [cardSecondName]="test?.testReason.reason"
               [shortName]="test.testType.name[0]"
               [stateTooltipName]="test.testType.name + ' Test'"
@@ -946,7 +967,7 @@
             *ngFor="let med of data.medicals; let i = index; trackBy: identity"
           >
             <app-ta-re-card
-              [options]="dataEdit"
+              [options]="dataTest"
               [cardNameCommon]="med?.issueDate | formatDateP"
               [expDateClose]="med?.expDate | formatDateP"
               [optionsId]="med.id"
@@ -1053,7 +1074,7 @@
         >
           <div *ngFor="let mvr of data.mvrs; let i = index; trackBy: identity">
             <app-ta-re-card
-              [options]="dataEdit"
+              [options]="dataTest"
               [cardDocumentCounter]="6"
               (resizePage)="toggleResizePage(i)"
               [cardNameCommon]="mvr?.issueDate | formatDateP"
