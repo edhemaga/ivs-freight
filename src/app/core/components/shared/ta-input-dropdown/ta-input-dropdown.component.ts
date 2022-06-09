@@ -27,7 +27,7 @@ import { TaInputComponent } from '../ta-input/ta-input.component';
   templateUrl: './ta-input-dropdown.component.html',
   styleUrls: ['./ta-input-dropdown.component.scss'],
   providers: [TaInputService],
-  animations: [input_dropdown_animation('showHideDropdownOptions')],
+  animations: [input_dropdown_animation('showHideDropdownOptions')]
 })
 export class TaInputDropdownComponent
   implements OnInit, OnDestroy, OnChanges, ControlValueAccessor
@@ -38,6 +38,7 @@ export class TaInputDropdownComponent
   @Input() inputConfig: ITaInput;
   @Input() canAddNew: boolean = false;
   @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
+  @Input() preloadMultiselectItems: any[] = [];
   @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
 
@@ -59,8 +60,14 @@ export class TaInputDropdownComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.options) {
+    if (this.options.length) {
       this.originalOptions = [...this.options];
+    }
+    if(this.preloadMultiselectItems.length && this.inputConfig.multiselectDropdown) {
+      this.preloadMultiselectItems.forEach(item => {
+        this.onMultiselectSelect(item, this.template)
+      })
+      
     }
   }
 
@@ -151,7 +158,6 @@ export class TaInputDropdownComponent
     this.inputService.dropDownNavigatorSubject
       .pipe(untilDestroyed(this))
       .subscribe((keyEvent) => {
-
         if (keyEvent === 40) {
           this.dropdownNavigation(1);
         }
@@ -182,8 +188,7 @@ export class TaInputDropdownComponent
 
           if (this.inputConfig.multiselectDropdown) {
             this.onMultiselectSelect(existItem, this.template);
-          } 
-          else {
+          } else {
             this.getSuperControl.setValue(existItem.name);
             this.selectedItem.emit(existItem);
             this.activeItem = existItem;
@@ -349,8 +354,9 @@ export class TaInputDropdownComponent
           }
           return item;
         });
-
+        console.log(" PRE  ", this.multiselectItems)
         this.multiselectItems = this.options.filter((item) => item.active);
+        console.log(" AFTER  ", this.multiselectItems)
         this.originalOptions = this.options;
         this.selectedItems.emit(
           this.multiselectItems.map((item) => {
@@ -443,7 +449,7 @@ export class TaInputDropdownComponent
    */
   private dropdownNavigation(step: number) {
     this.dropdownPosition += step;
-    console.log(this.dropdownPosition)
+    console.log(this.dropdownPosition);
     if (this.dropdownPosition > this.options.length - 1) {
       this.dropdownPosition = 0;
     }

@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { TodoModalResponse } from 'appcoretruckassist';
+import { TodoModalResponse, TodoResponse } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
@@ -20,6 +20,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   public taskForm: FormGroup;
 
   public resDepartments: any[] = [];
+  public resCompanyUsers: any[] = [];
 
   public comments: any[] = [];
   public documents: any[] = [];
@@ -148,7 +149,27 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   private deleteTaskById(id: number) {}
 
-  private editTask(id: number) {}
+  private editTask(id: number) {
+    this.taskModalService
+        .getTaskById(id)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: (res: TodoResponse) => {
+            this.taskForm.patchValue({
+              title: res.title,
+              description: res.description,
+              url: res.url,
+              deadline: res.deadline,
+              departmentIds: [null],
+              companyUserIds: [null],
+              note: res.note,
+            })
+          },
+          error: () => {
+            this.notificationService.error("Can't get task.", 'Error:');
+          }
+        })
+  }
 
   private getTaskDropdowns() {
     this.taskModalService
@@ -157,6 +178,12 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: TodoModalResponse) => {
           this.resDepartments = res.departments;
+          this.resCompanyUsers = res.companyUsers.map(item => {
+            return {
+              id: item.id,
+              name: item.fullName
+            }
+          });
         },
         error: () => {
           this.notificationService.error("Can't get task dropdowns.", 'Error:');

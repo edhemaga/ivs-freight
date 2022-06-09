@@ -124,11 +124,11 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'restrictions': {
-        this.selectedRestrictions = event ? event.map((item) => item.id) : [];
+        this.selectedRestrictions = event;
         break;
       }
       case 'endorsments': {
-        this.selectedEndorsment = event ? event.map((item) => item.id) : [];
+        this.selectedEndorsment = event;
         break;
       }
       default: {
@@ -211,14 +211,15 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             cdlNumber: res.cdlNumber,
             issueDate: moment(new Date(res.issueDate)).format('YYYY-MM-DD'),
             expDate: moment(new Date(res.expDate)).format('YYYY-MM-DD'),
-            classType: res.classType,
-            countryType: res.countryType,
+            classType: res.classType.name,
+            countryType: res.countryType.name,
             stateId: res.state.stateName,
-            restrictions: res.cdlRestrictions,
-            endorsements: res.cdlEndorsements,
+            restrictions: null,
+            endorsements: null,
             note: res.note,
           });
-
+          this.selectedEndorsment = res.cdlEndorsements;
+          this.selectedRestrictions = res.cdlRestrictions;
           this.selectedClassType = res.classType;
           this.selectedCountryType = res.countryType;
           this.selectedStateType = res.state;
@@ -240,12 +241,12 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       classType: this.selectedClassType.name,
       countryType: this.selectedCountryType.name,
       stateId: this.selectedStateType.id,
-      restrictions: null,
-      endorsements: null,
+      restrictions: this.selectedRestrictions ? this.selectedRestrictions.map((item) => item.id) : [],
+      endorsements: this.selectedEndorsment ? this.selectedEndorsment.map((item) => item.id) : [],
     };
 
     this.cdlService
-      .addCdl(newData)
+      .updateCdl(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
@@ -272,8 +273,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       classType: this.selectedClassType.name,
       countryType: this.selectedCountryType.name,
       stateId: this.selectedStateType.id,
-      restrictions: this.selectedRestrictions,
-      endorsements: this.selectedEndorsment,
+      restrictions: this.selectedRestrictions ? this.selectedRestrictions.map((item) => item.id) : [],
+      endorsements: this.selectedEndorsment ? this.selectedEndorsment.map((item) => item.id) : [],
     };
 
     this.cdlService
