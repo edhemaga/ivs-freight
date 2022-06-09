@@ -13,6 +13,7 @@ import {GooglePlaceModule} from "ngx-google-places-autocomplete";
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import * as $ from 'jquery';
 import {NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
+import { AccountActivatedPageComponent } from './account-activated-page/account-activated-page.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
     ChangePasswordComponent,
     ThankYouComponent,
     SelectCompanyComponent,
-    RegisterComponent
+    RegisterComponent,
+    AccountActivatedPageComponent
   ],
   imports: [
     CommonModule,
