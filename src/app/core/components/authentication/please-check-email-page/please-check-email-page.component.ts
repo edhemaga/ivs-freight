@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import moment from 'moment';
 
@@ -7,15 +7,18 @@ import moment from 'moment';
     templateUrl: './please-check-email-page.component.html',
     styleUrls: ['./please-check-email-page.component.scss'],
 })
-export class PleaseCheckEmailPageComponent implements OnInit {
+export class PleaseCheckEmailPageComponent implements OnInit, OnDestroy {
     public email: string;
-    public copyrightYear!: number;
+    public copyrightYear: number;
 
     constructor() {}
 
     ngOnInit(): void {
         this.email = JSON.parse(localStorage.getItem('checkEmail'));
-
         this.copyrightYear = moment().year();
+    }
+
+    ngOnDestroy(): void {
+        localStorage.removeItem('checkEmail');
     }
 }

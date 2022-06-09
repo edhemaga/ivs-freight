@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { PleaseCheckEmailPageComponent } from './please-check-email-page/please-check-email-page.component';
 import { CreateNewPasswordPageComponent } from './create-new-password-page/create-new-password-page.component';
+import { PasswordChangedPageComponent } from './password-changed-page/password-changed-page.component';
 
 const routes: Routes = [
     {
@@ -25,6 +26,11 @@ const routes: Routes = [
         path: 'forgot-password/create-new-password',
         component: CreateNewPasswordPageComponent,
         data: { title: 'Create New Password' },
+    },
+    {
+        path: 'forgot-password/password-changed',
+        component: PasswordChangedPageComponent,
+        data: { title: 'Password Changed' },
     },
 ];
 

@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpResponseBase } from '@angular/common/http';
+import { Router } from '@angular/router';
+
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import moment from 'moment';
 
@@ -8,8 +11,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 
-import { untilDestroyed } from 'ngx-take-until-destroy';
-import { HttpResponseBase } from '@angular/common/http';
+import { SetNewPasswordCommand } from 'appcoretruckassist/model/setNewPasswordCommand';
 
 @Component({
     selector: 'app-create-new-password-page',
@@ -25,7 +27,8 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private authStoreService: AuthStoreService,
-        private notification: NotificationService
+        private notification: NotificationService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -73,7 +76,7 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const newData = {
+        const newData: SetNewPasswordCommand = {
             newPassword: this.createNewPasswordForm.get('newPassword').value,
         };
 
@@ -88,18 +91,9 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
                             'Success'
                         );
 
-                        /*            localStorage.setItem(
-                            'checkEmail',
-                            JSON.stringify(
-                                this.forgotPasswordForm.get('email').value
-                            )
-                        );
-
                         this.router.navigate([
-                            '/login/forgot-password/check-email',
+                            '/login/forgot-password/password-changed',
                         ]);
-
-                        this.forgotPasswordForm.reset(); */
                     }
                 },
                 error: err => {

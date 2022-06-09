@@ -15,6 +15,7 @@ import * as $ from 'jquery';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { PleaseCheckEmailPageComponent } from './please-check-email-page/please-check-email-page.component';
 import { CreateNewPasswordPageComponent } from './create-new-password-page/create-new-password-page.component';
+import { PasswordChangedPageComponent } from './password-changed-page/password-changed-page.component';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { CreateNewPasswordPageComponent } from './create-new-password-page/creat
         RegisterComponent,
         PleaseCheckEmailPageComponent,
         CreateNewPasswordPageComponent,
+        PasswordChangedPageComponent,
     ],
     imports: [
         CommonModule,

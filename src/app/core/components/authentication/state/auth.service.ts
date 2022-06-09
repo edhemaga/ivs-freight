@@ -40,10 +40,16 @@ export class AuthStoreService {
     }
 
     public forgotPassword(data: ForgotPasswordCommand): Observable<object> {
-        return this.accountService.apiAccountForgotpasswordPut(data);
+        return this.accountService.apiAccountForgotpasswordPut(
+            data,
+            'response'
+        );
     }
 
     public createNewPassword(data: SetNewPasswordCommand): Observable<object> {
-        return this.accountService.apiAccountSetnewpasswordPut(data);
+        return this.accountService.apiAccountSetnewpasswordPut(
+            data,
+            'response'
+        );
     }
 }

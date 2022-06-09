@@ -2,80 +2,61 @@
 
 .check-email-container {
     background-color: $white;
-    min-height: 100vh;
 
-    .container {
+    .check-email-text {
+        margin-top: 184px;
+
         h1 {
             font-weight: 800;
             font-size: 52px;
             height: 63px;
             width: 688px;
-            color: $light-blue;
-            margin-top: 120px;
-            margin-bottom: 40px;
+            color: $bw6-2;
+            margin-bottom: 30px !important;
 
             span {
-                color: $bw6-2;
+                color: #536bc2;
             }
         }
 
         h2 {
             font-weight: bold;
-            font-size: 26px;
-            line-height: 32px;
-            width: 824px;
-            height: 64px;
+            font-size: 20px;
+            line-height: 24px;
+            width: 762px;
+            height: 48px;
             color: $bw6-2;
-            margin-bottom: 10px;
+            margin-bottom: 10px !important;
+            text-transform: uppercase;
 
             span {
-                color: $light-blue;
+                color: #536bc2;
             }
         }
 
         p {
             font-weight: 400;
-            font-size: 14px;
-            height: 40px;
-            width: 510px;
+            font-size: 18px;
+            height: 44px;
+            width: 608px;
             line-height: 22px;
             color: $bw6-2;
-            margin-bottom: 40px;
-        }
-
-        .thank-you-btn {
-            width: 320px;
-            margin: 40px auto 157px auto;
-            height: 50px;
-            border-radius: 3px;
-            background-color: $light-blue;
-            border: none;
-            outline: none;
-            transition: 0.3s;
-
-            p {
-                font-weight: 600;
-                font-size: 14px;
-                height: 18px;
-                color: $white;
-                margin: 0;
-            }
+            margin-bottom: 38px !important;
         }
     }
 
+    .check-email-img {
+        margin-bottom: 150.8px;
+    }
+
     .copyright {
-        width: 100%;
         height: 42px;
-        position: fixed;
-        bottom: 0;
-        background: $light-blue;
-        text-align: center;
+        border-top: 0.1rem solid #e5e5e5;
 
         p {
-            margin: 0;
-            color: $white;
+            color: #3551b7;
+            font-weight: 400;
             font-size: 14px;
-            height: 18px;
         }
     }
 }
