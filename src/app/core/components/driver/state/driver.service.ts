@@ -15,6 +15,7 @@ import {
 import { DriversStore } from './driver.store';
 import { CreateDriverResponse } from 'appcoretruckassist/model/createDriverResponse';
 import { DriversQuery } from './driver.query';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,8 @@ export class DriverTService {
     private driverService: DriverService,
     private driversQuery: DriversQuery,
     private driverStore: DriversStore,
-    private ownerService: OwnerService
+    private ownerService: OwnerService,
+    private tableService: TruckassistTableService,
   ) {}
 
   // Create Driver
@@ -54,6 +56,12 @@ export class DriverTService {
             };
 
             this.driverStore.add(driver);
+
+            this.tableService.sendActionAnimation({
+              animation: 'add',
+              data: driver,
+              id: driver.id
+            })
 
             subDriver.unsubscribe();
           },

@@ -1,5 +1,5 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
@@ -38,12 +38,10 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     public datePipe: DatePipe,
     private driverTService: DriverTService,
     private notificationService: NotificationService,
-    private driverStore: DriversStore
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    /* this.driverStore.remove(); */
-
     this.initTableOptions();
     this.getDriversData();
 
@@ -58,6 +56,25 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         }
       });
 
+    // Add Driver
+    this.tableService.currentActionAnimation
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if(res.animation === 'add'){
+          this.viewData.push(this.mapDriverData(res.data));
+
+          this.viewData = this.viewData.map((driver:any) => {
+            if(driver.id === res.id){
+              driver.actionAnimation = 'add';
+            }
+
+            return driver;
+          })
+
+          this.closeAnimationAction();
+        }
+      });
+
     // Delete Selected Rows
     this.tableService.currentDeleteSelectedRows
       .pipe(untilDestroyed(this))
@@ -69,13 +86,17 @@ export class DriverTableComponent implements OnInit, OnDestroy {
             .subscribe(() => {
               this.viewData = this.viewData.map((driver: any) => {
                 response.map((r: any) => {
-                  if(driver.id === r.id){
-                    driver.actionAnimation = 'delete'
+                  if (driver.id === r.id) {
+                    driver.actionAnimation = 'delete';
                   }
-                })
+                });
 
                 return driver;
-              })
+              });
+
+              this.closeAnimationAction(true);
+
+              this.tableService.sendRowsSelected([]);
             });
         }
       });
@@ -218,32 +239,33 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       this.viewData = td.data;
 
       this.viewData = this.viewData.map((data: DriversState) => {
-        return {
-          ...data,
-          isSelected: false,
-          textAddress: data.address.address ? data.address.address : '',
-          textDOB: data.dateOfBirth
-            ? this.datePipe.transform(data.dateOfBirth, 'dd/MM/yy')
-            : '',
-          textHired: data.hired
-            ? this.datePipe.transform(data.hired, 'dd/MM/yy')
-            : '',
-          textCDL: data.cdlNumber ? data.cdlNumber : '',
-          textState: data.address.state ? data.address.state : '',
-          textBank: data.bank ? data.bank : '',
-          textAccount: data.account ? data.account : '',
-          textRouting: data.routing ? data.routing : '',
-          tableCDLData: data.cdlExpiration ? data.cdlExpiration : {},
-          tableMedicalData: data.medicalExpiration
-            ? data.medicalExpiration
-            : {},
-          tableMvrData: data.mvrIssueDate ? data.mvrIssueDate : {},
-        };
+        return this.mapDriverData(data);
       });
-
-      console.log('viewData');
-      console.log(this.viewData);
     }
+  }
+
+  mapDriverData(data: any){
+    return {
+      ...data,
+      isSelected: false,
+      textAddress: data.address.address ? data.address.address : '',
+      textDOB: data.dateOfBirth
+        ? this.datePipe.transform(data.dateOfBirth, 'dd/MM/yy')
+        : '',
+      textHired: data.hired
+        ? this.datePipe.transform(data.hired, 'dd/MM/yy')
+        : '',
+      textCDL: data.cdlNumber ? data.cdlNumber : '',
+      textState: data.address.state ? data.address.state : '',
+      textBank: data.bank ? data.bank : '',
+      textAccount: data.account ? data.account : '',
+      textRouting: data.routing ? data.routing : '',
+      tableCDLData: data.cdlExpiration ? data.cdlExpiration : {},
+      tableMedicalData: data.medicalExpiration
+        ? data.medicalExpiration
+        : {},
+      tableMvrData: data.mvrIssueDate ? data.mvrIssueDate : {},
+    };
   }
 
   onToolBarAction(event: any) {
@@ -308,7 +330,15 @@ export class DriverTableComponent implements OnInit, OnDestroy {
               'Success:'
             );
 
-            this.viewData = this.viewData
+            this.viewData = this.viewData.map((driver: any) => {
+              if (driver.id === event.id) {
+                driver.actionAnimation = 'delete';
+              }
+
+              return driver;
+            });
+
+            this.closeAnimationAction(true);
           },
           error: () => {
             this.notificationService.error(
@@ -318,6 +348,32 @@ export class DriverTableComponent implements OnInit, OnDestroy {
           },
         });
     }
+  }
+
+  closeAnimationAction(isDelete?: boolean) {
+    const timeOut = setInterval(() => {
+      if (!isDelete) {
+        this.viewData = this.viewData.map((driver: any) => {
+          if (driver?.actionAnimation) {
+            delete driver.actionAnimation;
+          }
+
+          return driver;
+        });
+      } else {
+        let newViewData = [];
+
+        this.viewData.map((driver: any) => {
+          if (!driver.hasOwnProperty('actionAnimation')) {
+            newViewData.push(driver);
+          }
+        });
+
+        this.viewData = newViewData;
+      }
+
+      clearInterval(timeOut);
+    }, 1000);
   }
 
   ngOnDestroy(): void {}

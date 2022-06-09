@@ -135,9 +135,6 @@ export class TruckassistTableBodyComponent
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {
       this.viewData = changes.viewData.currentValue;
-
-      console.log('table body ngOnChanges');
-      console.log(this.viewData);
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {

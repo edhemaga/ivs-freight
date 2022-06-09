@@ -45,7 +45,16 @@ export class TruckassistTableService {
   private deleteSelectedRows = new BehaviorSubject<any>([]);
   public currentDeleteSelectedRows = this.deleteSelectedRows.asObservable();
 
+  /* Table Action Animation */
+  private actionAnimation = new BehaviorSubject<any>({});
+  public currentActionAnimation = this.actionAnimation.asObservable();
+
   constructor() {}
+
+  /* Delete Selected Rows */
+  public sendActionAnimation(actionAnimation: any) {
+    this.actionAnimation.next(actionAnimation);
+  }
 
   /* Delete Selected Rows */
   public sendDeleteSelectedRows(deleteSelectedRows: any[]) {
