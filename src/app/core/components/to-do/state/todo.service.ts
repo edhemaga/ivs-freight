@@ -70,6 +70,10 @@ export class TodoTService {
     return this.commentService.apiCommentPost(data);
   }
 
+  public getCommentsList(entityTypeCommentId: number, entityTypeId: number): Observable<CommentByEntityTypeListResponse> {
+    return this.commentService.apiCommentListGet();
+  }
+
   public deleteCommentById(id: number): Observable<any> {
     return this.commentService.apiCommentIdDelete(id);
   }

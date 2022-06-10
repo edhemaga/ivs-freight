@@ -107,6 +107,19 @@
     }
   }
 
+  &.password-eye-invalid {
+    background-color: #ef5350 !important;
+    color: #ffffff;
+
+    &::-moz-selection {
+      background-color: #e57373 !important;
+    }
+
+    &::selection {
+      background-color: #e57373 !important;
+    }
+  }
+
   &.has-input-icon {
     padding-left: 37px;
   }

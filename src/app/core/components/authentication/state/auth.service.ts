@@ -31,9 +31,12 @@ export class AuthStoreService {
   }
 
   public accountLogut(): void {
+    // ---- PRODUCTION MODE ----
     this.persistStorage.clearStore();
     this.persistStorage.destroy();
     this.router.navigate(['/login']);
+    // ---- DEVELOP MODE ----
+    localStorage.removeItem('user');
   }
 
   public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
