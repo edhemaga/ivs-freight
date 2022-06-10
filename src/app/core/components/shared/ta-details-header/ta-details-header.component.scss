@@ -50,7 +50,6 @@ p {
         font-weight: 800;
         padding-right: 12px;
         line-height: 17px;
-      
     }
     .header-plus-button {
         display: flex;
@@ -87,7 +86,7 @@ p {
                         width: 12.5px;
                         position: relative;
                         bottom: -3px;
-                    
+
                         &:hover {
                             path {
                                 fill: #6c6c6c;
@@ -137,14 +136,14 @@ svg {
     margin: 2px;
     cursor: pointer;
     svg {
-        path{
+        path {
             fill: #6d82c7;
         }
     }
-    &:hover{
+    &:hover {
         background-color: #6d82c7;
         border-radius: 2px;
-        svg{
+        svg {
             path {
                 fill: #ffffff !important;
             }
@@ -210,7 +209,28 @@ svg {
         }
     }
 }
-.ic-hed{
+.ic-hed {
     display: flex;
     align-items: center;
+}
+.request-header-container {
+    width: 86px;
+    height: 24px;
+    color: #ffffff;
+    background-color: #6d82c7;
+    border-radius: 2px;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    bottom: 0.1px;
+    margin-right: 4px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

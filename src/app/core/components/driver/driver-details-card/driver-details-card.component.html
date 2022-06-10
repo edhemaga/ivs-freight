@@ -27,6 +27,7 @@
             <p class="information-value ssn">
               {{ data.ssn | formatSsnP }}
             </p>
+         
             <span
               [tooltipBackground]="copiedSSN ? '#536BC2' : '#6c6c6c'"
               ngbTooltip
@@ -40,6 +41,9 @@
                 src="assets/svg/common/ic_copy.svg"
               ></svg-icon>
             </span>
+            <div *ngIf="data.status==0" class="inactive-wrapper">
+              Inactive
+           </div>
           </div>
           <div
             class="information-item"
@@ -276,8 +280,42 @@
           </div>
           <div>
             <div *ngIf="deactivatePeriod" class="progress-employment-history">
+              <div *ngIf="showTooltip" class="employment-tooltip">
+                <div class="emp-tooltip">
+                  <div class="emp-tooltip-value">
+                    <p class="emp-duration">
+                      {{ tooltipFormatStartDate }} -
+                      <span>{{
+                        tooltipData.endDate ?  tooltipFormatEndDate : 'Today'
+                      }}</span>
+
+                    </p>
+                    <div class="emp-text-icon">
+                      <p>
+                        {{
+                          tooltipData.isDeactivate ? "Deactivated " : "Employed"
+                        }}
+                      </p>
+                      <svg-icon
+                        class="svg-blue"
+                        src="{{
+                          tooltipData.isDeactivate
+                            ? 'assets/svg/common/ic_circle_light_blue.svg'
+                            : '  assets/svg/common/round_blue.svg'
+                        }}"
+                      ></svg-icon>
+                    </div>
+                  </div>
+                  <p class="year-working">
+                    {{ tooltipData.duration.Years }} {{ tooltipData.duration.Years > 1 ? "years" : "year" }}
+                    {{ tooltipData.duration.Days }} {{ tooltipData.duration.Days > 1 ? "days" : "day" }}
+                    </p>
+                </div>
+              </div>
               <div class="progress-driver">
                 <div
+                  (mouseover)="mouseEnter(dat)"
+                  (mouseleave)="showTooltip = false"
                   *ngFor="
                     let dat of data.employmentHistories;
                     trackBy: identity
@@ -291,36 +329,11 @@
                     emp: dat.isDeactivate == false,
                     unp: dat.isDeactivate == true
                   }"
-                >
-                  <div class="employment-tooltip">
-                    <div class="emp-tooltip">
-                      <div class="emp-tooltip-value">
-                        <p class="emp-duration">10 September, 2021 - Today</p>
-                        <div class="emp-text-icon">
-                          <p>
-                            {{ dat.isDeactivate ? "Deactivated " : "Employed" }}
-                          </p>
-                          <svg-icon
-                            class="svg-blue"
-                            src="{{
-                              dat.isDeactivate
-                                ? 'assets/svg/common/ic_circle_light_blue.svg'
-                                : '  assets/svg/common/round_blue.svg'
-                            }}"
-                          ></svg-icon>
-                        </div>
-                      </div>
-                      <p class="year-working">
-                        {{ dat.duration.Years }} year
-                        {{ dat.duration.Days }} days
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                ></div>
               </div>
               <div *ngIf="!showMoreEmployment" class="year-employer">
-                <p>{{ firstDate }}</p>
-                <p>Today</p>
+                <p>{{ firstDate }} </p>
+                <p>{{lastDate ? lastDate : 'Today'}}</p>
               </div>
             </div>
 
@@ -452,22 +465,49 @@
         class="item-cards"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
-        [cardName]="'Commission Pay'"
+        [cardName]="data.commissionSolo? 'Commission Pay' : 'Mileage Pay'"
         [isCardOpen]="true"
       >
-        <div class="purchase-template">
+        <div *ngIf="data.commissionSolo" class="purchase-template">
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">Solo</div>
             <div class="purchase-template-item-value">
               {{ data.commissionSolo }}%
             </div>
           </div>
+          
           <div class="purchase-template-item second-name">
             <div class="purchase-template-item-name">Team</div>
             <div class="purchase-template-item-value">
               {{ data.commissionTeam }}%
             </div>
           </div>
+        </div>
+        <div *ngIf="!data.commissionSolo" class="mileage-template">
+          <div class="mileage-template-item">
+          <div class="mileage-template-item-name">Empty (Solo)</div>
+          <div class="mileage-template-item-value">${{data.solo.emptyMile}}</div>
+        </div>
+        <div class="mileage-template-item">
+          <div class="mileage-template-item-name">Loaded (Solo)</div>
+          <div class="mileage-template-item-value">${{data.solo.loadedMile}}</div>
+        </div>
+        <div class="mileage-template-item">
+          <div class="mileage-template-item-name">Per Stop (Solo)</div>
+          <div class="mileage-template-item-value">${{data.solo.perStop}}</div>
+        </div>
+        <div class="mileage-template-item">
+          <div class="mileage-template-item-name">Empty (Team)</div>
+          <div class="mileage-template-item-value">${{data.team.emptyMile}}</div>
+        </div>
+        <div class="mileage-template-item">
+          <div class="mileage-template-item-name">Loaded (Team)</div>
+          <div class="mileage-template-item-value">${{data.team.loadedMile}}</div>
+        </div>
+        <div class="mileage-template-item">
+          <div class="mileage-template-item-name">Per Stop (Team)</div>
+          <div class="mileage-template-item-value">${{data.team.perStop}}</div>
+        </div>
         </div>
       </app-ta-custom-card>
 
@@ -875,7 +915,7 @@
               (resizePage)="toggleResizePage(i)"
               [optionsId]="test.id"
               [weeklyWidth]="'18'"
-              [cardSecondName]="test?.testReason.reason"
+              [cardSecondName]="test?.testReason.name"
               [shortName]="test.testType.name[0]"
               [stateTooltipName]="test.testType.name + ' Test'"
               (dropActions)="optionsEvent($event, 'edit-drug')"

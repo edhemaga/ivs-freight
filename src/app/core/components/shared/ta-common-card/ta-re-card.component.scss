@@ -308,6 +308,7 @@ p {
 .content-wrapper{
     display: flex;
     align-items: center;
+    line-height: 23px;
     z-index: 100;
     &:hover{
         .card-icon-common {

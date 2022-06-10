@@ -1,5 +1,11 @@
 import { card_component_animation } from './../../shared/animations/card-component.animations';
-import { AfterContentInit, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  Input,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { createBase64 } from 'src/app/core/utils/base64.image';
@@ -19,7 +25,7 @@ import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
   animations: [card_component_animation('showHideCardBody')],
   providers: [SumArraysPipe],
 })
-export class DriverDetailsCardComponent implements OnInit,AfterContentInit {
+export class DriverDetailsCardComponent implements OnInit, AfterContentInit {
   @Input() data: any;
   @Input() templateCard: boolean = false;
   public note: FormControl = new FormControl();
@@ -41,7 +47,12 @@ export class DriverDetailsCardComponent implements OnInit,AfterContentInit {
   public daysService: number = 0;
   public activePercentage: number = 0;
   public firstDate: any;
- public deactivatePeriod:boolean;
+  public lastDate: any;
+  public deactivatePeriod: boolean;
+  public tooltipData: any;
+  public tooltipFormatStartDate: any;
+  public tooltipFormatEndDate: any;
+  public showTooltip: boolean;
   public tabsDriver: any[] = [];
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
@@ -58,7 +69,7 @@ export class DriverDetailsCardComponent implements OnInit,AfterContentInit {
 
   ngOnInit(): void {
     console.log(this.data);
-    this.initTableOptions(); 
+    this.initTableOptions();
     this.tabsDriver = [
       {
         id: 223,
@@ -286,7 +297,8 @@ export class DriverDetailsCardComponent implements OnInit,AfterContentInit {
 
   public widthOfProgress() {
     let arrMinDate = [];
-    let dateDeactivate=[];
+    let arrMaxDate = [];
+    let dateDeactivate = [];
     if (this.data.employmentHistories) {
       const sum = this.sumArr.transform(
         this.data.employmentHistories.map((item) => {
@@ -296,6 +308,8 @@ export class DriverDetailsCardComponent implements OnInit,AfterContentInit {
           };
         })
       );
+      console.log(sum);
+
       this.data.employmentHistories = this.data.employmentHistories.map(
         (element) => {
           let res = element.duration.Years * 365.25 + element.duration.Days;
@@ -303,10 +317,13 @@ export class DriverDetailsCardComponent implements OnInit,AfterContentInit {
           let dates = moment(element.startDate)
             .min(element.startDate)
             .format('MM/DD/YY');
+          let endDate = moment(element.endDate)
+            .max(element.endDate)
+            .format('MM/DD/YY');
           arrMinDate.push(new Date(dates));
-          let deactivate=element.isDeactivate;
-          dateDeactivate.push(deactivate)
-           
+          arrMaxDate.push(new Date(endDate));
+          let deactivate = element.isDeactivate;
+          dateDeactivate.push(deactivate);          
           return {
             ...element,
             activePercentage: this.activePercentage.toFixed(1),
@@ -314,12 +331,18 @@ export class DriverDetailsCardComponent implements OnInit,AfterContentInit {
         }
       );
       let dateRes = new Date(Math.min.apply(null, arrMinDate)).toISOString();
-      if(dateDeactivate.includes(true)){
-        this.deactivatePeriod=true
-      }else{
-        this.deactivatePeriod=false;
+      if (dateDeactivate.includes(true)) {
+        this.deactivatePeriod = true;
+      } else {
+        this.deactivatePeriod = false;
       }
       this.firstDate = moment(dateRes).format('MM/DD/YY');
+      if (arrMaxDate.includes('Invalid Date')) {
+        this.lastDate = 'Today';
+      } else {
+        let maxEmpDate = new Date(Math.max.apply(null, arrMaxDate)).toISOString();
+        this.lastDate = moment(maxEmpDate).format('MM/DD/YY');
+      }
     }
   }
 
@@ -335,5 +358,17 @@ export class DriverDetailsCardComponent implements OnInit,AfterContentInit {
       this.yearsService = Math.trunc(sum3 / 365.25);
       this.daysService = Math.trunc(sum3 % 365.25);
     }
+  }
+  public mouseEnter(dat: any) {
+    this.tooltipData = dat;
+    this.tooltipFormatStartDate = moment(
+      dat.startDate,
+      'YYYY-MM-DDTHH:mm:ss.SSS[Z]'
+    ).format('DD MMMM, YYYY');
+    this.tooltipFormatEndDate = moment(
+      dat.endDate,
+      'YYYY-MM-DDTHH:mm:ss.SSS[Z]'
+    ).format('DD MMMM, YYYY');
+    this.showTooltip = true;
   }
 }

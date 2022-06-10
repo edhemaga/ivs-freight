@@ -1,11 +1,19 @@
 @import "../driver-details.component.scss";
 @keyframes change {
-  from { color: #6c6c6c }
-  to   { color: #3551b7 }
+  from {
+    color: #6c6c6c;
+  }
+  to {
+    color: #3551b7;
+  }
 }
 @keyframes changeSVG {
-  from { fill: #6c6c6c }
-  to   { fill: #3551b7 }
+  from {
+    fill: #6c6c6c;
+  }
+  to {
+    fill: #3551b7;
+  }
 }
 // DRIVER GENERAL PERSONAL DATA
 .details-header-wrapper {
@@ -90,12 +98,11 @@
       }
       .ssn {
         font-size: 18px !important;
-
       }
 
       .information-svg {
         margin-right: 6px;
-        svg{
+        svg {
           display: flex;
         }
       }
@@ -285,6 +292,7 @@
   flex-direction: column;
   padding-left: 5px;
   padding-right: 3px;
+  position: relative;
   .transform-arrow {
     bottom: 0 !important;
     svg {
@@ -349,16 +357,16 @@
   .employment-tooltip {
     width: 424px;
     height: 52px;
-    display: none;
+    // display: none;
     justify-content: center;
     align-items: center;
     background-color: #ffffff;
-    position: relative;
-    bottom: 58px;
+    position: absolute;
     margin: auto;
     border-radius: 2px;
-
-    filter: drop-shadow(0 0 2px #e7e7e7);
+    top: -7px;
+    left: 2px;
+    filter: drop-shadow(0 0 2px #e9e9e9);
     .emp-tooltip {
       display: flex;
       flex-direction: column;
@@ -413,25 +421,33 @@
       display: flex;
       border-radius: 2px;
       .emp {
-        border-radius: 0 2px 2px 0;
         position: relative;
-
-        &:hover{
+        &:first-child{
+          border-radius: 2px 0 0 2px;
+        }
+        &:last-child{
+          border-radius: 0 2px 2px 0;
+        }
+        &:hover {
           .employment-tooltip {
             display: block;
-            transform: translate(-2%, -1%);
+            // transform: translate(-2%, -1%);
           }
         }
       }
       .unp {
-        border-radius: 0 2px 2px 0;
         position: relative;
-       
+        &:first-child{
+          border-radius: 2px 0 0 2px;
+        }
+        &:last-child{
+          border-radius: 0 2px 2px 0;
+        }
         &:hover {
           background-color: #97a8dc !important;
           .employment-tooltip {
             display: block;
-            transform: translate(-28%, -1%);
+            // transform: translate(-28%, -1%);
           }
         }
       }
@@ -476,7 +492,7 @@
 .has-counter {
   padding-left: 2px !important;
 }
-.card-restriction-class{
+.card-restriction-class {
   // margin-top: -9px;
   margin-bottom: 2px;
 }

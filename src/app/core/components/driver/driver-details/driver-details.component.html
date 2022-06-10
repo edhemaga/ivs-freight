@@ -5,8 +5,10 @@
       [route]="'/driver'"
       [tooltipHeaderName]="'Back to Driver List'"
       [headerText]="item.name"
-      [counterData]="item.data"
+      [counterData]="item.data? item.data : 0"
       [hidePlus]="item.hide"
+      [hasRequest]="item.req"
+      [statusInactive]="item.status"
       (openModalAction)="onModalAction($event)"
     >
     </app-ta-details-header>

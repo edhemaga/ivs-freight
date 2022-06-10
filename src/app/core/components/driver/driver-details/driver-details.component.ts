@@ -23,10 +23,11 @@ import { DriverTService } from '../state/driver.service';
 export class DriverDetailsComponent implements OnInit, OnDestroy {
   public driverDetailsConfig: any[] = [];
   public dataTest: any;
-  public cdlLength: number=0;
-  public mvrLength: number=0;
-  public testLength: number=0;
-  public medicalLength: number=0;
+  public cdlLength: number = 0;
+  public mvrLength: number = 0;
+  public testLength: number = 0;
+  public medicalLength: number = 0;
+  public statusDriver:boolean;
   public data: any;
 
   constructor(
@@ -37,14 +38,17 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initTableOptions();
     this.data = this.activated_route.snapshot.data;
-    // if(this.data.driver?.cdls.length){
-
-    //   this.cdlLength = this.data.driver?.cdls.length;
-    // }
-    // this.mvrLength = this.data.driver?.mvrs.length;
-    // this.medicalLength = this.data.driver?.medicals.length;
-    // this.testLength = this.data.driver?.tests.length;
-
+    this.cdlLength = this.data.driver?.cdls.length;
+    this.mvrLength = this.data.driver?.mvrs.length;
+    this.medicalLength = this.data.driver?.medicals.length;
+    this.testLength = this.data.driver?.tests.length;
+    if(this.data.driver.status == 0){
+      this.statusDriver=true;
+    }else{
+      this.statusDriver=false;
+    }
+    console.log(this.statusDriver);
+    
     this.detailCongif();
   }
 
@@ -66,24 +70,32 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         name: 'CDL',
         template: 'cdl',
         data: this.cdlLength,
+        req:false,
+        status:this.statusDriver
       },
       {
         id: 2,
         name: 'Drug & Alcohol',
         template: 'drug-alcohol',
         data: this.testLength,
+        req:true,
+        status:this.statusDriver
       },
       {
         id: 3,
         name: 'Medical',
         template: 'medical',
         data: this.medicalLength,
+        req:false,
+        status:this.statusDriver
       },
       {
         id: 4,
         name: 'MVR',
         template: 'mvr',
         data: this.mvrLength,
+        req:true,
+        status:this.statusDriver
       },
     ];
   }

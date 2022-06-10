@@ -18,7 +18,7 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() tooltipHeaderName: string = '';
   @Input() route: string = '';
   @Input() options: any = [];
-  @Input() counterData: any;
+  @Input() counterData: number=0;
   @Output() openModalAction = new EventEmitter<any>();
   @Input() hasIcon:boolean=false;
   @Input() hasDateArrow:boolean=false;
@@ -26,7 +26,10 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() customText:string='Date';
   @Output() changeDataArrowUp=new EventEmitter<any>();
   @Output() changeDataArrowDown=new EventEmitter<any>();
+  @Input() hasRequest:boolean;
+  @Output() makeRequest=new EventEmitter<any>();
   @Input() arrayIcons:any[]=[];
+  @Input() statusInactive:boolean=false;
   public up:boolean=false;
   public down:boolean=false;
   constructor(private routes: ActivatedRoute) {}
@@ -34,25 +37,30 @@ export class TaCommonHeaderComponent implements OnInit {
   ngOnInit(): void {}
 
  
-  openModal(val: any) {
+  public openModal(val: any) {
     console.log(val);
     this.openModalAction.emit(val);
   }
-  changeDataArrowUpFun(val:any){
+  public makeRequestFun(req:any){
+    console.log(req);
+    
+    this.makeRequest.emit(req);
+  }
+ public changeDataArrowUpFun(val:any){
      this.up=true;
      if(this.down==true){
        this.down=false;
      }
      this.changeDataArrowUp.emit(val);
   }
-  changeDataArrowDownFun(val:any){
+ public changeDataArrowDownFun(val:any){
     this.down=true;
     if(this.up==true){
       this.up=false;
     }
     this.changeDataArrowDown.emit(val);
   }
-  trackByIndex(index: number, obj: any): any {
+  public trackByIndex(index: number, obj: any): any {
     return index;
   }
 }
