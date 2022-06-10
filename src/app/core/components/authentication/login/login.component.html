@@ -48,7 +48,7 @@
             </div>
           </div>
 
-          <p class="forgot-password" routerLink="/forgot-password">
+          <p class="forgot-password" [routerLink]="['/forgot-password']">
             FORGOT PASSWORD?
           </p>
           <button
@@ -61,15 +61,18 @@
           </button>
           <p class="login-sign-up">
             Don't have an account?
-            <a class="sign-up-link" href="https://truckassist.io/startfreetrial">SIGN UP</a>
+            <a class="sign-up-link" [routerLink]="['/register']">SIGN UP</a>
           </p>
+          <!-- href="https://truckassist.io/startfreetrial" -->
         </form>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="copyright">
-      <p>© Copyright {{ copyrightYear }} TruckAssist, Inc. All rights reserved.</p>
+      <p>
+        © Copyright {{ copyrightYear }} TruckAssist, Inc. All rights reserved.
+      </p>
     </div>
   </div>
 </div>

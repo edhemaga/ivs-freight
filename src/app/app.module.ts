@@ -41,7 +41,7 @@ import { configFactory } from './app.config';
     NavigationSubrouteCardComponent,
     NavigationModalsComponent,
     NavigationUserProfileComponent,
-    NavigationUserCompanyComponent,
+    NavigationUserCompanyComponent
     
   ],
   imports: [

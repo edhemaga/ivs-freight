@@ -1,4 +1,6 @@
 [
+    "assets/svg/authentication/check-email.svg",
+    "assets/svg/authentication/password-changed.svg",
     "assets/svg/authentication/activated.svg",
     "assets/svg/authentication/thank-you.svg",
     "assets/svg/common/arrow_top_right.svg",

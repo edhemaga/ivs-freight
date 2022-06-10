@@ -8,13 +8,13 @@ import { formatSsnPipe } from './formatSsn.pipe';
 
 
 @NgModule({
-  declarations: [
+  declarations: [	
     SafeHtmlPipe,
     formatDatePipe,
     formatPhonePipe,
     formatEinPipe,
     formatSsnPipe
-  ],
+   ],
   imports: [CommonModule],
   exports: [
     SafeHtmlPipe,

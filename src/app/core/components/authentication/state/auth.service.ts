@@ -4,7 +4,12 @@ import { environment } from 'src/environments/environment';
 import { AuthStore } from './auth.store';
 import { map, Observable } from 'rxjs';
 
-import { AccountService, SignUpCompanyCommand } from 'appcoretruckassist';
+import {
+    AccountService,
+    ForgotPasswordCommand,
+    SetNewPasswordCommand,
+    SignUpCompanyCommand,
+} from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStoreService {
@@ -32,6 +37,20 @@ export class AuthStoreService {
                     return user;
                 })
             );
+    }
+
+    public forgotPassword(data: ForgotPasswordCommand): Observable<object> {
+        return this.accountService.apiAccountForgotpasswordPut(
+            data,
+            'response'
+        );
+    }
+
+    public createNewPassword(data: SetNewPasswordCommand): Observable<object> {
+        return this.accountService.apiAccountSetnewpasswordPut(
+            data,
+            'response'
+        );
     }
 
     public signUpCompany(data: SignUpCompanyCommand): Observable<object> {

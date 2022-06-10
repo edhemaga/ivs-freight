@@ -1,33 +1,36 @@
-<div
-    class="thank-you-container container-fluid d-flex flex-column justify-content-between"
->
-    <div class="d-flex flex-column justify-content-center align-items-center">
+<div class="container-fluid">
+  <div class="row">
+    <div
+      class="thank-you-container container-fluid d-flex flex-column justify-content-between"
+    >
+      <div class="d-flex flex-column justify-content-center align-items-center">
         <div class="thank-you-text d-flex flex-column align-items-center">
-            <h1 class="text-center">Thank you <span>for choosing us!</span></h1>
+          <h1 class="m-0 text-center">
+            Thank you <span>for choosing us!</span>
+          </h1>
 
-            <h2 class="text-center">
-                Confirmation email has been sent to:<br /><span>{{
-                    email
-                }}</span>
-            </h2>
+          <h2 class="m-0 text-center">
+            Confirmation email has been sent to:<br /><span>{{ email }}</span>
+          </h2>
 
-            <p class="m-0 text-center">
-                Click on the button in the email to activate your account
-            </p>
+          <p class="m-0 text-center">
+            Click on the button in the email to activate your account
+          </p>
         </div>
 
         <svg-icon
-            class="thank-you-img"
-            src="assets/svg/authentication/thank-you.svg"
-            [svgStyle]="{ 'width.px': '446.83', 'height.px': '354.91' }"
+          src="assets/svg/authentication/thank-you.svg"
+          [svgStyle]="{ 'width.px': '447', 'height.px': '355' }"
         ></svg-icon>
-    </div>
+      </div>
 
-    <!-- COPYRIGHT -->
+      <!-- COPYRIGHT -->
 
-    <div class="row">
+      <div class="row">
         <div class="d-flex justify-content-center align-items-center copyright">
-            <p class="m-0">Copyright © TruckAssist {{ copyrightYear }}.</p>
+          <p class="m-0">Copyright © TruckAssist {{ copyrightYear }}.</p>
         </div>
+      </div>
     </div>
+  </div>
 </div>
