@@ -24,6 +24,7 @@ export class AuthStoreService {
     return this.accountService.apiAccountLoginPost(data).pipe(
       tap((user: SignInResponse) => {
         this.authStore.set({ 1: user });
+        localStorage.setItem("user", JSON.stringify(user));
         this.router.navigate(['/dashboard']);
       })
     );

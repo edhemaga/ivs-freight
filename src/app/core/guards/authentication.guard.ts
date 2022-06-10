@@ -13,18 +13,25 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate() {
-    if(this.authQuery.getEntity(1)) {
-      const currentUser: SignInResponse = this.authQuery.getEntity(1);
+    // ----------------------- PRODUCSTION MODE ----------------------------
+    // if(this.authQuery.getEntity(1)) {
+    //   const currentUser: SignInResponse = this.authQuery.getEntity(1);
 
-      if (currentUser.token) {
-        return true;
-      }
+    //   if (currentUser.token) {
+    //     return true;
+    //   }
+    // }
+
+    // ----------------------- DEVELOP MODE ----------------------------
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user.token) {
+      return true;
     }
     this.router.navigate(['/login']);
-      this.notification.warning(
-        'Access forbidden, please contact administrator.',
-        'Warning:'
-      );
+    this.notification.warning(
+      'Access forbidden, please contact administrator.',
+      'Warning:'
+    );
     return false;
   }
 }

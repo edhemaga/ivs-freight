@@ -23,17 +23,26 @@ export class JwtInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    //-------------------------- PRODUCTION MODE --------------------------------
+    // this.persistStorage.clearStore();
+    // if (this.authQuery.getEntity(1)) {
+    //   request = request.clone({
+    //     headers: request.headers.set(
+    //       'Authorization',
+    //       'Bearer ' + this.authQuery.getEntity(1).token
+    //     ),
+    //   });
+    //   configFactory(this.authQuery.getEntity(1).token);
+    // } 
 
-    this.persistStorage.clearStore();
+    // ------------------------- DEVELOP MODE -----------------------------------
 
-    if (this.authQuery.getEntity(1)) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
       request = request.clone({
-        headers: request.headers.set(
-          'Authorization',
-          'Bearer ' + this.authQuery.getEntity(1).token
-        ),
+        headers: request.headers.set('Authorization', 'Bearer ' + user.token),
       });
-      configFactory(this.authQuery.getEntity(1).token);
+      configFactory(user.token);
     }
     return next.handle(request);
   }
