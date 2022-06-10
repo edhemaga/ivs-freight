@@ -1,4 +1,4 @@
-<app-navigation *ngIf="currentPage !== 'login'"> </app-navigation>
+<app-navigation *ngIf="!(currentPage | blockedContent)"> </app-navigation>
 <div style="display: none">
   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
@@ -25,7 +25,7 @@
 
 <div
   id="top"
-  class="{{ currentPage === 'login' ? 'login-page' : 'content-page' }}"
+  class="{{ (currentPage | blockedContent) ? 'login-page' : 'content-page' }}"
 >
   <router-outlet></router-outlet>
 
@@ -39,7 +39,7 @@
       src="assets/img/svgs/app-scroll-button/ic_truckassist_arrow_top.svg"
     ></svg-icon>
   </div>
-</div>
+</div> 
 
 <div class="low-res-wrapper">
   <div class="low-res-logo">

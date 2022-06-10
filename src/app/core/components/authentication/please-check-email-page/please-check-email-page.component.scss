@@ -1,22 +1,22 @@
 @import 'src/theme/variables';
 
-.thank-you-container {
+.check-email-container {
   background-color: $white;
   height: 100vh;
   min-height: 750px;
   padding-top: 60px;
 
-  .thank-you-text {
+  .check-email-text {
     h1 {
       font-weight: 800;
       font-size: 52px;
       height: 63px;
-      width: 766px;
-      color: $ta-blue;
+      width: 688px;
+      color: $bw6-2;
       margin-bottom: 30px !important;
 
       span {
-        color: $bw6-2;
+        color: #536bc2;
       }
     }
 
@@ -24,33 +24,34 @@
       font-weight: bold;
       font-size: 20px;
       line-height: 24px;
-      width: 454px;
+      width: 762px;
       height: 48px;
       color: $bw6-2;
       margin-bottom: 10px !important;
       text-transform: uppercase;
 
       span {
-        color: $ta-blue;
+        color: #536bc2;
       }
     }
 
     p {
       font-weight: 400;
       font-size: 18px;
-      height: 22px;
-      width: 507px;
+      height: 44px;
+      width: 608px;
+      line-height: 22px;
       color: $bw6-2;
-      margin-bottom: 60px !important;
+      margin-bottom: 38px !important;
     }
   }
 
   .copyright {
     height: 42px;
-    border-top: 0.1rem solid $ta-gray-02;
+    border-top: 0.1rem solid #e5e5e5;
 
     p {
-      color: $ta-blue-2;
+      color: #3551b7;
       font-weight: 400;
       font-size: 14px;
     }

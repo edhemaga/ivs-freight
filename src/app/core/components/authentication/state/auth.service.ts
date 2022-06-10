@@ -7,6 +7,8 @@ import {
   SignInCommand,
   SignInResponse,
   SignUpCompanyCommand,
+  ForgotPasswordCommand,
+  SetNewPasswordCommand,
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
@@ -39,7 +41,24 @@ export class AuthStoreService {
     localStorage.removeItem('user');
   }
 
-  public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
-    return this.accountService.apiAccountSignupcompanyPost(data, 'response');
-  }
+    public forgotPassword(data: ForgotPasswordCommand): Observable<object> {
+        return this.accountService.apiAccountForgotpasswordPut(
+            data,
+            'response'
+        );
+    }
+
+    public createNewPassword(data: SetNewPasswordCommand): Observable<object> {
+        return this.accountService.apiAccountSetnewpasswordPut(
+            data,
+            'response'
+        );
+    }
+
+    public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
+        return this.accountService.apiAccountSignupcompanyPost(
+            data,
+            'response'
+        );
+    }
 }
