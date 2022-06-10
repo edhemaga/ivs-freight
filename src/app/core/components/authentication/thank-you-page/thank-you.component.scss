@@ -1,11 +1,11 @@
-@import "src/theme/variables";
+@import 'src/theme/variables';
 
 .thank-you-container {
   background-color: $white;
-  height: calc(100vh - 0px);
+  height: 100vh;
   min-height: 750px;
-  padding-top: 184px;
-  
+  padding-top: 60px;
+
   .thank-you-text {
     h1 {
       font-weight: 800;
@@ -13,7 +13,7 @@
       height: 63px;
       width: 766px;
       color: $ta-blue;
-      margin-bottom: 30px;
+      margin-bottom: 30px !important;
 
       span {
         color: $bw6-2;
@@ -27,7 +27,7 @@
       width: 454px;
       height: 48px;
       color: $bw6-2;
-      margin-bottom: 10px;
+      margin-bottom: 10px !important;
       text-transform: uppercase;
 
       span {
@@ -41,11 +41,8 @@
       height: 22px;
       width: 507px;
       color: $bw6-2;
+      margin-bottom: 60px !important;
     }
-  }
-
-  .thank-you-img {
-    margin-bottom: 156px;
   }
 
   .copyright {

@@ -1,62 +1,59 @@
 @import 'src/theme/variables';
 
 .check-email-container {
-    background-color: $white;
+  background-color: $white;
+  height: 100vh;
+  min-height: 750px;
+  padding-top: 60px;
 
-    .check-email-text {
-        margin-top: 184px;
+  .check-email-text {
+    h1 {
+      font-weight: 800;
+      font-size: 52px;
+      height: 63px;
+      width: 688px;
+      color: $bw6-2;
+      margin-bottom: 30px !important;
 
-        h1 {
-            font-weight: 800;
-            font-size: 52px;
-            height: 63px;
-            width: 688px;
-            color: $bw6-2;
-            margin-bottom: 30px !important;
-
-            span {
-                color: #536bc2;
-            }
-        }
-
-        h2 {
-            font-weight: bold;
-            font-size: 20px;
-            line-height: 24px;
-            width: 762px;
-            height: 48px;
-            color: $bw6-2;
-            margin-bottom: 10px !important;
-            text-transform: uppercase;
-
-            span {
-                color: #536bc2;
-            }
-        }
-
-        p {
-            font-weight: 400;
-            font-size: 18px;
-            height: 44px;
-            width: 608px;
-            line-height: 22px;
-            color: $bw6-2;
-            margin-bottom: 38px !important;
-        }
+      span {
+        color: #536bc2;
+      }
     }
 
-    .check-email-img {
-        margin-bottom: 150.8px;
+    h2 {
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 24px;
+      width: 762px;
+      height: 48px;
+      color: $bw6-2;
+      margin-bottom: 10px !important;
+      text-transform: uppercase;
+
+      span {
+        color: #536bc2;
+      }
     }
 
-    .copyright {
-        height: 42px;
-        border-top: 0.1rem solid #e5e5e5;
-
-        p {
-            color: #3551b7;
-            font-weight: 400;
-            font-size: 14px;
-        }
+    p {
+      font-weight: 400;
+      font-size: 18px;
+      height: 44px;
+      width: 608px;
+      line-height: 22px;
+      color: $bw6-2;
+      margin-bottom: 38px !important;
     }
+  }
+
+  .copyright {
+    height: 42px;
+    border-top: 0.1rem solid #e5e5e5;
+
+    p {
+      color: #3551b7;
+      font-weight: 400;
+      font-size: 14px;
+    }
+  }
 }
