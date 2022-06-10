@@ -15,6 +15,7 @@ export class BlockedContentPipe implements PipeTransform {
         'check email',
         'create new password',
         'password changed',
+        'register user',
       ].includes(value.toLowerCase())
     ) {
       return true;

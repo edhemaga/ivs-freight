@@ -9,6 +9,7 @@ import { PasswordChangedPageComponent } from './password-changed-page/password-c
 import { RegisterComponent } from './register/register/register.component';
 import { ThankYouComponent } from './thank-you-page/thank-you.component';
 import { AccountActivatedPageComponent } from './account-activated-page/account-activated-page.component';
+import { RegisterUserComponent } from './register-user/register-user.component';
 
 const routes: Routes = [
   {
@@ -55,6 +56,16 @@ const routes: Routes = [
     path: 'forgot-password/password-changed',
     component: PasswordChangedPageComponent,
     data: { title: 'Password Changed' },
+  },
+  {
+    path: 'register-user',
+    component: RegisterUserComponent,
+    data: { title: 'Register User' },
+  },
+  {
+    path: 'register-user/account-activated',
+    component: AccountActivatedPageComponent,
+    data: { title: 'Account Activated' },
   },
 ];
 
