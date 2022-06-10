@@ -39,6 +39,41 @@
       </span>
     </div>
   </div>
+  <div *ngIf="haveTwoInput" class="details-header-wrapper-switcher">
+    <div class="inactive-icon-input">
+      <app-ta-input-dropdown
+        class="dropInput"
+        [formControl]="inputFormControl"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          isDropdown: true,
+          dropdownWidthClass: 'w-col-details-template'
+        }"
+        [options]="optionsCmp"
+        [template]="'details-template'"
+        (selectedItem)="onSelectDetail($event)"
+      >
+      </app-ta-input-dropdown>
+    </div>
+    <div class="arrows">
+      <span  ngbTooltip [mainTooltip]="tooltipPrevious" position="top" tooltipBackground="#6C6C6C">
+        <svg-icon
+          class="arrow-left"
+          (click)="onPreviousAction($event)"
+          src="assets/svg/common/arrow-left.svg"
+        >
+        </svg-icon>
+      </span>
+      <span tooltipBackground="#6C6C6C" ngbTooltip [mainTooltip]="tooltipNext" position="top">
+      <svg-icon
+        class="arrow-right"
+        (click)="onNextAction()"
+        src="assets/svg/common/arrow-left.svg"
+      ></svg-icon>
+      </span>
+    </div>
+  </div>
   <div class="details-header-wrapper-container">
     <div class="details-header-wrapper">
       <ng-content></ng-content>

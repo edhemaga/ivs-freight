@@ -746,14 +746,10 @@
               <div class="cards-container">
                 <div class="card-body-cdl">
                   <div
+                   [ngClass]="{'card-row-issued':cdl.dateDeactivated}"
                     class="card-restriction-endorsment card-restriction-class"
                   >
-                    <!-- <div class="card-item">
-                    <div class="card-item-name">State</div>
-                    <div class="card-item-value">
-                      {{ cdl.state.stateShortName }}
-                    </div>
-                  </div> -->
+                   
                     <div class="card-restriction">
                       <div class="restriction-name">Class</div>
                       <div class="restriction-item-value">
@@ -764,6 +760,12 @@
                       <div class="restriction-name">Issued</div>
                       <div class="restriction-item-value">
                         {{ cdl?.issueDate | formatDateP }}
+                      </div>
+                    </div>
+                    <div *ngIf="cdl.dateDeactivated" class="card-restriction">
+                      <div class="restriction-name">Deactivated</div>
+                      <div class="restriction-item-value">
+                        {{ cdl.dateDeactivated | formatDateP }}
                       </div>
                     </div>
                   </div>
@@ -804,7 +806,7 @@
                             >
                           </span>
                         </p>
-                        <span class="no-data" *ngIf="endors == ''">None</span>
+                        <span class="no-data" style="padding: 0 !important;" *ngIf="cdl.cdlEndorsements.length==0">None</span>
                       </div>
                     </div>
                   </div>

@@ -850,6 +850,14 @@ p {
   font-weight: 400;
   padding: 0 10px;
   color: #b7b7b7;
+  &::-moz-selection {
+    color: #b7b7b7;
+    background: rgb(183, 183, 183, 0.2);
+  }
+  &::selection {
+    color: #b7b7b7;
+    background: rgb(183, 183, 183, 0.2);
+  }
 }
 
 .mileage-template{

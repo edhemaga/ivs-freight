@@ -19,7 +19,7 @@ import {NgApexchartsModule} from "ng-apexcharts";
     DriverDetailsItemComponent,
     RenderMultipleItemsPipe,
     DriverDetailsCardComponent,
-    // Modals
+    // ModalsA
     DriverCdlModalComponent,
     DriverDrugAlcoholModalComponent,
     DriverMedicalModalComponent,
