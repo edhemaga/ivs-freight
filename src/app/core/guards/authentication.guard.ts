@@ -1,33 +1,30 @@
 import { AuthQuery } from './../components/authentication/state/auth.query';
-import {Injectable} from '@angular/core';
-import {CanActivate, Router} from '@angular/router';
-import { AuthService } from '../services/auth/auth.service';
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
 import { NotificationService } from '../services/notification/notification.service';
+import { SignInResponse } from 'appcoretruckassist';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
-    private authenticationService: AuthService,
     private notification: NotificationService,
     private authQuery: AuthQuery
-  ) {
-  }
+  ) {}
 
   canActivate() {
-    //const currentUser = this.authenticationService.currentUserValue;
-    const currentUser = this.authQuery.loggedUserMainInfo;
-    const token = JSON.parse(localStorage.getItem('token'));
-    console.log(token)
-    // if (token && currentUser.token) {
-    //   // TODO HANDLE ROLES SOMETIMES
-    //   return true;
-    // }
-    if(token) {
-      return true;
+    if(this.authQuery.getEntity(1)) {
+      const currentUser: SignInResponse = this.authQuery.getEntity(1);
+
+      if (currentUser.token) {
+        return true;
+      }
     }
     this.router.navigate(['/login']);
-    this.notification.warning('Access forbidden, please contact administrator.', 'Warning:');
+      this.notification.warning(
+        'Access forbidden, please contact administrator.',
+        'Warning:'
+      );
     return false;
   }
 }
