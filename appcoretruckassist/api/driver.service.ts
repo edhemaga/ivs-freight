@@ -248,6 +248,7 @@ export class DriverService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/driver/list`,
             {
+                body: deleteMultipleDriverCommand,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

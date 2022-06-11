@@ -21,10 +21,11 @@ import { SortPipe } from './sort.pipe';
 import { StatusPipePipe } from './status-pipe.pipe';
 import { SumArraysPipe } from './sum-arrays.pipe';
 import { TaSvgPipe } from './ta-svg.pipe';
+import { BlockedContentPipe } from './blockedContent.pipe';
 
 
 @NgModule({
-  declarations: [
+  declarations: [	
     SafeHtmlPipe,
     formatDatePipe,
     formatPhonePipe,
@@ -47,6 +48,7 @@ import { TaSvgPipe } from './ta-svg.pipe';
      HidePasswordPipe,
      InputTypePipe,
      FormatRestrictionEndorsmentPipe,
+     BlockedContentPipe
   ],
   imports: [CommonModule],
   exports: [
@@ -71,6 +73,7 @@ import { TaSvgPipe } from './ta-svg.pipe';
     HidePasswordPipe,
     InputTypePipe,
     FormatRestrictionEndorsmentPipe,
+    BlockedContentPipe
   ],
   providers:[
     DatePipe,

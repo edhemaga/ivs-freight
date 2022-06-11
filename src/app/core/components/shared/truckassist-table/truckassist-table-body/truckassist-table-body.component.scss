@@ -957,3 +957,14 @@ table {
     }
   }
 }
+
+/* Action Animations */
+.add-animation{
+  background: green !important;
+  transition: 0.25s;
+}
+
+.delete-animation{
+  background: red !important;
+  transition: 0.2s;
+}

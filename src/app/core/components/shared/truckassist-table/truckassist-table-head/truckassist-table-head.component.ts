@@ -65,8 +65,6 @@ export class TruckassistTableHeadComponent
       });
 
     // Rows Selected
-    console.log("AFTER STARTING SERVICE");
-    console.log(this.tableService.rowsSelected.getValue());
     this.tableService.currentRowsSelected
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: any[]) => {

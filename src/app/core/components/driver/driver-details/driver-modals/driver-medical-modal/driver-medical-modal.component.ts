@@ -11,6 +11,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 import { DriverTService } from '../../../state/driver.service';
 import { MedicalTService } from '../../../state/medical.service';
 @Component({
@@ -104,8 +105,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     const newData: EditMedicalCommand = {
       id: this.editData.file_id,
       ...this.medicalForm.value,
-      issueDate: new Date(issueDate).toISOString(),
-      expDate: new Date(expDate).toISOString(),
+      issueDate: convertDateToBackend(issueDate),
+      expDate: convertDateToBackend(expDate),
     };
 
     this.medicalService
@@ -130,8 +131,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     const newData: CreateMedicalCommand = {
       driverId: this.editData.id,
       ...this.medicalForm.value,
-      issueDate: new Date(issueDate).toISOString(),
-      expDate: new Date(expDate).toISOString(),
+      issueDate: convertDateToBackend(issueDate),
+      expDate: convertDateToBackend(expDate),
     };
 
     this.medicalService
@@ -158,8 +159,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: MedicalResponse) => {
           this.medicalForm.patchValue({
-            issueDate: moment(new Date(res.issueDate)).format('YYYY-MM-DD'),
-            expDate: moment(new Date(res.expDate)).format('YYYY-MM-DD'),
+            issueDate: convertDateFromBackend(res.issueDate),
+            expDate: convertDateFromBackend(res.expDate),
             note: res.note,
           });
         },

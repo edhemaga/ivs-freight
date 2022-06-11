@@ -47,7 +47,7 @@
   <div class="table-actions">
     <div class="actions-container">
       <!-- Activation -->
-      <div>
+      <div *ngIf="tableRowsSelected.length">
         <svg-icon
           [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
           [src]="'assets/svg/truckassist-table/activation-icon.svg'"
@@ -55,7 +55,7 @@
       </div>
 
       <!-- Delete -->
-      <div>
+      <div *ngIf="tableRowsSelected.length" (click)="deleteSelectedRows()">
         <svg-icon
           [svgStyle]="{ 'width.px': 16, 'height.px': 18 }"
           [src]="'assets/svg/truckassist-table/trash-icon.svg'"
@@ -63,7 +63,7 @@
       </div>
 
       <!-- Print -->
-      <div>
+      <div *ngIf="tableRowsSelected.length">
         <svg-icon
           [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
           [src]="'assets/svg/truckassist-table/print-icon.svg'"

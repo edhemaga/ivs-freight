@@ -8,10 +8,11 @@ import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.compo
 
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
 
+
 const routes: Routes = [
   // Auth Routes
   {
-    path: 'login',
+    path: '',
     loadChildren: () =>
       import('./core/components/authentication/auth.module').then(
         (m) => m.AuthModule

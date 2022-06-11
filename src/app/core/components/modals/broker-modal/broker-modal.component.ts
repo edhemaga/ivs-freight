@@ -223,7 +223,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             },
             error: () => {
               this.notificationService.error(
-                "Driver status can't be changed.",
+                "Broker status can't be changed.",
                 'Success:'
               );
             },
@@ -251,7 +251,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             },
             error: () => {
               this.notificationService.error(
-                "Driver status can't be changed.",
+                "Broker status can't be changed.",
                 'Success:'
               );
             },

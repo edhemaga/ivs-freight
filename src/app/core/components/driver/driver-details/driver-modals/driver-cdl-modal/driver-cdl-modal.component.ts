@@ -14,6 +14,7 @@ import { CdlTService } from '../../../state/cdl.service';
 import { DriverTService } from '../../../state/driver.service';
 import moment from 'moment';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -124,11 +125,11 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'restrictions': {
-        this.selectedRestrictions = event ? event.map((item) => item.id) : [];
+        this.selectedRestrictions = event;
         break;
       }
       case 'endorsments': {
-        this.selectedEndorsment = event ? event.map((item) => item.id) : [];
+        this.selectedEndorsment = event;
         break;
       }
       default: {
@@ -209,16 +210,17 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         next: (res: CdlResponse) => {
           this.cdlForm.patchValue({
             cdlNumber: res.cdlNumber,
-            issueDate: moment(new Date(res.issueDate)).format('YYYY-MM-DD'),
-            expDate: moment(new Date(res.expDate)).format('YYYY-MM-DD'),
-            classType: res.classType,
-            countryType: res.countryType,
+            issueDate: convertDateFromBackend(res.issueDate),
+            expDate: convertDateFromBackend(res.expDate),
+            classType: res.classType.name,
+            countryType: res.countryType.name,
             stateId: res.state.stateName,
-            restrictions: res.cdlRestrictions,
-            endorsements: res.cdlEndorsements,
+            restrictions: null,
+            endorsements: null,
             note: res.note,
           });
-
+          this.selectedEndorsment = res.cdlEndorsements;
+          this.selectedRestrictions = res.cdlRestrictions;
           this.selectedClassType = res.classType;
           this.selectedCountryType = res.countryType;
           this.selectedStateType = res.state;
@@ -235,17 +237,17 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     const newData: EditCdlCommand = {
       id: this.editData.file_id,
       ...this.cdlForm.value,
-      issueDate: new Date(issueDate).toISOString(),
-      expDate: new Date(expDate).toISOString(),
+      issueDate: convertDateToBackend(issueDate),
+      expDate: convertDateToBackend(expDate),
       classType: this.selectedClassType.name,
       countryType: this.selectedCountryType.name,
       stateId: this.selectedStateType.id,
-      restrictions: null,
-      endorsements: null,
+      restrictions: this.selectedRestrictions ? this.selectedRestrictions.map((item) => item.id) : [],
+      endorsements: this.selectedEndorsment ? this.selectedEndorsment.map((item) => item.id) : [],
     };
 
     this.cdlService
-      .addCdl(newData)
+      .updateCdl(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
@@ -267,13 +269,13 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     const newData: CreateCdlCommand = {
       driverId: this.editData.id,
       ...this.cdlForm.value,
-      issueDate: new Date(issueDate).toISOString(),
-      expDate: new Date(expDate).toISOString(),
+      issueDate: convertDateToBackend(issueDate),
+      expDate: convertDateToBackend(expDate),
       classType: this.selectedClassType.name,
       countryType: this.selectedCountryType.name,
       stateId: this.selectedStateType.id,
-      restrictions: this.selectedRestrictions,
-      endorsements: this.selectedEndorsment,
+      restrictions: this.selectedRestrictions ? this.selectedRestrictions.map((item) => item.id) : [],
+      endorsements: this.selectedEndorsment ? this.selectedEndorsment.map((item) => item.id) : [],
     };
 
     this.cdlService

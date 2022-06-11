@@ -31,6 +31,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-modal-upload/ta-upload-file.service';
 import { DriverTService } from '../../driver/state/driver.service';
 import { HttpResponseBase } from '@angular/common/http';
+import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -519,9 +520,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     const newData: CreateDriverCommand = {
       ...form,
-      dateOfBirth: new Date(
-        this.driverForm.get('dateOfBirth').value
-      ).toISOString(),
+      dateOfBirth: convertDateToBackend(this.driverForm.get('dateOfBirth').value),
       ownerId:
         this.driverForm.get('ownerType').value === 'Sole Proprietor'
           ? null
@@ -549,7 +548,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       commissionSolo: parseInt(this.driverForm.get('commissionSolo').value),
       commissionTeam: parseInt(this.driverForm.get('commissionTeam').value),
       twicExpDate: this.driverForm.get('twic').value
-        ? new Date(this.driverForm.get('twicExpDate').value).toISOString()
+        ? convertDateToBackend(this.driverForm.get('twicExpDate').value)
         : null,
       offDutyLocations: this.premmapedOffDutyLocation(),
     };
@@ -586,9 +585,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     const newData: UpdateDriverCommand = {
       id: id,
       ...form,
-      dateOfBirth: new Date(
-        this.driverForm.get('dateOfBirth').value
-      ).toISOString(),
+      dateOfBirth: convertDateToBackend(this.driverForm.get('dateOfBirth').value),
       ownerId:
         this.driverForm.get('ownerType').value === 'Sole Proprietor'
           ? null
@@ -623,7 +620,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       commissionSolo: parseInt(this.driverForm.get('commissionSolo').value),
       commissionTeam: parseInt(this.driverForm.get('commissionTeam').value),
       twicExpDate: this.driverForm.get('twic').value
-        ? new Date(this.driverForm.get('twicExpDate').value).toISOString()
+        ? convertDateToBackend(this.driverForm.get('twicExpDate').value)
         : null,
       offDutyLocations: this.premmapedOffDutyLocation(),
     };
@@ -658,7 +655,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ssn: res.ssn,
             note: res.note,
             avatar: res.avatar,
-            dateOfBirth: moment(new Date(res.dateOfBirth)).format('YYYY-MM-DD'),
+            dateOfBirth: convertDateFromBackend(res.dateOfBirth),
             offDutyLocations: [],
             isOwner: res.owner ? true : false,
             ownerId: res.owner ? res.owner.id : null,
@@ -684,7 +681,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             commissionSolo: res.commissionSolo,
             commissionTeam: res.commissionTeam,
             twic: res.twic,
-            twicExpDate: moment(new Date(res.twicExpDate)).format('YYYY-MM-DD'),
+            twicExpDate: convertDateFromBackend(res.twicExpDate),
             fuelCard: res.fuelCard,
             emergencyContactName: res.emergencyContactName,
             emergencyContactPhone: res.emergencyContactPhone,

@@ -1,5 +1,4 @@
 import { AccidentModalComponent } from './../safety/accident/accident-modal/accident-modal.component';
-import { SumArraysPipe } from './../../pipes/sum-arrays.pipe';
 import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
@@ -32,7 +31,6 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxMaskModule } from "ngx-mask";
 import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
-import { TaSelectComponent } from './ta-select/ta-select.component';
 import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
 import { TaStatusSwitchComponent } from './ta-status-switch/ta-status-switch.component';
 import { Ng5SliderModule } from 'ng5-slider';
@@ -72,7 +70,6 @@ import { BrokerModalComponent } from '../modals/broker-modal/broker-modal.compon
 import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-radiobuttons.component';
 import { TaLikeDislikeComponent } from './ta-like-dislike/ta-like-dislike.component';
 import { TaUserReviewComponent } from './ta-user-review/ta-user-review.component';
-import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
 import { TaCommonHeaderComponent } from './ta-details-header/ta-details-header.component';
 import { TaDetailsHeaderCardComponent } from './ta-details-header-card/ta-details-header-card.component';
 import { TaReCardComponent } from './ta-common-card/ta-re-card.component';
@@ -98,6 +95,8 @@ import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-m
 import { PipesModule } from '../../pipes/pipes.module';
 
 
+
+
 @NgModule({
   declarations: [
     HistoryDataComponent,
@@ -106,7 +105,6 @@ import { PipesModule } from '../../pipes/pipes.module';
     TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
-    TaSelectComponent,
     DeleteDialogComponent,
     EditProfileImageComponent,
     EditProfileImageComponent,
@@ -159,6 +157,7 @@ import { PipesModule } from '../../pipes/pipes.module';
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
+    
 
   
     FilterComponent
@@ -244,7 +243,6 @@ import { PipesModule } from '../../pipes/pipes.module';
     TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
-    TaSelectComponent,
     DeleteDialogComponent,
     SvgDefinitionsComponent,
     CustomDatetimePickersComponent,
@@ -298,7 +296,7 @@ import { PipesModule } from '../../pipes/pipes.module';
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
-
+    AppTooltipeModule,
     FilterComponent
   ],
   providers: [],

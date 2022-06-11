@@ -1,4 +1,5 @@
 import { AbstractControl } from '@angular/forms';
+import moment from 'moment';
 
 export const calculateParkingSlot = (
   value: string,
@@ -76,4 +77,12 @@ export const calculateParkingSlot = (
     .reduce((accumulator, item) => {
       return (accumulator += item);
     }, 0);
+};
+
+export const convertDateToBackend = (date: string) => {
+  return new Date(date).toISOString();
+};
+
+export const convertDateFromBackend = (date: string) => {
+  return moment(new Date(date)).format('YYYY-MM-DD');
 };
