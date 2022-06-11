@@ -34,3 +34,12 @@
 .note-cards{
     padding-right: 1px;
 }
+.assignTo-item{
+    height: 34px;
+    .assignTo-vehicle{
+        padding-left: 6px;
+        svg{
+            width: fit-content !important;
+        }
+    }
+}

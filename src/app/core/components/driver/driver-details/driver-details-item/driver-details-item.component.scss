@@ -496,3 +496,21 @@
   // margin-top: -9px;
   margin-bottom: 2px;
 }
+.activate-button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #6d82c7;
+  color: #ffffff;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 800;
+  width: 303px;
+  height: 26px;
+  margin-top: 12px;
+  cursor: pointer;
+  line-height: 17px;
+  &:hover{
+    background-color: #536BC2;
+  }
+}

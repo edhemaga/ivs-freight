@@ -30,6 +30,7 @@ export class TaReCardComponent implements OnInit {
   @Input() public cardSecondName: string = '';
   @Output() public dropActions = new EventEmitter<any>();
   @Input() public weeklyWidth:string='';
+  @Input() isDeactivated:any;
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
   public toggleDropDown: boolean;
@@ -39,10 +40,10 @@ export class TaReCardComponent implements OnInit {
     this.CloseCard();
   }
 
-  public CloseCard() {
-    let currentDate = moment().format('MM/DD/YYYY');
-    if (moment(this.expDateClose).isBefore(currentDate)) {
-      this.isCardOpen = false;
+  public CloseCard() {   
+     let currentDate = moment().format('MM/DD/YYYY');
+    if (moment(this.expDateClose).isBefore(currentDate) || this.isDeactivated) {
+      this.isCardOpen = false; 
     }
   }
 
@@ -50,7 +51,7 @@ export class TaReCardComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     let currentDate = moment().format('MM/DD/YYYY');
-    if (moment(this.expDateClose).isBefore(currentDate)) {
+    if (moment(this.expDateClose).isBefore(currentDate) || this.isDeactivated) {
       this.isCardOpen = !this.isCardOpen;
   }
   }
@@ -71,9 +72,10 @@ export class TaReCardComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     this.copiedCommon = true;
-    setInterval(() => {
+   const timeoutCommon= setInterval(() => {
       this.copiedCommon = false;
-    }, 150);
+      clearInterval(timeoutCommon)
+    }, 300);
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';

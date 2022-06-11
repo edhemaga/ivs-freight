@@ -2,23 +2,27 @@
   <div [ngSwitch]="data.template">
     <!---------------------------- GENERAL TEMPLATE ----------------------------->
     <div *ngSwitchCase="'general'">
-      <app-truck-details-card
-        [data]="truckData.truck"
-      >
+      <app-truck-details-card [data]="truckData.truck">
       </app-truck-details-card>
     </div>
     <!---------------------------- Registration TEMPLATE ----------------------------->
     <div *ngSwitchCase="'registration'">
-      <div *ngFor="let reg of truckData.truck.registrations; let i=index; trackBy: identity">
+      <div
+        *ngFor="
+          let reg of truckData.truck.registrations;
+          let i = index;
+          trackBy: identity
+        "
+      >
         <app-ta-re-card
           [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage(i)"
           [cardNameCommon]="reg.licensePlate"
           [hasCopyIcon]="false"
           [options]="dataEdit"
-          [expDateClose]=" reg.expDate | formatDateP "
+          [expDateClose]="reg.expDate | formatDateP"
           [optionsId]="reg.id"
-          (dropActions)="optionsEvent($event,'edit-registration')"
+          (dropActions)="optionsEvent($event, 'edit-registration')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -30,7 +34,7 @@
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
                   <div class="card-item-value">
-                    {{reg.issueDate | formatDateP }}
+                    {{ reg.issueDate | formatDateP }}
                   </div>
                 </div>
               </div>
@@ -40,7 +44,7 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]=" reg.expDate | formatDateP"
+                    [expireDate]="reg.expDate | formatDateP"
                     [startDate]="reg.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
@@ -67,15 +71,21 @@
     </div>
     <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
     <div *ngSwitchCase="'fhwa-insepction'">
-      <div *ngFor="let fhwa of truckData.truck.inspections; let i = index; trackBy: identity">
+      <div
+        *ngFor="
+          let fhwa of truckData.truck.inspections;
+          let i = index;
+          trackBy: identity
+        "
+      >
         <app-ta-re-card
           [options]="dataEdit"
+          [cardDocumentCounter]="1"
           [cardNameCommon]="fhwa.issueDate | formatDateP"
           (resizePage)="toggleResizePage(i)"
-          [expDateClose]=" '04/04/25' | formatDateP"
+          [expDateClose]="'04/04/25' | formatDateP"
           [optionsId]="fhwa.id"
-          (dropActions)="optionsEvent($event,'edit-inspection')"
-          
+          (dropActions)="optionsEvent($event, 'edit-inspection')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -111,7 +121,13 @@
 
     <!---------------------------- Title TEMPLATE ----------------------------->
     <div *ngSwitchCase="'title'">
-      <div *ngFor="let title of truckData.truck.titles; let i=index; trackBy: identity">
+      <div
+        *ngFor="
+          let title of truckData.truck.titles;
+          let i = index;
+          trackBy: identity
+        "
+      >
         <app-ta-re-card
           [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage(i)"
@@ -119,7 +135,7 @@
           [options]="dataEdit"
           [expDateClose]="'04/04/27' | formatDateP"
           [optionsId]="title.id"
-          (dropActions)="optionsEvent($event,'edit-title')"
+          (dropActions)="optionsEvent($event, 'edit-title')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -131,7 +147,7 @@
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
                   <div class="card-item-value">
-                    {{title.issueDate | formatDateP }}
+                    {{ title.issueDate | formatDateP }}
                   </div>
                 </div>
               </div>
@@ -174,7 +190,6 @@
         [cardNameCommon]="'KSKA FREIGHT, INC'"
         [isCardOpen]="true"
         [expDateClose]="'04/04/27' | formatDateP"
-        
       >
         <div class="purchase-container">
           <div class="purchase-template">
@@ -377,21 +392,14 @@
                 </app-ta-files>
               </div>
             </div>
-            <div class="divider"></div>
-            <div class="details-page-row-5">
-              <div class="note-item">
-                <app-ta-input-note
-                  [formControl]="note"
-                  [isVisibleDivider]="false"
-                  [isVisibleNote]="true"
-                  [isVisibleArrow]="false"
-                  [isVisibleSecondDivider]="false"
-                  [minRows]="1"
-                  [placeholder]="'Write something.'"
-                  [customClass]="'note-small'"
-                >
-                </app-ta-input-note>
-              </div>
+           
+            <div class="note-cards">
+              <app-ta-input-note
+                [formControl]="note"
+                [isReadOnly]="true"
+                [isVisibleArrow]="false"
+                [isVisibleSecondDivider]="false"
+              ></app-ta-input-note>
             </div>
           </div>
         </div>

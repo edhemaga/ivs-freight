@@ -1,7 +1,7 @@
 <div class="card-container-cmp" [ngClass]="{ 'card-flex': !isCardOpen }">
   <div
     ngbTooltip
-    [mainTooltip]="isCardOpen ? '' : 'Open Card'"
+    [mainTooltip]="isCardOpen ? 'Close Card' : 'Open Card'"
     position="top"
     [tooltipBackground]="isCardOpen ? 'rgba(0,0,0,0)' : '#6C6C6C'"
     class="tooltipClose"
@@ -51,7 +51,7 @@
               [ngClass]="{ 'card-close-title': !isCardOpen }"
               class="open-name"
               *ngIf="!isCardOpen && expDateClose"
-              >Expired on {{ expDateClose }}
+              ><span *ngIf="!isDeactivated">Expired</span> <span *ngIf="isDeactivated">Voided</span>  on {{ expDateClose }}
             </span>
             <span *ngIf="cardSecondName && isCardOpen" class="second-name">{{
               cardSecondName

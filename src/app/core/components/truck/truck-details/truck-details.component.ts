@@ -65,6 +65,7 @@ export class TruckDetailsComponent implements OnInit {
         id: 4,
         name: 'Lease / Purchase',
         template: 'lease-purchase',
+        data:1
       },
     ];
   }

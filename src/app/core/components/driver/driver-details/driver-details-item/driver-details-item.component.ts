@@ -171,7 +171,19 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           class: 'regular-text',
           contentType: 'edit',
         },
-
+        {
+         title:'Renew',
+         name:'renew',
+         class:'regular-text',
+         contentType:'add'
+        },
+        {
+          title: 'Activate',
+          reverseTitle: 'Deactivate',
+          name: 'activate-item',
+          class: 'regular-text',
+          contentType: 'activate',
+        },
         {
           title: 'Delete',
           name: 'delete-item',

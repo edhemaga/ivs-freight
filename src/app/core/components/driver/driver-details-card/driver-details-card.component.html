@@ -739,6 +739,7 @@
               [hasCopyIcon]="true"
               [optionsId]="cdl.id"
               [weeklyWidth]="'28'"
+              [isDeactivated]="cdl.dateDeactivated"
               [stateTooltipName]="cdl.state.stateName"
               [shortName]="cdl.state.stateShortName"
               (dropActions)="optionsEvent($event, 'edit-licence')"

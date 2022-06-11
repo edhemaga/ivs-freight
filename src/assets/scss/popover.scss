@@ -13,7 +13,8 @@
       .table-dropdown-content {
         cursor: pointer;
         width: 100%;
-        min-width: 110px;
+        min-width: 97px;
+        max-width: 109px;
         height: 26px;
         border-radius: 2px;
         display: flex;
@@ -42,8 +43,8 @@
           }
 
           .add {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             background-image: url("../../assets/png/table-dropdown/add.png");
           }
 

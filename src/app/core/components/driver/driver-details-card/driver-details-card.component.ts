@@ -179,45 +179,53 @@ export class DriverDetailsCardComponent implements OnInit, AfterContentInit {
     switch (copVal) {
       case 'phone':
         this.copiedPhone = true;
-        setInterval(() => {
+       const timeoutPhone = setInterval(() => {
           this.copiedPhone = false;
-        }, 100);
+          clearInterval(timeoutPhone);
+        }, 300);
         break;
       case 'bankAcc':
         this.copiedBankAccount = true;
-        setInterval(() => {
+        const timeoutBank = setInterval(() => {
           this.copiedBankAccount = false;
-        }, 100);
+          
+         clearInterval(timeoutBank);
+        }, 300);
         break;
       case 'bankRouting':
         this.copiedBankRouting = true;
-        setInterval(() => {
+        const timeoutRouting =  setInterval(() => {
           this.copiedBankRouting = false;
-        }, 100);
+          clearInterval(timeoutRouting);
+        }, 300);
         break;
       case 'ein':
         this.copiedEin = true;
-        setInterval(() => {
+        const timeoutEin =  setInterval(() => {
           this.copiedEin = false;
-        }, 100);
+          clearInterval(timeoutEin);
+        }, 300);
         break;
       case 'ssn':
         this.copiedSSN = true;
-        setInterval(() => {
+        const timeoutSSN = setInterval(() => {
           this.copiedSSN = false;
-        }, 100);
+          clearInterval(timeoutSSN);
+        }, 300);
         break;
       case 'driver-phone':
         this.copiedDriverPhone = true;
-        setInterval(() => {
+        const timeoutDriverPhone =  setInterval(() => {
           this.copiedDriverPhone = false;
-        }, 100);
+          clearInterval(timeoutDriverPhone);
+        }, 300);
         break;
       case 'driver-email':
         this.copiedDriverEmail = true;
-        setInterval(() => {
+        const timeoutDriverEmail = setInterval(() => {
           this.copiedDriverEmail = false;
-        }, 100);
+          clearInterval(timeoutDriverEmail);
+        }, 300);
         break;
     }
 
