@@ -25,7 +25,7 @@ import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
   animations: [card_component_animation('showHideCardBody')],
   providers: [SumArraysPipe],
 })
-export class DriverDetailsCardComponent implements OnInit, AfterContentInit {
+export class DriverDetailsCardComponent implements OnInit {
   @Input() data: any;
   @Input() templateCard: boolean = false;
   public note: FormControl = new FormControl();
@@ -62,10 +62,7 @@ export class DriverDetailsCardComponent implements OnInit, AfterContentInit {
     private sumArr: SumArraysPipe
   ) {}
 
-  ngAfterContentInit() {
-    this.getYearsAndDays();
-    this.widthOfProgress();
-  }
+ 
 
   ngOnInit(): void {
     console.log(this.data);
@@ -96,6 +93,8 @@ export class DriverDetailsCardComponent implements OnInit, AfterContentInit {
         name: 'ALL',
       },
     ];
+    this.getYearsAndDays();
+    this.widthOfProgress();
   }
   /**Function return user image if have in DB or default image */
   public transformImage() {
@@ -352,6 +351,8 @@ export class DriverDetailsCardComponent implements OnInit, AfterContentInit {
         this.lastDate = moment(maxEmpDate).format('MM/DD/YY');
       }
     }
+    console.log('aa');
+    
   }
 
   public getYearsAndDays() {
@@ -365,7 +366,11 @@ export class DriverDetailsCardComponent implements OnInit, AfterContentInit {
       let sum3 = sum * 365.25 + sum2;
       this.yearsService = Math.trunc(sum3 / 365.25);
       this.daysService = Math.trunc(sum3 % 365.25);
+      console.log('bbb');
+      
     }
+    console.log('aaaa');
+    
   }
   public mouseEnter(dat: any) {
     this.tooltipData = dat;

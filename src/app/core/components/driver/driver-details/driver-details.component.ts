@@ -13,6 +13,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { of, Subject, switchMap, takeUntil } from 'rxjs';
 import { DriversQuery } from '../state/driver.query';
 import { DriverTService } from '../state/driver.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-driver-details',
@@ -27,8 +28,12 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   public mvrLength: number = 0;
   public testLength: number = 0;
   public medicalLength: number = 0;
-  public statusDriver:boolean;
+  public statusDriver: boolean;
   public data: any;
+  public hasDangerCDL: boolean;
+  public hasDangerMedical:boolean;
+  public hasDangerTest:boolean;
+  public hasDangerMvr:boolean;
 
   constructor(
     private activated_route: ActivatedRoute,
@@ -37,18 +42,17 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initTableOptions();
-    this.data = this.activated_route.snapshot.data;
-    this.cdlLength = this.data.driver?.cdls.length;
-    this.mvrLength = this.data.driver?.mvrs.length;
-    this.medicalLength = this.data.driver?.medicals.length;
-    this.testLength = this.data.driver?.tests.length;
-    if(this.data.driver.status == 0){
-      this.statusDriver=true;
-    }else{
-      this.statusDriver=false;
+    this.data = this.activated_route.snapshot.data.driver;
+    this.cdlLength = this.data?.cdls.length;
+    this.mvrLength = this.data?.mvrs.length;
+    this.medicalLength = this.data?.medicals.length;
+    this.testLength = this.data?.tests.length;
+    if (this.data.status == 0) {
+      this.statusDriver = true;
+    } else {
+      this.statusDriver = false;
     }
-    console.log(this.statusDriver);
-    
+    this.getDanger();
     this.detailCongif();
   }
 
@@ -70,32 +74,36 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         name: 'CDL',
         template: 'cdl',
         data: this.cdlLength,
-        req:false,
-        status:this.statusDriver
+        req: false,
+        status: this.statusDriver,
+        hasDangerC:this.hasDangerCDL
       },
       {
         id: 2,
         name: 'Drug & Alcohol',
         template: 'drug-alcohol',
         data: this.testLength,
-        req:true,
-        status:this.statusDriver
+        req: true,
+        status: this.statusDriver,
+        hasDangerC:this.hasDangerTest
       },
       {
         id: 3,
         name: 'Medical',
         template: 'medical',
         data: this.medicalLength,
-        req:false,
-        status:this.statusDriver
+        req: false,
+        status: this.statusDriver,
+        hasDangerC:this.hasDangerMedical
       },
       {
         id: 4,
         name: 'MVR',
         template: 'mvr',
         data: this.mvrLength,
-        req:true,
-        status:this.statusDriver
+        req: true,
+        status: this.statusDriver,
+        hasDangerC:this.hasDangerMvr
       },
     ];
   }
@@ -196,5 +204,87 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  public getDanger() {
+    let arrCDl=[];
+    let arrMedical=[];
+    let arrTests=[];
+    let arrMVR=[];
+    this.data.cdls=this.data.cdls.map(
+      (ele)=>{
+        if(moment(ele.expDate).isBefore(moment()) || ele.dateDeactivated){
+         this.hasDangerCDL=false;
+        }else{
+          this.hasDangerCDL=true;
+        }
+        arrCDl.push(this.hasDangerCDL)
+        if(arrCDl.includes(true)){
+          this.hasDangerCDL=false;
+        }else{
+          this.hasDangerCDL=true;
+        }
+        return {
+          ...ele,
+          showDanger:this.hasDangerCDL,
+        };
+    })
+  
+    
+    this.data.medicals=this.data.medicals.map(
+      (eleMed)=>{
+        if(moment(eleMed.expDate).isBefore(moment())){
+          this.hasDangerMedical=false;
+        }else{
+          this.hasDangerMedical=true;
+        }
+        arrMedical.push(this.hasDangerMedical)
+        if(arrMedical.includes(true)){
+          this.hasDangerMedical=false;
+        }else{
+         this.hasDangerMedical= true;
+        }
+        return {
+          ...eleMed,
+          showDanger:this.hasDangerMedical,
+        };
+    })
+    this.data.tests=this.data.tests.map(
+      (eleTest)=>{
+        if(moment(eleTest.testingDate).isBefore(moment())){
+          this.hasDangerTest=false;
+        }else{
+          this.hasDangerTest=true;
+        }
+        arrTests.push(this.hasDangerTest)
+        if(arrTests.includes(true)){
+          this.hasDangerTest=false;
+        }else{
+         this.hasDangerTest= true;
+        }
+        return {
+          ...eleTest,
+          showDanger:this.hasDangerTest,
+        };
+    })
+
+    this.data.mvrs=this.data.mvrs.map(
+      (eleMvr)=>{
+        if(moment(eleMvr.issueDate).isBefore(moment())){
+          this.hasDangerMvr=false;
+        }else{
+          this.hasDangerMvr=true;
+        }
+        arrMVR.push(this.hasDangerMvr)
+        if(arrMVR.includes(true)){
+          this.hasDangerMvr=false;
+        }else{
+         this.hasDangerMvr= true;
+        }
+        return {
+          ...eleMvr,
+          showDanger:this.hasDangerMvr,
+        };
+    })
+    
+  }
   ngOnDestroy(): void {}
 }

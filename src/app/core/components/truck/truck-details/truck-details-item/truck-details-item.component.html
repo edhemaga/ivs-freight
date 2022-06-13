@@ -184,9 +184,10 @@
     </div>
     <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
     <div *ngSwitchCase="'lease-purchase'">
+      
       <app-ta-re-card
         [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
-        (resizePage)="toggleResizePage($event)"
+        (resizePage)="toggleResizePage(5)"
         [cardNameCommon]="'KSKA FREIGHT, INC'"
         [isCardOpen]="true"
         [expDateClose]="'04/04/27' | formatDateP"
@@ -246,7 +247,7 @@
           <!----------Progress Card---------->
           <div
             class="details-progress-container purchase-progress"
-            [ngClass]="{ 'no-toggler': !toggler }"
+            [ngClass]="{ 'no-toggler': !toggler[5] }"
           >
             <app-ta-currency-progress-bar
               [template]="'payments'"
@@ -258,7 +259,7 @@
           </div>
 
           <!----------Amortization table Card---------->
-          <div *ngIf="toggler">
+          <div *ngIf="toggler[5]">
             <div class="details-document-container amortization-details">
               <div class="divider"></div>
               <div class="icon-counter-wrapper">
@@ -393,7 +394,7 @@
               </div>
             </div>
            
-            <div class="note-cards">
+            <div class="note-cards-lease">
               <app-ta-input-note
                 [formControl]="note"
                 [isReadOnly]="true"

@@ -57,6 +57,7 @@
         [ngClass]="{ 'has-counter-header': counterData }"
       >
         <app-ta-counter
+          *ngIf="!danger"
           [countBackgroud]="'#F3F3F3'"
           [countColor]="'#919191'"
           [countHeight]="'24px'"
@@ -64,6 +65,7 @@
           [count]="counterData"
         >
         </app-ta-counter>
+        <svg-icon  *ngIf="danger" class="danger-svg" src="assets/svg/common/ic_danger.svg"></svg-icon>
         <p class="header-name disable-selection">{{ headerText }}</p>
         <div *ngIf="hasIcon" class="repair-header-icons">
           <span class="ic-hed" *ngFor="let ic of arrayIcons; trackBy: trackByIndex">

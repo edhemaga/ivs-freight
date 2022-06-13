@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { FuelDetailsRoutes } from './fuel-details.routing';
+import { TruckassistTableModule } from '../../shared/truckassist-table/truckassist-table.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { FuelDetailsRoutes } from './fuel-details.routing';
     SharedModule,
     FuelDetailsRoutes,
     TruckassistProgressExpirationModule,
+    TruckassistTableModule
   ]
 })
 export class FuelDetailsModule {}

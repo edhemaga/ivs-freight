@@ -43,7 +43,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
 
   public dataTest: any;
   public driverData: any;
-
+ public expDateCard:any;
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService
@@ -116,13 +116,29 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
     this.initTableOptions();
     this.getDriversList();
     this.getDriverById();
+    this.getExpireDate()
   }
 
   /**Function return driver by id */
   public getDriverById() {
     this.driverData = this.activated_route.snapshot.data;
   }
-
+ public getExpireDate(){
+  this.driverData.driver.cdls= this.driverData.driver.cdls.map(
+    (ele)=>{
+    if(moment(ele.expDate).isBefore(moment())){
+      this.expDateCard=false;
+    }else{
+      this.expDateCard=true;
+    }
+    return {
+      ...ele,
+      showButton:this.expDateCard,
+    };
+   })
+   console.log( this.driverData.driver.cdls);
+   
+ }
   public getDriversList() {
     for (let i = 0; i < this.arrayDrivers.length; i++) {
       this.arrayDrivers[i];

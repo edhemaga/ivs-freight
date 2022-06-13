@@ -42,8 +42,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
-    this.getDriversData();
+    
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -100,6 +99,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
             });
         }
       });
+      this.initTableOptions();
+    this.getDriversData();
   }
 
   public initTableOptions(): void {
@@ -239,12 +240,15 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       this.viewData = td.data;
 
       this.viewData = this.viewData.map((data: DriversState) => {
+        console.log(data);
+        
         return this.mapDriverData(data);
       });
     }
   }
 
   mapDriverData(data: any){
+    
     return {
       ...data,
       isSelected: false,

@@ -21,7 +21,7 @@
             <div class="svg-wrapper">
               <svg-icon
                 class="details-header-model"
-                src="assets/svg/common/chevrolet.svg"
+                src="{{'assets/svg/common/trucksmake/'+data.truckMake.logoName }}"
               >
               </svg-icon>
             </div>
@@ -99,6 +99,7 @@
         class="item-cards"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
+        [isCardOpen]="true"
         [cardName]="'Additional Details'"
         *ngIf="data.truckGrossWeight"
       >
@@ -158,6 +159,7 @@
         class="item-cards"
         [cardName]="'Owner'"
         [bodyTemplate]="'card'"
+        [isCardOpen]="true"
       >
         <div class="common-template">
           <div class="common-template-item">
@@ -169,7 +171,7 @@
           <div class="common-template-item">
             <div class="common-template-item-name">Commission</div>
             <div class="common-template-item-value size18">
-              {{ data.commission }}
+              {{ data.commission }}%
             </div>
           </div>
         </div>
@@ -184,6 +186,7 @@
         class="item-cards"
         [cardName]="'Perfomance'"
         [bodyTemplate]="'card'"
+        [isCardOpen]="true"
       >
         <div class="charts-template perfomance">
           <app-ta-input-radiobuttons [buttons]="buttonsArrayPerfomance">
@@ -248,6 +251,7 @@
         [animationsDisabled]="false"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         class="item-cards"
+        [isCardOpen]="true"
       >
         <div class="charts-template perfomance">
           <app-ta-input-radiobuttons [buttons]="buttonsArrayRevenue">
@@ -309,7 +313,7 @@
                   <span *ngIf="owHist.endDate">{{ owHist.endDate | formatDateP}}</span>
                   <span *ngIf="!owHist.endDate">Today</span>
                 </p>
-                <p class="duration">1 y 200 d</p>
+                <p class="duration">{{owHist.duration.Years}} y {{owHist.duration.Days}} d</p>
               </div>
             </div>
           </div>

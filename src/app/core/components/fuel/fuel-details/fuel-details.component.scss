@@ -14,12 +14,13 @@
     .repair-header-fuel {
         padding: 0 10px;
         display: grid;
-        grid-template-columns: 65px 140px 100px 58px 90px 220px 70px 50px 52px;
-        grid-column-gap: 15px;
-        column-gap: 15px;
+        grid-template-columns: 72px 140px 105px 65px 90px 204px 76px 67px 52px;
+        grid-column-gap: 11px;
+        column-gap: 13px;
         height: 18px;
         margin-bottom: 6px;
-        .repaier-headers-fuel{
+
+        .repaier-headers-fuel {
             font-size: 14px;
             font-weight: 700;
             color: #919191;
@@ -33,7 +34,7 @@
             }
         }
     }
-    .repair-items-wrapper-fuel{
+    .repair-items-wrapper-fuel {
         overflow-y: scroll;
         height: calc(96vh - 62px);
         overflow-x: hidden;
@@ -63,12 +64,13 @@
         .items-header-fuel {
             padding: 0 4px;
             display: grid;
-            grid-template-columns: 81px 154px 114px 76px 104px 236px 83px 53px 49px;
-          
+            grid-template-columns: 74px 142px 106px 69px 90px 227px 38px 77px 49px;
             align-content: center;
             grid-auto-flow: column;
+            column-gap: 11px;
             margin-top: 8px;
             margin-bottom: 8px;
+        
             .dots-vertical {
                 width: 5px;
                 height: 18px !important;

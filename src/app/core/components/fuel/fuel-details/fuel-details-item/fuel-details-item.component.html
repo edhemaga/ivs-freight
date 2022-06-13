@@ -111,7 +111,7 @@
         <div class="repair-items-wrapper-fuel">
           <span
             *ngFor="let dummy of dummyDataFuel; let i = index"
-            [ngClass]="{ 'finish-order-cont': dummy.finishOrder == false }"
+            [ngClass]="{ 'blue-background': dummy.blue_back == true }"
           >
             <div class="repair-items-fuel">
               <div class="items-header-fuel">
@@ -124,13 +124,13 @@
                 <span class="date-fuel">{{ dummy.fuel_g }}</span>
                 <div class="ppg-icon-fuel">
                   <svg-icon class="ppg-icon" [src]="dummy.icon"></svg-icon>
-                <span class="date-fuel">{{ dummy.ppg }}</span>
+                <span class="date-fuel">${{ dummy.ppg }}</span>
               </div>
                 <span class="cost">${{ dummy.cost }}</span>
 
                 <div
                   class="dots-vertical"
-                  [ngClass]="{ 'dots-top': dummy.blue_back == false }"
+                  [ngClass]="{ 'dots-top-fuel': dummy.blue_back == true }"
                 >
                   <app-table-dropdown
                     [options]="dummyData.actions"

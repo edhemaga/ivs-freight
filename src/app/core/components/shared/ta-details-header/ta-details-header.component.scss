@@ -237,3 +237,14 @@ svg {
         background-color: #536BC2;
       }
 }
+.danger-svg{
+    margin-left: 3px;
+    margin-right: 6px;
+    svg{
+        width: 18px;
+        height: 18px;
+        path{
+            fill: #e57373;
+        }
+    }
+}
