@@ -24,10 +24,10 @@ export class AuthGuard implements CanActivate {
 
     // ----------------------- DEVELOP MODE ----------------------------
     const user = JSON.parse(localStorage.getItem('user'));
-    if (user.token) {
+    if (user) {
       return true;
     }
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth']);
     this.notification.warning(
       'Access forbidden, please contact administrator.',
       'Warning:'

@@ -57,7 +57,11 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getTaskDropdowns();
-    this.companyUser = this.authQuery.getEntity(1);
+    // -------------- PRODUCTION MODE -----------------
+    // this.companyUser = this.authQuery.getEntity(1);
+
+    // -------------- DEVELOP MODE --------------------
+    this.companyUser = JSON.parse(localStorage.getItem('user'));
 
     if (this.editData) {
       this.editTask(this.editData.id);
@@ -148,10 +152,12 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     // });
 
     // -------------------------- DEVELOP MODE --------------------------------
-    const user = JSON.parse(localStorage.getItem('user'));
     this.comments.unshift({
       companyUser: {
-        fullName: user.firstName.concat(' ', user.lastName),
+        fullName: this.companyUser.firstName.concat(
+          ' ',
+          this.companyUser.lastName
+        ),
         avatar: 'https://picsum.photos/id/237/200/300',
       },
       commentContent: '',
@@ -368,6 +374,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             };
           });
           this.taskStatus = res.status;
+          console.log(res.status);
         },
         error: () => {
           this.notificationService.error("Can't get task.", 'Error:');

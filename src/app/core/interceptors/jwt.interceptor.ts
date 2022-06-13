@@ -33,7 +33,7 @@ export class JwtInterceptor implements HttpInterceptor {
     //     ),
     //   });
     //   configFactory(this.authQuery.getEntity(1).token);
-    // } 
+    // }
 
     // ------------------------- DEVELOP MODE -----------------------------------
 

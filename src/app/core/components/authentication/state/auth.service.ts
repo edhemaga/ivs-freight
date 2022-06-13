@@ -25,8 +25,10 @@ export class AuthStoreService {
   public accountLogin(data: SignInCommand): Observable<SignInResponse> {
     return this.accountService.apiAccountLoginPost(data).pipe(
       tap((user: SignInResponse) => {
+        // Production
         this.authStore.set({ 1: user });
-        localStorage.setItem("user", JSON.stringify(user));
+        // Develop
+        localStorage.setItem('user', JSON.stringify(user));
         this.router.navigate(['/dashboard']);
       })
     );
@@ -36,29 +38,20 @@ export class AuthStoreService {
     // ---- PRODUCTION MODE ----
     this.persistStorage.clearStore();
     this.persistStorage.destroy();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
     // ---- DEVELOP MODE ----
     localStorage.removeItem('user');
   }
 
-    public forgotPassword(data: ForgotPasswordCommand): Observable<object> {
-        return this.accountService.apiAccountForgotpasswordPut(
-            data,
-            'response'
-        );
-    }
+  public forgotPassword(data: ForgotPasswordCommand): Observable<object> {
+    return this.accountService.apiAccountForgotpasswordPut(data, 'response');
+  }
 
-    public createNewPassword(data: SetNewPasswordCommand): Observable<object> {
-        return this.accountService.apiAccountSetnewpasswordPut(
-            data,
-            'response'
-        );
-    }
+  public createNewPassword(data: SetNewPasswordCommand): Observable<object> {
+    return this.accountService.apiAccountSetnewpasswordPut(data, 'response');
+  }
 
-    public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
-        return this.accountService.apiAccountSignupcompanyPost(
-            data,
-            'response'
-        );
-    }
+  public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
+    return this.accountService.apiAccountSignupcompanyPost(data, 'response');
+  }
 }
