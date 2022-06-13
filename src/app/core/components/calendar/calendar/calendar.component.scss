@@ -220,11 +220,11 @@
                 }
 
                 .ta-custom-card .ta-card-header.active .header-text{
-                    color: #919191;
+                    color: #6C6C6C;
                 }
 
                 .ta-custom-card .ta-card-header.active:hover .header-text{
-                    color: #919191 !important;
+                    color: #6C6C6C !important;
                 }
 
                 .ta-custom-card .ta-card-header:hover .header-text{
@@ -346,9 +346,11 @@
                             line-height: 19px;
                             user-select: none;
     
-                            &:hover{
-                                cursor: pointer;
-                                color: #3551B7;
+                            &.today{
+                                &:hover{
+                                    cursor: pointer;
+                                    color: #3551B7;
+                                }    
                             }
                         }
     
@@ -400,11 +402,15 @@
                                     &.current-month{
                                         color: #536BC2;
                                     }
-        
-                                    &.event{
-                                        background-color: #CCCCCC;
+
+                                    &.current-month.active{
+                                        background-color: #97A8DC;
                                         color: #fff;
                                     }
+        
+                                    &:hover{
+                                        background-color: #CCCCCC;
+                                        color: #fff;                                    }
         
                                     &.active{
                                         background-color: #919191;
@@ -412,7 +418,11 @@
                                     }
     
                                     &.inactiv{
-                                        color: #B7B7B7;   
+                                        color: #B7B7B7;  
+                                        
+                                        &:hover{
+                                            background-color: #fff;
+                                        }
                                     }        
                                 }
                             }
@@ -453,7 +463,6 @@
             align-items: center;
             padding-left: 12px;
             box-sizing: border-box;
-            margin-bottom: 8px;  
 
 
             .ta-checkbox-container .ta-checkbox:checked ~ .ta-mark{
@@ -469,7 +478,12 @@
             &.personal-event{
                 .ta-checkbox-container .ta-checkbox:checked ~ .ta-mark{
                     background-color: #FFB74D;
-                }     
+                }  
+                
+                .calendar-holder .calendar-info-holder .important-event-holder.personal-event .ta-custom-card .ta-card-header .arrow-down-plus svg-icon{
+                    display: flex !important;
+                }
+                
             }
 
             &.holiday{
@@ -486,6 +500,10 @@
                 }
 
                 .ta-custom-card .ta-card-header .header-content .header-text{
+                    color: #919191;
+                }
+
+                .ta-custom-card .ta-card-header.active .header-text{
                     color: #6C6C6C;
                 }
 
@@ -541,7 +559,116 @@
 
             }
         }
+
+        .border-frame{
+            width: 100%;
+            background-color: #fff;
+
+            .border-event{
+                width: 314px;
+                height: 2px;
+                margin: auto;
+                border-radius: 1px;
+                background-color: #F3F3F3;
+            }    
+        }
     }
+
+    .year-calendar-holder{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+        padding-left: 12px;
+        box-sizing: border-box;
+        user-select: none;
+
+        .year-calendar-toolbar{
+            width: 100%;
+            min-height: 32px;
+            border-radius: 3px;
+            background-color: #fff;
+            margin-bottom: 6px;
+            margin-right: 12px;
+        }
+
+        .calendar-month-holder{
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-wrap: wrap;
+
+            .month-calendar-holder{
+                width: 363px;
+                height: 326px;
+                border-radius: 2px;
+                background-color: #fff;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 12px 0px 6px 0px;
+                box-sizing: border-box;
+                margin-right: 12px;
+                margin-bottom: 12px;
+
+                .month{
+                    font-size: 20px;
+                    font-weight: 700;
+                    color: #6C6C6C;
+                    padding-left: 12px;
+                    box-sizing: border-box;
+                    height: 24px;
+                }
+
+                .day-holder{
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    padding: 16px 12px;
+                    box-sizing: border-box;
+
+                    &.different-padding{
+                        padding: 0px 12px;
+                    }
+
+                    .day{
+                        font-size: 20px;
+                        font-weight: 700;
+                        color: #919191;
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 2px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        &.different-weight{
+                            font-weight: 400;
+                            color: #6C6C6C;
+                            margin-bottom: 6px;
+                            box-sizing: border-box;
+                            margin-right: 19px;
+                        }
+
+                        &:nth-child(7n + 0){
+                            margin-right: 0px;
+                        }
+
+                        &.event{
+                            background-color: #E5E5E5;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     /* Calendar View code */
 
     .calendar_view_holder{
@@ -690,6 +817,103 @@
         }
     }
 }
+
+.event-date-popover{
+    width: 400px;
+    height: 214px;
+    border-radius: 3px;
+    background-color: #fff;
+    box-shadow: 0 0 5px #00000026;
+    padding: 7px 6px 4px 6px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+
+    .date-holder{
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 6px;
+        box-sizing: border-box;
+
+        .number-event{
+            min-width: 24px;
+            height: 24px;
+            padding: 3px 7px;
+            box-sizing: border-box;
+            border-radius: 2px;
+            background-color: #F3F3F3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 800;
+            color: #6C6C6C;
+        }
+
+        .date-event{
+            font-size: 18px;
+            font-weight: 800;
+            color: #6C6C6C;
+            padding-left: 6px;
+            box-sizing: border-box;
+        }
+
+        .close-event{
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            top: 3px;
+            right: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            svg-icon{
+                svg{
+                    display: flex;
+                    width: 12.38px;
+                    height: 12.38px;
+
+                    path{
+                        fill: #AAAAAA;
+                    }
+                }
+            }
+
+
+        }
+    }
+
+    .event-border{
+        width: 388px;
+        height: 2px;
+        border-radius: 1px;
+        background-color: #F3F3F3;
+        margin-top: 7px;
+    }
+
+    .event-report{
+        width: 388px;
+        height: 26px;
+        border-radius: 2px;
+        background-color: #BA68C8;
+        margin-top: 2px;
+        padding-left: 6px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 500;
+        color: #fff;
+    }
+    
+}        
 
 .events-popover{
     width: 175px;
