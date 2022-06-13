@@ -67,7 +67,7 @@ export class CalendarComponent implements OnInit {
 
   event_colors: any = {
     'important': this.currentCalendarView == 'week' ? '#BA68C8' : '#BA68C8B3',
-    'company': this.currentCalendarView == 'week' ? '#6D82C7' : '#6D82C7B3',
+    'company': this.currentCalendarView == 'week' ? '#536BC2' : '#536BC2B3',
     'personal': this.currentCalendarView == 'week' ? '#FFB74D' : '#FFB74DB3',
     'moreEvents': this.currentCalendarView == 'week' ? '#AAAAAA' : '#AAAAAAB3',
     'holiday': this.currentCalendarView == 'week' ? '#4DB6A2' : '#4DB6A2B3'
@@ -77,31 +77,88 @@ export class CalendarComponent implements OnInit {
     {
       title: 'event 1 very long name check',
       color: this.event_colors['important'],
-      start: '2022-06-07',
-      end: '2022-06-08',
+      start: '2022-06-15',
+      end: '2022-06-16',
       textColor: '#fff'
     },
     { 
       title: 'event 2',
       color: this.event_colors['company'],
-      start: '2022-06-06',
-      end: '2022-06-13',
+      start: '2022-06-15',
+      end: '2022-06-20',
+      textColor: '#fff'
+    },
+    { 
+      title: 'event 11',
+      color: this.event_colors['company'],
+      start: '2022-06-23',
+      end: '2022-06-24',
+      textColor: '#fff'
+    },
+    { 
+      title: 'event 22',
+      color: this.event_colors['company'],
+      start: '2022-06-23',
+      end: '2022-06-24',
+      textColor: '#fff'
+    },
+    { 
+      title: 'event 33',
+      color: this.event_colors['company'],
+      start: '2022-06-23',
+      end: '2022-06-24',
+      textColor: '#fff'
+    },
+    { 
+      title: 'event 44',
+      color: this.event_colors['company'],
+      start: '2022-06-23',
+      end: '2022-06-24',
+      textColor: '#fff'
+    },
+    { 
+      title: 'event 55',
+      color: this.event_colors['company'],
+      start: '2022-06-23',
+      end: '2022-06-24',
+      textColor: '#fff'
+    },
+    { 
+      title: 'event 66',
+      color: this.event_colors['company'],
+      start: '2022-06-23',
+      end: '2022-06-24',
+      textColor: '#fff'
+    },
+    { 
+      title: 'event 77',
+      color: this.event_colors['company'],
+      start: '2022-06-23',
+      end: '2022-06-24',
       textColor: '#fff'
     },
     { 
       title: 'Event 3',
-      color: this.event_colors['personal'],
+      color: this.event_colors['holiday'],
       start: '2022-06-18',
-      end: '2022-06-26',
-      textColor: '#000',
-      display: 'list-item'
+      end: '2022-06-20',
+      textColor: '#fff'
     },
     { 
       title: 'Personal Event',
       color: this.event_colors['personal'],
-      start: '2022-06-06T00:30:00',
-      end: '2022-06-06T23:30:00',
-      textColor: '#fff'
+      start: '2022-06-14T00:30:00',
+      end: '2022-06-14T23:30:00',
+      textColor: '#fff',
+      description: 'Event description'
+    },
+    { 
+      title: 'Today Holiday Event',
+      color: this.event_colors['holiday'],
+      start: '2022-06-13T02:30:00',
+      end: '2022-06-13T16:30:00',
+      textColor: '#fff',
+      description: 'Event holiday description'
     }
   ];
 
@@ -139,6 +196,17 @@ export class CalendarComponent implements OnInit {
         right: ''
       },
       events: ev,
+      eventDidMount: function(info) {
+          var dotEl = <HTMLBodyElement> info.el.getElementsByClassName('fc-daygrid-event-dot')[0];
+          if (dotEl) {
+            dotEl.style.backgroundColor = info.backgroundColor;
+          }
+      },
+      eventTimeFormat: {
+        hour: 'numeric',
+        minute: '2-digit',
+        meridiem: 'short'
+      },
       editable: true,
       eventResizableFromStart: true,
       slotLabelInterval: '00:30',
@@ -155,8 +223,18 @@ export class CalendarComponent implements OnInit {
                 year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
             },
         },
-     },
-     eventResize: this.resizeEvent.bind(this),
+        timeGrid: {
+          dayMaxEventRows: 6
+        },
+      },
+      moreLinkContent:function(args){
+        return args.num+' More Events';
+      },
+      eventResize: this.resizeEvent.bind(this),
+      dayMaxEventRows: true,
+      eventMouseEnter: function (info) {
+        console.log(info['event'], "-------hover--------");
+      },
     };
     this.changeViewCalendar(type);
   }
@@ -174,11 +252,21 @@ export class CalendarComponent implements OnInit {
   public checkCalendarTitle() {
     const calendarApi = this.fullcalendar.getApi();
     console.log(calendarApi.currentData, 'viewitle');
-    this.calendarTitle = this.calendarGridView == 'timeGridWeek' ? calendarApi.currentData.viewTitle.split(",")[0] : this.calendarTitle = calendarApi.currentData.viewTitle.split(" ")[0];
+    if ( this.calendarGridView == 'timeGridWeek' ) {
+      this.calendarTitle = calendarApi.currentData.viewTitle.split(",")[0];
+    }
+    else{
+      var calendarTitleParts = calendarApi.currentData.viewTitle.split(" ");
+      this.calendarTitle = calendarTitleParts[0]+', '+calendarTitleParts[1];
+    }
   }
 
   resizeEvent(mod) {
     console.log(mod, 'resized');
+  }
+
+  hoverEvent(mod) {
+    console.log(mod, 'hovered');
   }
 
   changeCalendarView(view) {
@@ -212,7 +300,19 @@ export class CalendarComponent implements OnInit {
     // }
     const calendarApi = this.fullcalendar.getApi();
     calendarApi.changeView(view);
-    this.calendarTitle = this.calendarGridView == 'timeGridWeek' ? calendarApi.currentData.viewTitle.split(",")[0] : this.calendarTitle = calendarApi.currentData.viewTitle.split(" ")[0];
+    console.log(calendarApi.currentData.viewTitle, 'calendarApi.currentData.viewTitle');
+    if ( this.calendarGridView == 'timeGridWeek' ) {
+      this.calendarTitle = calendarApi.currentData.viewTitle.split(",")[0];
+    }
+    else{
+      var calendarTitleParts = calendarApi.currentData.viewTitle.split(" ");
+      this.calendarTitle = calendarTitleParts[0]+', '+calendarTitleParts[1];
+    }
+    
+    if ( this.calendarGridView == 'timeGridWeek' ) {
+      var topLeftColumn = <HTMLElement> document.querySelector(".fc-timegrid-axis");
+      topLeftColumn.innerHTML = '<div class="fc-scrollgrid-sync-inner"><a class="fc-col-header-cell-cushion">TIME</a></div>';
+    }
   }
 
 }
