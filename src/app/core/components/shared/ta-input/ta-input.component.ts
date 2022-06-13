@@ -710,12 +710,12 @@ export class TaInputComponent
           this.selectionInput = this.selectionInput + 1;
           this.selectSpanByTabIndex(this.selectionInput);
         } else if (e.keyCode == 9) {
-          console.log('NEXT ONEEEEE');
-          //this.input.nativeElement.focus();
-          //this.input.nativeElement.dispatchEvent(new KeyboardEvent('keydown',{'keyCode': 9}));
-          this.input.nativeElement.dispatchEvent(
-            new KeyboardEvent('keydown', { keyCode: 9 })
-          );
+          console.log('final third click');
+          this.input.nativeElement.focus();
+          setTimeout(() => {
+            this.input.nativeElement.dispatchEvent(new KeyboardEvent('keydown',{'keyCode': 9}));
+          }, 500);
+          
         }
       } else if (e.keyCode == 38) {
         this.setDateTimeModel('up');
