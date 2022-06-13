@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CompanyUserResponse } from './companyUserResponse';
 
 
-export interface CompanyUserShortResponse { 
-    id?: number;
-    fullName?: string | null;
-    avatar?: string | null;
+export interface CompanyUserResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<CompanyUserResponse> | null;
 }
 

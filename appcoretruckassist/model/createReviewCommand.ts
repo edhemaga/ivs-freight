@@ -11,9 +11,9 @@
  */
 
 
-export interface CompanyUserShortResponse { 
-    id?: number;
-    fullName?: string | null;
-    avatar?: string | null;
+export interface CreateReviewCommand { 
+    entityTypeReviewId?: number;
+    entityTypeId?: number;
+    comment?: string | null;
 }
 

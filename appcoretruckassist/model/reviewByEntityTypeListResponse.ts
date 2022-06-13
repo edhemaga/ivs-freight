@@ -9,11 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ReviewResponsePagination } from './reviewResponsePagination';
 
 
-export interface CompanyUserShortResponse { 
-    id?: number;
-    fullName?: string | null;
-    avatar?: string | null;
+export interface ReviewByEntityTypeListResponse { 
+    pagination?: ReviewResponsePagination;
 }
 

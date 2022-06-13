@@ -11,9 +11,10 @@
  */
 
 
-export interface CompanyUserShortResponse { 
-    id?: number;
-    fullName?: string | null;
-    avatar?: string | null;
+export interface CompanyOfficeDepartmentContactCommand { 
+    departmentId?: number | null;
+    phone?: string | null;
+    extensionPhone?: string | null;
+    email?: string | null;
 }
 

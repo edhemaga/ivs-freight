@@ -10,17 +10,10 @@
  * Do not edit the class manually.
  */
 import { EnumValue } from './enumValue';
-import { CompanyUserShortResponse } from './companyUserShortResponse';
 
 
-export interface CommentResponse { 
-    id?: number;
-    companyUser?: CompanyUserShortResponse;
-    entityTypeComment?: EnumValue;
-    commentContent?: string | null;
-    downRatingCount?: number;
-    upRatingCount?: number;
-    createdAt?: string;
-    updatedAt?: string;
+export interface GetRatingReviewModalResponse { 
+    entityTypeRating?: Array<EnumValue> | null;
+    entityTypeReview?: Array<EnumValue> | null;
 }
 

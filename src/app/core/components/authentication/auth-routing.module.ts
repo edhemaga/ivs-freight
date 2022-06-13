@@ -35,7 +35,8 @@ const routes: Routes = [
     path: 'register/account-activated',
     component: AccountActivatedPageComponent,
     data: { title: 'Account Activated' },
-  },
+  }, 
+  // http://localhost:4200/api/account/verifyowner?EmailHash=ex62tvq54Ma3MiE566QGd918tLbVXzveVN0R3ehzKeM=&Code=kWkWR8acg0CAYX27L9viEQ==
   {
     path: 'forgot-password',
     component: ForgotPasswordComponent,

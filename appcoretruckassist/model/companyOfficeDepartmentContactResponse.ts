@@ -9,18 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
-import { CompanyUserShortResponse } from './companyUserShortResponse';
+import { DepartmentResponse } from './departmentResponse';
 
 
-export interface CommentResponse { 
+export interface CompanyOfficeDepartmentContactResponse { 
     id?: number;
-    companyUser?: CompanyUserShortResponse;
-    entityTypeComment?: EnumValue;
-    commentContent?: string | null;
-    downRatingCount?: number;
-    upRatingCount?: number;
-    createdAt?: string;
-    updatedAt?: string;
+    email?: string | null;
+    phone?: string | null;
+    department?: DepartmentResponse;
+    extensionPhone?: string | null;
 }
 

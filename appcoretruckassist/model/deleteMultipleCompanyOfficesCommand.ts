@@ -11,9 +11,7 @@
  */
 
 
-export interface CompanyUserShortResponse { 
-    id?: number;
-    fullName?: string | null;
-    avatar?: string | null;
+export interface DeleteMultipleCompanyOfficesCommand { 
+    ids?: Array<number> | null;
 }
 

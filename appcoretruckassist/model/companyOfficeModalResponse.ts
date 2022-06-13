@@ -10,17 +10,14 @@
  * Do not edit the class manually.
  */
 import { EnumValue } from './enumValue';
-import { CompanyUserShortResponse } from './companyUserShortResponse';
+import { DepartmentResponse } from './departmentResponse';
 
 
-export interface CommentResponse { 
-    id?: number;
-    companyUser?: CompanyUserShortResponse;
-    entityTypeComment?: EnumValue;
-    commentContent?: string | null;
-    downRatingCount?: number;
-    upRatingCount?: number;
-    createdAt?: string;
-    updatedAt?: string;
+export interface CompanyOfficeModalResponse { 
+    ownerType?: Array<EnumValue> | null;
+    payPeriod?: Array<EnumValue> | null;
+    dayOfWeek?: Array<EnumValue> | null;
+    payPeriodMonthly?: Array<EnumValue> | null;
+    departments?: Array<DepartmentResponse> | null;
 }
 
