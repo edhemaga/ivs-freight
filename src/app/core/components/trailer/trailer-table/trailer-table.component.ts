@@ -231,6 +231,7 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
   }
 
   mapTrailerData(data: any) {
+    console.log(data);
     return {
       ...data,
       isSelected: false,
@@ -244,13 +245,13 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
       textLength: data?.trailerLength?.name ? data.trailerLength.name : '',
       textLicPlate: data?.licensePlate
         ? data.licensePlate
-        : data?.registrations[0]?.licensePlate
+        : data?.registrations?.length
         ? data.registrations[0].licensePlate
         : '',
       textInspectionData: {
         start: data?.fhwaInspection
           ? data.fhwaInspection
-          : data?.inspections[0]?.issueDate
+          : data?.inspections?.length
           ? data.inspections[0].issueDate
           : null,
         end: null,
@@ -261,144 +262,6 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
     this.trailer = this.trailerQuery.getAll();
 
     return this.trailer?.length ? this.trailer : [];
-    /*  let data: any[] = [
-      {
-        id: 104,
-        companyId: 1,
-        companyOwned: 0,
-        divisionFlag: null,
-        ownerId: 466,
-        ownerName: 'ERA TRUCKING LLC',
-        trailerNumber: 'R504',
-        vin: '1UYVS3605AM932301',
-        year: '2010',
-        categoryId: 1,
-        category: 'Bank of America',
-        make: null,
-        model: '',
-        licensePlate: 'J783209',
-        licenseExpDate: null,
-        fhwaInspection: null,
-        svgIcon: 'reefer.svg',
-        length: 0,
-        status: 1,
-        used: 0,
-        canBeUsedByCompany: 1,
-        doc: {
-          titleData: [],
-          licenseData: [
-            {
-              id: 'b26b5982-9d55-420a-b397-bc56a74d6915',
-              startDate: '2020-07-15T05:00:00Z',
-              attachments: [],
-              licensePlate: 'J783209',
-            },
-          ],
-          additionalData: {
-            make: {
-              file: 'utility.svg',
-              name: 'Utility',
-              color: '',
-            },
-            note: '',
-            type: {
-              file: 'reefer.svg',
-              name: 'Reefer',
-              type: 'trailer',
-              class: 'reefer-icon',
-              color: 'EF6E6E',
-              whiteFile: 'white-reefer.svg',
-              legendcolor: 'ef6e6e',
-            },
-            year: '2010',
-            color: {
-              id: 921,
-              key: 'White',
-              value: '#F9F9F9',
-              domain: 'color',
-              entityId: null,
-              parentId: null,
-              companyId: null,
-              createdAt: '2021-02-08T21:34:33',
-              protected: 1,
-              updatedAt: '2021-02-09T05:39:40',
-              entityName: null,
-            },
-            model: '',
-            axises: '',
-            length: {
-              id: 671,
-              key: 'length',
-              value: '48 ft',
-              domain: 'trailer',
-              entityId: null,
-              parentId: null,
-              companyId: null,
-              createdAt: '2020-10-23T17:15:33',
-              protected: 0,
-              updatedAt: '2020-10-23T17:15:33',
-              entityName: null,
-            },
-            tireSize: null,
-          },
-          inspectionData: [
-            {
-              id: '2ad2fbef-f024-4ecb-876d-ea38894ed6fe',
-              startDate: '2021-06-08T05:00:00Z',
-              attachments: [
-                {
-                  url: 'https://nyc3.digitaloceanspaces.com/space.truckasssist/uploads/0/0/1/truck/104/inspection/2ad2fbeff0244ecb876dea38894ed6fe1623258561-R504 6.8.21.pdf',
-                  fileName: 'R504 6.8.21.pdf',
-                  fileItemGuid: '2ad2fbef-f024-4ecb-876d-ea38894ed6fe',
-                },
-              ],
-            },
-          ],
-          activityHistory: [
-            {
-              id: '1dcd5580-c4ab-4352-b318-eef3829ac73e',
-              header: 'ERA TRUCKING LLC',
-              endDate: null,
-              ownerId: 466,
-              startDate: '2021-06-07T16:51:56.451Z',
-              endDateShort: null,
-              startDateShort: '6/7/21',
-            },
-          ],
-          trailerLeaseData: [],
-        },
-        protected: 0,
-        createdAt: '2021-06-07T16:51:56',
-        updatedAt: '2021-12-29T15:07:37',
-        gpsFlag: null,
-        guid: '3bbdf681-64d3-4223-9479-4a769603b1e6',
-        textYear: '2010',
-        textMake: 'Utility',
-        textModel: '',
-        textColor: '#F9F9F9',
-        textType: 'Reefer',
-        textLicPlate: 'J783209',
-        textInspectionData: {
-          start: '2021-06-08T05:00:00Z',
-        },
-        textLength: '48 ft',
-        tableType: {
-          file: 'reefer.svg',
-          name: 'Reefer',
-          type: 'trailer',
-          class: 'reefer-icon',
-          color: 'EF6E6E',
-          whiteFile: 'white-reefer.svg',
-          legendcolor: 'ef6e6e',
-        },
-      },
-    ];
-
-    for (let i = 0; i < numberOfCopy; i++) {
-      data.push(data[i]);
-    }
-
-    return data; */
   }
 
   onToolBarAction(event: any) {
