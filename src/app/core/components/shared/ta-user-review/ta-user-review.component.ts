@@ -11,6 +11,12 @@ import {
   ViewChildren,
 } from '@angular/core';
 
+export interface ReviewCommentModal {
+  sortData: any[];
+  data: any | number;
+  action: string;
+}
+
 @Component({
   selector: 'app-ta-user-review',
   templateUrl: './ta-user-review.component.html',
@@ -25,15 +31,8 @@ export class TaUserReviewComponent implements OnInit, OnChanges {
    * and pass like input, for focusing first created new review !!!
    */
   @Input() isNewReview: boolean = false;
-  @Output() changeReviewsEvent: EventEmitter<{
-    sortData: any[];
-    data: any | number;
-    action: string;
-  }> = new EventEmitter<{
-    sortData: any[];
-    data: any | number;
-    action: string;
-  }>();
+  @Output() changeReviewsEvent: EventEmitter<ReviewCommentModal> =
+    new EventEmitter<ReviewCommentModal>();
 
   constructor(private reviewSortPipe: ReviewsSortPipe) {}
 
@@ -45,6 +44,7 @@ export class TaUserReviewComponent implements OnInit, OnChanges {
         );
         this.reviewData.filter((item) => (item.isEditMode = false));
         this.reviewData[0].isEditMode = true;
+        this.reviewMessageRef.toArray()[0].nativeElement.value = null;
         clearTimeout(timeout);
       }, 150);
     }
@@ -57,12 +57,11 @@ export class TaUserReviewComponent implements OnInit, OnChanges {
   public onAction(review: any, type: string, index: number) {
     switch (type) {
       case 'edit': {
-        this.reviewData.filter(
-          (item) => (item.isEditMode = false)
-        );
+        this.reviewData.filter((item) => (item.isEditMode = false));
 
         review.isEditMode = true;
-        this.reviewMessageRef.toArray()[index].nativeElement.value = review.commentContent;
+        this.reviewMessageRef.toArray()[index].nativeElement.value =
+          review.commentContent;
 
         this.setInputCursorAtTheEnd(
           this.reviewMessageRef.toArray()[index].nativeElement
@@ -74,26 +73,41 @@ export class TaUserReviewComponent implements OnInit, OnChanges {
           (item) => item.id !== review.id
         );
         this.reviewSortPipe.transform(this.reviewData);
-        this.changeReviewsEvent.emit({ sortData: this.reviewData, data: review.id, action: type });
+        console.log('REVIEW ', review.id);
+        this.changeReviewsEvent.emit({
+          sortData: this.reviewData,
+          data: review.id,
+          action: type,
+        });
         break;
       }
       case 'add': {
-        review.commentContent = this.reviewMessageRef.toArray()[index].nativeElement.value;
+        review.commentContent =
+          this.reviewMessageRef.toArray()[index].nativeElement.value;
         review.isEditMode = false;
         review.isNewReview = false;
         review.updatedAt = new Date().toISOString();
 
         this.reviewSortPipe.transform(this.reviewData);
-        this.changeReviewsEvent.emit({ sortData: this.reviewData, data: review, action: type });
+        this.changeReviewsEvent.emit({
+          sortData: this.reviewData,
+          data: review,
+          action: type,
+        });
         break;
       }
       case 'update': {
-        review.commentContent = this.reviewMessageRef.toArray()[index].nativeElement.value;
+        review.commentContent =
+          this.reviewMessageRef.toArray()[index].nativeElement.value;
         review.isEditMode = false;
         review.updatedAt = new Date().toISOString();
 
         this.reviewSortPipe.transform(this.reviewData);
-        this.changeReviewsEvent.emit({ sortData: this.reviewData, data: review, action: type });
+        this.changeReviewsEvent.emit({
+          sortData: this.reviewData,
+          data: review,
+          action: type,
+        });
         break;
       }
       case 'cancel': {
