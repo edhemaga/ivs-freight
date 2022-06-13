@@ -22,6 +22,7 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { TodoTService } from '../../to-do/state/todo.service';
 import { AuthQuery } from '../../authentication/state/auth.query';
+import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 
 @Component({
   selector: 'app-task-modal',
@@ -160,24 +161,20 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         ),
         avatar: 'https://picsum.photos/id/237/200/300',
       },
-      commentContent: '',
+      commentContent: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       isNewReview: true,
     });
   }
 
-  private addComment(comments: {
-    sortData: any[];
-    data: any | number;
-    action: string;
-  }) {
+  private addComment(comments: ReviewCommentModal) {
     this.comments = [...comments.sortData];
 
     const comment: CreateCommentCommand = {
       entityTypeCommentId: 1,
       entityTypeId: this.editData.id,
-      commentContent: comments.data.comment,
+      commentContent: comments.data.commentContent,
     };
 
     this.todoService
@@ -196,17 +193,14 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private updateComment(comments: {
-    sortData: any[];
-    data: any;
-    action: string;
-  }) {
+  private updateComment(comments: ReviewCommentModal) {
     this.comments = comments.sortData;
 
     const comment: UpdateCommentCommand = {
       id: comments.data.id,
       commentContent: comments.data.commentContent,
     };
+
     this.todoService
       .updateComment(comment)
       .pipe(untilDestroyed(this))
@@ -226,11 +220,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private deleteComment(comments: {
-    sortData: any[];
-    data: any | number;
-    action: string;
-  }) {
+  private deleteComment(comments: ReviewCommentModal) {
+    console.log(comments);
     this.comments = comments.sortData;
     this.todoService
       .deleteCommentById(comments.data)
@@ -374,7 +365,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             };
           });
           this.taskStatus = res.status;
-          console.log(res.status);
         },
         error: () => {
           this.notificationService.error("Can't get task.", 'Error:');
