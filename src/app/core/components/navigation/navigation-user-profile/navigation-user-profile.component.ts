@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
   Input,
   OnDestroy,
   OnInit,
@@ -9,15 +8,9 @@ import {
 import { userNavigationData } from '../model/navigation-data';
 import { NavigationUserPanel } from '../model/navigation.model';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { ChangePasswordComponent } from '../../authentication/change-password/change-password.component';
-import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { UserService } from 'src/app/core/services/user/user.service';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { NavigationService } from '../services/navigation.service';
-import { PersistState } from '@datorama/akita';
+import { AuthStoreService } from '../../authentication/state/auth.service';
 
 @Component({
   selector: 'app-navigation-user-profile',
@@ -35,16 +28,10 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
 
   public isItemHovered: boolean = false;
 
-  private destroy$: Subject<void> = new Subject<void>();
-
   constructor(
     public router: Router,
-    private authService: AuthService,
-    private userService: UserService,
-    private customModalService: CustomModalService,
-    private sharedService: SharedService,
+    private authService: AuthStoreService,
     private navigationService: NavigationService,
-    @Inject('persistStorage') private persistStorage: PersistState
   ) {}
 
   ngOnInit() {
@@ -67,26 +54,26 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   public onAction(data: NavigationUserPanel) {
     switch (data.action) {
       case 'update': {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-        this.userService
-          .getUserByUsername(currentUser.username)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(
-            (user: any) => {
-              this.customModalService.openModal(
-                ChangePasswordComponent,
-                user,
-                null,
-                {
-                  size: 'small',
-                }
-              );
-            },
-            (error: any) => {
-              error ? this.sharedService.handleServerError() : null;
-            }
-          );
+        // this.userService
+        //   .getUserByUsername(currentUser.username)
+        //   .pipe(takeUntil(this.destroy$))
+        //   .subscribe(
+        //     (user: any) => {
+        //       this.customModalService.openModal(
+        //         ChangePasswordComponent,
+        //         user,
+        //         null,
+        //         {
+        //           size: 'small',
+        //         }
+        //       );
+        //     },
+        //     (error: any) => {
+        //       error ? this.sharedService.handleServerError() : null;
+        //     }
+        //   );
         break;
       }
       case 'status': {
@@ -104,10 +91,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         break;
       }
       case 'logout': {
-        this.persistStorage.clearStore();
-        this.persistStorage.destroy();
-        this.authService.logout();
-        this.router.navigate(['/login']);
+        this.authService.accountLogut();
         break;
       }
       default:
@@ -144,8 +128,5 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     return this.router.url.includes('communicator');
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  ngOnDestroy(): void {}
 }

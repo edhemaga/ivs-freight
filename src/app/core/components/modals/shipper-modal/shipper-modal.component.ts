@@ -464,7 +464,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             this.isAppointmentShipping = true;
           }
 
-          this.reviews = [...reasponse.shipperReviews].map((item) => ({
+          this.reviews = [...reasponse.reviews].map((item) => ({
             ...item,
             companyUser: {
               ...item.companyUser,

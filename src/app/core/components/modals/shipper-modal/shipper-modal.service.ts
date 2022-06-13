@@ -1,13 +1,25 @@
 import { Injectable } from '@angular/core';
-import { CreateResponse, CreateShipperCommand, CreateShipperReviewCommand, ShipperModalResponse, ShipperResponse, ShipperService, UpdateShipperCommand, UpdateShipperReviewCommand } from 'appcoretruckassist';
+import {
+  CreateRatingCommand,
+  CreateResponse,
+  CreateShipperCommand,
+  RatingReviewService,
+  ShipperModalResponse,
+  ShipperResponse,
+  ShipperService,
+  UpdateReviewCommand,
+  UpdateShipperCommand,
+} from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ShipperModalService {
-
-  constructor(private shipperService: ShipperService) {}
+  constructor(
+    private shipperService: ShipperService,
+    private ratingReviewService: RatingReviewService
+  ) {}
 
   public addShipper(data: CreateShipperCommand): Observable<CreateResponse> {
     return this.shipperService.apiShipperPost(data);
@@ -38,15 +50,14 @@ export class ShipperModalService {
   }
 
   public deleteReviewById(id: number): Observable<any> {
-    return this.shipperService.apiShipperReviewIdDelete(id);
+    return this.ratingReviewService.apiRatingReviewReviewIdDelete(id);
   }
 
-  public createReview(review: CreateShipperReviewCommand): Observable<CreateResponse> {
-    return this.shipperService.apiShipperReviewPost(review)
+  public createReview(review: CreateRatingCommand): Observable<CreateResponse> {
+    return this.ratingReviewService.apiRatingReviewReviewPost(review);
   }
 
-  public updateReview(review: UpdateShipperReviewCommand): Observable<any> {
-    return this.shipperService.apiShipperReviewPut(review);
+  public updateReview(review: UpdateReviewCommand): Observable<any> {
+    return this.ratingReviewService.apiRatingReviewReviewPut(review);
   }
-
 }

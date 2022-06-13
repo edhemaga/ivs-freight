@@ -10,10 +10,10 @@
  * Do not edit the class manually.
  */
 import { BrokerContactResponse } from './brokerContactResponse';
-import { BrokerReviewResponse } from './brokerReviewResponse';
 import { EnumValue } from './enumValue';
 import { PoBoxEntity } from './poBoxEntity';
 import { AddressEntity } from './addressEntity';
+import { ReviewResponse } from './reviewResponse';
 
 
 export interface BrokerResponse { 
@@ -36,9 +36,9 @@ export interface BrokerResponse {
     dnu?: boolean;
     note?: string | null;
     brokerContacts?: Array<BrokerContactResponse> | null;
-    brokerReviews?: Array<BrokerReviewResponse> | null;
+    reviews?: Array<ReviewResponse> | null;
     status?: number;
-    totalRatingCount?: number;
+    downRatingCount?: number;
     upRatingCount?: number;
     createdAt?: string;
 }

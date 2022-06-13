@@ -124,7 +124,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 2,
+        id: 1,
       };
       this.editBrokerById(this.editData.id);
       this.tabs.push({
@@ -203,7 +203,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       // DNU
       if (data.action === 'dnu' && this.editData) {
         this.brokerForm.get('dnu').patchValue(data.bool);
-        
+
         this.brokerModalService
           .changeDnuStatus(this.editData.id)
           .pipe(untilDestroyed(this))
@@ -216,7 +216,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                   status: this.brokerDnuStatus,
                 });
                 this.notificationService.success(
-                  `Broker ${this.brokerDnuStatus ? 'status changed to DNU' : 'removed from DNU'}.`,
+                  `Broker ${
+                    this.brokerDnuStatus
+                      ? 'status changed to DNU'
+                      : 'removed from DNU'
+                  }.`,
                   'Success:'
                 );
               }
@@ -244,7 +248,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                   status: this.brokerBanStatus,
                 });
                 this.notificationService.success(
-                  `Broker ${this.brokerBanStatus ? 'status changed to BAN' : 'removed from BAN'} .`,
+                  `Broker ${
+                    this.brokerBanStatus
+                      ? 'status changed to BAN'
+                      : 'removed from BAN'
+                  } .`,
                   'Success:'
                 );
               }
@@ -717,7 +725,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             }
           }
 
-          this.reviews = [...reasponse.brokerReviews].map((item) => ({
+          this.reviews = [...reasponse.reviews].map((item) => ({
             ...item,
             companyUser: {
               ...item.companyUser,

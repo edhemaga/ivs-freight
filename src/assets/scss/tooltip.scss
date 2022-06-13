@@ -294,12 +294,14 @@
   }
 }
 
-.app-main-tooltip{
-  .tooltip-inner{
+.app-main-tooltip {
+  pointer-events: none;
+  .tooltip-inner {
     padding: 0;
     background-color: transparent;
+    pointer-events: none;
 
-    .tooltip-holder{
+    .tooltip-holder {
       display: flex;
       align-items: center;
       justify-content: center;

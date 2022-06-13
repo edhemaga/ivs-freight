@@ -66,6 +66,8 @@ export class TaInputComponent
   // Date Timer
   private dateTimeMainTimer: any;
 
+  public capsLockOn: boolean = false;
+
   constructor(
     @Self() public superControl: NgControl,
     private changeDetection: ChangeDetectorRef,
@@ -312,7 +314,7 @@ export class TaInputComponent
         this.clearInput(event);
       }
     }
-    console.log(event.keyCode)
+
     if (this.inputConfig.isDropdown) {
       if (event.keyCode === 40 || event.keyCode === 38) {
         this.inputService.dropDownNavigatorSubject.next(event.keyCode);
@@ -329,6 +331,14 @@ export class TaInputComponent
         this.input.nativeElement.focus();
         this.inputService.dropDownNavigatorSubject.next(event.keyCode);
       }
+    }
+
+    if(event.getModifierState("CapsLock")) {
+      console.log("CAPS LOCK")
+      this.capsLockOn = true;
+    }
+    else {
+      this.capsLockOn = false;
     }
   }
 
