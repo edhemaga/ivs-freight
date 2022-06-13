@@ -63,27 +63,29 @@ export class CalendarComponent implements OnInit {
     }
   ];
 
+  currentCalendarView = 'month';
+
   event_colors: any = {
-    'important': '#BA68C8B3',
-    'company': '#6D82C7B3',
-    'personal': '#FFB74DB3',
-    'moreEvents': '#AAAAAAB3',
-    'holiday': '#4DB6A2B3'
+    'important': this.currentCalendarView == 'week' ? '#BA68C8' : '#BA68C8B3',
+    'company': this.currentCalendarView == 'week' ? '#6D82C7' : '#6D82C7B3',
+    'personal': this.currentCalendarView == 'week' ? '#FFB74D' : '#FFB74DB3',
+    'moreEvents': this.currentCalendarView == 'week' ? '#AAAAAA' : '#AAAAAAB3',
+    'holiday': this.currentCalendarView == 'week' ? '#4DB6A2' : '#4DB6A2B3'
   };
 
   currentEvents: any = [
     {
       title: 'event 1 very long name check',
       color: this.event_colors['important'],
-      start: '2022-06-02',
-      end: '2022-06-03',
+      start: '2022-06-07',
+      end: '2022-06-08',
       textColor: '#fff'
     },
     { 
       title: 'event 2',
       color: this.event_colors['company'],
-      start: '2022-06-02',
-      end: '2022-06-07',
+      start: '2022-06-06',
+      end: '2022-06-13',
       textColor: '#fff'
     },
     { 
@@ -97,8 +99,8 @@ export class CalendarComponent implements OnInit {
     { 
       title: 'Personal Event',
       color: this.event_colors['personal'],
-      start: '2022-06-03T00:30:00',
-      end: '2022-06-03T23:30:00',
+      start: '2022-06-06T00:30:00',
+      end: '2022-06-06T23:30:00',
       textColor: '#fff'
     }
   ];
@@ -107,7 +109,6 @@ export class CalendarComponent implements OnInit {
       weekday: 'long'
   }
 
-  currentCalendarView = 'month';
   calendarTitle: String = '';
   calendarGridView: String = 'dayGridMonth';
 
@@ -181,7 +182,7 @@ export class CalendarComponent implements OnInit {
   }
 
   changeCalendarView(view) {
-    if ( this.currentCalendarView == 'view' ) { return false; }
+    if ( this.currentCalendarView == view ) { return false; }
 
     this.currentCalendarView = view;
     var gridType = view == 'month' ? 'dayGridMonth' : view == 'week' ? 'timeGridWeek' : 'dayGridMonth';

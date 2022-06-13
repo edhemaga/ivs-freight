@@ -981,4 +981,21 @@
         color: #6C6C6C;
         font-weight: 400;
     }
+
+    .fc-timegrid-event-harness{
+        .fc-event-title{
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .fc-event-time{
+            position: absolute;
+            bottom: 0;
+        }
+    }
+
+    .fc-timegrid-slot{
+        height: 32px !important;
+    }
 }
