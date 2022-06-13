@@ -136,7 +136,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
       showButton:this.expDateCard,
     };
    })
-   console.log( this.driverData.driver.cdls);
+  //  console.log( this.driverData.driver.cdls);
    
  }
   public getDriversList() {

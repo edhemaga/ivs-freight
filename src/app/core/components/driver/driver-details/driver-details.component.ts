@@ -1,3 +1,4 @@
+import { DriversQuery } from './../state/driver.query';
 import { DriverMvrModalComponent } from './driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from './driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverDrugAlcoholModalComponent } from './driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
@@ -9,11 +10,9 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { of, Subject, switchMap, takeUntil } from 'rxjs';
-import { DriversQuery } from '../state/driver.query';
-import { DriverTService } from '../state/driver.service';
+import { ActivatedRoute, } from '@angular/router';
 import moment from 'moment';
+import { DriversDetailsQuery } from '../state/driver-details.query';
 
 @Component({
   selector: 'app-driver-details',
@@ -37,11 +36,15 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private activated_route: ActivatedRoute,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private driverQuery:DriversDetailsQuery
   ) {}
 
   ngOnInit() {
     this.initTableOptions();
+    console.log(this.driverQuery.getAll());
+    console.log('query data');
+        
     this.data = this.activated_route.snapshot.data.driver;
     this.cdlLength = this.data?.cdls.length;
     this.mvrLength = this.data?.mvrs.length;
