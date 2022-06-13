@@ -18,8 +18,8 @@ export class BlockedContentPipe implements PipeTransform {
         'password changed',
       ].includes(value?.toLowerCase())
     ) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 }

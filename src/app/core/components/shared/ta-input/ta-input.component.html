@@ -297,8 +297,9 @@
     <span
       #span1
       class="main"
-      tabindex="997"
+      tabindex="0"
       (focus)="onFocus()"
+      (paste)="onDatePaste($event)"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
@@ -312,9 +313,10 @@
     <span
       #span2
       class="main"
-      tabindex="998"
+      tabindex="1"
       (focus)="onFocus()"
       (click)="setSelection($event)"
+      (paste)="onDatePaste($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
@@ -327,7 +329,8 @@
     <span
       #span3
       class="main"
-      tabindex="999"
+      (paste)="onDatePaste($event)"
+      tabindex="2"
       (focus)="onFocus()"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
