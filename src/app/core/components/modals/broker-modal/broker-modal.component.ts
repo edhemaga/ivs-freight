@@ -10,14 +10,17 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { BrokerModalService } from './broker-modal.service';
 import { BrokerModalResponse } from './../../../../../../appcoretruckassist/model/brokerModalResponse';
 import {
   BrokerResponse,
   CreateBrokerCommand,
+  CreateRatingCommand,
+  CreateReviewCommand,
+  SignInResponse,
   UpdateBrokerCommand,
+  UpdateReviewCommand,
 } from 'appcoretruckassist';
 import {
   einNumberRegex,
@@ -26,6 +29,12 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
+import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
+import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+import {
+  LikeDislikeModel,
+  TaLikeDislikeService,
+} from '../../shared/ta-like-dislike/ta-like-dislike.service';
 
 @Component({
   selector: 'app-broker-modal',
@@ -48,6 +57,36 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     {
       id: 2,
       name: 'Contact',
+    },
+  ];
+
+  public brokerPhysicalAddressTabs: any[] = [
+    {
+      id: 'physicaladdress',
+      name: 'Physical Address',
+      inputName: 'a',
+      checked: true,
+    },
+    {
+      id: 'poboxphysical',
+      name: 'PO Box Physical',
+      inputName: 'a',
+      checked: false,
+    },
+  ];
+
+  public brokerBillingAddressTabs: any[] = [
+    {
+      id: 'billingaddress',
+      name: 'Billing Address',
+      inputName: 'n',
+      checked: true,
+    },
+    {
+      id: 'poboxbilling',
+      name: 'PO Box Billing',
+      inputName: 'n',
+      checked: false,
     },
   ];
 
@@ -106,13 +145,17 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public brokerBanStatus: boolean = true;
   public brokerDnuStatus: boolean = true;
 
+  public companyUser: SignInResponse = null;
+  public hasCompanyUserReview: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private mockModalService: MockModalService,
     private brokerModalService: BrokerModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private reviewRatingService: ReviewsRatingService,
+    private taLikeDislikeService: TaLikeDislikeService
   ) {}
 
   ngOnInit() {
@@ -131,7 +174,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         id: 3,
         name: 'Review',
       });
+      this.ratingChanges();
     }
+
+    this.companyUser = JSON.parse(localStorage.getItem('user'));
   }
 
   private createForm() {
@@ -370,33 +416,35 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       );
     }
   }
-
-  public onHandlePhysicalAddress(event: {
-    address: AddressEntity;
-    valid: boolean;
-  }) {
-    this.selectedPhysicalAddress = event.address;
-  }
-
-  public onHandlePhysicalPoBoxCityAddress(event: {
-    address: AddressEntity;
-    valid: boolean;
-  }) {
-    this.selectedPhysicalPoBox = event.address;
-  }
-
-  public onHandleBillingAddress(event: {
-    address: AddressEntity;
-    valid: boolean;
-  }) {
-    this.selectedBillingAddress = event.address;
-  }
-
-  public onHandleBillingPoBoxCityAddress(event: {
-    address: AddressEntity;
-    valid: boolean;
-  }) {
-    this.selectedBillingPoBox = event.address;
+  //taLikeDislikeService
+  public onHandleAddress(
+    event: {
+      address: AddressEntity;
+      valid: boolean;
+    },
+    action: string
+  ) {
+    switch (action) {
+      case 'physical-address': {
+        this.selectedPhysicalAddress = event.address;
+        break;
+      }
+      case 'physical-pobox': {
+        this.selectedPhysicalPoBox = event.address;
+        break;
+      }
+      case 'billing-address': {
+        this.selectedBillingAddress = event.address;
+        break;
+      }
+      case 'billing-pobox': {
+        this.selectedBillingPoBox = event.address;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   public isCredit(event: any) {
@@ -417,25 +465,169 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public changeReviewsEvent(reviews: { data: any[]; action: string }) {
-    this.reviews = [...reviews.data];
-    // TODO: API CREATE OR DELETE
+  public changeReviewsEvent(reviews: ReviewCommentModal) {
+    switch (reviews.action) {
+      case 'delete': {
+        this.deleteReview(reviews);
+        break;
+      }
+      case 'add': {
+        this.addReview(reviews);
+        break;
+      }
+      case 'update': {
+        this.updateReview(reviews);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
-  public addNewReview(event: any) {
+  public createReview(event: any) {
+    if (this.reviews.some((item) => item.isNewReview)) {
+      return;
+    }
+    // ------------------------ PRODUCTION MODE -----------------------------
+    // this.reviews.unshift({
+    //   companyUser: {
+    //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
+    //     avatar: 'https://picsum.photos/id/237/200/300',
+    //   },
+    //   commentContent: '',
+    //   createdAt: new Date().toISOString(),
+    //   updatedAt: new Date().toISOString(),
+    //   isNewReview: true,
+    // });
+    // -------------------------- DEVELOP MODE --------------------------------
     this.reviews.unshift({
-      id: Math.random() * 100,
       companyUser: {
-        id: Math.random() * 100,
-        fullName: 'Angela Martin',
-        image: 'https://picsum.photos/id/237/200/300',
-        reaction: '',
+        fullName: this.companyUser.firstName.concat(
+          ' ',
+          this.companyUser.lastName
+        ),
+        avatar: 'https://picsum.photos/id/237/200/300',
       },
-      comment: '',
+      commentContent: '',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       isNewReview: true,
     });
+  }
+
+  private ratingChanges() {
+    this.taLikeDislikeService.userLikeDislike$
+      .pipe(untilDestroyed(this))
+      .subscribe((action: LikeDislikeModel) => {
+        let rating: CreateRatingCommand = null;
+
+        if (action.action === 'liked') {
+          rating = {
+            entityTypeRatingId: 1,
+            entityTypeId: this.editData.id,
+            thumb: action.likeDislike,
+          };
+        } else {
+          rating = {
+            entityTypeRatingId: 1,
+            entityTypeId: this.editData.id,
+            thumb: action.likeDislike,
+          };
+        }
+
+        this.reviewRatingService
+          .addRating(rating)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Rating successfully updated.',
+                'Success:'
+              );
+            },
+            error: () => {
+              this.notificationService.error(
+                "Rating can't be updated.",
+                'Error:'
+              );
+            },
+          });
+      });
+  }
+
+  private addReview(reviews: ReviewCommentModal) {
+    const review: CreateReviewCommand = {
+      entityTypeReviewId: 1,
+      entityTypeId: this.editData.id,
+      comment: reviews.data.commentContent,
+    };
+
+    this.reviewRatingService
+      .addReview(review)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: any) => {
+          this.reviews = reviews.sortData.map((item, index) => {
+            if (index === 0) {
+              return {
+                ...item,
+                id: res.id,
+              };
+            }
+            return item;
+          });
+          this.notificationService.success(
+            'Review successfully created.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Review can't be created.", 'Error:');
+        },
+      });
+  }
+
+  private deleteReview(reviews: ReviewCommentModal) {
+    this.reviews = reviews.sortData;
+
+    this.reviewRatingService
+      .deleteReview(reviews.data)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Review successfully deleted.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Review can't be deleted.", 'Error:');
+        },
+      });
+  }
+
+  private updateReview(reviews: ReviewCommentModal) {
+    this.reviews = reviews.sortData;
+    const review: UpdateReviewCommand = {
+      id: reviews.data.id,
+      comment: reviews.data.commentContent,
+    };
+
+    this.reviewRatingService
+      .updateReview(review)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Review successfully updated.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Review can't be updated.", 'Error:');
+        },
+      });
   }
 
   public onSelectDropDown(event: any, action: string, index?: number) {
@@ -469,8 +661,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           );
         },
       });
-    this.physicalAddressTabs = this.mockModalService.brokerPhysicalAddressTabs;
-    this.billingAddressTabs = this.mockModalService.brokerBillingAddressTabs;
+    this.physicalAddressTabs = this.brokerPhysicalAddressTabs;
+    this.billingAddressTabs = this.brokerBillingAddressTabs;
   }
 
   private addBroker(): void {
@@ -725,12 +917,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             }
           }
 
-          this.reviews = [...reasponse.reviews].map((item) => ({
+          this.reviews = reasponse.reviews.map((item: any) => ({
             ...item,
             companyUser: {
               ...item.companyUser,
-              image: 'https://picsum.photos/id/237/200/300',
+              avatar: 'https://picsum.photos/id/237/200/300',
             },
+            commentContent: item.comment,
           }));
 
           if (reasponse.creditType === 'Enable') {

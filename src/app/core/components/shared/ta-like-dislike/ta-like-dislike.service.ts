@@ -1,27 +1,23 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+
+export interface LikeDislikeModel {
+  action: string;
+  likeDislike: number;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaLikeDislikeService {
-  private likeDislikeSubject: BehaviorSubject<{
-    action: string;
-    likes: number;
-    dislikes: number;
-  }> = new BehaviorSubject<{ action: string; likes: number; dislikes: number }>(
-    null
-  );
+  private userLikeDislikeSubject: Subject<LikeDislikeModel> =
+    new Subject<LikeDislikeModel>();
 
-  public get likeDislikeSubject$() {
-    return this.likeDislikeSubject.asObservable();
+  public get userLikeDislike$() {
+    return this.userLikeDislikeSubject.asObservable();
   }
 
-  public userLikeDislikeEvent(data: {
-    action: string;
-    likes: number;
-    dislikes: number;
-  }) {
-    this.likeDislikeSubject.next(data);
+  public likeDislikeEvent(data: LikeDislikeModel) {
+    this.userLikeDislikeSubject.next(data);
   }
 }

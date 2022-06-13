@@ -183,13 +183,9 @@
         <app-ta-custom-card
           [cardName]="'Shipping Work Hours'"
           *ngIf="!shipperForm.get('shippingHoursSameReceiving').value"
-          [isCardOpen]="
-            !shipperForm.get('shippingHoursSameReceiving').value
-          "
+          [isCardOpen]="!shipperForm.get('shippingHoursSameReceiving').value"
         >
-          <div
-            *ngIf="!shipperForm.get('shippingHoursSameReceiving').value"
-          >
+          <div *ngIf="!shipperForm.get('shippingHoursSameReceiving').value">
             <div class="shipper-work-hours row-mt-20 last-row">
               <div
                 class="shipper-work-hours-field appointment"
@@ -357,7 +353,7 @@
           [hasBodyData]="reviews.length"
           [isCommentData]="true"
           [hasScrollBody]="reviews.length > 6"
-          (onActionEvent)="addNewReview($event)"
+          (onActionEvent)="createReview($event)"
         >
           <div class="no-review-shipper" *ngIf="!reviews.length">
             <svg-icon
