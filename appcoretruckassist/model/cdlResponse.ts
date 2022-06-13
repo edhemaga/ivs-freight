@@ -21,6 +21,8 @@ export interface CdlResponse {
     cdlNumber?: string | null;
     issueDate?: string;
     expDate?: string;
+    status?: number;
+    dateDeactivated?: string | null;
     classType?: EnumValue;
     countryType?: EnumValue;
     cdlRestrictions?: Array<CdlRestrictionResponse> | null;

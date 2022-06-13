@@ -8,11 +8,10 @@ import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.compo
 
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
 
-
 const routes: Routes = [
   // Auth Routes
   {
-    path: '',
+    path: 'auth',
     loadChildren: () =>
       import('./core/components/authentication/auth.module').then(
         (m) => m.AuthModule
@@ -144,17 +143,16 @@ const routes: Routes = [
   {
     path: 'tools/todo',
     loadChildren: () =>
-     import('./core/components/to-do/to-do.module').then(
-       (m) => m.ToDoModule
-     )
+      import('./core/components/to-do/to-do.module').then((m) => m.ToDoModule),
+    canActivate: [AuthGuard],
   },
   {
-    path:'test',
-    component:TruckassistProgressExpirationComponent
+    path: 'test',
+    component: TruckassistProgressExpirationComponent,
   },
   {
-    path: "catalog",
-    component: SvgDefinitionsComponent
+    path: 'catalog',
+    component: SvgDefinitionsComponent,
   },
   { path: '**', redirectTo: 'dashboard' },
 ];

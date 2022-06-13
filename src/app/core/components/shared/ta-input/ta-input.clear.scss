@@ -81,21 +81,7 @@
   }
 
   &.password-eye {
-    display: inline-block;
-    .input-clear-x {
-      svg {
-        path {
-          fill: #6c6c6c !important;
-        }
-      }
-      &:hover {
-        svg {
-          rect {
-            fill: #fffafa !important;
-          }
-        }
-      }
-    }
+    display: none !important;
   }
 
   // If dropdown

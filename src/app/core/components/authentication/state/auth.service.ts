@@ -1,62 +1,57 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { AuthStore } from './auth.store';
-import { map, Observable } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
+import { AuthState, AuthStore } from './auth.store';
+import { Observable, tap } from 'rxjs';
 
 import {
-    AccountService,
-    ForgotPasswordCommand,
-    SetNewPasswordCommand,
-    SignUpCompanyCommand,
+  AccountService,
+  SignInCommand,
+  SignInResponse,
+  SignUpCompanyCommand,
+  ForgotPasswordCommand,
+  SetNewPasswordCommand,
 } from 'appcoretruckassist';
+import { Router } from '@angular/router';
+import { PersistState } from '@datorama/akita';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStoreService {
-    constructor(
-        private authStore: AuthStore,
-        private http: HttpClient,
-        private accountService: AccountService
-    ) {}
+  constructor(
+    private authStore: AuthStore,
+    private accountService: AccountService,
+    private router: Router,
+    @Inject('persistStorage') private persistStorage: PersistState
+  ) {}
 
-    public userLogin(data: any) {
-        return this.http
-            .post(environment.API_ENDPOINT + '/api/account/login', data)
-            .pipe(
-                map((user: any) => {
-                    localStorage.setItem(
-                        'currentUser',
-                        JSON.stringify(user.loggedUser)
-                    );
-                    localStorage.setItem('token', JSON.stringify(user.token));
-                    localStorage.setItem(
-                        'userCompany',
-                        JSON.stringify(user.userCompany)
-                    );
-                    this.authStore.update(user);
-                    return user;
-                })
-            );
-    }
+  public accountLogin(data: SignInCommand): Observable<SignInResponse> {
+    return this.accountService.apiAccountLoginPost(data).pipe(
+      tap((user: SignInResponse) => {
+        // Production
+        this.authStore.set({ 1: user });
+        // Develop
+        localStorage.setItem('user', JSON.stringify(user));
+        this.router.navigate(['/dashboard']);
+      })
+    );
+  }
 
-    public forgotPassword(data: ForgotPasswordCommand): Observable<object> {
-        return this.accountService.apiAccountForgotpasswordPut(
-            data,
-            'response'
-        );
-    }
+  public accountLogut(): void {
+    // ---- PRODUCTION MODE ----
+    this.persistStorage.clearStore();
+    this.persistStorage.destroy();
+    this.router.navigate(['/auth/login']);
+    // ---- DEVELOP MODE ----
+    localStorage.removeItem('user');
+  }
 
-    public createNewPassword(data: SetNewPasswordCommand): Observable<object> {
-        return this.accountService.apiAccountSetnewpasswordPut(
-            data,
-            'response'
-        );
-    }
+  public forgotPassword(data: ForgotPasswordCommand): Observable<object> {
+    return this.accountService.apiAccountForgotpasswordPut(data, 'response');
+  }
 
-    public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
-        return this.accountService.apiAccountSignupcompanyPost(
-            data,
-            'response'
-        );
-    }
+  public createNewPassword(data: SetNewPasswordCommand): Observable<object> {
+    return this.accountService.apiAccountSetnewpasswordPut(data, 'response');
+  }
+
+  public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
+    return this.accountService.apiAccountSignupcompanyPost(data, 'response');
+  }
 }
