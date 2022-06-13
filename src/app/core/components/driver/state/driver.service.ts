@@ -29,7 +29,7 @@ export class DriverTService {
     private tableService: TruckassistTableService,
   ) {}
 
-  // Create Driver
+  // Get Driver List
   public getDrivers(
     active?: number,
     pageIndex?: number,
@@ -43,6 +43,7 @@ export class DriverTService {
     return this.driverService.apiDriverListGet(active, pageIndex, pageSize);
   }
 
+  // Create Driver
   public addDriver(
     data: CreateDriverCommand
   ): Observable<CreateDriverResponse> {
@@ -50,6 +51,7 @@ export class DriverTService {
       tap((res: any) => {
         const subDriver = this.getDriverById(res.id).subscribe({
           next: (driver: DriverShortResponse | any) => {
+            console.log(subDriver);
             driver = {
               ...driver,
               fullName: driver.firstName + ' ' + driver.lastName,
@@ -57,6 +59,7 @@ export class DriverTService {
 
             this.driverStore.add(driver);
 
+            console.log('Poziva se sendActionAnimation iz Add Driver')
             this.tableService.sendActionAnimation({
               animation: 'add',
               data: driver,
@@ -64,6 +67,7 @@ export class DriverTService {
             })
 
             subDriver.unsubscribe();
+            console.log(subDriver);
           },
         });
       })

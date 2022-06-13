@@ -7,6 +7,7 @@ import { AuthGuard } from './core/guards/authentication.guard';
 import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
+import { TruckResolver } from './core/components/truck/state/truck.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -57,6 +58,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./core/components/truck/truck.module').then((m) => m.TruckModule),
     canActivate: [AuthGuard],
+    resolve: { truck: TruckResolver },
   },
   {
     path: 'trailer',

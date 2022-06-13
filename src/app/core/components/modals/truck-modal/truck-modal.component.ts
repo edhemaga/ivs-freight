@@ -23,7 +23,7 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TruckModalService } from './truck-modal.service';
+import { TruckTService } from '../../truck/state/truck.service';
 
 @Component({
   selector: 'app-truck-modal',
@@ -83,7 +83,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private truckModalService: TruckModalService,
+    private truckModalService: TruckTService,
     private notificationService: NotificationService,
     private modalService: ModalService
   ) {}
@@ -94,11 +94,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     this.getTruckDropdowns();
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 1,
-      };
       this.editTruckById(this.editData.id);
     }
   }

@@ -248,6 +248,7 @@ export class TruckService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/truck/list`,
             {
+                body: deleteMultipleTruckCommand,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

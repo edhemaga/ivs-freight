@@ -961,10 +961,15 @@ table {
 /* Action Animations */
 .add-animation{
   background: green !important;
-  transition: 0.25s;
+  transition: 0.4s;
+}
+
+.update-animation{
+  background: orange !important;
+  transition: 0.4s;
 }
 
 .delete-animation{
   background: red !important;
-  transition: 0.2s;
+  transition: 0.4s;
 }
