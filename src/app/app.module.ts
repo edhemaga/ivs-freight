@@ -17,7 +17,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
-import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 // ---- NAVIGATION
 import { NavigationComponent } from './core/components/navigation/navigation.component';
 import { NavigationRouteComponent } from './core/components/navigation/navigation-route/navigation-route.component';
@@ -41,8 +40,7 @@ import { configFactory } from './app.config';
     NavigationSubrouteCardComponent,
     NavigationModalsComponent,
     NavigationUserProfileComponent,
-    NavigationUserCompanyComponent
-    
+    NavigationUserCompanyComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,18 +56,13 @@ import { configFactory } from './app.config';
       timeOut: 5000,
     }),
     NgIdleModule.forRoot(),
-    ApiModule.forRoot(configFactory)
+    ApiModule.forRoot(configFactory),
   ],
   providers: [
     GoogleMapsAPIWrapper,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
       multi: true,
     },
   ],

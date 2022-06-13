@@ -12,15 +12,10 @@
     <div
       class="nav-header-bottom-plus"
       (click)="onAction('Open Panel')"
-      [appTooltip]="'Add New'"
-      [position]="'middle-right'"
-      [tooltipBackground]="'#6C6C6C'"
-      [tooltipColor]="'#FFFFFF'"
-      [zIndex]="900"
-      [borderRadius]="'2px'"
-      [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-      [fontWeight]="'bold'"
-      [fontSize]="'11px'"
+      ngbTooltip
+      mainTooltip="Add New"
+      tooltipBackground="#6c6c6c"
+      position="right"
     >
       <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
     </div>
@@ -32,46 +27,30 @@
       <div
         class="nav-header-bottom-rightSide-search"
         (click)="onAction('Search')"
-        [appTooltip]="'Find Anything'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6C6C6C'"
-        [tooltipColor]="'#FFFFFF'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
+        ngbTooltip
+        mainTooltip="Find Anything"
+        tooltipBackground="#6c6c6c"
+        position="top"
       >
         <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
       </div>
       <div
         class="nav-header-bottom-rightSide-notes"
         (click)="onAction('Notes')"
-        [appTooltip]="'Note'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6C6C6C'"
-        [tooltipColor]="'#FFFFFF'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="20"
+        ngbTooltip
+        mainTooltip="Notes"
+        tooltipBackground="#6c6c6c"
+        position="top"
       >
         <svg-icon src="assets/svg/common/ic_note.svg"></svg-icon>
       </div>
       <div
         class="nav-header-bottom-rightSide-bell"
         (click)="onAction('Bell')"
-        [appTooltip]="'Notification'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6C6C6C'"
-        [tooltipColor]="'#FFFFFF'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
+        ngbTooltip
+        mainTooltip="Notification"
+        tooltipBackground="#6c6c6c"
+        position="top"
       >
         <svg-icon src="assets/svg/common/ic_bell.svg"></svg-icon>
       </div>

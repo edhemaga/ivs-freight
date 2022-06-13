@@ -6,10 +6,6 @@ import { AuthState, AuthStore } from './auth.store';
   providedIn: 'root'
 })
 export class AuthQuery extends QueryEntity<AuthState> {
-  get loggedUserMainInfo(){
-      return this.getValue();
-  }
-
   constructor(protected store: AuthStore) {
     super(store);
   }

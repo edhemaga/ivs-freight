@@ -6,9 +6,13 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import {
+  CommentResponse,
+  CreateCommentCommand,
   EnumValue,
+  SignInResponse,
   TodoModalResponse,
   TodoResponse,
+  UpdateCommentCommand,
   UpdateTodoCommand,
 } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -17,6 +21,7 @@ import {
   convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
 import { TodoTService } from '../../to-do/state/todo.service';
+import { AuthQuery } from '../../authentication/state/auth.query';
 
 @Component({
   selector: 'app-task-modal',
@@ -38,18 +43,26 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   public comments: any[] = [];
   public documents: any[] = [];
 
+  public companyUser: SignInResponse = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
     private todoService: TodoTService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private authQuery: AuthQuery
   ) {}
 
   ngOnInit() {
     this.createForm();
     this.getTaskDropdowns();
-    console.log(this.editData);
+    // -------------- PRODUCTION MODE -----------------
+    // this.companyUser = this.authQuery.getEntity(1);
+
+    // -------------- DEVELOP MODE --------------------
+    this.companyUser = JSON.parse(localStorage.getItem('user'));
+
     if (this.editData) {
       this.editTask(this.editData.id);
     }
@@ -98,25 +111,144 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public changeCommentsEvent(comments: { data: any[]; action: string }) {
-    this.comments = [...comments.data];
-    // TODO: API CREATE OR DELETE
+  public changeCommentsEvent(comments: {
+    sortData: any[];
+    data: any | number;
+    action: string;
+  }) {
+    switch (comments.action) {
+      case 'delete': {
+        this.deleteComment(comments);
+        break;
+      }
+      case 'add': {
+        this.addComment(comments);
+        break;
+      }
+      case 'update': {
+        this.updateComment(comments);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
-  public addComment(event: any) {
+  public createComment(event: any) {
+    if (this.comments.some((item) => item.isNewReview)) {
+      return;
+    }
+    // ------------------------ PRODUCTION MODE -----------------------------
+    // this.comments.unshift({
+    //   companyUser: {
+    //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
+    //     avatar: 'https://picsum.photos/id/237/200/300',
+    //   },
+    //   commentContent: '',
+    //   createdAt: new Date().toISOString(),
+    //   updatedAt: new Date().toISOString(),
+    //   isNewReview: true,
+    // });
+
+    // -------------------------- DEVELOP MODE --------------------------------
     this.comments.unshift({
-      id: Math.random() * 100,
       companyUser: {
-        id: Math.random() * 100,
-        fullName: 'Angela Martin',
-        image: 'https://picsum.photos/id/237/200/300',
-        reaction: '',
+        fullName: this.companyUser.firstName.concat(
+          ' ',
+          this.companyUser.lastName
+        ),
+        avatar: 'https://picsum.photos/id/237/200/300',
       },
-      comment: '',
+      commentContent: '',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       isNewReview: true,
     });
+  }
+
+  private addComment(comments: {
+    sortData: any[];
+    data: any | number;
+    action: string;
+  }) {
+    this.comments = [...comments.sortData];
+
+    const comment: CreateCommentCommand = {
+      entityTypeCommentId: 1,
+      entityTypeId: this.editData.id,
+      commentContent: comments.data.comment,
+    };
+
+    this.todoService
+      .createComment(comment)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Comment successfully created.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Comment can't be created.", 'Error:');
+        },
+      });
+  }
+
+  private updateComment(comments: {
+    sortData: any[];
+    data: any;
+    action: string;
+  }) {
+    this.comments = comments.sortData;
+
+    const comment: UpdateCommentCommand = {
+      id: comments.data.id,
+      commentContent: comments.data.commentContent,
+    };
+    this.todoService
+      .updateComment(comment)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Comment successfully updated.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Comment cant't be updated.",
+            'Error:'
+          );
+        },
+      });
+  }
+
+  private deleteComment(comments: {
+    sortData: any[];
+    data: any | number;
+    action: string;
+  }) {
+    this.comments = comments.sortData;
+    this.todoService
+      .deleteCommentById(comments.data)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Comment successfully deleted.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Comment cant't be deleted.",
+            'Error:'
+          );
+        },
+      });
   }
 
   public onFilesEvent(event: any) {
@@ -232,8 +364,17 @@ export class TaskModalComponent implements OnInit, OnDestroy {
               name: item.firstName.concat(' ', item.lastName),
             };
           });
-          this.comments = res.comments;
+          this.comments = res.comments.map((item: CommentResponse) => {
+            return {
+              ...item,
+              companyUser: {
+                ...item.companyUser,
+                avatar: 'https://picsum.photos/id/237/200/300',
+              },
+            };
+          });
           this.taskStatus = res.status;
+          console.log(res.status);
         },
         error: () => {
           this.notificationService.error("Can't get task.", 'Error:');
@@ -269,7 +410,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       }
       case 'assign-task': {
         this.selectedCompanyUsers = event;
-        console.log(this.selectedCompanyUsers);
         break;
       }
       default: {
