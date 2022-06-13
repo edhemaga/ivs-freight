@@ -1,6 +1,15 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { createBase64 } from 'src/app/core/utils/base64.image';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -8,16 +17,17 @@ import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { DriversQuery } from '../state/driver.query';
 
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',
   styleUrls: ['./driver-details-card.component.scss'],
-  encapsulation:ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None,
   animations: [card_modal_animation('showHideCardBody')],
 })
-export class DriverDetailsCardComponent implements OnInit {
-  @Input() data:any;
+export class DriverDetailsCardComponent implements OnInit, OnDestroy {
+  @Input() data: any;
   public note: FormControl = new FormControl();
   public copiedPhone: boolean = false;
   public copiedBankRouting: boolean = false;
@@ -29,53 +39,59 @@ export class DriverDetailsCardComponent implements OnInit {
   public isAccountVisible: boolean = true;
   public accountText: string = null;
   public buttonsArray: any;
-  public duttyLocationCounter:number=0;
-  @Input() templateCard:boolean=false;
-  public toggler:boolean[]=[];
-  public dataEdit:any;
-  public selectedTab:number;
-  public tabsDriver:any[]=[];
+  public duttyLocationCounter: number = 0;
+  @Input() templateCard: boolean = false;
+  public toggler: boolean[] = [];
+  public dataEdit: any;
+  public selectedTab: number;
+  public tabsDriver: any[] = [];
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
-  constructor( private sanitazer: DomSanitizer,  private modalService: ModalService) { }
+
+  public driver_active_id: number = +this.activated_route.snapshot.params['id'];
+
+  constructor(
+    private sanitazer: DomSanitizer,
+    private modalService: ModalService,
+    private driversQuery: DriversQuery,
+    private activated_route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    console.log(this.data);
-    console.log('data from cards');
     this.initTableOptions();
-   
-      this.tabsDriver= [
+    this.getDriversDropdown();
+
+    this.tabsDriver = [
       {
         id: 53333,
         name: '1M',
-        checked:true
+        checked: true,
       },
       {
         id: 53,
         name: '3M',
-        checked:false
+        checked: false,
       },
       {
         id: 42,
         name: '6M',
-        checked:false
+        checked: false,
       },
       {
         id: 36,
         name: '1Y',
-        checked:false
+        checked: false,
       },
       {
         id: 8932,
         name: 'YTD',
-        checked:false
+        checked: false,
       },
       {
         id: 1111,
         name: 'ALL',
-        checked:false
+        checked: false,
       },
-     
     ];
     this.buttonsArray = [
       {
@@ -122,29 +138,32 @@ export class DriverDetailsCardComponent implements OnInit {
       },
     ];
   }
+
   /**Function return user image if have in DB or default image */
   public transformImage() {
     let img;
     if (this.data.avatar) {
-      img= createBase64(this.data.avatar) ;
+      img = createBase64(this.data.avatar);
     } else {
       img = 'assets/svg/common/ic_no_avatar_driver.svg';
     }
     return this.sanitazer.bypassSecurityTrustResourceUrl(img);
   }
-   /**Function for toggle page in cards */
+
+  /**Function for toggle page in cards */
   public toggleResizePage(value: number) {
     this.toggler[value] = !this.toggler[value];
   }
-  public changeTab(ev:any){
+
+  public changeTab(ev: any) {
     console.log(ev.id);
-    
-      this.selectedTab=ev.id;
+
+    this.selectedTab = ev.id;
   }
-   
+
   public optionsEvent(any: any, action: string) {
-    console.log(any)
-    console.log(this.data)
+    console.log(any);
+    console.log(this.data);
     switch (action) {
       case 'edit-licence': {
         this.modalService.openModal(
@@ -200,129 +219,162 @@ export class DriverDetailsCardComponent implements OnInit {
     }
   }
 
-    /* To copy any Text */
-    public copyText(val: any, copVal: string) {
-      switch (copVal) {
-        case 'phone':
-          this.copiedPhone = true;
-          setTimeout(() => {
-            this.copiedPhone = false;
-          }, 2100);
-          break;
-  
-        case 'bankAcc':
-          this.copiedBankAccount = true;
-          setTimeout(() => {
-             this.copiedBankAccount=false;
-          }, 2100);
-          break;
-  
-        case 'bankRouting':
-          this.copiedBankRouting = true;
-          setTimeout(() => {
-            this.copiedBankRouting=false;
-         }, 2100);
-          break;
-  
-        case 'ein':
-          this.copiedEin = true;
-          setTimeout(() => {
-            this.copiedEin=false;
-         }, 2100);
-          break;
-  
-        case 'ssn':
-          this.copiedSSN = true;
-          setTimeout(() => {
-            this.copiedSSN=false;
-         }, 2100);
-          break;
-  
-        case 'driver-phone':
-          this.copiedDriverPhone = true;
-          setTimeout(() => {
-            this.copiedDriverPhone=false;
-         }, 2100);
-          break;
-        case 'driver-email':
-          this.copiedDriverEmail = true;
-          setTimeout(() => {
-            this.copiedDriverEmail=false;
-         }, 2100);
-          break;
-      }
-  
-      let selBox = document.createElement('textarea');
-      selBox.style.position = 'fixed';
-      selBox.style.left = '0';
-      selBox.style.top = '0';
-      selBox.style.opacity = '0';
-      selBox.value = val;
-      document.body.appendChild(selBox);
-      selBox.focus();
-      selBox.select();
-      document.execCommand('copy');
-      document.body.removeChild(selBox);
+  /* To copy any Text */
+  public copyText(val: any, copVal: string) {
+    switch (copVal) {
+      case 'phone':
+        this.copiedPhone = true;
+        setTimeout(() => {
+          this.copiedPhone = false;
+        }, 2100);
+        break;
+
+      case 'bankAcc':
+        this.copiedBankAccount = true;
+        setTimeout(() => {
+          this.copiedBankAccount = false;
+        }, 2100);
+        break;
+
+      case 'bankRouting':
+        this.copiedBankRouting = true;
+        setTimeout(() => {
+          this.copiedBankRouting = false;
+        }, 2100);
+        break;
+
+      case 'ein':
+        this.copiedEin = true;
+        setTimeout(() => {
+          this.copiedEin = false;
+        }, 2100);
+        break;
+
+      case 'ssn':
+        this.copiedSSN = true;
+        setTimeout(() => {
+          this.copiedSSN = false;
+        }, 2100);
+        break;
+
+      case 'driver-phone':
+        this.copiedDriverPhone = true;
+        setTimeout(() => {
+          this.copiedDriverPhone = false;
+        }, 2100);
+        break;
+      case 'driver-email':
+        this.copiedDriverEmail = true;
+        setTimeout(() => {
+          this.copiedDriverEmail = false;
+        }, 2100);
+        break;
     }
 
-    public hiddenPassword(value: any, numberOfCharacterToHide: number): string {
-      const lastFourCharaters = value.substring(
-        value.length - numberOfCharacterToHide
-      );
-      let hiddenCharacter = '';
-  
-      for (let i = 0; i < numberOfCharacterToHide; i++) {
-        hiddenCharacter += '*';
-      }
-      return hiddenCharacter + lastFourCharaters;
-    }
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = val;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+  }
 
-    public showHideValue(value: string) {
-      this.isAccountVisible = !this.isAccountVisible;
-      if (!this.isAccountVisible) {
-        this.accountText = this.hiddenPassword(value, 4);
-        return;
-      }
-      this.accountText = value;
-    }
+  public hiddenPassword(value: any, numberOfCharacterToHide: number): string {
+    const lastFourCharaters = value.substring(
+      value.length - numberOfCharacterToHide
+    );
+    let hiddenCharacter = '';
 
-
-     /**Function retrun id */
-    public identity(index: number, item: any): number {
-      return item.id;
+    for (let i = 0; i < numberOfCharacterToHide; i++) {
+      hiddenCharacter += '*';
     }
-     /**Function for dots in cards */
-    public initTableOptions(): void {
-      this.dataEdit = {
-        disabledMutedStyle: null,
-        toolbarActions: {
-          hideViewMode: false,
+    return hiddenCharacter + lastFourCharaters;
+  }
+
+  public showHideValue(value: string) {
+    this.isAccountVisible = !this.isAccountVisible;
+    if (!this.isAccountVisible) {
+      this.accountText = this.hiddenPassword(value, 4);
+      return;
+    }
+    this.accountText = value;
+  }
+
+  /**Function retrun id */
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
+
+  /**Function for dots in cards */
+  public initTableOptions(): void {
+    this.dataEdit = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          class: 'regular-text',
+          contentType: 'edit',
         },
-        config: {
-          showSort: true,
-          sortBy: '',
-          sortDirection: '',
-          disabledColumns: [0],
-          minWidth: 60,
+
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
         },
-        actions: [
-          {
-            title: 'Edit',
-            name: 'edit',
-            class: 'regular-text',
-            contentType: 'edit',
-          },
-  
-          {
-            title: 'Delete',
-            name: 'delete-item',
-            type: 'driver',
-            text: 'Are you sure you want to delete driver(s)?',
-            class: 'delete-text',
-            contentType: 'delete',
-          },
-        ],
-        export: true,
+      ],
+      export: true,
+    };
+  }
+
+  driversDropdowns: any[] = [];
+
+  public getDriversDropdown() {
+    console.log(this.driver_active_id);
+    this.driversDropdowns = this.driversQuery.getAll().map((item) => {
+      return {
+        id: item.id,
+        name: item.fullName,
+        status: item.status,
+        svg: item.owner ? 'driver-owner' : null,
+        folder: 'common',
+        active: item.id === this.driver_active_id,
       };
+    });
+  }
+
+  public onSelectedDriver(event: any) {
+    if (event) {
+      this.driversDropdowns = this.driversQuery.getAll().map((item) => {
+        return {
+          id: item.id,
+          name: item.fullName,
+          status: item.status,
+          svg: item.owner ? 'driver-owner' : null,
+          folder: 'common',
+          active: item.id === event.id,
+        };
+      });
     }
+  }
+
+  ngOnDestroy(): void {}
 }
