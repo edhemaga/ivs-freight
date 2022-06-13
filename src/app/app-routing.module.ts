@@ -7,6 +7,7 @@ import { AuthGuard } from './core/guards/authentication.guard';
 import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
+import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -65,6 +66,7 @@ const routes: Routes = [
         (m) => m.TrailerModule
       ),
     canActivate: [AuthGuard],
+    resolve: { trailer: TrailerResolver },
   },
   {
     path: 'customer',
