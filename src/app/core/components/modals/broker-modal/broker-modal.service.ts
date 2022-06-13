@@ -2,13 +2,13 @@ import { BrokerResponse } from './../../../../../../appcoretruckassist/model/bro
 import { Injectable } from '@angular/core';
 import {
   BrokerModalResponse,
-  BrokerReviewCreateResponse,
   BrokerService,
   CreateBrokerCommand,
-  CreateBrokerReviewCommand,
+  CreateRatingCommand,
   CreateResponse,
+  RatingReviewService,
   UpdateBrokerCommand,
-  UpdateBrokerReviewCommand,
+  UpdateReviewCommand,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 
@@ -16,7 +16,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BrokerModalService {
-  constructor(private brokerService: BrokerService) {}
+  constructor(
+    private brokerService: BrokerService,
+    private ratingReviewService: RatingReviewService
+  ) {}
 
   public addBroker(data: CreateBrokerCommand): Observable<CreateResponse> {
     return this.brokerService.apiBrokerPost(data);
@@ -47,14 +50,14 @@ export class BrokerModalService {
   }
 
   public deleteReviewById(id: number): Observable<any> {
-    return this.brokerService.apiBrokerReviewIdDelete(id);
+    return this.ratingReviewService.apiRatingReviewReviewIdDelete(id);
   }
 
-  public createReview(review: CreateBrokerReviewCommand): Observable<BrokerReviewCreateResponse> {
-    return this.brokerService.apiBrokerReviewPost(review)
+  public createReview(review: CreateRatingCommand): Observable<any> {
+    return this.ratingReviewService.apiRatingReviewReviewPost(review);
   }
 
-  public updateReview(review: UpdateBrokerReviewCommand): Observable<any> {
-    return this.brokerService.apiBrokerReviewPut(review);
+  public updateReview(review: UpdateReviewCommand): Observable<any> {
+    return this.ratingReviewService.apiRatingReviewReviewPut(review);
   }
 }

@@ -99,6 +99,22 @@
     }
   }
 
+  &.password-eye {
+    svg {
+      path {
+        fill: #b7b7b7 !important;
+      }
+    }
+  }
+
+  &.password-eye-invalid {
+    svg {
+      path {
+        fill: #ffcdd2 !important;
+      }
+    }
+  }
+
   &.input-dropdown {
     display: none !important;
   }
