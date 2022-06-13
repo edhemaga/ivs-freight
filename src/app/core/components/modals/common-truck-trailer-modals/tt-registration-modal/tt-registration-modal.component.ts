@@ -37,7 +37,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    console.log(this.editData)
+    
     if (this.editData.type === 'edit-registration') {
       this.getRegistrationById();
     }

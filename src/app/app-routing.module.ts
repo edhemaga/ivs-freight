@@ -8,6 +8,7 @@ import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.compo
 
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
 import { TruckResolver } from './core/components/truck/state/truck.resolver';
+import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -67,6 +68,7 @@ const routes: Routes = [
         (m) => m.TrailerModule
       ),
     canActivate: [AuthGuard],
+    resolve: { trailer: TrailerResolver },
   },
   {
     path: 'customer',
