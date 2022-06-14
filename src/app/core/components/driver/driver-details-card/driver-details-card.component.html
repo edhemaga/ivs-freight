@@ -10,6 +10,7 @@
     [statusInactive]="data.status"
     [options]="driversDropdowns"
     (selectValue)="onSelectedDriver($event)"
+    (changeEvent)="onChangeDriver($event)"
   >
     <div class="driver-container">
       <div class="driver-personal">

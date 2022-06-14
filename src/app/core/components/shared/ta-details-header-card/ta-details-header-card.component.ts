@@ -17,8 +17,7 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Input() options: any = [];
   @Input() statusInactive: number = 1;
   @Output() selectValue = new EventEmitter<string>();
-  @Output() nextValue = new EventEmitter<any>();
-  @Output() previousValue = new EventEmitter<any>();
+  @Output() changeEvent = new EventEmitter<string>();
   id: number = 0;
   public inputFormControl: FormControl = new FormControl();
 
@@ -30,11 +29,8 @@ export class TaDetailsHeaderCardComponent implements OnInit {
     console.log(this.options);
   }
 
-  onNextAction() {
-    this.nextValue.emit();
-  }
-  onPreviousAction(val: any) {
-    this.previousValue.emit(val);
+  public onAction(action: string) {
+    this.changeEvent.emit(action);
   }
 
   public onPickItem(): void {

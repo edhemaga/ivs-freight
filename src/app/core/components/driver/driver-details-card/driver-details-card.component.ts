@@ -48,6 +48,8 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
 
+  // Driver Dropdown
+  public driversDropdowns: any[] = [];
   public driver_active_id: number = +this.activated_route.snapshot.params['id'];
 
   constructor(
@@ -345,10 +347,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
     };
   }
 
-  driversDropdowns: any[] = [];
-
   public getDriversDropdown() {
-    console.log(this.driver_active_id);
     this.driversDropdowns = this.driversQuery.getAll().map((item) => {
       return {
         id: item.id,
@@ -373,6 +372,28 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           active: item.id === event.id,
         };
       });
+      // Call from store active driver or API on DROPDOWN SELECT
+    }
+  }
+
+  public onChangeDriver(action: string) {
+    // Call from store active driver or API on ARROW SELECTED
+    switch (action) {
+      case 'previous': {
+        console.log('PREVIOUS');
+        this.driver_active_id = --this.driver_active_id;
+        console.log(this.driver_active_id);
+        break;
+      }
+      case 'next': {
+        console.log('NEXT');
+        this.driver_active_id = ++this.driver_active_id;
+        console.log(this.driver_active_id);
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 
