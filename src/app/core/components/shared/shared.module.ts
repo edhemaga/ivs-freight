@@ -34,7 +34,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from '../switchers/status-switcher/status-switcher.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { NgxMaskModule } from "ngx-mask";
+import { NgxMaskModule } from 'ngx-mask';
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
@@ -113,6 +113,7 @@ import { HidePasswordPipe } from '../../pipes/hide-password.pipe';
 import { InputTypePipe } from './ta-input/input-type.pipe';
 import { FormatRestrictionEndorsmentPipe } from '../../pipes/formatRestrictionEndorsment.pipe';
 import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
+import { DetailsActiveItemPipe } from '../../pipes/detailsActiveItem.pipe';
 
 @NgModule({
   declarations: [
@@ -174,7 +175,6 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
-    
 
     // Pipes
     InputErrorPipe,
@@ -194,13 +194,14 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     InputTypePipe,
     FormatRestrictionEndorsmentPipe,
     BlockedContentPipe,
+    DetailsActiveItemPipe,
 
     // Directive
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
     TextareaAutosizeDirective,
-    FilterComponent
+    FilterComponent,
   ],
   imports: [
     CommonModule,
@@ -243,7 +244,7 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     PdfViewerModule,
     DirectivesModule,
     TruckassistTableModule,
-    AppTooltipeModule
+    AppTooltipeModule,
   ],
   exports: [
     // Modules
@@ -353,6 +354,7 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     InputTypePipe,
     FormatRestrictionEndorsmentPipe,
     BlockedContentPipe,
+    DetailsActiveItemPipe,
 
     // Directive
     AutoFocusDirective,
@@ -360,7 +362,7 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     InputRestrictionDirective,
     TextareaAutosizeDirective,
     AppTooltipeModule,
-    FilterComponent
+    FilterComponent,
   ],
   providers: [
     DatePipe,
@@ -371,7 +373,7 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     CalendarMonthsPipe,
     CdkIdPipe,
     HighlightSearchPipe,
-    HosTimePipe
+    HosTimePipe,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
