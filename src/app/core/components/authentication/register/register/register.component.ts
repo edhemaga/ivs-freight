@@ -116,7 +116,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
               JSON.stringify(this.registerForm.get('email').value)
             );
 
-            this.router.navigate(['/register/thank-you']);
+            this.router.navigate(['/auth/register/thank-you']);
           }
         },
         error: err => {

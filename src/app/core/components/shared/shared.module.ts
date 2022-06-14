@@ -115,6 +115,8 @@ import { FormatRestrictionEndorsmentPipe } from '../../pipes/formatRestrictionEn
 import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
 import { DetailsActiveItemPipe } from '../../pipes/detailsActiveItem.pipe';
 import { RepairShopModalComponent } from '../modals/repair-shop/repair-shop-modal/repair-shop-modal.component';
+import { TaChartComponent } from './ta-chart/ta-chart.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -204,6 +206,7 @@ import { RepairShopModalComponent } from '../modals/repair-shop/repair-shop-moda
     InputRestrictionDirective,
     TextareaAutosizeDirective,
     FilterComponent,
+    TaChartComponent,
   ],
   imports: [
     CommonModule,
@@ -247,6 +250,7 @@ import { RepairShopModalComponent } from '../modals/repair-shop/repair-shop-moda
     DirectivesModule,
     TruckassistTableModule,
     AppTooltipeModule,
+    ChartsModule,
   ],
   exports: [
     // Modules
@@ -315,6 +319,7 @@ import { RepairShopModalComponent } from '../modals/repair-shop/repair-shop-moda
     TaLogoChangeComponent,
     TaLikeDislikeComponent,
     TaCurrencyProgressBarComponent,
+    TaChartComponent,
 
     // Modals Components
     TaModalComponent,

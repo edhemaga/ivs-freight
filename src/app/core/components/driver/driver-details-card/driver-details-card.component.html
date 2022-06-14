@@ -486,24 +486,10 @@
           </app-tab-switcher>
           <!-- <app-ta-input-radiobuttons [buttons]="buttonsArray">
           </app-ta-input-radiobuttons> -->
-          <div class="charts-item-wrapper revenue">
-            <div class="charts-template-item">
-              <div class="icon-name-item">
-                <svg-icon src="assets/svg/common/round_yellow.svg"></svg-icon>
-                <div class="charts-template-item-name">Miles</div>
-              </div>
-              <div class="charts-template-item-value">46,755.2 mi</div>
-            </div>
-
-            <div class="charts-template-item fuel-item">
-              <div class="icon-name-item">
-                <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                <div class="charts-template-item-name">Salary</div>
-              </div>
-              <div class="charts-template-item-value">$36.854.27</div>
-            </div>
+          
+          <div id="chart">
+            <app-ta-chart></app-ta-chart>
           </div>
-          <div id="chart"></div>
         </div>
       </app-ta-custom-card>
 

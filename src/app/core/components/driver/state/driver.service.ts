@@ -1,11 +1,9 @@
-import { DriverShortResponse } from './../../../../../../appcoretruckassist/model/driverShortResponse';
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
 import {
   CheckOwnerSsnEinResponse,
   CreateDriverCommand,
-  DeleteMultipleDriverCommand,
   DriverListResponse,
   DriverResponse,
   GetDriverModalResponse,
@@ -40,6 +38,7 @@ export class DriverTService {
   }
 
   // Create Driver
+  // Get Driver List
   public getDrivers(
     active?: number,
     pageIndex?: number,
@@ -53,13 +52,14 @@ export class DriverTService {
     return this.driverService.apiDriverListGet(active, pageIndex, pageSize);
   }
 
+  // Create Driver
   public addDriver(
     data: CreateDriverCommand
   ): Observable<CreateDriverResponse> {
     return this.driverService.apiDriverPost(data).pipe(
       tap((res: any) => {
         const subDriver = this.getDriverById(res.id).subscribe({
-          next: (driver: DriverShortResponse | any) => {
+          next: (driver: DriverResponse | any) => {
             driver = {
               ...driver,
               fullName: driver.firstName + ' ' + driver.lastName,
@@ -109,7 +109,30 @@ export class DriverTService {
   }
 
   public updateDriver(data: UpdateDriverCommand): Observable<object> {
-    return this.driverService.apiDriverPut(data);
+    return this.driverService.apiDriverPut(data).pipe(
+      tap((res: any) => {
+        const subDriver = this.getDriverById(data.id).subscribe({
+          next: (driver: DriverResponse | any) => {
+            this.driverStore.remove(({ id }) => id === data.id);
+
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
+
+            this.driverStore.add(driver);
+
+            this.tableService.sendActionAnimation({
+              animation: 'update',
+              data: driver,
+              id: driver.id,
+            });
+
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );
   }
 
   public getDriverById(id: number): Observable<DriverResponse> {
@@ -126,7 +149,22 @@ export class DriverTService {
     return this.ownerService.apiOwnerCheckSsnEinGet(number);
   }
 
-  public changeDriverStatus(id: number): Observable<any> {
-    return this.driverService.apiDriverStatusIdPut(id, 'response');
+  public changeDriverStatus(driverId: number): Observable<any> {
+    return this.driverService.apiDriverStatusIdPut(driverId, 'response').pipe(
+      tap(() => {
+        const driverToUpdate = this.driversQuery.getAll({
+          filterBy: ({ id }) => id === driverId,
+        });
+
+        this.driverStore.update(({ id }) => id === driverId, {
+          status: driverToUpdate[0].status === 0 ? 1 : 0,
+        });
+
+        this.tableService.sendActionAnimation({
+          animation: 'update-status',
+          id: driverId,
+        });
+      })
+    );
   }
 }

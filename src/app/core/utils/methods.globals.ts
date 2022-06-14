@@ -4,21 +4,31 @@ import {
   FilterDescriptor,
   process,
 } from '@progress/kendo-data-query';
-//import {dateFormat, formatPhoneNumber} from 'src/app/core/helpers/formating';
 
-export function setTableAnimation(
-  tableData: any[],
-  animation: string,
-  id: any
-) {
-  tableData
-    .filter((data) => id === data.id)
-    .map((data) => {
-      data.animation = animation;
+export function closeAnimationAction(isDelete?: boolean, viewData?: any): any {
+  if (!isDelete) {
+    viewData = viewData.map((data: any) => {
+      if (data?.actionAnimation) {
+        delete data.actionAnimation;
+      }
+
       return data;
     });
 
-  return tableData;
+    return viewData;
+  } else {
+    let newViewData = [];
+
+    viewData.map((data: any) => {
+      if (!data.hasOwnProperty('actionAnimation')) {
+        newViewData.push(data);
+      }
+    });
+
+    viewData = newViewData;
+
+    return viewData;
+  }
 }
 
 export function ssnFormat(ssn: any): string {
