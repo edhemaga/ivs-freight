@@ -124,13 +124,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
             });
         }
       });
-<<<<<<< HEAD
-      this.initTableOptions();
-    this.getDriversData();
-=======
 
     this.loadingPage = false;
->>>>>>> develop
   }
 
   public initTableOptions(): void {
@@ -277,12 +272,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     }
   }
 
-<<<<<<< HEAD
-  mapDriverData(data: any){
-    
-=======
   mapDriverData(data: any) {
->>>>>>> develop
     return {
       ...data,
       isSelected: false,
