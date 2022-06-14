@@ -819,11 +819,10 @@
 
 .event-date-popover{
     width: 400px;
-    height: 214px;
     border-radius: 3px;
     background-color: #fff;
     box-shadow: 0 0 5px #00000026;
-    padding: 7px 6px 4px 6px;
+    padding: 7px 6px 6px 6px;
     box-sizing: border-box;
     display: flex;
     justify-content: flex-start;
@@ -901,19 +900,50 @@
         height: 26px;
         border-radius: 2px;
         background-color: #BA68C8;
-        margin-top: 2px;
         padding-left: 6px;
         box-sizing: border-box;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        font-size: 14px;
-        font-weight: 500;
-        color: #fff;
         margin-top: 2px;
 
         &.drivers-organization{
             background-color: #FFB74D;
+        }
+
+        &.blue-box{
+            background-color: transparent;
+        }
+
+        &.green-bcg{
+            background-color: #4DB6A2;
+        }
+
+        .report-text{
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;  
+            width: 285px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            
+            &.different-color{
+                color: #6C6C6C;
+                padding-left: 6px;
+                box-sizing: border-box;
+            }
+        }
+
+        .event-box{
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            background-color: #6D82C7;
+
+            &.orange-box{
+                background-color: #FFB74D;
+            }
         }
     }
 
