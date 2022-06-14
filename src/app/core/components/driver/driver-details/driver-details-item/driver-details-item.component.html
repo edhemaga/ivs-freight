@@ -2,7 +2,7 @@
   <div [ngSwitch]="driver.template">
     <!---------------------- GENERAL TEMPLATE ------------------>
     <div *ngSwitchCase="'general'">
-      <app-driver-details-card [data]="driver.data"></app-driver-details-card>
+      <app-driver-details-card [driver]="driver.data"></app-driver-details-card>
     </div>
     <div *ngSwitchCase="'cdl'">
       <div

@@ -29,7 +29,7 @@ import { DriverTService } from '../state/driver.service';
   animations: [card_modal_animation('showHideCardBody')],
 })
 export class DriverDetailsCardComponent implements OnInit, OnDestroy {
-  @Input() data: DriverResponse;
+  @Input() driver: DriverResponse;
   public note: FormControl = new FormControl();
   public copiedPhone: boolean = false;
   public copiedBankRouting: boolean = false;
@@ -148,8 +148,8 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   /**Function return user image if have in DB or default image */
   public transformImage() {
     let img;
-    if (this.data.avatar) {
-      img = createBase64(this.data.avatar);
+    if (this.driver.avatar) {
+      img = createBase64(this.driver.avatar);
     } else {
       img = 'assets/svg/common/ic_no_avatar_driver.svg';
     }
@@ -173,7 +173,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.data.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -185,7 +185,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.data.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -197,7 +197,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.data.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -209,7 +209,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.data.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -379,7 +379,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   public onChangeDriver(action: string) {
     let currentIndex = this.driversList
       .map((driver) => driver.id)
-      .indexOf(this.data.id);
+      .indexOf(this.driver.id);
     switch (action) {
       case 'previous': {
         currentIndex = --currentIndex;

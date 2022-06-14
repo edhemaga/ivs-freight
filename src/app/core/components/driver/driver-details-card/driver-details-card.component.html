@@ -1,13 +1,13 @@
-<div *ngIf="data" class="cards-item-wrapper-1">
+<div *ngIf="driver" class="cards-item-wrapper-1">
   <app-ta-details-header-card
     [tooltipNext]="'Next Driver'"
     [tooltipPrevious]="'Previous Driver'"
     [searchName]="'Search Driver'"
     [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
-    [cardDetailsName]="data.currentDriverName"
-    [cardDetailsDate]="data.hired | formatDateP"
-    [cardDetailsDateTerminated]="data.dateTerminated | formatDateP"
-    [statusInactive]="data.status"
+    [cardDetailsName]="driver.currentDriverName"
+    [cardDetailsDate]="driver.hired | formatDateP"
+    [cardDetailsDateTerminated]="driver.dateTerminated | formatDateP"
+    [statusInactive]="driver.status"
     [options]="driversDropdowns"
     (selectValue)="onSelectedDriver($event)"
     (changeEvent)="onChangeDriver($event)"
@@ -28,7 +28,7 @@
               src="assets/svg/common/ic_ssn.svg"
             ></svg-icon>
             <p class="information-value ssn">
-              {{ data.ssn | formatSsnP }}
+              {{ driver.ssn | formatSsnP }}
             </p>
             <span
               [tooltipBackground]="copiedSSN ? '#536BC2' : '#6c6c6c'"
@@ -39,7 +39,7 @@
               <svg-icon
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
-                (click)="copyText(data.ssn, 'ssn')"
+                (click)="copyText(driver.ssn, 'ssn')"
               ></svg-icon>
             </span>
           </div>
@@ -52,7 +52,7 @@
               src="assets/svg/common/ic_phone.svg"
             ></svg-icon>
             <p class="information-value">
-              {{ data.phone | formatPhoneP }}
+              {{ driver.phone | formatPhoneP }}
             </p>
             <span
               [tooltipBackground]="copiedDriverPhone ? '#536BC2' : '#6c6c6c'"
@@ -61,7 +61,7 @@
               position="top"
             >
               <svg-icon
-                (click)="copyText(data.phone, 'driver-phone')"
+                (click)="copyText(driver.phone, 'driver-phone')"
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
               >
@@ -77,7 +77,7 @@
               src="assets/svg/common/ic_email.svg"
             ></svg-icon>
             <p class="information-value information-email-value">
-              {{ data.email }}
+              {{ driver.email }}
             </p>
             <span
               [tooltipBackground]="copiedDriverEmail ? '#536BC2' : '#6c6c6c'"
@@ -86,7 +86,7 @@
               position="top"
             >
               <svg-icon
-                (click)="copyText(data.email, 'driver-email')"
+                (click)="copyText(driver.email, 'driver-email')"
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
               ></svg-icon>
@@ -100,7 +100,9 @@
     <div class="details-cards">
       <!-- assignedTo -->
       <app-ta-custom-card
-        [cardName]="data.status == 1 ? 'Assigned To' : 'View Dispatch History'"
+        [cardName]="
+          driver.status == 1 ? 'Assigned To' : 'View Dispatch History'
+        "
         [hasDivider]="false"
         [tooltipName]="'Dispatch History'"
         [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
@@ -188,9 +190,9 @@
             <div class="addres-name">Address</div>
             <div class="addres-value-icon">
               <div class="addres-value">
-                {{ data.address.addressUnit }} {{ data.address.address }},
-                {{ data.address.city }}, {{ data.address.stateShortName }}
-                {{ data.address.zipCode }}, {{ data.address.country }}
+                {{ driver.address.addressUnit }} {{ driver.address.address }},
+                {{ driver.address.city }}, {{ driver.address.stateShortName }}
+                {{ driver.address.zipCode }}, {{ driver.address.country }}
               </div>
               <span
                 tooltipBackground="#6c6c6c"
@@ -209,7 +211,7 @@
           <div class="addres-wrapper addres-second">
             <div class="addres-name">Date of Birth</div>
             <div class="addres-value">
-              {{ data.dateOfBirth | formatDateP }}
+              {{ driver.dateOfBirth | formatDateP }}
             </div>
           </div>
         </div>
@@ -217,19 +219,19 @@
 
       <!-- Off Duty Location-->
       <app-ta-custom-card
-        [hasCounter]="data.offDutyLocations.length"
+        [hasCounter]="driver.offDutyLocations.length"
         [cardName]="'Off Duty Location'"
         [isCardOpen]="false"
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
         class="item-cards"
       >
-        <div *ngIf="data.offDutyLocations == ''" class="no-data">
+        <div *ngIf="driver.offDutyLocations == ''" class="no-driver">
           No Added Location
         </div>
         <div
           class="additional-container"
-          *ngFor="let offDuty of data.offDutyLocations; trackBy: identity"
+          *ngFor="let offDuty of driver.offDutyLocations; trackBy: identity"
         >
           <div *ngIf="offDuty" class="addres-wrapper">
             <div class="addres-name">{{ offDuty?.nickname }}</div>
@@ -342,7 +344,7 @@
               <div class="status-items">
                 <div
                   *ngFor="
-                    let empH of data.employmentHistories;
+                    let empH of driver.employmentHistories;
                     trackBy: identity
                   "
                   class="item-wrapper"
@@ -394,16 +396,16 @@
         class="item-cards"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
-        [cardName]="data.owner ? 'Owner Details' : 'Owner - Sole Proprietor'"
-        [isCardOpen]="data.owner ? true : false"
-        [hasArrow]="data.owner ? true : false"
+        [cardName]="driver.owner ? 'Owner Details' : 'Owner - Sole Proprietor'"
+        [isCardOpen]="driver.owner ? true : false"
+        [hasArrow]="driver.owner ? true : false"
       >
-        <div *ngIf="data.owner" class="purchase-template">
+        <div *ngIf="driver.owner" class="purchase-template">
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">Company</div>
             <div class="purchase-icon-copy">
               <div class="purchase-template-item-value owner-name">
-                {{ data.owner.name }}
+                {{ driver.owner.name }}
               </div>
               <span
                 tooltipBackground="#6c6c6c"
@@ -422,7 +424,7 @@
             <div class="purchase-template-item-name">EIN</div>
             <div class="purchase-icon-copy" [ngClass]="{ copied: copiedEin }">
               <div class="purchase-template-item-value">
-                {{ data.owner.ssnEin | formatEinP }}
+                {{ driver.owner.ssnEin | formatEinP }}
               </div>
               <span
                 [tooltipBackground]="copiedEin ? '#536BC2' : '#6c6c6c'"
@@ -431,7 +433,7 @@
                 position="top"
               >
                 <svg-icon
-                  (click)="copyText(data.owner.ssnEin, 'ein')"
+                  (click)="copyText(driver.owner.ssnEin, 'ein')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -453,13 +455,13 @@
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">Solo</div>
             <div class="purchase-template-item-value">
-              {{ data.commissionSolo }}%
+              {{ driver.commissionSolo }}%
             </div>
           </div>
           <div class="purchase-template-item second-name">
             <div class="purchase-template-item-name">Team</div>
             <div class="purchase-template-item-value">
-              {{ data.commissionTeam }}%
+              {{ driver.commissionTeam }}%
             </div>
           </div>
         </div>
@@ -522,7 +524,7 @@
               [ngClass]="{ copied: copiedBankRouting }"
             >
               <div class="purchase-template-item-value">
-                {{ data?.routing ? data?.routing : "No routing" }}
+                {{ driver?.routing ? driver?.routing : "No routing" }}
               </div>
               <span
                 [tooltipBackground]="copiedBankRouting ? '#536BC2' : '#6c6c6c'"
@@ -531,7 +533,7 @@
                 position="top"
               >
                 <svg-icon
-                  (click)="copyText(data?.routing, 'bankRouting')"
+                  (click)="copyText(driver?.routing, 'bankRouting')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -549,13 +551,13 @@
                   accountText
                     ? accountText
                     : hiddenPassword(
-                        data.account ? data.account : "No account",
+                        driver.account ? driver.account : "No account",
                         4
                       )
                 }}
               </div>
               <span
-                *ngIf="data.account !== null"
+                *ngIf="driver.account !== null"
                 tooltipBackground="#6c6c6c"
                 ngbTooltip
                 [mainTooltip]="
@@ -568,7 +570,9 @@
                 <svg-icon
                   class="hidden-svg-eye"
                   (click)="
-                    showHideValue(data.account ? data.account : 'No account')
+                    showHideValue(
+                      driver.account ? driver.account : 'No account'
+                    )
                   "
                   src="{{
                     isAccountVisible
@@ -578,17 +582,17 @@
                 ></svg-icon>
               </span>
               <span
-                *ngIf="data.account !== null"
+                *ngIf="driver.account !== null"
                 [tooltipBackground]="copiedBankAccount ? '#536BC2' : '#6c6c6c'"
                 ngbTooltip
                 [mainTooltip]="copiedBankAccount ? 'Copied' : 'Copy'"
                 position="top"
               >
                 <svg-icon
-                  *ngIf="data?.account !== null"
+                  *ngIf="driver?.account !== null"
                   (click)="
                     copyText(
-                      data.account ? data.account : 'No account',
+                      driver.account ? driver.account : 'No account',
                       'bankAcc'
                     )
                   "
@@ -610,35 +614,35 @@
       >
         <div
           *ngIf="
-            !data.emergencyContactRelationship ||
-            !data.emergencyContactName ||
-            !data.emergencyContactPhone
+            !driver.emergencyContactRelationship ||
+            !driver.emergencyContactName ||
+            !driver.emergencyContactPhone
           "
-          class="no-data"
+          class="no-driver"
         >
           No Contact
         </div>
         <div
           *ngIf="
-            data.emergencyContactRelationship &&
-            data.emergencyContactName &&
-            data.emergencyContactPhone
+            driver.emergencyContactRelationship &&
+            driver.emergencyContactName &&
+            driver.emergencyContactPhone
           "
           class="purchase-template"
         >
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">
-              {{ data?.emergencyContactRelationship }}
+              {{ driver?.emergencyContactRelationship }}
             </div>
             <div class="purchase-template-item-value">
-              {{ data.emergencyContactName }}
+              {{ driver.emergencyContactName }}
             </div>
           </div>
           <div class="purchase-template-item second-name">
             <div class="purchase-template-item-name">Phone</div>
             <div class="purchase-icon-copy" [ngClass]="{ copied: copiedPhone }">
               <div class="purchase-template-item-value">
-                {{ data.emergencyContactPhone | formatPhoneP }}
+                {{ driver.emergencyContactPhone | formatPhoneP }}
               </div>
               <span
                 [tooltipBackground]="copiedPhone ? '#536BC2' : '#6c6c6c'"
@@ -647,7 +651,7 @@
                 position="top"
               >
                 <svg-icon
-                  (click)="copyText(data.emergencyContactPhone, 'phone')"
+                  (click)="copyText(driver.emergencyContactPhone, 'phone')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -681,11 +685,13 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.cdls.length"
+          [hasCounter]="driver.cdls.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let cdl of data.cdls; let i = index; trackBy: identity">
+          <div
+            *ngFor="let cdl of driver.cdls; let i = index; trackBy: identity"
+          >
             <app-ta-re-card
               [options]="dataEdit"
               [cardDocumentCounter]="6"
@@ -759,7 +765,7 @@
                             >
                           </span>
                         </p>
-                        <span class="no-data" *ngIf="endors == ''">None</span>
+                        <span class="no-driver" *ngIf="endors == ''">None</span>
                       </div>
                     </div>
                   </div>
@@ -857,12 +863,12 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.tests.length"
+          [hasCounter]="driver.tests.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
           <div
-            *ngFor="let test of data.tests; let i = index; trackBy: identity"
+            *ngFor="let test of driver.tests; let i = index; trackBy: identity"
           >
             <app-ta-re-card
               [options]="dataEdit"
@@ -953,12 +959,16 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.medicals.length"
+          [hasCounter]="driver.medicals.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
           <div
-            *ngFor="let med of data.medicals; let i = index; trackBy: identity"
+            *ngFor="
+              let med of driver.medicals;
+              let i = index;
+              trackBy: identity
+            "
           >
             <app-ta-re-card
               [options]="dataEdit"
@@ -1062,11 +1072,13 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.mvrs.length"
+          [hasCounter]="driver.mvrs.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let mvr of data.mvrs; let i = index; trackBy: identity">
+          <div
+            *ngFor="let mvr of driver.mvrs; let i = index; trackBy: identity"
+          >
             <app-ta-re-card
               [options]="dataEdit"
               [cardDocumentCounter]="6"

@@ -9,10 +9,8 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import moment from 'moment';
 
-import { ActivatedRoute } from '@angular/router';
-import { DriverShortResponse } from 'appcoretruckassist';
+import { DriverResponse } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
@@ -30,7 +28,7 @@ import { card_component_animation } from '../../../shared/animations/card-compon
 })
 export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-  @Input() driver: any = null;
+  @Input() driver: DriverResponse | any = null;
   public cdlNote: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
   public toggler: boolean[] = [];
@@ -43,10 +41,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
 
   public dataTest: any;
 
-  constructor(
-    private activated_route: ActivatedRoute,
-    private modalService: ModalService
-  ) {
+  constructor(private modalService: ModalService) {
     this.arrayDrivers = [
       {
         id: 434,
