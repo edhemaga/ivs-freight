@@ -27,7 +27,7 @@
       <div class="day-holder schedule" [class.active]="currentCalendarView == 'schedule'" (click)="changeCalendarView('schedule')">Schedule</div>
     </div>
     <div class="calendar-header">
-      <app-ta-custom-card [cardName]="'07/03/2022'" [hasPlusHeader]="false">
+      <app-ta-custom-card [cardName]="'July, 2022'" [hasPlusHeader]="false">
         <div class="calendar-body">
           <div class="calendar-years-holder">
             <div class="current-year-holder"></div>
@@ -44,27 +44,116 @@
           <div class="calendar-month-holder">
             <div class="current-year-holder">
               <div class="current-year">2022</div>
-              <div class="current-year">Today</div>
+              <div class="current-year today">Today</div>
             </div>
             <div class="calendar-body-holder">
               <div class="calendar-current-month">
                 <div class="calendar-holder">
-                  <div class="calendar-items">JAN</div>
-                  <div class="calendar-items">FEB</div>
-                  <div class="calendar-items">MAR</div>
+                  <div 
+                  class="calendar-items"
+                  #t2="ngbPopover"
+                  [ngbPopover]="eventsPopover"
+                  triggers="mouseenter:mouseleave" 
+                  [placement]="['bottom-left']"
+                  [popoverClass]="'eventspopovermain'"
+                  autoclose="outside"
+                  [container]="'body'"
+                  >
+                    JAN
+                  </div>
+                  <div 
+                  class="calendar-items"
+                  #t2="ngbPopover"
+                  [ngbPopover]="eventsPopover"
+                  triggers="mouseenter:mouseleave" 
+                  [placement]="['bottom-left']"
+                  [popoverClass]="'eventspopovermain'"
+                  autoclose="outside"
+                  [container]="'body'"
+                  >
+                    FEB
+                  </div>
+                  <div 
+                  class="calendar-items"
+                  #t2="ngbPopover"
+                  [ngbPopover]="eventsPopover"
+                  triggers="mouseenter:mouseleave" 
+                  [placement]="['bottom-left']"
+                  [popoverClass]="'eventspopovermain'"
+                  autoclose="outside"
+                  [container]="'body'"
+                  >
+                    MAR
+                  </div>
                 </div>
                 <div class="calendar-holder">
-                  <div class="calendar-items">APR</div>
-                  <div class="calendar-items current-month">MAY</div>
-                  <div class="calendar-items">JUN</div>
+                  <div 
+                  class="calendar-items"
+                  #t2="ngbPopover"
+                  [ngbPopover]="eventsPopover"
+                  triggers="mouseenter:mouseleave" 
+                  [placement]="['bottom-left']"
+                  [popoverClass]="'eventspopovermain'"
+                  autoclose="outside"
+                  [container]="'body'"
+                  >
+                    APR
+                  </div>
+                  <div 
+                  class="calendar-items current-month"
+                  #t2="ngbPopover"
+                  [ngbPopover]="eventsPopover"
+                  triggers="mouseenter:mouseleave" 
+                  [placement]="['bottom-left']"
+                  [popoverClass]="'eventspopovermain'"
+                  autoclose="outside"
+                  [container]="'body'"
+                  >
+                    MAY
+                  </div>
+                  <div 
+                  class="calendar-items"
+                  #t2="ngbPopover"
+                  [ngbPopover]="eventsPopover"
+                  triggers="mouseenter:mouseleave" 
+                  [placement]="['bottom-left']"
+                  [popoverClass]="'eventspopovermain'"
+                  autoclose="outside"
+                  [container]="'body'"
+                  >
+                    JUN
+                  </div>
                 </div>
                 <div class="calendar-holder">
-                  <div class="calendar-items active">JUL</div>
-                  <div class="calendar-items">AUG</div>
+                  <div 
+                  class="calendar-items active"
+                  #t2="ngbPopover"
+                  [ngbPopover]="eventsPopover"
+                  triggers="mouseenter:mouseleave" 
+                  [placement]="['bottom-left']"
+                  [popoverClass]="'eventspopovermain'"
+                  autoclose="outside"
+                  [container]="'body'"
+                  >
+                    JUL
+                  </div>
+                  <div 
+                  class="calendar-items"
+                  #t2="ngbPopover"
+                  [ngbPopover]="eventsPopover"
+                  triggers="mouseenter:mouseleave" 
+                  [placement]="['bottom-left']"
+                  [popoverClass]="'eventspopovermain'"
+                  autoclose="outside"
+                  [container]="'body'"
+                  >
+                    AUG
+                  </div>
                   <div 
                     class="calendar-items event"
                     #t2="ngbPopover"
                     [ngbPopover]="eventsPopover"
+                    triggers="mouseenter:mouseleave" 
                     [placement]="['bottom-left']"
                     [popoverClass]="'eventspopovermain'"
                     autoclose="outside"
@@ -76,9 +165,42 @@
                   
                 </div>
                 <div class="calendar-holder">
-                  <div class="calendar-items">OCT</div>
-                  <div class="calendar-items">NOV</div>
-                  <div class="calendar-items">DEC</div>
+                  <div 
+                  class="calendar-items"
+                  #t2="ngbPopover"
+                  [ngbPopover]="eventsPopover"
+                  triggers="mouseenter:mouseleave" 
+                  [placement]="['bottom-left']"
+                  [popoverClass]="'eventspopovermain'"
+                  autoclose="outside"
+                  [container]="'body'"
+                  >
+                    OCT
+                  </div>
+                  <div 
+                  class="calendar-items"
+                  #t2="ngbPopover"
+                  [ngbPopover]="eventsPopover"
+                  triggers="mouseenter:mouseleave" 
+                  [placement]="['bottom-left']"
+                  [popoverClass]="'eventspopovermain'"
+                  autoclose="outside"
+                  [container]="'body'"
+                  >
+                    NOV
+                  </div>
+                  <div 
+                  class="calendar-items"
+                  #t2="ngbPopover"
+                  [ngbPopover]="eventsPopover"
+                  triggers="mouseenter:mouseleave" 
+                  [placement]="['bottom-left']"
+                  [popoverClass]="'eventspopovermain'"
+                  autoclose="outside"
+                  [container]="'body'"
+                  >
+                    DEC
+                  </div>
                 </div>
               </div>
               <div class="year-holder-inactiv">2023</div>
@@ -142,6 +264,9 @@
         </div>
       </app-ta-custom-card>
     </div>
+    <div class="border-frame">
+      <div class="border-event"></div>
+    </div>
     <div class="important-event-holder company-event">
       <app-ta-custom-card
         [cardName]="'Company Events'"
@@ -175,6 +300,9 @@
         </div>
       </app-ta-custom-card>
     </div>
+    <div class="border-frame">
+      <div class="border-event"></div>
+    </div>
     <div class="important-event-holder personal-event">
       <app-ta-custom-card
         [cardName]="'Personal Events'"
@@ -203,6 +331,9 @@
           </div>
         </div>
       </app-ta-custom-card>
+    </div>
+    <div class="border-frame">
+      <div class="border-event"></div>
     </div>
     <div class="important-event-holder holiday">
       <app-ta-custom-card
@@ -234,8 +365,35 @@
       </app-ta-custom-card>
     </div>
   </div>
-  <div class="calendar_view_holder">
+  <div *ngIf="currentCalendarView == 'week' || currentCalendarView == 'month'" class="calendar_view_holder">
     <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
+  </div>
+  <div *ngIf="currentCalendarView == 'year'" class="year-calendar-holder">
+    <div class="year-calendar-toolbar"></div>
+    <div class="calendar-month-holder">
+      <div *ngFor="let item of calendarMonth, let indx=index" class="month-calendar-holder">
+        <div class="month">{{item.month}} 2022</div>
+        <div class="day-holder">
+          <div *ngFor="let item of daysInWeek; let indx=index" class="day" [ngStyle]="{'color': item.weekendColor}">{{item.day}}</div>
+        </div>
+        <div class="day-holder different-padding">
+          <div 
+          *ngFor="let item of dateInMonth; let indx=index" 
+          class="day different-weight" 
+          [class.event]="item.event" 
+          [ngStyle]="{'color': item.weekendDateColor || item.lastMonthDateColor || item.nextMonthDateColor}"
+          #t2="ngbPopover"
+          [ngbPopover]="eventsDatePopover"
+          [placement]="['bottom-right']"
+          [popoverClass]="'eventspopovermain'"
+          autoclose="outside"
+          [container]="'body'"
+          >
+            {{item.date}}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -263,4 +421,37 @@
       <div class="event-text">Holiday</div>
     </div>
   </div>
+</ng-template>
+
+<ng-template #eventsDatePopover let-data="data">
+   <div class="event-date-popover">
+    <div class="date-holder">
+      <div class="number-event">6</div>
+      <div class="date-event">July 18, 2022</div>
+      <div class="close-event">
+        <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+      </div>
+    </div>
+    <div class="event-border"></div>
+    <div class="event-report">
+      <div class="report-text">IFTA Report - Deadline</div>
+    </div>
+    <div class="event-menagment">
+      <div class="event-text">Q3 - Event - Management</div>
+    </div>
+    <div class="event-report drivers-organization">
+      <div class="report-text">Drivers Organization</div>
+    </div>
+    <div class="event-report blue-box">
+      <div class="event-box"></div>
+      <div class="report-text different-color">Lorem ipsum dolor sit amet, consedetur</div>
+    </div>
+    <div class="event-report blue-box">
+      <div class="event-box orange-box"></div>
+      <div class="report-text different-color">Sed diam nonumy eirmod</div>
+    </div>
+    <div class="event-report green-bcg">
+      <div class="report-text">Labor Day</div>
+    </div>
+  </div>  
 </ng-template>

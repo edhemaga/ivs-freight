@@ -1,19 +1,19 @@
-<div class="ta-like-dislike {{customClass}}">
+<div class="ta-like-dislike {{ customClass }}">
   <svg-icon
     class="ta-like-svg"
-    [ngClass]="{'liked': isLiked}"
+    [ngClass]="{ liked: isLiked }"
     src="assets/svg/common/ic_like.svg"
-    (click)="onAction('like', $event)"
+    (click)="onAction('liked', $event)"
   ></svg-icon>
-  <div class="ta-counter like-count">
+  <div class="ta-like-dislike-counter like-count">
     {{ taLikes }}
   </div>
-  <div class="ta-counter dislike-count">
+  <div class="ta-like-dislike-counter dislike-count">
     {{ taDislikes }}
   </div>
   <svg-icon
     class="ta-dislike-svg"
-    [ngClass]="{'disliked': isDisliked}"
+    [ngClass]="{ disliked: isDisliked }"
     src="assets/svg/common/ic_dislike.svg"
     (click)="onAction('dislike', $event)"
   ></svg-icon>

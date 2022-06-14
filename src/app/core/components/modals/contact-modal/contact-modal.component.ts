@@ -12,7 +12,6 @@ import {
   CreateCompanyContactCommand,
   UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import { MockModalService } from 'src/app/core/services/mockmodal.service';
 import {
   emailRegex,
   phoneRegex,
@@ -40,8 +39,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private contactModalService: ContactModalService,
-    private notificationService: NotificationService,
-    private mockModalService: MockModalService
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -121,7 +119,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         next: (res: CompanyContactModalResponse) => {
           this.contactLabels = res.labels;
           this.sharedDepartments = res.departments;
-          this.sharedDepartments = this.mockModalService.sharedLabels;
+          this.sharedDepartments = [];
         },
         error: () => {
           this.notificationService.error(

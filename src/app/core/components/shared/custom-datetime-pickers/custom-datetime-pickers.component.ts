@@ -483,9 +483,17 @@ export class CustomDatetimePickersComponent implements OnInit {
     this.selectedDateTime = this.createStringFromOutput();
   
     let currentDate=moment().format('MM/DD/YYYY');
+    console.log(currentDate + " " + this.selectedDateTime);
     
     this.calendarService.dateChanged.next(new Date(currentDate + " " + this.selectedDateTime));
     //this.dropdown.close();
+
+    this.closePopover.emit();
+  }
+
+  setDefaultTime(){
+    let currentDate=moment().format('MM/DD/YYYY');
+    this.calendarService.dateChanged.next(new Date(currentDate + " 08:00"));
 
     this.closePopover.emit();
   }

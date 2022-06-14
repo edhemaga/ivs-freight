@@ -8,6 +8,9 @@
     [cardDetailsDate]="data.hired | formatDateP"
     [cardDetailsDateTerminated]="data.dateTerminated | formatDateP"
     [statusInactive]="data.status"
+    [options]="driversDropdowns"
+    (selectValue)="onSelectedDriver($event)"
+    (changeEvent)="onChangeDriver($event)"
   >
     <div class="driver-container">
       <div class="driver-personal">
@@ -134,7 +137,11 @@
               ngbTooltip
               mainTooltip="View in Modal"
               position="top"
+<<<<<<< HEAD
               style="margin-left: 42px"
+=======
+              style="margin-left: 40px"
+>>>>>>> develop
             >
               <svg-icon
                 class="open-modal-icon"
@@ -447,10 +454,16 @@
                 ngbTooltip
                 [mainTooltip]="copiedEin ? 'Copied' : 'Copy'"
                 position="top"
+<<<<<<< HEAD
                 class="tooltip-ein"
                 (click)="copyText(data.owner.ssnEin, 'ein')"
               >
                 <svg-icon
+=======
+              >
+                <svg-icon
+                  (click)="copyText(data.owner.ssnEin, 'ein')"
+>>>>>>> develop
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>

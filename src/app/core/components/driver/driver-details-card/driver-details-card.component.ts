@@ -1,13 +1,16 @@
 import { card_component_animation } from './../../shared/animations/card-component.animations';
 import {
-  AfterContentInit,
   Component,
+  EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
+  Output,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { createBase64 } from 'src/app/core/utils/base64.image';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
@@ -16,6 +19,7 @@ import { DriverMedicalModalComponent } from '../driver-details/driver-modals/dri
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
 import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
+import { DriversQuery } from '../state/driver.query';
 
 @Component({
   selector: 'app-driver-details-card',
@@ -25,9 +29,8 @@ import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
   animations: [card_component_animation('showHideCardBody')],
   providers: [SumArraysPipe],
 })
-export class DriverDetailsCardComponent implements OnInit {
+export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   @Input() data: any;
-  @Input() templateCard: boolean = false;
   public note: FormControl = new FormControl();
   public copiedPhone: boolean = false;
   public copiedBankRouting: boolean = false;
@@ -56,46 +59,55 @@ export class DriverDetailsCardComponent implements OnInit {
   public tabsDriver: any[] = [];
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
-  constructor(
-    private sanitazer: DomSanitizer,
-    private modalService: ModalService,
-    private sumArr: SumArraysPipe
-  ) {}
-
- 
+    // Driver Dropdown
+    public driversDropdowns: any[] = [];
+    public driver_active_id: number = +this.activated_route.snapshot.params['id'];
+    constructor(
+      private sanitazer: DomSanitizer,
+      private modalService: ModalService,
+      private driversQuery: DriversQuery,
+      private activated_route: ActivatedRoute,
+      private sumArr:SumArraysPipe
+    ) {}
 
   ngOnInit(): void {
-    console.log(this.data);
     this.initTableOptions();
+    this.getDriversDropdown();
+    this.driver_active_id;
     this.tabsDriver = [
       {
         id: 223,
         name: '1M',
       },
       {
-        id: 513,
         name: '3M',
+        checked: false,
       },
       {
         id: 412,
         name: '6M',
+        checked: false,
       },
       {
         id: 515,
         name: '1Y',
+        checked: false,
       },
       {
         id: 1210,
         name: 'YTD',
+        checked: false,
       },
       {
         id: 1011,
         name: 'ALL',
+        checked: false,
       },
     ];
     this.getYearsAndDays();
     this.widthOfProgress();
   }
+
   /**Function return user image if have in DB or default image */
   public transformImage() {
     let img;
@@ -106,12 +118,14 @@ export class DriverDetailsCardComponent implements OnInit {
     }
     return this.sanitazer.bypassSecurityTrustResourceUrl(img);
   }
+
   /**Function for toggle page in cards */
   public toggleResizePage(value: number) {
     this.toggler[value] = !this.toggler[value];
   }
   public changeTab(ev: any) {
     console.log(ev.id);
+
     this.selectedTab = ev.id;
   }
 
@@ -178,53 +192,50 @@ export class DriverDetailsCardComponent implements OnInit {
     switch (copVal) {
       case 'phone':
         this.copiedPhone = true;
-       const timeoutPhone = setInterval(() => {
+        setTimeout(() => {
           this.copiedPhone = false;
-          clearInterval(timeoutPhone);
-        }, 300);
+        }, 2100);
         break;
+
       case 'bankAcc':
         this.copiedBankAccount = true;
-        const timeoutBank = setInterval(() => {
+        setTimeout(() => {
           this.copiedBankAccount = false;
-          
-         clearInterval(timeoutBank);
-        }, 300);
+        }, 2100);
         break;
+
       case 'bankRouting':
         this.copiedBankRouting = true;
-        const timeoutRouting =  setInterval(() => {
+        setTimeout(() => {
           this.copiedBankRouting = false;
-          clearInterval(timeoutRouting);
-        }, 300);
+        }, 2100);
         break;
+
       case 'ein':
         this.copiedEin = true;
-        const timeoutEin =  setInterval(() => {
+        setTimeout(() => {
           this.copiedEin = false;
-          clearInterval(timeoutEin);
-        }, 300);
+        }, 2100);
         break;
+
       case 'ssn':
         this.copiedSSN = true;
-        const timeoutSSN = setInterval(() => {
+        setTimeout(() => {
           this.copiedSSN = false;
-          clearInterval(timeoutSSN);
-        }, 300);
+        }, 2100);
         break;
+
       case 'driver-phone':
         this.copiedDriverPhone = true;
-        const timeoutDriverPhone =  setInterval(() => {
+        setTimeout(() => {
           this.copiedDriverPhone = false;
-          clearInterval(timeoutDriverPhone);
-        }, 300);
+        }, 2100);
         break;
       case 'driver-email':
         this.copiedDriverEmail = true;
-        const timeoutDriverEmail = setInterval(() => {
+        setTimeout(() => {
           this.copiedDriverEmail = false;
-          clearInterval(timeoutDriverEmail);
-        }, 300);
+        }, 2100);
         break;
     }
 
@@ -384,4 +395,55 @@ export class DriverDetailsCardComponent implements OnInit {
     ).format('DD MMMM, YYYY');
     this.showTooltip = true;
   }
+  public getDriversDropdown() {
+    this.driversDropdowns = this.driversQuery.getAll().map((item) => {
+      return {
+        id: item.id,
+        name: item.fullName,
+        status: item.status,
+        svg: item.owner ? 'driver-owner' : null,
+        folder: 'common',
+        active: item.id === this.driver_active_id,
+      };
+    });
+  }
+
+  public onSelectedDriver(event: any) {
+    if (event) {
+      this.driversDropdowns = this.driversQuery.getAll().map((item) => {
+        return {
+          id: item.id,
+          name: item.fullName,
+          status: item.status,
+          svg: item.owner ? 'driver-owner' : null,
+          folder: 'common',
+          active: item.id === event.id,
+        };
+      });
+      // Call from store active driver or API on DROPDOWN SELECT
+    }
+  }
+
+  public onChangeDriver(action: string) {
+    // Call from store active driver or API on ARROW SELECTED
+    switch (action) {
+      case 'previous': {
+        console.log('PREVIOUS');
+        this.driver_active_id = --this.driver_active_id;
+        console.log(this.driver_active_id);
+        break;
+      }
+      case 'next': {
+        console.log('NEXT');
+        this.driver_active_id = ++this.driver_active_id;
+        console.log(this.driver_active_id);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  ngOnDestroy(): void {}
 }

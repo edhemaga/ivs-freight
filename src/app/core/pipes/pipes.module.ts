@@ -23,9 +23,8 @@ import { SumArraysPipe } from './sum-arrays.pipe';
 import { TaSvgPipe } from './ta-svg.pipe';
 import { BlockedContentPipe } from './blockedContent.pipe';
 
-
 @NgModule({
-  declarations: [	
+  declarations: [
     SafeHtmlPipe,
     formatDatePipe,
     formatPhonePipe,

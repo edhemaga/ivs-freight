@@ -9,10 +9,8 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { TrailerModalService } from './trailer-modal.service';
 import {
   CreateTrailerCommand,
   GetTrailerModalResponse,
@@ -24,6 +22,7 @@ import {
   yearValidRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TrailerTService } from '../../trailer/state/trailer.service';
 
 @Component({
   selector: 'app-trailer-modal',
@@ -78,7 +77,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private trailerModalService: TrailerModalService,
+    private trailerModalService: TrailerTService,
     private notificationService: NotificationService,
     private modalService: ModalService
   ) {}
@@ -89,11 +88,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     this.getTrailerDropdowns();
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 1,
-      };
       this.editTrailerById(this.editData.id);
     }
   }

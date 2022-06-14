@@ -28,7 +28,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from '../switchers/status-switcher/status-switcher.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { NgxMaskModule } from "ngx-mask";
+import { NgxMaskModule } from 'ngx-mask';
+import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
@@ -157,7 +158,6 @@ import { PipesModule } from '../../pipes/pipes.module';
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
-    
 
   
     FilterComponent
@@ -203,7 +203,7 @@ import { PipesModule } from '../../pipes/pipes.module';
     PdfViewerModule,
     DirectivesModule,
     TruckassistTableModule,
-    AppTooltipeModule
+    AppTooltipeModule,
   ],
   exports: [
     // Modules
@@ -297,7 +297,7 @@ import { PipesModule } from '../../pipes/pipes.module';
     ViolationModalComponent,
     AccidentModalComponent,
     AppTooltipeModule,
-    FilterComponent
+    FilterComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

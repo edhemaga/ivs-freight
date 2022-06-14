@@ -3,15 +3,10 @@ import { TodoListResponse } from './../../../../../../appcoretruckassist/model/t
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  CommentByEntityTypeListResponse,
-  CommentService,
-  CreateCommentCommand,
   CreateResponse,
   CreateTodoCommand,
-  GetCommentModalResponse,
   TodoModalResponse,
   TodoResponse,
-  UpdateCommentCommand,
   UpdateTodoCommand,
   UpdateTodoStatusCommand,
 } from 'appcoretruckassist';
@@ -20,10 +15,7 @@ import {
   providedIn: 'root',
 })
 export class TodoTService {
-  constructor(
-    private todoService: TodoService,
-    private commentService: CommentService
-  ) {}
+  constructor(private todoService: TodoService) {}
 
   public getTodoList(
     title?: string,
@@ -63,26 +55,5 @@ export class TodoTService {
 
   public getTodoDropdowns(): Observable<TodoModalResponse> {
     return this.todoService.apiTodoModalGet();
-  }
-
-  // Comments
-  public createComment(data: CreateCommentCommand): Observable<CreateResponse> {
-    return this.commentService.apiCommentPost(data);
-  }
-
-  public getCommentsList(entityTypeCommentId: number, entityTypeId: number): Observable<CommentByEntityTypeListResponse> {
-    return this.commentService.apiCommentListGet();
-  }
-
-  public deleteCommentById(id: number): Observable<any> {
-    return this.commentService.apiCommentIdDelete(id);
-  }
-
-  public updateComment(data: UpdateCommentCommand): Observable<any> {
-    return this.commentService.apiCommentPut(data);
-  }
-
-  public getModalComments(): Observable<GetCommentModalResponse> {
-    return this.commentService.apiCommentModalGet();
   }
 }
