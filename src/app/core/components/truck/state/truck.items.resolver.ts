@@ -19,15 +19,16 @@ export class TruckItemResolver implements Resolve<TruckState> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<TruckState> | Observable<any> {
-     const truck_id=route.paramMap.get('id')    
-    return this.truckService.getTruckById(+truck_id).pipe(
+     const truck_id=route.paramMap.get('id') 
+     
+     return of(true)
+    /* return this.truckService.getTruckById(+truck_id).pipe(
         catchError((error)=>{
-            this.truckStore.set({ entities: [] });
             return of('No truck data for...' + truck_id);
         }),
         tap((truckRespon: TruckResponse) => {
             this.truckStore.set({ entities: truckRespon[truck_id] })
           })
-    );
+    ); */
   }
 }

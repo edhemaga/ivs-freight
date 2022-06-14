@@ -248,6 +248,7 @@ export class TrailerService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/trailer/list`,
             {
+                body: deleteMultipleTrailerCommand,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

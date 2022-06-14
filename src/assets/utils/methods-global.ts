@@ -5,17 +5,6 @@ import {dateFormat, formatPhoneNumber} from 'src/app/core/helpers/formating';
 declare var google: any;
 
 
-export function setTableAnimation(tableData: any[], animation: string, id: any) {
-  tableData
-    .filter((data) => id === data.id)
-    .map((data) => {
-      data.animation = animation;
-      return data;
-    });
-
-  return tableData;
-}
-
 export function ssnFormat(ssn: any): string {
   let count = 0;
   let newSSN = '';
