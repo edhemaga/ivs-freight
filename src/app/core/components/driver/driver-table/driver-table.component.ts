@@ -84,7 +84,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
               driver.actionAnimation = 'update';
             }
 
-            return driver;
+            return driver; 
           });
           
           const inetval = setInterval(() => {
