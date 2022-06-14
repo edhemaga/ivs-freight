@@ -384,7 +384,6 @@
           [ngStyle]="{'color': item.weekendDateColor || item.lastMonthDateColor || item.nextMonthDateColor}"
           #t2="ngbPopover"
           [ngbPopover]="eventsDatePopover"
-          triggers="mouseenter:mouseleave" 
           [placement]="['bottom-right']"
           [popoverClass]="'eventspopovermain'"
           autoclose="outside"
@@ -423,6 +422,7 @@
     </div>
   </div>
 </ng-template>
+
 <ng-template #eventsDatePopover let-data="data">
    <div class="event-date-popover">
      <div class="date-holder">
@@ -434,5 +434,9 @@
      </div>
      <div class="event-border"></div>
      <div class="event-report">IFTA Report - Deadline</div>
+     <div class="event-menagment">
+      <div class="event-text">Q3 - Event - Management</div>
+     </div>
+     <div class="event-report drivers-organization">Drivers Organization</div>
    </div>  
 </ng-template>

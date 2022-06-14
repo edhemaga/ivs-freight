@@ -910,6 +910,55 @@
         font-size: 14px;
         font-weight: 500;
         color: #fff;
+        margin-top: 2px;
+
+        &.drivers-organization{
+            background-color: #FFB74D;
+        }
+    }
+
+    .event-menagment{
+        position: relative;
+        width: 363px;
+        height: 26px;
+        background-color: #6D82C7;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 2px;
+        margin-left: 12px;
+
+        .event-text{
+            position: relative;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;    
+            left: -5px;
+        }
+
+        &::after{
+            position: absolute;
+            content: '';
+            width: 19px;
+            height: 19px;
+            border-radius: 2px;
+            background-color: #6D82C7;
+            top: 3px;
+            right: -11px;
+            transform: rotate(135deg);
+        }
+
+        &::before{
+            position: absolute;
+            content: '';
+            width: 19px;
+            height: 19px;
+            border-radius: 2px;
+            background-color: #6D82C7;
+            top: 3px;
+            left: -11px;
+            transform: rotate(135deg); 
+        }
     }
     
 }        
