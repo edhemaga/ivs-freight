@@ -1,0 +1,28 @@
+<div class="charts-item-wrapper revenue">
+  <div class="charts-template-item">
+    <div class="icon-name-item">
+      <svg-icon src="assets/svg/common/round_yellow.svg"></svg-icon>
+      <div class="charts-template-item-name">Miles</div>
+    </div>
+    <div class="charts-template-item-value">46,755.2 mi</div>
+  </div>
+
+  <div class="charts-template-item fuel-item">
+    <div class="icon-name-item">
+      <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+      <div class="charts-template-item-name">Salary</div>
+    </div>
+    <div class="charts-template-item-value">$36.854.27</div>
+  </div>
+</div>
+<div class="main_chart_container">
+    <canvas baseChart width="417px" height="130px"
+      [datasets]="lineChartData"
+      [labels]="lineChartLabels"
+      [options]="lineChartOptions"
+      [colors]="lineChartColors"
+      [legend]="lineChartLegend"
+      [chartType]="lineChartType"
+      [plugins]="lineChartPlugins">
+    </canvas>
+</div>
