@@ -80,7 +80,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 4,
+        id: 6,
       };
       this.editOwnerById(this.editData.id);
     }

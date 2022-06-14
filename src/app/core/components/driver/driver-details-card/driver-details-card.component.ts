@@ -53,6 +53,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   // Driver Dropdown
   public driversDropdowns: any[] = [];
   public driver_active_id: number = +this.activated_route.snapshot.params['id'];
+  public driversList: any[] = this.driversQuery.getAll();
 
   constructor(
     private sanitazer: DomSanitizer,
@@ -63,7 +64,6 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.data);
     this.initTableOptions();
     this.getDriversDropdown();
 
@@ -162,14 +162,10 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   }
 
   public changeTab(ev: any) {
-    console.log(ev.id);
-
     this.selectedTab = ev.id;
   }
 
   public optionsEvent(any: any, action: string) {
-    console.log(any);
-    console.log(this.data);
     switch (action) {
       case 'edit-licence': {
         this.modalService.openModal(
@@ -381,31 +377,34 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   }
 
   public onChangeDriver(action: string) {
+    let currentIndex = this.driversList
+      .map((driver) => driver.id)
+      .indexOf(this.data.id);
     switch (action) {
       case 'previous': {
-        if (this.data.id === 0) {
-          return;
+        currentIndex = --currentIndex;
+        if (currentIndex != -1) {
+          this.driverService.getDriverDetailId(
+            this.driversList[currentIndex].id
+          );
+          this.onSelectedDriver({ id: this.driversList[currentIndex].id });
         }
-        this.driver_active_id = --this.data.id;
         break;
       }
       case 'next': {
-        if (
-          this.driversQuery
-            .getAll()
-            .some((driver) => driver.id !== this.data.id)
-        ) {
-          return;
+        currentIndex = ++currentIndex;
+        if (currentIndex !== -1 && this.driversList.length > currentIndex) {
+          this.driverService.getDriverDetailId(
+            this.driversList[currentIndex].id
+          );
+          this.onSelectedDriver({ id: this.driversList[currentIndex].id });
         }
-        this.driver_active_id = ++this.data.id;
         break;
       }
       default: {
         break;
       }
     }
-    this.driverService.getDriverDetailId(this.driver_active_id);
-    this.onSelectedDriver({ id: this.driver_active_id });
   }
 
   ngOnDestroy(): void {}
