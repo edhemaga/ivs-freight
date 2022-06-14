@@ -5,14 +5,16 @@ import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver
 import { ModalService } from './../../shared/ta-modal/modal.service';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { of, Subject, switchMap, takeUntil } from 'rxjs';
-import { DriversQuery } from '../state/driver.query';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DriverTService } from '../state/driver.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { DriverResponse } from 'appcoretruckassist';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
 @Component({
   selector: 'app-driver-details',
@@ -23,67 +25,88 @@ import { DriverTService } from '../state/driver.service';
 export class DriverDetailsComponent implements OnInit, OnDestroy {
   public driverDetailsConfig: any[] = [];
   public dataTest: any;
-  public cdlLength: number;
-  public mvrLength: number;
-  public testLength: number;
-  public medicalLength: number;
-  public data: any;
+  public driverId: number = null;
 
   constructor(
     private activated_route: ActivatedRoute,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private driverService: DriverTService,
+    private router: Router,
+    private notificationService: NotificationService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.initTableOptions();
-    this.data = this.activated_route.snapshot.data;
-    this.cdlLength = this.data.driver.cdls.length;
-    this.mvrLength = this.data.driver.mvrs.length;
-    this.medicalLength = this.data.driver.medicals.length;
-    this.testLength = this.data.driver.tests.length;
+    this.detailCongif(this.activated_route.snapshot.data.driver);
 
-    this.detailCongif();
-  }
-
-  /**Function retrun id */
-  public identity(index: number, item: any): number {
-    return item.id;
+    this.driverService.driverDetailChangeId$
+      .pipe(untilDestroyed(this))
+      .subscribe((id) => {
+        this.driverService
+          .getDriverById(id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: DriverResponse) => {
+              this.detailCongif(res);
+              this.router.navigate([`/driver/${res.id}/details`]);
+              this.notificationService.success(
+                'Driver successfully changed',
+                'Success:'
+              );
+              this.cdRef.detectChanges();
+            },
+            error: () => {
+              this.notificationService.error(
+                "Driver can't be loaded",
+                'Error:'
+              );
+            },
+          });
+      });
   }
 
   /**Function template and names for header and other options in header */
-  detailCongif() {
+  detailCongif(data: DriverResponse) {
     this.driverDetailsConfig = [
       {
         id: 0,
         name: 'Driver Details',
         template: 'general',
+        data: data,
       },
       {
         id: 1,
         name: 'CDL',
         template: 'cdl',
-        data: this.cdlLength,
+        length: data.cdls?.length,
+        data: data.cdls,
       },
       {
         id: 2,
         name: 'Drug & Alcohol',
         template: 'drug-alcohol',
-        data: this.testLength,
+        length: data.tests?.length,
+        data: data.tests,
       },
       {
         id: 3,
         name: 'Medical',
         template: 'medical',
-        data: this.medicalLength,
+        length: data.medicals?.length,
+        data: data.medicals,
       },
       {
         id: 4,
         name: 'MVR',
         template: 'mvr',
-        data: this.mvrLength,
+        length: data.mvrs?.length,
+        data: data.mvrs,
       },
     ];
+    this.driverId = data.id;
   }
+
   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataTest = {
@@ -138,7 +161,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(action: string): void {
-    const driver_id = this.activated_route.snapshot.paramMap.get('id');
     if (action.includes('Drug')) {
       action = 'DrugAlcohol';
     }
@@ -147,7 +169,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.modalService.openModal(
           DriverCdlModalComponent,
           { size: 'small' },
-          { id: driver_id, type: 'new-licence' }
+          { id: this.driverId, type: 'new-licence' }
         );
         break;
       }
@@ -155,7 +177,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.modalService.openModal(
           DriverDrugAlcoholModalComponent,
           { size: 'small' },
-          { id: driver_id, type: 'new-drug' }
+          { id: this.driverId, type: 'new-drug' }
         );
         break;
       }
@@ -163,7 +185,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.modalService.openModal(
           DriverMedicalModalComponent,
           { size: 'small' },
-          { id: driver_id, type: 'new-medical' }
+          { id: this.driverId, type: 'new-medical' }
         );
         break;
       }
@@ -171,7 +193,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.modalService.openModal(
           DriverMvrModalComponent,
           { size: 'small' },
-          { id: driver_id, type: 'new-mvr' }
+          { id: this.driverId, type: 'new-mvr' }
         );
         break;
       }
@@ -179,6 +201,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  /**Function retrun id */
+  public identity(index: number, item: any): number {
+    return item.id;
   }
 
   ngOnDestroy(): void {}

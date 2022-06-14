@@ -527,6 +527,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       teamLoadedMile,
       teamPerStop,
       address,
+      addressUnit,
       bussinesName,
       ...form
     } = this.driverForm.value;
@@ -547,7 +548,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bussinesName: this.owner
         ? null
         : this.driverForm.get('bussinesName').value,
-      address: this.selectedAddress,
+      address: {
+        ...this.selectedAddress,
+        addressUnit: this.driverForm.get('addressUnit').value,
+      },
       bankId: this.selectedBank ? this.selectedBank.id : null,
       payType: this.selectedPayType ? this.selectedPayType.name : null,
       solo: {
@@ -593,6 +597,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       teamLoadedMile,
       teamPerStop,
       address,
+      addressUnit,
       bussinesName,
       ...form
     } = this.driverForm.value;
@@ -614,7 +619,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bussinesName: this.owner
         ? null
         : this.driverForm.get('bussinesName').value,
-      address: this.selectedAddress,
+      address: {
+        ...this.selectedAddress,
+        addressUnit: this.driverForm.get('addressUnit').value,
+      },
       bankId: this.selectedBank ? this.selectedBank.id : null,
       payType: this.selectedPayType ? this.selectedPayType.name : null,
       solo: {
@@ -770,7 +778,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         if (this.selectedBank) {
           this.onBankSelected();
         }
-
         break;
       }
       case 'paytype': {

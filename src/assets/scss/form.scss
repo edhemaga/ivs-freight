@@ -447,16 +447,19 @@
     .extension-field {
       background: #f3f3f3;
       border-radius: 2px;
-      padding: 1px 4.5px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1px 0px;
+      position: relative;
 
       svg-icon {
         svg {
           position: relative;
-          bottom: 1px;
-          left: 1.5px;
-          width: 15px;
-          height: 14px;
+          bottom: 0.5px;
+          width: 17px;
+          height: 18px;
           path {
             fill: #b7b7b7;
           }
@@ -500,6 +503,10 @@
     margin-bottom: 32px !important;
   }
 
+  &.phone-ext-email-small-modal-my-32 {
+    margin: 32px 0px !important;
+  }
+
   .phone-extension {
     display: grid;
     grid-template-columns: 152px 26px;
@@ -510,10 +517,18 @@
     .extension-field {
       background: #f3f3f3;
       border-radius: 2px;
-      padding: 1px 4.5px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1px 0px;
+      position: relative;
 
       svg {
+        position: relative;
+        bottom: 0.5px;
+        width: 17px;
+        height: 18px;
         path {
           fill: #b7b7b7;
         }
@@ -592,6 +607,10 @@
   -moz-column-gap: 12px;
   column-gap: 12px;
   row-gap: 6px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   .repair-shop-service,
   .violation-special-check {
@@ -631,13 +650,13 @@
     }
 
     &.active {
-      background-color: #6d82c7;
-      color: #ffffff;
+      background-color: #e0eaf8;
+      color: #536bc2;
 
       svg-icon {
         svg {
           path {
-            fill: #ffffff;
+            fill: #6d82c7;
           }
         }
       }
@@ -744,6 +763,7 @@
   display: grid;
   grid-template-columns: 292px repeat(2, 260px);
   grid-template-rows: 26px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 32px;
 }
@@ -751,9 +771,10 @@
 //---------------- Injury, fatality, towing, hazmat, vehicle number ----------------
 .inj-fat-tow-hazmat-vehNumber {
   display: grid;
-  grid-template-columns: repeat(5,157px);
+  grid-template-columns: repeat(5, 157px);
   align-items: center;
   grid-template-rows: 26px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 32px;
 }

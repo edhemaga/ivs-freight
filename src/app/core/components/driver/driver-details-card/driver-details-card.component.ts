@@ -10,6 +10,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { DriverResponse } from 'appcoretruckassist';
 import { createBase64 } from 'src/app/core/utils/base64.image';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -18,6 +19,7 @@ import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriversQuery } from '../state/driver.query';
+import { DriverTService } from '../state/driver.service';
 
 @Component({
   selector: 'app-driver-details-card',
@@ -27,7 +29,7 @@ import { DriversQuery } from '../state/driver.query';
   animations: [card_modal_animation('showHideCardBody')],
 })
 export class DriverDetailsCardComponent implements OnInit, OnDestroy {
-  @Input() data: any;
+  @Input() data: DriverResponse;
   public note: FormControl = new FormControl();
   public copiedPhone: boolean = false;
   public copiedBankRouting: boolean = false;
@@ -56,10 +58,12 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
     private sanitazer: DomSanitizer,
     private modalService: ModalService,
     private driversQuery: DriversQuery,
-    private activated_route: ActivatedRoute
+    private activated_route: ActivatedRoute,
+    private driverService: DriverTService
   ) {}
 
   ngOnInit(): void {
+    console.log(this.data);
     this.initTableOptions();
     this.getDriversDropdown();
 
@@ -372,29 +376,29 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           active: item.id === event.id,
         };
       });
-      // Call from store active driver or API on DROPDOWN SELECT
+      this.driverService.getDriverDetailId(event.id);
     }
   }
 
   public onChangeDriver(action: string) {
-    // Call from store active driver or API on ARROW SELECTED
     switch (action) {
       case 'previous': {
-        console.log('PREVIOUS');
-        this.driver_active_id = --this.driver_active_id;
-        console.log(this.driver_active_id);
+        if (--this.data.id === 0) {
+          return;
+        }
+        this.driver_active_id = --this.data.id;
         break;
       }
       case 'next': {
-        console.log('NEXT');
-        this.driver_active_id = ++this.driver_active_id;
-        console.log(this.driver_active_id);
+        this.driver_active_id = ++this.data.id;
         break;
       }
       default: {
         break;
       }
     }
+    this.driverService.getDriverDetailId(this.driver_active_id);
+    this.onSelectedDriver({ id: this.driver_active_id });
   }
 
   ngOnDestroy(): void {}

@@ -1,0 +1,248 @@
+<app-ta-modal
+  [modalTitle]="
+    editData?.type !== 'edit' ? 'Add Repair Shop' : 'Edit Repair Shop - '
+  "
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="repairShopForm.valid"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <form [formGroup]="repairShopForm" class="form-container">
+    <div class="row first-row">
+      <div class="col-11">
+        <app-ta-input
+          formControlName="name"
+          [inputConfig]="{
+            name: 'Shop name',
+            type: 'text',
+            label: 'Shop Name',
+            isRequired: true,
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-1">
+        <svg-icon
+          class="repair-shop-star"
+          [class.active]="isRepairShopFavourite"
+          src="assets/svg/common/ic_star.svg"
+          (click)="favouriteRepairShop()"
+        ></svg-icon>
+      </div>
+    </div>
+
+    <div
+      class="phone-ext-email-small-modal phone-ext-email-small-modal-my-32"
+      [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
+    >
+      <div class="phone-extension">
+        <div class="phone-field">
+          <app-ta-input
+            formControlName="phone"
+            [inputConfig]="{
+              name: 'Phone',
+              type: 'text',
+              label: 'Phone',
+              isRequired: true,
+              placeholderIcon: 'phone',
+              mask: '(000) 000-0000'
+            }"
+          ></app-ta-input>
+        </div>
+        <div
+          class="extension-field"
+          *ngIf="!isPhoneExtExist"
+          ngbTooltip
+          mainTooltip="Add Extension"
+          position="top"
+          tooltipBackground="#6c6c6c"
+          (click)="isPhoneExtExist = !isPhoneExtExist"
+        >
+          <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+        </div>
+        <app-ta-input
+          *ngIf="isPhoneExtExist"
+          formControlName="phoneExt"
+          [inputConfig]="{
+            name: 'Phone Extension',
+            type: 'text',
+            label: 'Ext.',
+            maxLength: 3,
+            placeholderIcon: 'phone-extension'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="email-field">
+        <app-ta-input
+          formControlName="email"
+          [inputConfig]="{
+            name: 'Email',
+            type: 'text',
+            label: 'Email',
+            placeholderIcon: 'email'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row last-row">
+      <div class="col-10">
+        <app-ta-input-address
+          formControlName="address"
+          [inputConfig]="{
+            name: 'Address',
+            type: 'text',
+            label: 'Address, City, State Zip',
+            isRequired: true,
+            placeholderIcon: 'address',
+            textTransform: 'capitalize'
+          }"
+          (selectedAddress)="onHandleAddress($event)"
+        ></app-ta-input-address>
+      </div>
+      <div class="col-2">
+        <app-ta-input
+          formControlName="addressUnit"
+          [inputConfig]="{
+            name: 'Address Unit',
+            type: 'text',
+            label: 'Unit #',
+            maxLength: 6
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <!-- Company Owned -->
+    <div class="custom-checkbox-card">
+      <div class="divider"></div>
+      <div class="checkbox-card-header pointer">
+        <app-ta-checkbox
+          formControlName="companyOwned"
+          [label]="'Company Owned'"
+        ></app-ta-checkbox>
+      </div>
+    </div>
+    <!-- Repair Shop Servies -->
+    <app-ta-custom-card
+      [hasCounter]="pickedServices() ? pickedServices() : '0'"
+      [cardName]="'Service'"
+      [isCardOpen]="true"
+    >
+      <div class="repair-shop-services">
+        <div
+          *ngFor="let repair of services; trackBy: identity"
+          class="repair-shop-service"
+          [class.active]="repair.active"
+          (click)="repair.active = !repair.active"
+        >
+          <svg-icon src="{{ repair.svg }}"></svg-icon>
+          <p>{{ repair.name }}</p>
+        </div>
+      </div>
+    </app-ta-custom-card>
+    <!-- Open Hours -->
+    <div class="open-hours-card-repair-shop">
+      <app-ta-custom-card
+        [cardName]="'Open Hours'"
+        [isCardOpen]="true"
+        [hasBodyData]="true"
+      >
+        <div
+          formArrayName="openHours"
+          class="common-fake-table-modal common-fake-table-modal-repair-shop-open-hours"
+        >
+          <div class="common-fake-table-label">
+            <p>DAY</p>
+            <p>FROM</p>
+            <p>TO</p>
+          </div>
+          <div *ngFor="let openHour of openHours.controls; let ind = index">
+            <div [formGroupName]="ind" class="common-fake-table-card">
+              <app-ta-checkbox
+                formControlName="isDay"
+                [customClass]="'medium'"
+                [name]="openHour.get('dayLabel').value"
+                [label]="openHour.get('dayLabel').value"
+              ></app-ta-checkbox>
+              <!-- Time Picker -->
+              <app-ta-input
+                *ngIf="openHour.get('isDay').value"
+                formControlName="from"
+                [inputConfig]="{
+                  name: 'timepicker',
+                  type: 'text',
+                  placeholderIcon: 'time',
+                  customClass: 'datetimeclass repair-shop-oh'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                *ngIf="openHour.get('isDay').value"
+                formControlName="to"
+                [inputConfig]="{
+                  name: 'timepicker',
+                  type: 'text',
+                  placeholderIcon: 'time',
+                  customClass: 'datetimeclass repair-shop-oh'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </div>
+      </app-ta-custom-card>
+    </div>
+
+    <!-- Bank Account -->
+    <app-ta-custom-card [cardName]="'Bank Account'" [isCardOpen]="true">
+      <div class="custom-bank-row">
+        <div class="bank-field">
+          <app-ta-input-dropdown
+            formControlName="bankId"
+            [template]="'svg-template'"
+            [inputConfig]="{
+              name: 'Input Dropdown',
+              type: 'text',
+              label: 'Bank Name',
+              isDropdown: true,
+              dropdownWidthClass: 'w-col-banks'
+            }"
+            [canAddNew]="true"
+            [options]="labelsBank"
+            (selectedItem)="onSelectDropdown($event, 'bank')"
+          ></app-ta-input-dropdown>
+        </div>
+        <div class="bank-field">
+          <app-ta-input
+            formControlName="routing"
+            [inputConfig]="{
+              name: 'Routing Number',
+              type: 'text',
+              label: 'Routing #',
+              isDisabled: !selectedBank,
+              isRequired: selectedBank,
+              minLength: 9,
+              maxLength: 9
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="bank-field">
+          <app-ta-input
+            formControlName="account"
+            [inputConfig]="{
+              name: 'Account Number',
+              type: 'text',
+              label: 'Account #',
+              isDisabled: !selectedBank,
+              isRequired: selectedBank,
+              maxLength: 17,
+              minLength: 4
+            }"
+          ></app-ta-input>
+        </div>
+      </div>
+    </app-ta-custom-card>
+    <!-- Note -->
+    <app-ta-input-note
+      formControlName="note"
+      [isVisibleNote]="repairShopForm.get('note').value"
+    ></app-ta-input-note>
+  </form>
+</app-ta-modal>

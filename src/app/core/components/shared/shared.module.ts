@@ -114,6 +114,7 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
 import { FormatRestrictionEndorsmentPipe } from '../../pipes/formatRestrictionEndorsment.pipe';
 import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
 import { DetailsActiveItemPipe } from '../../pipes/detailsActiveItem.pipe';
+import { RepairShopModalComponent } from '../modals/repair-shop/repair-shop-modal/repair-shop-modal.component';
 
 @NgModule({
   declarations: [
@@ -175,6 +176,7 @@ import { DetailsActiveItemPipe } from '../../pipes/detailsActiveItem.pipe';
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
+    RepairShopModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -335,6 +337,7 @@ import { DetailsActiveItemPipe } from '../../pipes/detailsActiveItem.pipe';
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
+    RepairShopModalComponent,
 
     // Pipes
     InputErrorPipe,

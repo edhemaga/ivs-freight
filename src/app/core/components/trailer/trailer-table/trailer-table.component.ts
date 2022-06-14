@@ -14,7 +14,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 })
 export class TrailerTableComponent implements OnInit {
   private destroy$: Subject<void> = new Subject<void>();
-  
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -22,7 +22,10 @@ export class TrailerTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private modalService: ModalService,  private tableService: TruckassistTableService) {}
+  constructor(
+    private modalService: ModalService,
+    private tableService: TruckassistTableService
+  ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -301,8 +304,7 @@ export class TrailerTableComponent implements OnInit {
   }
 
   public onTableBodyActions(event: any) {
-    console.log(event);
-    switch(event.type){
+    switch (event.type) {
       case 'edit-trailer': {
         this.modalService.openModal(
           TrailerModalComponent,
@@ -310,7 +312,7 @@ export class TrailerTableComponent implements OnInit {
           {
             ...event,
             type: 'edit',
-            disableButton: true
+            disableButton: true,
           }
         );
         break;
@@ -321,7 +323,7 @@ export class TrailerTableComponent implements OnInit {
           { size: 'small' },
           {
             ...event,
-            modal: 'trailer'
+            modal: 'trailer',
           }
         );
         break;
@@ -332,7 +334,7 @@ export class TrailerTableComponent implements OnInit {
           { size: 'small' },
           {
             ...event,
-            modal: 'trailer'
+            modal: 'trailer',
           }
         );
         break;

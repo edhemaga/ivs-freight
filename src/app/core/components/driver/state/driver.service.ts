@@ -1,7 +1,7 @@
 import { DriverShortResponse } from './../../../../../../appcoretruckassist/model/driverShortResponse';
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import {
   CheckOwnerSsnEinResponse,
   CreateDriverCommand,
@@ -26,8 +26,18 @@ export class DriverTService {
     private driversQuery: DriversQuery,
     private driverStore: DriversStore,
     private ownerService: OwnerService,
-    private tableService: TruckassistTableService,
+    private tableService: TruckassistTableService
   ) {}
+
+  private driverDetailChangeSubject: Subject<number> = new Subject<number>();
+
+  get driverDetailChangeId$() {
+    return this.driverDetailChangeSubject.asObservable();
+  }
+
+  public getDriverDetailId(id: number) {
+    this.driverDetailChangeSubject.next(id);
+  }
 
   // Create Driver
   public getDrivers(
@@ -60,8 +70,8 @@ export class DriverTService {
             this.tableService.sendActionAnimation({
               animation: 'add',
               data: driver,
-              id: driver.id
-            })
+              id: driver.id,
+            });
 
             subDriver.unsubscribe();
           },
