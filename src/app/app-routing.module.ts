@@ -8,6 +8,7 @@ import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.compo
 
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
 import { HelperComponent } from './core/components/authentication/helper/helper.component';
+import { HelperForgotPasswordComponent } from './core/components/authentication/helper-forgot-password/helper-forgot-password.component';
 import { TruckResolver } from './core/components/truck/state/truck.resolver';
 import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
 
@@ -23,6 +24,11 @@ const routes: Routes = [
   {
     path: 'api/account/verifyowner',
     component: HelperComponent,
+    data: { title: 'Helper Component Route' },
+  },
+  {
+    path: 'api/account/verifyforgotpassword',
+    component: HelperForgotPasswordComponent,
     data: { title: 'Helper Component Route' },
   },
   {

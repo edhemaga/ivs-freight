@@ -10,6 +10,7 @@ import {
   ForgotPasswordCommand,
   SetNewPasswordCommand,
   VerifyOwnerCommand,
+  VerifyForgotPasswordCommand,
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
@@ -46,6 +47,15 @@ export class AuthStoreService {
 
   public forgotPassword(data: ForgotPasswordCommand): Observable<object> {
     return this.accountService.apiAccountForgotpasswordPut(data, 'response');
+  }
+
+  public verifyForgotPassword(
+    data: VerifyForgotPasswordCommand
+  ): Observable<object> {
+    return this.accountService.apiAccountVerifyforgotpasswordPut(
+      data,
+      'response'
+    );
   }
 
   public createNewPassword(data: SetNewPasswordCommand): Observable<object> {

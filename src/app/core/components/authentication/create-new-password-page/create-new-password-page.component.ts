@@ -85,7 +85,7 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
               'Success'
             );
 
-            this.router.navigate(['/forgot-password/password-changed']);
+            this.router.navigate(['/auth/forgot-password/password-changed']);
           }
         },
         error: err => {

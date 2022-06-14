@@ -18,6 +18,7 @@ import { CreateNewPasswordPageComponent } from './create-new-password-page/creat
 import { PasswordChangedPageComponent } from './password-changed-page/password-changed-page.component';
 import { RegisterComponent } from './register/register/register.component';
 import { HelperComponent } from './helper/helper.component';
+import { HelperForgotPasswordComponent } from './helper-forgot-password/helper-forgot-password.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import { HelperComponent } from './helper/helper.component';
         CreateNewPasswordPageComponent,
         PasswordChangedPageComponent,
         RegisterComponent,
-        HelperComponent
+        HelperComponent,
+        HelperForgotPasswordComponent
     ],
     imports: [
         CommonModule,
