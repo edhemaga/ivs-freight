@@ -1,9 +1,11 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TruckQuery } from '../state/truck.query';
 
 @Component({
   selector: 'app-truck-details-card',
@@ -17,144 +19,95 @@ export class TruckDetailsCardComponent implements OnInit {
   public buttonsArrayFuel: any;
   public buttonsArrayRevenue: any;
   public toggler:boolean=false;
+  public truckDropDowns:any[] = []
   public dataEdit:any;
   @Input() templateCard:boolean=false;
   @Input() data:any;
-  constructor(private modalService:ModalService) { }
+  public truck_active_id: number=+this.activeted_route.snapshot.params['id'];
+  constructor(private activeted_route:ActivatedRoute, private modalService:ModalService, private trucksQuery:TruckQuery) { }
 
   ngOnInit(): void {
+    this.getTruckDropdown();
     this.noteControl.patchValue(this.data.note);
+
     this.initTableOptions();
     this.buttonsArrayPerfomance = [
       {
-        id: 5,
-        label: '1M',
-        value: '1Mchart',
-        name: 'chart',
-        checked: false,
+        id: 5,  
+        name: '1M',
       },
       {
         id: 10,
-        label: '3M',
-        value: '3Mchart',
-        name: 'chart',
-        checked: false,
+        name: '3M',
       },
       {
         id: 12,
-        label: '6M',
-        value: '6Mchart',
-        name: 'chart',
-        checked: false,
+        name: '6M',
       },
       {
         id: 15,
-        label: '1Y',
-        value: '1Ychart',
-        name: 'chart',
-        checked: false,
+        name: '1Y',
       },
       {
         id: 20,
-        label: 'YTD',
-        value: 'YTDchart',
-        name: 'chart',
-        checked: false,
+        name: 'YTD',
       },
       {
         id: 30,
-        label: 'ALL',
-        value: 'ALLchart',
-        name: 'chart',
-        checked: true,
+        name: 'ALL',
       },
     ];
     this.buttonsArrayRevenue = [
       {
         id: 36,
-        label: '1M',
-        value: '1Mrev',
-        name: 'rev',
-        checked: false,
+        name: '1M',
       },
       {
         id: 66,
-        label: '3M',
-        value: '3Mrev',
-        name: 'rev',
-        checked: false,
+        name: '3M',
       },
       {
         id: 97,
-        label: '6M',
-        value: '6Mrev',
-        name: 'rev',
-        checked: false,
+        name: '6M',
       },
       {
         id: 99,
-        label: '1Y',
-        value: '1Yrev',
-        name: 'rev',
-        checked: true,
+        name: '1Y',
       },
       {
         id: 101,
-        label: 'YTD',
-        value: 'YTDrev',
-        name: 'rev',
-        checked: false,
+        name: 'YTD',
       },
       {
         id: 103,
-        label: 'ALL',
-        value: 'ALLrev',
-        name: 'rev',
-        checked: false,
+        name: 'ALL',
       },
     ];
     this.buttonsArrayFuel = [
       {
         id: 222,
-        label: '1M',
-        value: '1Mfuel',
-        name: 'fuel',
+        name: '1M',
         checked: false,
       },
       {
         id: 333,
-        label: '3M',
-        value: '3Mfuel',
-        name: 'fuel',
-        checked: false,
+        name: '3M',
       },
       {
         id: 444,
-        label: '6M',
-        value: '6Mfuel',
-        name: 'fuel',
-        checked: false,
+        name: '6M',
       },
       {
         id: 555,
-        label: '1Y',
-        value: '1Yfuel',
-        name: 'fuel',
-        checked: true,
+        name: '1Y',
       },
       {
         id: 231,
-        label: 'YTD',
-        value: 'YTDfuel',
-        name: 'fuel',
-        checked: false,
+        name: 'YTD',
       },
       {
         id: 213,
-        label: 'ALL',
-        value: 'ALLfuel',
-        name: 'fuel',
-        checked: false,
+        name: 'ALL',
       },
     ];
   }
@@ -193,6 +146,16 @@ export class TruckDetailsCardComponent implements OnInit {
       export: true,
     };
   }
+  public changeTabPerfomance(ev: any) {
+    console.log(ev.id);
+  }
+  public changeTabFuel(ev: any) {
+    console.log(ev.id);
+  }
+  public changeTabRevenue(ev: any) {
+    console.log(ev.id);
+  }
+
 
   /**Function for toggle page in cards */
   public toggleResizePage(value: boolean) {
@@ -239,5 +202,30 @@ export class TruckDetailsCardComponent implements OnInit {
    /**Function retrun id */
   public identity(index: number, item: any): number {
     return item.id;
+  }
+  public getTruckDropdown() {    
+    this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
+      return {
+        id: item.id,
+        name: item.licensePlate,
+        svg: item.truckType.logoName,
+        active: item.id === this.truck_active_id,
+        folder: 'common/trucks/',
+      };
+    });
+  }
+  public onSelectedTruck(event: any) {
+    if (event) {
+      this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
+        return {
+          id: item.id,
+          name: item.licensePlate,
+          svg: item.truckType.logoName,
+          active: item.id === this.truck_active_id,
+          folder: 'common/trucks/',
+        };
+      });
+      // Call from store active driver or API on DROPDOWN SELECT
+    }
   }
 }

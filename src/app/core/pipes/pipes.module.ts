@@ -22,7 +22,7 @@ import { StatusPipePipe } from './status-pipe.pipe';
 import { SumArraysPipe } from './sum-arrays.pipe';
 import { TaSvgPipe } from './ta-svg.pipe';
 import { BlockedContentPipe } from './blockedContent.pipe';
-
+import { DetailsActiveItemPipe } from './detailsActiveItem.pipe';
 @NgModule({
   declarations: [
     SafeHtmlPipe,
@@ -47,7 +47,8 @@ import { BlockedContentPipe } from './blockedContent.pipe';
      HidePasswordPipe,
      InputTypePipe,
      FormatRestrictionEndorsmentPipe,
-     BlockedContentPipe
+     BlockedContentPipe,
+     DetailsActiveItemPipe
   ],
   imports: [CommonModule],
   exports: [
@@ -72,7 +73,8 @@ import { BlockedContentPipe } from './blockedContent.pipe';
     HidePasswordPipe,
     InputTypePipe,
     FormatRestrictionEndorsmentPipe,
-    BlockedContentPipe
+    BlockedContentPipe,
+    DetailsActiveItemPipe
   ],
   providers:[
     DatePipe,

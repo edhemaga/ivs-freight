@@ -37,6 +37,7 @@ $border-radius: 3px;
       width: 100%;
       justify-content: flex-end;
       margin-left: 9px;
+      margin-top: 2px;
       span {
         height: 100%;
         width: 100%;
@@ -48,11 +49,17 @@ $border-radius: 3px;
       .arrow-left {
         cursor: pointer;
         padding: 0 5px;
+        svg {
+          position: relative;
+          top: 2px;
+        }
       }
       .arrow-right {
         cursor: pointer;
         padding: 0 5px;
         svg {
+          position: relative;
+          top: 2px;
           transform: rotate(180deg);
         }
       }
@@ -223,7 +230,7 @@ $border-radius: 3px;
   .current-active-name {
     font-size: 20px;
     font-weight: 700;
-    font-style: italic;
+    // font-style: italic;
     line-height: 24px;
     color: #6c6c6c;
     cursor: pointer;

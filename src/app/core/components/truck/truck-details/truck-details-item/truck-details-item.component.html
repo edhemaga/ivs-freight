@@ -95,7 +95,7 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="'04/04/25'"
+                    [expireDate]="fhwa.issueDate | formatDateP"
                     [startDate]="fhwa.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
