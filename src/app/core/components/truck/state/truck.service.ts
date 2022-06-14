@@ -62,7 +62,6 @@ export class TruckTService {
         const subTruck = this.getTruckById(data.id).subscribe({
           next: (truck: TruckResponse | any) => {
             this.truckStore.remove(({ id }) => id === data.id);
-            console.log(truck);
 
             this.truckStore.add(truck);
 
@@ -127,7 +126,7 @@ export class TruckTService {
           id: truckId
         });
       })
-    );;
+    );
   }
 
   public getTruckDropdowns(): Observable<GetTruckModalResponse> {

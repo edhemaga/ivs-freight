@@ -3,6 +3,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
@@ -70,7 +71,12 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
             return trailer;
           });
 
-          this.closeAnimationAction();
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+
         } else if (res.animation === 'update') {
           console.log('Radi se update trailera');
           console.log(res);
@@ -84,7 +90,12 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
             return trailer;
           });
 
-          this.closeAnimationAction();
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+
         }
       });
 
@@ -112,7 +123,11 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
                 'Success:'
               );
 
-              this.closeAnimationAction(true);
+              const inetval = setInterval(() => {
+                this.viewData = closeAnimationAction(true, this.viewData);
+
+                clearInterval(inetval);
+              }, 1000);
 
               this.tableService.sendRowsSelected([]);
             });
@@ -225,13 +240,9 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
     this.viewData = this.viewData.map((data) => {
       return this.mapTrailerData(data);
     });
-
-    console.log('Trailer viewData');
-    console.log(this.viewData);
   }
 
   mapTrailerData(data: any) {
-    console.log(data);
     return {
       ...data,
       isSelected: false,
@@ -276,7 +287,6 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    console.log(event);
     switch (event.type) {
       case 'edit-trailer': {
         this.modalService.openModal(
@@ -327,7 +337,7 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
             },
             error: () => {
               this.notificationService.error(
-                `Trailer with id: ${event.id} status couldn't be changed`,
+                `Trailer with id: ${event.id}, status couldn't be changed`,
                 'Error:'
               );
             },
@@ -353,7 +363,11 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
                 return trailer;
               });
 
-              this.closeAnimationAction(true);
+              const inetval = setInterval(() => {
+                this.viewData = closeAnimationAction(true, this.viewData);
+
+                clearInterval(inetval);
+              }, 1000);
             },
             error: () => {
               this.notificationService.error(
@@ -370,31 +384,7 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
-
-  closeAnimationAction(isDelete?: boolean) {
-    const timeOut = setInterval(() => {
-      if (!isDelete) {
-        this.viewData = this.viewData.map((driver: any) => {
-          if (driver?.actionAnimation) {
-            delete driver.actionAnimation;
-          }
-
-          return driver;
-        });
-      } else {
-        let newViewData = [];
-
-        this.viewData.map((driver: any) => {
-          if (!driver.hasOwnProperty('actionAnimation')) {
-            newViewData.push(driver);
-          }
-        });
-
-        this.viewData = newViewData;
-      }
-
-      clearInterval(timeOut);
-    }, 1000);
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
   }
 }

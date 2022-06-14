@@ -60,24 +60,39 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
-        if (!this.loadingPage) {
-          if (res.animation === 'add') {
-            this.viewData.push(this.mapDriverData(res.data));
+        if (res.animation === 'add') {
+          this.viewData.push(this.mapDriverData(res.data));
 
-            this.viewData = this.viewData.map((driver: any) => {
-              if (driver.id === res.id) {
-                driver.actionAnimation = 'add';
-              }
+          this.viewData = this.viewData.map((driver: any) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'add';
+            }
 
-              return driver;
-            });
+            return driver;
+          });
 
-            const inetval = setInterval(() => {
-              this.viewData = closeAnimationAction(false, this.viewData);
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
 
-              clearInterval(inetval);
-            }, 1000);
-          }
+            clearInterval(inetval);
+          }, 1000);
+        }else if (res.animation === 'update') {
+          const updatedDriver = this.mapDriverData(res.data);
+
+          this.viewData = this.viewData.map((driver: any) => {
+            if (driver.id === res.id) {
+              driver = updatedDriver;
+              driver.actionAnimation = 'update';
+            }
+
+            return driver;
+          });
+          
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
         }
       });
 
@@ -364,5 +379,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+  }
 }

@@ -54,61 +54,56 @@ export class TruckTableComponent implements OnInit, OnDestroy {
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
-        if (!this.loadingPage) {
-          if (res.animation === 'add') {
-            this.viewData.push(this.mapTruckData(res.data));
+        if (res.animation === 'add') {
+          this.viewData.push(this.mapTruckData(res.data));
 
-            this.viewData = this.viewData.map((truck: any) => {
-              if (truck.id === res.id) {
-                truck.actionAnimation = 'add';
-              }
+          this.viewData = this.viewData.map((truck: any) => {
+            if (truck.id === res.id) {
+              truck.actionAnimation = 'add';
+            }
 
-              return truck;
-            });
+            return truck;
+          });
 
-            const inetval = setInterval(() => {
-              this.viewData = closeAnimationAction(false, this.viewData);
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
 
-              clearInterval(inetval);
-            }, 1000);
-          } else if (res.animation === 'update') {
-            const updatedTruck = this.mapTruckData(res.data);
+            clearInterval(inetval);
+          }, 1000);
+        } else if (res.animation === 'update') {
+          const updatedTruck = this.mapTruckData(res.data);
 
-            this.viewData = this.viewData.map((truck: any) => {
-              if (truck.id === res.id) {
-                truck = updatedTruck;
-                truck.actionAnimation = 'update';
-              }
+          this.viewData = this.viewData.map((truck: any) => {
+            if (truck.id === res.id) {
+              truck = updatedTruck;
+              truck.actionAnimation = 'update';
+            }
 
-              return truck;
-            });
+            return truck;
+          });
+          
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
 
-            console.log('Truck Update');
-            console.log(this.viewData);
+            clearInterval(inetval);
+          }, 1000);
+        } else if (res.animation === 'update-status') {
+          let truckIndex: number;
+          this.viewData = this.viewData.map((truck: any, index: number) => {
+            if (truck.id === res.id) {
+              truck.actionAnimation = 'update';
+              truckIndex = index;
+            }
 
-            const inetval = setInterval(() => {
-              this.viewData = closeAnimationAction(false, this.viewData);
+            return truck;
+          });
 
-              clearInterval(inetval);
-            }, 1000);
-          }else if(res.animation === 'update-status'){
-            let truckIndex: number;
-            this.viewData = this.viewData.map((truck: any, index: number) => {
-              if (truck.id === res.id) {
-                truck.actionAnimation = 'update';
-                truckIndex = index;
-              }
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
 
-              return truck;
-            });
-
-            const inetval = setInterval(() => {
-              this.viewData = closeAnimationAction(false, this.viewData);
-
-              this.viewData.splice(truckIndex, 1);
-              clearInterval(inetval);
-            }, 1000);
-          }
+            this.viewData.splice(truckIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
         }
       });
 
@@ -358,7 +353,7 @@ export class TruckTableComponent implements OnInit, OnDestroy {
           .changeTruckStatus(event.id)
           .pipe(untilDestroyed(this))
           .subscribe({
-            next: (res: any) => {
+            next: () => {
               this.notificationService.success(
                 `Truck successfully Change Status`,
                 'Success:'
@@ -366,7 +361,7 @@ export class TruckTableComponent implements OnInit, OnDestroy {
             },
             error: () => {
               this.notificationService.error(
-                `Truck status with id: ${event.id} couldn't be changed`,
+                `Truck with id: ${event.id}, status couldn't be changed`,
                 'Error:'
               );
             },
@@ -413,5 +408,7 @@ export class TruckTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+  }
 }

@@ -50,8 +50,7 @@ export class DriverTService {
     return this.driverService.apiDriverPost(data).pipe(
       tap((res: any) => {
         const subDriver = this.getDriverById(res.id).subscribe({
-          next: (driver: DriverShortResponse | any) => {
-            console.log(subDriver);
+          next: (driver: DriverResponse | any) => {
             driver = {
               ...driver,
               fullName: driver.firstName + ' ' + driver.lastName,
@@ -59,7 +58,6 @@ export class DriverTService {
 
             this.driverStore.add(driver);
 
-            console.log('Poziva se sendActionAnimation iz Add Driver')
             this.tableService.sendActionAnimation({
               animation: 'add',
               data: driver,
@@ -67,7 +65,6 @@ export class DriverTService {
             })
 
             subDriver.unsubscribe();
-            console.log(subDriver);
           },
         });
       })
@@ -103,7 +100,30 @@ export class DriverTService {
   }
 
   public updateDriver(data: UpdateDriverCommand): Observable<object> {
-    return this.driverService.apiDriverPut(data);
+    return this.driverService.apiDriverPut(data).pipe(
+      tap((res: any) => {
+        const subDriver = this.getDriverById(res.id).subscribe({
+          next: (driver: DriverResponse | any) => {
+            this.driverStore.remove(({ id }) => id === data.id);
+
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
+
+            this.driverStore.add(driver);
+
+            this.tableService.sendActionAnimation({
+              animation: 'update',
+              data: driver,
+              id: driver.id
+            })
+
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );;
   }
 
   public getDriverById(id: number): Observable<DriverResponse> {
