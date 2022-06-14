@@ -588,6 +588,14 @@ export class TaInputComponent
     }
   }
 
+  public onDatePaste(e: any){
+    e.preventDefault();
+    console.log("EVENT PASTE");
+    console.log(e);
+    const pasteText = e.clipboardData.getData('text');
+    console.log(pasteText);
+  }
+
   public onPaste(event: any, maxLength?: number) {
     event.preventDefault();
 
@@ -716,16 +724,22 @@ export class TaInputComponent
           this.selectSpanByTabIndex(this.selectionInput);
         }
       } else if (e.keyCode == 39 || e.keyCode == 9) {
+        console.log("4535443");
+        console.log(this.selectionInput);
         if (this.selectionInput != 2) {
           this.selectionInput = this.selectionInput + 1;
           this.selectSpanByTabIndex(this.selectionInput);
         } else if (e.keyCode == 9) {
-          console.log('NEXT ONEEEEE');
-          //this.input.nativeElement.focus();
-          //this.input.nativeElement.dispatchEvent(new KeyboardEvent('keydown',{'keyCode': 9}));
-          this.input.nativeElement.dispatchEvent(
-            new KeyboardEvent('keydown', { keyCode: 9 })
-          );
+          console.log("fsadfsfsda");
+          let allInputs = document.querySelectorAll("input");
+
+          [...allInputs as any].map((item, indx) => {
+            if(item === this.input.nativeElement){
+              allInputs[indx+1].focus();
+              return;
+            }
+          });
+          
         }
       } else if (e.keyCode == 38) {
         this.setDateTimeModel('up');
@@ -752,6 +766,7 @@ export class TaInputComponent
         this.setSpanSelection(this.span3.nativeElement);
     }
   }
+
 
   setDateTimeModel(direction: string) {
     if (this.inputConfig.name === 'datepicker') {

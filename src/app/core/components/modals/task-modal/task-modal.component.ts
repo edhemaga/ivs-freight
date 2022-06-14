@@ -23,6 +23,7 @@ import {
 import { TodoTService } from '../../to-do/state/todo.service';
 import { AuthQuery } from '../../authentication/state/auth.query';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
+import { CommentsService } from 'src/app/core/services/comments/comments.service';
 
 @Component({
   selector: 'app-task-modal',
@@ -51,6 +52,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private todoService: TodoTService,
+    private commentsService: CommentsService,
     private notificationService: NotificationService,
     private authQuery: AuthQuery
   ) {}
@@ -112,11 +114,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public changeCommentsEvent(comments: {
-    sortData: any[];
-    data: any | number;
-    action: string;
-  }) {
+  public changeCommentsEvent(comments: ReviewCommentModal) {
     switch (comments.action) {
       case 'delete': {
         this.deleteComment(comments);
@@ -169,19 +167,26 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   private addComment(comments: ReviewCommentModal) {
-    this.comments = [...comments.sortData];
-
     const comment: CreateCommentCommand = {
       entityTypeCommentId: 1,
       entityTypeId: this.editData.id,
       commentContent: comments.data.commentContent,
     };
 
-    this.todoService
+    this.commentsService
       .createComment(comment)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () => {
+        next: (res: any) => {
+          this.comments = comments.sortData.map((item, index) => {
+            if (index === 0) {
+              return {
+                ...item,
+                id: res.id,
+              };
+            }
+            return item;
+          });
           this.notificationService.success(
             'Comment successfully created.',
             'Success:'
@@ -201,7 +206,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       commentContent: comments.data.commentContent,
     };
 
-    this.todoService
+    this.commentsService
       .updateComment(comment)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -221,9 +226,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   private deleteComment(comments: ReviewCommentModal) {
-    console.log(comments);
     this.comments = comments.sortData;
-    this.todoService
+    this.commentsService
       .deleteCommentById(comments.data)
       .pipe(untilDestroyed(this))
       .subscribe({
