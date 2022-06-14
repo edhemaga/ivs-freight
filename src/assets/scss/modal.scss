@@ -23,9 +23,11 @@ ngb-modal-window[aria-hidden="true"] {
     transform: scale(1) !important;
   }
 
-
   .modal-dialog {
     max-width: max-content !important;
+    &.modal-large {
+      bottom: 6%;
+    }
     @media (min-width: 576px) {
       max-width: max-content !important;
       margin: 0.5rem auto !important;
