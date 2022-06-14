@@ -102,7 +102,7 @@ export class DriverTService {
   public updateDriver(data: UpdateDriverCommand): Observable<object> {
     return this.driverService.apiDriverPut(data).pipe(
       tap((res: any) => {
-        const subDriver = this.getDriverById(res.id).subscribe({
+        const subDriver = this.getDriverById(data.id).subscribe({
           next: (driver: DriverResponse | any) => {
             this.driverStore.remove(({ id }) => id === data.id);
 
@@ -123,7 +123,7 @@ export class DriverTService {
           },
         });
       })
-    );;
+    );
   }
 
   public getDriverById(id: number): Observable<DriverResponse> {
@@ -140,7 +140,22 @@ export class DriverTService {
     return this.ownerService.apiOwnerCheckSsnEinGet(number);
   }
 
-  public changeDriverStatus(id: number): Observable<any> {
-    return this.driverService.apiDriverStatusIdPut(id, 'response');
+  public changeDriverStatus(driverId: number): Observable<any> {
+    return this.driverService.apiDriverStatusIdPut(driverId, 'response').pipe(
+      tap(() => {
+        const driverToUpdate = this.driversQuery.getAll({
+          filterBy: ({ id }) => id === driverId
+        });
+
+        this.driverStore.update(({ id }) => id === driverId, {
+          status: driverToUpdate[0].status === 0 ? 1 : 0
+        });
+
+        this.tableService.sendActionAnimation({
+          animation: 'update-status',
+          id: driverId
+        });
+      })
+    );;
   }
 }

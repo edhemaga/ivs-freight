@@ -112,20 +112,23 @@ export class TrailerTService {
     return this.trailerService.apiTrailerIdGet(id);
   }
 
-  public changeTrailerStatus(id: number): Observable<any> {
-    return this.trailerService.apiTrailerStatusIdPut(id, 'response').pipe(
+  public changeTrailerStatus(trailerId: number): Observable<any> {
+    return this.trailerService.apiTrailerStatusIdPut(trailerId, 'response').pipe(
       tap(() => {
-        const subTrailer = this.getTrailerById(id).subscribe({
-          next: (trailer: TrailerResponse | any) => {
-            this.trailerStore.update(({ id }) => id === trailer.id, {
-              status: trailer.status
+        const subTrailer = this.getTrailerById(trailerId).subscribe({
+          next: () => {
+            const trailerToUpdate = this.trailerQuery.getAll({
+              filterBy: ({ id }) => id === trailerId
             });
-
+    
+            this.trailerStore.update(({ id }) => id === trailerId, {
+              status: trailerToUpdate[0].status === 0 ? 1 : 0
+            });
+    
             this.tableService.sendActionAnimation({
-              animation: 'update',
-              data: trailer,
-              id: trailer.id
-            })
+              animation: 'update-status',
+              id: trailerId
+            });
 
             subTrailer.unsubscribe();
           },
