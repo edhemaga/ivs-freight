@@ -73,7 +73,6 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initTableOptions();
     this.getDriversDropdown();
-    this.driver_active_id;
     this.tabsDriver = [
       {
         id: 223,

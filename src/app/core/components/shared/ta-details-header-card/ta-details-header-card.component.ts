@@ -16,6 +16,7 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Input() searchName: string = '';
   @Input() options: any = [];
   @Input() statusInactive: number = 1;
+  @Input() haveTwoInput:boolean;
   @Output() selectValue = new EventEmitter<string>();
   @Output() changeEvent = new EventEmitter<string>();
   id: number = 0;
