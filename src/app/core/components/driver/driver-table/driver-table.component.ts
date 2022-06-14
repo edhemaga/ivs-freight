@@ -76,7 +76,10 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
             clearInterval(inetval);
           }, 1000);
-        }else if (res.animation === 'update') {
+        } else if (res.animation === 'update') {
+          console.log('Driver Data Befor Update');
+          console.log(this.viewData);
+
           const updatedDriver = this.mapDriverData(res.data);
 
           this.viewData = this.viewData.map((driver: any) => {
@@ -87,10 +90,28 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
             return driver;
           });
-          
+
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
+            clearInterval(inetval);
+          }, 1000);
+        } else if (res.animation === 'update-status') {
+          let driverIndex: number;
+
+          this.viewData = this.viewData.map((driver: any, index: number) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'update';
+              driverIndex = index;
+            }
+
+            return driver;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(driverIndex, 1);
             clearInterval(inetval);
           }, 1000);
         }
@@ -269,6 +290,9 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         return this.mapDriverData(data);
       });
     }
+
+    console.log('Driver Data');
+    console.log(this.viewData);
   }
 
   mapDriverData(data: any) {
@@ -282,14 +306,40 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       textHired: data.hired
         ? this.datePipe.transform(data.hired, 'dd/MM/yy')
         : '',
-      textCDL: data.cdlNumber ? data.cdlNumber : '',
+      textCDL: data?.cdlNumber
+        ? data.cdlNumber
+        : data?.cdls?.length
+        ? data.cdls[0].cdlNumber
+        : '',
       textState: data.address.state ? data.address.state : '',
       textBank: data.bank ? data.bank : '',
       textAccount: data.account ? data.account : '',
       textRouting: data.routing ? data.routing : '',
-      tableCDLData: data.cdlExpiration ? data.cdlExpiration : {},
-      tableMedicalData: data.medicalExpiration ? data.medicalExpiration : {},
-      tableMvrData: data.mvrIssueDate ? data.mvrIssueDate : {},
+      tableCDLData: {
+        start: data?.cdlExpiration
+          ? data.cdlExpiration
+          : data?.cdls?.length
+          ? data.cdls[0].expDate
+          : null,
+        end: null,
+      },
+      tableMedicalData: {
+        start: data?.medicalExpiration
+          ? data.medicalExpiration
+          : data?.medicals?.length
+          ? data.medicals[0].expDate
+          : null,
+        end: null,
+      },
+      tableMvrData: {
+        start: data?.mvrIssueDate
+          ? data.mvrIssueDate
+          : data?.mvrs?.length
+          ? data.mvrs[0].issueDate
+          : null,
+        end: null,
+      },
+      tableDrugOrAlcoholTest: null,
     };
   }
 
@@ -307,6 +357,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
+    console.log(event);
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
@@ -344,6 +395,24 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         },
         { ...event }
       );
+    } else if (event.type === 'activate-item') {
+      this.driverTService
+        .changeDriverStatus(event.id)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: () => {
+            this.notificationService.success(
+              `Driver successfully Change Status`,
+              'Success:'
+            );
+          },
+          error: () => {
+            this.notificationService.error(
+              `Driver with id: ${event.id}, status couldn't be changed`,
+              'Error:'
+            );
+          },
+        });
     } else if (event.type === 'delete-item') {
       this.driverTService
         .deleteDriverById(event.id)

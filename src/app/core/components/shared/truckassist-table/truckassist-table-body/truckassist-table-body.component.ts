@@ -179,11 +179,13 @@ export class TruckassistTableBodyComponent
   checkForScroll() {
     const div = document.getElementById('scroll-container');
 
-    this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+    if (div) {
+      this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
 
-    this.tableService.sendShowingScroll(this.showScrollSectionBorder);
+      this.tableService.sendShowingScroll(this.showScrollSectionBorder);
 
-    this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
   trackByFn(index) {

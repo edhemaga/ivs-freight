@@ -40,10 +40,9 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log('Ucitava se Tabela');
-    
+
     this.initTableOptions();
     this.getTrucksData();
-    
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -76,11 +75,7 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
 
             clearInterval(inetval);
           }, 1000);
-
         } else if (res.animation === 'update') {
-          console.log('Radi se update trailera');
-          console.log(res);
-
           this.viewData = this.viewData.map((trailer: any) => {
             if (trailer.id === res.id) {
               trailer = this.mapTrailerData(res.data);
@@ -95,7 +90,24 @@ export class TrailerTableComponent implements OnInit, OnDestroy {
 
             clearInterval(inetval);
           }, 1000);
+        } else if (res.animation === 'update-status') {
+          let trailerIndex: number;
 
+          this.viewData = this.viewData.map((trailer: any, index: number) => {
+            if (trailer.id === res.id) {
+              trailer.actionAnimation = 'update';
+              trailerIndex = index;
+            }
+
+            return trailer;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(trailerIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
         }
       });
 
