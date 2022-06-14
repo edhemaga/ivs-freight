@@ -114,6 +114,8 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
 import { FormatRestrictionEndorsmentPipe } from '../../pipes/formatRestrictionEndorsment.pipe';
 import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
 import { DetailsActiveItemPipe } from '../../pipes/detailsActiveItem.pipe';
+import { TaChartComponent } from './ta-chart/ta-chart.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -202,6 +204,7 @@ import { DetailsActiveItemPipe } from '../../pipes/detailsActiveItem.pipe';
     InputRestrictionDirective,
     TextareaAutosizeDirective,
     FilterComponent,
+    TaChartComponent
   ],
   imports: [
     CommonModule,
@@ -245,6 +248,7 @@ import { DetailsActiveItemPipe } from '../../pipes/detailsActiveItem.pipe';
     DirectivesModule,
     TruckassistTableModule,
     AppTooltipeModule,
+    ChartsModule
   ],
   exports: [
     // Modules
@@ -313,6 +317,7 @@ import { DetailsActiveItemPipe } from '../../pipes/detailsActiveItem.pipe';
     TaLogoChangeComponent,
     TaLikeDislikeComponent,
     TaCurrencyProgressBarComponent,
+    TaChartComponent,
 
     // Modals Components
     TaModalComponent,
