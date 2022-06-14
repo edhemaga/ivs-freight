@@ -10,6 +10,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { DriverResponse } from 'appcoretruckassist';
 import { createBase64 } from 'src/app/core/utils/base64.image';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -18,6 +19,7 @@ import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriversQuery } from '../state/driver.query';
+import { DriverTService } from '../state/driver.service';
 
 @Component({
   selector: 'app-driver-details-card',
@@ -27,7 +29,7 @@ import { DriversQuery } from '../state/driver.query';
   animations: [card_modal_animation('showHideCardBody')],
 })
 export class DriverDetailsCardComponent implements OnInit, OnDestroy {
-  @Input() data: any;
+  @Input() driver: DriverResponse;
   public note: FormControl = new FormControl();
   public copiedPhone: boolean = false;
   public copiedBankRouting: boolean = false;
@@ -51,12 +53,14 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   // Driver Dropdown
   public driversDropdowns: any[] = [];
   public driver_active_id: number = +this.activated_route.snapshot.params['id'];
+  public driversList: any[] = this.driversQuery.getAll();
 
   constructor(
     private sanitazer: DomSanitizer,
     private modalService: ModalService,
     private driversQuery: DriversQuery,
-    private activated_route: ActivatedRoute
+    private activated_route: ActivatedRoute,
+    private driverService: DriverTService
   ) {}
 
   ngOnInit(): void {
@@ -144,8 +148,8 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   /**Function return user image if have in DB or default image */
   public transformImage() {
     let img;
-    if (this.data.avatar) {
-      img = createBase64(this.data.avatar);
+    if (this.driver.avatar) {
+      img = createBase64(this.driver.avatar);
     } else {
       img = 'assets/svg/common/ic_no_avatar_driver.svg';
     }
@@ -158,14 +162,10 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   }
 
   public changeTab(ev: any) {
-    console.log(ev.id);
-
     this.selectedTab = ev.id;
   }
 
   public optionsEvent(any: any, action: string) {
-    console.log(any);
-    console.log(this.data);
     switch (action) {
       case 'edit-licence': {
         this.modalService.openModal(
@@ -173,7 +173,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.data.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -185,7 +185,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.data.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -197,7 +197,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.data.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -209,7 +209,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.data.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -372,23 +372,33 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           active: item.id === event.id,
         };
       });
-      // Call from store active driver or API on DROPDOWN SELECT
+      this.driverService.getDriverDetailId(event.id);
     }
   }
 
   public onChangeDriver(action: string) {
-    // Call from store active driver or API on ARROW SELECTED
+    let currentIndex = this.driversList
+      .map((driver) => driver.id)
+      .indexOf(this.driver.id);
     switch (action) {
       case 'previous': {
-        console.log('PREVIOUS');
-        this.driver_active_id = --this.driver_active_id;
-        console.log(this.driver_active_id);
+        currentIndex = --currentIndex;
+        if (currentIndex != -1) {
+          this.driverService.getDriverDetailId(
+            this.driversList[currentIndex].id
+          );
+          this.onSelectedDriver({ id: this.driversList[currentIndex].id });
+        }
         break;
       }
       case 'next': {
-        console.log('NEXT');
-        this.driver_active_id = ++this.driver_active_id;
-        console.log(this.driver_active_id);
+        currentIndex = ++currentIndex;
+        if (currentIndex !== -1 && this.driversList.length > currentIndex) {
+          this.driverService.getDriverDetailId(
+            this.driversList[currentIndex].id
+          );
+          this.onSelectedDriver({ id: this.driversList[currentIndex].id });
+        }
         break;
       }
       default: {

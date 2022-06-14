@@ -9,10 +9,8 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import moment from 'moment';
 
-import { ActivatedRoute } from '@angular/router';
-import { DriverShortResponse } from 'appcoretruckassist';
+import { DriverResponse } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
@@ -30,7 +28,7 @@ import { card_component_animation } from '../../../shared/animations/card-compon
 })
 export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-  @Input() data: any = null;
+  @Input() driver: DriverResponse | any = null;
   public cdlNote: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
   public toggler: boolean[] = [];
@@ -42,12 +40,8 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   public showMoreEmployment: boolean = false;
 
   public dataTest: any;
-  public driverData: any;
 
-  constructor(
-    private activated_route: ActivatedRoute,
-    private modalService: ModalService
-  ) {
+  constructor(private modalService: ModalService) {
     this.arrayDrivers = [
       {
         id: 434,
@@ -115,12 +109,6 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initTableOptions();
     this.getDriversList();
-    this.getDriverById();
-  }
-
-  /**Function return driver by id */
-  public getDriverById() {
-    this.driverData = this.activated_route.snapshot.data;
   }
 
   public getDriversList() {
@@ -186,8 +174,6 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   }
 
   public optionsEvent(any: any, action: string) {
-    console.log(any)
-    console.log(this.driverData)
     switch (action) {
       case 'edit-licence': {
         this.modalService.openModal(
@@ -195,7 +181,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driverData.driver.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -207,7 +193,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driverData.driver.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -219,7 +205,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driverData.driver.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -231,7 +217,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driverData.driver.id,
+            id: this.driver.id,
             type: action,
           }
         );

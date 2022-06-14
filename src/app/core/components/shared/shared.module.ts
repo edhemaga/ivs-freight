@@ -114,6 +114,7 @@ import { InputTypePipe } from './ta-input/input-type.pipe';
 import { FormatRestrictionEndorsmentPipe } from '../../pipes/formatRestrictionEndorsment.pipe';
 import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
 import { DetailsActiveItemPipe } from '../../pipes/detailsActiveItem.pipe';
+import { RepairShopModalComponent } from '../modals/repair-shop/repair-shop-modal/repair-shop-modal.component';
 import { TaChartComponent } from './ta-chart/ta-chart.component';
 import { ChartsModule } from 'ng2-charts';
 
@@ -177,6 +178,7 @@ import { ChartsModule } from 'ng2-charts';
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
+    RepairShopModalComponent,
 
     // Pipes
     InputErrorPipe,
@@ -204,7 +206,7 @@ import { ChartsModule } from 'ng2-charts';
     InputRestrictionDirective,
     TextareaAutosizeDirective,
     FilterComponent,
-    TaChartComponent
+    TaChartComponent,
   ],
   imports: [
     CommonModule,
@@ -248,7 +250,7 @@ import { ChartsModule } from 'ng2-charts';
     DirectivesModule,
     TruckassistTableModule,
     AppTooltipeModule,
-    ChartsModule
+    ChartsModule,
   ],
   exports: [
     // Modules
@@ -340,6 +342,7 @@ import { ChartsModule } from 'ng2-charts';
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
+    RepairShopModalComponent,
 
     // Pipes
     InputErrorPipe,
