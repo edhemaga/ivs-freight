@@ -614,14 +614,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bussinesName: this.owner
         ? null
         : this.driverForm.get('bussinesName').value,
-      city: this.selectedAddress ? this.selectedAddress.city : null,
-      state: this.selectedAddress ? this.selectedAddress.state : null,
-      address: this.selectedAddress ? this.selectedAddress.address : null,
-      country: this.selectedAddress ? this.selectedAddress.country : null,
-      zipCode: this.selectedAddress ? this.selectedAddress.zipCode : null,
-      stateShortName: this.selectedAddress
-        ? this.selectedAddress.stateShortName
-        : null,
+      address: this.selectedAddress,
       bankId: this.selectedBank ? this.selectedBank.id : null,
       payType: this.selectedPayType ? this.selectedPayType.name : null,
       solo: {
@@ -771,7 +764,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string): void {
-    console.log(event);
     switch (action) {
       case 'bank': {
         this.selectedBank = event;

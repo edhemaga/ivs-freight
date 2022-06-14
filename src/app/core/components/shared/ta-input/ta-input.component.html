@@ -25,7 +25,11 @@
 >
   <!-- Input Clear -->
   <div
-    *ngIf="!inputConfig.hideClear && !inputConfig.isDisabled"
+    *ngIf="
+      !inputConfig.hideClear &&
+      !inputConfig.isDisabled &&
+      !inputConfig.customClass?.includes('details-pages')
+    "
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
       'valid-focus-in':
@@ -60,9 +64,9 @@
     *ngIf="
       !inputConfig.isDropdown &&
       touchedInput &&
-        getSuperControl.value &&
-        getSuperControl.invalid &&
-        !focusInput
+      getSuperControl.value &&
+      getSuperControl.invalid &&
+      !focusInput
     "
     class="input-invalid-danger-mark  {{ inputConfig.customClass }}"
     src="assets/svg/common/ic_danger.svg"
@@ -97,14 +101,10 @@
     class="input-password-eye {{ inputConfig.customClass }}"
     [ngClass]="{
       visible: isVisiblePasswordEye,
-      'valid-focus-out': 
-        getSuperControl.value && 
-        getSuperControl.valid && 
-        !isVisiblePasswordEye,
-      'invalid': 
-        getSuperControl.value && 
-        getSuperControl.invalid && 
-        isVisiblePasswordEye
+      'valid-focus-out':
+        getSuperControl.value && getSuperControl.valid && !isVisiblePasswordEye,
+      invalid:
+        getSuperControl.value && getSuperControl.invalid && isVisiblePasswordEye
     }"
     ngbTooltip
     mainTooltip="{{ !togglePassword ? 'Show Password' : 'Hide Password' }}"
@@ -139,7 +139,7 @@
 
   <!-- Input Drodown Arrow -->
   <svg-icon
-    class="input-dropdown-arrow"
+    class="input-dropdown-arrow {{ inputConfig.customClass }}"
     *ngIf="
       inputConfig.isDropdown &&
       !inputConfig.isDisabled &&
@@ -197,19 +197,19 @@
         !focusInput &&
         touchedInput,
       'invalid-required-filled-out':
-        getSuperControl.value && 
-        getSuperControl.invalid && 
-        !focusInput && 
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
         !isVisiblePasswordEye,
       'password-eye':
         inputConfig.type === 'password' &&
         isVisiblePasswordEye &&
         getSuperControl.value &&
         !getSuperControl.invalid,
-      'password-eye-invalid': 
-        inputConfig.type === 'password' && 
-        isVisiblePasswordEye && 
-        getSuperControl.invalid && 
+      'password-eye-invalid':
+        inputConfig.type === 'password' &&
+        isVisiblePasswordEye &&
+        getSuperControl.invalid &&
         getSuperControl.value
     }"
     [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg: 'common'"
@@ -257,8 +257,15 @@
         !isVisiblePasswordEye,
       'invalid-focus-in':
         getSuperControl.value && getSuperControl.invalid && focusInput,
-      'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye && !getSuperControl.invalid,
-      'password-eye-invalid': inputConfig.type === 'password' && isVisiblePasswordEye && getSuperControl.invalid && getSuperControl.value,
+      'password-eye':
+        inputConfig.type === 'password' &&
+        isVisiblePasswordEye &&
+        !getSuperControl.invalid,
+      'password-eye-invalid':
+        inputConfig.type === 'password' &&
+        isVisiblePasswordEye &&
+        getSuperControl.invalid &&
+        getSuperControl.value,
       'has-input-icon': inputConfig.placeholderIcon,
       'dropdown-placeholder-active':
         inputConfig.isDropdown &&

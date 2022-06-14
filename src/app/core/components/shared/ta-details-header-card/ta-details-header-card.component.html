@@ -6,36 +6,68 @@
         class="inactive-status"
         src="assets/svg/truckassist-table/dropdown/content/activate-hover.svg"
       ></svg-icon>
+      <!-- Active Item -->
+      <div
+        *ngIf="!selectedDropdown"
+        class="current-active-item"
+        (click)="onPickItem()"
+      >
+        <p class="current-active-name">
+          {{ (options | detailActiveItem).name }}
+        </p>
+        <svg-icon
+          class="current-active-owner"
+          src="{{ (options | detailActiveItem).svg }}"
+        ></svg-icon>
+      </div>
+      <!-- Input dropdown -->
       <app-ta-input-dropdown
+        *ngIf="selectedDropdown"
         class="dropInput"
         [formControl]="inputFormControl"
         [inputConfig]="{
           name: 'Input Dropdown',
           type: 'text',
           isDropdown: true,
-          dropdownWidthClass: 'w-col-details-template'
+          dropdownWidthClass:
+            statusInactive === 0
+              ? 'w-col-details-template-small'
+              : 'w-col-details-template-big',
+          textTransform: 'capitalize',
+          customClass: 'input-big input-big-font-20 details-pages'
         }"
-        [options]="optionsCmp"
+        [options]="options"
         [template]="'details-template'"
-        (selectedItem)="onSelectDetail($event)"
+        [isDetailsActive]="selectedDropdown"
+        (selectedItem)="onSelecItem($event)"
       >
       </app-ta-input-dropdown>
     </div>
     <div class="arrows">
-      <span  ngbTooltip [mainTooltip]="tooltipPrevious" position="top" tooltipBackground="#6C6C6C">
+      <span
+        ngbTooltip
+        [mainTooltip]="tooltipPrevious"
+        position="top"
+        tooltipBackground="#6C6C6C"
+      >
         <svg-icon
           class="arrow-left"
-          (click)="onPreviousAction($event)"
+          (click)="onAction('previous')"
           src="assets/svg/common/arrow-left.svg"
         >
         </svg-icon>
       </span>
-      <span tooltipBackground="#6C6C6C" ngbTooltip [mainTooltip]="tooltipNext" position="top">
-      <svg-icon
-        class="arrow-right"
-        (click)="onNextAction()"
-        src="assets/svg/common/arrow-left.svg"
-      ></svg-icon>
+      <span
+        tooltipBackground="#6C6C6C"
+        ngbTooltip
+        [mainTooltip]="tooltipNext"
+        position="top"
+      >
+        <svg-icon
+          class="arrow-right"
+          (click)="onAction('next')"
+          src="assets/svg/common/arrow-left.svg"
+        ></svg-icon>
       </span>
     </div>
   </div>
@@ -46,25 +78,39 @@
 
     <div class="border-line"></div>
     <div class="details-header-wrapper-data">
-      <span tooltipBackground="#6C6C6C" ngbTooltip mainTooltip="Date Added" position="top">
-      <div class="details-header-wrapper-data-item bottom"
+      <span
+        tooltipBackground="#6C6C6C"
+        ngbTooltip
+        mainTooltip="Date Added"
+        position="top"
       >
-        <svg-icon class="date-add" src="assets/svg/common/date.svg"></svg-icon>
-        <p class="vin-text">{{ cardDetailsDate }}</p>
+        <div class="details-header-wrapper-data-item bottom">
+          <svg-icon
+            class="date-add"
+            src="assets/svg/common/date.svg"
+          ></svg-icon>
+          <p class="vin-text">{{ cardDetailsDate }}</p>
         </div>
       </span>
-      <span style="margin-left:130px ;" *ngIf="statusInactive == 0" tooltipBackground="#6C6C6C" ngbTooltip mainTooltip="Date Terminated" position="top">
-      <div
+      <span
+        style="margin-left: 130px"
         *ngIf="statusInactive == 0"
-        class="details-header-wrapper-data-item bottom"
+        tooltipBackground="#6C6C6C"
+        ngbTooltip
+        mainTooltip="Date Terminated"
+        position="top"
       >
-        <svg-icon
-          class="date-terminated"
-          src="assets/svg/common/ic_terminated.svg"
-        ></svg-icon>
-        <p class="vin-text">{{ cardDetailsDateTerminated }}</p>
-      </div>
-    </span>
+        <div
+          *ngIf="statusInactive == 0"
+          class="details-header-wrapper-data-item bottom"
+        >
+          <svg-icon
+            class="date-terminated"
+            src="assets/svg/common/ic_terminated.svg"
+          ></svg-icon>
+          <p class="vin-text">{{ cardDetailsDateTerminated }}</p>
+        </div>
+      </span>
     </div>
   </div>
 </div>
