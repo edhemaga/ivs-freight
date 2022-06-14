@@ -383,13 +383,20 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   public onChangeDriver(action: string) {
     switch (action) {
       case 'previous': {
-        if (--this.data.id === 0) {
+        if (this.data.id === 0) {
           return;
         }
         this.driver_active_id = --this.data.id;
         break;
       }
       case 'next': {
+        if (
+          this.driversQuery
+            .getAll()
+            .some((driver) => driver.id !== this.data.id)
+        ) {
+          return;
+        }
         this.driver_active_id = ++this.data.id;
         break;
       }

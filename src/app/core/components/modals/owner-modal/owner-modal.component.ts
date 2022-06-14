@@ -341,13 +341,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             addressUnit: res.address.addressUnit,
             phone: res.phone,
             email: res.email,
-            bankId: res.bankName,
+            bankId: res.bank.name,
             accountNumber: res.accountNumber,
             routingNumber: res.routingNumber,
             note: res.note,
           });
           this.selectedAddress = res.address;
-          this.selectedBank = res.bankName;
+          this.selectedBank = res.bank;
           this.tabChange(
             this.tabs.find((item) => item.id === res.ownerType.id)
           );
