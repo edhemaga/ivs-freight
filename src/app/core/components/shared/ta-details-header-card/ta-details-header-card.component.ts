@@ -42,6 +42,8 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   }
 
   public onSelecItem(emit: any): void {
+    console.log('FROM DETAILS HEADER CARD');
+    console.log(emit);
     this.selectValue.emit(emit);
     this.selectedDropdown = false;
   }

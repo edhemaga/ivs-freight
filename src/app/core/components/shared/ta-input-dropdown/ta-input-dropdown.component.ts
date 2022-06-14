@@ -82,10 +82,14 @@ export class TaInputDropdownComponent
     if (this.template === 'details-template' && this.isDetailsActive) {
       const timeout = setTimeout(() => {
         this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
+        const option = this.options.find((item) => item.active);
+        this.activeItem = option;
+        this.getSuperControl.setValue(option.name);
+
         const timeout2 = setTimeout(() => {
           this.popoverRef.open();
           clearTimeout(timeout2);
-        }, 200);
+        }, 150);
         clearTimeout(timeout);
       });
     }
@@ -158,7 +162,7 @@ export class TaInputDropdownComponent
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
         this.isMultiSelectInputFocus = action;
-        console.log(action + ' FROM DROP DOWN SHOW HIDE EVENT');
+
         if (!action) {
           this.popoverRef.open();
           if (this.activeItem) {
@@ -183,6 +187,13 @@ export class TaInputDropdownComponent
 
           this.getSuperControl.setValue(null);
           this.popoverRef.close();
+        }
+
+        if (
+          this.inputConfig.customClass?.includes('details-pages') &&
+          !action
+        ) {
+          this.selectedItem.emit(this.activeItem);
         }
       });
   }
