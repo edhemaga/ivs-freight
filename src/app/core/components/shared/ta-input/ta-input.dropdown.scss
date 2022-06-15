@@ -50,6 +50,15 @@
         }
       }
     }
+
+    &.datetimeclass{
+      z-index: 1;
+      svg{
+        path{
+          fill: #dadada !important;
+        }
+      }
+    }
   }
 
   &.invalid {

@@ -147,7 +147,7 @@
     *ngIf="
       inputConfig.isDropdown &&
       !inputConfig.isDisabled &&
-      !isDropdownAddModeActive &&
+      (!isDropdownAddModeActive || (inputConfig.name === 'datepicker' || inputConfig.name === 'timepicker' ) ) &&
       !inputConfig.multiSelectDropdownActive
     "
     [ngClass]="{
