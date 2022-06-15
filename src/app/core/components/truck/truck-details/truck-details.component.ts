@@ -43,7 +43,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initTableOptions();
-    this.data = this.activated_route.snapshot.data.truck;
+    // this.data = this.activated_route.snapshot.data.truck;
     this.detailsPageDriverSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {

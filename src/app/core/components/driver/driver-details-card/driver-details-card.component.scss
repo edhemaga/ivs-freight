@@ -11,7 +11,7 @@
     margin-top: 8px;
 }
 .wrapper-additional-cards{
-    max-height: calc(82vh - 74px);
+    max-height: calc(77vh - 74px);
     min-height: calc(33vh - 10px);
     display: grid;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
@@ -57,4 +57,7 @@
     color: $color-gray-dark;
     width: 60px;
     height: 18px;
+}
+.bind-heigth{
+      max-height: calc(100vh - 74px) !important;
 }

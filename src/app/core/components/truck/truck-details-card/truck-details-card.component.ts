@@ -216,21 +216,21 @@ export class TruckDetailsCardComponent implements OnInit {
     this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
       return {
         id: item.id,
-        name: item.licensePlate,
+        name: item.truckType.name,
         svg: item.truckType.logoName,
-        active: item.id === this.truck_active_id,
+        active: item.id === this.truck.id,
         folder: 'common/trucks/',
       };
     });
   }
   public onSelectedTruck(event: any) {
-    if (event) {
+    if (event.id !== this.truck.id) {
       this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
         return {
           id: item.id,
-          name: item.licensePlate,
+          name: item.truckType.name,
           svg: item.truckType.logoName,
-          active: item.id === this.truck_active_id,
+          active: item.id === event.id,
           folder: 'common/trucks/',
         };
       });

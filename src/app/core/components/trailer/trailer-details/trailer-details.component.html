@@ -4,7 +4,7 @@
         [route]="'/trailer'"
         [tooltipHeaderName]="'Back to Trailer List'"
         [headerText]="item.name"
-        [counterData]="item.data"
+        [counterData]="item.length"
         [hidePlus]="item.hide"
         (openModalAction)="onModalAction($event)"
       >
@@ -13,7 +13,7 @@
     <div class="details-item-cmp">
       <app-trailer-details-item
         *ngFor="let item of trailerDetailsConfig; trackBy: identity"
-        [data]="item"
+        [trailer]="item"
       >
       </app-trailer-details-item>
     </div>

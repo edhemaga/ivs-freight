@@ -92,11 +92,8 @@ export class DriverDetailsCardComponent
     } else {
       this.hideArrow = false;
     }
-    console.log(this.hideArrow);
-    console.log(this.templateCard);
   }
   ngOnInit(): void {
-    console.log(this.templateCard);
 
     if (this.templateCard == true) {
       this.hideArrow = true;
@@ -106,6 +103,20 @@ export class DriverDetailsCardComponent
     this.initTableOptions();
     this.initTableOptionsCard();
     this.getDriversDropdown();
+    this.tabsButton();
+  }
+
+  /**Function return user image if have in DB or default image */
+  public transformImage() {
+    let img;
+    if (this.driver.avatar) {
+      img = createBase64(this.driver.avatar);
+    } else {
+      img = 'assets/svg/common/ic_no_avatar_driver.svg';
+    }
+    return this.sanitazer.bypassSecurityTrustResourceUrl(img);
+  }
+  public tabsButton(){
     this.tabsDriver = [
       {
         id: 223,
@@ -137,18 +148,6 @@ export class DriverDetailsCardComponent
       },
     ];
   }
-
-  /**Function return user image if have in DB or default image */
-  public transformImage() {
-    let img;
-    if (this.driver.avatar) {
-      img = createBase64(this.driver.avatar);
-    } else {
-      img = 'assets/svg/common/ic_no_avatar_driver.svg';
-    }
-    return this.sanitazer.bypassSecurityTrustResourceUrl(img);
-  }
-
   /**Function for toggle page in cards */
   public toggleResizePage(value: number) {
     this.toggler[value] = !this.toggler[value];
