@@ -135,7 +135,7 @@
           (click)="repair.active = !repair.active"
         >
           <svg-icon src="{{ repair.svg }}"></svg-icon>
-          <p>{{ repair.name }}</p>
+          <p>{{ repair.serviceType }}</p>
         </div>
       </div>
     </app-ta-custom-card>
@@ -166,7 +166,7 @@
               <!-- Time Picker -->
               <app-ta-input
                 *ngIf="openHour.get('isDay').value"
-                formControlName="from"
+                formControlName="startTime"
                 [inputConfig]="{
                   name: 'timepicker',
                   type: 'text',
@@ -176,7 +176,7 @@
               ></app-ta-input>
               <app-ta-input
                 *ngIf="openHour.get('isDay').value"
-                formControlName="to"
+                formControlName="endTime"
                 [inputConfig]="{
                   name: 'timepicker',
                   type: 'text',

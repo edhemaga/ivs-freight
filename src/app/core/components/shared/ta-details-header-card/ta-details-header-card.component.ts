@@ -1,11 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-ta-details-header-card',
   templateUrl: './ta-details-header-card.component.html',
   styleUrls: ['./ta-details-header-card.component.scss'],
-  encapsulation:ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class TaDetailsHeaderCardComponent implements OnInit {
   @Input() cardDetailsName: string = '';
@@ -18,9 +25,9 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Input() options: any = [];
   @Input() public optionsDrop: any = [];
   @Input() statusInactive: number = 1;
-  @Input() haveTwoInput:boolean;
-  @Input() searchInputName:string;
-  @Input() hasArrow:boolean;
+  @Input() haveTwoInput: boolean;
+  @Input() searchInputName: string;
+  @Input() hasArrow: boolean;
   @Input() public optionsId: number;
   @Output() public dropActions = new EventEmitter<any>();
   @Output() selectValue = new EventEmitter<string>();
@@ -44,8 +51,9 @@ export class TaDetailsHeaderCardComponent implements OnInit {
     this.selectedDropdown = true;
   }
 
-  public onSelecItem(emit: any): void {
-    this.selectValue.emit(emit);
+  public onSelecItem(value: any): void {
+    console.log(value);
+    this.selectValue.emit(value);
     this.selectedDropdown = false;
   }
 

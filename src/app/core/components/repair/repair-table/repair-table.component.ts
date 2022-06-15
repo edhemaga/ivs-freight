@@ -6,7 +6,7 @@ import {
   getRepairTrailerColumnDefinition,
   getRepairTruckColumnDefinition,
 } from 'src/assets/utils/settings/repair-columns';
-import { RepairShopModalComponent } from '../../modals/repair-shop/repair-shop-modal/repair-shop-modal.component';
+import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({

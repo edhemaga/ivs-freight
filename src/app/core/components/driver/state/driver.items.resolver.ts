@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DriversItemStore } from './driver-details.store';
+
 import {
   ActivatedRouteSnapshot,
   Resolve,
@@ -9,7 +9,7 @@ import { DriverResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { DriverTService } from './driver.service';
-import { Store } from '@datorama/akita';
+import { DriversItemStore } from './driver-details.store';
 
 @Injectable({
   providedIn: 'root',
