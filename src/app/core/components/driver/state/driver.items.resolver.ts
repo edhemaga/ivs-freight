@@ -26,19 +26,20 @@ export class DriverItemResolver implements Resolve<DriverResponse[]> {
       catchError((error) => {
         return of('No drivers data for...' + driver_id);
       }),
-      tap((driverData: DriverResponse) => {      
-       return this.driverItemStore.update((state) =>{
+      // tap((driverData: DriverResponse) => {      
+      //  return this.driverItemStore.update((state) =>{
 
-         console.log('from resolver')
-         console.log(state)
-        return {
-          ...state,
-           ids:driverData
-        }
-       } 
+      //    console.log('from resolver')
+      //    console.log(state)
+      //   return {
+      //     ...state,
+      //      ids:driverData
+      //   }
+      //  } 
        
-      );
-      })
+      // );
+      // })
+      take(1)
     );
   }
 }

@@ -1,15 +1,15 @@
 <div class="details-component">
-  <div [ngSwitch]="data.template">
+  <div [ngSwitch]="truck.template">
     <!---------------------------- GENERAL TEMPLATE ----------------------------->
     <div *ngSwitchCase="'general'">
-      <app-truck-details-card [data]="truckData.truck">
+      <app-truck-details-card [truck]="truck.data">
       </app-truck-details-card>
     </div>
     <!---------------------------- Registration TEMPLATE ----------------------------->
     <div *ngSwitchCase="'registration'">
       <div
         *ngFor="
-          let reg of truckData.truck.registrations;
+          let reg of truck.data.registrations;
           let i = index;
           trackBy: identity
         "
@@ -73,7 +73,7 @@
     <div *ngSwitchCase="'fhwa-insepction'">
       <div
         *ngFor="
-          let fhwa of truckData.truck.inspections;
+          let fhwa of truck.data.inspections;
           let i = index;
           trackBy: identity
         "
@@ -123,7 +123,7 @@
     <div *ngSwitchCase="'title'">
       <div
         *ngFor="
-          let title of truckData.truck.titles;
+          let title of truck.data.titles;
           let i = index;
           trackBy: identity
         "

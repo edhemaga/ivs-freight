@@ -83,6 +83,11 @@
             height: 16px;
             background-image: url("../../assets/svg/common/ic_nohover_print.svg");
           }
+          .email{
+            width: 16px;
+            height: 16px;
+            background-image: url("../../assets/svg/common/ic_email.svg");
+          }
         }
 
         .dropdown-content-text {
@@ -126,6 +131,9 @@
             }
             .print{
               background-image: url("../../assets/svg/common/ic_print.svg");
+            }
+            .email{
+              background-image: url("../../assets/svg/common/ic_email.svg");
             }
           }
         }

@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import {
   getRepairsShopColumnDefinition,
   getRepairTrailerColumnDefinition,
   getRepairTruckColumnDefinition,
 } from 'src/assets/utils/settings/repair-columns';
+import { RepairShopModalComponent } from '../../modals/repair-shop/repair-shop-modal/repair-shop-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-repair-table',
@@ -15,7 +16,7 @@ import {
 })
 export class RepairTableComponent implements OnInit {
   private destroy$: Subject<void> = new Subject<void>();
-  
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -23,7 +24,10 @@ export class RepairTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService, private tableService: TruckassistTableService) {}
+  constructor(
+    private modalService: ModalService,
+    private tableService: TruckassistTableService
+  ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -473,10 +477,19 @@ export class RepairTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba odraditi modal!');
+      this.modalService.openModal(RepairShopModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setRepairData(event.tabData);
     }
+  }
+
+  public onTableBodyActions(event: any) {
+    console.log(event);
+    this.modalService.openModal(
+      RepairShopModalComponent,
+      { size: 'small' },
+      event
+    );
   }
 }

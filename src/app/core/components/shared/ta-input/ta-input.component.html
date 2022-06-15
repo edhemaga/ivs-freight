@@ -33,7 +33,10 @@
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
       'valid-focus-in':
-        getSuperControl.value && getSuperControl.valid && focusInput,
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        focusInput &&
+        !inputConfig.customClass?.includes('repair-shop-oh'),
       'invalid-focus-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
@@ -45,6 +48,7 @@
         !inputConfig.isDisabled &&
         !isDropdownAddModeActive &&
         !inputConfig.multiSelectDropdownActive,
+      focus: focusInput,
       'password-eye':
         inputConfig.type === 'password' &&
         isVisiblePasswordEye &&

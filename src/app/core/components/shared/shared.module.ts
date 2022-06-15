@@ -94,7 +94,9 @@ import { ViolationModalComponent } from '../safety/violation/violation-modal/vio
 import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { PipesModule } from '../../pipes/pipes.module';
-
+import { RepairShopModalComponent } from '../modals/repair-shop/repair-shop-modal/repair-shop-modal.component';
+import { TaChartComponent } from './ta-chart/ta-chart.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 
@@ -158,7 +160,8 @@ import { PipesModule } from '../../pipes/pipes.module';
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
-
+    RepairShopModalComponent,
+    TaChartComponent,
   
     FilterComponent
   ],
@@ -204,6 +207,7 @@ import { PipesModule } from '../../pipes/pipes.module';
     DirectivesModule,
     TruckassistTableModule,
     AppTooltipeModule,
+    ChartsModule
   ],
   exports: [
     // Modules
@@ -274,6 +278,7 @@ import { PipesModule } from '../../pipes/pipes.module';
     TaLogoChangeComponent,
     TaLikeDislikeComponent,
     TaCurrencyProgressBarComponent,
+    TaChartComponent,
 
     // Modals Components
     TaModalComponent,

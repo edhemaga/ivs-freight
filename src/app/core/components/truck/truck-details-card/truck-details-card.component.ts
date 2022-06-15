@@ -1,3 +1,4 @@
+import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute } from '@angular/router';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -6,34 +7,43 @@ import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-traile
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckQuery } from '../state/truck.query';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 
 @Component({
   selector: 'app-truck-details-card',
   templateUrl: './truck-details-card.component.html',
   styleUrls: ['./truck-details-card.component.scss'],
-  encapsulation:ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class TruckDetailsCardComponent implements OnInit {
   public noteControl: FormControl = new FormControl();
   public buttonsArrayPerfomance: any;
   public buttonsArrayFuel: any;
   public buttonsArrayRevenue: any;
-  public toggler:boolean=false;
-  public truckDropDowns:any[] = []
-  public dataEdit:any;
-  @Input() templateCard:boolean=false;
-  @Input() data:any;
-  public truck_active_id: number=+this.activeted_route.snapshot.params['id'];
-  constructor(private activeted_route:ActivatedRoute, private modalService:ModalService, private trucksQuery:TruckQuery) { }
+  public toggler: boolean = false;
+  public truckDropDowns: any[] = [];
+  public dataEdit: any;
+  @Input() templateCard: boolean = false;
+  @Input() truck: TruckResponse | any;
+  public truck_active_id: number = +this.activeted_route.snapshot.params['id'];
+  public truck_list:any[]=this.trucksQuery.getAll();
+  constructor(
+    private activeted_route: ActivatedRoute,
+    private modalService: ModalService,
+    private trucksQuery: TruckQuery,
+    private detailsPageDriverSer:DetailsPageService
+  ) {}
 
   ngOnInit(): void {
+    console.log(this.truck);
     this.getTruckDropdown();
-    this.noteControl.patchValue(this.data.note);
+    
+    this.noteControl.patchValue(this.truck.note);
 
     this.initTableOptions();
     this.buttonsArrayPerfomance = [
       {
-        id: 5,  
+        id: 5,
         name: '1M',
       },
       {
@@ -111,8 +121,8 @@ export class TruckDetailsCardComponent implements OnInit {
       },
     ];
   }
-  
-   /**Function for dots in cards */
+
+  /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataEdit = {
       disabledMutedStyle: null,
@@ -156,7 +166,6 @@ export class TruckDetailsCardComponent implements OnInit {
     console.log(ev.id);
   }
 
-
   /**Function for toggle page in cards */
   public toggleResizePage(value: boolean) {
     this.toggler = value;
@@ -170,7 +179,7 @@ export class TruckDetailsCardComponent implements OnInit {
           TtRegistrationModalComponent,
           { size: 'small' },
           {
-            id: this.data.id,
+            id: this.truck.id,
             file_id: any.id,
             type: action,
             modal: 'truck',
@@ -183,7 +192,7 @@ export class TruckDetailsCardComponent implements OnInit {
           TtFhwaInspectionModalComponent,
           { size: 'small' },
           {
-            id: this.data.id,
+            id: this.truck.id,
             file_id: any.id,
             type: action,
             modal: 'truck',
@@ -199,11 +208,11 @@ export class TruckDetailsCardComponent implements OnInit {
       }
     }
   }
-   /**Function retrun id */
+  /**Function retrun id */
   public identity(index: number, item: any): number {
     return item.id;
   }
-  public getTruckDropdown() {    
+  public getTruckDropdown() {
     this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
       return {
         id: item.id,
@@ -225,7 +234,38 @@ export class TruckDetailsCardComponent implements OnInit {
           folder: 'common/trucks/',
         };
       });
-      // Call from store active driver or API on DROPDOWN SELECT
+      this.detailsPageDriverSer.getDataDetailId(event.id);
+    }
+  }
+  public onChangeTruck(action: string) {
+    let currentIndex = this.truck_list
+      .map((truck) => truck.id)
+      .indexOf(this.truck.id);
+    switch (action) {
+      case 'previous': {
+        currentIndex = --currentIndex;
+        if (currentIndex != -1) {
+          this.detailsPageDriverSer.getDataDetailId(
+            this.truck_list[currentIndex].id
+          );
+          this.onSelectedTruck({ id: this.truck_list[currentIndex].id });
+        }
+        break;
+      }
+      case 'next': {
+        currentIndex = ++currentIndex;
+        if (currentIndex !== -1 && this.truck_list.length > currentIndex) {
+          this.detailsPageDriverSer.getDataDetailId(
+            this.truck_list[currentIndex].id
+          );
+          this.onSelectedTruck({ id: this.truck_list[currentIndex].id });
+        }
+
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 }

@@ -240,11 +240,13 @@ $border-radius: 3px;
     width: 22px;
     height: 22px;
     line-height: 20px;
+    z-index: 50;
     svg {
       width: 22px;
       height: 22px;
       path {
         fill: #6d82c7;
+       
       }
     }
     cursor: pointer;
@@ -259,9 +261,11 @@ $border-radius: 3px;
     }
 
     .current-active-owner {
+      z-index: 50;
       svg {
         path {
           fill: #536bc2;
+          
         }
       }
     }
@@ -270,4 +274,11 @@ $border-radius: 3px;
 .inactive-icon-input {
   display: flex;
   align-items: center;
+}
+.verical-dots-header{
+  margin-top: 7px;
+  .table-dropdown-container-vertical{
+     right: 0 !important;
+     left: 43px;
+  }
 }

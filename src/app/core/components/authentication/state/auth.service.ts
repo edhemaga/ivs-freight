@@ -9,6 +9,7 @@ import {
   SignUpCompanyCommand,
   ForgotPasswordCommand,
   SetNewPasswordCommand,
+  VerifyOwnerCommand,
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
@@ -53,5 +54,9 @@ export class AuthStoreService {
 
   public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
     return this.accountService.apiAccountSignupcompanyPost(data, 'response');
+  }
+
+  public verifyOwner(data: VerifyOwnerCommand): Observable<object> {
+    return this.accountService.apiAccountVerifyownerPut(data, 'response');
   }
 }

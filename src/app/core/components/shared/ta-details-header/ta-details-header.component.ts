@@ -29,8 +29,9 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() hasRequest:boolean;
   @Output() makeRequest=new EventEmitter<any>();
   @Input() arrayIcons:any[]=[];
-  @Input() statusInactive:boolean=false;
+  @Input() statusInactive:boolean=true;
   @Input() danger:boolean;
+  @Input() isInactive:boolean=false;
   public up:boolean=false;
   public down:boolean=false;
   constructor(private routes: ActivatedRoute) {}

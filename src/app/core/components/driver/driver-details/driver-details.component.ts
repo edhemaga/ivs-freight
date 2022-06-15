@@ -4,16 +4,22 @@ import { DriverMedicalModalComponent } from './driver-modals/driver-medical-moda
 import { DriverDrugAlcoholModalComponent } from './driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { ModalService } from './../../shared/ta-modal/modal.service';
+import moment from 'moment';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  OnChanges,
   OnDestroy,
   OnInit,
+  SimpleChanges,
 } from '@angular/core';
-import { ActivatedRoute, } from '@angular/router';
-import moment from 'moment';
-import { DriversDetailsQuery } from '../state/driver-details.query';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { DriverTService } from '../state/driver.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { DriverResponse } from 'appcoretruckassist';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 @Component({
   selector: 'app-driver-details',
   templateUrl: './driver-details.component.html',
@@ -23,93 +29,197 @@ import { DriversDetailsQuery } from '../state/driver-details.query';
 export class DriverDetailsComponent implements OnInit, OnDestroy {
   public driverDetailsConfig: any[] = [];
   public dataTest: any;
-  public cdlLength: number = 0;
-  public mvrLength: number = 0;
-  public testLength: number = 0;
-  public medicalLength: number = 0;
   public statusDriver: boolean;
   public data: any;
-  public hasDangerCDL: boolean;
-  public hasDangerMedical:boolean;
-  public hasDangerTest:boolean;
-  public hasDangerMvr:boolean;
+  public showInc:boolean;
+  public hasDangerCDL: boolean = false;
+  public hasDangerMedical: boolean = false;
+  public hasDangerTest: boolean = false;
+  public hasDangerMvr: boolean = false;
+  public driverId: number = null;
 
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService,
-    private driverQuery:DriversDetailsQuery
+    private driverService: DriverTService,
+    private router: Router,
+    private notificationService: NotificationService,
+    private detailsPageDriverSer:DetailsPageService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.initTableOptions();
-    console.log(this.driverQuery.getAll());
-    console.log('query data');
-        
     this.data = this.activated_route.snapshot.data.driver;
-    this.cdlLength = this.data?.cdls.length;
-    this.mvrLength = this.data?.mvrs.length;
-    this.medicalLength = this.data?.medicals.length;
-    this.testLength = this.data?.tests.length;
-    if (this.data.status == 0) {
-      this.statusDriver = true;
-    } else {
-      this.statusDriver = false;
-    }
-    this.getDanger();
-    this.detailCongif();
+   
+    this.detailsPageDriverSer.pageDetailChangeId$
+      .pipe(untilDestroyed(this))
+      .subscribe((id) => {
+        this.driverService
+          .getDriverById(id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: DriverResponse) => {
+              this.detailCongif(res);
+              this.router.navigate([`/driver/${res.id}/details`]);
+              this.notificationService.success(
+                'Driver successfully changed',
+                'Success:'
+              );
+              this.cdRef.detectChanges();
+            },
+            error: () => {
+              this.notificationService.error(
+                "Driver can't be loaded",
+                'Error:'
+              );
+            },
+          });
+      });
+    this.detailCongif(this.activated_route.snapshot.data.driver);
   }
 
-  /**Function retrun id */
-  public identity(index: number, item: any): number {
-    return item.id;
+  public getDanger(data:any) {
+    let arrCDl = [];
+    let arrMedical = [];
+    let arrTests = [];
+    let arrMVR = [];
+     data.cdls = data.cdls.map((ele) => {
+      if (moment(ele.expDate).isBefore(moment()) || ele.dateDeactivated || data.cdls.length==0) {
+        this.hasDangerCDL = false;
+      } else {
+        this.hasDangerCDL = true;
+      }
+      arrCDl.push(this.hasDangerCDL);
+      if (arrCDl.includes(true)) {
+        this.hasDangerCDL = false;
+      } else {
+        this.hasDangerCDL = true;
+      }
+      return {
+        ...ele,
+        showDanger: this.hasDangerCDL,
+      };
+    });
+
+    data.medicals = data.medicals.map((eleMed) => {
+      if (moment(eleMed.expDate).isBefore(moment()) || data.medicals.length==0) {
+        this.hasDangerMedical = false;
+      } else {
+        this.hasDangerMedical = true;
+      }
+      arrMedical.push(this.hasDangerMedical);
+      if (arrMedical.includes(true)) {
+        this.hasDangerMedical = false;
+      } else {
+        this.hasDangerMedical = true;
+      }
+      return {
+        ...eleMed,
+        showDanger: this.hasDangerMedical,
+      };
+    });
+
+    data.tests = data.tests.map((eleTest) => {
+      if (moment(eleTest.testingDate).isBefore(moment()) || data.tests.length==0) {
+        this.hasDangerTest = false;
+      } else {
+        this.hasDangerTest = true;
+      }
+      arrTests.push(this.hasDangerTest);
+      if (arrTests.includes(true)) {
+        this.hasDangerTest = false;
+      } else {
+        this.hasDangerTest = true;
+      }
+      return {
+        ...eleTest,
+        showDanger: this.hasDangerTest,
+      };
+    });
+    data.mvrs = data.mvrs.map((eleMvr) => {
+      console.log(eleMvr);
+      
+      if (moment(eleMvr.issueDate).isBefore(moment()) || data.mvrs.length==0) {
+        this.hasDangerMvr = false;
+      } else {
+        this.hasDangerMvr = true;
+      }
+      arrMVR.push(this.hasDangerMvr);
+      if (arrMVR.includes(true)) {
+        this.hasDangerMvr = false;
+      } else {
+        this.hasDangerMvr = true;
+      }
+      return {
+        ...eleMvr,
+        showDanger: this.hasDangerMvr,
+      };
+    });
   }
 
   /**Function template and names for header and other options in header */
-  detailCongif() {
+  detailCongif(data: DriverResponse) {
+    this.getDanger(data);
+    if (data.status == 0) {
+      this.statusDriver = true;
+      this.showInc=true;
+    } else {
+      this.statusDriver = false;
+      this.showInc=false;
+    }
+    
     this.driverDetailsConfig = [
       {
         id: 0,
         name: 'Driver Details',
         template: 'general',
+        data: data,
       },
       {
         id: 1,
         name: 'CDL',
         template: 'cdl',
-        data: this.cdlLength,
         req: false,
         status: this.statusDriver,
-        hasDangerC:this.hasDangerCDL
+        hasDangerC: this.hasDangerCDL,
+        length: data.cdls?.length,
+        data: data,
       },
       {
         id: 2,
         name: 'Drug & Alcohol',
         template: 'drug-alcohol',
-        data: this.testLength,
         req: true,
         status: this.statusDriver,
-        hasDangerC:this.hasDangerTest
+        hasDangerC: this.hasDangerTest,
+        length: data.tests?.length,
+        data: data,
       },
       {
         id: 3,
         name: 'Medical',
         template: 'medical',
-        data: this.medicalLength,
         req: false,
         status: this.statusDriver,
-        hasDangerC:this.hasDangerMedical
+        hasDangerC: this.hasDangerMedical,
+        length: data.medicals?.length,
+        data: data,
       },
       {
         id: 4,
         name: 'MVR',
         template: 'mvr',
-        data: this.mvrLength,
         req: true,
         status: this.statusDriver,
-        hasDangerC:this.hasDangerMvr
+        hasDangerC: this.hasDangerMvr,
+        length: data.mvrs?.length,
+        data: data,
       },
     ];
+    this.driverId = data.id;
   }
+
   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataTest = {
@@ -164,7 +274,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(action: string): void {
-    const driver_id = this.activated_route.snapshot.paramMap.get('id');
     if (action.includes('Drug')) {
       action = 'DrugAlcohol';
     }
@@ -173,7 +282,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.modalService.openModal(
           DriverCdlModalComponent,
           { size: 'small' },
-          { id: driver_id, type: 'new-licence' }
+          { id: this.driverId, type: 'new-licence' }
         );
         break;
       }
@@ -181,7 +290,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.modalService.openModal(
           DriverDrugAlcoholModalComponent,
           { size: 'small' },
-          { id: driver_id, type: 'new-drug' }
+          { id: this.driverId, type: 'new-drug' }
         );
         break;
       }
@@ -189,7 +298,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.modalService.openModal(
           DriverMedicalModalComponent,
           { size: 'small' },
-          { id: driver_id, type: 'new-medical' }
+          { id: this.driverId, type: 'new-medical' }
         );
         break;
       }
@@ -197,7 +306,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.modalService.openModal(
           DriverMvrModalComponent,
           { size: 'small' },
-          { id: driver_id, type: 'new-mvr' }
+          { id: this.driverId, type: 'new-mvr' }
         );
         break;
       }
@@ -207,87 +316,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public getDanger() {
-    let arrCDl=[];
-    let arrMedical=[];
-    let arrTests=[];
-    let arrMVR=[];
-    this.data.cdls=this.data.cdls.map(
-      (ele)=>{
-        if(moment(ele.expDate).isBefore(moment()) || ele.dateDeactivated){
-         this.hasDangerCDL=false;
-        }else{
-          this.hasDangerCDL=true;
-        }
-        arrCDl.push(this.hasDangerCDL)
-        if(arrCDl.includes(true)){
-          this.hasDangerCDL=false;
-        }else{
-          this.hasDangerCDL=true;
-        }
-        return {
-          ...ele,
-          showDanger:this.hasDangerCDL,
-        };
-    })
-  
-    
-    this.data.medicals=this.data.medicals.map(
-      (eleMed)=>{
-        if(moment(eleMed.expDate).isBefore(moment())){
-          this.hasDangerMedical=false;
-        }else{
-          this.hasDangerMedical=true;
-        }
-        arrMedical.push(this.hasDangerMedical)
-        if(arrMedical.includes(true)){
-          this.hasDangerMedical=false;
-        }else{
-         this.hasDangerMedical= true;
-        }
-        return {
-          ...eleMed,
-          showDanger:this.hasDangerMedical,
-        };
-    })
-    this.data.tests=this.data.tests.map(
-      (eleTest)=>{
-        if(moment(eleTest.testingDate).isBefore(moment())){
-          this.hasDangerTest=false;
-        }else{
-          this.hasDangerTest=true;
-        }
-        arrTests.push(this.hasDangerTest)
-        if(arrTests.includes(true)){
-          this.hasDangerTest=false;
-        }else{
-         this.hasDangerTest= true;
-        }
-        return {
-          ...eleTest,
-          showDanger:this.hasDangerTest,
-        };
-    })
-
-    this.data.mvrs=this.data.mvrs.map(
-      (eleMvr)=>{
-        if(moment(eleMvr.issueDate).isBefore(moment())){
-          this.hasDangerMvr=false;
-        }else{
-          this.hasDangerMvr=true;
-        }
-        arrMVR.push(this.hasDangerMvr)
-        if(arrMVR.includes(true)){
-          this.hasDangerMvr=false;
-        }else{
-         this.hasDangerMvr= true;
-        }
-        return {
-          ...eleMvr,
-          showDanger:this.hasDangerMvr,
-        };
-    })
-    
+  /**Function retrun id */
+  public identity(index: number, item: any): number {
+    return item.id;
   }
+
   ngOnDestroy(): void {}
 }

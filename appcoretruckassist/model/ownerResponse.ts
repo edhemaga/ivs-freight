@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
 import { AddressEntity } from './addressEntity';
 
@@ -23,7 +24,7 @@ export interface OwnerResponse {
     phone?: string | null;
     email?: string | null;
     note?: string | null;
-    bankName?: string | null;
+    bank?: BankResponse;
     accountNumber?: string | null;
     routingNumber?: string | null;
     address?: AddressEntity;

@@ -30,7 +30,11 @@
     </span>
       <p class="disable-selection">{{ headerText }}</p>
     </div>
+    
     <div class="icon-right">
+      <div *ngIf="isInactive" class="inactive-status">
+        INACTIVE
+       </div>
       <app-table-dropdown
         [customClassDropDown]="'table-dropdown-container-horizontal-details'"
         [options]="options.actions"
@@ -95,7 +99,7 @@
             ></svg-icon>
           </div>
         </div>
-        <div class="hide-buttons" *ngIf="!hidePlus && !statusInactive">
+        <div class="hide-buttons" *ngIf="!statusInactive">
           <div (click)="makeRequestFun(headerText)" *ngIf="hasRequest " class="request-header-container">Request</div>
           <div  *ngIf="!hasRequest" class="border-line-left"></div>
           <svg-icon

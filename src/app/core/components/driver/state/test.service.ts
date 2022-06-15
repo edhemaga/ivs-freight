@@ -1,22 +1,56 @@
 import { Injectable } from '@angular/core';
 import {
   CreateTestCommand,
+  DriverResponse,
   EditTestCommand,
   GetTestModalResponse,
   TestResponse,
   TestService,
 } from 'appcoretruckassist';
 import { CreateTestResponse } from 'appcoretruckassist/model/createTestResponse';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DriverTService } from './driver.service';
+import { DriversStore } from './driver.store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TestTService {
-  constructor(private drugService: TestService) {}
+  constructor(
+    private drugService: TestService,
+    private driverService: DriverTService,
+    private driverStore: DriversStore,
+    private tableService: TruckassistTableService
+  ) {}
 
   public addTest(data: CreateTestCommand): Observable<CreateTestResponse> {
-    return this.drugService.apiTestPost(data);
+    return this.drugService.apiTestPost(data).pipe(
+      tap((res: any) => {
+        const subDriver = this.driverService
+          .getDriverById(data.driverId)
+          .subscribe({
+            next: (driver: DriverResponse | any) => {
+              /*  this.driverStore.remove(({ id }) => id === data.driverId);
+
+              driver = {
+                ...driver,
+                fullName: driver.firstName + ' ' + driver.lastName,
+              };
+
+              this.driverStore.add(driver);
+
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: driver,
+                id: driver.id,
+              }); */
+
+              subDriver.unsubscribe();
+            },
+          });
+      })
+    );
   }
 
   public updateTest(data: EditTestCommand): Observable<object> {
