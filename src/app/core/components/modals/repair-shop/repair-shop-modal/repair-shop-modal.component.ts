@@ -4,6 +4,7 @@ import {
   AddressEntity,
   CreateRepairShopCommand,
   RepairShopResponse,
+  UpdateRepairShopCommand,
 } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { distinctUntilChanged } from 'rxjs';
@@ -39,62 +40,62 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   public services: any[] = [
     {
       id: 1,
-      name: 'Truck',
-      svg: 'assets/svg/common/ic_truck.svg',
+      serviceType: 'Truck',
+      svg: 'assets/svg/common/repair-services/ic_truck.svg',
       active: false,
     },
     {
       id: 2,
-      name: 'Trailer',
-      svg: 'assets/svg/common/ic_trailer.svg',
+      serviceType: 'Trailer',
+      svg: 'assets/svg/common/repair-services/ic_trailer.svg',
       active: false,
     },
     {
       id: 3,
-      name: 'Mobile',
-      svg: 'assets/svg/common/ic_mobile.svg',
+      serviceType: 'Mobile',
+      svg: 'assets/svg/common/repair-services/ic_mobile.svg',
       active: false,
     },
     {
       id: 4,
-      name: 'Shop',
-      svg: 'assets/svg/common/ic_shop.svg',
+      serviceType: 'Shop',
+      svg: 'assets/svg/common/repair-services/ic_shop.svg',
       active: false,
     },
     {
       id: 5,
-      name: 'Towing',
-      svg: 'assets/svg/common/ic_towing.svg',
+      serviceType: 'Towing',
+      svg: 'assets/svg/common/repair-services/ic_towing.svg',
       active: false,
     },
     {
       id: 6,
-      name: 'Parts',
-      svg: 'assets/svg/common/ic_parts.svg',
+      serviceType: 'Parts',
+      svg: 'assets/svg/common/repair-services/ic_parts.svg',
       active: false,
     },
     {
       id: 7,
-      name: 'Tire',
-      svg: 'assets/svg/common/ic_tire.svg',
+      serviceType: 'Tire',
+      svg: 'assets/svg/common/repair-services/ic_tire.svg',
       active: false,
     },
     {
       id: 8,
-      name: 'Dealer',
-      svg: 'assets/svg/common/ic_dealer.svg',
+      serviceType: 'Dealer',
+      svg: 'assets/svg/common/repair-services/ic_dealer.svg',
       active: false,
     },
   ];
 
   public openHoursDays = [
+    'Sunday',
     'Monday',
     'Tuesday',
     'Wednesday',
     'Thursday',
     'Friday',
     'Saturday',
-    'Sunday',
   ];
 
   constructor(
@@ -109,11 +110,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     this.createForm();
 
     if (this.editData) {
+      this.editData = {
+        ...this.editData,
+        id: 2,
+      };
       this.editRepairShopById(this.editData.id);
     }
 
     for (let i = 0; i < this.openHoursDays.length; i++) {
-      this.addOpenHours(this.openHoursDays[i], i !== 6);
+      this.addOpenHours(this.openHoursDays[i], i !== 0, i);
     }
   }
 
@@ -126,7 +131,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       email: [null, emailRegex],
       address: [null, [Validators.required]],
       addressUnit: [null, [Validators.maxLength(6)]],
-      companyOwned: [null],
+      companyOwned: [false],
       openHours: this.formBuilder.array([]),
       bankId: [null],
       routing: [null],
@@ -172,17 +177,22 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     return this.repairShopForm.get('openHours') as FormArray;
   }
 
-  private createOpenHour(day: string, isDay: boolean): FormGroup {
+  private createOpenHour(
+    day: string,
+    isDay: boolean,
+    dayOfWeek: number
+  ): FormGroup {
     return this.formBuilder.group({
       isDay: [isDay],
+      dayOfWeek: [dayOfWeek],
       dayLabel: [day],
-      from: ['08:00 AM'],
-      to: ['05:00 PM'],
+      startTime: ['08:00'],
+      endTime: ['05:00'],
     });
   }
 
-  public addOpenHours(day: string, isDay: boolean = false) {
-    this.openHours.push(this.createOpenHour(day, isDay));
+  public addOpenHours(day: string, isDay: boolean = false, dayOfWeek: number) {
+    this.openHours.push(this.createOpenHour(day, isDay, dayOfWeek));
   }
 
   public removeOpenHour(id: number) {
@@ -279,9 +289,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         next: (res: RepairShopResponse) => {
           this.repairShopForm.patchValue({
             name: res.name,
-            favourite: res.pinned,
+            pinned: res.pinned,
             phone: res.phone,
-            phoneExt: null,
+            phoneExt: res.phoneExt,
             email: res.email,
             address: res.address.address,
             addressUnit: res.address.addressUnit,
@@ -294,6 +304,28 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
           });
           this.selectedAddress = res.address;
           this.selectedBank = res.bank;
+          this.isPhoneExtExist = res.phoneExt ? true : false;
+          this.isRepairShopFavourite = res.pinned;
+          this.services = res.serviceTypes.map((item) => {
+            return {
+              id: item.serviceType.id,
+              serviceType: item.serviceType.name,
+              svg: 'assets/svg/common/ic_dealer.svg',
+              active: item.active,
+            };
+          });
+
+          res.openHours.forEach((el, index) => {
+            this.openHours.at(index).patchValue({
+              isDay: el.startTime && el.endTime,
+              dayOfWeek: this.openHoursDays.indexOf(el.dayOfWeek),
+              dayLabel: el.dayOfWeek,
+              startTime: el.startTime,
+              endTime: el.endTime,
+            });
+          });
+
+          console.log(this.openHours.value);
         },
         error: () => {
           this.notificationService.error(
@@ -305,24 +337,39 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   }
 
   private addRepairShop() {
-    // name: [null, Validators.required],
-    //   pinned: [null],
-    //   phone: [null, [Validators.required, phoneRegex]],
-    //   phoneExt: [null, [Validators.maxLength(3)]],
-    //   email: [null, emailRegex],
-    //   address: [null, [Validators.required]],
-    //   addressUnit: [null, [Validators.maxLength(6)]],
-    //   companyOwned: [null],
-    //   openHours: this.formBuilder.array([]),
-    //   bankId: [null],
-    //   routing: [null],
-    //   account: [null],
-    //   note: [null],
-    const { address, ...form } = this.repairShopForm.value;
+    let { address, addressUnit, openHours, ...form } =
+      this.repairShopForm.value;
+
+    openHours = openHours.map((item) => {
+      if (item.isDay) {
+        return {
+          dayOfWeek: item.dayOfWeek,
+          startTime: item.startTime,
+          endTime: item.endTime,
+        };
+      } else {
+        return {
+          dayOfWeek: item.dayOfWeek,
+          startTime: null,
+          endTime: null,
+        };
+      }
+    });
+
+    this.services = this.services.map((item) => {
+      return {
+        serviceType: item.serviceType,
+        active: item.active,
+      };
+    });
+
     const newData: CreateRepairShopCommand = {
       ...form,
-      address: this.selectedAddress,
+      address: { ...this.selectedAddress, addressUnit: addressUnit },
+      openHours: openHours,
+      serviceTypes: this.services,
     };
+
     this.shopService
       .addRepairShop(newData)
       .pipe(untilDestroyed(this))
@@ -339,9 +386,80 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private updateRepairShop(id: number) {}
+  private updateRepairShop(id: number) {
+    let { address, addressUnit, openHours, ...form } =
+      this.repairShopForm.value;
 
-  private deleteRepairShopById(id: number) {}
+    openHours = openHours.map((item) => {
+      if (item.isDay) {
+        return {
+          dayOfWeek: item.dayOfWeek,
+          startTime: item.startTime,
+          endTime: item.endTime,
+        };
+      } else {
+        return {
+          dayOfWeek: item.dayOfWeek,
+          startTime: null,
+          endTime: null,
+        };
+      }
+    });
+
+    this.services = this.services.map((item) => {
+      return {
+        serviceType: item.serviceType,
+        active: item.active,
+      };
+    });
+
+    const newData: UpdateRepairShopCommand = {
+      id: id,
+      ...form,
+      address: { ...this.selectedAddress, addressUnit: addressUnit },
+      openHours: openHours,
+      serviceTypes: this.services,
+    };
+
+    this.shopService
+      .updateRepairShop(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Repair shop successfully updated',
+            'Success: '
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Repair shop can't be updated",
+            'Error: '
+          );
+        },
+      });
+  }
+
+  private deleteRepairShopById(id: number) {
+    console.log(id);
+    this.shopService
+      .deleteRepairById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Repair shop successfully deleted',
+            'Success: '
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Repair shop can't be deleted",
+            'Error: '
+          );
+        },
+      });
+  }
 
   ngOnDestroy(): void {}
 }
