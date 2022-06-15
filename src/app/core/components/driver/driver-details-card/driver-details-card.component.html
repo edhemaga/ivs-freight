@@ -544,7 +544,61 @@
           </app-tab-switcher>
           
           <div id="chart">
-            <app-ta-chart></app-ta-chart>
+            <app-ta-chart
+              [chartConfig]="{
+                dataProperties: [
+                  {
+                    defaultConfig: {
+                      type: 'line',
+                      data: [1050, 950, 2200, 1100, 1250, 1550, 2100, 2500, 2000, 1150, 1300, 1700],
+                      label: 'Salary',
+                      yAxisID: 'y-axis-1'
+                    },
+                    colorProperties: {
+                      borderColor: '#6D82C7'
+                    }
+                  },
+                  {
+                    defaultConfig: {
+                      type: 'bar',
+                      data: [2200, 1700, 2800, 1100, 1500, 2200, 3300, 3700, 2500, 1400, 2200, 2800],
+                      label: 'Miles',
+                      yAxisID: 'y-axis-0',
+                      maxBarThickness: 42
+                    },
+                    colorProperties: {
+                      borderColor: '#FFCC80',
+                      backgroundColor: '#FFCC80',
+                      hoverBackgroundColor: '#FFA726'
+                    }
+                  }
+                ],
+                showLegend: false,
+                defaultType: 'bar'
+              }"
+              [axesProperties]="{
+                verticalLeftAxes: {
+                  visible: true,
+                  minValue: 0,
+                  maxValue: 4000,
+                  stepSize: 1000,
+                  showGridLines: true
+                },
+                verticalRightAxes: {
+                  visible: true,
+                  minValue: 0,
+                  maxValue: 2800,
+                  stepSize: 700,
+                  showGridLines: false
+                },
+                horizontalAxes: {
+                  visible: true,
+                  position: 'bottom',
+                  showGridLines: false
+                }
+              }"
+            >
+            </app-ta-chart>
           </div>
         </div>
       </app-ta-custom-card>

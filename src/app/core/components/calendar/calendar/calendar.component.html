@@ -410,467 +410,49 @@
       </div>
     </div>
     <div class="schedule-body-holder">
-      <div class="schedule-body">
-        <div class="schedule-body-left">3 July, Monday</div>
+      <div *ngFor="let item of calendarSchedule; let indx=index" class="schedule-body">
+        <div class="schedule-body-left" [ngStyle]="{'max-height': (item.eventSchedule.length == 1 ? '32px' : 'auto')}">
+          <div class="left-inside-box" [class.active]="colorIndx1 == indx && colorIndx2 == i">{{item.date}}</div>
+        </div>
         <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important">Important</div>
-            <div class="type-important company">Company</div>
-            <div class="type-important personal">Personal</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-            <div class="type-important duration-text">12:00 am - 12:00 pm</div>
-            <div class="type-important duration-text">11:00 am -2:00 pm</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Lorem Ipsum Dolor Sit</div>
+          <div *ngFor="let ev of item.eventSchedule; let i=index" class="right-frame">
+            <div class="type-body-holder">
+              <div class="type-important" [ngStyle]="{'color':typeEventColor[ev.type]}">
+                <div class="right-inside-box" [class.active]="colorIndx1 == indx && colorIndx2 == i">{{ev.type}}</div>
+              </div>
             </div>
-            <div class="type-important">
-              <div class="title-text">Consetetur sadipscing elitr</div>
+            <div class="type-body-holder duration-holder">
+              <div class="type-important duration-text">
+                <div class="right-inside-box" [class.active]="colorIndx1 == indx && colorIndx2 == i">{{ev.duration}}</div>
+              </div>
             </div>
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
+            <div class="type-body-holder title-holder">
+              <div 
+              class="type-important"
+              #t2="ngbPopover"
+              [ngbPopover]="eventsSchedulePopover"
+              [placement]="['left-top']"
+              [popoverClass]="'eventsschedulepopovermain'"
+              autoclose="outside"
+              [container]="'body'" 
+              triggers="'manual'" 
+              (click)="openEvenPopover(t2, ev, indx, i)"        
+              >
+                <div class="right-inside-box" [class.active]="colorIndx1 == indx && colorIndx2 == i">
+                  <div class="title-text">{{ev.title}}</div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
+            <div class="type-body-holder description-holder">
+              <div class="type-important">
+                <div class="right-inside-box" [class.active]="colorIndx1 == indx && colorIndx2 == i">
+                  <div class="title-text description-text">{{ev.description}}</div>
+                </div>
+              </div>
+            </div>  
           </div>
         </div>
       </div> 
-      <div class="schedule-body">
-        <div class="schedule-body-left">4 July, Tuesday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important holiday">Holiday</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Independence day</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-          </div>
-        </div>
-      </div> 
-      <div class="schedule-body">
-        <div class="schedule-body-left">24 July, Monday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important">Important</div>
-            <div class="type-important">Important</div>
-            <div class="type-important company">Company</div>
-            <div class="type-important personal">Personal</div>
-            <div class="type-important holiday">Holiday</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-            <div class="type-important duration-text">All Day</div>
-            <div class="type-important duration-text">All Day</div>
-            <div class="type-important duration-text">12:00 am - 2:00 pm</div>
-            <div class="type-important duration-text">All Day</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Lorem ipsum dolor sit amet</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text">Lorem ipsum dolor sit amet, consetetur ipsum</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text">Lorem Ipsum Dolor Sit</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text">Consetetur sadipscing elitr</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text">Labor day</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet.</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet.</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-          </div>
-        </div>
-      </div> 
-      <div class="schedule-body">
-        <div class="schedule-body-left">17 August, Wednesday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important company">Company</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invite</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="schedule-body">
-        <div class="schedule-body-left">18 August, Thursday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important company">Company</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invite</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="schedule-body">
-        <div class="schedule-body-left">30 August, Thursday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important personal">Personal</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-          </div>
-        </div>
-      </div> 
-      <div class="schedule-body">
-        <div class="schedule-body-left">12 September, Monday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important important">Important</div>
-            <div class="type-important important">Important</div>
-            <div class="type-important personal">Personal</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-            <div class="type-important duration-text">All Day</div>
-            <div class="type-important duration-text">11:00 am -2:00 pm</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Lorem Ipsum Dolor Sit</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text">Consetetur sadipscing elitr</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text">Tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</div>
-            </div>
-          </div>
-        </div>
-      </div>   
-      <div class="schedule-body">
-        <div class="schedule-body-left">24 September, Wednesday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important personal">Personal</div>
-            <div class="type-important personal">Personal</div>
-            <div class="type-important personal">Personal</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-            <div class="type-important duration-text">11:00 am -2:00 pm</div>
-            <div class="type-important duration-text">10:00 am -2:00 pm</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Lorem Ipsum Dolor Sit</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text">Consetetur sadipscing elitr</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text">Tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</div>
-            </div>
-          </div>
-        </div>
-      </div>  
-      <div class="schedule-body">
-        <div class="schedule-body-left">4 October, Friday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important holiday">Holiday</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Labor day</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="schedule-body">
-        <div class="schedule-body-left">11 October, Monday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important company">Company</div>
-            <div class="type-important personal">Personal</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-            <div class="type-important duration-text">12:00 am - 12:00 pm</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Lorem Ipsum Dolor Sit</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text">Consetetur sadipscing elitr</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="schedule-body">
-        <div class="schedule-body-left">17 October, Wednesday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important company">Company</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="schedule-body">
-        <div class="schedule-body-left">27 October, Friday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important company">Company</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="schedule-body">
-        <div class="schedule-body-left">5 November, Wednesday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important personal">Personal</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="schedule-body">
-        <div class="schedule-body-left">13 November, Monday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important important">Important</div>
-            <div class="type-important important">Important</div>
-            <div class="type-important personal">Personal</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-            <div class="type-important duration-text">All Day</div>
-            <div class="type-important duration-text">11:00 am -2:00 pm</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Lorem Ipsum Dolor Sit</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text">Consetetur sadipscing elitr</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-            <div class="type-important">
-              <div class="title-text description-text">Tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="schedule-body">
-        <div class="schedule-body-left">14 November, Tuesday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important company">Company</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="schedule-body">
-        <div class="schedule-body-left">17 November, Friday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important company">Company</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="schedule-body">
-        <div class="schedule-body-left">23 November, Wednesday</div>
-        <div class="schedule-body-right">
-          <div class="type-body-holder">
-            <div class="type-important personal">Personal</div>
-          </div>
-          <div class="type-body-holder duration-holder">
-            <div class="type-important duration-text">All Day</div>
-          </div>
-          <div class="type-body-holder title-holder">
-            <div class="type-important">
-              <div class="title-text">Q3 - Event - Management</div>
-            </div>
-          </div>
-          <div class="type-body-holder description-holder">
-            <div class="type-important">
-              <div class="title-text description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -932,4 +514,45 @@
       <div class="report-text">Labor Day</div>
     </div>
   </div>  
+</ng-template>
+
+<ng-template #eventsSchedulePopover let-data="data">
+  <div class="event-schedule-popover">
+    <div class="icons-holder">
+      <div class="icon-edit">
+        <svg-icon src="assets/svg/common/ic_pen.svg"></svg-icon>
+      </div>
+      <div class="icon-edit">
+        <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+      </div>
+    </div>
+    <div class="title-event-holder">
+      <div class="title-event">{{data.title}}</div>
+    </div>
+    <div class="date-event-holder">
+      <div class="date-icons">
+        <svg-icon src="assets/svg/common/ic_date.svg"></svg-icon>
+      </div>
+      <div class="date-event-text">October 11, Monday</div>
+    </div>
+    <div class="date-event-holder">
+      <div class="date-icons">
+        <svg-icon src="assets/svg/common/ic_clock.svg"></svg-icon>
+      </div>
+      <div class="date-event-text">9:00 am - 3:00 pm</div>
+    </div>
+    <div class="description-holder">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</div>
+    <div class="date-event-holder">
+      <div class="date-icons">
+        <svg-icon src="assets/svg/common/ic_bell.svg"></svg-icon>
+      </div>
+      <div class="date-event-text regular">30 minutes before via notification & email</div>
+    </div>
+    <div class="date-event-holder">
+      <div class="date-icons">
+        <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon>
+      </div>
+      <div class="date-event-text regular">Denis Rodman</div>
+    </div>
+  </div>
 </ng-template>
