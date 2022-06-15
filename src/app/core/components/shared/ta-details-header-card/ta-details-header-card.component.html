@@ -11,25 +11,16 @@
         *ngIf="!selectedDropdown"
         class="current-active-item"
         (click)="onPickItem()"
-        ngbTooltip
-        [mainTooltip]="searchInputName"
-        position="top"
-        tooltipBackground="#6C6C6C"
+        
       >
         <p class="current-active-name">
           {{ (options | detailActiveItem).name }}
         </p>
-        <span
-        ngbTooltip
-        [mainTooltip]="searchName"
-        position="top"
-        [tooltipBackground]="searchName ? '#6C6C6C':''"
-        >
+       
         <svg-icon
           class="current-active-owner"
           src="{{ (options | detailActiveItem).svg }}"
         ></svg-icon>
-      </span>
       </div>
       <!-- Input dropdown -->
       <app-ta-input-dropdown

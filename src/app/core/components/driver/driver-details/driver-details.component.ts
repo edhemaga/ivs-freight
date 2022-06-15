@@ -25,6 +25,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
   templateUrl: './driver-details.component.html',
   styleUrls: ['./driver-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers:[DetailsPageService]
 })
 export class DriverDetailsComponent implements OnInit, OnDestroy {
   public driverDetailsConfig: any[] = [];
@@ -79,7 +80,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     this.detailCongif(this.activated_route.snapshot.data.driver);
   }
 
-  public getDanger(data:any) {
+  public getDanger(data:DriverResponse) {
     let arrCDl = [];
     let arrMedical = [];
     let arrTests = [];

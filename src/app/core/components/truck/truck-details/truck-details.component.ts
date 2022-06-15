@@ -20,6 +20,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   selector: 'app-truck-details',
   templateUrl: './truck-details.component.html',
   styleUrls: ['./truck-details.component.scss'],
+  providers:[DetailsPageService]
 })
 export class TruckDetailsComponent implements OnInit, OnDestroy {
   // @Input() data:any=null;

@@ -81,7 +81,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges 
     private sumArr:SumArraysPipe
   ) {}
   ngOnChanges(changes: SimpleChanges) {
-    this.driver=changes.driver.currentValue
+    // this.driver=changes.driver.currentValue
     this.getYearsAndDays();
     this.widthOfProgress();
     this.templateCard;
@@ -96,7 +96,6 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges 
     
   }
   ngOnInit(): void {
-    console.log(this.templateCard);
     
     if(this.templateCard==true){
       this.hideArrow=true;
@@ -493,7 +492,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges 
           id: item.id,
           name: item.fullName,
           status: item.status,
-          svg: item.owner ? 'owner-status' : null,
+          svg: item.owner ? 'driver-owner' : null,
           folder: 'common',
           active: item.id === event.id,
         };
