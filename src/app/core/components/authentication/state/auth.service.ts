@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { AuthState, AuthStore } from './auth.store';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 
 import {
   AccountService,
@@ -17,12 +17,24 @@ import { PersistState } from '@datorama/akita';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStoreService {
+  private forgotPasswordTokenSubject: BehaviorSubject<string> =
+    new BehaviorSubject<string>(null);
+
   constructor(
     private authStore: AuthStore,
     private accountService: AccountService,
     private router: Router,
     @Inject('persistStorage') private persistStorage: PersistState
   ) {}
+
+  public getForgotPasswordToken(token: string) {
+    console.log('servis', token);
+    this.forgotPasswordTokenSubject.next(token);
+  }
+
+  get getForgotPassword$() {
+    return this.forgotPasswordTokenSubject.asObservable();
+  }
 
   public accountLogin(data: SignInCommand): Observable<SignInResponse> {
     return this.accountService.apiAccountLoginPost(data).pipe(
@@ -52,10 +64,7 @@ export class AuthStoreService {
   public verifyForgotPassword(
     data: VerifyForgotPasswordCommand
   ): Observable<object> {
-    return this.accountService.apiAccountVerifyforgotpasswordPut(
-      data,
-      'response'
-    );
+    return this.accountService.apiAccountVerifyforgotpasswordPut(data);
   }
 
   public createNewPassword(data: SetNewPasswordCommand): Observable<object> {

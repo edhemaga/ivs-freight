@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpResponseBase } from '@angular/common/http';
+import { HttpHeaders, HttpResponseBase } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -12,6 +12,8 @@ import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 import { SetNewPasswordCommand } from 'appcoretruckassist/model/setNewPasswordCommand';
+import { throws } from 'assert';
+import { configFactory } from 'src/app/app.config';
 
 @Component({
   selector: 'app-create-new-password-page',
@@ -70,27 +72,42 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
       return;
     }
 
+    let headers = null;
+
     const newData: SetNewPasswordCommand = {
       newPassword: this.createNewPasswordForm.get('newPassword').value,
     };
 
-    this.authStoreService
-      .createNewPassword(newData)
+    this.authStoreService.getForgotPassword$
       .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: HttpResponseBase) => {
-          if (res.status === 200 || res.status === 204) {
-            this.notification.success(
-              'Password changed successfully',
-              'Success'
-            );
+      .subscribe(token => {
+        /*  headers = new HttpHeaders({
+          'Content-Type': 'application/json; charset=utf-8',
+          Authorization: `Bearer ${token}`,
+        }); */
+        console.log(token);
+        configFactory(token);
 
-            this.router.navigate(['/auth/forgot-password/password-changed']);
-          }
-        },
-        error: err => {
-          this.notification.error(err, 'Error');
-        },
+        this.authStoreService
+          .createNewPassword(newData)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: HttpResponseBase) => {
+              if (res.status === 200 || res.status === 204) {
+                this.notification.success(
+                  'Password changed successfully',
+                  'Success'
+                );
+
+                this.router.navigate([
+                  '/auth/forgot-password/password-changed',
+                ]);
+              }
+            },
+            error: err => {
+              this.notification.error(err, 'Error');
+            },
+          });
       });
   }
 
