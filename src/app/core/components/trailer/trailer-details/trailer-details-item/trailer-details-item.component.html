@@ -84,6 +84,7 @@
           [options]="dataTest"
           [cardNameCommon]="fhwa.issueDate | formatDateP"
           [optionsId]="fhwa.id"
+          [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage(i)"
           (dropActions)="optionsEvent($event, 'edit-inspection')"
         >

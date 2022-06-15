@@ -48,11 +48,8 @@ p {
         padding-left: 8px;
         font-size: 14px;
         font-weight: 800;
-        height: 18px;
         padding-right: 12px;
-        line-height: 15px;
-        position: relative;
-        bottom: -3px;
+        line-height: 17px;
     }
     .header-plus-button {
         display: flex;
@@ -89,7 +86,7 @@ p {
                         width: 12.5px;
                         position: relative;
                         bottom: -3px;
-                    
+
                         &:hover {
                             path {
                                 fill: #6c6c6c;
@@ -139,14 +136,14 @@ svg {
     margin: 2px;
     cursor: pointer;
     svg {
-        path{
+        path {
             fill: #6d82c7;
         }
     }
-    &:hover{
+    &:hover {
         background-color: #6d82c7;
         border-radius: 2px;
-        svg{
+        svg {
             path {
                 fill: #ffffff !important;
             }
@@ -158,8 +155,6 @@ svg {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    position: relative;
-    bottom: -1px;
 }
 
 .repair-header-icons {
@@ -214,7 +209,61 @@ svg {
         }
     }
 }
-.ic-hed{
+.ic-hed {
     display: flex;
     align-items: center;
+}
+.request-header-container {
+    width: 86px;
+    height: 24px;
+    color: #ffffff;
+    background-color: #6d82c7;
+    border-radius: 2px;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    bottom: 0.1px;
+    margin-right: 4px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    &:hover{
+        background-color: #536BC2;
+      }
+}
+.danger-svg{
+    margin-left: 3px;
+    margin-right: 6px;
+    svg{
+        width: 18px;
+        height: 18px;
+        display: flex;
+        path{
+            fill: #e57373;
+        }
+    }
+}
+.icon-right{
+ display: flex;
+ align-items: center;
+
+.inactive-status{
+    height: 22px;
+    width: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #E57373;
+    color: #ffffff;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 8px;
+}
 }

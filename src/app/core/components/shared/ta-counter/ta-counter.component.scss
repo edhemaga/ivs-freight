@@ -5,10 +5,13 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  min-width: 24px;
-  padding: 0 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   p {
     margin: 0 !important;
     position: relative;
+    line-height: 17px;
+    font-size: 14px;
   }
 }
