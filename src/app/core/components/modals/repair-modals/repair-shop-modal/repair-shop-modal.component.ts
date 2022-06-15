@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   AddressEntity,
   CreateRepairShopCommand,
+  RepairShopModalResponse,
   RepairShopResponse,
   UpdateRepairShopCommand,
 } from 'appcoretruckassist';
@@ -108,7 +109,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-
+    this.getRepairShopModalDropdowns();
+    
     if (this.editData) {
       this.editData = {
         ...this.editData,
@@ -458,6 +460,23 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             'Error: '
           );
         },
+      });
+  }
+
+  private getRepairShopModalDropdowns() {
+    return this.shopService
+      .getRepairShopModalDropdowns()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: RepairShopModalResponse) => {
+          // this.labelsBank = 
+        },
+        error: () => {
+          this.notificationService.error(
+            "Repair shop can't get dropdowns",
+            'Error: '
+          );
+        }
       });
   }
 

@@ -94,11 +94,10 @@ import { ViolationModalComponent } from '../safety/violation/violation-modal/vio
 import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { PipesModule } from '../../pipes/pipes.module';
-import { RepairShopModalComponent } from '../modals/repair-shop/repair-shop-modal/repair-shop-modal.component';
+import { RepairShopModalComponent } from '../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { TaChartComponent } from './ta-chart/ta-chart.component';
 import { ChartsModule } from 'ng2-charts';
-
-
+import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +138,8 @@ import { ChartsModule } from 'ng2-charts';
     TaCurrencyProgressBarComponent,
     TaUploadFilesCarouselComponent,
     TaUploadDropzoneComponent,
+    FilterComponent,
+    TaChartComponent,
 
     // Modals Components
     TaModalComponent,
@@ -161,9 +162,7 @@ import { ChartsModule } from 'ng2-charts';
     ViolationModalComponent,
     AccidentModalComponent,
     RepairShopModalComponent,
-    TaChartComponent,
-  
-    FilterComponent
+    RepairPmModalComponent,
   ],
   imports: [
     CommonModule,
@@ -207,7 +206,7 @@ import { ChartsModule } from 'ng2-charts';
     DirectivesModule,
     TruckassistTableModule,
     AppTooltipeModule,
-    ChartsModule
+    ChartsModule,
   ],
   exports: [
     // Modules
@@ -241,6 +240,7 @@ import { ChartsModule } from 'ng2-charts';
     CroppieModule,
     NgxSliderModule,
     PdfViewerModule,
+    AppTooltipeModule,
 
     // Components
     TabSwitcherComponent,
@@ -279,6 +279,7 @@ import { ChartsModule } from 'ng2-charts';
     TaLikeDislikeComponent,
     TaCurrencyProgressBarComponent,
     TaChartComponent,
+    FilterComponent,
 
     // Modals Components
     TaModalComponent,
@@ -301,8 +302,7 @@ import { ChartsModule } from 'ng2-charts';
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
-    AppTooltipeModule,
-    FilterComponent,
+    RepairPmModalComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
