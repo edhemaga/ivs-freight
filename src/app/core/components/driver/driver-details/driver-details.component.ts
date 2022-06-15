@@ -44,7 +44,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     private driverService: DriverTService,
     private router: Router,
     private notificationService: NotificationService,
-    private detailsPageDriverSer: DetailsPageService,
+    private detailsPageDriverService: DetailsPageService,
     private cdRef: ChangeDetectorRef
   ) {}
 
@@ -52,7 +52,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     this.initTableOptions();
     this.detailCongif(this.activated_route.snapshot.data.driver);
 
-    this.detailsPageDriverSer.pageDetailChangeId$
+    this.detailsPageDriverService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
         this.driverService
@@ -61,7 +61,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (res: DriverResponse) => {
               this.detailCongif(res);
-              this.router.navigate([`/driver/${res.id}/details`]);
+              if (this.router.url.includes('details')) {
+                this.router.navigate([`/driver/${res.id}/details`]);
+              }
               this.notificationService.success(
                 'Driver successfully changed',
                 'Success:'

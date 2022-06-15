@@ -33,7 +33,9 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
   animations: [card_component_animation('showHideCardBody')],
   providers: [SumArraysPipe],
 })
-export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges {
+export class DriverDetailsCardComponent
+  implements OnInit, OnDestroy, OnChanges
+{
   @Input() driver: DriverResponse | any;
 
   public note: FormControl = new FormControl();
@@ -64,12 +66,12 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges 
   public tabsDriver: any[] = [];
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
-  public dropData:any;
-  @Input() templateCard:boolean;
-  public hideArrow:boolean;
+  public dropData: any;
+  @Input() templateCard: boolean;
+  public hideArrow: boolean;
   // Driver Dropdown
   public driversDropdowns: any[] = [];
-  public driver_active_id: number = +this.activated_route.snapshot.params['id'];
+  // public driver_active_id: number = +this.activated_route.snapshot.params['id'];
   public driversList: any[] = this.driversQuery.getAll();
 
   constructor(
@@ -77,31 +79,29 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges 
     private modalService: ModalService,
     private driversQuery: DriversQuery,
     private activated_route: ActivatedRoute,
-    private detailsPageDriverSer:DetailsPageService,
-    private sumArr:SumArraysPipe
+    private detailsPageDriverSer: DetailsPageService,
+    private sumArr: SumArraysPipe
   ) {}
   ngOnChanges(changes: SimpleChanges) {
-    this.driver=changes.driver.currentValue
+    this.driver = changes.driver.currentValue;
     this.getYearsAndDays();
     this.widthOfProgress();
     this.templateCard;
-    if(this.templateCard==true){
-      this.hideArrow=true;
-    }else{
-      this.hideArrow=false;
+    if (this.templateCard == true) {
+      this.hideArrow = true;
+    } else {
+      this.hideArrow = false;
     }
     console.log(this.hideArrow);
     console.log(this.templateCard);
-    
-    
   }
   ngOnInit(): void {
     console.log(this.templateCard);
-    
-    if(this.templateCard==true){
-      this.hideArrow=true;
-    }else{
-      this.hideArrow=false;
+
+    if (this.templateCard == true) {
+      this.hideArrow = true;
+    } else {
+      this.hideArrow = false;
     }
     this.initTableOptions();
     this.initTableOptionsCard();
@@ -136,7 +136,6 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges 
         checked: false,
       },
     ];
-   
   }
 
   /**Function return user image if have in DB or default image */
@@ -340,35 +339,35 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges 
     };
   }
 
-    /**Function for dots in cards */
-    public initTableOptionsCard(): void {
-      this.dropData = {
-        disabledMutedStyle: null,
-        toolbarActions: {
-          hideViewMode: false,
+  /**Function for dots in cards */
+  public initTableOptionsCard(): void {
+    this.dropData = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          class: 'regular-text',
+          contentType: 'edit',
         },
-        config: {
-          showSort: true,
-          sortBy: '',
-          sortDirection: '',
-          disabledColumns: [0],
-          minWidth: 60,
+        {
+          title: 'Deactivate',
+          reverseTitle: 'Activate',
+          name: 'activate-item',
+          class: 'regular-text',
+          contentType: 'activate',
         },
-        actions: [
-          {
-            title: 'Edit',
-            name: 'edit',
-            class: 'regular-text',
-            contentType: 'edit',
-          },
-          {
-            title: 'Deactivate',
-            reverseTitle: 'Activate',
-            name: 'activate-item',
-            class: 'regular-text',
-            contentType: 'activate',
-          },
-           {
+        {
           title: 'Print Details',
           name: 'print',
           class: 'regular-text',
@@ -380,18 +379,18 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges 
           class: 'regular-text',
           contentType: 'email',
         },
-          {
-            title: 'Delete',
-            name: 'delete-item',
-            type: 'driver',
-            text: 'Are you sure you want to delete driver(s)?',
-            class: 'delete-text',
-            contentType: 'delete',
-          },
-        ],
-        export: true,
-      };
-    }
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
+        },
+      ],
+      export: true,
+    };
+  }
 
   public widthOfProgress() {
     let arrMinDate = [];
@@ -421,29 +420,31 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges 
           arrMinDate.push(new Date(dates));
           arrMaxDate.push(new Date(endDate));
           let deactivate = element.isDeactivate;
-          dateDeactivate.push(deactivate);          
+          dateDeactivate.push(deactivate);
           return {
             ...element,
             activePercentage: this.activePercentage.toFixed(1),
           };
         }
       );
-      let dateRes = moment(new Date(Math.min.apply(null, arrMinDate))).format('MM/DD/YY');
+      let dateRes = moment(new Date(Math.min.apply(null, arrMinDate))).format(
+        'MM/DD/YY'
+      );
       if (dateDeactivate.includes(true)) {
         this.deactivatePeriod = true;
       } else {
         this.deactivatePeriod = false;
       }
-      this.firstDate = dateRes;      
+      this.firstDate = dateRes;
       if (!arrMaxDate.includes('Invalid Date')) {
-        let maxEmpDate = moment(new Date(Math.max.apply(null, arrMaxDate))).format('MM/DD/YY');
+        let maxEmpDate = moment(
+          new Date(Math.max.apply(null, arrMaxDate))
+        ).format('MM/DD/YY');
         this.lastDate = maxEmpDate;
-       
       } else {
         this.lastDate = 'Today';
       }
     }
-    
   }
 
   public getYearsAndDays() {
@@ -458,8 +459,6 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges 
       this.yearsService = Math.trunc(sum3 / 365.25);
       this.daysService = Math.trunc(sum3 % 365.25);
     }
-
-    
   }
   public mouseEnter(dat: any) {
     this.tooltipData = dat;
@@ -481,13 +480,13 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges 
         status: item.status,
         svg: item.owner ? 'driver-owner' : null,
         folder: 'common',
-        active: item.id === this.driver_active_id,
+        active: item.id === this.driver.id,
       };
     });
   }
 
   public onSelectedDriver(event: any) {
-    if (event) {
+    if (event.id !== this.driver.id) {
       this.driversDropdowns = this.driversQuery.getAll().map((item) => {
         return {
           id: item.id,
@@ -503,30 +502,25 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges 
   }
 
   public onChangeDriver(action: string) {
-    
     let currentIndex = this.driversList
       .map((driver) => driver.id)
       .indexOf(this.driver.id);
     switch (action) {
       case 'previous': {
-     
         currentIndex = --currentIndex;
         if (currentIndex != -1) {
           this.detailsPageDriverSer.getDataDetailId(
             this.driversList[currentIndex].id
           );
           this.onSelectedDriver({ id: this.driversList[currentIndex].id });
-        
         }
         break;
       }
       case 'next': {
-     
         currentIndex = ++currentIndex;
         if (currentIndex !== -1 && this.driversList.length > currentIndex) {
           this.detailsPageDriverSer.getDataDetailId(
             this.driversList[currentIndex].id
-            
           );
           this.onSelectedDriver({ id: this.driversList[currentIndex].id });
         }
