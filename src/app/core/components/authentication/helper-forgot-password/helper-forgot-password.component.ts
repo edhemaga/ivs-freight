@@ -43,7 +43,6 @@ export class HelperForgotPasswordComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: any) => {
-          console.log('helper', res.token);
           this.authStoreService.getForgotPasswordToken(res.token);
 
           this.notification.success('Verifying successful', 'Success');
@@ -57,13 +56,3 @@ export class HelperForgotPasswordComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {}
 }
-
-/*   next: ((res: any) ) => {
-          this.notification.success('Verifying successful', 'Success');
-          this.router.navigate(['/auth/forgot-password/create-new-password']);
-
-          this.authStoreService.getForgotPasswordToken(res.token);
-        },
-        error: () => {
-          this.notification.error('Verifying unsuccessful', 'Error');
-        }, */

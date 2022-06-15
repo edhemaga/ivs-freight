@@ -125,14 +125,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       });
   }
 
-  public keyDownFunction(event: any): void {
-    if (
-      event.keyCode === 13 &&
-      event.target.localName !== 'textarea' &&
-      event.path !== undefined &&
-      event.path !== null &&
-      event.path[3].className !== 'ng-select-container ng-has-value'
-    ) {
+  public onKeyDown(event: any): void {
+    if (event.keyCode === 13) {
       this.registerUser();
     }
   }

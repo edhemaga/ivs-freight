@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { AuthState, AuthStore } from './auth.store';
-import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import {
   AccountService,
@@ -29,7 +29,6 @@ export class AuthStoreService {
   ) {}
 
   public getForgotPasswordToken(token: string) {
-    console.log('servis', token);
     this.forgotPasswordTokenSubject.next(token);
   }
 

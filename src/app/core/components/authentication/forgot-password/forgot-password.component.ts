@@ -79,5 +79,11 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
       });
   }
 
+  public onKeyDown(event: any) {
+    if (event.keyCode === 13) {
+      this.onForgotPassword();
+    }
+  }
+
   ngOnDestroy(): void {}
 }

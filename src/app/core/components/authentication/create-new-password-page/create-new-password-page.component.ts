@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpHeaders, HttpResponseBase } from '@angular/common/http';
+import { HttpResponseBase } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -12,8 +12,6 @@ import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 import { SetNewPasswordCommand } from 'appcoretruckassist/model/setNewPasswordCommand';
-import { throws } from 'assert';
-import { configFactory } from 'src/app/app.config';
 
 @Component({
   selector: 'app-create-new-password-page',
@@ -52,7 +50,7 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
     this.createNewPasswordForm
       .get('confirmNewPassword')
       .valueChanges.pipe(untilDestroyed(this))
-      .subscribe((value) => {
+      .subscribe(value => {
         if (
           value?.toLowerCase() ===
           this.createNewPasswordForm.get('newPassword').value?.toLowerCase()
@@ -78,8 +76,9 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
 
     this.authStoreService.getForgotPassword$
       .pipe(untilDestroyed(this))
-      .subscribe((token) => {
+      .subscribe(token => {
         localStorage.setItem('user', JSON.stringify({ token: token }));
+
         this.authStoreService
           .createNewPassword(newData)
           .pipe(untilDestroyed(this))
@@ -90,17 +89,25 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
                   'Password changed successfully',
                   'Success'
                 );
+
                 localStorage.removeItem('user');
+
                 this.router.navigate([
                   '/auth/forgot-password/password-changed',
                 ]);
               }
             },
-            error: (err) => {
+            error: err => {
               this.notification.error(err, 'Error');
             },
           });
       });
+  }
+
+  public onKeyDown(event: any) {
+    if (event.keyCode === 13) {
+      this.onCreateNewPassword();
+    }
   }
 
   ngOnDestroy(): void {}
