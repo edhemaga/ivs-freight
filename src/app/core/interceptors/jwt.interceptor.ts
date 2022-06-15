@@ -42,7 +42,7 @@ export class JwtInterceptor implements HttpInterceptor {
       request = request.clone({
         headers: request.headers.set('Authorization', 'Bearer ' + user.token),
       });
-      configFactory(user.token);
+      configFactory(user.token)
     }
     return next.handle(request);
   }

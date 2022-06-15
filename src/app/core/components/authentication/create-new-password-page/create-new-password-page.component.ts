@@ -52,7 +52,7 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
     this.createNewPasswordForm
       .get('confirmNewPassword')
       .valueChanges.pipe(untilDestroyed(this))
-      .subscribe(value => {
+      .subscribe((value) => {
         if (
           value?.toLowerCase() ===
           this.createNewPasswordForm.get('newPassword').value?.toLowerCase()
@@ -72,22 +72,14 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let headers = null;
-
     const newData: SetNewPasswordCommand = {
       newPassword: this.createNewPasswordForm.get('newPassword').value,
     };
 
     this.authStoreService.getForgotPassword$
       .pipe(untilDestroyed(this))
-      .subscribe(token => {
-        /*  headers = new HttpHeaders({
-          'Content-Type': 'application/json; charset=utf-8',
-          Authorization: `Bearer ${token}`,
-        }); */
-        console.log(token);
-        configFactory(token);
-
+      .subscribe((token) => {
+        localStorage.setItem('user', JSON.stringify({ token: token }));
         this.authStoreService
           .createNewPassword(newData)
           .pipe(untilDestroyed(this))
@@ -98,13 +90,13 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
                   'Password changed successfully',
                   'Success'
                 );
-
+                localStorage.removeItem('user');
                 this.router.navigate([
                   '/auth/forgot-password/password-changed',
                 ]);
               }
             },
-            error: err => {
+            error: (err) => {
               this.notification.error(err, 'Error');
             },
           });

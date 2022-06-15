@@ -14,6 +14,7 @@ import {
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
+import { configFactory } from 'src/app/app.config';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStoreService {
@@ -41,6 +42,7 @@ export class AuthStoreService {
       tap((user: SignInResponse) => {
         // Production
         this.authStore.set({ 1: user });
+        configFactory(user.token);
         // Develop
         localStorage.setItem('user', JSON.stringify(user));
         this.router.navigate(['/dashboard']);
@@ -53,6 +55,7 @@ export class AuthStoreService {
     this.persistStorage.clearStore();
     this.persistStorage.destroy();
     this.router.navigate(['/auth/login']);
+    configFactory(null);
     // ---- DEVELOP MODE ----
     localStorage.removeItem('user');
   }
