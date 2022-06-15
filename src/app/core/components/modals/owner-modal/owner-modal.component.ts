@@ -80,7 +80,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 8,
+        id: 6,
       };
       this.editOwnerById(this.editData.id);
     }
@@ -237,13 +237,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     const newData: UpdateOwnerCommand = {
       id: id,
+      ...form,
       ownerType: this.selectedTab,
       name:
         this.selectedTab === 1 ? bussinesName : firstName.concat(' ', lastName),
       ssnEin: this.selectedTab === 1 ? ein : ssn,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       bankId: this.selectedBank ? this.selectedBank.id : null,
-      ...form,
     };
 
     this.ownerModalService
@@ -341,14 +341,16 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             addressUnit: res.address.addressUnit,
             phone: res.phone,
             email: res.email,
-            bankId: res.bankName,
+            bankId: res.bank.name,
             accountNumber: res.accountNumber,
             routingNumber: res.routingNumber,
             note: res.note,
           });
           this.selectedAddress = res.address;
-          this.selectedBank = res.bankName;
-          this.tabChange(this.tabs.find((item) => item.id === res.ownerType.id));
+          this.selectedBank = res.bank;
+          this.tabChange(
+            this.tabs.find((item) => item.id === res.ownerType.id)
+          );
         },
         error: () => {
           this.notificationService.error("Owner can't be loaded.", 'Error:');

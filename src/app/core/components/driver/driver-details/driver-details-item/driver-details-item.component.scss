@@ -1,5 +1,20 @@
 @import "../driver-details.component.scss";
-
+@keyframes change {
+  from {
+    color: #6c6c6c;
+  }
+  to {
+    color: #3551b7;
+  }
+}
+@keyframes changeSVG {
+  from {
+    fill: #6c6c6c;
+  }
+  to {
+    fill: #3551b7;
+  }
+}
 // DRIVER GENERAL PERSONAL DATA
 .details-header-wrapper {
   margin-bottom: 12px !important;
@@ -37,9 +52,9 @@
 
   .driver-information {
     display: flex;
+    height: 80px;
+    margin-top: 2px;
     flex-direction: column;
-    position: relative;
-    bottom: 3px;
 
     // Ovveride email information-item
     .information-item-email {
@@ -48,7 +63,7 @@
 
     .information-item {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       height: 18px;
       margin-bottom: 12px;
       cursor: pointer;
@@ -70,6 +85,8 @@
         font-size: 14px;
         font-weight: 400;
         color: #6c6c6c;
+        line-height: 17px;
+        width: fit-content;
         &::-moz-selection {
           color: #6c6c6c;
           background: rgb(108, 108, 108, 0.2);
@@ -81,12 +98,13 @@
       }
       .ssn {
         font-size: 18px !important;
-        position: relative;
-        bottom: -2px;
       }
 
       .information-svg {
         margin-right: 6px;
+        svg {
+          display: flex;
+        }
       }
 
       .information-email-value {
@@ -103,7 +121,7 @@
       }
       &:hover {
         .card-icon {
-          display: block;
+          display: flex;
         }
       }
     }
@@ -245,19 +263,25 @@
 }
 .copied {
   .card-item-value {
-    color: #3551b7 !important;
+    animation-duration: 300ms;
+    animation-name: change;
   }
   .purchase-template-item-value {
-    color: #3551b7 !important;
+    animation-duration: 300ms;
+    animation-name: change;
   }
   .information-value {
-    color: #3551b7 !important;
+    animation-duration: 300ms;
+    animation-name: change;
   }
   .card-icon {
     svg {
       path {
+        animation-duration: 300ms;
+        animation-name: changeSVG;
         &:hover {
-          fill: #3551b7 !important;
+          animation-duration: 300ms;
+          animation-name: changeSVG;
         }
       }
     }
@@ -268,6 +292,7 @@
   flex-direction: column;
   padding-left: 5px;
   padding-right: 3px;
+  position: relative;
   .transform-arrow {
     bottom: 0 !important;
     svg {
@@ -332,13 +357,16 @@
   .employment-tooltip {
     width: 424px;
     height: 52px;
-    display: none;
+    // display: none;
+    justify-content: center;
+    align-items: center;
     background-color: #ffffff;
-    position: relative;
-    bottom: 58px;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.45);
-    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.45);
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.45);
+    position: absolute;
+    margin: auto;
+    border-radius: 2px;
+    top: -7px;
+    left: 2px;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.1));
     .emp-tooltip {
       display: flex;
       flex-direction: column;
@@ -393,25 +421,33 @@
       display: flex;
       border-radius: 2px;
       .emp {
-        width: 35%;
-        background-color: #6d82c8;
-        border-radius: 0 2px 2px 0;
-        &:hover{
+        position: relative;
+        &:first-child{
+          border-radius: 2px 0 0 2px;
+        }
+        &:last-child{
+          border-radius: 0 2px 2px 0;
+        }
+        &:hover {
           .employment-tooltip {
             display: block;
-            transform: translate(-2%, -1%);
+            // transform: translate(-2%, -1%);
           }
         }
       }
       .unp {
-        width: 65%;
-        background-color: #d4dff4;
-        border-radius: 0 2px 2px 0;
+        position: relative;
+        &:first-child{
+          border-radius: 2px 0 0 2px;
+        }
+        &:last-child{
+          border-radius: 0 2px 2px 0;
+        }
         &:hover {
           background-color: #97a8dc !important;
           .employment-tooltip {
             display: block;
-            transform: translate(-36%, -4%);
+            // transform: translate(-28%, -1%);
           }
         }
       }
@@ -456,7 +492,25 @@
 .has-counter {
   padding-left: 2px !important;
 }
-.card-restriction-class{
+.card-restriction-class {
   // margin-top: -9px;
   margin-bottom: 2px;
+}
+.activate-button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #6d82c7;
+  color: #ffffff;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 800;
+  width: 303px;
+  height: 26px;
+  margin-top: 12px;
+  cursor: pointer;
+  line-height: 17px;
+  &:hover{
+    background-color: #536BC2;
+  }
 }

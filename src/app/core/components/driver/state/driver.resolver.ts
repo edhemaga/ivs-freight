@@ -19,7 +19,17 @@ export class DriverResolver implements Resolve<DriversState> {
     private driversStore: DriversStore
   ) {}
   resolve(): Observable<DriversState | boolean> {
-    if (this.driversStore.getValue().ids?.length) {
+    return this.driverService
+      .getDrivers(this.tableTab, this.pageIndex, this.pageSize)
+      .pipe(
+        catchError(() => {
+          return of('No drivers data...');
+        }),
+        tap((driverPagination: DriverListResponse) => {
+          this.driversStore.set(driverPagination.pagination.data);
+        })
+      );
+    /* if (this.driversStore.getValue().ids?.length) {
       return of(true);
     } else {
       return this.driverService
@@ -32,6 +42,6 @@ export class DriverResolver implements Resolve<DriversState> {
             this.driversStore.set(driverPagination.pagination.data);
           })
         );
-    }
+    } */
   }
 }

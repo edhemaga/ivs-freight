@@ -89,6 +89,7 @@ export class TruckTableComponent implements OnInit, OnDestroy {
           }, 1000);
         } else if (res.animation === 'update-status') {
           let truckIndex: number;
+          
           this.viewData = this.viewData.map((truck: any, index: number) => {
             if (truck.id === res.id) {
               truck.actionAnimation = 'update';

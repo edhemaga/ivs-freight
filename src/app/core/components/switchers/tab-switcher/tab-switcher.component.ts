@@ -25,5 +25,8 @@ export class TabSwitcherComponent implements OnInit {
     this.switchClicked.emit(event);
     this.activeTab = event.id;
   }
-
+ /**Function retrun id */
+ public identity(index: number, item: any): number {
+  return item.id;
+}
 }

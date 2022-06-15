@@ -19,6 +19,7 @@ import { TruckTService } from '../../state/truck.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TtRegistrationModalComponent } from '../../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TruckResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-truck-details-item',
@@ -29,7 +30,7 @@ import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-tra
 })
 export class TruckDetailsItemComponent implements OnInit {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-  @Input() data: any = null;
+  @Input() truck: TruckResponse |  any = null;
   public note: FormControl = new FormControl();
   public fhwaNote: FormControl = new FormControl();
   public purchaseNote: FormControl = new FormControl();
@@ -51,7 +52,6 @@ export class TruckDetailsItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.initTableOptions();
-    this.getTruckById();
   }
   ngOnDestroy(): void {
   }
@@ -59,10 +59,7 @@ export class TruckDetailsItemComponent implements OnInit {
   public onShowDetails(componentData: any) {
     componentData.showDetails = !componentData.showDetails;
   }
-  /** return truck by id, truckData.trcuk value from resolver for id truck */
-  public getTruckById() {
-    this.truckData = this.activated_route.snapshot.data;
-  }
+ 
 
   /**Function for dots in cards */
   public initTableOptions(): void {
@@ -117,7 +114,7 @@ export class TruckDetailsItemComponent implements OnInit {
           TtRegistrationModalComponent,
           { size: 'small' },
           {
-            id: this.truckData.truck.id,
+            id: this.truck.id,
             file_id: any.id,
             type: action,
             modal: 'truck',
@@ -130,7 +127,7 @@ export class TruckDetailsItemComponent implements OnInit {
           TtFhwaInspectionModalComponent,
           { size: 'small' },
           {
-            id: this.truckData.truck.id,
+            id: this.truck.id,
             file_id: any.id,
             type: action,
             modal: 'truck',

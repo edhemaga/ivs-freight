@@ -3,13 +3,15 @@ import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
+import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-trailer-details-card',
   templateUrl: './trailer-details-card.component.html',
   styleUrls: ['./trailer-details-card.component.scss'],
-  encapsulation:ViewEncapsulation.None
+  encapsulation:ViewEncapsulation.None,
+  animations: [card_component_animation('showHideCardBody')],
 })
 export class TrailerDetailsCardComponent implements OnInit {
   @Input() data:any;

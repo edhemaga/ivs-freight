@@ -3,20 +3,54 @@ import {
   CdlResponse,
   CdlService,
   CreateCdlCommand,
+  DriverResponse,
   EditCdlCommand,
   GetCdlModalResponse,
 } from 'appcoretruckassist';
 import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DriverTService } from './driver.service';
+import { DriversStore } from './driver.store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CdlTService {
-  constructor(private cdlService: CdlService) {}
+  constructor(
+    private cdlService: CdlService,
+    private driverService: DriverTService,
+    private driverStore: DriversStore,
+    private tableService: TruckassistTableService
+  ) {}
 
   public addCdl(data: CreateCdlCommand): Observable<CreateCdlResponse> {
-    return this.cdlService.apiCdlPost(data);
+    return this.cdlService.apiCdlPost(data).pipe(
+      tap((res: any) => {
+        const subDriver = this.driverService
+          .getDriverById(data.driverId)
+          .subscribe({
+            next: (driver: DriverResponse | any) => {
+              this.driverStore.remove(({ id }) => id === data.driverId);
+
+              driver = {
+                ...driver,
+                fullName: driver.firstName + ' ' + driver.lastName,
+              };
+
+              this.driverStore.add(driver);
+
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: driver,
+                id: driver.id,
+              });
+
+              subDriver.unsubscribe();
+            },
+          });
+      })
+    );
   }
 
   public updateCdl(data: EditCdlCommand): Observable<object> {

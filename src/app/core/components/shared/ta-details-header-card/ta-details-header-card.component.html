@@ -1,24 +1,35 @@
 <div class="details-header-wrapper">
   <div class="details-header-wrapper-switcher">
     <div class="inactive-icon-input">
-      <svg-icon
+      <!-- <svg-icon
         *ngIf="statusInactive == 0"
         class="inactive-status"
         src="assets/svg/truckassist-table/dropdown/content/activate-hover.svg"
-      ></svg-icon>
+      ></svg-icon> -->
       <!-- Active Item -->
       <div
         *ngIf="!selectedDropdown"
         class="current-active-item"
         (click)="onPickItem()"
+        ngbTooltip
+        [mainTooltip]="searchInputName"
+        position="top"
+        tooltipBackground="#6C6C6C"
       >
         <p class="current-active-name">
           {{ (options | detailActiveItem).name }}
         </p>
+        <span
+        ngbTooltip
+        [mainTooltip]="searchName"
+        position="top"
+        [tooltipBackground]="searchName ? '#6C6C6C':''"
+        >
         <svg-icon
           class="current-active-owner"
           src="{{ (options | detailActiveItem).svg }}"
         ></svg-icon>
+      </span>
       </div>
       <!-- Input dropdown -->
       <app-ta-input-dropdown
@@ -43,7 +54,7 @@
       >
       </app-ta-input-dropdown>
     </div>
-    <div class="arrows">
+    <div *ngIf="!hasArrow" class="arrows">
       <span
         ngbTooltip
         [mainTooltip]="tooltipPrevious"
@@ -52,7 +63,7 @@
       >
         <svg-icon
           class="arrow-left"
-          (click)="onAction('previous')"
+          (click)="onAction('next')"
           src="assets/svg/common/arrow-left.svg"
         >
         </svg-icon>
@@ -65,9 +76,54 @@
       >
         <svg-icon
           class="arrow-right"
-          (click)="onAction('next')"
+          (click)="onAction('previous')"
           src="assets/svg/common/arrow-left.svg"
         ></svg-icon>
+      </span>
+    </div>
+    <div *ngIf="hasArrow" class="verical-dots-header">
+    <app-table-dropdown
+    [options]="optionsDrop.actions"
+    [id]="optionsId"
+    [placement]="'bottom-left'"
+    (dropDownActions)="dropAct($event)"
+    [customClassDropDown]="'table-dropdown-container-vertical'"
+  >
+  </app-table-dropdown>
+</div>
+  </div>
+  <div *ngIf="haveTwoInput" class="details-header-wrapper-switcher">
+    <div class="inactive-icon-input">
+      <app-ta-input-dropdown
+        class="dropInput"
+        [formControl]="inputFormControl"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          isDropdown: true,
+          dropdownWidthClass: 'w-col-details-template'
+        }"
+        [options]="options"
+        [template]="'details-template'"
+        (selectedItem)="onSelectDetail($event)"
+      >
+      </app-ta-input-dropdown>
+    </div>
+    <div class="arrows">
+      <span  ngbTooltip [mainTooltip]="tooltipPrevious" position="top" tooltipBackground="#6C6C6C">
+        <svg-icon
+          class="arrow-left"
+          (click)="onPreviousAction($event)"
+          src="assets/svg/common/arrow-left.svg"
+        >
+        </svg-icon>
+      </span>
+      <span tooltipBackground="#6C6C6C" ngbTooltip [mainTooltip]="tooltipNext" position="top">
+      <svg-icon
+        class="arrow-right"
+        (click)="onNextAction()"
+        src="assets/svg/common/arrow-left.svg"
+      ></svg-icon>
       </span>
     </div>
   </div>

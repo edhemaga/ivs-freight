@@ -20,7 +20,17 @@ export class TrailerResolver implements Resolve<TrailerState> {
   ) {}
 
   resolve(): Observable<TrailerState | boolean> {
-    if (this.trailerStore.getValue().ids?.length) {
+    return this.trailerService
+      .getTrailers(this.tableTab, this.pageIndex, this.pageSize)
+      .pipe(
+        catchError(() => {
+          return of('No trailer data...');
+        }),
+        tap((trailerPagination: TrailerListResponse) => {
+          this.trailerStore.set(trailerPagination.pagination.data);
+        })
+      );
+    /* if (this.trailerStore.getValue().ids?.length) {
       return of(true);
     } else {
       return this.trailerService
@@ -33,6 +43,6 @@ export class TrailerResolver implements Resolve<TrailerState> {
             this.trailerStore.set(trailerPagination.pagination.data);
           })
         );
-    }
+    } */
   }
 }

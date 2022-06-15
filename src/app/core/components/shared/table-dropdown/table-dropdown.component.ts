@@ -21,6 +21,7 @@ export class TableDropdownComponent implements OnInit, OnChanges {
   @Input() options: any;
   @Input() id: number;
   @Input() customClassDropDown:string;
+  @Input() public placement:string='bottom-right'
   @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
   dropContent: any[] = [];
   tooltip: any;

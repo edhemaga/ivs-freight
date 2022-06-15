@@ -5,8 +5,9 @@
       [route]="'/truck'"
       [tooltipHeaderName]="'Back to Truck List'"
       [headerText]="item.name"
-      [counterData]="item.data"
+      [counterData]="item.length"
       [hidePlus]="item.hide"
+      [statusInactive]="false"
       (openModalAction)="onModalAction($event)"
     >
     </app-ta-details-header>
@@ -14,7 +15,7 @@
   <div class="details-item-cmp">
     <app-truck-details-item
       *ngFor="let item of truckDetailsConfig; trackBy: identity"
-      [data]="item"
+      [truck]="item"
     >
     </app-truck-details-item>
   </div>

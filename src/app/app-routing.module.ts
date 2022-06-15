@@ -163,10 +163,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'test',
-    component: TruckassistProgressExpirationComponent,
-  },
-  {
     path: 'catalog',
     component: SvgDefinitionsComponent,
   },

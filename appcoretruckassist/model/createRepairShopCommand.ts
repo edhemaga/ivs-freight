@@ -17,6 +17,7 @@ import { AddressEntity } from './addressEntity';
 export interface CreateRepairShopCommand { 
     name?: string | null;
     phone?: string | null;
+    phoneExt?: string | null;
     email?: string | null;
     address?: AddressEntity;
     pinned?: boolean | null;

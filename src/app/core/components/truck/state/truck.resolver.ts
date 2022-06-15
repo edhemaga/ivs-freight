@@ -19,7 +19,17 @@ export class TruckResolver implements Resolve<TruckState> {
     private truckStore: TruckStore
   ) {}
   resolve(): Observable<TruckState | boolean> {
-    if (this.truckStore.getValue().ids?.length) {
+    return this.truckService
+        .getTruckList(this.tableTab, this.pageIndex, this.pageSize)
+        .pipe(
+          catchError(() => {
+            return of('No truck data...');
+          }),
+          tap((truckPagination: TruckListResponse) => {
+            this.truckStore.set(truckPagination.pagination.data);
+          })
+        );
+    /* if (this.truckStore.getValue().ids?.length) {
       return of(true);
     } else {
       return this.truckService
@@ -32,6 +42,6 @@ export class TruckResolver implements Resolve<TruckState> {
             this.truckStore.set(truckPagination.pagination.data);
           })
         );
-    }
+    } */
   }
 }

@@ -1,6 +1,7 @@
 // Table Dropdown Popup
 .table-dropdown-popover {
   .popover-body {
+    z-index: 60;
     .table-dropdown {
       width: fit-content;
       height: auto;
@@ -12,7 +13,8 @@
       .table-dropdown-content {
         cursor: pointer;
         width: 100%;
-        min-width: 110px;
+        min-width: 97px;
+        max-width: 120px;
         height: 26px;
         border-radius: 2px;
         display: flex;
@@ -41,8 +43,8 @@
           }
 
           .add {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             background-image: url("../../assets/png/table-dropdown/add.png");
           }
 
@@ -80,6 +82,11 @@
             width: 14px;
             height: 16px;
             background-image: url("../../assets/svg/common/ic_nohover_print.svg");
+          }
+          .email{
+            width: 16px;
+            height: 16px;
+            background-image: url("../../assets/svg/common/ic_email.svg");
           }
         }
 
@@ -124,6 +131,9 @@
             }
             .print{
               background-image: url("../../assets/svg/common/ic_print.svg");
+            }
+            .email{
+              background-image: url("../../assets/svg/common/ic_email.svg");
             }
           }
         }

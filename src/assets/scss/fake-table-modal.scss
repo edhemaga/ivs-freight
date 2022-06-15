@@ -417,6 +417,7 @@
     }
   }
 
+  // Accident Modal Violations
   &-accident-violations {
     .common-fake-table-label {
       p {
@@ -470,6 +471,7 @@
     }
   }
 
+  // Accident Modal Insurance
   &-accident-insurance {
     .common-fake-table-label {
       p {
@@ -496,6 +498,34 @@
     .common-fake-table-card {
       grid-template-columns: repeat(2, 135px) 142px 140px 200px;
       align-items: center;
+    }
+  }
+
+  // Repair Shop Modal Open Hours
+  &-repair-shop-open-hours {
+    margin-bottom: 0px;
+    .common-fake-table-label {
+      p {
+        &:nth-child(1) {
+          margin-left: 1px;
+        }
+
+        &:nth-child(2) {
+          margin-left: 137px;
+        }
+
+        &:nth-child(3) {
+          margin-left: 114px;
+        }
+      }
+    }
+
+    .common-fake-table-card {
+      grid-template-columns: 1fr repeat(2, 140px);
+      column-gap: 12px;
+      align-items: center;
+      padding-left: 6px;
+      padding-right: 0px;
     }
   }
 }
