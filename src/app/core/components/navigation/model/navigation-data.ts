@@ -321,12 +321,12 @@ export const repairNavigationData: NavigationModal[] = [
   {
     id: 13,
     name: 'Order',
-    path: 'order',
+    path: 'repair-order',
   },
   {
     id: 14,
     name: 'Shop',
-    path: 'shop',
+    path: 'repair-shop',
   },
 ];
 

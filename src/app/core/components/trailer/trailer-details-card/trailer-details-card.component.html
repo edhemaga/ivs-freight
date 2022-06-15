@@ -21,8 +21,8 @@
         <div class="model-name">
           <div class="svg-wrapper">
             <svg-icon
-              class="details-header-model"
-              src="assets/svg/truckassist-table/trailer/makers/fontaine.svg"
+              class="details-header-model "
+              src="{{'assets/svg/common/trailermake/'+data.trailerMake.logoName}}"
             >
             </svg-icon>
           </div>
@@ -54,12 +54,12 @@
                 <path
                   d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
                   transform="translate(712.181 241.886)"
-                  [attr.fill]="data.color.code"
+                  [attr.fill]="data?.color.code"
                 />
               </g>
             </svg>
           </div>
-          <p class="vin-text">{{ data.color.name }}</p>
+          <p class="vin-text">{{ data?.color.name }}</p>
           <div class="light-green">
             <svg-icon
               class="resize"
@@ -134,7 +134,7 @@
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
       >
-        <div class="common-template">
+        <div *ngIf="data.suspension" class="common-template">
           <div class="common-template-item">
             <div class="common-template-item-name">Empty Weight</div>
             <div class="common-template-item-value">
@@ -184,7 +184,7 @@
           <div class="owner-items-name">
             <p class="firm-name">{{ data.owner.name }}</p>
           </div>
-          <div *ngIf="toggleOwner">
+          <div  [@showHideCardBody]="toggleOwner ? 'true' : 'false'">
             <div class="owner-items">
               <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
               <p class="information-value">
@@ -217,7 +217,10 @@
                 src="assets/svg/common/fill_arrow_down.svg"
               ></svg-icon>
               </span>
-              <p class="hide-show">
+              <p tooltipBackground="#6c6c6c"
+              ngbTooltip
+              [mainTooltip]="toggleOwner ? 'Hide Contact' : 'Show More'"
+              position="top" class="hide-show">
                 {{ toggleOwner ? "HIDE CONTACT" : "" }}
               </p>
             </div>
@@ -260,7 +263,7 @@
                  <span *ngIf="owHist.endDate">{{owHist.endDate | formatDateP}}</span>
                  <span *ngIf="!owHist.endDate">Today</span>
                 </p>
-                <p class="duration">1 y 200 d</p>
+                <p class="duration">{{owHist.duration.Years}} y {{owHist.duration.Days}} d</p>
               </div>
             </div>
           </div>
@@ -362,6 +365,7 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
+          [cardDocumentCounter]="1"
           [hasCounter]="data.inspections.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
@@ -443,8 +447,8 @@
                 <div class="card-body-cdl">
                   <div class="card-row-endor">
                     <div class="card-item">
-                      <div class="card-item-name">State</div>
-                      <div class="card-item-value">KV</div>
+                      <div class="card-item-name">Purchased</div>
+                      <div class="card-item-value"> {{ title.issueDate | formatDateP }}</div>
                     </div>
                     <div class="card-item">
                       <div class="card-item-name">Issued</div>

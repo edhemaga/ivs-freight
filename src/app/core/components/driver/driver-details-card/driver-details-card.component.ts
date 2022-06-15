@@ -1,33 +1,41 @@
+import { SumArraysPipe } from './../../../pipes/sum-arrays.pipe';
+import { card_component_animation } from './../../shared/animations/card-component.animations';
 import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { DriverResponse } from 'appcoretruckassist';
 import { createBase64 } from 'src/app/core/utils/base64.image';
-import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import moment from 'moment';
 import { DriversQuery } from '../state/driver.query';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',
   styleUrls: ['./driver-details-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: [card_modal_animation('showHideCardBody')],
+  animations: [card_component_animation('showHideCardBody')],
+  providers: [SumArraysPipe],
 })
-export class DriverDetailsCardComponent implements OnInit, OnDestroy {
-  @Input() data: any;
+export class DriverDetailsCardComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() driver: DriverResponse | any;
+
   public note: FormControl = new FormControl();
   public copiedPhone: boolean = false;
   public copiedBankRouting: boolean = false;
@@ -40,112 +48,102 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   public accountText: string = null;
   public buttonsArray: any;
   public duttyLocationCounter: number = 0;
-  @Input() templateCard: boolean = false;
   public toggler: boolean[] = [];
-  public dataEdit: any;
+  public dataTest: any;
   public selectedTab: number;
+  public yearsService: number = 0;
+  public daysService: number = 0;
+  public activePercentage: number = 0;
+  public firstDate: any;
+  public lastDate: any;
+  public deactivatePeriod: boolean;
+  public tooltipData: any;
+  public tooltipFormatStartDate: any;
+  public tooltipFormatEndDate: any;
+  public showTooltip: boolean;
   public tabsDriver: any[] = [];
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
-
+  public dropData:any;
+  @Input() templateCard:boolean;
+  public hideArrow:boolean;
   // Driver Dropdown
   public driversDropdowns: any[] = [];
   public driver_active_id: number = +this.activated_route.snapshot.params['id'];
+  public driversList: any[] = this.driversQuery.getAll();
 
   constructor(
     private sanitazer: DomSanitizer,
     private modalService: ModalService,
     private driversQuery: DriversQuery,
-    private activated_route: ActivatedRoute
+    private activated_route: ActivatedRoute,
+    private detailsPageDriverSer:DetailsPageService,
+    private sumArr:SumArraysPipe
   ) {}
-
+  ngOnChanges(changes: SimpleChanges) {
+    this.driver=changes.driver.currentValue
+    this.getYearsAndDays();
+    this.widthOfProgress();
+    this.templateCard;
+    if(this.templateCard==true){
+      this.hideArrow=true;
+    }else{
+      this.hideArrow=false;
+    }
+    console.log(this.hideArrow);
+    console.log(this.templateCard);
+    
+    
+  }
   ngOnInit(): void {
+    console.log(this.templateCard);
+    
+    if(this.templateCard==true){
+      this.hideArrow=true;
+    }else{
+      this.hideArrow=false;
+    }
     this.initTableOptions();
+    this.initTableOptionsCard();
     this.getDriversDropdown();
-
     this.tabsDriver = [
       {
-        id: 53333,
+        id: 223,
         name: '1M',
-        checked: true,
       },
       {
-        id: 53,
         name: '3M',
         checked: false,
       },
       {
-        id: 42,
+        id: 412,
         name: '6M',
         checked: false,
       },
       {
-        id: 36,
+        id: 515,
         name: '1Y',
         checked: false,
       },
       {
-        id: 8932,
+        id: 1210,
         name: 'YTD',
         checked: false,
       },
       {
-        id: 1111,
+        id: 1011,
         name: 'ALL',
         checked: false,
       },
     ];
-    this.buttonsArray = [
-      {
-        id: 444,
-        label: '1M',
-        value: '1M',
-        name: 'chart',
-        checked: false,
-      },
-      {
-        id: 555,
-        label: '3M',
-        value: '3M',
-        name: 'chart',
-        checked: false,
-      },
-      {
-        id: 6666,
-        label: '6M',
-        value: '6M',
-        name: 'chart',
-        checked: false,
-      },
-      {
-        id: 7777,
-        label: '1Y',
-        value: '1Y',
-        name: 'chart',
-        checked: false,
-      },
-      {
-        id: 7774,
-        label: 'YTD',
-        value: 'YTD',
-        name: 'chart',
-        checked: false,
-      },
-      {
-        id: 8888,
-        label: 'ALL',
-        value: 'ALL',
-        name: 'chart',
-        checked: true,
-      },
-    ];
+   
   }
 
   /**Function return user image if have in DB or default image */
   public transformImage() {
     let img;
-    if (this.data.avatar) {
-      img = createBase64(this.data.avatar);
+    if (this.driver.avatar) {
+      img = createBase64(this.driver.avatar);
     } else {
       img = 'assets/svg/common/ic_no_avatar_driver.svg';
     }
@@ -156,16 +154,11 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
   public toggleResizePage(value: number) {
     this.toggler[value] = !this.toggler[value];
   }
-
   public changeTab(ev: any) {
-    console.log(ev.id);
-
     this.selectedTab = ev.id;
   }
 
   public optionsEvent(any: any, action: string) {
-    console.log(any);
-    console.log(this.data);
     switch (action) {
       case 'edit-licence': {
         this.modalService.openModal(
@@ -173,7 +166,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.data.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -185,7 +178,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.data.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -197,7 +190,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.data.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -209,7 +202,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.data.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -280,7 +273,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
     selBox.style.opacity = '0';
     selBox.value = val;
     document.body.appendChild(selBox);
-    selBox.focus();
+    // selBox.focus();
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
@@ -314,7 +307,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
 
   /**Function for dots in cards */
   public initTableOptions(): void {
-    this.dataEdit = {
+    this.dataTest = {
       disabledMutedStyle: null,
       toolbarActions: {
         hideViewMode: false,
@@ -347,6 +340,139 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
     };
   }
 
+    /**Function for dots in cards */
+    public initTableOptionsCard(): void {
+      this.dropData = {
+        disabledMutedStyle: null,
+        toolbarActions: {
+          hideViewMode: false,
+        },
+        config: {
+          showSort: true,
+          sortBy: '',
+          sortDirection: '',
+          disabledColumns: [0],
+          minWidth: 60,
+        },
+        actions: [
+          {
+            title: 'Edit',
+            name: 'edit',
+            class: 'regular-text',
+            contentType: 'edit',
+          },
+          {
+            title: 'Deactivate',
+            reverseTitle: 'Activate',
+            name: 'activate-item',
+            class: 'regular-text',
+            contentType: 'activate',
+          },
+           {
+          title: 'Print Details',
+          name: 'print',
+          class: 'regular-text',
+          contentType: 'print',
+        },
+        {
+          title: 'Forward Email',
+          name: 'email',
+          class: 'regular-text',
+          contentType: 'email',
+        },
+          {
+            title: 'Delete',
+            name: 'delete-item',
+            type: 'driver',
+            text: 'Are you sure you want to delete driver(s)?',
+            class: 'delete-text',
+            contentType: 'delete',
+          },
+        ],
+        export: true,
+      };
+    }
+
+  public widthOfProgress() {
+    let arrMinDate = [];
+    let arrMaxDate = [];
+    let dateDeactivate = [];
+    if (this.driver.employmentHistories) {
+      const sum = this.sumArr.transform(
+        this.driver.employmentHistories.map((item) => {
+          return {
+            id: item.id,
+            value: item.duration.Years * 365.25 + item.duration.Days,
+          };
+        })
+      );
+      console.log(sum);
+
+      this.driver.employmentHistories = this.driver.employmentHistories.map(
+        (element) => {
+          let res = element.duration.Years * 365.25 + element.duration.Days;
+          this.activePercentage = (res / sum) * 100;
+          let dates = moment(element.startDate)
+            .min(element.startDate)
+            .format('MM/DD/YY');
+          let endDate = moment(element.endDate)
+            .max(element.endDate)
+            .format('MM/DD/YY');
+          arrMinDate.push(new Date(dates));
+          arrMaxDate.push(new Date(endDate));
+          let deactivate = element.isDeactivate;
+          dateDeactivate.push(deactivate);          
+          return {
+            ...element,
+            activePercentage: this.activePercentage.toFixed(1),
+          };
+        }
+      );
+      let dateRes = moment(new Date(Math.min.apply(null, arrMinDate))).format('MM/DD/YY');
+      if (dateDeactivate.includes(true)) {
+        this.deactivatePeriod = true;
+      } else {
+        this.deactivatePeriod = false;
+      }
+      this.firstDate = dateRes;      
+      if (!arrMaxDate.includes('Invalid Date')) {
+        let maxEmpDate = moment(new Date(Math.max.apply(null, arrMaxDate))).format('MM/DD/YY');
+        this.lastDate = maxEmpDate;
+       
+      } else {
+        this.lastDate = 'Today';
+      }
+    }
+    
+  }
+
+  public getYearsAndDays() {
+    let sum = 0;
+    let sum2 = 0;
+    if (this.driver.employmentHistories) {
+      this.driver.employmentHistories.forEach((element) => {
+        sum += element.duration.Years;
+        sum2 += element.duration.Days;
+      });
+      let sum3 = sum * 365.25 + sum2;
+      this.yearsService = Math.trunc(sum3 / 365.25);
+      this.daysService = Math.trunc(sum3 % 365.25);
+    }
+
+    
+  }
+  public mouseEnter(dat: any) {
+    this.tooltipData = dat;
+    this.tooltipFormatStartDate = moment(
+      dat.startDate,
+      'YYYY-MM-DDTHH:mm:ss.SSS[Z]'
+    ).format('DD MMMM, YYYY');
+    this.tooltipFormatEndDate = moment(
+      dat.endDate,
+      'YYYY-MM-DDTHH:mm:ss.SSS[Z]'
+    ).format('DD MMMM, YYYY');
+    this.showTooltip = true;
+  }
   public getDriversDropdown() {
     this.driversDropdowns = this.driversQuery.getAll().map((item) => {
       return {
@@ -367,28 +493,43 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
           id: item.id,
           name: item.fullName,
           status: item.status,
-          svg: item.owner ? 'driver-owner' : null,
+          svg: item.owner ? 'owner-status' : null,
           folder: 'common',
           active: item.id === event.id,
         };
       });
-      // Call from store active driver or API on DROPDOWN SELECT
+      this.detailsPageDriverSer.getDataDetailId(event.id);
     }
   }
 
   public onChangeDriver(action: string) {
-    // Call from store active driver or API on ARROW SELECTED
+    
+    let currentIndex = this.driversList
+      .map((driver) => driver.id)
+      .indexOf(this.driver.id);
     switch (action) {
       case 'previous': {
-        console.log('PREVIOUS');
-        this.driver_active_id = --this.driver_active_id;
-        console.log(this.driver_active_id);
+     
+        currentIndex = --currentIndex;
+        if (currentIndex != -1) {
+          this.detailsPageDriverSer.getDataDetailId(
+            this.driversList[currentIndex].id
+          );
+          this.onSelectedDriver({ id: this.driversList[currentIndex].id });
+        
+        }
         break;
       }
       case 'next': {
-        console.log('NEXT');
-        this.driver_active_id = ++this.driver_active_id;
-        console.log(this.driver_active_id);
+     
+        currentIndex = ++currentIndex;
+        if (currentIndex !== -1 && this.driversList.length > currentIndex) {
+          this.detailsPageDriverSer.getDataDetailId(
+            this.driversList[currentIndex].id
+            
+          );
+          this.onSelectedDriver({ id: this.driversList[currentIndex].id });
+        }
         break;
       }
       default: {

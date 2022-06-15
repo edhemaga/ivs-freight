@@ -32,7 +32,8 @@
 .additional-container {
   padding: 0 10px;
   display: grid;
-  column-gap: 12px;
+  -moz-column-gap: 12px;
+       column-gap: 12px;
   .addres-wrapper {
     padding-bottom: 9px;
     .address-icon {

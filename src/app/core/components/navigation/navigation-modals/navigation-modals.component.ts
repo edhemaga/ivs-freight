@@ -23,6 +23,7 @@ import { TaskModalComponent } from '../../modals/task-modal/task-modal.component
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { AccidentModalComponent } from '../../safety/accident/accident-modal/accident-modal.component';
+import { RepairShopModalComponent } from '../../modals/repair-shop/repair-shop-modal/repair-shop-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -119,6 +120,12 @@ export class NavigationModalsComponent {
         });
         break;
       }
+      case 'repair-shop': {
+        this.modalService.openModal(RepairShopModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
       case 'task': {
         this.modalService.openModal(TaskModalComponent, {
           size: 'small',
@@ -130,7 +137,7 @@ export class NavigationModalsComponent {
           size: 'small',
         });
         break;
-      } 
+      }
       case 'fuel-stop': {
         this.modalService.openModal(FuelStopModalComponent, {
           size: 'small',
@@ -141,7 +148,7 @@ export class NavigationModalsComponent {
         this.modalService.openModal(AccidentModalComponent, {
           size: 'large',
         });
-        break; 
+        break;
       }
       default: {
         break;

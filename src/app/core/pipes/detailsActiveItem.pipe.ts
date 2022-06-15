@@ -6,15 +6,14 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DetailsActiveItemPipe implements PipeTransform {
   transform(options: any[], template?: string): any {
     const option = options.find((item) => item.active);
-
     switch (template) {
       default: {
         return {
-          name: option.name,
-          svg: option.svg
-            ? `assets/svg/${option.folder}/ic_${option.svg}.svg`
+          name: option?.name,
+          svg: option?.svg
+            ? `assets/svg/${option?.folder}/ic_${option?.svg}.svg`
             : null,
-          folder: option.folder,
+          folder: option?.folder,
         };
       }
     }

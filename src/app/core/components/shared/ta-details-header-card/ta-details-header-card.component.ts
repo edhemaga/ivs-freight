@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-ta-details-header-card',
   templateUrl: './ta-details-header-card.component.html',
   styleUrls: ['./ta-details-header-card.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
 export class TaDetailsHeaderCardComponent implements OnInit {
   @Input() cardDetailsName: string = '';
@@ -15,7 +16,13 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Input() tooltipPrevious: string = '';
   @Input() searchName: string = '';
   @Input() options: any = [];
+  @Input() public optionsDrop: any = [];
   @Input() statusInactive: number = 1;
+  @Input() haveTwoInput:boolean;
+  @Input() searchInputName:string;
+  @Input() hasArrow:boolean;
+  @Input() public optionsId: number;
+  @Output() public dropActions = new EventEmitter<any>();
   @Output() selectValue = new EventEmitter<string>();
   @Output() changeEvent = new EventEmitter<string>();
   id: number = 0;
@@ -26,7 +33,7 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.options);
+    // console.log(this.options);
   }
 
   public onAction(action: string) {
@@ -38,9 +45,11 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   }
 
   public onSelecItem(emit: any): void {
-    console.log('FROM DETAILS HEADER CARD');
-    console.log(emit);
     this.selectValue.emit(emit);
     this.selectedDropdown = false;
+  }
+
+  public dropAct(action: any) {
+    this.dropActions.emit(action);
   }
 }

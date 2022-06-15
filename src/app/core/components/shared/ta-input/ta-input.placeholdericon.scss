@@ -123,4 +123,12 @@
   &.input-big {
     top: 2.7px;
   }
+
+  &.repair-shop-oh {
+    svg {
+      path {
+        fill: #b7b7b7 !important;
+      }
+    }
+  }
 }

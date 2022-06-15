@@ -21,6 +21,7 @@ export interface RepairShopResponse {
     name?: string | null;
     companyId?: number;
     phone?: string | null;
+    phoneExt?: string | null;
     email?: string | null;
     address?: AddressEntity;
     status?: number;

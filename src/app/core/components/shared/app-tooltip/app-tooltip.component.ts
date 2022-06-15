@@ -22,7 +22,6 @@ export class AppTooltipComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.bindTemplete();
   }
-
   bindTemplete() {
     if (this.ngbTooltop) {
       this.ngbTooltop.tooltipClass = 'app-main-tooltip';
