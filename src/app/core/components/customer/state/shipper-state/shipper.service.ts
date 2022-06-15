@@ -1,21 +1,20 @@
+import { ShipperService } from './../../../../../../../appcoretruckassist/api/shipper.service';
 import { Injectable } from '@angular/core';
-import { BrokerService, GetBrokerListResponse } from 'appcoretruckassist';
+import { ShipperListResponse } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class BrokerTService {
+export class ShipperTService {
   constructor(
-    private brokerService: BrokerService,
-  /*   private customerQuery: BrokerQuery,
-    private customerStore: CustomerStore, */
+    private shipperService: ShipperService,
     private tableService: TruckassistTableService,
   ) {}
 
-  // Get Driver List
-  public getCustomers(
+  // Get Shipper List
+  public getShippersList(
     active?: number,
     pageIndex?: number,
     pageSize?: number,
@@ -24,7 +23,7 @@ export class BrokerTService {
     search?: string,
     search1?: string,
     search2?: string
-  ): Observable<GetBrokerListResponse> {
-    return this.brokerService.apiBrokerListGet(active, pageIndex, pageSize);
+  ): Observable<ShipperListResponse> {
+    return this.shipperService.apiShipperListGet(active, pageIndex, pageSize);
   }
 }

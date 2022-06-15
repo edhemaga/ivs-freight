@@ -9,6 +9,8 @@ import {
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { BrokerQuery } from '../state/broker-state/broker.query';
+import { BrokerState } from '../state/broker-state/broker.store';
 
 @Component({
   selector: 'app-customer-table',
@@ -24,10 +26,12 @@ export class CustomerTableComponent implements OnInit {
   public columns: any[] = [];
   public selectedTab = 'broker';
   resetColumns: boolean;
+  public brokers: BrokerState[] = [];
 
   constructor(
     private modalService: ModalService,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private brokerQuery: BrokerQuery
   ) {}
 
   ngOnInit(): void {
@@ -94,7 +98,7 @@ export class CustomerTableComponent implements OnInit {
         title: 'Broker',
         field: 'broker',
         length: 8,
-        data: this.getDumyData(8, 'broker'),
+        data: this.getBrokerShipperTabData('broker'),
         extended: false,
         isCustomer: true,
         gridNameTitle: 'Broker',
@@ -105,7 +109,7 @@ export class CustomerTableComponent implements OnInit {
         title: 'Shipper',
         field: 'shipper',
         length: 15,
-        data: this.getDumyData(15, 'shipper'),
+        data: this.getBrokerShipperTabData('shipper'),
         extended: false,
         isCustomer: true,
         gridNameTitle: 'Shipper',
@@ -113,6 +117,9 @@ export class CustomerTableComponent implements OnInit {
         gridColumns: this.getGridColumns('shippers', this.resetColumns),
       },
     ];
+
+    console.log('Table Data');
+    console.log(this.tableData);
 
     const td = this.tableData.find((t) => t.field === this.selectedTab);
 
@@ -137,135 +144,29 @@ export class CustomerTableComponent implements OnInit {
     this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
+    this.viewData = this.viewData.map((data: any) => {
+      return this.mapBrokerData(data);
     });
+
+    console.log('setCustomerData')
+    console.log(this.viewData)
   }
 
-  getDumyData(numberOfCopy: number, dataType: string) {
-    let dataBroker: any[] = [
-      {
-        id: 61,
-        companyId: 1,
-        predefinedBrokerId: null,
-        name: 'ROADTEX YOUNGSTOWN',
-        address: null,
-        street: 'Southern Blvd, Dayton, OH, USA',
-        city: 'Dayton',
-        state: 'Oh',
-        country: 'US',
-        zip: '',
-        longitude: -84.198938,
-        latitude: 39.760973,
-        email: null,
-        phone: null,
-        upCount: 2,
-        downCount: 0,
-        loadCount: 10,
-        total: '$12,500',
-        thumbUp: 221,
-        thumbDown: null,
-        latestComment: 'juhuuuuuhuhu',
-        status: 1,
-        mcNumber: '54',
-        hasBillingContact: 0,
-        dnu: 0,
-        ban: 0,
-        protected: 1,
-        doc: {
-          email: '',
-          phone: '(330) 423-4727',
-          address: {
-            city: 'Dayton',
-            state: 'Ohio',
-            address: 'Southern Blvd, Dayton, OH, USA',
-            country: 'US',
-            zipCode: '',
-            streetName: 'Southern Boulevard',
-            streetNumber: '',
-            stateShortName: 'OH',
-          },
-          dbaName: '',
-          addressUnit: 'D',
-          contactPersons: [],
-        },
-        createdAt: null,
-        updatedAt: null,
-        guid: '3511a282-4f64-4b32-9d7e-e5777aee9711',
-        textDbaName: '',
-        textPhone: '(330) 423-4727',
-        textEmail: '',
-        textAddress: 'Southern Blvd, Dayton, OH, USA',
-        isSelected: false,
-      },
-    ];
-
-    let dataShippers: any[] = [
-      {
-        id: 29,
-        companyId: 1,
-        name: 'PH FOOD MORTON',
-        address: null,
-        street: null,
-        city: null,
-        state: null,
-        country: null,
-        zip: null,
-        longitude: -89.654816,
-        latitude: 32.357247,
-        email: null,
-        phone: null,
-        upCount: 0,
-        downCount: 0,
-        pickupCount: 7,
-        deliveryCount: 0,
-        loadCount: 0,
-        total: '$4,498',
-        thumbUp: null,
-        thumbDown: null,
-        latestComment: null,
-        status: 1,
-        doc: {
-          email: '',
-          phone: '(601) 732-8670',
-          address: {
-            city: 'Morton',
-            state: 'Mississippi',
-            address: '4013 US-80, Morton, MS 39117, USA',
-            country: 'US',
-            zipCode: '39117',
-            streetName: 'U.S. 80',
-            streetNumber: '4013',
-            stateShortName: 'MS',
-          },
-          addressUnit: '',
-          appointments: 1,
-          contactPersons: [],
-          receivingHours: '',
-        },
-        protected: null,
-        createdAt: null,
-        updatedAt: null,
-        guid: '6628a080-baed-4a85-8933-ed656785957b',
-        textDbaName: '',
-        textPhone: '(601) 732-8670',
-        textEmail: '',
-        textAddress: '4013 US-80, Morton, MS 39117, USA',
-      },
-    ];
-
-    let data: any[] = [];
-
-    for (let i = 0; i < numberOfCopy; i++) {
-      if (dataType === 'broker') {
-        data.push(dataBroker[0]);
-      } else {
-        data.push(dataShippers[0]);
-      }
+  mapBrokerData(data: any){
+    return {
+      ...data,
+      isSelected: false
     }
+  }
 
-    return data;
+  getBrokerShipperTabData(dataType: string) {
+    if(dataType === 'Broker'){
+      this.brokers = this.brokerQuery.getAll();
+
+      return this.brokers?.length ? this.brokers : [];
+    }else{
+      return [];
+    }
   }
 
   public onTableBodyActions(event: any) {

@@ -10,6 +10,7 @@ import { DriverResolver } from './core/components/driver/state/driver.resolver';
 import { HelperComponent } from './core/components/authentication/helper/helper.component';
 import { TruckResolver } from './core/components/truck/state/truck.resolver';
 import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
+import { BrokerResolver } from './core/components/customer/state/broker-state/broker.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -83,6 +84,7 @@ const routes: Routes = [
         m => m.CustomerModule
       ),
     canActivate: [AuthGuard],
+    resolve: { broker: BrokerResolver },
   },
   {
     path: 'load',
