@@ -1,19 +1,16 @@
-import { SignInResponse } from './../../../../../../appcoretruckassist/model/signInResponse';
 import { AuthStoreService } from './../state/auth.service';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
 import { NotificationService } from '../../../services/notification/notification.service';
-import { SpinnerService } from '../../../services/spinner/spinner.service';
-import { AccountService, SignInCommand } from 'appcoretruckassist';
 import { emailRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { TaInputService } from '../../shared/ta-input/ta-input.service';
 
 @Component({
   selector: 'app-login',
@@ -21,74 +18,42 @@ import { emailRegex } from '../../shared/ta-input/ta-input.regex-validations';
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements OnInit, AfterViewInit {
+export class LoginComponent implements OnInit, OnDestroy {
   public loginForm: FormGroup;
-  passwordType = 'text';
-  copyrightYear!: number;
-  inputText!: false;
-  passwordText!: false;
+  public copyrightYear!: number;
 
   constructor(
     private formBuilder: FormBuilder,
     private authStoreService: AuthStoreService,
     private notification: NotificationService,
-    private router: Router,
-    private spinner: SpinnerService,
-    private shared: SharedService,
-    private accountService: AccountService
-  ) {
-    this.createForm();
-  }
+    private inputService: TaInputService
+  ) {}
 
   ngOnInit() {
     this.copyrightYear = moment().year();
+    this.createForm();
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.passwordType = 'password';
-    }, 500);
-  }
-
-  /**
-   * User login function
-   *
-   * @param e Any
-   */
-  public userLogin(e: any): any {
-    e.preventDefault();
-    if (!this.shared.markInvalid(this.loginForm)) {
+  public userLogin() {
+    if (this.loginForm.invalid) {
+      this.inputService.markInvalid(this.loginForm);
       return false;
     }
-    const data: SignInCommand = this.loginForm.value;
-    this.accountService.apiAccountLoginPost(data).subscribe(
-      (res: SignInResponse) => {
-        console.log(res);
-        localStorage.setItem(
-          'multiple_companies',
-          JSON.stringify(res.companies)
-        );
-        localStorage.setItem(
-          'token',
-          JSON.stringify(res.token)
-        );
-        const url =
-          res.companies.length <= 1 ? '/dashboard' : '/select-company';
-        this.notification.success('Login is success', 'Success');
-        console.log(url)
-        setTimeout(() => {
-          this.router.navigate([url]);
-        }, 1000);
-        this.spinner.show(false);
-      },
-      (error: any) => {
-        error ? this.shared.handleServerError() : null;
-      }
-    )
-  }
 
-  manageInputValidation(formElement: any) {
-    return this.shared.manageInputValidation(formElement);
+    this.authStoreService
+      .accountLogin(this.loginForm.value)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notification.success('Login is success', 'Success');
+        },
+        error: () => {
+          this.notification.error(
+            'Something went wrong. Please try again.',
+            'Error:'
+          );
+        },
+      });
   }
 
   private createForm() {
@@ -98,11 +63,5 @@ export class LoginComponent implements OnInit, AfterViewInit {
     });
   }
 
-  get email() {
-    return this.loginForm.get('email');
-  }
-
-  get password() {
-    return this.loginForm.get('password');
-  }
+  ngOnDestroy(): void {}
 }

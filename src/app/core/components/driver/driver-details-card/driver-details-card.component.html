@@ -8,6 +8,9 @@
     [cardDetailsDate]="data.hired | formatDateP"
     [cardDetailsDateTerminated]="data.dateTerminated | formatDateP"
     [statusInactive]="data.status"
+    [options]="driversDropdowns"
+    (selectValue)="onSelectedDriver($event)"
+    (changeEvent)="onChangeDriver($event)"
   >
     <div class="driver-container">
       <div class="driver-personal">
@@ -131,7 +134,6 @@
               mainTooltip="View in Modal"
               position="top"
               style="margin-left: 40px"
-            
             >
               <svg-icon
                 class="open-modal-icon"
@@ -153,7 +155,9 @@
                   src="assets/svg/common/trailers/ic_trailer_container.svg"
                 ></svg-icon>
               </span>
-              <p class="assignTo-value" style="margin-left: 6px !important;">R4578</p>
+              <p class="assignTo-value" style="margin-left: 6px !important">
+                R4578
+              </p>
             </div>
             <span
               style="margin-left: 33px"
@@ -231,10 +235,9 @@
             <div class="addres-name">{{ offDuty?.nickname }}</div>
             <div class="addres-value-icon">
               <div class="addres-value">
-          
-
-                {{ offDuty?.address.addressUnit }} {{ offDuty?.address.address }},    
-                {{ offDuty?.address.city }}, {{ offDuty.address.stateShortName }}
+                {{ offDuty?.address.addressUnit }}
+                {{ offDuty?.address.address }}, {{ offDuty?.address.city }},
+                {{ offDuty.address.stateShortName }}
                 {{ offDuty?.address.zipCode }}, {{ offDuty?.address.country }}
               </div>
               <span
@@ -392,15 +395,15 @@
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
         [cardName]="data.owner ? 'Owner Details' : 'Owner - Sole Proprietor'"
-        [isCardOpen]="data.owner ? true:false"
-        [hasArrow]="data.owner ? true:false"
+        [isCardOpen]="data.owner ? true : false"
+        [hasArrow]="data.owner ? true : false"
       >
-        <div *ngIf="data.owner"  class="purchase-template">
-          <div  class="purchase-template-item">
+        <div *ngIf="data.owner" class="purchase-template">
+          <div class="purchase-template-item">
             <div class="purchase-template-item-name">Company</div>
             <div class="purchase-icon-copy">
-              <div  class="purchase-template-item-value owner-name">
-                {{data.owner.name }}
+              <div class="purchase-template-item-value owner-name">
+                {{ data.owner.name }}
               </div>
               <span
                 tooltipBackground="#6c6c6c"
@@ -416,9 +419,9 @@
             </div>
           </div>
           <div class="purchase-template-item second-name">
-            <div  class="purchase-template-item-name">EIN</div>
+            <div class="purchase-template-item-name">EIN</div>
             <div class="purchase-icon-copy" [ngClass]="{ copied: copiedEin }">
-              <div  class="purchase-template-item-value">
+              <div class="purchase-template-item-value">
                 {{ data.owner.ssnEin | formatEinP }}
               </div>
               <span
@@ -426,10 +429,8 @@
                 ngbTooltip
                 [mainTooltip]="copiedEin ? 'Copied' : 'Copy'"
                 position="top"
-                
               >
                 <svg-icon
-                 
                   (click)="copyText(data.owner.ssnEin, 'ein')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
@@ -476,9 +477,9 @@
       >
         <div class="charts-template perfomance">
           <app-tab-switcher
-           [tabs]="tabsDriver"
-           (switchClicked)="changeTab($event)"
-           [customClass]="'chart-tabs'"
+            [tabs]="tabsDriver"
+            (switchClicked)="changeTab($event)"
+            [customClass]="'chart-tabs'"
           >
           </app-tab-switcher>
           <!-- <app-ta-input-radiobuttons [buttons]="buttonsArray">

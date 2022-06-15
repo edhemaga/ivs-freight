@@ -1,5 +1,5 @@
 <table>
-  <tbody>
+  <tbody *ngIf="viewData.length">
     <!-- Pined -->
     <div class="pined-tr">
       <tr
@@ -1376,7 +1376,7 @@
               ></app-dispatcher-note> -->
               <app-app-note
                 [note]="
-                  row.additionalData?.note ? row.additionalData?.note : ''
+                  row?.note ? row.note : ''
                 "
                 [note_expanded]="false"
                 [rowIndex]="i"
@@ -1402,7 +1402,7 @@
   </tbody>
 </table>
 
-<div class="show-more-container">
+<div class="show-more-container" *ngIf="viewData.length">
   <div class="showing">6 of 6 Showing</div>
   <div class="show-more">Show More</div>
 </div>

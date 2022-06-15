@@ -128,7 +128,7 @@
                   placeholderIcon: 'address',
                   textTransform: 'capitalize'
                 }"
-                (selectedAddress)="onHandlePhysicalAddress($event)"
+                (selectedAddress)="onHandleAddress($event, 'physical-address')"
               ></app-ta-input-address>
             </div>
             <div class="col-2">
@@ -179,7 +179,7 @@
                   placeholderIcon: 'address',
                   textTransform: 'capitalize'
                 }"
-                (selectedAddress)="onHandlePhysicalPoBoxCityAddress($event)"
+                (selectedAddress)="onHandleAddress($event, 'physical-pobox')"
               ></app-ta-input-address>
             </div>
           </div>
@@ -225,7 +225,7 @@
                     placeholderIcon: 'address',
                     textTransform: 'capitalize'
                   }"
-                  (selectedAddress)="onHandleBillingAddress($event)"
+                  (selectedAddress)="onHandleAddress($event, 'billing-address')"
                 ></app-ta-input-address>
               </div>
               <div class="col-2">
@@ -276,7 +276,7 @@
                     placeholderIcon: 'address',
                     textTransform: 'capitalize'
                   }"
-                  (selectedAddress)="onHandleBillingPoBoxCityAddress($event)"
+                  (selectedAddress)="onHandleAddress($event, 'billing-pobox')"
                 ></app-ta-input-address>
               </div>
             </div>
@@ -467,7 +467,7 @@
           [isCommentData]="true"
           [hasBodyData]="reviews.length"
           [hasScrollBody]="reviews.length > 6"
-          (onActionEvent)="addNewReview($event)"
+          (onActionEvent)="createReview($event)"
         >
           <div class="no-review-broker" *ngIf="!reviews.length">
             <svg-icon

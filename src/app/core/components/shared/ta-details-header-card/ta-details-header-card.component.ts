@@ -4,41 +4,43 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-ta-details-header-card',
   templateUrl: './ta-details-header-card.component.html',
-  styleUrls: ['./ta-details-header-card.component.scss']
+  styleUrls: ['./ta-details-header-card.component.scss'],
 })
 export class TaDetailsHeaderCardComponent implements OnInit {
-  
-  @Input() cardDetailsName:string='';
-  @Input() cardDetailsDate:any;
-  @Input() cardDetailsDateTerminated:string=null;
-  @Input() hasSvgHeader:string='';
-  @Input() tooltipNext:string='';
-  @Input() tooltipPrevious:string='';
-  @Input() searchName:string='';
-  @Input() optionsCmp:any=[];
-  @Input() statusInactive:number=1;
-  @Output() selectValue=new EventEmitter<string>();
-  @Output() nextValue=new EventEmitter<any>();
-  @Output() previousValue=new EventEmitter<any>();
-  id:number=0;
+  @Input() cardDetailsName: string = '';
+  @Input() cardDetailsDate: any;
+  @Input() cardDetailsDateTerminated: string = null;
+  @Input() hasSvgHeader: string = '';
+  @Input() tooltipNext: string = '';
+  @Input() tooltipPrevious: string = '';
+  @Input() searchName: string = '';
+  @Input() options: any = [];
+  @Input() statusInactive: number = 1;
+  @Output() selectValue = new EventEmitter<string>();
+  @Output() changeEvent = new EventEmitter<string>();
+  id: number = 0;
   public inputFormControl: FormControl = new FormControl();
 
+  public selectedDropdown: boolean = false;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
-  }
-  onSelectDetail(val:any){
-    console.log(val);
-    this.selectValue.emit(val)
+    console.log(this.options);
   }
 
-  onNextAction(){
-
-    this.nextValue.emit();
-    
+  public onAction(action: string) {
+    this.changeEvent.emit(action);
   }
-  onPreviousAction(val:any){
-    this.previousValue.emit(val);   
+
+  public onPickItem(): void {
+    this.selectedDropdown = true;
+  }
+
+  public onSelecItem(emit: any): void {
+    console.log('FROM DETAILS HEADER CARD');
+    console.log(emit);
+    this.selectValue.emit(emit);
+    this.selectedDropdown = false;
   }
 }

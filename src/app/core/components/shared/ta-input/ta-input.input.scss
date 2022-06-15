@@ -107,6 +107,19 @@
     }
   }
 
+  &.password-eye-invalid {
+    background-color: #ef5350 !important;
+    color: #ffffff;
+
+    &::-moz-selection {
+      background-color: #e57373 !important;
+    }
+
+    &::selection {
+      background-color: #e57373 !important;
+    }
+  }
+
   &.has-input-icon {
     padding-left: 37px;
   }
@@ -160,6 +173,34 @@
   //------------------------- Custom class -------------------------
   &.input-big {
     height: 32px;
+  }
+
+  &.input-big-font-20 {
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  &.details-pages {
+    background-color: #6c6c6c !important;
+
+    &::-webkit-input-placeholder {
+      color: #b7b7b7 !important;
+    }
+    &::-moz-placeholder {
+      color: #b7b7b7 !important;
+    }
+
+    &:-ms-input-placeholder {
+      color: #b7b7b7 !important;
+    }
+
+    &::-ms-input-placeholder {
+      color: #b7b7b7 !important;
+    }
+
+    &::placeholder {
+      color: #b7b7b7 !important;
+    }
   }
 }
 

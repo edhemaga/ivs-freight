@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpResponseBase } from '@angular/common/http';
+import { HttpHeaders, HttpResponseBase } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -12,95 +12,104 @@ import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 import { SetNewPasswordCommand } from 'appcoretruckassist/model/setNewPasswordCommand';
+import { throws } from 'assert';
+import { configFactory } from 'src/app/app.config';
 
 @Component({
-    selector: 'app-create-new-password-page',
-    templateUrl: './create-new-password-page.component.html',
-    styleUrls: ['./create-new-password-page.component.scss'],
+  selector: 'app-create-new-password-page',
+  templateUrl: './create-new-password-page.component.html',
+  styleUrls: ['./create-new-password-page.component.scss'],
 })
 export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
-    public createNewPasswordForm: FormGroup;
+  public createNewPasswordForm: FormGroup;
 
-    public copyrightYear: number;
+  public copyrightYear: number;
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private inputService: TaInputService,
-        private authStoreService: AuthStoreService,
-        private notification: NotificationService,
-        private router: Router
-    ) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private authStoreService: AuthStoreService,
+    private notification: NotificationService,
+    private router: Router
+  ) {}
 
-    ngOnInit(): void {
-        this.createForm();
+  ngOnInit(): void {
+    this.createForm();
 
-        this.passwordsNotSame();
+    this.passwordsNotSame();
 
-        this.copyrightYear = moment().year();
-    }
+    this.copyrightYear = moment().year();
+  }
 
-    private createForm(): void {
-        this.createNewPasswordForm = this.formBuilder.group({
-            newPassword: [null, Validators.required],
-            confirmNewPassword: [null, Validators.required],
-        });
-    }
+  private createForm(): void {
+    this.createNewPasswordForm = this.formBuilder.group({
+      newPassword: [null, Validators.required],
+      confirmNewPassword: [null, Validators.required],
+    });
+  }
 
-    public passwordsNotSame(): void {
-        this.createNewPasswordForm
-            .get('confirmNewPassword')
-            .valueChanges.pipe(untilDestroyed(this))
-            .subscribe(value => {
-                if (
-                    value?.toLowerCase() ===
-                    this.createNewPasswordForm
-                        .get('newPassword')
-                        .value?.toLowerCase()
-                ) {
-                    this.createNewPasswordForm
-                        .get('confirmNewPassword')
-                        .setErrors(null);
-                } else {
-                    this.createNewPasswordForm
-                        .get('confirmNewPassword')
-                        .setErrors({
-                            invalid: true,
-                        });
-                }
-            });
-    }
-
-    public onCreateNewPassword(): void {
-        if (this.createNewPasswordForm.invalid) {
-            this.inputService.markInvalid(this.createNewPasswordForm);
-            return;
+  public passwordsNotSame(): void {
+    this.createNewPasswordForm
+      .get('confirmNewPassword')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe(value => {
+        if (
+          value?.toLowerCase() ===
+          this.createNewPasswordForm.get('newPassword').value?.toLowerCase()
+        ) {
+          this.createNewPasswordForm.get('confirmNewPassword').setErrors(null);
+        } else {
+          this.createNewPasswordForm.get('confirmNewPassword').setErrors({
+            invalid: true,
+          });
         }
+      });
+  }
 
-        const newData: SetNewPasswordCommand = {
-            newPassword: this.createNewPasswordForm.get('newPassword').value,
-        };
+  public onCreateNewPassword(): void {
+    if (this.createNewPasswordForm.invalid) {
+      this.inputService.markInvalid(this.createNewPasswordForm);
+      return;
+    }
+
+    let headers = null;
+
+    const newData: SetNewPasswordCommand = {
+      newPassword: this.createNewPasswordForm.get('newPassword').value,
+    };
+
+    this.authStoreService.getForgotPassword$
+      .pipe(untilDestroyed(this))
+      .subscribe(token => {
+        /*  headers = new HttpHeaders({
+          'Content-Type': 'application/json; charset=utf-8',
+          Authorization: `Bearer ${token}`,
+        }); */
+        console.log(token);
+        configFactory(token);
 
         this.authStoreService
-            .createNewPassword(newData)
-            .pipe(untilDestroyed(this))
-            .subscribe({
-                next: (res: HttpResponseBase) => {
-                    if (res.status === 200 || res.status === 204) {
-                        this.notification.success(
-                            'Password changed successfully',
-                            'Success'
-                        );
+          .createNewPassword(newData)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: HttpResponseBase) => {
+              if (res.status === 200 || res.status === 204) {
+                this.notification.success(
+                  'Password changed successfully',
+                  'Success'
+                );
 
-                        this.router.navigate([
-                            '/login/forgot-password/password-changed',
-                        ]);
-                    }
-                },
-                error: err => {
-                    this.notification.error(err, 'Error');
-                },
-            });
-    }
+                this.router.navigate([
+                  '/auth/forgot-password/password-changed',
+                ]);
+              }
+            },
+            error: err => {
+              this.notification.error(err, 'Error');
+            },
+          });
+      });
+  }
 
-    ngOnDestroy(): void {}
+  ngOnDestroy(): void {}
 }

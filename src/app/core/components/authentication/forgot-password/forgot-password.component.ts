@@ -1,5 +1,5 @@
 import { HttpResponseBase } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -14,87 +14,70 @@ import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 import { ForgotPasswordCommand } from 'appcoretruckassist/model/forgotPasswordCommand';
-import { tap } from 'rxjs';
 
 @Component({
-    selector: 'app-forgot-password',
-    templateUrl: './forgot-password.component.html',
-    styleUrls: ['./forgot-password.component.scss'],
+  selector: 'app-forgot-password',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss'],
 })
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
-    public forgotPasswordForm!: FormGroup;
+  public forgotPasswordForm!: FormGroup;
 
-    public copyrightYear: number;
+  public copyrightYear: number;
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private authStoreService: AuthStoreService,
-        private inputService: TaInputService,
-        private notification: NotificationService,
-        private router: Router
-    ) {
-        this.createForm();
+  constructor(
+    private formBuilder: FormBuilder,
+    private authStoreService: AuthStoreService,
+    private inputService: TaInputService,
+    private notification: NotificationService,
+    private router: Router
+  ) {
+    this.createForm();
 
-        this.copyrightYear = moment().year();
+    this.copyrightYear = moment().year();
+  }
+
+  ngOnInit(): void {
+    this.createForm();
+  }
+
+  private createForm(): void {
+    this.forgotPasswordForm = this.formBuilder.group({
+      email: [null, [Validators.required, emailRegex]],
+    });
+  }
+
+  public onForgotPassword(): void {
+    if (this.forgotPasswordForm.invalid) {
+      this.inputService.markInvalid(this.forgotPasswordForm);
+      return;
     }
 
-    ngOnInit(): void {
-        this.createForm();
-    }
+    const resetData: ForgotPasswordCommand = {
+      email: this.forgotPasswordForm.get('email').value,
+    };
 
-    private createForm(): void {
-        this.forgotPasswordForm = this.formBuilder.group({
-            email: [null, [Validators.required, emailRegex]],
-        });
-    }
+    this.authStoreService
+      .forgotPassword(resetData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: HttpResponseBase) => {
+          if (res.status === 200 || res.status === 204) {
+            this.notification.success('Confirmation mail sent', 'Success');
 
-    public onForgotPassword(): void {
-        if (this.forgotPasswordForm.invalid) {
-            this.inputService.markInvalid(this.forgotPasswordForm);
-            return;
-        }
+            localStorage.setItem(
+              'checkEmail',
+              JSON.stringify(this.forgotPasswordForm.get('email').value)
+            );
 
-        const resetData: ForgotPasswordCommand = {
-            email: this.forgotPasswordForm.get('email').value,
-        };
+            this.router.navigate(['/auth/forgot-password/check-email']);
+          }
+        },
+        error: err => {
+          this.notification.error(err, 'Error');
+        },
+      });
+  }
 
-        this.authStoreService
-            .forgotPassword(resetData)
-            .pipe(
-                tap((res: HttpResponseBase) => console.log(res)),
-                untilDestroyed(this)
-            )
-            .subscribe({
-                next: (res: HttpResponseBase) => {
-                    if (res.status === 200 || res.status === 204) {
-                        this.notification.success(
-                            'Confirmation mail sent',
-                            'Success'
-                        );
-
-                        localStorage.setItem(
-                            'checkEmail',
-                            JSON.stringify(
-                                this.forgotPasswordForm.get('email').value
-                            )
-                        );
-
-                        this.router.navigate([
-                            '/forgot-password/check-email',
-                        ]);
-
-                        console.log(
-                            this.router.navigate([
-                                '/forgot-password/check-email',
-                            ])
-                        );
-                    }
-                },
-                error: err => {
-                    this.notification.error(err, 'Error');
-                },
-            });
-    }
-
-    ngOnDestroy(): void {}
+  ngOnDestroy(): void {}
 }

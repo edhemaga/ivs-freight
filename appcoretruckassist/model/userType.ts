@@ -11,13 +11,14 @@
  */
 
 
-export type UserType = 'Owner' | 'Admin' | 'Dispatcher' | 'Driver' | 'Broker';
+export type UserType = 'Owner' | 'Admin' | 'Dispatcher' | 'Driver' | 'User' | 'Broker';
 
 export const UserType = {
     Owner: 'Owner' as UserType,
     Admin: 'Admin' as UserType,
     Dispatcher: 'Dispatcher' as UserType,
     Driver: 'Driver' as UserType,
+    User: 'User' as UserType,
     Broker: 'Broker' as UserType
 };
 

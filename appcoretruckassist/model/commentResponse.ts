@@ -18,6 +18,8 @@ export interface CommentResponse {
     companyUser?: CompanyUserShortResponse;
     entityTypeComment?: EnumValue;
     commentContent?: string | null;
+    downRatingCount?: number;
+    upRatingCount?: number;
     createdAt?: string;
     updatedAt?: string;
 }
