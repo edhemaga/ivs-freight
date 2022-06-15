@@ -611,7 +611,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shipperContacts: [],
           });
           this.selectedAddress = reasponse.address;
-
+          this.isPhoneExtExist = reasponse.phoneExt ? true : false;
           if (reasponse.phoneExt) {
             this.isPhoneExtExist = true;
           }
