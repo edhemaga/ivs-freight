@@ -19,7 +19,11 @@
 
         <!-- FORM SECTION -->
 
-        <form [formGroup]="registerUserForm" class="d-flex flex-column">
+        <form
+          (keydown)="onKeyDown($event)"
+          [formGroup]="registerUserForm"
+          class="d-flex flex-column"
+        >
           <!-- FIRST NAME, LAST NAME -->
 
           <div class="d-flex">
@@ -31,7 +35,8 @@
                   type: 'text',
                   label: 'First Name',
                   isRequired: true,
-                  textTransform: 'capitalize'
+                  textTransform: 'capitalize',
+                  isDisabled: true
                 }"
               ></app-ta-input>
             </div>
@@ -43,7 +48,8 @@
                   type: 'text',
                   label: 'Last Name',
                   isRequired: true,
-                  textTransform: 'capitalize'
+                  textTransform: 'capitalize',
+                  isDisabled: true
                 }"
               ></app-ta-input>
             </div>
@@ -61,7 +67,8 @@
                   label: 'Address, City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
-                  textTransform: 'capitalize'
+                  textTransform: 'capitalize',
+                  isDisabled: true
                 }"
               ></app-ta-input-address>
             </div>
@@ -72,7 +79,8 @@
                   name: 'Address Unit',
                   type: 'text',
                   label: 'Unit #',
-                  maxLength: 6
+                  maxLength: 6,
+                  isDisabled: true
                 }"
               ></app-ta-input>
             </div>
@@ -90,7 +98,8 @@
                   label: 'Phone',
                   isRequired: true,
                   placeholderIcon: 'phone',
-                  mask: '(000) 000-0000'
+                  mask: '(000) 000-0000',
+                  isDisabled: true
                 }"
               ></app-ta-input>
             </div>
@@ -103,7 +112,8 @@
                   label: 'Email',
                   isRequired: true,
                   placeholderIcon: 'email',
-                  autocomplete: 'off'
+                  autocomplete: 'off',
+                  isDisabled: true
                 }"
               ></app-ta-input>
             </div>
@@ -121,7 +131,8 @@
                   label: 'Password',
                   placeholderIcon: 'password',
                   isRequired: true,
-                  autocomplete: 'off'
+                  autocomplete: 'off',
+                  autoFocus: true
                 }"
               ></app-ta-input>
             </div>

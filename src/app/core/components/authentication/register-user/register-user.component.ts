@@ -37,6 +37,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
+    this.patchForm();
+
     this.passwordsNotSame();
 
     this.copyrightYear = moment().year();
@@ -52,6 +54,17 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
       email: [null, [Validators.required, emailRegex]],
       password: [null, Validators.required],
       confirmPassword: [null, Validators.required],
+    });
+  }
+
+  private patchForm(): void {
+    this.registerUserForm.patchValue({
+      firstName: 'Tarik',
+      lastName: 'Alikadic',
+      address: 'Adija Mulabegovica 15',
+      addressUnit: '15',
+      phone: '(000) 000-0000',
+      email: 'talikadic@gmail.com',
     });
   }
 
@@ -79,12 +92,14 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const saveData: SignupUserCommand = {};
+    const { email, password } = this.registerUserForm.value;
 
-    this.notification.success('Registration is successful', 'Success');
+    const saveData: SignupUserCommand = {
+      email,
+      password,
+      code: '123',
+    };
 
-    this.router.navigate(['/register-user/account-activated']);
-    /* 
     this.authStoreService
       .signUpUser(saveData)
       .pipe(untilDestroyed(this))
@@ -99,7 +114,13 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
         error: err => {
           this.notification.error(err, 'Error');
         },
-      }); */
+      });
+  }
+
+  public onKeyDown(event: any) {
+    if (event.keyCode === 13) {
+      this.registerUser();
+    }
   }
 
   ngOnDestroy(): void {}
