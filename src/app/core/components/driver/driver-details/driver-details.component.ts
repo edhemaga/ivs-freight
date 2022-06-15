@@ -31,7 +31,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   public dataTest: any;
   public statusDriver: boolean;
   public data: any;
-  public showInc:boolean;
+  public showInc: boolean;
   public hasDangerCDL: boolean = false;
   public hasDangerMedical: boolean = false;
   public hasDangerTest: boolean = false;
@@ -44,15 +44,15 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     private driverService: DriverTService,
     private router: Router,
     private notificationService: NotificationService,
-    private detailsPageDriverSer:DetailsPageService,
+    private detailsPageDriverService: DetailsPageService,
     private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.initTableOptions();
-    this.data = this.activated_route.snapshot.data.driver;
-   
-    this.detailsPageDriverSer.pageDetailChangeId$
+    this.detailCongif(this.activated_route.snapshot.data.driver);
+
+    this.detailsPageDriverService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
         this.driverService
@@ -61,7 +61,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (res: DriverResponse) => {
               this.detailCongif(res);
-              this.router.navigate([`/driver/${res.id}/details`]);
+              if (this.router.url.includes('details')) {
+                this.router.navigate([`/driver/${res.id}/details`]);
+              }
               this.notificationService.success(
                 'Driver successfully changed',
                 'Success:'
@@ -76,99 +78,18 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             },
           });
       });
-    this.detailCongif(this.activated_route.snapshot.data.driver);
-  }
-
-  public getDanger(data:any) {
-    let arrCDl = [];
-    let arrMedical = [];
-    let arrTests = [];
-    let arrMVR = [];
-     data.cdls = data.cdls.map((ele) => {
-      if (moment(ele.expDate).isBefore(moment()) || ele.dateDeactivated || data.cdls.length==0) {
-        this.hasDangerCDL = false;
-      } else {
-        this.hasDangerCDL = true;
-      }
-      arrCDl.push(this.hasDangerCDL);
-      if (arrCDl.includes(true)) {
-        this.hasDangerCDL = false;
-      } else {
-        this.hasDangerCDL = true;
-      }
-      return {
-        ...ele,
-        showDanger: this.hasDangerCDL,
-      };
-    });
-
-    data.medicals = data.medicals.map((eleMed) => {
-      if (moment(eleMed.expDate).isBefore(moment()) || data.medicals.length==0) {
-        this.hasDangerMedical = false;
-      } else {
-        this.hasDangerMedical = true;
-      }
-      arrMedical.push(this.hasDangerMedical);
-      if (arrMedical.includes(true)) {
-        this.hasDangerMedical = false;
-      } else {
-        this.hasDangerMedical = true;
-      }
-      return {
-        ...eleMed,
-        showDanger: this.hasDangerMedical,
-      };
-    });
-
-    data.tests = data.tests.map((eleTest) => {
-      if (moment(eleTest.testingDate).isBefore(moment()) || data.tests.length==0) {
-        this.hasDangerTest = false;
-      } else {
-        this.hasDangerTest = true;
-      }
-      arrTests.push(this.hasDangerTest);
-      if (arrTests.includes(true)) {
-        this.hasDangerTest = false;
-      } else {
-        this.hasDangerTest = true;
-      }
-      return {
-        ...eleTest,
-        showDanger: this.hasDangerTest,
-      };
-    });
-    data.mvrs = data.mvrs.map((eleMvr) => {
-      console.log(eleMvr);
-      
-      if (moment(eleMvr.issueDate).isBefore(moment()) || data.mvrs.length==0) {
-        this.hasDangerMvr = false;
-      } else {
-        this.hasDangerMvr = true;
-      }
-      arrMVR.push(this.hasDangerMvr);
-      if (arrMVR.includes(true)) {
-        this.hasDangerMvr = false;
-      } else {
-        this.hasDangerMvr = true;
-      }
-      return {
-        ...eleMvr,
-        showDanger: this.hasDangerMvr,
-      };
-    });
   }
 
   /**Function template and names for header and other options in header */
   detailCongif(data: DriverResponse) {
-    this.getDanger(data);
     if (data.status == 0) {
       this.statusDriver = true;
-      this.showInc=true;
+      this.showInc = true;
     } else {
       this.statusDriver = false;
-      this.showInc=false;
+      this.showInc = false;
     }
-    
+
     this.driverDetailsConfig = [
       {
         id: 0,
@@ -182,7 +103,12 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         template: 'cdl',
         req: false,
         status: this.statusDriver,
-        hasDangerC: this.hasDangerCDL,
+        hasDangerC: data.cdls.some(
+          (el) =>
+            moment(el.expDate).isBefore(moment()) ||
+            el.dateDeactivated ||
+            data.cdls.length == 0
+        ),
         length: data.cdls?.length,
         data: data,
       },
@@ -192,7 +118,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         template: 'drug-alcohol',
         req: true,
         status: this.statusDriver,
-        hasDangerC: this.hasDangerTest,
+        hasDangerC: data.tests.some(
+          (el) =>
+            moment(el.testingDate).isBefore(moment()) || data.tests.length == 0
+        ),
         length: data.tests?.length,
         data: data,
       },
@@ -202,7 +131,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         template: 'medical',
         req: false,
         status: this.statusDriver,
-        hasDangerC: this.hasDangerMedical,
+        hasDangerC: data.medicals.some(
+          (el) =>
+            moment(el.expDate).isBefore(moment()) || data.medicals.length == 0
+        ),
         length: data.medicals?.length,
         data: data,
       },
@@ -212,7 +144,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         template: 'mvr',
         req: true,
         status: this.statusDriver,
-        hasDangerC: this.hasDangerMvr,
+        hasDangerC: data.mvrs.some(
+          (el) =>
+            moment(el.issueDate).isBefore(moment()) || data.mvrs.length == 0
+        ),
         length: data.mvrs?.length,
         data: data,
       },

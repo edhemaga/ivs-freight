@@ -23,7 +23,7 @@ import { TaskModalComponent } from '../../modals/task-modal/task-modal.component
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { AccidentModalComponent } from '../../safety/accident/accident-modal/accident-modal.component';
-import { RepairShopModalComponent } from '../../modals/repair-shop/repair-shop-modal/repair-shop-modal.component';
+import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
