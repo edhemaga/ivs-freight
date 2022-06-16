@@ -63,10 +63,7 @@
       'invalid-required-in':
         getSuperControl.value && invalidAddress && focusInput,
       'invalid-required-empty':
-        !getSuperControl.value &&
-        getSuperControl.invalid &&
-        !focusInput &&
-        touchedInput,
+        !getSuperControl.value && invalidAddress && !focusInput && touchedInput,
       'invalid-required-filled-out':
         getSuperControl.value && invalidAddress && !focusInput
     }"
@@ -87,7 +84,7 @@
       inputConfig.customClass
     }}"
     [ngClass]="{
-      'disabled': !getSuperControl.value && inputConfig.isDisabled,
+      disabled: !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-focus-in':
         activeAddress &&
@@ -115,9 +112,9 @@
       'up-label': getSuperControl.value || focusInput,
       'has-input-icon': inputConfig.placeholderIcon,
       'valid-focus-out':
-        getSuperControl.value && !invalidAddress && !focusInput,
+        getSuperControl.value && !getSuperControl.invalid && !focusInput,
       'invalid-focus-out':
-        getSuperControl.value && invalidAddress && !focusInput
+        getSuperControl.value && getSuperControl.invalid && !focusInput
     }"
   >
     {{ inputConfig.label }}
@@ -125,7 +122,11 @@
 
   <!-- Input Error Message -->
   <span
-    *ngIf="!(!getSuperControl.value && focusInput) && (touchedInput || getSuperControl.value) && invalidAddress"
+    *ngIf="
+      !(!getSuperControl.value && focusInput) &&
+      (touchedInput || getSuperControl.value) &&
+      getSuperControl.invalid
+    "
     class="input-error {{ inputConfig.customClass }}"
   >
     {{ getSuperControl.errors | inputError: inputConfig.name }}

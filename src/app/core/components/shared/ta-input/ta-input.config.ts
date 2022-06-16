@@ -19,8 +19,10 @@ export interface ITaInput {
   textAlign?: string | 'center';
   customClass?: string; // 'input-big' -> height: 32px
   autoFocus?: boolean; // focus first input in form,
-  hideClear?:boolean;
+  hideClear?: boolean;
   hideErrorMessage?: boolean;
+  // Black input only
+  blackInput?: boolean;
   // Dropdown
   isDropdown?: boolean;
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class
