@@ -145,7 +145,7 @@ export class NavigationModalsComponent {
         });
         break;
       }
-      case 'violation': {
+      case 'ltl': {
         this.modalService.openModal(RepairPmModalComponent, {
           size: 'small',
         });
