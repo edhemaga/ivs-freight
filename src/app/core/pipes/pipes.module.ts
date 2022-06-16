@@ -26,6 +26,7 @@ import { DetailsActiveItemPipe } from './detailsActiveItem.pipe';
 import { TaThousandSeparatorPipe } from './taThousandSeparator.pipe';
 import { DynamicNavHeightPipe } from '../components/navigation/pipe/dynamic-nav-card.pipe';
 import { UserDataPipe } from '../components/navigation/pipe/user-data.pipe';
+
 @NgModule({
   declarations: [
     SafeHtmlPipe,

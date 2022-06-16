@@ -30,8 +30,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
 
   public footerData: FooterData[] = footerData;
 
-  private destroy$: Subject<void> = new Subject<void>();
-
   constructor(
     private router: Router,
     private navigationService: NavigationService
@@ -93,8 +91,5 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     return item.id;
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  ngOnDestroy(): void {}
 }
