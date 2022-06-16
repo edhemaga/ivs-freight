@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-repair-pm-modal',
@@ -9,7 +10,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 export class RepairPmModalComponent implements OnInit {
   @Input() editData: any;
 
-  public pmForm: FormGroup;
+  public PMform: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -18,47 +19,45 @@ export class RepairPmModalComponent implements OnInit {
   }
 
   private createForm() {
-    this.pmForm = this.formBuilder.group({
-      pms: this.formBuilder.array([]),
+    this.PMform = this.formBuilder.group({
+      PMs: this.formBuilder.array([]),
     });
   }
 
-  public get pms(): FormArray {
-    return this.pmForm.get('pms') as FormArray;
+  public get PMs(): FormArray {
+    return this.PMform.get('PMs') as FormArray;
   }
 
   private createPMS(
     isChecked: boolean = false,
     svg: string,
-    title: string
+    title: string,
+    miles: string
   ): FormGroup {
     return this.formBuilder.group({
       isChecked: [isChecked],
       svg: [svg],
       title: [title],
-      miles: [null],
+      miles: [miles],
     });
   }
 
-  public addPMS(event: any) {
+  public addPMs(event: any) {
     if (event) {
-      this.pms.push(
+      this.PMs.push(
         this.createPMS(
           false,
           'assets/svg/common/repair-pm/ic_battery.svg',
-          'Engine Oil & Filter'
+          'Engine Oil & Filter',
+          convertNumberInThousandSep(15000)
         )
       );
     }
   }
 
-  public removePMS(id: number) {
-    this.pms.removeAt(id);
+  public removePMs(id: number) {
+    this.PMs.removeAt(id);
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {}
-
-  public addNewPM(event) {
-    this.addPMS(true);
-  }
 }

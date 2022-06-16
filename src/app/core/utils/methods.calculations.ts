@@ -1,6 +1,7 @@
 import { AbstractControl } from '@angular/forms';
 import moment from 'moment';
 
+//------------------------------- Calculating Parking Slots -------------------------------
 export const calculateParkingSlot = (
   value: string,
   formControl: AbstractControl
@@ -79,10 +80,21 @@ export const calculateParkingSlot = (
     }, 0);
 };
 
+//------------------------------- DATE TO BACKEND -------------------------------
 export const convertDateToBackend = (date: string) => {
   return new Date(date).toISOString();
 };
 
+//------------------------------- DATE FROM BACKEND -------------------------------
 export const convertDateFromBackend = (date: string) => {
   return moment(new Date(date)).format('YYYY-MM-DD');
+};
+
+//------------------------------- Convert thousand separator in number -------------------------------
+export const convertThousanSepInNumber = (value: string) => {
+  return parseFloat(value.replace(/,/g, ''));
+};
+//------------------------------- Convert number in thousand separator -------------------------------
+export const convertNumberInThousandSep = (value: number) => {
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };

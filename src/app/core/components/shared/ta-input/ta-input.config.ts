@@ -22,11 +22,13 @@ export interface ITaInput {
   hideClear?: boolean;
   hideErrorMessage?: boolean;
   // Black input only
-  blackInput?: boolean;
+  blackInput?: boolean; // has only black background && input clear, no validations
   // Dropdown
   isDropdown?: boolean;
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class
   // MultiSelect Dropdown
   multiselectDropdown?: boolean;
   multiSelectDropdownActive?: boolean;
+  // PM Modal
+  modalPM?: boolean;
 }

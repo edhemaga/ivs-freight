@@ -20,6 +20,10 @@ import { NgbDropdownConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
 import { TitleCasePipe, UpperCasePipe } from '@angular/common';
+import {
+  convertNumberInThousandSep,
+  convertThousanSepInNumber,
+} from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-ta-input',
@@ -67,6 +71,9 @@ export class TaInputComponent
   private dateTimeMainTimer: any;
 
   public capsLockOn: boolean = false;
+
+  // PM Modal Input
+  public isVisiblePmCommands: boolean = false;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -170,6 +177,10 @@ export class TaInputComponent
       this.isVisiblePasswordEye = true;
     }
 
+    if (this.inputConfig.modalPM) {
+      this.isVisiblePmCommands = true;
+    }
+
     // Datepicker
     if (
       this.inputConfig.name === 'datepicker' ||
@@ -236,6 +247,13 @@ export class TaInputComponent
   private blurOnPassword() {
     this.timeout = setTimeout(() => {
       this.isVisiblePasswordEye = false;
+      this.changeDetection.detectChanges();
+    }, 150);
+  }
+
+  private blurOnPmCommands() {
+    this.timeout = setTimeout(() => {
+      this.isVisiblePmCommands = false;
       this.changeDetection.detectChanges();
     }, 150);
   }
@@ -354,6 +372,66 @@ export class TaInputComponent
       }
       case 'uppercase': {
         this.input.nativeElement.value = this.upperCaseInput(event);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public onPmIncrementation(event: Event, action: string) {
+    event.stopPropagation();
+    event.preventDefault();
+    const value = convertThousanSepInNumber(this.getSuperControl.value);
+
+    switch (action) {
+      case 'decrement': {
+        if (value >= 10000 && value < 20000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value - 1000)
+          );
+        } else if (value >= 20001 && value < 50000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value - 3000)
+          );
+        } else if (value >= 50001 && value < 100000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value - 5000)
+          );
+        } else if (value >= 10000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value - 10000)
+          );
+        } else {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value - 500)
+          );
+        }
+        break;
+      }
+      case 'increment': {
+        if (value > 10000 && value < 20000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value + 1000)
+          );
+        } else if (value >= 20001 && value < 50000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value + 3000)
+          );
+        } else if (value >= 50001 && value < 100000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value + 5000)
+          );
+        } else if (value >= 10000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value + 10000)
+          );
+        } else {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value + 500)
+          );
+        }
         break;
       }
       default: {
