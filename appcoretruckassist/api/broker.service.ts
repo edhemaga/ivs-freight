@@ -113,7 +113,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -164,7 +164,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -229,7 +229,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -280,7 +280,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -345,7 +345,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -398,7 +398,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -448,7 +448,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -484,7 +484,6 @@ export class BrokerService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/broker/list`,
             {
-                body: deleteMultipleBrokerCommand,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -556,7 +555,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -606,7 +605,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -656,7 +655,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -718,7 +717,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -783,7 +782,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -834,7 +833,7 @@ export class BrokerService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
