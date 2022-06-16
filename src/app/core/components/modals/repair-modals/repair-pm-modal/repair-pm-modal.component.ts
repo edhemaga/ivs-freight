@@ -37,7 +37,7 @@ export class RepairPmModalComponent implements OnInit {
       isChecked: [isChecked],
       svg: [svg],
       title: [title],
-      miles: [miles],
+      miles: ['1500000'],
     });
   }
 

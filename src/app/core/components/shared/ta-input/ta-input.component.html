@@ -147,7 +147,9 @@
     *ngIf="
       inputConfig.isDropdown &&
       !inputConfig.isDisabled &&
-      (!isDropdownAddModeActive || (inputConfig.name === 'datepicker' || inputConfig.name === 'timepicker' ) ) &&
+      (!isDropdownAddModeActive ||
+        inputConfig.name === 'datepicker' ||
+        inputConfig.name === 'timepicker') &&
       !inputConfig.multiSelectDropdownActive
     "
     [ngClass]="{
@@ -241,11 +243,12 @@
     [placeholder]="inputConfig.placeholder ? inputConfig.placeholder : ''"
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
-    [mask]="inputConfig.mask"
+    mask="{{ inputConfig.mask }}"
+    thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
+    separatorLimit="99999999999999"
     [min]="inputConfig.min ? inputConfig.min : 0"
     [max]="inputConfig.max"
     [step]="inputConfig.step ? inputConfig.step : null"
-    thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
     inputformat="dd-mm-yy"
     class="input-control 
     {{ inputConfig.textTransform }} 
