@@ -1,19 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpResponseBase } from '@angular/common/http';
 
 import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import moment from 'moment';
 
+import { SignupUserCommand } from 'appcoretruckassist/model/models';
+import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
+
 import {
   emailRegex,
   phoneRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
+
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { SignupUserCommand } from 'appcoretruckassist/model/models';
 import { AuthStoreService } from '../state/auth.service';
-import { HttpResponseBase } from '@angular/common/http';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
 @Component({
@@ -23,6 +26,8 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 })
 export class RegisterUserComponent implements OnInit, OnDestroy {
   public registerUserForm!: FormGroup;
+
+  private signUpUserCode: string;
 
   public copyrightYear!: number;
 
@@ -58,14 +63,20 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
   }
 
   private patchForm(): void {
-    this.registerUserForm.patchValue({
-      firstName: 'Tarik',
-      lastName: 'Alikadic',
-      address: 'Adija Mulabegovica 15',
-      addressUnit: '15',
-      phone: '(000) 000-0000',
-      email: 'talikadic@gmail.com',
-    });
+    this.authStoreService.getSignUpUserInfo$
+      .pipe(untilDestroyed(this))
+      .subscribe((signUpUserInfo: SignUpUserInfo) => {
+        this.registerUserForm.patchValue({
+          firstName: signUpUserInfo.firstName,
+          lastName: signUpUserInfo.lastName,
+          address: signUpUserInfo.address,
+          addressUnit: signUpUserInfo.addressUnit,
+          phone: signUpUserInfo.phone,
+          email: signUpUserInfo.email,
+        });
+
+        this.signUpUserCode = signUpUserInfo.code;
+      });
   }
 
   public passwordsNotSame(): void {
@@ -97,7 +108,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
     const saveData: SignupUserCommand = {
       email,
       password,
-      code: '123',
+      code: this.signUpUserCode,
     };
 
     this.authStoreService
@@ -117,7 +128,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onKeyDown(event: any) {
+  public onKeyDown(event: any): void {
     if (event.keyCode === 13) {
       this.registerUser();
     }

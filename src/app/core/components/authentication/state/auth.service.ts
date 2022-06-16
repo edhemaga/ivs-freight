@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 
 import { AuthStore } from './auth.store';
 
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 import {
   AccountService,
@@ -14,14 +14,26 @@ import {
   SignUpCompanyCommand,
   SignupUserCommand,
 } from 'appcoretruckassist';
+import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStoreService {
+  private signUpUserInfoSubject: BehaviorSubject<SignUpUserInfo> =
+    new BehaviorSubject<SignUpUserInfo>(null);
+
   constructor(
     private authStore: AuthStore,
     private http: HttpClient,
     private accountService: AccountService
   ) {}
+
+  public getSignUpUserInfo(signUpUserInfo: SignUpUserInfo) {
+    this.signUpUserInfoSubject.next(signUpUserInfo);
+  }
+
+  get getSignUpUserInfo$() {
+    return this.signUpUserInfoSubject.asObservable();
+  }
 
   public userLogin(data: any) {
     return this.http

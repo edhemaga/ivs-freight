@@ -23,6 +23,7 @@ import { PleaseCheckEmailPageComponent } from './please-check-email-page/please-
 import { CreateNewPasswordPageComponent } from './create-new-password-page/create-new-password-page.component';
 import { PasswordChangedPageComponent } from './password-changed-page/password-changed-page.component';
 import { RegisterUserComponent } from './register-user/register-user.component';
+import { HelperSignupUserComponent } from './helper-signup-user/helper-signup-user.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { RegisterUserComponent } from './register-user/register-user.component';
     PasswordChangedPageComponent,
     RegisterComponent,
     RegisterUserComponent,
+    HelperSignupUserComponent,
   ],
   imports: [
     CommonModule,
