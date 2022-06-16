@@ -22,6 +22,14 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
+  getAccessToken(){
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log("SELECTED USER TOKEN-----------------------------------------------------");
+    console.log(user.token);
+    
+    return user.token;
+  }
+
   /**
    * User login function
    *

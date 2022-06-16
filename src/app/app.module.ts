@@ -25,8 +25,10 @@ import { NavigationSubrouteComponent } from './core/components/navigation/naviga
 import { NavigationSubrouteCardComponent } from './core/components/navigation/navigation-subroute-card/navigation-subroute-card.component';
 import { NavigationUserCompanyComponent } from './core/components/navigation/navigation-user-company/navigation-user-company.component';
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
-import { ApiModule } from 'appcoretruckassist';
+import { ApiModule, Configuration } from 'appcoretruckassist';
 import { configFactory } from './app.config';
+import { environment } from 'src/environments/environment';
+import { AuthService } from './core/services/auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -56,15 +58,22 @@ import { configFactory } from './app.config';
       timeOut: 5000,
     }),
     NgIdleModule.forRoot(),
-    ApiModule.forRoot(configFactory),
+    //ApiModule.forRoot(configFactory),
+    ApiModule
   ],
   providers: [
     GoogleMapsAPIWrapper,
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true,
-    },
+      provide: Configuration,
+      useFactory: (authService: AuthService) => new Configuration(
+        {
+          basePath: environment.API_ENDPOINT,
+          credentials: {'Bearer': authService.getAccessToken.bind(authService)}
+        }
+      ),
+      deps: [AuthService],
+      multi: false
+    }
   ],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
