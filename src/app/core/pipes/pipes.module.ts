@@ -23,6 +23,7 @@ import { SumArraysPipe } from './sum-arrays.pipe';
 import { TaSvgPipe } from './ta-svg.pipe';
 import { BlockedContentPipe } from './blockedContent.pipe';
 import { DetailsActiveItemPipe } from './detailsActiveItem.pipe';
+import { TaThousandSeparatorPipe } from './taThousandSeparator.pipe';
 @NgModule({
   declarations: [
     SafeHtmlPipe,
@@ -30,25 +31,26 @@ import { DetailsActiveItemPipe } from './detailsActiveItem.pipe';
     formatPhonePipe,
     formatEinPipe,
     formatSsnPipe,
-     // Pipes
-     InputErrorPipe,
-     SortPipe,
-     StatusPipePipe,
-     HighlightSearchPipe,
-     HosTimePipe,
-     CdkIdPipe,
-     CdkConnectPipe,
-     CalendarMonthsPipe,
-     NFormatterPipe,
-     TaSvgPipe,
-     DropdownCountPipe,
-     ReviewsSortPipe,
-     SumArraysPipe,
-     HidePasswordPipe,
-     InputTypePipe,
-     FormatRestrictionEndorsmentPipe,
-     BlockedContentPipe,
-     DetailsActiveItemPipe
+    // Pipes
+    InputErrorPipe,
+    SortPipe,
+    StatusPipePipe,
+    HighlightSearchPipe,
+    HosTimePipe,
+    CdkIdPipe,
+    CdkConnectPipe,
+    CalendarMonthsPipe,
+    NFormatterPipe,
+    TaSvgPipe,
+    DropdownCountPipe,
+    ReviewsSortPipe,
+    SumArraysPipe,
+    HidePasswordPipe,
+    InputTypePipe,
+    FormatRestrictionEndorsmentPipe,
+    BlockedContentPipe,
+    DetailsActiveItemPipe,
+    TaThousandSeparatorPipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -74,9 +76,10 @@ import { DetailsActiveItemPipe } from './detailsActiveItem.pipe';
     InputTypePipe,
     FormatRestrictionEndorsmentPipe,
     BlockedContentPipe,
-    DetailsActiveItemPipe
+    DetailsActiveItemPipe,
+    TaThousandSeparatorPipe,
   ],
-  providers:[
+  providers: [
     DatePipe,
     SortPipe,
     NFormatterPipe,
@@ -86,7 +89,7 @@ import { DetailsActiveItemPipe } from './detailsActiveItem.pipe';
     CdkIdPipe,
     HighlightSearchPipe,
     HosTimePipe,
-    SumArraysPipe
-  ]
+    SumArraysPipe,
+  ],
 })
 export class PipesModule {}

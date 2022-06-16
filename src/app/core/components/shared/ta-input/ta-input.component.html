@@ -178,6 +178,27 @@
     (click)="toggleDropdownOptions()"
   ></svg-icon>
 
+  <!-- Modal PM -,+ buttons -->
+  <div
+    *ngIf="inputConfig.modalPM && isVisiblePmCommands"
+    class="input-pm-incrementation"
+  >
+    <div class="input-pm-decrement">
+      <svg-icon
+        class="pm-svg-decrement"
+        src="assets/svg/common/ic_pm_decrement.svg"
+        (click)="onPmIncrementation($event, 'decrement')"
+      ></svg-icon>
+    </div>
+    <div class="input-pm-increment">
+      <svg-icon
+        class="pm-svg-increment"
+        src="assets/svg/common/ic_pm_increment.svg"
+        (click)="onPmIncrementation($event, 'increment')"
+      ></svg-icon>
+    </div>
+  </div>
+
   <!-- Input Icon Placeholder -->
   <svg-icon
     #t2="ngbPopover"
@@ -236,7 +257,12 @@
   >
   </svg-icon>
 
-  <!-- Input Control -->
+  <!-- Input Control 
+  
+     thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
+    separatorLimit="99999999999999"
+  
+  -->
   <input
     #input
     [type]="inputConfig.type | inputType: togglePassword"
@@ -249,8 +275,6 @@
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
     mask="{{ inputConfig.mask }}"
-    thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
-    separatorLimit="99999999999999"
     [min]="inputConfig.min ? inputConfig.min : 0"
     [max]="inputConfig.max"
     [step]="inputConfig.step ? inputConfig.step : null"
@@ -267,6 +291,7 @@
         getSuperControl.valid &&
         focusInput &&
         !isVisiblePasswordEye &&
+        !isVisiblePmCommands &&
         !inputConfig.blackInput,
       'invalid-focus-in':
         getSuperControl.value &&
@@ -274,8 +299,8 @@
         focusInput &&
         !inputConfig.blackInput,
       'password-eye':
-        inputConfig.type === 'password' &&
-        isVisiblePasswordEye &&
+        ((inputConfig.type === 'password' && isVisiblePasswordEye) ||
+          isVisiblePmCommands) &&
         !getSuperControl.invalid,
       'password-eye-invalid':
         inputConfig.type === 'password' &&

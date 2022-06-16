@@ -100,7 +100,7 @@
       </div>
     </div>
     <!-- Fake Table Card -->
-    {{hoverRowTable}}
+    {{ hoverRowTable }}
     <app-ta-custom-card
       [hasCounter]="fuelItems.length ? fuelItems.length : '0'"
       [cardName]="'Items'"
@@ -130,9 +130,18 @@
           *ngFor="let fuelItem of fuelItems.controls; let ind = index"
           cdkDrag
         >
-          <div [formGroupName]="ind" class="common-fake-table-card" (mouseenter)="hoverRowTable[ind] = true" (mouseleave)="hoverRowTable[ind] = false">
+          <div
+            [formGroupName]="ind"
+            class="common-fake-table-card"
+            (mouseenter)="hoverRowTable[ind] = true"
+            (mouseleave)="hoverRowTable[ind] = false"
+          >
             <p *ngIf="!hoverRowTable[ind]">{{ fuelItem.controls.id.value }}</p>
-            <svg-icon class="common-fake-table-card-transfer-svg" *ngIf="hoverRowTable[ind]" src="assets/svg/common/ic_transfer-array.svg"></svg-icon>
+            <svg-icon
+              class="common-fake-table-card-transfer-svg"
+              *ngIf="hoverRowTable[ind]"
+              src="assets/svg/common/ic_transfer-array.svg"
+            ></svg-icon>
             <app-ta-input-dropdown
               formControlName="itemId"
               [inputConfig]="{
@@ -160,7 +169,7 @@
                 name: 'Price',
                 type: 'text',
                 textTransform: 'capitalize',
-                mask: 'separator.2'
+                thousandSeparator: true
               }"
               (change)="onChange('price', ind)"
             ></app-ta-input>
