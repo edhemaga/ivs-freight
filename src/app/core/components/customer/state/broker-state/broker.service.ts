@@ -1,5 +1,16 @@
 import { Injectable } from '@angular/core';
-import { BrokerModalResponse, BrokerResponse, BrokerService, CreateBrokerCommand, CreateRatingCommand, CreateResponse, GetBrokerListResponse, RatingReviewService, UpdateBrokerCommand, UpdateReviewCommand } from 'appcoretruckassist';
+import {
+  BrokerModalResponse,
+  BrokerResponse,
+  BrokerService,
+  CreateBrokerCommand,
+  CreateRatingCommand,
+  CreateResponse,
+  GetBrokerListResponse,
+  RatingReviewService,
+  UpdateBrokerCommand,
+  UpdateReviewCommand,
+} from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversQuery } from '../../../driver/state/driver.query';
@@ -19,7 +30,24 @@ export class BrokerTService {
 
   // Add Broker
   public addBroker(data: CreateBrokerCommand): Observable<CreateResponse> {
-    return this.brokerService.apiBrokerPost(data);
+    return this.brokerService.apiBrokerPost(data).pipe(
+      tap((res: any) => {
+        const subBroker = this.getBrokerById(res.id).subscribe({
+          next: (broker: BrokerResponse | any) => {
+            this.brokerStore.add(broker);
+
+            this.tableService.sendActionAnimation({
+              animation: 'add',
+              tab: 'broker',
+              data: broker,
+              id: broker.id,
+            });
+
+            subBroker.unsubscribe();
+          },
+        });
+      })
+    );
   }
 
   // Update Broker
@@ -29,10 +57,6 @@ export class BrokerTService {
         const subBroker = this.getBrokerById(data.id).subscribe({
           next: (broker: BrokerResponse | any) => {
             this.brokerStore.remove(({ id }) => id === data.id);
-
-            /* broker = {
-              ...broker,
-            }; */
 
             this.brokerStore.add(broker);
 
@@ -47,12 +71,12 @@ export class BrokerTService {
           },
         });
       })
-    );;
+    );
   }
 
   // Get Broker List
   public getBrokerList(
-    ban?: number, 
+    ban?: number,
     dnu?: number,
     pageIndex?: number,
     pageSize?: number,
@@ -72,6 +96,9 @@ export class BrokerTService {
 
   // Delete Broker List
   public deleteBrokerList(brokersToDelete: any[]): Observable<any> {
+    console.log('Brokers To Delete');
+    console.log(brokersToDelete);
+
     let deleteOnBack = brokersToDelete.map((broker: any) => {
       return broker.id;
     });
@@ -93,8 +120,6 @@ export class BrokerTService {
 
   // Delete Broker By Id
   public deleteBrokerById(brokerId: number): Observable<any> {
-    console.log('Poziva se deleteBrokerById');
-
     return this.brokerService.apiBrokerIdDelete(brokerId).pipe(
       tap(() => {
         this.brokerStore.remove(({ id }) => id === id);
@@ -116,9 +141,8 @@ export class BrokerTService {
     return this.brokerService.apiBrokerModalGet();
   }
 
-  /* <---------------------------------------------------------------------------> */
+  //  <--------------------------------- Review ---------------------------------->
 
-  // Review
   public createReview(review: CreateRatingCommand): Observable<any> {
     return this.ratingReviewService.apiRatingReviewReviewPost(review);
   }

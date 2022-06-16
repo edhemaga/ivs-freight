@@ -477,6 +477,7 @@ export class ShipperService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/shipper/list`,
             {
+                body: deleteMultipleShipperCommand,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

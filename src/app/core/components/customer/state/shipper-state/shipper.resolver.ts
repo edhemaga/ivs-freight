@@ -10,7 +10,6 @@ import { ShipperState, ShipperStore } from './shipper.store';
   providedIn: 'root',
 })
 export class ShipperResolver implements Resolve<ShipperState> {
-  tableTab: number = 1;
   pageIndex: number = 1;
   pageSize: number = 25;
 
@@ -20,7 +19,7 @@ export class ShipperResolver implements Resolve<ShipperState> {
   ) {}
   resolve(): Observable<ShipperState | boolean> {
     return this.shipperService
-    .getShippersList(this.tableTab, this.pageIndex, this.pageSize)
+    .getShippersList(null, null, this.pageIndex, this.pageSize)
     .pipe(
       catchError(() => {
         return of('No shippers data...');
