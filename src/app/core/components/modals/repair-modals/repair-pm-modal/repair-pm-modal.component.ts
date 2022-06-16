@@ -30,14 +30,13 @@ export class RepairPmModalComponent implements OnInit {
   private createPMS(
     isChecked: boolean = false,
     svg: string,
-    title: string,
-    miles: string
+    title: string
   ): FormGroup {
     return this.formBuilder.group({
       isChecked: [isChecked],
       svg: [svg],
       title: [title],
-      miles: ['1500000'],
+      miles: [null],
     });
   }
 
@@ -47,8 +46,7 @@ export class RepairPmModalComponent implements OnInit {
         this.createPMS(
           false,
           'assets/svg/common/repair-pm/ic_battery.svg',
-          'Engine Oil & Filter',
-          '15000'
+          'Engine Oil & Filter'
         )
       );
     }

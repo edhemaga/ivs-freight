@@ -36,18 +36,21 @@
         getSuperControl.value &&
         getSuperControl.valid &&
         focusInput &&
-        !inputConfig.customClass?.includes('repair-shop-oh'),
+        !inputConfig.customClass?.includes('repair-shop-oh') &&
+        !inputConfig.blackInput,
       'invalid-focus-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
         focusInput &&
-        !inputConfig.isDropdown,
+        !inputConfig.isDropdown &&
+        !inputConfig.blackInput,
       'dropdown-position':
         getSuperControl.value &&
         inputConfig.isDropdown &&
         !inputConfig.isDisabled &&
         !isDropdownAddModeActive &&
-        !inputConfig.multiSelectDropdownActive,
+        !inputConfig.multiSelectDropdownActive &&
+        !inputConfig.blackInput,
       focus: focusInput,
       'password-eye':
         inputConfig.type === 'password' &&
@@ -70,7 +73,8 @@
       touchedInput &&
       getSuperControl.value &&
       getSuperControl.invalid &&
-      !focusInput
+      !focusInput &&
+      !inputConfig.blackInput
     "
     class="input-invalid-danger-mark  {{ inputConfig.customClass }}"
     src="assets/svg/common/ic_danger.svg"
@@ -86,7 +90,8 @@
       !focusInput &&
       !inputConfig.isDisabled &&
       !inputConfig.placeholderIcon &&
-      !inputConfig.isDropdown
+      !inputConfig.isDropdown &&
+      !inputConfig.blackInput
     "
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
@@ -261,9 +266,13 @@
         getSuperControl.value &&
         getSuperControl.valid &&
         focusInput &&
-        !isVisiblePasswordEye,
+        !isVisiblePasswordEye &&
+        !inputConfig.blackInput,
       'invalid-focus-in':
-        getSuperControl.value && getSuperControl.invalid && focusInput,
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        !inputConfig.blackInput,
       'password-eye':
         inputConfig.type === 'password' &&
         isVisiblePasswordEye &&
@@ -278,7 +287,8 @@
         inputConfig.isDropdown &&
         inputConfig.placeholder &&
         dropdownToggler &&
-        focusInput,
+        focusInput &&
+        !inputConfig.blackInput,
       'multiSelect-dropdown-active':
         inputConfig.multiSelectDropdownActive && focusInput
     }"
@@ -290,8 +300,6 @@
     (input)="onChange($event.target.value); transformText($event.target.value)"
     [(ngModel)]="inputConfig.mask ? '' : input.value"
   />
-
-  <!--  -->
 
   <!-- DateTime Picker -->
   <div
