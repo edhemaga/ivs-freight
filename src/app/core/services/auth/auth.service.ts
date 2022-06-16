@@ -24,10 +24,7 @@ export class AuthService {
 
   getAccessToken(){
     const user = JSON.parse(localStorage.getItem('user'));
-    console.log("SELECTED USER TOKEN-----------------------------------------------------");
-    console.log(user.token);
-    
-    return user.token;
+    return `Bearer ${user.token}`;
   }
 
   /**

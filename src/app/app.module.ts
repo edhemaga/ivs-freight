@@ -9,14 +9,13 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './core/components/shared/shared.module';
 import { ToastrModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
-import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 // ---- NAVIGATION
 import { NavigationComponent } from './core/components/navigation/navigation.component';
 import { NavigationRouteComponent } from './core/components/navigation/navigation-route/navigation-route.component';
@@ -26,9 +25,8 @@ import { NavigationSubrouteCardComponent } from './core/components/navigation/na
 import { NavigationUserCompanyComponent } from './core/components/navigation/navigation-user-company/navigation-user-company.component';
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 import { ApiModule, Configuration } from 'appcoretruckassist';
-import { configFactory } from './app.config';
 import { environment } from 'src/environments/environment';
-import { AuthService } from './core/services/auth/auth.service';
+import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
 
 @NgModule({
   declarations: [
@@ -65,13 +63,13 @@ import { AuthService } from './core/services/auth/auth.service';
     GoogleMapsAPIWrapper,
     {
       provide: Configuration,
-      useFactory: (authService: AuthService) => new Configuration(
+      useFactory: (authService: UserLoggedService) => new Configuration(
         {
           basePath: environment.API_ENDPOINT,
           credentials: {'Bearer': authService.getAccessToken.bind(authService)}
         }
       ),
-      deps: [AuthService],
+      deps: [UserLoggedService],
       multi: false
     }
   ],
