@@ -29,11 +29,13 @@ export class RepairPmModalComponent implements OnInit {
 
   private createPMS(
     isChecked: boolean = false,
+    svg: string,
     title: string,
-    miles: number
+    miles: string
   ): FormGroup {
     return this.formBuilder.group({
       isChecked: [isChecked],
+      svg: [svg],
       title: [title],
       miles: [miles],
     });
@@ -41,17 +43,24 @@ export class RepairPmModalComponent implements OnInit {
 
   public addPMS(event: any) {
     if (event) {
-      this.pms.push(this.createPMS(false, 'Engine Oil & Filter', 15000));
+      this.pms.push(
+        this.createPMS(
+          false,
+          'assets/svg/common/repair-pm/ic_battery.svg',
+          'Engine Oil & Filter',
+          '15000'
+        )
+      );
     }
   }
 
-  public removeTrucksPM(id: number) {
+  public removePMS(id: number) {
     this.pms.removeAt(id);
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {}
 
-  public addPM(event) {
+  public addNewPM(event) {
     this.addPMS(true);
   }
 }

@@ -15,11 +15,11 @@
       [isCommentData]="true"
       [isCardOpen]="pms.length"
       [hasScrollBody]="pms.length > 18"
-      (onActionEvent)="addPM($event)"
+      (onActionEvent)="addNewPM($event)"
     >
       <div
         formArrayName="pms"
-        class="common-fake-table-modal common-fake-table-modal-pm-modal"
+        class="common-fake-table-modal common-fake-table-modal-pm"
         *ngIf="pms.length"
       >
         <div class="common-fake-table-label">
@@ -31,8 +31,10 @@
           <div [formGroupName]="ind" class="common-fake-table-card">
             <app-ta-checkbox
               formControlName="isChecked"
+              [name]="ind"
               [customClass]="'regular'"
-              [disabled]="true"
+              [disabled]="false"
+              [svg]="pm.get('svg').value"
               [label]="pm.get('title').value"
             >
             </app-ta-checkbox>
@@ -45,6 +47,17 @@
                 mask: 'separator.2'
               }"
             ></app-ta-input>
+
+            <div
+              ngbTooltip
+              mainTooltip="Delete"
+              position="top"
+              tooltipBackground="#EF5350"
+              class="common-fake-table-delete"
+              (click)="removePM(ind)"
+            >
+              <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+            </div>
           </div>
         </div>
       </div>

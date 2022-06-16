@@ -529,15 +529,16 @@
     }
   }
 
-  &-pm-modal {
+  // PM MODAL
+  &-pm {
     .common-fake-table-label {
       p {
         &:nth-child(2) {
-          margin-left: 22px;
+          margin-left: 26px;
         }
 
         &:nth-child(3) {
-          margin-left: 237px;
+          margin-left: 233px;
         }
       }
     }
