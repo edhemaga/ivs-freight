@@ -60,9 +60,6 @@ export class Configuration {
 
         // init default Bearer credential
         if (!this.credentials['Bearer']) {
-            this.credentials['Bearer'] = () => {
-                return this.apiKeys['Bearer'] || this.apiKeys['Authorization'];
-            };
         }
     }
 

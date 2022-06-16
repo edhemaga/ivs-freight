@@ -112,7 +112,6 @@ export class TruckService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -165,7 +164,6 @@ export class TruckService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -215,7 +213,6 @@ export class TruckService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -317,7 +314,6 @@ export class TruckService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -409,7 +405,6 @@ export class TruckService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -459,7 +454,6 @@ export class TruckService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -509,7 +503,6 @@ export class TruckService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -571,7 +564,6 @@ export class TruckService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -636,7 +628,6 @@ export class TruckService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -687,7 +678,6 @@ export class TruckService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;

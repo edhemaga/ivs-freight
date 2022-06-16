@@ -112,7 +112,6 @@ export class DriverService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -165,7 +164,6 @@ export class DriverService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -215,7 +213,6 @@ export class DriverService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -251,7 +248,6 @@ export class DriverService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/driver/list`,
             {
-                body: deleteMultipleDriverCommand,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -318,7 +314,6 @@ export class DriverService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -410,7 +405,6 @@ export class DriverService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -460,7 +454,6 @@ export class DriverService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -510,7 +503,6 @@ export class DriverService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -572,7 +564,6 @@ export class DriverService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -637,7 +628,6 @@ export class DriverService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -688,7 +678,6 @@ export class DriverService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;

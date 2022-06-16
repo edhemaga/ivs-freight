@@ -113,7 +113,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -164,7 +163,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -229,7 +227,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -280,7 +277,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -345,7 +341,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -398,7 +393,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -448,7 +442,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -484,7 +477,6 @@ export class ShipperService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/shipper/list`,
             {
-                body: deleteMultipleShipperCommand,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -556,7 +548,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -606,7 +597,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -656,7 +646,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -718,7 +707,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -783,7 +771,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -834,7 +821,6 @@ export class ShipperService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
-            headers = headers.set('Authorization', credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
