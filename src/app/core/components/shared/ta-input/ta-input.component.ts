@@ -77,6 +77,7 @@ export class TaInputComponent
     private uppercasePipe: UpperCasePipe
   ) {
     this.superControl.valueAccessor = this;
+    // this.input.nativeElement.value = this.getSuperControl.value;
   }
 
   ngOnInit(): void {
@@ -834,17 +835,15 @@ export class TaInputComponent
         if (this.selectionInput == 0) {
           const selectedHours = this.dateTimeInputDate.getHours() + 1;
           this.dateTimeInputDate = new Date(
-            this.dateTimeInputDate.setHours(
-              selectedHours
-            )
+            this.dateTimeInputDate.setHours(selectedHours)
           );
           this.span1.nativeElement.innerHTML = (
             '0' + (selectedHours > 12 ? selectedHours - 12 : selectedHours)
           ).slice(-2);
           this.setSpanSelection(this.span1.nativeElement);
           if (selectedHours > 11) {
-            this.span3.nativeElement.innerHTML = "PM";
-          }else{
+            this.span3.nativeElement.innerHTML = 'PM';
+          } else {
             this.span3.nativeElement.innerHTML = 'AM';
           }
         } else if (this.selectionInput == 1) {
@@ -860,32 +859,31 @@ export class TaInputComponent
         } else {
           this.span3.nativeElement.innerHTML =
             this.span3.nativeElement.innerHTML == 'AM' ? 'PM' : 'AM';
-            this.dateTimeInputDate = new Date(
-              this.dateTimeInputDate.setHours(
-                this.span3.nativeElement.innerHTML == 'AM' ? this.dateTimeInputDate.getHours() % 12 : this.dateTimeInputDate.getHours() + 12
-              )
-            );
+          this.dateTimeInputDate = new Date(
+            this.dateTimeInputDate.setHours(
+              this.span3.nativeElement.innerHTML == 'AM'
+                ? this.dateTimeInputDate.getHours() % 12
+                : this.dateTimeInputDate.getHours() + 12
+            )
+          );
           this.setSpanSelection(this.span3.nativeElement);
         }
-      }else{
+      } else {
         if (this.selectionInput == 0) {
-          console.log("CLOSING ITEM");
+          console.log('CLOSING ITEM');
           console.log(this.dateTimeInputDate.getHours());
           const selectedHours = this.dateTimeInputDate.getHours() - 1;
           this.dateTimeInputDate = new Date(
-            this.dateTimeInputDate.setHours(
-              selectedHours
-            )
+            this.dateTimeInputDate.setHours(selectedHours)
           );
 
-          
           this.span1.nativeElement.innerHTML = (
             '0' + (selectedHours > 12 ? selectedHours - 12 : selectedHours)
           ).slice(-2);
           this.setSpanSelection(this.span1.nativeElement);
           if (selectedHours > 11) {
-            this.span3.nativeElement.innerHTML = "PM";
-          }else{
+            this.span3.nativeElement.innerHTML = 'PM';
+          } else {
             this.span3.nativeElement.innerHTML = 'AM';
           }
         } else if (this.selectionInput == 1) {
@@ -901,11 +899,13 @@ export class TaInputComponent
         } else {
           this.span3.nativeElement.innerHTML =
             this.span3.nativeElement.innerHTML == 'AM' ? 'PM' : 'AM';
-            this.dateTimeInputDate = new Date(
-              this.dateTimeInputDate.setHours(
-                this.span3.nativeElement.innerHTML == 'AM' ? this.dateTimeInputDate.getHours() % 12 : this.dateTimeInputDate.getHours() + 12
-              )
-            );
+          this.dateTimeInputDate = new Date(
+            this.dateTimeInputDate.setHours(
+              this.span3.nativeElement.innerHTML == 'AM'
+                ? this.dateTimeInputDate.getHours() % 12
+                : this.dateTimeInputDate.getHours() + 12
+            )
+          );
           this.setSpanSelection(this.span3.nativeElement);
         }
       }

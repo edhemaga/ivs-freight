@@ -282,14 +282,16 @@
       'multiSelect-dropdown-active':
         inputConfig.multiSelectDropdownActive && focusInput
     }"
-    [(ngModel)]="input.value"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"
-    (input)="onChange($event.target.value); transformText($event.target.value)"
     (blur)="onBlur()"
     (focus)="onFocus()"
     (paste)="onPaste($event, inputConfig.maxLength)"
+    (input)="onChange($event.target.value); transformText($event.target.value)"
+    [(ngModel)]="inputConfig.mask ? '' : input.value"
   />
+
+  <!--  -->
 
   <!-- DateTime Picker -->
   <div
