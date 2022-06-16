@@ -137,7 +137,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
-
+    this.validateMiles();
     if (this.editData?.type === 'payroll-tab') {
       const timeout = setTimeout(() => {
         this.selectedTab = 3;
@@ -408,6 +408,30 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  private validateMiles() {
+    this.companyForm
+      .get('driverLoadedMile')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value > 10) {
+          this.companyForm.get('driverLoadedMile').setErrors({ invalid: true });
+        } else {
+          this.companyForm.get('driverLoadedMile').setErrors(null);
+        }
+      });
+
+    this.companyForm
+      .get('driverEmptyMile')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value > 10) {
+          this.companyForm.get('driverEmptyMile').setErrors({ invalid: true });
+        } else {
+          this.companyForm.get('driverEmptyMile').setErrors(null);
+        }
+      });
   }
 
   public useTruckAssist(event: any) {

@@ -138,6 +138,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.onPayTypeSelected();
     this.onTwicTypeSelected();
     this.getDriverDropdowns();
+    this.validateMiles();
 
     if (this.editData) {
       this.editDriverById(this.editData.id);
@@ -225,12 +226,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       mailNotification: [true],
       phoneCallNotification: [false],
       smsNotification: [false],
-      soloEmptyMile: [null],
-      soloLoadedMile: [null],
-      soloPerStop: [null],
-      teamEmptyMile: [null],
-      teamLoadedMile: [null],
-      teamPerStop: [null],
+      soloEmptyMile: [null, [Validators.min(0), Validators.max(10)]],
+      soloLoadedMile: [null, [Validators.min(0), Validators.max(10)]],
+      soloPerStop: [null, [Validators.min(0), Validators.max(10)]],
+      teamEmptyMile: [null, [Validators.min(0), Validators.max(10)]],
+      teamLoadedMile: [null, [Validators.min(0), Validators.max(10)]],
+      teamPerStop: [null, [Validators.min(0), Validators.max(10)]],
       commissionSolo: [25],
       commissionTeam: [25],
       twic: [false],
@@ -515,6 +516,74 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             'Error:'
           );
         },
+      });
+  }
+
+  public validateMiles() {
+    this.driverForm
+      .get('soloEmptyMile')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value > 10) {
+          this.driverForm.get('soloEmptyMile').setErrors({ invalid: true });
+        } else {
+          this.driverForm.get('soloEmptyMile').setErrors(null);
+        }
+      });
+
+    this.driverForm
+      .get('soloLoadedMile')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value > 10) {
+          this.driverForm.get('soloLoadedMile').setErrors({ invalid: true });
+        } else {
+          this.driverForm.get('soloLoadedMile').setErrors(null);
+        }
+      });
+
+    this.driverForm
+      .get('soloPerStop')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value > 10) {
+          this.driverForm.get('soloPerStop').setErrors({ invalid: true });
+        } else {
+          this.driverForm.get('soloPerStop').setErrors(null);
+        }
+      });
+
+    this.driverForm
+      .get('teamEmptyMile')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value > 10) {
+          this.driverForm.get('teamEmptyMile').setErrors({ invalid: true });
+        } else {
+          this.driverForm.get('teamEmptyMile').setErrors(null);
+        }
+      });
+
+    this.driverForm
+      .get('teamLoadedMile')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value > 10) {
+          this.driverForm.get('teamLoadedMile').setErrors({ invalid: true });
+        } else {
+          this.driverForm.get('teamLoadedMile').setErrors(null);
+        }
+      });
+
+    this.driverForm
+      .get('teamPerStop')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value > 10) {
+          this.driverForm.get('teamPerStop').setErrors({ invalid: true });
+        } else {
+          this.driverForm.get('teamPerStop').setErrors(null);
+        }
       });
   }
 

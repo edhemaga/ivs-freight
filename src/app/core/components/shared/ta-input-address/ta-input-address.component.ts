@@ -39,8 +39,6 @@ export class TaInputAddressComponent
   public activeAddress: AddressEntity;
   public invalidAddress: boolean = false;
 
-  private initValidAddress: boolean = false;
-
   public options = {
     componentRestrictions: { country: ['US', 'CA'] },
   };
@@ -52,29 +50,14 @@ export class TaInputAddressComponent
     this.superControl.valueAccessor = this;
   }
 
-  ngOnInit(): void {
-    this.getSuperControl.valueChanges
-      .pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (value && !this.initValidAddress) {
-          this.initValidAddress = true;
-          this.activeAddress = { ...this.activeAddress, address: value };
-        }
-        if (value !== this.activeAddress?.address) {
-          this.invalidAddress = true;
-          this.selectedAddress.emit({ address: null, valid: false });
-          this.getSuperControl.setErrors({ invalid: true });
-        }
-      });
-  }
+  ngOnInit(): void {}
 
   public handleAddressChange(address: AddressEntity) {
     this.activeAddress = this.sharedService.selectAddress(null, address);
     this.invalidAddress = false;
     this.selectedAddress.emit({ address: this.activeAddress, valid: true });
-    this.getSuperControl.setValue(
-      this.sharedService.selectAddress(null, address).address
-    );
+    this.getSuperControl.setValue(this.activeAddress.address);
+    this.getSuperControl.setErrors(null);
   }
 
   get getSuperControl() {
@@ -102,22 +85,18 @@ export class TaInputAddressComponent
 
     if (!this.activeAddress) {
       this.invalidAddress = true;
+      this.getSuperControl.setErrors({ invalid: true });
       this.selectedAddress.emit({ address: null, valid: false });
     }
   }
 
   public onBlur(): void {
     this.focusInput = false;
-
-    if (
-      !this.activeAddress ||
-      this.activeAddress?.address !== this.getSuperControl.value
-    ) {
-      this.invalidAddress = true;
-      this.getSuperControl.setErrors({ invalid: true });
-    }
-
     this.touchedInput = true;
+
+    if (!this.getSuperControl.value && this.inputConfig.isRequired) {
+      this.getSuperControl.setErrors({ required: true });
+    }
   }
 
   public clearInput(): void {
@@ -127,11 +106,14 @@ export class TaInputAddressComponent
     this.touchedInput = true;
     this.activeAddress = null;
     this.invalidAddress = false;
+    this.getSuperControl.setErrors(null);
+
     if (!this.inputConfig.isRequired) {
       this.selectedAddress.emit({ address: null, valid: true });
       this.getSuperControl.setErrors(null);
     } else {
       this.selectedAddress.emit({ address: null, valid: false });
+      this.invalidAddress = true;
       this.getSuperControl.setErrors({ required: true });
     }
   }
@@ -145,7 +127,7 @@ export class TaInputAddressComponent
     }
     if (this.activeAddress?.address !== this.getSuperControl.value) {
       this.invalidAddress = true;
-      // this.selectedAddress.emit({address: null, valid: false});
+      this.getSuperControl.setErrors({ invalid: true });
     }
   }
 
@@ -182,7 +164,5 @@ export class TaInputAddressComponent
     }
   }
 
-  ngOnDestroy(): void {
-    this.initValidAddress = false;
-  }
+  ngOnDestroy(): void {}
 }
