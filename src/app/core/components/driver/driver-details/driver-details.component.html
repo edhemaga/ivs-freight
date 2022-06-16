@@ -10,10 +10,11 @@
       [isInactive]="showInc"
       [hasRequest]="item.req"
       [statusInactive]="item.status"
-      [danger]="item.hasDanger"
+  
       (openModalAction)="onModalAction($event)"
     >
     </app-ta-details-header>
+    <!-- [danger]="item.hasDanger" -->
   </div>
   <div class="details-item-cmp">
     <app-driver-details-item

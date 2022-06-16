@@ -52,19 +52,21 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
   ) {}
  ngOnChanges(changes: SimpleChanges): void {
   console.log(changes);
-  
+ 
 
  }
   ngOnInit() {
-    this.initTableOptions();
 
     this.tableService.currentActionAnimation
     .pipe(untilDestroyed(this))
     .subscribe((res: any) => {
+      console.log(res.data);
       
-      this.detailCongif(res.data);
-      
+     this.detailCongif(res.data);
+     
     });
+    this.initTableOptions();
+  
     this.detailCongif(this.activated_route.snapshot.data.driver);
     this.detailsPageDriverService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
@@ -96,13 +98,13 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
 
   /**Function template and names for header and other options in header */
   detailCongif(data: DriverResponse | any) {
-    if (data.status == 0) {
-      this.statusDriver = true;
-      this.showInc = true;
-    } else {
-      this.statusDriver = false;
-      this.showInc = false;
-    }
+    // if (data.status == 0) {
+    //   this.statusDriver = true;
+    //   this.showInc = true;
+    // } else {
+    //   this.statusDriver = false;
+    //   this.showInc = false;
+    // }
 
     this.driverDetailsConfig = [
       {
@@ -117,10 +119,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
         template: 'cdl',
         req: false,
         status: this.statusDriver,
-        hasDanger: data.cdls.some(
-          (el) =>
-            moment(el.expDate).isBefore(moment())
-        ),
+        // hasDanger: data.cdls.some(
+        //   (el) =>
+        //     moment(el.expDate).isBefore(moment())
+        // ),
         length: data.cdls?.length,
         data: data,
       },
@@ -130,10 +132,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
         template: 'drug-alcohol',
         req: true,
         status: this.statusDriver,
-        hasDanger: data.tests.some(
-          (el) =>
-            moment(el.testingDate).isBefore(moment())
-        ),
+        // hasDanger: data.tests.some(
+        //   (el) =>
+        //     moment(el.testingDate).isBefore(moment())
+        // ),
         length: data.tests?.length,
         data: data,
       },
@@ -143,10 +145,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
         template: 'medical',
         req: false,
         status: this.statusDriver,
-        hasDanger: data.medicals.some(
-          (el) =>
-            moment(el.expDate).isBefore(moment())
-        ),
+        // hasDanger: data.medicals.some(
+        //   (el) =>
+        //     moment(el.expDate).isBefore(moment())
+        // ),
         length: data.medicals?.length,
         data: data,
       },
@@ -156,10 +158,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
         template: 'mvr',
         req: true,
         status: this.statusDriver,
-        hasDanger: data.mvrs.some(
-          (el) =>
-            moment(el.issueDate).isBefore(moment())
-        ),
+        // hasDanger: data.mvrs.some(
+        //   (el) =>
+        //     moment(el.issueDate).isBefore(moment())
+        // ),
         length: data.mvrs?.length,
         data: data,
       },
@@ -238,7 +240,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
           DriverDrugAlcoholModalComponent,
           { size: 'small' },
           { id: this.driverId, type: 'new-drug' }
+        
         );
+      
         break;
       }
       case 'Medical': {
