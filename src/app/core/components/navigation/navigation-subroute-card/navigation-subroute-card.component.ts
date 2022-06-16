@@ -14,6 +14,7 @@ export class NavigationSubrouteCardComponent {
    * 1 - header of subroutes
    */
   public getDynamicHeight() {
+    console.log('IZVRSAVANJE');
     return this.isNavigationCardActive ? (this.contentHeight + 1) * 29 + 5 : 0;
   }
 }
