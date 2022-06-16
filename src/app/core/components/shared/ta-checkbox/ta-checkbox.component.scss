@@ -14,25 +14,6 @@
     cursor: pointer;
   }
 
-  &.disabled {
-    pointer-events: none !important;
-    svg-icon {
-      width: 14px;
-      height: 17px;
-      position: relative;
-      bottom: 2px;
-      svg {
-        path {
-          fill: #dadada !important;
-        }
-      }
-    }
-
-    .ta-checkbox-label {
-      color: #dadada !important;
-    }
-  }
-
   /* Create a custom checkbox */
   .ta-mark {
     position: absolute;
@@ -59,11 +40,10 @@
     }
 
     &.invalid {
-      
-      background-color: #E57373;
+      background-color: #e57373;
       &:hover {
         transition: all 0.3s ease-in-out;
-        background-color: #EF5350 !important;
+        background-color: #ef5350 !important;
       }
     }
   }
@@ -93,6 +73,11 @@
     transition: all 0.3s ease-in-out;
   }
 
+  .ta-checkbox-svg {
+    margin-left: 12px;
+    margin-right: 4px;
+  }
+
   .ta-checkbox-label {
     cursor: pointer;
     color: #919191;
@@ -107,17 +92,44 @@
     user-select: none;
 
     &-required {
-      color: #E57373;
+      color: #e57373;
     }
   }
 
-  // Custom classes
-  &.medium {
-    position: relative;
-    top: 1px;
+  // -------------------------- Custom Class --------------------------------
+  &.disabled {
+    pointer-events: none !important;
+    svg-icon {
+      width: 14px;
+      height: 15px;
+      position: relative;
+      bottom: 2px;
+      svg {
+        path {
+          fill: #dadada !important;
+        }
+      }
+    }
 
     .ta-checkbox-label {
+      color: #dadada !important;
+    }
+  }
+
+  &.medium {
+    .ta-checkbox-label {
       font-weight: 500;
+      color: #6c6c6c;
+    }
+  }
+
+  &.regular {
+    label {
+      line-height: 17px;
+    }
+
+    .ta-checkbox-label {
+      font-weight: 400;
       color: #6c6c6c;
     }
   }
