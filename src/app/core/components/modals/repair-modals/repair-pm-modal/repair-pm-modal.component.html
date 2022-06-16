@@ -1,3 +1,53 @@
-<p>
-  repair-pm-modal works!
-</p>
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Truck PM' : 'Truck PM Unit 53587 '"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="pmForm.valid"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <form [formGroup]="pmForm" class="form-container">
+    <app-ta-custom-card
+      [hasCounter]="'0'"
+      [hasDivider]="false"
+      [cardName]="'Selected'"
+      [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+      [hasArrow]="false"
+      [isCommentData]="true"
+      [isCardOpen]="pms.length"
+      [hasScrollBody]="pms.length > 18"
+      (onActionEvent)="addPM($event)"
+    >
+      <div
+        formArrayName="pms"
+        class="common-fake-table-modal common-fake-table-modal-pm-modal"
+        *ngIf="pms.length"
+      >
+        <div class="common-fake-table-label">
+          <p></p>
+          <p>TITLE</p>
+          <p>MILES</p>
+        </div>
+        <div *ngFor="let pm of pms.controls; let ind = index">
+          <div [formGroupName]="ind" class="common-fake-table-card">
+            <app-ta-checkbox
+              formControlName="isChecked"
+              [customClass]="'regular'"
+              [disabled]="true"
+              [label]="pm.get('title').value"
+            >
+            </app-ta-checkbox>
+
+            <app-ta-input
+              formControlName="miles"
+              [inputConfig]="{
+                name: 'MILES',
+                type: 'text',
+                mask: 'separator.2'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+      </div>
+    </app-ta-custom-card>
+  </form>
+</app-ta-modal>
