@@ -49,10 +49,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     //   });
   }
 
-  public isUserData(text: any): boolean {
-    return text.hasOwnProperty('companyName');
-  }
-
   public onAction(index: number, action: string) {
     switch (action) {
       case 'Open User Panel': {

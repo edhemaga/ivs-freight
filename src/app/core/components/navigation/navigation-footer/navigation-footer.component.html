@@ -28,21 +28,21 @@
     >
       <p
         class="nav-footer-text"
-        *ngIf="!isUserData(item.text) && isNavigationHovered"
+        *ngIf="!(item.text | userData) && isNavigationHovered"
       >
         {{ item.text }}
       </p>
 
       <div
         class="nav-footer-user"
-        *ngIf="isUserData(item.text) && isNavigationHovered"
+        *ngIf="(item.text | userData) && isNavigationHovered"
       >
-        <p class="nav-footer-user-company"> IVS FREIGHT INC </p>
-        <p class="nav-footer-user-name"> Ivan Stoiljkovic </p>
+        <p class="nav-footer-user-company">IVS FREIGHT INC</p>
+        <p class="nav-footer-user-name">Ivan Stoiljkovic</p>
       </div>
     </div>
     <div
-      *ngIf="currentUserStatus && isUserData(item.text)"
+      *ngIf="currentUserStatus && (item.text | userData)"
       class="status-marker-container"
     >
       <div

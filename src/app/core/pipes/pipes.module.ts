@@ -24,6 +24,8 @@ import { TaSvgPipe } from './ta-svg.pipe';
 import { BlockedContentPipe } from './blockedContent.pipe';
 import { DetailsActiveItemPipe } from './detailsActiveItem.pipe';
 import { TaThousandSeparatorPipe } from './taThousandSeparator.pipe';
+import { DynamicNavHeightPipe } from '../components/navigation/pipe/dynamic-nav-card.pipe';
+import { UserDataPipe } from '../components/navigation/pipe/user-data.pipe';
 @NgModule({
   declarations: [
     SafeHtmlPipe,
@@ -51,6 +53,8 @@ import { TaThousandSeparatorPipe } from './taThousandSeparator.pipe';
     BlockedContentPipe,
     DetailsActiveItemPipe,
     TaThousandSeparatorPipe,
+    DynamicNavHeightPipe,
+    UserDataPipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -78,6 +82,8 @@ import { TaThousandSeparatorPipe } from './taThousandSeparator.pipe';
     BlockedContentPipe,
     DetailsActiveItemPipe,
     TaThousandSeparatorPipe,
+    DynamicNavHeightPipe,
+    UserDataPipe,
   ],
   providers: [
     DatePipe,
