@@ -477,6 +477,7 @@ export class BrokerService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/broker/list`,
             {
+                body: deleteMultipleBrokerCommand,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

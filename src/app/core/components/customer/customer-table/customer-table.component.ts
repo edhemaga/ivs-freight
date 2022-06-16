@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
 import {
   getBrokerColumnDefinition,
   getShipperColumnDefinition,
@@ -9,13 +11,17 @@ import {
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { BrokerQuery } from '../state/broker-state/broker.query';
+import { BrokerTService } from '../state/broker-state/broker.service';
+import { BrokerState } from '../state/broker-state/broker.store';
+import { ShipperState } from '../state/shipper-state/shipper.store';
 
 @Component({
   selector: 'app-customer-table',
   templateUrl: './customer-table.component.html',
   styleUrls: ['./customer-table.component.scss'],
 })
-export class CustomerTableComponent implements OnInit {
+export class CustomerTableComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   public tableOptions: any = {};
@@ -24,10 +30,15 @@ export class CustomerTableComponent implements OnInit {
   public columns: any[] = [];
   public selectedTab = 'broker';
   resetColumns: boolean;
+  public brokers: BrokerState[] = [];
+  public shipper: ShipperState[] = [];
 
   constructor(
     private modalService: ModalService,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private brokerQuery: BrokerQuery,
+    private brokerService: BrokerTService,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +56,60 @@ export class CustomerTableComponent implements OnInit {
           this.sendCustomerData();
         }
       });
+
+    // Add, Update Broker-Shiper
+    this.tableService.currentActionAnimation
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+         if (res.animation === 'update' && res.tab === 'broker') {
+          const updatedBroker = this.mapBrokerData(res.data);
+
+          this.viewData = this.viewData.map((broker: any) => {
+            if (broker.id === res.id) {
+              broker = updatedBroker;
+              broker.actionAnimation = 'update';
+            }
+
+            return broker;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        }
+      });
+
+      // Delete Selected Rows
+    this.tableService.currentDeleteSelectedRows
+    .pipe(untilDestroyed(this))
+    .subscribe((response: any[]) => {
+      if (response.length) {
+        this.brokerService
+          .deleteBrokerList(response)
+          .pipe(untilDestroyed(this))
+          .subscribe(() => {
+            this.viewData = this.viewData.map((broker: any) => {
+              response.map((r: any) => {
+                if (broker.id === r.id) {
+                  broker.actionAnimation = 'delete';
+                }
+              });
+
+              return broker;
+            });
+
+            const inetval = setInterval(() => {
+              this.viewData = closeAnimationAction(true, this.viewData);
+
+              clearInterval(inetval);
+            }, 1000);
+
+            this.tableService.sendRowsSelected([]);
+          });
+      }
+    });
   }
 
   public initTableOptions(): void {
@@ -93,8 +158,8 @@ export class CustomerTableComponent implements OnInit {
       {
         title: 'Broker',
         field: 'broker',
-        length: 8,
-        data: this.getDumyData(8, 'broker'),
+        length: 0,
+        data: this.getBrokerShipperTabData('broker'),
         extended: false,
         isCustomer: true,
         gridNameTitle: 'Broker',
@@ -104,8 +169,8 @@ export class CustomerTableComponent implements OnInit {
       {
         title: 'Shipper',
         field: 'shipper',
-        length: 15,
-        data: this.getDumyData(15, 'shipper'),
+        length: 0,
+        data: this.getBrokerShipperTabData('shipper'),
         extended: false,
         isCustomer: true,
         gridNameTitle: 'Shipper',
@@ -115,6 +180,9 @@ export class CustomerTableComponent implements OnInit {
     ];
 
     const td = this.tableData.find((t) => t.field === this.selectedTab);
+
+    this.tableData[0].length = this.tableData[0].data.length;
+    this.tableData[1].length = this.tableData[1].data.length;
 
     this.setCustomerData(td);
   }
@@ -137,151 +205,54 @@ export class CustomerTableComponent implements OnInit {
     this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
+    this.viewData = this.viewData.map((data: any) => {
+      return this.mapBrokerData(data);
     });
+
+    console.log('setCustomerData');
+    console.log(this.viewData);
   }
 
-  getDumyData(numberOfCopy: number, dataType: string) {
-    let dataBroker: any[] = [
-      {
-        id: 61,
-        companyId: 1,
-        predefinedBrokerId: null,
-        name: 'ROADTEX YOUNGSTOWN',
-        address: null,
-        street: 'Southern Blvd, Dayton, OH, USA',
-        city: 'Dayton',
-        state: 'Oh',
-        country: 'US',
-        zip: '',
-        longitude: -84.198938,
-        latitude: 39.760973,
-        email: null,
-        phone: null,
-        upCount: 2,
-        downCount: 0,
-        loadCount: 10,
-        total: '$12,500',
-        thumbUp: 221,
-        thumbDown: null,
-        latestComment: 'juhuuuuuhuhu',
-        status: 1,
-        mcNumber: '54',
-        hasBillingContact: 0,
-        dnu: 0,
-        ban: 0,
-        protected: 1,
-        doc: {
-          email: '',
-          phone: '(330) 423-4727',
-          address: {
-            city: 'Dayton',
-            state: 'Ohio',
-            address: 'Southern Blvd, Dayton, OH, USA',
-            country: 'US',
-            zipCode: '',
-            streetName: 'Southern Boulevard',
-            streetNumber: '',
-            stateShortName: 'OH',
-          },
-          dbaName: '',
-          addressUnit: 'D',
-          contactPersons: [],
-        },
-        createdAt: null,
-        updatedAt: null,
-        guid: '3511a282-4f64-4b32-9d7e-e5777aee9711',
-        textDbaName: '',
-        textPhone: '(330) 423-4727',
-        textEmail: '',
-        textAddress: 'Southern Blvd, Dayton, OH, USA',
-        isSelected: false,
-      },
-    ];
+  mapBrokerData(data: any) {
+    return {
+      ...data,
+      isSelected: false,
+      textAddress: data?.mainAddress
+        ? data.mainAddress.city + ', ' + data.mainAddress.state
+        : '',
+      loadCount: '',
+      total: '',
+    };
+  }
 
-    let dataShippers: any[] = [
-      {
-        id: 29,
-        companyId: 1,
-        name: 'PH FOOD MORTON',
-        address: null,
-        street: null,
-        city: null,
-        state: null,
-        country: null,
-        zip: null,
-        longitude: -89.654816,
-        latitude: 32.357247,
-        email: null,
-        phone: null,
-        upCount: 0,
-        downCount: 0,
-        pickupCount: 7,
-        deliveryCount: 0,
-        loadCount: 0,
-        total: '$4,498',
-        thumbUp: null,
-        thumbDown: null,
-        latestComment: null,
-        status: 1,
-        doc: {
-          email: '',
-          phone: '(601) 732-8670',
-          address: {
-            city: 'Morton',
-            state: 'Mississippi',
-            address: '4013 US-80, Morton, MS 39117, USA',
-            country: 'US',
-            zipCode: '39117',
-            streetName: 'U.S. 80',
-            streetNumber: '4013',
-            stateShortName: 'MS',
-          },
-          addressUnit: '',
-          appointments: 1,
-          contactPersons: [],
-          receivingHours: '',
-        },
-        protected: null,
-        createdAt: null,
-        updatedAt: null,
-        guid: '6628a080-baed-4a85-8933-ed656785957b',
-        textDbaName: '',
-        textPhone: '(601) 732-8670',
-        textEmail: '',
-        textAddress: '4013 US-80, Morton, MS 39117, USA',
-      },
-    ];
+  getBrokerShipperTabData(dataType: string) {
+    if (dataType === 'broker') {
+      this.brokers = this.brokerQuery.getAll();
 
-    let data: any[] = [];
+      console.log('Brokers Data');
+      console.log(this.brokers);
 
-    for (let i = 0; i < numberOfCopy; i++) {
-      if (dataType === 'broker') {
-        data.push(dataBroker[0]);
-      } else {
-        data.push(dataShippers[0]);
-      }
+      return this.brokers?.length ? this.brokers : [];
+    } else {
+      return [];
     }
-
-    return data;
   }
 
   public onTableBodyActions(event: any) {
-    if (this.selectedTab === 'broker') {
-      this.modalService.openModal(
+    console.log(event);
+    if (event.type === 'edit-cutomer-or-shipper' && this.selectedTab === 'broker') {
+       this.modalService.openModal(
         BrokerModalComponent,
         { size: 'small' },
         {
           ...event,
           type: 'edit',
           dnuButton: true,
-          bfbButton: true
+          bfbButton: true,
         }
       );
-    } else {
-      this.modalService.openModal(
+    } else if (event.type === 'edit-cutomer-or-shipper' && this.selectedTab === 'shipper') {
+       this.modalService.openModal(
         ShipperModalComponent,
         { size: 'small' },
         {
@@ -289,6 +260,40 @@ export class CustomerTableComponent implements OnInit {
           type: 'edit',
         }
       );
+    } else if (event.type === 'delete' && this.selectedTab === 'broker') {
+      console.log('Poziva se single delete brokera');
+
+      this.brokerService
+        .deleteBrokerById(event.id)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: () => {
+            this.notificationService.success(
+              'Broker successfully deleted',
+              'Success:'
+            );
+
+            this.viewData = this.viewData.map((broker: any) => {
+              if (broker.id === event.id) {
+                broker.actionAnimation = 'delete';
+              }
+
+              return broker;
+            });
+
+            const inetval = setInterval(() => {
+              this.viewData = closeAnimationAction(true, this.viewData);
+
+              clearInterval(inetval);
+            }, 1000);
+          },
+          error: () => {
+            this.notificationService.error(
+              `Broker with id: ${event.id} couldn't be deleted`,
+              'Error:'
+            );
+          },
+        });
     }
   }
 
@@ -298,12 +303,18 @@ export class CustomerTableComponent implements OnInit {
 
       if (this.selectedTab === 'broker') {
         this.modalService.openModal(BrokerModalComponent, { size: 'medium' });
-      } else { 
+      } else {
         this.modalService.openModal(ShipperModalComponent, { size: 'medium' });
       }
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setCustomerData(event.tabData);
     }
+  }
+
+
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+    this.tableService.sendDeleteSelectedRows([]);
   }
 }

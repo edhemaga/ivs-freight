@@ -25,7 +25,7 @@ export function getBrokerColumnDefinition() {
     {
       ngTemplate: 'customer-name',
       title: 'Name',
-      field: 'name',
+      field: 'businessName',
       name: 'Name',
       hidden: false,
       width: 300,
@@ -45,7 +45,7 @@ export function getBrokerColumnDefinition() {
     {
       ngTemplate: 'text',
       title: 'DBA',
-      field: 'textDbaName',
+      field: 'dbaName',
       name: 'DBA',
       hidden: true,
       width: 300,
@@ -65,7 +65,7 @@ export function getBrokerColumnDefinition() {
     {
       ngTemplate: 'text',
       title: 'Phone',
-      field: 'textPhone',
+      field: 'phone',
       name: 'Phone',
       hidden: false,
       width: 140,
@@ -87,7 +87,7 @@ export function getBrokerColumnDefinition() {
     {
       ngTemplate: 'text',
       title: 'Email',
-      field: 'textEmail',
+      field: 'email',
       name: 'Email',
       hidden: false,
       width: 245,
@@ -243,7 +243,7 @@ export function getBrokerColumnDefinition() {
     {
       ngTemplate: 'note',
       title: 'Note',
-      field: 'doc.additionalData.note',
+      field: 'note',
       name: '',
       hidden: false,
       width: 40,

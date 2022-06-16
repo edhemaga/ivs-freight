@@ -11,7 +11,6 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { BrokerModalService } from './broker-modal.service';
 import { BrokerModalResponse } from './../../../../../../appcoretruckassist/model/brokerModalResponse';
 import {
   BrokerResponse,
@@ -35,6 +34,7 @@ import {
   LikeDislikeModel,
   TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
+import { BrokerTService } from '../../customer/state/broker-state/broker.service';
 
 @Component({
   selector: 'app-broker-modal',
@@ -152,7 +152,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private brokerModalService: BrokerModalService,
+    private brokerModalService: BrokerTService,
     private notificationService: NotificationService,
     private reviewRatingService: ReviewsRatingService,
     private taLikeDislikeService: TaLikeDislikeService
@@ -164,11 +164,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     this.isCredit(this.billingCredit);
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 1,
-      };
       this.editBrokerById(this.editData.id);
       this.tabs.push({
         id: 3,
