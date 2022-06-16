@@ -63,6 +63,12 @@
                         >- {{ rest?.description }}
                       </span>
                     </p>
+                    <span
+                    class="no-data"
+                    style="padding: 0 !important"
+                    *ngIf="cdl.cdlRestrictions.length == 0"
+                    >None</span
+                  >
                   </div>
                 </div>
                 <div class="card-restriction endorsement">
@@ -106,13 +112,13 @@
                   >
                   </app-truckassist-progress-expiration>
                 </div>
-                <div
-                  *ngIf="cdl.dateDeactivated && cdl.showButton"
+                <!-- <div
+                  *ngIf="cdl.dateDeactivated || expDateCard"
                   class="activate-button"
                 >
                   Activate
                 </div>
-                <div *ngIf="!cdl.showButton" class="activate-button">Renew</div>
+                <div *ngIf="!expDateCard" class="activate-button">Renew</div> -->
               </div>
             </div>
             <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">

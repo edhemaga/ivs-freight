@@ -2,7 +2,6 @@ import { SumArraysPipe } from './../../../pipes/sum-arrays.pipe';
 import { card_component_animation } from './../../shared/animations/card-component.animations';
 import {
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
@@ -36,7 +35,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 export class DriverDetailsCardComponent
   implements OnInit, OnDestroy, OnChanges
 {
-  @Input() driver: DriverResponse | any;
+  @Input() driver: any;
 
   public note: FormControl = new FormControl();
   public copiedPhone: boolean = false;
@@ -48,8 +47,6 @@ export class DriverDetailsCardComponent
   public copiedDriverEmail: boolean = false;
   public isAccountVisible: boolean = true;
   public accountText: string = null;
-  public buttonsArray: any;
-  public duttyLocationCounter: number = 0;
   public toggler: boolean[] = [];
   public dataTest: any;
   public selectedTab: number;
@@ -67,6 +64,7 @@ export class DriverDetailsCardComponent
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
   public dropData: any;
+  public dataProggress:any;
   @Input() templateCard: boolean;
   public hideArrow: boolean;
   // Driver Dropdown
@@ -83,9 +81,8 @@ export class DriverDetailsCardComponent
     private sumArr: SumArraysPipe
   ) {}
   ngOnChanges(changes: SimpleChanges) {
-    this.driver = changes.driver.currentValue;
-    this.getYearsAndDays();
-    this.widthOfProgress();
+    this.getYearsAndDays(changes.driver.currentValue);
+      this.widthOfProgress();
     this.templateCard;
     if (this.templateCard == true) {
       this.hideArrow = true;
@@ -93,6 +90,7 @@ export class DriverDetailsCardComponent
       this.hideArrow = false;
     }
   }
+  
   ngOnInit(): void {
 
     if (this.templateCard == true) {
@@ -104,6 +102,8 @@ export class DriverDetailsCardComponent
     this.initTableOptionsCard();
     this.getDriversDropdown();
     this.tabsButton();
+    this.getYearsAndDays(this.driver);
+    this.widthOfProgress()
   }
 
   /**Function return user image if have in DB or default image */
@@ -405,8 +405,7 @@ export class DriverDetailsCardComponent
         })
       );
       console.log(sum);
-
-      /* this.driver.employmentHistories = this.driver.employmentHistories.map(
+      this.dataProggress = this.driver.employmentHistories.map(
         (element) => {
           let res = element.duration.Years * 365.25 + element.duration.Days;
           this.activePercentage = (res / sum) * 100;
@@ -425,8 +424,10 @@ export class DriverDetailsCardComponent
             activePercentage: this.activePercentage.toFixed(1),
           };
         }
-      ); */
-
+      
+        
+      );
+      
       let dateRes = moment(new Date(Math.min.apply(null, arrMinDate))).format(
         'MM/DD/YY'
       );
@@ -447,11 +448,11 @@ export class DriverDetailsCardComponent
     }
   }
 
-  public getYearsAndDays() {
+  public getYearsAndDays(data:any) {
     let sum = 0;
     let sum2 = 0;
-    if (this.driver.employmentHistories) {
-      this.driver.employmentHistories.forEach((element) => {
+    if (data.employmentHistories) {
+      data.employmentHistories.forEach((element) => {
         sum += element.duration.Years;
         sum2 += element.duration.Days;
       });
@@ -502,13 +503,16 @@ export class DriverDetailsCardComponent
   }
 
   public onChangeDriver(action: string) {
+ 
     let currentIndex = this.driversList
       .map((driver) => driver.id)
       .indexOf(this.driver.id);
     switch (action) {
       case 'previous': {
+
         currentIndex = --currentIndex;
         if (currentIndex != -1) {
+      
           this.detailsPageDriverSer.getDataDetailId(
             this.driversList[currentIndex].id
           );
@@ -517,8 +521,11 @@ export class DriverDetailsCardComponent
         break;
       }
       case 'next': {
+      
+
         currentIndex = ++currentIndex;
         if (currentIndex !== -1 && this.driversList.length > currentIndex) {
+         
           this.detailsPageDriverSer.getDataDetailId(
             this.driversList[currentIndex].id
           );

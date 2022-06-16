@@ -203,9 +203,7 @@
             <div class="addres-name">Address</div>
             <div class="addres-value-icon">
               <div class="addres-value">
-                {{ driver.address.addressUnit }} {{ driver.address.address }},
-                {{ driver.address.city }}, {{ driver.address.stateShortName }}
-                {{ driver.address.zipCode }}, {{ driver.address.country }}
+                {{ driver.address.address }}
               </div>
               <span
                 tooltipBackground="#6c6c6c"
@@ -331,7 +329,7 @@
                   (mouseover)="mouseEnter(dat)"
                   (mouseleave)="showTooltip = false"
                   *ngFor="
-                    let dat of driver.employmentHistories;
+                    let dat of dataProggress;
                     trackBy: identity
                   "
                   [ngStyle]="{
@@ -371,7 +369,7 @@
               <div class="status-items">
                 <div
                   *ngFor="
-                    let empH of driver.employmentHistories;
+                    let empH of dataProggress;
                     trackBy: identity
                   "
                   class="item-wrapper"

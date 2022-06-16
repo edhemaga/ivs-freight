@@ -26,18 +26,18 @@ export class TruckDetailsCardComponent implements OnInit {
   @Input() templateCard: boolean = false;
   @Input() truck: TruckResponse | any;
   public truck_active_id: number = +this.activeted_route.snapshot.params['id'];
-  public truck_list:any[]=this.trucksQuery.getAll();
+  public truck_list: any[] = this.trucksQuery.getAll();
   constructor(
     private activeted_route: ActivatedRoute,
     private modalService: ModalService,
     private trucksQuery: TruckQuery,
-    private detailsPageDriverSer:DetailsPageService
+    private detailsPageDriverSer: DetailsPageService
   ) {}
 
   ngOnInit(): void {
     console.log(this.truck);
     this.getTruckDropdown();
-    
+
     this.noteControl.patchValue(this.truck.note);
 
     this.initTableOptions();
@@ -216,10 +216,8 @@ export class TruckDetailsCardComponent implements OnInit {
     this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
       return {
         id: item.id,
-        name: item.truckType.name,
-        svg: item.truckType.logoName,
+        name: item.truckNumber,
         active: item.id === this.truck.id,
-        folder: 'common/trucks/',
       };
     });
   }
@@ -228,7 +226,7 @@ export class TruckDetailsCardComponent implements OnInit {
       this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
         return {
           id: item.id,
-          name: item.truckType.name,
+          name: item.truckNumber,
           svg: item.truckType.logoName,
           active: item.id === event.id,
           folder: 'common/trucks/',

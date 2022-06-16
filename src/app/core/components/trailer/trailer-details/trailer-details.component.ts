@@ -8,6 +8,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { TrailerTService } from '../state/trailer.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 @Component({
   selector: 'app-trailer-details',
   templateUrl: './trailer-details.component.html',
@@ -25,9 +26,19 @@ export class TrailerDetailsComponent implements OnInit,OnDestroy {
     private router:Router,
     private notificationService: NotificationService,
     private detailsPageDriverSer: DetailsPageService,
+    private tableService: TruckassistTableService
   ) {}
 
   ngOnInit(): void {
+    this.tableService.currentActionAnimation
+    .pipe(untilDestroyed(this))
+    .subscribe((res: any) => {
+      if (res.animation) {
+        this.trailerConf(res.data);
+
+        this.cdRef.detectChanges();
+      }
+    });
     this.detailsPageDriverSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {

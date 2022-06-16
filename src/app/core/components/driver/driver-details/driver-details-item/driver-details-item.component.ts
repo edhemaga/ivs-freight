@@ -48,10 +48,10 @@ export class DriverDetailsItemComponent
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.getExpireDate();
     if(!changes.driver.firstChange && changes.driver.currentValue){
       this.driver = changes.driver.currentValue;
 
-      this.getExpireDate();
     }
   }
 
@@ -61,21 +61,17 @@ export class DriverDetailsItemComponent
   }
 
   public getExpireDate() {
-   /*  if (this.driver?.data?.cdls.length) {
-      console.log('getExpireDate');
-      console.log(this.driver.data.cdls);
-      this.driver.data.cdls = this.driver.data.cdls.map((ele) => {
-        if (moment(ele.expDate).isBefore(moment())) {
-          this.expDateCard = false;
-        } else {
-          this.expDateCard = true;
-        }
-        return {
-          ...ele,
-          showButton: this.expDateCard,
-        };
-      });
-    } */
+
+      // this.driver.data = this.driver.data.cdls.forEach((ele) => {
+      //   if (moment(ele.expDate).isBefore(moment())) {
+      //     this.expDateCard = false;
+      //   } else {
+      //     this.expDateCard = true;
+      //   }
+      //     console.log(this.expDateCard);
+          
+      // });
+  
   }
 
   /**Function for dots in cards */

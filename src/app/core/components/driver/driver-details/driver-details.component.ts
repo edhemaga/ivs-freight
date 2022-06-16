@@ -100,13 +100,13 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   /**Function template and names for header and other options in header */
   detailCongif(data: DriverResponse | any) {
-    // if (data.status == 0) {
-    //   this.statusDriver = true;
-    //   this.showInc = true;
-    // } else {
-    //   this.statusDriver = false;
-    //   this.showInc = false;
-    // }
+    if (data.status == 0) {
+      this.statusDriver = true;
+      this.showInc = true;
+    } else {
+      this.statusDriver = false;
+      this.showInc = false;
+    }
 
     this.driverDetailsConfig = [
       {
@@ -168,10 +168,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
         data: data,
       },
     ];
-
-    console.log('driverDetailsConfig');
-    console.log(this.driverDetailsConfig);
-
     this.driverId = data?.id ? data.id : null;
   }
 

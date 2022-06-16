@@ -24,19 +24,20 @@ export class TrailerDetailsCardComponent implements OnInit {
   public toggler: boolean = false;
   public dataEdit: any;
   public trailerDropDowns: any[] = [];
-  public trailer_active_id: number = +this.activeted_route.snapshot.params['id'];
-  public trailer_list:any[]=this.trailerQuery.getAll();
+  public trailer_active_id: number =
+    +this.activeted_route.snapshot.params['id'];
+  public trailer_list: any[] = this.trailerQuery.getAll();
   constructor(
     private modalService: ModalService,
     private detailsPageDriverSer: DetailsPageService,
     private trailerQuery: TrailerQuery,
-    private activeted_route:ActivatedRoute
+    private activeted_route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.note.patchValue(this.trailer.note);
     this.initTableOptions();
-    this.getTrailerDropdown()
+    this.getTrailerDropdown();
   }
   /**Function for toggle page in cards */
   public toggleResizePage(value: boolean) {
@@ -125,10 +126,8 @@ export class TrailerDetailsCardComponent implements OnInit {
     this.trailerDropDowns = this.trailerQuery.getAll().map((item) => {
       return {
         id: item.id,
-        name: item.trailerType.name,
-        svg: item.trailerType.logoName,
+        name: item.trailerNumber,
         active: item.id === this.trailer.id,
-        folder: 'common/trucks/',
       };
     });
   }
@@ -137,7 +136,7 @@ export class TrailerDetailsCardComponent implements OnInit {
       this.trailerDropDowns = this.trailerQuery.getAll().map((item) => {
         return {
           id: item.id,
-          name: item.trailerType.name,
+          name: item.trailerNumber,
           svg: item.trailerType.logoName,
           active: item.id === event.id,
           folder: 'common/trucks/',
