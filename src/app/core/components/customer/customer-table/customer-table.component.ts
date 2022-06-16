@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
 import {
   getBrokerColumnDefinition,
   getShipperColumnDefinition,
@@ -10,14 +12,16 @@ import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.com
 import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BrokerQuery } from '../state/broker-state/broker.query';
+import { BrokerTService } from '../state/broker-state/broker.service';
 import { BrokerState } from '../state/broker-state/broker.store';
+import { ShipperState } from '../state/shipper-state/shipper.store';
 
 @Component({
   selector: 'app-customer-table',
   templateUrl: './customer-table.component.html',
   styleUrls: ['./customer-table.component.scss'],
 })
-export class CustomerTableComponent implements OnInit {
+export class CustomerTableComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   public tableOptions: any = {};
@@ -27,11 +31,14 @@ export class CustomerTableComponent implements OnInit {
   public selectedTab = 'broker';
   resetColumns: boolean;
   public brokers: BrokerState[] = [];
+  public shipper: ShipperState[] = [];
 
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
-    private brokerQuery: BrokerQuery
+    private brokerQuery: BrokerQuery,
+    private brokerService: BrokerTService,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +56,60 @@ export class CustomerTableComponent implements OnInit {
           this.sendCustomerData();
         }
       });
+
+    // Add, Update Broker-Shiper
+    this.tableService.currentActionAnimation
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+         if (res.animation === 'update' && res.tab === 'broker') {
+          const updatedBroker = this.mapBrokerData(res.data);
+
+          this.viewData = this.viewData.map((broker: any) => {
+            if (broker.id === res.id) {
+              broker = updatedBroker;
+              broker.actionAnimation = 'update';
+            }
+
+            return broker;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        }
+      });
+
+      // Delete Selected Rows
+    this.tableService.currentDeleteSelectedRows
+    .pipe(untilDestroyed(this))
+    .subscribe((response: any[]) => {
+      if (response.length) {
+        this.brokerService
+          .deleteBrokerList(response)
+          .pipe(untilDestroyed(this))
+          .subscribe(() => {
+            this.viewData = this.viewData.map((broker: any) => {
+              response.map((r: any) => {
+                if (broker.id === r.id) {
+                  broker.actionAnimation = 'delete';
+                }
+              });
+
+              return broker;
+            });
+
+            const inetval = setInterval(() => {
+              this.viewData = closeAnimationAction(true, this.viewData);
+
+              clearInterval(inetval);
+            }, 1000);
+
+            this.tableService.sendRowsSelected([]);
+          });
+      }
+    });
   }
 
   public initTableOptions(): void {
@@ -97,7 +158,7 @@ export class CustomerTableComponent implements OnInit {
       {
         title: 'Broker',
         field: 'broker',
-        length: 8,
+        length: 0,
         data: this.getBrokerShipperTabData('broker'),
         extended: false,
         isCustomer: true,
@@ -108,7 +169,7 @@ export class CustomerTableComponent implements OnInit {
       {
         title: 'Shipper',
         field: 'shipper',
-        length: 15,
+        length: 0,
         data: this.getBrokerShipperTabData('shipper'),
         extended: false,
         isCustomer: true,
@@ -118,10 +179,10 @@ export class CustomerTableComponent implements OnInit {
       },
     ];
 
-    console.log('Table Data');
-    console.log(this.tableData);
-
     const td = this.tableData.find((t) => t.field === this.selectedTab);
+
+    this.tableData[0].length = this.tableData[0].data.length;
+    this.tableData[1].length = this.tableData[1].data.length;
 
     this.setCustomerData(td);
   }
@@ -148,41 +209,50 @@ export class CustomerTableComponent implements OnInit {
       return this.mapBrokerData(data);
     });
 
-    console.log('setCustomerData')
-    console.log(this.viewData)
+    console.log('setCustomerData');
+    console.log(this.viewData);
   }
 
-  mapBrokerData(data: any){
+  mapBrokerData(data: any) {
     return {
       ...data,
-      isSelected: false
-    }
+      isSelected: false,
+      textAddress: data?.mainAddress
+        ? data.mainAddress.city + ', ' + data.mainAddress.state
+        : '',
+      loadCount: '',
+      total: '',
+    };
   }
 
   getBrokerShipperTabData(dataType: string) {
-    if(dataType === 'Broker'){
+    if (dataType === 'broker') {
       this.brokers = this.brokerQuery.getAll();
 
+      console.log('Brokers Data');
+      console.log(this.brokers);
+
       return this.brokers?.length ? this.brokers : [];
-    }else{
+    } else {
       return [];
     }
   }
 
   public onTableBodyActions(event: any) {
-    if (this.selectedTab === 'broker') {
-      this.modalService.openModal(
+    console.log(event);
+    if (event.type === 'edit-cutomer-or-shipper' && this.selectedTab === 'broker') {
+       this.modalService.openModal(
         BrokerModalComponent,
         { size: 'small' },
         {
           ...event,
           type: 'edit',
           dnuButton: true,
-          bfbButton: true
+          bfbButton: true,
         }
       );
-    } else {
-      this.modalService.openModal(
+    } else if (event.type === 'edit-cutomer-or-shipper' && this.selectedTab === 'shipper') {
+       this.modalService.openModal(
         ShipperModalComponent,
         { size: 'small' },
         {
@@ -190,6 +260,40 @@ export class CustomerTableComponent implements OnInit {
           type: 'edit',
         }
       );
+    } else if (event.type === 'delete' && this.selectedTab === 'broker') {
+      console.log('Poziva se single delete brokera');
+
+      this.brokerService
+        .deleteBrokerById(event.id)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: () => {
+            this.notificationService.success(
+              'Broker successfully deleted',
+              'Success:'
+            );
+
+            this.viewData = this.viewData.map((broker: any) => {
+              if (broker.id === event.id) {
+                broker.actionAnimation = 'delete';
+              }
+
+              return broker;
+            });
+
+            const inetval = setInterval(() => {
+              this.viewData = closeAnimationAction(true, this.viewData);
+
+              clearInterval(inetval);
+            }, 1000);
+          },
+          error: () => {
+            this.notificationService.error(
+              `Broker with id: ${event.id} couldn't be deleted`,
+              'Error:'
+            );
+          },
+        });
     }
   }
 
@@ -199,12 +303,18 @@ export class CustomerTableComponent implements OnInit {
 
       if (this.selectedTab === 'broker') {
         this.modalService.openModal(BrokerModalComponent, { size: 'medium' });
-      } else { 
+      } else {
         this.modalService.openModal(ShipperModalComponent, { size: 'medium' });
       }
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setCustomerData(event.tabData);
     }
+  }
+
+
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+    this.tableService.sendDeleteSelectedRows([]);
   }
 }

@@ -10,7 +10,6 @@ import { BrokerState, BrokerStore } from './broker.store';
   providedIn: 'root',
 })
 export class BrokerResolver implements Resolve<BrokerState> {
-  tableTab: number = 1;
   pageIndex: number = 1;
   pageSize: number = 25;
 
@@ -20,14 +19,12 @@ export class BrokerResolver implements Resolve<BrokerState> {
   ) {}
   resolve(): Observable<BrokerState | boolean> {
     return this.brokerService
-    .getBrokerList(this.tableTab, this.pageIndex, this.pageSize)
+    .getBrokerList(null, null, this.pageIndex, this.pageSize)
     .pipe(
       catchError(() => {
         return of('No brokers data...');
       }),
       tap((brokerPagination: GetBrokerListResponse) => {
-        console.log('Poziva se Api za getBrokerList');
-        console.log(brokerPagination)
         this.brokerStore.set(brokerPagination.pagination.data);
       })
     );
