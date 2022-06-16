@@ -26,9 +26,9 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
   templateUrl: './driver-details.component.html',
   styleUrls: ['./driver-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers:[DetailsPageService]
+  providers: [DetailsPageService],
 })
-export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
+export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   public driverDetailsConfig: any[] = [];
   public dataTest: any;
   public statusDriver: boolean;
@@ -48,26 +48,28 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
     private notificationService: NotificationService,
     private detailsPageDriverService: DetailsPageService,
     private cdRef: ChangeDetectorRef,
-    private tableService:TruckassistTableService
+    private tableService: TruckassistTableService
   ) {}
- ngOnChanges(changes: SimpleChanges): void {
-  console.log(changes);
- 
 
- }
+  ngOnChanges(changes: SimpleChanges): void {}
+
   ngOnInit() {
+    this.initTableOptions();
+
+    this.detailCongif(this.activated_route.snapshot.data.driver);
+
 
     this.tableService.currentActionAnimation
-    .pipe(untilDestroyed(this))
-    .subscribe((res: any) => {
-      console.log(res.data);
-      
-     this.detailCongif(res.data);
-     
-    });
-    this.initTableOptions();
-  
-    this.detailCongif(this.activated_route.snapshot.data.driver);
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.detailCongif(res.data);
+
+          this.cdRef.detectChanges();
+        }
+      });
+    
+    
     this.detailsPageDriverService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
@@ -123,7 +125,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
         //   (el) =>
         //     moment(el.expDate).isBefore(moment())
         // ),
-        length: data.cdls?.length,
+        length: data?.cdls?.length ? data.cdls.length : 0,
         data: data,
       },
       {
@@ -136,7 +138,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
         //   (el) =>
         //     moment(el.testingDate).isBefore(moment())
         // ),
-        length: data.tests?.length,
+        length: data?.tests?.length ? data.tests.length : 0,
         data: data,
       },
       {
@@ -149,7 +151,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
         //   (el) =>
         //     moment(el.expDate).isBefore(moment())
         // ),
-        length: data.medicals?.length,
+        length: data?.medicals?.length ? data.medicals.length : 0,
         data: data,
       },
       {
@@ -162,11 +164,15 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
         //   (el) =>
         //     moment(el.issueDate).isBefore(moment())
         // ),
-        length: data.mvrs?.length,
+        length: data?.mvrs?.length ? data.mvrs.length : 0,
         data: data,
       },
     ];
-    this.driverId = data.id;
+
+    console.log('driverDetailsConfig');
+    console.log(this.driverDetailsConfig);
+
+    this.driverId = data?.id ? data.id : null;
   }
 
   /**Function for dots in cards */
@@ -240,9 +246,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy,OnChanges {
           DriverDrugAlcoholModalComponent,
           { size: 'small' },
           { id: this.driverId, type: 'new-drug' }
-        
         );
-      
+
         break;
       }
       case 'Medical': {

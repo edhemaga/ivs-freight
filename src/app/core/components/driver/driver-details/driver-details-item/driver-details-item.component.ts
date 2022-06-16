@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 
 import { DriverResponse } from 'appcoretruckassist';
-import moment from 'moment'
+import moment from 'moment';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
@@ -30,7 +30,9 @@ import { card_component_animation } from '../../../shared/animations/card-compon
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-export class DriverDetailsItemComponent implements OnInit, OnDestroy,OnChanges {
+export class DriverDetailsItemComponent
+  implements OnInit, OnDestroy, OnChanges
+{
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
   @Input() driver: DriverResponse | any = null;
   public cdlNote: FormControl = new FormControl();
@@ -39,39 +41,42 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy,OnChanges {
   public showMoreEmployment: boolean = false;
 
   public dataTest: any;
- public expDateCard:any;
+  public expDateCard: any;
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService
-  ) {
+  ) {}
 
-   
-  }
-  
   ngOnChanges(changes: SimpleChanges): void {
-      this.getExpireDate()
+    if(!changes.driver.firstChange && changes.driver.currentValue){
+      this.driver = changes.driver.currentValue;
+
+      this.getExpireDate();
+    }
   }
+
   ngOnInit(): void {
     this.initTableOptions();
-    this.getExpireDate()
+    this.getExpireDate();
   }
 
- 
- public getExpireDate(){
-  this.driver.data.cdls= this.driver.data.cdls.map(
-    (ele)=>{
-    if(moment(ele.expDate).isBefore(moment())){
-      this.expDateCard=false;
-    }else{
-      this.expDateCard=true;
-    }
-    return {
-      ...ele,
-      showButton:this.expDateCard,
-    };
-   })   
- }
- 
+  public getExpireDate() {
+   /*  if (this.driver?.data?.cdls.length) {
+      console.log('getExpireDate');
+      console.log(this.driver.data.cdls);
+      this.driver.data.cdls = this.driver.data.cdls.map((ele) => {
+        if (moment(ele.expDate).isBefore(moment())) {
+          this.expDateCard = false;
+        } else {
+          this.expDateCard = true;
+        }
+        return {
+          ...ele,
+          showButton: this.expDateCard,
+        };
+      });
+    } */
+  }
 
   /**Function for dots in cards */
   public initTableOptions(): void {
@@ -95,10 +100,10 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy,OnChanges {
           contentType: 'edit',
         },
         {
-         title:'Renew',
-         name:'renew',
-         class:'regular-text',
-         contentType:'add'
+          title: 'Renew',
+          name: 'renew',
+          class: 'regular-text',
+          contentType: 'add',
         },
         {
           title: 'Activate',

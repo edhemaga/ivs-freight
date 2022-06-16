@@ -406,7 +406,7 @@ export class DriverDetailsCardComponent
       );
       console.log(sum);
 
-      this.driver.employmentHistories = this.driver.employmentHistories.map(
+      /* this.driver.employmentHistories = this.driver.employmentHistories.map(
         (element) => {
           let res = element.duration.Years * 365.25 + element.duration.Days;
           this.activePercentage = (res / sum) * 100;
@@ -425,7 +425,8 @@ export class DriverDetailsCardComponent
             activePercentage: this.activePercentage.toFixed(1),
           };
         }
-      );
+      ); */
+
       let dateRes = moment(new Date(Math.min.apply(null, arrMinDate))).format(
         'MM/DD/YY'
       );
