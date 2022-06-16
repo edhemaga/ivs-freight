@@ -24,6 +24,7 @@ import {
   convertNumberInThousandSep,
   convertThousanSepInNumber,
 } from 'src/app/core/utils/methods.calculations';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 @Component({
   selector: 'app-ta-input',
@@ -34,6 +35,7 @@ import {
     CalendarScrollService,
     TitleCasePipe,
     UpperCasePipe,
+    TaThousandSeparatorPipe,
   ],
 })
 export class TaInputComponent
@@ -81,7 +83,8 @@ export class TaInputComponent
     private inputService: TaInputService,
     private calendarService: CalendarScrollService,
     private titlecasePipe: TitleCasePipe,
-    private uppercasePipe: UpperCasePipe
+    private uppercasePipe: UpperCasePipe,
+    private thousandSeparatorPipe: TaThousandSeparatorPipe
   ) {
     this.superControl.valueAccessor = this;
     // this.input.nativeElement.value = this.getSuperControl.value;
@@ -377,6 +380,12 @@ export class TaInputComponent
       default: {
         break;
       }
+    }
+
+    if (this.inputConfig.thousandSeparator) {
+      this.getSuperControl.patchValue(
+        this.thousandSeparatorPipe.transform(this.getSuperControl.value)
+      );
     }
   }
 

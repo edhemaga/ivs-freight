@@ -21,6 +21,7 @@ export interface ITaInput {
   autoFocus?: boolean; // focus first input in form,
   hideClear?: boolean;
   hideErrorMessage?: boolean;
+  thousandSeparator?: boolean;
   // Black input only
   blackInput?: boolean; // has only black background && input clear, no validations
   // Dropdown

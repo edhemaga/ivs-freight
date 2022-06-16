@@ -257,7 +257,12 @@
   >
   </svg-icon>
 
-  <!-- Input Control -->
+  <!-- Input Control 
+  
+     thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
+    separatorLimit="99999999999999"
+  
+  -->
   <input
     #input
     [type]="inputConfig.type | inputType: togglePassword"
@@ -270,8 +275,6 @@
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
     mask="{{ inputConfig.mask }}"
-    thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
-    separatorLimit="99999999999999"
     [min]="inputConfig.min ? inputConfig.min : 0"
     [max]="inputConfig.max"
     [step]="inputConfig.step ? inputConfig.step : null"

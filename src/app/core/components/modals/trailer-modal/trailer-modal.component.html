@@ -324,7 +324,7 @@
                 label: 'Volume',
                 maxLength: 6,
                 placeholderText: !trailerForm.get('volume').value ? '' : 'gal',
-                mask: 'separator.2'
+                thousandSeparator: true
               }"
             ></app-ta-input>
           </div>
@@ -345,7 +345,7 @@
                 type: 'text',
                 label: 'Empty Weight',
                 maxLength: 6,
-                mask: 'separator.2',
+                thousandSeparator: true,
                 placeholderText: !trailerForm.get('emptyWeight').value
                   ? ''
                   : 'ibs'
@@ -369,7 +369,7 @@
                 type: 'text',
                 label: 'Mileage',
                 maxLength: 10,
-                mask: 'separator.2'
+                thousandSeparator: true
               }"
             ></app-ta-input>
           </div>

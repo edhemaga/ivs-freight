@@ -96,5 +96,5 @@ export const convertThousanSepInNumber = (value: string) => {
 };
 //------------------------------- Convert number in thousand separator -------------------------------
 export const convertNumberInThousandSep = (value: number) => {
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
 };
