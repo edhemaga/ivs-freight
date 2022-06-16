@@ -7,7 +7,7 @@
     .small-medium-holder{
         display: flex;
         justify-content: flex-start;
-        align-items: flex-end;
+        align-items: center;
 
         .profile-image-small{
             width: 18px;
@@ -20,6 +20,7 @@
             font-size: 7px;
             font-weight: 800;
             color: #6D82C7;
+            line-height: 20px;
             user-select: none;
 
             &.small{

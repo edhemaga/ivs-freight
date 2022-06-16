@@ -141,6 +141,7 @@ export class TruckTableComponent implements OnInit, OnDestroy {
               }, 1000);
 
               this.tableService.sendRowsSelected([]);
+              this.tableService.sendResetSelectedColumns(true);
             });
         }
       });

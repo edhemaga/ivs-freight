@@ -7,13 +7,4 @@ import { Component, Input } from '@angular/core';
 export class NavigationSubrouteCardComponent {
   @Input() isNavigationCardActive: boolean = false;
   @Input() contentHeight: number = 0;
-
-  /**
-   *
-   * 30 - height of item
-   * 1 - header of subroutes
-   */
-  public getDynamicHeight() {
-    return this.isNavigationCardActive ? (this.contentHeight + 1) * 29 + 5 : 0;
-  }
 }

@@ -21,7 +21,6 @@ import {
   UpdateShipperCommand,
 } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { ShipperModalService } from './shipper-modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -32,6 +31,7 @@ import {
   TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
 
 @Component({
   selector: 'app-shipper-modal',
@@ -84,7 +84,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private shipperModalService: ShipperModalService,
+    private shipperModalService: ShipperTService,
     private modalService: ModalService,
     private notificationService: NotificationService,
     private taLikeDislikeService: TaLikeDislikeService,
@@ -96,11 +96,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     this.getShipperDropdowns();
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 2,
-      };
       this.editShipperById(this.editData.id);
       this.tabs.push({
         id: 3,
