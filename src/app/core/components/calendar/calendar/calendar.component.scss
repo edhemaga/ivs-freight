@@ -1453,6 +1453,13 @@
     }
 }
 
+.fc .fc-daygrid-body{
+    width: 100% !important;
+}
+.fc .fc-scrollgrid table{
+    width: 100% !important;
+}
+
 .fc-scrollgrid-section-header .fc-col-header-cell-cushion {
     padding: 0;
     font-size: 14px;
