@@ -1,0 +1,290 @@
+<div class="d-flex flex-column align-items-center step-container">
+  <h1 class="step-title text-center noselect ta-font-bold">7 Days HOS</h1>
+
+  <!-- INSTRUCTIONS -->
+
+  <div
+    class="d-flex flex-column justify-content-center align-items-center instructions-container"
+  >
+    <p class="m-0 text-center ta-font-regular">
+      <span class="ta-font-bold">Instructions:</span> Motor Carriers when using
+      a driver for the first time shall obtain from the driver a signed
+      statement giving the total time on-duty during the immediately preceding 7
+      days and time at which such driver was last relived from duty prior to
+      beginning work for such motor carrier. Rule 395.8(j) (2) Federal Motor
+      Carrier Safety Regulations.
+    </p>
+
+    <p class="m-0 text-center ta-font-regular">
+      <span class="ta-font-bold">NOTE:</span> Hours for any compensated work
+      during the preceding 7 days, including work for a non-motor carrier
+      entity, must be recorded on this form.
+    </p>
+  </div>
+
+  <!-- FORM SECTION -->
+
+  <div class="d-flex flex-column form-section">
+    <form [formGroup]="sevenDaysHosForm">
+      <!-- SEVEN DAYS HOS TABLE -->
+
+      <div
+        class="d-flex flex-column justify-content-center seven-days-hos-table-container"
+      >
+        <table>
+          <tr>
+            <div class="d-flex day-container">
+              <th
+                *ngFor="
+                  let day of sevenDaysHosDaysData;
+                  let i = index;
+                  let first = first;
+                  let last = last;
+                  trackBy: trackByIdentity
+                "
+              >
+                <div
+                  class="d-flex day-box"
+                  [ngStyle]="{
+                    'justify-content': first ? 'start' : 'center',
+                    'margin-right': last ? '0' : '12px'
+                  }"
+                >
+                  <p class="m-0 ta-font-bold">
+                    {{ day }}
+                  </p>
+                </div>
+              </th>
+            </div>
+          </tr>
+          <tr>
+            <div class="d-flex date-container">
+              <td
+                *ngFor="
+                  let date of sevenDaysHosDateData;
+                  let i = index;
+                  let first = first;
+                  let last = last;
+                  trackBy: trackByIdentity
+                "
+              >
+                <div
+                  class="d-flex date-box"
+                  [ngStyle]="{
+                    'justify-content': first ? 'start' : 'center',
+                    'margin-right': last ? '0' : '12px',
+                    'font-size': first ? '14px' : '12px'
+                  }"
+                >
+                  <p class="m-0 ta-font-bold">
+                    {{ date }}
+                  </p>
+                </div>
+              </td>
+            </div>
+          </tr>
+          <tr>
+            <div class="d-flex align-items-center input-container">
+              <td>
+                <div class="d-flex align-items-center hos-title-group">
+                  <p class="m-0 ta-font-bold">HOS <span>*</span></p>
+                </div>
+              </td>
+              <td
+                formArrayName="hosArray"
+                *ngFor="
+                  let input of hosArray?.controls;
+                  let i = index;
+                  trackBy: trackByIdentity
+                "
+              >
+                <div class="d-flex justify-content-center align-items-center">
+                  <div class="hos-input-group" [formGroupName]="i">
+                    <app-ta-input
+                      formControlName="hos"
+                      [inputConfig]="{
+                        name: 'hos',
+                        type: 'number',
+                        hideClear: true,
+                        textAlign: 'center',
+                        max: 24,
+                        hideErrorMessage: true
+                      }"
+                      (change)="countTotalHours(i)"
+                    ></app-ta-input>
+                  </div>
+                </div>
+
+                <!-- REVIEW AND FEEDBACK -->
+
+                <div
+                  class="review-feedback"
+                  *ngIf="selectedMode === 'REVIEW_MODE'"
+                >
+                  <app-applicant-review-feedback
+                    [index]="0"
+                    [reviewFeedbackData]=""
+                    (sendReview)="onSubmitReview($event)"
+                  ></app-applicant-review-feedback>
+                </div>
+              </td>
+            </div>
+          </tr>
+          <tr>
+            <div class="d-flex total-container">
+              <p class="m-0 ta-font-bold">
+                Total Hours: {{ totalHours | sumArrays }}
+              </p>
+            </div>
+          </tr>
+        </table>
+      </div>
+
+      <!-- VALID HOS  -->
+
+      <div
+        class="d-flex text-center justify-content-center valid-hos-container"
+      >
+        <app-ta-checkbox
+          formControlName="isValidHos"
+          [name]="'isValidHos'"
+          [label]="
+            'I hereby certify that the information given above is correct to the best of my Knowledge and behalf, and that I was released from work on:'
+          "
+        >
+        </app-ta-checkbox>
+      </div>
+
+      <h3 class="step-subtitle noselect text-center ta-font-bold">
+        Date released from work and location?
+      </h3>
+
+      <!-- DATE, LOCATION -->
+
+      <div class="d-flex justify-content-center">
+        <div class="form-label-group date-group">
+          <app-ta-input
+            formControlName="startDate"
+            [inputConfig]="{
+              name: 'datepicker',
+              type: 'text',
+              label: 'Date',
+              placeholderIcon: 'date',
+              isRequired: true,
+              customClass: 'datetimeclass'
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="form-label-group location-group">
+          <app-ta-input-address
+            formControlName="address"
+            [inputConfig]="{
+              name: 'Address',
+              type: 'text',
+              label: 'City, State',
+              isRequired: true,
+              placeholderIcon: 'address',
+              textTransform: 'capitalize'
+            }"
+            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+          ></app-ta-input-address>
+        </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="1"
+            [reviewFeedbackData]=""
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <!-- INSTRUCTIONS -->
+
+      <div
+        class="d-flex flex-column justify-content-center align-items-center instructions-container"
+      >
+        <p class="m-0 text-center ta-font-regular">
+          <span class="ta-font-bold">Instructions:</span> When employed by motor
+          carrier, a driver must report to the motor carrier all on-duty time
+          working for other employers. The definition of on-duty time found in
+          Section 395.2 paragraphs 8 and 9 of the Federal Motor Carrier Safety
+          Regulations includes time performing any other work in the capacity
+          of, or in the employment or service of a common, contract or private
+          motor carrier, also performing any compensated work for any non-motor
+          carrier entity.
+        </p>
+      </div>
+
+      <!-- QUESTIONS -->
+
+      <div class="d-flex flex-column align-items-center questions-container">
+        <div
+          class="d-flex align-items-center justify-content-between question-container"
+          *ngFor="
+            let question of questions;
+            let i = index;
+            trackBy: trackByIdentity
+          "
+        >
+          <div class="title-box">
+            <p class="m-0 ta-font-regular">
+              {{ question.title }}
+              <span class="required-star">*</span>
+            </p>
+          </div>
+
+          <div class="radios-box">
+            <app-ta-input-radiobuttons
+              [buttons]="question.answerChoices"
+              (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+            ></app-ta-input-radiobuttons>
+          </div>
+
+          <!-- REVIEW AND FEEDBACK -->
+
+          <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+            <app-applicant-review-feedback
+              [index]="2 + i"
+              [reviewFeedbackData]=""
+              (sendReview)="onSubmitReview($event)"
+            ></app-applicant-review-feedback>
+          </div>
+        </div>
+      </div>
+
+      <!-- VALID ANOTHER EMPLOYER  -->
+
+      <div
+        class="d-flex justify-content-center valid-another-employer-container"
+      >
+        <app-ta-checkbox
+          formControlName="isValidAnotherEmployer"
+          [name]="'isValidAnotherEmployer'"
+          [label]="
+            'I hereby certify that the information given above is true and I understand that once I'
+          "
+        >
+          <!--   begin driving for this company, if I begin working for any
+            additional employer(s) for compensation that I must inform this
+            company immediately of such employment activity. -->
+        </app-ta-checkbox>
+      </div>
+
+      <!-- NEXT, BACK STEP -->
+
+      <app-applicant-next-step
+        (stepEvent)="onStepAction($event)"
+        [isReview]="selectedMode == 'REVIEW_MODE'"
+      ></app-applicant-next-step>
+    </form>
+  </div>
+</div>
+
+<!-- CONFIRM ALL REVIEW -->
+
+<app-applicant-confirm-all-review
+  *ngIf="selectedMode === 'REVIEW_MODE'"
+></app-applicant-confirm-all-review>

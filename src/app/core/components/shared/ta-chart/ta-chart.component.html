@@ -1,28 +1,30 @@
 <div class="charts-item-wrapper revenue">
-  <div class="charts-template-item">
+  <div class="charts-template-item" *ngFor="let item of legendProperties; let indx = index">
     <div class="icon-name-item">
-      <svg-icon src="assets/svg/common/round_yellow.svg"></svg-icon>
-      <div class="charts-template-item-name">Miles</div>
+      <svg-icon src={{item.image}}></svg-icon>
+      <div class="charts-template-item-name">{{ item.title }}</div>
     </div>
-    <div class="charts-template-item-value">46,755.2 mi</div>
-  </div>
-
-  <div class="charts-template-item fuel-item">
-    <div class="icon-name-item">
-      <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-      <div class="charts-template-item-name">Salary</div>
-    </div>
-    <div class="charts-template-item-value">$36.854.27</div>
+    <div class="charts-template-item-value">{{ item.value }}</div>
   </div>
 </div>
 <div class="main_chart_container">
-    <canvas baseChart width="417px" height="130px"
-      [datasets]="lineChartData"
-      [labels]="lineChartLabels"
-      [options]="lineChartOptions"
-      [colors]="lineChartColors"
-      [legend]="lineChartLegend"
-      [chartType]="lineChartType"
-      [plugins]="lineChartPlugins">
-    </canvas>
+  <div class="chart_text_holder" *ngIf="lineChartType == 'doughnut' && doughnutChartLegend">
+    <div class="chart_inner">
+      <div class="chart_value_holder" *ngFor="let item of chartInnitProperties; let indx = index" [ngStyle]="{'margin-bottom': indx+1 < chartInnitProperties.length ? '22px': '11px'}">
+        <div class="chart_label" [ngStyle]="{'color': item.color}" >{{ item.name }}</div>
+        <div class="chart_value_hold" [ngStyle]="{'background-color': item.color}">
+          <div class="chart_value">{{ item.value }}%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <canvas baseChart width={{chartWidth}} height={{chartHeight}} [class.dotted_background]="dottedBackground" [ngStyle]="{'width': chartWidth+'px', 'height': chartHeight+'px'}"
+    [datasets]="lineChartData"
+    [labels]="lineChartLabels"
+    [options]="lineChartOptions"
+    [colors]="lineChartColors"
+    [legend]="lineChartLegend"
+    [chartType]="lineChartType"
+    [plugins]="lineChartPlugins">
+  </canvas>
 </div>

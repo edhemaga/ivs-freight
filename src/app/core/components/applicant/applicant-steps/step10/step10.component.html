@@ -1,0 +1,180 @@
+<div class="d-flex flex-column align-items-center step-container">
+  <h1 class="step-title text-center noselect ta-font-bold">
+    Disclosure & release
+  </h1>
+
+  <!-- FORM SECTION -->
+
+  <div class="d-flex flex-column form-section">
+    <form [formGroup]="disclosureReleaseForm">
+      <div class="d-flex justify-content-center checkbox-container">
+        <app-ta-checkbox
+          formControlName="isFirstDisclosure"
+          [name]="'isFirstDisclosure'"
+          [label]="
+            '1. Because I must drive as an essential function of my employment or potential employment, I hereby give permission to JD FREIGHTInc. to obtain my state driving record (also known as my motor vehicle record or MVR) in accordance with the Fair Credit Reporting Act (FCRA) and the Federal Driver’s Privacy Protection Act (DPPA).'
+          "
+        >
+        </app-ta-checkbox>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="0"
+            [reviewFeedbackData]="reviewFeedback[0]"
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center checkbox-container">
+        <app-ta-checkbox
+          formControlName="isSecondDisclosure"
+          [name]="'isSecondDisclosure'"
+          [label]="
+            '2. I acknowledge and understand that my driving record is a consumer report that contains public record information.'
+          "
+        >
+        </app-ta-checkbox>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="1"
+            [reviewFeedbackData]="reviewFeedback[1]"
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center checkbox-container">
+        <app-ta-checkbox
+          formControlName="isThirdDisclosure"
+          [name]="'isThirdDisclosure'"
+          [label]="
+            '3. I authorize, without reservation any party or agency contacted by JD FREIGHT Inc. to furnish JD FREIGHT Inc. a copy of my state driving record.'
+          "
+        >
+        </app-ta-checkbox>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="2"
+            [reviewFeedbackData]="reviewFeedback[2]"
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center checkbox-container">
+        <app-ta-checkbox
+          formControlName="isFourthDisclosure"
+          [name]="'isFourthDisclosure'"
+          [label]="
+            '4. I understand that I have the right to request a copy of my driving record and to know the source or sources of my driving record, for a two-year period preceding my request.'
+          "
+        >
+        </app-ta-checkbox>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="3"
+            [reviewFeedbackData]="reviewFeedback[3]"
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center checkbox-container">
+        <app-ta-checkbox
+          formControlName="isFifthDisclosure"
+          [name]="'isFifthDisclosure'"
+          [label]="
+            '5. This authorization shall remain on file by JD FREIGHT Inc. for the duration of my and will serve as ongoing authorization for JD FREIGHT Inc. to procure my state driving record at any time during my employment period.'
+          "
+        >
+        </app-ta-checkbox>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="4"
+            [reviewFeedbackData]="reviewFeedback[4]"
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center checkbox-container">
+        <app-ta-checkbox
+          formControlName="isSixthDisclosure"
+          [name]="'isSixthDisclosure'"
+          [label]="
+            '6. I understand that JD FREIGHT Inc. may take adverse action affecting my employment, based on information in my driving record.If such adverse action is taken, I acknowledge that my rights are as follows:'
+          "
+        >
+        </app-ta-checkbox>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="5"
+            [reviewFeedbackData]="reviewFeedback[5]"
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <div class="d-flex flex-column align-items-center text-center group-text">
+        <p class="m-0 ta-font-regular">
+          - Employer must notify me in writing of any such adverse action
+        </p>
+
+        <p class="m-0 ta-font-regular">
+          - I have the right to receive a copy of the driving record upon which
+          the adverse action was based.
+        </p>
+
+        <p class="m-0 ta-font-regular text-blue">
+          - I have the right to receive a summary of my rights under the Fair
+          Credit Reporting Act. I have the right to know the name, address and
+          phone number of the consumer reporting agency that provided my driving
+          record to JD FREIGHT Inc.
+        </p>
+
+        <p class="m-0 ta-font-regular">
+          - I have the right to obtain a free copy of my driving record from the
+          agency that provided it, if such request is made within 60 days from
+          the date that Employer took adverse action.
+        </p>
+
+        <p class="m-0 ta-font-regular">
+          - I have the right to dispute the accuracy or completeness of my
+          driving record with the consumer reporting agency that provided it,
+          and request that errors be corrected.
+        </p>
+      </div>
+
+      <!-- NEXT, BACK STEP -->
+
+      <app-applicant-next-step
+        (stepEvent)="onStepAction($event)"
+        [isReview]="selectedMode == 'REVIEW_MODE'"
+      ></app-applicant-next-step>
+    </form>
+  </div>
+</div>
+
+<!-- CONFIRM ALL REVIEW -->
+
+<app-applicant-confirm-all-review
+  *ngIf="selectedMode === 'REVIEW_MODE'"
+></app-applicant-confirm-all-review>
