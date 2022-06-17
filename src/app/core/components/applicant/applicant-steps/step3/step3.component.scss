@@ -1,0 +1,234 @@
+@import 'src/theme/variables.scss';
+
+.step-container {
+  .step-title {
+    color: $light-blue;
+    font-size: 32px;
+    margin-top: 30px;
+  }
+
+  .top-section {
+    margin-top: 20px;
+    width: 680px;
+
+    p {
+      color: $bw6-2;
+      font-size: 14px;
+    }
+  }
+
+  .form-section {
+    margin-top: 22px;
+
+    .license-view-container {
+      margin-bottom: 12px;
+
+      .title-container {
+        margin-bottom: 2px;
+
+        .license-title-box,
+        .state-title-box,
+        .class-title-box,
+        .date-title-box {
+          margin-right: 12px;
+
+          &.license-title-box {
+            width: 148px;
+          }
+
+          &.state-title-box {
+            width: 83px;
+          }
+
+          &.class-title-box {
+            width: 77px;
+          }
+
+          &.date-title-box {
+            width: 113px;
+            margin-right: 0;
+          }
+
+          p {
+            color: $bw6-2;
+            font-size: 10px;
+          }
+        }
+      }
+
+      .license-info-container {
+        &:hover .edit-delete-box {
+          visibility: visible;
+        }
+
+        .license-box,
+        .state-box,
+        .class-box,
+        .date-box {
+          background-color: $bw5;
+          color: $white;
+          border-radius: 3px;
+          height: 26px;
+          padding: 0;
+          margin-right: 12px;
+
+          &.license-box {
+            width: 148px;
+          }
+
+          &.state-box {
+            width: 83px;
+          }
+
+          &.class-box {
+            width: 77px;
+          }
+
+          &.date-box {
+            width: 113px;
+            margin-right: 0;
+          }
+
+          p {
+            font-size: 14px;
+          }
+        }
+
+        .edit-delete-box {
+          visibility: hidden;
+          height: 26px;
+          width: 38px;
+          margin-left: 6px;
+
+          .edit-btn,
+          .delete-btn {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: none;
+            outline: none;
+            opacity: 0.7;
+
+            &:hover {
+              opacity: 1;
+            }
+
+            &.edit-btn {
+              background-color: $bw6-2;
+              margin-right: 6px;
+
+              .edit-icon {
+                svg {
+                  path {
+                    fill: $white;
+                  }
+                }
+              }
+            }
+
+            &.delete-btn {
+              background-color: $progress-danger;
+
+              .delete-icon {
+                svg {
+                  path {
+                    fill: $white;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .form-label-group {
+      margin-bottom: 22px;
+      margin-right: 12px;
+      width: 456px;
+
+      &:last-child {
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+    }
+
+    .license-group {
+      width: 149px;
+    }
+
+    .country-group {
+      width: 111px;
+    }
+
+    .state-group {
+      width: 83px;
+    }
+
+    .class-group {
+      width: 77px;
+    }
+
+    .exp-date-group {
+      width: 122px;
+    }
+
+    .endorsments-group {
+      width: 322px;
+    }
+
+    .add-more-license-container {
+      margin-top: 12px;
+
+      h4 {
+        color: $bw6-2;
+        font-size: 14px;
+      }
+
+      .add-license-btn {
+        margin-top: 12px;
+        border: 0;
+        outline: 0;
+        font-size: 14px;
+        height: 18px;
+        color: $light-blue;
+        background-color: transparent;
+        opacity: 0.7;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+
+    .permit-container {
+      margin-top: 12px;
+      margin-bottom: 32px;
+      width: 456px;
+
+      .permit-title-box {
+        p {
+          color: $bw6-2;
+          font-size: 14px;
+
+          .required-star {
+            color: $progress-danger;
+          }
+        }
+      }
+
+      .permit-radios-box {
+        width: 80px;
+
+        .ta-input-radiobutons {
+          width: 100%;
+        }
+      }
+
+      .explain-container {
+        width: 456px;
+        margin-top: 22px;
+      }
+    }
+  }
+}

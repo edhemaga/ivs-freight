@@ -160,6 +160,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'applicant/:id',
+    loadChildren: () =>
+      import('./core/components/applicant/applicant.module').then(
+        (m) => m.ApplicantModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'catalog',
     component: SvgDefinitionsComponent,
   },

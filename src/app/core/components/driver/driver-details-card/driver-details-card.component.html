@@ -544,6 +544,18 @@
           <div id="chart">
             <app-ta-chart
               [chartConfig]="{
+                legendAttributes: [
+                  {
+                    title: 'Miles',
+                    value: '46,755.2 mi',
+                    image: 'assets/svg/common/round_yellow.svg'
+                  },
+                  {
+                    title: 'Salary',
+                    value: '$36.854.27',
+                    image: 'assets/svg/common/round_blue.svg'
+                  }
+                ],
                 dataProperties: [
                   {
                     defaultConfig: {
@@ -561,8 +573,7 @@
                       type: 'bar',
                       data: [2200, 1700, 2800, 1100, 1500, 2200, 3300, 3700, 2500, 1400, 2200, 2800],
                       label: 'Miles',
-                      yAxisID: 'y-axis-0',
-                      maxBarThickness: 42
+                      yAxisID: 'y-axis-0'
                     },
                     colorProperties: {
                       borderColor: '#FFCC80',
@@ -572,7 +583,10 @@
                   }
                 ],
                 showLegend: false,
-                defaultType: 'bar'
+                defaultType: 'bar',
+                chartWidth: '417',
+                chartHeight: '130',
+                dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP']
               }"
               [axesProperties]="{
                 verticalLeftAxes: {

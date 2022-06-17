@@ -1,0 +1,27 @@
+@import 'src/theme/variables.scss';
+
+.step-container {
+  .step-title {
+    color: $light-blue;
+    font-size: 32px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  .checkbox-container {
+    width: 680px;
+    margin-bottom: 12px;
+  }
+
+  .step-subtitle {
+    height: 18px;
+    color: $bw6-2;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 12px;
+  }
+
+  .signature-pad-container {
+    margin-bottom: 32px;
+  }
+}
