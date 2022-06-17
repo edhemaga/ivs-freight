@@ -17,8 +17,7 @@ import { DriverDetailsModule } from './driver-details/driver-details.module';
     DriverDetailsModule,
     TruckassistTableModule,
     AngularSvgIconModule,
-    SharedModule, 
-    ProfileImagesModule
+    SharedModule
   ],
 
 })
