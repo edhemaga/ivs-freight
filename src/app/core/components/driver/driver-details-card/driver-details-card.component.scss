@@ -11,8 +11,8 @@
     margin-top: 8px;
 }
 .wrapper-additional-cards{
-    max-height: calc(82vh - 74px);
-    min-height: calc(33vh - 10px);
+    max-height: calc(77vh - 74px);
+    min-height: calc(26vh - 10px);
     display: grid;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
@@ -35,4 +35,29 @@
 }
 .owner-name{
     text-transform: uppercase;
+}
+.tooltip-copy{
+    width: 12%;
+}
+.tooltip-ein{
+ width: 17%;
+}
+
+.inactive-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 15px;
+    background-color: #f3f3f3;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 800;
+    position: relative;
+    left: 98px;
+    color: $color-gray-dark;
+    width: 60px;
+    height: 18px;
+}
+.bind-heigth{
+      max-height: calc(100vh - 74px) !important;
 }

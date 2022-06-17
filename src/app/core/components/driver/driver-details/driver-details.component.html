@@ -5,17 +5,21 @@
       [route]="'/driver'"
       [tooltipHeaderName]="'Back to Driver List'"
       [headerText]="item.name"
-      [counterData]="item.data"
+      [counterData]="item.length"
       [hidePlus]="item.hide"
+      [isInactive]="showInc"
+      [hasRequest]="item.req"
+      [statusInactive]="item.status"
+  
       (openModalAction)="onModalAction($event)"
     >
     </app-ta-details-header>
-  
+    <!-- [danger]="item.hasDanger" -->
   </div>
   <div class="details-item-cmp">
     <app-driver-details-item
       *ngFor="let item of driverDetailsConfig; trackBy: identity"
-      [data]="item"
+      [driver]="item"
     ></app-driver-details-item>
   </div>
 </div>

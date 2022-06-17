@@ -53,6 +53,7 @@
           [inputConfig]="{
             name: 'datepicker',
             type: 'text',
+            isDropdown: true,
             label: 'Deadline',
             placeholderIcon: 'date',
             customClass: 'datetimeclass'
@@ -102,13 +103,11 @@
       [hasCounter]="comments.length ? comments.length : '0'"
       [cardName]="'Comment'"
       [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-      [hasArrow]="false"
-      [hasLikeDislike]="true"
       [isCardOpen]="comments.length"
       [hasBodyData]="comments.length"
       [hasScrollBody]="comments.length > 6"
       [isCommentData]="true"
-      (onActionEvent)="addComment($event)"
+      (onActionEvent)="createComment($event)"
     >
       <div class="no-review-broker" *ngIf="!comments.length">
         <svg-icon
@@ -130,7 +129,7 @@
         [isCardOpen]="documents.length"
       >
         <app-ta-modal-upload
-          [files]="[]"
+          [files]="documents"
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-modal-upload>
       </app-ta-custom-card>

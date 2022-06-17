@@ -1,18 +1,20 @@
-<div *ngIf="data" class="cards-item-wrapper-1">
+<div *ngIf="truck" class="cards-item-wrapper-1">
   <app-ta-details-header-card
-    [cardDetailsName]="data.firstName"
     [cardDetailsDate]="'08/03/20'"
     [tooltipNext]="'Next Truck'"
     [tooltipPrevious]="'Previous Truck'"
-    [searchName]="'Search Truck'"
-  >
+    [searchInputName]="'Search Truck'"
+    [options]="truckDropDowns"
+    (selectValue)="onSelectedTruck($event)" 
+    (changeEvent)="onChangeTruck($event)"
+    >
     <ng-container>
       <div class="truck-details-wrapper">
         <div class="details-header-avatar">
           <div class="svg-truck-wrapper">
             <svg-icon
               class="truck"
-              src="{{ 'assets/svg/common/trucks/' + data.truckType.logoName }}"
+              src="{{ 'assets/svg/common/trucks/' + truck.truckType.logoName }}"
             >
             </svg-icon>
           </div>
@@ -21,21 +23,23 @@
             <div class="svg-wrapper">
               <svg-icon
                 class="details-header-model"
-                src="assets/svg/common/chevrolet.svg"
+                src="{{
+                  'assets/svg/common/trucksmake/' + truck.truckMake.logoName
+                }}"
               >
               </svg-icon>
             </div>
-            <p>{{ data.model }}</p>
+            <p>{{ truck.model }}</p>
           </div>
         </div>
         <div class="details-header-data">
           <div class="details-header-data-item">
             <svg-icon src="assets/svg/common/vin.svg"></svg-icon>
-            <p class="vin-text">{{ data.vin }}</p>
+            <p class="vin-text">{{ truck.vin }}</p>
           </div>
           <div class="details-header-data-item second">
             <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
-            <p class="vin-text date">{{ data.year }}</p>
+            <p class="vin-text date">{{ truck.year }}</p>
             <div class="light-green">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -53,12 +57,12 @@
                   <path
                     d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
                     transform="translate(712.181 241.886)"
-                    [attr.fill]="data.color.code"
+                    [attr.fill]="truck.color.code"
                   />
                 </g>
               </svg>
             </div>
-            <p class="vin-text">{{ data.color.name }}</p>
+            <p class="vin-text">{{ truck?.color.name }}</p>
           </div>
         </div>
       </div>
@@ -99,53 +103,55 @@
         class="item-cards"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
+        [isCardOpen]="true"
         [cardName]="'Additional Details'"
+        *ngIf="truck.truckGrossWeight"
       >
         <div class="common-template">
           <div class="common-template-item">
             <div class="common-template-item-name">Gross Weight</div>
             <div class="common-template-item-value">
-              {{ data.truckGrossWeight.name }}
+              {{ truck?.truckGrossWeight.name }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Starting Mileage</div>
-            <div class="common-template-item-value">{{ data.mileage }} mi</div>
+            <div class="common-template-item-value">{{ truck?.mileage }} mi</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Empty Weight</div>
             <div class="common-template-item-value">
-              {{ data.emptyWeight }}
+              {{ truck?.emptyWeight }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Engine Type</div>
             <div class="common-template-item-value">
-              {{ data.truckEngineType.name }}
+              {{ truck?.truckEngineType.name }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Axles</div>
             <div class="common-template-item-value">
-              {{ data.axles }}
+              {{ truck?.axles }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Tire size</div>
             <div class="common-template-item-value">
-              {{ data.tireSize.name }}
+              {{ truck?.tireSize.name }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">IPASS/EZPASS</div>
             <div class="common-template-item-value">
-              {{ data.ipasEzpass }}
+              {{ truck?.ipasEzpass }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Insurance Policy</div>
             <div class="common-template-item-value">
-              {{ data.insurancePolicy }}
+              {{ truck?.insurancePolicy }}
             </div>
           </div>
         </div>
@@ -157,18 +163,19 @@
         class="item-cards"
         [cardName]="'Owner'"
         [bodyTemplate]="'card'"
+        [isCardOpen]="true"
       >
         <div class="common-template">
           <div class="common-template-item">
             <div class="common-template-item-name">Company</div>
             <div class="common-template-item-value size18">
-              {{ data.owner.name }}
+              {{ truck.owner.name }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Commission</div>
             <div class="common-template-item-value size18">
-              {{ data.commission }}
+              {{ truck.commission }}%
             </div>
           </div>
         </div>
@@ -183,10 +190,15 @@
         class="item-cards"
         [cardName]="'Perfomance'"
         [bodyTemplate]="'card'"
+        [isCardOpen]="true"
       >
         <div class="charts-template perfomance">
-          <app-ta-input-radiobuttons [buttons]="buttonsArrayPerfomance">
-          </app-ta-input-radiobuttons>
+          <app-tab-switcher
+            [customClass]="'chart-tabs'"
+            (switchClicked)="changeTabPerfomance($event)"
+            [tabs]="buttonsArrayPerfomance"
+          >
+          </app-tab-switcher>
 
           <div class="charts-item-wrapper revenue">
             <div class="charts-template-item">
@@ -217,8 +229,12 @@
         class="item-cards"
       >
         <div class="charts-template perfomance">
-          <app-ta-input-radiobuttons [buttons]="buttonsArrayFuel">
-          </app-ta-input-radiobuttons>
+          <app-tab-switcher
+            [customClass]="'chart-tabs'"
+            (switchClicked)="changeTabFuel($event)"
+            [tabs]="buttonsArrayFuel"
+          >
+          </app-tab-switcher>
           <div class="charts-item-wrapper revenue">
             <div class="charts-template-item">
               <div class="icon-name-item">
@@ -247,10 +263,15 @@
         [animationsDisabled]="false"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         class="item-cards"
+        [isCardOpen]="true"
       >
         <div class="charts-template perfomance">
-          <app-ta-input-radiobuttons [buttons]="buttonsArrayRevenue">
-          </app-ta-input-radiobuttons>
+          <app-tab-switcher
+            [customClass]="'chart-tabs'"
+            (switchClicked)="changeTabRevenue($event)"
+            [tabs]="buttonsArrayRevenue"
+          >
+          </app-tab-switcher>
           <div class="charts-item-wrapper revenue">
             <div class="charts-template-item">
               <div class="icon-name-item">
@@ -299,16 +320,20 @@
             <div class="status-items">
               <div
                 class="item-wrapper"
-                *ngFor="let owHist of data.ownerHistories; trackBy: identity"
+                *ngFor="let owHist of truck.ownerHistories; trackBy: identity"
               >
                 <p class="employment">{{ owHist.name }}</p>
 
                 <p class="date-from-to">
-                  {{  owHist.startDate | formatDateP }} -
-                  <span *ngIf="owHist.endDate">{{ owHist.endDate | formatDateP}}</span>
+                  {{ owHist.startDate | formatDateP }} -
+                  <span *ngIf="owHist.endDate">{{
+                    owHist.endDate | formatDateP
+                  }}</span>
                   <span *ngIf="!owHist.endDate">Today</span>
                 </p>
-                <p class="duration">1 y 200 d</p>
+                <p class="duration">
+                  {{ owHist.duration.Years }} y {{ owHist.duration.Days }} d
+                </p>
               </div>
             </div>
           </div>
@@ -333,18 +358,18 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.registrations.length"
+          [hasCounter]="truck.registrations.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let reg of data.registrations; trackBy: identity">
+          <div *ngFor="let reg of truck.registrations; trackBy: identity">
             <app-ta-re-card
               [cardDocumentCounter]="1"
               (resizePage)="toggleResizePage($event)"
               [cardNameCommon]="reg.licensePlate"
               [hasCopyIcon]="true"
               [options]="dataEdit"
-              [expDateClose]=" reg.expDate | formatDateP"
+              [expDateClose]="reg.expDate | formatDateP"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -399,14 +424,14 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.inspections.length"
+          [hasCounter]="truck.inspections.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let fhwa of data.inspections; trackBy: identity">
+          <div *ngFor="let fhwa of truck.inspections; trackBy: identity">
             <app-ta-re-card
               [options]="dataEdit"
-              [cardNameCommon]=" fhwa.issueDate | formatDateP"
+              [cardNameCommon]="fhwa.issueDate | formatDateP"
               [expDateClose]="'04/04/24' | formatDateP"
             >
               <div class="cards-container">
@@ -448,11 +473,11 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.titles.length"
+          [hasCounter]="truck.titles.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let title of data.titles; trackBy: identity">
+          <div *ngFor="let title of truck.titles; trackBy: identity">
             <app-ta-re-card
               [cardDocumentCounter]="1"
               (resizePage)="toggleResizePage($event)"

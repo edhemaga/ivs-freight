@@ -6,6 +6,7 @@ import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-
 
 @NgModule({
   declarations: [FuelTableComponent],
+  exports:[TruckassistTableModule],
   imports: [CommonModule, FuelRoutingModule, TruckassistTableModule],
 })
 export class FuelModule {}

@@ -1,0 +1,173 @@
+<div class="repair-component">
+  <div [ngSwitch]="data.template">
+    <div *ngSwitchCase="'general'">
+      <app-ta-details-header-card
+        [cardDetailsName]=""
+        [cardDetailsDate]="'08/03/20'"
+        [tooltipNext]="'Next Fuel'"
+        [tooltipPrevious]="'Previous Fuel'"
+        [searchName]="'Search Fuel'"
+        [haveTwoInput]="true"
+      >
+        <div class="repair-information-wrapper">
+          <div class="repair-information-item">
+            <svg-icon
+              class="repair-icon"
+              src="assets/svg/common/ic_phone.svg"
+            ></svg-icon>
+            <p class="repair-value">(123) 546-6664</p>
+          </div>
+
+          <div class="repair-information-item">
+            <svg-icon
+              class="repair-icon"
+              src="assets/svg/common/ic_address.svg"
+            ></svg-icon>
+            <p class="repair-value">
+              5462 N East River Rd apt 611, Chicago, IL 60656, USA
+            </p>
+          </div>
+        </div>
+      </app-ta-details-header-card>
+      <div class="repair-cards">
+        <app-ta-custom-card
+          [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
+          [hasDivider]="false"
+          [cardName]="'Last Fuel Price'"
+          [isCardOpen]="true"
+        >
+          <div class="fuel-price-template">
+            <div class="fuel-price-wrapper">
+              <div class="fuel-price-name">Diesel</div>
+              <div class="fuel-price-value">$3.567</div>
+            </div>
+            <div class="fuel-price-wrapper">
+              <div class="fuel-price-name">Def</div>
+              <div class="fuel-price-value">$3.799</div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card
+          [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
+          [hasDivider]="true"
+          [cardName]="'Fuel Expense'"
+          [tooltipName]="'View in Modal'"
+          [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+          [isCardOpen]="true"
+        >
+          <div class="charts-template perfomance">
+            <app-tab-switcher
+              [tabs]="tabsFuel"
+              (switchClicked)="changeTab($event)"
+              [customClass]="'chart-tabs'"
+            >
+            </app-tab-switcher>
+            <div class="charts-item-wrapper revenue">
+              <div class="charts-template-item">
+                <div class="icon-name-item">
+                  <svg-icon src="assets/svg/common/round_yellow.svg"></svg-icon>
+                  <div class="charts-template-item-name">Gallon</div>
+                </div>
+                <div class="charts-template-item-value">27,755 gal.</div>
+              </div>
+
+              <div class="charts-template-item fuel-item">
+                <div class="icon-name-item">
+                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                  <div class="charts-template-item-name">Cost</div>
+                </div>
+                <div class="charts-template-item-value">$36.854.27</div>
+              </div>
+            </div>
+            <div id="chart"></div>
+          </div>
+        </app-ta-custom-card>
+        <div class="note-cards">
+          <app-ta-input-note
+            [formControl]="noteControl"
+            [isVisibleSecondDivider]="false"
+            [isReadOnly]="true"
+            [isVisibleNote]="noteControl.value"
+          ></app-ta-input-note>
+        </div>
+      </div>
+    </div>
+    <div *ngSwitchCase="'transaction'">
+      <div class="repair-container-fuel">
+        <div class="repair-header-fuel">
+          <span class="repaier-headers-fuel">UNIT</span>
+          <span class="repaier-headers-fuel">DRIVER</span>
+          <span class="repaier-headers-fuel">FUEL CARD</span>
+          <span class="repaier-headers-fuel">DATE</span>
+          <span class="repaier-headers-fuel">TIME</span>
+          <span class="repaier-headers-fuel">CATEGORY</span>
+          <span class="repaier-headers-fuel">FUEL G.</span>
+          <span class="repaier-headers-fuel">PPG</span>
+          <span class="repaier-headers-fuel">COST</span>
+        </div>
+        <div class="divider"></div>
+        <div class="repair-items-wrapper-fuel">
+          <span
+            *ngFor="let dummy of dummyDataFuel; let i = index"
+            [ngClass]="{ 'blue-background': dummy.blue_back == true }"
+          >
+            <div class="repair-items-fuel">
+              <div class="items-header-fuel">
+                <span class="unit-fuel">{{ dummy.unit }}</span>
+                <span class="date-fuel">{{ dummy.driver }}</span>
+                <span class="date-fuel">{{ dummy.fuel_card }}</span>
+                <span class="date-fuel">{{ dummy.date }}</span>
+                <span class="date-fuel">{{ dummy.time }}</span>
+                <span class="date-fuel">{{ dummy.category }}</span>
+                <span class="date-fuel">{{ dummy.fuel_g }}</span>
+                <div class="ppg-icon-fuel">
+                  <svg-icon class="ppg-icon" [src]="dummy.icon"></svg-icon>
+                <span class="date-fuel">${{ dummy.ppg }}</span>
+              </div>
+                <span class="cost">${{ dummy.cost }}</span>
+
+                <div
+                  class="dots-vertical"
+                  [ngClass]="{ 'dots-top-fuel': dummy.blue_back == true }"
+                >
+                  <app-table-dropdown
+                    [options]="dummyData.actions"
+                    [customClassDropDown]="'table-dropdown-container-vertical'"
+                  >
+                  </app-table-dropdown>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div *ngSwitchCase="'fuel-vehicle'">
+      <div class="repaired-vehicle-container">
+        <div class="repair-vehicle-header">
+          <span class="repaier-headers">UNIT</span>
+          <span class="repaier-headers">TYPE</span>
+          <svg-icon src="assets/svg/common/fuel.svg"></svg-icon>
+          <span class="repaier-headers">COST</span>
+        </div>
+        <div class="divider"></div>
+        <div
+          class="repair-items-vehicle"
+          *ngFor="let dum of dummyDataVehicle; let i = index"
+        >
+          <div class="items-vehicle">
+            <span class="unit">{{ dum.unit }}</span>
+            <svg-icon class="vehicle-icon" src="{{ dum.icon }}"></svg-icon>
+            <span class="date">{{ dum.key }}</span>
+            <span class="cost">${{ dum.cost }}</span>
+          </div>
+          <div class="divider"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

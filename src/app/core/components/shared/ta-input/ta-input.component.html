@@ -2,9 +2,7 @@
   class="input-custom-group"
   [ngClass]="{
     'hover-focus-out': !focusInput,
-    'hide-placeholder-icon':
-      inputConfig.type === 'password' && getSuperControl.value,
-    'invalid': getSuperControl.value && getSuperControl.invalid && !focusInput,
+    invalid: getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required':
       inputConfig.isRequired &&
       !getSuperControl.value &&
@@ -15,7 +13,7 @@
       !getSuperControl.value &&
       getSuperControl.invalid &&
       focusInput,
-    'valid': getSuperControl.value && getSuperControl.valid && !focusInput,
+    valid: getSuperControl.value && getSuperControl.valid && !focusInput,
     'invalid-empty-dropdown':
       inputConfig.isRequired &&
       !getSuperControl.value &&
@@ -25,31 +23,37 @@
       !focusInput
   }"
 >
-
   <!-- Input Clear -->
   <div
-    *ngIf="!inputConfig.hideClear && !inputConfig.isDisabled"
+    *ngIf="
+      !inputConfig.hideClear &&
+      !inputConfig.isDisabled &&
+      !inputConfig.customClass?.includes('details-pages')
+    "
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
       'valid-focus-in':
         getSuperControl.value &&
         getSuperControl.valid &&
         focusInput &&
-        !isVisiblePasswordEye,
+        !inputConfig.customClass?.includes('repair-shop-oh') &&
+        !inputConfig.blackInput,
       'invalid-focus-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
         focusInput &&
-        !isVisiblePasswordEye &&
-        !inputConfig.isDropdown,
+        !inputConfig.isDropdown &&
+        !inputConfig.blackInput,
       'dropdown-position':
         getSuperControl.value &&
         inputConfig.isDropdown &&
         !inputConfig.isDisabled &&
         !isDropdownAddModeActive &&
-        !inputConfig.multiSelectDropdownActive,
-      'password-eye': 
-        inputConfig.type === 'password' && 
+        !inputConfig.multiSelectDropdownActive &&
+        !inputConfig.blackInput,
+      focus: focusInput,
+      'password-eye':
+        inputConfig.type === 'password' &&
         isVisiblePasswordEye &&
         getSuperControl.value
     }"
@@ -65,11 +69,13 @@
   <!-- Input Invalid Danger Mark -->
   <svg-icon
     *ngIf="
-    !inputConfig.isDropdown &&
-    (touchedInput && 
-     getSuperControl.value && 
-     getSuperControl.invalid && 
-     !focusInput)"
+      !inputConfig.isDropdown &&
+      touchedInput &&
+      getSuperControl.value &&
+      getSuperControl.invalid &&
+      !focusInput &&
+      !inputConfig.blackInput
+    "
     class="input-invalid-danger-mark  {{ inputConfig.customClass }}"
     src="assets/svg/common/ic_danger.svg"
   >
@@ -84,19 +90,31 @@
       !focusInput &&
       !inputConfig.isDisabled &&
       !inputConfig.placeholderIcon &&
-      !inputConfig.isDropdown
+      !inputConfig.isDropdown &&
+      !inputConfig.blackInput
     "
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
 
+  <!-- Input Password Caps Lock -->
+  <p
+    *ngIf="capsLockOn && inputConfig.type === 'password'"
+    class="password-capslock"
+  >
+    Caps Lock is ON
+  </p>
+
   <!-- Input Password Eye -->
   <div
-    *ngIf="inputConfig.type === 'password'"
+    *ngIf="inputConfig.type === 'password' && getSuperControl.value"
     class="input-password-eye {{ inputConfig.customClass }}"
     [ngClass]="{
-      'visible': isVisiblePasswordEye,
-      'valid': getSuperControl.valid && !focusInput && !isVisiblePasswordEye,
-      'not-focused': !focusInput}"
+      visible: isVisiblePasswordEye,
+      'valid-focus-out':
+        getSuperControl.value && getSuperControl.valid && !isVisiblePasswordEye,
+      invalid:
+        getSuperControl.value && getSuperControl.invalid && isVisiblePasswordEye
+    }"
     ngbTooltip
     mainTooltip="{{ !togglePassword ? 'Show Password' : 'Hide Password' }}"
     tooltipBackground="#6c6c6c"
@@ -105,7 +123,7 @@
   >
     <svg-icon
       src="{{
-        togglePassword
+        !togglePassword
           ? 'assets/svg/common/ic_eye-visible.svg'
           : 'assets/svg/common/ic_eye-hidden.svg'
       }}"
@@ -130,22 +148,22 @@
 
   <!-- Input Drodown Arrow -->
   <svg-icon
-    class="input-dropdown-arrow"
+    class="input-dropdown-arrow {{ inputConfig.customClass }}"
     *ngIf="
       inputConfig.isDropdown &&
       !inputConfig.isDisabled &&
-      !isDropdownAddModeActive &&
+      (!isDropdownAddModeActive ||
+        inputConfig.name === 'datepicker' ||
+        inputConfig.name === 'timepicker') &&
       !inputConfig.multiSelectDropdownActive
     "
     [ngClass]="{
-      'active': 
-      (!inputConfig.isDisabled && focusInput) || 
-      (inputConfig.multiSelectDropdownActive &&
-       focusInput),
-      'valid':
-      (getSuperControl.value && getSuperControl.valid && focusInput) ||
-      (inputConfig.multiSelectDropdownActive &&
-       focusInput),
+      active:
+        (!inputConfig.isDisabled && focusInput) ||
+        (inputConfig.multiSelectDropdownActive && focusInput),
+      valid:
+        (getSuperControl.value && getSuperControl.valid && focusInput) ||
+        (inputConfig.multiSelectDropdownActive && focusInput),
       'valid-focus-out-required':
         getSuperControl.value && getSuperControl.valid && !focusInput,
       'focus-out-hover': !focusInput,
@@ -159,6 +177,27 @@
     src="assets/svg/common/ic_arrow_down_updated.svg"
     (click)="toggleDropdownOptions()"
   ></svg-icon>
+
+  <!-- Modal PM -,+ buttons -->
+  <div
+    *ngIf="inputConfig.modalPM && isVisiblePmCommands"
+    class="input-pm-incrementation"
+  >
+    <div class="input-pm-decrement">
+      <svg-icon
+        class="pm-svg-decrement"
+        src="assets/svg/common/ic_pm_decrement.svg"
+        (click)="onPmIncrementation($event, 'decrement')"
+      ></svg-icon>
+    </div>
+    <div class="input-pm-increment">
+      <svg-icon
+        class="pm-svg-increment"
+        src="assets/svg/common/ic_pm_increment.svg"
+        (click)="onPmIncrementation($event, 'increment')"
+      ></svg-icon>
+    </div>
+  </div>
 
   <!-- Input Icon Placeholder -->
   <svg-icon
@@ -174,7 +213,7 @@
     (shown)="onPopoverShown()"
     (hidden)="onPopoverHidden()"
     class="input-icon {{ inputConfig.customClass }}"
-    *ngIf="inputConfig.placeholderIcon && !isVisiblePasswordEye"
+    *ngIf="inputConfig.placeholderIcon"
     [ngClass]="{
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
@@ -190,7 +229,20 @@
         !focusInput &&
         touchedInput,
       'invalid-required-filled-out':
-        getSuperControl.value && getSuperControl.invalid && !focusInput
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        !isVisiblePasswordEye,
+      'password-eye':
+        inputConfig.type === 'password' &&
+        isVisiblePasswordEye &&
+        getSuperControl.value &&
+        !getSuperControl.invalid,
+      'password-eye-invalid':
+        inputConfig.type === 'password' &&
+        isVisiblePasswordEye &&
+        getSuperControl.invalid &&
+        getSuperControl.value
     }"
     [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg: 'common'"
   ></svg-icon>
@@ -205,7 +257,12 @@
   >
   </svg-icon>
 
-  <!-- Input Control -->
+  <!-- Input Control 
+  
+     thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
+    separatorLimit="99999999999999"
+  
+  -->
   <input
     #input
     [type]="inputConfig.type | inputType: togglePassword"
@@ -217,44 +274,56 @@
     [placeholder]="inputConfig.placeholder ? inputConfig.placeholder : ''"
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
-    [mask]="inputConfig.mask"
+    mask="{{ inputConfig.mask }}"
     [min]="inputConfig.min ? inputConfig.min : 0"
     [max]="inputConfig.max"
     [step]="inputConfig.step ? inputConfig.step : null"
-    thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
     inputformat="dd-mm-yy"
     class="input-control 
     {{ inputConfig.textTransform }} 
     {{ inputConfig.textAlign }} 
     {{ inputConfig.customClass }}"
     [ngClass]="{
-      'disabled': !getSuperControl.value && inputConfig.isDisabled,
+      disabled: !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-focus-in':
         getSuperControl.value &&
         getSuperControl.valid &&
         focusInput &&
-        !isVisiblePasswordEye,
+        !isVisiblePasswordEye &&
+        !isVisiblePmCommands &&
+        !inputConfig.blackInput,
       'invalid-focus-in':
-        getSuperControl.value && getSuperControl.invalid && focusInput,
-      'password-eye': inputConfig.type === 'password' && isVisiblePasswordEye,
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        !inputConfig.blackInput,
+      'password-eye':
+        ((inputConfig.type === 'password' && isVisiblePasswordEye) ||
+          isVisiblePmCommands) &&
+        !getSuperControl.invalid,
+      'password-eye-invalid':
+        inputConfig.type === 'password' &&
+        isVisiblePasswordEye &&
+        getSuperControl.invalid &&
+        getSuperControl.value,
       'has-input-icon': inputConfig.placeholderIcon,
       'dropdown-placeholder-active':
         inputConfig.isDropdown &&
         inputConfig.placeholder &&
         dropdownToggler &&
-        focusInput,
-      'multiSelect-dropdown-active': 
-        inputConfig.multiSelectDropdownActive &&
-        focusInput
+        focusInput &&
+        !inputConfig.blackInput,
+      'multiSelect-dropdown-active':
+        inputConfig.multiSelectDropdownActive && focusInput
     }"
-    [(ngModel)]="input.value"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"
-    (input)="onChange($event.target.value); transformText($event.target.value)"
     (blur)="onBlur()"
     (focus)="onFocus()"
     (paste)="onPaste($event, inputConfig.maxLength)"
+    (input)="onChange($event.target.value); transformText($event.target.value)"
+    [(ngModel)]="inputConfig.mask ? '' : input.value"
   />
 
   <!-- DateTime Picker -->
@@ -279,6 +348,7 @@
       class="main"
       tabindex="0"
       (focus)="onFocus()"
+      (paste)="onDatePaste($event)"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
@@ -295,6 +365,7 @@
       tabindex="1"
       (focus)="onFocus()"
       (click)="setSelection($event)"
+      (paste)="onDatePaste($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
@@ -307,6 +378,7 @@
     <span
       #span3
       class="main"
+      (paste)="onDatePaste($event)"
       tabindex="2"
       (focus)="onFocus()"
       (click)="setSelection($event)"
@@ -322,7 +394,7 @@
     [for]="inputConfig.name"
     class="input-label {{ inputConfig.customClass }}"
     [ngClass]="{
-      'required': inputConfig.isRequired && !inputConfig.isDisabled,
+      required: inputConfig.isRequired && !inputConfig.isDisabled,
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'up-label': getSuperControl.value || focusInput || showDateInput,

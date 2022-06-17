@@ -35,6 +35,7 @@ export class TaInputDropdownComponent
   @ViewChild(TaInputComponent) inputRef: TaInputComponent;
   @ViewChild('t2') public popoverRef: NgbPopover;
   @Input() template: string;
+  @Input() isDetailsActive: boolean = false;
   @Input() inputConfig: ITaInput;
   @Input() canAddNew: boolean = false;
   @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
@@ -76,9 +77,26 @@ export class TaInputDropdownComponent
         clearTimeout(timeout);
       }, 50);
     }
+
+    // Details Pages
+    if (this.template === 'details-template' && this.isDetailsActive) {
+      const timeout = setTimeout(() => {
+        this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
+        const option = this.options.find((item) => item.active);
+        this.activeItem = option;
+        this.getSuperControl.setValue(option.name);
+
+        const timeout2 = setTimeout(() => {
+          this.popoverRef.open();
+          clearTimeout(timeout2);
+        }, 150);
+        clearTimeout(timeout);
+      });
+    }
   }
 
   ngOnInit(): void {
+    // Multiselect dropdown
     if (
       this.preloadMultiselectItems.length &&
       this.inputConfig.multiselectDropdown
@@ -87,20 +105,24 @@ export class TaInputDropdownComponent
         this.onMultiselectSelect(item, this.template);
       });
     }
+
     if (this.inputConfig.multiselectDropdown) {
       this.multiSelectLabel = this.inputConfig.label;
     }
 
+    // Options
     if (this.options) {
       this.originalOptions = [...this.options];
     }
 
+    // Search
     this.getSuperControl.valueChanges
       .pipe(untilDestroyed(this))
       .subscribe((term) => {
         this.search(term);
       });
 
+    // Clear Input
     this.inputService.onClearInputSubject
       .pipe(debounceTime(50), untilDestroyed(this))
       .subscribe((action: boolean) => {
@@ -165,6 +187,13 @@ export class TaInputDropdownComponent
 
           this.getSuperControl.setValue(null);
           this.popoverRef.close();
+        }
+
+        if (
+          this.inputConfig.customClass?.includes('details-pages') &&
+          !action
+        ) {
+          this.selectedItem.emit(this.activeItem);
         }
       });
   }
@@ -464,7 +493,7 @@ export class TaInputDropdownComponent
    */
   private dropdownNavigation(step: number) {
     this.dropdownPosition += step;
-    console.log(this.dropdownPosition);
+
     if (this.dropdownPosition > this.options.length - 1) {
       this.dropdownPosition = 0;
     }

@@ -34,14 +34,6 @@
     }
   }
 
-  &.hide-placeholder-icon {
-    &:hover {
-      .input-icon {
-        display: none;
-      }
-    }
-  }
-
   &.invalid {
     &:hover {
       transition: all 0.3s ease-in-out;
@@ -284,4 +276,6 @@
   @import "./ta-input.datepicker.scss";
   @import "./ta-input.placeholderText.scss";
   @import "./ta-input.dangermark.scss";
+  @import "./ta-input.passwordcapslock.scss";
+  @import "./ta-input.pmincrementation.scss";
 }

@@ -47,3 +47,18 @@
       }
     }
 }
+.assignTo-item{
+    height: 34px;
+    .assignTo-vehicle{
+        padding-left: 6px;
+        svg{
+            width: fit-content !important;
+        }
+    }
+}
+.details-header-model {
+    svg{
+        width: 165px;
+        height: 30px;
+    }
+}

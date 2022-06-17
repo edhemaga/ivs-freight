@@ -140,7 +140,7 @@
           </div>
           <div
             class="checkbox-card-body"
-            [ngClass]="{'active-20': !truckForm.get('companyOwned').value}"
+            [ngClass]="{ 'active-20': !truckForm.get('companyOwned').value }"
           >
             <div
               *ngIf="!truckForm.get('companyOwned').value"
@@ -177,7 +177,10 @@
             </div>
           </div>
         </div>
-        <app-ta-input-note formControlName="note" [isVisibleNote]="truckForm.get('note').value"></app-ta-input-note>
+        <app-ta-input-note
+          formControlName="note"
+          [isVisibleNote]="truckForm.get('note').value"
+        ></app-ta-input-note>
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
@@ -204,7 +207,7 @@
                 type: 'text',
                 label: 'Empty Weight',
                 maxLength: 6,
-                mask: 'separator.2'
+                thousandSeparator: true
               }"
             ></app-ta-input>
           </div>
@@ -268,7 +271,7 @@
                 type: 'text',
                 label: 'Mileage',
                 maxLength: 10,
-                mask: 'separator.2'
+                thousandSeparator: true
               }"
             ></app-ta-input>
           </div>

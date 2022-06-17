@@ -1,13 +1,19 @@
-<div *ngIf="data" class="cards-item-wrapper-1">
+<div *ngIf="driver" class="cards-item-wrapper-1">
   <app-ta-details-header-card
     [tooltipNext]="'Next Driver'"
     [tooltipPrevious]="'Previous Driver'"
-    [searchName]="'Search Driver'"
+    [searchName]="'Driver is Owner'"
     [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
-    [cardDetailsName]="data.currentDriverName"
-    [cardDetailsDate]="data.hired | formatDateP"
-    [cardDetailsDateTerminated]="data.dateTerminated | formatDateP"
-    [statusInactive]="data.status"
+    [cardDetailsName]="driver.currentDriverName"
+    [cardDetailsDate]="driver.hired | formatDateP"
+    [cardDetailsDateTerminated]="driver.dateTerminated | formatDateP"
+    [statusInactive]="driver.status"
+    [options]="driversDropdowns"
+    [searchInputName]="'Search Driver'"
+    (selectValue)="onSelectedDriver($event)"
+    (changeEvent)="onChangeDriver($event)"
+    [hasArrow]="hideArrow"
+    [optionsDrop]="dropData"
   >
     <div class="driver-container">
       <div class="driver-personal">
@@ -25,20 +31,26 @@
               src="assets/svg/common/ic_ssn.svg"
             ></svg-icon>
             <p class="information-value ssn">
-              {{ data.ssn | formatSsnP }}
+              {{ driver.ssn | formatSsnP }}
             </p>
+         
             <span
               [tooltipBackground]="copiedSSN ? '#536BC2' : '#6c6c6c'"
               ngbTooltip
               [mainTooltip]="copiedSSN ? 'Copied' : 'Copy'"
               position="top"
+              class="tooltip-copy"
+              (click)="copyText(driver.ssn, 'ssn')"
             >
               <svg-icon
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
-                (click)="copyText(data.ssn, 'ssn')"
+                (click)="copyText(driver.ssn, 'ssn')"
               ></svg-icon>
             </span>
+            <div *ngIf="driver.status==0" class="inactive-wrapper">
+              Inactive
+           </div>
           </div>
           <div
             class="information-item"
@@ -49,16 +61,18 @@
               src="assets/svg/common/ic_phone.svg"
             ></svg-icon>
             <p class="information-value">
-              {{ data.phone | formatPhoneP }}
+              {{ driver.phone | formatPhoneP }}
             </p>
             <span
               [tooltipBackground]="copiedDriverPhone ? '#536BC2' : '#6c6c6c'"
               ngbTooltip
               [mainTooltip]="copiedDriverPhone ? 'Copied' : 'Copy'"
               position="top"
+              class="tooltip-copy"
+              (click)="copyText(driver.phone, 'driver-phone')"
             >
               <svg-icon
-                (click)="copyText(data.phone, 'driver-phone')"
+                (click)="copyText(driver.phone, 'driver-phone')"
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
               >
@@ -74,16 +88,18 @@
               src="assets/svg/common/ic_email.svg"
             ></svg-icon>
             <p class="information-value information-email-value">
-              {{ data.email }}
+              {{ driver.email }}
             </p>
             <span
               [tooltipBackground]="copiedDriverEmail ? '#536BC2' : '#6c6c6c'"
               ngbTooltip
               [mainTooltip]="copiedDriverEmail ? 'Copied' : 'Copy'"
               position="top"
+              class="tooltip-copy"
+              (click)="copyText(driver.email, 'driver-email')"
             >
               <svg-icon
-                (click)="copyText(data.email, 'driver-email')"
+                (click)="copyText(driver.email, 'driver-email')"
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
               ></svg-icon>
@@ -93,11 +109,13 @@
       </div>
     </div>
   </app-ta-details-header-card>
-  <div class="wrapper-additional-cards">
+  <div class="wrapper-additional-cards" [ngClass]="{ 'bind-heigth': !templateCard }">
     <div class="details-cards">
       <!-- assignedTo -->
       <app-ta-custom-card
-        [cardName]="data.status == 1 ? 'Assigned To' : 'View Dispatch History'"
+        [cardName]="
+          driver.status == 1 ? 'Assigned To' : 'View Dispatch History'
+        "
         [hasDivider]="false"
         [tooltipName]="'Dispatch History'"
         [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
@@ -131,7 +149,6 @@
               mainTooltip="View in Modal"
               position="top"
               style="margin-left: 40px"
-            
             >
               <svg-icon
                 class="open-modal-icon"
@@ -153,7 +170,9 @@
                   src="assets/svg/common/trailers/ic_trailer_container.svg"
                 ></svg-icon>
               </span>
-              <p class="assignTo-value" style="margin-left: 6px !important;">R4578</p>
+              <p class="assignTo-value" style="margin-left: 6px !important">
+                R4578
+              </p>
             </div>
             <span
               style="margin-left: 33px"
@@ -184,9 +203,7 @@
             <div class="addres-name">Address</div>
             <div class="addres-value-icon">
               <div class="addres-value">
-                {{ data.address.addressUnit }} {{ data.address.address }},
-                {{ data.address.city }}, {{ data.address.stateShortName }}
-                {{ data.address.zipCode }}, {{ data.address.country }}
+                {{ driver.address.address }}
               </div>
               <span
                 tooltipBackground="#6c6c6c"
@@ -205,7 +222,7 @@
           <div class="addres-wrapper addres-second">
             <div class="addres-name">Date of Birth</div>
             <div class="addres-value">
-              {{ data.dateOfBirth | formatDateP }}
+              {{ driver.dateOfBirth | formatDateP }}
             </div>
           </div>
         </div>
@@ -213,28 +230,28 @@
 
       <!-- Off Duty Location-->
       <app-ta-custom-card
-        [hasCounter]="data.offDutyLocations.length"
+        [hasCounter]="driver.offDutyLocations.length"
         [cardName]="'Off Duty Location'"
         [isCardOpen]="false"
+        *ngIf="driver.offDutyLocations"
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
         class="item-cards"
       >
-        <div *ngIf="data.offDutyLocations == ''" class="no-data">
+        <div *ngIf="driver.offDutyLocations == ''" class="no-data">
           No Added Location
         </div>
         <div
           class="additional-container"
-          *ngFor="let offDuty of data.offDutyLocations; trackBy: identity"
+          *ngFor="let offDuty of driver.offDutyLocations; trackBy: identity"
         >
           <div *ngIf="offDuty" class="addres-wrapper">
             <div class="addres-name">{{ offDuty?.nickname }}</div>
             <div class="addres-value-icon">
               <div class="addres-value">
-          
-
-                {{ offDuty?.address.addressUnit }} {{ offDuty?.address.address }},    
-                {{ offDuty?.address.city }}, {{ offDuty.address.stateShortName }}
+                {{ offDuty?.address.addressUnit }}
+                {{ offDuty?.address.address }}, {{ offDuty?.address.city }},
+                {{ offDuty.address.stateShortName }}
                 {{ offDuty?.address.zipCode }}, {{ offDuty?.address.country }}
               </div>
               <span
@@ -268,59 +285,72 @@
             <div class="items-wrapper">
               <div class="service-years-name">Years of Service</div>
               <div class="service-year-value">
-                <!-- {{
-            formatHistoryDays(driverData.employmentHistories.startDate)
-          }} -->
-                4 years 70 days
+                {{ yearsService }} {{ yearsService > 1 ? "years" : "year" }}
+                {{ daysService }} {{ daysService > 1 ? "days" : "day" }}
               </div>
             </div>
           </div>
           <div>
-            <div class="progress-employment-history">
-              <div class="progress-driver">
-                <div class="emp">
-                  <div class="employment-tooltip">
-                    <div class="emp-tooltip">
-                      <div class="emp-tooltip-value">
-                        <p class="emp-duration">10 September, 2021 - Today</p>
-                        <div class="emp-text-icon">
-                          <p>Employed</p>
-                          <svg-icon
-                            src="assets/svg/common/round_blue.svg"
-                          ></svg-icon>
-                        </div>
-                      </div>
-                      <p class="year-working">1 year 103 days</p>
+            <div *ngIf="deactivatePeriod" class="progress-employment-history">
+              <div *ngIf="showTooltip" class="employment-tooltip">
+                <div class="emp-tooltip">
+                  <div class="emp-tooltip-value">
+                    <p class="emp-duration">
+                      {{ tooltipFormatStartDate }} -
+                      <span>{{
+                        tooltipData.endDate ?  tooltipFormatEndDate : 'Today'
+                      }}</span>
+
+                    </p>
+                    <div class="emp-text-icon">
+                      <p>
+                        {{
+                          tooltipData.isDeactivate ? "Deactivated " : "Employed"
+                        }}
+                      </p>
+                      <svg-icon
+                        class="svg-blue"
+                        src="{{
+                          tooltipData.isDeactivate
+                            ? 'assets/svg/common/ic_circle_light_blue.svg'
+                            : '  assets/svg/common/round_blue.svg'
+                        }}"
+                      ></svg-icon>
                     </div>
                   </div>
-                </div>
-                <div class="unp">
-                  <div class="employment-tooltip">
-                    <div class="emp-tooltip">
-                      <div class="emp-tooltip-value">
-                        <p class="emp-duration">
-                          10 September, 2021 - 04 January, 2023
-                        </p>
-                        <div class="emp-text-icon">
-                          <p>Deactivated</p>
-                          <svg-icon
-                            src="assets/svg/common/ic_circle_light_blue.svg"
-                          ></svg-icon>
-                        </div>
-                      </div>
-                      <p class="year-working">1 year 103 days</p>
-                    </div>
-                  </div>
+                  <p class="year-working">
+                    {{ tooltipData.duration.Years }} {{ tooltipData.duration.Years > 1 ? "years" : "year" }}
+                    {{ tooltipData.duration.Days }} {{ tooltipData.duration.Days > 1 ? "days" : "day" }}
+                    </p>
                 </div>
               </div>
+              <div class="progress-driver">
+                <div
+                  (mouseover)="mouseEnter(dat)"
+                  (mouseleave)="showTooltip = false"
+                  *ngFor="
+                    let dat of dataProggress;
+                    trackBy: identity
+                  "
+                  [ngStyle]="{
+                    'background-color':
+                      dat.isDeactivate === true ? '#d4dff4' : '#6d82c8',
+                    width: dat.activePercentage + '%'
+                  }"
+                  [ngClass]="{
+                    emp: dat.isDeactivate == false,
+                    unp: dat.isDeactivate == true
+                  }"
+                ></div>
+              </div>
               <div *ngIf="!showMoreEmployment" class="year-employer">
-                <p>05/23/21</p>
-                <p>Today</p>
+                <p>{{ firstDate }} </p>
+                <p >{{!lastDate=='Invalid Date'? lastDate : 'Today'}}</p>
+              
               </div>
             </div>
 
             <div
-              *ngIf="showMoreEmployment"
               [@showHideCardBody]="showMoreEmployment ? 'true' : 'false'"
               class="status-container"
             >
@@ -339,7 +369,7 @@
               <div class="status-items">
                 <div
                   *ngFor="
-                    let empH of data.employmentHistories;
+                    let empH of dataProggress;
                     trackBy: identity
                   "
                   class="item-wrapper"
@@ -348,13 +378,13 @@
                     <svg-icon
                       class="svg-blue"
                       src="{{
-                        empH.endDate
+                        empH.isDeactivate
                           ? 'assets/svg/common/ic_circle_light_blue.svg'
                           : '  assets/svg/common/round_blue.svg'
                       }}"
                     ></svg-icon>
                     <p class="employment">
-                      {{ empH.endDate ? "Deactivated " : "Employed" }}
+                      {{ empH.isDeactivate ? "Deactivated " : "Employed" }}
                     </p>
                   </div>
                   <p class="date-from-to">
@@ -364,7 +394,9 @@
                     }}</span>
                     <span *ngIf="!empH.endDate">Today</span>
                   </p>
-                  <p class="duration">1 y 20 d</p>
+                  <p *ngIf="empH.duration" class="duration">
+                    {{ empH.duration.Years }} y {{ empH.duration.Days }} d
+                  </p>
                   <div class="divider-employment"></div>
                 </div>
               </div>
@@ -374,6 +406,7 @@
               ngbTooltip
               [mainTooltip]="showMoreEmployment ? 'Show Less' : 'Show More'"
               position="top"
+              *ngIf="deactivatePeriod"
             >
               <svg-icon
                 [ngClass]="{ 'transform-arrow': showMoreEmployment }"
@@ -388,19 +421,20 @@
 
       <!-- Owner Details-->
       <app-ta-custom-card
+        *ngIf="driver.owner"
         class="item-cards"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
-        [cardName]="data.owner ? 'Owner Details' : 'Owner - Sole Proprietor'"
-        [isCardOpen]="data.owner ? true:false"
-        [hasArrow]="data.owner ? true:false"
+        [cardName]="driver.owner ? 'Owner Details' : 'Owner - Sole Proprietor'"
+        [isCardOpen]="driver.owner ? true : false"
+        [hasArrow]="driver.owner ? true : false"
       >
-        <div *ngIf="data.owner"  class="purchase-template">
-          <div  class="purchase-template-item">
+        <div *ngIf="driver.owner" class="purchase-template">
+          <div class="purchase-template-item">
             <div class="purchase-template-item-name">Company</div>
             <div class="purchase-icon-copy">
-              <div  class="purchase-template-item-value owner-name">
-                {{data.owner.name }}
+              <div class="purchase-template-item-value owner-name">
+                {{ driver.owner.name }}
               </div>
               <span
                 tooltipBackground="#6c6c6c"
@@ -416,21 +450,19 @@
             </div>
           </div>
           <div class="purchase-template-item second-name">
-            <div  class="purchase-template-item-name">EIN</div>
+            <div class="purchase-template-item-name">EIN</div>
             <div class="purchase-icon-copy" [ngClass]="{ copied: copiedEin }">
-              <div  class="purchase-template-item-value">
-                {{ data.owner.ssnEin | formatEinP }}
+              <div class="purchase-template-item-value">
+                {{ driver.owner.ssnEin | formatEinP }}
               </div>
               <span
                 [tooltipBackground]="copiedEin ? '#536BC2' : '#6c6c6c'"
                 ngbTooltip
                 [mainTooltip]="copiedEin ? 'Copied' : 'Copy'"
                 position="top"
-                
               >
                 <svg-icon
-                 
-                  (click)="copyText(data.owner.ssnEin, 'ein')"
+                  (click)="copyText(driver.owner.ssnEin, 'ein')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -445,22 +477,49 @@
         class="item-cards"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
-        [cardName]="'Commission Pay'"
+        [cardName]="driver.commissionSolo? 'Commission Pay' : 'Mileage Pay'"
         [isCardOpen]="true"
       >
-        <div class="purchase-template">
+        <div *ngIf="driver.commissionSolo" class="purchase-template">
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">Solo</div>
             <div class="purchase-template-item-value">
-              {{ data.commissionSolo }}%
+              {{ driver.commissionSolo }}%
             </div>
           </div>
+          
           <div class="purchase-template-item second-name">
             <div class="purchase-template-item-name">Team</div>
             <div class="purchase-template-item-value">
-              {{ data.commissionTeam }}%
+              {{ driver.commissionTeam }}%
             </div>
           </div>
+        </div>
+        <div *ngIf="!driver.commissionSolo" class="mileage-template">
+          <div class="mileage-template-item">
+          <div class="mileage-template-item-name">Empty (Solo)</div>
+          <div class="mileage-template-item-value">${{driver.solo.emptyMile}}</div>
+        </div>
+        <div class="mileage-template-item">
+          <div class="mileage-template-item-name">Loaded (Solo)</div>
+          <div class="mileage-template-item-value">${{driver.solo.loadedMile}}</div>
+        </div>
+        <div class="mileage-template-item">
+          <div class="mileage-template-item-name">Per Stop (Solo)</div>
+          <div class="mileage-template-item-value">${{driver.solo.perStop}}</div>
+        </div>
+        <div class="mileage-template-item">
+          <div class="mileage-template-item-name">Empty (Team)</div>
+          <div class="mileage-template-item-value">${{driver.team.emptyMile}}</div>
+        </div>
+        <div class="mileage-template-item">
+          <div class="mileage-template-item-name">Loaded (Team)</div>
+          <div class="mileage-template-item-value">${{driver.team.loadedMile}}</div>
+        </div>
+        <div class="mileage-template-item">
+          <div class="mileage-template-item-name">Per Stop (Team)</div>
+          <div class="mileage-template-item-value">${{driver.team.perStop}}</div>
+        </div>
         </div>
       </app-ta-custom-card>
 
@@ -476,37 +535,76 @@
       >
         <div class="charts-template perfomance">
           <app-tab-switcher
-           [tabs]="tabsDriver"
-           (switchClicked)="changeTab($event)"
-           [customClass]="'chart-tabs'"
+            [tabs]="tabsDriver"
+            (switchClicked)="changeTab($event)" 
+            [customClass]="'chart-tabs'"
           >
           </app-tab-switcher>
-          <!-- <app-ta-input-radiobuttons [buttons]="buttonsArray">
-          </app-ta-input-radiobuttons> -->
-          <div class="charts-item-wrapper revenue">
-            <div class="charts-template-item">
-              <div class="icon-name-item">
-                <svg-icon src="assets/svg/common/round_yellow.svg"></svg-icon>
-                <div class="charts-template-item-name">Miles</div>
-              </div>
-              <div class="charts-template-item-value">46,755.2 mi</div>
-            </div>
-
-            <div class="charts-template-item fuel-item">
-              <div class="icon-name-item">
-                <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                <div class="charts-template-item-name">Salary</div>
-              </div>
-              <div class="charts-template-item-value">$36.854.27</div>
-            </div>
+          
+          <div id="chart">
+            <app-ta-chart
+              [chartConfig]="{
+                dataProperties: [
+                  {
+                    defaultConfig: {
+                      type: 'line',
+                      data: [1050, 950, 2200, 1100, 1250, 1550, 2100, 2500, 2000, 1150, 1300, 1700],
+                      label: 'Salary',
+                      yAxisID: 'y-axis-1'
+                    },
+                    colorProperties: {
+                      borderColor: '#6D82C7'
+                    }
+                  },
+                  {
+                    defaultConfig: {
+                      type: 'bar',
+                      data: [2200, 1700, 2800, 1100, 1500, 2200, 3300, 3700, 2500, 1400, 2200, 2800],
+                      label: 'Miles',
+                      yAxisID: 'y-axis-0',
+                      maxBarThickness: 42
+                    },
+                    colorProperties: {
+                      borderColor: '#FFCC80',
+                      backgroundColor: '#FFCC80',
+                      hoverBackgroundColor: '#FFA726'
+                    }
+                  }
+                ],
+                showLegend: false,
+                defaultType: 'bar'
+              }"
+              [axesProperties]="{
+                verticalLeftAxes: {
+                  visible: true,
+                  minValue: 0,
+                  maxValue: 4000,
+                  stepSize: 1000,
+                  showGridLines: true
+                },
+                verticalRightAxes: {
+                  visible: true,
+                  minValue: 0,
+                  maxValue: 2800,
+                  stepSize: 700,
+                  showGridLines: false
+                },
+                horizontalAxes: {
+                  visible: true,
+                  position: 'bottom',
+                  showGridLines: false
+                }
+              }"
+            >
+            </app-ta-chart>
           </div>
-          <div id="chart"></div>
         </div>
       </app-ta-custom-card>
 
       <!-- Bank Info-->
       <app-ta-custom-card
-        [hasHeaderSvg]="'assets/svg/common/ic_bankAccount_dummy.svg'"
+        *ngIf="driver.account"
+        [hasHeaderSvg]="'assets/svg/common/banks/' + driver.bank.logoName"
         [cardName]="'Bank Info'"
         [isCardOpen]="false"
         class="item-cards"
@@ -521,16 +619,18 @@
               [ngClass]="{ copied: copiedBankRouting }"
             >
               <div class="purchase-template-item-value">
-                {{ data?.routing ? data?.routing : "No routing" }}
+                {{ driver?.routing ? driver?.routing : "No routing" }}
               </div>
               <span
                 [tooltipBackground]="copiedBankRouting ? '#536BC2' : '#6c6c6c'"
                 ngbTooltip
                 [mainTooltip]="copiedBankRouting ? 'Copied' : 'Copy'"
                 position="top"
+                class="tooltip-ein"
+                (click)="copyText(driver?.routing, 'bankRouting')"
               >
                 <svg-icon
-                  (click)="copyText(data?.routing, 'bankRouting')"
+                  (click)="copyText(driver?.routing, 'bankRouting')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -548,13 +648,13 @@
                   accountText
                     ? accountText
                     : hiddenPassword(
-                        data.account ? data.account : "No account",
+                        driver.account ? driver.account : "No account",
                         4
                       )
                 }}
               </div>
               <span
-                *ngIf="data.account !== null"
+                *ngIf="driver.account !== null"
                 tooltipBackground="#6c6c6c"
                 ngbTooltip
                 [mainTooltip]="
@@ -567,7 +667,9 @@
                 <svg-icon
                   class="hidden-svg-eye"
                   (click)="
-                    showHideValue(data.account ? data.account : 'No account')
+                    showHideValue(
+                      driver.account ? driver.account : 'No account'
+                    )
                   "
                   src="{{
                     isAccountVisible
@@ -577,17 +679,19 @@
                 ></svg-icon>
               </span>
               <span
-                *ngIf="data.account !== null"
+                *ngIf="driver.account !== null"
                 [tooltipBackground]="copiedBankAccount ? '#536BC2' : '#6c6c6c'"
                 ngbTooltip
                 [mainTooltip]="copiedBankAccount ? 'Copied' : 'Copy'"
                 position="top"
+                class="tooltip-ein"
+                (click)="copyText(driver.account, 'bankAcc')"
               >
                 <svg-icon
-                  *ngIf="data?.account !== null"
+                  *ngIf="driver?.account !== null"
                   (click)="
                     copyText(
-                      data.account ? data.account : 'No account',
+                      driver.account ? driver.account : 'No account',
                       'bankAcc'
                     )
                   "
@@ -609,44 +713,45 @@
       >
         <div
           *ngIf="
-            !data.emergencyContactRelationship ||
-            !data.emergencyContactName ||
-            !data.emergencyContactPhone
+            !driver.emergencyContactRelationship ||
+            !driver.emergencyContactName ||
+            !driver.emergencyContactPhone
           "
-          class="no-data"
+          class="no-driver"
         >
           No Contact
         </div>
         <div
           *ngIf="
-            data.emergencyContactRelationship &&
-            data.emergencyContactName &&
-            data.emergencyContactPhone
+            driver.emergencyContactRelationship &&
+            driver.emergencyContactName &&
+            driver.emergencyContactPhone
           "
           class="purchase-template"
         >
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">
-              {{ data?.emergencyContactRelationship }}
+              {{ driver?.emergencyContactRelationship }}
             </div>
             <div class="purchase-template-item-value">
-              {{ data.emergencyContactName }}
+              {{ driver.emergencyContactName }}
             </div>
           </div>
           <div class="purchase-template-item second-name">
             <div class="purchase-template-item-name">Phone</div>
             <div class="purchase-icon-copy" [ngClass]="{ copied: copiedPhone }">
               <div class="purchase-template-item-value">
-                {{ data.emergencyContactPhone | formatPhoneP }}
+                {{ driver.emergencyContactPhone | formatPhoneP }}
               </div>
               <span
                 [tooltipBackground]="copiedPhone ? '#536BC2' : '#6c6c6c'"
                 ngbTooltip
                 [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
                 position="top"
+                (click)="copyText(driver.emergencyContactPhone, 'phone')"
               >
                 <svg-icon
-                  (click)="copyText(data.emergencyContactPhone, 'phone')"
+                  (click)="copyText(driver.emergencyContactPhone, 'phone')"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -680,19 +785,23 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.cdls.length"
+          [hasCounter]="driver.cdls.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let cdl of data.cdls; let i = index; trackBy: identity">
+          <div
+            *ngFor="let cdl of driver.cdls; let i = index; trackBy: identity"
+          >
             <app-ta-re-card
-              [options]="dataEdit"
+              [options]="dataTest"
               [cardDocumentCounter]="6"
               (resizePage)="toggleResizePage(i)"
               [cardNameCommon]="cdl?.cdlNumber"
               [expDateClose]="cdl?.expDate | formatDateP"
               [hasCopyIcon]="true"
               [optionsId]="cdl.id"
+              [weeklyWidth]="'28'"
+              [isDeactivated]="cdl.dateDeactivated"
               [stateTooltipName]="cdl.state.stateName"
               [shortName]="cdl.state.stateShortName"
               (dropActions)="optionsEvent($event, 'edit-licence')"
@@ -700,24 +809,26 @@
               <div class="cards-container">
                 <div class="card-body-cdl">
                   <div
+                   [ngClass]="{'card-row-issued':cdl.dateDeactivated}"
                     class="card-restriction-endorsment card-restriction-class"
                   >
-                    <!-- <div class="card-item">
-                    <div class="card-item-name">State</div>
-                    <div class="card-item-value">
-                      {{ cdl.state.stateShortName }}
-                    </div>
-                  </div> -->
+                   
                     <div class="card-restriction">
                       <div class="restriction-name">Class</div>
                       <div class="restriction-item-value">
-                        {{ cdl?.classType }}
+                        {{ cdl?.classType.name }}
                       </div>
                     </div>
                     <div class="card-restriction">
                       <div class="restriction-name">Issued</div>
                       <div class="restriction-item-value">
                         {{ cdl?.issueDate | formatDateP }}
+                      </div>
+                    </div>
+                    <div *ngIf="cdl.dateDeactivated" class="card-restriction">
+                      <div class="restriction-name">Deactivated</div>
+                      <div class="restriction-item-value">
+                        {{ cdl.dateDeactivated | formatDateP }}
                       </div>
                     </div>
                   </div>
@@ -758,7 +869,7 @@
                             >
                           </span>
                         </p>
-                        <span class="no-data" *ngIf="endors == ''">None</span>
+                        <span class="no-driver" *ngIf="endors == ''">None</span>
                       </div>
                     </div>
                   </div>
@@ -856,19 +967,20 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.tests.length"
+          [hasCounter]="driver.tests.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
           <div
-            *ngFor="let test of data.tests; let i = index; trackBy: identity"
+            *ngFor="let test of driver.tests; let i = index; trackBy: identity"
           >
             <app-ta-re-card
-              [options]="dataEdit"
+              [options]="dataTest"
               [cardNameCommon]="test?.testingDate | formatDateP"
               (resizePage)="toggleResizePage(i)"
               [optionsId]="test.id"
-              [cardSecondName]="test?.testReason.reason"
+              [weeklyWidth]="'18'"
+              [cardSecondName]="test?.testReason.name"
               [shortName]="test.testType.name[0]"
               [stateTooltipName]="test.testType.name + ' Test'"
               (dropActions)="optionsEvent($event, 'edit-drug')"
@@ -952,15 +1064,19 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.medicals.length"
+          [hasCounter]="driver.medicals.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
           <div
-            *ngFor="let med of data.medicals; let i = index; trackBy: identity"
+            *ngFor="
+              let med of driver.medicals;
+              let i = index;
+              trackBy: identity
+            "
           >
             <app-ta-re-card
-              [options]="dataEdit"
+              [options]="dataTest"
               [cardNameCommon]="med?.issueDate | formatDateP"
               [expDateClose]="med?.expDate | formatDateP"
               [optionsId]="med.id"
@@ -1061,13 +1177,15 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.mvrs.length"
+          [hasCounter]="driver.mvrs.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let mvr of data.mvrs; let i = index; trackBy: identity">
+          <div
+            *ngFor="let mvr of driver.mvrs; let i = index; trackBy: identity"
+          >
             <app-ta-re-card
-              [options]="dataEdit"
+              [options]="dataTest"
               [cardDocumentCounter]="6"
               (resizePage)="toggleResizePage(i)"
               [cardNameCommon]="mvr?.issueDate | formatDateP"
@@ -1084,6 +1202,7 @@
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
                         [startDate]="mvr?.issueDate | formatDateP"
+                        [expireDate]="mvr?.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>

@@ -1,20 +1,14 @@
 import { AccidentModalComponent } from './../safety/accident/accident-modal/accident-modal.component';
-import { SumArraysPipe } from './../../pipes/sum-arrays.pipe';
 import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
-import { AutoFocusDirective } from '../../directives/auto-focus.directive';
-import { InputFocusDirective } from '../../directives/input-focus.directive';
-import { InputRestrictionDirective } from '../../directives/input-restriction.directive';
-import { InputErrorPipe } from './ta-input/input-error.pipe';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 import { AgmCoreModule } from '@agm/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SortPipe } from '../../pipes/sort.pipe';
 import { HistoryDataComponent } from './history-data/history-data.component';
 import { DatePickerModule } from '@progress/kendo-angular-dateinputs';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
@@ -34,17 +28,12 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from '../switchers/status-switcher/status-switcher.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { NgxMaskModule } from "ngx-mask";
+import { NgxMaskModule } from 'ngx-mask';
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
 import { TaStatusSwitchComponent } from './ta-status-switch/ta-status-switch.component';
-import { StatusPipePipe } from '../../pipes/status-pipe.pipe';
-import { CdkConnectPipe } from '../../pipes/cdkconnect.pipe';
-import { CdkIdPipe } from '../../pipes/cdkid.pipe';
-import { HighlightSearchPipe } from '../../pipes/highlight-search.pipe';
-import { HosTimePipe } from '../../pipes/hostime';
 import { Ng5SliderModule } from 'ng5-slider';
 import { EditProfileImageComponent } from './edit-profile-image/edit-profile-image.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
@@ -71,22 +60,17 @@ import { CalendarLeftComponent } from './custom-datetime-pickers/calendar-left/c
 import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars/date-calendars.component';
 import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
-import { TaInputService } from './ta-input/ta-input.service';
 import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
-import { CalendarMonthsPipe } from '../../pipes/calendarMonths.pipe';
 import { DirectivesModule } from '../../directives/directives.module';
 
 import { TruckModalComponent } from '../modals/truck-modal/truck-modal.component';
-import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 import { TrailerModalComponent } from '../modals/trailer-modal/trailer-modal.component';
 import { TaCustomCardComponent } from './ta-custom-card/ta-custom-card.component';
 import { ContactModalComponent } from '../modals/contact-modal/contact-modal.component';
-import { DropdownCountPipe } from './ta-input-dropdown/dropdown-count.pipe';
 import { BrokerModalComponent } from '../modals/broker-modal/broker-modal.component';
 import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons/ta-input-radiobuttons.component';
 import { TaLikeDislikeComponent } from './ta-like-dislike/ta-like-dislike.component';
 import { TaUserReviewComponent } from './ta-user-review/ta-user-review.component';
-import { ReviewsSortPipe } from './ta-user-review/reviews-sort.pipe';
 import { TaCommonHeaderComponent } from './ta-details-header/ta-details-header.component';
 import { TaDetailsHeaderCardComponent } from './ta-details-header-card/ta-details-header-card.component';
 import { TaReCardComponent } from './ta-common-card/ta-re-card.component';
@@ -109,10 +93,11 @@ import { FuelStopModalComponent } from '../modals/fuel-modals/fuel-stop-modal/fu
 import { ViolationModalComponent } from '../safety/violation/violation-modal/violation-modal.component';
 import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { HidePasswordPipe } from '../../pipes/hide-password.pipe';
-import { InputTypePipe } from './ta-input/input-type.pipe';
-import { FormatRestrictionEndorsmentPipe } from '../../pipes/formatRestrictionEndorsment.pipe';
-import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
+import { PipesModule } from '../../pipes/pipes.module';
+import { RepairShopModalComponent } from '../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
+import { TaChartComponent } from './ta-chart/ta-chart.component';
+import { ChartsModule } from 'ng2-charts';
+import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 
 @NgModule({
   declarations: [
@@ -153,6 +138,8 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     TaCurrencyProgressBarComponent,
     TaUploadFilesCarouselComponent,
     TaUploadDropzoneComponent,
+    FilterComponent,
+    TaChartComponent,
 
     // Modals Components
     TaModalComponent,
@@ -174,42 +161,17 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
-    
-
-    // Pipes
-    InputErrorPipe,
-    SortPipe,
-    StatusPipePipe,
-    HighlightSearchPipe,
-    HosTimePipe,
-    CdkIdPipe,
-    CdkConnectPipe,
-    CalendarMonthsPipe,
-    NFormatterPipe,
-    TaSvgPipe,
-    DropdownCountPipe,
-    ReviewsSortPipe,
-    SumArraysPipe,
-    HidePasswordPipe,
-    InputTypePipe,
-    FormatRestrictionEndorsmentPipe,
-    BlockedContentPipe,
-
-    // Directive
-    AutoFocusDirective,
-    InputFocusDirective,
-    InputRestrictionDirective,
-    TextareaAutosizeDirective,
-    FilterComponent
+    RepairShopModalComponent,
+    RepairPmModalComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
     NgSelectModule,
-    AppTooltipeModule,
     NgbModule,
     RouterModule,
+    PipesModule,
     AngularSvgIconModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
@@ -243,11 +205,13 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     PdfViewerModule,
     DirectivesModule,
     TruckassistTableModule,
-    AppTooltipeModule
+    AppTooltipeModule,
+    ChartsModule,
   ],
   exports: [
     // Modules
     FormsModule,
+    AppTooltipeModule,
     ReactiveFormsModule,
     NgSelectModule,
     AngularSvgIconModule,
@@ -257,6 +221,7 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     SortableModule,
     GridModule,
     PDFModule,
+    PipesModule,
     DropDownsModule,
     ButtonsModule,
     SchedulerModule,
@@ -275,6 +240,7 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     CroppieModule,
     NgxSliderModule,
     PdfViewerModule,
+    AppTooltipeModule,
 
     // Components
     TabSwitcherComponent,
@@ -312,6 +278,8 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     TaLogoChangeComponent,
     TaLikeDislikeComponent,
     TaCurrencyProgressBarComponent,
+    TaChartComponent,
+    FilterComponent,
 
     // Modals Components
     TaModalComponent,
@@ -334,45 +302,9 @@ import { BlockedContentPipe } from '../../pipes/blockedContent.pipe';
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
-
-    // Pipes
-    InputErrorPipe,
-    SortPipe,
-    StatusPipePipe,
-    HighlightSearchPipe,
-    HosTimePipe,
-    CdkIdPipe,
-    CdkConnectPipe,
-    CalendarMonthsPipe,
-    NFormatterPipe,
-    TaSvgPipe,
-    DropdownCountPipe,
-    ReviewsSortPipe,
-    SumArraysPipe,
-    HidePasswordPipe,
-    InputTypePipe,
-    FormatRestrictionEndorsmentPipe,
-    BlockedContentPipe,
-
-    // Directive
-    AutoFocusDirective,
-    InputFocusDirective,
-    InputRestrictionDirective,
-    TextareaAutosizeDirective,
-    AppTooltipeModule,
-    FilterComponent
+    RepairPmModalComponent,
   ],
-  providers: [
-    DatePipe,
-    SortPipe,
-    NFormatterPipe,
-    StatusPipePipe,
-    CdkConnectPipe,
-    CalendarMonthsPipe,
-    CdkIdPipe,
-    HighlightSearchPipe,
-    HosTimePipe
-  ],
+  providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SharedModule {}

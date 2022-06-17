@@ -4,7 +4,6 @@
   right: 4px;
   top: 0px;
   border-radius: 1px;
-  display: block;
   transition: all 0.3s ease-in-out;
   display: none;
   z-index: 10;
@@ -81,21 +80,7 @@
   }
 
   &.password-eye {
-    display: inline-block;
-    .input-clear-x {
-      svg {
-        path {
-          fill: #6c6c6c !important;
-        }
-      }
-      &:hover {
-        svg {
-          rect {
-            fill: #fffafa !important;
-          }
-        }
-      }
-    }
+    display: none !important;
   }
 
   // If dropdown
@@ -107,5 +92,27 @@
   &.input-big {
     top: 3.5px;
     right: 6px;
+  }
+
+  &.focus {
+    &.repair-shop-oh {
+      display: inline-block;
+      svg {
+        path {
+          fill: #6c6c6c !important;
+        }
+        rect {
+          fill: #b7b7b7 !important;
+        }
+      }
+
+      &:hover {
+        svg {
+          rect {
+            fill: #eeeeee !important;
+          }
+        }
+      }
+    }
   }
 }

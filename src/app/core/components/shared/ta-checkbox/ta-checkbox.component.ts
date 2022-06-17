@@ -12,14 +12,15 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   selector: 'app-ta-checkbox',
   templateUrl: './ta-checkbox.component.html',
   styleUrls: ['./ta-checkbox.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class TaCheckboxComponent implements OnChanges, ControlValueAccessor {
   @Input() label: string;
   @Input() required: boolean = false;
   @Input() invalid: boolean = false;
   @Input() disabled: boolean = false;
-  @Input() name: string = 'ta-checkbox'; // if have multiple checkboxes on same page, forward different name 
+  @Input() svg: string;
+  @Input() name: string = 'ta-checkbox'; // if have multiple checkboxes on same page, forward different name
   @Input() customClass: string;
 
   constructor(@Self() public superControl: NgControl) {

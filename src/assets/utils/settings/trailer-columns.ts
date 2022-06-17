@@ -44,15 +44,15 @@ export function getTrailerColumnDefinition() {
       disabled: true,
       export: true,
       resizable: true,
-      linkField: {
-        routerLinkStart: '/trailers/edit/',
-        routerLinkEnd: '/detail',
+      link: {
+        routerLinkStart: '/trailer/',
+        routerLinkEnd: '/details',
       },
     },
     {
       ngTemplate: 'text',
       title: 'Year',
-      field: 'textYear',
+      field: 'year',
       name: 'Year',
       sortName: 'year',
       hidden: false,
@@ -180,8 +180,9 @@ export function getTrailerColumnDefinition() {
       opacityIgnore: true,
       class: 'overflow-unset',
     },
+    /*  ngTemplate: 'svg', */
     {
-      ngTemplate: 'svg',
+      ngTemplate: 'text',
       title: 'Type',
       field: 'svgIcon',
       name: 'Type',
@@ -342,7 +343,7 @@ export function getTrailerColumnDefinition() {
     {
       ngTemplate: 'note',
       title: 'Note',
-      field: 'doc.additionalData.note',
+      field: 'note',
       name: '',
       hidden: false,
       width: 40,

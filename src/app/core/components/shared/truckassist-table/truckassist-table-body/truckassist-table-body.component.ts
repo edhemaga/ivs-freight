@@ -14,9 +14,8 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-truckassist-table-body',
@@ -28,7 +27,6 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 export class TruckassistTableBodyComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
-  private destroy$: Subject<void> = new Subject<void>();
   @Input() viewData: any[];
   @Input() columns: any[];
   @Input() options: any[];
@@ -52,7 +50,7 @@ export class TruckassistTableBodyComponent
   ngOnInit(): void {
     // Select Or Deselect All
     this.tableService.currentSelectOrDeselect
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((response: string) => {
         if (response !== '') {
           const isSelect = response === 'select';
@@ -76,7 +74,7 @@ export class TruckassistTableBodyComponent
 
     // Rezaize
     this.tableService.currentColumnWidth
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response?.event?.width) {
           this.columns = this.columns.map((c) => {
@@ -95,7 +93,7 @@ export class TruckassistTableBodyComponent
 
     // Columns Reorder
     this.tableService.currentColumnsOrder
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response.columnsOrder) {
           this.columns = response.columnsOrder;
@@ -108,7 +106,7 @@ export class TruckassistTableBodyComponent
 
     // Toaggle Columns
     this.tableService.currentToaggleColumn
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response?.column) {
           this.columns = this.columns.map((c) => {
@@ -122,6 +120,14 @@ export class TruckassistTableBodyComponent
           this.changeDetectorRef.detectChanges();
 
           this.checkForScroll();
+        }
+      });
+
+    this.tableService.currentResetSelectedColumns
+      .pipe(untilDestroyed(this))
+      .subscribe((reset: boolean) => {
+        if (reset) {
+          this.mySelection = [];
         }
       });
 
@@ -179,11 +185,13 @@ export class TruckassistTableBodyComponent
   checkForScroll() {
     const div = document.getElementById('scroll-container');
 
-    this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+    if (div) {
+      this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
 
-    this.tableService.sendShowingScroll(this.showScrollSectionBorder);
+      this.tableService.sendShowingScroll(this.showScrollSectionBorder);
 
-    this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
   trackByFn(index) {
@@ -234,8 +242,5 @@ export class TruckassistTableBodyComponent
 
   ngOnDestroy(): void {
     this.tableService.sendRowsSelected([]);
-
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

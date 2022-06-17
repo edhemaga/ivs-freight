@@ -1,15 +1,15 @@
 <div class="details-component">
-  <div [ngSwitch]="data.template">
+  <div [ngSwitch]="trailer.template">
     <!---------------------- GENERAL TEMPLATE ------------------>
     <div *ngSwitchCase="'general'">
-      <app-trailer-details-card [data]="trailerData.trailer">
+      <app-trailer-details-card [trailer]="trailer.data">
       </app-trailer-details-card>
     </div>
     <!---------------------------- Registration TEMPLATE ----------------------------->
     <div *ngSwitchCase="'registration'">
       <div
         *ngFor="
-          let reg of trailerData.trailer.registrations;
+          let reg of trailer.data.registrations;
           let i = index;
           trackBy: identity;
         "
@@ -75,7 +75,7 @@
     <div *ngSwitchCase="'fhwa-insepction'">
       <div
         *ngFor="
-          let fhwa of trailerData.trailer.inspections;
+          let fhwa of trailer.data.inspections;
           let i = index;
           trackBy: identity;
         "
@@ -84,6 +84,7 @@
           [options]="dataTest"
           [cardNameCommon]="fhwa.issueDate | formatDateP"
           [optionsId]="fhwa.id"
+          [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage(i)"
           (dropActions)="optionsEvent($event, 'edit-inspection')"
         >
@@ -127,7 +128,7 @@
     <div *ngSwitchCase="'title'">
       <div
         *ngFor="
-          let title of trailerData.trailer.titles;
+          let title of trailer.data.titles;
           let i = index;
           trackBy: identity;
         "

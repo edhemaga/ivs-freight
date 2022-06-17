@@ -15,6 +15,7 @@ import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
 
 @Component({
   selector: 'app-driver-table',
@@ -27,9 +28,9 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   public viewData: any[] = [];
   public columns: any[] = [];
   public selectedTab = 'active';
-  resetColumns: boolean;
-
   public drivers: DriversState[] = [];
+  resetColumns: boolean;
+  loadingPage: boolean = true;
 
   constructor(
     private modalService: ModalService,
@@ -37,8 +38,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     private tableService: TruckassistTableService,
     public datePipe: DatePipe,
     private driverTService: DriverTService,
-    private notificationService: NotificationService,
-    private changeDetectorRef: ChangeDetectorRef
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +49,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.tableService.currentResetColumns
       .pipe(untilDestroyed(this))
       .subscribe((response: boolean) => {
-        if (response) {
+        if (response && !this.loadingPage) {
           this.resetColumns = response;
 
           this.sendDriverData();
@@ -60,18 +60,60 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
-        if(res.animation === 'add'){
+        if (res.animation === 'add') {
           this.viewData.push(this.mapDriverData(res.data));
 
-          this.viewData = this.viewData.map((driver:any) => {
-            if(driver.id === res.id){
+          this.viewData = this.viewData.map((driver: any) => {
+            if (driver.id === res.id) {
               driver.actionAnimation = 'add';
             }
 
             return driver;
-          })
+          });
 
-          this.closeAnimationAction();
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        } else if (res.animation === 'update') {
+          console.log('Driver Data Befor Update');
+          console.log(this.viewData);
+
+          const updatedDriver = this.mapDriverData(res.data);
+
+          this.viewData = this.viewData.map((driver: any) => {
+            if (driver.id === res.id) {
+              driver = updatedDriver;
+              driver.actionAnimation = 'update';
+            }
+
+            return driver;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        } else if (res.animation === 'update-status') {
+          let driverIndex: number;
+
+          this.viewData = this.viewData.map((driver: any, index: number) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'update';
+              driverIndex = index;
+            }
+
+            return driver;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(driverIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
         }
       });
 
@@ -79,7 +121,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.tableService.currentDeleteSelectedRows
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
-        if (response.length) {
+        if (response.length && !this.loadingPage) {
           this.driverTService
             .deleteDriverList(response)
             .pipe(untilDestroyed(this))
@@ -94,12 +136,19 @@ export class DriverTableComponent implements OnInit, OnDestroy {
                 return driver;
               });
 
-              this.closeAnimationAction(true);
+              const inetval = setInterval(() => {
+                this.viewData = closeAnimationAction(true, this.viewData);
+
+                clearInterval(inetval);
+              }, 1000);
 
               this.tableService.sendRowsSelected([]);
+              this.tableService.sendResetSelectedColumns(true);
             });
         }
       });
+
+    this.loadingPage = false;
   }
 
   public initTableOptions(): void {
@@ -177,7 +226,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Applicants',
         field: 'applicants',
         length: 8,
-        data: this.getDumyData(),
+        data: this.getTabData(),
         extended: true,
         gridNameTitle: 'Driver',
         stateName: 'applicants',
@@ -187,7 +236,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Active',
         field: 'active',
         length: 5,
-        data: this.getDumyData(),
+        data: this.getTabData(),
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -197,7 +246,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Inactive',
         field: 'inactive',
         length: 10,
-        data: this.getDumyData(),
+        data: this.getTabData(),
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -210,7 +259,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.setDriverData(td);
   }
 
-  getDumyData() {
+  getTabData() {
     this.drivers = this.driversQuery.getAll();
 
     return this.drivers?.length ? this.drivers : [];
@@ -242,9 +291,12 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         return this.mapDriverData(data);
       });
     }
+
+    console.log('Driver Data');
+    console.log(this.viewData);
   }
 
-  mapDriverData(data: any){
+  mapDriverData(data: any) {
     return {
       ...data,
       isSelected: false,
@@ -255,16 +307,40 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       textHired: data.hired
         ? this.datePipe.transform(data.hired, 'dd/MM/yy')
         : '',
-      textCDL: data.cdlNumber ? data.cdlNumber : '',
+      textCDL: data?.cdlNumber
+        ? data.cdlNumber
+        : data?.cdls?.length
+        ? data.cdls[0].cdlNumber
+        : '',
       textState: data.address.state ? data.address.state : '',
       textBank: data.bank ? data.bank : '',
       textAccount: data.account ? data.account : '',
       textRouting: data.routing ? data.routing : '',
-      tableCDLData: data.cdlExpiration ? data.cdlExpiration : {},
-      tableMedicalData: data.medicalExpiration
-        ? data.medicalExpiration
-        : {},
-      tableMvrData: data.mvrIssueDate ? data.mvrIssueDate : {},
+      tableCDLData: {
+        start: data?.cdlExpiration
+          ? data.cdlExpiration
+          : data?.cdls?.length
+          ? data.cdls[0].expDate
+          : null,
+        end: null,
+      },
+      tableMedicalData: {
+        start: data?.medicalExpiration
+          ? data.medicalExpiration
+          : data?.medicals?.length
+          ? data.medicals[0].expDate
+          : null,
+        end: null,
+      },
+      tableMvrData: {
+        start: data?.mvrIssueDate
+          ? data.mvrIssueDate
+          : data?.mvrs?.length
+          ? data.mvrs[0].issueDate
+          : null,
+        end: null,
+      },
+      tableDrugOrAlcoholTest: null,
     };
   }
 
@@ -282,6 +358,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
+    console.log(event);
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
@@ -319,6 +396,24 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         },
         { ...event }
       );
+    } else if (event.type === 'activate-item') {
+      this.driverTService
+        .changeDriverStatus(event.id)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: () => {
+            this.notificationService.success(
+              `Driver successfully Change Status`,
+              'Success:'
+            );
+          },
+          error: () => {
+            this.notificationService.error(
+              `Driver with id: ${event.id}, status couldn't be changed`,
+              'Error:'
+            );
+          },
+        });
     } else if (event.type === 'delete-item') {
       this.driverTService
         .deleteDriverById(event.id)
@@ -338,7 +433,11 @@ export class DriverTableComponent implements OnInit, OnDestroy {
               return driver;
             });
 
-            this.closeAnimationAction(true);
+            const inetval = setInterval(() => {
+              this.viewData = closeAnimationAction(true, this.viewData);
+
+              clearInterval(inetval);
+            }, 1000);
           },
           error: () => {
             this.notificationService.error(
@@ -350,31 +449,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  closeAnimationAction(isDelete?: boolean) {
-    const timeOut = setInterval(() => {
-      if (!isDelete) {
-        this.viewData = this.viewData.map((driver: any) => {
-          if (driver?.actionAnimation) {
-            delete driver.actionAnimation;
-          }
-
-          return driver;
-        });
-      } else {
-        let newViewData = [];
-
-        this.viewData.map((driver: any) => {
-          if (!driver.hasOwnProperty('actionAnimation')) {
-            newViewData.push(driver);
-          }
-        });
-
-        this.viewData = newViewData;
-      }
-
-      clearInterval(timeOut);
-    }, 1000);
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
   }
-
-  ngOnDestroy(): void {}
 }

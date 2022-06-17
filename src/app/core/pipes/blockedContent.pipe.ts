@@ -5,6 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class BlockedContentPipe implements PipeTransform {
   transform(value: string): boolean {
+    console.log(value);
     if (
       [
         'login',
@@ -16,7 +17,8 @@ export class BlockedContentPipe implements PipeTransform {
         'create new password',
         'password changed',
         'register user',
-      ].includes(value.toLowerCase())
+        'helper component route',
+      ].includes(value?.toLowerCase())
     ) {
       return true;
     }

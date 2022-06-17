@@ -38,6 +38,7 @@ export class TaCustomCardComponent {
   @Input() textBottomPossiton:string;
   @Input() hasWeeklyStatus:string=null;
   @Input() controlName:FormControl;
+  @Input() stayOpen : boolean = false;
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );

@@ -1,18 +1,20 @@
+import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
   ChangeDetectionStrategy,
   Component,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import moment from 'moment';
 
-import { ActivatedRoute } from '@angular/router';
-import { DriverShortResponse } from 'appcoretruckassist';
+import { DriverResponse } from 'appcoretruckassist';
+import moment from 'moment';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
@@ -28,126 +30,48 @@ import { card_component_animation } from '../../../shared/animations/card-compon
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-export class DriverDetailsItemComponent implements OnInit, OnDestroy {
+export class DriverDetailsItemComponent
+  implements OnInit, OnDestroy, OnChanges
+{
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-  @Input() data: any = null;
+  @Input() driver: DriverResponse | any = null;
   public cdlNote: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
   public toggler: boolean[] = [];
-
-  public arrayDrivers: any = [];
-  public arrayDriverName: any = '';
-  public currentDriverName: string = 'Milos Cirkovic';
-  public driverId: number = 0;
   public showMoreEmployment: boolean = false;
 
   public dataTest: any;
-  public driverData: any;
-
+  public expDateCard: any;
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService
-  ) {
-    this.arrayDrivers = [
-      {
-        id: 434,
-        name: 'Angela Martin',
-        svg: 'ic_owner-status.svg',
-        folder: 'common',
-      },
-      {
-        id: 2,
-        name: 'Angela Lomarion',
-        svg: 'ic_owner-status.svg',
-        folder: 'common',
-      },
-      {
-        id: 3,
-        name: 'Denis Rodmar',
-        svg: null,
-        folder: null,
-      },
-      {
-        id: 4,
-        name: 'Milos Cirkovic',
-        svg: 'ic_owner-status.svg',
-        folder: 'common',
-      },
-      {
-        id: 5,
-        name: 'Aleksandar Djordjevic',
-        svg: 'ic_owner-status.svg',
-        folder: 'common',
-      },
-      {
-        id: 6,
-        name: 'Mika Mikic',
-        svg: null,
-        folder: null,
-      },
-      {
-        id: 7,
-        name: 'Denis Rodmar',
-        svg: null,
-        folder: null,
-      },
-      {
-        id: 8,
-        name: 'Milos Cirkovic',
-        svg: 'ic_owner-status.svg',
-        folder: 'common',
-      },
-      {
-        id: 9,
-        name: 'Aleksandar Djordjevic',
-        svg: 'ic_owner-status.svg',
-        folder: 'common',
-      },
-      {
-        id: 10,
-        name: 'Mika Mikic',
-        svg: null,
-        folder: null,
-      },
-    ];
+  ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.getExpireDate();
+    if(!changes.driver.firstChange && changes.driver.currentValue){
+      this.driver = changes.driver.currentValue;
+
+    }
   }
 
   ngOnInit(): void {
     this.initTableOptions();
-    this.getDriversList();
-    this.getDriverById();
+    this.getExpireDate();
   }
 
-  /**Function return driver by id */
-  public getDriverById() {
-    this.driverData = this.activated_route.snapshot.data;
-  }
+  public getExpireDate() {
 
-  public getDriversList() {
-    for (let i = 0; i < this.arrayDrivers.length; i++) {
-      this.arrayDrivers[i];
-    }
-    this.arrayDriverName =
-      this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]];
-    return this.arrayDrivers;
-  }
-
-  public nextDriver() {
-    this.driverId < this.arrayDrivers.length - 1
-      ? this.driverId++
-      : (this.driverId = 0);
-
-    this.arrayDriverName =
-      this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]];
-  }
-
-  public previousDriver() {
-    this.driverId < 1
-      ? (this.driverId = this.arrayDrivers.length)
-      : this.driverId--;
-
-    this.arrayDriverName =
-      this.arrayDrivers[Object.keys(this.arrayDrivers)[this.driverId]];
+      // this.driver.data = this.driver.data.cdls.forEach((ele) => {
+      //   if (moment(ele.expDate).isBefore(moment())) {
+      //     this.expDateCard = false;
+      //   } else {
+      //     this.expDateCard = true;
+      //   }
+      //     console.log(this.expDateCard);
+          
+      // });
+  
   }
 
   /**Function for dots in cards */
@@ -171,7 +95,19 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           class: 'regular-text',
           contentType: 'edit',
         },
-
+        {
+          title: 'Renew',
+          name: 'renew',
+          class: 'regular-text',
+          contentType: 'add',
+        },
+        {
+          title: 'Activate',
+          reverseTitle: 'Deactivate',
+          name: 'activate-item',
+          class: 'regular-text',
+          contentType: 'activate',
+        },
         {
           title: 'Delete',
           name: 'delete-item',
@@ -186,8 +122,6 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
   }
 
   public optionsEvent(any: any, action: string) {
-    console.log(any)
-    console.log(this.driverData)
     switch (action) {
       case 'edit-licence': {
         this.modalService.openModal(
@@ -195,7 +129,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driverData.driver.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -207,7 +141,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driverData.driver.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -219,7 +153,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driverData.driver.id,
+            id: this.driver.id,
             type: action,
           }
         );
@@ -231,7 +165,7 @@ export class DriverDetailsItemComponent implements OnInit, OnDestroy {
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driverData.driver.id,
+            id: this.driver.id,
             type: action,
           }
         );

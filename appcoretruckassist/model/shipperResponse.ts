@@ -11,7 +11,7 @@
  */
 import { ShipperContactResponse } from './shipperContactResponse';
 import { AddressEntity } from './addressEntity';
-import { ShipperReviewResponse } from './shipperReviewResponse';
+import { ReviewResponse } from './reviewResponse';
 
 
 export interface ShipperResponse { 
@@ -34,9 +34,9 @@ export interface ShipperResponse {
     note?: string | null;
     shippingHoursSameReceiving?: boolean;
     shipperContacts?: Array<ShipperContactResponse> | null;
-    shipperReviews?: Array<ShipperReviewResponse> | null;
+    reviews?: Array<ReviewResponse> | null;
     status?: number;
-    totalRatingCount?: number;
+    downRatingCount?: number;
     upRatingCount?: number;
     createdAt?: string;
 }

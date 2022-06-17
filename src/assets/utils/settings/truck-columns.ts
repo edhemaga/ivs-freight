@@ -156,8 +156,9 @@ export function getTruckColumnDefinition() {
       opacityIgnore: true,
       class: 'overflow-unset',
     },
+    /* ngTemplate: 'svg', */
     {
-      ngTemplate: 'svg',
+      ngTemplate: 'text',
       title: 'Type',
       field: 'svgIcon',
       headAlign: 'center',
@@ -505,7 +506,7 @@ export function getTruckColumnDefinition() {
     {
       ngTemplate: 'note',
       title: 'Note',
-      field: 'doc.additionalData.note',
+      field: 'note',
       name: '',
       hidden: false,
       width: 40,

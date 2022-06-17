@@ -11,9 +11,9 @@
  */
 import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
 import { BankResponse } from './bankResponse';
-import { RepairShopReviewResponse } from './repairShopReviewResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
 import { AddressEntity } from './addressEntity';
+import { ReviewResponse } from './reviewResponse';
 
 
 export interface RepairShopResponse { 
@@ -21,14 +21,13 @@ export interface RepairShopResponse {
     name?: string | null;
     companyId?: number;
     phone?: string | null;
+    phoneExt?: string | null;
     email?: string | null;
     address?: AddressEntity;
     status?: number;
     latitude?: number;
     longitude?: number;
     pinned?: boolean;
-    upCount?: number;
-    downCount?: number;
     order?: number;
     cost?: number;
     openHoursToday?: string | null;
@@ -39,6 +38,8 @@ export interface RepairShopResponse {
     account?: string | null;
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
     openHours?: Array<RepairShopOpenHoursResponse> | null;
-    reviews?: Array<RepairShopReviewResponse> | null;
+    reviews?: Array<ReviewResponse> | null;
+    downRatingCount?: number;
+    upRatingCount?: number;
 }
 

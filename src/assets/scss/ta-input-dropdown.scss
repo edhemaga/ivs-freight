@@ -53,13 +53,12 @@
         background-color: #ffffff;
         color: #6c6c6c;
 
-
         &.dropdown-option-hovered {
           background-color: #f3f3f3;
           color: #3c3c3c;
           transition: all 0.2s ease-out;
         }
-     
+
         &:hover {
           background-color: #f3f3f3;
           color: #3c3c3c;
@@ -170,14 +169,21 @@
           }
         }
 
-         //------------------------ Details Template ------------------------
-         &.details-template {
-           display: flex;
-           align-items: center;
-           .details-template-logo {
-             margin-left: 6px;
-           }
-         }
+        //------------------------ Details Template ------------------------
+        &.details-template {
+          display: flex;
+          align-items: center;
+          .details-template-logo {
+            margin-left: 6px;
+            width: 14px;
+            height: 14px;
+            line-height: 15px;
+            svg {
+              height: 14px;
+              width: 14px;
+            }
+          }
+        }
 
         //------------------------ SVG Template ------------------------
         .svg-template-logo {
@@ -314,10 +320,12 @@
         width: 120px;
       }
 
-      &.w-col-details-template {
+      &.w-col-details-template-big {
         width: 366px;
-        height: 142px;
-        overflow: auto;
+      }
+
+      &.w-col-details-template-small {
+        width: 332px;
       }
 
       &.w-col-custom-fuel-modal-dropdown {
@@ -326,6 +334,10 @@
 
       &.w-col-large-modal-cutomer {
         width: 273px;
+      }
+
+      &.w-col-accident-trailer-unit {
+        width: 100px;
       }
 
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
@@ -393,7 +405,7 @@
               height: 16px;
               border-radius: 50%;
               -o-object-fit: fill;
-                 object-fit: fill;
+              object-fit: fill;
               margin-right: 4px;
             }
 

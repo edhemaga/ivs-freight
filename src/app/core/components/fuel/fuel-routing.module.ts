@@ -8,6 +8,12 @@ const routes: Routes = [
     component: FuelTableComponent,
     data: { title: 'Fuel' },
   },
+  {
+    path:':id/details',
+    loadChildren:()=>import('./fuel-details/fuel-details.module').then(
+      (m)=>m.FuelDetailsModule
+    )
+  }
 ];
 
 @NgModule({

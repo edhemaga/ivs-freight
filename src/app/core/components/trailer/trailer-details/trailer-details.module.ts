@@ -19,13 +19,12 @@ import { PipesModule } from "src/app/core/pipes/pipes.module";
         RenderMultipleItemsPipe,
         TrailerDetailsCardComponent,
     ],
-    exports:[TrailerDetailsCardComponent,PipesModule],
+    exports:[TrailerDetailsCardComponent,SharedModule],
     imports:[
         CommonModule,
         TruckDetailsRoutes,
         TruckassistProgressExpirationModule,
         SharedModule,
-        PipesModule
     ]
 })
 export class TrailerDetailsModule{}

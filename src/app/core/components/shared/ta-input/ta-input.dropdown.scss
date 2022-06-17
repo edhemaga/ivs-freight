@@ -50,6 +50,15 @@
         }
       }
     }
+
+    &.datetimeclass{
+      z-index: 1;
+      svg{
+        path{
+          fill: #dadada !important;
+        }
+      }
+    }
   }
 
   &.invalid {
@@ -158,6 +167,24 @@
       }
     }
   }
+
+  &.input-big {
+    top: 6px;
+  }
+
+  &.details-pages {
+    svg {
+      path {
+        fill: #aaaaaa !important;
+      }
+    }
+    &:hover {
+      path {
+        fill: #f7f7f7 !important;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
 }
 
 //-------------------- Input Dropdwon confirmation ----------
@@ -178,7 +205,7 @@
     left: 2px;
     svg {
       path {
-        fill: #536BC2;
+        fill: #536bc2;
       }
     }
   }

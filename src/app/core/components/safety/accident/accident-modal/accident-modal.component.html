@@ -126,6 +126,7 @@
               [inputConfig]="{
                 name: 'datepicker',
                 type: 'text',
+                isDropdown: true,
                 label: 'Date',
                 isDisabled: editData?.type === 'edit',
                 placeholderIcon: 'date',
@@ -140,6 +141,7 @@
                 name: 'timepicker',
                 type: 'text',
                 label: 'Time',
+                isDropdown: true,
                 isDisabled: editData?.type === 'edit',
                 placeholderIcon: 'time',
                 customClass: 'datetimeclass'
@@ -184,6 +186,7 @@
                 name: 'datepicker',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
+                isDropdown: true,
                 label: 'DoB',
                 placeholderIcon: 'date',
                 customClass: 'datetimeclass'
@@ -263,8 +266,8 @@
                 name: 'Input Dropdown',
                 type: 'text',
                 label: 'Unit',
-                textTransform: 'capitalize',
-                dropdownWidthClass: 'w-col-large-modal-cutomer'
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-accident-trailer-unit'
               }"
               [options]="labelsTrailerUnits"
               (selectedItem)="onSelectDropDown($event, 'trailer-unit')"
@@ -415,7 +418,9 @@
                       dropdownWidthClass: 'w-col-4-insuranceType'
                     }"
                     [options]="labelsInsuranceType"
-                    (selectedItem)="onSelectDropDown($event, 'insurance-type', ind)"
+                    (selectedItem)="
+                      onSelectDropDown($event, 'insurance-type', ind)
+                    "
                   ></app-ta-input-dropdown>
 
                   <app-ta-input

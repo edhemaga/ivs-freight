@@ -173,4 +173,20 @@
   .new-magic-line-selected:nth-child(10) ~ .new-magic-line {
     transform: translateY(261px);
   }
+
+  .subroutes:nth-child(11):hover ~ .new-magic-line {
+    transform: translateY(290px) !important;
+  }
+
+  .new-magic-line-selected:nth-child(11) ~ .new-magic-line {
+    transform: translateY(290px);
+  }
+
+  .subroutes:nth-child(12):hover ~ .new-magic-line {
+    transform: translateY(319px) !important;
+  }
+
+  .new-magic-line-selected:nth-child(12) ~ .new-magic-line {
+    transform: translateY(319px);
+  }
 }

@@ -189,8 +189,7 @@
           [ngClass]="{
             disabled: option?.disabled,
             'no-result':
-              options.length === 1 && options[0].name === 'No Results',
-            active: option.id === activeItem?.id
+              options.length === 1 && options[0].name === 'No Results'
           }"
           (click)="onActiveItem(option)"
         >
@@ -203,7 +202,6 @@
           ></div>
           <svg-icon
             class="details-template-logo"
-            [ngClass]="{ active: option.id === activeItem?.id }"
             [src]="option.svg | taSvg: option.folder"
           ></svg-icon>
         </div>

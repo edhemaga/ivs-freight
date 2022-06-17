@@ -12,16 +12,26 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
   AddressEntity,
+  CreateRatingCommand,
+  CreateReviewCommand,
   CreateShipperCommand,
   ShipperResponse,
+  SignInResponse,
+  UpdateReviewCommand,
   UpdateShipperCommand,
 } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { ShipperModalService } from './shipper-modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
+import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
+import {
+  LikeDislikeModel,
+  TaLikeDislikeService,
+} from '../../shared/ta-like-dislike/ta-like-dislike.service';
+import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
 
 @Component({
   selector: 'app-shipper-modal',
@@ -69,12 +79,16 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   public shipperDnuStatus: boolean = true;
   public shipperBanStatus: boolean = true;
 
+  public companyUser: SignInResponse = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private shipperModalService: ShipperModalService,
+    private shipperModalService: ShipperTService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private taLikeDislikeService: TaLikeDislikeService,
+    private reviewRatingService: ReviewsRatingService
   ) {}
 
   ngOnInit() {
@@ -82,17 +96,15 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     this.getShipperDropdowns();
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 2,
-      };
       this.editShipperById(this.editData.id);
       this.tabs.push({
         id: 3,
         name: 'Review',
       });
+      this.ratingChanges();
     }
+
+    this.companyUser = JSON.parse(localStorage.getItem('user'));
   }
 
   private createForm() {
@@ -270,9 +282,169 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     this.selectedContractDepartmentFormArray[ind] = event;
   }
 
-  public changeReviewsEvent(reviews: { data: any[]; action: string }) {
-    this.reviews = [...reviews.data];
-    // TODO: API CREATE OR DELETE
+  public changeReviewsEvent(reviews: ReviewCommentModal) {
+    switch (reviews.action) {
+      case 'delete': {
+        this.deleteReview(reviews);
+        break;
+      }
+      case 'add': {
+        this.addReview(reviews);
+        break;
+      }
+      case 'update': {
+        this.updateReview(reviews);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public createReview(event: any) {
+    if (this.reviews.some((item) => item.isNewReview)) {
+      return;
+    }
+    // ------------------------ PRODUCTION MODE -----------------------------
+    // this.reviews.unshift({
+    //   companyUser: {
+    //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
+    //     avatar: 'https://picsum.photos/id/237/200/300',
+    //   },
+    //   commentContent: '',
+    //   createdAt: new Date().toISOString(),
+    //   updatedAt: new Date().toISOString(),
+    //   isNewReview: true,
+    // });
+    // -------------------------- DEVELOP MODE --------------------------------
+    this.reviews.unshift({
+      companyUser: {
+        fullName: this.companyUser.firstName.concat(
+          ' ',
+          this.companyUser.lastName
+        ),
+        avatar: 'https://picsum.photos/id/237/200/300',
+      },
+      commentContent: '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      isNewReview: true,
+    });
+  }
+
+  private ratingChanges() {
+    this.taLikeDislikeService.userLikeDislike$
+      .pipe(untilDestroyed(this))
+      .subscribe((action: LikeDislikeModel) => {
+        let rating: CreateRatingCommand = null;
+
+        if (action.action === 'liked') {
+          rating = {
+            entityTypeRatingId: 1,
+            entityTypeId: this.editData.id,
+            thumb: action.likeDislike,
+          };
+        } else {
+          rating = {
+            entityTypeRatingId: 1,
+            entityTypeId: this.editData.id,
+            thumb: action.likeDislike,
+          };
+        }
+
+        this.reviewRatingService
+          .addRating(rating)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Rating successfully updated.',
+                'Success:'
+              );
+            },
+            error: () => {
+              this.notificationService.error(
+                "Rating can't be updated.",
+                'Error:'
+              );
+            },
+          });
+      });
+  }
+
+  private addReview(reviews: ReviewCommentModal) {
+    const review: CreateReviewCommand = {
+      entityTypeReviewId: 3,
+      entityTypeId: this.editData.id,
+      comment: reviews.data.commentContent,
+    };
+
+    this.reviewRatingService
+      .addReview(review)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: any) => {
+          this.reviews = reviews.sortData.map((item, index) => {
+            if (index === 0) {
+              return {
+                ...item,
+                id: res.id,
+              };
+            }
+            return item;
+          });
+          this.notificationService.success(
+            'Review successfully created.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Review can't be created.", 'Error:');
+        },
+      });
+  }
+
+  private deleteReview(reviews: ReviewCommentModal) {
+    this.reviews = reviews.sortData;
+
+    this.reviewRatingService
+      .deleteReview(reviews.data)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Review successfully deleted.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Review can't be deleted.", 'Error:');
+        },
+      });
+  }
+
+  private updateReview(reviews: ReviewCommentModal) {
+    this.reviews = reviews.sortData;
+    const review: UpdateReviewCommand = {
+      id: reviews.data.id,
+      comment: reviews.data.commentContent,
+    };
+
+    this.reviewRatingService
+      .updateReview(review)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Review successfully updated.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Review can't be updated.", 'Error:');
+        },
+      });
   }
 
   public addNewReview(event: any) {
@@ -434,7 +606,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shipperContacts: [],
           });
           this.selectedAddress = reasponse.address;
-
+          this.isPhoneExtExist = reasponse.phoneExt ? true : false;
           if (reasponse.phoneExt) {
             this.isPhoneExtExist = true;
           }
@@ -464,7 +636,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             this.isAppointmentShipping = true;
           }
 
-          this.reviews = [...reasponse.shipperReviews].map((item) => ({
+          this.reviews = [...reasponse.reviews].map((item) => ({
             ...item,
             companyUser: {
               ...item.companyUser,
