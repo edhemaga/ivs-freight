@@ -17,6 +17,17 @@ export class BlockedContentPipe implements PipeTransform {
         'create new password',
         'password changed',
         'helper component route',
+        'personal info',
+        'work experience',
+        'cdl information',
+        'accident records',
+        'traffic violations',
+        'education',
+        'days hos',
+        'drug and alchocol statement',
+        'driver rights',
+        'disclosure and release',
+        'authorization',
       ].includes(value?.toLowerCase())
     ) {
       return true;

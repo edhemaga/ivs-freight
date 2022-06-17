@@ -1,0 +1,413 @@
+<div class="d-flex flex-column align-items-center step-container">
+  <h1 class="step-title text-center noselect ta-font-bold">Education</h1>
+
+  <h3 class="step-subtitle noselect text-center ta-font-bold">
+    Please select the highest grade completed:
+  </h3>
+
+  <!-- SELECT GRADE -->
+
+  <div class="d-flex justify-content-center align-items-center grade-container">
+    <div
+      class="d-flex justify-content-center align-items-center grade"
+      (mouseover)="highlightGrade = i"
+      (mouseleave)="highlightGrade = -1"
+      (click)="selectedGrade = i"
+      [ngClass]="{
+        'grade-hovered': i <= highlightGrade,
+        'grade-selected': selectedGrade === i,
+        'all-before-selected': i < selectedGrade
+      }"
+      *ngFor="
+        let grade of schoolGrades;
+        let i = index;
+        trackBy: trackByIdentity
+      "
+    >
+      {{ grade }}
+    </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+      <app-applicant-review-feedback
+        [index]="0"
+        [reviewFeedbackData]=""
+        (sendReview)="onSubmitReview($event)"
+      ></app-applicant-review-feedback>
+    </div>
+  </div>
+
+  <p class="m-0 noselect college-title">COLLEGE:</p>
+
+  <!-- SELECT COLLAGE GRADE -->
+
+  <div
+    class="d-flex justify-content-center align-items-center collage-grade-container"
+  >
+    <div
+      class="d-flex justify-content-center align-items-center grade"
+      (mouseover)="highlightCollegeGrade = i"
+      (mouseleave)="highlightCollegeGrade = -1"
+      (click)="selectedCollegeGrade = i"
+      [ngClass]="{
+        'grade-hovered': i <= highlightCollegeGrade,
+        'grade-selected': selectedCollegeGrade === i,
+        'all-before-selected': i < selectedCollegeGrade
+      }"
+      *ngFor="
+        let grade of collegeGrades;
+        let i = index;
+        trackBy: trackByIdentity
+      "
+    >
+      {{ grade }}
+    </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+      <app-applicant-review-feedback
+        [index]="1"
+        [reviewFeedbackData]=""
+        (sendReview)="onSubmitReview($event)"
+      ></app-applicant-review-feedback>
+    </div>
+  </div>
+
+  <!-- FORM SECTION -->
+
+  <div class="d-flex flex-column form-section">
+    <form [formGroup]="educationForm">
+      <!-- TOP QUESTIONS -->
+
+      <div class="d-flex flex-column top-questions-container">
+        <div
+          class="d-flex flex-column question-container"
+          *ngFor="
+            let question of questions | slice: 0:3;
+            let i = index;
+            trackBy: trackByIdentity
+          "
+        >
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="title-box">
+              <p class="m-0 ta-font-regular">
+                {{ question.title }}
+                <span class="required-star">*</span>
+              </p>
+            </div>
+
+            <div class="radios-box">
+              <app-ta-input-radiobuttons
+                [buttons]="question.answerChoices"
+                (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+              ></app-ta-input-radiobuttons>
+            </div>
+          </div>
+
+          <!-- EXPLAIN -->
+
+          <div
+            class="d-flex explain-container"
+            *ngIf="educationForm.get(question.formControlName)?.value === 'Yes'"
+          >
+            <div class="w-100">
+              <app-ta-input
+                [formControlName]="question.formControlNameExplain"
+                [inputConfig]="{
+                  name: 'Explain',
+                  type: 'text',
+                  label: 'Please Explain',
+                  isRequired: true,
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+
+          <!-- REVIEW AND FEEDBACK -->
+
+          <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+            <app-applicant-review-feedback
+              [index]="2"
+              [reviewFeedbackData]=""
+              (sendReview)="onSubmitReview($event)"
+            ></app-applicant-review-feedback>
+          </div>
+        </div>
+      </div>
+
+      <!-- GENERAL -->
+
+      <h3 class="text-center noselect ta-font-bold step-title general-title">
+        General
+      </h3>
+
+      <!-- BOTTOM QUESTIONS -->
+
+      <div class="d-flex flex-column bottom-questions-container">
+        <div
+          class="d-flex align-items-center question-container"
+          *ngFor="
+            let question of questions | slice: 3;
+            let i = index;
+            trackBy: trackByIdentity
+          "
+        >
+          <div class="d-flex align-items-center w-100">
+            <div
+              class="d-flex align-items-center justify-content-between w-100"
+            >
+              <div class="title-box">
+                <p class="m-0 ta-font-regular">
+                  {{ question.title }}
+                  <span class="required-star">*</span>
+                </p>
+              </div>
+
+              <div class="radios-box">
+                <app-ta-input-radiobuttons
+                  [buttons]="question.answerChoices"
+                  (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+                ></app-ta-input-radiobuttons>
+              </div>
+            </div>
+            <div class="d-flex" *ngIf="i === 0">
+              <div
+                class="form-label-group date-group"
+                *ngIf="
+                  educationForm.get('driverForCompanyBefore').value === 'Yes'
+                "
+              >
+                <app-ta-input
+                  formControlName="driverForCompanyBeforeExplain"
+                  [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'Date',
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    customClass: 'datetimeclass'
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+          </div>
+
+          <!-- REVIEW AND FEEDBACK -->
+
+          <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+            <app-applicant-review-feedback
+              [index]="3"
+              [reviewFeedbackData]=""
+              (sendReview)="onSubmitReview($event)"
+            ></app-applicant-review-feedback>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- CREATED CONTACT DATA -->
+
+    <div
+      class="d-flex flex-column contacts-view-container"
+      *ngIf="contactsFormArray?.length"
+    >
+      <div class="d-flex flex-column">
+        <div class="d-flex title-container">
+          <div
+            class="d-flex justify-content-center align-items-center name-title-box"
+          >
+            <p class="m-0 ta-font-bold">NAME</p>
+          </div>
+          <div
+            class="d-flex justify-content-center align-items-center phone-title-box"
+          >
+            <p class="m-0 ta-font-bold">PHONE</p>
+          </div>
+          <div
+            class="d-flex justify-content-center align-items-center relationship-title-box"
+          >
+            <p class="m-0 ta-font-bold">RELATIONSHIP</p>
+          </div>
+        </div>
+
+        <div
+          class="d-flex align-items-center contact"
+          *ngFor="
+            let contact of contactsFormArray | filter: false;
+            let i = index;
+            trackBy: trackByIdentity
+          "
+        >
+          <div class="d-flex align-items-center contact-info-container">
+            <div
+              class="d-flex justify-content-center align-items-center name-box"
+            >
+              <p class="m-0 ta-font-regular">
+                {{ contact.contactName }}
+              </p>
+            </div>
+            <div
+              class="d-flex justify-content-center align-items-center phone-box"
+            >
+              <p class="m-0 ta-font-regular">
+                {{ contact.contactPhone }}
+              </p>
+            </div>
+            <div
+              class="d-flex justify-content-center align-items-center relationship-box"
+            >
+              <p class="m-0 ta-font-regular">
+                {{ contact.contactRelationship }}
+              </p>
+            </div>
+          </div>
+
+          <!-- REVIEW AND FEEDBACK -->
+
+          <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+            <app-applicant-review-feedback
+              [index]="4"
+              [reviewFeedbackData]=""
+              (sendReview)="onSubmitReview($event)"
+            ></app-applicant-review-feedback>
+          </div>
+
+          <div
+            class="d-flex justify-content-center align-items-center edit-delete-box"
+          >
+            <button
+              type="button"
+              class="d-flex justify-content-center align-items-center edit-btn"
+              (click)="onEditContact(i)"
+            >
+              <svg-icon
+                class="edit-icon"
+                src="assets/svg/common/ic_pen.svg"
+                [svgStyle]="{
+                  'width.px': 10,
+                  'height.px': 10
+                }"
+              ></svg-icon>
+            </button>
+            <button
+              type="button"
+              class="d-flex justify-content-center align-items-center delete-btn"
+              (click)="onDeleteContact(i)"
+            >
+              <svg-icon
+                class="delete-icon"
+                src="assets/svg/common/ic_trash.svg"
+                [svgStyle]="{
+                  'width.px': 8,
+                  'height.px': 9
+                }"
+              ></svg-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+
+    <form [formGroup]="contactForm">
+      <h3
+        class="step-subtitle contact-title noselect text-center ta-font-bold"
+        [ngStyle]="{
+          'margin-top': contactsFormArray.length ? '0' : '12px'
+        }"
+      >
+        In case of emergency, contact:
+      </h3>
+
+      <div class="d-flex">
+        <div class="form-label-group name-group">
+          <app-ta-input
+            formControlName="contactName"
+            [inputConfig]="{
+              name: 'Name',
+              type: 'text',
+              label: 'Name',
+              isRequired: true,
+              textTransform: 'capitalize'
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="form-label-group phone-group">
+          <app-ta-input
+            formControlName="contactPhone"
+            [inputConfig]="{
+              name: 'Phone',
+              type: 'text',
+              label: 'Phone',
+              isRequired: true,
+              placeholderIcon: 'phone',
+              mask: '(000) 000-0000'
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="form-label-group relationship-group">
+          <app-ta-input
+            formControlName="contactRelationship"
+            [inputConfig]="{
+              name: 'Relationship',
+              type: 'text',
+              label: 'Relationship',
+              textTransform: 'capitalize',
+              isRequired: true
+            }"
+          ></app-ta-input>
+        </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="5"
+            [reviewFeedbackData]=""
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <!-- ADD SECOND CONTACT -->
+
+      <div
+        class="d-flex flex-column align-items-center add-second-contact-container"
+      >
+        <button
+          type="button"
+          class="add-contact-btn ta-font-semi-bold"
+          (click)="onAddContact()"
+          *ngIf="editContact === -1"
+        >
+          Add second emergency contact
+        </button>
+        <button
+          type="button"
+          class="add-contact-btn ta-font-semi-bold"
+          (click)="onUpdateContact()"
+          *ngIf="editContact !== -1"
+        >
+          Save contact
+        </button>
+      </div>
+    </form>
+
+    <!-- NEXT, BACK STEP -->
+
+    <app-applicant-next-step
+      (stepEvent)="onStepAction($event)"
+      [isReview]="selectedMode == 'REVIEW_MODE'"
+    ></app-applicant-next-step>
+  </div>
+</div>
+
+<!-- CONFIRM ALL REVIEW -->
+
+<app-applicant-confirm-all-review
+  *ngIf="selectedMode === 'REVIEW_MODE'"
+></app-applicant-confirm-all-review>

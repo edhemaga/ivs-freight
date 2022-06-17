@@ -1,0 +1,583 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+
+import { Observable } from 'rxjs';
+
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { Address } from '../../state/model/address.model';
+import { ApplicantQuestion } from '../../state/model/applicant-question.model';
+import {
+  Applicant,
+  Bank,
+  IApplicantAddress,
+  PersonalInfo,
+} from '../../state/model/applicant.model';
+
+import {
+  phoneRegex,
+  emailRegex,
+  ssnNumberRegex,
+  accountBankRegex,
+  routingBankRegex,
+} from '../../../shared/ta-input/ta-input.regex-validations';
+
+import { getPersonalInfoReviewFeedbackData } from '../../state/utils/review-feedback-data/step1';
+
+import { ReviewFeedbackService } from '../../state/services/review-feedback.service';
+
+@Component({
+  selector: 'app-step1',
+  templateUrl: './step1.component.html',
+  styleUrls: ['./step1.component.scss'],
+})
+export class Step1Component implements OnInit, OnDestroy {
+  public loadingApplicant$: Observable<boolean>;
+  public loadingBankData$: Observable<boolean>;
+  public loadingPersonalInfo$: Observable<boolean>;
+
+  public selectedMode: string = SelectedMode.APPLICANT;
+
+  public applicant: Applicant | undefined;
+
+  public personalInfoForm!: FormGroup;
+  public personalInfo: PersonalInfo | undefined;
+
+  public isLastAddedPreviousAddressValid: boolean = false;
+  public isBankSelected: boolean = false;
+
+  public selectedAddress: Address = null;
+  public selectedBank: any = null;
+
+  public bankData: any[] = [
+    {
+      svg: null,
+      name: 'Test Bank',
+    },
+  ];
+
+  public questions: ApplicantQuestion[] = [
+    {
+      title: 'Do you have legal right to work in the US?',
+      formControlName: 'legalWork',
+      formControlNameExplain: 'legalWorkExplain',
+      answerChoices: [
+        {
+          id: 1,
+          label: 'Yes',
+          value: 'legalWorkYes',
+          name: 'legalWorkYes',
+          checked: false,
+          index: 0,
+        },
+        {
+          id: 2,
+          label: 'No',
+          value: 'legalWorkNo',
+          name: 'legalWorkNo',
+          checked: false,
+          index: 0,
+        },
+      ],
+    },
+    {
+      title: 'Have you ever been known by any other name?',
+      formControlName: 'anotherName',
+      formControlNameExplain: 'anotherNameExplain',
+      answerChoices: [
+        {
+          id: 3,
+          label: 'Yes',
+          value: 'anotherNameYes',
+          name: 'anotherNameYes',
+          checked: false,
+          index: 1,
+        },
+        {
+          id: 4,
+          label: 'No',
+          value: 'anotherNameNo',
+          name: 'anotherNameNo',
+          checked: false,
+          index: 1,
+        },
+      ],
+    },
+    {
+      title: 'Were you ever in the military?',
+      formControlName: 'inMilitary',
+      formControlNameExplain: 'inMilitaryExplain',
+      answerChoices: [
+        {
+          id: 5,
+          label: 'Yes',
+          value: 'inMilitaryYes',
+          name: 'inMilitaryYes',
+          checked: false,
+          index: 2,
+        },
+        {
+          id: 6,
+          label: 'No',
+          value: 'inMilitaryNo',
+          name: 'inMilitaryNo',
+          checked: false,
+          index: 2,
+        },
+      ],
+    },
+    {
+      title: 'Have you ever been convicted of a felony?',
+      formControlName: 'felony',
+      formControlNameExplain: 'felonyExplain',
+      answerChoices: [
+        {
+          id: 7,
+          label: 'Yes',
+          value: 'felonyYes',
+          name: 'felonyYes',
+          checked: false,
+          index: 3,
+        },
+        {
+          id: 8,
+          label: 'No',
+          value: 'felonyNo',
+          name: 'felonyNo',
+          checked: false,
+          index: 3,
+        },
+      ],
+    },
+    {
+      title: 'Have you ever been convicted of a misdemeanor?',
+      formControlName: 'misdemeanor',
+      formControlNameExplain: 'misdemeanorExplain',
+      answerChoices: [
+        {
+          id: 9,
+          label: 'Yes',
+          value: 'misdemeanorYes',
+          name: 'misdemeanorYes',
+          checked: false,
+          index: 4,
+        },
+        {
+          id: 10,
+          label: 'No',
+          value: 'misdemeanorNo',
+          name: 'misdemeanorNo',
+          checked: false,
+          index: 4,
+        },
+      ],
+    },
+    {
+      title: 'Have you ever had a DUI, DWI, or OVI?',
+      formControlName: 'drunkDriving',
+      formControlNameExplain: 'drunkDrivingExplain',
+      answerChoices: [
+        {
+          id: 11,
+          label: 'Yes',
+          value: 'drunkDrivingYes',
+          name: 'drunkDrivingYes',
+          checked: false,
+          index: 5,
+        },
+        {
+          id: 12,
+          label: 'No',
+          value: 'drunkDrivingNo',
+          name: 'drunkDrivingNo',
+          checked: false,
+          index: 5,
+        },
+      ],
+    },
+  ];
+
+  public reviewFeedback: any[] = getPersonalInfoReviewFeedbackData();
+  private countOfReview: number = 0;
+
+  public trackByIdentity = (index: number, item: any): number => index;
+
+  public get previousAddresses(): FormArray {
+    return this.personalInfoForm.get('previousAddresses') as FormArray;
+  }
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private reviewFeedbackService: ReviewFeedbackService
+  ) {}
+
+  ngOnInit(): void {
+    this.formInit();
+
+    const applicantUser = localStorage.getItem('applicant_user');
+
+    if (applicantUser) {
+      this.applicant = JSON.parse(applicantUser) as Applicant;
+    }
+  }
+
+  private formInit(): void {
+    this.personalInfoForm = this.formBuilder.group({
+      isAgreement: [false, Validators.requiredTrue],
+
+      firstName: [null, Validators.required],
+      lastName: [null, Validators.required],
+      dateOfBirth: [null, Validators.required],
+      phone: [null, [Validators.required, phoneRegex]],
+      email: [null, [Validators.required, emailRegex]],
+      address: [null, Validators.required],
+      addressUnit: [null, Validators.maxLength(6)],
+      ssn: [null, [Validators.required, ssnNumberRegex]],
+      bankId: [null],
+      accountNumber: [null, accountBankRegex],
+      routingNumber: [null, routingBankRegex],
+      legalWork: [null, Validators.required],
+      anotherName: [null, Validators.required],
+      inMilitary: [null, Validators.required],
+      felony: [null, Validators.required],
+      misdemeanor: [null, Validators.required],
+      drunkDriving: [null, Validators.required],
+      legalWorkExplain: [null, Validators.required],
+      anotherNameExplain: [null, Validators.required],
+      inMilitaryExplain: [null, Validators.required],
+      felonyExplain: [null, Validators.required],
+      misdemeanorExplain: [null, Validators.required],
+      drunkDrivingExplain: [null, Validators.required],
+
+      previousAddresses: this.formBuilder.array([]),
+    });
+  }
+
+  public handleInputSelect(event: any, action: string, index?: number): void {
+    switch (action) {
+      case InputSwitchActions.ADDRESS:
+        this.selectedAddress = event.address;
+
+        if (!event.valid) {
+          this.personalInfoForm.get('address').setErrors({ invalid: true });
+        }
+
+        break;
+      case InputSwitchActions.BANK:
+        this.selectedBank = event;
+
+        break;
+      case InputSwitchActions.ANSWER_CHOICE:
+        const selectedCheckbox = event.find(
+          (radio: { checked: boolean }) => radio.checked
+        );
+
+        const selectedFormControlName =
+          this.questions[selectedCheckbox.index].formControlName;
+
+        this.personalInfoForm
+          .get(selectedFormControlName)
+          .patchValue(selectedCheckbox.label);
+
+        break;
+      case InputSwitchActions.PREVIOUS_ADDRESS:
+        const address: Address = event.address;
+
+        this.isLastAddedPreviousAddressValid = event.valid;
+
+        if (!event.valid) {
+          this.previousAddresses.at(index).setErrors({ invalid: true });
+        } else {
+          this.previousAddresses.at(index).patchValue({
+            address: address.address,
+            city: address.city,
+            state: address.state,
+            stateShortName: address.stateShortName,
+            country: address.country,
+            zipCode: address.zipCode,
+            // streetNumber: address,
+            // streetName: address,
+          });
+        }
+
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  private createNewAddress(): FormGroup {
+    return this.formBuilder.group({
+      address: [null, Validators.required],
+      addressUnit: [null],
+    });
+  }
+
+  public addNewAddress(): void {
+    const newAddress = this.createNewAddress();
+
+    if (
+      !this.previousAddresses.controls.length ||
+      this.isLastAddedPreviousAddressValid
+    ) {
+      this.previousAddresses.push(newAddress);
+    }
+
+    this.isLastAddedPreviousAddressValid = false;
+  }
+
+  public removeNewAddress(index: number): void {
+    this.previousAddresses.removeAt(index);
+  }
+
+  private formFIlling(): void {
+    // Redirect to next Step
+    // if (this.personalInfo?.isCompleted) {
+    //   // this.router.navigateByUrl(`/application/${this.applicant?.id}/2`);
+    // }
+
+    const applicantInfo = this.applicant;
+    const personalInfo = this.personalInfo;
+
+    this.personalInfoForm = this.formBuilder.group({
+      isAgreement: [personalInfo?.isAgreement, Validators.required],
+
+      firstName: [applicantInfo?.firstName, Validators.required],
+      lastName: [applicantInfo?.lastName, Validators.required],
+      dateOfBirth: [applicantInfo?.dateOfBirth, Validators.required],
+      phone: [applicantInfo?.phone, [Validators.required, phoneRegex]],
+      email: [applicantInfo?.email, [Validators.required, emailRegex]],
+      address: [applicantInfo?.address, Validators.required],
+      addressUnit: [applicantInfo?.addressUnit],
+
+      ssn: [personalInfo?.ssn, [Validators.required, ssnNumberRegex]],
+      bankId: [personalInfo?.bank],
+      accountNumber: [
+        personalInfo?.bank?.accountNumber
+          ? personalInfo?.bank.accountNumber
+          : null,
+      ],
+      routingNumber: [
+        personalInfo?.bank?.routingNumber
+          ? personalInfo?.bank.routingNumber
+          : null,
+      ],
+
+      legalWork: [personalInfo?.legalWork, Validators.required],
+      anotherName: [personalInfo?.anotherName, Validators.required],
+      inMilitary: [personalInfo?.inMilitary, Validators.required],
+      felony: [personalInfo?.felony, Validators.required],
+      misdemeanor: [personalInfo?.misdemeanor, Validators.required],
+      drunkDriving: [personalInfo?.drunkDriving, Validators.required],
+      legalWorkExplain: [
+        personalInfo?.legalWorkExplain,
+        personalInfo?.legalWork
+          ? Validators.required
+          : Validators.nullValidator,
+      ],
+      anotherNameExplain: [
+        personalInfo?.anotherNameExplain,
+        personalInfo?.anotherName
+          ? Validators.required
+          : Validators.nullValidator,
+      ],
+      inMilitaryExplain: [
+        personalInfo?.inMilitaryExplain,
+        personalInfo?.inMilitary
+          ? Validators.required
+          : Validators.nullValidator,
+      ],
+      felonyExplain: [
+        personalInfo?.felonyExplain,
+        personalInfo?.felony ? Validators.required : Validators.nullValidator,
+      ],
+      misdemeanorExplain: [
+        personalInfo?.misdemeanorExplain,
+        personalInfo?.misdemeanor
+          ? Validators.required
+          : Validators.nullValidator,
+      ],
+      drunkDrivingExplain: [
+        personalInfo?.drunkDrivingExplain,
+        personalInfo?.drunkDriving
+          ? Validators.required
+          : Validators.nullValidator,
+      ],
+
+      previousAddresses: this.formBuilder.array([]),
+    });
+
+    // Previous Addresses
+
+    if (personalInfo?.previousAddresses?.length) {
+      for (let i = 0; i < personalInfo?.previousAddresses.length; i++) {
+        this.addNewAddress();
+        this.previousAddresses.at(i)?.patchValue({
+          id: personalInfo?.previousAddresses[i].id,
+          address: personalInfo?.previousAddresses[i].address,
+          addressUnit: personalInfo?.previousAddresses[i].addressUnit,
+        });
+      }
+    } else {
+      this.previousAddresses.controls = [];
+    }
+
+    // Bank Info
+    /*  this.requiredBankInfo(
+            this.personalInfo?.bank && this.bankData.length ? true : false
+        ); */
+  }
+
+  public onSubmitForm(): void {
+    const personalInfoForm = this.personalInfoForm.value;
+
+    // Applicant Data
+
+    const applicant: Applicant = new Applicant(this.applicant);
+
+    applicant.firstName = personalInfoForm.firstName;
+    applicant.lastName = personalInfoForm.lastName;
+    applicant.dateOfBirth = personalInfoForm.dateOfBirth;
+    applicant.phone = personalInfoForm.phone;
+    applicant.email = personalInfoForm.email;
+    applicant.address = personalInfoForm.address;
+    applicant.addressUnit = personalInfoForm.addressUnit;
+
+    // Personal Info Data
+
+    const personalInfo: PersonalInfo = new PersonalInfo(this.personalInfo);
+
+    personalInfo.ssn = personalInfoForm.ssn;
+    personalInfo.legalWork = personalInfoForm.legalWork;
+    personalInfo.anotherName = personalInfoForm.anotherName;
+    personalInfo.inMilitary = personalInfoForm.inMilitary;
+    personalInfo.felony = personalInfoForm.felony;
+    personalInfo.misdemeanor = personalInfoForm.misdemeanor;
+    personalInfo.drunkDriving = personalInfoForm.drunkDriving;
+    personalInfo.legalWorkExplain = personalInfoForm.legalWorkExplain;
+    personalInfo.anotherNameExplain = personalInfoForm.anotherNameExplain;
+    personalInfo.inMilitaryExplain = personalInfoForm.inMilitaryExplain;
+    personalInfo.felonyExplain = personalInfoForm.felonyExplain;
+    personalInfo.misdemeanorExplain = personalInfoForm.misdemeanorExplain;
+    personalInfo.drunkDrivingExplain = personalInfoForm.drunkDrivingExplain;
+
+    personalInfo.isAgreement = personalInfoForm.isAgreement;
+    personalInfo.isCompleted = true;
+
+    // Bank Data
+
+    if (personalInfoForm.bankId) {
+      const bank = new Bank(this.personalInfo?.bank);
+
+      bank.id = personalInfoForm.bankId;
+      bank.name = this.selectedBank.name;
+      bank.accountNumber = personalInfoForm.accountNumber;
+      bank.routingNumber = personalInfoForm.routingNumber;
+
+      personalInfo.bank = bank;
+    } else {
+      personalInfo.bank = undefined;
+    }
+
+    // Previous Addresses Data
+
+    if (personalInfoForm.previousAddresses?.length) {
+      const previousAddresses: IApplicantAddress[] =
+        personalInfoForm.previousAddresses;
+
+      // items for delete
+      personalInfo.previousAddresses = personalInfo?.previousAddresses?.map(
+        (d: IApplicantAddress) => {
+          let temp: IApplicantAddress | undefined = previousAddresses.find(
+            (ad) => ad.id === d.id
+          );
+
+          if (temp) {
+            d = temp;
+            d.IsDeleted = false;
+          } else {
+            d.IsDeleted = true;
+          }
+
+          return d;
+        }
+      );
+
+      // new items
+      for (const address of previousAddresses) {
+        let temp: IApplicantAddress | undefined =
+          personalInfo.previousAddresses?.find(
+            (ad) =>
+              ad.address === address.address &&
+              ad.addressUnit === address.addressUnit
+          );
+
+        if (!temp) {
+          address.id = undefined;
+          address.IsDeleted = false;
+          personalInfo.previousAddresses?.push(address);
+        }
+      }
+    } else {
+      personalInfo.previousAddresses = personalInfo.previousAddresses?.map(
+        (d: IApplicantAddress) => {
+          d.IsDeleted = true;
+          return d;
+        }
+      );
+    }
+
+    // Update Applicant
+    /*  if (applicant) {
+      this.apppEntityServices.ApplicantService.upsert(applicant).subscribe(
+        () => {
+          if (personalInfo) {
+            personalInfo.applicantId = applicant.id;
+            this.apppEntityServices.PersonalInfoService.upsert(
+              personalInfo
+            ).subscribe(
+              () => {
+                this.notification.success('Personal Info is updated');
+                this.router.navigateByUrl(`/application/${this.applicant?.id}/2`)
+              },
+              (error) => {
+                this.shared.handleError(error);
+              }
+            );
+          }
+        },
+        (error) => {
+          this.shared.handleError(error);
+        }
+      );
+    } */
+  }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+      this.onSubmitForm();
+    }
+  }
+
+  public onSubmitReview(data: any): void {
+    const numberOfPreviousAddresses =
+      this.personalInfoForm.value.previousAddresses.length;
+
+    this.reviewFeedback[data.index] = data.reviewFeedbackData;
+
+    this.countOfReview++;
+
+    if (
+      this.countOfReview === 10 + numberOfPreviousAddresses &&
+      !data.firstLoad
+    ) {
+      /* TODO: Send data to backend and move to next step */
+      console.log(this.reviewFeedback);
+    } else if (data.firstLoad) {
+      this.countOfReview = 0;
+    }
+  }
+
+  ngOnDestroy() {}
+}

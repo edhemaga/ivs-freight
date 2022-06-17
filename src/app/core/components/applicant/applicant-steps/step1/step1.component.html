@@ -1,0 +1,494 @@
+<ng-template #loading>
+  <span class="d-flex justify-content-center"> LOADING... </span>
+</ng-template>
+
+<div
+  class="d-flex flex-column justify-content-center step-container"
+  *ngIf="
+    !(loadingApplicant$ | async) ||
+      !(loadingBankData$ | async) ||
+      !(loadingPersonalInfo$ | async);
+    else loading
+  "
+>
+  <h1 class="text-center step-title noselect ta-font-bold">
+    Driver Application
+  </h1>
+
+  <!-- TOP SECTION -->
+
+  <div
+    class="d-flex flex-column text-center top-section"
+    *ngIf="!personalInfoForm.get('isAgreement').value"
+  >
+    <p class="noselect ta-font-regular">
+      In compliance with Federal and State equal opportunity laws, qualified
+      applicants are considered for all positions<br />without regard to race,
+      religion, sex national origin, age marital status, or non-job related
+      disability.
+    </p>
+    <p class="noselect ta-font-regular">
+      I understand that information I provide regarding current and/or previous
+      employers may be used, and those<br />employer(s) will be contacted, for
+      the purpose of investigation my safety performance history as required by
+      49 CFR<br />391.23(d) and (e).
+    </p>
+  </div>
+
+  <!-- MID SECTION -->
+
+  <div
+    class="d-flex flex-column text-center mid-section"
+    [formGroup]="personalInfoForm"
+    [ngStyle]="{
+      'margin-top': !personalInfoForm.get('isAgreement').value ? '25px' : '22px'
+    }"
+  >
+    <app-ta-checkbox
+      formControlName="isAgreement"
+      [name]="'isAgreement'"
+      [label]="'I also understand that JD Freight have the right to:'"
+    ></app-ta-checkbox>
+  </div>
+
+  <!-- BOTTOM SECTION -->
+
+  <div class="d-flex flex-column text-center bottom-section">
+    <p class="noselect ta-font-regular">
+      Review information provided by previous employers. Have errors in the
+      information corrected by<br />previous employers and for those previous
+      employers to re-send the corrected
+    </p>
+
+    <p class="noselect ta-font-regular">
+      Information to the prospective employer, and. Have a rebuttal statement
+      attached to the alleged erroneous<br />
+      information, if the previous employer(s) and I cannot agree on the
+      accuracy of the information
+    </p>
+  </div>
+
+  <!-- FORM SECTION -->
+
+  <div
+    class="d-flex justify-content-center form-section"
+    *ngIf="personalInfoForm.get('isAgreement').value"
+  >
+    <form [formGroup]="personalInfoForm">
+      <!-- FIRST NAME, LAST NAME, DOB -->
+
+      <div class="d-flex form-input-container">
+        <div class="form-label-group first-name-group">
+          <app-ta-input
+            formControlName="firstName"
+            [inputConfig]="{
+              name: 'First Name',
+              type: 'text',
+              label: 'First Name',
+              isRequired: true,
+              textTransform: 'capitalize',
+              autoFocus: true
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="form-label-group last-name-group">
+          <app-ta-input
+            formControlName="lastName"
+            [inputConfig]="{
+              name: 'Last Name',
+              type: 'text',
+              label: 'Last Name',
+              isRequired: true,
+              textTransform: 'capitalize'
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="form-label-group date-group">
+          <app-ta-input
+            formControlName="dateOfBirth"
+            [inputConfig]="{
+              name: 'datepicker',
+              type: 'text',
+              label: 'DOB',
+              placeholderIcon: 'date',
+              isRequired: true,
+              customClass: 'datetimeclass'
+            }"
+          ></app-ta-input>
+        </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="0"
+            [reviewFeedbackData]="reviewFeedback[0]"
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <!--  PHONE, EMAIL-->
+
+      <div class="d-flex form-input-container">
+        <div class="form-label-group phone-group">
+          <app-ta-input
+            formControlName="phone"
+            [inputConfig]="{
+              name: 'Phone',
+              type: 'text',
+              label: 'Phone',
+              isRequired: true,
+              placeholderIcon: 'phone',
+              mask: '(000) 000-0000'
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="form-label-group email-group">
+          <app-ta-input
+            formControlName="email"
+            [inputConfig]="{
+              name: 'Email',
+              type: 'text',
+              label: 'Email',
+              isRequired: true,
+              placeholderIcon: 'email'
+            }"
+          ></app-ta-input>
+        </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="1"
+            [reviewFeedbackData]="reviewFeedback[1]"
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <!-- ADDRESS -->
+
+      <div class="d-flex form-input-container">
+        <div class="form-label-group address-group">
+          <app-ta-input-address
+            formControlName="address"
+            [inputConfig]="{
+              name: 'Address',
+              type: 'text',
+              label: 'Address, City, State Zip',
+              isRequired: true,
+              placeholderIcon: 'address',
+              textTransform: 'capitalize'
+            }"
+            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+          ></app-ta-input-address>
+        </div>
+        <div class="form-label-group address-unit-group">
+          <app-ta-input
+            formControlName="addressUnit"
+            [inputConfig]="{
+              name: 'Address Unit',
+              type: 'text',
+              label: 'Unit #',
+              maxLength: 6
+            }"
+          ></app-ta-input>
+        </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="2"
+            [reviewFeedbackData]="reviewFeedback[2]"
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <!-- SSN, BANK NAME -->
+
+      <div class="d-flex form-input-container">
+        <div class="form-label-group ssn-group">
+          <app-ta-input
+            formControlName="ssn"
+            [inputConfig]="{
+              name: 'SSN',
+              type: 'text',
+              label: 'SSN',
+              isRequired: true,
+              mask: '000-00-0000'
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="form-label-group bank-group">
+          <app-ta-input-dropdown
+            formControlName="bankId"
+            [template]="'banks'"
+            [inputConfig]="{
+              name: 'Input Dropdown',
+              type: 'text',
+              label: 'Bank Name',
+              isDropdown: true,
+              dropdownWidthClass: 'w-col-applicant-bank'
+            }"
+            [canAddNew]="true"
+            [options]="bankData"
+            (selectedItem)="handleInputSelect($event, 'BANK')"
+          ></app-ta-input-dropdown>
+        </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="3"
+            [reviewFeedbackData]="reviewFeedback[3]"
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <!-- ACCOUNT NUMBER, ROUTING NUMBER -->
+
+      <div class="d-flex form-input-container">
+        <div class="form-label-group account-number-group">
+          <app-ta-input
+            formControlName="accountNumber"
+            [inputConfig]="{
+              name: 'Account Number',
+              type: 'text',
+              label: 'Account number',
+              isDisabled: !isBankSelected,
+              isRequired: isBankSelected,
+              maxLength: 17,
+              minLength: 4
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="form-label-group routing-number-group">
+          <app-ta-input
+            formControlName="routingNumber"
+            [inputConfig]="{
+              name: 'Routing Number',
+              type: 'text',
+              label: 'Routing number',
+              isDisabled: !isBankSelected,
+              isRequired: isBankSelected,
+              minLength: 9,
+              maxLength: 9
+            }"
+          ></app-ta-input>
+        </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="4"
+            [reviewFeedbackData]="reviewFeedback[4]"
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <!-- QUESTIONS SECTION -->
+
+      <ng-container *ngIf="questions">
+        <div class="questions-section">
+          <div
+            class="d-flex flex-column question-container"
+            *ngFor="
+              let question of questions;
+              let i = index;
+              trackBy: trackByIdentity
+            "
+          >
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="question-title-box">
+                <p class="m-0 question-title noselect ta-font-regular">
+                  {{ question.title }}
+
+                  <span class="required-star noselect">*</span>
+                </p>
+              </div>
+
+              <div class="question-radios-box">
+                <app-ta-input-radiobuttons
+                  [buttons]="question.answerChoices"
+                  (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+                ></app-ta-input-radiobuttons>
+              </div>
+
+              <!-- REVIEW AND FEEDBACK -->
+
+              <div
+                class="review-feedback"
+                *ngIf="selectedMode === 'REVIEW_MODE'"
+              >
+                <app-applicant-review-feedback
+                  [index]="5 + i"
+                  [reviewFeedbackData]="reviewFeedback[5 + i]"
+                  (sendReview)="onSubmitReview($event)"
+                ></app-applicant-review-feedback>
+              </div>
+            </div>
+
+            <span
+              class="required-note ta-font-semi-bold"
+              *ngIf="
+                personalInfoForm.controls[question.formControlNameExplain]
+                  .status !== 'DISABLED' &&
+                !personalInfoForm.controls[question.formControlNameExplain]
+                  ?.valid &&
+                personalInfoForm.controls[question.formControlNameExplain]
+                  ?.touched &&
+                !personalInfoForm.controls[question.formControlNameExplain]
+              "
+              >Required field</span
+            >
+
+            <!-- EXPLAIN -->
+
+            <div
+              class="d-flex explain-container"
+              *ngIf="
+                personalInfoForm.get(question.formControlName)?.value === 'Yes'
+              "
+            >
+              <div class="w-100">
+                <app-ta-input
+                  [formControlName]="question.formControlNameExplain"
+                  [inputConfig]="{
+                    name: 'Explain',
+                    type: 'text',
+                    label: 'Please Explain',
+                    isRequired: true,
+                    textTransform: 'capitalize'
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- PREVIOUS ADDRESSES SECTION -->
+
+      <div class="previous-addresses-section">
+        <h5
+          class="d-flex justify-content-center noselect ta-font-bold previous-address-title"
+        >
+          Previous addresses for the past 3 years?
+        </h5>
+
+        <div
+          class="d-flex flex-column previous-address-container"
+          formArrayName="previousAddresses"
+          *ngFor="
+            let address of previousAddresses?.controls;
+            let i = index;
+            trackBy: trackByIdentity
+          "
+        >
+          <div class="d-flex" [formGroupName]="i">
+            <div class="badge-container">
+              <span class="badge ta-font-bold">{{ i + 1 }}</span>
+            </div>
+
+            <div class="address-container">
+              <app-ta-input-address
+                formControlName="address"
+                [inputConfig]="{
+                  name: 'Address',
+                  type: 'text',
+                  label: 'Address, City, State Zip',
+                  isRequired: true,
+                  placeholderIcon: 'address',
+                  textTransform: 'capitalize'
+                }"
+                (selectedAddress)="
+                  handleInputSelect($event, 'PREVIOUS-ADDRESS', i)
+                "
+              ></app-ta-input-address>
+            </div>
+
+            <div class="unit-container">
+              <app-ta-input
+                formControlName="addressUnit"
+                [inputConfig]="{
+                  name: 'Address Unit',
+                  type: 'text',
+                  label: 'Unit #',
+                  maxLength: 6
+                }"
+              ></app-ta-input>
+            </div>
+
+            <div
+              class="d-flex justify-content-center align-items-center delete-container"
+            >
+              <button
+                type="button"
+                class="d-flex justify-content-center align-items-center btn delete-btn"
+                appTooltip="Delete"
+                tooltipColor="#FFFFFF"
+                tooltipBackground="#FF5D5D"
+                position="bottom-right"
+                (click)="removeNewAddress(i)"
+              >
+                <svg-icon
+                  class="trash-icon"
+                  src="assets/svg/common/ic_trash.svg"
+                  [svgStyle]="{
+                    'width.px': 8,
+                    'height.px': 9
+                  }"
+                ></svg-icon>
+              </button>
+            </div>
+
+            <!-- REVIEW AND FEEDBACK -->
+
+            <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+              <app-applicant-review-feedback
+                [index]="11 + i"
+                [reviewFeedbackData]="reviewFeedback[11 + i]"
+                (sendReview)="onSubmitReview($event)"
+              ></app-applicant-review-feedback>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="d-flex justify-content-center"
+          *ngIf="previousAddresses.controls.length < 5"
+        >
+          <button
+            type="button"
+            class="ta-font-semi-bold add-btn"
+            (click)="addNewAddress()"
+          >
+            Add address
+          </button>
+        </div>
+      </div>
+
+      <!-- NEXT STEP -->
+
+      <app-applicant-next-step
+        [hideBackStep]="true"
+        (stepEvent)="onStepAction($event)"
+        [isReview]="selectedMode === 'REVIEW_MODE'"
+      ></app-applicant-next-step>
+    </form>
+  </div>
+</div>
+
+<!-- CONFIRM ALL REVIEW -->
+
+<app-applicant-confirm-all-review
+  *ngIf="selectedMode === 'REVIEW_MODE'"
+></app-applicant-confirm-all-review>

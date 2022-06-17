@@ -1,0 +1,46 @@
+@import 'src/theme/variables.scss';
+
+.step-container {
+  .step-title {
+    color: $light-blue;
+    font-size: 32px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  .step-subtitle {
+    color: $bw6-2;
+    font-size: 14px;
+    height: 40px;
+    width: 680px;
+    line-height: 22px;
+    margin-bottom: 12px;
+  }
+
+  .group-text {
+    width: 680px;
+
+    p {
+      font-size: 14px;
+      color: $bw6-2;
+      opacity: 0.4;
+      margin-bottom: 12px !important;
+    }
+
+    .group-title {
+      color: $bw6-2;
+      font-size: 14px;
+      height: 18px;
+      margin-bottom: 12px;
+    }
+
+    .text-blue {
+      opacity: 1;
+      color: $light-blue;
+    }
+  }
+
+  .rights-container {
+    margin-bottom: 32px;
+  }
+}
