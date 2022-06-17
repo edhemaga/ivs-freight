@@ -33,7 +33,11 @@
       <div class="day-holder schedule" [class.active]="currentCalendarView == 'schedule'" (click)="changeCalendarView('schedule')">Schedule</div> -->
     </div>
     <div class="calendar-header">
-      <app-ta-custom-card [cardName]="'July, 2022'" [hasPlusHeader]="false">
+      <app-ta-custom-card 
+        [cardName]="'July, 2022'" 
+        [hasPlusHeader]="false"
+        [animationsDisabled]="false"
+      >
         <div class="calendar-body">
           <div class="calendar-years-holder">
             <div class="current-year-holder"></div>
@@ -244,6 +248,7 @@
           [hasPlusHeader]="true"
           [hasCheckbox]="true"
           [controlName]="inputDate"
+          [animationsDisabled]="false"
         >
           <div class="event-info-holder">
             <div class="event-items-info-holder">
@@ -280,6 +285,7 @@
           [hasPlusHeader]="true"
           [hasCheckbox]="true"
           [controlName]="inputDate"
+          [animationsDisabled]="false"
         >
           <div class="event-info-holder">
             <div class="event-items-info-holder">
@@ -316,6 +322,7 @@
           [hasPlusHeader]="true"
           [hasCheckbox]="true"
           [controlName]="inputDate"
+          [animationsDisabled]="false"
         >
           <div class="event-info-holder">
             <div class="event-items-info-holder">
@@ -348,6 +355,7 @@
           [hasPlusHeader]="true"
           [hasCheckbox]="true"
           [controlName]="inputDate"
+          [animationsDisabled]="false"
         >
           <div class="event-info-holder">
             <div class="event-items-info-holder">
