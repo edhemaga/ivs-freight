@@ -17,6 +17,8 @@ export class CalendarComponent implements OnInit {
   @ViewChild('fullcalendar', {static: false}) fullcalendar: FullCalendarComponent;
   public inputDate: FormControl = new FormControl(true);
 
+  tabsCalendar: any[] = []
+
   calendarSchedule: any[] = [
     {
       date: '3 July, Monday',
@@ -119,7 +121,7 @@ export class CalendarComponent implements OnInit {
           description: ''
         },
       ]
-    },
+    }, 
     {
       date: '12 September, Monday',
       eventSchedule: [
@@ -676,7 +678,34 @@ export class CalendarComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    
+    this.tabsCalendar = [
+      {
+        id: 1,
+        name: 'Day',
+        checked: false
+      },
+      {
+        id: 2,
+        name: 'Week',
+        checked: false
+      },
+      {
+        id: 3,
+        name: 'Month',
+        checked: true
+      },
+      {
+        id: 4,
+        name: 'Year',
+        checked: false
+      },
+      {
+        id: 5,
+        name: 'Schedule',
+        checked: false
+      }
+  
+    ]  
   }
 
   ngAfterViewInit(): void {
@@ -830,6 +859,11 @@ export class CalendarComponent implements OnInit {
       console.log(ev);
       t2.open({data: ev})
     }
+  }
+
+  changeTab(ev){
+    console.log(ev)
+    this.currentCalendarView = ev.name.toLowerCase();
   }
 
 }
