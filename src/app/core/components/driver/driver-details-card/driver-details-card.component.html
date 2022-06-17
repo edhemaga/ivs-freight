@@ -18,6 +18,11 @@
     <div class="driver-container">
       <div class="driver-personal">
         <div class="driver-avatar">
+          <app-profile-images
+          [indx]="i"
+          [size]="'large'"
+          [type]="'driver'"
+          ></app-profile-images>
           <img
             class="driver-avatar-svg"
             [src]="transformImage()"

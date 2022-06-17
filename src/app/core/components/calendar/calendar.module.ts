@@ -8,6 +8,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { CalendarMonthComponent } from './calendar-month/calendar-month.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -17,6 +18,7 @@ FullCalendarModule.registerPlugins([
 @NgModule({
   declarations: [
     CalendarComponent,
+    CalendarMonthComponent,
   ],
   imports: [
     CommonModule,

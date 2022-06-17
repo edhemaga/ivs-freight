@@ -650,73 +650,90 @@
             align-items: flex-start;
             flex-wrap: wrap;
 
-            .month-calendar-holder{
-                width: 363px;
-                height: 326px;
-                border-radius: 2px;
-                background-color: #fff;
+            app-calendar-month{
                 display: flex;
                 justify-content: flex-start;
                 align-items: flex-start;
-                flex-direction: column;
-                padding: 12px 0px 6px 0px;
-                box-sizing: border-box;
-                margin-right: 12px;
-                margin-bottom: 12px;
+                flex-wrap: wrap;
 
-                .month{
-                    font-size: 20px;
-                    font-weight: 700;
-                    color: #6C6C6C;
-                    padding-left: 12px;
-                    box-sizing: border-box;
-                    height: 24px;
-                }
-
-                .day-holder{
-                    width: 100%;
+                .month-calendar-holder{
+                    width: 363px;
+                    height: 326px;
+                    border-radius: 2px;
+                    background-color: #fff;
                     display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    flex-wrap: wrap;
-                    padding: 16px 12px;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    flex-direction: column;
+                    padding: 12px 0px 6px 0px;
                     box-sizing: border-box;
-
-                    &.different-padding{
-                        padding: 0px 12px;
-                    }
-
-                    .day{
+                    margin-right: 12px;
+                    margin-bottom: 12px;
+    
+                    .month{
                         font-size: 20px;
                         font-weight: 700;
-                        color: #919191;
-                        width: 32px;
-                        height: 32px;
-                        line-height: 32px;
-                        border-radius: 2px;
+                        color: #6C6C6C;
+                        padding-left: 12px;
+                        box-sizing: border-box;
+                        height: 24px;
+                    }
+    
+                    .day-holder{
+                        width: 100%;
                         display: flex;
-                        justify-content: center;
+                        justify-content: space-between;
                         align-items: center;
-                        cursor: pointer;
-
-                        &.different-weight{
-                            font-weight: 400;
-                            color: #6C6C6C;
-                            margin-bottom: 6px;
-                            box-sizing: border-box;
-                            margin-right: 19px;
+                        flex-wrap: wrap;
+                        padding: 16px 12px;
+                        box-sizing: border-box;
+    
+                        &.different-padding{
+                            padding: 0px 12px;
                         }
+    
+                        .day{
+                            font-size: 20px;
+                            font-weight: 700;
+                            color: #919191;
+                            background-color: transparent;
+                            width: 32px;
+                            height: 32px;
+                            line-height: 32px;
+                            border-radius: 2px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            cursor: pointer;
 
-                        &:nth-child(7n + 0){
-                            margin-right: 0px;
-                        }
+                            &.active{
+                                background-color: #CCCCCC !important;
+                                color: #fff !important;
+                            }    
 
-                        &.event{
-                            background-color: #E5E5E5;
+    
+    
+                            &.different-weight{
+                                font-weight: 400;
+                                color: #6C6C6C;
+                                margin-bottom: 6px;
+                                box-sizing: border-box;
+                                margin-right: 19px;
+
+                            }
+    
+                            &:nth-child(7n + 0){
+                                margin-right: 0px;
+                            }
+    
+                            &.event{
+                                background-color: #E5E5E5;
+                            }
                         }
                     }
-                }
+                }    
             }
+
         }
     }
 
@@ -1538,6 +1555,10 @@
             color: #6C6C6C !important;
         }
     }
+}
+
+.fc .fc-timegrid-body{
+    width: 100% !important;
 }
 
 .fc-theme-standard td, .fc-theme-standard th, .fc-theme-standard .fc-scrollgrid{
