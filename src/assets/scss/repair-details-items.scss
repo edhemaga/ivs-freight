@@ -144,7 +144,9 @@ $transition: all 0.3s ease-in-out;
             font-size: $font-size14;
             font-weight: $font-bold;
             color: $color-gray-dark;
-            height: 18px;
+            line-height: 21px;
+            display: flex;
+            align-items: center;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
@@ -178,7 +180,9 @@ $transition: all 0.3s ease-in-out;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            height: 18px;
+            display: flex;
+            align-items: center;
+            line-height: 22px;
             width: 294px;
             &::-moz-selection {
                 color: $color-gray-dark;
@@ -194,7 +198,10 @@ $transition: all 0.3s ease-in-out;
             font-weight: $font-semibold;
             color: $color-gray-dark;
             text-align: right;
-            height: 18px;
+            line-height: 21px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);

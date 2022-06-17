@@ -98,6 +98,7 @@ import { RepairShopModalComponent } from '../modals/repair-modals/repair-shop-mo
 import { TaChartComponent } from './ta-chart/ta-chart.component';
 import { ChartsModule } from 'ng2-charts';
 import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
+import { ProfileImagesModule } from './profile-images/profile-images.module';
 
 @NgModule({
   declarations: [
@@ -172,6 +173,7 @@ import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/
     NgbModule,
     RouterModule,
     PipesModule,
+    ProfileImagesModule,
     AngularSvgIconModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
@@ -241,6 +243,7 @@ import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/
     NgxSliderModule,
     PdfViewerModule,
     AppTooltipeModule,
+    ProfileImagesModule,
 
     // Components
     TabSwitcherComponent,

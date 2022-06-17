@@ -991,6 +991,7 @@
 
     .chart_top_hold {
       position: relative;
+      height: 319px;
 
       &.white_one {
         background-color: #fff;
@@ -1002,7 +1003,7 @@
       .inside_chart {
         position: absolute;
         left: 50%;
-        bottom: 30px;
+        top: 50%;
 
         transform: translate(-50%, -0%);
         text-align: center;
@@ -1022,8 +1023,7 @@
             font-size: 42px;
 
             .total-sufix {
-              font-size: 22px;
-              margin-top: 3px;
+              font-size: 42px;
             }
           }
         }

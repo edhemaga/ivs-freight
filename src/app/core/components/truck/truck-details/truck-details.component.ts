@@ -16,10 +16,12 @@ import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-traile
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 @Component({
   selector: 'app-truck-details',
   templateUrl: './truck-details.component.html',
   styleUrls: ['./truck-details.component.scss'],
+  providers:[DetailsPageService]
 })
 export class TruckDetailsComponent implements OnInit, OnDestroy {
   // @Input() data:any=null;
@@ -37,12 +39,22 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     private detailsPageDriverSer: DetailsPageService,
     private modalService: ModalService,
     private router: Router,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private tableService: TruckassistTableService
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
-    this.data = this.activated_route.snapshot.data.truck;
+    this.tableService.currentActionAnimation
+    .pipe(untilDestroyed(this))
+    .subscribe((res: any) => {
+      if (res.animation) {
+        this.truckConf(res.data);
+
+        this.cdRef.detectChanges();
+      }
+    });
+    // this.data = this.activated_route.snapshot.data.truck;
     this.detailsPageDriverSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {

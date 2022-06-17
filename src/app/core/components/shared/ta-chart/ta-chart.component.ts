@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Chart, ChartDataSets, ChartOptions, scaleService } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
+import { Color, Label, MultiDataSet } from 'ng2-charts';
 
 @Component({
   selector: 'app-ta-chart',
@@ -12,25 +12,18 @@ export class TaChartComponent implements OnInit {
   @Input() axesProperties: any;
   lineChartData: ChartDataSets[] = [];
   
-  public lineChartLabels: Label[] = [
-    '',
-    'NOV',
-    '',
-    '2021',
-    '',
-    'MAR',
-    '',
-    'MAY',
-    '',
-    'JUL',
-    '',
-    'SEP'
-  ];
+  public lineChartLabels: Label[] = [];
   public lineChartOptions: ChartOptions = {};
   lineChartColors: Color[] = [];
   public lineChartLegend: boolean = false;
   public lineChartType: string  = 'bar';
   public lineChartPlugins = [];
+  chartInnitProperties: any = [];
+  legendProperties: any = [];
+  doughnutChartLegend: boolean = false;
+  chartWidth: string = '';
+  chartHeight: string = '';
+  dottedBackground: boolean = false;
 
   constructor() { }
 
@@ -43,10 +36,22 @@ export class TaChartComponent implements OnInit {
     this.lineChartOptions = {
       responsive: false,
       cutoutPercentage: 80,
+      rotation: 1 * Math.PI,
+      circumference: 1 * Math.PI,
+      tooltips: {
+        enabled: this.chartConfig['tooltip']
+      },
+      plugins: {
+        datalabels: {
+          formatter: () => {
+            return null;
+          },
+        },
+      },
       elements: {
         point: {
-          radius: 4,
-          borderWidth: 3,
+          radius: 3,
+          borderWidth: 2,
           backgroundColor: '#fff'
         },
         line: {
@@ -104,6 +109,7 @@ export class TaChartComponent implements OnInit {
               min: this.axesProperties['verticalRightAxes'] && this.axesProperties['verticalRightAxes']['minValue'] ? this.axesProperties['verticalRightAxes']['minValue'] : 0,
               fontColor: '#AAAAAA',
               fontSize: 11,
+              padding: -4,
               callback: function(value: any) {
                 var ranges = [
                   { divider: 1e6, suffix: 'M' },
@@ -142,15 +148,53 @@ export class TaChartComponent implements OnInit {
 
   setChartData() {
     console.log(this.chartConfig, 'chartConfigchartConfigchartConfigchartConfig');
+    var allData;
+    var allBackgrounds = [];
     this.chartConfig['dataProperties'].map((item, indx) => {
       var currentChartConfig = item['defaultConfig'];
       var chartDataArray = currentChartConfig;
       var colorProperties = item['colorProperties'];
+      
+      if ( item['defaultConfig']['type'] == 'doughnut' ) {
+        allData = item['defaultConfig']['data'];
+        allBackgrounds = ['#24C1A1B3', '#F78585B3'];
+        item['colorProperties']['backgroundColor'].map((item1, indx1) => {
+          //allBackgrounds.push(item1+'B3');
+        });
+      }
 
+      
+     // chartDataArray.map((item2, indx2) => {
+        //
+    //  });
       this.lineChartData.push(chartDataArray);
       this.lineChartColors.push(colorProperties);
-      this.lineChartLegend = this.chartConfig['showLegend'];
-      this.lineChartType = this.chartConfig['defaultType']
+      this.lineChartLegend = this.chartConfig['defaultType'] != 'doughnut' ?  this.chartConfig['showLegend'] : false;
+      this.doughnutChartLegend = this.chartConfig['showLegend'];
+      this.lineChartType = this.chartConfig['defaultType'];
+      this.lineChartLabels = this.chartConfig['dataLabels'];
+      this.legendProperties = this.chartConfig['legendAttributes'];
+      
+      this.chartWidth = this.chartConfig['chartWidth'];
+      this.chartHeight = this.chartConfig['chartHeight'];
+      this.dottedBackground = this.chartConfig['dottedBackground'];
     });
+
+    if ( this.chartConfig['defaultType'] == 'doughnut' ){
+      this.setChartInner(allData, allBackgrounds);
+    }
+  }
+
+  setChartInner(allData, allBackgrounds){
+    this.chartConfig['dataLabels'].map((item, indx) => {
+      console.log(allData[indx], allBackgrounds[indx]);
+      var doughnutParameters = {
+        name: item,
+        value: allData[indx],
+        color: allBackgrounds[indx]
+      };
+      this.chartInnitProperties.push(doughnutParameters);
+    });
+    console.log(this.chartInnitProperties, 'this.chartInnitProperties');
   }
 }

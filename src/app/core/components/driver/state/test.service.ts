@@ -46,6 +46,12 @@ export class TestTService {
                 id: driver.id,
               }); */
 
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: driver,
+                id: driver.id,
+              });
+
               subDriver.unsubscribe();
             },
           });

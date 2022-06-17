@@ -9,7 +9,7 @@
       src="assets/svg/common/ic_arrow_down_updated.svg"
     ></svg-icon>
   </div>
-  <div class="note-body" #noteBody [@showHideNote]="_isVisibleNote" style="max-height: 0px">
+  <div class="note-body" #noteBody [@showHideNote]="_isVisibleNote">
     <textarea
       #note
       [readOnly]="isReadOnly"

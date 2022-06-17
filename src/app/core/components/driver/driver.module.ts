@@ -1,3 +1,4 @@
+import { ProfileImagesModule } from './../shared/profile-images/profile-images.module';
 import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,7 +17,7 @@ import { DriverDetailsModule } from './driver-details/driver-details.module';
     DriverDetailsModule,
     TruckassistTableModule,
     AngularSvgIconModule,
-    SharedModule, 
+    SharedModule
   ],
 
 })
