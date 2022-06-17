@@ -83,7 +83,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
     this.registerUserForm
       .get('confirmPassword')
       .valueChanges.pipe(untilDestroyed(this))
-      .subscribe(value => {
+      .subscribe((value) => {
         if (
           value?.toLowerCase() ===
           this.registerUserForm.get('password').value?.toLowerCase()
@@ -119,10 +119,10 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
           if (res.status === 200 || res.status === 204) {
             this.notification.success('Registration is successful', 'Success');
 
-            this.router.navigate(['/register-user/account-activated']);
+            this.router.navigate(['/auth/register-user/account-activated']);
           }
         },
-        error: err => {
+        error: (err) => {
           this.notification.error(err, 'Error');
         },
       });

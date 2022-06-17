@@ -20,7 +20,7 @@ export class HelperSignupUserComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.signUpUser = {
         firstName: params['FirstName'],
         lastName: params['LastName'],
@@ -34,6 +34,6 @@ export class HelperSignupUserComponent implements OnInit {
 
     this.authStoreService.getSignUpUserInfo(this.signUpUser);
 
-    this.router.navigate(['/register-user']);
+    this.router.navigate(['/auth/register-user']);
   }
 }
