@@ -1,60 +1,110 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { TrailerResponse } from './../../../../../../appcoretruckassist/model/trailerResponse';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { TrailerTService } from '../state/trailer.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 @Component({
   selector: 'app-trailer-details',
   templateUrl: './trailer-details.component.html',
-  styleUrls: ['./trailer-details.component.scss']
+  styleUrls: ['./trailer-details.component.scss'],
+  providers:[DetailsPageService]
 })
-export class TrailerDetailsComponent implements OnInit {
+export class TrailerDetailsComponent implements OnInit,OnDestroy {
   public trailerDetailsConfig: any[] = [];
-  public data:any;
-  registrationLength:number;
-  inspectionLength:number;
-  titleLength:number;
-  constructor(private activated_route: ActivatedRoute, private modalService: ModalService) { }
+  
+  constructor(
+    private activated_route: ActivatedRoute,
+    private modalService: ModalService,
+    private trailerService:TrailerTService,
+    private cdRef: ChangeDetectorRef,
+    private router:Router,
+    private notificationService: NotificationService,
+    private detailsPageDriverSer: DetailsPageService,
+    private tableService: TruckassistTableService
+  ) {}
 
   ngOnInit(): void {
-    this.data=this.activated_route.snapshot.data;
-    this.registrationLength=this.data.trailer.registrations.length;
-    this.inspectionLength=this.data.trailer.inspections.length;
-    this.titleLength=this.data.trailer.titles.length;
+    this.tableService.currentActionAnimation
+    .pipe(untilDestroyed(this))
+    .subscribe((res: any) => {
+      if (res.animation) {
+        this.trailerConf(res.data);
+
+        this.cdRef.detectChanges();
+      }
+    });
+    this.detailsPageDriverSer.pageDetailChangeId$
+      .pipe(untilDestroyed(this))
+      .subscribe((id) => {
+        this.trailerService
+          .getTrailerById(id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: TrailerResponse) => {
+              this.trailerConf(res);
+              this.router.navigate([`/trailer/${res.id}/details`]);
+              this.notificationService.success(
+                'Trailer successfully changed',
+                'Success:'
+              );
+              this.cdRef.detectChanges();
+            },
+            error: () => {
+              this.notificationService.error("Trailer can't be loaded", 'Error:');
+            },
+          });
+      });
+    this.trailerConf(this.activated_route.snapshot.data.trailer);
+  }
+
+
+
+  trailerConf(data: TrailerResponse) {
     this.trailerDetailsConfig = [
       {
         id: 0,
         name: 'Trailer Details',
         template: 'general',
+        data: data,
       },
       {
         id: 1,
         name: 'Registration',
         template: 'registration',
-        data:this.registrationLength
+        data: data,
+        length: data.registrations.length,
       },
       {
         id: 2,
         name: 'FHWA Inspection',
         template: 'fhwa-insepction',
-        data:this.inspectionLength   
+        data: data,
+        length: data.inspections.length,
       },
       {
         id: 3,
         name: 'Title',
         template: 'title',
-        data:this.titleLength
-     
+        data: data,
+        length: data.titles.length,
       },
       {
         id: 4,
         name: 'Lease / Purchase',
         template: 'lease-purchase',
-        data:0
+        length:1,
+        data: data,
       },
     ];
   }
+
+
   public onModalAction(action: string): void {
     const truck_id = this.activated_route.snapshot.paramMap.get('id');
     switch (action.toLowerCase()) {
@@ -83,4 +133,5 @@ export class TrailerDetailsComponent implements OnInit {
   public identity(index: number, item: any): number {
     return item.id;
   }
+  ngOnDestroy():void{}
 }

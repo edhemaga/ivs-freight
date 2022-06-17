@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import moment from 'moment';
 import { card_component_animation } from '../animations/card-component.animations';
 
@@ -8,7 +16,7 @@ import { card_component_animation } from '../animations/card-component.animation
   styleUrls: ['./ta-re-card.component.scss'],
   animations: [card_component_animation('showHideCardBody')],
 })
-export class TaReCardComponent implements OnInit {
+export class TaReCardComponent implements OnInit, OnChanges {
   @Input() public cardNameCommon: string;
   @Input() public cardDocumentCounter: number;
   @Input() public isCardOpen: boolean = true;
@@ -29,33 +37,38 @@ export class TaReCardComponent implements OnInit {
   @Input() public stateTooltipName: string = '';
   @Input() public cardSecondName: string = '';
   @Output() public dropActions = new EventEmitter<any>();
-  @Input() public weeklyWidth:string='';
-  @Input() isDeactivated:any;
+  @Input() public weeklyWidth: string = '';
+  @Input() isDeactivated: any;
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
   public toggleDropDown: boolean;
   constructor() {}
-
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    console.log('changes from common');
+    
+    this.expDateClose;
+  }
   ngOnInit(): void {
     this.CloseCard();
   }
 
-  public CloseCard() {   
-     let currentDate = moment().format('MM/DD/YYYY');
+  public CloseCard() {
+    let currentDate = moment().format('MM/DD/YYYY');
     if (moment(this.expDateClose).isBefore(currentDate) || this.isDeactivated) {
-      this.isCardOpen = false; 
+      this.isCardOpen = false;
     }
   }
 
-  public toggleCard(event:any){
+  public toggleCard(event: any) {
     event.preventDefault();
     event.stopPropagation();
     let currentDate = moment().format('MM/DD/YYYY');
     if (moment(this.expDateClose).isBefore(currentDate) || this.isDeactivated) {
       this.isCardOpen = !this.isCardOpen;
+    }
   }
-  }
-  public onAction(val: string,res:any) {    
+  public onAction(val: string, res: any) {
     switch (val) {
       case 'resize':
         this.resPage = !this.resPage;
@@ -68,13 +81,13 @@ export class TaReCardComponent implements OnInit {
     this.dropActions.emit(action);
   }
   /* To copy any Text */
-  public copyText(val: any,event:any) {
+  public copyText(val: any, event: any) {
     event.preventDefault();
     event.stopPropagation();
     this.copiedCommon = true;
-   const timeoutCommon= setInterval(() => {
+    const timeoutCommon = setInterval(() => {
       this.copiedCommon = false;
-      clearInterval(timeoutCommon)
+      clearInterval(timeoutCommon);
     }, 300);
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';

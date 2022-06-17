@@ -22,24 +22,17 @@ export class DriverItemResolver implements Resolve<DriverResponse[]> {
   ): Observable<DriverResponse[]> | Observable<any> {
     const driver_id = route.paramMap.get('id');
     let id = parseInt(driver_id)
+
     return this.driverService.getDriverById(id).pipe(
       catchError((error) => {
         return of('No drivers data for...' + driver_id);
       }),
-      // tap((driverData: DriverResponse) => {      
-      //  return this.driverItemStore.update((state) =>{
-
-      //    console.log('from resolver')
-      //    console.log(state)
-      //   return {
-      //     ...state,
-      //      ids:driverData
-      //   }
-      //  } 
+      tap((driverResponse: DriverResponse) => {
+        console.log(driverResponse);
+        this.driverItemStore.add(driverResponse);
+      })
        
-      // );
-      // })
-      take(1)
+      // take(1)
     );
   }
 }

@@ -1,10 +1,13 @@
-<div *ngIf="data" class="cards-item-wrapper-1">
+<div *ngIf="trailer" class="cards-item-wrapper-1">
   <app-ta-details-header-card
     [tooltipNext]="'Next Trailer'"
     [tooltipPrevious]="'Previous Trailer'"
-    [searchName]="'Search Trailer'"
-    [cardDetailsName]="data.trailerNumber"
+    [cardDetailsName]="trailer.trailerNumber"
     [cardDetailsDate]="'08/03/20'"
+    [options]="trailerDropDowns"
+    [searchInputName]="'Search Trailer'"
+    (selectValue)="onSelectedTrailer($event)" 
+    (changeEvent)="onChangeTrailer($event)"
   >
     <div class="truck-details-wrapper">
       <div class="details-header-avatar">
@@ -12,7 +15,7 @@
           <svg-icon
             class="truck"
             src="{{
-              'assets/svg/common/trailers/' + data.trailerType.logoName
+              'assets/svg/common/trailers/' + trailer.trailerType.logoName
             }}"
           >
           </svg-icon>
@@ -22,21 +25,21 @@
           <div class="svg-wrapper">
             <svg-icon
               class="details-header-model "
-              src="{{'assets/svg/common/trailermake/'+data.trailerMake.logoName}}"
+              src="{{'assets/svg/common/trailermake/'+trailer.trailerMake.logoName}}"
             >
             </svg-icon>
           </div>
-          <p>{{ data.model }}</p>
+          <p>{{ trailer.model }}</p>
         </div>
       </div>
       <div class="details-header-data">
         <div class="details-header-data-item">
           <svg-icon src="assets/svg/common/vin.svg"></svg-icon>
-          <p class="vin-text">{{ data.vin }}</p>
+          <p class="vin-text">{{ trailer.vin }}</p>
         </div>
         <div class="details-header-data-item second">
           <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
-          <p class="vin-text date">{{ data.year }}</p>
+          <p class="vin-text date">{{ trailer.year }}</p>
           <div class="light-green">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -54,19 +57,19 @@
                 <path
                   d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
                   transform="translate(712.181 241.886)"
-                  [attr.fill]="data?.color.code"
+                  [attr.fill]="trailer?.color.code"
                 />
               </g>
             </svg>
           </div>
-          <p class="vin-text">{{ data?.color.name }}</p>
+          <p class="vin-text">{{ trailer?.color.name }}</p>
           <div class="light-green">
             <svg-icon
               class="resize"
               src="assets/svg/common/ic_resize.svg"
             ></svg-icon>
           </div>
-          <p class="vin-text">{{ data.trailerLength.name }}</p>
+          <p class="vin-text">{{ trailer.trailerLength.name }}</p>
         </div>
       </div>
     </div>
@@ -134,40 +137,40 @@
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
       >
-        <div *ngIf="data.suspension" class="common-template">
+        <div *ngIf="trailer.suspension" class="common-template">
           <div class="common-template-item">
             <div class="common-template-item-name">Empty Weight</div>
             <div class="common-template-item-value">
-              {{ data.emptyWeight }}
+              {{ trailer.emptyWeight }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Mileage</div>
-            <div class="common-template-item-value">{{ data.mileage }} mi</div>
+            <div class="common-template-item-value">{{ trailer.mileage }} mi</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Axles</div>
             <div class="common-template-item-value">
-              {{ data.axles }}
+              {{ trailer.axles }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Tire Size</div>
             <div class="common-template-item-value">
-              {{ data.tireSize.name }}
+              {{ trailer.tireSize.name }}
             </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Suspension</div>
             <div class="common-template-item-value">
-              {{ data.suspension.name }}
+              {{ trailer.suspension.name }}
             </div>
           </div>
 
           <div class="common-template-item">
             <div class="common-template-item-name">Insurance Policy</div>
             <div class="common-template-item-value">
-              {{ data.insurancePolicy }}
+              {{ trailer.insurancePolicy }}
             </div>
           </div>
         </div>
@@ -182,25 +185,25 @@
       >
         <div class="owner-container">
           <div class="owner-items-name">
-            <p class="firm-name">{{ data.owner.name }}</p>
+            <p class="firm-name">{{ trailer.owner.name }}</p>
           </div>
           <div  [@showHideCardBody]="toggleOwner ? 'true' : 'false'">
             <div class="owner-items">
               <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
               <p class="information-value">
-                {{   data.owner.phone | formatPhoneP }}
+                {{   trailer.owner.phone | formatPhoneP }}
               </p>
             </div>
             <div class="owner-items">
               <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
               <p class="information-value">
-                {{ data.owner.email }}
+                {{ trailer.owner.email }}
               </p>
             </div>
             <div class="owner-items">
               <svg-icon src="assets/svg/common/ic_address.svg"></svg-icon>
               <p class="information-value">
-                {{ data.owner.address.address }}
+                {{ trailer.owner.address.address }}
               </p>
             </div>
           </div>
@@ -254,7 +257,7 @@
             <div class="status-items">
               <div
                 class="item-wrapper"
-                *ngFor="let owHist of data.ownerHistories; trackBy: identity"
+                *ngFor="let owHist of trailer.ownerHistories; trackBy: identity"
               >
                 <p class="employment">{{ owHist.name }}</p>
 
@@ -288,13 +291,13 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.registrations.length"
+          [hasCounter]="trailer.registrations.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
           <div
             *ngFor="
-              let reg of data.registrations;
+              let reg of trailer.registrations;
               let i = index;
               trackBy: identity
             "
@@ -366,13 +369,13 @@
           class="item-cards"
           [bodyTemplate]="'card'"
           [cardDocumentCounter]="1"
-          [hasCounter]="data.inspections.length"
+          [hasCounter]="trailer.inspections.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
           <div
             *ngFor="
-              let fhwa of data.inspections;
+              let fhwa of trailer.inspections;
               let i = index;
               trackBy: identity
             "
@@ -428,12 +431,12 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="data.titles.length"
+          [hasCounter]="trailer.titles.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
           <div
-            *ngFor="let title of data.titles; let i = index; trackBy: identity"
+            *ngFor="let title of trailer.titles; let i = index; trackBy: identity"
           >
             <app-ta-re-card
               [cardDocumentCounter]="1"
