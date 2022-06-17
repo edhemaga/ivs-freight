@@ -1,0 +1,239 @@
+<div class="d-flex flex-column align-items-center step-container">
+  <h1 class="step-title text-center noselect ta-font-bold">
+    Drug & alcohol statement
+  </h1>
+
+  <!-- INFO -->
+
+  <div class="d-flex justify-content-center align-items-center info-container">
+    <p class="m-0 text-center ta-font-regular">
+      Section 40.25(j) of the Federal Motor Carrier Safety Regulations, requires
+      each motor carrier to inquire to prospective drivers and prospective
+      drivers are required to respond to the information in the question below.
+    </p>
+  </div>
+
+  <!-- FORM SECTION -->
+
+  <div class="d-flex form-section">
+    <form [formGroup]="drugAlcoholStatementForm">
+      <!-- QUESTION -->
+
+      <div class="d-flex flex-column align-items-center question-container">
+        <p class="m-0 text-center ta-font-regular">
+          {{ question.title }} <span>*</span>
+        </p>
+
+        <div class="radios-box">
+          <app-ta-input-radiobuttons
+            [buttons]="question.answerChoices"
+            (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+          ></app-ta-input-radiobuttons>
+        </div>
+      </div>
+
+      <!-- MOTOR CARRIER, PHONE -->
+
+      <div
+        class="d-flex flex-column align-items-center"
+        *ngIf="drugAlcoholStatementForm.get('drugTest').value"
+      >
+        <div class="d-flex">
+          <div class="form-label-group motor-carrier-group">
+            <app-ta-input
+              formControlName="motorCarrier"
+              [inputConfig]="{
+                name: 'Motor Carrier',
+                type: 'text',
+                label: 'Motor Carrier',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="form-label-group phone-group">
+            <app-ta-input
+              formControlName="phone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                isRequired: true,
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+          </div>
+
+          <!-- REVIEW AND FEEDBACK -->
+
+          <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+            <app-applicant-review-feedback
+              [index]="0"
+              [reviewFeedbackData]=""
+              (sendReview)="onSubmitReview($event)"
+            ></app-applicant-review-feedback>
+          </div>
+        </div>
+
+        <!-- ADDRESS -->
+
+        <div class="d-flex">
+          <div class="form-label-group address-group">
+            <app-ta-input-address
+              formControlName="address"
+              [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Address, City, State Zip',
+                isRequired: true,
+                placeholderIcon: 'address',
+                textTransform: 'capitalize'
+              }"
+              (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+            ></app-ta-input-address>
+          </div>
+          <div class="form-label-group unit-group">
+            <app-ta-input
+              formControlName="addressUnit"
+              [inputConfig]="{
+                name: 'Address Unit',
+                type: 'text',
+                label: 'Unit #',
+                maxLength: 6
+              }"
+            ></app-ta-input>
+          </div>
+
+          <!-- REVIEW AND FEEDBACK -->
+
+          <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+            <app-applicant-review-feedback
+              [index]="1"
+              [reviewFeedbackData]=""
+              (sendReview)="onSubmitReview($event)"
+            ></app-applicant-review-feedback>
+          </div>
+        </div>
+
+        <!-- INFO -->
+
+        <div
+          class="d-flex justify-content-center align-items-center sap-info-container"
+        >
+          <p class="m-0 ta-font-regular">
+            In addition, if the answer to the above question is YES, please list
+            the name and contact information for the Substance Abuse
+            Professional (SAP) who completes you evaluation:
+          </p>
+        </div>
+
+        <!-- SAP NAME, PHONE -->
+
+        <div class="d-flex">
+          <div class="form-label-group sap-name-group">
+            <app-ta-input
+              formControlName="sapName"
+              [inputConfig]="{
+                name: 'Motor Carrier',
+                type: 'text',
+                label: 'Name of SAP',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="form-label-group phone-group">
+            <app-ta-input
+              formControlName="sapPhone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                isRequired: true,
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+          </div>
+
+          <!-- REVIEW AND FEEDBACK -->
+
+          <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+            <app-applicant-review-feedback
+              [index]="2"
+              [reviewFeedbackData]=""
+              (sendReview)="onSubmitReview($event)"
+            ></app-applicant-review-feedback>
+          </div>
+        </div>
+
+        <!-- SAP ADDRESS -->
+
+        <div class="d-flex">
+          <div class="form-label-group sap-address-group">
+            <app-ta-input-address
+              formControlName="sapAddress"
+              [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Address, City, State Zip',
+                isRequired: true,
+                placeholderIcon: 'address',
+                textTransform: 'capitalize'
+              }"
+              (selectedAddress)="handleInputSelect($event, 'ADDRESS', 'SAP')"
+            ></app-ta-input-address>
+          </div>
+          <div class="form-label-group sap-unit-group">
+            <app-ta-input
+              formControlName="sapAddressUnit"
+              [inputConfig]="{
+                name: 'Address Unit',
+                type: 'text',
+                label: 'Unit #',
+                maxLength: 6
+              }"
+            ></app-ta-input>
+          </div>
+
+          <!-- REVIEW AND FEEDBACK -->
+
+          <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+            <app-applicant-review-feedback
+              [index]="3"
+              [reviewFeedbackData]=""
+              (sendReview)="onSubmitReview($event)"
+            ></app-applicant-review-feedback>
+          </div>
+        </div>
+
+        <!-- AGREEMENT -->
+
+        <div class="d-flex justify-content-center agreement-container">
+          <app-ta-checkbox
+            formControlName="isAgreement"
+            [name]="'isAgreement'"
+            [label]="
+              'I certify that the information provided on this document is true and correct.'
+            "
+          >
+          </app-ta-checkbox>
+        </div>
+
+        <!-- NEXT, BACK STEP -->
+
+        <app-applicant-next-step
+          (stepEvent)="onStepAction($event)"
+          [isReview]="selectedMode == 'REVIEW_MODE'"
+        ></app-applicant-next-step>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- CONFIRM ALL REVIEW -->
+
+<app-applicant-confirm-all-review
+  *ngIf="selectedMode === 'REVIEW_MODE'"
+></app-applicant-confirm-all-review>

@@ -1,0 +1,303 @@
+@import 'src/theme/variables.scss';
+
+.step-container {
+  .step-title {
+    color: $light-blue;
+    font-size: 32px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  .step-subtitle {
+    height: 18px;
+    color: $bw6-2;
+    font-size: 14px;
+    font-style: italic;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .form-section {
+    .past-monts-violations-container {
+      margin-bottom: 12px;
+    }
+
+    .not-been-convicted-container {
+      margin-bottom: 12px;
+    }
+
+    .license-view-container {
+      .title-container {
+        margin-bottom: 2px;
+
+        .license-title-box,
+        .state-title-box,
+        .class-title-box,
+        .date-title-box {
+          margin-right: 12px;
+
+          &.license-title-box {
+            width: 148px;
+          }
+
+          &.state-title-box {
+            width: 83px;
+          }
+
+          &.class-title-box {
+            width: 77px;
+          }
+
+          &.date-title-box {
+            width: 113px;
+            margin-right: 0;
+          }
+
+          p {
+            color: $bw6-2;
+            font-size: 10px;
+          }
+        }
+      }
+
+      .license-info-container {
+        margin-bottom: 12px;
+
+        .license-box,
+        .state-box,
+        .class-box,
+        .date-box {
+          background-color: $bw5;
+          color: $white;
+          border-radius: 3px;
+          height: 26px;
+          padding: 0;
+          margin-right: 12px;
+
+          &.license-box {
+            width: 148px;
+          }
+
+          &.state-box {
+            width: 83px;
+          }
+
+          &.class-box {
+            width: 77px;
+          }
+
+          &.date-box {
+            width: 113px;
+            margin-right: 0;
+          }
+
+          p {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    .only-license-container {
+      margin-bottom: 12px;
+    }
+
+    .violations-view-container {
+      margin-bottom: 18px;
+
+      .title-container {
+        margin-bottom: 6px;
+
+        .date-title-box,
+        .vehicle-title-box,
+        .location-title-box,
+        .description-title-box {
+          margin-right: 12px;
+          padding-left: 6px;
+
+          &.date-title-box {
+            width: 100px;
+            padding-left: 37px;
+          }
+
+          &.vehicle-title-box {
+            width: 105px;
+          }
+
+          &.location-title-box {
+            width: 165px;
+            padding-left: 37px;
+          }
+
+          &.description-title-box {
+            width: 210px;
+            margin-right: 0;
+          }
+
+          p {
+            color: $bw6-2;
+            font-size: 12px;
+          }
+        }
+      }
+
+      .violation {
+        &:hover .edit-delete-box {
+          visibility: visible;
+        }
+      }
+
+      .violation-info-container {
+        margin-bottom: 6px;
+        height: 26px;
+        background-color: $bw1;
+        border-radius: 2px;
+        padding: 4px 0;
+
+        .date-box,
+        .vehicle-box,
+        .location-box,
+        .description-box {
+          margin-right: 12px;
+          padding-left: 6px;
+
+          &.date-box {
+            width: 100px;
+          }
+
+          &.vehicle-box {
+            width: 105px;
+          }
+
+          &.location-box {
+            width: 165px;
+          }
+
+          &.description-box {
+            width: 210px;
+            margin-right: 0;
+          }
+
+          .icon-box {
+            width: 18px;
+            height: 18px;
+
+            svg {
+              path {
+                fill: $ta-light-blue;
+              }
+            }
+          }
+
+          .pipe-border {
+            margin-left: 6px;
+            margin-right: 6px;
+            height: 14px;
+            width: 1px;
+            background-color: $ta-light-grey;
+          }
+
+          p {
+            font-size: 14px;
+            color: $bw6-2;
+          }
+        }
+      }
+
+      .edit-delete-box {
+        visibility: hidden;
+        height: 26px;
+        width: 38px;
+        margin-left: 6px;
+        background-color: $white;
+
+        .edit-btn,
+        .delete-btn {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          border: none;
+          outline: none;
+          opacity: 0.7;
+
+          &:hover {
+            opacity: 1;
+          }
+
+          &.edit-btn {
+            background-color: $bw6-2;
+            margin-right: 6px;
+
+            .edit-icon {
+              svg {
+                path {
+                  fill: $white;
+                }
+              }
+            }
+          }
+
+          &.delete-btn {
+            background-color: $progress-danger;
+
+            .delete-icon {
+              svg {
+                path {
+                  fill: $white;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .form-label-group {
+      margin-bottom: 12px;
+      margin-right: 12px;
+
+      &:last-child {
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+    }
+
+    .date-group {
+      width: 97px;
+    }
+
+    .truck-type-group {
+      width: 171px;
+    }
+
+    .location-group {
+      width: 193px;
+    }
+
+    .description-group {
+      width: 226px;
+    }
+
+    .add-another-violation-container {
+      margin-bottom: 12px;
+
+      .add-violation-btn {
+        border: 0;
+        outline: 0;
+        font-size: 14px;
+        height: 18px;
+        color: $light-blue;
+        background-color: transparent;
+        opacity: 0.7;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+
+    .certify-container {
+      margin-bottom: 32px;
+    }
+  }
+}

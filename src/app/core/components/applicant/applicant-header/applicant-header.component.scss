@@ -1,0 +1,151 @@
+@import 'src/theme/variables.scss';
+
+.top-header {
+  height: 30px;
+  background-color: $bw6-2;
+
+  &-title {
+    color: $white;
+    font-size: 14px;
+    line-height: 18px;
+  }
+}
+
+.mid-header {
+  background-color: $bw1;
+  height: 95px;
+
+  .company-container {
+    display: flex;
+    align-items: center;
+
+    .company-name {
+      text-transform: uppercase;
+      height: 27px;
+      margin-right: 13px;
+
+      span {
+        font-size: 22px;
+        line-height: 22px;
+        color: $bw6-2;
+      }
+    }
+
+    .company-usdot,
+    .company-phone {
+      height: 22px;
+
+      span {
+        font-size: 18px;
+        line-height: 22px;
+        color: $bw6-2;
+      }
+
+      &.company-usdot {
+        margin-right: 22px;
+      }
+
+      &.company-phone {
+        .phone-icon {
+          margin-right: 8px;
+
+          svg {
+            path {
+              fill: $bw6-2;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .company-address-container {
+    margin-top: 6px;
+
+    .company-street,
+    .company-city,
+    .company-postalcode,
+    .company-country {
+      height: 22px;
+      margin-right: 6px;
+
+      span {
+        font-size: 18px;
+        line-height: 22px;
+        color: $bw6-2;
+      }
+
+      &.company-street {
+        .location-icon {
+          margin-right: 7.9px;
+
+          svg {
+            path {
+              fill: $bw6-2;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.nav-header {
+  padding-top: 18px;
+  margin-bottom: 18px !important;
+  margin: 0 auto;
+
+  nav {
+    ul {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      margin-bottom: 0;
+
+      li {
+        margin-right: 14px;
+        border-radius: 2px;
+        height: 28px;
+        padding: 5px 8px;
+
+        .nav-icon {
+          margin-right: 12px;
+
+          svg {
+            path {
+              fill: $ta-light-grey-2;
+            }
+          }
+        }
+
+        a {
+          text-decoration: none;
+          border-radius: 2px;
+          font-size: 14px;
+          color: $bw6-2;
+
+          &.nav-active {
+            color: $light-blue;
+            opacity: 0.7;
+          }
+        }
+
+        &:hover {
+          background-color: $ta-light-grey-4;
+        }
+
+        &:hover .nav-icon {
+          svg {
+            path {
+              fill: $bw5;
+            }
+          }
+        }
+
+        &:hover a {
+          color: $ta-light-grey-3;
+        }
+      }
+    }
+  }
+}

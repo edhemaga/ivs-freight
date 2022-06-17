@@ -1,0 +1,273 @@
+@import 'src/theme/variables.scss';
+
+.step-container {
+  .step-title {
+    margin: 22px auto 0 auto;
+    color: $ta-blue;
+    font-size: 32px;
+    height: 39px;
+  }
+
+  .top-section {
+    margin: 12px auto 0 auto;
+
+    p {
+      width: 820px;
+      color: $bw6-2;
+      font-size: 14px;
+      margin: 0;
+      line-height: 22px;
+
+      &:nth-child(2) {
+        margin-top: 19px;
+      }
+    }
+  }
+
+  .mid-section {
+    margin-bottom: 12px;
+  }
+
+  .bottom-section {
+    p {
+      margin: 0;
+      margin-top: 12px;
+      font-size: 14px;
+      color: $bw6-2;
+      line-height: 18px;
+
+      &:nth-child(1) {
+        margin-top: 0;
+        color: $ta-blue-2;
+      }
+    }
+  }
+
+  .form-section {
+    /*  margin: 22px auto 0 auto; */
+    margin-top: 22px;
+    /* width: 478px; */
+    /*  width: 456px; */
+
+    .form-input-container {
+      margin-bottom: 22px;
+      width: 456px;
+      /*   margin-right: 22px; */
+      margin-left: 22px;
+      position: relative;
+
+      &:nth-child(5) {
+        margin-bottom: 12px;
+      }
+
+      .review-feedback {
+        height: 26px;
+        position: absolute;
+        right: -6px;
+        top: 0;
+        /*  width: 54px; */
+      }
+
+      .form-label-group {
+        margin-bottom: 0;
+      }
+
+      .first-name-group {
+        width: 167px;
+        margin-right: 12px;
+      }
+
+      .last-name-group {
+        width: 167px;
+        margin-right: 12px;
+      }
+
+      .date-group {
+        width: 98px;
+      }
+
+      .phone-group {
+        width: 169px;
+        margin-right: 12px;
+      }
+
+      .email-group {
+        width: 275px;
+      }
+
+      .address-group {
+        width: 380px;
+        margin-right: 12px;
+      }
+
+      .address-unit-group {
+        width: 64px;
+      }
+
+      .ssn-group {
+        width: 127px;
+        margin-right: 12px;
+      }
+
+      .bank-group {
+        width: 316px;
+      }
+
+      .account-number-group {
+        width: 280px;
+        margin-right: 12px;
+      }
+
+      .routing-number-group {
+        width: 164px;
+      }
+    }
+  }
+
+  .questions-section {
+    /* max-width: 566px; */
+    margin-bottom: 12px;
+
+    /*  margin-right: 22px;
+         */
+    margin-left: 22px;
+
+    .question-container {
+      margin-bottom: 3px;
+      /*    margin-right: 12px; */
+      position: relative;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .review-feedback {
+        height: 26px;
+        position: absolute;
+        right: -6px;
+        top: 0;
+      }
+
+      .question-title-box {
+        width: 376px;
+      }
+
+      .question-title {
+        color: $bw6-2;
+        opacity: 0.7;
+        font-size: 14px;
+        line-height: 18px;
+      }
+
+      .required-star {
+        color: $progress-danger;
+      }
+
+      .question-radios-box {
+        width: 80px;
+
+        .ta-input-radiobutons {
+          width: 100%;
+        }
+      }
+    }
+
+    .explain-container {
+      width: 455px;
+      margin-top: 7px;
+    }
+  }
+
+  .previous-addresses-section {
+    /*    margin-left: 22px; */
+    max-width: 522px;
+
+    .previous-address-title {
+      color: $bw6-2;
+      font-size: 14px;
+      margin-bottom: 22px;
+      line-height: 22px;
+    }
+
+    .previous-address-container {
+      margin-bottom: 12px;
+      margin-left: 22px;
+
+      &:hover .delete-container {
+        visibility: visible !important;
+      }
+
+      .badge-container {
+        width: 26px;
+        height: 26px;
+        margin-right: 6px;
+        border-radius: 3px;
+        color: $white;
+        background-color: $light-blue;
+        opacity: 0.7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .badge {
+          font-size: 14px;
+        }
+      }
+
+      .address-container {
+        width: 349px;
+        margin-right: 12px;
+      }
+
+      .unit-container {
+        width: 63px;
+      }
+
+      .delete-container {
+        visibility: hidden !important;
+        margin-left: 6px;
+
+        .delete-btn {
+          width: 16px;
+          height: 16px;
+          padding: 3.5px 4px;
+          border-radius: 50%;
+          background-color: $progress-danger;
+          opacity: 0.7;
+          cursor: pointer;
+
+          &:hover {
+            opacity: 1;
+          }
+
+          .trash-icon {
+            svg {
+              path {
+                fill: $white;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .add-btn {
+      border: none;
+      outline: none;
+      font-size: 12px;
+      color: $light-blue;
+      opacity: 0.7;
+      background-color: transparent;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  .required-note {
+    font-size: 10px;
+    color: $progress-danger;
+    line-height: 3px;
+  }
+}

@@ -1,0 +1,97 @@
+@import 'src/theme/variables.scss';
+
+.step-container {
+  .step-title {
+    color: $light-blue;
+    font-size: 32px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  .info-container {
+    width: 680px;
+    margin-bottom: 12px;
+
+    p {
+      font-size: 14px;
+      color: $bw6-2;
+    }
+  }
+
+  .form-section {
+    width: 680px;
+
+    .question-container {
+      margin-bottom: 22px;
+
+      p {
+        font-size: 14px;
+        color: $bw6-2;
+        margin-bottom: 12px !important;
+
+        span {
+          color: $progress-danger;
+        }
+      }
+
+      .radios-box {
+        width: 80px;
+
+        .ta-input-radiobutons {
+          width: 100%;
+        }
+      }
+    }
+
+    .form-label-group {
+      margin-bottom: 22px;
+      margin-right: 12px;
+
+      &:last-child {
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+    }
+
+    .motor-carrier-group,
+    .sap-name-group {
+      width: 276px;
+    }
+
+    .phone-group {
+      width: 167px;
+    }
+
+    .address-group {
+      width: 381px;
+    }
+
+    .unit-group {
+      width: 63px;
+    }
+
+    .sap-info-container {
+      width: 680px;
+      margin-bottom: 22px;
+
+      p {
+        font-size: 14px;
+        color: $bw6-2;
+      }
+    }
+
+    .sap-address-group {
+      width: 381px;
+      margin-bottom: 12px;
+    }
+
+    .sap-unit-group {
+      width: 63px;
+      margin-bottom: 12px;
+    }
+
+    .agreement-container {
+      margin-bottom: 32px;
+    }
+  }
+}

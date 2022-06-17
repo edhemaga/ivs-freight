@@ -1,0 +1,95 @@
+<!--TOP HEADER-->
+
+<!-- <div class="d-flex justify-content-center align-items-center top-header">
+    <span class="top-header-title ta-font-semi-bold noselect"
+        >Date of application {{ currentDate }}</span
+    >
+</div> -->
+
+<!-- MID HEADER -->
+
+<!-- <div
+    class="d-flex justify-content-center flex-column align-items-center mid-header"
+>
+    <div class="d-flex justify-content-center company-container">
+        <div class="d-flex align-items-center company-name">
+            <span class="ta-font-black" appSelectionColor>{{
+                company?.name
+            }}</span>
+        </div>
+
+        <div class="d-flex align-items-center company-usdot">
+            <span class="ta-font-regular" appSelectionColor
+                >USDOT # {{ company?.usdot }}</span
+            >
+        </div>
+
+        <div class="d-flex align-items-center company-phone">
+            <svg-icon
+                class="phone-icon"
+                src="assets/svg/common/ic_phone.svg"
+                [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
+            ></svg-icon>
+
+            <span class="ta-font-regular" appSelectionColor>{{
+                company?.phoneContact
+            }}</span>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center company-address-container">
+        <div class="d-flex align-items-center company-street">
+            <svg-icon
+                class="location-icon"
+                src="assets/svg/applicant/location.svg"
+                [svgStyle]="{ 'width.px': '16.39', 'height.px': 20 }"
+            ></svg-icon>
+            <span class="ta-font-regular" appSelectionColor
+                >{{ company?.location?.street }},</span
+            >
+        </div>
+
+        <div class="d-flex align-items-center company-city">
+            <span class="ta-font-regular" appSelectionColor
+                >{{ company?.location?.city }},</span
+            >
+        </div>
+
+        <div class="d-flex align-items-center company-postalcode">
+            <span class="ta-font-regular" appSelectionColor
+                >{{ company?.location?.postalCode }},</span
+            >
+        </div>
+
+        <div class="d-flex align-items-center company-country">
+            <span class="ta-font-regular" appSelectionColor>{{
+                company?.location?.country
+            }}</span>
+        </div>
+    </div>
+</div> -->
+
+<!--NAV HEADER-->
+
+<div class="d-flex align-items-center justify-content-center nav-header">
+  <nav>
+    <ul class="d-flex">
+      <li
+        class="d-flex align-items-center"
+        *ngFor="let menuItem of menuItems; index as i; trackBy: trackByIdentity"
+      >
+        <svg-icon
+          class="nav-icon"
+          src="{{ menuItem.iconSrc }}"
+          [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
+        ></svg-icon>
+        <a
+          class="ta-font-medium"
+          [routerLink]="[menuItem.route, applicant ? applicant.id : 'id']"
+          routerLinkActive="nav-active"
+          >{{ menuItem.title }}</a
+        >
+      </li>
+    </ul>
+  </nav>
+</div>
