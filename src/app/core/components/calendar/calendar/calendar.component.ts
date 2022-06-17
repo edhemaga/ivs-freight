@@ -680,22 +680,27 @@ export class CalendarComponent implements OnInit {
   ngOnInit(): void {
     this.tabsCalendar = [
       {
+        id: 1,
         name: 'Day',
         checked: false
       },
       {
+        id: 2,
         name: 'Week',
         checked: false
       },
       {
+        id: 3,
         name: 'Month',
         checked: true
       },
       {
+        id: 4,
         name: 'Year',
         checked: false
       },
       {
+        id: 5,
         name: 'Schedule',
         checked: false
       }
@@ -858,6 +863,7 @@ export class CalendarComponent implements OnInit {
 
   changeTab(ev){
     console.log(ev)
+    this.currentCalendarView = ev.name.toLowerCase();
   }
 
 }
