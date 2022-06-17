@@ -141,9 +141,35 @@
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            padding: 2px;
-            box-sizing: border-box;
             margin-bottom: 8px;
+
+            app-tab-switcher{
+                width: 100%;
+                height: 32px;
+
+                .multiswitch{
+                    margin-top: 0px;
+                    height: 100%;
+
+                    .slide-container{
+                        background-color: transparent;
+                        color: #B7B7B7;
+                        height: 100%;
+
+                        label{
+                            font-weight: 800 !important;
+
+                            &.checked-label.ta-radio-button{
+                                color: #919191 !important;
+                            }
+                        }
+
+                        a{
+                            background-color: #EEEEEE;
+                        }
+                    }
+                }    
+            }
 
             .day-holder{
                 width: 45px;
