@@ -10,32 +10,59 @@
   </div>
   <div class="chart_main_holder chat_invoce no-back p-0">
     <div class="chart_top_hold white_one">
-      <chart #chart [data]="data" [options]="options" [type]="type"></chart>
+      <!--<chart #chart [data]="data" [options]="options" [type]="type"></chart>-->
+      <app-ta-chart
+        [chartConfig]="{
+          dataProperties: [
+            {
+              defaultConfig: {
+                  type: 'doughnut',
+                  data: [30, 25, 30, 5],
+                  label: 'Income'
+              },
+              colorProperties: {
+                borderColor: '#fFFFFF',
+                backgroundColor: ['#60D5BD', '#91A4C7', '#FFCB86', '#C29FCB'],
+                hoverBorderColor: 'transparent'
+              }
+            }
+          ],
+          showLegend: false,
+          defaultType: 'doughnut',
+          chartWidth: '442',
+          chartHeight: '295',
+          dataLabels: ['Income', 'Expense'],
+          toolTip: false,
+          dottedBackground: true
+        }"
+        [axesProperties]="{}"
+      >
+      </app-ta-chart>
       <div *ngIf="insideChart" class="inside_chart">
         <div
           appSelectionColor
           class="inside_title"
-          style="color: #919191;"
-        >{{insideChart.title}}</div>
-        <div
-          [innerHtml]="insideChart.value | nFormatter"
-          [ngStyle]="{'color': insideChart.color}"
-          appSelectionColor
-          class="inside_value main_value"
-          style="color: #919191;"
-        ></div>
-        <div
-          appSelectionColor
-          class="inside_title"
-          style="color: #919191;"
+          style="color: #B7B7B7; font-size: 12px; line-height: 15px;"
         >Count
         </div>
         <div
           [ngStyle]="{'color': insideChart.color}"
           appSelectionColor
           class="inside_value"
-          style="color: #919191;"
+          style="color: #B7B7B7; font-size: 22px; line-height: 27px; margin-bottom: 12px;"
         >{{insideChart.count}}</div>
+        <div
+          appSelectionColor
+          class="inside_title"
+          style="color: #B7B7B7; font-size: 12px; line-height: 15px;"
+        >{{insideChart.title}}</div>
+        <div
+          [innerHtml]="insideChart.value | nFormatter"
+          [ngStyle]="{'color': insideChart.color}"
+          appSelectionColor
+          class="inside_value main_value"
+          style="color: #B7B7B7; font-size: 42px; line-height: 52px;"
+        ></div>
       </div>
     </div>
     <div class="d-flex bottom_results chart_bottom_results">
