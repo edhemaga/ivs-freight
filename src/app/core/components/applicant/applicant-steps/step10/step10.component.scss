@@ -1,0 +1,35 @@
+@import 'src/theme/variables.scss';
+
+.step-container {
+  .step-title {
+    color: $light-blue;
+    font-size: 32px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  .checkbox-container {
+    width: 680px;
+    margin-bottom: 12px;
+  }
+
+  .group-text {
+    width: 680px;
+
+    &:last-of-type {
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 14px;
+      color: $bw6-2;
+      opacity: 0.4;
+      margin-bottom: 12px !important;
+    }
+
+    .text-blue {
+      opacity: 1;
+      color: $light-blue;
+    }
+  }
+}

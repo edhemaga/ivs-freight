@@ -1,0 +1,247 @@
+@import 'src/theme/variables.scss';
+
+.step-container {
+  .step-title {
+    color: $light-blue;
+    font-size: 32px;
+    margin-top: 30px;
+  }
+
+  .top-section {
+    margin-top: 20px;
+    width: 680px;
+
+    p {
+      color: $bw6-2;
+      font-size: 14px;
+    }
+  }
+
+  .mid-section {
+    margin-bottom: 22px;
+  }
+
+  .form-section {
+    .accident-view-container {
+      margin-bottom: 10px;
+
+      .title-container {
+        margin-bottom: 2px;
+
+        .date-title-box,
+        .state-title-box,
+        .fat-title-box,
+        .inj-title-box,
+        .hazmat-spill-title-box,
+        .description-title-box {
+          margin-right: 12px;
+
+          &.date-title-box {
+            width: 73px;
+          }
+
+          &.state-title-box,
+          &.hazmat-spill-title-box {
+            width: 43px;
+          }
+
+          &.fat-title-box,
+          &.inj-title-box {
+            width: 40px;
+          }
+
+          &.description-title-box {
+            width: 157px;
+            margin-right: 0;
+          }
+
+          p {
+            color: $bw6-2;
+            font-size: 10px;
+          }
+        }
+      }
+
+      .accident-info-container {
+        margin-bottom: 12px;
+
+        &:hover .edit-delete-box {
+          visibility: visible;
+        }
+
+        .date-box,
+        .state-box,
+        .fat-box,
+        .inj-box,
+        .hazmat-spill-box,
+        .description-box {
+          background-color: $bw5;
+          color: $white;
+          border-radius: 3px;
+          height: 26px;
+          padding: 0;
+          margin-right: 12px;
+
+          &.date-box {
+            width: 73px;
+          }
+
+          &.state-box,
+          &.hazmat-spill-box {
+            width: 43px;
+          }
+
+          &.fat-box,
+          &.inj-box {
+            width: 40px;
+          }
+
+          &.description-box {
+            width: 157px;
+            margin-right: 0;
+          }
+
+          p {
+            font-size: 14px;
+          }
+        }
+
+        .edit-delete-box {
+          visibility: hidden;
+          height: 26px;
+          width: 38px;
+          margin-left: 6px;
+
+          .edit-btn,
+          .delete-btn {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: none;
+            outline: none;
+            opacity: 0.7;
+
+            &:hover {
+              opacity: 1;
+            }
+
+            &.edit-btn {
+              background-color: $bw6-2;
+              margin-right: 6px;
+
+              .edit-icon {
+                svg {
+                  path {
+                    fill: $white;
+                  }
+                }
+              }
+            }
+
+            &.delete-btn {
+              background-color: $progress-danger;
+
+              .delete-icon {
+                svg {
+                  path {
+                    fill: $white;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .form-label-group {
+      margin-bottom: 22px;
+      margin-right: 12px;
+      width: 456px;
+
+      &:last-child {
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+    }
+
+    .location-group {
+      width: 320px;
+    }
+
+    .date-group {
+      width: 122px;
+    }
+
+    .fatalities-group {
+      width: 128px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .injuries-group {
+      width: 117px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hazmat-spill-group {
+      width: 187px;
+      height: 26px;
+
+      .title-box {
+        p {
+          font-size: 14px;
+          color: $bw6-2;
+
+          .required-star {
+            color: $progress-danger;
+          }
+        }
+      }
+
+      .radios-box {
+        width: 80px;
+
+        .ta-input-radiobutons {
+          width: 100%;
+
+          .radio-button {
+            padding-left: 0;
+          }
+        }
+      }
+    }
+
+    .truck-type-group {
+      width: 171px;
+      margin-bottom: 0;
+    }
+
+    .description-group {
+      width: 273px;
+      margin-bottom: 0;
+    }
+
+    .add-more-accident-container {
+      margin-top: 12px;
+      margin-bottom: 32px;
+
+      .add-accident-btn {
+        border: 0;
+        outline: 0;
+        font-size: 14px;
+        height: 18px;
+        color: $light-blue;
+        background-color: transparent;
+        opacity: 0.7;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
