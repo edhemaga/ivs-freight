@@ -1,0 +1,162 @@
+@import 'src/theme/variables.scss';
+
+.step-container {
+  .step-title {
+    color: $light-blue;
+    font-size: 32px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  .instructions-container {
+    width: 680px;
+
+    p {
+      font-size: 14px;
+      color: $bw6-2;
+
+      &:nth-child(2) {
+        margin-top: 12px !important;
+      }
+    }
+  }
+
+  .valid-hos-container {
+    margin-bottom: 20px;
+    width: 680px;
+  }
+
+  .form-section {
+    width: 680px;
+
+    .seven-days-hos-table-container {
+      table {
+        width: 456px;
+        margin: 12px auto 14px auto;
+
+        .day-container {
+          height: 18px;
+          margin-bottom: 6px;
+
+          .day-box {
+            width: 53px;
+
+            p {
+              font-size: 14px;
+              color: $bw4;
+            }
+          }
+        }
+
+        .date-container {
+          height: 18px;
+          margin-bottom: 12px;
+
+          .date-box {
+            width: 53px;
+
+            p {
+              color: $bw4;
+            }
+          }
+        }
+
+        .input-container {
+          margin-bottom: 6px;
+
+          .hos-title-group {
+            width: 53px;
+            margin-right: 12px;
+
+            p {
+              height: 18px;
+              color: $bw6-2;
+              font-size: 14px;
+
+              span {
+                color: $progress-danger;
+              }
+            }
+          }
+
+          .hos-input-group {
+            width: 53px;
+            margin-right: 12px !important;
+
+            &:last-child {
+              margin-right: 0px;
+            }
+          }
+        }
+
+        .total-container {
+          height: 18px;
+
+          p {
+            color: $light-blue;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    .step-subtitle {
+      height: 18px;
+      color: $bw6-2;
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+
+    .form-label-group {
+      margin-bottom: 12px;
+      margin-right: 12px;
+
+      &:last-child {
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+    }
+
+    .date-group {
+      width: 113px;
+    }
+
+    .location-group {
+      width: 331px;
+    }
+
+    .questions-container {
+      margin-top: 12px;
+
+      .question-container {
+        margin-bottom: 12px;
+        width: 456px;
+
+        .title-box {
+          p {
+            color: $bw6-2;
+            font-size: 14px;
+            line-height: 18px;
+
+            .required-star {
+              color: $progress-danger;
+            }
+          }
+        }
+
+        .radios-box {
+          width: 80px;
+
+          .ta-input-radiobutons {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .valid-another-employer-container {
+      margin-bottom: 36px;
+      width: 680px;
+    }
+  }
+}

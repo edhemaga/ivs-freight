@@ -22,7 +22,7 @@ export class DashboardInvChartComponent implements OnInit, OnDestroy {
       title: 'Amount',
       value: 0,
       count: 0,
-      color: '#919191'
+      color: '#B7B7B7'
     },
     {
       title: '0-30',

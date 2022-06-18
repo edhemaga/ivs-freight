@@ -862,8 +862,7 @@ export class CalendarComponent implements OnInit {
   }
 
   changeTab(ev){
-    console.log(ev)
-    this.currentCalendarView = ev.name.toLowerCase();
+    this.changeCalendarView(ev.name.toLowerCase());
   }
 
 }

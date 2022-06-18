@@ -1,0 +1,62 @@
+<div *ngFor="let item of calendarMonth, let i=index" class="month-calendar-holder">
+    <div class="month">{{item.month}} 2022</div>
+    <div class="day-holder">
+      <div *ngFor="let item of daysInWeek; let indx=index" class="day" [ngStyle]="{'color': item.weekendColor}">{{item.day}}</div>
+    </div>
+    <div class="day-holder different-padding">
+      <div 
+      *ngFor="let item of item.monthDays; let indx=index" 
+      class="day different-weight"
+      [class.active]="colorDate == indx && colorDay == i" 
+      [class.current]="item.current"
+      [class.event]="item.event" 
+      [ngStyle]="{'color': item.weekendDateColor || item.lastMonthDateColor || item.nextMonthDateColor}"
+      #t2="ngbPopover"
+      [ngbPopover]="eventsDatePopover"
+      [placement]="['bottom-right']"
+      [popoverClass]="'eventspopovermain'"
+      autoclose="outside"
+      [container]="'body'"
+      triggers="'manual'" 
+      (click)="openEvenPopover(t2, ev, indx, i)"        
+      >
+        {{item.date}}
+      </div>
+    </div>
+</div>
+
+
+<ng-template #eventsDatePopover let-data="data">
+    <div class="event-date-popover">
+     <div class="date-holder">
+       <div class="number-event">6</div>
+       <div class="date-event">July 18, 2022</div>
+       <div class="close-event">
+         <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+       </div>
+     </div>
+     <div class="event-border"></div>
+     <div class="event-report">
+       <div class="report-text">IFTA Report - Deadline</div>
+     </div>
+     <div class="event-menagment">
+       <div class="event-text">Q3 - Event - Management</div>
+     </div>
+     <div class="event-report drivers-organization">
+       <div class="report-text">Drivers Organization</div>
+     </div>
+     <div class="event-report blue-box">
+       <div class="event-box"></div>
+       <div class="report-text different-color">Lorem ipsum dolor sit amet, consedetur</div>
+     </div>
+     <div class="event-report blue-box">
+       <div class="event-box orange-box"></div>
+       <div class="report-text different-color">Sed diam nonumy eirmod</div>
+     </div>
+     <div class="event-report green-bcg">
+       <div class="report-text">Labor Day</div>
+     </div>
+   </div>  
+ </ng-template>
+ 
+

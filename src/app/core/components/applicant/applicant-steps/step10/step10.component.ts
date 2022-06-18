@@ -1,0 +1,114 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { ReviewFeedbackService } from '../../state/services/review-feedback.service';
+
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { Applicant } from '../../state/model/applicant.model';
+import { DisclosureRelease } from '../../state/model/disclosure-release.model';
+
+import { getDisclosureReleaseReviewFeedbackData } from '../../state/utils/review-feedback-data/step10';
+
+@Component({
+  selector: 'app-step10',
+  templateUrl: './step10.component.html',
+  styleUrls: ['./step10.component.scss'],
+})
+export class Step10Component implements OnInit, OnDestroy {
+  public selectedMode: string = SelectedMode.APPLICANT;
+
+  public applicant: Applicant | undefined;
+
+  public disclosureReleaseForm: FormGroup;
+  public disclosureReleaseInfo: DisclosureRelease | undefined;
+
+  public reviewFeedback: any[] = getDisclosureReleaseReviewFeedbackData();
+  private countOfReview: number = 0;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private reviewFeedbackService: ReviewFeedbackService
+  ) {}
+
+  ngOnInit(): void {
+    this.formInit();
+
+    const applicantUser = localStorage.getItem('applicant_user');
+
+    if (applicantUser) {
+      this.applicant = JSON.parse(applicantUser) as Applicant;
+    }
+  }
+
+  public formInit(): void {
+    this.disclosureReleaseForm = this.formBuilder.group({
+      isFirstDisclosure: [false, Validators.requiredTrue],
+      isSecondDisclosure: [false, Validators.requiredTrue],
+      isThirdDisclosure: [false, Validators.requiredTrue],
+      isFourthDisclosure: [false, Validators.requiredTrue],
+      isFifthDisclosure: [false, Validators.requiredTrue],
+      isSixthDisclosure: [false, Validators.requiredTrue],
+    });
+  }
+
+  private formFilling(): void {
+    this.disclosureReleaseForm.patchValue({
+      isFirstDisclosure: this.disclosureReleaseInfo?.isFirstDisclosure,
+      isSecondDisclosure: this.disclosureReleaseInfo?.isSecondDisclosure,
+      isThirdDisclosure: this.disclosureReleaseInfo?.isThirdDisclosure,
+      isFourthDisclosure: this.disclosureReleaseInfo?.isFourthDisclosure,
+      isFiftyDisclosure: this.disclosureReleaseInfo?.isFifthDisclosure,
+      isSixDisclosure: this.disclosureReleaseInfo?.isSixthDisclosure,
+    });
+  }
+
+  public onSubmitForm(): void {
+    const disclosureReleaseForm = this.disclosureReleaseForm.value;
+    const disclosureRelease = new DisclosureRelease(this.disclosureReleaseInfo);
+
+    disclosureRelease.applicantId = this.applicant?.id;
+
+    disclosureRelease.isFirstDisclosure =
+      disclosureReleaseForm.isFirstDisclosure;
+    disclosureRelease.isSecondDisclosure =
+      disclosureReleaseForm.isSecondDisclosure;
+    disclosureRelease.isThirdDisclosure =
+      disclosureReleaseForm.isThirdDisclosure;
+    disclosureRelease.isFourthDisclosure =
+      disclosureReleaseForm.isFourthDisclosure;
+    disclosureRelease.isFifthDisclosure =
+      disclosureReleaseForm.isFifthDisclosure;
+    disclosureRelease.isSixthDisclosure =
+      disclosureReleaseForm.isSixthDisclosure;
+
+    /* this.apppEntityServices.DisclosureReleaseService.upsert(
+        disclosureRelease
+      ).subscribe(
+        () => {
+          this.notification.success('Disclosure Release is updated');
+        },
+        (error: any) => {
+          this.shared.handleError(error);
+        }
+      ); */
+  }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+      this.onSubmitForm();
+    }
+  }
+
+  public onSubmitReview(data: any): void {
+    this.reviewFeedback[data.index] = data.reviewFeedbackData;
+
+    this.countOfReview++;
+    if (this.countOfReview === 6 && !data.firstLoad) {
+      /* TODO: Send data to backend and move to next step */
+    } else if (data.firstLoad) {
+      this.countOfReview = 0;
+    }
+  }
+
+  ngOnDestroy(): void {}
+}

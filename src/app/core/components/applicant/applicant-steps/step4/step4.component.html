@@ -1,0 +1,322 @@
+<div class="d-flex flex-column align-items-center step-container">
+  <h1 class="step-title text-center noselect ta-font-bold">Accident record</h1>
+
+  <!-- TOP SECTION -->
+
+  <div class="d-flex flex-column text-center top-section">
+    <p class="d-flex justify-content-center noselect ta-font-regular">
+      Please list all motor vehicle collisions in which you were involved (both
+      commercial and private vehicle) during the past 3 years prior to the
+      application date.
+    </p>
+  </div>
+
+  <!-- MID SECTION -->
+
+  <div
+    class="d-flex flex-column text-center mid-section"
+    [formGroup]="accidentForm"
+  >
+    <app-ta-checkbox
+      formControlName="hasPastAccident"
+      [name]="'hasPastAccident'"
+      [label]="'No accidents for past 3 years'"
+    ></app-ta-checkbox>
+  </div>
+
+  <!-- FORM SECTION -->
+
+  <div
+    class="d-flex flex-column form-section"
+    *ngIf="!accidentForm.get('hasPastAccident').value"
+  >
+    <!-- CREATED ACCIDENT DATA -->
+
+    <div class="d-flex flex-column accident-view-container">
+      <div
+        class="d-flex flex-column"
+        *ngFor="
+          let accident of accidentFormArray | filter: false;
+          let i = index;
+          trackBy: trackByIdentity
+        "
+      >
+        <div class="d-flex title-container">
+          <div class="d-flex justify-content-center date-title-box">
+            <p class="m-0 ta-font-bold">DATE</p>
+          </div>
+          <div class="d-flex justify-content-center state-title-box">
+            <p class="m-0 ta-font-bold">STATE</p>
+          </div>
+          <div class="d-flex justify-content-center fat-title-box">
+            <p class="m-0 ta-font-bold">FAT. #</p>
+          </div>
+          <div class="d-flex justify-content-center inj-title-box">
+            <p class="m-0 ta-font-bold">INJ. #</p>
+          </div>
+          <div class="d-flex justify-content-center hazmat-spill-title-box">
+            <p class="m-0 ta-font-bold">H. SPILL</p>
+          </div>
+          <div class="d-flex justify-content-center description-title-box">
+            <p class="m-0 ta-font-bold">DESCRIPTION</p>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center accident-info-container">
+          <div
+            class="d-flex justify-content-center align-items-center date-box"
+          >
+            <p class="m-0 ta-font-regular">
+              {{ accident.dateAccident }}
+            </p>
+          </div>
+          <div
+            class="d-flex justify-content-center align-items-center state-box"
+          >
+            <p class="m-0 ta-font-regular">
+              {{ accident.accidentLocation.stateShortName }}
+            </p>
+          </div>
+          <div class="d-flex justify-content-center align-items-center fat-box">
+            <p class="m-0 ta-font-regular">
+              {{ accident.fatalities }}
+            </p>
+          </div>
+          <div class="d-flex justify-content-center align-items-center inj-box">
+            <p class="m-0 ta-font-regular">
+              {{ accident.injuries }}
+            </p>
+          </div>
+          <div
+            class="d-flex justify-content-center align-items-center hazmat-spill-box"
+          >
+            <p class="m-0 ta-font-regular">
+              {{ accident.isHazmatSpill }}
+            </p>
+          </div>
+          <div
+            class="d-flex justify-content-center align-items-center description-box"
+          >
+            <p class="m-0 ta-font-regular">
+              {{ accident.descriptionAccident }}
+            </p>
+          </div>
+
+          <div
+            class="d-flex justify-content-center align-items-center edit-delete-box"
+          >
+            <button
+              type="button"
+              class="d-flex justify-content-center align-items-center edit-btn"
+              (click)="onEditAccident(i)"
+            >
+              <svg-icon
+                class="edit-icon"
+                src="assets/svg/common/ic_pen.svg"
+                [svgStyle]="{
+                  'width.px': 10,
+                  'height.px': 10
+                }"
+              ></svg-icon>
+            </button>
+            <button
+              type="button"
+              class="d-flex justify-content-center align-items-center delete-btn"
+              (click)="onDeleteAccident(i)"
+            >
+              <svg-icon
+                class="delete-icon"
+                src="assets/svg/common/ic_trash.svg"
+                [svgStyle]="{
+                  'width.px': 8,
+                  'height.px': 9
+                }"
+              ></svg-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form [formGroup]="accidentForm">
+      <!-- LOCATION, DATE -->
+
+      <div class="d-flex">
+        <div class="form-label-group location-group">
+          <app-ta-input-address
+            formControlName="accidentLocation"
+            [inputConfig]="{
+              name: 'Address',
+              type: 'text',
+              label: 'Location',
+              isRequired: true,
+              placeholderIcon: 'address',
+              textTransform: 'capitalize',
+              autoFocus: true
+            }"
+            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+          ></app-ta-input-address>
+        </div>
+        <div class="form-label-group date-group">
+          <app-ta-input
+            formControlName="accidentDate"
+            [inputConfig]="{
+              name: 'datepicker',
+              type: 'text',
+              label: 'Date',
+              placeholderIcon: 'date',
+              isRequired: true,
+              customClass: 'datetimeclass'
+            }"
+          ></app-ta-input>
+        </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="0"
+            [reviewFeedbackData]=""
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <!-- FATALITIES, INJURIES, HAZMAT SPILL -->
+
+      <div class="d-flex">
+        <div class="form-label-group fatalities-group">
+          <app-ta-input
+            formControlName="accidentDate"
+            [inputConfig]="{
+              name: 'datepicker',
+              type: 'text',
+              label: 'Date',
+              placeholderIcon: 'date',
+              isRequired: true,
+              customClass: 'datetimeclass'
+            }"
+          ></app-ta-input>
+        </div>
+
+        <div class="form-label-group injuries-group">
+          <app-ta-input
+            formControlName="accidentDate"
+            [inputConfig]="{
+              name: 'datepicker',
+              type: 'text',
+              label: 'Date',
+              placeholderIcon: 'date',
+              isRequired: true,
+              customClass: 'datetimeclass'
+            }"
+          ></app-ta-input>
+        </div>
+
+        <div
+          class="d-flex align-items-center justify-content-between form-label-group hazmat-spill-group"
+        >
+          <div class="title-box">
+            <p class="m-0 ta-font-regular">
+              Hazmat spill <span class="required-star">*</span>
+            </p>
+          </div>
+          <div class="radios-box">
+            <app-ta-input-radiobuttons
+              [buttons]="answerChoices"
+              (changedValue)="handleInputSelect($event, 'HAZMAT-SPILL')"
+            ></app-ta-input-radiobuttons>
+          </div>
+        </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="1"
+            [reviewFeedbackData]=""
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <!-- TRUCK TYPE, DESCRIPTION -->
+
+      <div class="d-flex">
+        <div class="form-label-group truck-type-group">
+          <app-ta-input-dropdown
+            formControlName="truckType"
+            [template]="'svgtext-template'"
+            [inputConfig]="{
+              name: 'Input Dropdown',
+              type: 'text',
+              label: 'Vehicle type',
+              isRequired: true,
+              isDropdown: true,
+              dropdownWidthClass: 'w-col-applicant-t-type'
+            }"
+            [options]="truckType"
+            (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
+          ></app-ta-input-dropdown>
+        </div>
+        <div class="form-label-group description-group">
+          <app-ta-input
+            formControlName="accidentDescription"
+            [inputConfig]="{
+              name: 'Description',
+              type: 'text',
+              label: 'Description',
+              textTransform: 'capitalize',
+              isRequired: true
+            }"
+          ></app-ta-input>
+        </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="2"
+            [reviewFeedbackData]=""
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <!-- ADD MORE LICENSES -->
+
+      <div
+        class="d-flex flex-column align-items-center add-more-accident-container"
+      >
+        <button
+          type="button"
+          class="add-accident-btn ta-font-semi-bold"
+          (click)="onAddAccident()"
+          *ngIf="editAccident === -1"
+        >
+          Add another accident
+        </button>
+        <button
+          type="button"
+          class="add-accident-btn ta-font-semi-bold"
+          (click)="onUpdateAccident()"
+          *ngIf="editAccident !== -1"
+        >
+          Save accident
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- NEXT, BACK STEP -->
+
+  <app-applicant-next-step
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-step>
+</div>
+
+<!-- CONFIRM ALL REVIEW -->
+
+<app-applicant-confirm-all-review
+  *ngIf="selectedMode === 'REVIEW_MODE'"
+></app-applicant-confirm-all-review>
