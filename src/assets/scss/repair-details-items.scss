@@ -180,9 +180,10 @@ $transition: all 0.3s ease-in-out;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            display: flex;
+            position: relative;
+            top: 1px;
             align-items: center;
-            line-height: 22px;
+            line-height: 17px;
             width: 294px;
             &::-moz-selection {
                 color: $color-gray-dark;

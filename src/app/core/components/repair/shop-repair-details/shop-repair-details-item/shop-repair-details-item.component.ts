@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ShopQuery } from '../../state/shop.query';
 
 @Component({
   selector: 'app-shop-repair-details-item',
@@ -17,12 +18,13 @@ export class ShopRepairDetailsItemComponent implements OnInit {
   public dummyDataVehicle: any[] = [];
   public reviewsRepair: any[] = [];
   public count:number;
-  constructor(private _act_route: ActivatedRoute) {}
+  constructor(private _act_route: ActivatedRoute,private shopQuery:ShopQuery) {}
 
   ngOnInit(): void {
     this.shopData = this._act_route.snapshot.data;
     console.log(this.shopData);
-    
+     console.log(this.shopQuery.getAll());
+     
     this.noteControl.patchValue('Neki notee');
     this.initTableOptions();
     this.dummyDataRep();

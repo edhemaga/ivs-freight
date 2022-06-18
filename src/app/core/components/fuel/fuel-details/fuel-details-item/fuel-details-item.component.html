@@ -6,7 +6,7 @@
         [cardDetailsDate]="'08/03/20'"
         [tooltipNext]="'Next Fuel'"
         [tooltipPrevious]="'Previous Fuel'"
-        [searchName]="'Search Fuel'"
+        [searchInputName]="'Search Fuel'"
         [haveTwoInput]="true"
       >
         <div class="repair-information-wrapper">
@@ -124,8 +124,8 @@
                 <span class="date-fuel">{{ dummy.fuel_g }}</span>
                 <div class="ppg-icon-fuel">
                   <svg-icon class="ppg-icon" [src]="dummy.icon"></svg-icon>
-                <span class="date-fuel">${{ dummy.ppg }}</span>
-              </div>
+                  <span class="date-fuel">${{ dummy.ppg }}</span>
+                </div>
                 <span class="cost">${{ dummy.cost }}</span>
 
                 <div

@@ -2,7 +2,7 @@ import { RepairShopResponse } from './../../../../../../appcoretruckassist/model
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap,take } from 'rxjs/operators';
 import { ShopTService } from './shop.service';
 import { ShopState, ShopStore } from './shop.store';
 
@@ -25,9 +25,7 @@ export class ShopRepairItemResolver implements Resolve<ShopState> {
             this.shopStore.set({ entities: [] });
             return of('No shop data for...' + shop_id);
         }),
-        tap((driverRespon: RepairShopResponse) => {
-            this.shopStore.set({ entities: driverRespon[shop_id] })
-          })
+       take(1)
     );
   }
 }
