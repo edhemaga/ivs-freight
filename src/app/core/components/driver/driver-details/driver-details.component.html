@@ -10,7 +10,8 @@
       [isInactive]="showInc"
       [hasRequest]="item.req"
       [statusInactive]="item.status"
-  
+      [optionsId]="driverId"
+      (dropActions)="onDriverActions($event)"
       (openModalAction)="onModalAction($event)"
     >
     </app-ta-details-header>

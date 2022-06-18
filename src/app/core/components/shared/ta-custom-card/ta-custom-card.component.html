@@ -74,6 +74,7 @@
           *ngIf="(hasPlusHeader && isCardOpen) || stayOpen"
           class="plus-custom-card"
           src="assets/svg/common/ic_plus.svg"
+          (click)="onAdd($event)"
         ></svg-icon>
         <div class="status-icon-weekly">
          <div *ngIf="hasWeeklyStatus" class="weekly-status">

@@ -44,9 +44,6 @@ export class TaReCardComponent implements OnInit, OnChanges {
   public toggleDropDown: boolean;
   constructor() {}
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    console.log('changes from common');
-    
     this.expDateClose;
   }
   ngOnInit(): void {

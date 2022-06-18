@@ -6,7 +6,7 @@
     </div>
     <div *ngSwitchCase="'cdl'">
       <div
-        *ngFor="let cdl of driver.data.cdls; let i = index; trackBy: identity"
+        *ngFor="let cdl of dataCDl; let i = index; trackBy: identity"
       >
         <app-ta-re-card
           [options]="dataTest"
@@ -112,13 +112,13 @@
                   >
                   </app-truckassist-progress-expiration>
                 </div>
-                <!-- <div
-                  *ngIf="cdl.dateDeactivated || expDateCard"
+                <div
+                  *ngIf="cdl.dateDeactivated && cdl.showButton"
                   class="activate-button"
                 >
                   Activate
                 </div>
-                <div *ngIf="!expDateCard" class="activate-button">Renew</div> -->
+                <div *ngIf="!cdl.showButton" class="activate-button">Renew</div>
               </div>
             </div>
             <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">

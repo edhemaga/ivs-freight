@@ -7,6 +7,9 @@
         [counterData]="item.length"
         [hidePlus]="item.hide"
         [statusInactive]="false"
+        [optionsId]="trailerId"
+        [options]="dataHeaderDropDown"
+        (dropActions)="onTrailerActions($event)"
         (openModalAction)="onModalAction($event)"
       >
       </app-ta-details-header>

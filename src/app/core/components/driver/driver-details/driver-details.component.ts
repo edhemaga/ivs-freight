@@ -21,6 +21,7 @@ import { DriverResponse } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 @Component({
   selector: 'app-driver-details',
   templateUrl: './driver-details.component.html',
@@ -62,6 +63,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
+        console.log(res);
+        
         if (res.animation) {
           this.detailCongif(res.data);
 
@@ -223,7 +226,70 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
       export: true,
     };
   }
+  public onDriverActions(event: any) {
+    console.log(event);
+    console.log(this.driverId);
+    
+    if (event.type === 'edit') {
+      this.modalService.openModal(
+        DriverModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          disableButton: true,
+          id:this.driverId
+        }
+      );
+    } else if (event.type === 'deactivate') {
+      this.driverService
+        .changeDriverStatus(event.id)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: () => {
+            this.notificationService.success(
+              `Driver successfully Change Status`,
+              'Success:'
+            );
+          },
+          error: () => {
+            this.notificationService.error(
+              `Driver with id: ${event.id}, status couldn't be changed`,
+              'Error:'
+            );
+          },
+        });
+    } else if (event.type === 'delete-item') {
+      this.driverService
+        .deleteDriverById(event.id)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: () => {
+            setTimeout(() => {
+              
+              this.router.navigate(['/driver'])
+            }, 500);
+            this.notificationService.success(
+              'Driver successfully deleted',
+              'Success:'
+            );
 
+            // this.viewData = this.viewData.map((driver: any) => {
+            //   if (driver.id === event.id) {
+            //     driver.actionAnimation = 'delete';
+            //   }
+
+            //   return driver;
+            // });
+          },
+          error: () => {
+            this.notificationService.error(
+              `Driver with id: ${event.id} couldn't be deleted`,
+              'Error:'
+            );
+          },
+        });
+    }
+  }
   public onModalAction(action: string): void {
     if (action.includes('Drug')) {
       action = 'DrugAlcohol';

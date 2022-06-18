@@ -67,11 +67,12 @@ export class DriverDetailsCardComponent
   public dataProggress:any;
   @Input() templateCard: boolean;
   public hideArrow: boolean;
+  public expDateCard:boolean;
   // Driver Dropdown
   public driversDropdowns: any[] = [];
   // public driver_active_id: number = +this.activated_route.snapshot.params['id'];
   public driversList: any[] = this.driversQuery.getAll();
-
+ public dataCDl:any;
   constructor(
     private sanitazer: DomSanitizer,
     private modalService: ModalService,
@@ -81,6 +82,7 @@ export class DriverDetailsCardComponent
     private sumArr: SumArraysPipe
   ) {}
   ngOnChanges(changes: SimpleChanges) {
+    this.getExpireDate();
     this.getYearsAndDays(changes.driver.currentValue);
       this.widthOfProgress();
     this.templateCard;
@@ -389,6 +391,68 @@ export class DriverDetailsCardComponent
       ],
       export: true,
     };
+  }
+
+  public getExpireDate() {
+    this.dataCDl = this.driver.cdls.map((ele) => {
+      if (moment(ele.expDate).isBefore(moment())) {
+        this.expDateCard = false;
+      } else {
+        this.expDateCard = true;
+      }
+     return{
+      ...ele,
+      showButton:this.expDateCard
+     }
+    
+     
+    });
+    console.log(this.dataCDl);
+  }
+
+   
+  public onModalAction(action: string): void {
+    if (action.includes('Drug')) {
+      action = 'DrugAlcohol';
+    }
+    switch (action) {
+      case 'CDL': {
+        this.modalService.openModal(
+          DriverCdlModalComponent,
+          { size: 'small' },
+          { id: this.driver.id, type: 'new-licence' }
+        );
+        break;
+      }
+      case 'DrugAlcohol': {
+        this.modalService.openModal(
+          DriverDrugAlcoholModalComponent,
+          { size: 'small' },
+          { id: this.driver.id, type: 'new-drug' }
+        );
+
+        break;
+      }
+      case 'Medical': {
+        this.modalService.openModal(
+          DriverMedicalModalComponent,
+          { size: 'small' },
+          { id: this.driver.id, type: 'new-medical' }
+        );
+        break;
+      }
+      case 'MVR': {
+        this.modalService.openModal(
+          DriverMvrModalComponent,
+          { size: 'small' },
+          { id: this.driver.id, type: 'new-mvr' }
+        );
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   public widthOfProgress() {

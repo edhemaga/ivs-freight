@@ -38,6 +38,8 @@
       <app-table-dropdown
         [customClassDropDown]="'table-dropdown-container-horizontal-details'"
         [options]="options.actions"
+        [id]="optionsId"
+        (dropDownActions)="dropAct($event)"
       >
       </app-table-dropdown>
     </div>

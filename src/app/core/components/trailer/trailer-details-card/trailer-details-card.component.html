@@ -6,7 +6,7 @@
     [cardDetailsDate]="'08/03/20'"
     [options]="trailerDropDowns"
     [searchInputName]="'Search Trailer'"
-    (selectValue)="onSelectedTrailer($event)" 
+    (selectValue)="onSelectedTrailer($event)"
     (changeEvent)="onChangeTrailer($event)"
   >
     <div class="truck-details-wrapper">
@@ -24,8 +24,10 @@
         <div class="model-name">
           <div class="svg-wrapper">
             <svg-icon
-              class="details-header-model "
-              src="{{'assets/svg/common/trailermake/'+trailer.trailerMake.logoName}}"
+              class="details-header-model"
+              src="{{
+                'assets/svg/common/trailermake/' + trailer.trailerMake.logoName
+              }}"
             >
             </svg-icon>
           </div>
@@ -89,11 +91,7 @@
       >
         <div class="assignTo">
           <div class="assignTo-item first">
-            <svg-icon
-              class="assignTo-vehicle"
-              
-            >
-            </svg-icon>
+            <svg-icon class="assignTo-vehicle"> </svg-icon>
             <p class="assignTo-value">No truck</p>
             <span
               tooltipBackground="#6c6c6c"
@@ -109,10 +107,7 @@
             </span>
           </div>
           <div class="assignTo-item second">
-            <svg-icon
-              class="assignTo-vehicle"
-              
-            ></svg-icon>
+            <svg-icon class="assignTo-vehicle"></svg-icon>
             <p class="assignTo-value">No driver</p>
             <span
               tooltipBackground="#6c6c6c"
@@ -137,7 +132,7 @@
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
       >
-        <div *ngIf="trailer.suspension" class="common-template">
+        <div *ngIf="trailer.emptyWeight" class="common-template">
           <div class="common-template-item">
             <div class="common-template-item-name">Empty Weight</div>
             <div class="common-template-item-value">
@@ -146,7 +141,9 @@
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Mileage</div>
-            <div class="common-template-item-value">{{ trailer.mileage }} mi</div>
+            <div class="common-template-item-value">
+              {{ trailer.mileage }} mi
+            </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Axles</div>
@@ -157,7 +154,7 @@
           <div class="common-template-item">
             <div class="common-template-item-name">Tire Size</div>
             <div class="common-template-item-value">
-              {{ trailer.tireSize.name }}
+              {{ trailer.tireSize }}
             </div>
           </div>
           <div class="common-template-item">
@@ -174,6 +171,9 @@
             </div>
           </div>
         </div>
+        <div class="no-data" *ngIf="!trailer.emptyWeight">
+          No Additional info
+        </div>
       </app-ta-custom-card>
 
       <!-- Owner -->
@@ -187,11 +187,11 @@
           <div class="owner-items-name">
             <p class="firm-name">{{ trailer.owner.name }}</p>
           </div>
-          <div  [@showHideCardBody]="toggleOwner ? 'true' : 'false'">
+          <div [@showHideCardBody]="toggleOwner ? 'true' : 'false'">
             <div class="owner-items">
               <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
               <p class="information-value">
-                {{   trailer.owner.phone | formatPhoneP }}
+                {{ trailer.owner.phone | formatPhoneP }}
               </p>
             </div>
             <div class="owner-items">
@@ -210,20 +210,23 @@
           <div [ngClass]="{ 'transform-arrow': toggleOwner }">
             <div (click)="toggleOwner = !toggleOwner" class="icon-show">
               <span
-              tooltipBackground="#6c6c6c"
-              ngbTooltip
-              [mainTooltip]="toggleOwner ? 'HIDE CONTACT' : 'Show More'"
-              position="top"
+                tooltipBackground="#6c6c6c"
+                ngbTooltip
+                [mainTooltip]="toggleOwner ? 'HIDE CONTACT' : 'Show More'"
+                position="top"
               >
-              <svg-icon
-                class="arrow-down-employment"
-                src="assets/svg/common/fill_arrow_down.svg"
-              ></svg-icon>
+                <svg-icon
+                  class="arrow-down-employment"
+                  src="assets/svg/common/fill_arrow_down.svg"
+                ></svg-icon>
               </span>
-              <p tooltipBackground="#6c6c6c"
-              ngbTooltip
-              [mainTooltip]="toggleOwner ? 'Hide Contact' : 'Show More'"
-              position="top" class="hide-show">
+              <p
+                tooltipBackground="#6c6c6c"
+                ngbTooltip
+                [mainTooltip]="toggleOwner ? 'Hide Contact' : 'Show More'"
+                position="top"
+                class="hide-show"
+              >
                 {{ toggleOwner ? "HIDE CONTACT" : "" }}
               </p>
             </div>
@@ -263,10 +266,14 @@
 
                 <p class="date-from-to">
                   {{ owHist.startDate | formatDateP }} -
-                 <span *ngIf="owHist.endDate">{{owHist.endDate | formatDateP}}</span>
-                 <span *ngIf="!owHist.endDate">Today</span>
+                  <span *ngIf="owHist.endDate">{{
+                    owHist.endDate | formatDateP
+                  }}</span>
+                  <span *ngIf="!owHist.endDate">Today</span>
                 </p>
-                <p class="duration">{{owHist.duration.Years}} y {{owHist.duration.Days}} d</p>
+                <p class="duration">
+                  {{ owHist.duration.Years }} y {{ owHist.duration.Days }} d
+                </p>
               </div>
             </div>
           </div>
@@ -395,7 +402,7 @@
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [expireDate]="'04/04/25'"
+                        [expireDate]="fhwa.issueDate | formatDateP"
                         [startDate]="fhwa.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
@@ -436,7 +443,11 @@
           [hasPlusHeader]="true"
         >
           <div
-            *ngFor="let title of trailer.titles; let i = index; trackBy: identity"
+            *ngFor="
+              let title of trailer.titles;
+              let i = index;
+              trackBy: identity
+            "
           >
             <app-ta-re-card
               [cardDocumentCounter]="1"
@@ -451,7 +462,9 @@
                   <div class="card-row-endor">
                     <div class="card-item">
                       <div class="card-item-name">Purchased</div>
-                      <div class="card-item-value"> {{ title.issueDate | formatDateP }}</div>
+                      <div class="card-item-value">
+                        {{ title.issueDate | formatDateP }}
+                      </div>
                     </div>
                     <div class="card-item">
                       <div class="card-item-name">Issued</div>
@@ -466,7 +479,7 @@
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [expireDate]="'04/04/27'"
+                        [expireDate]="title.issueDate | formatDateP"
                         [startDate]="title.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >

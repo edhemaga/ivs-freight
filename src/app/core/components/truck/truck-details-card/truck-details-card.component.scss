@@ -11,7 +11,8 @@
     margin-top: 8px;
 }
 .wrapper-additional-cards{
-    max-height: 1080px;
+    max-height: calc(77vh - 74px);
+    min-height: calc(26vh - 10px);
     display: grid;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */

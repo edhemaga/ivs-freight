@@ -23,6 +23,7 @@ export class TrailerDetailsCardComponent implements OnInit {
   public note: FormControl = new FormControl();
   public toggler: boolean = false;
   public dataEdit: any;
+  public toggleOwner: boolean = true;
   public trailerDropDowns: any[] = [];
   public trailer_active_id: number =
     +this.activeted_route.snapshot.params['id'];

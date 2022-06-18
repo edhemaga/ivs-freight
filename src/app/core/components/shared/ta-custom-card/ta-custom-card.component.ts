@@ -64,6 +64,8 @@ export class TaCustomCardComponent {
   }
 
   public onAdd(event: any): void {
+    console.log(event);
+    
     event.preventDefault();
     event.stopPropagation();
     this.onActionEvent.emit(true);

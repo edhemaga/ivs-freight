@@ -35,12 +35,14 @@ export class TruckDetailsCardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.truck);
     this.getTruckDropdown();
 
     this.noteControl.patchValue(this.truck.note);
 
+    this.buttonSwitcher();
     this.initTableOptions();
+  }
+  public buttonSwitcher() {
     this.buttonsArrayPerfomance = [
       {
         id: 5,
@@ -121,7 +123,6 @@ export class TruckDetailsCardComponent implements OnInit {
       },
     ];
   }
-
   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataEdit = {
