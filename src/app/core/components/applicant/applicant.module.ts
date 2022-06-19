@@ -8,8 +8,6 @@ import { ApplicantRoutingModule } from './applicant-routing.module';
 
 import { SelectionColorDirective } from './state/directives/selection-color.directive';
 
-import { FilterPipe } from './state/pipes/filter.pipe';
-
 import { ReviewFeedbackService } from './state/services/review-feedback.service';
 
 import { ApplicantComponent } from './applicant/applicant.component';
@@ -39,13 +37,12 @@ import { SharedModule } from '../shared/shared.module';
     ApplicantHeaderComponent,
     ApplicantFooterComponent,
     ApplicantNextStepComponent,
+    ApplicantConfirmAllReviewComponent,
+    ApplicantReviewFeedbackComponent,
+    ApplicantSignaturePadComponent,
     Step1Component,
     Step2Component,
     Step3Component,
-
-    SelectionColorDirective,
-
-    FilterPipe,
     Step4Component,
     Step5Component,
     Step6Component,
@@ -54,9 +51,8 @@ import { SharedModule } from '../shared/shared.module';
     Step9Component,
     Step10Component,
     Step11Component,
-    ApplicantConfirmAllReviewComponent,
-    ApplicantReviewFeedbackComponent,
-    ApplicantSignaturePadComponent,
+
+    SelectionColorDirective,
   ],
   imports: [
     CommonModule,
