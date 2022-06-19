@@ -1,13 +1,14 @@
-<div *ngFor="let item of calendarMonth, let indx=index" class="month-calendar-holder">
+<div *ngFor="let item of calendarMonth, let i=index" class="month-calendar-holder">
     <div class="month">{{item.month}} 2022</div>
     <div class="day-holder">
       <div *ngFor="let item of daysInWeek; let indx=index" class="day" [ngStyle]="{'color': item.weekendColor}">{{item.day}}</div>
     </div>
     <div class="day-holder different-padding">
       <div 
-      *ngFor="let item of dateInMonth; let indx=index" 
+      *ngFor="let item of item.monthDays; let indx=index" 
       class="day different-weight"
-      [class.active]="colorDate == indx" 
+      [class.active]="colorDate == indx && colorDay == i" 
+      [class.current]="item.current"
       [class.event]="item.event" 
       [ngStyle]="{'color': item.weekendDateColor || item.lastMonthDateColor || item.nextMonthDateColor}"
       #t2="ngbPopover"
@@ -17,7 +18,7 @@
       autoclose="outside"
       [container]="'body'"
       triggers="'manual'" 
-      (click)="openEvenPopover(t2, ev, indx)"        
+      (click)="openEvenPopover(t2, ev, indx, i)"        
       >
         {{item.date}}
       </div>

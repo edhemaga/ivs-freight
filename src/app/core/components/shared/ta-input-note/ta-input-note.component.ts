@@ -17,7 +17,7 @@ import { input_note_animation } from './ta-input-note.animation';
   animations: [input_note_animation('showHideNote')],
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
-  _isVisibleNote: boolean = false;
+  _isVisibleNote: boolean = null;
   @Input() isVisibleDivider: boolean = true;
   @Input() isVisibleSecondDivider: boolean = true;
 

@@ -20,17 +20,17 @@
       <input class="search" type="text" placeholder="Find Event" />
     </div>
     <div class="calendar-items-holder">
-      <app-tab-switcher
+      <!-- <app-tab-switcher
       [tabs]="tabsCalendar"
       (switchClicked)="changeTab($event)" 
       >
         
-      </app-tab-switcher>
-      <!-- <div class="day-holder" [class.active]="currentCalendarView == 'day'" (click)="changeCalendarView('day')">Day</div>
+      </app-tab-switcher> -->
+      <div class="day-holder" [class.active]="currentCalendarView == 'day'" (click)="changeCalendarView('day')">Day</div>
       <div class="day-holder week" [class.active]="currentCalendarView == 'week'" (click)="changeCalendarView('week')">Week</div>
       <div class="day-holder month" [class.active]="currentCalendarView == 'month'" (click)="changeCalendarView('month')">Month</div>
       <div class="day-holder year" [class.active]="currentCalendarView == 'year'" (click)="changeCalendarView('year')">Year</div>
-      <div class="day-holder schedule" [class.active]="currentCalendarView == 'schedule'" (click)="changeCalendarView('schedule')">Schedule</div> -->
+      <div class="day-holder schedule" [class.active]="currentCalendarView == 'schedule'" (click)="changeCalendarView('schedule')">Schedule</div>
     </div>
     <div class="calendar-header">
       <app-ta-custom-card 
