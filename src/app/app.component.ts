@@ -54,7 +54,6 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log("APPP COMPONENT");
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
