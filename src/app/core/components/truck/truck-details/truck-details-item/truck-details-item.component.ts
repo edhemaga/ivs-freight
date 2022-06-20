@@ -30,7 +30,7 @@ import { TruckResponse } from 'appcoretruckassist';
 })
 export class TruckDetailsItemComponent implements OnInit {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-  @Input() truck: TruckResponse |  any = null;
+  @Input() truck: TruckResponse | any = null;
   public note: FormControl = new FormControl();
   public fhwaNote: FormControl = new FormControl();
   public purchaseNote: FormControl = new FormControl();
@@ -53,13 +53,15 @@ export class TruckDetailsItemComponent implements OnInit {
   ngOnInit(): void {
     this.initTableOptions();
   }
-  ngOnDestroy(): void {
-  }
+  ngOnDestroy(): void {}
 
   public onShowDetails(componentData: any) {
     componentData.showDetails = !componentData.showDetails;
   }
- 
+
+  public setFutureYear(date: any) {
+    return moment(date).add(1, 'years').format('MM/DD/YY');
+  }
 
   /**Function for dots in cards */
   public initTableOptions(): void {

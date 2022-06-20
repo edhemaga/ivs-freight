@@ -40,12 +40,16 @@
               [mainTooltip]="copiedSSN ? 'Copied' : 'Copy'"
               position="top"
               class="tooltip-copy"
+              [autoClose]="false"
+             
               (click)="copyText(driver.ssn, 'ssn')"
             >
               <svg-icon
                 class="card-icon"
+                id="card-icon"
                 src="assets/svg/common/ic_copy.svg"
-                (click)="copyText(driver.ssn, 'ssn')"
+               
+               
               ></svg-icon>
             </span>
             <div *ngIf="driver.status==0" class="inactive-wrapper">
@@ -68,11 +72,11 @@
               ngbTooltip
               [mainTooltip]="copiedDriverPhone ? 'Copied' : 'Copy'"
               position="top"
+              [autoClose]="false"
               class="tooltip-copy"
               (click)="copyText(driver.phone, 'driver-phone')"
             >
               <svg-icon
-                (click)="copyText(driver.phone, 'driver-phone')"
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
               >
@@ -96,10 +100,10 @@
               [mainTooltip]="copiedDriverEmail ? 'Copied' : 'Copy'"
               position="top"
               class="tooltip-copy"
+              [autoClose]="false"
               (click)="copyText(driver.email, 'driver-email')"
             >
               <svg-icon
-                (click)="copyText(driver.email, 'driver-email')"
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
               ></svg-icon>
@@ -457,6 +461,7 @@
               <span
                 [tooltipBackground]="copiedEin ? '#536BC2' : '#6c6c6c'"
                 ngbTooltip
+                [autoClose]="false"
                 [mainTooltip]="copiedEin ? 'Copied' : 'Copy'"
                 position="top"
               >
@@ -640,10 +645,11 @@
                 [mainTooltip]="copiedBankRouting ? 'Copied' : 'Copy'"
                 position="top"
                 class="tooltip-ein"
+                [autoClose]="false"
                 (click)="copyText(driver?.routing, 'bankRouting')"
               >
                 <svg-icon
-                  (click)="copyText(driver?.routing, 'bankRouting')"
+                 
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -698,6 +704,7 @@
                 [mainTooltip]="copiedBankAccount ? 'Copied' : 'Copy'"
                 position="top"
                 class="tooltip-ein"
+                [autoClose]="false"
                 (click)="copyText(driver.account, 'bankAcc')"
               >
                 <svg-icon
@@ -730,7 +737,7 @@
             !driver.emergencyContactName ||
             !driver.emergencyContactPhone
           "
-          class="no-driver"
+          class="no-data"
         >
           No Contact
         </div>
@@ -761,10 +768,11 @@
                 ngbTooltip
                 [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
                 position="top"
+                [autoClose]="false"
                 (click)="copyText(driver.emergencyContactPhone, 'phone')"
               >
                 <svg-icon
-                  (click)="copyText(driver.emergencyContactPhone, 'phone')"
+                  
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -903,10 +911,11 @@
                     <div
                     *ngIf="cdl.dateDeactivated && cdl.showButton"
                     class="activate-button"
+                    [ngClass]="{'activate-button-card':templateCard}"
                   >
                     Activate
                   </div>
-                  <div *ngIf="!cdl.showButton" class="activate-button">Renew</div>
+                  <div *ngIf="!cdl.showButton"  [ngClass]="{'activate-button-card':templateCard}" class="activate-button">Renew</div>
                   </div>
                 </div>
                 <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
@@ -991,6 +1000,7 @@
           [hasCounter]="driver.tests.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
+          (onActionEvent)="onModalAction('DrugAlcohol')"
         >
           <div
             *ngFor="let test of driver.tests; let i = index; trackBy: identity"
@@ -1088,6 +1098,7 @@
           [hasCounter]="driver.medicals.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
+          (onActionEvent)="onModalAction('Medical')"
         >
           <div
             *ngFor="
@@ -1201,6 +1212,7 @@
           [hasCounter]="driver.mvrs.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
+          (onActionEvent)="onModalAction('MVR')"
         >
           <div
             *ngFor="let mvr of driver.mvrs; let i = index; trackBy: identity"

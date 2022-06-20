@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import moment from 'moment';
 import { card_component_animation } from '../animations/card-component.animations';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-ta-re-card',
   templateUrl: './ta-re-card.component.html',
@@ -42,7 +42,7 @@ export class TaReCardComponent implements OnInit, OnChanges {
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
   public toggleDropDown: boolean;
-  constructor() {}
+  constructor(private clipboard:Clipboard) {}
   ngOnChanges(changes: SimpleChanges): void {
     this.expDateClose;
   }
@@ -82,20 +82,9 @@ export class TaReCardComponent implements OnInit, OnChanges {
     event.preventDefault();
     event.stopPropagation();
     this.copiedCommon = true;
-    const timeoutCommon = setInterval(() => {
-      this.copiedCommon = false;
-      clearInterval(timeoutCommon);
-    }, 300);
-    let selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = val;
-    document.body.appendChild(selBox);
-    // selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
+   setTimeout(() => {
+    this.copiedCommon=false
+   }, 1500);
+   this.clipboard.copy(val);
   }
 }

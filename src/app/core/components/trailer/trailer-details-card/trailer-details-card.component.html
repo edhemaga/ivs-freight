@@ -281,12 +281,17 @@
       </app-ta-custom-card>
 
       <!-- Note  -->
+      <div class="divider"></div>
       <div class="note-cards">
         <app-ta-input-note
-          [formControl]="note"
-          [isReadOnly]="true"
-          [isVisibleSecondDivider]="false"
-          [isVisibleNote]="note.value"
+        [formControl]="note"
+        [isVisibleDivider]="false"
+        [isVisibleNote]="true"
+        [isVisibleArrow]="true"
+        [minRows]="1"
+        [isVisibleSecondDivider]="false"
+        [placeholder]="'Write something.'"
+        [customClass]="'note-small'"
         ></app-ta-input-note>
       </div>
     </div>

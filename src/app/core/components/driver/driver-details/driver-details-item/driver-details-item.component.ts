@@ -53,12 +53,16 @@ export class DriverDetailsItemComponent
       this.driver = changes.driver.currentValue;
     }
   }
-
+  
   ngOnInit(): void {
     this.initTableOptions();
     this.getExpireDate();
   }
-
+ 
+  public setFutureYear(date:any){
+             
+      return moment(date).add(1,'years').format('MM/DD/YY')
+  }
   public getExpireDate() {
     this.dataCDl = this.driver.data.cdls.map((ele) => {
       if (moment(ele.expDate).isBefore(moment())) {

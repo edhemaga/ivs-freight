@@ -23,7 +23,7 @@ import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-
 import moment from 'moment';
 import { DriversQuery } from '../state/driver.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',
@@ -79,7 +79,8 @@ export class DriverDetailsCardComponent
     private driversQuery: DriversQuery,
     private activated_route: ActivatedRoute,
     private detailsPageDriverSer: DetailsPageService,
-    private sumArr: SumArraysPipe
+    private sumArr: SumArraysPipe,
+    private clipboar:Clipboard
   ) {}
   ngOnChanges(changes: SimpleChanges) {
     this.getExpireDate();
@@ -94,7 +95,7 @@ export class DriverDetailsCardComponent
   }
   
   ngOnInit(): void {
-
+    
     if (this.templateCard == true) {
       this.hideArrow = true;
     } else {
@@ -215,68 +216,60 @@ export class DriverDetailsCardComponent
   }
 
   /* To copy any Text */
-  public copyText(val: any, copVal: string) {
-    switch (copVal) {
+  public copyText(val: any, copyVal: string) {
+ 
+    switch (copyVal) {
       case 'phone':
         this.copiedPhone = true;
         setTimeout(() => {
           this.copiedPhone = false;
-        }, 2100);
+        }, 1500);
         break;
 
       case 'bankAcc':
         this.copiedBankAccount = true;
         setTimeout(() => {
           this.copiedBankAccount = false;
-        }, 2100);
+        }, 1500);
         break;
 
       case 'bankRouting':
         this.copiedBankRouting = true;
         setTimeout(() => {
           this.copiedBankRouting = false;
-        }, 2100);
+        }, 1500);
         break;
 
       case 'ein':
         this.copiedEin = true;
         setTimeout(() => {
           this.copiedEin = false;
-        }, 2100);
+        }, 1500);
         break;
 
       case 'ssn':
         this.copiedSSN = true;
         setTimeout(() => {
           this.copiedSSN = false;
-        }, 2100);
+        }, 1500);
         break;
 
       case 'driver-phone':
         this.copiedDriverPhone = true;
         setTimeout(() => {
           this.copiedDriverPhone = false;
-        }, 2100);
+        }, 1500);
         break;
       case 'driver-email':
+       
         this.copiedDriverEmail = true;
         setTimeout(() => {
           this.copiedDriverEmail = false;
-        }, 2100);
+        }, 1500);
         break;
     }
+    this.clipboar.copy(val);
 
-    let selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = val;
-    document.body.appendChild(selBox);
-    // selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
   }
 
   public hiddenPassword(value: any, numberOfCharacterToHide: number): string {

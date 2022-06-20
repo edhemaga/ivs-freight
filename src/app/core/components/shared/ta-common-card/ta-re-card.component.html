@@ -62,6 +62,7 @@
             ngbTooltip
             [mainTooltip]="copiedCommon ? 'Copied' : 'Copy'"
             position="top"
+            [autoClose]="false"
             (click)="copyText(cardNameCommon,$event)"
             [tooltipBackground]="copiedCommon ? '#536BC2' : '#6c6c6c'"
           >

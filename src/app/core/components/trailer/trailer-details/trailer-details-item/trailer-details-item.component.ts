@@ -39,6 +39,10 @@ export class TrailerDetailsItemComponent implements OnInit {
   public toggleResizePage(value: number) {
     this.toggler[value] = !this.toggler[value];
   }
+
+  public setFutureYear(date: any) {
+    return moment(date).add(1, 'years').format('MM/DD/YY');
+  }
   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataTest = {
