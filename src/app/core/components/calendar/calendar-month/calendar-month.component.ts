@@ -228,26 +228,91 @@ export class CalendarMonthComponent implements OnInit {
   ]
 
   colorDate: any;
+  colorDay: any;
 
 
   constructor() { }
 
   ngOnInit(): void {
+
+    this.calendarMonth.map((item, indx) => {
+      item.monthDays = this.createCalendar(new Date(), indx);
+      return item;
+    })
   }
 
-  openEvenPopover(t2, ev, indx){
-    console.log(indx)
+  openEvenPopover(t2, ev, indx, i){
+    console.log(indx, i)
 
       this.colorDate = indx;
+      this.colorDay = i;
 
     if(t2.isOpen()){
       t2.close();
-      this.colorDate = '-1';
+      this.colorDate = -1;
+      this.colorDay = -1;
     }else{
       console.log(ev);
       t2.open({data: ev})
     }
   }
 
+  createCalendar(dates, indx){
+    let dateInMonth: any[] = [];
+    // Previous month
+    const prevMonth = new Date(dates.getFullYear(), indx, 0);
+    // This month
+    const thisMonth = new Date(dates.getFullYear(), indx + 1, 0);
+    // Next month
+    const nextMonth = new Date(dates.getFullYear(), indx + 1, 1);
+
+    // Last day of previous month
+    const lastMonthDay = prevMonth.getDate();
+    // Previos month last day name / 0 - 6 // 0 is Sunday
+    const lastMonthDayName = prevMonth.getDay();
+
+    const lastMonthDiff = lastMonthDay - lastMonthDayName;
+
+    const thisMonthDays = thisMonth.getDate();
+
+    const nextMonthDay = nextMonth.getDay();
+
+    const currentDay = dates.getDate();
+    const currMonth = dates.getMonth();
+
+
+    if (lastMonthDayName !== 6) {
+      for (let i = lastMonthDiff; i <= lastMonthDay; i++) {
+        dateInMonth.push(
+          {
+            date: i,
+            lastMonthDateColor: '#B7B7B7'
+          }
+        );
+      }
+    }
+
+    for (let i = 1; i <= thisMonthDays; i++) {
+      dateInMonth.push(
+        {
+          date: i,
+          current: currentDay == i && currMonth == indx
+        }
+      );
+    }
+
+    if(nextMonthDay != 0){
+      for(let i=1; i<= (7-nextMonthDay); i++){
+        dateInMonth.push(
+          {
+            date: i,
+            nextMonthDateColor: '#B7B7B7'
+          }
+        )  
+      }
+    }
+    return dateInMonth;
+  }
 
 }
+

@@ -1,0 +1,44 @@
+.item-total-row {
+  margin: 0 !important;
+  text-align: right;
+  .item-total {
+    align-self: end;
+    font-size: 18px;
+    font-weight: 800;
+    color: #6c6c6c;
+    margin: 0;
+    line-height: 18px;
+    padding-right: 32px !important;
+
+    &-text {
+      font-size: 12px;
+
+      &::-moz-selection {
+        background-color: #919191 !important;
+      }
+
+      &::selection {
+        background-color: #919191 !important;
+      }
+    }
+
+    &::-moz-selection {
+      background-color: #919191 !important;
+    }
+
+    &::selection {
+      background-color: #919191 !important;
+    }
+  }
+}
+
+.repair-shop-services {
+  grid-template-columns: 105px repeat(5, 104px);
+  grid-template-rows: repeat(1, 26px);
+}
+
+.repair-order {
+  ::ng-deep .content-holder {
+    margin-bottom: 0px !important;
+  }
+}
