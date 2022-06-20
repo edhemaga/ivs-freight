@@ -792,7 +792,7 @@ export class TaInputComponent
   changeSelection(e): void {
     e.preventDefault();
     e.stopPropagation();
-
+  
     if (
       e.keyCode == 37 ||
       e.keyCode == 38 ||
@@ -872,7 +872,7 @@ export class TaInputComponent
               parseInt(e.key) -1
             )
           );
-          console.log(this.dateTimeInputDate);
+
           this.span1.nativeElement.innerHTML = (
             '0' +
             (parseInt(e.key))
@@ -946,7 +946,7 @@ export class TaInputComponent
         }else{
           this.dateTimeInputDate = new Date(
             this.dateTimeInputDate.setFullYear(
-              parseInt(`20${this.span3.nativeElement.innerHTML + (parseInt(e.key))}`)
+              parseInt(`2${this.span3.nativeElement.innerHTML + (parseInt(e.key))}`)
             )
           );
           this.span3.nativeElement.innerHTML = (
@@ -1132,7 +1132,7 @@ export class TaInputComponent
   isNumber(evt) {
     evt = evt ? evt : window.event;
     let charCode = evt.which ? evt.which : evt.keyCode;
-    return !(charCode > 31 && (charCode < 48 || charCode > 57));
+    return ((charCode >= 48 && charCode <= 57) || (charCode >= 96 && charCode <= 105));
   }
 
   onPopoverShown() {
