@@ -292,9 +292,6 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         return this.mapDriverData(data);
       });
     }
-
-    console.log('Driver Data');
-    console.log(this.viewData);
   }
 
   mapDriverData(data: any) {
