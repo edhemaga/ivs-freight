@@ -15,7 +15,13 @@ import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.com
 import { TaInputService } from '../ta-input/ta-input.service';
 import { DropZoneConfig } from '../ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../ta-modal-upload/ta-upload-file.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-ta-modal',
@@ -24,15 +30,21 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('widthGrow', [
-        state('closed', style({
-            transform: 'scale(0)',
-        })),
-        state('open', style({
+      state(
+        'closed',
+        style({
+          transform: 'scale(0)',
+        })
+      ),
+      state(
+        'open',
+        style({
           transform: 'scale(1)',
-        })),
-        transition('closed => open', animate(250))
+        })
+      ),
+      transition('closed => open', animate(250)),
     ]),
-]
+  ],
 })
 export class TaModalComponent implements OnInit, OnDestroy {
   @Input() modalTitle: string;
@@ -55,10 +67,14 @@ export class TaModalComponent implements OnInit, OnDestroy {
     multiple: true,
   };
 
+  @Input() tabChange: any;
+
   @Output() modalActionTypeEmitter: EventEmitter<{
     action: string;
     bool: boolean;
   }> = new EventEmitter<{ action: string; bool: boolean }>(null);
+
+  @Output() onTabHeaderChange: EventEmitter<any> = new EventEmitter<any>();
 
   private timeout = null;
 
@@ -82,7 +98,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     this.modalService.modalStatus$
       .pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((data: { name: string; status: boolean }) => {
-        switch(data?.name) {
+        switch (data?.name) {
           case 'deactivate': {
             this.isDeactivated = data.status;
             break;
@@ -99,7 +115,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
             break;
           }
         }
-        
       });
 
     this.uploadFileService.visibilityDropZone$
@@ -244,6 +259,15 @@ export class TaModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  public onTabChange(event): void {
+    this.tabChange = [...event];
+    this.tabChange.forEach((item) => {
+      if (item.checked) {
+        this.onTabHeaderChange.emit(item);
+      }
+    });
   }
 
   ngOnDestroy(): void {

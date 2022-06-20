@@ -8,6 +8,12 @@
       >
         {{ editName }}
       </h5>
+      <div *ngIf="tabChange" class="modal-header-tab-change">
+        <app-ta-input-radiobuttons
+          [buttons]="tabChange"
+          (changedValue)="onTabChange($event)"
+        ></app-ta-input-radiobuttons>
+      </div>
     </div>
     <svg-icon
       class="modal-close"
@@ -94,7 +100,7 @@
       ngbAutofocus
       type="button"
     >
-      {{ editData?.type === 'edit' ? "Save Changes" : "Save" }}
+      {{ editData?.type === "edit" ? "Save Changes" : "Save" }}
       <div
         *ngIf="saveSpinnerVisibility"
         class="spinner-border"
