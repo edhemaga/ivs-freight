@@ -108,6 +108,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'pm',
+    loadChildren: () =>
+      import('./core/components/pm-truck-trailer/pm-truck-trailer.module').then(
+        (m) => m.PmTruckTrailerModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'fuel',
     loadChildren: () =>
       import('./core/components/fuel/fuel.module').then((m) => m.FuelModule),

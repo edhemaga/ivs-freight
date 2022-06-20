@@ -5,7 +5,6 @@ import { RepairRoutingModule } from './repair-routing.module';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 import { RepairCardComponent } from './repair-card/repair-card.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { ShopRepairDetailsComponent } from './shop-repair-details/shop-repair-details.component';
 
 @NgModule({
   declarations: [RepairTableComponent, RepairCardComponent],

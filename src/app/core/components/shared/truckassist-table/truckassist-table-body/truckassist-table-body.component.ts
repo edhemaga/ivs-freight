@@ -123,6 +123,7 @@ export class TruckassistTableBodyComponent
         }
       });
 
+    // Reset Selected Columns
     this.tableService.currentResetSelectedColumns
       .pipe(untilDestroyed(this))
       .subscribe((reset: boolean) => {
