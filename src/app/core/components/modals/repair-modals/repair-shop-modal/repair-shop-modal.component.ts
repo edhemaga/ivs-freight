@@ -110,7 +110,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getRepairShopModalDropdowns();
-    
+
     if (this.editData) {
       this.editData = {
         ...this.editData,
@@ -469,7 +469,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RepairShopModalResponse) => {
-          // this.labelsBank = 
+          this.labelsBank = res.banks;
+          console.log(res.serviceTypes)
+          console.log(res.daysOfWeek)
         },
         error: () => {
           this.notificationService.error(

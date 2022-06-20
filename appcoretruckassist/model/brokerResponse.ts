@@ -40,6 +40,7 @@ export interface BrokerResponse {
     status?: number;
     downRatingCount?: number;
     upRatingCount?: number;
+    currentCompanyUserRating?: number | null;
     createdAt?: string;
 }
 

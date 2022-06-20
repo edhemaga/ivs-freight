@@ -66,7 +66,7 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
       useFactory: (authService: UserLoggedService) => new Configuration(
         {
           basePath: environment.API_ENDPOINT,
-          credentials: {'Bearer': authService.getAccessToken.bind(authService)}
+          credentials: {'bearer': authService.getAccessToken.bind(authService)}
         }
       ),
       deps: [UserLoggedService],

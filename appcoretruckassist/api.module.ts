@@ -22,6 +22,7 @@ import { OwnerService } from './api/owner.service';
 import { OwnerHistoryService } from './api/ownerHistory.service';
 import { RatingReviewService } from './api/ratingReview.service';
 import { RegistrationService } from './api/registration.service';
+import { RepairService } from './api/repair.service';
 import { RepairShopService } from './api/repairShop.service';
 import { ShipperService } from './api/shipper.service';
 import { TestService } from './api/test.service';
