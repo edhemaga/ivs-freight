@@ -47,6 +47,7 @@ export class PmTruckTrailerComponent implements OnInit {
       toolbarActions: {
         hideLocationFilter: true,
         hideViewMode: true,
+        showGeneralPmBtn: true
       },
       config: {
         showSort: true,

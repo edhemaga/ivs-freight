@@ -87,6 +87,8 @@ export class TruckassistTableBodyComponent
 
           this.changeDetectorRef.detectChanges();
 
+          console.log('Poziva se currentColumnsOrder')
+
           this.checkForScroll();
         }
       });
@@ -99,6 +101,8 @@ export class TruckassistTableBodyComponent
           this.columns = response.columnsOrder;
 
           this.changeDetectorRef.detectChanges();
+
+          console.log('Poziva se currentColumnsOrder')
 
           this.checkForScroll();
         }
@@ -118,6 +122,8 @@ export class TruckassistTableBodyComponent
           });
 
           this.changeDetectorRef.detectChanges();
+
+          console.log('Poziva se currentToaggleColumns')
 
           this.checkForScroll();
         }
@@ -157,6 +163,7 @@ export class TruckassistTableBodyComponent
 
       this.changeDetectorRef.detectChanges();
 
+      console.log('Poziva se ngOnChanges columns')
       this.checkForScroll();
     }
 
@@ -172,8 +179,9 @@ export class TruckassistTableBodyComponent
 
   ngAfterViewInit(): void {
     setTimeout(() => {
+      console.log('Krece pokazivanje da li ima skroll ili ne');
       this.checkForScroll();
-    }, 100);
+    }, 1000);
   }
 
   @HostListener('window:scroll', ['$event'])
