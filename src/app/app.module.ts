@@ -56,7 +56,6 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
       timeOut: 5000,
     }),
     NgIdleModule.forRoot(),
-    //ApiModule.forRoot(configFactory),
     ApiModule
   ],
   providers: [

@@ -833,9 +833,134 @@ export class TaInputComponent
     } else {
       e.preventDefault();
       console.log('rest of input click');
-      //this.handleKeyboardInputs(e);
+      this.handleKeyboardInputs(e);
     }
   }
+
+  handleKeyboardInputs(e: KeyboardEvent ) {
+    const span1Value = isNaN(this.span1.nativeElement.innerHTML) ? undefined : parseInt(this.span1.nativeElement.innerHTML);
+    const span2Value = isNaN(this.span2.nativeElement.innerHTML) ? undefined : parseInt(this.span2.nativeElement.innerHTML);
+    const span3Value = isNaN(this.span3.nativeElement.innerHTML) ? "" : parseInt(this.span3.nativeElement.innerHTML);
+    if (this.inputConfig.name === 'datepicker') {
+      if (this.selectionInput == 0) {
+       
+        if( span1Value ){
+          if(parseInt(`${span1Value}${e.key}`) > 12){ 
+            this.span2.nativeElement.innerHTML = (
+              '0' +
+              (parseInt(e.key))
+            ).slice(-2);
+            this.selectionInput = 1;
+            this.selectSpanByTabIndex(1);
+          }else{
+            this.dateTimeInputDate = new Date(
+              this.dateTimeInputDate.setMonth(
+                parseInt(this.span1.nativeElement.innerHTML + (parseInt(e.key) -1))
+              )
+            );
+            this.span1.nativeElement.innerHTML = (
+              this.span1.nativeElement.innerHTML +
+              (parseInt(e.key))
+            ).slice(-2);
+            this.selectionInput = 1;
+            this.selectSpanByTabIndex(1);
+          }
+
+        }else{
+          this.dateTimeInputDate = new Date(
+            this.dateTimeInputDate.setMonth(
+              parseInt(e.key) -1
+            )
+          );
+          console.log(this.dateTimeInputDate);
+          this.span1.nativeElement.innerHTML = (
+            '0' +
+            (parseInt(e.key))
+          ).slice(-2);
+
+          if(parseInt(`1${e.key}`) > 12){
+            this.selectionInput = 1;
+            this.selectSpanByTabIndex(1);
+          }else{
+            console.log("possible months");
+            this.selectSpanByTabIndex(0);
+          }
+        }
+
+      }else if(this.selectionInput == 1){
+        
+        if( span2Value ){
+          if(parseInt(`${span2Value}${e.key}`) > 31){
+            this.span3.nativeElement.innerHTML = (
+              '0' +
+              (parseInt(e.key))
+            ).slice(-2);
+            this.selectionInput = 2;
+            this.selectSpanByTabIndex(2);
+          }else{
+            this.dateTimeInputDate = new Date(
+              this.dateTimeInputDate.setDate(
+                parseInt(this.span2.nativeElement.innerHTML + (parseInt(e.key)))
+              )
+            );
+            this.span2.nativeElement.innerHTML = (
+              this.span2.nativeElement.innerHTML +
+              (parseInt(e.key))
+            ).slice(-2);
+            this.selectionInput = 3;
+            this.selectSpanByTabIndex(3);
+          }
+
+        }else{
+          this.dateTimeInputDate = new Date(
+            this.dateTimeInputDate.setDate(
+              parseInt(e.key)
+            )
+          );
+          this.span2.nativeElement.innerHTML = (
+            '0' +
+            (parseInt(e.key))
+          ).slice(-2);
+
+          if(parseInt(`1${e.key}`) > 31){
+            this.selectionInput = 3;
+            this.selectSpanByTabIndex(3);
+          }else{
+            this.selectSpanByTabIndex(1);
+          }
+        }
+      }else{
+        
+        if( !span3Value || span3Value.toString().length == 2){
+          this.span3.nativeElement.innerHTML = (
+            '0' +
+            (parseInt(e.key))
+          ).slice(-2);
+          this.dateTimeInputDate = new Date(
+            this.dateTimeInputDate.setFullYear(
+              parseInt(`200${parseInt(e.key)}`)
+            )
+          );
+
+          this.selectSpanByTabIndex(3);
+        }else{
+          this.dateTimeInputDate = new Date(
+            this.dateTimeInputDate.setFullYear(
+              parseInt(`20${this.span3.nativeElement.innerHTML + (parseInt(e.key))}`)
+            )
+          );
+          this.span3.nativeElement.innerHTML = (
+            this.span3.nativeElement.innerHTML +
+            (parseInt(e.key))
+          ).slice(-2);
+          this.selectSpanByTabIndex(3);
+        }
+      }
+    }else{
+
+    }
+  }
+
 
   selectSpanByTabIndex(indx) {
     switch (indx) {

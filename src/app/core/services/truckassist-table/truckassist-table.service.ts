@@ -53,7 +53,16 @@ export class TruckassistTableService {
   private resetSelectedColumns = new BehaviorSubject<boolean>(false);
   public currentResetSelectedColumns = this.resetSelectedColumns.asObservable();
 
+  /* Switch Select  */
+  private toolBarSwitchActive = new BehaviorSubject<any>(null);
+  public currentSwitchOptionSelected = this.toolBarSwitchActive.asObservable();
+
   constructor() {}
+
+  /*  Switch Select  */
+  public sendCurrentSwitchOptionSelected(option: any) {
+    this.toolBarSwitchActive.next(option);
+  }
 
   /* Reset Selected Columns  */
   public sendResetSelectedColumns(reset: boolean) {

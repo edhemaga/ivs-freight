@@ -1,0 +1,16 @@
+<div class="switch-container">
+  <div
+    class="switch-options"
+    [ngStyle]="{
+      'margin-right': i !== switchOptions.length - 1 ? '2px' : 'unset'
+    }"
+    [ngClass]="{
+      'active-option': option.active,
+      'inactive-option': !option.active
+    }"
+    *ngFor="let option of switchOptions; let i = index"
+    (click)="onSelectOption(i)"
+  >
+    {{ option.title }}
+  </div>
+</div>
