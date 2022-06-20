@@ -9,7 +9,7 @@ import { PasswordChangedPageComponent } from './password-changed-page/password-c
 import { RegisterComponent } from './register/register/register.component';
 import { ThankYouComponent } from './thank-you-page/thank-you.component';
 import { AccountActivatedPageComponent } from './account-activated-page/account-activated-page.component';
-import { HelperComponent } from './helper/helper.component';
+import { RegisterUserComponent } from './register-user/register-user.component';
 
 const routes: Routes = [
   {
@@ -57,8 +57,16 @@ const routes: Routes = [
     component: PasswordChangedPageComponent,
     data: { title: 'Password Changed' },
   },
-
-  /* https://localhost:4200/api/account/verifyowner?EmailHash=4uvTjkxsQ17zGz6A+it+6UWLJMq6zPDSyySUw5lW/Jg=&Code=RcgCuBe/7E+Hd7IYko415g== */
+  {
+    path: 'register-user',
+    component: RegisterUserComponent,
+    data: { title: 'Register User' },
+  },
+  {
+    path: 'register-user/account-activated',
+    component: AccountActivatedPageComponent,
+    data: { title: 'Account Activated' },
+  },
 ];
 
 @NgModule({

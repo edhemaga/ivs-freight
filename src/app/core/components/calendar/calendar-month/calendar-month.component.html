@@ -7,7 +7,7 @@
       <div 
       *ngFor="let item of item.monthDays; let indx=index" 
       class="day different-weight"
-      [class.active]="colorDate == indx && colorDay == i" 
+      [class.active]="t2?.isOpen()" 
       [class.current]="item.current"
       [class.event]="item.event" 
       [ngStyle]="{'color': item.weekendDateColor || item.lastMonthDateColor || item.nextMonthDateColor}"

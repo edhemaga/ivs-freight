@@ -86,7 +86,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       });
   }
 
-  public registerUser(): void {
+  public registerCompany(): void {
     if (this.registerForm.invalid) {
       this.inputService.markInvalid(this.registerForm);
       return;
@@ -133,7 +133,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       event.path !== null &&
       event.path[3].className !== 'ng-select-container ng-has-value'
     ) {
-      this.registerUser();
+      this.registerCompany();
     }
   }
 

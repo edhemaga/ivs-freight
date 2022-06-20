@@ -25,6 +25,7 @@ import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal
 import { AccidentModalComponent } from '../../safety/accident/accident-modal/accident-modal.component';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { RepairPmModalComponent } from '../../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
+import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -117,6 +118,12 @@ export class NavigationModalsComponent {
       }
       case 'account': {
         this.modalService.openModal(AccountModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
+      case 'repair-order': {
+        this.modalService.openModal(RepairOrderModalComponent, {
           size: 'small',
         });
         break;
