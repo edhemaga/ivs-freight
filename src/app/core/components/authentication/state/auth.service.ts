@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { AuthState, AuthStore } from './auth.store';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import {
   AccountService,
@@ -10,18 +10,31 @@ import {
   ForgotPasswordCommand,
   SetNewPasswordCommand,
   VerifyOwnerCommand,
+  SignupUserCommand,
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
+import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStoreService {
+  private signUpUserInfoSubject: BehaviorSubject<SignUpUserInfo> =
+    new BehaviorSubject<SignUpUserInfo>(null);
+
   constructor(
     private authStore: AuthStore,
     private accountService: AccountService,
     private router: Router,
     @Inject('persistStorage') private persistStorage: PersistState
   ) {}
+
+  public getSignUpUserInfo(signUpUserInfo: SignUpUserInfo) {
+    this.signUpUserInfoSubject.next(signUpUserInfo);
+  }
+
+  get getSignUpUserInfo$() {
+    return this.signUpUserInfoSubject.asObservable();
+  }
 
   public accountLogin(data: SignInCommand): Observable<SignInResponse> {
     return this.accountService.apiAccountLoginPost(data).pipe(
@@ -54,6 +67,10 @@ export class AuthStoreService {
 
   public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
     return this.accountService.apiAccountSignupcompanyPost(data, 'response');
+  }
+
+  public signUpUser(data: SignupUserCommand): Observable<any> {
+    return this.accountService.apiAccountSignupuserPut(data, 'response');
   }
 
   public verifyOwner(data: VerifyOwnerCommand): Observable<object> {
