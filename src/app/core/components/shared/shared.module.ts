@@ -1,3 +1,4 @@
+import { RepairOrderModalComponent } from './../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { AccidentModalComponent } from './../safety/accident/accident-modal/accident-modal.component';
 import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
@@ -164,6 +165,7 @@ import { ProfileImagesModule } from './profile-images/profile-images.module';
     AccidentModalComponent,
     RepairShopModalComponent,
     RepairPmModalComponent,
+    RepairOrderModalComponent
   ],
   imports: [
     CommonModule,
@@ -306,6 +308,7 @@ import { ProfileImagesModule } from './profile-images/profile-images.module';
     ViolationModalComponent,
     AccidentModalComponent,
     RepairPmModalComponent,
+    RepairOrderModalComponent
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
