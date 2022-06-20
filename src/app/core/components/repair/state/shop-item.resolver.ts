@@ -22,7 +22,6 @@ export class ShopRepairItemResolver implements Resolve<ShopState> {
      const shop_id=route.paramMap.get('id')    
     return this.shopService.getRepairShopById(+shop_id).pipe(
         catchError((error)=>{
-            this.shopStore.set({ entities: [] });
             return of('No shop data for...' + shop_id);
         }),
        take(1)

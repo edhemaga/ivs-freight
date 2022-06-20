@@ -12,13 +12,30 @@
       font-size: 12px;
       font-weight: 700;
       color: #6c6c6c;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
     }
     .fuel-price-value {
       font-size: 18px;
       font-weight: 700;
       color: #6c6c6c;
       margin-top: -2px;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+      }
     }
+  
   }
 }
 .charts-template {
@@ -146,4 +163,22 @@
     }
   }
 }
-
+.note-cards {
+  padding: 0 7px;
+  .note-body {
+    padding: 0 2px !important;
+    // margin-bottom: 7px !important;
+    .note-textarea {
+      color: #6c6c6c !important;
+      font-weight: 400 !important;
+      &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+  }
+}

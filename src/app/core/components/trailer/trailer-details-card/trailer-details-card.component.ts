@@ -1,5 +1,5 @@
 import { TrailerResponse } from './../../../../../../appcoretruckassist/model/trailerResponse';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
@@ -17,7 +17,7 @@ import { ActivatedRoute } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-export class TrailerDetailsCardComponent implements OnInit {
+export class TrailerDetailsCardComponent implements OnInit,OnChanges {
   @Input() trailer: TrailerResponse | any;
   @Input() templateCard: boolean = false;
   public note: FormControl = new FormControl();
@@ -34,9 +34,14 @@ export class TrailerDetailsCardComponent implements OnInit {
     private trailerQuery: TrailerQuery,
     private activeted_route: ActivatedRoute
   ) {}
-
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('changes from trailer');
+    this.note.patchValue(changes.trailer.currentValue.note);
+      console.log(changes);
+      
+  }
   ngOnInit(): void {
-    this.note.patchValue(this.trailer.note);
+  
     this.initTableOptions();
     this.getTrailerDropdown();
   }

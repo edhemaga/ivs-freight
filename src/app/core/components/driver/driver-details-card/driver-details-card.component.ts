@@ -1,6 +1,7 @@
 import { SumArraysPipe } from './../../../pipes/sum-arrays.pipe';
 import { card_component_animation } from './../../shared/animations/card-component.animations';
 import {
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -21,9 +22,11 @@ import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 import { DriversQuery } from '../state/driver.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',
@@ -64,28 +67,30 @@ export class DriverDetailsCardComponent
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
   public dropData: any;
-  public dataProggress:any;
+  public dataProggress: any;
   @Input() templateCard: boolean;
   public hideArrow: boolean;
-  public expDateCard:boolean;
+  public expDateCard: boolean;
   // Driver Dropdown
   public driversDropdowns: any[] = [];
   // public driver_active_id: number = +this.activated_route.snapshot.params['id'];
   public driversList: any[] = this.driversQuery.getAll();
- public dataCDl:any;
+  public dataCDl: any;
   constructor(
     private sanitazer: DomSanitizer,
     private modalService: ModalService,
     private driversQuery: DriversQuery,
-    private activated_route: ActivatedRoute,
     private detailsPageDriverSer: DetailsPageService,
     private sumArr: SumArraysPipe,
-    private clipboar:Clipboard
+    private clipboar: Clipboard,
+    private cdRef: ChangeDetectorRef,
+    private tableService: TruckassistTableService
   ) {}
   ngOnChanges(changes: SimpleChanges) {
-    this.getExpireDate();
+    this.note.patchValue(changes.driver.currentValue.note);
+    this.getExpireDate(changes.driver.currentValue);
     this.getYearsAndDays(changes.driver.currentValue);
-      this.widthOfProgress();
+    this.widthOfProgress();
     this.templateCard;
     if (this.templateCard == true) {
       this.hideArrow = true;
@@ -93,9 +98,17 @@ export class DriverDetailsCardComponent
       this.hideArrow = false;
     }
   }
-  
+
   ngOnInit(): void {
-    
+    this.tableService.currentActionAnimation
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.driver = res.data;
+          this.getExpireDate(res.data);
+          this.cdRef.detectChanges();
+        }
+      });
     if (this.templateCard == true) {
       this.hideArrow = true;
     } else {
@@ -106,7 +119,7 @@ export class DriverDetailsCardComponent
     this.getDriversDropdown();
     this.tabsButton();
     this.getYearsAndDays(this.driver);
-    this.widthOfProgress()
+    this.widthOfProgress();
   }
 
   /**Function return user image if have in DB or default image */
@@ -119,7 +132,7 @@ export class DriverDetailsCardComponent
     }
     return this.sanitazer.bypassSecurityTrustResourceUrl(img);
   }
-  public tabsButton(){
+  public tabsButton() {
     this.tabsDriver = [
       {
         id: 223,
@@ -217,59 +230,35 @@ export class DriverDetailsCardComponent
 
   /* To copy any Text */
   public copyText(val: any, copyVal: string) {
- 
     switch (copyVal) {
       case 'phone':
         this.copiedPhone = true;
-        setTimeout(() => {
-          this.copiedPhone = false;
-        }, 1500);
         break;
 
       case 'bankAcc':
         this.copiedBankAccount = true;
-        setTimeout(() => {
-          this.copiedBankAccount = false;
-        }, 1500);
         break;
 
       case 'bankRouting':
         this.copiedBankRouting = true;
-        setTimeout(() => {
-          this.copiedBankRouting = false;
-        }, 1500);
         break;
 
       case 'ein':
         this.copiedEin = true;
-        setTimeout(() => {
-          this.copiedEin = false;
-        }, 1500);
         break;
 
       case 'ssn':
         this.copiedSSN = true;
-        setTimeout(() => {
-          this.copiedSSN = false;
-        }, 1500);
         break;
 
       case 'driver-phone':
         this.copiedDriverPhone = true;
-        setTimeout(() => {
-          this.copiedDriverPhone = false;
-        }, 1500);
         break;
       case 'driver-email':
-       
         this.copiedDriverEmail = true;
-        setTimeout(() => {
-          this.copiedDriverEmail = false;
-        }, 1500);
         break;
     }
     this.clipboar.copy(val);
-
   }
 
   public hiddenPassword(value: any, numberOfCharacterToHide: number): string {
@@ -386,24 +375,21 @@ export class DriverDetailsCardComponent
     };
   }
 
-  public getExpireDate() {
-    this.dataCDl = this.driver.cdls.map((ele) => {
+  public getExpireDate(data: DriverResponse) {
+    this.dataCDl = data.cdls.map((ele) => {
       if (moment(ele.expDate).isBefore(moment())) {
         this.expDateCard = false;
       } else {
         this.expDateCard = true;
       }
-     return{
-      ...ele,
-      showButton:this.expDateCard
-     }
-    
-     
+      return {
+        ...ele,
+        showButton: this.expDateCard,
+      };
     });
     console.log(this.dataCDl);
   }
 
-   
   public onModalAction(action: string): void {
     if (action.includes('Drug')) {
       action = 'DrugAlcohol';
@@ -462,29 +448,25 @@ export class DriverDetailsCardComponent
         })
       );
       console.log(sum);
-      this.dataProggress = this.driver.employmentHistories.map(
-        (element) => {
-          let res = element.duration.Years * 365.25 + element.duration.Days;
-          this.activePercentage = (res / sum) * 100;
-          let dates = moment(element.startDate)
-            .min(element.startDate)
-            .format('MM/DD/YY');
-          let endDate = moment(element.endDate)
-            .max(element.endDate)
-            .format('MM/DD/YY');
-          arrMinDate.push(new Date(dates));
-          arrMaxDate.push(new Date(endDate));
-          let deactivate = element.isDeactivate;
-          dateDeactivate.push(deactivate);
-          return {
-            ...element,
-            activePercentage: this.activePercentage.toFixed(1),
-          };
-        }
-      
-        
-      );
-      
+      this.dataProggress = this.driver.employmentHistories.map((element) => {
+        let res = element.duration.Years * 365.25 + element.duration.Days;
+        this.activePercentage = (res / sum) * 100;
+        let dates = moment(element.startDate)
+          .min(element.startDate)
+          .format('MM/DD/YY');
+        let endDate = moment(element.endDate)
+          .max(element.endDate)
+          .format('MM/DD/YY');
+        arrMinDate.push(new Date(dates));
+        arrMaxDate.push(new Date(endDate));
+        let deactivate = element.isDeactivate;
+        dateDeactivate.push(deactivate);
+        return {
+          ...element,
+          activePercentage: this.activePercentage.toFixed(1),
+        };
+      });
+
       let dateRes = moment(new Date(Math.min.apply(null, arrMinDate))).format(
         'MM/DD/YY'
       );
@@ -505,7 +487,7 @@ export class DriverDetailsCardComponent
     }
   }
 
-  public getYearsAndDays(data:any) {
+  public getYearsAndDays(data: any) {
     let sum = 0;
     let sum2 = 0;
     if (data.employmentHistories) {
@@ -560,16 +542,13 @@ export class DriverDetailsCardComponent
   }
 
   public onChangeDriver(action: string) {
- 
     let currentIndex = this.driversList
       .map((driver) => driver.id)
       .indexOf(this.driver.id);
     switch (action) {
       case 'previous': {
-
         currentIndex = --currentIndex;
         if (currentIndex != -1) {
-      
           this.detailsPageDriverSer.getDataDetailId(
             this.driversList[currentIndex].id
           );
@@ -578,11 +557,8 @@ export class DriverDetailsCardComponent
         break;
       }
       case 'next': {
-      
-
         currentIndex = ++currentIndex;
         if (currentIndex !== -1 && this.driversList.length > currentIndex) {
-         
           this.detailsPageDriverSer.getDataDetailId(
             this.driversList[currentIndex].id
           );

@@ -4,7 +4,6 @@
     [tooltipPrevious]="'Previous Driver'"
     [searchName]="'Driver is Owner'"
     [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
-    [cardDetailsName]="driver.currentDriverName"
     [cardDetailsDate]="driver.hired | formatDateP"
     [cardDetailsDateTerminated]="driver.dateTerminated | formatDateP"
     [statusInactive]="driver.status"
@@ -41,15 +40,14 @@
               position="top"
               class="tooltip-copy"
               [autoClose]="false"
-             
+              
               (click)="copyText(driver.ssn, 'ssn')"
             >
               <svg-icon
                 class="card-icon"
                 id="card-icon"
                 src="assets/svg/common/ic_copy.svg"
-               
-               
+                (mouseleave)="copiedSSN = false"
               ></svg-icon>
             </span>
             <div *ngIf="driver.status==0" class="inactive-wrapper">
@@ -78,6 +76,7 @@
             >
               <svg-icon
                 class="card-icon"
+                (mouseleave)="copiedDriverPhone = false"
                 src="assets/svg/common/ic_copy.svg"
               >
               </svg-icon>
@@ -106,6 +105,7 @@
               <svg-icon
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
+                (mouseleave)="copiedDriverEmail = false"
               ></svg-icon>
             </span>
           </div>
@@ -468,6 +468,7 @@
                 <svg-icon
                   (click)="copyText(driver.owner.ssnEin, 'ein')"
                   class="card-icon"
+                  (mouseleave)="copiedEin = false"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
               </span>
@@ -649,7 +650,7 @@
                 (click)="copyText(driver?.routing, 'bankRouting')"
               >
                 <svg-icon
-                 
+                (mouseleave)="copiedBankRouting = false"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -708,13 +709,7 @@
                 (click)="copyText(driver.account, 'bankAcc')"
               >
                 <svg-icon
-                  *ngIf="driver?.account !== null"
-                  (click)="
-                    copyText(
-                      driver.account ? driver.account : 'No account',
-                      'bankAcc'
-                    )
-                  "
+                  (mouseleave)="copiedBankAccount = false"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -772,7 +767,7 @@
                 (click)="copyText(driver.emergencyContactPhone, 'phone')"
               >
                 <svg-icon
-                  
+                (mouseleave)="copiedPhone = false"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -827,6 +822,7 @@
               [stateTooltipName]="cdl.state.stateName"
               [shortName]="cdl.state.stateShortName"
               (dropActions)="optionsEvent($event, 'edit-licence')"
+              [setPositionDrop]="true"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -1015,6 +1011,7 @@
               [shortName]="test.testType.name[0]"
               [stateTooltipName]="test.testType.name + ' Test'"
               (dropActions)="optionsEvent($event, 'edit-drug')"
+              [setPositionDrop]="true"
             >
               <div [ngClass]="{ 'second-progress': toggler[i] }"></div>
               <div class="cards-container">
@@ -1114,6 +1111,7 @@
               [optionsId]="med.id"
               (resizePage)="toggleResizePage(i)"
               (dropActions)="optionsEvent($event, 'edit-medical')"
+              [setPositionDrop]="true"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -1224,6 +1222,7 @@
               [cardNameCommon]="mvr?.issueDate | formatDateP"
               [expDateClose]="mvr?.issueDate | formatDateP"
               [optionsId]="mvr.id"
+              [setPositionDrop]="true"
               (dropActions)="optionsEvent($event, 'edit-mvr')"
             >
               <div class="cards-container">

@@ -84,12 +84,16 @@
             <div id="chart"></div>
           </div>
         </app-ta-custom-card>
+        <div class="divider"></div>
         <div class="note-cards">
           <app-ta-input-note
             [formControl]="noteControl"
             [isVisibleSecondDivider]="false"
-            [isReadOnly]="true"
-            [isVisibleNote]="noteControl.value"
+            [isVisibleArrow]="true"
+            [minRows]="1"
+            [isVisibleDivider]="false"
+            [placeholder]="'Write something.'"
+            [customClass]="'note-small'"
           ></app-ta-input-note>
         </div>
       </div>

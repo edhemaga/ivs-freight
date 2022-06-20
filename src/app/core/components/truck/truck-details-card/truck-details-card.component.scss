@@ -1,6 +1,6 @@
-@import '../truck-details/truck-details-item/truck-details-item.component.scss';
+@import "../truck-details/truck-details-item/truck-details-item.component.scss";
 
-.custom-card-single{
+.custom-card-single {
     background-color: #ffffff;
     border-radius: 3px;
     padding-left: 4px;
@@ -10,43 +10,46 @@
     max-width: 440px;
     margin-top: 8px;
 }
-.wrapper-additional-cards{
+.wrapper-additional-cards {
     max-height: calc(75vh - 74px);
     min-height: calc(24vh - 10px);
     display: grid;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
-    overflow-y: scroll; 
-    &::-webkit-scrollbar{
-        display: none; 
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        display: none;
     }
-    .card-footer-cmp{
-        padding-bottom:  0 !important;
+    .card-footer-cmp {
+        padding-bottom: 0 !important;
     }
 }
-.cards-item-wrapper-1{
+.cards-item-wrapper-1 {
     overflow: hidden;
 }
-.details-cards{
+.details-cards {
     background-color: #ffffff;
     width: 440px;
     padding: 9px 6px;
 }
-.note-cards{
-  padding: 0 7px;
+.note-cards {
+    padding: 0 7px;
 }
-.assignTo-item{
+.assignTo-item {
     height: 34px;
-    .assignTo-vehicle{
+    .assignTo-vehicle {
         padding-left: 6px;
-        svg{
+        svg {
             width: fit-content !important;
         }
     }
 }
 .details-header-model {
-    svg{
+    svg {
         width: 165px;
         height: 30px;
     }
+}
+.bind-height {
+    max-height: fit-content !important;
 }

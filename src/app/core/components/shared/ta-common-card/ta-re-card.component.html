@@ -83,7 +83,7 @@
       <app-table-dropdown
         [options]="options.actions"
         [id]="optionsId"
-        [placement]="'bottom-left'"
+        [placement]="setPositionDrop? 'bottom-right' : 'bottom-left'"
         (dropDownActions)="dropAct($event)"
         [customClassDropDown]="'table-dropdown-container-vertical'"
       >

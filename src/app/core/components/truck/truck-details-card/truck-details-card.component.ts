@@ -1,6 +1,6 @@
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute } from '@angular/router';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
@@ -15,7 +15,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
   styleUrls: ['./truck-details-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TruckDetailsCardComponent implements OnInit {
+export class TruckDetailsCardComponent implements OnInit,OnChanges {
   public noteControl: FormControl = new FormControl();
   public buttonsArrayPerfomance: any;
   public buttonsArrayFuel: any;
@@ -33,12 +33,12 @@ export class TruckDetailsCardComponent implements OnInit {
     private trucksQuery: TruckQuery,
     private detailsPageDriverSer: DetailsPageService
   ) {}
-
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    this.noteControl.patchValue(changes.truck.currentValue.note);
+  }
   ngOnInit(): void {
     this.getTruckDropdown();
-
-    this.noteControl.patchValue(this.truck.note);
-
     this.buttonSwitcher();
     this.initTableOptions();
   }

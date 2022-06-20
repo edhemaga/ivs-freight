@@ -1,5 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { RepairShopResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-shop-repair-details',
@@ -11,12 +12,11 @@ export class ShopRepairDetailsComponent implements OnInit {
   public shopRepairConfig:any[]=[]
   
   constructor(
-    private _act_route:ActivatedRoute
+    private act_route:ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.data=this._act_route.snapshot.data;
-    this.shopConf();    
+    this.shopConf(this.act_route.snapshot.data.shop);    
   }
  
   /**Function return id */
@@ -24,19 +24,22 @@ export class ShopRepairDetailsComponent implements OnInit {
     return item.id;
   }
   /**Function for header names and array of icons */
-  shopConf(){
+  shopConf(data:RepairShopResponse | any){
+    console.log(data);
+    
     this.shopRepairConfig = [
       {
         id: 0,
         name: 'Repair Shop Details',
         template: 'general',
+        data:data
       },
       {
         id: 1,
         name: 'Repair',
         template: 'repair',
         icon:true,
-        data:25,
+        length:25,
         customText:'Date',
         icons:[
           {
@@ -64,22 +67,26 @@ export class ShopRepairDetailsComponent implements OnInit {
                     icon:'assets/svg/common/ic_dollar.svg'
                     },
                 
-      ]
+      ],
+       data:data
       },
       {
         id: 2,
         name: 'Repaired Vehicle',
         template: 'repaired-vehicle',
-        data:18,
+        length:data.repairsByUnit.length,
         hide:true,
-        customText:'Repairs'
+        customText:'Repairs',
+        data:data
       },
       {
         id: 3,
         name: 'Review',
         template: 'review',
-        data:9,
-        customText:'Date'
+        length:data.reviews.length,
+        customText:'Date',
+        hide:false,
+        data:data
       },
     ];
   }

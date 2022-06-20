@@ -20,13 +20,14 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TtRegistrationModalComponent } from '../../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TruckResponse } from 'appcoretruckassist';
+import { card_component_animation } from '../../../shared/animations/card-component.animations';
 
 @Component({
   selector: 'app-truck-details-item',
   templateUrl: './truck-details-item.component.html',
   styleUrls: ['./truck-details-item.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: [truck_details_animation('showHideDetails')],
+  animations: [card_component_animation('showHideCardBody')],
 })
 export class TruckDetailsItemComponent implements OnInit {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;

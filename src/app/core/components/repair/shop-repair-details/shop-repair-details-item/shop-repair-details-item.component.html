@@ -1,131 +1,10 @@
 <div class="repair-component">
-  <div [ngSwitch]="data.template">
+  <div [ngSwitch]="shopData.template">
     <!---------------------------- GENERAL TEMPLATE ----------------------------->
     <div *ngSwitchCase="'general'">
-      <app-ta-details-header-card
-        [cardDetailsName]=""
-        [cardDetailsDate]="'08/03/20'"
-        [tooltipNext]="'Next Repair'"
-        [tooltipPrevious]="'Previous Repair'"
-        [searchInputName]="'Search Repair'"
-      >
-        <div class="repair-information-wrapper">
-          <div class="repair-information-item">
-            <svg-icon
-              class="repair-icon"
-              src="assets/svg/common/ic_phone.svg"
-            ></svg-icon>
-            <p class="repair-value">{{shopData?.shop?.phone | formatPhoneP  }}</p>
-          </div>
-          <div class="repair-information-item">
-            <svg-icon
-              class="repair-icon"
-              src="assets/svg/common/ic_email.svg"
-            ></svg-icon>
-            <p class="repair-value">{{ shopData?.shop?.email }}</p>
-          </div>
-          <div class="repair-information-item">
-            <svg-icon
-              class="repair-icon"
-              src="assets/svg/common/ic_address.svg"
-            ></svg-icon>
-            <p class="repair-value">
-      
-              {{ shopData?.shop?.address?.address }},
-             
-            </p>
-          </div>
-        </div>
-      </app-ta-details-header-card>
-      <div class="repair-cards">
-        <app-ta-custom-card
-          [bodyTemplate]="'card'"
-          [animationsDisabled]="false"
-          [hasDivider]="false"
-          [cardName]="'Working Hours'"
-          [isCardOpen]="true"
-        >
-          <div class="working-hours-container" *ngIf=" shopData.shop.openHours">
-            <div class="open-now-wrapper">
-              <div class="open-now-icon-text">
-                <div class="open-header">Open Now</div>
-                <svg-icon src="assets/svg/common/ic_open-now.svg"></svg-icon>
-              </div>
-              <div *ngIf="shopData?.shop.openHoursToday" class="open-time">{{ shopData?.shop.openHoursToday }}</div>
-            </div>
-            <div class="open-hours-wrapper">
-              <div class="working-days">
-                <div class="open-header">Monday - Friday</div>
-                <div class="open-working-days-value">
-                  {{ shopData.shop.openHours[1].startTime }} AM -
-                  {{ shopData.shop.openHours[1].endTime }} PM
-                </div>
-              </div>
-              <div class="working-days">
-                <div class="open-header">Saturday</div>
-                <div class="open-working-days-value">
-                  {{ shopData.shop.openHours[5].startTime }} AM -
-                  {{ shopData.shop.openHours[5].endTime }} PM
-                </div>
-              </div>
-            </div>
-            <div class="open-now-wrapper sunday">
-              <div class="open-header">Sunday</div>
-              <div class="open-working-days-value">
-                {{
-                  shopData.shop.openHours[0].startTime
-                    ?  "Closed" : shopData.shop.openHours[0].startTime
-                    
-                }}
-              </div>
-            </div>
-          </div>
-        </app-ta-custom-card>
+      <app-shop-repair-card-view [shopResponse]="shopData.data">
 
-        <app-ta-custom-card
-          [bodyTemplate]="'card'"
-          [animationsDisabled]="false"
-          [cardName]="'Service'"
-          [hasCounter]="count"
-          [isCardOpen]="true"
-        >
-     
-          <div class="service-container">
-            <div
-              *ngFor="
-                let service of shopData.shop.serviceTypes;
-                let i = index;
-                trackBy: identity
-              "
-            >
-              <div class="service-item">
-                <svg-icon
-                  [ngClass]="{ disabled: !service.active }"
-                  src="assets/svg/truckassist-table/repair/{{
-                    service.logoName
-                  }}"
-                ></svg-icon>
-
-                <span
-                  [ngClass]="{ 'cross-out': !service.active }"
-                  class="service-type"
-                  >{{ service.serviceType.name }}</span
-                >
-              </div>
-            </div>
-          </div>
-        </app-ta-custom-card>
-
-        <!--------Note--------->
-        <div class="note-cards">
-          <app-ta-input-note
-            [formControl]="noteControl"
-            [isVisibleSecondDivider]="false"
-            [isReadOnly]="true"
-            [isVisibleNote]="noteControl.value"
-          ></app-ta-input-note>
-        </div>
-      </div>
+      </app-shop-repair-card-view>
     </div>
     <div *ngSwitchCase="'repair'">
       <div class="repair-container">
@@ -154,7 +33,10 @@
                 <div *ngIf="!dummy.finishOrder" class="button-wrapper-shop">
                   Finish Order
                 </div>
-                <div class="dots-vertical" [ngClass]="{ 'dots-top': dummy.finishOrder == false }">
+                <div
+                  class="dots-vertical"
+                  [ngClass]="{ 'dots-top': dummy.finishOrder == false }"
+                >
                   <app-table-dropdown
                     [options]="dummyData.actions"
                     [customClassDropDown]="'table-dropdown-container-vertical'"
@@ -162,10 +44,9 @@
                   </app-table-dropdown>
                 </div>
               </div>
-             
+
               <div class="divider"></div>
             </div>
-           
           </span>
         </div>
       </div>
@@ -181,13 +62,13 @@
         <div class="divider"></div>
         <div
           class="repair-items-vehicle"
-          *ngFor="let dum of dummyDataVehicle; let i = index"
+          *ngFor="let vehicle of shopData.data.repairsByUnit; let i = index"
         >
           <div class="items-vehicle">
-            <span class="unit">{{ dum.unit }}</span>
-            <svg-icon class="vehicle-icon" src="{{ dum.icon }}"></svg-icon>
-            <span class="date">{{ dum.key }}</span>
-            <span class="cost">${{ dum.cost }}</span>
+            <span class="unit">{{ vehicle.unitNumber }}</span>
+            <svg-icon class="vehicle-icon" src="assets/svg/common/trailers/{{ vehicle.logoName }}"></svg-icon>
+            <span class="date">{{ vehicle.totalOrder }}</span>
+            <span class="cost">${{ vehicle.totalCost }}</span>
           </div>
           <div class="divider"></div>
         </div>
@@ -206,7 +87,7 @@
               [countColor]="'#919191'"
               [countHeight]="'24px'"
               [countWidth]="'24px'"
-              [count]="5"
+              [count]="shopData.data.upRatingCount"
             >
             </app-ta-counter>
           </div>
@@ -217,7 +98,7 @@
               [countColor]="'#919191'"
               [countHeight]="'24px'"
               [countWidth]="'24px'"
-              [count]="1"
+              [count]="shopData.data.downRatingCount"
             >
             </app-ta-counter>
             <svg-icon

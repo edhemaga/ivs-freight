@@ -38,6 +38,7 @@ export class TaReCardComponent implements OnInit, OnChanges {
   @Input() public cardSecondName: string = '';
   @Output() public dropActions = new EventEmitter<any>();
   @Input() public weeklyWidth: string = '';
+  @Input() public setPositionDrop:boolean;
   @Input() isDeactivated: any;
   public resPage: boolean = false;
   public copiedCommon: boolean = false;

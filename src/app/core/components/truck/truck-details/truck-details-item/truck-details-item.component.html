@@ -257,7 +257,7 @@
           </div>
 
           <!----------Amortization table Card---------->
-          <div *ngIf="toggler[5]">
+          <div [@showHideCardBody]="toggler[5] ? 'true' : 'false'">
             <div class="details-document-container amortization-details">
               <div class="divider"></div>
               <div class="icon-counter-wrapper">

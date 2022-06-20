@@ -5,7 +5,7 @@
   .open-now-wrapper {
     .open-now-icon-text {
       display: flex;
-      align-items: baseline;
+      align-items: center;
     }
 
     .open-time {
@@ -64,10 +64,10 @@
 }
 
 .note-cards {
+  padding: 0 7px;
   .note-body {
-    height: 40px !important;
-    padding: 0 9px !important;
-    margin-bottom: 7px !important;
+    padding: 0 2px !important;
+    // margin-bottom: 7px !important;
     .note-textarea {
       color: #6c6c6c !important;
       font-weight: 400 !important;
@@ -172,22 +172,26 @@
   height: fit-content;
   min-height: 50px;
   margin-top: 12px;
-  padding: 12px;
+  padding: 6px;
 }
 .button-wrapper-shop {
   position: relative;
-  display: flex;
-  left: 14px;
-  background-color: #6d82c7;
-  color: #ffffff;
-  cursor: pointer;
-  margin: auto;
-  font-size: 12px;
-  font-weight: 700;
-  border-radius: 2px;
-  text-align: center;
-  border: none;
-  padding: 2px 8px;
+    display: flex;
+    left: 14px;
+    background-color: #6d82c7;
+    color: #ffffff;
+    cursor: pointer;
+    margin: auto;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: center;
+    line-height: 20px;
+    height: 22px;
+    text-align: center;
+    border: none;
+    padding: 0px 8px;
   &:hover{
     background-color: #536BC2;
   }
@@ -232,7 +236,4 @@
     color: #b7b7b7 !important;
     background: rgb(183, 183, 183, 0.2) !important;
   }
-}
-.note-cards {
-  padding-right: 1px;
 }
