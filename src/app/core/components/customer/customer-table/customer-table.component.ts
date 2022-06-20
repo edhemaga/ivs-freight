@@ -239,7 +239,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       ...data,
       isSelected: false,
       textAddress: data?.mainAddress
-        ? data.mainAddress.city + ', ' + data.mainAddress.state
+        ? data.mainAddress.city + ', ' + data.mainAddress.state 
         : '',
       loadCount: '',
       total: '',

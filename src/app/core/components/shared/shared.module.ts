@@ -100,6 +100,7 @@ import { TaChartComponent } from './ta-chart/ta-chart.component';
 import { ChartsModule } from 'ng2-charts';
 import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 import { ProfileImagesModule } from './profile-images/profile-images.module';
+import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
 
 @NgModule({
   declarations: [
@@ -166,6 +167,7 @@ import { ProfileImagesModule } from './profile-images/profile-images.module';
     RepairShopModalComponent,
     RepairPmModalComponent,
     RepairOrderModalComponent,
+    TaTabSwitchComponent,
   ],
   imports: [
     CommonModule,
@@ -285,6 +287,7 @@ import { ProfileImagesModule } from './profile-images/profile-images.module';
     TaCurrencyProgressBarComponent,
     TaChartComponent,
     FilterComponent,
+    TaTabSwitchComponent,
 
     // Modals Components
     TaModalComponent,

@@ -23,7 +23,10 @@
               *ngIf="
                 !column.hidden && column.ngTemplate === '' && column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width': column?.minWidth ? column.minWidth : 'unset'
+              }"
               class="td-content"
             >
               <div class="no-template">NO TEMPLATE</div>
@@ -36,7 +39,10 @@
                 column.ngTemplate === 'checkbox' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               class="td-content set-center"
             >
               <input
@@ -56,7 +62,10 @@
                 column.ngTemplate === 'user-checkbox' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               class="td-content set-center"
             >
               <!-- IF USER IS OWNER -->
@@ -89,7 +98,10 @@
                 column.ngTemplate === 'avatar' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               class="td-content"
             >
               <div class="avatar-container">
@@ -121,7 +133,10 @@
                 column.ngTemplate === 'user-avatar' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               class="td-content"
             >
               <div class="user-avatar-container">
@@ -146,7 +161,10 @@
                 column.ngTemplate === 'user-status' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="user-status-container">{{ row[column.field] }}</div>
             </div>
@@ -159,7 +177,10 @@
                 column.ngTemplate === 'nameLink' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <span
                 class="table-name-link"
@@ -174,7 +195,10 @@
               *ngIf="
                 !column.hidden && column.ngTemplate === 'oos' && column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="oos-container">
                 <div [ngClass]="{ 'oos-active': row.oos[0].active }">
@@ -269,7 +293,10 @@
                 column.ngTemplate === 'customer-name' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="customer-name-container">
                 <svg-icon
@@ -298,7 +325,10 @@
                 column.ngTemplate === 'rating' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw>
             </div>
@@ -311,7 +341,10 @@
                 column.ngTemplate === 'item-drop' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               (click)="onShowItemDrop(i)"
             >
               <!-- [innerHtml]="row[column.field] | taHighlight: highlightingWords" -->
@@ -350,7 +383,10 @@
                 column.ngTemplate === 'total' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
             highlightingWords) : '' " -->
@@ -368,7 +404,10 @@
                 column.ngTemplate === 'service' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="service-container set-center">
                 <div
@@ -420,7 +459,10 @@
               *ngIf="
                 !column.hidden && column.ngTemplate === 'ppg' && column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <!-- [innerHtml]="'$0' | taHighlight: highlightingWords" -->
               <span class="table-text" [innerHtml]="'$0'"></span>
@@ -432,7 +474,10 @@
               *ngIf="
                 !column.hidden && column.ngTemplate === 'url' && column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <a
                 class="table-url"
@@ -449,7 +494,10 @@
                 column.ngTemplate === 'password' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <svg-icon
                 class="table-password-icon"
@@ -484,7 +532,10 @@
                 column.ngTemplate === 'label' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div
                 class="table-lable"
@@ -502,7 +553,10 @@
               *ngIf="
                 !column.hidden && column.ngTemplate === 'text' && column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <span class="table-text">{{
                 row[column.field] ? row[column.field] : ""
@@ -517,7 +571,10 @@
                 column.ngTemplate === 'semi-bold-text' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <span class="semi-bold-table-text">{{
                 row[column.field] ? row[column.field] : ""
@@ -532,7 +589,10 @@
                 column.ngTemplate === 'color' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div
                 [ngStyle]="{ background: row[column.field] }"
@@ -549,7 +609,10 @@
               *ngIf="
                 !column.hidden && column.ngTemplate === 'svg' && column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="truckassist-icon" [class]="row.svgClass">
                 <svg-icon
@@ -567,7 +630,10 @@
                 column.ngTemplate === 'pickup' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="pickup-and-delivery-container">
                 <div class="picup-count">{{ row.pickupCount }}</div>
@@ -583,7 +649,10 @@
                 column.ngTemplate === 'delivery' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="pickup-and-delivery-container">
                 <div class="delivery-count">{{ row.deliveryCount }}</div>
@@ -599,7 +668,10 @@
                 column.ngTemplate === 'applicantDoneCheckbox' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="table-done-checkbox">
                 <div
@@ -619,7 +691,10 @@
                 column.ngTemplate === 'applicantReview' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="table-applicant-review">
                 <div
@@ -639,7 +714,10 @@
                 column.ngTemplate === 'textState' &&
                 column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               class="td-content"
             >
               <span
@@ -652,7 +730,10 @@
             <!-- PROGRESS COLUMN TEMPLATE -->
             <div
               class="td-content"
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               *ngIf="
                 !column.hidden &&
                 column.ngTemplate === 'progress' &&
@@ -717,7 +798,10 @@
               *ngIf="
                 !column.hidden && column.ngTemplate === '' && !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               class="td-content"
             >
               <div class="no-template">NO TEMPLATE</div>
@@ -730,7 +814,10 @@
                 column.ngTemplate === 'avatar' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               class="td-content"
             >
               <div class="avatar-container">
@@ -762,7 +849,10 @@
                 column.ngTemplate === 'user-avatar' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               class="td-content"
             >
               <div class="user-avatar-container">
@@ -787,7 +877,10 @@
                 column.ngTemplate === 'user-status' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="user-status-container">{{ row[column.field] }}</div>
             </div>
@@ -800,7 +893,10 @@
                 column.ngTemplate === 'nameLink' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <span class="table-name-link">{{ row[column.field] }}</span>
             </div>
@@ -811,7 +907,10 @@
               *ngIf="
                 !column.hidden && column.ngTemplate === 'oos' && !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="oos-container">
                 <div [ngClass]="{ 'oos-active': row.oos[0].active }">
@@ -906,7 +1005,10 @@
                 column.ngTemplate === 'customer-name' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="customer-name-container">
                 <svg-icon
@@ -935,7 +1037,10 @@
                 column.ngTemplate === 'rating' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw>
             </div>
@@ -948,7 +1053,10 @@
                 column.ngTemplate === 'item-drop' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               (click)="onShowItemDrop(i)"
             >
               <!-- [innerHtml]="row[column.field] | taHighlight: highlightingWords" -->
@@ -987,7 +1095,10 @@
                 column.ngTemplate === 'total' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
             highlightingWords) : '' " -->
@@ -1005,7 +1116,10 @@
                 column.ngTemplate === 'service' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="service-container set-center">
                 <div
@@ -1057,7 +1171,10 @@
               *ngIf="
                 !column.hidden && column.ngTemplate === 'ppg' && !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <!-- [innerHtml]="'$0' | taHighlight: highlightingWords" -->
               <span class="table-text" [innerHtml]="'$0'"></span>
@@ -1069,7 +1186,10 @@
               *ngIf="
                 !column.hidden && column.ngTemplate === 'url' && !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <a
                 class="table-url"
@@ -1086,7 +1206,10 @@
                 column.ngTemplate === 'password' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <svg-icon
                 class="table-password-icon"
@@ -1121,7 +1244,10 @@
                 column.ngTemplate === 'label' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div
                 class="table-lable"
@@ -1141,7 +1267,10 @@
                 column.ngTemplate === 'text' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <span class="table-text">{{
                 row[column.field] ? row[column.field] : ""
@@ -1156,7 +1285,10 @@
                 column.ngTemplate === 'semi-bold-text' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <span class="semi-bold-table-text">{{
                 row[column.field] ? row[column.field] : ""
@@ -1171,7 +1303,10 @@
                 column.ngTemplate === 'color' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div
                 [ngStyle]="{ background: row[column.field] }"
@@ -1188,7 +1323,10 @@
               *ngIf="
                 !column.hidden && column.ngTemplate === 'svg' && !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="truckassist-icon" [class]="row.svgClass">
                 <svg-icon
@@ -1206,7 +1344,10 @@
                 column.ngTemplate === 'pickup' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="pickup-and-delivery-container">
                 <div class="picup-count">{{ row.pickupCount }}</div>
@@ -1222,7 +1363,10 @@
                 column.ngTemplate === 'delivery' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="pickup-and-delivery-container">
                 <div class="delivery-count">{{ row.deliveryCount }}</div>
@@ -1238,7 +1382,10 @@
                 column.ngTemplate === 'applicantDoneCheckbox' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="table-done-checkbox">
                 <div
@@ -1258,7 +1405,10 @@
                 column.ngTemplate === 'applicantReview' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <div class="table-applicant-review">
                 <div
@@ -1278,7 +1428,10 @@
                 column.ngTemplate === 'textState' &&
                 !column.isPined
               "
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               class="td-content"
             >
               <span class="table-text table-text-state">{{
@@ -1289,7 +1442,10 @@
             <!-- PROGRESS COLUMN TEMPLATE -->
             <div
               class="td-content"
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               *ngIf="
                 !column.hidden &&
                 column.ngTemplate === 'progress' &&
@@ -1347,7 +1503,10 @@
             <!-- ATTACHMENTS COLUMN TEMPLATE -->
             <div
               *ngIf="!column.hidden && column.ngTemplate === 'attachments'"
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               class="td-content"
             >
               <div (click)="onShowAttachments(row)" class="attachments-btn">
@@ -1358,7 +1517,10 @@
             <!-- NOTE COLUMN TEMPLATE -->
             <div
               *ngIf="!column.hidden && column.ngTemplate === 'note'"
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
               class="td-content set-center"
             >
               <!-- <app-ta-note
@@ -1375,9 +1537,7 @@
                 [rowIndex]="i"
               ></app-dispatcher-note> -->
               <app-app-note
-                [note]="
-                  row?.note ? row.note : ''
-                "
+                [note]="row?.note ? row.note : ''"
                 [note_expanded]="false"
                 [rowIndex]="i"
               ></app-app-note>
@@ -1387,7 +1547,10 @@
             <div
               class="td-content set-center"
               *ngIf="!column.hidden && column.ngTemplate === 'actions'"
-              [ngStyle]="{ width: column.width + 'px' }"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
             >
               <app-table-dropdown
                 (dropDownActions)="onDropAction($event)"

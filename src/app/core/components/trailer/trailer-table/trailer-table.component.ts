@@ -16,7 +16,7 @@ import { TrailerState } from '../state/trailer.store';
 @Component({
   selector: 'app-trailer-table',
   templateUrl: './trailer-table.component.html',
-  styleUrls: ['./trailer-table.component.scss'],
+  styleUrls: ['./trailer-table.component.scss']
 })
 export class TrailerTableComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();

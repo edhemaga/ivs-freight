@@ -5,10 +5,18 @@
   [isModalValid]="trailerForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-  <app-tab-switcher
+
+  <app-ta-tab-switch
+  [tabs]="tabs"
+  (switchClicked)="tabChange($event)" 
+  [type]="'modal-popup'"
+  >
+  </app-ta-tab-switch>  
+
+  <!-- <app-tab-switcher
     (switchClicked)="tabChange($event)"
     [tabs]="tabs"
-  ></app-tab-switcher>
+  ></app-tab-switcher> -->
 
   <form [formGroup]="trailerForm" class="form-container">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">

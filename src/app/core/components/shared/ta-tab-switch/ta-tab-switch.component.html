@@ -1,0 +1,4 @@
+<div class="tab-switch-holder {{type}}">
+    <div *ngFor="let item of tabs; let indx=index" class="tab-switch-items-holder" [class.active]="indx == indexSwitch" (click)="switchTab($event, indx, item)">{{item.name}}</div>
+    <div class="slide-active-holder" [ngStyle]="{'width': hoverStyle.width + 'px', 'left': hoverStyle.x + 'px'}"></div>
+</div>
