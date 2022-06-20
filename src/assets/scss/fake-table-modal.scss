@@ -550,4 +550,131 @@
       padding-left: 6px;
     }
   }
+
+  // Repair Order Modal Items
+  &-repair-bill-item {
+    .common-fake-table-label {
+      p {
+        &:nth-child(2) {
+          margin-left: 36px;
+        }
+
+        &:nth-child(3) {
+          margin-left: 212px;
+        }
+
+        &:nth-child(4) {
+          margin-left: 26px;
+        }
+
+        &:nth-child(5) {
+          margin-left: 63px;
+        }
+
+        &:nth-child(6) {
+          margin-left: 74px;
+        }
+      }
+    }
+
+    .common-fake-table-card {
+      grid-template-columns: 18px 332px 90px 60px 100px;
+      column-gap: 12px;
+      align-items: center;
+      padding-left: 6px;
+      position: relative;
+      align-items: center;
+
+      p {
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #919191;
+
+        &:nth-child(1) {
+          padding-left: 8px;
+        }
+
+        &::-moz-selection {
+          background-color: #919191 !important;
+        }
+
+        &::selection {
+          background-color: #919191 !important;
+        }
+      }
+
+      .item-subtotal {
+        text-align: end;
+      }
+
+      .desc-pm-container {
+        position: relative;
+
+        .pm-item {
+          position: absolute;
+          right: 6px;
+          top: 1px;
+        }
+      }
+    }
+  }
+
+  &-repair-order-item {
+    .common-fake-table-label {
+      p {
+        &:nth-child(2) {
+          margin-left: 36px;
+        }
+
+        &:nth-child(3) {
+          margin-left: 426px;
+        }
+
+        &:nth-child(4) {
+          margin-left: 25px;
+        }
+      }
+    }
+
+    .common-fake-table-card {
+      grid-template-columns: 18px 546px 60px;
+      column-gap: 12px;
+      align-items: center;
+      padding-left: 6px;
+      position: relative;
+      align-items: center;
+
+      p {
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #919191;
+
+        &:nth-child(1) {
+          padding-left: 8px;
+        }
+
+        &::-moz-selection {
+          background-color: #919191 !important;
+        }
+
+        &::selection {
+          background-color: #919191 !important;
+        }
+      }
+
+      .desc-pm-container {
+        position: relative;
+
+        .pm-item {
+          position: absolute;
+          right: 6px;
+          top: 1px;
+        }
+      }
+    }
+  }
 }
