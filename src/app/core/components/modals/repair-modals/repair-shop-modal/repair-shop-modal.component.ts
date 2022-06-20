@@ -64,7 +64,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     if (this.editData) {
       this.editData = {
         ...this.editData,
-        id: 3,
+        id: 1,
       };
       this.editRepairShopById(this.editData.id);
     }
@@ -254,7 +254,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             account: res.account,
             note: res.note,
           });
-
+          console.log(res);
           this.selectedAddress = res.address;
           this.selectedBank = res.bank;
           this.isPhoneExtExist = res.phoneExt ? true : false;
@@ -263,7 +263,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             return {
               id: item.serviceType.id,
               serviceType: item.serviceType.name,
-              svg: 'assets/svg/common/ic_dealer.svg',
+              svg: `assets/svg/common/repair-service/${item.logoName}`,
               active: item.active,
             };
           });
@@ -419,28 +419,29 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RepairShopModalResponse) => {
-          this.labelsBank = res.banks.map(item => {
+          this.labelsBank = res.banks.map((item) => {
             return {
               ...item,
               folder: 'common',
-              subFolder: 'banks'
-            }
+              subFolder: 'banks',
+            };
           });
-          this.services = res.serviceTypes.map(item => {
+          this.services = res.serviceTypes.map((item) => {
             return {
               id: item.serviceType.id,
               serviceType: item.serviceType.name,
               svg: `assets/svg/common/repair-services/${item.logoName}`,
               active: false,
-            }
-          })
+            };
+          });
+          console.log(res);
         },
         error: () => {
           this.notificationService.error(
             "Repair shop can't get dropdowns",
             'Error: '
           );
-        }
+        },
       });
   }
 

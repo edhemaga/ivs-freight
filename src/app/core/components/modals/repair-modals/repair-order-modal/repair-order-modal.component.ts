@@ -262,6 +262,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RepairModalResponse) => {
+          console.log(res);
           this.pmTrucks = this.pmOptions = res.pmTrucks.map((item) => {
             return {
               ...item,
