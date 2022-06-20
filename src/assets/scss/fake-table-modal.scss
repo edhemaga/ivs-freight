@@ -605,6 +605,18 @@
         }
       }
 
+      &.card-item-active {
+        p {
+          color: #536bc2 !important;
+          &::selection {
+            background-color: rgb(83, 107, 194, 0.2) !important;
+          }
+          &::-moz-selection {
+            background-color: rgb(83, 107, 194, 0.2) !important;
+          }
+        }
+      }
+
       .item-subtotal {
         text-align: end;
       }
@@ -616,6 +628,21 @@
           position: absolute;
           right: 6px;
           top: 1px;
+        }
+
+        .pm-svg {
+          position: absolute;
+          top: 0px;
+          right: 9px;
+          cursor: pointer;
+
+          &.active {
+            svg {
+              path {
+                fill: #536bc2;
+              }
+            }
+          }
         }
       }
     }
@@ -658,11 +685,23 @@
         }
 
         &::-moz-selection {
-          background-color: #919191 !important;
+          background-color: rgb(145, 145, 145, 0.2) !important;
         }
 
         &::selection {
-          background-color: #919191 !important;
+          background-color: rgb(145, 145, 145, 0.2) !important;
+        }
+      }
+
+      &.card-item-active {
+        p {
+          color: #536bc2 !important;
+          &::selection {
+            background-color: rgb(83, 107, 194, 0.2) !important;
+          }
+          &::-moz-selection {
+            background-color: rgb(83, 107, 194, 0.2) !important;
+          }
         }
       }
 
@@ -673,6 +712,21 @@
           position: absolute;
           right: 6px;
           top: 1px;
+        }
+
+        .pm-svg {
+          position: absolute;
+          top: 0px;
+          right: 9px;
+          cursor: pointer;
+
+          &.active {
+            svg {
+              path {
+                fill: #536bc2;
+              }
+            }
+          }
         }
       }
     }

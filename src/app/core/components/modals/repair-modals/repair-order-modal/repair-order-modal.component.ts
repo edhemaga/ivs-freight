@@ -1,7 +1,13 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { NotificationService } from './../../../../services/notification/notification.service';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { RepairModalResponse } from 'appcoretruckassist';
+import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
 
 @Component({
   selector: 'app-repair-order-modal',
@@ -9,7 +15,10 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
   styleUrls: ['./repair-order-modal.component.scss'],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
+  @ViewChild('t2') public popoverRef: NgbPopover;
+
   @Input() editData: any;
+
   public repairOrderForm: FormGroup;
 
   public selectedTab: number = 1;
@@ -48,64 +57,45 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   ];
 
   public labelsUnit: any[] = [];
-  public labelsRepairShop: any = [];
-
-  public services: any[] = [
-    {
-      id: 1,
-      serviceType: 'Mobile',
-      svg: 'assets/svg/common/repair-services/ic_mobile.svg',
-      active: false,
-    },
-    {
-      id: 2,
-      serviceType: 'Shop',
-      svg: 'assets/svg/common/repair-services/ic_shop.svg',
-      active: false,
-    },
-    {
-      id: 3,
-      serviceType: 'Towing',
-      svg: 'assets/svg/common/repair-services/ic_towing.svg',
-      active: false,
-    },
-    {
-      id: 4,
-      serviceType: 'Parts',
-      svg: 'assets/svg/common/repair-services/ic_parts.svg',
-      active: false,
-    },
-    {
-      id: 5,
-      serviceType: 'Tire',
-      svg: 'assets/svg/common/repair-services/ic_tire.svg',
-      active: false,
-    },
-    {
-      id: 6,
-      serviceType: 'Dealer',
-      svg: 'assets/svg/common/repair-services/ic_dealer.svg',
-      active: false,
-    },
-  ];
-
-  public documents: any[] = [];
-
   public selectedUnit: any = null;
+
+  public labelsRepairShop: any = [];
   public selectedRepairShop: any = null;
 
+  public services: any[] = [];
+  public documents: any[] = [];
+
+  // Sum of items
   public subtotal: { id: number; value: number }[] = [];
   public quantity: any[] = [];
   public itemsCounter: number = 0;
 
+  // PMs
+  public selectedPM: any = {
+    id: 0,
+    logoName: 'assets/svg/common/repair-pm/ic_default_pm.svg',
+    mileage: 0,
+    passedMileage: null,
+    status: { name: 'Active', id: 2 },
+    title: 'Turbo',
+  };
+  public pmOptions: any[] = []; // this array fill when truck/trailer switch change
+  private pmTrucks: any[] = [];
+  private pmTrailers: any[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private repairService: RepairTService,
+    private notificationService: NotificationService,
+    private modalService: ModalService,
+    private ngbActiveModal: NgbActiveModal
   ) {}
 
   ngOnInit() {
     this.createForm();
     this.onTypeOfRepair(this.typeOfRepair);
+    this.getRepairDropdowns();
   }
 
   private createForm() {
@@ -120,6 +110,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
   }
+
+  public onModalAction(data) {}
 
   public get items(): FormArray {
     return this.repairOrderForm.get('items') as FormArray;
@@ -201,8 +193,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     this.selectedTab = event.id;
   }
 
-  public onModalAction(data) {}
-
   public onTypeOfRepair(event: any) {
     this.typeOfRepair = [...event];
     this.typeOfRepair.forEach((item) => {
@@ -212,14 +202,29 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     });
 
     if (this.repairOrderForm.get('repairType')?.value === 'Truck') {
-      this.inputService.changeValidators(
-        this.repairOrderForm.get('repairType')
-      );
+      this.pmOptions = this.pmTrucks;
+      if (!this.pmOptions.find((item) => item.title === 'Add New')) {
+        this.pmOptions.push({
+          id: this.pmTrucks.length + 1,
+          logoName: null,
+          mileage: null,
+          passedMileage: null,
+          status: null,
+          title: 'Add New',
+        });
+      }
     } else {
-      this.inputService.changeValidators(
-        this.repairOrderForm.get('repairType'),
-        false
-      );
+      this.pmOptions = this.pmTrailers;
+      if (!this.pmOptions.find((item) => item.title === 'Add New')) {
+        this.pmOptions.push({
+          id: this.pmTrucks.length + 1,
+          logoName: null,
+          mileage: null,
+          passedMileage: null,
+          status: null,
+          title: 'Add New',
+        });
+      }
     }
   }
 
@@ -249,6 +254,88 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
   public identity(index: number, item: any): string {
     return item.value;
+  }
+
+  private getRepairDropdowns() {
+    this.repairService
+      .getRepairModalDropdowns()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: RepairModalResponse) => {
+          this.pmTrucks = this.pmOptions = res.pmTrucks.map((item) => {
+            return {
+              ...item,
+              logoName: `assets/svg/common/repair-pm/${item.logoName}`,
+            };
+          });
+          if (!this.pmTrucks.find((item) => item.title === 'Add New')) {
+            this.pmTrucks.push({
+              id: this.pmTrucks.length + 1,
+              logoName: null,
+              mileage: null,
+              passedMileage: null,
+              status: null,
+              title: 'Add New',
+            });
+          }
+          this.pmTrailers = res.pmTrailers.map((item) => {
+            return {
+              ...item,
+              logoName: `assets/svg/common/repair-pm/${item.logoName}`,
+            };
+          });
+          if (!this.pmTrailers.find((item) => item.title === 'Add New')) {
+            this.pmTrailers.push({
+              id: this.pmTrailers.length + 1,
+              logoName: null,
+              mileage: null,
+              passedMileage: null,
+              status: null,
+              title: 'Add New',
+            });
+          }
+          this.services = res.serviceTypes.map((item) => {
+            return {
+              id: item.id,
+              serviceType: item.name,
+              svg: `assets/svg/common/repair-services/ic_dealer.svg`,
+              active: false,
+            };
+          });
+          this.labelsRepairShop = res.repairShops;
+        },
+        error: () => {
+          this.notificationService.error("Repair Dropdowns can't be loaded");
+        },
+      });
+  }
+
+  public onAction(action: any) {
+    this.selectedPM = action;
+
+    if (
+      this.selectedPM.id !== 0 &&
+      this.selectedPM.id !== this.pmOptions[this.pmOptions.length - 1]
+    ) {
+      this.inputService.changeValidators(this.repairOrderForm.get('odometer'));
+    } else {
+      this.inputService.changeValidators(
+        this.repairOrderForm.get('odometer'),
+        false
+      );
+    }
+    if (this.pmOptions[this.pmOptions.length - 1].title === 'Add New') {
+      this.ngbActiveModal.close();
+      const timeout = setTimeout(() => {
+        this.modalService.openModal(
+          RepairPmModalComponent,
+          { size: 'small' },
+          { type: 'new', action: 'generic' }
+        );
+        clearTimeout(timeout);
+      }, 100);
+    }
+    this.popoverRef.close();
   }
 
   ngOnDestroy(): void {}

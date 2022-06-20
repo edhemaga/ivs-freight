@@ -32,4 +32,6 @@ export interface ITaInput {
   multiSelectDropdownActive?: boolean;
   // PM Modal
   modalPM?: boolean;
+  // Fake Modal Table
+  fakeModalTableInput?: boolean;
 }

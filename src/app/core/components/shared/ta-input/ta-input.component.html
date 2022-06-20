@@ -91,7 +91,8 @@
       !inputConfig.isDisabled &&
       !inputConfig.placeholderIcon &&
       !inputConfig.isDropdown &&
-      !inputConfig.blackInput
+      !inputConfig.blackInput &&
+      !inputConfig.fakeModalTableInput
     "
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
@@ -257,11 +258,11 @@
   >
   </svg-icon>
 
-  <!-- Input Control 
-  
+  <!-- Input Control
+
      thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
     separatorLimit="99999999999999"
-  
+
   -->
   <input
     #input
@@ -279,9 +280,9 @@
     [max]="inputConfig.max"
     [step]="inputConfig.step ? inputConfig.step : null"
     inputformat="dd-mm-yy"
-    class="input-control 
-    {{ inputConfig.textTransform }} 
-    {{ inputConfig.textAlign }} 
+    class="input-control
+    {{ inputConfig.textTransform }}
+    {{ inputConfig.textAlign }}
     {{ inputConfig.customClass }}"
     [ngClass]="{
       disabled: !getSuperControl.value && inputConfig.isDisabled,

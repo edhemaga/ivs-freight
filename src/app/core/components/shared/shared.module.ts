@@ -165,7 +165,7 @@ import { ProfileImagesModule } from './profile-images/profile-images.module';
     AccidentModalComponent,
     RepairShopModalComponent,
     RepairPmModalComponent,
-    RepairOrderModalComponent
+    RepairOrderModalComponent,
   ],
   imports: [
     CommonModule,
@@ -308,7 +308,7 @@ import { ProfileImagesModule } from './profile-images/profile-images.module';
     ViolationModalComponent,
     AccidentModalComponent,
     RepairPmModalComponent,
-    RepairOrderModalComponent
+    RepairOrderModalComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
