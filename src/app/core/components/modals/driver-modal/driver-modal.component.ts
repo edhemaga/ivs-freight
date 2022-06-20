@@ -507,7 +507,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (data: GetDriverModalResponse) => {
-          this.labelsBank = data.banks;
+          this.labelsBank = data.banks.map(item => {
+            return {
+              ...item,
+              folder: 'common',
+              subFolder: 'banks'
+            }
+          });
           this.labelsPayType = data.payTypes;
         },
         error: (err) => {

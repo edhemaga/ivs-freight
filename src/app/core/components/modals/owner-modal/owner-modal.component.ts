@@ -364,7 +364,14 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: OwnerModalResponse) => {
-          this.labelsBank = res.banks;
+          this.labelsBank = res.banks.map(item => {
+            return {
+              ...item,
+              folder: 'common',
+              subFolder: 'banks'
+            }
+          });
+          console.log(this.labelsBank)
         },
         error: () => {
           this.notificationService.error(

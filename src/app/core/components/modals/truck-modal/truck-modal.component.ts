@@ -31,7 +31,7 @@ import { TruckTService } from '../../truck/state/truck.service';
   styleUrls: ['./truck-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService] 
+  providers: [ModalService]
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -319,7 +319,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       truckTypeId: this.selectedTruckType ? this.selectedTruckType.id : null,
       truckMakeId: this.selectedTruckMake ? this.selectedTruckMake.id : null,
       colorId: this.selectedColor ? this.selectedColor.id : null,
-      ownerId: this.selectedOwner ? this.selectedOwner.id : null,
+      ownerId: this.truckForm.get('companyOwned').value ? null : (this.selectedOwner ? this.selectedOwner.id : null),
       truckGrossWeightId: this.selectedTruckGrossWeight
         ? this.selectedTruckGrossWeight.id
         : null,
@@ -415,6 +415,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.selectedTruckMake = res.truckMake ? res.truckMake : null;
           this.selectedColor = res.color ? res.color : null;
           this.selectedOwner = res.owner ? res.owner : null;
+
           this.selectedTruckGrossWeight = res.truckGrossWeight
             ? res.truckGrossWeight
             : null;

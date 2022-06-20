@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
+import { PmTService } from '../../../repair/state/pm.service.ts.service';
 
 @Component({
   selector: 'app-repair-pm-modal',
@@ -9,13 +10,22 @@ import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculati
 })
 export class RepairPmModalComponent implements OnInit {
   @Input() editData: any;
-
   public PMform: FormGroup;
+  public pmTruckList: any[] = [];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private pmService: PmTService
+  ) {}
 
   ngOnInit() {
     this.createForm();
+
+    if (this.editData) {
+      this.editData = {
+        ...this.editData,
+      };
+    }
   }
 
   private createForm() {
