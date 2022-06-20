@@ -10,12 +10,14 @@
  * Do not edit the class manually.
  */
 import { RepairType } from './repairType';
+import { RepairUnitType } from './repairUnitType';
 import { RepairItemCommand } from './repairItemCommand';
 import { RepairServiceTypeCommand } from './repairServiceTypeCommand';
 
 
 export interface CreateRepairCommand { 
     repairType?: RepairType;
+    unitType?: RepairUnitType;
     truckId?: number | null;
     trailerId?: number | null;
     odometer?: number | null;

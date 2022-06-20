@@ -9,15 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
 
 
-export interface RepairShopShortResponse { 
-    id?: number;
-    name?: string | null;
-    phone?: string | null;
-    phoneExt?: string | null;
-    email?: string | null;
-    address?: AddressEntity;
-}
+export type RepairUnitType = 'Truck' | 'Trailer';
+
+export const RepairUnitType = {
+    Truck: 'Truck' as RepairUnitType,
+    Trailer: 'Trailer' as RepairUnitType
+};
 

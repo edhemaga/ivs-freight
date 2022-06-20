@@ -207,6 +207,7 @@ model/repairShopServiceTypeCommand.ts
 model/repairShopServiceTypeResponse.ts
 model/repairShopShortResponse.ts
 model/repairType.ts
+model/repairUnitType.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts

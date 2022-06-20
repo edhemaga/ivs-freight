@@ -296,9 +296,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           }
           this.services = res.serviceTypes.map((item) => {
             return {
-              id: item.id,
-              serviceType: item.name,
-              svg: `assets/svg/common/repair-services/ic_dealer.svg`,
+              id: item.serviceType.id,
+              serviceType: item.serviceType.name,
+              svg: `assets/svg/common/repair-services/${item.logoName}`,
               active: false,
             };
           });

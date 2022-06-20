@@ -20,6 +20,7 @@ export interface RepairResponse {
     id?: number;
     companyId?: number;
     repairType?: EnumValue;
+    unitType?: EnumValue;
     truckId?: number | null;
     truck?: TruckMinimalResponse;
     trailerId?: number | null;

@@ -211,7 +211,7 @@ export class RepairService {
     /**
      * @param repairShopId 
      * @param repairType 
-     * @param serviceType 
+     * @param unitType 
      * @param dateFrom 
      * @param dateTo 
      * @param isPM 
@@ -225,10 +225,10 @@ export class RepairService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairListGet(repairShopId?: number, repairType?: number, serviceType?: number, dateFrom?: string, dateTo?: string, isPM?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RepairListResponse>;
-    public apiRepairListGet(repairShopId?: number, repairType?: number, serviceType?: number, dateFrom?: string, dateTo?: string, isPM?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RepairListResponse>>;
-    public apiRepairListGet(repairShopId?: number, repairType?: number, serviceType?: number, dateFrom?: string, dateTo?: string, isPM?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RepairListResponse>>;
-    public apiRepairListGet(repairShopId?: number, repairType?: number, serviceType?: number, dateFrom?: string, dateTo?: string, isPM?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiRepairListGet(repairShopId?: number, repairType?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RepairListResponse>;
+    public apiRepairListGet(repairShopId?: number, repairType?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RepairListResponse>>;
+    public apiRepairListGet(repairShopId?: number, repairType?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RepairListResponse>>;
+    public apiRepairListGet(repairShopId?: number, repairType?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (repairShopId !== undefined && repairShopId !== null) {
@@ -239,9 +239,9 @@ export class RepairService {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>repairType, 'RepairType');
         }
-        if (serviceType !== undefined && serviceType !== null) {
+        if (unitType !== undefined && unitType !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>serviceType, 'ServiceType');
+            <any>unitType, 'UnitType');
         }
         if (dateFrom !== undefined && dateFrom !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
