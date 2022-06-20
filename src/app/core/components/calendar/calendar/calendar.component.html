@@ -19,19 +19,27 @@
       </div>
       <input class="search" type="text" placeholder="Find Event" />
     </div>
-    <div class="calendar-items-holder">
-      <!-- <app-tab-switcher
+    <div class="switch-holder">
+      <app-ta-tab-switch
+      [tabs]="tabsCalendar"
+      (switchClicked)="changeTab($event)" 
+      >
+      </app-ta-tab-switch>  
+    </div>
+    
+    <!-- <div class="calendar-items-holder">
+      <app-tab-switcher
       [tabs]="tabsCalendar"
       (switchClicked)="changeTab($event)" 
       >
         
-      </app-tab-switcher> -->
+      </app-tab-switcher>
       <div class="day-holder" [class.active]="currentCalendarView == 'day'" (click)="changeCalendarView('day')">Day</div>
       <div class="day-holder week" [class.active]="currentCalendarView == 'week'" (click)="changeCalendarView('week')">Week</div>
       <div class="day-holder month" [class.active]="currentCalendarView == 'month'" (click)="changeCalendarView('month')">Month</div>
       <div class="day-holder year" [class.active]="currentCalendarView == 'year'" (click)="changeCalendarView('year')">Year</div>
       <div class="day-holder schedule" [class.active]="currentCalendarView == 'schedule'" (click)="changeCalendarView('schedule')">Schedule</div>
-    </div>
+    </div> -->
     <div class="calendar-header">
       <app-ta-custom-card 
         [cardName]="'July, 2022'" 
@@ -61,37 +69,43 @@
                 <div class="calendar-holder">
                   <div 
                   class="calendar-items"
+                  [class.active]="t2?.isOpen()"
                   #t2="ngbPopover"
                   [ngbPopover]="eventsPopover"
-                  triggers="mouseenter:mouseleave" 
                   [placement]="['bottom-left']"
-                  [popoverClass]="'eventspopovermain'"
+                  [popoverClass]="'eventspopovercalendarmain'"
                   autoclose="outside"
                   [container]="'body'"
+                  triggers="'manual'" 
+                  (click)="openCalendarEvenPopover(t2, 1)"            
                   >
                     JAN
                   </div>
                   <div 
                   class="calendar-items"
-                  #t2="ngbPopover"
+                  [class.active]="t3?.isOpen()"
+                  #t3="ngbPopover"
                   [ngbPopover]="eventsPopover"
-                  triggers="mouseenter:mouseleave" 
                   [placement]="['bottom-left']"
-                  [popoverClass]="'eventspopovermain'"
+                  [popoverClass]="'eventspopovercalendarmain'"
                   autoclose="outside"
                   [container]="'body'"
+                  triggers="'manual'" 
+                  (click)="openCalendarEvenPopover(t3, 2)"            
                   >
                     FEB
                   </div>
                   <div 
                   class="calendar-items"
-                  #t2="ngbPopover"
+                  [class.active]="t4?.isOpen()"
+                  #t4="ngbPopover"
                   [ngbPopover]="eventsPopover"
-                  triggers="mouseenter:mouseleave" 
                   [placement]="['bottom-left']"
-                  [popoverClass]="'eventspopovermain'"
+                  [popoverClass]="'eventspopovercalendarmain'"
                   autoclose="outside"
                   [container]="'body'"
+                  triggers="'manual'" 
+                  (click)="openCalendarEvenPopover(t4, 3)"            
                   >
                     MAR
                   </div>
@@ -99,75 +113,87 @@
                 <div class="calendar-holder">
                   <div 
                   class="calendar-items"
-                  #t2="ngbPopover"
+                  [class.active]="t5?.isOpen()"
+                  #t5="ngbPopover"
                   [ngbPopover]="eventsPopover"
-                  triggers="mouseenter:mouseleave" 
                   [placement]="['bottom-left']"
-                  [popoverClass]="'eventspopovermain'"
+                  [popoverClass]="'eventspopovercalendarmain'"
                   autoclose="outside"
                   [container]="'body'"
+                  triggers="'manual'" 
+                  (click)="openCalendarEvenPopover(t5, 4)"            
                   >
                     APR
                   </div>
                   <div 
                   class="calendar-items current-month"
-                  #t2="ngbPopover"
+                  [class.active]="t6?.isOpen()"
+                  #t6="ngbPopover"
                   [ngbPopover]="eventsPopover"
-                  triggers="mouseenter:mouseleave" 
                   [placement]="['bottom-left']"
-                  [popoverClass]="'eventspopovermain'"
+                  [popoverClass]="'eventspopovercalendarmain'"
                   autoclose="outside"
                   [container]="'body'"
+                  triggers="'manual'" 
+                  (click)="openCalendarEvenPopover(t6, 5)"            
                   >
                     MAY
                   </div>
                   <div 
                   class="calendar-items"
-                  #t2="ngbPopover"
+                  [class.active]="t7?.isOpen()"
+                  #t7="ngbPopover"
                   [ngbPopover]="eventsPopover"
-                  triggers="mouseenter:mouseleave" 
                   [placement]="['bottom-left']"
-                  [popoverClass]="'eventspopovermain'"
+                  [popoverClass]="'eventspopovercalendarmain'"
                   autoclose="outside"
                   [container]="'body'"
+                  triggers="'manual'" 
+                  (click)="openCalendarEvenPopover(t7, 6)"            
                   >
                     JUN
                   </div>
                 </div>
                 <div class="calendar-holder">
                   <div 
-                  class="calendar-items active"
-                  #t2="ngbPopover"
+                  class="calendar-items"
+                  [class.active]="t8?.isOpen()"
+                  #t8="ngbPopover"
                   [ngbPopover]="eventsPopover"
-                  triggers="mouseenter:mouseleave" 
                   [placement]="['bottom-left']"
-                  [popoverClass]="'eventspopovermain'"
+                  [popoverClass]="'eventspopovercalendarmain'"
                   autoclose="outside"
                   [container]="'body'"
+                  triggers="'manual'" 
+                  (click)="openCalendarEvenPopover(t8, 7)"            
                   >
                     JUL
                   </div>
                   <div 
                   class="calendar-items"
-                  #t2="ngbPopover"
+                  [class.active]="t9?.isOpen()"
+                  #t9="ngbPopover"
                   [ngbPopover]="eventsPopover"
-                  triggers="mouseenter:mouseleave" 
                   [placement]="['bottom-left']"
-                  [popoverClass]="'eventspopovermain'"
+                  [popoverClass]="'eventspopovercalendarmain'"
                   autoclose="outside"
                   [container]="'body'"
+                  triggers="'manual'" 
+                  (click)="openCalendarEvenPopover(t9, 8)"            
                   >
                     AUG
                   </div>
                   <div 
                     class="calendar-items event"
-                    #t2="ngbPopover"
+                    [class.active]="t10?.isOpen()"
+                    #t10="ngbPopover"
                     [ngbPopover]="eventsPopover"
-                    triggers="mouseenter:mouseleave" 
                     [placement]="['bottom-left']"
-                    [popoverClass]="'eventspopovermain'"
+                    [popoverClass]="'eventspopovercalendarmain'"
                     autoclose="outside"
                     [container]="'body'"
+                    triggers="'manual'" 
+                    (click)="openCalendarEvenPopover(t10, 9)"              
                   >
                     SEP
                   </div>
@@ -177,37 +203,43 @@
                 <div class="calendar-holder">
                   <div 
                   class="calendar-items"
-                  #t2="ngbPopover"
+                  [class.active]="t11?.isOpen()"
+                  #t11="ngbPopover"
                   [ngbPopover]="eventsPopover"
-                  triggers="mouseenter:mouseleave" 
                   [placement]="['bottom-left']"
-                  [popoverClass]="'eventspopovermain'"
+                  [popoverClass]="'eventspopovercalendarmain'"
                   autoclose="outside"
                   [container]="'body'"
+                  triggers="'manual'" 
+                  (click)="openCalendarEvenPopover(t11, 10)"              
                   >
                     OCT
                   </div>
                   <div 
                   class="calendar-items"
-                  #t2="ngbPopover"
+                  [class.active]="t12?.isOpen()"
+                  #t12="ngbPopover"
                   [ngbPopover]="eventsPopover"
-                  triggers="mouseenter:mouseleave" 
                   [placement]="['bottom-left']"
-                  [popoverClass]="'eventspopovermain'"
+                  [popoverClass]="'eventspopovercalendarmain'"
                   autoclose="outside"
                   [container]="'body'"
+                  triggers="'manual'" 
+                  (click)="openCalendarEvenPopover(t12, 11)"              
                   >
                     NOV
                   </div>
                   <div 
                   class="calendar-items"
-                  #t2="ngbPopover"
+                  [class.active]="t13?.isOpen()"
+                  #t13="ngbPopover"
                   [ngbPopover]="eventsPopover"
-                  triggers="mouseenter:mouseleave" 
                   [placement]="['bottom-left']"
-                  [popoverClass]="'eventspopovermain'"
+                  [popoverClass]="'eventspopovercalendarmain'"
                   autoclose="outside"
                   [container]="'body'"
+                  triggers="'manual'" 
+                  (click)="openCalendarEvenPopover(t13, 12)"              
                   >
                     DEC
                   </div>
@@ -407,18 +439,18 @@
     <div class="schedule-body-holder">
       <div *ngFor="let item of calendarSchedule; let indx=index" class="schedule-body">
         <div class="schedule-body-left" [ngStyle]="{'max-height': (item.eventSchedule.length == 1 ? '32px' : 'auto')}">
-          <div class="left-inside-box" [class.active]="colorIndx1 == indx && colorIndx2 == i">{{item.date}}</div>
+          <div class="left-inside-box" [class.active]="t2?.isOpen()">{{item.date}}</div>
         </div>
         <div class="schedule-body-right">
           <div *ngFor="let ev of item.eventSchedule; let i=index" class="right-frame">
             <div class="type-body-holder">
               <div class="type-important" [ngStyle]="{'color':typeEventColor[ev.type]}">
-                <div class="right-inside-box" [class.active]="colorIndx1 == indx && colorIndx2 == i">{{ev.type}}</div>
+                <div class="right-inside-box" [class.active]="t2?.isOpen()">{{ev.type}}</div>
               </div>
             </div>
             <div class="type-body-holder duration-holder">
               <div class="type-important duration-text">
-                <div class="right-inside-box" [class.active]="colorIndx1 == indx && colorIndx2 == i">{{ev.duration}}</div>
+                <div class="right-inside-box" [class.active]="t2?.isOpen()">{{ev.duration}}</div>
               </div>
             </div>
             <div class="type-body-holder title-holder">
@@ -433,14 +465,14 @@
               triggers="'manual'" 
               (click)="openEvenPopover(t2, ev, indx, i)"        
               >
-                <div class="right-inside-box" [class.active]="colorIndx1 == indx && colorIndx2 == i">
+                <div class="right-inside-box" [class.active]="t2?.isOpen()">
                   <div class="title-text">{{ev.title}}</div>
                 </div>
               </div>
             </div>
             <div class="type-body-holder description-holder">
               <div class="type-important">
-                <div class="right-inside-box" [class.active]="colorIndx1 == indx && colorIndx2 == i">
+                <div class="right-inside-box" [class.active]="t2?.isOpen()">
                   <div class="title-text description-text">{{ev.description}}</div>
                 </div>
               </div>
