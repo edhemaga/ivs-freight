@@ -10,6 +10,7 @@ import {
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Router } from '@angular/router';
+import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 
 @Component({
   selector: 'app-repair-table',
@@ -50,7 +51,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
-          if(res.switchType === 'PM'){
+          if (res.switchType === 'PM') {
             this.router.navigate([`pm`]);
           }
         }
@@ -499,21 +500,80 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   }
 
   onToolBarAction(event: any) {
-    if (event.action === 'open-modal') {
-      this.modalService.openModal(RepairShopModalComponent, { size: 'small' });
-    } else if (event.action === 'tab-selected') {
-      this.selectedTab = event.tabData.field;
-      this.setRepairData(event.tabData);
+    switch (event.action) {
+      case 'tab-selected': {
+        this.selectedTab = event.tabData.field;
+        this.setRepairData(event.tabData);
+        break;
+      }
+      case 'open-modal': {
+        switch (this.selectedTab) {
+          case 'active': {
+            this.modalService.openModal(
+              RepairOrderModalComponent,
+              {
+                size: 'small',
+              },
+              {
+                type: 'new-truck',
+              }
+            );
+            break;
+          }
+          case 'inactive': {
+            this.modalService.openModal(
+              RepairOrderModalComponent,
+              {
+                size: 'small',
+              },
+              {
+                type: 'new-trailer',
+              }
+            );
+            break;
+          }
+          default: {
+            this.modalService.openModal(RepairShopModalComponent, {
+              size: 'small',
+            });
+            break;
+          }
+        }
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 
   public onTableBodyActions(event: any) {
-    console.log(event);
-    this.modalService.openModal(
-      RepairShopModalComponent,
-      { size: 'small' },
-      event
-    );
+    switch (this.selectedTab) {
+      case 'active': {
+        this.modalService.openModal(
+          RepairOrderModalComponent,
+          { size: 'small' },
+          { ...event, type: 'edit-truck' }
+        );
+        break;
+      }
+      case 'inactive': {
+        this.modalService.openModal(
+          RepairOrderModalComponent,
+          { size: 'small' },
+          { ...event, type: 'edit-trailer' }
+        );
+        break;
+      }
+      default: {
+        this.modalService.openModal(
+          RepairShopModalComponent,
+          { size: 'small' },
+          event
+        );
+        break;
+      }
+    }
   }
 
   ngOnDestroy(): void {

@@ -94,8 +94,28 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    this.onTypeOfRepair(this.typeOfRepair);
     this.getRepairDropdowns();
+    const timeout = setTimeout(() => {
+      if (this.editData?.type) {
+        if (this.editData.type.includes('truck')) {
+          this.onTypeOfRepair(this.typeOfRepair);
+        } else {
+          this.onTypeOfRepair(
+            this.typeOfRepair.map((item) => {
+              if (item.label === 'Trailer') {
+                item.checked = true;
+              } else {
+                item.checked = false;
+              }
+              return item;
+            })
+          );
+        }
+      } else {
+        this.onTypeOfRepair(this.typeOfRepair);
+      }
+      clearTimeout(timeout);
+    }, 150);
   }
 
   private createForm() {
@@ -194,6 +214,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }
 
   public onTypeOfRepair(event: any) {
+    console.log('CHOOSE TYPE');
+    console.log(event);
     this.typeOfRepair = [...event];
     this.typeOfRepair.forEach((item) => {
       if (item.checked) {
@@ -203,29 +225,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     if (this.repairOrderForm.get('repairType')?.value === 'Truck') {
       this.pmOptions = this.pmTrucks;
-      if (!this.pmOptions.find((item) => item.title === 'Add New')) {
-        this.pmOptions.push({
-          id: this.pmTrucks.length + 1,
-          logoName: null,
-          mileage: null,
-          passedMileage: null,
-          status: null,
-          title: 'Add New',
-        });
-      }
     } else {
+      console.log('ELSE');
+      console.log(this.pmTrailers);
       this.pmOptions = this.pmTrailers;
-      if (!this.pmOptions.find((item) => item.title === 'Add New')) {
-        this.pmOptions.push({
-          id: this.pmTrucks.length + 1,
-          logoName: null,
-          mileage: null,
-          passedMileage: null,
-          status: null,
-          title: 'Add New',
-        });
-      }
     }
+    console.log(this.repairOrderForm.get('repairType').value);
+    console.log(this.pmOptions);
   }
 
   public onSelectDropDown(event: any, action: string) {
@@ -262,7 +268,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RepairModalResponse) => {
-          console.log(res);
+          console.log('DROPDOWNS FIRST');
           this.pmTrucks = this.pmOptions = res.pmTrucks.map((item) => {
             return {
               ...item,
@@ -279,6 +285,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               title: 'Add New',
             });
           }
+
           this.pmTrailers = res.pmTrailers.map((item) => {
             return {
               ...item,
@@ -295,6 +302,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               title: 'Add New',
             });
           }
+
           this.services = res.serviceTypes.map((item) => {
             return {
               id: item.serviceType.id,
