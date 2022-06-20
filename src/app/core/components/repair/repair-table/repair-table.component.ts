@@ -64,7 +64,6 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       toolbarActions: {
         hideLocationFilter: true,
         hideViewMode: true,
-        showPmSwitch: true,
       },
       config: {
         showSort: true,
@@ -73,16 +72,6 @@ export class RepairTableComponent implements OnInit, OnDestroy {
         disabledColumns: [0],
         minWidth: 60,
       },
-      pmSwitch: [
-        {
-          title: 'Regular',
-          active: true,
-        },
-        {
-          title: 'PM',
-          active: false,
-        },
-      ],
       actions: [
         {
           title: 'Edit',

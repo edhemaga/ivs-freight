@@ -157,7 +157,9 @@ export class TruckassistTableBodyComponent
 
       this.changeDetectorRef.detectChanges();
 
-      this.checkForScroll();
+      setTimeout(() => {
+        this.checkForScroll();
+      }, 10);
     }
 
     if (
@@ -173,7 +175,7 @@ export class TruckassistTableBodyComponent
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.checkForScroll();
-    }, 100);
+    }, 10);
   }
 
   @HostListener('window:scroll', ['$event'])

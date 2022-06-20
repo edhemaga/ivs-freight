@@ -25,12 +25,31 @@
 
   <!-- VIEW MODE SELECT -->
   <div class="view-mode-container" *ngIf="!options.toolbarActions.hideViewMode">
-    <div class="mode" [ngClass]="{ 'mode-active': options.toolbarActions.viewModeActive == 'List' }" (click)="changeModeView('List')">List</div>
-    <div class="mode" [ngClass]="{ 'mode-active': options.toolbarActions.viewModeActive == 'Card' }" (click)="changeModeView('Card')">Card</div>
+    <div
+      class="mode"
+      [ngClass]="{
+        'mode-active': options.toolbarActions.viewModeActive == 'List'
+      }"
+      (click)="changeModeView('List')"
+    >
+      List
+    </div>
+    <div
+      class="mode"
+      [ngClass]="{
+        'mode-active': options.toolbarActions.viewModeActive == 'Card'
+      }"
+      (click)="changeModeView('Card')"
+    >
+      Card
+    </div>
   </div>
 
   <!-- PM AND REGULAR SWITCH -->
-  <app-truckassist-table-toolbar-switch [switchOptions]="options.pmSwitch" *ngIf="options.toolbarActions.showPmSwitch"></app-truckassist-table-toolbar-switch>
+  <!-- <app-truckassist-table-toolbar-switch
+    [switchOptions]="options.pmSwitch"
+    *ngIf="options.toolbarActions.showPmSwitch"
+  ></app-truckassist-table-toolbar-switch> -->
 
   <!-- SEARCH -->
   <app-truckassist-search></app-truckassist-search>
@@ -93,6 +112,18 @@
     </div>
   </div>
 
+  <!-- OPEN GENERAL PM BUTTON -->
+  <div
+    class="general-pm-open-container"
+    *ngIf="options.toolbarActions.showGeneralPmBtn"
+    (click)="onToolBarAction('open-general-pm')"
+  >
+    <svg-icon
+      [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+      [src]="'assets/svg/common/repair-pm/ic_default_pm.svg'"
+    ></svg-icon>
+  </div>
+
   <!-- OPEN MODAL BUTTON -->
   <div class="modal-open-container" (click)="onToolBarAction('open-modal')">
     <svg-icon
@@ -119,9 +150,15 @@
 
       <div class="text">{{ option.text }}</div>
 
-      <div class="additional-drop-icon" *ngIf="option.additionalDropIcon && option.active">
+      <div
+        class="additional-drop-icon"
+        *ngIf="option.additionalDropIcon && option.active"
+      >
         <svg-icon
-          [svgStyle]="{ 'width.px': option.additionalDropIcon.width, 'height.px': option.additionalDropIcon.height }"
+          [svgStyle]="{
+            'width.px': option.additionalDropIcon.width,
+            'height.px': option.additionalDropIcon.height
+          }"
           [src]="option.additionalDropIcon.path"
         ></svg-icon>
       </div>

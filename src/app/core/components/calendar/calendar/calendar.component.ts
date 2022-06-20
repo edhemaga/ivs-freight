@@ -711,7 +711,10 @@ export class CalendarComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.checkCalendarTitle();
+    if(this.fullcalendar){
+      this.checkCalendarTitle();
+    }
+
     this.setCalendarOptions(this.currentEvents, this.calendarGridView, this.headerBarInfo);
   }
 
@@ -830,6 +833,7 @@ export class CalendarComponent implements OnInit {
     // } else {
     //   calendarApi.setOption('selectMinDistance', 150);
     // }
+    if( !this.fullcalendar ) return false;
     const calendarApi = this.fullcalendar.getApi();
     calendarApi.changeView(view);
     console.log(calendarApi.currentData.viewTitle, 'calendarApi.currentData.viewTitle');

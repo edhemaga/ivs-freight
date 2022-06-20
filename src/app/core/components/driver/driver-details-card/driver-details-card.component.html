@@ -534,12 +534,20 @@
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
       >
         <div class="charts-template perfomance">
-          <app-tab-switcher
+
+          <app-ta-tab-switch
+          [tabs]="tabsDriver"
+          (switchClicked)="changeTab($event)" 
+          [type]="'driver-details-popup'"
+          >
+          </app-ta-tab-switch>  
+        
+          <!-- <app-tab-switcher
             [tabs]="tabsDriver"
             (switchClicked)="changeTab($event)" 
             [customClass]="'chart-tabs'"
           >
-          </app-tab-switcher>
+          </app-tab-switcher> -->
           
           <div id="chart">
             <app-ta-chart
