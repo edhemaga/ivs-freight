@@ -7,7 +7,8 @@
         'Driver Details',
         'Trailer Details',
         'Repair Shop Details',
-        'Fuel Stop Details'
+        'Fuel Stop Details',
+        'Shipper Details'
       ].includes(headerText)
     "
   >
@@ -54,7 +55,8 @@
           'Driver Details',
           'Trailer Details',
           'Repair Shop Details',
-          'Fuel Stop Details'
+          'Fuel Stop Details',
+          'Shipper Details'
         ].includes(headerText)
       "
     >
@@ -80,7 +82,7 @@
           </span>
           <div class="border-line-left"></div>
 
-          <div class="total-cost">$ 77.58M</div>
+          <div *ngIf="hasDateNav" class="total-cost">$ 77.58M</div>
         </div>
       </div>
       <div class="header-plus-button">

@@ -7,9 +7,8 @@ import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { TruckDetailsRoutes } from './truck-details.routing';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import {NgApexchartsModule} from "ng-apexcharts";
 import { TruckDetailsCardComponent } from '../truck-details-card/truck-details-card.component';
-import { PipesModule } from 'src/app/core/pipes/pipes.module';
+
 @NgModule({
     declarations:[
         TruckDetailsComponent,
@@ -25,7 +24,6 @@ import { PipesModule } from 'src/app/core/pipes/pipes.module';
         TruckassistProgressExpirationModule,
         SharedModule,
         MatButtonToggleModule,
-        NgApexchartsModule,
     ],
    
 })

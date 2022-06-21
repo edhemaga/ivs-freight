@@ -1,0 +1,9 @@
+<div class="repair-component">
+    <div [ngSwitch]="shipper.template">
+        <div *ngSwitchCase="'general'">
+            <app-shipper-card-view [shipper]="shipper.data">
+
+            </app-shipper-card-view>
+          </div>
+    </div>
+    </div>

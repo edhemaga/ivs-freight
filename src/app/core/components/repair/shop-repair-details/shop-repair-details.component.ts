@@ -13,7 +13,6 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
   providers: [DetailsPageService],
 })
 export class ShopRepairDetailsComponent implements OnInit,OnDestroy {
-  public data:any;
   public shopRepairConfig:any[]=[]
   
   constructor(

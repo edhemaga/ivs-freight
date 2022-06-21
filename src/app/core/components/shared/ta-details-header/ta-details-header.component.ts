@@ -34,6 +34,7 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() isInactive:boolean=false;
   @Output() public dropActions = new EventEmitter<any>();
   @Input() public optionsId: number;
+  @Input() hasDateNav:boolean=true;
   public up:boolean=false;
   public down:boolean=false;
   constructor(private routes: ActivatedRoute) {}
