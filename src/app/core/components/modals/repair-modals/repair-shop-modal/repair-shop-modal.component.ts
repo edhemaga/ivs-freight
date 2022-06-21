@@ -64,7 +64,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     if (this.editData) {
       this.editData = {
         ...this.editData,
-        id: 2,
+        id: 3,
       };
       this.editRepairShopById(this.editData.id);
     }

@@ -126,7 +126,15 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: PMTruckListResponse) => {
-          console.log(res);
+          res.pagination.data.forEach((item) => {
+            const data = {
+              isChecked: item.status.name === 'Active',
+              svg: `assets/svg/common/repair-pm/${item.logoName}`,
+              title: item.title,
+              miles: convertNumberInThousandSep(item.mileage),
+            };
+            this.addPMs(data);
+          });
         },
         error: () => {
           this.notificationService.error(
@@ -143,7 +151,15 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: PMTrailerListResponse) => {
-          console.log(res);
+          res.pagination.data.forEach((item) => {
+            const data = {
+              isChecked: item.status.name === 'Active',
+              svg: `assets/svg/common/repair-pm/${item.logoName}`,
+              title: item.title,
+              miles: convertNumberInThousandSep(item.months),
+            };
+            this.addPMs(data);
+          });
         },
         error: () => {
           this.notificationService.error(
