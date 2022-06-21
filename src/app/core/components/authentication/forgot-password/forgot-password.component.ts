@@ -14,7 +14,6 @@ import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 import { ForgotPasswordCommand } from 'appcoretruckassist/model/forgotPasswordCommand';
-import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-forgot-password',
@@ -60,10 +59,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
     this.authStoreService
       .forgotPassword(resetData)
-      .pipe(
-        tap((res: HttpResponseBase) => console.log(res)),
-        untilDestroyed(this)
-      )
+      .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: HttpResponseBase) => {
           if (res.status === 200 || res.status === 204) {
@@ -74,13 +70,19 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
               JSON.stringify(this.forgotPasswordForm.get('email').value)
             );
 
-            this.router.navigate(['/forgot-password/check-email']);
+            this.router.navigate(['/auth/forgot-password/check-email']);
           }
         },
         error: err => {
           this.notification.error(err, 'Error');
         },
       });
+  }
+
+  public onKeyDown(event: any) {
+    if (event.keyCode === 13) {
+      this.onForgotPassword();
+    }
   }
 
   ngOnDestroy(): void {}

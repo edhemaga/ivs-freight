@@ -72,7 +72,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.registerForm
       .get('confirmPassword')
       .valueChanges.pipe(untilDestroyed(this))
-      .subscribe(value => {
+      .subscribe((value) => {
         if (
           value?.toLowerCase() ===
           this.registerForm.get('password').value?.toLowerCase()
@@ -119,20 +119,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
             this.router.navigate(['/auth/register/thank-you']);
           }
         },
-        error: err => {
+        error: (err) => {
           this.notification.error(err, 'Error');
         },
       });
   }
 
-  public keyDownFunction(event: any): void {
-    if (
-      event.keyCode === 13 &&
-      event.target.localName !== 'textarea' &&
-      event.path !== undefined &&
-      event.path !== null &&
-      event.path[3].className !== 'ng-select-container ng-has-value'
-    ) {
+  public onKeyDown(event: any): void {
+    if (event.keyCode === 13) {
       this.registerCompany();
     }
   }
