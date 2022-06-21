@@ -53,7 +53,7 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
     ToastrModule.forRoot({
       preventDuplicates: true,
       enableHtml: true,
-      timeOut: 5000,
+      timeOut: 5000, 
     }),
     NgIdleModule.forRoot(),
     ApiModule

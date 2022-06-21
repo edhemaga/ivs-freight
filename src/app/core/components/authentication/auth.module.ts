@@ -22,6 +22,7 @@ import { CreateNewPasswordPageComponent } from './create-new-password-page/creat
 import { PasswordChangedPageComponent } from './password-changed-page/password-changed-page.component';
 import { RegisterComponent } from './register/register/register.component';
 import { HelperComponent } from './helper/helper.component';
+import { HelperForgotPasswordComponent } from './helper-forgot-password/helper-forgot-password.component';
 import { RegisterUserComponent } from './register-user/register-user.component';
 import { HelperSignupUserComponent } from './helper-signup-user/helper-signup-user.component';
 import { SharedModule } from '../shared/shared.module';
@@ -41,6 +42,7 @@ import { SharedModule } from '../shared/shared.module';
     HelperComponent,
     RegisterUserComponent,
     HelperSignupUserComponent,
+    HelperForgotPasswordComponent,
   ],
   imports: [
     CommonModule,
