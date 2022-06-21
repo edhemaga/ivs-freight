@@ -1039,6 +1039,11 @@
         padding: 0 18px 17px 12px;
         box-sizing: border-box;
         user-select: none;
+
+        &.hidden{
+            display: none !important;
+        }
+
         .calendar_view_title_line{
             display: flex;
             justify-content: space-between;
