@@ -32,6 +32,7 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Output() public dropActions = new EventEmitter<any>();
   @Output() selectValue = new EventEmitter<string>();
   @Output() changeEvent = new EventEmitter<string>();
+  @Input() dateChecked:string='';
   id: number = 0;
   public inputFormControl: FormControl = new FormControl();
 

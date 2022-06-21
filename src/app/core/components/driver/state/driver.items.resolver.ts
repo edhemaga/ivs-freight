@@ -28,7 +28,6 @@ export class DriverItemResolver implements Resolve<DriverResponse[]> {
         return of('No drivers data for...' + driver_id);
       }),
       tap((driverResponse: DriverResponse) => {
-        console.log(driverResponse);
         this.driverItemStore.add(driverResponse);
       })
        

@@ -1,10 +1,14 @@
 <div class="cards-item-wrapper-1">
   <app-ta-details-header-card
-    [cardDetailsName]=""
     [cardDetailsDate]="'08/03/20'"
     [tooltipNext]="'Next Repair'"
     [tooltipPrevious]="'Previous Repair'"
     [searchInputName]="'Search Repair'"
+    [searchName]="'Pinned Shop'"
+    [options]="shopsDropdowns"
+    (selectValue)="onSelectedShop($event)"
+    (changeEvent)="onChangeShop($event)"
+    [dateChecked]="'Today'"
   >
     <div class="repair-information-wrapper">
       <div class="repair-information-item">

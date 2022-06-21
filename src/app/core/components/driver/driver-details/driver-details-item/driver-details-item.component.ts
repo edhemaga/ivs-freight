@@ -53,15 +53,14 @@ export class DriverDetailsItemComponent
       this.driver = changes.driver.currentValue;
     }
   }
-  
+
   ngOnInit(): void {
     this.initTableOptions();
     this.getExpireDate();
   }
- 
-  public setFutureYear(date:any){
-             
-      return moment(date).add(1,'years').format('MM/DD/YY')
+
+  public setFutureYear(date: any) {
+    return moment(date).add(1, 'years').format('MM/DD/YY');
   }
   public getExpireDate() {
     this.dataCDl = this.driver.data.cdls.map((ele) => {
@@ -70,14 +69,11 @@ export class DriverDetailsItemComponent
       } else {
         this.expDateCard = true;
       }
-     return{
-      ...ele,
-      showButton:this.expDateCard
-     }
-    
-     
+      return {
+        ...ele,
+        showButton: this.expDateCard,
+      };
     });
-    console.log(this.dataCDl);
   }
 
   /**Function for dots in cards */

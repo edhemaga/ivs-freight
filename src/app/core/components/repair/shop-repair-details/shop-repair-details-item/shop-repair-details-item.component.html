@@ -18,25 +18,28 @@
         <div class="divider"></div>
         <div class="repair-items-wrapper">
           <span
-            *ngFor="let dummy of dummyDataRepair; let i = index"
-            [ngClass]="{ 'finish-order-cont': dummy.finishOrder == false }"
+            *ngFor="let repairs of shopData.data.repairs; let i = index"
+            
           >
+          <!-- [ngClass]="{ 'finish-order-cont': dummy.finishOrder == false }" -->
             <div class="repair-items">
               <div class="items-header">
-                <span class="unit">{{ dummy.unit }}</span>
-                <span class="date">{{ dummy.date }}</span>
-                <span class="date">{{ dummy.inv }}</span>
-                <span class="date">{{ dummy.desc }}</span>
-                <span *ngIf="dummy.finishOrder" class="cost"
-                  >${{ dummy.cost }}</span
+                <span class="unit">{{ repairs.trailer.trailerNumber }}</span>
+                <span class="date">{{ repairs.date | formatDateP }}</span>
+                <span class="date">{{ repairs.invoice }}</span>
+                <span class="date">{{ repairs.note }}</span>
+                <!-- *ngIf="dummy.finishOrder"  -->
+                <span class="cost"
+                  >${{ repairs.total }}</span
                 >
-                <div *ngIf="!dummy.finishOrder" class="button-wrapper-shop">
+                <!-- <div *ngIf="!dummy.finishOrder" class="button-wrapper-shop">
                   Finish Order
-                </div>
+                </div> -->
                 <div
                   class="dots-vertical"
-                  [ngClass]="{ 'dots-top': dummy.finishOrder == false }"
+                
                 >
+                <!-- [ngClass]="{ 'dots-top': dummy.finishOrder == false }" -->
                   <app-table-dropdown
                     [options]="dummyData.actions"
                     [customClassDropDown]="'table-dropdown-container-vertical'"

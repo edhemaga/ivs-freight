@@ -1,22 +1,58 @@
-import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { RepairShopResponse } from 'appcoretruckassist';
-
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { RepairTService } from '../state/repair.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 @Component({
   selector: 'app-shop-repair-details',
   templateUrl: './shop-repair-details.component.html',
-  styleUrls: ['./shop-repair-details.component.scss']
+  styleUrls: ['./shop-repair-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DetailsPageService],
 })
-export class ShopRepairDetailsComponent implements OnInit {
+export class ShopRepairDetailsComponent implements OnInit,OnDestroy {
   public data:any;
   public shopRepairConfig:any[]=[]
   
   constructor(
-    private act_route:ActivatedRoute
+    private act_route:ActivatedRoute,
+    private detailsPageDriverService: DetailsPageService,
+    private shopService:RepairTService,
+    private router:Router,
+    private notificationService:NotificationService,
+    private cdRef:ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    this.shopConf(this.act_route.snapshot.data.shop);    
+    this.shopConf(this.act_route.snapshot.data.shop);  
+    this.detailsPageDriverService.pageDetailChangeId$
+      .pipe(untilDestroyed(this))
+      .subscribe((id) => {
+        this.shopService
+          .getRepairShopById(id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: RepairShopResponse) => {
+              this.shopConf(res);
+              if (this.router.url.includes('shop-details')) {
+                this.router.navigate([`/repair/${res.id}/shop-details`]);
+              }
+              this.notificationService.success(
+                'Shop successfully changed',
+                'Success:'
+              );
+              this.cdRef.detectChanges();
+            },
+            error: () => {
+              this.notificationService.error(
+                "Shop can't be loaded",
+                'Error:'
+              );
+            },
+          });
+      });  
   }
  
   /**Function return id */
@@ -24,22 +60,20 @@ export class ShopRepairDetailsComponent implements OnInit {
     return item.id;
   }
   /**Function for header names and array of icons */
-  shopConf(data:RepairShopResponse | any){
-    console.log(data);
-    
+  shopConf(data:RepairShopResponse | any){  
     this.shopRepairConfig = [
       {
         id: 0,
-        name: 'Repair Shop Details',
+        nameDefault: 'Repair Shop Details',
         template: 'general',
         data:data
       },
       {
         id: 1,
-        name: 'Repair',
+        nameDefault: 'Repair',
         template: 'repair',
         icon:true,
-        length:25,
+        length:data.repairs.length,
         customText:'Date',
         icons:[
           {
@@ -72,7 +106,7 @@ export class ShopRepairDetailsComponent implements OnInit {
       },
       {
         id: 2,
-        name: 'Repaired Vehicle',
+        nameDefault: 'Repaired Vehicle',
         template: 'repaired-vehicle',
         length:data.repairsByUnit.length,
         hide:true,
@@ -81,7 +115,7 @@ export class ShopRepairDetailsComponent implements OnInit {
       },
       {
         id: 3,
-        name: 'Review',
+        nameDefault: 'Review',
         template: 'review',
         length:data.reviews.length,
         customText:'Date',
@@ -90,5 +124,7 @@ export class ShopRepairDetailsComponent implements OnInit {
       },
     ];
   }
-
+  ngOnDestroy(): void {
+   
+  }
 }
