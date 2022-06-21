@@ -3,11 +3,13 @@
     <div class="title-holder">
       <div class="title">Calendar</div>
       <div class="selected-month">{{ calendarTitle }}</div>
-      <div class="arrow-left">
-        <svg-icon (click)="changeMonth('prev')" src="assets/svg/common/ic_arrow-right.svg"></svg-icon>
-      </div>
-      <div class="arrow-left arrow-right">
-        <svg-icon (click)="changeMonth('next')" src="assets/svg/common/ic_arrow-right.svg"></svg-icon>
+      <div class="arrow-holder">
+        <div class="arrow-left">
+          <svg-icon (click)="changeMonth('prev')" src="assets/svg/common/calendar/arrow-left.svg"></svg-icon>
+        </div>
+        <div class="arrow-right">
+          <svg-icon (click)="changeMonth('next')" src="assets/svg/common/calendar/arrow-right.svg"></svg-icon>
+        </div>  
       </div>
     </div>
     <div class="search-holder">
