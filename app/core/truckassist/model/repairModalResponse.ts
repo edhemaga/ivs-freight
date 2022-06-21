@@ -9,16 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
+import { TruckMinimalResponse } from './truckMinimalResponse';
+import { TrailerMinimalResponse } from './trailerMinimalResponse';
+import { ServiceTypeResponse } from './serviceTypeResponse';
 import { PMTruckResponse } from './pMTruckResponse';
 import { PMTrailerResponse } from './pMTrailerResponse';
 import { RepairShopShortResponse } from './repairShopShortResponse';
 
 
 export interface RepairModalResponse { 
-    repairTypes?: Array<EnumValue> | null;
-    serviceTypes?: Array<EnumValue> | null;
+    serviceTypes?: Array<ServiceTypeResponse> | null;
     repairShops?: Array<RepairShopShortResponse> | null;
+    trucks?: Array<TruckMinimalResponse> | null;
+    trailers?: Array<TrailerMinimalResponse> | null;
     pmTrucks?: Array<PMTruckResponse> | null;
     pmTrailers?: Array<PMTrailerResponse> | null;
 }
