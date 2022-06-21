@@ -200,6 +200,10 @@ export class Step1Component implements OnInit, OnDestroy {
   public reviewFeedback: any[] = getPersonalInfoReviewFeedbackData();
   private countOfReview: number = 0;
 
+  public showInput: boolean = false;
+  public isEditingArray: { id: number; isEditing: boolean }[] = [];
+  public isEditingId: number = -1;
+
   public trackByIdentity = (index: number, item: any): number => index;
 
   public get previousAddresses(): FormArray {
@@ -315,13 +319,35 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   public addNewAddress(): void {
-    const newAddress = this.createNewAddress();
+    if (
+      this.previousAddresses.controls.length !== 0 &&
+      !this.isLastAddedPreviousAddressValid
+    ) {
+      return;
+    }
 
     if (
       !this.previousAddresses.controls.length ||
       this.isLastAddedPreviousAddressValid
     ) {
-      this.previousAddresses.push(newAddress);
+      this.previousAddresses.push(this.createNewAddress());
+
+      this.isEditingId++;
+
+      this.isEditingArray = [
+        ...this.isEditingArray,
+        { id: this.isEditingId, isEditing: true },
+      ];
+
+      if (this.previousAddresses.controls.length > 1) {
+        this.isEditingArray = this.isEditingArray.map((item, index) => {
+          if (index === this.isEditingArray.length - 1) {
+            return { ...item, isEditing: true };
+          }
+
+          return { ...item, isEditing: false };
+        });
+      }
     }
 
     this.isLastAddedPreviousAddressValid = false;
@@ -329,6 +355,15 @@ export class Step1Component implements OnInit, OnDestroy {
 
   public removeNewAddress(index: number): void {
     this.previousAddresses.removeAt(index);
+
+    this.isEditingArray.splice(index, 1);
+  }
+
+  public onEditAddress(index: number): void {
+    if (this.previousAddresses.controls[index].value.address) {
+      this.isEditingArray[index].isEditing =
+        !this.isEditingArray[index].isEditing;
+    }
   }
 
   private formFIlling(): void {

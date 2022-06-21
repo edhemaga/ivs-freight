@@ -54,7 +54,14 @@
   <!-- BOTTOM SECTION -->
 
   <div class="d-flex flex-column text-center bottom-section">
-    <p class="noselect ta-font-regular">
+    <p
+      class="noselect ta-font-regular"
+      [ngStyle]="{
+        color: !personalInfoForm.get('isAgreement').value
+          ? '#3551B7'
+          : '#6C6C6C'
+      }"
+    >
       Review information provided by previous employers. Have errors in the
       information corrected by<br />previous employers and for those previous
       employers to re-send the corrected
@@ -152,7 +159,8 @@
               type: 'text',
               label: 'Email',
               isRequired: true,
-              placeholderIcon: 'email'
+              placeholderIcon: 'email',
+              isDisabled: true
             }"
           ></app-ta-input>
         </div>
@@ -347,7 +355,7 @@
                   ?.touched &&
                 !personalInfoForm.controls[question.formControlNameExplain]
               "
-              >Required field</span
+              >Required</span
             >
 
             <!-- EXPLAIN -->
@@ -383,106 +391,196 @@
         >
           Previous addresses for the past 3 years?
         </h5>
-
-        <div
-          class="d-flex flex-column previous-address-container"
-          formArrayName="previousAddresses"
-          *ngFor="
-            let address of previousAddresses?.controls;
-            let i = index;
-            trackBy: trackByIdentity
-          "
-        >
-          <div class="d-flex" [formGroupName]="i">
-            <div class="badge-container">
-              <span class="badge ta-font-bold">{{ i + 1 }}</span>
+        <div class="d-flex flex-column justify-content-center">
+          <div
+            class="d-flex align-items-center title-container"
+            *ngIf="previousAddresses?.controls.length > 1"
+          >
+            <div class="address-title-container">
+              <p class="m-0 ta-font-bold">
+                Address, City, State Zip <span>*</span>
+              </p>
             </div>
-
-            <div class="address-container">
-              <app-ta-input-address
-                formControlName="address"
-                [inputConfig]="{
-                  name: 'Address',
-                  type: 'text',
-                  label: 'Address, City, State Zip',
-                  isRequired: true,
-                  placeholderIcon: 'address',
-                  textTransform: 'capitalize'
+            <div class="address-unit-title-container">
+              <p class="m-0 ta-font-bold">Unit #</p>
+            </div>
+          </div>
+          <div
+            class="d-flex align-items-center dets-container"
+            formArrayName="previousAddresses"
+            *ngFor="
+              let address of previousAddresses?.controls;
+              let i = index;
+              trackBy: trackByIdentity
+            "
+          >
+            <div class="d-flex align-items-center" [formGroupName]="i">
+              <div
+                class="d-flex justify-content-center align-items-center left-container"
+                [ngStyle]="{
+                  'background-color': !isEditingArray[i]?.isEditing
+                    ? '#97a8dc'
+                    : '#6D82C7'
                 }"
-                (selectedAddress)="
-                  handleInputSelect($event, 'PREVIOUS-ADDRESS', i)
-                "
-              ></app-ta-input-address>
-            </div>
-
-            <div class="unit-container">
-              <app-ta-input
-                formControlName="addressUnit"
-                [inputConfig]="{
-                  name: 'Address Unit',
-                  type: 'text',
-                  label: 'Unit #',
-                  maxLength: 6
-                }"
-              ></app-ta-input>
-            </div>
-
-            <div
-              class="d-flex justify-content-center align-items-center delete-container"
-            >
-              <button
-                type="button"
-                class="d-flex justify-content-center align-items-center btn delete-btn"
-                appTooltip="Delete"
-                tooltipColor="#FFFFFF"
-                tooltipBackground="#FF5D5D"
-                position="bottom-right"
-                (click)="removeNewAddress(i)"
               >
-                <svg-icon
-                  class="trash-icon"
-                  src="assets/svg/common/ic_trash.svg"
-                  [svgStyle]="{
-                    'width.px': 8,
-                    'height.px': 9
-                  }"
-                ></svg-icon>
-              </button>
-            </div>
+                <span class="badge ta-font-bold">{{ i + 1 }}</span>
+              </div>
 
-            <!-- REVIEW AND FEEDBACK -->
+              <div
+                class="d-flex align-items-center right-container"
+                [ngStyle]="{
+                  'background-color': isEditingArray[i]?.isEditing
+                    ? '#f3f3f3'
+                    : '#eeeeee',
+                  padding: isEditingArray[i]?.isEditing ? '0' : '4px 6px'
+                }"
+              >
+                <div
+                  class="d-flex align-items-center input-container"
+                  *ngIf="isEditingArray[i]?.isEditing"
+                >
+                  <div class="d-flex align-items-center">
+                    <div class="address-container">
+                      <app-ta-input-address
+                        formControlName="address"
+                        [inputConfig]="{
+                          name: 'Address',
+                          type: 'text',
+                          label: 'Address, City, State Zip',
+                          isRequired: true,
+                          placeholderIcon: 'address',
+                          textTransform: 'capitalize'
+                        }"
+                        (selectedAddress)="
+                          handleInputSelect($event, 'PREVIOUS-ADDRESS', i)
+                        "
+                      ></app-ta-input-address>
+                    </div>
 
-            <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-              <app-applicant-review-feedback
-                [index]="11 + i"
-                [reviewFeedbackData]="reviewFeedback[11 + i]"
-                (sendReview)="onSubmitReview($event)"
-              ></app-applicant-review-feedback>
+                    <div class="address-unit-container">
+                      <app-ta-input
+                        formControlName="addressUnit"
+                        [inputConfig]="{
+                          name: 'Address Unit',
+                          type: 'text',
+                          label: 'Unit #',
+                          maxLength: 6
+                        }"
+                      ></app-ta-input>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="d-flex align-items-center info-container"
+                  *ngIf="!isEditingArray[i]?.isEditing"
+                >
+                  <div class="d-flex align-items-center address-container">
+                    <svg-icon
+                      class="address-icon"
+                      src="assets/svg/common/ic_address.svg"
+                      [svgStyle]="{
+                        'width.px': 18,
+                        'height.px': 18
+                      }"
+                    ></svg-icon>
+
+                    <div class="d-flex pipe"></div>
+
+                    <p class="m-0 ta-font-regular">
+                      {{ address.value?.address }}
+                    </p>
+                  </div>
+
+                  <div class="d-flex align-items-center address-unit-container">
+                    <p class="m-0 ta-font-regular">
+                      {{ address.value?.addressUnit }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-center btn-container">
+                  <svg-icon
+                    class="edit-icon"
+                    src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                    [svgStyle]="{
+                      'width.px': 18,
+                      'height.px': 18
+                    }"
+                    appTooltip="Edit"
+                    tooltipColor="#FFFFFF"
+                    tooltipBackground="#6C6C6C"
+                    position="top-middle"
+                    borderRadius="2px"
+                    fontSize="11px"
+                    fontWeight="bold"
+                    (click)="onEditAddress(i)"
+                  ></svg-icon>
+
+                  <svg-icon
+                    class="delete-icon"
+                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                    [svgStyle]="{
+                      'width.px': 18,
+                      'height.px': 18
+                    }"
+                    appTooltip="Delete"
+                    tooltipColor="#FFFFFF"
+                    tooltipBackground="#EF5350"
+                    position="top-middle"
+                    borderRadius="2px"
+                    fontSize="11px"
+                    fontWeight="bold"
+                    (click)="removeNewAddress()"
+                  ></svg-icon>
+                </div>
+              </div>
+
+              <!-- REVIEW AND FEEDBACK -->
+
+              <div
+                class="review-feedback"
+                *ngIf="selectedMode === 'REVIEW_MODE'"
+              >
+                <app-applicant-review-feedback
+                  [index]="11 + i"
+                  [reviewFeedbackData]="reviewFeedback[11 + i]"
+                  (sendReview)="onSubmitReview($event)"
+                ></app-applicant-review-feedback>
+              </div>
             </div>
           </div>
         </div>
 
         <div
           class="d-flex justify-content-center"
-          *ngIf="previousAddresses.controls.length < 5"
+          [ngStyle]="{
+            'margin-top': !previousAddresses.controls?.length ? '0' : '12px'
+          }"
+          *ngIf="previousAddresses.controls?.length < 5"
         >
           <button
             type="button"
-            class="ta-font-semi-bold add-btn"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn"
             (click)="addNewAddress()"
+            [ngClass]="{
+              disabled:
+                previousAddresses.controls.length !== 0 &&
+                !isLastAddedPreviousAddressValid
+            }"
           >
-            Add address
+            Add Address
           </button>
         </div>
       </div>
 
       <!-- NEXT STEP -->
-
+      <!-- 
       <app-applicant-next-step
         [hideBackStep]="true"
         (stepEvent)="onStepAction($event)"
         [isReview]="selectedMode === 'REVIEW_MODE'"
-      ></app-applicant-next-step>
+      ></app-applicant-next-step> -->
     </form>
   </div>
 </div>

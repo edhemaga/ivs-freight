@@ -31,6 +31,9 @@ import { Step11Component } from './applicant-steps/step11/step11.component';
 
 import { SharedModule } from '../shared/shared.module';
 
+import { ApplicantNextBackBtnComponent } from './applicant-next-back-btn/applicant-next-back-btn.component';
+import { ApplicantWelcomeScreenComponent } from './applicant-welcome-screen/applicant-welcome-screen.component';
+
 @NgModule({
   declarations: [
     ApplicantComponent,
@@ -40,6 +43,8 @@ import { SharedModule } from '../shared/shared.module';
     ApplicantConfirmAllReviewComponent,
     ApplicantReviewFeedbackComponent,
     ApplicantSignaturePadComponent,
+    ApplicantNextBackBtnComponent,
+    ApplicantWelcomeScreenComponent,
     Step1Component,
     Step2Component,
     Step3Component,

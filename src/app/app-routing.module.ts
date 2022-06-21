@@ -12,6 +12,7 @@ import { TruckResolver } from './core/components/truck/state/truck.resolver';
 import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
 import { BrokerResolver } from './core/components/customer/state/broker-state/broker.resolver';
 import { ShipperResolver } from './core/components/customer/state/shipper-state/shipper.resolver';
+import { ApplicantWelcomeScreenComponent } from './core/components/applicant/applicant-welcome-screen/applicant-welcome-screen.component';
 
 const routes: Routes = [
   // Auth Routes
@@ -158,6 +159,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./core/components/to-do/to-do.module').then((m) => m.ToDoModule),
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'applicant/welcome',
+    component: ApplicantWelcomeScreenComponent,
+    data: { title: 'Welcome Screen' },
   },
   {
     path: 'applicant/:id',

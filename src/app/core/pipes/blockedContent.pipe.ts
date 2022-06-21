@@ -17,6 +17,7 @@ export class BlockedContentPipe implements PipeTransform {
         'create new password',
         'password changed',
         'helper component route',
+        'welcome screen',
         'personal info',
         'work experience',
         'cdl information',
