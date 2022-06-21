@@ -418,7 +418,7 @@
       </div>  
     </div>
   </div>
-  <div *ngIf="currentCalendarView == 'week' || currentCalendarView == 'month'" class="calendar_view_holder">
+  <div  [class.hidden]="currentCalendarView != 'week' && currentCalendarView != 'month'" class="calendar_view_holder">
     <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
   </div>
   <div *ngIf="currentCalendarView == 'year'" class="year-calendar-holder">
