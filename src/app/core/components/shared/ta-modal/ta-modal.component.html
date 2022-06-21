@@ -4,7 +4,7 @@
       <h5 class="modal-title">{{ modalTitle }}</h5>
       <h5
         class="edit-name"
-        *ngIf="editData?.type === 'edit' || specificCaseModalName"
+        *ngIf="editData?.type?.includes('edit') || specificCaseModalName"
       >
         {{ editName }}
       </h5>
@@ -27,9 +27,9 @@
   </div>
   <div
     class="modal-footer"
-    [ngClass]="{ 'mutliple-buttons': editData?.type === 'edit' }"
+    [ngClass]="{ 'mutliple-buttons': editData?.type?.includes('edit') }"
   >
-    <div class="left-side" *ngIf="editData?.type === 'edit'">
+    <div class="left-side" *ngIf="editData?.type?.includes('edit')">
       <button
         *ngIf="!disableDelete"
         (click)="onAction('delete')"
@@ -100,7 +100,7 @@
       ngbAutofocus
       type="button"
     >
-      {{ editData?.type === "edit" ? "Save Changes" : "Save" }}
+      {{ editData?.type?.includes("edit") ? "Save Changes" : "Save" }}
       <div
         *ngIf="saveSpinnerVisibility"
         class="spinner-border"

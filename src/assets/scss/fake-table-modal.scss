@@ -548,10 +548,21 @@
       column-gap: 12px;
       align-items: center;
       padding-left: 6px;
+
+      .ta-checkbox-container.disabled .ta-checkbox-label {
+        color: #6c6c6c !important;
+      }
+      .ta-checkbox-container .ta-checkbox-svg {
+        svg {
+          path {
+            fill: #b7b7b7 !important;
+          }
+        }
+      }
     }
   }
 
-  // Repair Order Modal Items
+  // Repair Bill Modal Items
   &-repair-bill-item {
     .common-fake-table-label {
       p {
@@ -648,6 +659,7 @@
     }
   }
 
+  // Repair Order Modal Items
   &-repair-order-item {
     .common-fake-table-label {
       p {

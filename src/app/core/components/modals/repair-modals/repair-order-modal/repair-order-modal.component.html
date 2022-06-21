@@ -1,5 +1,7 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add Repair' : ''"
+  [modalTitle]="
+    !editData?.type?.includes('edit') ? 'Add Repair' : 'Edit Repair'
+  "
   [editData]="editData"
   [editName]="editData?.id"
   [isModalValid]="repairOrderForm.valid"
@@ -116,7 +118,7 @@
             type: 'text',
             label: 'Repair Shop',
             isDropdown: true,
-            isRequired: true,
+            isRequired: selectedTab === 1,
             dropdownWidthClass: 'w-col-repair-m-shop'
           }"
           [options]="labelsRepairShop"

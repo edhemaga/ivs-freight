@@ -93,8 +93,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    console.log(this.editData);
+
     this.createForm();
     this.getRepairDropdowns();
+
     const timeout = setTimeout(() => {
       if (this.editData?.type) {
         if (this.editData.type.includes('truck')) {
@@ -211,11 +214,19 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
   public onModalHeaderTabChange(event: any) {
     this.selectedTab = event.id;
+    if (this.selectedTab === 2) {
+      this.inputService.changeValidators(
+        this.repairOrderForm.get('repairShop'),
+        false
+      );
+    } else {
+      this.inputService.changeValidators(
+        this.repairOrderForm.get('repairShop')
+      );
+    }
   }
 
   public onTypeOfRepair(event: any) {
-    console.log('CHOOSE TYPE');
-    console.log(event);
     this.typeOfRepair = [...event];
     this.typeOfRepair.forEach((item) => {
       if (item.checked) {
@@ -226,12 +237,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     if (this.repairOrderForm.get('repairType')?.value === 'Truck') {
       this.pmOptions = this.pmTrucks;
     } else {
-      console.log('ELSE');
-      console.log(this.pmTrailers);
       this.pmOptions = this.pmTrailers;
     }
-    console.log(this.repairOrderForm.get('repairType').value);
-    console.log(this.pmOptions);
   }
 
   public onSelectDropDown(event: any, action: string) {
@@ -268,7 +275,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RepairModalResponse) => {
-          console.log('DROPDOWNS FIRST');
           this.pmTrucks = this.pmOptions = res.pmTrucks.map((item) => {
             return {
               ...item,
@@ -321,7 +327,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
   public onAction(action: any) {
     this.selectedPM = action;
-
+    console.log(this.selectedPM);
+    console.log(this.pmOptions);
     if (
       this.selectedPM.id !== 0 &&
       this.selectedPM.id !== this.pmOptions[this.pmOptions.length - 1]
@@ -333,13 +340,17 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         false
       );
     }
-    if (this.pmOptions[this.pmOptions.length - 1].title === 'Add New') {
+    if (this.selectedPM.title === 'Add New') {
       this.ngbActiveModal.close();
       const timeout = setTimeout(() => {
         this.modalService.openModal(
           RepairPmModalComponent,
           { size: 'small' },
-          { type: 'new', action: 'generic' }
+          {
+            type: 'new',
+            header: this.repairOrderForm.get('repairType').value,
+            action: 'generic-pm',
+          }
         );
         clearTimeout(timeout);
       }, 100);

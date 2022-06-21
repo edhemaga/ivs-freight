@@ -1,7 +1,11 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Truck PM' : 'Truck PM Unit 53587 '"
+  [modalTitle]="editData?.header?.concat(' ', 'PM')"
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="
+    editData?.action.includes('unit-pm')
+      ? 'Unit'.concat(' ', editData?.id)
+      : editData?.id
+  "
   [isModalValid]="PMform.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
@@ -13,27 +17,36 @@
       [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
       [hasArrow]="false"
       [isCommentData]="true"
-      [isCardOpen]="PMs.length"
-      [hasScrollBody]="PMs.length > 18"
+      [isCardOpen]="defaultPMs.length"
+      [hasScrollBody]="defaultPMs.length > 18"
       (onActionEvent)="addPMs($event)"
     >
+      <!-- Default PMs -->
       <div
-        formArrayName="PMs"
+        formArrayName="defaultPMs"
         class="common-fake-table-modal common-fake-table-modal-pm"
-        *ngIf="PMs.length"
+        *ngIf="defaultPMs.length"
       >
         <div class="common-fake-table-label">
           <p></p>
           <p>TITLE</p>
           <p>MILES</p>
         </div>
-        <div *ngFor="let pm of PMs.controls; let ind = index">
+        <div
+          *ngFor="
+            let pm of defaultPMs.controls;
+            let ind = index;
+            trackBy: identity
+          "
+        >
           <div [formGroupName]="ind" class="common-fake-table-card">
             <app-ta-checkbox
               formControlName="isChecked"
               [name]="ind"
               [customClass]="'regular'"
-              [disabled]="false"
+              [disabled]="
+                editData?.header?.includes('Truck') ? ind < 4 : ind < 1
+              "
               [svg]="pm.get('svg').value"
               [label]="pm.get('title').value"
             >
@@ -50,7 +63,7 @@
               }"
             ></app-ta-input>
 
-            <div
+            <!-- <div
               ngbTooltip
               mainTooltip="Delete"
               position="top"
@@ -59,10 +72,11 @@
               (click)="removePMs(ind)"
             >
               <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
+      <!-- New PMs -->
     </app-ta-custom-card>
   </form>
 </app-ta-modal>

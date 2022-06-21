@@ -31,7 +31,7 @@ import { TruckTService } from '../../truck/state/truck.service';
   styleUrls: ['./truck-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService]
+  providers: [ModalService],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -159,7 +159,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                   status: this.truckStatus,
                 });
                 this.notificationService.success(
-                  `Truck status changed to ${this.truckStatus ? 'deactivate' : 'activate'}.`,
+                  `Truck status changed to ${
+                    this.truckStatus ? 'deactivate' : 'activate'
+                  }.`,
                   'Success:'
                 );
               }
@@ -319,7 +321,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       truckTypeId: this.selectedTruckType ? this.selectedTruckType.id : null,
       truckMakeId: this.selectedTruckMake ? this.selectedTruckMake.id : null,
       colorId: this.selectedColor ? this.selectedColor.id : null,
-      ownerId: this.truckForm.get('companyOwned').value ? null : (this.selectedOwner ? this.selectedOwner.id : null),
+      ownerId: this.truckForm.get('companyOwned').value
+        ? null
+        : this.selectedOwner
+        ? this.selectedOwner.id
+        : null,
       truckGrossWeightId: this.selectedTruckGrossWeight
         ? this.selectedTruckGrossWeight.id
         : null,
@@ -373,7 +379,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             'Truck successfully deleted.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: 'delete', status: false });
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
         },
         error: () =>
           this.notificationService.error("Truck can't be deleted.", 'Error:'),
@@ -395,7 +404,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             year: res.year,
             colorId: res.color ? res.color.name : null,
             companyOwned: res.companyOwned,
-            ownerId: res.owner ? res.owner.name : null,
+            ownerId: res.companyOwned
+              ? null
+              : res.owner
+              ? res.owner.name
+              : null,
             commission: res.commission,
             note: res.note,
             truckGrossWeightId: res.truckGrossWeight

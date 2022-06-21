@@ -406,7 +406,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             colorId: res.color ? res.color.name : null,
             year: res.year,
             trailerLengthId: res.trailerLength ? res.trailerLength.name : null,
-            ownerId: res.owner ? res.owner.name : null,
+            ownerId: res.companyOwned
+              ? null
+              : res.owner
+              ? res.owner.name
+              : null,
             note: res.note,
             axles: res.axles,
             suspension: res.suspension ? res.suspension.name : null,
