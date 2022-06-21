@@ -461,4 +461,15 @@
   }
 }
 
+.eventsschedulepopovermain{
+  max-width: 454px !important;
+
+  .arrow{
+    display: none;
+  }
+  .popover-body{
+    width: 454px;
+  }
+}
+
 

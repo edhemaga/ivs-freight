@@ -133,17 +133,51 @@
             }
         }
 
+        .switch-holder{
+            width: 326px;
+            height: 32px;
+            margin-bottom: 8px;
+        }
+
         .calendar-items-holder{
             width: 100%;
             height: 32px;
             border-radius: 3px;
             background-color: #fff;
+            padding: 2px;
+            box-sizing: border-box;
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            padding: 2px;
-            box-sizing: border-box;
             margin-bottom: 8px;
+
+            app-tab-switcher{
+                width: 100%;
+                height: 32px;
+
+                .multiswitch{
+                    margin-top: 0px;
+                    height: 100%;
+
+                    .slide-container{
+                        background-color: transparent;
+                        color: #B7B7B7;
+                        height: 100%;
+
+                        label{
+                            font-weight: 800 !important;
+
+                            &.checked-label.ta-radio-button{
+                                color: #919191 !important;
+                            }
+                        }
+
+                        a{
+                            background-color: #EEEEEE;
+                        }
+                    }
+                }    
+            }
 
             .day-holder{
                 width: 45px;
@@ -156,9 +190,10 @@
                 font-size: 14px;
                 font-weight: 800;
                 color: #B7B7B7;
-                line-height: 19px;
+                line-height: 28px;
                 margin-right: 2px;
                 user-select: none;
+                cursor: pointer;
 
                 &.week{
                     width: 60px;
@@ -238,6 +273,12 @@
                 .ta-custom-card .ta-card-header.active{
                     border-radius: 3px;
                 }
+            }
+
+            .border-calendar{
+                width: 326px;
+                height: 2px;
+                background-color: #EEEEEE;
             }
 
             .calendar-body{
@@ -410,13 +451,14 @@
         
                                     &:hover{
                                         background-color: #CCCCCC;
-                                        color: #fff;                                    }
+                                        color: #fff;                                    
+                                    }
         
                                     &.active{
                                         background-color: #919191;
                                         color: #fff;
                                     }
-    
+
                                     &.inactiv{
                                         color: #B7B7B7;  
                                         
@@ -623,72 +665,93 @@
             align-items: flex-start;
             flex-wrap: wrap;
 
-            .month-calendar-holder{
-                width: 363px;
-                height: 326px;
-                border-radius: 2px;
-                background-color: #fff;
+            app-calendar-month{
                 display: flex;
                 justify-content: flex-start;
                 align-items: flex-start;
-                flex-direction: column;
-                padding: 12px 0px 6px 0px;
-                box-sizing: border-box;
-                margin-right: 12px;
-                margin-bottom: 12px;
+                flex-wrap: wrap;
 
-                .month{
-                    font-size: 20px;
-                    font-weight: 700;
-                    color: #6C6C6C;
-                    padding-left: 12px;
-                    box-sizing: border-box;
-                    height: 24px;
-                }
-
-                .day-holder{
-                    width: 100%;
+                .month-calendar-holder{
+                    width: 363px;
+                    height: 326px;
+                    border-radius: 2px;
+                    background-color: #fff;
                     display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    flex-wrap: wrap;
-                    padding: 16px 12px;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    flex-direction: column;
+                    padding: 12px 0px 6px 0px;
                     box-sizing: border-box;
-
-                    &.different-padding{
-                        padding: 0px 12px;
-                    }
-
-                    .day{
+                    margin-right: 12px;
+                    margin-bottom: 12px;
+    
+                    .month{
                         font-size: 20px;
                         font-weight: 700;
-                        color: #919191;
-                        width: 32px;
-                        height: 32px;
-                        line-height: 32px;
-                        border-radius: 2px;
+                        color: #6C6C6C;
+                        padding-left: 12px;
+                        box-sizing: border-box;
+                        height: 24px;
+                    }
+    
+                    .day-holder{
+                        width: 100%;
                         display: flex;
-                        justify-content: center;
+                        justify-content: space-between;
                         align-items: center;
-
-                        &.different-weight{
-                            font-weight: 400;
-                            color: #6C6C6C;
-                            margin-bottom: 6px;
-                            box-sizing: border-box;
-                            margin-right: 19px;
+                        flex-wrap: wrap;
+                        padding: 16px 12px;
+                        box-sizing: border-box;
+    
+                        &.different-padding{
+                            padding: 0px 12px;
                         }
+    
+                        .day{
+                            font-size: 20px;
+                            font-weight: 700;
+                            color: #919191;
+                            background-color: transparent;
+                            width: 32px;
+                            height: 32px;
+                            line-height: 32px;
+                            border-radius: 2px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            cursor: pointer;
 
-                        &:nth-child(7n + 0){
-                            margin-right: 0px;
-                        }
+                            &.active{
+                                background-color: #CCCCCC !important;
+                                color: #fff !important;
+                            }    
 
-                        &.event{
-                            background-color: #E5E5E5;
+                            &.current{
+                                background-color: #97A8DC !important;
+                                color: #fff !important;
+                            }
+    
+                            &.different-weight{
+                                font-weight: 400;
+                                color: #6C6C6C;
+                                margin-bottom: 6px;
+                                box-sizing: border-box;
+                                margin-right: 19px;
+
+                            }
+    
+                            &:nth-child(7n + 0){
+                                margin-right: 0px;
+                            }
+    
+                            &.event{
+                                background-color: #E5E5E5;
+                            }
                         }
                     }
-                }
+                }    
             }
+
         }
     }
 
@@ -787,7 +850,7 @@
                 .schedule-body-left{
                     width: 211px;
                     background-color: #fff;
-                    padding-left: 6px;
+                    padding: 2px;
                     box-sizing: border-box;
                     display: flex;
                     justify-content: flex-start;
@@ -797,6 +860,13 @@
                     color: #6C6C6C; 
                     line-height: 32px;  
                     margin-bottom: 1px; 
+
+                    .left-inside-box{
+                        width: 100%;
+                        height: 100%;
+                        padding-left: 4px;
+                        box-sizing: border-box;
+                    }
 
                     .left-height{
                         height: 18px;
@@ -809,7 +879,14 @@
                     display: flex;
                     justify-content: flex-start;
                     align-items: flex-start;
-    
+                    flex-direction: column;
+
+                    .right-frame{
+
+                        width: 100%;
+                        display: flex;
+                        
+                        
                     .type-body-holder{
                         width: 90px;
                         display: flex;
@@ -824,6 +901,7 @@
     
                         &.title-holder{
                             width: 304px;
+                            cursor: pointer;
                         }
     
                         &.description-holder{
@@ -831,48 +909,70 @@
                             border-radius: 0px 3px 3px 0px;
                         }
     
-                        .type-important{
-                            width: 100%;
-                            height: 32px;
-                            background-color: #fff;
-                            padding-left: 6px;
-                            box-sizing: border-box;
-                            font-size: 14px;
-                            font-weight: 400;    
-                            color: #AB47BC;
-                            display: flex;
-                            justify-content: flex-start;
-                            align-items: center;  
-                            margin-bottom: 1px;
-    
-                            &.company{
-                                color: #536BC2;
-                            }
-    
-                            &.personal{
-                                color: #FFA726;
-                            }
-
-                            &.holiday{
-                                color: #26A690;
-                            }
-    
-                            &.duration-text{
-                                color: #6C6C6C;
-                            }
-    
-                            .title-text{
-                                color: #6C6C6C;
-                                width: 286px;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                white-space: nowrap;
-    
-                                &.description-text{
-                                    width: 360px;
+                            .type-important{
+                                width: 100%;
+                                height: 32px;
+                                background-color: #fff;
+                                padding: 1px;
+                                box-sizing: border-box;
+                                font-size: 14px;
+                                font-weight: 400;    
+                                color: #AB47BC;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;  
+                                margin-bottom: 1px;
+        
+                                &.company{
+                                    color: #536BC2;
                                 }
+        
+                                &.personal{
+                                    color: #FFA726;
+                                }
+
+                                &.holiday{
+                                    color: #26A690;
+                                }
+        
+                                &.duration-text{
+                                    color: #6C6C6C;
+                                }
+
+                                .right-inside-box{
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    align-items: center;
+                                    padding-left: 4px;
+                                    box-sizing: border-box;
+
+                                    &.active{
+                                        background-color: #F7F7F7;
+                                        color: #3C3C3C;
+
+                                        .title-text{
+                                            color: #3C3C3C;
+                                        }
+                                    }
+
+                                    .title-text{
+                                        color: #6C6C6C;
+                                        width: 286px;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        white-space: nowrap;
+            
+                                        &.description-text{
+                                            width: 360px;
+                                        }
+                                    }
+    
+                                }
+        
                             }
                         }
+
                     }
                 }
             }    
@@ -1310,12 +1410,124 @@
     }
 }
 
+.event-schedule-popover{
+    position: relative;
+    width: 454px;
+    padding: 7px 10px 17px 14px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    background-color: #fff;
+    box-shadow: 0 0 5px #00000026;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+
+    .icons-holder{
+        position: absolute;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        top: 7px;
+        right: 10px;
+
+        .icon-edit{
+            width: 18px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 12px;
+
+            svg-icon{
+                svg{
+                    display: flex;
+
+                    path{
+                        fill: #AAAAAA;
+                    }
+                }
+            }
+        }
+    }
+
+    .title-event-holder{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .title-event{
+            font-size: 18px;
+            font-weight: 800;
+            color: #536BC2;
+            padding-right: 55px;
+            box-sizing: border-box;
+        }
+
+    }
+
+    .date-event-holder{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 12px;
+
+        .date-icons{
+            width: 18px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            svg-icon{
+                svg{
+                    display: flex;
+
+                    path{
+                        fill: #AAAAAA;
+                    }
+                }
+            }
+        }
+
+        .date-event-text{
+            font-size: 14px;
+            font-weight: 500;
+            color: #6C6C6C;
+            padding-left: 6px;
+            box-sizing: border-box;
+
+            &.regular{
+                font-weight: 400;
+            }
+        }
+    }
+
+    .description-holder{
+        width: 424px;
+        font-size: 12px;
+        font-weight: 400;
+        color: #6C6C6C;
+        margin-top: 12px;
+    }
+}
+
+.fc .fc-daygrid-body{
+    width: 100% !important;
+}
+.fc .fc-scrollgrid table{
+    width: 100% !important;
+}
+
 .fc-scrollgrid-section-header .fc-col-header-cell-cushion {
     padding: 0;
     font-size: 14px;
     font-weight: 700;
     line-height: 19px;
     color: #6C6C6C;
+
 
     text-decoration: none;
     text-transform: uppercase;
@@ -1361,6 +1573,10 @@
             color: #6C6C6C !important;
         }
     }
+}
+
+.fc .fc-timegrid-body{
+    width: 100% !important;
 }
 
 .fc-theme-standard td, .fc-theme-standard th, .fc-theme-standard .fc-scrollgrid{

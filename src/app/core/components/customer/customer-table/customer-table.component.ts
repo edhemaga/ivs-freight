@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
 import {
   getBrokerColumnDefinition,
   getShipperColumnDefinition,
@@ -9,40 +10,120 @@ import {
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { BrokerQuery } from '../state/broker-state/broker.query';
+import { BrokerTService } from '../state/broker-state/broker.service';
+import { BrokerState } from '../state/broker-state/broker.store';
+import { ShipperState } from '../state/shipper-state/shipper.store';
+import { ShipperQuery } from '../state/shipper-state/shipper.query';
+import { ShipperTService } from '../state/shipper-state/shipper.service';
 
 @Component({
   selector: 'app-customer-table',
   templateUrl: './customer-table.component.html',
   styleUrls: ['./customer-table.component.scss'],
 })
-export class CustomerTableComponent implements OnInit {
-  private destroy$: Subject<void> = new Subject<void>();
-
+export class CustomerTableComponent implements OnInit, OnDestroy {
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
   public columns: any[] = [];
+  public brokers: BrokerState[] = [];
+  public shipper: ShipperState[] = [];
   public selectedTab = 'broker';
-  resetColumns: boolean;
+  public resetColumns: boolean;
 
   constructor(
     private modalService: ModalService,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private brokerQuery: BrokerQuery,
+    private brokerService: BrokerTService,
+    private shipperQuery: ShipperQuery,
+    private shipperService: ShipperTService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
-
-    this.getCustomerData();
+    this.sendCustomerData();
 
     // Reset Columns
     this.tableService.currentResetColumns
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((response: boolean) => {
         if (response) {
           this.resetColumns = response;
 
           this.sendCustomerData();
+        }
+      });
+
+    // Add-Update Broker-Shipper
+    this.tableService.currentActionAnimation
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        // <------------------ Broker ------------------->
+        // Add Broker
+        if (res.animation === 'add' && res.tab === 'broker') {
+          this.viewData.push(this.mapBrokerData(res.data));
+
+          this.addData(res.id);
+        }
+        // Update Broker
+        else if (res.animation === 'update' && res.tab === 'broker') {
+          const updatedBroker = this.mapBrokerData(res.data);
+
+          this.updateData(res.id, updatedBroker);
+        }
+
+        // <------------------ Shipper ------------------->
+        // Add Shipper
+        else if (res.animation === 'add' && res.tab === 'shipper') {
+          this.viewData.push(this.mapShipperData(res.data));
+
+          this.addData(res.id);
+        }
+        // Update Shipper
+        else if (res.animation === 'update' && res.tab === 'shipper') {
+          const updatedShipper = this.mapShipperData(res.data);
+
+          this.updateData(res.id, updatedShipper);
+        }
+      });
+
+    // Delete Selected Rows
+    this.tableService.currentDeleteSelectedRows
+      .pipe(untilDestroyed(this))
+      .subscribe((response: any[]) => {
+        // Multiple Delete
+        if (response.length) {
+          // Delete Broker List
+          if (this.selectedTab === 'broker') {
+            this.brokerService
+              .deleteBrokerList(response)
+              .pipe(untilDestroyed(this))
+              .subscribe(() => {
+                this.notificationService.success(
+                  'Brokers successfully deleted',
+                  'Success:'
+                );
+
+                this.multipleDeleteData(response);
+              });
+          }
+          // Delete Shipper List
+          else {
+            this.shipperService
+              .deleteShipperList(response)
+              .pipe(untilDestroyed(this))
+              .subscribe(() => {
+                this.notificationService.success(
+                  'Shippers successfully deleted',
+                  'Success:'
+                );
+
+                this.multipleDeleteData(response);
+              });
+          }
         }
       });
   }
@@ -84,17 +165,23 @@ export class CustomerTableComponent implements OnInit {
     };
   }
 
-  getCustomerData() {
-    this.sendCustomerData();
-  }
-
   sendCustomerData() {
+    if (this.selectedTab === 'broker') {
+      this.brokers = this.brokerQuery.getAll().length
+        ? this.brokerQuery.getAll()
+        : [];
+    } else {
+      this.shipper = this.shipperQuery.getAll().length
+        ? this.shipperQuery.getAll()
+        : [];
+    }
+
     this.tableData = [
       {
         title: 'Broker',
         field: 'broker',
-        length: 8,
-        data: this.getDumyData(8, 'broker'),
+        length: this.brokers.length,
+        data: this.brokers,
         extended: false,
         isCustomer: true,
         gridNameTitle: 'Broker',
@@ -104,8 +191,8 @@ export class CustomerTableComponent implements OnInit {
       {
         title: 'Shipper',
         field: 'shipper',
-        length: 15,
-        data: this.getDumyData(15, 'shipper'),
+        length: this.shipper.length,
+        data: this.shipper,
         extended: false,
         isCustomer: true,
         gridNameTitle: 'Shipper',
@@ -137,173 +224,218 @@ export class CustomerTableComponent implements OnInit {
     this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
+    this.viewData = this.viewData.map((data: any) => {
+      if (this.selectedTab === 'broker') {
+        return this.mapBrokerData(data);
+      } else {
+        return this.mapShipperData(data);
+      }
     });
   }
 
-  getDumyData(numberOfCopy: number, dataType: string) {
-    let dataBroker: any[] = [
-      {
-        id: 61,
-        companyId: 1,
-        predefinedBrokerId: null,
-        name: 'ROADTEX YOUNGSTOWN',
-        address: null,
-        street: 'Southern Blvd, Dayton, OH, USA',
-        city: 'Dayton',
-        state: 'Oh',
-        country: 'US',
-        zip: '',
-        longitude: -84.198938,
-        latitude: 39.760973,
-        email: null,
-        phone: null,
-        upCount: 2,
-        downCount: 0,
-        loadCount: 10,
-        total: '$12,500',
-        thumbUp: 221,
-        thumbDown: null,
-        latestComment: 'juhuuuuuhuhu',
-        status: 1,
-        mcNumber: '54',
-        hasBillingContact: 0,
-        dnu: 0,
-        ban: 0,
-        protected: 1,
-        doc: {
-          email: '',
-          phone: '(330) 423-4727',
-          address: {
-            city: 'Dayton',
-            state: 'Ohio',
-            address: 'Southern Blvd, Dayton, OH, USA',
-            country: 'US',
-            zipCode: '',
-            streetName: 'Southern Boulevard',
-            streetNumber: '',
-            stateShortName: 'OH',
-          },
-          dbaName: '',
-          addressUnit: 'D',
-          contactPersons: [],
-        },
-        createdAt: null,
-        updatedAt: null,
-        guid: '3511a282-4f64-4b32-9d7e-e5777aee9711',
-        textDbaName: '',
-        textPhone: '(330) 423-4727',
-        textEmail: '',
-        textAddress: 'Southern Blvd, Dayton, OH, USA',
-        isSelected: false,
-      },
-    ];
-
-    let dataShippers: any[] = [
-      {
-        id: 29,
-        companyId: 1,
-        name: 'PH FOOD MORTON',
-        address: null,
-        street: null,
-        city: null,
-        state: null,
-        country: null,
-        zip: null,
-        longitude: -89.654816,
-        latitude: 32.357247,
-        email: null,
-        phone: null,
-        upCount: 0,
-        downCount: 0,
-        pickupCount: 7,
-        deliveryCount: 0,
-        loadCount: 0,
-        total: '$4,498',
-        thumbUp: null,
-        thumbDown: null,
-        latestComment: null,
-        status: 1,
-        doc: {
-          email: '',
-          phone: '(601) 732-8670',
-          address: {
-            city: 'Morton',
-            state: 'Mississippi',
-            address: '4013 US-80, Morton, MS 39117, USA',
-            country: 'US',
-            zipCode: '39117',
-            streetName: 'U.S. 80',
-            streetNumber: '4013',
-            stateShortName: 'MS',
-          },
-          addressUnit: '',
-          appointments: 1,
-          contactPersons: [],
-          receivingHours: '',
-        },
-        protected: null,
-        createdAt: null,
-        updatedAt: null,
-        guid: '6628a080-baed-4a85-8933-ed656785957b',
-        textDbaName: '',
-        textPhone: '(601) 732-8670',
-        textEmail: '',
-        textAddress: '4013 US-80, Morton, MS 39117, USA',
-      },
-    ];
-
-    let data: any[] = [];
-
-    for (let i = 0; i < numberOfCopy; i++) {
-      if (dataType === 'broker') {
-        data.push(dataBroker[0]);
-      } else {
-        data.push(dataShippers[0]);
-      }
-    }
-
-    return data;
+  // Map Broker Data
+  mapBrokerData(data: any) {
+    return {
+      ...data,
+      isSelected: false,
+      textAddress: data?.mainAddress
+        ? data.mainAddress.city + ', ' + data.mainAddress.state 
+        : '',
+      loadCount: '',
+      total: '',
+    };
   }
 
-  public onTableBodyActions(event: any) {
-    if (this.selectedTab === 'broker') {
-      this.modalService.openModal(
-        BrokerModalComponent,
-        { size: 'small' },
-        {
-          ...event,
-          type: 'edit',
-          dnuButton: true,
-          bfbButton: true
-        }
-      );
-    } else {
-      this.modalService.openModal(
-        ShipperModalComponent,
-        { size: 'small' },
-        {
-          ...event,
-          type: 'edit',
-        }
-      );
-    }
+  // Map Shipper Data
+  mapShipperData(data: any) {
+    return {
+      ...data,
+      isSelected: false,
+      textDbaName: '',
+      textAddress: data?.address
+        ? data.address.city + ', ' + data.address.state
+        : '',
+      mcNumber: '',
+      loadCount: '',
+      total: '',
+    };
   }
 
+  // Toolbar Actions
   onToolBarAction(event: any) {
+    // Add Call
     if (event.action === 'open-modal') {
-      console.log(this.selectedTab);
-
+      // Add Broker Call Modal
       if (this.selectedTab === 'broker') {
         this.modalService.openModal(BrokerModalComponent, { size: 'medium' });
-      } else { 
+      }
+      // Add Shipper Call Modal
+      else {
         this.modalService.openModal(ShipperModalComponent, { size: 'medium' });
       }
-    } else if (event.action === 'tab-selected') {
-      this.selectedTab = event.tabData.field;
-      this.setCustomerData(event.tabData);
     }
+    // Switch Tab Call
+    else if (event.action === 'tab-selected') {
+      this.selectedTab = event.tabData.field;
+
+      this.sendCustomerData();
+    }
+  }
+
+  // Table Body Actions
+  onTableBodyActions(event: any) {
+    // Edit Call
+    if (event.type === 'edit-cutomer-or-shipper') {
+      // Edit Broker Call Modal
+      if (this.selectedTab === 'broker') {
+        this.modalService.openModal(
+          BrokerModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            type: 'edit',
+            dnuButton: true,
+            bfbButton: true,
+          }
+        );
+      }
+      // Edit Shipper Call Modal
+      else {
+        this.modalService.openModal(
+          ShipperModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            type: 'edit',
+          }
+        );
+      }
+    }
+    // Delete Call
+    else if (event.type === 'delete') {
+      // Delete Broker Call
+      if (this.selectedTab === 'broker') {
+        this.brokerService
+          .deleteBrokerById(event.id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Broker successfully deleted',
+                'Success:'
+              );
+
+              this.deleteDataById(event.id);
+            },
+            error: () => {
+              this.notificationService.error(
+                `Broker with id: ${event.id} couldn't be deleted`,
+                'Error:'
+              );
+            },
+          });
+      }
+      // Delete Shipper Call
+      else {
+        this.shipperService
+          .deleteShipperById(event.id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Shipper successfully deleted',
+                'Success:'
+              );
+
+              this.deleteDataById(event.id);
+            },
+            error: () => {
+              this.notificationService.error(
+                `Broker with id: ${event.id} couldn't be deleted`,
+                'Error:'
+              );
+            },
+          });
+      }
+    }
+  }
+
+  // Add Shipper Or Broker To Viewdata
+  addData(dataId: any) {
+    this.viewData = this.viewData.map((data: any) => {
+      if (data.id === dataId) {
+        data.actionAnimation = 'add';
+      }
+
+      return data;
+    });
+
+    const inetval = setInterval(() => {
+      this.viewData = closeAnimationAction(false, this.viewData);
+
+      clearInterval(inetval);
+    }, 1000);
+  }
+
+  // Update Shipper Or Broker In Viewdata
+  updateData(dataId: number, updatedData: any) {
+    this.viewData = this.viewData.map((data: any) => {
+      if (data.id === dataId) {
+        data = updatedData;
+        data.actionAnimation = 'update';
+      }
+
+      return data;
+    });
+
+    const inetval = setInterval(() => {
+      this.viewData = closeAnimationAction(false, this.viewData);
+
+      clearInterval(inetval);
+    }, 1000);
+  }
+
+  // Delete Shipper Or Broker From Viewdata
+  deleteDataById(dataId: number) {
+    this.viewData = this.viewData.map((data: any) => {
+      if (data.id === dataId) {
+        data.actionAnimation = 'delete';
+      }
+
+      return data;
+    });
+
+    const inetval = setInterval(() => {
+      this.viewData = closeAnimationAction(true, this.viewData);
+
+      clearInterval(inetval);
+    }, 1000);
+  }
+
+  // Multiple Delete Shipper Or Broker From Viewdata
+  multipleDeleteData(response: any) {
+    this.viewData = this.viewData.map((data: any) => {
+      response.map((r: any) => {
+        if (data.id === r.id) {
+          data.actionAnimation = 'delete';
+        }
+      });
+
+      return data;
+    });
+
+    const inetval = setInterval(() => {
+      this.viewData = closeAnimationAction(true, this.viewData);
+
+      clearInterval(inetval);
+    }, 1000);
+
+    this.tableService.sendRowsSelected([]);
+    this.tableService.sendResetSelectedColumns(true);
+  }
+
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+    this.tableService.sendDeleteSelectedRows([]);
   }
 }

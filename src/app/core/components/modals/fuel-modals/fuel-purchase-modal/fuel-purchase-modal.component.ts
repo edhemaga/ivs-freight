@@ -1,11 +1,12 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -43,7 +44,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -99,6 +101,19 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     this.fuelItems.removeAt(id);
     this.selectedFuelItemsFormArray.splice(id, 1);
     this.hoverRowTable.splice(id, 1);
+    const afterDeleting = this.subtotal.splice(id, 1);
+
+    this.subtotal = this.subtotal.filter(
+      (item) => item.id !== afterDeleting[0].id
+    );
+
+    if (!this.subtotal.length) {
+      this.selectedFuelItemsFormArray = [];
+      this.hoverRowTable = [];
+      this.subtotal = [];
+      this.fuelItemsCounter = 0;
+      this.quantity = [];
+    }
   }
 
   public onChange(formControlName: string, index: number) {
@@ -114,7 +129,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             this.fuelItems
               .at(index)
               .get('price')
-              .value.toString()
+              .value?.toString()
               .replace(/,/g, '')
           );
           this.subtotal[index].value = this.quantity[index] * price;
@@ -152,17 +167,17 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         }
         if (this.editData) {
           this.updateFuel(this.editData.id);
-          this.modalService.setModalSpinner({action: null, status: true});
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addFuel();
-          this.modalService.setModalSpinner({action: null, status: true});
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
         break;
       }
       case 'delete': {
         if (this.editData) {
           this.deleteFuelById(this.editData.id);
-          this.modalService.setModalSpinner({action: 'delete', status: true});
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
         }
         break;
       }

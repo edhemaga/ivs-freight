@@ -20,13 +20,15 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { DriverResponse } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 @Component({
   selector: 'app-driver-details',
   templateUrl: './driver-details.component.html',
   styleUrls: ['./driver-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DetailsPageService],
 })
-export class DriverDetailsComponent implements OnInit, OnDestroy {
+export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   public driverDetailsConfig: any[] = [];
   public dataTest: any;
   public statusDriver: boolean;
@@ -44,15 +46,31 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     private driverService: DriverTService,
     private router: Router,
     private notificationService: NotificationService,
-    private detailsPageDriverSer: DetailsPageService,
-    private cdRef: ChangeDetectorRef
+    private detailsPageDriverService: DetailsPageService,
+    private cdRef: ChangeDetectorRef,
+    private tableService: TruckassistTableService
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {}
 
   ngOnInit() {
     this.initTableOptions();
+
     this.detailCongif(this.activated_route.snapshot.data.driver);
 
-    this.detailsPageDriverSer.pageDetailChangeId$
+
+    this.tableService.currentActionAnimation
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.detailCongif(res.data);
+
+          this.cdRef.detectChanges();
+        }
+      });
+    
+    
+    this.detailsPageDriverService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
         this.driverService
@@ -61,7 +79,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (res: DriverResponse) => {
               this.detailCongif(res);
-              this.router.navigate([`/driver/${res.id}/details`]);
+              if (this.router.url.includes('details')) {
+                this.router.navigate([`/driver/${res.id}/details`]);
+              }
               this.notificationService.success(
                 'Driver successfully changed',
                 'Success:'
@@ -79,7 +99,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   }
 
   /**Function template and names for header and other options in header */
-  detailCongif(data: DriverResponse) {
+  detailCongif(data: DriverResponse | any) {
     if (data.status == 0) {
       this.statusDriver = true;
       this.showInc = true;
@@ -101,13 +121,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         template: 'cdl',
         req: false,
         status: this.statusDriver,
-        hasDangerC: data.cdls.some(
-          (el) =>
-            moment(el.expDate).isBefore(moment()) ||
-            el.dateDeactivated ||
-            data.cdls.length == 0
-        ),
-        length: data.cdls?.length,
+        // hasDanger: data.cdls.some(
+        //   (el) =>
+        //     moment(el.expDate).isBefore(moment())
+        // ),
+        length: data?.cdls?.length ? data.cdls.length : 0,
         data: data,
       },
       {
@@ -116,11 +134,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         template: 'drug-alcohol',
         req: true,
         status: this.statusDriver,
-        hasDangerC: data.tests.some(
-          (el) =>
-            moment(el.testingDate).isBefore(moment()) || data.tests.length == 0
-        ),
-        length: data.tests?.length,
+        // hasDanger: data.tests.some(
+        //   (el) =>
+        //     moment(el.testingDate).isBefore(moment())
+        // ),
+        length: data?.tests?.length ? data.tests.length : 0,
         data: data,
       },
       {
@@ -129,11 +147,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         template: 'medical',
         req: false,
         status: this.statusDriver,
-        hasDangerC: data.medicals.some(
-          (el) =>
-            moment(el.expDate).isBefore(moment()) || data.medicals.length == 0
-        ),
-        length: data.medicals?.length,
+        // hasDanger: data.medicals.some(
+        //   (el) =>
+        //     moment(el.expDate).isBefore(moment())
+        // ),
+        length: data?.medicals?.length ? data.medicals.length : 0,
         data: data,
       },
       {
@@ -142,15 +160,15 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         template: 'mvr',
         req: true,
         status: this.statusDriver,
-        hasDangerC: data.mvrs.some(
-          (el) =>
-            moment(el.issueDate).isBefore(moment()) || data.mvrs.length == 0
-        ),
-        length: data.mvrs?.length,
+        // hasDanger: data.mvrs.some(
+        //   (el) =>
+        //     moment(el.issueDate).isBefore(moment())
+        // ),
+        length: data?.mvrs?.length ? data.mvrs.length : 0,
         data: data,
       },
     ];
-    this.driverId = data.id;
+    this.driverId = data?.id ? data.id : null;
   }
 
   /**Function for dots in cards */
@@ -225,6 +243,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           { size: 'small' },
           { id: this.driverId, type: 'new-drug' }
         );
+
         break;
       }
       case 'Medical': {
@@ -254,5 +273,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     return item.id;
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+  }
 }

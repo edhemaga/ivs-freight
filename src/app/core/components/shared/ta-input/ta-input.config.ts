@@ -19,12 +19,17 @@ export interface ITaInput {
   textAlign?: string | 'center';
   customClass?: string; // 'input-big' -> height: 32px
   autoFocus?: boolean; // focus first input in form,
-  hideClear?:boolean;
+  hideClear?: boolean;
   hideErrorMessage?: boolean;
+  thousandSeparator?: boolean;
+  // Black input only
+  blackInput?: boolean; // has only black background && input clear, no validations
   // Dropdown
   isDropdown?: boolean;
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class
   // MultiSelect Dropdown
   multiselectDropdown?: boolean;
   multiSelectDropdownActive?: boolean;
+  // PM Modal
+  modalPM?: boolean;
 }

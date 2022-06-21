@@ -1,3 +1,4 @@
+import { RepairOrderModalComponent } from './../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { AccidentModalComponent } from './../safety/accident/accident-modal/accident-modal.component';
 import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
@@ -98,6 +99,8 @@ import { RepairShopModalComponent } from '../modals/repair-modals/repair-shop-mo
 import { TaChartComponent } from './ta-chart/ta-chart.component';
 import { ChartsModule } from 'ng2-charts';
 import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
+import { ProfileImagesModule } from './profile-images/profile-images.module';
+import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
 
 @NgModule({
   declarations: [
@@ -163,6 +166,8 @@ import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/
     AccidentModalComponent,
     RepairShopModalComponent,
     RepairPmModalComponent,
+    RepairOrderModalComponent,
+    TaTabSwitchComponent
   ],
   imports: [
     CommonModule,
@@ -172,6 +177,7 @@ import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/
     NgbModule,
     RouterModule,
     PipesModule,
+    ProfileImagesModule,
     AngularSvgIconModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
@@ -241,6 +247,7 @@ import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/
     NgxSliderModule,
     PdfViewerModule,
     AppTooltipeModule,
+    ProfileImagesModule,
 
     // Components
     TabSwitcherComponent,
@@ -280,6 +287,7 @@ import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/
     TaCurrencyProgressBarComponent,
     TaChartComponent,
     FilterComponent,
+    TaTabSwitchComponent,
 
     // Modals Components
     TaModalComponent,
@@ -303,6 +311,7 @@ import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/
     ViolationModalComponent,
     AccidentModalComponent,
     RepairPmModalComponent,
+    RepairOrderModalComponent
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

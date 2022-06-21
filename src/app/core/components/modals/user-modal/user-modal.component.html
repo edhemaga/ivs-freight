@@ -5,10 +5,18 @@
   [isModalValid]="userForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-  <app-tab-switcher
+
+  <app-ta-tab-switch
+  [tabs]="tabs"
+  (switchClicked)="tabChange($event)" 
+  [type]="'modal-popup'"
+  >
+  </app-ta-tab-switch>  
+
+  <!-- <app-tab-switcher
     (switchClicked)="tabChange($event)"
     [tabs]="tabs"
-  ></app-tab-switcher>
+  ></app-tab-switcher> -->
 
   <form [formGroup]="userForm" class="form-container">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -76,7 +84,7 @@
                 type: 'text',
                 label: 'Phone',
                 placeholderIcon: 'phone',
-                mask: '(000) 000-0000'
+                thousandSeparator: true
               }"
             ></app-ta-input>
           </div>
@@ -144,7 +152,7 @@
                     type: 'text',
                     label: 'Phone',
                     placeholderIcon: 'phone',
-                    mask: '(000) 000-0000'
+                    thousandSeparator: true
                   }"
                 ></app-ta-input>
               </div>
@@ -218,7 +226,7 @@
                     isRequired: true,
                     placeholderIcon: 'dollar',
                     customClass: 'dollar-placeholderIcon',
-                    mask: 'separator.2'
+                    thousandSeparator: true
                   }"
                 ></app-ta-input>
               </div>

@@ -1,0 +1,87 @@
+@import 'src/theme/variables.scss';
+
+.pad {
+  margin-top: -20px !important;
+  margin: 0 auto;
+  position: relative;
+
+  @media only screen and (max-width: 414px) {
+    margin-left: 21px !important;
+  }
+
+  @media only screen and (max-width: 376px) {
+    margin-left: 2px !important;
+  }
+
+  @media only screen and (max-width: 361px) {
+    margin-left: 2px !important;
+  }
+
+  &_signature {
+    margin-top: 9px !important;
+  }
+
+  canvas {
+    height: 5px;
+    width: 100%;
+    position: relative;
+    top: 7px;
+    left: 0px;
+    border-radius: 50px !important;
+  }
+
+  .signature {
+    z-index: 0;
+    position: relative;
+    top: -6px;
+    display: flex;
+    width: 100%;
+    height: 28px;
+    font-size: 12px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    background-color: $bw1;
+    color: $bw6-2;
+    padding: 2px 0px;
+
+    .signature_blok {
+      position: relative;
+      left: 0px;
+      top: -2px;
+      border-bottom-left-radius: 3px;
+      width: 152px;
+      z-index: 100;
+
+      .signature_link {
+        text-decoration: none;
+        color: $bw6-2;
+        background-color: $bw2;
+        display: inline-block;
+        height: 28px;
+        font-size: 14px !important;
+        cursor: pointer;
+        font-weight: bold;
+        padding: 3px;
+        padding-top: 4px;
+      }
+
+      .signature_link_clear {
+        width: 76px;
+        transition: all 0.2s ease-in;
+      }
+
+      .signature_link_undo {
+        width: 76px;
+        transition: all 0.2s ease-in;
+      }
+    }
+
+    .signature_text {
+      height: 28px;
+      text-align: center;
+      line-height: 26px;
+      position: absolute;
+      width: 100%;
+    }
+  }
+}

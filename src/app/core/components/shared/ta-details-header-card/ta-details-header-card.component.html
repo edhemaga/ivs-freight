@@ -1,12 +1,7 @@
 <div class="details-header-wrapper">
   <div class="details-header-wrapper-switcher">
     <div class="inactive-icon-input">
-      <!-- <svg-icon
-        *ngIf="statusInactive == 0"
-        class="inactive-status"
-        src="assets/svg/truckassist-table/dropdown/content/activate-hover.svg"
-      ></svg-icon> -->
-      <!-- Active Item -->
+    
       <div
         *ngIf="!selectedDropdown"
         class="current-active-item"
@@ -92,8 +87,32 @@
   </app-table-dropdown>
 </div>
   </div>
-  <div *ngIf="haveTwoInput" class="details-header-wrapper-switcher">
+  <!-- <div *ngIf="haveTwoInput" class="details-header-wrapper-switcher">
     <div class="inactive-icon-input">
+      <div
+      *ngIf="!selectedDropdown"
+      class="current-active-item"
+      (click)="onPickItem()"
+      ngbTooltip
+      [mainTooltip]="searchInputName"
+      position="top"
+      tooltipBackground="#6C6C6C"
+    >
+      <p class="current-active-name">
+        {{ (options | detailActiveItem).name }}
+      </p>
+      <span
+      ngbTooltip
+      [mainTooltip]="searchName"
+      position="top"
+      [tooltipBackground]="searchName ? '#6C6C6C':''"
+      >
+      <svg-icon
+        class="current-active-owner"
+        src="{{ (options | detailActiveItem).svg }}"
+      ></svg-icon>
+    </span>
+    </div>
       <app-ta-input-dropdown
         class="dropInput"
         [formControl]="inputFormControl"
@@ -105,7 +124,8 @@
         }"
         [options]="options"
         [template]="'details-template'"
-        (selectedItem)="onSelectDetail($event)"
+        [isDetailsActive]="selectedDropdown"
+        (selectedItem)="onSelecItem($event)"
       >
       </app-ta-input-dropdown>
     </div>
@@ -126,7 +146,7 @@
       ></svg-icon>
       </span>
     </div>
-  </div>
+  </div> -->
   <div class="details-header-wrapper-container">
     <div class="details-header-wrapper">
       <ng-content></ng-content>

@@ -1,0 +1,214 @@
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Repair' : ''"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [isModalValid]="repairOrderForm.valid"
+  [tabChange]="headerTabs"
+  [customClass]="'modal-container-L'"
+  (onTabHeaderChange)="onModalHeaderTabChange($event)"
+  (modalActionTypeEmitter)="onModalAction($event)"
+>
+  <form [formGroup]="repairOrderForm" class="form-container">
+    <div
+      [ngClass]="
+        selectedTab === 1
+          ? 'repair-modal-bill-first-row'
+          : 'repair-modal-order-first-row'
+      "
+    >
+      <app-ta-input-radiobuttons
+        [buttons]="typeOfRepair"
+        (changedValue)="onTypeOfRepair($event)"
+      ></app-ta-input-radiobuttons>
+      <app-ta-input-dropdown
+        formControlName="unit"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          label: 'Unit',
+          isDropdown: true,
+          isRequired: true,
+          dropdownWidthClass: 'w-col-repair-m-unit'
+        }"
+        [options]="labelsUnit"
+        (selectedItem)="onSelectDropDown($event, 'repair-unit')"
+      ></app-ta-input-dropdown>
+      <app-ta-input
+        formControlName="odometer"
+        [inputConfig]="{
+          name: 'Odometer',
+          type: 'text',
+          label: 'Odometer',
+          textTransform: 'capitalize'
+        }"
+      ></app-ta-input>
+      <app-ta-input
+        formControlName="date"
+        [inputConfig]="{
+          name: 'datepicker',
+          type: 'text',
+          isDropdown: true,
+          label: 'Date',
+          placeholderIcon: 'date',
+          isRequired: true,
+          customClass: 'datetimeclass'
+        }"
+      ></app-ta-input>
+      <app-ta-input
+        *ngIf="selectedTab === 1"
+        formControlName="invoice"
+        [inputConfig]="{
+          name: 'Invoice',
+          type: 'text',
+          label: 'Invoice',
+          textTransform: 'capitalize'
+        }"
+      ></app-ta-input>
+    </div>
+    <div class="row last-row">
+      <app-ta-input-dropdown
+        formControlName="repairShop"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          label: 'Repair Shop',
+          isDropdown: true,
+          isRequired: true,
+          dropdownWidthClass: 'w-col-repair-m-shop'
+        }"
+        [options]="labelsRepairShop"
+        (selectedItem)="onSelectDropDown($event, 'repair-shop')"
+      ></app-ta-input-dropdown>
+    </div>
+    <!-- Fake Table Card -->
+    <div [ngClass]="{ 'repair-order': selectedTab !== 1 }">
+      <app-ta-custom-card
+        [hasCounter]="items.length ? items.length : '0'"
+        [cardName]="'Item'"
+        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+        [hasArrow]="false"
+        [isCommentData]="true"
+        [isCardOpen]="items.length"
+        [hasBodyData]="items.length"
+        [hasScrollBody]="items.length > 10"
+        (onActionEvent)="addItems($event)"
+      >
+        <div
+          formArrayName="items"
+          class="common-fake-table-modal"
+          [ngClass]="
+            selectedTab === 1
+              ? 'common-fake-table-modal-repair-bill-item'
+              : 'common-fake-table-modal-repair-order-item'
+          "
+          *ngIf="items.length"
+        >
+          <div class="common-fake-table-label">
+            <p></p>
+            <p>DESCRIPTION</p>
+            <p>PM</p>
+            <p *ngIf="selectedTab === 1">PRICE</p>
+            <p>QTY</p>
+            <p *ngIf="selectedTab === 1">SUBTOTAL</p>
+          </div>
+          <div *ngFor="let item of items.controls; let ind = index">
+            <div [formGroupName]="ind" class="common-fake-table-card">
+              <p>
+                {{ item.controls.id.value }}
+              </p>
+              <div class="desc-pm-container">
+                <app-ta-input
+                  formControlName="description"
+                  [inputConfig]="{
+                    name: 'Description',
+                    type: 'text',
+                    textTransform: 'capitalize'
+                  }"
+                ></app-ta-input>
+                <p class="pm-item">PM</p>
+              </div>
+
+              <app-ta-input
+                *ngIf="selectedTab === 1"
+                formControlName="price"
+                [inputConfig]="{
+                  name: 'Price',
+                  type: 'text',
+                  textTransform: 'capitalize',
+                  thousandSeparator: true
+                }"
+                (change)="onChange('price', ind)"
+              ></app-ta-input>
+
+              <app-ta-input
+                formControlName="qty"
+                [inputConfig]="{
+                  name: 'QTY',
+                  type: 'text',
+                  textTransform: 'capitalize'
+                }"
+                (change)="onChange('qty', ind)"
+              ></app-ta-input>
+
+              <p *ngIf="selectedTab === 1" class="item-subtotal">
+                {{ subtotal[ind].value | currency }}
+              </p>
+
+              <div
+                ngbTooltip
+                mainTooltip="Delete"
+                position="top"
+                tooltipBackground="#EF5350"
+                class="common-fake-table-delete"
+                (click)="removeItems(ind, item.controls)"
+              >
+                <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="selectedTab === 1" class="row item-total-row">
+          <p class="item-total">
+            <span class="item-total-text">TOTAL</span>
+            {{ subtotal | sumArrays | currency }}
+          </p>
+        </div>
+      </app-ta-custom-card>
+    </div>
+
+    <app-ta-custom-card
+      [hasCounter]="pickedServices() ? pickedServices() : '0'"
+      [cardName]="'Service'"
+      [isCardOpen]="true"
+    >
+      <div class="repair-shop-services">
+        <div
+          *ngFor="let repair of services; trackBy: identity"
+          class="repair-shop-service"
+          [class.active]="repair.active"
+          (click)="repair.active = !repair.active"
+        >
+          <svg-icon src="{{ repair.svg }}"></svg-icon>
+          <p>{{ repair.serviceType }}</p>
+        </div>
+      </div>
+    </app-ta-custom-card>
+    <div *ngIf="selectedTab === 1" class="ta-card-body-overflow-none">
+      <app-ta-custom-card
+        [hasCounter]="documents.length ? documents.length : '0'"
+        [cardName]="'Documents'"
+        [isCardOpen]="documents.length"
+      >
+        <app-ta-modal-upload
+          [files]="documents"
+          (onFileEvent)="onFilesEvent($event)"
+        ></app-ta-modal-upload>
+      </app-ta-custom-card>
+    </div>
+    <!-- Note -->
+    <app-ta-input-note
+      formControlName="note"
+      [isVisibleNote]="repairOrderForm.get('note').value"
+    ></app-ta-input-note>
+  </form>
+</app-ta-modal>

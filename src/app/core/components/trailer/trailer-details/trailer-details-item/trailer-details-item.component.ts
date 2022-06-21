@@ -1,3 +1,4 @@
+import { TrailerResponse } from './../../../../../../../appcoretruckassist/model/trailerResponse';
 import { ActivatedRoute } from '@angular/router';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -15,7 +16,7 @@ import { card_component_animation } from '../../../shared/animations/card-compon
   animations:[card_component_animation('showHideCardBody')]
 })
 export class TrailerDetailsItemComponent implements OnInit {
-  @Input() data: any = null;
+  @Input() trailer: TrailerResponse | any = null;
   public note: FormControl = new FormControl();
   public trailerData: any;
   public svgColorVar: string;
@@ -29,15 +30,11 @@ export class TrailerDetailsItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getTrailerById();
+    this.note.patchValue(this.trailer.data.note)
     this.initTableOptions();
   }
   /**Function return trailer by id */
-  public getTrailerById() {
-    this.trailerData = this.activated_route.snapshot.data;
-    this.note.patchValue(this.trailerData.trailer.note)
-
-  }
+ 
    
   /**Function for toggle page in cards */
   public toggleResizePage(value: number) {

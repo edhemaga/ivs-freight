@@ -1,0 +1,15 @@
+@import 'src/theme/variables.scss';
+
+.footer-container {
+  background-color: $light-blue;
+  height: 42px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .footer-title {
+    color: $white;
+    font-size: 14px;
+  }
+}

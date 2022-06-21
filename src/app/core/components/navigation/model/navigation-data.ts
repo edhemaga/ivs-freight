@@ -58,7 +58,11 @@ export const navigationData: Navigation[] = [
         route: '/repair',
         activeRouteFlegId: 3,
       },
-      // List Fuel route ?
+      {
+        name: 'PM',
+        route: '/pm',
+        activeRouteFlegId: 3,
+      },
       {
         name: 'Fuel',
         route: '/fuel',
@@ -67,6 +71,11 @@ export const navigationData: Navigation[] = [
       {
         name: 'Owner',
         route: '/owner',
+        activeRouteFlegId: 3,
+      },
+      {
+        name: 'Rentor',
+        route: '/rentor',
         activeRouteFlegId: 3,
       },
       {
@@ -139,6 +148,16 @@ export const navigationData: Navigation[] = [
         route: '/safety/scheduled-insurance',
         activeRouteFlegId: 5,
       },
+      {
+        name: 'MVR',
+        route: '/safety/mvr',
+        activeRouteFlegId: 5,
+      },
+      {
+        name: 'Test',
+        route: '/safety/test',
+        activeRouteFlegId: 5,
+      },
     ],
   },
   {
@@ -152,11 +171,6 @@ export const navigationData: Navigation[] = [
       {
         name: 'Miles',
         route: '/tools/miles',
-        activeRouteFlegId: 6,
-      },
-      {
-        name: 'MVR',
-        route: '/tools/mvr',
         activeRouteFlegId: 6,
       },
       {
@@ -226,7 +240,7 @@ export const navigationData: Navigation[] = [
   },
   {
     id: 11,
-    name: 'GPS',
+    name: 'Telematic',
     image: 'assets/svg/common/ic_gps.svg',
     route: '/gpstracking',
     isRouteActive: false,
@@ -234,14 +248,14 @@ export const navigationData: Navigation[] = [
   {
     id: 12,
     name: 'Places',
-    image: 'assets/svg/common/ic_places.svg',
+    image: 'assets/svg/common/ic_places-new.svg',
     route: '/places',
     isRouteActive: false,
   },
   {
     id: 13,
     name: 'File Manager',
-    image: 'assets/svg/common/ic_filemanager.svg',
+    image: 'assets/svg/common/ic_file_manager-new.svg',
     route: '/filemanager',
     isRouteActive: false,
   },
@@ -257,8 +271,8 @@ export const generalNavigationData: NavigationModal[] = [
   },
   {
     id: 2,
-    name: 'Driver',
-    path: 'driver',
+    name: 'LTL',
+    path: 'ltl',
   },
   {
     id: 3,
@@ -272,31 +286,41 @@ export const generalNavigationData: NavigationModal[] = [
   },
   {
     id: 5,
-    name: 'Broker',
-    path: 'broker',
+    name: 'Driver',
+    path: 'driver',
   },
   {
     id: 6,
-    name: 'Shipper',
-    path: 'shipper',
-  },
-  {
-    id: 7,
-    name: 'Owner',
-    path: 'owner',
-  },
-  {
-    id: 8,
     name: 'User',
     path: 'user',
   },
   {
+    id: 7,
+    name: 'Broker',
+    path: 'broker',
+  },
+  {
     id: 8,
+    name: 'Shipper',
+    path: 'shipper',
+  },
+  {
+    id: 9,
+    name: 'Owner',
+    path: 'owner',
+  },
+  {
+    id: 10,
+    name: 'Rentor',
+    path: 'rentor',
+  },
+  {
+    id: 11,
     name: 'Contact',
     path: 'contact',
   },
   {
-    id: 10,
+    id: 12,
     name: 'Account',
     path: 'account',
   },
@@ -314,17 +338,27 @@ export const toolsNavigationData: NavigationModal[] = [
     name: 'Task',
     path: 'task',
   },
+  {
+    id: 13,
+    name: 'Fax',
+    path: 'fax',
+  },
+  {
+    id: 14,
+    name: 'SMS',
+    path: 'sms',
+  },
 ];
 
 // Repair Navigation Data
 export const repairNavigationData: NavigationModal[] = [
   {
-    id: 13,
+    id: 15,
     name: 'Order',
     path: 'repair-order',
   },
   {
-    id: 14,
+    id: 16,
     name: 'Shop',
     path: 'repair-shop',
   },
@@ -333,12 +367,12 @@ export const repairNavigationData: NavigationModal[] = [
 // Fuel Navigation Data
 export const fuelNavigationData: NavigationModal[] = [
   {
-    id: 15,
+    id: 17,
     name: 'Purchase',
     path: 'purchase',
   },
   {
-    id: 16,
+    id: 18,
     name: 'Stop',
     path: 'fuel-stop',
   },
@@ -347,36 +381,46 @@ export const fuelNavigationData: NavigationModal[] = [
 // Safety Navigation Data
 export const safetyNavigationData: NavigationModal[] = [
   {
-    id: 17,
-    name: 'Violation',
-    path: 'violation',
-  },
-  {
-    id: 18,
+    id: 19,
     name: 'Accident',
     path: 'accident',
+  },
+  {
+    id: 20,
+    name: 'MVR',
+    path: 'mvr',
+  },
+  {
+    id: 21,
+    name: 'Test',
+    path: 'test',
+  },
+  {
+    id: 22,
+    name: 'Medical',
+    path: 'medical',
   },
 ];
 
 // Accounting Navigation Data
 export const accountingNavigationData: NavigationModal[] = [
   {
-    id: 19,
+    id: 23,
     name: 'Credit',
     path: 'credit',
   },
   {
-    id: 20,
+    id: 24,
     name: 'Bonus',
     path: 'bonus',
   },
   {
-    id: 21,
+    id: 25,
     name: 'Deduction',
     path: 'deduction',
   },
   {
-    id: 22,
+    id: 26,
     name: 'Fuel',
     path: 'fuel',
   },
@@ -385,31 +429,31 @@ export const accountingNavigationData: NavigationModal[] = [
 // User Navigation Data
 export const userNavigationData: NavigationUserPanel[] = [
   {
-    id: 23,
+    id: 27,
     name: 'Profile Update',
     image: 'assets/svg/common/ic_pen.svg',
     action: 'update',
   },
   {
-    id: 24,
+    id: 28,
     name: 'User status',
     image: 'assets/svg/common/ic_disable-status.svg',
     action: 'status',
   },
   {
-    id: 25,
+    id: 29,
     name: 'Switch Company',
     image: 'assets/svg/common/ic_company.svg',
     action: 'company',
   },
   {
-    id: 26,
+    id: 30,
     name: 'Help Center',
     image: 'assets/svg/common/ic_helpcenter.svg',
     action: 'help',
   },
   {
-    id: 27,
+    id: 31,
     name: 'Logout',
     image: 'assets/svg/common/ic_logout.svg',
     action: 'logout',
@@ -419,21 +463,21 @@ export const userNavigationData: NavigationUserPanel[] = [
 export const footerData: FooterData[] = [
   // ROUTE WHAT'S NEW ?
   {
-    id: 29,
+    id: 32,
     image: 'assets/svg/common/ic_info.svg',
     text: "What's New",
     route: '/whatsnew',
     isRouteActive: false,
   },
   {
-    id: 30,
+    id: 33,
     image: 'assets/svg/common/ic_settings.svg',
     text: 'Settings',
     route: '/settings',
     isRouteActive: false,
   },
   {
-    id: 31,
+    id: 34,
     image: 'assets/svg/common/ic_profile.svg',
     text: {
       companyName: '',

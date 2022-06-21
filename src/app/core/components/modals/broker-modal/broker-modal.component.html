@@ -6,10 +6,18 @@
   [customClass]="'modal-container-M'"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-  <app-tab-switcher
+
+  <app-ta-tab-switch
+  [tabs]="tabs"
+  (switchClicked)="tabChange($event)" 
+  [type]="'modal-popup'"
+  >
+  </app-ta-tab-switch>  
+
+  <!-- <app-tab-switcher
     (switchClicked)="tabChange($event)"
     [tabs]="tabs"
-  ></app-tab-switcher>
+  ></app-tab-switcher> -->
   <form
     [formGroup]="brokerForm"
     class="form-container"
@@ -312,7 +320,7 @@
                     this.brokerForm.get('creditType').value !== 'Enable',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  mask: 'separator.2'
+                  thousandSeparator: true
                 }"
               ></app-ta-input>
             </div>

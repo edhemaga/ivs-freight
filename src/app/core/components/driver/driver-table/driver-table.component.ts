@@ -20,7 +20,7 @@ import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
 @Component({
   selector: 'app-driver-table',
   templateUrl: './driver-table.component.html',
-  styleUrls: ['./driver-table.component.scss'],
+  styleUrls: ['./driver-table.component.scss']
 })
 export class DriverTableComponent implements OnInit, OnDestroy {
   public tableOptions: any = {};
@@ -60,6 +60,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
+        console.log('Driver currentActionAnimation');
         if (res.animation === 'add') {
           this.viewData.push(this.mapDriverData(res.data));
 
@@ -143,6 +144,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
               }, 1000);
 
               this.tableService.sendRowsSelected([]);
+              this.tableService.sendResetSelectedColumns(true);
             });
         }
       });
@@ -290,9 +292,6 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         return this.mapDriverData(data);
       });
     }
-
-    console.log('Driver Data');
-    console.log(this.viewData);
   }
 
   mapDriverData(data: any) {

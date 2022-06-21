@@ -148,36 +148,6 @@ $border-radius: 3px;
 }
 .dropInput {
   width: 366px;
-  .input-custom-group {
-    .input-dropdown-arrow {
-      top: 10px !important;
-      svg {
-        display: none !important;
-      }
-    }
-    &:hover {
-      .input-dropdown-arrow {
-        svg {
-          display: block !important;
-        }
-      }
-    }
-
-    .input-control {
-      background-color: transparent !important;
-      font-size: $font-size20 !important;
-      color: #6c6c6c !important;
-      font-weight: $font-bold !important;
-      cursor: pointer;
-      &:hover {
-        background-color: #f3f3f3 !important;
-        color: #3c3c3c !important;
-      }
-      &:focus {
-        background-color: #6c6c6c !important;
-      }
-    }
-  }
 }
 .date-add {
   svg {
@@ -244,6 +214,9 @@ $border-radius: 3px;
     svg {
       width: 22px;
       height: 22px;
+      circle{
+        fill: red;
+      }
       path {
         fill: #6d82c7;
        
@@ -261,7 +234,6 @@ $border-radius: 3px;
     }
 
     .current-active-owner {
-      z-index: 50;
       svg {
         path {
           fill: #536bc2;

@@ -116,6 +116,7 @@ export class AccountService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -177,6 +178,7 @@ export class AccountService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -238,6 +240,7 @@ export class AccountService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -299,6 +302,7 @@ export class AccountService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -360,6 +364,7 @@ export class AccountService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -421,6 +426,7 @@ export class AccountService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -482,6 +488,7 @@ export class AccountService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
         console.log("FROM BACKEND SERVICE")
         console.log(credential)
@@ -544,6 +551,7 @@ export class AccountService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -605,6 +613,7 @@ export class AccountService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -666,6 +675,7 @@ export class AccountService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -727,6 +737,7 @@ export class AccountService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -788,6 +799,7 @@ export class AccountService {
         // authentication (Bearer) required
         credential = this.configuration.lookupCredential('Bearer');
         if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
         }
 
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;

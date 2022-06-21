@@ -5,10 +5,18 @@
   [isModalValid]="trailerForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-  <app-tab-switcher
+
+  <app-ta-tab-switch
+  [tabs]="tabs"
+  (switchClicked)="tabChange($event)" 
+  [type]="'modal-popup'"
+  >
+  </app-ta-tab-switch>  
+
+  <!-- <app-tab-switcher
     (switchClicked)="tabChange($event)"
     [tabs]="tabs"
-  ></app-tab-switcher>
+  ></app-tab-switcher> -->
 
   <form [formGroup]="trailerForm" class="form-container">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -86,7 +94,6 @@
                 name: 'Model',
                 type: 'text',
                 label: 'Model',
-                isRequired: true,
                 textTransform: 'capitalize',
                 maxLength: 22
               }"
@@ -325,7 +332,7 @@
                 label: 'Volume',
                 maxLength: 6,
                 placeholderText: !trailerForm.get('volume').value ? '' : 'gal',
-                mask: 'separator.2'
+                thousandSeparator: true
               }"
             ></app-ta-input>
           </div>
@@ -346,7 +353,7 @@
                 type: 'text',
                 label: 'Empty Weight',
                 maxLength: 6,
-                mask: 'separator.2',
+                thousandSeparator: true,
                 placeholderText: !trailerForm.get('emptyWeight').value
                   ? ''
                   : 'ibs'
@@ -370,7 +377,7 @@
                 type: 'text',
                 label: 'Mileage',
                 maxLength: 10,
-                mask: 'separator.2'
+                thousandSeparator: true
               }"
             ></app-ta-input>
           </div>

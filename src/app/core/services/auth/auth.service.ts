@@ -22,6 +22,11 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
+  getAccessToken(){
+    const user = JSON.parse(localStorage.getItem('user'));
+    return `Bearer ${user.token}`;
+  }
+
   /**
    * User login function
    *

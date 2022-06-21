@@ -1,0 +1,26 @@
+<div class="applicant-container">
+  <app-applicant-header></app-applicant-header>
+
+  <div class="d-flex justify-content-center noselect step-progress-bar">
+    <div
+      class="step"
+      *ngFor="let menuItem of menuItems; index as i; trackBy: trackByIdentity"
+      [routerLink]="menuItem.route"
+      routerLinkActive="step-active"
+    >
+      <div
+        class="d-inline-flex justify-content-center align-items-center bullet ta-font-semi-bold"
+        [class]="menuItem.class"
+      >
+        {{ menuItem.route }}
+      </div>
+      <p class="step-text ta-font-regular">
+        {{ menuItem.title }}
+      </p>
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>
+
+  <app-applicant-footer></app-applicant-footer>
+</div>

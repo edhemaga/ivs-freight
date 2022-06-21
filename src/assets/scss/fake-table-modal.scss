@@ -528,4 +528,26 @@
       padding-right: 0px;
     }
   }
+
+  // PM MODAL
+  &-pm {
+    .common-fake-table-label {
+      p {
+        &:nth-child(2) {
+          margin-left: 26px;
+        }
+
+        &:nth-child(3) {
+          margin-left: 233px;
+        }
+      }
+    }
+
+    .common-fake-table-card {
+      grid-template-columns: 1fr 126px 18px;
+      column-gap: 12px;
+      align-items: center;
+      padding-left: 6px;
+    }
+  }
 }

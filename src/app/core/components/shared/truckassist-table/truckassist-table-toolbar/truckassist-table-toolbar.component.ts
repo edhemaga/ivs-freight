@@ -11,7 +11,7 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { Subject, takeUntil } from 'rxjs';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-truckassist-table-toolbar',
@@ -22,8 +22,6 @@ import { Subject, takeUntil } from 'rxjs';
 export class TruckassistTableToolbarComponent
   implements OnInit, OnChanges, OnDestroy
 {
-  private destroy$: Subject<void> = new Subject<void>();
-
   @Output() toolBarAction: EventEmitter<any> = new EventEmitter();
   @Input() tableData: any[];
   @Input() options: any;
@@ -77,7 +75,7 @@ export class TruckassistTableToolbarComponent
   ngOnInit(): void {
     // Columns Reorder
     this.tableService.currentColumnsOrder
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response.columnsOrder) {
           this.columns = this.columns.map((c) => {
@@ -95,9 +93,12 @@ export class TruckassistTableToolbarComponent
 
     // Rows Selected
     this.tableService.currentRowsSelected
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
         this.tableRowsSelected = response;
+
+        console.log('Tabke Row Selected In Toolbar');
+        console.log(this.tableRowsSelected);
 
         /* this.changeDetectorRef.detectChanges(); */
       });
@@ -193,8 +194,5 @@ export class TruckassistTableToolbarComponent
     this.tableService.sendUnlockTable({});
     this.tableService.sendToaggleColumn(null);
     this.tableService.sendResetColumns(false);
-
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

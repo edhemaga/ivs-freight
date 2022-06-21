@@ -17,6 +17,285 @@ export class CalendarComponent implements OnInit {
   @ViewChild('fullcalendar', {static: false}) fullcalendar: FullCalendarComponent;
   public inputDate: FormControl = new FormControl(true);
 
+  calendarIndex: number;
+
+  tabsCalendar: any[] = []
+
+  calendarSchedule: any[] = [
+    {
+      date: '3 July, Monday',
+      eventSchedule: [
+        {
+          type: 'Important',
+          duration: 'All Day',
+          title: 'Lorem Ipsum Dolor Sit',
+          description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor'
+        },
+        {
+          type: 'Company',
+          duration: '12:00 am - 12:00 pm',
+          title: 'Consetetur sadipscing elitr',
+          description: ''
+        },
+        {
+          type: 'Personal',
+          duration: '11:00 am -2:00 pm',
+          title: 'Q3 - Event - Management',
+          description: ''
+        }
+      ]
+    },
+    {
+      date: '4 July, Tuesday',
+      eventSchedule: [
+        {
+          type: 'Holiday',
+          duration: 'All Day',
+          title: 'Independence day',
+          description: ''
+        },
+      ]
+    },
+    {
+      date: '24 July, Monday',
+      eventSchedule: [
+        {
+          type: 'Important',
+          duration: 'All Day',
+          title: 'Lorem ipsum dolor sit amet',
+          description: ''
+        },
+        {
+          type: 'Important',
+          duration: 'All Day',
+          title: 'Lorem ipsum dolor sit amet, consetetur',
+          description: 'Lorem ipsum dolor sit amet.'
+        },
+        {
+          type: 'Company',
+          duration: 'All Day',
+          title: 'Lorem Ipsum Dolor Sit',
+          description: ''
+        },
+        {
+          type: 'Personal',
+          duration: '12:00 am - 2:00 pm',
+          title: 'Consetetur sadipscing elitr',
+          description: 'Lorem ipsum dolor sit amet.'
+        },
+        {
+          type: 'Holiday',
+          duration: 'All Day',
+          title: 'Labor day',
+          description: ''
+        }
+      ]
+    },
+    {
+      date: '17 August, Wednesday',
+      eventSchedule: [
+        {
+          type: 'Company',
+          duration: 'All Day',
+          title: 'Q3 - Event - Management',
+          description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor'
+        },
+      ]
+    },
+    {
+      date: '18 August, Thursday',
+      eventSchedule: [
+        {
+          type: 'Company',
+          duration: 'All Day',
+          title: 'Q3 - Event - Management',
+          description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor'
+        },
+      ]
+    },
+    {
+      date: '30 August, Wednesday',
+      eventSchedule: [
+        {
+          type: 'Personal',
+          duration: 'All Day',
+          title: 'Q3 - Event - Management',
+          description: ''
+        },
+      ]
+    }, 
+    {
+      date: '12 September, Monday',
+      eventSchedule: [
+        {
+          type: 'Important',
+          duration: 'All Day',
+          title: 'Lorem Ipsum Dolor Sit',
+          description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor'
+        },
+        {
+          type: 'Important',
+          duration: 'All Day',
+          title: 'Consetetur sadipscing elitr',
+          description: ''
+        },
+        {
+          type: 'Personal',
+          duration: '11:00 am -2:00 pm',
+          title: 'Q3 - Event - Management',
+          description: 'Tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'
+        }
+      ]
+    },
+    {
+      date: '24 September, Wednesday',
+      eventSchedule: [
+        {
+          type: 'Personal',
+          duration: 'All Day',
+          title: 'Lorem Ipsum Dolor Sit',
+          description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor'
+        },
+        {
+          type: 'Personal',
+          duration: '11:00 am -2:00 pm',
+          title: 'Consetetur sadipscing elitr',
+          description: ''
+        },
+        {
+          type: 'Personal',
+          duration: '10:00 am - 2:00 pm',
+          title: 'Q3 - Event - Management',
+          description: 'Tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'
+        },
+      ]
+    },
+    {
+      date: '4 October, Friday',
+      eventSchedule: [
+        {
+          type: 'Holiday',
+          duration: 'All Day',
+          title: 'Labor day',
+          description: ''
+        },
+      ]
+    },
+    {
+      date: '11 October, Monday',
+      eventSchedule: [
+        {
+          type: 'Company',
+          duration: 'All Day',
+          title: 'Lorem Ipsum Dolor Sit',
+          description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+        },
+        {
+          type: 'Personal',
+          duration: '12:00 am - 12:00 pm',
+          title: 'Consetetur sadipscing elitr',
+          description: 'Lorem ipsum dolor sit amet.'
+        }
+      ]
+    },
+    {
+      date: '17 October, Wednesday',
+      eventSchedule: [
+        {
+          type: 'Company',
+          duration: 'All Day',
+          title: 'Q3 - Event - Management',
+          description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor'
+        },
+      ]
+    },
+    {
+      date: '27 October, Friday',
+      eventSchedule: [
+        {
+          type: 'Company',
+          duration: 'All Day',
+          title: 'Q3 - Event - Management',
+          description: ''
+        },
+      ]
+    },
+    {
+      date: '5 November, Wednesday',
+      eventSchedule: [
+        {
+          type: 'Personal',
+          duration: 'All Day',
+          title: 'Q3 - Event - Management',
+          description: ''
+        },
+      ]
+    },
+    {
+      date: '13 November, Monday',
+      eventSchedule: [
+        {
+          type: 'Important',
+          duration: 'All Day',
+          title: 'Lorem Ipsum Dolor Sit',
+          description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor'
+        },
+        {
+          type: 'Important',
+          duration: 'All Day',
+          title: 'Consetetur sadipscing elitr',
+          description: ''
+        },
+        {
+          type: 'Personal',
+          duration: '11:00 am -2:00 pm',
+          title: 'Q3 - Event - Management',
+          description: 'Tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'
+        }
+      ]
+    },
+    {
+      date: '14 November, Tuesday',
+      eventSchedule: [
+        {
+          type: 'Company',
+          duration: 'All Day',
+          title: 'Q3 - Event - Management',
+          description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor'
+        },
+      ]
+    },
+    {
+      date: '17 November, Friday',
+      eventSchedule: [
+        {
+          type: 'Company',
+          duration: 'All Day',
+          title: 'Q3 - Event - Management',
+          description: ''
+        },
+      ]
+    },
+    {
+      date: '23 November, Wednesday',
+      eventSchedule: [
+        {
+          type: 'Personal',
+          duration: 'All Day',
+          title: 'Q3 - Event - Management',
+          description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor'
+        },
+      ]
+    }
+  ]
+
+  typeEventColor: any = {
+    'Important' : '#AB47BC',
+    'Company' : '#536BC2',
+    'Personal' : '#FFA726',
+    'Holiday' : '#26A690'
+  }
+
   calendarMonth: any[] = [
     {
       month: 'JANUARY'
@@ -283,7 +562,7 @@ export class CalendarComponent implements OnInit {
     }
   ];
 
-  currentCalendarView = 'month';
+  currentCalendarView = 'day';
 
   event_colors: any = {
     'important': this.currentCalendarView == 'week' ? '#BA68C8' : '#BA68C8B3',
@@ -389,18 +668,53 @@ export class CalendarComponent implements OnInit {
   calendarTitle: String = '';
   calendarGridView: String = 'dayGridMonth';
 
+  colorIndx1: any;
+  colorIndx2: any;
+
+
   calendarOptions: CalendarOptions;
+
 
   constructor() {
     const name = Calendar.name
    }
 
   ngOnInit(): void {
-    
+    this.tabsCalendar = [
+      {
+        id: 1,
+        name: 'Day',
+        checked: true
+      },
+      {
+        id: 2,
+        name: 'Week',
+        checked: false
+      },
+      {
+        id: 3,
+        name: 'Month',
+        checked: false
+      },
+      {
+        id: 4,
+        name: 'Year',
+        checked: false
+      },
+      {
+        id: 5,
+        name: 'Schedule',
+        checked: false
+      }
+  
+    ]  
   }
 
   ngAfterViewInit(): void {
-    this.checkCalendarTitle();
+    if(this.fullcalendar){
+      this.checkCalendarTitle();
+    }
+
     this.setCalendarOptions(this.currentEvents, this.calendarGridView, this.headerBarInfo);
   }
 
@@ -519,6 +833,7 @@ export class CalendarComponent implements OnInit {
     // } else {
     //   calendarApi.setOption('selectMinDistance', 150);
     // }
+    if( !this.fullcalendar ) return false;
     const calendarApi = this.fullcalendar.getApi();
     calendarApi.changeView(view);
     console.log(calendarApi.currentData.viewTitle, 'calendarApi.currentData.viewTitle');
@@ -534,6 +849,38 @@ export class CalendarComponent implements OnInit {
       var topLeftColumn = <HTMLElement> document.querySelector(".fc-timegrid-axis");
       topLeftColumn.innerHTML = '<div class="fc-scrollgrid-sync-inner"><a class="fc-col-header-cell-cushion">TIME</a></div>';
     }
+  }
+
+  openEvenPopover(t2, ev, indx, i){
+    console.log(indx, i)
+
+      this.colorIndx1 = indx;
+      this.colorIndx2 = i;  
+
+    if(t2.isOpen()){
+      t2.close();
+      this.colorIndx1 = '-1';
+      this.colorIndx2 = '-1';
+    }else{
+      console.log(ev);
+      t2.open({data: ev})
+    }
+  }
+
+  openCalendarEvenPopover(t2, i){
+    this.calendarIndex = i;
+
+    if(t2.isOpen()){
+      t2.close();
+      this.calendarIndex = -1;
+      
+    }else{
+      t2.open()
+    }
+  }
+
+  changeTab(ev){
+    this.changeCalendarView(ev.name.toLowerCase());
   }
 
 }

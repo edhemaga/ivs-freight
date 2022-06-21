@@ -44,9 +44,9 @@ export function getTrailerColumnDefinition() {
       disabled: true,
       export: true,
       resizable: true,
-      linkField: {
-        routerLinkStart: '/trailers/edit/',
-        routerLinkEnd: '/detail',
+      link: {
+        routerLinkStart: '/trailer/',
+        routerLinkEnd: '/details',
       },
     },
     {

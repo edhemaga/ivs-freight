@@ -20,6 +20,11 @@ import { NgbDropdownConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
 import { TitleCasePipe, UpperCasePipe } from '@angular/common';
+import {
+  convertNumberInThousandSep,
+  convertThousanSepInNumber,
+} from 'src/app/core/utils/methods.calculations';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 @Component({
   selector: 'app-ta-input',
@@ -30,6 +35,7 @@ import { TitleCasePipe, UpperCasePipe } from '@angular/common';
     CalendarScrollService,
     TitleCasePipe,
     UpperCasePipe,
+    TaThousandSeparatorPipe,
   ],
 })
 export class TaInputComponent
@@ -68,15 +74,20 @@ export class TaInputComponent
 
   public capsLockOn: boolean = false;
 
+  // PM Modal Input
+  public isVisiblePmCommands: boolean = false;
+
   constructor(
     @Self() public superControl: NgControl,
     private changeDetection: ChangeDetectorRef,
     private inputService: TaInputService,
     private calendarService: CalendarScrollService,
     private titlecasePipe: TitleCasePipe,
-    private uppercasePipe: UpperCasePipe
+    private uppercasePipe: UpperCasePipe,
+    private thousandSeparatorPipe: TaThousandSeparatorPipe
   ) {
     this.superControl.valueAccessor = this;
+    // this.input.nativeElement.value = this.getSuperControl.value;
   }
 
   ngOnInit(): void {
@@ -169,6 +180,10 @@ export class TaInputComponent
       this.isVisiblePasswordEye = true;
     }
 
+    if (this.inputConfig.modalPM) {
+      this.isVisiblePmCommands = true;
+    }
+
     // Datepicker
     if (
       this.inputConfig.name === 'datepicker' ||
@@ -235,6 +250,13 @@ export class TaInputComponent
   private blurOnPassword() {
     this.timeout = setTimeout(() => {
       this.isVisiblePasswordEye = false;
+      this.changeDetection.detectChanges();
+    }, 150);
+  }
+
+  private blurOnPmCommands() {
+    this.timeout = setTimeout(() => {
+      this.isVisiblePmCommands = false;
       this.changeDetection.detectChanges();
     }, 150);
   }
@@ -353,6 +375,72 @@ export class TaInputComponent
       }
       case 'uppercase': {
         this.input.nativeElement.value = this.upperCaseInput(event);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    if (this.inputConfig.thousandSeparator) {
+      this.getSuperControl.patchValue(
+        this.thousandSeparatorPipe.transform(this.getSuperControl.value)
+      );
+    }
+  }
+
+  public onPmIncrementation(event: Event, action: string) {
+    event.stopPropagation();
+    event.preventDefault();
+    const value = convertThousanSepInNumber(this.getSuperControl.value);
+
+    switch (action) {
+      case 'decrement': {
+        if (value >= 10000 && value < 20000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value - 1000)
+          );
+        } else if (value >= 20001 && value < 50000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value - 3000)
+          );
+        } else if (value >= 50001 && value < 100000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value - 5000)
+          );
+        } else if (value >= 10000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value - 10000)
+          );
+        } else {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value - 500)
+          );
+        }
+        break;
+      }
+      case 'increment': {
+        if (value > 10000 && value < 20000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value + 1000)
+          );
+        } else if (value >= 20001 && value < 50000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value + 3000)
+          );
+        } else if (value >= 50001 && value < 100000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value + 5000)
+          );
+        } else if (value >= 10000) {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value + 10000)
+          );
+        } else {
+          this.getSuperControl.patchValue(
+            convertNumberInThousandSep(value + 500)
+          );
+        }
         break;
       }
       default: {
@@ -704,7 +792,7 @@ export class TaInputComponent
   changeSelection(e): void {
     e.preventDefault();
     e.stopPropagation();
-
+  
     if (
       e.keyCode == 37 ||
       e.keyCode == 38 ||
@@ -745,9 +833,134 @@ export class TaInputComponent
     } else {
       e.preventDefault();
       console.log('rest of input click');
-      //this.handleKeyboardInputs(e);
+      this.handleKeyboardInputs(e);
     }
   }
+
+  handleKeyboardInputs(e: KeyboardEvent ) {
+    const span1Value = isNaN(this.span1.nativeElement.innerHTML) ? undefined : parseInt(this.span1.nativeElement.innerHTML);
+    const span2Value = isNaN(this.span2.nativeElement.innerHTML) ? undefined : parseInt(this.span2.nativeElement.innerHTML);
+    const span3Value = isNaN(this.span3.nativeElement.innerHTML) ? "" : parseInt(this.span3.nativeElement.innerHTML);
+    if (this.inputConfig.name === 'datepicker') {
+      if (this.selectionInput == 0) {
+       
+        if( span1Value ){
+          if(parseInt(`${span1Value}${e.key}`) > 12){ 
+            this.span2.nativeElement.innerHTML = (
+              '0' +
+              (parseInt(e.key))
+            ).slice(-2);
+            this.selectionInput = 1;
+            this.selectSpanByTabIndex(1);
+          }else{
+            this.dateTimeInputDate = new Date(
+              this.dateTimeInputDate.setMonth(
+                parseInt(this.span1.nativeElement.innerHTML + (parseInt(e.key) -1))
+              )
+            );
+            this.span1.nativeElement.innerHTML = (
+              this.span1.nativeElement.innerHTML +
+              (parseInt(e.key))
+            ).slice(-2);
+            this.selectionInput = 1;
+            this.selectSpanByTabIndex(1);
+          }
+
+        }else{
+          this.dateTimeInputDate = new Date(
+            this.dateTimeInputDate.setMonth(
+              parseInt(e.key) -1
+            )
+          );
+
+          this.span1.nativeElement.innerHTML = (
+            '0' +
+            (parseInt(e.key))
+          ).slice(-2);
+
+          if(parseInt(`1${e.key}`) > 12){
+            this.selectionInput = 1;
+            this.selectSpanByTabIndex(1);
+          }else{
+            console.log("possible months");
+            this.selectSpanByTabIndex(0);
+          }
+        }
+
+      }else if(this.selectionInput == 1){
+        
+        if( span2Value ){
+          if(parseInt(`${span2Value}${e.key}`) > 31){
+            this.span3.nativeElement.innerHTML = (
+              '0' +
+              (parseInt(e.key))
+            ).slice(-2);
+            this.selectionInput = 2;
+            this.selectSpanByTabIndex(2);
+          }else{
+            this.dateTimeInputDate = new Date(
+              this.dateTimeInputDate.setDate(
+                parseInt(this.span2.nativeElement.innerHTML + (parseInt(e.key)))
+              )
+            );
+            this.span2.nativeElement.innerHTML = (
+              this.span2.nativeElement.innerHTML +
+              (parseInt(e.key))
+            ).slice(-2);
+            this.selectionInput = 3;
+            this.selectSpanByTabIndex(3);
+          }
+
+        }else{
+          this.dateTimeInputDate = new Date(
+            this.dateTimeInputDate.setDate(
+              parseInt(e.key)
+            )
+          );
+          this.span2.nativeElement.innerHTML = (
+            '0' +
+            (parseInt(e.key))
+          ).slice(-2);
+
+          if(parseInt(`1${e.key}`) > 31){
+            this.selectionInput = 3;
+            this.selectSpanByTabIndex(3);
+          }else{
+            this.selectSpanByTabIndex(1);
+          }
+        }
+      }else{
+        
+        if( !span3Value || span3Value.toString().length == 2){
+          this.span3.nativeElement.innerHTML = (
+            '0' +
+            (parseInt(e.key))
+          ).slice(-2);
+          this.dateTimeInputDate = new Date(
+            this.dateTimeInputDate.setFullYear(
+              parseInt(`200${parseInt(e.key)}`)
+            )
+          );
+
+          this.selectSpanByTabIndex(3);
+        }else{
+          this.dateTimeInputDate = new Date(
+            this.dateTimeInputDate.setFullYear(
+              parseInt(`2${this.span3.nativeElement.innerHTML + (parseInt(e.key))}`)
+            )
+          );
+          this.span3.nativeElement.innerHTML = (
+            this.span3.nativeElement.innerHTML +
+            (parseInt(e.key))
+          ).slice(-2);
+          this.selectSpanByTabIndex(3);
+        }
+      }
+    }else{
+
+    }
+  }
+
 
   selectSpanByTabIndex(indx) {
     switch (indx) {
@@ -833,18 +1046,18 @@ export class TaInputComponent
       if (direction == 'up') {
         if (this.selectionInput == 0) {
           const selectedHours = this.dateTimeInputDate.getHours() + 1;
+          console.log(selectedHours);
           this.dateTimeInputDate = new Date(
-            this.dateTimeInputDate.setHours(
-              selectedHours
-            )
+            this.dateTimeInputDate.setHours(selectedHours)
           );
           this.span1.nativeElement.innerHTML = (
             '0' + (selectedHours > 12 ? selectedHours - 12 : selectedHours)
           ).slice(-2);
           this.setSpanSelection(this.span1.nativeElement);
-          if (selectedHours > 11) {
-            this.span3.nativeElement.innerHTML = "PM";
-          }else{
+
+          if (selectedHours > 11 && selectedHours < 24) {
+            this.span3.nativeElement.innerHTML = 'PM';
+          } else {
             this.span3.nativeElement.innerHTML = 'AM';
           }
         } else if (this.selectionInput == 1) {
@@ -860,32 +1073,34 @@ export class TaInputComponent
         } else {
           this.span3.nativeElement.innerHTML =
             this.span3.nativeElement.innerHTML == 'AM' ? 'PM' : 'AM';
-            this.dateTimeInputDate = new Date(
-              this.dateTimeInputDate.setHours(
-                this.span3.nativeElement.innerHTML == 'AM' ? this.dateTimeInputDate.getHours() % 12 : this.dateTimeInputDate.getHours() + 12
-              )
-            );
-          this.setSpanSelection(this.span3.nativeElement);
-        }
-      }else{
-        if (this.selectionInput == 0) {
-          console.log("CLOSING ITEM");
-          console.log(this.dateTimeInputDate.getHours());
-          const selectedHours = this.dateTimeInputDate.getHours() - 1;
           this.dateTimeInputDate = new Date(
             this.dateTimeInputDate.setHours(
-              selectedHours
+              this.span3.nativeElement.innerHTML == 'AM'
+                ? this.dateTimeInputDate.getHours() % 12
+                : this.dateTimeInputDate.getHours() + 12
             )
           );
-
+          this.setSpanSelection(this.span3.nativeElement);
+        }
+      } else {
+        if (this.selectionInput == 0) {
+          const decreaseHour = this.dateTimeInputDate.getHours() - 1;
+          console.log(decreaseHour);
           
+          let selectedHours = decreaseHour === 0 ? 24 : decreaseHour;
+          selectedHours = decreaseHour === -1  ? 23 : selectedHours;
+          console.log(selectedHours);
+          this.dateTimeInputDate = new Date(
+            this.dateTimeInputDate.setHours(selectedHours)
+          );
+
           this.span1.nativeElement.innerHTML = (
             '0' + (selectedHours > 12 ? selectedHours - 12 : selectedHours)
           ).slice(-2);
           this.setSpanSelection(this.span1.nativeElement);
-          if (selectedHours > 11) {
-            this.span3.nativeElement.innerHTML = "PM";
-          }else{
+          if (selectedHours > 11 && selectedHours < 24) {
+            this.span3.nativeElement.innerHTML = 'PM';
+          } else {
             this.span3.nativeElement.innerHTML = 'AM';
           }
         } else if (this.selectionInput == 1) {
@@ -901,11 +1116,13 @@ export class TaInputComponent
         } else {
           this.span3.nativeElement.innerHTML =
             this.span3.nativeElement.innerHTML == 'AM' ? 'PM' : 'AM';
-            this.dateTimeInputDate = new Date(
-              this.dateTimeInputDate.setHours(
-                this.span3.nativeElement.innerHTML == 'AM' ? this.dateTimeInputDate.getHours() % 12 : this.dateTimeInputDate.getHours() + 12
-              )
-            );
+          this.dateTimeInputDate = new Date(
+            this.dateTimeInputDate.setHours(
+              this.span3.nativeElement.innerHTML == 'AM'
+                ? this.dateTimeInputDate.getHours() % 12
+                : this.dateTimeInputDate.getHours() + 12
+            )
+          );
           this.setSpanSelection(this.span3.nativeElement);
         }
       }
@@ -915,7 +1132,7 @@ export class TaInputComponent
   isNumber(evt) {
     evt = evt ? evt : window.event;
     let charCode = evt.which ? evt.which : evt.keyCode;
-    return !(charCode > 31 && (charCode < 48 || charCode > 57));
+    return ((charCode >= 48 && charCode <= 57) || (charCode >= 96 && charCode <= 105));
   }
 
   onPopoverShown() {

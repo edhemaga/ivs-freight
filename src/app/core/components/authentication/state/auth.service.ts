@@ -10,14 +10,19 @@ import {
   ForgotPasswordCommand,
   SetNewPasswordCommand,
   VerifyOwnerCommand,
+  SignupUserCommand,
   VerifyForgotPasswordCommand,
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
 import { configFactory } from 'src/app/app.config';
+import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStoreService {
+  private signUpUserInfoSubject: BehaviorSubject<SignUpUserInfo> =
+    new BehaviorSubject<SignUpUserInfo>(null);
+
   private forgotPasswordTokenSubject: BehaviorSubject<string> =
     new BehaviorSubject<string>(null);
 
@@ -32,8 +37,16 @@ export class AuthStoreService {
     this.forgotPasswordTokenSubject.next(token);
   }
 
+  public getSignUpUserInfo(signUpUserInfo: SignUpUserInfo) {
+    this.signUpUserInfoSubject.next(signUpUserInfo);
+  }
+
   get getForgotPassword$() {
     return this.forgotPasswordTokenSubject.asObservable();
+  }
+
+  get getSignUpUserInfo$() {
+    return this.signUpUserInfoSubject.asObservable();
   }
 
   public accountLogin(data: SignInCommand): Observable<SignInResponse> {
@@ -75,6 +88,10 @@ export class AuthStoreService {
 
   public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
     return this.accountService.apiAccountSignupcompanyPost(data, 'response');
+  }
+
+  public signUpUser(data: SignupUserCommand): Observable<any> {
+    return this.accountService.apiAccountSignupuserPut(data, 'response');
   }
 
   public verifyOwner(data: VerifyOwnerCommand): Observable<object> {

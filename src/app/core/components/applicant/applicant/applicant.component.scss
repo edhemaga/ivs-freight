@@ -1,0 +1,110 @@
+@import 'src/theme/variables.scss';
+
+.applicant-container {
+  background-color: $white;
+  min-height: 100vh;
+
+  .step-progress-bar {
+    @media only screen and(max-width:414px) {
+      display: none;
+    }
+
+    .step {
+      text-align: center;
+      width: 134px;
+      cursor: pointer;
+
+      &.step-active {
+        pointer-events: none;
+
+        .bullet {
+          background-color: $light-blue;
+        }
+
+        .step-text {
+          color: $light-blue;
+        }
+      }
+
+      &:hover {
+        .bullet {
+          background-color: $dark-blue-07;
+        }
+
+        .step-text {
+          color: $dark-blue-07;
+        }
+      }
+
+      .bullet {
+        opacity: 1;
+        position: relative;
+        font-size: 27px;
+        height: 42px;
+        width: 42px;
+        background-color: $bw4;
+        color: $white;
+        border-radius: 3px;
+        transition: background-color 500ms;
+      }
+
+      .step-text {
+        margin: 6px auto 0 auto;
+        color: $muted;
+        font-size: 14px;
+        line-height: 14px;
+        transition: color 500ms;
+      }
+
+      .bullet-2 + .step-text,
+      .bullet-3 + .step-text,
+      .bullet-4 + .step-text,
+      .bullet-5 + .step-text {
+        width: 78px;
+      }
+    }
+  }
+}
+
+/* BULLET BEFORE ELEMENT */
+
+.bullet-1::before {
+  content: '';
+  position: absolute;
+  height: 2px;
+  width: 30px;
+  right: 42px;
+  bottom: 19px;
+  background-color: $muted;
+  opacity: 0.4;
+}
+
+/* BULLET AFTER ELEMENT */
+
+.bullet::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  bottom: 19px;
+  background-color: $muted;
+  opacity: 0.4;
+}
+
+.bullet-1::after,
+.bullet-2::after,
+.bullet-3::after,
+.bullet-4::after,
+.bullet-5::after,
+.bullet-6::after,
+.bullet-7::after,
+.bullet-8::after,
+.bullet-9::after,
+.bullet-10::after {
+  width: 92px;
+  right: -92px;
+}
+
+.bullet-11::after {
+  width: 30px;
+  right: -30px;
+}

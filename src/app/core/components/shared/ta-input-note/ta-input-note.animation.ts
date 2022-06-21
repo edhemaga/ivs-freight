@@ -11,9 +11,9 @@ export const input_note_animation = (type: string) =>
     state(
       'true',
       style({
-        'max-height': "600px"
+        height: "*"
       })
     ),
-    state('false', style({ 'max-height': "0px" })),
+    state('false', style({ height: '0px' })),
     transition('false <=> true', [animate('0.3s ease-in-out')]),
   ]);

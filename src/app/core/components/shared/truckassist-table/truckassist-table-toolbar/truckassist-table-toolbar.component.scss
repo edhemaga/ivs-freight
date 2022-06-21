@@ -158,7 +158,8 @@
 
   // LOCATION FILTER AND OPEN MODAL BUTTON
   .location-filter-container,
-  .modal-open-container {
+  .modal-open-container,
+  .general-pm-open-container {
     width: 32px;
     height: 32px;
     border-radius: 3px;
@@ -169,7 +170,8 @@
     cursor: pointer;
   }
 
-  .location-filter-container {
+  .location-filter-container,
+  .general-pm-open-container {
     margin-right: 6px;
   }
 }

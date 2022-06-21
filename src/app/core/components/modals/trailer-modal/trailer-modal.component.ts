@@ -99,7 +99,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       trailerTypeId: [null, [Validators.required]],
       vin: [null, [Validators.required]],
       trailerMakeId: [null, [Validators.required]],
-      model: [null, [Validators.required]],
+      model: [null],
       colorId: [null],
       year: [null, [Validators.required, yearValidRegex]],
       trailerLengthId: [null, [Validators.required]],
@@ -150,9 +150,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                   name: 'deactivate',
                   status: this.trailerStatus,
                 });
-                
+
                 this.notificationService.success(
-                  `Trailer status changed to ${this.trailerStatus ? 'deactivate' : 'activate'}.`,
+                  `Trailer status changed to ${
+                    this.trailerStatus ? 'deactivate' : 'activate'
+                  }.`,
                   'Success:'
                 );
               }
@@ -416,12 +418,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             volume: res.volume,
             insurancePolicy: res.insurancePolicy,
           });
-          this.selectedTrailerType = res.trailerType
-            ? res.trailerType
-            : null;
-          this.selectedTrailerMake = res.trailerMake
-            ? res.trailerMake
-            : null;
+          this.selectedTrailerType = res.trailerType ? res.trailerType : null;
+          this.selectedTrailerMake = res.trailerMake ? res.trailerMake : null;
           this.selectedColor = res.color ? res.color : null;
           this.selectedTrailerLength = res.trailerLength
             ? res.trailerLength

@@ -11,10 +11,17 @@
   }"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-  <app-tab-switcher
+  <app-ta-tab-switch
+  [tabs]="tabs"
+  (switchClicked)="tabChange($event)" 
+  [type]="'modal-popup'"
+  >
+  </app-ta-tab-switch>  
+
+  <!-- <app-tab-switcher
     (switchClicked)="tabChange($event)"
     [tabs]="tabs"
-  ></app-tab-switcher>
+  ></app-tab-switcher> -->
 
   <form
     [formGroup]="driverForm"
@@ -397,7 +404,7 @@
                 isRequired: true,
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                step: .1,
+                step: 0.01,
                 min: 0,
                 max: 10
               }"
@@ -411,7 +418,7 @@
                 isRequired: true,
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                step: .1,
+                step: 0.01,
                 min: 0,
                 max: 10
               }"
@@ -424,7 +431,7 @@
                 label: 'Per Stop',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                step: .1,
+                step: 0.01,
                 min: 0,
                 max: 10
               }"
@@ -440,7 +447,7 @@
                 label: 'Empty Mi',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                step: .1,
+                step: 0.01,
                 min: 0,
                 max: 10
               }"
@@ -453,7 +460,7 @@
                 label: 'Loaded Mi',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                step: .1,
+                step: 0.01,
                 min: 0,
                 max: 10
               }"
@@ -466,7 +473,7 @@
                 label: 'Per Stop',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                step: .1,
+                step: 0.01,
                 min: 0,
                 max: 10
               }"
