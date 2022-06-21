@@ -169,6 +169,7 @@ export * from './repairShopServiceTypeCommand';
 export * from './repairShopServiceTypeResponse';
 export * from './repairShopShortResponse';
 export * from './repairType';
+export * from './repairUnitType';
 export * from './reviewByEntityTypeListResponse';
 export * from './reviewResponse';
 export * from './reviewResponsePagination';

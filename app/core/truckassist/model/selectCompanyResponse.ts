@@ -14,5 +14,10 @@
 export interface SelectCompanyResponse { 
     companyName?: string | null;
     token?: string | null;
+    companyUserId?: number;
+    firstName?: string | null;
+    lastName?: string | null;
+    avatar?: string | null;
+    driverId?: number | null;
 }
 
