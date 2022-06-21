@@ -9,17 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CompanyShortResponse } from './companyShortResponse';
+import { PMTrailerUnitResponse } from './pMTrailerUnitResponse';
 
 
-export interface SignInResponse { 
-    token?: string | null;
-    companyName?: string | null;
-    companyUserId?: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    avatar?: string | null;
-    driverId?: number | null;
-    companies?: Array<CompanyShortResponse> | null;
+export interface PMTrailerUnitResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<PMTrailerUnitResponse> | null;
 }
 

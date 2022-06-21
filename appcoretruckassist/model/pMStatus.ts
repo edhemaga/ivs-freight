@@ -11,9 +11,11 @@
  */
 
 
-export interface CompanyShortResponse { 
-    id?: number;
-    companyName?: string | null;
-    logo?: string | null;
-}
+export type PMStatus = 'Default' | 'Active' | 'Inactive';
+
+export const PMStatus = {
+    Default: 'Default' as PMStatus,
+    Active: 'Active' as PMStatus,
+    Inactive: 'Inactive' as PMStatus
+};
 

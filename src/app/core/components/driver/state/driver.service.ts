@@ -27,7 +27,6 @@ export class DriverTService {
     private tableService: TruckassistTableService
   ) {}
 
-  // Create Driver
   // Get Driver List
   public getDrivers(
     active?: number,
