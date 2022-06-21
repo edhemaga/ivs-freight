@@ -8,7 +8,7 @@
           <svg-icon (click)="changeMonth('prev')" src="assets/svg/common/calendar/arrow-left.svg"></svg-icon>
         </div>
         <div class="arrow-right">
-          <svg-icon (click)="changeMonth('next')" src="assets/svg/common/calendar/arrow-right.svg"></svg-icon>
+          <svg-icon (click)="changeMonth('next')" src="assets/svg/common/calendar/arrow-left.svg"></svg-icon>
         </div>  
       </div>
     </div>
@@ -44,7 +44,7 @@
     </div> -->
     <div class="calendar-header">
       <app-ta-custom-card 
-        [cardName]="'July, 2022'" 
+        [cardName]="calendarTitle" 
         [hasPlusHeader]="false"
         [animationsDisabled]="false"
       >

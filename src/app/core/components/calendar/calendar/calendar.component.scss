@@ -31,7 +31,7 @@
                 font-size: 20px;
                 font-weight: 700;
                 color: #6C6C6C;
-                padding-right: 56px;
+                padding-right: 48px;
                 box-sizing: border-box;
             }
 
@@ -46,6 +46,7 @@
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
+                cursor: pointer;
 
                 .arrow-left{
                     min-width: 18px;
@@ -67,6 +68,16 @@
                             }
                         }
                     }
+
+                    &:hover{
+                        svg-icon{
+                            svg{
+                                path{
+                                    fill: #919191;
+                                }
+                            }
+                        }
+                    }
     
                 }   
                 
@@ -83,10 +94,20 @@
                             display: flex;
                             width: 13px;
                             height: 8.15px;
-                            transform: rotate(270deg);
+                            transform: rotate(90deg);
     
                             path{
                                 fill: #AAAAAA;
+                            }
+                        }
+                    }
+
+                    &:hover{
+                        svg-icon{
+                            svg{
+                                path{
+                                    fill: #919191;
+                                }
                             }
                         }
                     }
