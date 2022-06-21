@@ -5,7 +5,7 @@ import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
-import { start } from 'repl';
+import moment from 'moment';
 
 @Component({
   selector: 'app-calendar',
@@ -16,6 +16,8 @@ import { start } from 'repl';
 export class CalendarComponent implements OnInit {
   @ViewChild('fullcalendar', {static: false}) fullcalendar: FullCalendarComponent;
   public inputDate: FormControl = new FormControl(true);
+
+  calendarIndex: number;
 
   tabsCalendar: any[] = []
 
@@ -560,7 +562,7 @@ export class CalendarComponent implements OnInit {
     }
   ];
 
-  currentCalendarView = 'month';
+  currentCalendarView = 'day';
 
   event_colors: any = {
     'important': this.currentCalendarView == 'week' ? '#BA68C8' : '#BA68C8B3',
@@ -682,7 +684,7 @@ export class CalendarComponent implements OnInit {
       {
         id: 1,
         name: 'Day',
-        checked: false
+        checked: true
       },
       {
         id: 2,
@@ -692,7 +694,7 @@ export class CalendarComponent implements OnInit {
       {
         id: 3,
         name: 'Month',
-        checked: true
+        checked: false
       },
       {
         id: 4,
@@ -709,7 +711,10 @@ export class CalendarComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.checkCalendarTitle();
+    if(this.fullcalendar){
+      this.checkCalendarTitle();
+    }
+
     this.setCalendarOptions(this.currentEvents, this.calendarGridView, this.headerBarInfo);
   }
 
@@ -780,14 +785,15 @@ export class CalendarComponent implements OnInit {
 
   public checkCalendarTitle() {
     const calendarApi = this.fullcalendar.getApi();
-    console.log(calendarApi.currentData, 'viewitle');
-    if ( this.calendarGridView == 'timeGridWeek' ) {
-      this.calendarTitle = calendarApi.currentData.viewTitle.split(",")[0];
+    console.log("calendarApi");
+    console.log(calendarApi.currentData.currentDate); 
+
+    console.log(moment(calendarApi.currentData.currentDate).format("MMMM D, YYYY"));
+
+    if(this.currentCalendarView === "day"){
+      this.calendarTitle = moment(calendarApi.currentData.currentDate).format("MMMM D, YYYY");
     }
-    else{
-      var calendarTitleParts = calendarApi.currentData.viewTitle.split(" ");
-      this.calendarTitle = calendarTitleParts[0]+', '+calendarTitleParts[1];
-    }
+
   }
 
   resizeEvent(mod) {
@@ -828,15 +834,17 @@ export class CalendarComponent implements OnInit {
     // } else {
     //   calendarApi.setOption('selectMinDistance', 150);
     // }
+  
+    if( !this.fullcalendar ) return false;
     const calendarApi = this.fullcalendar.getApi();
     calendarApi.changeView(view);
     console.log(calendarApi.currentData.viewTitle, 'calendarApi.currentData.viewTitle');
     if ( this.calendarGridView == 'timeGridWeek' ) {
-      this.calendarTitle = calendarApi.currentData.viewTitle.split(",")[0];
+      //this.calendarTitle = calendarApi.currentData.viewTitle.split(",")[0];
     }
     else{
       var calendarTitleParts = calendarApi.currentData.viewTitle.split(" ");
-      this.calendarTitle = calendarTitleParts[0]+', '+calendarTitleParts[1];
+      //this.calendarTitle = calendarTitleParts[0]+', '+calendarTitleParts[1];
     }
     
     if ( this.calendarGridView == 'timeGridWeek' ) {
@@ -858,6 +866,18 @@ export class CalendarComponent implements OnInit {
     }else{
       console.log(ev);
       t2.open({data: ev})
+    }
+  }
+
+  openCalendarEvenPopover(t2, i){
+    this.calendarIndex = i;
+
+    if(t2.isOpen()){
+      t2.close();
+      this.calendarIndex = -1;
+      
+    }else{
+      t2.open()
     }
   }
 

@@ -35,33 +35,63 @@
                 box-sizing: border-box;
             }
 
-            .arrow-left{
+
+            .arrow-holder{
                 position: absolute;
-                width: 18px;
+                width: 42px;
                 height: 18px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 top: 50%;
-                transform: translateY(-50%) rotate(180deg);
-                right: 28px;
+                transform: translateY(-50%);
+                right: 3px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
 
-                svg-icon{
-                    svg{
-                        display: flex;
-                        width: 8.15px;
-                        height: 13px;
+                .arrow-left{
+                    min-width: 18px;
+                    height: 18px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-left: 6px;
+    
+                    svg-icon{
+                        svg{
+                            display: flex;
+                            width: 13px;
+                            height: 8.15px;
+                            transform: rotate(270deg);
+    
+                            path{
+                                fill: #AAAAAA;
+                            }
+                        }
+                    }
+    
+                }   
+                
+                .arrow-right{
+                    min-width: 18px;
+                    height: 18px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-left: 6px;
 
-                        path{
-                            fill: #AAAAAA;
+                    svg-icon{
+                        svg{
+                            display: flex;
+                            width: 13px;
+                            height: 8.15px;
+                            transform: rotate(270deg);
+    
+                            path{
+                                fill: #AAAAAA;
+                            }
                         }
                     }
                 }
 
-                &.arrow-right{
-                    right: 0px;
-                    transform: translateY(-50%) rotate(0deg);
-                }
             }
         }
 
@@ -131,6 +161,12 @@
                     color: #AAAAAA;     
                 }    
             }
+        }
+
+        .switch-holder{
+            width: 326px;
+            height: 32px;
+            margin-bottom: 8px;
         }
 
         .calendar-items-holder{
@@ -267,6 +303,12 @@
                 .ta-custom-card .ta-card-header.active{
                     border-radius: 3px;
                 }
+            }
+
+            .border-calendar{
+                width: 326px;
+                height: 2px;
+                background-color: #EEEEEE;
             }
 
             .calendar-body{
@@ -439,13 +481,14 @@
         
                                     &:hover{
                                         background-color: #CCCCCC;
-                                        color: #fff;                                    }
+                                        color: #fff;                                    
+                                    }
         
                                     &.active{
                                         background-color: #919191;
                                         color: #fff;
                                     }
-    
+
                                     &.inactiv{
                                         color: #B7B7B7;  
                                         
@@ -975,6 +1018,11 @@
         padding: 0 18px 17px 12px;
         box-sizing: border-box;
         user-select: none;
+
+        &.hidden{
+            display: none !important;
+        }
+
         .calendar_view_title_line{
             display: flex;
             justify-content: space-between;
@@ -1640,7 +1688,7 @@
     }
 }
 
-.fc-day-past .fc-scrollgrid-sync-inner, .fc-day-other .fc-scrollgrid-sync-inner{
+.fc-day-other .fc-scrollgrid-sync-inner, .fc-day-other .fc-scrollgrid-sync-inner{
     .fc-daygrid-day-number{
         color: #F3F3F3 !important;
     }
@@ -1776,4 +1824,10 @@
 
 .fc-daygrid-dot-event .fc-event-title{
     padding: 0 !important;
+}
+
+.calendar_view_holder{
+    .fc-day.fc-day-sun,  .fc-day.fc-day-sat{
+        color: red;
+    }
 }

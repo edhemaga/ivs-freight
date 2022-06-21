@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import {
   getRepairsShopColumnDefinition,
@@ -8,25 +8,25 @@ import {
 } from 'src/assets/utils/settings/repair-columns';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-repair-table',
   templateUrl: './repair-table.component.html',
   styleUrls: ['./repair-table.component.scss'],
 })
-export class RepairTableComponent implements OnInit {
-  private destroy$: Subject<void> = new Subject<void>();
-
+export class RepairTableComponent implements OnInit, OnDestroy {
   public tableOptions: any = {};
   public tableData: any[] = [];
-  public viewData: any[] = [];
+  public viewData: any[] = []; 
   public columns: any[] = [];
   public selectedTab = 'active';
   resetColumns: boolean;
 
   constructor(
     private modalService: ModalService,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    public router: Router
   ) {}
 
   ngOnInit(): void {
@@ -35,12 +35,23 @@ export class RepairTableComponent implements OnInit {
 
     // Reset Columns
     this.tableService.currentResetColumns
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((response: boolean) => {
         if (response) {
           this.resetColumns = response;
 
           this.sendRepairData();
+        }
+      });
+
+    // Switch Selected
+    this.tableService.currentSwitchOptionSelected
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res) {
+          if(res.switchType === 'PM'){
+            this.router.navigate([`pm`]);
+          }
         }
       });
   }
@@ -485,11 +496,14 @@ export class RepairTableComponent implements OnInit {
   }
 
   public onTableBodyActions(event: any) {
-    console.log(event);
     this.modalService.openModal(
       RepairShopModalComponent,
       { size: 'small' },
       event
     );
+  }
+
+  ngOnDestroy(): void {
+    this.tableService.sendCurrentSwitchOptionSelected(null);
   }
 }

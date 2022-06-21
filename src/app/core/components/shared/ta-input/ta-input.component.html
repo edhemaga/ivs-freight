@@ -150,12 +150,12 @@
   <svg-icon
     class="input-dropdown-arrow {{ inputConfig.customClass }}"
     *ngIf="
-      inputConfig.isDropdown &&
+      (inputConfig.isDropdown &&
       !inputConfig.isDisabled &&
-      (!isDropdownAddModeActive ||
-        inputConfig.name === 'datepicker' ||
-        inputConfig.name === 'timepicker') &&
-      !inputConfig.multiSelectDropdownActive
+      !isDropdownAddModeActive &&
+      !inputConfig.multiSelectDropdownActive) ||
+      (inputConfig.name === 'datepicker' ||
+        inputConfig.name === 'timepicker')
     "
     [ngClass]="{
       active:
