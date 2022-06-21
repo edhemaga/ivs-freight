@@ -1,6 +1,5 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import {
   getRepairsShopColumnDefinition,
@@ -19,7 +18,7 @@ import { Router } from '@angular/router';
 export class RepairTableComponent implements OnInit, OnDestroy {
   public tableOptions: any = {};
   public tableData: any[] = [];
-  public viewData: any[] = [];
+  public viewData: any[] = []; 
   public columns: any[] = [];
   public selectedTab = 'active';
   resetColumns: boolean;
@@ -497,7 +496,6 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    console.log(event);
     this.modalService.openModal(
       RepairShopModalComponent,
       { size: 'small' },

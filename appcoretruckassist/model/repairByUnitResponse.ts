@@ -9,17 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CompanyShortResponse } from './companyShortResponse';
+import { ServiceType } from './serviceType';
 
 
-export interface SignInResponse { 
-    token?: string | null;
-    companyName?: string | null;
-    companyUserId?: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    avatar?: string | null;
-    driverId?: number | null;
-    companies?: Array<CompanyShortResponse> | null;
+export interface RepairByUnitResponse { 
+    unitId?: number | null;
+    unitType?: ServiceType;
+    unitNumber?: string | null;
+    totalOrder?: number | null;
+    logoName?: string | null;
+    totalCost?: number | null;
 }
 

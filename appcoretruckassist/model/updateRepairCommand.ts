@@ -10,20 +10,17 @@
  * Do not edit the class manually.
  */
 import { RepairType } from './repairType';
-import { RepairUnitType } from './repairUnitType';
 import { RepairItemCommand } from './repairItemCommand';
 import { RepairServiceTypeCommand } from './repairServiceTypeCommand';
 
 
-export interface CreateRepairCommand { 
+export interface UpdateRepairCommand { 
+    id?: number;
     repairType?: RepairType;
-    unitType?: RepairUnitType;
-    truckId?: number | null;
-    trailerId?: number | null;
     odometer?: number | null;
-    date?: string;
+    date?: string | null;
     invoice?: string | null;
-    repairShopId?: number;
+    repairShopId?: number | null;
     total?: number | null;
     serviceTypes?: Array<RepairServiceTypeCommand> | null;
     note?: string | null;

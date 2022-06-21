@@ -14,6 +14,7 @@ import { TruckResolver } from './core/components/truck/state/truck.resolver';
 import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
 import { BrokerResolver } from './core/components/customer/state/broker-state/broker.resolver';
 import { ShipperResolver } from './core/components/customer/state/shipper-state/shipper.resolver';
+import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -112,6 +113,7 @@ const routes: Routes = [
         (m) => m.RepairModule
       ),
     canActivate: [AuthGuard],
+    resolve: { shop: ShopResolver },
   },
   {
     path: 'pm',

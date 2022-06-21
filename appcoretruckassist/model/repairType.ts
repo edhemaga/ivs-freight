@@ -11,9 +11,10 @@
  */
 
 
-export interface CompanyShortResponse { 
-    id?: number;
-    companyName?: string | null;
-    logo?: string | null;
-}
+export type RepairType = 'Bill' | 'Order';
+
+export const RepairType = {
+    Bill: 'Bill' as RepairType,
+    Order: 'Order' as RepairType
+};
 
