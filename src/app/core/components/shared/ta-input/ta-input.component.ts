@@ -561,6 +561,7 @@ export class TaInputComponent
         'phone extension',
         'qty',
         'price',
+        'odometer',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {

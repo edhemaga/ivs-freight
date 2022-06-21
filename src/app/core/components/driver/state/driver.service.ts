@@ -104,20 +104,16 @@ export class DriverTService {
         const subDriver = this.getDriverById(data.id).subscribe({
           next: (driver: DriverResponse | any) => {
             this.driverStore.remove(({ id }) => id === data.id);
-
             driver = {
               ...driver,
               fullName: driver.firstName + ' ' + driver.lastName,
             };
-
             this.driverStore.add(driver);
-
             this.tableService.sendActionAnimation({
               animation: 'update',
               data: driver,
               id: driver.id,
             });
-
             subDriver.unsubscribe();
           },
         });

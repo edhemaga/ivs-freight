@@ -42,7 +42,7 @@
           type: 'text',
           label: 'Odometer',
           isRequired: selectedPM.id !== 0,
-          textTransform: 'capitalize'
+          thousandSeparator: true
         }"
       ></app-ta-input>
       <app-ta-input
@@ -75,7 +75,7 @@
             Repair Shop <span *ngIf="selectedTab === 1">*</span>
           </div>
           <p class="repair-shop-name">
-            IVS TRUCK REPAIR SHOP
+            {{ selectedRepairShop?.name }}
             <svg-icon
               class="repair-shop-star"
               src="assets/src/common/ic_star.svg"
@@ -84,18 +84,18 @@
           <div class="repair-shop-additional">
             <div class="repair-shop-info">
               <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-              <p>{{ "9876543210" | formatPhoneP }}</p>
+              <p>{{ selectedRepairShop?.phone | formatPhoneP }}</p>
             </div>
 
             <div class="repair-shop-info">
               <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-              <p>{{ "contact@windsor-brokers.com" }}</p>
+              <p>{{ selectedRepairShop?.email }}</p>
             </div>
 
             <div class="repair-shop-info">
               <svg-icon src="assets/svg/common/ic_address.svg"></svg-icon>
               <p>
-                {{ "5462 N East River Rd apt 611, Chicago, IL 60656, USA" }}
+                {{ selectedRepairShop?.address }}
               </p>
             </div>
           </div>
@@ -112,7 +112,7 @@
         </div>
         <app-ta-input-dropdown
           *ngIf="!selectedRepairShop"
-          formControlName="repairShop"
+          formControlName="repairShopId"
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
@@ -231,14 +231,14 @@
               ></app-ta-input>
 
               <app-ta-input
-                formControlName="qty"
+                formControlName="quantity"
                 [inputConfig]="{
                   name: 'QTY',
                   type: 'text',
                   textTransform: 'capitalize',
                   fakeModalTableInput: true
                 }"
-                (change)="onChange('qty', ind)"
+                (change)="onChange('quantity', ind)"
               ></app-ta-input>
 
               <p *ngIf="selectedTab === 1" class="item-subtotal">

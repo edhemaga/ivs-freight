@@ -477,6 +477,7 @@
 
 // PM Repair Modal popover
 .ta-dropdown-popover {
+  z-index: 999999;
   .arrow {
     display: none !important;
   }

@@ -249,6 +249,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   private createOffDutyLocation(): FormGroup {
     return this.formBuilder.group({
+      id: [0],
       nickname: [null],
       address: [null],
       city: [null],
@@ -409,11 +410,33 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         streetNumber: address.streetNumber,
       });
     }
+    console.log(this.offDutyLocations.controls);
   }
 
   public premmapedOffDutyLocation() {
+    console.log(this.offDutyLocations.controls);
+    console.log(
+      this.offDutyLocations.controls.map((item) => {
+        return {
+          id: item.get('id').value ? item.get('id').value : 0,
+          nickname: item.get('nickname').value,
+          address: {
+            address: item.get('address').value,
+            city: item.get('city').value,
+            state: item.get('state').value,
+            stateShortName: item.get('stateShortName').value,
+            country: item.get('country').value,
+            zipCode: item.get('zipCode').value,
+            addressUnit: item.get('addressUnit').value,
+            street: item.get('street').value,
+            streetNumber: item.get('streetNumber').value,
+          },
+        };
+      })
+    );
     return this.offDutyLocations.controls.map((item) => {
       return {
+        id: item.get('id').value ? item.get('id').value : 0,
         nickname: item.get('nickname').value,
         address: {
           address: item.get('address').value,
@@ -507,12 +530,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (data: GetDriverModalResponse) => {
-          this.labelsBank = data.banks.map(item => {
+          this.labelsBank = data.banks.map((item) => {
             return {
               ...item,
               folder: 'common',
-              subFolder: 'banks'
-            }
+              subFolder: 'banks',
+            };
           });
           this.labelsPayType = data.payTypes;
         },
@@ -718,6 +741,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       offDutyLocations: this.premmapedOffDutyLocation(),
     };
 
+    console.log(newData);
+
     this.driverTService
       .updateDriver(newData)
       .pipe(untilDestroyed(this))
@@ -798,22 +823,22 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             status: res.status === 1 ? false : true,
           });
           this.driverStatus = res.status === 1 ? false : true;
-
+          console.log(res.offDutyLocations);
           if (res.offDutyLocations.length) {
             for (const offDuty of res.offDutyLocations) {
               this.offDutyLocations.push(
                 this.formBuilder.group({
                   id: offDuty.id,
                   nickname: offDuty.nickname,
-                  address: res.address.address,
-                  city: res.address.city,
-                  state: res.address.state,
-                  stateShortName: res.address.stateShortName,
-                  country: res.address.country,
-                  zipCode: res.address.zipCode,
-                  addressUnit: res.address.addressUnit,
-                  street: res.address.street,
-                  streetNumber: res.address.streetNumber,
+                  address: offDuty.address.address,
+                  city: offDuty.address.city,
+                  state: offDuty.address.state,
+                  stateShortName: offDuty.address.stateShortName,
+                  country: offDuty.address.country,
+                  zipCode: offDuty.address.zipCode,
+                  addressUnit: offDuty.address.addressUnit,
+                  street: offDuty.address.street,
+                  streetNumber: offDuty.address.streetNumber,
                 })
               );
             }

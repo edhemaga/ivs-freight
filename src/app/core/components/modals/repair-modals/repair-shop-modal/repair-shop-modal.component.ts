@@ -328,6 +328,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success('Repair shop added', 'Success: ');
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -383,6 +384,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             'Repair shop successfully updated',
             'Success: '
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -403,6 +405,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             'Repair shop successfully deleted',
             'Success: '
           );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error(

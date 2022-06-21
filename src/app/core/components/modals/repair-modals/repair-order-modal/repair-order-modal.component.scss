@@ -37,7 +37,7 @@
 
   .repair-shop-additional {
     display: grid;
-    grid-template-columns: 97px 188px 1fr;
+    grid-template-columns: 97px repeat(2, 1fr);
     column-gap: 32px;
     align-items: center;
 
@@ -63,6 +63,9 @@
         font-size: 11px;
         font-weight: 400;
         color: #6c6c6c;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
   }
