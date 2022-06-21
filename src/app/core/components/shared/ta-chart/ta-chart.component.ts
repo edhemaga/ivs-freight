@@ -40,13 +40,13 @@ export class TaChartComponent implements OnInit {
     this.setChartData();
   }
 
-  chartHovered(ev) {
+  chartHovered(ev: any) {
     console.log(ev.active[0]['_index'], 'hoverEvent');
 
     this.setHoverAnnotation(ev.active[0]['_index']);
   }
 
-  setHoverAnnotation(value) {
+  setHoverAnnotation(value: any) {
     var sameValue = false;
     this.lineChartOptions['annotation']['annotations'].forEach((item, i) => {
       if ( item['id'] == 'a-line-2' && item['value'] == value ) {
@@ -202,7 +202,6 @@ export class TaChartComponent implements OnInit {
   }
 
   setChartData() {
-    console.log(this.chartConfig, 'chartConfigchartConfigchartConfigchartConfig');
     var allData;
     var allBackgrounds = [];
     this.chartConfig['dataProperties'].map((item, indx) => {
@@ -221,11 +220,7 @@ export class TaChartComponent implements OnInit {
           //allBackgrounds.push(item1+'B3');
         });
       }
-
       
-     // chartDataArray.map((item2, indx2) => {
-        //
-    //  });
       this.lineChartData.push(chartDataArray);
       this.lineChartColors.push(colorProperties);
       this.lineChartLegend = this.chartConfig['defaultType'] != 'doughnut' ?  this.chartConfig['showLegend'] : false;
@@ -240,23 +235,6 @@ export class TaChartComponent implements OnInit {
       this.noChartImage = this.chartConfig['noChartImage'];
       this.chartDataCheck(this.chartConfig['chartValues']);
     });
-
-    if ( this.chartConfig['defaultType'] == 'doughnut' ){
-      this.setChartInner(allData, allBackgrounds);
-    }
-  }
-
-  setChartInner(allData, allBackgrounds){
-    this.chartConfig['dataLabels'].map((item, indx) => {
-      console.log(allData[indx], allBackgrounds[indx]);
-      var doughnutParameters = {
-        name: item,
-        value: allData[indx],
-        color: allBackgrounds[indx]
-      };
-      this.chartInnitProperties.push(doughnutParameters);
-    });
-    console.log(this.chartInnitProperties, 'this.chartInnitProperties');
   }
 
   setGradientBackground() {
