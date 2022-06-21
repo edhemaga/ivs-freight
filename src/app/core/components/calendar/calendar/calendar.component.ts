@@ -17,6 +17,8 @@ export class CalendarComponent implements OnInit {
   @ViewChild('fullcalendar', {static: false}) fullcalendar: FullCalendarComponent;
   public inputDate: FormControl = new FormControl(true);
 
+  calendarIndex: number;
+
   tabsCalendar: any[] = []
 
   calendarSchedule: any[] = [
@@ -560,7 +562,7 @@ export class CalendarComponent implements OnInit {
     }
   ];
 
-  currentCalendarView = 'month';
+  currentCalendarView = 'day';
 
   event_colors: any = {
     'important': this.currentCalendarView == 'week' ? '#BA68C8' : '#BA68C8B3',
@@ -682,7 +684,7 @@ export class CalendarComponent implements OnInit {
       {
         id: 1,
         name: 'Day',
-        checked: false
+        checked: true
       },
       {
         id: 2,
@@ -692,7 +694,7 @@ export class CalendarComponent implements OnInit {
       {
         id: 3,
         name: 'Month',
-        checked: true
+        checked: false
       },
       {
         id: 4,
@@ -709,7 +711,10 @@ export class CalendarComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.checkCalendarTitle();
+    if(this.fullcalendar){
+      this.checkCalendarTitle();
+    }
+
     this.setCalendarOptions(this.currentEvents, this.calendarGridView, this.headerBarInfo);
   }
 
@@ -828,6 +833,7 @@ export class CalendarComponent implements OnInit {
     // } else {
     //   calendarApi.setOption('selectMinDistance', 150);
     // }
+    if( !this.fullcalendar ) return false;
     const calendarApi = this.fullcalendar.getApi();
     calendarApi.changeView(view);
     console.log(calendarApi.currentData.viewTitle, 'calendarApi.currentData.viewTitle');
@@ -858,6 +864,18 @@ export class CalendarComponent implements OnInit {
     }else{
       console.log(ev);
       t2.open({data: ev})
+    }
+  }
+
+  openCalendarEvenPopover(t2, i){
+    this.calendarIndex = i;
+
+    if(t2.isOpen()){
+      t2.close();
+      this.calendarIndex = -1;
+      
+    }else{
+      t2.open()
     }
   }
 

@@ -5,10 +5,18 @@
   [isModalValid]="ownerForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-  <app-tab-switcher
+
+  <app-ta-tab-switch
+  [tabs]="tabs"
+  (switchClicked)="tabChange($event)" 
+  [type]="'modal-popup'"
+  >
+  </app-ta-tab-switch>  
+
+  <!-- <app-tab-switcher
     (switchClicked)="tabChange($event)"
     [tabs]="tabs"
-  ></app-tab-switcher>
+  ></app-tab-switcher> -->
 
   <form [formGroup]="ownerForm" class="form-container">
     <div class="row" *ngIf="selectedTab === 1">

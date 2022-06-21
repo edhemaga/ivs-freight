@@ -133,6 +133,12 @@
             }
         }
 
+        .switch-holder{
+            width: 326px;
+            height: 32px;
+            margin-bottom: 8px;
+        }
+
         .calendar-items-holder{
             width: 100%;
             height: 32px;
@@ -267,6 +273,12 @@
                 .ta-custom-card .ta-card-header.active{
                     border-radius: 3px;
                 }
+            }
+
+            .border-calendar{
+                width: 326px;
+                height: 2px;
+                background-color: #EEEEEE;
             }
 
             .calendar-body{
@@ -439,13 +451,14 @@
         
                                     &:hover{
                                         background-color: #CCCCCC;
-                                        color: #fff;                                    }
+                                        color: #fff;                                    
+                                    }
         
                                     &.active{
                                         background-color: #919191;
                                         color: #fff;
                                     }
-    
+
                                     &.inactiv{
                                         color: #B7B7B7;  
                                         

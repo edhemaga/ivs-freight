@@ -7,6 +7,7 @@ import { AuthGuard } from './core/guards/authentication.guard';
 import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
+import { HelperSignupUserComponent } from './core/components/authentication/helper-signup-user/helper-signup-user.component';
 import { HelperComponent } from './core/components/authentication/helper/helper.component';
 import { TruckResolver } from './core/components/truck/state/truck.resolver';
 import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
@@ -22,6 +23,11 @@ const routes: Routes = [
       import('./core/components/authentication/auth.module').then(
         (m) => m.AuthModule
       ),
+  },
+  {
+    path: 'api/account/signupuser',
+    component: HelperSignupUserComponent,
+    data: { title: 'Helper Component Route' },
   },
   {
     path: 'api/account/verifyowner',
@@ -99,6 +105,14 @@ const routes: Routes = [
     loadChildren: () =>
       import('./core/components/repair/repair.module').then(
         (m) => m.RepairModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'pm',
+    loadChildren: () =>
+      import('./core/components/pm-truck-trailer/pm-truck-trailer.module').then(
+        (m) => m.PmTruckTrailerModule
       ),
     canActivate: [AuthGuard],
   },

@@ -27,6 +27,7 @@
           class="d-flex flex-column"
         >
           <!-- FIRST NAME, LAST NAME -->
+
           <div class="d-flex">
             <div class="form-label-group first-name-group">
               <app-ta-input
@@ -37,8 +38,7 @@
                   label: 'First Name',
                   isRequired: true,
                   textTransform: 'capitalize',
-                  autoFocus: true,
-                  customClass: 'input-big'
+                  autoFocus: true
                 }"
               ></app-ta-input>
             </div>
@@ -50,8 +50,7 @@
                   type: 'text',
                   label: 'Last Name',
                   isRequired: true,
-                  textTransform: 'capitalize',
-                  customClass: 'input-big'
+                  textTransform: 'capitalize'
                 }"
               ></app-ta-input>
             </div>
@@ -68,8 +67,7 @@
                   type: 'text',
                   label: 'Company Name',
                   isRequired: true,
-                  textTransform: 'capitalize',
-                  customClass: 'input-big'
+                  textTransform: 'capitalize'
                 }"
               ></app-ta-input>
             </div>
@@ -80,8 +78,7 @@
                   name: 'EIN',
                   type: 'text',
                   label: 'EIN #',
-                  mask: '00-0000000',
-                  customClass: 'input-big'
+                  mask: '00-0000000'
                 }"
               ></app-ta-input>
             </div>
@@ -99,8 +96,7 @@
                   label: 'Address, City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
-                  textTransform: 'capitalize',
-                  customClass: 'input-big'
+                  textTransform: 'capitalize'
                 }"
                 (selectedAddress)="handleAddressChange($event)"
               ></app-ta-input-address>
@@ -112,8 +108,7 @@
                   name: 'Address Unit',
                   type: 'text',
                   label: 'Unit #',
-                  maxLength: 6,
-                  customClass: 'input-big'
+                  maxLength: 6
                 }"
               ></app-ta-input>
             </div>
@@ -131,8 +126,7 @@
                   label: 'Phone',
                   isRequired: true,
                   placeholderIcon: 'phone',
-                  mask: '(000) 000-0000',
-                  customClass: 'input-big'
+                  mask: '(000) 000-0000'
                 }"
               ></app-ta-input>
             </div>
@@ -145,8 +139,7 @@
                   label: 'Email',
                   isRequired: true,
                   placeholderIcon: 'email',
-                  autocomplete: 'off',
-                  customClass: 'input-big'
+                  autocomplete: 'off'
                 }"
               ></app-ta-input>
             </div>
@@ -164,8 +157,7 @@
                   label: 'Password',
                   placeholderIcon: 'password',
                   isRequired: true,
-                  autocomplete: 'off',
-                  customClass: 'input-big'
+                  autocomplete: 'off'
                 }"
               ></app-ta-input>
             </div>
@@ -178,8 +170,7 @@
                   label: 'Confirm Password',
                   placeholderIcon: 'password',
                   isRequired: true,
-                  autocomplete: 'off',
-                  customClass: 'input-big'
+                  autocomplete: 'off'
                 }"
               ></app-ta-input>
             </div>
@@ -189,7 +180,7 @@
 
           <button
             class="d-flex justify-content-center align-items-center submit-btn"
-            (click)="registerUser()"
+            (click)="registerCompany()"
             type="submit"
             [ngClass]="{
               disabled: registerForm.invalid

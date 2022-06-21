@@ -24,11 +24,15 @@ ngb-modal-window[aria-hidden="true"] {
   }
 
   .modal-dialog {
+    max-width: -webkit-max-content !important;
+    max-width: -moz-max-content !important;
     max-width: max-content !important;
     &.modal-large {
       bottom: 6%;
     }
     @media (min-width: 576px) {
+      max-width: -webkit-max-content !important;
+      max-width: -moz-max-content !important;
       max-width: max-content !important;
       margin: 0.5rem auto !important;
     }
@@ -90,6 +94,7 @@ ngb-modal-window[aria-hidden="true"] {
         .modal-header-leftside {
           display: flex;
           align-items: center;
+          gap: 6px;
         }
 
         .modal-title {
@@ -101,12 +106,46 @@ ngb-modal-window[aria-hidden="true"] {
           color: #6c6c6c;
         }
 
+        .modal-header-tab-change {
+          width: 116px;
+          height: 24px;
+          margin-left: 2px;
+          margin-bottom: 1px;
+
+          .ta-input-radiobutons {
+            height: 100% !important;
+            gap: 2px;
+
+            .radio-button-label {
+              height: 20px;
+              &:nth-child(1) {
+                width: 44px;
+              }
+
+              &:nth-child(2) {
+                width: 66px;
+              }
+
+              .radio-button:checked ~ .radio-button-text {
+                color: #6c6c6c;
+                transition: all 0.3 ease-in-out;
+              }
+
+              .radio-button-text {
+                font-size: 16px;
+                font-weight: 800;
+                line-height: 17px;
+              }
+            }
+          }
+        }
+
         .edit-name {
           font-size: 18px;
           font-weight: 500;
           color: #6c6c6c;
           margin: 0px;
-          margin-left: 6px;
+          // margin-left: 6px;
         }
 
         .modal-close {
@@ -289,7 +328,10 @@ body.modal-open {
       opacity: 1 !important;
       background-color: rgba(0, 0, 0, 0.6);
 
+      -webkit-animation-name: modalShow;
+
       animation-name: modalShow;
+      -webkit-animation-duration: 0.3s;
       animation-duration: 0.3s;
     }
   }
