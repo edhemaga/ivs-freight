@@ -93,8 +93,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    console.log(this.editData);
-
     this.createForm();
     this.getRepairDropdowns();
 
@@ -327,8 +325,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
   public onAction(action: any) {
     this.selectedPM = action;
-    console.log(this.selectedPM);
-    console.log(this.pmOptions);
+
     if (
       this.selectedPM.id !== 0 &&
       this.selectedPM.id !== this.pmOptions[this.pmOptions.length - 1]

@@ -242,12 +242,19 @@ export class TaInputComponent
       if (this.inputConfig.type === 'password') {
         this.blurOnPassword();
       }
+
+      if (this.inputConfig.modalPM) {
+        this.blurOnPmCommands();
+      }
     }
     this.inputService.onFocusOutInputSubject.next(true);
     this.touchedInput = true;
   }
 
   private blurOnPassword() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
     this.timeout = setTimeout(() => {
       this.isVisiblePasswordEye = false;
       this.changeDetection.detectChanges();
@@ -255,6 +262,9 @@ export class TaInputComponent
   }
 
   private blurOnPmCommands() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
     this.timeout = setTimeout(() => {
       this.isVisiblePmCommands = false;
       this.changeDetection.detectChanges();
@@ -792,7 +802,7 @@ export class TaInputComponent
   changeSelection(e): void {
     e.preventDefault();
     e.stopPropagation();
-  
+
     if (
       e.keyCode == 37 ||
       e.keyCode == 38 ||
@@ -837,105 +847,96 @@ export class TaInputComponent
     }
   }
 
-  handleKeyboardInputs(e: KeyboardEvent ) {
-    const span1Value = isNaN(this.span1.nativeElement.innerHTML) ? undefined : parseInt(this.span1.nativeElement.innerHTML);
-    const span2Value = isNaN(this.span2.nativeElement.innerHTML) ? undefined : parseInt(this.span2.nativeElement.innerHTML);
-    const span3Value = isNaN(this.span3.nativeElement.innerHTML) ? "" : parseInt(this.span3.nativeElement.innerHTML);
+  handleKeyboardInputs(e: KeyboardEvent) {
+    const span1Value = isNaN(this.span1.nativeElement.innerHTML)
+      ? undefined
+      : parseInt(this.span1.nativeElement.innerHTML);
+    const span2Value = isNaN(this.span2.nativeElement.innerHTML)
+      ? undefined
+      : parseInt(this.span2.nativeElement.innerHTML);
+    const span3Value = isNaN(this.span3.nativeElement.innerHTML)
+      ? ''
+      : parseInt(this.span3.nativeElement.innerHTML);
     if (this.inputConfig.name === 'datepicker') {
       if (this.selectionInput == 0) {
-       
-        if( span1Value ){
-          if(parseInt(`${span1Value}${e.key}`) > 12){ 
-            this.span2.nativeElement.innerHTML = (
-              '0' +
-              (parseInt(e.key))
-            ).slice(-2);
+        if (span1Value) {
+          if (parseInt(`${span1Value}${e.key}`) > 12) {
+            this.span2.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
+              -2
+            );
             this.selectionInput = 1;
             this.selectSpanByTabIndex(1);
-          }else{
+          } else {
             this.dateTimeInputDate = new Date(
               this.dateTimeInputDate.setMonth(
-                parseInt(this.span1.nativeElement.innerHTML + (parseInt(e.key) -1))
+                parseInt(
+                  this.span1.nativeElement.innerHTML + (parseInt(e.key) - 1)
+                )
               )
             );
             this.span1.nativeElement.innerHTML = (
-              this.span1.nativeElement.innerHTML +
-              (parseInt(e.key))
+              this.span1.nativeElement.innerHTML + parseInt(e.key)
             ).slice(-2);
             this.selectionInput = 1;
             this.selectSpanByTabIndex(1);
           }
-
-        }else{
+        } else {
           this.dateTimeInputDate = new Date(
-            this.dateTimeInputDate.setMonth(
-              parseInt(e.key) -1
-            )
+            this.dateTimeInputDate.setMonth(parseInt(e.key) - 1)
           );
 
-          this.span1.nativeElement.innerHTML = (
-            '0' +
-            (parseInt(e.key))
-          ).slice(-2);
+          this.span1.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
+            -2
+          );
 
-          if(parseInt(`1${e.key}`) > 12){
+          if (parseInt(`1${e.key}`) > 12) {
             this.selectionInput = 1;
             this.selectSpanByTabIndex(1);
-          }else{
-            console.log("possible months");
+          } else {
+            console.log('possible months');
             this.selectSpanByTabIndex(0);
           }
         }
-
-      }else if(this.selectionInput == 1){
-        
-        if( span2Value ){
-          if(parseInt(`${span2Value}${e.key}`) > 31){
-            this.span3.nativeElement.innerHTML = (
-              '0' +
-              (parseInt(e.key))
-            ).slice(-2);
+      } else if (this.selectionInput == 1) {
+        if (span2Value) {
+          if (parseInt(`${span2Value}${e.key}`) > 31) {
+            this.span3.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
+              -2
+            );
             this.selectionInput = 2;
             this.selectSpanByTabIndex(2);
-          }else{
+          } else {
             this.dateTimeInputDate = new Date(
               this.dateTimeInputDate.setDate(
-                parseInt(this.span2.nativeElement.innerHTML + (parseInt(e.key)))
+                parseInt(this.span2.nativeElement.innerHTML + parseInt(e.key))
               )
             );
             this.span2.nativeElement.innerHTML = (
-              this.span2.nativeElement.innerHTML +
-              (parseInt(e.key))
+              this.span2.nativeElement.innerHTML + parseInt(e.key)
             ).slice(-2);
             this.selectionInput = 3;
             this.selectSpanByTabIndex(3);
           }
-
-        }else{
+        } else {
           this.dateTimeInputDate = new Date(
-            this.dateTimeInputDate.setDate(
-              parseInt(e.key)
-            )
+            this.dateTimeInputDate.setDate(parseInt(e.key))
           );
-          this.span2.nativeElement.innerHTML = (
-            '0' +
-            (parseInt(e.key))
-          ).slice(-2);
+          this.span2.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
+            -2
+          );
 
-          if(parseInt(`1${e.key}`) > 31){
+          if (parseInt(`1${e.key}`) > 31) {
             this.selectionInput = 3;
             this.selectSpanByTabIndex(3);
-          }else{
+          } else {
             this.selectSpanByTabIndex(1);
           }
         }
-      }else{
-        
-        if( !span3Value || span3Value.toString().length == 2){
-          this.span3.nativeElement.innerHTML = (
-            '0' +
-            (parseInt(e.key))
-          ).slice(-2);
+      } else {
+        if (!span3Value || span3Value.toString().length == 2) {
+          this.span3.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
+            -2
+          );
           this.dateTimeInputDate = new Date(
             this.dateTimeInputDate.setFullYear(
               parseInt(`200${parseInt(e.key)}`)
@@ -943,24 +944,23 @@ export class TaInputComponent
           );
 
           this.selectSpanByTabIndex(3);
-        }else{
+        } else {
           this.dateTimeInputDate = new Date(
             this.dateTimeInputDate.setFullYear(
-              parseInt(`2${this.span3.nativeElement.innerHTML + (parseInt(e.key))}`)
+              parseInt(
+                `2${this.span3.nativeElement.innerHTML + parseInt(e.key)}`
+              )
             )
           );
           this.span3.nativeElement.innerHTML = (
-            this.span3.nativeElement.innerHTML +
-            (parseInt(e.key))
+            this.span3.nativeElement.innerHTML + parseInt(e.key)
           ).slice(-2);
           this.selectSpanByTabIndex(3);
         }
       }
-    }else{
-
+    } else {
     }
   }
-
 
   selectSpanByTabIndex(indx) {
     switch (indx) {
@@ -1086,9 +1086,9 @@ export class TaInputComponent
         if (this.selectionInput == 0) {
           const decreaseHour = this.dateTimeInputDate.getHours() - 1;
           console.log(decreaseHour);
-          
+
           let selectedHours = decreaseHour === 0 ? 24 : decreaseHour;
-          selectedHours = decreaseHour === -1  ? 23 : selectedHours;
+          selectedHours = decreaseHour === -1 ? 23 : selectedHours;
           console.log(selectedHours);
           this.dateTimeInputDate = new Date(
             this.dateTimeInputDate.setHours(selectedHours)
@@ -1132,7 +1132,9 @@ export class TaInputComponent
   isNumber(evt) {
     evt = evt ? evt : window.event;
     let charCode = evt.which ? evt.which : evt.keyCode;
-    return ((charCode >= 48 && charCode <= 57) || (charCode >= 96 && charCode <= 105));
+    return (
+      (charCode >= 48 && charCode <= 57) || (charCode >= 96 && charCode <= 105)
+    );
   }
 
   onPopoverShown() {

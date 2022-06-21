@@ -28,7 +28,8 @@
     *ngIf="
       !inputConfig.hideClear &&
       !inputConfig.isDisabled &&
-      !inputConfig.customClass?.includes('details-pages')
+      !inputConfig.customClass?.includes('details-pages') &&
+      !inputConfig.modalPM
     "
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
@@ -152,11 +153,11 @@
     class="input-dropdown-arrow {{ inputConfig.customClass }}"
     *ngIf="
       (inputConfig.isDropdown &&
-      !inputConfig.isDisabled &&
-      !isDropdownAddModeActive &&
-      !inputConfig.multiSelectDropdownActive) ||
-      (inputConfig.name === 'datepicker' ||
-        inputConfig.name === 'timepicker')
+        !inputConfig.isDisabled &&
+        !isDropdownAddModeActive &&
+        !inputConfig.multiSelectDropdownActive) ||
+      inputConfig.name === 'datepicker' ||
+      inputConfig.name === 'timepicker'
     "
     [ngClass]="{
       active:
@@ -219,7 +220,10 @@
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-required-in':
-        getSuperControl.value && getSuperControl.valid && focusInput,
+        !inputConfig.modalPM &&
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        focusInput,
       'valid-required-out':
         getSuperControl.value && getSuperControl.valid && !focusInput,
       'invalid-required-in':
@@ -258,12 +262,7 @@
   >
   </svg-icon>
 
-  <!-- Input Control
-
-     thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
-    separatorLimit="99999999999999"
-
-  -->
+  <!-- Input Control -->
   <input
     #input
     [type]="inputConfig.type | inputType: togglePassword"
@@ -324,7 +323,7 @@
     (focus)="onFocus()"
     (paste)="onPaste($event, inputConfig.maxLength)"
     (input)="onChange($event.target.value); transformText($event.target.value)"
-    [(ngModel)]="inputConfig.mask ? '' : input.value"
+    [(ngModel)]="input.value"
   />
 
   <!-- DateTime Picker -->
