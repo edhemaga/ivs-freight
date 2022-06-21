@@ -7,4 +7,4 @@ export class ShopQuery extends QueryEntity<ShopState> {
   constructor(protected shopStore: ShopStore) {
     super(shopStore);
   }
-  }
+}

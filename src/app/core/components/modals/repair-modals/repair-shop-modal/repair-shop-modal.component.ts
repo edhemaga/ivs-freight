@@ -10,7 +10,7 @@ import {
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { distinctUntilChanged } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { ShopTService } from '../../../repair/state/shop.service';
+import { RepairTService } from '../../../repair/state/repair.service';
 import {
   accountBankRegex,
   bankRoutingValidator,
@@ -102,7 +102,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private shopService: ShopTService,
+    private shopService: RepairTService,
     private modalService: ModalService,
     private notificationService: NotificationService
   ) {}
