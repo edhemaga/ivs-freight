@@ -9,6 +9,7 @@ import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.compo
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
 import { HelperSignupUserComponent } from './core/components/authentication/helper-signup-user/helper-signup-user.component';
 import { HelperComponent } from './core/components/authentication/helper/helper.component';
+import { HelperForgotPasswordComponent } from './core/components/authentication/helper-forgot-password/helper-forgot-password.component';
 import { TruckResolver } from './core/components/truck/state/truck.resolver';
 import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
 import { BrokerResolver } from './core/components/customer/state/broker-state/broker.resolver';
@@ -32,6 +33,11 @@ const routes: Routes = [
   {
     path: 'api/account/verifyowner',
     component: HelperComponent,
+    data: { title: 'Helper Component Route' },
+  },
+  {
+    path: 'api/account/verifyforgotpassword',
+    component: HelperForgotPasswordComponent,
     data: { title: 'Helper Component Route' },
   },
   {
