@@ -60,7 +60,6 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
-        console.log('Driver currentActionAnimation');
         if (res.animation === 'add') {
           this.viewData.push(this.mapDriverData(res.data));
 
@@ -78,9 +77,6 @@ export class DriverTableComponent implements OnInit, OnDestroy {
             clearInterval(inetval);
           }, 1000);
         } else if (res.animation === 'update') {
-          console.log('Driver Data Befor Update');
-          console.log(this.viewData);
-
           const updatedDriver = this.mapDriverData(res.data);
 
           this.viewData = this.viewData.map((driver: any) => {
@@ -356,7 +352,6 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    console.log(event);
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
