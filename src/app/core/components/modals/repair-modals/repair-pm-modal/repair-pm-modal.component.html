@@ -67,7 +67,7 @@
                 thousandSeparator: true,
                 maxLength: editData?.header?.includes('Truck') ? 999999999 : 2
               }"
-              (change)="onMilesMonthChange(ind, editData?.header)"
+              (change)="onMilesMonthChange(ind, editData?.header, 'old')"
             ></app-ta-input>
           </div>
         </div>
@@ -120,7 +120,7 @@
                 thousandSeparator: true,
                 maxLength: editData?.header?.includes('Truck') ? 999999999 : 2
               }"
-              (change)="onMilesMonthChange(ind, editData?.header)"
+              (change)="onMilesMonthChange(ind, editData?.header, 'new')"
             ></app-ta-input>
 
             <div

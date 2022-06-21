@@ -180,6 +180,7 @@ export class TaInputComponent
       this.isVisiblePasswordEye = true;
     }
 
+    // Repair PM Modal
     if (this.inputConfig.modalPM) {
       this.isVisiblePmCommands = true;
     }
@@ -243,6 +244,7 @@ export class TaInputComponent
         this.blurOnPassword();
       }
 
+      // PM REPAIR MODAL
       if (this.inputConfig.modalPM) {
         this.blurOnPmCommands();
       }
@@ -267,8 +269,8 @@ export class TaInputComponent
     }
     this.timeout = setTimeout(() => {
       this.isVisiblePmCommands = false;
-      this.changeDetection.detectChanges();
-    }, 150);
+      clearTimeout(this.timeout);
+    }, 2500);
   }
 
   private blurOnDropDownArrow() {

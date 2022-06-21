@@ -296,22 +296,25 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onMilesMonthChange(ind: number, type: string) {
+  public onMilesMonthChange(ind: number, type: string, oldNew: string) {
     switch (type) {
       case 'Truck': {
-        this.defaultPMs
-          .at(ind)
-          .get('miles')
-          .valueChanges.pipe(untilDestroyed(this))
-          .subscribe((value) => {
-            if (!value || value < 1000) {
-              this.defaultPMs
-                .at(ind)
-                .get('miles')
-                .patchValue(convertNumberInThousandSep(1000));
-            }
-          });
-        if (this.newPMs.length) {
+        if (oldNew === 'old') {
+          this.defaultPMs
+            .at(ind)
+            .get('miles')
+            .valueChanges.pipe(untilDestroyed(this))
+            .subscribe((value) => {
+              if (!value || value < 1000) {
+                this.defaultPMs
+                  .at(ind)
+                  .get('miles')
+                  .patchValue(convertNumberInThousandSep(1000));
+              }
+            });
+        }
+
+        if (this.newPMs.length && oldNew === 'new') {
           this.newPMs
             .at(ind)
             .get('miles')
@@ -328,19 +331,22 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Trailer': {
-        this.defaultPMs
-          .at(ind)
-          .get('miles')
-          .valueChanges.pipe(untilDestroyed(this))
-          .subscribe((value) => {
-            if (!value || value == 0) {
-              this.defaultPMs
-                .at(ind)
-                .get('miles')
-                .patchValue(convertNumberInThousandSep(1));
-            }
-          });
-        if (this.newPMs.length) {
+        if (oldNew === 'old') {
+          this.defaultPMs
+            .at(ind)
+            .get('miles')
+            .valueChanges.pipe(untilDestroyed(this))
+            .subscribe((value) => {
+              if (!value || value == 0) {
+                this.defaultPMs
+                  .at(ind)
+                  .get('miles')
+                  .patchValue(convertNumberInThousandSep(1));
+              }
+            });
+        }
+
+        if (this.newPMs.length && oldNew === 'new') {
           this.newPMs
             .at(ind)
             .get('miles')
