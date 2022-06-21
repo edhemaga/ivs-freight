@@ -59,6 +59,8 @@ export class AccountService {
             this.configuration.basePath = basePath;
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
+        console.log("FROM BACKEND SERVICE")
+        console.log(configuration)
     }
 
 
@@ -488,7 +490,8 @@ export class AccountService {
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
-
+        console.log("FROM BACKEND SERVICE")
+        console.log(credential)
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
