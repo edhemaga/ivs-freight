@@ -74,24 +74,40 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
       newPassword: this.createNewPasswordForm.get('newPassword').value,
     };
 
-    this.authStoreService
-      .createNewPassword(newData)
+    this.authStoreService.getForgotPassword$
       .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: HttpResponseBase) => {
-          if (res.status === 200 || res.status === 204) {
-            this.notification.success(
-              'Password changed successfully',
-              'Success'
-            );
+      .subscribe(token => {
+        localStorage.setItem('user', JSON.stringify({ token: token }));
 
-            this.router.navigate(['/forgot-password/password-changed']);
-          }
-        },
-        error: err => {
-          this.notification.error(err, 'Error');
-        },
+        this.authStoreService
+          .createNewPassword(newData)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: HttpResponseBase) => {
+              if (res.status === 200 || res.status === 204) {
+                this.notification.success(
+                  'Password changed successfully',
+                  'Success'
+                );
+
+                localStorage.removeItem('user');
+
+                this.router.navigate([
+                  '/auth/forgot-password/password-changed',
+                ]);
+              }
+            },
+            error: err => {
+              this.notification.error(err, 'Error');
+            },
+          });
       });
+  }
+
+  public onKeyDown(event: any) {
+    if (event.keyCode === 13) {
+      this.onCreateNewPassword();
+    }
   }
 
   ngOnDestroy(): void {}

@@ -11,15 +11,20 @@ import {
   SetNewPasswordCommand,
   VerifyOwnerCommand,
   SignupUserCommand,
+  VerifyForgotPasswordCommand,
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
+import { configFactory } from 'src/app/app.config';
 import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStoreService {
   private signUpUserInfoSubject: BehaviorSubject<SignUpUserInfo> =
     new BehaviorSubject<SignUpUserInfo>(null);
+
+  private forgotPasswordTokenSubject: BehaviorSubject<string> =
+    new BehaviorSubject<string>(null);
 
   constructor(
     private authStore: AuthStore,
@@ -28,8 +33,16 @@ export class AuthStoreService {
     @Inject('persistStorage') private persistStorage: PersistState
   ) {}
 
+  public getForgotPasswordToken(token: string) {
+    this.forgotPasswordTokenSubject.next(token);
+  }
+
   public getSignUpUserInfo(signUpUserInfo: SignUpUserInfo) {
     this.signUpUserInfoSubject.next(signUpUserInfo);
+  }
+
+  get getForgotPassword$() {
+    return this.forgotPasswordTokenSubject.asObservable();
   }
 
   get getSignUpUserInfo$() {
@@ -41,6 +54,7 @@ export class AuthStoreService {
       tap((user: SignInResponse) => {
         // Production
         this.authStore.set({ 1: user });
+        configFactory(user.token);
         // Develop
         localStorage.setItem('user', JSON.stringify(user));
         this.router.navigate(['/dashboard']);
@@ -53,12 +67,19 @@ export class AuthStoreService {
     this.persistStorage.clearStore();
     this.persistStorage.destroy();
     this.router.navigate(['/auth/login']);
+    configFactory(null);
     // ---- DEVELOP MODE ----
     localStorage.removeItem('user');
   }
 
   public forgotPassword(data: ForgotPasswordCommand): Observable<object> {
     return this.accountService.apiAccountForgotpasswordPut(data, 'response');
+  }
+
+  public verifyForgotPassword(
+    data: VerifyForgotPasswordCommand
+  ): Observable<object> {
+    return this.accountService.apiAccountVerifyforgotpasswordPut(data);
   }
 
   public createNewPassword(data: SetNewPasswordCommand): Observable<object> {
