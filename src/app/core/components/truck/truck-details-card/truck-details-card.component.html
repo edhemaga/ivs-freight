@@ -259,7 +259,9 @@
                       borderColor: '#6D82C7',
                       pointBackgroundColor: '#FFFFFF',
                       pointHoverBackgroundColor: '#6D82C7',
-                      pointHoverBorderColor: '#FFFFFF'
+                      pointHoverBorderColor: '#FFFFFF',
+                      pointHoverRadius: 3,
+                      pointBorderWidth: 2
                     }
                   },
                   {
@@ -349,7 +351,9 @@
                       borderColor: '#6D82C7',
                       pointBackgroundColor: '#FFFFFF',
                       pointHoverBackgroundColor: '#6D82C7',
-                      pointHoverBorderColor: '#FFFFFF'
+                      pointHoverBorderColor: '#FFFFFF',
+                      pointHoverRadius: 3,
+                      pointBorderWidth: 2
                     }
                   },
                   {
@@ -395,6 +399,136 @@
               }"
             >
             </app-ta-chart>
+            <!--<app-ta-chart
+              [chartConfig]="{
+                legendAttributes: [
+                  {
+                    title: 'Avg. Rate',
+                    value: '$2.37',
+                    image: 'assets/svg/common/round_blue.svg'
+                  },
+                  {
+                    title: 'Highest Rate',
+                    value: '$2.86',
+                    image: 'assets/svg/common/round_green.svg'
+                  },
+                  {
+                    title: 'Lowest Rate',
+                    value: '$1.29',
+                    image: 'assets/svg/common/round_yellow.svg'
+                  }
+                ],
+                dataProperties: [
+                  {
+                    defaultConfig: {
+                      type: 'line',
+                      data: [2.25, 2.5, 2.2, 1.6, 2.2, 2.3],
+                      label: 'Salary',
+                      yAxisID: 'y-axis-0',
+                      borderColor: '#6D82C7',
+                      pointBackgroundColor: '#FFFFFF',
+                      pointHoverBackgroundColor: '#6D82C7',
+                      pointHoverBorderColor: '#FFFFFF',
+                      pointHoverRadius: 3,
+                      pointBorderWidth: 2
+                    }
+                  },
+                  {
+                    defaultConfig: {
+                      type: 'bar',
+                      data: [[2.7, 1.8], [2.8, 2.2], [2.7, 1.7], [2.1, 1.2], [2.7, 1.6], [2.6, 2.0]],
+                      label: 'Miles',
+                      yAxisID: 'y-axis-0',
+                      borderColor: '#FFCC80',
+                      backgroundColor: '#FFCC80',
+                      hoverBackgroundColor: '#FFA726',
+                      hasGradiendBackground: true,
+                      colors: ['rgba(128, 203, 186, 1)', 'rgba(255, 204, 128, 1)'],
+                      maxBarThickness: 18
+                    }
+                  }
+                ],
+                showLegend: false,
+                chartValues: [46,755,000, 36.854],
+                defaultType: 'bar',
+                chartWidth: '417',
+                chartHeight: '130',
+                dataLabels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                noChartImage: 'assets/svg/common/yellow_no_data.svg'
+              }"
+              [axesProperties]="{
+                verticalLeftAxes: {
+                  visible: true,
+                  minValue: 1,
+                  maxValue: 3,
+                  stepSize: 0.5,
+                  showGridLines: true
+                },
+                horizontalAxes: {
+                  visible: true,
+                  position: 'bottom',
+                  showGridLines: false
+                }
+              }"
+            >
+            </app-ta-chart>
+            <app-ta-chart
+              [chartConfig]="{
+                legendAttributes: [
+                  {
+                    title: 'Pay Period',
+                    value: '18 days',
+                    image: 'assets/svg/common/round_blue.svg'
+                  },
+                  {
+                    title: 'Pay Term',
+                    value: '32 days',
+                    image: 'assets/svg/common/dash_line.svg'
+                  }
+                ],
+                dataProperties: [
+                  {
+                    defaultConfig: {
+                      type: 'line',
+                      data: [12, 21, 27, 37, 28, 25, 21, 10, 15, 45, 27, 46, 41, 28, 24],
+                      yAxisID: 'y-axis-0',
+                      borderColor: '#6D82C7',
+                      pointBackgroundColor: '#FFFFFF',
+                      pointHoverBackgroundColor: '#6D82C7',
+                      pointHoverBorderColor: '#FFFFFF',
+                      pointHoverRadius: 3,
+                      pointBorderWidth: 2,
+                      fill: true,
+                      hasGradiendBackground: true,
+                      colors: ['rgba(189, 202, 235, 1)', 'rgba(255, 255, 255, 1)']
+                    }
+                  }
+                ],
+                showLegend: false,
+                chartValues: [2, 2],
+                defaultType: 'bar',
+                chartWidth: '417',
+                chartHeight: '130',
+                annotation: 28,
+                dataLabels: ['JUL', '', '', '', '', '', '', 'AUG', '', '', '', '', '', '', 'SEP'],
+                noChartImage: 'assets/svg/common/no_data_pay.svg'
+              }"
+              [axesProperties]="{
+                verticalLeftAxes: {
+                  visible: true,
+                  minValue: 0,
+                  maxValue: 52,
+                  stepSize: 13,
+                  showGridLines: true
+                },
+                horizontalAxes: {
+                  visible: true,
+                  position: 'bottom',
+                  showGridLines: false
+                }
+              }"
+            >
+            </app-ta-chart>-->
         </div>
       </app-ta-custom-card>
 
