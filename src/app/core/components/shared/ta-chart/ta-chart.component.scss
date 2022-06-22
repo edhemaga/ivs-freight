@@ -4,6 +4,10 @@
   align-items: center;
   position: relative;
   margin-top: 14px;
+
+  .no_chart_data{
+    user-select: none;
+  }
 }
 
 .dotted_background{
@@ -48,4 +52,8 @@
       }
     }
   }
+}
+
+.charts-template-item{
+  padding: 0 !important;
 }

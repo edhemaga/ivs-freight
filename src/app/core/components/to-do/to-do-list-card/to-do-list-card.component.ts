@@ -195,7 +195,7 @@ export class ToDoListCardComponent implements OnInit {
   }
 
   public openModalTodo() {
-    this.modalService.openModal(TaskModalComponent, { size: 'small' }, {type: 'edit', id: 1});
+    this.modalService.openModal(TaskModalComponent, { size: 'small' });
   }
 
   public updateStatus(todo) {
@@ -213,7 +213,7 @@ export class ToDoListCardComponent implements OnInit {
 
   updateTodosList(resp, noReplace?: boolean) {
     this.toDoTasks = resp.filter((x, indx) => {
-      if (x.status === TodoStatus.Todo) {
+      if (x.status.name === TodoStatus.Todo) {
         if (!noReplace) {
           this.cardData.push({
             ...x,
@@ -231,7 +231,7 @@ export class ToDoListCardComponent implements OnInit {
     });
 
     this.inProgressTasks = resp.filter((x, indx) => {
-      if (x.status === TodoStatus.InProgres) {
+      if (x.status.name === TodoStatus.InProgres) {
         if (!noReplace) {
           this.cardData.push({
             ...x,
@@ -249,7 +249,7 @@ export class ToDoListCardComponent implements OnInit {
     });
 
     this.doneTasks = resp.filter((x, indx) => {
-      if (x.status === TodoStatus.Done) {
+      if (x.status.name === TodoStatus.Done) {
         if (!noReplace) {
           this.cardData.push({
             ...x,
