@@ -115,47 +115,7 @@
     }
   }
 }
-.likes-count-container {
-  max-width: 280px;
-  min-height: 48px;
-  background-color: $color-white;
-  border-radius: 3px;
-  .likes-item {
-    display: flex;
-    column-gap: 41px;
-    padding-left: 46px;
-    padding-right: 46px;
-    .ic-counter {
-      display: flex;
-      margin-top: 12px;
-    }
-    .like {
-      margin-right: 4px;
-      position: relative;
-      bottom: 3px;
-      svg {
-        width: 20px;
-        height: 20px;
-        transform: rotate(180deg);
 
-        path {
-          fill: #4db6a2;
-        }
-      }
-    }
-    .dislike {
-      margin-left: 4px;
-      position: relative;
-      svg {
-        width: 20px;
-        height: 20px;
-        path {
-          fill: #aaaaaa;
-        }
-      }
-    }
-  }
-}
 .border-vertical {
   margin: 0;
   width: 2px;

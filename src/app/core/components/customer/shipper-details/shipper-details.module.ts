@@ -16,13 +16,12 @@ import { RenderMultipleItemsPipe } from './shipper-details-single/renderMultiple
     RenderMultipleItemsPipe,
     ShipperCardViewComponent,
   ],
-  exports: [SharedModule, ShipperCardViewComponent, PipesModule],
+  exports: [SharedModule, ShipperCardViewComponent],
   imports: [
     CommonModule,
     TruckassistProgressExpirationModule,
     ShipperDetailsRoutes,
-    SharedModule,
-    PipesModule,
+    SharedModule
   ],
 })
 export class ShipperDetailsModule {}

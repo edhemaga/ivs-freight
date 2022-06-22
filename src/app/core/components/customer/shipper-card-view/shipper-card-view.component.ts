@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ShipperResponse } from 'appcoretruckassist';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
@@ -13,6 +14,7 @@ export class ShipperCardViewComponent implements OnInit {
   @Input() templateCard: boolean;
   public shipperDropdowns: any[] = [];
   public shipperList: any[] = this.shipperQuery.getAll();
+  public note: FormControl = new FormControl();
   constructor(
     private shipperQuery: ShipperQuery,
     private detailsPageDriverSer: DetailsPageService

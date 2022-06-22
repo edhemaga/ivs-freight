@@ -47,7 +47,7 @@ $transition: all 0.3s ease-in-out;
     }
     .repair-information-wrapper {
         padding: 0 16px;
-        padding-top: 22px;
+        padding-top: 13px;
         .repair-information-item {
             display: flex;
             align-items: baseline;
@@ -427,4 +427,54 @@ $transition: all 0.3s ease-in-out;
       font-size: $font-size18 !important;
       font-weight: $font-semibold !important;
     }
+  }
+  .likes-count-container {
+    max-width: 280px;
+    min-height: 48px;
+    background-color: $color-white;
+    border-radius: 3px;
+    .likes-item {
+      display: flex;
+      column-gap: 41px;
+      padding-left: 46px;
+      padding-right: 46px;
+      .ic-counter {
+        display: flex;
+        margin-top: 12px;
+      }
+      .like {
+        margin-right: 4px;
+        position: relative;
+        bottom: 3px;
+        svg {
+          width: 20px;
+          height: 20px;
+          transform: rotate(180deg);
+  
+          path {
+            fill: #4db6a2;
+          }
+        }
+      }
+      .dislike {
+        margin-left: 4px;
+        position: relative;
+        svg {
+          width: 20px;
+          height: 20px;
+          path {
+            fill: #aaaaaa;
+          }
+        }
+      }
+    }
+  }
+  .review-container {
+    background-color: $color-white;
+    border-radius: 3px;
+    max-width: 280px;
+    height: fit-content;
+    min-height: 50px;
+    margin-top: 12px;
+    padding: 6px;
   }

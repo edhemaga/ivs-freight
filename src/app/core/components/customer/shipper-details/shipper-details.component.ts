@@ -19,13 +19,13 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
     private shipperService:ShipperTService,
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
-    private detailsPageDriverService: DetailsPageService
+    private detailsPageService: DetailsPageService
   ) {}
 
   ngOnInit(): void {
     this.shipperConf(this.activated_route.snapshot.data.shipper);
 
-    this.detailsPageDriverService.pageDetailChangeId$
+    this.detailsPageService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
         this.shipperService
@@ -65,6 +65,7 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
         icon: true,
         length: 25,
         hide: true,
+        hasArrow:true,
         customText: 'Date',
         icons: [
           {
@@ -94,6 +95,7 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
         length: 1,
         hide: false,
         icon: true,
+        hasArrow:false,
         icons: [
           {
             id: Math.random() * 1000,
@@ -111,6 +113,7 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
         customText: 'Date',
         hide: false,
         data: data,
+        hasArrow:false,
       },
     ];
   }
