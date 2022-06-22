@@ -6,7 +6,6 @@
 
     .calendar-info-holder{
         width: 326px;
-        height: 100vh;
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
@@ -1667,7 +1666,13 @@
     margin: 1px !important;
 
     border-radius: 2px;
+
 }
+
+.fc .fc-daygrid-day-events{
+    margin: 3px !important;
+}
+
 
 .fc .fc-day-other .fc-daygrid-day-top{
     opacity: 1 !important;
@@ -1675,6 +1680,11 @@
 
 .fc-direction-ltr .fc-daygrid-event.fc-event-start, .fc-direction-rtl .fc-daygrid-event.fc-event-end{
     margin: 0px 0px 1px 0 !important;
+}
+
+.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-end){
+    border-top-right-radius: 2px !important;
+    border-bottom-right-radius: 2px !important;
 }
 
 .fc .fc-daygrid-event{
@@ -1762,6 +1772,10 @@
     border-radius: 2px !important;
     background-color: #97A8DC;
     border: none !important;
+}
+
+.fc-daygrid-event{
+    border-radius: 2px !important;
 }
 
 .fc-col-header .fc-day-sun .fc-scrollgrid-sync-inner{

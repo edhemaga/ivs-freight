@@ -1,3 +1,4 @@
+import { filter } from 'rxjs';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Component, Input, OnInit } from '@angular/core';
 
@@ -38,19 +39,19 @@ export class FilterComponent implements OnInit {
       name: 'James Halpert'
     },
     {
-      name: 'Aleksandar Djordjevic'
+      name: 'Anna Beasley'
     },
     {
-      name: 'Denis Rodman'
+      name: 'Denis Halpert'
     },
     {
-      name: 'Eric Halpert'
+      name: 'Eric James'
     },
     {
-      name: 'Jacob Forman'
+      name: 'Michael Forman'
     },
     {
-      name: 'James Robertson'
+      name: 'James Lopez'
     }
    ];
 
@@ -77,6 +78,17 @@ export class FilterComponent implements OnInit {
   clearAll(){
     this.unselectedUser = [...this.unselectedUser, ...this.selectedUser];
     this.selectedUser = [];
+  }
+
+  filterUser(e: any) {
+    const inputValue = e.target.value
+    this.unselectedUser.filter(item => {
+      item.hidden = true;
+      if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
+        item.hidden = false;
+      }
+      return item;
+    });
   }
 
 }
