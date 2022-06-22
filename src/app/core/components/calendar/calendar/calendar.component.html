@@ -3,11 +3,13 @@
     <div class="title-holder">
       <div class="title">Calendar</div>
       <div class="selected-month">{{ calendarTitle }}</div>
-      <div class="arrow-left">
-        <svg-icon (click)="changeMonth('prev')" src="assets/svg/common/ic_arrow-right.svg"></svg-icon>
-      </div>
-      <div class="arrow-left arrow-right">
-        <svg-icon (click)="changeMonth('next')" src="assets/svg/common/ic_arrow-right.svg"></svg-icon>
+      <div class="arrow-holder">
+        <div class="arrow-left">
+          <svg-icon (click)="changeMonth('prev')" src="assets/svg/common/calendar/arrow-left.svg"></svg-icon>
+        </div>
+        <div class="arrow-right">
+          <svg-icon (click)="changeMonth('next')" src="assets/svg/common/calendar/arrow-left.svg"></svg-icon>
+        </div>  
       </div>
     </div>
     <div class="search-holder">
@@ -42,7 +44,7 @@
     </div> -->
     <div class="calendar-header">
       <app-ta-custom-card 
-        [cardName]="'July, 2022'" 
+        [cardName]="calendarTitle" 
         [hasPlusHeader]="false"
         [animationsDisabled]="false"
       >
@@ -416,7 +418,7 @@
       </div>  
     </div>
   </div>
-  <div *ngIf="currentCalendarView == 'week' || currentCalendarView == 'month'" class="calendar_view_holder">
+  <div  [class.hidden]="currentCalendarView != 'week' && currentCalendarView != 'month'" class="calendar_view_holder">
     <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
   </div>
   <div *ngIf="currentCalendarView == 'year'" class="year-calendar-holder">

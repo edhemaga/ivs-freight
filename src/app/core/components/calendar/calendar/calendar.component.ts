@@ -5,7 +5,7 @@ import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
-import { start } from 'repl';
+import moment from 'moment';
 
 @Component({
   selector: 'app-calendar',
@@ -785,14 +785,19 @@ export class CalendarComponent implements OnInit {
 
   public checkCalendarTitle() {
     const calendarApi = this.fullcalendar.getApi();
-    console.log(calendarApi.currentData, 'viewitle');
-    if ( this.calendarGridView == 'timeGridWeek' ) {
-      this.calendarTitle = calendarApi.currentData.viewTitle.split(",")[0];
+    console.log("calendarApi");
+    console.log(calendarApi.currentData.currentDate); 
+
+    console.log(moment(calendarApi.currentData.currentDate).format("MMMM D, YYYY"));
+
+    if(this.currentCalendarView === "day"){
+      this.calendarTitle = moment(calendarApi.currentData.currentDate).format("MMMM D, YYYY");
+    }else if(this.currentCalendarView === "week" || this.currentCalendarView === "month"){
+      this.calendarTitle = moment(calendarApi.currentData.currentDate).format("MMMM, YYYY");
+    }else if(this.currentCalendarView === "year" || this.currentCalendarView === "schedule"){
+      this.calendarTitle = moment(calendarApi.currentData.currentDate).format("YYYY");
     }
-    else{
-      var calendarTitleParts = calendarApi.currentData.viewTitle.split(" ");
-      this.calendarTitle = calendarTitleParts[0]+', '+calendarTitleParts[1];
-    }
+
   }
 
   resizeEvent(mod) {
@@ -833,16 +838,17 @@ export class CalendarComponent implements OnInit {
     // } else {
     //   calendarApi.setOption('selectMinDistance', 150);
     // }
+  
     if( !this.fullcalendar ) return false;
     const calendarApi = this.fullcalendar.getApi();
     calendarApi.changeView(view);
     console.log(calendarApi.currentData.viewTitle, 'calendarApi.currentData.viewTitle');
     if ( this.calendarGridView == 'timeGridWeek' ) {
-      this.calendarTitle = calendarApi.currentData.viewTitle.split(",")[0];
+      //this.calendarTitle = calendarApi.currentData.viewTitle.split(",")[0];
     }
     else{
       var calendarTitleParts = calendarApi.currentData.viewTitle.split(" ");
-      this.calendarTitle = calendarTitleParts[0]+', '+calendarTitleParts[1];
+      //this.calendarTitle = calendarTitleParts[0]+', '+calendarTitleParts[1];
     }
     
     if ( this.calendarGridView == 'timeGridWeek' ) {
@@ -881,6 +887,7 @@ export class CalendarComponent implements OnInit {
 
   changeTab(ev){
     this.changeCalendarView(ev.name.toLowerCase());
+    this.checkCalendarTitle();
   }
 
 }

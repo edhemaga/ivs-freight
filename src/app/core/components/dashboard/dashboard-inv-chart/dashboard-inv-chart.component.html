@@ -10,34 +10,7 @@
   </div>
   <div class="chart_main_holder chat_invoce no-back p-0">
     <div class="chart_top_hold white_one">
-      <!--<chart #chart [data]="data" [options]="options" [type]="type"></chart>-->
-      <app-ta-chart
-        [chartConfig]="{
-          dataProperties: [
-            {
-              defaultConfig: {
-                  type: 'doughnut',
-                  data: [30, 25, 30, 5],
-                  label: 'Income'
-              },
-              colorProperties: {
-                borderColor: '#fFFFFF',
-                backgroundColor: ['#60D5BD', '#91A4C7', '#FFCB86', '#C29FCB'],
-                hoverBorderColor: 'transparent'
-              }
-            }
-          ],
-          showLegend: false,
-          defaultType: 'doughnut',
-          chartWidth: '442',
-          chartHeight: '295',
-          dataLabels: ['Income', 'Expense'],
-          toolTip: false,
-          dottedBackground: true
-        }"
-        [axesProperties]="{}"
-      >
-      </app-ta-chart>
+      <chart #chart [data]="data" [options]="options" [type]="type"></chart>
       <div *ngIf="insideChart" class="inside_chart">
         <div
           appSelectionColor

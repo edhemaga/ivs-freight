@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/authentication.guard';
 import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
+import { ApplicantWelcomeScreenComponent } from './core/components/applicant/applicant-welcome-screen/applicant-welcome-screen.component';
 import { DriverResolver } from './core/components/driver/state/driver.resolver';
 import { HelperSignupUserComponent } from './core/components/authentication/helper-signup-user/helper-signup-user.component';
 import { HelperComponent } from './core/components/authentication/helper/helper.component';
@@ -14,7 +15,7 @@ import { TruckResolver } from './core/components/truck/state/truck.resolver';
 import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
 import { BrokerResolver } from './core/components/customer/state/broker-state/broker.resolver';
 import { ShipperResolver } from './core/components/customer/state/shipper-state/shipper.resolver';
-import { ApplicantWelcomeScreenComponent } from './core/components/applicant/applicant-welcome-screen/applicant-welcome-screen.component';
+import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -113,6 +114,7 @@ const routes: Routes = [
         (m) => m.RepairModule
       ),
     canActivate: [AuthGuard],
+    resolve: { shop: ShopResolver },
   },
   {
     path: 'pm',
