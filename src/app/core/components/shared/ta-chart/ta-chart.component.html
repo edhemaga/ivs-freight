@@ -8,6 +8,9 @@
   </div>
 </div>
 <div class="main_chart_container">
+  <div class="no_chart_data" *ngIf="noChartData">
+    <svg-icon src={{noChartImage}}></svg-icon>
+  </div>
   <div class="chart_text_holder" *ngIf="lineChartType == 'doughnut' && doughnutChartLegend">
     <div class="chart_inner">
       <div class="chart_value_holder" *ngFor="let item of chartInnitProperties; let indx = index" [ngStyle]="{'margin-bottom': indx+1 < chartInnitProperties.length ? '22px': '11px'}">
@@ -18,13 +21,14 @@
       </div>
     </div>
   </div>
-  <canvas baseChart width={{chartWidth}} height={{chartHeight}} [class.dotted_background]="dottedBackground" [ngStyle]="{'width': chartWidth+'px', 'height': chartHeight+'px'}"
+  <canvas *ngIf="!noChartData" baseChart id="myChart" width={{chartWidth}} height={{chartHeight}} [class.dotted_background]="dottedBackground" [ngStyle]="{'width': chartWidth+'px', 'height': chartHeight+'px'}"
     [datasets]="lineChartData"
     [labels]="lineChartLabels"
     [options]="lineChartOptions"
     [colors]="lineChartColors"
     [legend]="lineChartLegend"
     [chartType]="lineChartType"
-    [plugins]="lineChartPlugins">
+    [plugins]="lineChartPlugins"
+    (chartHover)="chartHovered($event)">
   </canvas>
 </div>
