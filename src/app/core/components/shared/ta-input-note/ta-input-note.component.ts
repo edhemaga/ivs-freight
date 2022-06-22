@@ -17,12 +17,13 @@ import { input_note_animation } from './ta-input-note.animation';
   animations: [input_note_animation('showHideNote')],
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
-  _isVisibleNote: boolean = null;
+  _isVisibleNote: any = null;
   @Input() isVisibleDivider: boolean = true;
   @Input() isVisibleSecondDivider: boolean = true;
 
-  @Input('isVisibleNote') set isVisibleNote(value: boolean) {
-      this._isVisibleNote = value ? true : false;
+  @Input('isVisibleNote') set isVisibleNote(value: any) {
+    console.log(this._isVisibleNote);
+      this._isVisibleNote = value ? true : null
   }
 
   @Input() isVisibleArrow: boolean = true;
@@ -39,7 +40,10 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     this.superControl.valueAccessor = this;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log("--------------------------------------------");
+    console.log(this._isVisibleNote);
+  }
 
   get getSuperControl() {
     return this.superControl.control;
