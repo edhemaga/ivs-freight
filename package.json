@@ -65,6 +65,7 @@
     "@progress/kendo-recurrence": "^1.0.2",
     "@progress/kendo-theme-default": "^5.2.0",
     "@types/chart.js": "^2.9.30",
+    "@types/chartjs-plugin-annotation": "^0.5.2",
     "angular-croppie-module": "0.0.7",
     "angular-gridster2": "^13.2.1",
     "angular-svg-icon": "^13.0.0",
