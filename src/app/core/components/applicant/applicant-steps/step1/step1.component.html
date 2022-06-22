@@ -411,10 +411,18 @@
             *ngFor="
               let address of previousAddresses?.controls;
               let i = index;
+              let last = last;
               trackBy: trackByIdentity
             "
           >
-            <div class="d-flex align-items-center" [formGroupName]="i">
+            <div
+              class="d-flex align-items-center"
+              [formGroupName]="i"
+              [ngStyle]="{
+                'margin-top':
+                  previousAddresses?.controls.length > 1 && last ? '32px' : '0'
+              }"
+            >
               <div
                 class="d-flex justify-content-center align-items-center left-container"
                 [ngStyle]="{
@@ -531,7 +539,7 @@
                     borderRadius="2px"
                     fontSize="11px"
                     fontWeight="bold"
-                    (click)="removeNewAddress()"
+                    (click)="removeNewAddress(i)"
                   ></svg-icon>
                 </div>
               </div>
@@ -583,6 +591,23 @@
       ></app-applicant-next-step> -->
     </form>
   </div>
+</div>
+
+<!-- NEXT BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+</div>
+
+<!-- BACK BTN -->
+<div
+  class="d-flex justify-content-center align-items-center back-btn-container"
+>
+  <app-applicant-next-back-btn [backStep]="true">
+    [disabled]="true"</app-applicant-next-back-btn
+  >
 </div>
 
 <!-- CONFIRM ALL REVIEW -->

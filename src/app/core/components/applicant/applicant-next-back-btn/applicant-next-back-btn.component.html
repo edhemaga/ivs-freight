@@ -1,1 +1,53 @@
-<p>applicant-next-back-btn works!</p>
+<div class="d-flex justify-content-center align-items-center" *ngIf="nextStep">
+  <button
+    type="button"
+    class="d-flex justify-content-center align-items-center step-btn"
+    [ngClass]="{ 'filled-correctly': filledCorrectly }"
+    [ngStyle]="{
+      width: lastPage ? '234px' : '100px'
+    }"
+  >
+    <span
+      class="ta-font-semi-bold step-text"
+      [ngStyle]="{
+        'margin-right': '12px',
+        color: filledCorrectly ? '#3551B7' : '#6c6c6c'
+      }"
+      >{{ lastStep ? 'Finish' : lastPage ? 'Finish & Save Profile' : 'Next' }}
+    </span>
+
+    <svg-icon
+      class="step-icon"
+      src="assets/svg/applicant/next-btn.svg"
+      [svgStyle]="{
+        'width.px': 52,
+        'height.px': 52
+      }"
+    ></svg-icon>
+  </button>
+</div>
+
+<div class="d-flex justify-content-center align-items-center" *ngIf="backStep">
+  <button
+    type="button"
+    class="d-flex justify-content-center align-items-center step-btn"
+    disabled="{{ disabledStep }}"
+  >
+    <svg-icon
+      class="step-icon"
+      src="assets/svg/applicant/back-btn.svg"
+      [svgStyle]="{
+        'width.px': 52,
+        'height.px': 52
+      }"
+    ></svg-icon>
+
+    <span
+      class="ta-font-semi-bold step-text"
+      [ngStyle]="{
+        'margin-left': '12px'
+      }"
+      >Back</span
+    >
+  </button>
+</div>

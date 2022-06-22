@@ -160,13 +160,12 @@
 
     .explain-container {
       width: 616px;
-      margin-top: 7px;
+      margin-top: 22px;
     }
   }
 
   .previous-addresses-section {
     width: 616px;
-    padding-bottom: 200px;
 
     .previous-address-title {
       color: $bw6-2;
@@ -338,6 +337,7 @@
     }
 
     .add-btn {
+      margin: 0 auto 85px auto;
       width: 136px;
       height: 34px;
       border: none;
@@ -348,7 +348,6 @@
       color: $white;
       background: $ta-light-blue;
       transition: background 0.3s ease-in-out;
-      margin-bottom: 300px;
 
       &:hover {
         background: $ta-blue;
@@ -376,4 +375,20 @@
     color: $progress-danger;
     line-height: 3px;
   }
+}
+
+.next-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  right: 42px;
+}
+
+.back-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  left: 42px;
 }

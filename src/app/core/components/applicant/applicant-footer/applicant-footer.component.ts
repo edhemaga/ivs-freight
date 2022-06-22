@@ -8,9 +8,11 @@ import moment from 'moment';
   styleUrls: ['./applicant-footer.component.scss'],
 })
 export class ApplicantFooterComponent implements OnInit {
-  public currentYear: string = moment().format('YYYY');
+  public copyrightYear: string;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.copyrightYear = moment().format('YYYY');
+  }
 }

@@ -200,7 +200,6 @@ export class Step1Component implements OnInit, OnDestroy {
   public reviewFeedback: any[] = getPersonalInfoReviewFeedbackData();
   private countOfReview: number = 0;
 
-  public showInput: boolean = false;
   public isEditingArray: { id: number; isEditing: boolean }[] = [];
   public isEditingId: number = -1;
 
