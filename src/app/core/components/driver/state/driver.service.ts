@@ -56,6 +56,20 @@ export class DriverTService {
 
             this.driverStore.add(driver);
 
+            const driverCount = JSON.parse(
+              localStorage.getItem('driverTableCount')
+            );
+
+            driverCount.active++;
+
+            localStorage.setItem(
+              'driverTableCount',
+              JSON.stringify({
+                active:  driverCount.active,
+                inactive: driverCount.inactive,
+              })
+            );
+
             this.tableService.sendActionAnimation({
               animation: 'add',
               data: driver,
@@ -73,6 +87,20 @@ export class DriverTService {
     return this.driverService.apiDriverIdDelete(id).pipe(
       tap(() => {
         this.driverStore.remove(({ id }) => id === id);
+
+        const driverCount = JSON.parse(
+          localStorage.getItem('driverTableCount')
+        );
+
+        driverCount.active--;
+
+        localStorage.setItem(
+          'driverTableCount',
+          JSON.stringify({
+            active: driverCount.active,
+            inactive: driverCount.inactive,
+          })
+        );
       })
     );
   }
@@ -93,6 +121,20 @@ export class DriverTService {
             }
           });
         });
+
+        alert('Proveri jel sljaka driver count update');
+
+        const driverCount = JSON.parse(
+          localStorage.getItem('driverTableCount')
+        );
+
+        localStorage.setItem(
+          'driverTableCount',
+          JSON.stringify({
+            active: storeDrivers.length,
+            inactive: driverCount.inactive,
+          })
+        );
       })
     );
   }

@@ -26,9 +26,15 @@ export class DriverResolver implements Resolve<DriversState> {
           return of('No drivers data...');
         }),
         tap((driverPagination: DriverListResponse) => {
+          localStorage.setItem('driverTableCount', JSON.stringify({
+            active: driverPagination.activeCount,
+            inactive: driverPagination.inactiveCount
+          }));
+
           this.driversStore.set(driverPagination.pagination.data);
         })
       );
+
     /* if (this.driversStore.getValue().ids?.length) {
       return of(true);
     } else {
@@ -39,6 +45,11 @@ export class DriverResolver implements Resolve<DriversState> {
             return of('No drivers data...');
           }),
           tap((driverPagination: DriverListResponse) => {
+            localStorage.setItem('driverTableCount', JSON.stringify({
+              active: driverPagination.activeCount,
+              inactive: driverPagination.inactiveCount
+            }));
+
             this.driversStore.set(driverPagination.pagination.data);
           })
         );

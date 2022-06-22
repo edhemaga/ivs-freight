@@ -20,7 +20,7 @@ import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
 @Component({
   selector: 'app-driver-table',
   templateUrl: './driver-table.component.html',
-  styleUrls: ['./driver-table.component.scss']
+  styleUrls: ['./driver-table.component.scss'],
 })
 export class DriverTableComponent implements OnInit, OnDestroy {
   public tableOptions: any = {};
@@ -43,7 +43,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initTableOptions();
-    this.getDriversData();
+    this.sendDriverData();
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -70,6 +70,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
             return driver;
           });
+
+          this.updateDataCount();
 
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
@@ -132,6 +134,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
                 return driver;
               });
+
+              this.updateDataCount();
 
               const inetval = setInterval(() => {
                 this.viewData = closeAnimationAction(true, this.viewData);
@@ -213,16 +217,14 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     };
   }
 
-  getDriversData() {
-    this.sendDriverData();
-  }
-
   sendDriverData() {
+    const driverCount = JSON.parse(localStorage.getItem('driverTableCount'));
+
     this.tableData = [
       {
         title: 'Applicants',
         field: 'applicants',
-        length: 8,
+        length: 0,
         data: this.getTabData(),
         extended: true,
         gridNameTitle: 'Driver',
@@ -232,7 +234,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       {
         title: 'Active',
         field: 'active',
-        length: 5,
+        length: driverCount.active,
         data: this.getTabData(),
         extended: false,
         gridNameTitle: 'Driver',
@@ -242,7 +244,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       {
         title: 'Inactive',
         field: 'inactive',
-        length: 10,
+        length: driverCount.inactive,
         data: this.getTabData(),
         extended: false,
         gridNameTitle: 'Driver',
@@ -338,6 +340,13 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     };
   }
 
+  updateDataCount() {
+    const driverCount = JSON.parse(localStorage.getItem('driverTableCount'));
+
+    this.tableData[1].length = driverCount.active;
+    this.tableData[2].length = driverCount.inactive;
+  }
+
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
       this.modalService.openModal(DriverModalComponent, {
@@ -425,6 +434,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
               return driver;
             });
+
+            this.updateDataCount();
 
             const inetval = setInterval(() => {
               this.viewData = closeAnimationAction(true, this.viewData);
