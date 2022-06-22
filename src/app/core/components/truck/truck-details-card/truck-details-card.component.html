@@ -5,9 +5,9 @@
     [tooltipPrevious]="'Previous Truck'"
     [searchInputName]="'Search Truck'"
     [options]="truckDropDowns"
-    (selectValue)="onSelectedTruck($event)"
+    (selectValue)="onSelectedTruck($event)" 
     (changeEvent)="onChangeTruck($event)"
-  >
+    >
     <ng-container>
       <div class="truck-details-wrapper">
         <div class="details-header-avatar">
@@ -68,7 +68,7 @@
       </div>
     </ng-container>
   </app-ta-details-header-card>
-  <div class="wrapper-additional-cards" [ngClass]="{ 'bind-height': !templateCard }">
+  <div class="wrapper-additional-cards">
     <div class="details-cards">
       <!--------Assinged to--------->
       <app-ta-custom-card
@@ -116,9 +116,7 @@
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Starting Mileage</div>
-            <div class="common-template-item-value">
-              {{ truck?.mileage }} mi
-            </div>
+            <div class="common-template-item-value">{{ truck?.mileage }} mi</div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Empty Weight</div>
@@ -238,90 +236,75 @@
           >
           </app-tab-switcher>
           <app-ta-chart
-            [chartConfig]="{
-              legendAttributes: [
-                {
-                  title: 'Miles Per Gallon',
-                  value: '5.75 mi',
-                  image: 'assets/svg/common/round_yellow.svg'
-                },
-                {
-                  title: 'Revenue',
-                  value: '$190,568.85',
-                  image: 'assets/svg/common/round_blue.svg'
-                }
-              ],
-              dataProperties: [
-                {
-                  defaultConfig: {
-                    type: 'line',
-                    data: [
-                      9000, 7500, 19000, 10000, 11000, 13500, 18000, 22000,
-                      17000, 10000, 11000, 14000
-                    ],
-                    label: 'Salary',
-                    yAxisID: 'y-axis-1'
+              [chartConfig]="{
+                legendAttributes: [
+                  {
+                    title: 'Miles Per Gallon',
+                    value: '0.00 mi',
+                    image: 'assets/svg/common/round_yellow.svg'
                   },
-                  colorProperties: {
-                    borderColor: '#6D82C7'
+                  {
+                    title: 'Revenue',
+                    value: '$0.00',
+                    image: 'assets/svg/common/round_blue.svg'
                   }
-                },
-                {
-                  defaultConfig: {
-                    type: 'bar',
-                    data: [33, 25, 42, 12, 23, 33, 50, 57, 34, 19, 12, 42],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0'
+                ],
+                dataProperties: [
+                  {
+                    defaultConfig: {
+                      type: 'line',
+                      data: [9000, 7500, 19000, 10000, 11000, 13500, 18000, 22000, 17000, 10000, 11000, 14000],
+                      label: 'Salary',
+                      yAxisID: 'y-axis-1',
+                      borderColor: '#6D82C7',
+                      pointBackgroundColor: '#FFFFFF',
+                      pointHoverBackgroundColor: '#6D82C7',
+                      pointHoverBorderColor: '#FFFFFF'
+                    }
                   },
-                  colorProperties: {
-                    borderColor: '#FFCC80',
-                    backgroundColor: '#FFCC80',
-                    hoverBackgroundColor: '#FFA726'
+                  {
+                    defaultConfig: {
+                      type: 'bar',
+                      data: [33, 25, 42, 12, 23, 33, 50, 57, 34, 19, 12, 42],
+                      label: 'Miles',
+                      yAxisID: 'y-axis-0',
+                      borderColor: '#FFCC80',
+                      backgroundColor: '#FFCC80',
+                      hoverBackgroundColor: '#FFA726'
+                    }
                   }
+                ],
+                showLegend: false,
+                chartValues: [],
+                defaultType: 'bar',
+                chartWidth: '417',
+                chartHeight: '130',
+                dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP'],
+                noChartImage: 'assets/svg/common/yellow_no_data.svg'
+              }"
+              [axesProperties]="{
+                verticalLeftAxes: {
+                  visible: true,
+                  minValue: 0,
+                  maxValue: 60,
+                  stepSize: 15,
+                  showGridLines: true
+                },
+                verticalRightAxes: {
+                  visible: true,
+                  minValue: 0,
+                  maxValue: 24000,
+                  stepSize: 6000,
+                  showGridLines: false
+                },
+                horizontalAxes: {
+                  visible: true,
+                  position: 'bottom',
+                  showGridLines: false
                 }
-              ],
-              showLegend: false,
-              defaultType: 'bar',
-              chartWidth: '417',
-              chartHeight: '130',
-              dataLabels: [
-                '',
-                'NOV',
-                '',
-                '2021',
-                '',
-                'MAR',
-                '',
-                'MAY',
-                '',
-                'JUL',
-                '',
-                'SEP'
-              ]
-            }"
-            [axesProperties]="{
-              verticalLeftAxes: {
-                visible: true,
-                minValue: 0,
-                maxValue: 60,
-                stepSize: 15,
-                showGridLines: true
-              },
-              verticalRightAxes: {
-                visible: true,
-                minValue: 0,
-                maxValue: 24000,
-                stepSize: 6000,
-                showGridLines: false
-              },
-              horizontalAxes: {
-                visible: true,
-                position: 'bottom',
-                showGridLines: false
-              }
-            }"
-          >
-          </app-ta-chart>
+              }"
+            >
+            </app-ta-chart>
         </div>
       </app-ta-custom-card>
 
@@ -343,89 +326,75 @@
           >
           </app-tab-switcher>
           <app-ta-chart
-            [chartConfig]="{
-              legendAttributes: [
-                {
-                  title: 'Miles',
-                  value: '150,257.7 mi',
-                  image: 'assets/svg/common/round_blue_light.svg'
-                },
-                {
-                  title: 'Revenue',
-                  value: '$190,568.85',
-                  image: 'assets/svg/common/round_blue.svg'
-                }
-              ],
-              dataProperties: [
-                {
-                  defaultConfig: {
-                    type: 'line',
-                    data: [
-                      10000, 18000, 20000, 13000, 9000, 10000, 16000, 19000,
-                      20000, 15000, 19000, 20000
-                    ],
-                    label: 'Salary',
-                    yAxisID: 'y-axis-1'
+              [chartConfig]="{
+                legendAttributes: [
+                  {
+                    title: 'Miles',
+                    value: '150,257.7 mi',
+                    image: 'assets/svg/common/round_blue_light.svg'
                   },
-                  colorProperties: {
-                    borderColor: '#6D82C7'
+                  {
+                    title: 'Revenue',
+                    value: '$190,568.85',
+                    image: 'assets/svg/common/round_blue.svg'
                   }
-                },
-                {
-                  defaultConfig: {
-                    type: 'bar',
-                    data: [41, 27, 50, 33, 37, 37, 39, 39, 41, 37, 47, 50],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0'
+                ],
+                dataProperties: [
+                  {
+                    defaultConfig: {
+                      type: 'line',
+                      data: [10000, 18000, 20000, 13000, 9000, 10000, 16000, 19000, 20000, 15000, 19000, 20000],
+                      label: 'Salary',
+                      yAxisID: 'y-axis-1',
+                      borderColor: '#6D82C7',
+                      pointBackgroundColor: '#FFFFFF',
+                      pointHoverBackgroundColor: '#6D82C7',
+                      pointHoverBorderColor: '#FFFFFF'
+                    }
                   },
-                  colorProperties: {
-                    borderColor: '#B2DFD1',
-                    backgroundColor: '#B2DFD1'
+                  {
+                    defaultConfig: {
+                      type: 'bar',
+                      data: [41, 27, 50, 33, 37, 37, 39, 39, 41, 37, 47, 50],
+                      label: 'Miles',
+                      yAxisID: 'y-axis-0',
+                      borderColor: '#B2DFD1',
+                      backgroundColor: '#B2DFD1',
+                      hoverBackgroundColor: '#4DB6A2'
+                    }
                   }
+                ],
+                showLegend: false,
+                chartValues: [150,257.7, 190,568.85],
+                defaultType: 'bar',
+                chartWidth: '417',
+                chartHeight: '130',
+                dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP'],
+                noChartImage: 'assets/svg/common/green_no_data.svg'
+              }"
+              [axesProperties]="{
+                verticalLeftAxes: {
+                  visible: true,
+                  minValue: 0,
+                  maxValue: 60,
+                  stepSize: 15,
+                  showGridLines: true
+                },
+                verticalRightAxes: {
+                  visible: true,
+                  minValue: 0,
+                  maxValue: 24000,
+                  stepSize: 6000,
+                  showGridLines: false
+                },
+                horizontalAxes: {
+                  visible: true,
+                  position: 'bottom',
+                  showGridLines: false
                 }
-              ],
-              showLegend: false,
-              defaultType: 'bar',
-              chartWidth: '417',
-              chartHeight: '130',
-              dataLabels: [
-                '',
-                'NOV',
-                '',
-                '2021',
-                '',
-                'MAR',
-                '',
-                'MAY',
-                '',
-                'JUL',
-                '',
-                'SEP'
-              ]
-            }"
-            [axesProperties]="{
-              verticalLeftAxes: {
-                visible: true,
-                minValue: 0,
-                maxValue: 60,
-                stepSize: 15,
-                showGridLines: true
-              },
-              verticalRightAxes: {
-                visible: true,
-                minValue: 0,
-                maxValue: 24000,
-                stepSize: 6000,
-                showGridLines: false
-              },
-              horizontalAxes: {
-                visible: true,
-                position: 'bottom',
-                showGridLines: false
-              }
-            }"
-          >
-          </app-ta-chart>
+              }"
+            >
+            </app-ta-chart>
         </div>
       </app-ta-custom-card>
 
@@ -476,18 +445,12 @@
       </app-ta-custom-card>
 
       <!--------Note--------->
-      <div class="divider"></div>
       <div class="note-cards">
         <app-ta-input-note
           [formControl]="noteControl"
+          [isReadOnly]="true"
           [isVisibleSecondDivider]="false"
-          [isVisibleNote]="true"
-          [isVisibleDivider]="false"
-          [isVisibleArrow]="true"
-          [minRows]="1"
-          [isVisibleSecondDivider]="false"
-          [placeholder]="'Write something.'"
-          [customClass]="'note-small'"
+          [isVisibleNote]="noteControl.value"
         ></app-ta-input-note>
       </div>
     </div>
@@ -583,8 +546,8 @@
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [expireDate]="fhwa.issueDate | formatDateP"
-                        [startDate]="fhwa.issueDate | formatDateP"
+                        [expireDate]="'04/04/25'"
+                        [startDate]="formatDate(fhwa.issueDate)"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
@@ -646,7 +609,7 @@
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [expireDate]="title.issueDate | formatDateP"
+                        [expireDate]="'04/04/27'"
                         [startDate]="title.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >

@@ -574,10 +574,11 @@
                       type: 'line',
                       data: [1050, 950, 2200, 1100, 1250, 1550, 2100, 2500, 2000, 1150, 1300, 1700],
                       label: 'Salary',
-                      yAxisID: 'y-axis-1'
-                    },
-                    colorProperties: {
-                      borderColor: '#6D82C7'
+                      yAxisID: 'y-axis-1',
+                      borderColor: '#6D82C7',
+                      pointBackgroundColor: '#FFFFFF',
+                      pointHoverBackgroundColor: '#6D82C7',
+                      pointHoverBorderColor: '#FFFFFF'
                     }
                   },
                   {
@@ -585,9 +586,7 @@
                       type: 'bar',
                       data: [2200, 1700, 2800, 1100, 1500, 2200, 3300, 3700, 2500, 1400, 2200, 2800],
                       label: 'Miles',
-                      yAxisID: 'y-axis-0'
-                    },
-                    colorProperties: {
+                      yAxisID: 'y-axis-0',
                       borderColor: '#FFCC80',
                       backgroundColor: '#FFCC80',
                       hoverBackgroundColor: '#FFA726'
@@ -595,10 +594,12 @@
                   }
                 ],
                 showLegend: false,
+                chartValues: [46,755,000, 36.854],
                 defaultType: 'bar',
                 chartWidth: '417',
                 chartHeight: '130',
-                dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP']
+                dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP'],
+                noChartImage: 'assets/svg/common/yellow_no_data.svg'
               }"
               [axesProperties]="{
                 verticalLeftAxes: {
@@ -623,6 +624,126 @@
               }"
             >
             </app-ta-chart>
+           <!--<app-ta-chart
+              [chartConfig]="{
+                legendAttributes: [
+                  {
+                    title: 'Miles',
+                    value: '46,755.2 mi',
+                    image: 'assets/svg/common/round_yellow.svg'
+                  },
+                  {
+                    title: 'Salary',
+                    value: '$36.854.27',
+                    image: 'assets/svg/common/round_blue.svg'
+                  }
+                ],
+                dataProperties: [
+                  {
+                    defaultConfig: {
+                      type: 'line',
+                      data: [12, 21, 27, 37, 28, 25, 21, 10, 15, 45, 27, 46, 41, 28, 24],
+                      yAxisID: 'y-axis-0',
+                      borderColor: '#6D82C7',
+                      pointBackgroundColor: '#FFFFFF',
+                      pointHoverBackgroundColor: '#6D82C7',
+                      pointHoverBorderColor: '#FFFFFF',
+                      fill: true,
+                      hasGradiendBackground: true,
+                      colors: ['rgba(189, 202, 235, 1)', 'rgba(255, 255, 255, 1)']
+                    }
+                  }
+                ],
+                showLegend: false,
+                chartValues: [2, 2],
+                defaultType: 'bar',
+                chartWidth: '417',
+                chartHeight: '130',
+                annotation: 28,
+                dataLabels: ['JUL', '', '', '', '', '', '', 'AUG', '', '', '', '', '', '', 'SEP'],
+                noChartImage: 'assets/svg/common/no_data_pay.svg'
+              }"
+              [axesProperties]="{
+                verticalLeftAxes: {
+                  visible: true,
+                  minValue: 0,
+                  maxValue: 52,
+                  stepSize: 13,
+                  showGridLines: true
+                },
+                horizontalAxes: {
+                  visible: true,
+                  position: 'bottom',
+                  showGridLines: false
+                }
+              }"
+            >
+            </app-ta-chart>-->
+            <!--<app-ta-chart
+              [chartConfig]="{
+                legendAttributes: [
+                  {
+                    title: 'Miles',
+                    value: '46,755.2 mi',
+                    image: 'assets/svg/common/round_yellow.svg'
+                  },
+                  {
+                    title: 'Salary',
+                    value: '$36.854.27',
+                    image: 'assets/svg/common/round_blue.svg'
+                  }
+                ],
+                dataProperties: [
+                  {
+                    defaultConfig: {
+                      type: 'line',
+                      data: [2.3, 2.5, 2.3, 1.6, 2.3, 2.4],
+                      label: 'Salary',
+                      yAxisID: 'y-axis-0',
+                      borderColor: '#6D82C7',
+                      pointBackgroundColor: '#FFFFFF',
+                      pointHoverBackgroundColor: '#6D82C7',
+                      pointHoverBorderColor: '#FFFFFF'
+                    }
+                  },
+                  {
+                    defaultConfig: {
+                      type: 'bar',
+                      data: [2.7, 2.8, 2.7, 2.1, 2.7, 2.6],
+                      label: 'Miles',
+                      yAxisID: 'y-axis-0',
+                      borderColor: '#FFCC80',
+                      backgroundColor: '#FFCC80',
+                      hoverBackgroundColor: '#FFA726',
+                      hasGradiendBackground: true,
+                      colors: ['rgba(128, 203, 186, 1)', 'rgba(255, 204, 128, 1)']
+                    }
+                  }
+                ],
+                showLegend: false,
+                chartValues: [46,755,000, 36.854],
+                defaultType: 'bar',
+                chartWidth: '417',
+                chartHeight: '130',
+                dataLabels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                noChartImage: 'assets/svg/common/yellow_no_data.svg'
+              }"
+              [axesProperties]="{
+                verticalLeftAxes: {
+                  visible: true,
+                  minValue: 1,
+                  maxValue: 3,
+                  stepSize: 0.5,
+                  showGridLines: true
+                },
+                horizontalAxes: {
+                  visible: true,
+                  position: 'bottom',
+                  showGridLines: false
+                }
+              }"
+            >
+            </app-ta-chart>-->
           </div>
         </div>
       </app-ta-custom-card>
