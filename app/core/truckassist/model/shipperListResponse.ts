@@ -17,5 +17,6 @@ export interface ShipperListResponse {
     count?: number;
     banCount?: number;
     dnuCount?: number;
+    brokerCount?: number;
 }
 
