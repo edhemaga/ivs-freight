@@ -20,6 +20,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 6px;
+            line-height: 32px;
 
             .title{
                 font-size: 26px;
@@ -31,7 +32,7 @@
                 font-size: 20px;
                 font-weight: 700;
                 color: #6C6C6C;
-                padding-right: 56px;
+                padding-right: 48px;
                 box-sizing: border-box;
             }
 
@@ -46,6 +47,7 @@
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
+                cursor: pointer;
 
                 .arrow-left{
                     min-width: 18px;
@@ -67,6 +69,16 @@
                             }
                         }
                     }
+
+                    &:hover{
+                        svg-icon{
+                            svg{
+                                path{
+                                    fill: #919191;
+                                }
+                            }
+                        }
+                    }
     
                 }   
                 
@@ -83,10 +95,20 @@
                             display: flex;
                             width: 13px;
                             height: 8.15px;
-                            transform: rotate(270deg);
+                            transform: rotate(90deg);
     
                             path{
                                 fill: #AAAAAA;
+                            }
+                        }
+                    }
+
+                    &:hover{
+                        svg-icon{
+                            svg{
+                                path{
+                                    fill: #919191;
+                                }
                             }
                         }
                     }
@@ -1558,7 +1580,7 @@
 
 .fc-scrollgrid-section-header .fc-col-header-cell-cushion {
     padding: 0;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     line-height: 19px;
     color: #6C6C6C;

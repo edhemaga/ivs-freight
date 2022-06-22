@@ -787,6 +787,10 @@ export class CalendarComponent implements OnInit {
     const calendarApi = this.fullcalendar.getApi();
     if(this.currentCalendarView === "day"){
       this.calendarTitle = moment(calendarApi.currentData.currentDate).format("MMMM D, YYYY");
+    }else if(this.currentCalendarView === "week" || this.currentCalendarView === "month"){
+      this.calendarTitle = moment(calendarApi.currentData.currentDate).format("MMMM, YYYY");
+    }else if(this.currentCalendarView === "year" || this.currentCalendarView === "schedule"){
+      this.calendarTitle = moment(calendarApi.currentData.currentDate).format("YYYY");
     }
   }
 
@@ -877,6 +881,7 @@ export class CalendarComponent implements OnInit {
 
   changeTab(ev){
     this.changeCalendarView(ev.name.toLowerCase());
+    this.checkCalendarTitle();
   }
 
 }

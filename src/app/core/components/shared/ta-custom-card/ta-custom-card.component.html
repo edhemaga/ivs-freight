@@ -70,11 +70,19 @@
         </p>
       </div>
       <div class="arrow-down-plus">
-        <svg-icon
+        <div 
+        class="add-custom-card"
+        ngbTooltip
+        mainTooltip="Add New Event"
+        position="top"
+        tooltipBackground="#536BC2"
+        >
+          <svg-icon
           *ngIf="(hasPlusHeader && isCardOpen) || stayOpen"
           class="plus-custom-card"
           src="assets/svg/common/ic_plus.svg"
         ></svg-icon>
+        </div>
         <div class="status-icon-weekly">
          <div *ngIf="hasWeeklyStatus" class="weekly-status">
            <div class="weekly-status-value">
