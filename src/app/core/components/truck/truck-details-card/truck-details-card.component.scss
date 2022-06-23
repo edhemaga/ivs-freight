@@ -33,7 +33,22 @@
     padding: 9px 6px;
 }
 .note-cards {
-    padding: 0 7px;
+    padding: 0 1px;
+    .note-body {
+        padding: 0 9px !important;
+        .note-textarea {
+            color: #6c6c6c !important;
+            font-weight: 400 !important;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+    }
 }
 .assignTo-item {
     height: 34px;
@@ -50,6 +65,59 @@
         height: 30px;
     }
 }
-.bind-height {
-    max-height: fit-content !important;
+
+.rotate-owner{
+    .single-icon-wrapper{
+        justify-content: flex-start;
+        margin-top: 12px !important;
+        svg{
+            transform: rotate(180deg);
+            path{
+               fill: #6D82C7;
+               &:hover{
+                fill: #536BC2 !important;
+               }
+            }
+        }
+    }
+  
 }
+.single-icon-wrapper{
+    padding: 0 10px;
+    margin-top: 4px;
+    cursor: pointer;
+.icon-rotate{
+    cursor: pointer;
+    svg{
+        &:hover{
+            path{
+                fill: #6c6c6c;
+            }
+        }
+    }
+}
+}
+.wrapper-owner{
+    padding: 0 10px;
+}
+.card-icon {
+    display: none;
+    position: relative;
+    margin-left: 6px;
+    height: 18px;
+    svg {
+      &:hover {
+        path {
+          fill: #6c6c6c;
+        }
+      }
+    }
+  }
+.details-header-data-item {
+    &:hover {
+      .card-icon {
+        display: flex;
+        cursor: pointer;
+      }
+    }
+  }

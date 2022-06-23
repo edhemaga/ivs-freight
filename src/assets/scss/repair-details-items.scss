@@ -140,7 +140,7 @@ $transition: all 0.3s ease-in-out;
         }
     }
     .repair-items {
-        padding: 0 6px;
+        // padding: 0 6px;
         .unit {
             font-size: $font-size14;
             font-weight: $font-bold;
@@ -159,9 +159,10 @@ $transition: all 0.3s ease-in-out;
         }
         .items-header {
             padding: 0 4px;
+            padding-left: 10px;
             display: grid;
             grid-template-columns: 82px 86px 86px 307px 108px;
-          
+
             align-content: center;
             grid-auto-flow: column;
             margin-top: 8px;
@@ -169,9 +170,18 @@ $transition: all 0.3s ease-in-out;
             .dots-vertical {
                 width: 5px;
                 height: 18px !important;
-                top: -2px;
+                top: -1px;
+                left: 5px;
                 position: relative;
                 margin-left: 12px;
+            }
+            &:hover {
+                background-color: #f3f3f3;
+                margin-bottom: 2px !important;
+                margin-top: 2px !important;
+                padding: 6px 4px;
+                padding-left: 10px;
+                border-radius: 2px;
             }
         }
         .date {
@@ -256,10 +266,10 @@ $transition: all 0.3s ease-in-out;
             align-content: center;
             .vehicle-icon {
                 position: relative;
-                
+
                 svg {
                     width: 55px;
-                  
+
                     display: flex;
                     path {
                         fill: #aaaaaa;
@@ -310,11 +320,11 @@ $transition: all 0.3s ease-in-out;
                 }
             }
         }
-        &:last-child{
-            .divider{
-              visibility: hidden;
+        &:last-child {
+            .divider {
+                visibility: hidden;
             }
-          } 
+        }
     }
 }
 .vin-text {
@@ -327,7 +337,7 @@ $transition: all 0.3s ease-in-out;
         background: rgb(108, 108, 108, 0.2);
     }
 }
-.dots-top{
+.dots-top {
     position: relative;
     top: 0.4px !important;
     left: 4px;
@@ -348,128 +358,128 @@ $transition: all 0.3s ease-in-out;
     padding-left: 6px;
     padding-right: 6px;
     .charts-item-wrapper {
-      display: flex;
-      align-items: center;
-      height: 40px;
-      margin-left: 4px;
-      margin-top: -6px;
+        display: flex;
+        align-items: center;
+        height: 40px;
+        margin-left: 4px;
+        margin-top: -6px;
     }
     .charts-template-item {
-      display: flex;
-      flex-direction: column;
-  
-      .icon-name-item {
         display: flex;
-        align-items: baseline;
-        height: 18px;
+        flex-direction: column;
+
+        .icon-name-item {
+            display: flex;
+            align-items: baseline;
+            height: 18px;
+            .charts-template-item-name {
+                margin-left: 6px;
+            }
+        }
         .charts-template-item-name {
-          margin-left: 6px;
-        }
-      }
-      .charts-template-item-name {
-        font-size: $font-size12;
-        font-weight: $font-semibold;
-        color: $color-gray-dark;
-  
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-      }
-  
-      .charts-template-item-value {
-        font-size: $font-size18;
-        font-weight: $font-semibold;
-        color: $color-gray-dark;
-        width: 220px;
-        height: 18px;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-  
-        p {
-          &::-moz-selection {
+            font-size: $font-size12;
+            font-weight: $font-semibold;
             color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
-          &::selection {
+
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+
+        .charts-template-item-value {
+            font-size: $font-size18;
+            font-weight: $font-semibold;
             color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
+            width: 220px;
+            height: 18px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+
+            p {
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+
+            .hidden-svg-eye {
+                margin-left: 6px;
+                position: relative;
+                bottom: 1px;
+            }
         }
-  
-        .hidden-svg-eye {
-          margin-left: 6px;
-          position: relative;
-          bottom: 1px;
-        }
-      }
     }
-  }
-  .perfomance {
+}
+.perfomance {
     display: flex !important;
     flex-direction: column;
-  
+
     .common-template-item-name {
-      font-size: $font-size14 !important;
-      font-weight: $font-semibold !important;
+        font-size: $font-size14 !important;
+        font-weight: $font-semibold !important;
     }
     .common-template-item-value {
-      font-size: $font-size18 !important;
-      font-weight: $font-semibold !important;
+        font-size: $font-size18 !important;
+        font-weight: $font-semibold !important;
     }
-  }
-  .likes-count-container {
+}
+.likes-count-container {
     max-width: 280px;
     min-height: 48px;
     background-color: $color-white;
     border-radius: 3px;
     .likes-item {
-      display: flex;
-      column-gap: 41px;
-      padding-left: 46px;
-      padding-right: 46px;
-      .ic-counter {
         display: flex;
-        margin-top: 12px;
-      }
-      .like {
-        margin-right: 4px;
-        position: relative;
-        bottom: 3px;
-        svg {
-          width: 20px;
-          height: 20px;
-          transform: rotate(180deg);
-  
-          path {
-            fill: #4db6a2;
-          }
+        column-gap: 41px;
+        padding-left: 46px;
+        padding-right: 46px;
+        .ic-counter {
+            display: flex;
+            margin-top: 12px;
         }
-      }
-      .dislike {
-        margin-left: 4px;
-        position: relative;
-        svg {
-          width: 20px;
-          height: 20px;
-          path {
-            fill: #aaaaaa;
-          }
+        .like {
+            margin-right: 4px;
+            position: relative;
+            bottom: 3px;
+            svg {
+                width: 20px;
+                height: 20px;
+                transform: rotate(180deg);
+
+                path {
+                    fill: #4db6a2;
+                }
+            }
         }
-      }
+        .dislike {
+            margin-left: 4px;
+            position: relative;
+            svg {
+                width: 20px;
+                height: 20px;
+                path {
+                    fill: #aaaaaa;
+                }
+            }
+        }
     }
-  }
-  .review-container {
+}
+.review-container {
     background-color: $color-white;
     border-radius: 3px;
     max-width: 280px;
@@ -477,4 +487,4 @@ $transition: all 0.3s ease-in-out;
     min-height: 50px;
     margin-top: 12px;
     padding: 6px;
-  }
+}

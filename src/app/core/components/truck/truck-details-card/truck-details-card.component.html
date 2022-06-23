@@ -5,9 +5,9 @@
     [tooltipPrevious]="'Previous Truck'"
     [searchInputName]="'Search Truck'"
     [options]="truckDropDowns"
-    (selectValue)="onSelectedTruck($event)" 
+    (selectValue)="onSelectedTruck($event)"
     (changeEvent)="onChangeTruck($event)"
-    >
+  >
     <ng-container>
       <div class="truck-details-wrapper">
         <div class="details-header-avatar">
@@ -33,14 +33,30 @@
           </div>
         </div>
         <div class="details-header-data">
-          <div class="details-header-data-item">
+          <div class="details-header-data-item" [ngClass]="{'copied':copiedVin}">
             <svg-icon src="assets/svg/common/vin.svg"></svg-icon>
             <p class="vin-text">{{ truck.vin }}</p>
+            <span
+            [tooltipBackground]="copiedVin ? '#536BC2' : '#6c6c6c'"
+            ngbTooltip
+            [mainTooltip]="copiedVin ? 'Copied' : 'Copy'"
+            position="top"
+            class="tooltip-copy"
+            [autoClose]="false"
+            (click)="copyText(truck.vin, 'vin')"
+          >
+            <svg-icon
+              class="card-icon"
+              id="card-icon"
+              src="assets/svg/common/ic_copy.svg"
+              (mouseleave)="copiedVin = false"
+            ></svg-icon>
+          </span>
           </div>
           <div class="details-header-data-item second">
             <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
             <p class="vin-text date">{{ truck.year }}</p>
-            <div class="light-green">
+            <div *ngIf="truck.color" class="light-green">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
@@ -62,13 +78,16 @@
                 </g>
               </svg>
             </div>
-            <p class="vin-text">{{ truck?.color.name }}</p>
+            <p *ngIf="truck.color" class="vin-text">{{ truck?.color.name }}</p>
           </div>
         </div>
       </div>
     </ng-container>
   </app-ta-details-header-card>
-  <div class="wrapper-additional-cards">
+  <div
+    class="wrapper-additional-cards"
+    [ngClass]="{ 'bind-height': !templateCard }"
+  >
     <div class="details-cards">
       <!--------Assinged to--------->
       <app-ta-custom-card
@@ -116,7 +135,9 @@
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Starting Mileage</div>
-            <div class="common-template-item-value">{{ truck?.mileage }} mi</div>
+            <div class="common-template-item-value">
+              {{ truck?.mileage }} mi
+            </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Empty Weight</div>
@@ -179,9 +200,86 @@
             </div>
           </div>
         </div>
-        <!-- <div class="single-icon-wrapper">
-            <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
-          </div> -->
+        <div
+          class="wrapper-owner"
+          [@showHideCardBody]="toggler ? 'true' : 'false'"
+        >
+          <div class="owner-items" [ngClass]="{ copied: copiedPhone }">
+            <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+            <p class="information-value">
+              {{ truck.owner.phone | formatPhoneP }}
+            </p>
+            <span
+              [tooltipBackground]="copiedPhone ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText(truck.owner.phone, 'phone')"
+            >
+              <svg-icon
+                class="card-icon"
+                id="card-icon"
+                src="assets/svg/common/ic_copy.svg"
+                (mouseleave)="copiedPhone = false"
+              ></svg-icon>
+            </span>
+          </div>
+          <div class="owner-items" [ngClass]="{ copied: copiedEmail }">
+            <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+            <p class="information-value">
+              {{ truck.owner.email }}
+            </p>
+            <span
+              [tooltipBackground]="copiedEmail ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="copiedEmail ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText(truck.owner.email, 'email')"
+            >
+              <svg-icon
+                class="card-icon"
+                id="card-icon"
+                src="assets/svg/common/ic_copy.svg"
+                (mouseleave)="copiedEmail = false"
+              ></svg-icon>
+            </span>
+          </div>
+          <div class="owner-items">
+            <svg-icon src="assets/svg/common/ic_address.svg"></svg-icon>
+            <p class="information-value">
+              {{ truck.owner.address.address }}
+            </p>
+          </div>
+        </div>
+        <div [ngClass]="{ 'rotate-owner': toggler }">
+          <div (click)="toggler = !toggler" class="single-icon-wrapper">
+            <span
+            [tooltipBackground]="'#6c6c6c'"
+            ngbTooltip
+            [mainTooltip]="toggler ? 'Hide Contact' : 'Show More'"
+            position="top"
+            
+          >
+            <svg-icon
+              class="icon-rotate"
+              src="assets/svg/common/fill_arrow_down.svg"
+            ></svg-icon>
+            </span>
+            <span
+            tooltipBackground="#6c6c6c"
+            ngbTooltip
+            [mainTooltip]="toggler ? 'Hide Contact' : 'Show More'"
+            position="top"
+            class="hide-show"
+          >
+            {{ toggler? "HIDE CONTACT" : "" }}
+          </span>
+          </div>
+        </div>
       </app-ta-custom-card>
 
       <!--------Perfomance--------->
@@ -236,75 +334,91 @@
           >
           </app-tab-switcher>
           <app-ta-chart
-              [chartConfig]="{
-                legendAttributes: [
-                  {
-                    title: 'Miles Per Gallon',
-                    value: '0.00 mi',
-                    image: 'assets/svg/common/round_yellow.svg'
-                  },
-                  {
-                    title: 'Revenue',
-                    value: '$0.00',
-                    image: 'assets/svg/common/round_blue.svg'
-                  }
-                ],
-                dataProperties: [
-                  {
-                    defaultConfig: {
-                      type: 'line',
-                      data: [9000, 7500, 19000, 10000, 11000, 13500, 18000, 22000, 17000, 10000, 11000, 14000],
-                      label: 'Salary',
-                      yAxisID: 'y-axis-1',
-                      borderColor: '#6D82C7',
-                      pointBackgroundColor: '#FFFFFF',
-                      pointHoverBackgroundColor: '#6D82C7',
-                      pointHoverBorderColor: '#FFFFFF'
-                    }
-                  },
-                  {
-                    defaultConfig: {
-                      type: 'bar',
-                      data: [33, 25, 42, 12, 23, 33, 50, 57, 34, 19, 12, 42],
-                      label: 'Miles',
-                      yAxisID: 'y-axis-0',
-                      borderColor: '#FFCC80',
-                      backgroundColor: '#FFCC80',
-                      hoverBackgroundColor: '#FFA726'
-                    }
-                  }
-                ],
-                showLegend: false,
-                chartValues: [],
-                defaultType: 'bar',
-                chartWidth: '417',
-                chartHeight: '130',
-                dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP'],
-                noChartImage: 'assets/svg/common/yellow_no_data.svg'
-              }"
-              [axesProperties]="{
-                verticalLeftAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 60,
-                  stepSize: 15,
-                  showGridLines: true
+            [chartConfig]="{
+              legendAttributes: [
+                {
+                  title: 'Miles Per Gallon',
+                  value: '0.00 mi',
+                  image: 'assets/svg/common/round_yellow.svg'
                 },
-                verticalRightAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 24000,
-                  stepSize: 6000,
-                  showGridLines: false
-                },
-                horizontalAxes: {
-                  visible: true,
-                  position: 'bottom',
-                  showGridLines: false
+                {
+                  title: 'Revenue',
+                  value: '$0.00',
+                  image: 'assets/svg/common/round_blue.svg'
                 }
-              }"
-            >
-            </app-ta-chart>
+              ],
+              dataProperties: [
+                {
+                  defaultConfig: {
+                    type: 'line',
+                    data: [
+                      9000, 7500, 19000, 10000, 11000, 13500, 18000, 22000,
+                      17000, 10000, 11000, 14000
+                    ],
+                    label: 'Salary',
+                    yAxisID: 'y-axis-1',
+                    borderColor: '#6D82C7',
+                    pointBackgroundColor: '#FFFFFF',
+                    pointHoverBackgroundColor: '#6D82C7',
+                    pointHoverBorderColor: '#FFFFFF'
+                  }
+                },
+                {
+                  defaultConfig: {
+                    type: 'bar',
+                    data: [33, 25, 42, 12, 23, 33, 50, 57, 34, 19, 12, 42],
+                    label: 'Miles',
+                    yAxisID: 'y-axis-0',
+                    borderColor: '#FFCC80',
+                    backgroundColor: '#FFCC80',
+                    hoverBackgroundColor: '#FFA726'
+                  }
+                }
+              ],
+              showLegend: false,
+              chartValues: [],
+              defaultType: 'bar',
+              chartWidth: '417',
+              chartHeight: '130',
+              dataLabels: [
+                '',
+                'NOV',
+                '',
+                '2021',
+                '',
+                'MAR',
+                '',
+                'MAY',
+                '',
+                'JUL',
+                '',
+                'SEP'
+              ],
+              noChartImage: 'assets/svg/common/yellow_no_data.svg'
+            }"
+            [axesProperties]="{
+              verticalLeftAxes: {
+                visible: true,
+                minValue: 0,
+                maxValue: 60,
+                stepSize: 15,
+                showGridLines: true
+              },
+              verticalRightAxes: {
+                visible: true,
+                minValue: 0,
+                maxValue: 24000,
+                stepSize: 6000,
+                showGridLines: false
+              },
+              horizontalAxes: {
+                visible: true,
+                position: 'bottom',
+                showGridLines: false
+              }
+            }"
+          >
+          </app-ta-chart>
         </div>
       </app-ta-custom-card>
 
@@ -326,75 +440,91 @@
           >
           </app-tab-switcher>
           <app-ta-chart
-              [chartConfig]="{
-                legendAttributes: [
-                  {
-                    title: 'Miles',
-                    value: '150,257.7 mi',
-                    image: 'assets/svg/common/round_blue_light.svg'
-                  },
-                  {
-                    title: 'Revenue',
-                    value: '$190,568.85',
-                    image: 'assets/svg/common/round_blue.svg'
-                  }
-                ],
-                dataProperties: [
-                  {
-                    defaultConfig: {
-                      type: 'line',
-                      data: [10000, 18000, 20000, 13000, 9000, 10000, 16000, 19000, 20000, 15000, 19000, 20000],
-                      label: 'Salary',
-                      yAxisID: 'y-axis-1',
-                      borderColor: '#6D82C7',
-                      pointBackgroundColor: '#FFFFFF',
-                      pointHoverBackgroundColor: '#6D82C7',
-                      pointHoverBorderColor: '#FFFFFF'
-                    }
-                  },
-                  {
-                    defaultConfig: {
-                      type: 'bar',
-                      data: [41, 27, 50, 33, 37, 37, 39, 39, 41, 37, 47, 50],
-                      label: 'Miles',
-                      yAxisID: 'y-axis-0',
-                      borderColor: '#B2DFD1',
-                      backgroundColor: '#B2DFD1',
-                      hoverBackgroundColor: '#4DB6A2'
-                    }
-                  }
-                ],
-                showLegend: false,
-                chartValues: [150,257.7, 190,568.85],
-                defaultType: 'bar',
-                chartWidth: '417',
-                chartHeight: '130',
-                dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP'],
-                noChartImage: 'assets/svg/common/green_no_data.svg'
-              }"
-              [axesProperties]="{
-                verticalLeftAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 60,
-                  stepSize: 15,
-                  showGridLines: true
+            [chartConfig]="{
+              legendAttributes: [
+                {
+                  title: 'Miles',
+                  value: '150,257.7 mi',
+                  image: 'assets/svg/common/round_blue_light.svg'
                 },
-                verticalRightAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 24000,
-                  stepSize: 6000,
-                  showGridLines: false
-                },
-                horizontalAxes: {
-                  visible: true,
-                  position: 'bottom',
-                  showGridLines: false
+                {
+                  title: 'Revenue',
+                  value: '$190,568.85',
+                  image: 'assets/svg/common/round_blue.svg'
                 }
-              }"
-            >
-            </app-ta-chart>
+              ],
+              dataProperties: [
+                {
+                  defaultConfig: {
+                    type: 'line',
+                    data: [
+                      10000, 18000, 20000, 13000, 9000, 10000, 16000, 19000,
+                      20000, 15000, 19000, 20000
+                    ],
+                    label: 'Salary',
+                    yAxisID: 'y-axis-1',
+                    borderColor: '#6D82C7',
+                    pointBackgroundColor: '#FFFFFF',
+                    pointHoverBackgroundColor: '#6D82C7',
+                    pointHoverBorderColor: '#FFFFFF'
+                  }
+                },
+                {
+                  defaultConfig: {
+                    type: 'bar',
+                    data: [41, 27, 50, 33, 37, 37, 39, 39, 41, 37, 47, 50],
+                    label: 'Miles',
+                    yAxisID: 'y-axis-0',
+                    borderColor: '#B2DFD1',
+                    backgroundColor: '#B2DFD1',
+                    hoverBackgroundColor: '#4DB6A2'
+                  }
+                }
+              ],
+              showLegend: false,
+              chartValues: [150, 257.7, 190, 568.85],
+              defaultType: 'bar',
+              chartWidth: '417',
+              chartHeight: '130',
+              dataLabels: [
+                '',
+                'NOV',
+                '',
+                '2021',
+                '',
+                'MAR',
+                '',
+                'MAY',
+                '',
+                'JUL',
+                '',
+                'SEP'
+              ],
+              noChartImage: 'assets/svg/common/green_no_data.svg'
+            }"
+            [axesProperties]="{
+              verticalLeftAxes: {
+                visible: true,
+                minValue: 0,
+                maxValue: 60,
+                stepSize: 15,
+                showGridLines: true
+              },
+              verticalRightAxes: {
+                visible: true,
+                minValue: 0,
+                maxValue: 24000,
+                stepSize: 6000,
+                showGridLines: false
+              },
+              horizontalAxes: {
+                visible: true,
+                position: 'bottom',
+                showGridLines: false
+              }
+            }"
+          >
+          </app-ta-chart>
         </div>
       </app-ta-custom-card>
 
@@ -445,12 +575,16 @@
       </app-ta-custom-card>
 
       <!--------Note--------->
+      <div class="divider"></div>
       <div class="note-cards">
         <app-ta-input-note
           [formControl]="noteControl"
-          [isReadOnly]="true"
+          [isVisibleDivider]="false"
+          [isVisibleNote]="true"
+          [isVisibleArrow]="true"
+          [minRows]="1"
           [isVisibleSecondDivider]="false"
-          [isVisibleNote]="noteControl.value"
+          [placeholder]="'Write something.'"
         ></app-ta-input-note>
       </div>
     </div>

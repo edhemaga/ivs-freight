@@ -21,26 +21,25 @@ export class ShipperCardViewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getShipperDropdown();
+    this.getShipperDropdown();   
   }
   public getShipperDropdown() {
     this.shipperDropdowns = this.shipperQuery.getAll().map((item) => {
       return {
         id: item.id,
         name: item.businessName,
-        status: item.status,
         active: item.id === this.shipper.id,
       };
     });
   }
 
   public onSelectedShipper(event: any) {
+    
     if (event.id !== this.shipper.id) {
       this.shipperList = this.shipperQuery.getAll().map((item) => {
         return {
           id: item.id,
           name: item.businessName,
-          status: item.status,
           active: item.id === event.id,
         };
       });

@@ -8,12 +8,14 @@ import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckQuery } from '../state/truck.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-
+import { card_component_animation } from '../../shared/animations/card-component.animations';
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-truck-details-card',
   templateUrl: './truck-details-card.component.html',
   styleUrls: ['./truck-details-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  animations: [card_component_animation('showHideCardBody')],
 })
 export class TruckDetailsCardComponent implements OnInit,OnChanges {
   public noteControl: FormControl = new FormControl();
@@ -27,11 +29,15 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
   @Input() truck: TruckResponse | any;
   public truck_active_id: number = +this.activeted_route.snapshot.params['id'];
   public truck_list: any[] = this.trucksQuery.getAll();
+  public copiedPhone:boolean;
+  public copiedEmail:boolean;
+  public copiedVin:boolean;
   constructor(
     private activeted_route: ActivatedRoute,
     private modalService: ModalService,
     private trucksQuery: TruckQuery,
-    private detailsPageDriverSer: DetailsPageService
+    private detailsPageDriverSer: DetailsPageService,
+    private clipboar: Clipboard,
   ) {}
   
   ngOnChanges(changes: SimpleChanges): void {
@@ -267,4 +273,20 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
       }
     }
   }
+    /* To copy any Text */
+    public copyText(val: any, copyVal: string) {
+      switch (copyVal) {
+        case 'phone':
+          this.copiedPhone = true;
+          break;
+        case 'email':
+          this.copiedEmail = true;
+          break;
+          case 'vin':
+          this.copiedVin = true;
+          break;
+       
+      }
+      this.clipboar.copy(val);
+    }
 }

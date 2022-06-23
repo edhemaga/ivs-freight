@@ -128,3 +128,8 @@
     }
    }
 }
+.repair-header{
+  grid-template-columns: 80px 107px 62px 86px 69px 83px !important;
+  column-gap: 29px !important;
+  grid-auto-flow: column;
+}

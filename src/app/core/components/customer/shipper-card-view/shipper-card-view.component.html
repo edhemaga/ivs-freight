@@ -1,6 +1,6 @@
 <div class="cards-item-wrapper-1">
   <app-ta-details-header-card
-    [cardDetailsDate]="'08/03/20'"
+    [cardDetailsDate]="shipper.createdAt | formatDateP"
     [tooltipNext]="'Next Shipper'"
     [tooltipPrevious]="'Previous Shipper'"
     [searchInputName]="'Search Shipper'"
@@ -47,16 +47,31 @@
         <div class="hours-template">
           <div class="hours-item">
             <span class="name-item">Receiving Hours</span>
-            <span class="value-item"
-              >{{ shipper.receivingFrom }} AM -
-              {{ shipper.receivingTo }} PM</span
-            >
+            <div class="icon-wrapper">
+              <svg-icon
+              *ngIf="shipper.receivingAppointment"
+                class="svg-appoiment"
+                src="assets/svg/common/ic_appoiment.svg"
+              ></svg-icon>
+              <span class="value-item"
+                >{{ shipper.receivingFrom }} AM -
+                {{ shipper.receivingTo }} PM</span
+              >
+            </div>
           </div>
           <div class="hours-item">
             <span class="name-item">Shipping Hours</span>
-            <span class="value-item"
-              >{{ shipper.shippingFrom }} AM - {{ shipper.shippingTo }} PM</span
-            >
+            <div class="icon-wrapper">
+              <svg-icon
+               *ngIf="shipper.shippingAppointment"
+                class="svg-appoiment"
+                src="assets/svg/common/ic_appoiment.svg"
+              ></svg-icon>
+              <span class="value-item"
+                >{{ shipper.shippingFrom }} AM -
+                {{ shipper.shippingTo }} PM</span
+              >
+            </div>
           </div>
         </div>
       </app-ta-custom-card>

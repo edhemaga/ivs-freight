@@ -341,37 +341,6 @@ p {
     .card-row-progress {
       margin-top: 12px;
     }
-
-    // .card-icon-copy {
-    //   display: flex;
-    //   align-items: flex-start;
-    //   cursor: pointer;
-    //   .card-icon {
-    //     display: none;
-    //     position: relative;
-    //     margin-left: 6px;
-    //     bottom: 4px;
-    //     height: 18px;
-    //     svg {
-    //       fill: #aaaaaa;
-    //       &:hover {
-    //         path {
-    //           fill: #6c6c6c;
-    //         }
-    //       }
-    //     }
-    //   }
-    //   .card-icon {
-    //     height: 18px;
-    //     margin-left: 6px;
-    //   }
-    //   &:hover {
-    //     .card-icon {
-    //       display: block;
-    //     }
-    //   }
-    // }
-
     .card-restriction {
       display: flex;
       flex-direction: column;
@@ -898,4 +867,75 @@ p {
       }
     }
   }
+}
+.owner-items {
+  display: flex;
+  align-items: center;
+  height: 18px;
+  margin-top: 9px;
+  padding-top: 14px;
+  .card-icon {
+    display: none;
+    cursor: pointer;
+    margin-left: 6px;
+  }
+  .information-value {
+    font-size: 14px;
+    font-weight: 400;
+    color: $color-gray-dark;
+    margin-left: 6px;
+    &::-moz-selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+  &:hover {
+    .card-icon {
+      display: flex;
+    }
+  }
+}
+.copied {
+  .vin-text {
+    animation-duration: 1500ms;
+    animation-name: change;
+  }
+  .information-value {
+    animation-duration: 1500ms;
+    animation-name: change;
+  }
+  .card-icon {
+    svg {
+      path {
+        animation-duration: 1500ms;
+        animation-name: changeSVG;
+        &:hover {
+          animation-duration: 1500ms;
+          animation-name: changeSVG;
+        }
+      }
+    }
+  }
+}
+.hide-show {
+  font-size: $font-size14;
+  color: #536bc2;
+  font-weight: $font-semibold;
+  margin-left: 6px;
+  cursor: pointer;
+  &::-moz-selection {
+    color: #536bc2;
+    background: rgb(83, 107, 194, 0.2);
+  }
+  &::selection {
+    color: #536bc2;
+    background: rgb(83, 107, 194, 0.2);
+  }
+}
+.bind-height {
+  max-height: fit-content !important;
 }

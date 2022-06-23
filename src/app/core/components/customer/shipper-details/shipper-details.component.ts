@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ShipperResponse } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
@@ -9,6 +9,7 @@ import { ShipperTService } from '../state/shipper-state/shipper.service';
   selector: 'app-shipper-details',
   templateUrl: './shipper-details.component.html',
   styleUrls: ['./shipper-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers:[DetailsPageService]
 })
 export class ShipperDetailsComponent implements OnInit,OnDestroy {
@@ -23,7 +24,7 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.shipperConf(this.activated_route.snapshot.data.shipper);
+   
 
     this.detailsPageService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
@@ -34,9 +35,7 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
           .subscribe({
             next: (res: ShipperResponse) => {
               this.shipperConf(res);
-              if (this.router.url.includes('shipper-details')) {
-                this.router.navigate([`/customer/${res.id}/shipper-details`]);
-              }
+                this.router.navigate([`/customer/${res.id}/shipper-details`]);            
               this.notificationService.success(
                 'Shipper successfully changed',
                 'Success:'
@@ -48,9 +47,10 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
             },
           });
       });
+      this.shipperConf(this.activated_route.snapshot.data.shipper);
   }
 
-  public shipperConf(data: ShipperResponse | any) {
+  public shipperConf(data: ShipperResponse) {
     this.shipperConfig = [
       {
         id: 0,

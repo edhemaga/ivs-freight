@@ -9,7 +9,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerQuery } from '../state/trailer.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { ActivatedRoute } from '@angular/router';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-trailer-details-card',
   templateUrl: './trailer-details-card.component.html',
@@ -25,20 +25,20 @@ export class TrailerDetailsCardComponent implements OnInit,OnChanges {
   public dataEdit: any;
   public toggleOwner: boolean = true;
   public trailerDropDowns: any[] = [];
-  public trailer_active_id: number =
-    +this.activeted_route.snapshot.params['id'];
+  public trailer_active_id: number =+this.activeted_route.snapshot.params['id'];
   public trailer_list: any[] = this.trailerQuery.getAll();
+  public copiedPhone:boolean;
+  public copiedEmail:boolean;
+  public copiedVin:boolean;
   constructor(
     private modalService: ModalService,
     private detailsPageDriverSer: DetailsPageService,
     private trailerQuery: TrailerQuery,
-    private activeted_route: ActivatedRoute
+    private activeted_route: ActivatedRoute,
+    private clipboar: Clipboard,
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes from trailer');
-    this.note.patchValue(changes.trailer.currentValue.note);
-      console.log(changes);
-      
+    this.note.patchValue(changes.trailer.currentValue.note);  
   }
   ngOnInit(): void {
   
@@ -181,5 +181,22 @@ export class TrailerDetailsCardComponent implements OnInit,OnChanges {
         break;
       }
     }
+  }
+
+  /* To copy any Text */
+  public copyText(val: any, copyVal: string) {
+    switch (copyVal) {
+      case 'phone':
+        this.copiedPhone = true;
+        break;
+      case 'email':
+        this.copiedEmail = true;
+        break;
+        case 'vin':
+        this.copiedVin = true;
+        break;
+     
+    }
+    this.clipboar.copy(val);
   }
 }

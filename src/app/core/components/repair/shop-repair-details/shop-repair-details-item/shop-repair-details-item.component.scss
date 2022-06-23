@@ -136,45 +136,45 @@
 }
 .button-wrapper-shop {
   position: relative;
-    display: flex;
-    left: 14px;
-    background-color: #6d82c7;
-    color: #ffffff;
-    cursor: pointer;
-    margin: auto;
-    font-size: 12px;
-    font-weight: 700;
-    border-radius: 2px;
-    align-items: center;
-    justify-content: center;
-    line-height: 20px;
-    height: 22px;
-    text-align: center;
-    border: none;
-    padding: 0px 8px;
-  &:hover{
-    background-color: #536BC2;
+  display: flex;
+  left: 14px;
+  background-color: #6d82c7;
+  color: #ffffff;
+  cursor: pointer;
+  margin: auto;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 2px;
+  align-items: center;
+  justify-content: center;
+  line-height: 20px;
+  height: 22px;
+  text-align: center;
+  border: none;
+  padding: 0px 8px;
+  &:hover {
+    background-color: #536bc2;
   }
 }
 .finish-order-cont {
   .repair-items {
     .items-header {
       background-color: #fff3e0;
-      border-radius: 2px;
-      padding: 4px 0;
       margin-bottom: 2px !important;
       margin-top: 2px !important;
+      padding: 6px 4px;
+      padding-left: 10px;
+      border-radius: 2px;
+      &:hover{
+        background-color: #fff3e0 !important;
+      }
     }
   }
   .date {
-
     top: 2px !important;
-    padding-left: 4px;
   }
   .unit {
     position: relative;
-    // top: 1px;
-    padding-left: 4px;
   }
   
 }
@@ -195,5 +195,20 @@
   &::selection {
     color: #b7b7b7 !important;
     background: rgb(183, 183, 183, 0.2) !important;
+  }
+}
+.no-invoice{
+  display: flex;
+  align-items: center;
+  .no-inv{
+    svg{
+      display: flex;
+    }
+  }
+  .date-order{
+    font-size: 14px;
+    font-weight: 400;
+    color: #6c6c6c;
+    margin-left: 4px;
   }
 }

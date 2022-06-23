@@ -34,14 +34,30 @@
         </div>
       </div>
       <div class="details-header-data">
-        <div class="details-header-data-item">
+        <div class="details-header-data-item" [ngClass]="{ copied: copiedVin }">
           <svg-icon src="assets/svg/common/vin.svg"></svg-icon>
           <p class="vin-text">{{ trailer.vin }}</p>
+          <span
+            [tooltipBackground]="copiedVin ? '#536BC2' : '#6c6c6c'"
+            ngbTooltip
+            [mainTooltip]="copiedVin ? 'Copied' : 'Copy'"
+            position="top"
+            class="tooltip-copy"
+            [autoClose]="false"
+            (click)="copyText(trailer.vin, 'vin')"
+          >
+            <svg-icon
+              class="card-icon"
+              id="card-icon"
+              src="assets/svg/common/ic_copy.svg"
+              (mouseleave)="copiedVin = false"
+            ></svg-icon>
+          </span>
         </div>
         <div class="details-header-data-item second">
           <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
           <p class="vin-text date">{{ trailer.year }}</p>
-          <div class="light-green">
+          <div *ngIf="trailer.color" class="light-green">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
@@ -63,7 +79,9 @@
               </g>
             </svg>
           </div>
-          <p class="vin-text">{{ trailer?.color.name }}</p>
+          <p *ngIf="trailer.color" class="vin-text">
+            {{ trailer?.color.name }}
+          </p>
           <div class="light-green">
             <svg-icon
               class="resize"
@@ -75,7 +93,10 @@
       </div>
     </div>
   </app-ta-details-header-card>
-  <div class="wrapper-additional-cards">
+  <div
+    class="wrapper-additional-cards"
+    [ngClass]="{ 'bind-height': !templateCard }"
+  >
     <div class="details-cards">
       <!-- Assigned to -->
       <app-ta-custom-card
@@ -92,7 +113,7 @@
           <div class="assignTo-item first">
             <svg-icon class="assignTo-vehicle"> </svg-icon>
             <p class="assignTo-value">No truck</p>
-            <span
+            <!-- <span
               tooltipBackground="#6c6c6c"
               ngbTooltip
               mainTooltip="View in Modal"
@@ -103,12 +124,12 @@
                 class="open-modal-icon"
                 src="assets/svg/common/arrow_top_right.svg"
               ></svg-icon>
-            </span>
+            </span> -->
           </div>
           <div class="assignTo-item second">
             <svg-icon class="assignTo-vehicle"></svg-icon>
             <p class="assignTo-value">No driver</p>
-            <span
+            <!-- <span
               tooltipBackground="#6c6c6c"
               ngbTooltip
               mainTooltip="View in Modal"
@@ -119,7 +140,7 @@
                 class="open-modal-icon2"
                 src="assets/svg/common/arrow_top_right.svg"
               ></svg-icon>
-            </span>
+            </span> -->
           </div>
         </div>
       </app-ta-custom-card>
@@ -153,7 +174,7 @@
           <div class="common-template-item">
             <div class="common-template-item-name">Tire Size</div>
             <div class="common-template-item-value">
-              {{ trailer.tireSize }}
+              {{ trailer.tireSize.name }}
             </div>
           </div>
           <div class="common-template-item">
@@ -171,7 +192,7 @@
           </div>
         </div>
         <div class="no-data" *ngIf="!trailer.emptyWeight">
-          No Additional info
+          No Additional Details
         </div>
       </app-ta-custom-card>
 
@@ -187,17 +208,49 @@
             <p class="firm-name">{{ trailer.owner.name }}</p>
           </div>
           <div [@showHideCardBody]="toggleOwner ? 'true' : 'false'">
-            <div class="owner-items">
+            <div class="owner-items" [ngClass]="{ copied: copiedPhone }">
               <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
               <p class="information-value">
                 {{ trailer.owner.phone | formatPhoneP }}
               </p>
+              <span
+                [tooltipBackground]="copiedPhone ? '#536BC2' : '#6c6c6c'"
+                ngbTooltip
+                [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
+                position="top"
+                class="tooltip-copy"
+                [autoClose]="false"
+                (click)="copyText(trailer.owner.phone, 'phone')"
+              >
+                <svg-icon
+                  class="card-icon"
+                  id="card-icon"
+                  src="assets/svg/common/ic_copy.svg"
+                  (mouseleave)="copiedPhone = false"
+                ></svg-icon>
+              </span>
             </div>
-            <div class="owner-items">
+            <div class="owner-items" [ngClass]="{ copied: copiedEmail }">
               <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
               <p class="information-value">
                 {{ trailer.owner.email }}
               </p>
+              <span
+                [tooltipBackground]="copiedEmail ? '#536BC2' : '#6c6c6c'"
+                ngbTooltip
+                [mainTooltip]="copiedEmail ? 'Copied' : 'Copy'"
+                position="top"
+                class="tooltip-copy"
+                [autoClose]="false"
+                (click)="copyText(trailer.owner.email, 'email')"
+              >
+                <svg-icon
+                  class="card-icon"
+                  id="card-icon"
+                  src="assets/svg/common/ic_copy.svg"
+                  (mouseleave)="copiedEmail = false"
+                ></svg-icon>
+              </span>
             </div>
             <div class="owner-items">
               <svg-icon src="assets/svg/common/ic_address.svg"></svg-icon>
@@ -283,14 +336,14 @@
       <div class="divider"></div>
       <div class="note-cards">
         <app-ta-input-note
-        [formControl]="note"
-        [isVisibleDivider]="false"
-        [isVisibleNote]="true"
-        [isVisibleArrow]="true"
-        [minRows]="1"
-        [isVisibleSecondDivider]="false"
-        [placeholder]="'Write something.'"
-        [customClass]="'note-small'"
+          [formControl]="note"
+          [isVisibleDivider]="false"
+          [isVisibleNote]="true"
+          [isVisibleArrow]="true"
+          [minRows]="1"
+          [isVisibleSecondDivider]="false"
+          [placeholder]="'Write something.'"
+          [customClass]="'note-small'"
         ></app-ta-input-note>
       </div>
     </div>

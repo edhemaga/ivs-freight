@@ -8,7 +8,6 @@ import { ShopQuery } from '../state/shop-state/shop.query';
   selector: 'app-shop-repair-card-view',
   templateUrl: './shop-repair-card-view.component.html',
   styleUrls: ['./shop-repair-card-view.component.scss'],
- 
 })
 export class ShopRepairCardViewComponent implements OnInit {
   @Input() shopResponse: RepairShopResponse | any;
@@ -44,7 +43,7 @@ export class ShopRepairCardViewComponent implements OnInit {
         folder: 'common',
         active: item.id === this.shopResponse.id,
       };
-    });  
+    });
   }
 
   public onSelectedShop(event: any) {

@@ -11,11 +11,12 @@
       [hasRequest]="item.req"
       [statusInactive]="item.status"
       [optionsId]="driverId"
+      [danger]="item.hasDanger" 
       (dropActions)="onDriverActions($event)"
       (openModalAction)="onModalAction($event)"
     >
     </app-ta-details-header>
-    <!-- [danger]="item.hasDanger" -->
+  
   </div>
   <div class="details-item-cmp">
     <app-driver-details-item
