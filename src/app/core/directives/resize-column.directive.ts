@@ -68,7 +68,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
     if (!this.pressed) {
       this.resizeing.emit({
         isResizeing: true,
-        section: this.tableSection
+        section: this.tableSection,
       });
 
       this.pressed = true;
@@ -82,15 +82,12 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
       // Calculate width of column
       this.newColumnWidth = this.startWidth + (event.pageX - this.startX);
 
-      // Set table header width
-      this.renderer.setStyle(this.column, 'width', `${this.newColumnWidth}px`);
-
       // Send Resizeing Data
       this.resizeing.emit({
         isResizeing: true,
         width: this.newColumnWidth,
         index: this.index,
-        section: this.tableSection
+        section: this.tableSection,
       });
     }
   };
@@ -101,8 +98,10 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
 
       this.resizeing.emit({
         isResizeing: false,
-        section: this.tableSection
+        section: this.tableSection,
       });
+
+      window.getSelection().removeAllRanges();
     }
   };
 }

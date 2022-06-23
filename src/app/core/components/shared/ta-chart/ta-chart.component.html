@@ -1,5 +1,5 @@
-<div class="charts-item-wrapper revenue">
-  <div class="charts-template-item" *ngFor="let item of legendProperties; let indx = index">
+<div class="charts-item-wrapper revenue" [class.row]="legendProperties.length > 2">
+  <div class="charts-template-item" [class.col-4]="legendProperties.length > 2" *ngFor="let item of legendProperties; let indx = index">
     <div class="icon-name-item">
       <svg-icon src={{item.image}}></svg-icon>
       <div class="charts-template-item-name">{{ item.title }}</div>
@@ -28,7 +28,6 @@
     [colors]="lineChartColors"
     [legend]="lineChartLegend"
     [chartType]="lineChartType"
-    [plugins]="lineChartPlugins"
-    (chartHover)="chartHovered($event)">
+    [plugins]="lineChartPlugins">
   </canvas>
 </div>
