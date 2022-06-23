@@ -13,7 +13,7 @@ import {
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DriversQuery } from '../../../driver/state/driver-active-state/driver-active.query';
+import { BrokerQuery } from './broker.query';
 import { BrokerStore } from './broker.store';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class BrokerTService {
     private brokerStore: BrokerStore,
     private ratingReviewService: RatingReviewService,
     private tableService: TruckassistTableService,
-    private brokerQuery: DriversQuery
+    private brokerQuery: BrokerQuery
   ) {}
 
   // Add Broker
