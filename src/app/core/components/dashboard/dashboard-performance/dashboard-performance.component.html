@@ -1,0 +1,315 @@
+<div class="dashboard-performance-holder">
+    <div class="dashboard-performance-header">
+        <div class="dashboard-performance-title">Performance</div>
+        <div class="dashboard-performance-toolbar">
+            <div class="dashboard-performance-switch-holder">
+                <app-ta-tab-switch
+                [tabs]="dashboardSwitchTabs"
+                (switchClicked)="changeDashboardTabs($event)" 
+                [type]="'performance-switch'"
+                >
+                </app-ta-tab-switch>
+            </div>
+            <div class="dashboard-performance-border"></div>
+            <div class="dashboard-performance-dropdown-holder">
+                <div class="dashboard-performance-dropdown-text">Daily</div>
+                <div class="dashboard-performance-arrow-holder">
+                    <svg-icon src="assets/svg/common/calendar/arrow-right.svg"></svg-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-performance-body">
+        <div class="dashboard-performance-body-left-holder dashboard-performance-8A9AEF-box">
+            <div class="dashboard-performance-body-title-holder">
+                <div class="dashboard-performance-body-title-circle"></div>
+                <div class="dashboard-performance-body-title">NET INCOME</div>
+            </div>
+            <div class="dashboard-performance-body-price-holder">$320.56K</div>
+            <div class="dashboard-performance-body-range-holder">
+                <div class="dashboard-performance-body-range"></div>             
+            </div>
+            <div class="dashboard-performance-body-items-holder">
+                <div class="dashboard-performance-body-items-price">$462.57K</div>
+                <div class="dashboard-performance-body-trend-holder">
+                    <div class="dashboard-performance-body-trend-down">
+                        <svg-icon src="assets/svg/common/dashboard/trend-down.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-trend-price">-$138.01K</div>
+                    <div class="dashboard-performance-body-trend-percent">-29.5%</div>
+                </div>  
+                <div class="dashboard-performance-body-items-text">LAST MONTH</div>  
+            </div>
+            <div class="dashboard-performance-body-items-holder">
+                <div class="dashboard-performance-body-items-price">$283.32K</div>
+                <div class="dashboard-performance-body-trend-holder">
+                    <div class="dashboard-performance-body-trend-down trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-up.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-trend-price">+$37.24K</div>
+                    <div class="dashboard-performance-body-trend-percent">+4.9%</div>
+                </div>  
+                <div class="dashboard-performance-body-items-text">MONTHLY AVERAGE</div>  
+            </div>
+        </div>
+        <div class="dashboard-performance-body-right-holder">
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">REVENUE</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">$642.30K</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-up.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">+5.37K</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-8A9AEF-box">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">LOAD</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">37</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-up.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">+3</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">MILES</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">15.35K</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-up.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">+2.06K</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">FUEL GALLON</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">2.35K</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-up.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">+237.5</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">FUEL COST</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">$19.30K</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-up.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">+2.37K</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">REPAIR COST</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">$8.34K</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-down.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">-$768.30</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">ROADSIDE INSP.</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">47</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-up.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">+5</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">VIOLATION</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">5</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-up.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">+1</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">ACCIDENT</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">0</div>
+                <div class="dashboard-performance-body-right-cards-text-holder different-width">SAME AS LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">EXPENCES</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">$322.25K</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-up.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">+8.37K</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">DRIVER</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">3</div>
+                <div class="dashboard-performance-body-right-cards-text-holder different-width">SAME AS LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">TRUCK</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">5</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-down.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">-2</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">TRAILER</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">2</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-number different-padding">4</div>
+                    <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-down.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">MONTHLY AVERAGE</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">OWNER</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">1</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-up.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">+1</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">USER</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">0</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-down.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">-6</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">REPAIR SHOP</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">12</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-up.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">+4</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">BROKER</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">7</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-down.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">-1</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-holder">
+                <div class="dashboard-performance-body-right-cards-title-holder">
+                    <div class="dashboard-performance-body-right-cards-title-circle"></div>
+                    <div class="dashboard-performance-body-right-cards-title">SHIPPER</div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-price-holder">35</div>
+                <div class="dashboard-performance-body-right-cards-trend-holder">
+                    <div class="dashboard-performance-body-right-cards-trend-up">
+                        <svg-icon src="assets/svg/common/dashboard/trend-up.svg"></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-right-cards-trend-number">+12</div>
+                    <div class="dashboard-performance-body-right-cards-trend-loss"></div>
+                </div>
+                <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
+            </div>
+
+        </div>
+    </div>
+</div>
