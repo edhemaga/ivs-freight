@@ -5,8 +5,8 @@ import { DriverShortResponse } from 'appcoretruckassist';
 export interface DriversState extends EntityState<DriverShortResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'drivers' })
-export class DriversStore extends EntityStore<DriversState> {
+@StoreConfig({ name: 'driverActive' })
+export class DriversActiveStore extends EntityStore<DriversState> {
   constructor() {
     super();
   }

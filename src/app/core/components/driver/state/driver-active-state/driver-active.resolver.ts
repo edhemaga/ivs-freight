@@ -3,24 +3,23 @@ import { Resolve } from '@angular/router';
 import { DriverListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { DriverTService } from './driver.service';
-import { DriversState, DriversStore } from './driver.store';
+import { DriverTService } from '../driver.service';
+import { DriversState, DriversActiveStore } from './driver-active.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DriverResolver implements Resolve<DriversState> {
-  tableTab: number = 1;
+export class DriverActiveResolver implements Resolve<DriversState> {
   pageIndex: number = 1;
   pageSize: number = 25;
 
   constructor(
     private driverService: DriverTService,
-    private driversStore: DriversStore
+    private driversStore: DriversActiveStore
   ) {}
   resolve(): Observable<DriversState | boolean> {
     return this.driverService
-      .getDrivers(this.tableTab, this.pageIndex, this.pageSize)
+      .getDrivers(1, this.pageIndex, this.pageSize)
       .pipe(
         catchError(() => {
           return of('No drivers data...');

@@ -10,9 +10,9 @@ import {
   OwnerService,
   UpdateDriverCommand,
 } from 'appcoretruckassist';
-import { DriversStore } from './driver.store';
+import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { CreateDriverResponse } from 'appcoretruckassist/model/createDriverResponse';
-import { DriversQuery } from './driver.query';
+import { DriversQuery } from './driver-active-state/driver-active.query';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({
@@ -22,7 +22,7 @@ export class DriverTService {
   constructor(
     private driverService: DriverService,
     private driversQuery: DriversQuery,
-    private driverStore: DriversStore,
+    private driverStore: DriversActiveStore,
     private ownerService: OwnerService,
     private tableService: TruckassistTableService
   ) {}

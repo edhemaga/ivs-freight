@@ -13,7 +13,7 @@ import {
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DriversQuery } from '../../../driver/state/driver.query';
+import { DriversQuery } from '../../../driver/state/driver-active-state/driver-active.query';
 import { BrokerStore } from './broker.store';
 
 @Injectable({
