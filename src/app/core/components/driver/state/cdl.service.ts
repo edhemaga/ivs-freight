@@ -11,7 +11,7 @@ import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse';
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverTService } from './driver.service';
-import { DriversStore } from './driver.store';
+import { DriversActiveStore } from './driver-active-state/driver-active.store';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,7 @@ export class CdlTService {
   constructor(
     private cdlService: CdlService,
     private driverService: DriverTService,
-    private driverStore: DriversStore,
+    private driverStore: DriversActiveStore,
     private tableService: TruckassistTableService
   ) {}
 

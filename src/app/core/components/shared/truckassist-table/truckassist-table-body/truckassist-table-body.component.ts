@@ -40,6 +40,7 @@ export class TruckassistTableBodyComponent
   decryptedPassword: any[] = [];
   actionsMinWidth: number = 0;
   showScrollSectionBorder: boolean = false;
+  hoverActive: number = -1;
 
   constructor(
     private router: Router,

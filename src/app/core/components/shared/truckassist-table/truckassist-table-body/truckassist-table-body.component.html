@@ -16,7 +16,12 @@
         }"
         class="pined-tr-container"
       >
-        <div class="columns-container">
+        <div
+          class="columns-container"
+          (mouseenter)="hoverActive = i"
+          (mouseleave)="hoverActive = -1"
+          [ngClass]="{ 'regular-columns-hover': hoverActive === i }"
+        >
           <td *ngFor="let column of columns">
             <!-- NO TEMPLATE -->
             <div
@@ -767,7 +772,7 @@
       </tr>
     </div>
 
-    <!-- Not Pined -->
+    <!-- Border For Not Pined -->
     <div
       class="not-pined-border"
       *ngIf="showScrollSectionBorder"
@@ -776,6 +781,7 @@
       }"
     ></div>
 
+    <!-- Not Pined -->
     <div class="not-pined-tr" id="scroll-container" (scroll)="onScroll($event)">
       <tr
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
@@ -791,7 +797,12 @@
         }"
         class="not-pined-tr-container"
       >
-        <div class="columns-container">
+        <div
+          class="columns-container"
+          (mouseenter)="hoverActive = i"
+          (mouseleave)="hoverActive = -1"
+          [ngClass]="{ 'regular-columns-hover': hoverActive === i }"
+        >
           <td *ngFor="let column of columns">
             <!-- NO TEMPLATE -->
             <div
@@ -1474,6 +1485,7 @@
       </tr>
     </div>
 
+    <!-- Border For Not Pined -->
     <div
       class="not-pined-border"
       *ngIf="showScrollSectionBorder"
@@ -1498,7 +1510,12 @@
         }"
         class="actions-tr-container"
       >
-        <div class="columns-container">
+        <div
+          class="columns-container"
+          (mouseenter)="hoverActive = i"
+          (mouseleave)="hoverActive = -1"
+          [ngClass]="{ 'regular-columns-hover': hoverActive === i }"
+        >
           <td *ngFor="let column of columns">
             <!-- ATTACHMENTS COLUMN TEMPLATE -->
             <div
