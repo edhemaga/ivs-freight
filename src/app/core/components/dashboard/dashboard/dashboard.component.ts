@@ -13,7 +13,7 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss', '../dashboard.global.scss'],
+  styleUrls: ['./dashboard.component.scss',],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
