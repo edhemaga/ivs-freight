@@ -1,4 +1,4 @@
-import { DriversQuery } from './../state/driver.query';
+import { DriversQuery } from '../state/driver-active-state/driver-active.query';
 import { DriverMvrModalComponent } from './driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from './driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverDrugAlcoholModalComponent } from './driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';

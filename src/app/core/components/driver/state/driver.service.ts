@@ -10,9 +10,9 @@ import {
   OwnerService,
   UpdateDriverCommand,
 } from 'appcoretruckassist';
-import { DriversStore } from './driver.store';
+import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { CreateDriverResponse } from 'appcoretruckassist/model/createDriverResponse';
-import { DriversQuery } from './driver.query';
+import { DriversQuery } from './driver-active-state/driver-active.query';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({
@@ -22,7 +22,7 @@ export class DriverTService {
   constructor(
     private driverService: DriverService,
     private driversQuery: DriversQuery,
-    private driverStore: DriversStore,
+    private driverStore: DriversActiveStore,
     private ownerService: OwnerService,
     private tableService: TruckassistTableService
   ) {}
@@ -56,6 +56,20 @@ export class DriverTService {
 
             this.driverStore.add(driver);
 
+            const driverCount = JSON.parse(
+              localStorage.getItem('driverTableCount')
+            );
+
+            driverCount.active++;
+
+            localStorage.setItem(
+              'driverTableCount',
+              JSON.stringify({
+                active:  driverCount.active,
+                inactive: driverCount.inactive,
+              })
+            );
+
             this.tableService.sendActionAnimation({
               animation: 'add',
               data: driver,
@@ -73,6 +87,20 @@ export class DriverTService {
     return this.driverService.apiDriverIdDelete(id).pipe(
       tap(() => {
         this.driverStore.remove(({ id }) => id === id);
+
+        const driverCount = JSON.parse(
+          localStorage.getItem('driverTableCount')
+        );
+
+        driverCount.active--;
+
+        localStorage.setItem(
+          'driverTableCount',
+          JSON.stringify({
+            active: driverCount.active,
+            inactive: driverCount.inactive,
+          })
+        );
       })
     );
   }
@@ -93,6 +121,20 @@ export class DriverTService {
             }
           });
         });
+
+        alert('Proveri jel sljaka driver count update');
+
+        const driverCount = JSON.parse(
+          localStorage.getItem('driverTableCount')
+        );
+
+        localStorage.setItem(
+          'driverTableCount',
+          JSON.stringify({
+            active: storeDrivers.length,
+            inactive: driverCount.inactive,
+          })
+        );
       })
     );
   }

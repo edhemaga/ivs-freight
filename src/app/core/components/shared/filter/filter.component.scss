@@ -27,6 +27,7 @@
     width: 194px;
     border-radius: 3px;
     background-color: #fff;
+    box-shadow: 0 0 4px #00000026;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -40,6 +41,7 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        user-select: none;
 
         .user-filter-box{
             width: 24px;
@@ -73,6 +75,7 @@
             align-items: center;
             top: 10px;
             right: 8px;
+            cursor: pointer;
 
             svg-icon{
                 svg{
@@ -264,26 +267,40 @@
         -ms-overflow-style: none;
         scrollbar-width: none; 
 
-
-        .user-frame{
-            position: relative;
+        .user-frame-holder{
             width: 100%;
-            min-height: 26px;
-            border-radius: 2px;
             display: flex;
             align-items: center;
-            padding-left: 4px;
-            box-sizing: border-box;
-            font-size: 14px;
-            font-weight: 400;
-            color: #6C6C6C;
-            line-height: 18px;
-            margin-bottom: 2px;
 
-            &:hover{
-                cursor: pointer;
-                background-color: #F7F7F7;
-            }
+            .user-frame{
+                position: relative;
+                width: 100%;
+                min-height: 26px;
+                border-radius: 2px;
+                display: flex;
+                align-items: center;
+                padding-left: 4px;
+                box-sizing: border-box;
+                font-size: 14px;
+                font-weight: 400;
+                color: #6C6C6C;
+                line-height: 18px;
+                margin-bottom: 2px;
+    
+                &:hover{
+                    cursor: pointer;
+                    background-color: #F7F7F7;
+                }
+            }    
+        }
+
+
+        &::-webkit-scrollbar{
+            width: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb{
+            border: 3px solid #fff !important;
         }
     }
 
@@ -294,6 +311,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        user-select: none;
 
         .button-clear{
             width: 84px;
@@ -307,6 +325,7 @@
             font-weight: 600;
             color: #6C6C6C;
             line-height: 18px;
+            cursor: pointer;
 
             &:hover{
                 cursor: pointer;
@@ -319,7 +338,7 @@
             width: 68px;
             height: 28px;
             border-radius: 2px;
-            background-color: #6D82C7;
+            background-color: #6D82C733;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -327,6 +346,11 @@
             font-weight: 700;
             color: #fff;
             line-height: 18px;
+
+            &.active{
+                background-color: #6D82C7;
+                cursor: pointer;
+            }
         }
     }
 }
@@ -338,6 +362,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
+    box-shadow: 0 0 4px #00000026;
 
     .time-header{
         position: relative;
@@ -348,6 +373,7 @@
         font-weight: 800;
         color: #6C6C6C;
         line-height: 22px;
+        user-select: none;
 
         .close{
             position: absolute;
@@ -358,6 +384,7 @@
             align-items: center;
             top: 10px;
             right: 8px;
+            cursor: pointer;
 
             svg-icon{
                 svg{

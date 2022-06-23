@@ -23,10 +23,10 @@ import { DriverMedicalModalComponent } from '../driver-details/driver-modals/dri
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { DriversQuery } from '../state/driver.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DriversQuery } from '../state/driver-active-state/driver-active.query';
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',

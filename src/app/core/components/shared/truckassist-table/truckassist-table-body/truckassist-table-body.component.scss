@@ -1,3 +1,16 @@
+/* .regular-row {
+  &:hover {
+    .columns-container {
+      background: #f7f7f7;
+    }
+  }
+} */
+
+.regular-columns-hover{
+  background: #f7f7f7 !important;
+  transition: 0.25s;
+}
+
 /* Table Body */
 table {
   width: 100%;
@@ -949,14 +962,6 @@ table {
   justify-content: center;
 }
 
-/* Ng Class */
-.regular-row {
-  &:hover {
-    .columns-container {
-      background: #f7f7f7;
-    }
-  }
-}
 
 /* Action Animations */
 .add-animation{

@@ -785,11 +785,6 @@ export class CalendarComponent implements OnInit {
 
   public checkCalendarTitle() {
     const calendarApi = this.fullcalendar.getApi();
-    console.log("calendarApi");
-    console.log(calendarApi.currentData.currentDate); 
-
-    console.log(moment(calendarApi.currentData.currentDate).format("MMMM D, YYYY"));
-
     if(this.currentCalendarView === "day"){
       this.calendarTitle = moment(calendarApi.currentData.currentDate).format("MMMM D, YYYY");
     }else if(this.currentCalendarView === "week" || this.currentCalendarView === "month"){
@@ -797,7 +792,6 @@ export class CalendarComponent implements OnInit {
     }else if(this.currentCalendarView === "year" || this.currentCalendarView === "schedule"){
       this.calendarTitle = moment(calendarApi.currentData.currentDate).format("YYYY");
     }
-
   }
 
   resizeEvent(mod) {

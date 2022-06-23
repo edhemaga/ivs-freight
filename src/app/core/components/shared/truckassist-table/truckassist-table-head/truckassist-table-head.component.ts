@@ -190,6 +190,8 @@ export class TruckassistTableHeadComponent
 
       column.sortDirection = this.options.config.sortDirection;
 
+      this.setVisibleColumns();
+
       const directionSort = column.sortDirection
         ? column.sortName +
           (column.sortDirection[0]?.toUpperCase() +
@@ -237,6 +239,7 @@ export class TruckassistTableHeadComponent
   // Rezaize
   onResize(event: any) {
     this.rezaizeing = event.isResizeing;
+    
     if (this.rezaizeing) {
       this.tableService.sendColumnWidth({
         event: event,
