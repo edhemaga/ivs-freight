@@ -5,10 +5,10 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import { DriverResponse } from 'appcoretruckassist';
+import { DriverResponse } from '../../../../../../../appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
-import { DriverTService } from './driver.service';
+import { DriverTService } from '../driver.service';
 import { DriversItemStore } from './driver-details.store';
 
 @Injectable({

@@ -23,7 +23,7 @@ export class TaReCardComponent implements OnInit, OnChanges {
   @Input() public hasSvg: string = '';
   @Input() public options: any = [];
   @Input() public hasCopyIcon: boolean = false;
-  @Input() public expDateClose: string = '';
+  @Input() public expDateClose: any;
   @Input() public hasFooter: boolean = true;
   @Input() public settingsIcon: boolean = false;
   @Input() public haveHeaderText: boolean = false;
@@ -45,7 +45,6 @@ export class TaReCardComponent implements OnInit, OnChanges {
   public toggleDropDown: boolean;
   constructor(private clipboard:Clipboard) {}
   ngOnChanges(changes: SimpleChanges): void {
-    this.expDateClose;
   }
   ngOnInit(): void {
     this.CloseCard();
@@ -56,6 +55,8 @@ export class TaReCardComponent implements OnInit, OnChanges {
     if (moment(this.expDateClose).isBefore(currentDate) || this.isDeactivated) {
       this.isCardOpen = false;
     }
+    console.log(this.expDateClose);
+    
   }
 
   public toggleCard(event: any) {

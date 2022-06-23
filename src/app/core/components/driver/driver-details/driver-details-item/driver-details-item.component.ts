@@ -42,6 +42,7 @@ export class DriverDetailsItemComponent
   public dataTest: any;
   public expDateCard: any;
   public dataCDl: any;
+
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService

@@ -37,11 +37,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   public showInc: boolean;
   public hasDangerCDL: boolean;
   public arrayCDL: any[] = [];
-  public arrayTests: any[] = [];
   public arrayMedical: any[] = [];
   public arrayMvrs: any[] = [];
   public hasDangerMedical: boolean;
-  public hasDangerTest: boolean;
   public hasDangerMvr: boolean;
   public driverId: number = null;
 
@@ -166,12 +164,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   checkExpiration(data: DriverResponse) {
     this.hasDangerCDL = false;
     this.hasDangerMedical = false;
-    this.hasDangerMvr;
-    this.hasDangerTest;
+    this.hasDangerMvr=false;
     this.arrayCDL = [];
     this.arrayMedical = [];
     this.arrayMvrs = [];
-    this.arrayTests = [];
     if (data.cdls.length > 0) {
       data?.cdls.map((el) => {
         if (moment(el.expDate).isAfter(moment())) {
@@ -179,16 +175,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
         }
         if (moment(el.expDate).isBefore(moment())) {
           this.arrayCDL.push(true);
-        }
-      });
-    }
-    if (data.tests.length > 0) {
-      data?.tests.map((el) => {
-        if (moment(el.testingDate).isAfter(moment())) {
-          this.arrayTests.push(false);
-        }
-        if (moment(el.testingDate).isBefore(moment())) {
-          this.arrayTests.push(true);
         }
       });
     }
@@ -216,11 +202,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
       this.hasDangerCDL = false;
     } else {
       this.hasDangerCDL = true;
-    }
-    if (this.arrayTests.includes(false)) {
-      this.hasDangerTest = false;
-    } else {
-      this.hasDangerTest = true;
     }
     if (this.arrayMedical.includes(false)) {
       this.hasDangerMedical = false;

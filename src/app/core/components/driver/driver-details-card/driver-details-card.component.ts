@@ -27,6 +27,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { Clipboard } from '@angular/cdk/clipboard';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversQuery } from '../state/driver-active-state/driver-active.query';
+// import { DriversQueryIn } from '../state/driver-inactive-state/driver-inactive.query';
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',
@@ -84,6 +85,7 @@ export class DriverDetailsCardComponent
     private sumArr: SumArraysPipe,
     private clipboar: Clipboard,
     private cdRef: ChangeDetectorRef,
+    // private driverQueryIn: DriversQueryIn
     private tableService: TruckassistTableService
   ) {}
   ngOnChanges(changes: SimpleChanges) {
@@ -513,16 +515,30 @@ export class DriverDetailsCardComponent
     this.showTooltip = true;
   }
   public getDriversDropdown() {
-    this.driversDropdowns = this.driversQuery.getAll().map((item) => {
-      return {
-        id: item.id,
-        name: item.fullName,
-        status: item.status,
-        svg: item.owner ? 'driver-owner' : null,
-        folder: 'common',
-        active: item.id === this.driver.id,
-      };
-    });
+    if (this.driver.status == 1) {
+      this.driversDropdowns = this.driversQuery.getAll().map((item) => {
+        return {
+          id: item.id,
+          name: item.fullName,
+          status: item.status,
+          svg: item.owner ? 'driver-owner' : null,
+          folder: 'common',
+          active: item.id === this.driver.id,
+        };
+      });
+    // }else{
+    //   this.driversDropdowns= this.driverQueryIn.getAll().map((item) => {
+    //     return {
+    //       id: item.id,
+    //       name: item.fullName,
+    //       status: item.status,
+    //       svg: item.owner ? 'driver-owner' : null,
+    //       folder: 'common',
+    //       active: item.id === this.driver.id,
+    //     };
+    //   });
+     }
+    
   }
 
   public onSelectedDriver(event: any) {
