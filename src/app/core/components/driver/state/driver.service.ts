@@ -91,21 +91,21 @@ export class DriverTService {
 
   // Delete Driver By Id
   public deleteDriverById(
-    id: number,
+    driverId: number,
     tableSelectedTab?: string
   ): Observable<any> {
-    return this.driverService.apiDriverIdDelete(id).pipe(
+    return this.driverService.apiDriverIdDelete(driverId).pipe(
       tap(() => {
         const driverCount = JSON.parse(
           localStorage.getItem('driverTableCount')
         );
 
         if (tableSelectedTab === 'active') {
-          this.driverActiveStore.remove(({ id }) => id === id);
+          this.driverActiveStore.remove(({ id }) => id === driverId);
 
           driverCount.active--;
         } else if (tableSelectedTab === 'inactive') {
-          this.driverInactiveStore.remove(({ id }) => id === id);
+          this.driverInactiveStore.remove(({ id }) => id === driverId);
 
           driverCount.inactive--;
         }
@@ -182,8 +182,8 @@ export class DriverTService {
     );
   }
 
-  public getDriverById(id: number): Observable<DriverResponse> {
-    return this.driverService.apiDriverIdGet(id);
+  public getDriverById(driverId: number): Observable<DriverResponse> {
+    return this.driverService.apiDriverIdGet(driverId);
   }
 
   public getDriverDropdowns(): Observable<GetDriverModalResponse> {
