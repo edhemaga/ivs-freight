@@ -9,7 +9,7 @@ import {
 } from 'appcoretruckassist';
 import { CreateMvrResponse } from 'appcoretruckassist/model/createMvrResponse';
 import { DriverTService } from './driver.service';
-import { DriversStore } from './driver.store';
+import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class MvrTService {
   constructor(
     private mvrService: MvrService,
     private driverService: DriverTService,
-    private driverStore: DriversStore,
+    private driverStore: DriversActiveStore,
     private tableService: TruckassistTableService
   ) {}
 
