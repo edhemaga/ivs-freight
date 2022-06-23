@@ -3,22 +3,20 @@
 
   <!-- TOP SECTION -->
 
-  <div class="d-flex flex-column text-center top-section">
-    <p class="d-flex justify-content-center noselect ta-font-regular">
+  <div class="d-flex justify-content-center text-center top-section">
+    <p class="m-0 noselect ta-font-regular">
       In accordance with 391.21 & .23 of the Federal Motor Carrier Safety
-      Regulations (FMCSR), an <br />
-      applicant must list all previous work experience for the three (3) years
-      prior to the date of <br />
-      application shown on page one, as well as all commercial driving
-      experience for seven (7) years <br />
-      prior to those three years, for a total of 10 years.
+      Regulations (FMCSR), an applicant must list all<br />previous work
+      experience for the three (3) years prior to the date of application shown
+      on page one, as well as all<br />commercial driving experience for seven
+      (7) years prior to those three years, for a total of 10 years.
     </p>
   </div>
 
   <!-- MID SECTION -->
 
-  <div class="d-flex flex-column text-center mid-section">
-    <h5 class="step-subtitle noselect ta-font-bold">
+  <div class="d-flex justify-content-center text-center mid-section">
+    <h5 class="m-0 step-subtitle noselect ta-font-bold">
       Please list starting with most recent employer, use add employer link if
       needed
     </h5>
@@ -181,7 +179,7 @@
                     [inputConfig]="{
                       name: 'Phone',
                       type: 'text',
-                      label: 'Phone',
+                      label: 'Employer Phone',
                       isRequired: true,
                       placeholderIcon: 'phone',
                       mask: '(000) 000-0000'
@@ -194,7 +192,7 @@
                     [inputConfig]="{
                       name: 'Email',
                       type: 'text',
-                      label: 'Email',
+                      label: 'Employer Email',
                       isRequired: true,
                       placeholderIcon: 'email'
                     }"
@@ -211,7 +209,7 @@
                     [inputConfig]="{
                       name: 'Address',
                       type: 'text',
-                      label: 'Address, City, State Zip',
+                      label: 'Employer Address, City, State Zip',
                       isRequired: true,
                       placeholderIcon: 'address',
                       textTransform: 'capitalize'
@@ -367,7 +365,7 @@
               <!-- ACCOUNT FOR PERIOD -->
 
               <div class="d-flex">
-                <div class="mb-0 form-label-group account-for-period-group">
+                <div class="mb-0 form-label-group">
                   <app-ta-input
                     formControlName="accountForPeriod"
                     [inputConfig]="{
@@ -443,16 +441,26 @@
                   [label]="'I don’t have work experience'"
                 ></app-ta-checkbox>
               </div>
-
-              <!-- NEXT, BACK STEP -->
-
-              <app-applicant-next-step
-                (stepEvent)="onStepAction($event)"
-              ></app-applicant-next-step>
             </div>
           </form>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<!-- NEXT BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+</div>
+
+<!-- BACK BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center back-btn-container"
+>
+  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>

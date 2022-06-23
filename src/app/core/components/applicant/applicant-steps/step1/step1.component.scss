@@ -1,8 +1,9 @@
 @import 'src/theme/variables.scss';
 
 .step-container {
+  padding-top: 22px;
+
   .step-title {
-    margin: 22px auto 0 auto;
     color: $ta-blue;
     font-size: 32px;
     height: 39px;

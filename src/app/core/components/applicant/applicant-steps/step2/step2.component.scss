@@ -1,28 +1,32 @@
 @import 'src/theme/variables.scss';
 
 .step-container {
+  padding-top: 22px;
+
   .step-title {
-    color: $light-blue;
+    color: $ta-blue;
     font-size: 32px;
-    margin-top: 30px;
+    height: 39px;
   }
 
   .top-section {
-    margin-top: 20px;
-    width: 680px;
+    margin-top: 12px;
+    width: 820px;
 
     p {
       color: $bw6-2;
       font-size: 14px;
+      line-height: 22px;
     }
   }
 
   .mid-section {
     margin-top: 22px;
-    margin-bottom: 22px;
+    margin-bottom: 32px;
 
     .step-subtitle {
       font-size: 14px;
+      height: 18px;
       color: $bw6-2;
     }
   }
@@ -107,9 +111,9 @@
 
     .form-section {
       .form-label-group {
-        margin-bottom: 22px;
+        margin-bottom: 32px;
         margin-right: 12px;
-        width: 456px;
+        width: 616px;
 
         &:last-child {
           margin-right: 0;
@@ -117,31 +121,33 @@
       }
 
       .job-description-group {
-        width: 190px;
+        width: 296px;
       }
 
       .date-group {
-        width: 121px;
+        width: 148px;
       }
 
       .phone-group {
-        width: 169px;
+        width: 229px;
       }
 
       .email-group {
-        width: 275px;
+        width: 375px;
       }
 
       .address-group {
-        width: 380px;
+        width: 481px;
+        margin-bottom: 12px !important;
       }
 
       .address-unit-group {
-        width: 64px;
+        width: 123px;
+        margin-bottom: 12px !important;
       }
 
       .driving-position-group {
-        margin-bottom: 22px;
+        margin-bottom: 32px;
       }
 
       .truck-type-group {
@@ -188,7 +194,7 @@
       }
 
       .reason-for-leaving-group {
-        width: 456px;
+        width: 616px;
       }
 
       .edit-btn-group {
@@ -239,4 +245,20 @@
       }
     }
   }
+}
+
+.next-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  right: 42px;
+}
+
+.back-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  left: 42px;
 }
