@@ -20,6 +20,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
+import moment from 'moment';
 @Component({
   selector: 'app-driver-details',
   templateUrl: './driver-details.component.html',
