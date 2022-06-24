@@ -120,7 +120,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
-            this.viewData.splice(driverIndex, 1);
+            this.viewData.splice(driverIndex, 1);  
             clearInterval(inetval);
           }, 1000);
         }
