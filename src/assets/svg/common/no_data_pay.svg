@@ -3,11 +3,11 @@
     <clipPath id="clip-path">
       <path id="Path_38049" data-name="Path 38049" d="M-21484-5877s-17.549-11.863-26-18-18.807-12.849-27-19-13.359-10-26-10-14.75,37-27,37-13.68-35-26-35-21.836,40.46-27,50-17.633,15-26,15-17.5-11.764-27-17-16.807-7.589-26-10-19.344-4.966-27-8-16.314-13-26-13-19.7,10.621-27,16-16.123,8.9-26,13-27,15-27,15v22h371Z" transform="translate(22454 6820)" fill="none" stroke="#aaa" stroke-width="3"/>
     </clipPath>
-    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+    <linearGradient id="chart-linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
       <stop offset="0" stop-color="#d4dff4"/>
       <stop offset="1" stop-color="#f5fafc"/>
     </linearGradient>
-    <linearGradient id="linear-gradient-2" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+    <linearGradient id="chart-linear-gradient-2" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
       <stop offset="0" stop-color="#ffe1e4"/>
       <stop offset="1" stop-color="snow"/>
     </linearGradient>
@@ -25,8 +25,8 @@
     <path id="Path_38832" data-name="Path 38832" d="M0,0H407" transform="translate(-16465 -6526)" fill="none" stroke="#dadada" stroke-linecap="round" stroke-width="1" stroke-dasharray="0 3"/>
     <path id="Path_38833" data-name="Path 38833" d="M0,0H407" transform="translate(-16464 -6454)" fill="none" stroke="#dadada" stroke-linecap="round" stroke-width="1" stroke-dasharray="0 3"/>
     <g id="Mask_Group_63785" data-name="Mask Group 63785" transform="translate(-17037 -7411)" clip-path="url(#clip-path)">
-      <rect id="Rectangle_70348" data-name="Rectangle 70348" width="391" height="56" transform="translate(586 925)" fill="url(#linear-gradient)"/>
-      <rect id="Rectangle_70349" data-name="Rectangle 70349" width="391" height="40" transform="translate(586 885)" fill="url(#linear-gradient-2)"/>
+      <rect id="Rectangle_70348" data-name="Rectangle 70348" width="391" height="56" transform="translate(586 925)" fill="url(#chart-linear-gradient)"/>
+      <rect id="Rectangle_70349" data-name="Rectangle 70349" width="391" height="40" transform="translate(586 885)" fill="url(#chart-linear-gradient-2)"/>
     </g>
     <path id="Path_38834" data-name="Path 38834" d="M0,0H408" transform="translate(-16465 -6486)" fill="none" stroke="#ffebee" stroke-width="1"/>
     <g id="Mask_Group_63787" data-name="Mask Group 63787" transform="translate(-17037 -7411)" clip-path="url(#clip-path-2)">

@@ -27,6 +27,158 @@ export class TruckDetailsCardComponent implements OnInit {
   @Input() truck: TruckResponse | any;
   public truck_active_id: number = +this.activeted_route.snapshot.params['id'];
   public truck_list: any[] = this.trucksQuery.getAll();
+
+  public barChartLegend: any[] = [
+    {
+      title: 'Miles Per Gallon',
+      value: '0.00',
+      image: 'assets/svg/common/round_yellow.svg',
+      sufix: 'mi',
+      elementId: 1
+    },
+    {
+      title: 'Revenue',
+      value: '0.00',
+      image: 'assets/svg/common/round_blue.svg',
+      prefix: '$',
+      elementId: 0
+    }
+  ];
+
+  public barChartLegend2: any[] = [
+    {
+      title: 'Miles',
+      value: '150,257.7',
+      image: 'assets/svg/common/round_blue_light.svg',
+      sufix: 'mi',
+      elementId: 1
+    },
+    {
+      title: 'Revenue',
+      value: '190,568.85',
+      image: 'assets/svg/common/round_blue.svg',
+      prefix: '$',
+      elementId: 0
+    }
+  ];
+
+  public mixedBarChartLegend: any[] = [
+    {
+      title: 'Avg. Rate',
+      value: 2.37,
+      image: 'assets/svg/common/round_blue.svg',
+      prefix: '$',
+      elementId: 0
+    },
+    {
+      title: 'Highest Rate',
+      value: 2.86,
+      image: 'assets/svg/common/round_green.svg',
+      prefix: '$',
+      elementId: [1, 0]
+    },
+    {
+      title: 'Lowest Rate',
+      value: 1.29,
+      image: 'assets/svg/common/round_yellow.svg',
+      prefix: '$',
+      elementId: [1, 1]
+    }
+  ];
+
+  public paymentChartLegend: any[] = [
+    {
+      title: 'Avg. Pay Period',
+      value: 27,
+      image: 'assets/svg/common/round_blue_red.svg',
+      sufix: 'days',
+      elementId: 0,
+      titleReplace: 'Pay Period',
+      imageReplace: 'assets/svg/common/round_blue.svg'
+    },
+    {
+      title: 'Pay Term',
+      value: 32,
+      image: 'assets/svg/common/dash_line.svg',
+      sufix: 'days'
+    }
+  ];
+
+  public barAxes: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 60,
+      stepSize: 15,
+      showGridLines: true
+    },
+    verticalRightAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 24000,
+      stepSize: 6000,
+      showGridLines: false
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false
+    }
+  };
+
+  public barAxes2: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 60,
+      stepSize: 15,
+      showGridLines: true
+    },
+    verticalRightAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 24000,
+      stepSize: 6000,
+      showGridLines: false
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false
+    }
+  };
+
+  public mixedBarAxes: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 1,
+      maxValue: 3,
+      stepSize: 0.5,
+      showGridLines: true,
+      decimal: true
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false
+    }
+  };
+
+  public paymentAxes: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 52,
+      stepSize: 13,
+      showGridLines: true
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false
+    }
+  };
+
   constructor(
     private activeted_route: ActivatedRoute,
     private modalService: ModalService,
