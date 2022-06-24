@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class DashboardTopDriverComponent implements OnInit {
 
   driverTopSwitchTabs: any[] = [];
+  driverTopSwitch: any[] = [];
 
   constructor() { }
 
@@ -18,6 +19,27 @@ export class DashboardTopDriverComponent implements OnInit {
       },
       {
         name: 'Revenue'
+      }
+    ];
+
+    this.driverTopSwitch = [
+      {
+        name: 'Today'
+      },
+      {
+        name: 'WTD'
+      },
+      {
+        name: 'MTD'
+      },
+      {
+        name: 'YTD'
+      },
+      {
+        name: 'All Time'
+      },
+      {
+        name: 'Custom'
       }
     ]
   }

@@ -10,6 +10,7 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        margin-bottom: 11px;
 
         .dashboard-top-driver-header-box-list{
             min-width: 34px;
@@ -86,6 +87,10 @@
                     border-radius: 1px;
                     background-color: #F3F3F3;
                     margin: 0px 4px;
+
+                    &.different-margin{
+                        margin: 0px 6px;
+                    }
                 }
 
                 .dashboard-top-driver-header-toolbar-search-icon{
@@ -104,6 +109,137 @@
                             path{
                                 fill: #AAAAAA;
                             }
+                        }
+                    }
+                }
+
+                .dashboard-top-driver-header-toolbar-switch-right{
+                    height: 32px;
+                }
+
+                .dashboard-top-driver-header-toolbar-dropdown{
+                    position: relative;
+                    width: 108px;
+                    height: 32px;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    border-radius: 3px;
+                    background-color: #fff;
+
+                    .dashboard-top-driver-header-toolbar-dropdown-text{
+                        font-size: 14px;
+                        font-weight: 800;
+                        color: #6C6C6C;
+                        padding-left: 12px;
+                        box-sizing: border-box;
+                    }
+
+                    .dashboard-top-driver-header-toolbar-dropdown-arrow{
+                        position: absolute;
+                        width: 18px;
+                        height: 18px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        top: 50%;
+                        right: 8px;
+                        transform: translateY(-50%);
+    
+                        svg-icon{
+                            svg{
+                                display: flex;
+                                width: 13px;
+                                height: 8.15px;
+    
+                                path{
+                                    fill: #B7B7B7;
+                                }
+                            }
+                        }                            
+                    }
+                }
+            }
+        }
+    }
+
+    .dashboard-top-driver-body-holder{
+        width: 100%;
+        height: 366px;
+        border-radius: 3px;
+        background-color: #fff;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        .dashboard-top-driver-body-list-holder{
+            width: 460px;
+            height: 366px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-direction: column;
+            overflow: auto;
+
+            .dashboard-top-driver-body-list-items-holder{
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                flex-direction: column;
+
+                .dashboard-top-driver-body-list-items{
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 13px 12px 8px 12px;
+                    box-sizing: border-box;
+
+                    .dashboard-top-driver-body-list-frame{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+
+                        .dashboard-top-driver-body-list-id{
+                            width: 30px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #6C6C6C;
+                            margin-right: 16px;
+                        }
+    
+                        .dashboard-top-driver-body-list-circle{
+                            width: 14px;
+                            height: 14px;
+                            border-radius: 100%;
+                            background-color: #8A9AEF;
+                        }    
+
+                        .dashboard-top-driver-body-list-name{
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #6C6C6C;
+                            padding-left: 6px;
+                            box-sizing: border-box;
+                        }
+
+                        .dashboard-top-driver-body-list-price{
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: #6C6C6C;
+                        }
+
+                        .dashboard-top-driver-body-list-percent{
+                            width: 56px;
+                            font-size: 14px;
+                            font-weight: 500;
+                            color: #6C6C6C;
+                            padding-left: 26px;
+                            box-sizing: border-box;
                         }
                     }
                 }

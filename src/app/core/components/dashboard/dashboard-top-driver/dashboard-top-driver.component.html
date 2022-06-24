@@ -22,6 +22,40 @@
                     <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
                 </div>
             </div>
+            <div class="dashboard-top-driver-header-toolbar-items-holder">
+                <div class="dashboard-top-driver-header-toolbar-switch-right">
+                    <app-ta-tab-switch
+                    [tabs]="driverTopSwitch"
+                    (switchClicked)="changeDriverSwitchTabs($event)" 
+                    [type]="'performance-switch'"    
+                    >
+                    </app-ta-tab-switch>
+                </div>
+                <div class="dashboard-top-driver-header-toolbar-border different-margin"></div>
+                <div class="dashboard-top-driver-header-toolbar-dropdown">
+                    <div class="dashboard-top-driver-header-toolbar-dropdown-text">Monthly</div>
+                    <div class="dashboard-top-driver-header-toolbar-dropdown-arrow">
+                        <svg-icon src="assets/svg/common/calendar/arrow-right.svg"></svg-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-top-driver-body-holder">
+        <div class="dashboard-top-driver-body-list-holder">
+            <div class="dashboard-top-driver-body-list-items-holder">
+                <div class="dashboard-top-driver-body-list-items">
+                    <div class="dashboard-top-driver-body-list-frame">
+                        <div class="dashboard-top-driver-body-list-id">1</div>
+                        <div class="dashboard-top-driver-body-list-circle"></div> 
+                        <div class="dashboard-top-driver-body-list-name">Denis Rodman</div>   
+                    </div>
+                    <div class="dashboard-top-driver-body-list-frame">
+                        <div class="dashboard-top-driver-body-list-price">$123.45K</div>
+                        <div class="dashboard-top-driver-body-list-percent">8.53%</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
