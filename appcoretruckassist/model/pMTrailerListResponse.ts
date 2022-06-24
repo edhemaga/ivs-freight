@@ -10,9 +10,11 @@
  * Do not edit the class manually.
  */
 import { PMTrailerResponsePagination } from './pMTrailerResponsePagination';
+import { TrailerMinimalResponse } from './trailerMinimalResponse';
 
 
 export interface PMTrailerListResponse { 
+    trailer?: TrailerMinimalResponse;
     pagination?: PMTrailerResponsePagination;
 }
 

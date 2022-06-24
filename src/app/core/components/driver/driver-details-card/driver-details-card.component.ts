@@ -21,7 +21,7 @@ import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
-import { DriversQuery } from '../state/driver-active-state/driver-active.query';
+import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 
 @Component({
@@ -114,7 +114,7 @@ export class DriverDetailsCardComponent
   constructor(
     private sanitazer: DomSanitizer,
     private modalService: ModalService,
-    private driversQuery: DriversQuery,
+    private driversQuery: DriversActiveQuery,
     private activated_route: ActivatedRoute,
     private detailsPageDriverSer: DetailsPageService,
     private sumArr: SumArraysPipe

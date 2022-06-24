@@ -9,12 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { PMTrailerResponse } from './pMTrailerResponse';
 
 
 export interface PMTrailerUnitResponse { 
     id?: number;
-    trailerId?: number;
+    trailer?: TrailerMinimalResponse;
+    odometer?: number | null;
     pMs?: Array<PMTrailerResponse> | null;
     invoice?: string | null;
     lastShop?: string | null;

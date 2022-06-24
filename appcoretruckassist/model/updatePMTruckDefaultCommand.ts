@@ -13,7 +13,8 @@ import { PMStatus } from './pMStatus';
 
 
 export interface UpdatePMTruckDefaultCommand { 
-    id?: number;
+    id?: number | null;
+    title?: string | null;
     mileage?: number;
     status?: PMStatus;
 }
