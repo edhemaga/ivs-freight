@@ -1,3 +1,5 @@
+import { DriverListResponse } from './../../../../../../appcoretruckassist/model/driverListResponse';
+import { Observable } from 'rxjs';
 import { SumArraysPipe } from './../../../pipes/sum-arrays.pipe';
 import { card_component_animation } from './../../shared/animations/card-component.animations';
 import {
@@ -27,6 +29,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { Clipboard } from '@angular/cdk/clipboard';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversQuery } from '../state/driver-active-state/driver-active.query';
+import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
 // import { DriversQueryIn } from '../state/driver-inactive-state/driver-inactive.query';
 @Component({
   selector: 'app-driver-details-card',
@@ -85,20 +88,24 @@ export class DriverDetailsCardComponent
     private sumArr: SumArraysPipe,
     private clipboar: Clipboard,
     private cdRef: ChangeDetectorRef,
-    // private driverQueryIn: DriversQueryIn
     private tableService: TruckassistTableService
   ) {}
   ngOnChanges(changes: SimpleChanges) {
-    this.note.patchValue(changes.driver.currentValue.note);
-    this.getExpireDate(changes.driver.currentValue);
-    this.getYearsAndDays(changes.driver.currentValue);
-    this.widthOfProgress();
-    this.templateCard;
-    if (this.templateCard == true) {
-      this.hideArrow = true;
-    } else {
-      this.hideArrow = false;
+    console.log(changes);
+    if(!changes?.driver?.firstChange && changes?.driver){
+      this.note.patchValue(changes.driver.currentValue.note);
+      this.getExpireDate(changes.driver.currentValue);
+      this.getYearsAndDays(changes.driver.currentValue);
+      this.widthOfProgress();
     }
+   if(changes?.driver?.firstChange){
+
+     if (this.templateCard == true) {
+       this.hideArrow = true;
+     } else {
+       this.hideArrow = false;
+     }
+   }
   }
 
   ngOnInit(): void {

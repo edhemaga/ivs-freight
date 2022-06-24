@@ -1,7 +1,6 @@
 import { TruckDetailsItemComponent } from './truck-details-item/truck-details-item.component';
 import { TruckDetailsComponent } from './truck-details.component';
 import { NgModule } from "@angular/core";
-import { RenderMultipleItemsPipe } from './truck-details-item/renderMultipleItems.pipe';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
@@ -13,7 +12,6 @@ import { TruckDetailsCardComponent } from '../truck-details-card/truck-details-c
     declarations:[
         TruckDetailsComponent,
         TruckDetailsItemComponent,
-        RenderMultipleItemsPipe,
         TruckDetailsCardComponent
        
     ],

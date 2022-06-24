@@ -49,21 +49,10 @@
           <div class="open-now-wrapper">
             <div class="open-now-icon-text">
               <div class="open-header">Open Now</div>
-              <svg
-                class="svg-area"
-                width="18px"
-                height="18px"
-                viewBox="0 0 400 400"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-              >
-                <g transform="translate(200,200)">
-                  <circle id="core" cx="0" cy="0" r="32"></circle>
-
-                  <circle id="radar" cx="0" cy="0" r="32"></circle>
-                </g>
-              </svg>
+              <svg-icon
+                class="icon-pulse"
+                src="assets/svg/common/ic_pulse_circle.svg"
+              ></svg-icon>
             </div>
             <div *ngIf="shopResponse?.openHoursToday" class="open-time">
               {{ shopResponse?.openHoursToday }}
@@ -137,8 +126,8 @@
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
       >
         <div class="charts-template perfomance">
-          <app-tab-switcher [tabs]="tabs" [customClass]="'chart-tabs'">
-          </app-tab-switcher>
+          <app-ta-tab-switch [type]="'driver-details-popup'" [tabs]="tabs">
+          </app-ta-tab-switch>
 
           <div id="chart">
             <app-ta-chart

@@ -33,7 +33,7 @@
                 <span class="date">{{ repairs.note }}</span>
               
                 <span *ngIf="repairs.invoice && repairs.total" class="cost"
-                  >${{ repairs.total }}</span
+                  >{{ repairs.total | formatCurrency }}</span
                 >
                 <div *ngIf="!repairs.invoice && !repairs.total" class="button-wrapper-shop">
                   Finish Order
@@ -74,7 +74,7 @@
             <span class="unit">{{ vehicle.unitNumber }}</span>
             <svg-icon class="vehicle-icon" src="assets/svg/common/trailers/{{ vehicle.logoName }}"></svg-icon>
             <span class="date">{{ vehicle.totalOrder }}</span>
-            <span class="cost">${{ vehicle.totalCost }}</span>
+            <span class="cost">{{ vehicle.totalCost  | formatCurrency}}</span>
           </div>
           <div class="divider"></div>
         </div>

@@ -168,7 +168,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
     this.arrayCDL = [];
     this.arrayMedical = [];
     this.arrayMvrs = [];
-    if (data.cdls.length > 0) {
+  
       data?.cdls.map((el) => {
         if (moment(el.expDate).isAfter(moment())) {
           this.arrayCDL.push(false);
@@ -177,8 +177,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
           this.arrayCDL.push(true);
         }
       });
-    }
-    if (data.medicals.length > 0) {
+    
+ 
       data?.medicals.map((el) => {
         if (moment(el.expDate).isAfter(moment())) {
           this.arrayMedical.push(false);
@@ -187,7 +187,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
           this.arrayMedical.push(true);
         }
       });
-    }
+    
     // if(data.mvrs.length>0){
     //   data?.mvrs.map((el)=>{
     //     if(moment(el.issueDate).isAfter(moment())){

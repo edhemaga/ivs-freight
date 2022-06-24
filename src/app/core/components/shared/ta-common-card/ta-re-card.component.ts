@@ -54,9 +54,7 @@ export class TaReCardComponent implements OnInit, OnChanges {
     let currentDate = moment().format('MM/DD/YYYY');
     if (moment(this.expDateClose).isBefore(currentDate) || this.isDeactivated) {
       this.isCardOpen = false;
-    }
-    console.log(this.expDateClose);
-    
+    }    
   }
 
   public toggleCard(event: any) {

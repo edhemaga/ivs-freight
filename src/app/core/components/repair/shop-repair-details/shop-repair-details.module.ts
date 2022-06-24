@@ -5,7 +5,6 @@ import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { ShopRepairDetailsRoutes } from './shop-repair-details.routing';
 import { ShopRepairDetailsComponent } from './shop-repair-details.component';
-import { RenderMultipleItemsPipe } from './shop-repair-details-item/renderMultipleItems.pipe';
 import { ShopRepairDetailsItemComponent } from './shop-repair-details-item/shop-repair-details-item.component';
 import { PipesModule } from 'src/app/core/pipes/pipes.module';
 import { ShopRepairCardViewComponent } from '../shop-repair-card-view/shop-repair-card-view.component';
@@ -14,7 +13,6 @@ import { ShopRepairCardViewComponent } from '../shop-repair-card-view/shop-repai
   declarations: [
     ShopRepairDetailsComponent,
     ShopRepairDetailsItemComponent,
-    RenderMultipleItemsPipe,
     ShopRepairCardViewComponent
   ],
   exports:[PipesModule,ShopRepairCardViewComponent,SharedModule],

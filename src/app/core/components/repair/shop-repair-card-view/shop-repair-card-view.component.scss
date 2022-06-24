@@ -1,6 +1,11 @@
 @import '../shop-repair-details/shop-repair-details-item/shop-repair-details-item.component.scss';
 
-
+.icon-pulse{
+	margin-left: 3px;
+	svg{
+		display: flex;
+	}
+}
 .svg-area{
     display: block;
 }

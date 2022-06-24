@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { RepairShopResponse } from 'appcoretruckassist';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
@@ -9,7 +9,7 @@ import { ShopQuery } from '../state/shop-state/shop.query';
   templateUrl: './shop-repair-card-view.component.html',
   styleUrls: ['./shop-repair-card-view.component.scss'],
 })
-export class ShopRepairCardViewComponent implements OnInit {
+export class ShopRepairCardViewComponent implements OnInit,OnChanges {
   @Input() shopResponse: RepairShopResponse | any;
   @Input() templateCard: boolean;
   public noteControl: FormControl = new FormControl();
@@ -25,8 +25,13 @@ export class ShopRepairCardViewComponent implements OnInit {
   ngOnInit(): void {
     this.noteControl.patchValue(this.shopResponse.note);
     this.getShopsDropdown();
-    this.getActiveServices();
+    this.getActiveServices(this.shopResponse);
     this.tabsSwitcher();
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.getActiveServices(changes.shopResponse.currentValue);
+      console.log(changes);
+      
   }
   /**Function return id */
   public identity(index: number, item: any): number {
@@ -93,8 +98,8 @@ export class ShopRepairCardViewComponent implements OnInit {
     }
   }
 
-  public getActiveServices() {
-    let res = this.shopResponse.serviceTypes.filter((item) => item.active);
+  public getActiveServices(data:RepairShopResponse) {
+    let res = data.serviceTypes.filter((item) => item.active);
     this.count = res.length;
     return this.count;
   }

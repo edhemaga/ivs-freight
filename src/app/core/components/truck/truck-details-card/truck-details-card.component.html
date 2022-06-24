@@ -291,12 +291,12 @@
         [isCardOpen]="true"
       >
         <div class="charts-template perfomance">
-          <app-tab-switcher
-            [customClass]="'chart-tabs'"
+          <app-ta-tab-switch
+            [type]="'driver-details-popup'"
             (switchClicked)="changeTabPerfomance($event)"
             [tabs]="buttonsArrayPerfomance"
           >
-          </app-tab-switcher>
+          </app-ta-tab-switch>
 
           <div class="charts-item-wrapper revenue">
             <div class="charts-template-item">
@@ -327,12 +327,12 @@
         class="item-cards"
       >
         <div class="charts-template perfomance">
-          <app-tab-switcher
-            [customClass]="'chart-tabs'"
+          <app-ta-tab-switch
             (switchClicked)="changeTabFuel($event)"
             [tabs]="buttonsArrayFuel"
+            [type]="'driver-details-popup'"
           >
-          </app-tab-switcher>
+          </app-ta-tab-switch>
           <app-ta-chart
             [chartConfig]="{
               legendAttributes: [
@@ -433,12 +433,12 @@
         [isCardOpen]="true"
       >
         <div class="charts-template perfomance">
-          <app-tab-switcher
-            [customClass]="'chart-tabs'"
+          <app-ta-tab-switch
+            [type]="'driver-details-popup'"
             (switchClicked)="changeTabRevenue($event)"
             [tabs]="buttonsArrayRevenue"
           >
-          </app-tab-switcher>
+          </app-ta-tab-switch>
           <app-ta-chart
             [chartConfig]="{
               legendAttributes: [

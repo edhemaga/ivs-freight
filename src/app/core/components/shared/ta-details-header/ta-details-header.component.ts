@@ -43,18 +43,13 @@ export class TaCommonHeaderComponent implements OnInit {
 
  
   public openModal(val: any) {
-    console.log(val);
     this.openModalAction.emit(val);
   }
-  public makeRequestFun(req:any){
-    console.log(req);
-    
+  public makeRequestFun(req:any){    
     this.makeRequest.emit(req);
   }
   /**Function for drop acitons */
-  public dropAct(action: any) {
-    console.log(action);
-    
+  public dropAct(action: any) {    
     this.dropActions.emit(action);
   }
  public changeDataArrowUpFun(val:any){

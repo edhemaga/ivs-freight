@@ -60,10 +60,6 @@ export class TruckDetailsItemComponent implements OnInit {
     componentData.showDetails = !componentData.showDetails;
   }
 
-  public setFutureYear(date: any) {
-    return moment(date).add(1, 'years').format('MM/DD/YY');
-  }
-
   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataEdit = {

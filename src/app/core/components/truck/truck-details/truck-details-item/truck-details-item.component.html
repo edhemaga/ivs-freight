@@ -82,7 +82,7 @@
           [cardDocumentCounter]="1"
           [cardNameCommon]="fhwa.issueDate | formatDateP"
           (resizePage)="toggleResizePage(i)"
-          [expDateClose]="setFutureYear(fhwa.issueDate)"
+          [expDateClose]="fhwa.issueDate | setFutureYear "
           [optionsId]="fhwa.id"
           (dropActions)="optionsEvent($event, 'edit-inspection')"
         >
@@ -94,7 +94,7 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="setFutureYear(fhwa.issueDate)"
+                    [expireDate]=" fhwa.issueDate | setFutureYear"
                     [startDate]="fhwa.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >

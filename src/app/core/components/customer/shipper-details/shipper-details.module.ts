@@ -6,14 +6,11 @@ import { ShipperDetailsSingleComponent } from './shipper-details-single/shipper-
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { ShipperDetailsRoutes } from './shipper-details.routing';
 import { SharedModule } from '../../shared/shared.module';
-import { PipesModule } from 'src/app/core/pipes/pipes.module';
-import { RenderMultipleItemsPipe } from './shipper-details-single/renderMultipleItems.pipe';
 
 @NgModule({
   declarations: [
     ShipperDetailsComponent,
     ShipperDetailsSingleComponent,
-    RenderMultipleItemsPipe,
     ShipperCardViewComponent,
   ],
   exports: [SharedModule, ShipperCardViewComponent],

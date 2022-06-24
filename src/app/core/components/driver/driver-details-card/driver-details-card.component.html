@@ -253,7 +253,7 @@
             <div class="addres-value-icon">
               <div class="addres-value">
             
-                {{ offDuty?.address.address }}
+                {{ offDuty?.address?.address ? offDuty.address.address : '' }}
               
               </div>
               <span
@@ -545,13 +545,6 @@
           [type]="'driver-details-popup'"
           >
           </app-ta-tab-switch>  
-        
-          <!-- <app-tab-switcher
-            [tabs]="tabsDriver"
-            (switchClicked)="changeTab($event)" 
-            [customClass]="'chart-tabs'"
-          >
-          </app-tab-switcher> -->
           
           <div id="chart">
             <app-ta-chart

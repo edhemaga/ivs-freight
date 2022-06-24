@@ -73,8 +73,10 @@
 
             .dots-vertical {
                 width: 5px;
-                height: 18px !important;
-                top: -1px;
+                height: 20px !important;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
                 position: relative;
                 margin-left: 12px;
             }

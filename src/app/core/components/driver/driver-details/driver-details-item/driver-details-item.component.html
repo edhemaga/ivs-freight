@@ -388,7 +388,7 @@
           [cardDocumentCounter]="6"
           (resizePage)="toggleResizePage(i)"
           [cardNameCommon]="mvr?.issueDate | formatDateP"
-          [expDateClose]="setFutureYear(mvr?.issueDate)"
+          [expDateClose]="mvr?.issueDate | setFutureYear"
           [optionsId]="mvr.id"
           (dropActions)="optionsEvent($event, 'edit-mvr')"
         >
@@ -401,7 +401,7 @@
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
                     [startDate]="mvr?.issueDate | formatDateP"
-                    [expireDate]="setFutureYear(mvr?.issueDate)"
+                    [expireDate]="mvr?.issueDate | setFutureYear"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
