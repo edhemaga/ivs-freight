@@ -4,12 +4,12 @@ import { DriverListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { DriverTService } from '../driver.service';
-import { DriversState, DriversActiveStore } from './driver-active.store';
+import { DriversActiveState, DriversActiveStore } from './driver-active.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DriverActiveResolver implements Resolve<DriversState> {
+export class DriverActiveResolver implements Resolve<DriversActiveState> {
   pageIndex: number = 1;
   pageSize: number = 25;
 
@@ -17,7 +17,7 @@ export class DriverActiveResolver implements Resolve<DriversState> {
     private driverService: DriverTService,
     private driversStore: DriversActiveStore
   ) {}
-  resolve(): Observable<DriversState | boolean> {
+  resolve(): Observable<DriversActiveState | boolean> {
     return this.driverService
       .getDrivers(1, this.pageIndex, this.pageSize)
       .pipe(
@@ -25,6 +25,7 @@ export class DriverActiveResolver implements Resolve<DriversState> {
           return of('No drivers data...');
         }),
         tap((driverPagination: DriverListResponse) => {
+          console.log('Poziva se DriverActiveResolver')
           localStorage.setItem('driverTableCount', JSON.stringify({
             active: driverPagination.activeCount,
             inactive: driverPagination.inactiveCount

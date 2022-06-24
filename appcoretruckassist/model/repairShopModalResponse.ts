@@ -9,11 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
+import { ServiceTypeResponse } from './serviceTypeResponse';
 
 
 export interface RepairShopModalResponse { 
-    serviceTypes?: Array<EnumValue> | null;
+    serviceTypes?: Array<ServiceTypeResponse> | null;
     daysOfWeek?: Array<EnumValue> | null;
+    banks?: Array<BankResponse> | null;
 }
 

@@ -24,6 +24,8 @@ export interface TodoResponse {
     departments?: Array<DepartmentResponse> | null;
     deadline?: string;
     note?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
     todoUsers?: Array<TodoUserResponse> | null;
     comments?: Array<CommentResponse> | null;
 }

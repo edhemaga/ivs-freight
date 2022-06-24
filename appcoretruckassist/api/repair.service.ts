@@ -17,8 +17,6 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { CreatePMTrailerDefaultCommand } from '../model/models';
-import { CreatePMTruckDefaultCommand } from '../model/models';
 import { CreateRepairCommand } from '../model/models';
 import { CreateResponse } from '../model/models';
 import { PMTrailerListResponse } from '../model/models';
@@ -31,11 +29,11 @@ import { ProblemDetails } from '../model/models';
 import { RepairListResponse } from '../model/models';
 import { RepairModalResponse } from '../model/models';
 import { RepairResponse } from '../model/models';
-import { UpdatePMTrailerDefaultCommand } from '../model/models';
-import { UpdatePMTruckDefaultCommand } from '../model/models';
+import { UpdatePMTrailerListDefaultCommand } from '../model/models';
+import { UpdatePMTrailerUnitListCommand } from '../model/models';
+import { UpdatePMTruckDefaultListCommand } from '../model/models';
+import { UpdatePMTruckUnitListCommand } from '../model/models';
 import { UpdateRepairCommand } from '../model/models';
-import { UpdateTrailerPMUnitCommand } from '../model/models';
-import { UpdateTruckPMUnitCommand } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -515,76 +513,14 @@ export class RepairService {
     }
 
     /**
-     * @param createPMTrailerDefaultCommand 
+     * @param updatePMTrailerListDefaultCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairPmTrailerPost(createPMTrailerDefaultCommand?: CreatePMTrailerDefaultCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiRepairPmTrailerPost(createPMTrailerDefaultCommand?: CreatePMTrailerDefaultCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiRepairPmTrailerPost(createPMTrailerDefaultCommand?: CreatePMTrailerDefaultCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiRepairPmTrailerPost(createPMTrailerDefaultCommand?: CreatePMTrailerDefaultCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        let credential: string | undefined;
-        // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/repair/pm/trailer`,
-            createPMTrailerDefaultCommand,
-            {
-                responseType: <any>responseType,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param updatePMTrailerDefaultCommand 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiRepairPmTrailerPut(updatePMTrailerDefaultCommand?: UpdatePMTrailerDefaultCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiRepairPmTrailerPut(updatePMTrailerDefaultCommand?: UpdatePMTrailerDefaultCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiRepairPmTrailerPut(updatePMTrailerDefaultCommand?: UpdatePMTrailerDefaultCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiRepairPmTrailerPut(updatePMTrailerDefaultCommand?: UpdatePMTrailerDefaultCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiRepairPmTrailerPut(updatePMTrailerListDefaultCommand?: UpdatePMTrailerListDefaultCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiRepairPmTrailerPut(updatePMTrailerListDefaultCommand?: UpdatePMTrailerListDefaultCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiRepairPmTrailerPut(updatePMTrailerListDefaultCommand?: UpdatePMTrailerListDefaultCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiRepairPmTrailerPut(updatePMTrailerListDefaultCommand?: UpdatePMTrailerListDefaultCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -627,7 +563,7 @@ export class RepairService {
         }
 
         return this.httpClient.put<object>(`${this.configuration.basePath}/api/repair/pm/trailer`,
-            updatePMTrailerDefaultCommand,
+            updatePMTrailerListDefaultCommand,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -842,14 +778,14 @@ export class RepairService {
     }
 
     /**
-     * @param updateTrailerPMUnitCommand 
+     * @param updatePMTrailerUnitListCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairPmTrailerUnitPut(updateTrailerPMUnitCommand?: UpdateTrailerPMUnitCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiRepairPmTrailerUnitPut(updateTrailerPMUnitCommand?: UpdateTrailerPMUnitCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiRepairPmTrailerUnitPut(updateTrailerPMUnitCommand?: UpdateTrailerPMUnitCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiRepairPmTrailerUnitPut(updateTrailerPMUnitCommand?: UpdateTrailerPMUnitCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiRepairPmTrailerUnitPut(updatePMTrailerUnitListCommand?: UpdatePMTrailerUnitListCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiRepairPmTrailerUnitPut(updatePMTrailerUnitListCommand?: UpdatePMTrailerUnitListCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiRepairPmTrailerUnitPut(updatePMTrailerUnitListCommand?: UpdatePMTrailerUnitListCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiRepairPmTrailerUnitPut(updatePMTrailerUnitListCommand?: UpdatePMTrailerUnitListCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -892,7 +828,7 @@ export class RepairService {
         }
 
         return this.httpClient.put<object>(`${this.configuration.basePath}/api/repair/pm/trailer/unit`,
-            updateTrailerPMUnitCommand,
+            updatePMTrailerUnitListCommand,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -1044,76 +980,14 @@ export class RepairService {
     }
 
     /**
-     * @param createPMTruckDefaultCommand 
+     * @param updatePMTruckDefaultListCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairPmTruckPost(createPMTruckDefaultCommand?: CreatePMTruckDefaultCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiRepairPmTruckPost(createPMTruckDefaultCommand?: CreatePMTruckDefaultCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiRepairPmTruckPost(createPMTruckDefaultCommand?: CreatePMTruckDefaultCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiRepairPmTruckPost(createPMTruckDefaultCommand?: CreatePMTruckDefaultCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        let credential: string | undefined;
-        // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/repair/pm/truck`,
-            createPMTruckDefaultCommand,
-            {
-                responseType: <any>responseType,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param updatePMTruckDefaultCommand 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiRepairPmTruckPut(updatePMTruckDefaultCommand?: UpdatePMTruckDefaultCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiRepairPmTruckPut(updatePMTruckDefaultCommand?: UpdatePMTruckDefaultCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiRepairPmTruckPut(updatePMTruckDefaultCommand?: UpdatePMTruckDefaultCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiRepairPmTruckPut(updatePMTruckDefaultCommand?: UpdatePMTruckDefaultCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiRepairPmTruckPut(updatePMTruckDefaultListCommand?: UpdatePMTruckDefaultListCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiRepairPmTruckPut(updatePMTruckDefaultListCommand?: UpdatePMTruckDefaultListCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiRepairPmTruckPut(updatePMTruckDefaultListCommand?: UpdatePMTruckDefaultListCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiRepairPmTruckPut(updatePMTruckDefaultListCommand?: UpdatePMTruckDefaultListCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -1156,7 +1030,7 @@ export class RepairService {
         }
 
         return this.httpClient.put<object>(`${this.configuration.basePath}/api/repair/pm/truck`,
-            updatePMTruckDefaultCommand,
+            updatePMTruckDefaultListCommand,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -1371,14 +1245,14 @@ export class RepairService {
     }
 
     /**
-     * @param updateTruckPMUnitCommand 
+     * @param updatePMTruckUnitListCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairPmTruckUnitPut(updateTruckPMUnitCommand?: UpdateTruckPMUnitCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiRepairPmTruckUnitPut(updateTruckPMUnitCommand?: UpdateTruckPMUnitCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiRepairPmTruckUnitPut(updateTruckPMUnitCommand?: UpdateTruckPMUnitCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiRepairPmTruckUnitPut(updateTruckPMUnitCommand?: UpdateTruckPMUnitCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiRepairPmTruckUnitPut(updatePMTruckUnitListCommand?: UpdatePMTruckUnitListCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiRepairPmTruckUnitPut(updatePMTruckUnitListCommand?: UpdatePMTruckUnitListCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiRepairPmTruckUnitPut(updatePMTruckUnitListCommand?: UpdatePMTruckUnitListCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiRepairPmTruckUnitPut(updatePMTruckUnitListCommand?: UpdatePMTruckUnitListCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -1421,7 +1295,7 @@ export class RepairService {
         }
 
         return this.httpClient.put<object>(`${this.configuration.basePath}/api/repair/pm/truck/unit`,
-            updateTruckPMUnitCommand,
+            updatePMTruckUnitListCommand,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

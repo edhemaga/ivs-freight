@@ -38,6 +38,7 @@ export interface ShipperResponse {
     status?: number;
     downRatingCount?: number;
     upRatingCount?: number;
+    currentCompanyUserRating?: number | null;
     createdAt?: string;
 }
 
