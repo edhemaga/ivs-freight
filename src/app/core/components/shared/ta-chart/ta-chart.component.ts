@@ -30,6 +30,7 @@ export class TaChartComponent implements OnInit {
   noChartImage: string = '';
   annotationHovered: any;
   saveValues: any = [];
+  removeChartMargin: boolean = false;
 
   constructor() { }
 
@@ -59,22 +60,21 @@ export class TaChartComponent implements OnInit {
   }
 
   seChartOptions() {
-    var mainthis = this;
     this.lineChartOptions = {
       responsive: false,
       cutoutPercentage: 80,
       animation: {
         duration: 0
       },
-      onHover: function(evt, elements) {
+      onHover: (evt, elements) => {
         if ( elements && elements[0] ) {
-          mainthis.setChartLegendData(elements);
-          
-          mainthis.setHoverAnnotation(elements[0]['_index']);
+          if ( this.legendAttributes && this.legendAttributes.lenght && this.legendAttributes.lenght > 0) { this.setChartLegendData(elements); }
+          this.changeChartFillProperty(evt, elements);
+          this.setHoverAnnotation(elements[0]['_index']);
         }
         else{
-          mainthis.setHoverAnnotation(null);
-          mainthis.legendAttributes = JSON.parse(JSON.stringify(mainthis.saveValues));
+          this.setHoverAnnotation(null);
+          this.legendAttributes = JSON.parse(JSON.stringify(this.saveValues));
         }
       },
       annotation: {
@@ -143,8 +143,8 @@ export class TaChartComponent implements OnInit {
                 fontColor: '#AAAAAA',
                 fontSize: 11,
                 padding: 10,
-                callback: function(value: any) {
-                  if ( mainthis.axesProperties['verticalLeftAxes'] && mainthis.axesProperties['verticalLeftAxes']['decimal'] ) {
+                callback: (value: any) => {
+                  if ( this.axesProperties['verticalLeftAxes'] && this.axesProperties['verticalLeftAxes']['decimal'] ) {
                     if (value % 1 === 0) {
                       value = value+'.0';
                     }
@@ -201,10 +201,12 @@ export class TaChartComponent implements OnInit {
        }
      ],
       xAxes: [{
+        offset: false,
           display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['visible'] : false,
           position: this.axesProperties['horizontalAxes'] && this.axesProperties['horizontalAxes']['position'] ? this.axesProperties['horizontalAxes']['position'] : 'bottom',
           gridLines: {
-              display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['showGridLines'] : false
+              display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['showGridLines'] : false,
+              borderDash: [3, 3]
           },
           ticks: {
               fontColor: '#AAAAAA',
@@ -247,6 +249,7 @@ export class TaChartComponent implements OnInit {
       this.chartHeight = this.chartConfig['chartHeight'];
       this.dottedBackground = this.chartConfig['dottedBackground'];
       this.noChartImage = this.chartConfig['noChartImage'];
+      this.removeChartMargin = this.chartConfig['removeChartMargin'];
       this.chartDataCheck(this.chartConfig['chartValues']);
     });
   }
@@ -329,5 +332,18 @@ export class TaChartComponent implements OnInit {
           if ( item2['imageReplace'] ) { item2['image'] = item2['imageReplace']; }
       });
     });
+  }
+
+  changeChartFillProperty(evt: any, elements: any) {
+    console.log(evt, )
+    console.log(elements[0]['_chart']['config']['data']['datasets'][0]['fill'], 'ELEEEEMENTSSSS');
+    //elements[0]['_chart']['config']['data']['datasets'][0]['fill'] = true;
+    elements.forEach((item, i) => {
+      //console.log(chartValue, 'ELEEEEMENTSSSS');
+      var chartValue = item['_chart']['config']['data']['datasets'][i]['data'][elements[i]['_index']];
+      console.log(item, 'iteeeeeeeeem')
+      
+    });
+    //this.seChartOptions();
   }
 }

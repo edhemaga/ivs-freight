@@ -9,7 +9,36 @@
   </div>
   <div class="row row_padding">
     <div class="col-12 p-0">
-      <app-dashboard-performance-chart></app-dashboard-performance-chart>
+      <!-- <app-dashboard-performance-chart></app-dashboard-performance-chart> -->
+      <div class="dahsboard_charts_holder">
+        <div class="dashboard_chart_title">March, 2023</div>
+        <app-ta-chart
+          [chartConfig]="lineChartConfig"
+          [axesProperties]="lineAxes"
+          [legendAttributes]="{}"
+        >
+        </app-ta-chart>
+        <app-ta-chart
+          [chartConfig]="barChartConfig"
+          [axesProperties]="barAxes"
+          [legendAttributes]="{}"
+        >
+        </app-ta-chart>
+        <div class="dashboard_chart_data">
+          <div class="chart_data_inner separate_inner">
+            <div class="chart_data_icon">
+              <svg-icon src="assets/svg/common/round_dark_grey.svg"></svg-icon>
+            </div>
+            <div class="chart_data_text">Price per Gallon</div>
+          </div>
+          <div class="chart_data_inner">
+            <div class="chart_data_icon">
+              <svg-icon src="assets/svg/common/round_light_grey.svg"></svg-icon>
+            </div>
+            <div class="chart_data_text">Load Rate per Mile</div>
+          </div>
+      </div>
+      </div>
     </div>
   </div>
   <div class="row row_padding">
