@@ -25,7 +25,6 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
           return of('No drivers data...');
         }),
         tap((driverPagination: DriverListResponse) => {
-          console.log('Poziva se DriverActiveResolver')
           localStorage.setItem('driverTableCount', JSON.stringify({
             active: driverPagination.activeCount,
             inactive: driverPagination.inactiveCount
