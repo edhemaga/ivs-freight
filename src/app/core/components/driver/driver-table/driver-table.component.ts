@@ -317,6 +317,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       this.viewData = this.viewData.map((data: any) => {
         return this.mapDriverData(data);
       });
+    }else{
+      this.viewData = [];
     }
   }
 
