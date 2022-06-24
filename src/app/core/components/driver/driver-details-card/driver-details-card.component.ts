@@ -24,11 +24,11 @@ import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DriversQuery } from '../state/driver-active-state/driver-active.query';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
 // import { DriversQueryIn } from '../state/driver-inactive-state/driver-inactive.query';
 @Component({
@@ -80,10 +80,50 @@ export class DriverDetailsCardComponent
   // public driver_active_id: number = +this.activated_route.snapshot.params['id'];
   public driversList: any[] = this.driversQuery.getAll();
   public dataCDl: any;
+  public barChartLegend: any[] = [
+    {
+      title: 'Miles',
+      value: '46,755.2',
+      image: 'assets/svg/common/round_yellow.svg',
+      sufix: 'mi',
+      elementId: 1
+    },
+    {
+      title: 'Salary',
+      value: '36.854.27',
+      image: 'assets/svg/common/round_blue.svg',
+      prefix: '$',
+      elementId: 0
+    }
+  ];
+
+  public barAxes: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 4000,
+      stepSize: 1000,
+      showGridLines: true
+    },
+    verticalRightAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 2800,
+      stepSize: 700,
+      showGridLines: false
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false
+    }
+  };
+
   constructor(
     private sanitazer: DomSanitizer,
     private modalService: ModalService,
-    private driversQuery: DriversQuery,
+    private driversQuery: DriversActiveQuery,
+    private activated_route: ActivatedRoute,
     private detailsPageDriverSer: DetailsPageService,
     private sumArr: SumArraysPipe,
     private clipboar: Clipboard,

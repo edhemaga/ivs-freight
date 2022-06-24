@@ -28,18 +28,25 @@ export interface BrokerResponse {
     billingAddress?: AddressEntity;
     mainPoBox?: PoBoxEntity;
     billingPoBox?: PoBoxEntity;
-    creditType?: EnumValue;
     creditLimit?: number | null;
     availableCredit?: number | null;
     payTerm?: EnumValue;
-    ban?: boolean;
+    latitude?: number;
+    longitude?: number;
+    upCount?: number;
+    downCount?: number;
+    loadCount?: number;
+    total?: number;
     dnu?: boolean;
+    ban?: boolean;
     note?: string | null;
+    creditType?: EnumValue;
     brokerContacts?: Array<BrokerContactResponse> | null;
     reviews?: Array<ReviewResponse> | null;
     status?: number;
     downRatingCount?: number;
     upRatingCount?: number;
+    currentCompanyUserRating?: number | null;
     createdAt?: string;
 }
 

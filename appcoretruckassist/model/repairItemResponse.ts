@@ -9,6 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PMTrailerShortResponse } from './pMTrailerShortResponse';
+import { PMTruckShortResponse } from './pMTruckShortResponse';
 
 
 export interface RepairItemResponse { 
@@ -17,7 +19,7 @@ export interface RepairItemResponse {
     price?: number | null;
     quantity?: number;
     subtotal?: number | null;
-    pmTruckId?: number | null;
-    pmTrailerId?: number | null;
+    pmTruck?: PMTruckShortResponse;
+    pmTrailer?: PMTrailerShortResponse;
 }
 

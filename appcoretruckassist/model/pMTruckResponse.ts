@@ -13,6 +13,7 @@ import { EnumValue } from './enumValue';
 
 
 export interface PMTruckResponse { 
+    truckId?: number | null;
     id?: number;
     title?: string | null;
     status?: EnumValue;

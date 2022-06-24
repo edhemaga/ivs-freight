@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="409" height="97.5" viewBox="0 0 409 97.5">
   <defs>
-    <clipPath id="clip-path">
+    <clipPath id="clip-path-bar">
       <path id="Union_822" data-name="Union 822" d="M215,77.842a1,1,0,0,1-1-1V32.936a1,1,0,0,1,1-1h16a1,1,0,0,1,1,1V76.842a1,1,0,0,1-1,1Zm71-23.951a1,1,0,0,1-1-1V1a1,1,0,0,1,1-1h16a1,1,0,0,1,1,1V52.891a1,1,0,0,1-1,1Zm-143-2a1,1,0,0,1-1-1V1a1,1,0,0,1,1-1h16a1,1,0,0,1,1,1V50.9a1,1,0,0,1-1,1ZM1,49.9a1,1,0,0,1-1-1V1A1,1,0,0,1,1,0H17a1,1,0,0,1,1,1V48.9a1,1,0,0,1-1,1ZM357,39.92a1,1,0,0,1-1-1V10.98a1,1,0,0,1,1-1h16a1,1,0,0,1,1,1V38.919a1,1,0,0,1-1,1ZM72,29.939a1,1,0,0,1-1-1V1a1,1,0,0,1,1-1H88a1,1,0,0,1,1,1V28.94a1,1,0,0,1-1,1Z" transform="translate(0 0)" fill="#6d82c7"/>
     </clipPath>
-    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+    <linearGradient id="chart-bar-linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
       <stop offset="0" stop-color="#80cbba"/>
       <stop offset="1" stop-color="#ffcc80"/>
     </linearGradient>
@@ -14,8 +14,8 @@
     <path id="Path_38802" data-name="Path 38802" d="M0,0H408" transform="translate(-16479 -5992.158)" fill="none" stroke="#dadada" stroke-linecap="round" stroke-width="1" stroke-dasharray="0 3"/>
     <path id="Path_38803" data-name="Path 38803" d="M0,0H408" transform="translate(-16479 -6088)" fill="none" stroke="#dadada" stroke-linecap="round" stroke-width="1" stroke-dasharray="0 3"/>
     <path id="Path_38804" data-name="Path 38804" d="M0,0H408" transform="translate(-16479 -6016.118)" fill="none" stroke="#dadada" stroke-linecap="round" stroke-width="1" stroke-dasharray="0 3"/>
-    <g id="Mask_Group_63780" data-name="Mask Group 63780" transform="translate(-16452.998 -6079)" opacity="0.4" clip-path="url(#clip-path)">
-      <rect id="Rectangle_70240" data-name="Rectangle 70240" width="404" height="84.828" transform="translate(-24.002 -6.986)" fill="url(#linear-gradient)"/>
+    <g id="Mask_Group_63780" data-name="Mask Group 63780" transform="translate(-16452.998 -6079)" opacity="0.4" clip-path="url(#clip-path-bar)">
+      <rect id="Rectangle_70240" data-name="Rectangle 70240" width="404" height="84.828" transform="translate(-24.002 -6.986)" fill="url(#chart-bar-linear-gradient)"/>
     </g>
     <path id="Path_38039" data-name="Path 38039" d="M-22329-6257s44.266-10,71-10,55.162,3.559,71,11,45.783,28.856,72,29,44.541-25.418,71-28,71-2,71-2" transform="translate(5885 202.933)" fill="none" stroke="#e0eaf8" stroke-width="3"/>
     <g id="Path_38805" data-name="Path 38805" transform="translate(-16448 -6058.054)" fill="#fff">

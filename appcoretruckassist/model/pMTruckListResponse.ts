@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TruckMinimalResponse } from './truckMinimalResponse';
 import { PMTruckResponsePagination } from './pMTruckResponsePagination';
 
 
 export interface PMTruckListResponse { 
+    truck?: TruckMinimalResponse;
     pagination?: PMTruckResponsePagination;
 }
 
