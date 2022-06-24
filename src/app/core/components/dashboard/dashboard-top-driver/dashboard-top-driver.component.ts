@@ -8,7 +8,71 @@ import { Component, OnInit } from '@angular/core';
 export class DashboardTopDriverComponent implements OnInit {
 
   driverTopSwitchTabs: any[] = [];
+
   driverTopSwitch: any[] = [];
+
+  driverList: any[] = [
+    {
+      id: 1,
+      name: 'Denis Rodman',
+      price: '$123.45K',
+      percent: '8.53%'
+    },
+    {
+      id: 2,
+      name: 'Sasa Djordjevic',
+      price: '$102.34K',
+      percent: '8.43%'
+    },
+    {
+      id: 3,
+      name: 'Nicolas Drozlibrew',
+      price: '$95.15K',
+      percent: '7.35%'
+    },
+    {
+      id: 4,
+      name: 'Samuel Lioton',
+      price: '$93.52K',
+      percent: '7.23%'
+    },
+    {
+      id: 5,
+      name: 'Angelo Trotter',
+      price: '$89.35K',
+      percent: '6.87%'
+    },
+    {
+      id: 6,
+      name: 'Stan Tolbert',
+      price: '$75.23K',
+      percent: '4.07%'
+    },
+    {
+      id: 7,
+      name: 'Michael Scott',
+      price: '$67.52K',
+      percent: '3.52%'
+    },
+    {
+      id: 8,
+      name: 'Toby Flanders',
+      price: '$65.25K',
+      percent: '3.43%'
+    },
+    {
+      id: 9,
+      name: 'Sasuke Uchica',
+      price: '$35.04K',
+      percent: '2.96%'
+    },
+    {
+      id: 10,
+      name: 'Peter Simpson',
+      price: '$26.23K',
+      percent: '2.12%'
+    }
+  ];
 
   constructor() { }
 

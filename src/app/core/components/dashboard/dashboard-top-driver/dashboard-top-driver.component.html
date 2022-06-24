@@ -42,19 +42,24 @@
         </div>
     </div>
     <div class="dashboard-top-driver-body-holder">
-        <div class="dashboard-top-driver-body-list-holder">
-            <div class="dashboard-top-driver-body-list-items-holder">
-                <div class="dashboard-top-driver-body-list-items">
-                    <div class="dashboard-top-driver-body-list-frame">
-                        <div class="dashboard-top-driver-body-list-id">1</div>
-                        <div class="dashboard-top-driver-body-list-circle"></div> 
-                        <div class="dashboard-top-driver-body-list-name">Denis Rodman</div>   
+        <div class="row">
+            <div class="col-4">
+                <div class="dashboard-top-driver-body-list-holder">
+                    <div *ngFor="let item of driverList; let indx=index" class="dashboard-top-driver-body-list-items-holder">
+                        <div class="dashboard-top-driver-body-list-items">
+                            <div class="dashboard-top-driver-body-list-frame">
+                                <div class="dashboard-top-driver-body-list-id">{{item.id}}</div>
+                                <div class="dashboard-top-driver-body-list-circle"></div> 
+                                <div class="dashboard-top-driver-body-list-name">{{item.name}}</div>   
+                            </div>
+                            <div class="dashboard-top-driver-body-list-frame">
+                                <div class="dashboard-top-driver-body-list-price">{{item.price}}</div>
+                                <div class="dashboard-top-driver-body-list-percent">{{item.percent}}</div>
+                            </div>
+                        </div>
+                        <div class="dashboard-top-driver-body-list-border"></div>
                     </div>
-                    <div class="dashboard-top-driver-body-list-frame">
-                        <div class="dashboard-top-driver-body-list-price">$123.45K</div>
-                        <div class="dashboard-top-driver-body-list-percent">8.53%</div>
-                    </div>
-                </div>
+                </div>        
             </div>
         </div>
     </div>
