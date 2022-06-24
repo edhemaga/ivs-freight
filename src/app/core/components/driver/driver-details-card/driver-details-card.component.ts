@@ -72,6 +72,45 @@ export class DriverDetailsCardComponent
   // public driver_active_id: number = +this.activated_route.snapshot.params['id'];
   public driversList: any[] = this.driversQuery.getAll();
 
+  public barChartLegend: any[] = [
+    {
+      title: 'Miles',
+      value: '46,755.2',
+      image: 'assets/svg/common/round_yellow.svg',
+      sufix: 'mi',
+      elementId: 1
+    },
+    {
+      title: 'Salary',
+      value: '36.854.27',
+      image: 'assets/svg/common/round_blue.svg',
+      prefix: '$',
+      elementId: 0
+    }
+  ];
+
+  public barAxes: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 4000,
+      stepSize: 1000,
+      showGridLines: true
+    },
+    verticalRightAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 2800,
+      stepSize: 700,
+      showGridLines: false
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false
+    }
+  };
+
   constructor(
     private sanitazer: DomSanitizer,
     private modalService: ModalService,

@@ -237,18 +237,6 @@
           </app-tab-switcher>
           <app-ta-chart
               [chartConfig]="{
-                legendAttributes: [
-                  {
-                    title: 'Miles Per Gallon',
-                    value: '0.00 mi',
-                    image: 'assets/svg/common/round_yellow.svg'
-                  },
-                  {
-                    title: 'Revenue',
-                    value: '$0.00',
-                    image: 'assets/svg/common/round_blue.svg'
-                  }
-                ],
                 dataProperties: [
                   {
                     defaultConfig: {
@@ -284,27 +272,8 @@
                 dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP'],
                 noChartImage: 'assets/svg/common/yellow_no_data.svg'
               }"
-              [axesProperties]="{
-                verticalLeftAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 60,
-                  stepSize: 15,
-                  showGridLines: true
-                },
-                verticalRightAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 24000,
-                  stepSize: 6000,
-                  showGridLines: false
-                },
-                horizontalAxes: {
-                  visible: true,
-                  position: 'bottom',
-                  showGridLines: false
-                }
-              }"
+              [axesProperties]="barAxes"
+              [legendAttributes]="barChartLegend"
             >
             </app-ta-chart>
         </div>
@@ -329,18 +298,6 @@
           </app-tab-switcher>
           <app-ta-chart
               [chartConfig]="{
-                legendAttributes: [
-                  {
-                    title: 'Miles',
-                    value: '150,257.7 mi',
-                    image: 'assets/svg/common/round_blue_light.svg'
-                  },
-                  {
-                    title: 'Revenue',
-                    value: '$190,568.85',
-                    image: 'assets/svg/common/round_blue.svg'
-                  }
-                ],
                 dataProperties: [
                   {
                     defaultConfig: {
@@ -376,48 +333,12 @@
                 dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP'],
                 noChartImage: 'assets/svg/common/green_no_data.svg'
               }"
-              [axesProperties]="{
-                verticalLeftAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 60,
-                  stepSize: 15,
-                  showGridLines: true
-                },
-                verticalRightAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 24000,
-                  stepSize: 6000,
-                  showGridLines: false
-                },
-                horizontalAxes: {
-                  visible: true,
-                  position: 'bottom',
-                  showGridLines: false
-                }
-              }"
+              [axesProperties]="barAxes2"
+              [legendAttributes]="barChartLegend2"
             >
             </app-ta-chart>
-            <!--<app-ta-chart
+            <!-- <app-ta-chart
               [chartConfig]="{
-                legendAttributes: [
-                  {
-                    title: 'Avg. Rate',
-                    value: '$2.37',
-                    image: 'assets/svg/common/round_blue.svg'
-                  },
-                  {
-                    title: 'Highest Rate',
-                    value: '$2.86',
-                    image: 'assets/svg/common/round_green.svg'
-                  },
-                  {
-                    title: 'Lowest Rate',
-                    value: '$1.29',
-                    image: 'assets/svg/common/round_yellow.svg'
-                  }
-                ],
                 dataProperties: [
                   {
                     defaultConfig: {
@@ -444,6 +365,7 @@
                       hoverBackgroundColor: '#FFA726',
                       hasGradiendBackground: true,
                       colors: ['rgba(128, 203, 186, 1)', 'rgba(255, 204, 128, 1)'],
+                      hoverColors: ['rgba(38, 166, 144, 1)', 'rgba(255, 167, 38, 1)'],
                       maxBarThickness: 18
                     }
                   }
@@ -454,38 +376,14 @@
                 chartWidth: '417',
                 chartHeight: '130',
                 dataLabels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-                noChartImage: 'assets/svg/common/yellow_no_data.svg'
+                noChartImage: 'assets/svg/common/mixed_no_data.svg'
               }"
-              [axesProperties]="{
-                verticalLeftAxes: {
-                  visible: true,
-                  minValue: 1,
-                  maxValue: 3,
-                  stepSize: 0.5,
-                  showGridLines: true
-                },
-                horizontalAxes: {
-                  visible: true,
-                  position: 'bottom',
-                  showGridLines: false
-                }
-              }"
+              [axesProperties]="mixedBarAxes"
+              [legendAttributes]="mixedBarChartLegend"
             >
             </app-ta-chart>
             <app-ta-chart
               [chartConfig]="{
-                legendAttributes: [
-                  {
-                    title: 'Pay Period',
-                    value: '18 days',
-                    image: 'assets/svg/common/round_blue.svg'
-                  },
-                  {
-                    title: 'Pay Term',
-                    value: '32 days',
-                    image: 'assets/svg/common/dash_line.svg'
-                  }
-                ],
                 dataProperties: [
                   {
                     defaultConfig: {
@@ -513,22 +411,10 @@
                 dataLabels: ['JUL', '', '', '', '', '', '', 'AUG', '', '', '', '', '', '', 'SEP'],
                 noChartImage: 'assets/svg/common/no_data_pay.svg'
               }"
-              [axesProperties]="{
-                verticalLeftAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 52,
-                  stepSize: 13,
-                  showGridLines: true
-                },
-                horizontalAxes: {
-                  visible: true,
-                  position: 'bottom',
-                  showGridLines: false
-                }
-              }"
+              [axesProperties]="paymentAxes"
+              [legendAttributes]="paymentChartLegend"
             >
-            </app-ta-chart>-->
+            </app-ta-chart> -->
         </div>
       </app-ta-custom-card>
 
