@@ -11,6 +11,7 @@ import * as annotation from 'chartjs-plugin-annotation';
 export class TaChartComponent implements OnInit {
   @Input() chartConfig: any;
   @Input() axesProperties: any;
+  @Input() legendAttributes: any;
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   lineChartData: ChartDataSets[] = [];
   
@@ -21,7 +22,6 @@ export class TaChartComponent implements OnInit {
   public lineChartType: string  = 'bar';
   public lineChartPlugins = [];
   chartInnitProperties: any = [];
-  legendProperties: any = [];
   doughnutChartLegend: boolean = false;
   chartWidth: string = '';
   chartHeight: string = '';
@@ -29,10 +29,15 @@ export class TaChartComponent implements OnInit {
   noChartData: boolean = true;
   noChartImage: string = '';
   annotationHovered: any;
+  saveValues: any = [];
+  removeChartMargin: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.saveValues = JSON.parse(JSON.stringify(this.legendAttributes));
+    
+    console.log(this.saveValues, 'mainthis.legendAttributesmainthis 111111');
     let namedChartAnnotation = annotation;
     namedChartAnnotation["id"]="annotation";
     Chart.pluginService.register(namedChartAnnotation);
@@ -55,19 +60,21 @@ export class TaChartComponent implements OnInit {
   }
 
   seChartOptions() {
-    var mainthis = this;
     this.lineChartOptions = {
       responsive: false,
       cutoutPercentage: 80,
       animation: {
         duration: 0
       },
-      onHover: function(evt, elements) {
+      onHover: (evt, elements) => {
         if ( elements && elements[0] ) {
-          mainthis.setHoverAnnotation(elements[0]['_index']);
+          if ( this.legendAttributes && this.legendAttributes.lenght && this.legendAttributes.lenght > 0) { this.setChartLegendData(elements); }
+          this.changeChartFillProperty(evt, elements);
+          this.setHoverAnnotation(elements[0]['_index']);
         }
         else{
-          mainthis.setHoverAnnotation(null);
+          this.setHoverAnnotation(null);
+          this.legendAttributes = JSON.parse(JSON.stringify(this.saveValues));
         }
       },
       annotation: {
@@ -136,7 +143,14 @@ export class TaChartComponent implements OnInit {
                 fontColor: '#AAAAAA',
                 fontSize: 11,
                 padding: 10,
-                callback: function(value: any) {
+                callback: (value: any) => {
+                  if ( this.axesProperties['verticalLeftAxes'] && this.axesProperties['verticalLeftAxes']['decimal'] ) {
+                    if (value % 1 === 0) {
+                      value = value+'.0';
+                    }
+                    return value;
+                  }
+                  else {
                     var ranges = [
                       { divider: 1e6, suffix: 'M' },
                       { divider: 1e3, suffix: 'K' }
@@ -150,6 +164,7 @@ export class TaChartComponent implements OnInit {
                       return n;
                     }
                     return formatNumber(value);
+                  }
                 }
               }
         },
@@ -186,10 +201,12 @@ export class TaChartComponent implements OnInit {
        }
      ],
       xAxes: [{
+        offset: false,
           display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['visible'] : false,
           position: this.axesProperties['horizontalAxes'] && this.axesProperties['horizontalAxes']['position'] ? this.axesProperties['horizontalAxes']['position'] : 'bottom',
           gridLines: {
-              display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['showGridLines'] : false
+              display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['showGridLines'] : false,
+              borderDash: [3, 3]
           },
           ticks: {
               fontColor: '#AAAAAA',
@@ -209,7 +226,6 @@ export class TaChartComponent implements OnInit {
     this.chartConfig['dataProperties'].map((item, indx) => {
       var currentChartConfig = item['defaultConfig'];
       var chartDataArray = currentChartConfig;
-      var colorProperties = item['colorProperties'];
 
       if ( item['defaultConfig']['hasGradiendBackground'] ) {
         this.setGradientBackground();
@@ -224,17 +240,16 @@ export class TaChartComponent implements OnInit {
       }
       
       this.lineChartData.push(chartDataArray);
-      this.lineChartColors.push(colorProperties);
       this.lineChartLegend = this.chartConfig['defaultType'] != 'doughnut' ?  this.chartConfig['showLegend'] : false;
       this.doughnutChartLegend = this.chartConfig['showLegend'];
       this.lineChartType = this.chartConfig['defaultType'];
       this.lineChartLabels = this.chartConfig['dataLabels'];
-      this.legendProperties = this.chartConfig['legendAttributes'];
       
       this.chartWidth = this.chartConfig['chartWidth'];
       this.chartHeight = this.chartConfig['chartHeight'];
       this.dottedBackground = this.chartConfig['dottedBackground'];
       this.noChartImage = this.chartConfig['noChartImage'];
+      this.removeChartMargin = this.chartConfig['removeChartMargin'];
       this.chartDataCheck(this.chartConfig['chartValues']);
     });
   }
@@ -245,32 +260,44 @@ export class TaChartComponent implements OnInit {
         var ctx = chart.chart.ctx;
         var canvas = <HTMLCanvasElement> document.getElementById('myChart');
         var gradientStroke = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        var gradientStroke2 = ctx.createLinearGradient(0, 0, 0, canvas.height);
         var dataset = chart.data.datasets[0]['colors'] ? chart.data.datasets[0] : chart.data.datasets[1];
+        
+        if ( dataset.hoverColors ) {
+          dataset.hoverColors.forEach((c, i) => {
+            var stop = 1 / (dataset.hoverColors.length - 1) * i;
+            gradientStroke2.addColorStop(stop, c);
+          });
+          dataset.hoverBackgroundColor = gradientStroke2;
+        }
+
         if ( dataset.colors ) {
            dataset.colors.forEach((c, i) => {
-          var stop = 1 / (dataset.colors.length - 1) * i;
-          gradientStroke.addColorStop(stop, dataset.colors[i]);
-        });
-        dataset.backgroundColor = gradientStroke;
-        
-        if ( this.chartConfig['annotation'] ) {
-          const yScale = chart.scales['y-axis-0'];
-          const yPos = yScale.getPixelForValue(this.chartConfig['annotation']);
-      
-          const gradientFill = ctx.createLinearGradient(0, 0, 0, canvas.height);
-          gradientFill.addColorStop(0, 'rgb(229, 115, 115)');
-          gradientFill.addColorStop(yPos / canvas.height, 'rgb(229, 115, 115)');
-          gradientFill.addColorStop(yPos / canvas.height, 'rgb(109, 130, 199)');
-          gradientFill.addColorStop(1, 'rgb(109, 130, 199)');
-
-          gradientStroke.addColorStop(0, 'rgb(229, 115, 115)');
-          gradientStroke.addColorStop(yPos / canvas.height, 'rgb(255, 255, 255)');
-          gradientStroke.addColorStop(yPos / canvas.height, 'rgb(109, 130, 199)');
-          gradientStroke.addColorStop(1, 'rgb(255, 255, 255)');
+            var stop = 1 / (dataset.colors.length - 1) * i;
+            gradientStroke.addColorStop(stop, c);
+          });
 
           dataset.backgroundColor = gradientStroke;
-          dataset.borderColor = gradientFill;
-        }
+          
+          if ( this.chartConfig['annotation'] ) {
+            const yScale = chart.scales['y-axis-0'];
+            const yPos = yScale.getPixelForValue(this.chartConfig['annotation']);
+        
+            const gradientFill = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradientFill.addColorStop(0, 'rgb(229, 115, 115)');
+            gradientFill.addColorStop(yPos / canvas.height, 'rgb(229, 115, 115)');
+            gradientFill.addColorStop(yPos / canvas.height, 'rgb(109, 130, 199)');
+            gradientFill.addColorStop(1, 'rgb(109, 130, 199)');
+
+            gradientStroke.addColorStop(0, 'rgb(239, 154, 154)');
+            gradientStroke.addColorStop(yPos / canvas.height, 'rgb(255, 255, 255)');
+            gradientStroke.addColorStop(yPos / canvas.height, 'rgb(189, 202, 235)');
+            gradientStroke.addColorStop(1, 'rgb(255, 255, 255)');
+
+            dataset.backgroundColor = gradientStroke;
+            dataset.borderColor = gradientFill;
+            dataset.pointHoverBackgroundColor = gradientFill;
+          }
         }
       }
     }];
@@ -286,5 +313,37 @@ export class TaChartComponent implements OnInit {
     if ( hasData ){
       this.noChartData = false;
     }
+  }
+
+  setChartLegendData(elements: any) {
+    elements.forEach((item, i) => {
+      var chartValue = item['_chart']['config']['data']['datasets'][i]['data'][elements[i]['_index']];
+
+      this.legendAttributes.forEach((item2, a) => {
+          if ( item2['elementId'] == i ) {
+            item2['value'] = chartValue;
+          }
+
+          if ( item2['elementId'] && item2['elementId'].length  && item2['elementId'].length > 0 && item2['elementId'][0] == i ) {
+            item2['value'] = chartValue[item2['elementId'][1]];
+          }
+
+          if ( item2['titleReplace'] ) { item2['title'] = item2['titleReplace']; }
+          if ( item2['imageReplace'] ) { item2['image'] = item2['imageReplace']; }
+      });
+    });
+  }
+
+  changeChartFillProperty(evt: any, elements: any) {
+    console.log(evt, )
+    console.log(elements[0]['_chart']['config']['data']['datasets'][0]['fill'], 'ELEEEEMENTSSSS');
+    //elements[0]['_chart']['config']['data']['datasets'][0]['fill'] = true;
+    elements.forEach((item, i) => {
+      //console.log(chartValue, 'ELEEEEMENTSSSS');
+      var chartValue = item['_chart']['config']['data']['datasets'][i]['data'][elements[i]['_index']];
+      console.log(item, 'iteeeeeeeeem')
+      
+    });
+    //this.seChartOptions();
   }
 }

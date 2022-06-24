@@ -5,14 +5,13 @@
   position: relative;
   margin-top: 14px;
 
+  &.remove_chart_margin{
+    margin: 0;
+  }
+
   .no_chart_data{
     user-select: none;
   }
-}
-
-.dotted_background{
-  background-image: url('../../../../../assets/png/doted-line.png');
-  background-size: 10px;
 }
 
 .chart_text_holder{

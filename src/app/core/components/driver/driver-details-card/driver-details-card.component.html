@@ -552,18 +552,6 @@
           <div id="chart">
             <app-ta-chart
               [chartConfig]="{
-                legendAttributes: [
-                  {
-                    title: 'Miles',
-                    value: '46,755.2 mi',
-                    image: 'assets/svg/common/round_yellow.svg'
-                  },
-                  {
-                    title: 'Salary',
-                    value: '$36.854.27',
-                    image: 'assets/svg/common/round_blue.svg'
-                  }
-                ],
                 dataProperties: [
                   {
                     defaultConfig: {
@@ -599,27 +587,8 @@
                 dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP'],
                 noChartImage: 'assets/svg/common/yellow_no_data.svg'
               }"
-              [axesProperties]="{
-                verticalLeftAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 4000,
-                  stepSize: 1000,
-                  showGridLines: true
-                },
-                verticalRightAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 2800,
-                  stepSize: 700,
-                  showGridLines: false
-                },
-                horizontalAxes: {
-                  visible: true,
-                  position: 'bottom',
-                  showGridLines: false
-                }
-              }"
+              [axesProperties]="barAxes"
+              [legendAttributes]="barChartLegend"
             >
             </app-ta-chart>
           </div>
