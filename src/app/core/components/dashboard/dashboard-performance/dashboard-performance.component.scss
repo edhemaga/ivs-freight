@@ -55,6 +55,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
+                cursor: pointer;
 
                 .dashboard-performance-dropdown-text{
                     font-size: 14px;
@@ -98,6 +99,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
         align-items: flex-start;
 
         .dashboard-performance-body-left-holder{
+            position: relative;
             width: 177px;
             border-radius: 3px;
             background-color: #fff;
@@ -109,6 +111,33 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
             box-sizing: border-box;
             margin-bottom: 8px;
             margin-right: 8px;
+
+            .dashboard-performance-left-close{
+                position: absolute;
+                width: 18px;
+                height: 18px;
+                display: none;
+                justify-content: center;
+                align-items: center;
+                top: 12px;
+                right: 12px;
+
+                svg-icon{
+                    svg{
+                        display: flex;
+                        width: 12.38px;
+                        height: 12.38px;
+
+                        path{
+                            fill: #fff;
+                        }
+                    }
+                }
+
+                &:hover{
+                    cursor: pointer;
+                }
+            }
 
             .dashboard-performance-body-title-holder{
                 width: 100%;
@@ -192,10 +221,11 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                         border-radius: 2px;
 
                         svg-icon{
+                            display: flex;
                             svg{
                                 display: flex;
                                 width: 14px;
-                                height: 8.1px;
+                                height: 14px;
 
                                 path{
                                     fill: #E57373;
@@ -267,54 +297,69 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 .dashboard-performance-body-items-text{
                     color: #919191;
                 }
+
+                .dashboard-performance-body-right-cards-text-hover{
+                    display: flex;
+                }
             }
 
-            &.dashboard-performance-8A9AEF-box{
-                background-color: #8A9AEF;
 
-                .dashboard-performance-body-title-circle{
-                    background-color: #ffffff99 !important;
-                }
+            $ii: 1;
+            @each $col1 in $performance_active_colors {
+                $hover_color : nth($performance_hover_colors, $ii);
+                $ii: $ii + 1;
 
-                .dashboard-performance-body-title{
-                    color: #fff !important;
-                }
-
-                .dashboard-performance-body-price-holder{
-                    color: #fff !important;
-                }
-
-                .dashboard-performance-body-range-holder{
-                    background-color: #ffffff66 !important;
-                }
-
-                .dashboard-performance-body-range{
-                    background-color: #fff !important;
-                }
-
-                .dashboard-performance-body-items-price{
-                    color: #ffffffE6 !important;
-                }
-
-                .dashboard-performance-body-trend-down{
-                    background-color: #ffffffCC !important;
-                }
-
-                .dashboard-performance-body-trend-price{
-                    color: #ffffffB3 !important;
-                }
-
-                .dashboard-performance-body-trend-percent{
-                    color: #ffffffB3 !important;
-                }
-
-                .dashboard-performance-body-items-text{
-                    color: #ffffffB3 !important;
-                }
-
-                &:hover{
-                    background-color: #596FE8;
+                &.dashboard-performance-#{$col1}-box{
+                    background-color: unquote('#' + $col1);
     
+                    .dashboard-performance-body-title-circle{
+                        background-color: #ffffff99 !important;
+                    }
+    
+                    .dashboard-performance-body-title{
+                        color: #fff !important;
+                    }
+    
+                    .dashboard-performance-body-price-holder{
+                        color: #fff !important;
+                    }
+    
+                    .dashboard-performance-body-range-holder{
+                        background-color: #ffffff66 !important;
+                    }
+    
+                    .dashboard-performance-body-range{
+                        background-color: #fff !important;
+                    }
+    
+                    .dashboard-performance-body-items-price{
+                        color: #ffffffE6 !important;
+                    }
+    
+                    .dashboard-performance-body-trend-down{
+                        background-color: #ffffffCC !important;
+                    }
+    
+                    .dashboard-performance-body-trend-price{
+                        color: #ffffffB3 !important;
+                    }
+    
+                    .dashboard-performance-body-trend-percent{
+                        color: #ffffffB3 !important;
+                    }
+    
+                    .dashboard-performance-body-items-text{
+                        color: #ffffffB3 !important;
+                    }
+    
+                    &:hover{
+                        background-color: unquote('#' + $hover_color);
+
+                        .dashboard-performance-left-close{
+                            display: flex !important;
+                        }
+
+                    }
                 }
             }
         }
@@ -327,6 +372,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
             flex-wrap: wrap;
 
             .dashboard-performance-body-right-cards-holder{
+                position: relative;
                 width: 175px;
                 height: 143px;
                 background-color: #fff;
@@ -339,6 +385,33 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 flex-direction: column;
                 margin-right: 8px;
                 margin-bottom: 8px;
+
+                .dashboard-performance-right-close{
+                    position: absolute;
+                    width: 18px;
+                    height: 18px;
+                    display: none;
+                    justify-content: center;
+                    align-items: center;
+                    top: 12px;
+                    right: 12px;
+    
+                    svg-icon{
+                        svg{
+                            display: flex;
+                            width: 12.38px;
+                            height: 12.38px;
+    
+                            path{
+                                fill: #fff;
+                            }
+                        }
+                    }
+    
+                    &:hover{
+                        cursor: pointer;
+                    }    
+                }
 
                 .dashboard-performance-body-right-cards-title-holder{
                     width: 100%;
@@ -384,10 +457,11 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                         align-items: center;
 
                         svg-icon{
+                            display: flex;
                             svg{
                                 display: flex;
                                 width: 14px;
-                                height: 8.1px;
+                                height: 14px;
 
                                 path{
                                     fill: #4DB6A2;
@@ -415,7 +489,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                         padding-left: 8px;
                         box-sizing: border-box;
 
-                        .different-padding{
+                        &.different-padding{
                             padding-left: 0px;
                             padding-right: 8px;
                         }
@@ -431,7 +505,69 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
 
                 }
 
+                .dashboard-performance-body-right-cards-trend-holder-hover{
+                    width: 100%;
+                    display: none;
+                    justify-content: flex-start;
+                    align-items: center;
+
+                    .dashboard-performance-body-right-cards-trend-up{
+                        width: 18px;
+                        height: 18px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        svg-icon{
+                            display: flex;
+                            svg{
+                                display: flex;
+                                width: 14px;
+                                height: 14px;
+
+                                path{
+                                    fill: #4DB6A2;
+                                }
+                            }
+                        }
+
+                        &.red-trend-up{
+                            svg-icon{
+                                svg{
+                                    display: flex;
+
+                                    path{
+                                        fill: #E57373;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .dashboard-performance-body-right-cards-trend-number{
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: #B7B7B7;
+                        padding-left: 8px;
+                        box-sizing: border-box;
+
+                        &.different-padding{
+                            padding-left: 0px;
+                            padding-right: 8px;
+                        }
+                    }
+
+                    .dashboard-performance-body-right-cards-trend-loss{
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: #B7B7B7;
+                        padding-left: 8px;
+                        box-sizing: border-box;
+                    }
+                }
+
                 .dashboard-performance-body-right-cards-text-holder{
+                    display: flex;
                     font-size: 11px;
                     font-weight: 700;
                     color: #B7B7B7;
@@ -443,9 +579,33 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                     }
                 }
 
-                &:hover{
+                .dashboard-performance-body-right-cards-text-hover{
+                    display: none;
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: #B7B7B7;
+                }
+
+                &:hover:not(.active){
                     cursor: pointer;
                     box-shadow: 0 0 6px #0000004D;
+
+                    .dashboard-performance-body-right-cards-trend-holder{
+                        display: none !important;
+                    }
+
+                    .dashboard-performance-body-right-cards-trend-holder-hover{
+                        display: flex !important;
+                    }
+
+                    .dashboard-performance-body-right-cards-text-hover{
+                        display: flex !important;
+                    }
+
+                    .dashboard-performance-body-right-cards-text-holder{
+                        display: none !important;
+                    }
+
 
                     .dashboard-performance-body-right-cards-title-circle{
                         background-color: #AAAAAA !important;
@@ -468,42 +628,48 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                     }
                 }
 
-
-
+                $i: 1;
                 @each $col in $performance_active_colors {
+                    $hover_color : nth($performance_hover_colors, $i);
+                    $i: $i + 1;
+                    &.dashboard-performance-#{$col}-box{
+                        background-color: unquote('#' + $col);
+    
+                        .dashboard-performance-body-right-cards-title-circle{
+                            background-color: #ffffff99 !important;
+                        }
+    
+                        .dashboard-performance-body-right-cards-title{
+                            color: #fff !important;
+                        }
+    
+                        .dashboard-performance-body-right-cards-price-holder{
+                            color: #fff !important;
+                        }
+    
+                        .dashboard-performance-body-right-cards-trend-up{
+                            background-color: #ffffffCC !important;
+                        }
+    
+                        .dashboard-performance-body-right-cards-trend-number{
+                            color: #ffffffE6 !important;
+                        }
+    
+                        .dashboard-performance-body-right-cards-text-holder{
+                            color: #ffffffB3 !important;
+                        }
 
-                }
+                        .dashboard-performance-body-right-cards-text-hover{
+                            color: #ffffffB3 !important;
+                        }
+     
+                        &:hover{
+                            background-color: unquote('#' + $hover_color);
 
-
-                &.dashboard-performance-8A9AEF-box{
-                    background-color: #8A9AEF;
-
-                    .dashboard-performance-body-right-cards-title-circle{
-                        background-color: #ffffff99 !important;
-                    }
-
-                    .dashboard-performance-body-right-cards-title{
-                        color: #fff !important;
-                    }
-
-                    .dashboard-performance-body-right-cards-price-holder{
-                        color: #fff !important;
-                    }
-
-                    .dashboard-performance-body-right-cards-trend-up{
-                        background-color: #ffffffCC !important;
-                    }
-
-                    .dashboard-performance-body-right-cards-trend-number{
-                        color: #ffffffE6 !important;
-                    }
-
-                    .dashboard-performance-body-right-cards-text-holder{
-                        color: #ffffffB3 !important;
-                    }
- 
-                    &:hover{
-                        background-color: #596FE8;
+                            .dashboard-performance-right-close{
+                                display: flex !important;
+                            }
+                        }
                     }
                 }
             }

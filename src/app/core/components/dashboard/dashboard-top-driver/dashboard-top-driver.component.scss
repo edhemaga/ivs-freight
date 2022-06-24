@@ -1,0 +1,113 @@
+.dashboard-top-driver-holder{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+
+    .dashboard-top-driver-header-holder{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .dashboard-top-driver-header-box-list{
+            min-width: 34px;
+            height: 32px;
+            border-radius: 3px;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4px;
+            box-sizing: border-box;
+            font-size: 20px;
+            font-weight: 900;
+            color: #919191;
+            line-height: 32px;
+        }
+
+        .dashboard-top-driver-header-title-holder{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0px 12px 0px 6px;
+            box-sizing: border-box;
+
+            .dashboard-top-driver-header-title{
+                font-size: 26px;
+                font-weight: 900;
+                color: #919191;
+                padding-right: 8px;
+                box-sizing: border-box;
+            }
+
+            .dashboard-top-driver-header-arrow-down{
+                width: 18px;
+                height: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                svg-icon{
+                    svg{
+                        display: flex;
+
+                        path{
+                            fill: #919191;
+                        }
+                    }
+                }
+            }
+        }
+
+        .dashboard-top-driver-header-toolbar-holder{
+            width: 100%;
+            height: 32px;
+            flex: 1;
+            border-radius: 3px;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .dashboard-top-driver-header-toolbar-items-holder{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                .dashboard-top-driver-header-toolbar-switch-left{
+                    height: 32px;
+                }
+
+                .dashboard-top-driver-header-toolbar-border{
+                    width: 2px;
+                    height: 24px;
+                    border-radius: 1px;
+                    background-color: #F3F3F3;
+                    margin: 0px 4px;
+                }
+
+                .dashboard-top-driver-header-toolbar-search-icon{
+                    width: 28px;
+                    height: 28px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    svg-icon{
+                        svg{
+                            display: flex;
+                            width: 18px;
+                            height: 18px;
+
+                            path{
+                                fill: #AAAAAA;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+<div class="dashboard-top-driver-holder">
+    <div class="dashboard-top-driver-header-holder">
+        <div class="dashboard-top-driver-header-box-list">67</div>
+        <div class="dashboard-top-driver-header-title-holder">
+            <div class="dashboard-top-driver-header-title">Top Driver</div>
+            <div class="dashboard-top-driver-header-arrow-down">
+                <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
+            </div>
+        </div>
+        <div class="dashboard-top-driver-header-toolbar-holder">
+            <div class="dashboard-top-driver-header-toolbar-items-holder">
+                <div class="dashboard-top-driver-header-toolbar-switch-left">
+                    <app-ta-tab-switch
+                    [tabs]="driverTopSwitchTabs"
+                    (switchClicked)="changeDriverSwitchTabs($event)" 
+                    [type]="'performance-switch'"    
+                    >
+                    </app-ta-tab-switch>
+                </div>
+                <div class="dashboard-top-driver-header-toolbar-border"></div>
+                <div class="dashboard-top-driver-header-toolbar-search-icon">
+                    <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
