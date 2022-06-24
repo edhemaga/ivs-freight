@@ -107,8 +107,8 @@ export class CompanyContactService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -160,8 +160,8 @@ export class CompanyContactService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -210,8 +210,8 @@ export class CompanyContactService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -312,8 +312,8 @@ export class CompanyContactService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -362,8 +362,8 @@ export class CompanyContactService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -412,8 +412,8 @@ export class CompanyContactService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -474,8 +474,8 @@ export class CompanyContactService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }

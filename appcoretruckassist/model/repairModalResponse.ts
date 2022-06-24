@@ -12,8 +12,8 @@
 import { TruckMinimalResponse } from './truckMinimalResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { ServiceTypeResponse } from './serviceTypeResponse';
-import { PMTruckResponse } from './pMTruckResponse';
-import { PMTrailerResponse } from './pMTrailerResponse';
+import { PMTrailerShortResponse } from './pMTrailerShortResponse';
+import { PMTruckShortResponse } from './pMTruckShortResponse';
 import { RepairShopShortResponse } from './repairShopShortResponse';
 
 
@@ -22,7 +22,7 @@ export interface RepairModalResponse {
     repairShops?: Array<RepairShopShortResponse> | null;
     trucks?: Array<TruckMinimalResponse> | null;
     trailers?: Array<TrailerMinimalResponse> | null;
-    pmTrucks?: Array<PMTruckResponse> | null;
-    pmTrailers?: Array<PMTrailerResponse> | null;
+    pmTrucks?: Array<PMTruckShortResponse> | null;
+    pmTrailers?: Array<PMTrailerShortResponse> | null;
 }
 
