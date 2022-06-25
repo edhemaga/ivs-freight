@@ -29,7 +29,7 @@
       !inputConfig.hideClear &&
       !inputConfig.isDisabled &&
       !inputConfig.customClass?.includes('details-pages') &&
-      !inputConfig.modalPM
+      !inputConfig.plusMinusCommands
     "
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
@@ -93,7 +93,7 @@
       !inputConfig.placeholderIcon &&
       !inputConfig.isDropdown &&
       !inputConfig.blackInput &&
-      !inputConfig.fakeModalTableInput
+      !inputConfig.hideRequiredCheck
     "
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
@@ -182,7 +182,7 @@
 
   <!-- Modal PM -,+ buttons -->
   <div
-    *ngIf="inputConfig.modalPM && isVisiblePmCommands"
+    *ngIf="inputConfig.plusMinusCommands && isVisiblePmCommands"
     class="input-pm-incrementation"
   >
     <div class="input-pm-decrement">
@@ -220,7 +220,7 @@
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-required-in':
-        !inputConfig.modalPM &&
+        !inputConfig.plusMinusCommands &&
         getSuperControl.value &&
         getSuperControl.valid &&
         focusInput,
@@ -315,7 +315,8 @@
         focusInput &&
         !inputConfig.blackInput,
       'multiSelect-dropdown-active':
-        inputConfig.multiSelectDropdownActive && focusInput
+        inputConfig.multiSelectDropdownActive && focusInput,
+      'blue-input-color': inputConfig.blueInputColor && !focusInput
     }"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"

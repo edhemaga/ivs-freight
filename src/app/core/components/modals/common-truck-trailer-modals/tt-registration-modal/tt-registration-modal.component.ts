@@ -13,12 +13,16 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-tt-registration-modal',
   templateUrl: './tt-registration-modal.component.html',
   styleUrls: ['./tt-registration-modal.component.scss'],
+  providers: [ModalService],
 })
 export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -37,7 +41,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    
+
     if (this.editData.type === 'edit-registration') {
       this.getRegistrationById();
     }

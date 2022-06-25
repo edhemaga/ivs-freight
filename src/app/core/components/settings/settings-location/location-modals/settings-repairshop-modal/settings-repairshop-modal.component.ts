@@ -17,6 +17,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
   templateUrl: './settings-repairshop-modal.component.html',
   styleUrls: ['./settings-repairshop-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
+  providers: [ModalService],
 })
 export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

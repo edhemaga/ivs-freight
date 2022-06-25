@@ -29,6 +29,7 @@ import { CommentsService } from 'src/app/core/services/comments/comments.service
   selector: 'app-task-modal',
   templateUrl: './task-modal.component.html',
   styleUrls: ['./task-modal.component.scss'],
+  providers: [ModalService],
 })
 export class TaskModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

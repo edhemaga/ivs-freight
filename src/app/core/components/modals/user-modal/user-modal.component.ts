@@ -27,6 +27,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   styleUrls: ['./user-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

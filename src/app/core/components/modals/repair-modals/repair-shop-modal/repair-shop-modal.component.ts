@@ -25,6 +25,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
   selector: 'app-repair-shop-modal',
   templateUrl: './repair-shop-modal.component.html',
   styleUrls: ['./repair-shop-modal.component.scss'],
+  providers: [ModalService],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -64,7 +65,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     if (this.editData) {
       this.editData = {
         ...this.editData,
-        id: 3,
+        id: 1,
       };
       this.editRepairShopById(this.editData.id);
     }

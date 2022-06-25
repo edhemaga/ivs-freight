@@ -27,6 +27,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
   templateUrl: './settings-basic-modal.component.html',
   styleUrls: ['./settings-basic-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
+  providers: [ModalService],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   @ViewChild(TabSwitcherComponent) tabSwitcher: any;

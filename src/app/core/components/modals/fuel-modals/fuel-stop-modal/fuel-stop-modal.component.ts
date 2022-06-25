@@ -10,6 +10,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
   selector: 'app-fuel-stop-modal',
   templateUrl: './fuel-stop-modal.component.html',
   styleUrls: ['./fuel-stop-modal.component.scss'],
+  providers: [ModalService],
 })
 export class FuelStopModalComponent implements OnInit {
   @Input() editData: any;

@@ -46,5 +46,8 @@ export interface RepairShopResponse {
     currentCompanyUserRating?: number | null;
     repairs?: Array<RepairResponse> | null;
     repairsByUnit?: Array<RepairByUnitResponse> | null;
+    createdAt?: string;
+    updatedAt?: string;
+    lastVisited?: string | null;
 }
 

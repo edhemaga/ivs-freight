@@ -24,6 +24,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   templateUrl: './account-modal.component.html',
   styleUrls: ['./account-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

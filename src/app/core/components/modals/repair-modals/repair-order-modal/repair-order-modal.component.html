@@ -35,13 +35,14 @@
         [options]="labelsUnit"
         (selectedItem)="onSelectDropDown($event, 'repair-unit')"
       ></app-ta-input-dropdown>
+      <!--           isRequired: selectedPM.id !== 0, -->
       <app-ta-input
         formControlName="odometer"
         [inputConfig]="{
           name: 'Odometer',
           type: 'text',
           label: 'Odometer',
-          isRequired: selectedPM.id !== 0,
+
           thousandSeparator: true
         }"
       ></app-ta-input>
@@ -78,7 +79,7 @@
             {{ selectedRepairShop?.name }}
             <svg-icon
               class="repair-shop-star"
-              src="assets/src/common/ic_star.svg"
+              src="assets/svg/common/ic_star.svg"
             ></svg-icon>
           </p>
           <div class="repair-shop-additional">
@@ -161,7 +162,7 @@
             <div
               [formGroupName]="ind"
               class="common-fake-table-card"
-              [ngClass]="{ 'card-item-active': selectedPM.id !== 0 }"
+              [ngClass]="{ 'card-item-active': selectedPM[ind]?.status }"
             >
               <p>
                 {{ item.controls.id.value }}
@@ -173,7 +174,9 @@
                     name: 'Description',
                     type: 'text',
                     textTransform: 'capitalize',
-                    fakeModalTableInput: true
+                    hideRequiredCheck: true,
+                    blueInputColor:
+                      !selectedPM[ind]?.logoName?.includes('ic_default_pm')
                   }"
                 ></app-ta-input>
                 <!-- PMs -->
@@ -188,10 +191,10 @@
                     class="pm-svg"
                     [class.active]="
                       selectedPM
-                        ? !selectedPM?.logoName?.includes('ic_default_pm')
+                        ? !selectedPM[ind]?.logoName?.includes('ic_default_pm')
                         : false
                     "
-                    [src]="selectedPM.logoName"
+                    [src]="selectedPM[ind]?.logoName"
                   ></svg-icon>
                 </div>
 
@@ -201,10 +204,10 @@
                     [ngClass]="{ scroll: pmOptions.length > 6 }"
                   >
                     <div
-                      (click)="onAction(action)"
                       *ngFor="let action of pmOptions"
                       class="option"
                       [ngClass]="{ 'add-option': action.title === 'Add New' }"
+                      (click)="onAction(action, ind)"
                     >
                       <svg-icon
                         class="option-svg"
@@ -225,7 +228,9 @@
                   type: 'text',
                   textTransform: 'capitalize',
                   thousandSeparator: true,
-                  fakeModalTableInput: true
+                  hideRequiredCheck: true,
+                  blueInputColor:
+                    !selectedPM[ind]?.logoName?.includes('ic_default_pm')
                 }"
                 (change)="onChange('price', ind)"
               ></app-ta-input>
@@ -236,7 +241,9 @@
                   name: 'QTY',
                   type: 'text',
                   textTransform: 'capitalize',
-                  fakeModalTableInput: true
+                  hideRequiredCheck: true,
+                  blueInputColor:
+                    !selectedPM[ind]?.logoName?.includes('ic_default_pm')
                 }"
                 (change)="onChange('quantity', ind)"
               ></app-ta-input>

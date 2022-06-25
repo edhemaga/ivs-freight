@@ -3,7 +3,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import {
   CdlResponse,
-  CreateCdlCommand, 
+  CreateCdlCommand,
   DriverResponse,
   EditCdlCommand,
   GetCdlModalResponse,
@@ -14,12 +14,16 @@ import { CdlTService } from '../../../state/cdl.service';
 import { DriverTService } from '../../../state/driver.service';
 import moment from 'moment';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-driver-cdl-modal',
   templateUrl: './driver-cdl-modal.component.html',
   styleUrls: ['./driver-cdl-modal.component.scss'],
+  providers: [ModalService],
 })
 export class DriverCdlModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -91,10 +95,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         }
         if (this.editData.type === 'edit-licence') {
           this.updateCdl();
-          this.modalService.setModalSpinner({action: null, status: true});
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addCdl();
-          this.modalService.setModalSpinner({action: null, status: true});
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
         break;
       }
@@ -242,8 +246,12 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       classType: this.selectedClassType.name,
       countryType: this.selectedCountryType.name,
       stateId: this.selectedStateType.id,
-      restrictions: this.selectedRestrictions ? this.selectedRestrictions.map((item) => item.id) : [],
-      endorsements: this.selectedEndorsment ? this.selectedEndorsment.map((item) => item.id) : [],
+      restrictions: this.selectedRestrictions
+        ? this.selectedRestrictions.map((item) => item.id)
+        : [],
+      endorsements: this.selectedEndorsment
+        ? this.selectedEndorsment.map((item) => item.id)
+        : [],
     };
 
     this.cdlService
@@ -255,7 +263,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             'CDL successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({action: null, status: false});
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("CDL can't be updated.", 'Error:');
@@ -274,8 +282,12 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       classType: this.selectedClassType.name,
       countryType: this.selectedCountryType.name,
       stateId: this.selectedStateType.id,
-      restrictions: this.selectedRestrictions ? this.selectedRestrictions.map((item) => item.id) : [],
-      endorsements: this.selectedEndorsment ? this.selectedEndorsment.map((item) => item.id) : [],
+      restrictions: this.selectedRestrictions
+        ? this.selectedRestrictions.map((item) => item.id)
+        : [],
+      endorsements: this.selectedEndorsment
+        ? this.selectedEndorsment.map((item) => item.id)
+        : [],
     };
 
     this.cdlService
@@ -287,7 +299,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             'CDL successfully added.',
             'Success:'
           );
-          this.modalService.setModalSpinner({action: null, status: false});
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("CDL can't be added.", 'Error:');

@@ -30,6 +30,7 @@ import { TrailerTService } from '../../trailer/state/trailer.service';
   styleUrls: ['./trailer-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

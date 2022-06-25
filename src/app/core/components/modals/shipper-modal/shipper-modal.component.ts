@@ -39,6 +39,7 @@ import { ShipperTService } from '../../customer/state/shipper-state/shipper.serv
   styleUrls: ['./shipper-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService],
 })
 export class ShipperModalComponent implements OnInit, OnDestroy {
   @Input() editData: any = null;

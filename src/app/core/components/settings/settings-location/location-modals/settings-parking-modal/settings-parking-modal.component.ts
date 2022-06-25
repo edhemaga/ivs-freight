@@ -1,9 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { debounceTime } from 'rxjs';
@@ -22,6 +18,7 @@ import { calculateParkingSlot } from 'src/app/core/utils/methods.calculations';
   templateUrl: './settings-parking-modal.component.html',
   styleUrls: ['./settings-parking-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
+  providers: [ModalService],
 })
 export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

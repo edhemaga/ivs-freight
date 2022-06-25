@@ -42,5 +42,7 @@ export interface TruckShortResponse {
     ipasEzpass?: string | null;
     licensePlate?: string | null;
     fhwaInspection?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

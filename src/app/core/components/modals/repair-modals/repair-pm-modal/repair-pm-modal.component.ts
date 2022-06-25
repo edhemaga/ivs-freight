@@ -7,11 +7,13 @@ import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculati
 import { PMTrailerListResponse, PMTruckListResponse } from 'appcoretruckassist';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { debounceTime } from 'rxjs';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-repair-pm-modal',
   templateUrl: './repair-pm-modal.component.html',
   styleUrls: ['./repair-pm-modal.component.scss'],
+  providers: [ModalService],
 })
 export class RepairPmModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -21,7 +23,8 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private pmTService: PmTService,
     private notificationService: NotificationService,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {

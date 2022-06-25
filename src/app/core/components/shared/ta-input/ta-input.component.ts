@@ -181,7 +181,7 @@ export class TaInputComponent
     }
 
     // Repair PM Modal
-    if (this.inputConfig.modalPM) {
+    if (this.inputConfig.plusMinusCommands) {
       this.isVisiblePmCommands = true;
     }
 
@@ -245,7 +245,7 @@ export class TaInputComponent
       }
 
       // PM REPAIR MODAL
-      if (this.inputConfig.modalPM) {
+      if (this.inputConfig.plusMinusCommands) {
         this.blurOnPmCommands();
       }
     }

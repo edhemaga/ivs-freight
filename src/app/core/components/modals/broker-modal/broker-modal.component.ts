@@ -42,6 +42,7 @@ import { BrokerTService } from '../../customer/state/broker-state/broker.service
   styleUrls: ['./broker-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

@@ -11,13 +11,17 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
 import { DriverTService } from '../../../state/driver.service';
 import { MedicalTService } from '../../../state/medical.service';
 @Component({
   selector: 'app-driver-medical-modal',
   templateUrl: './driver-medical-modal.component.html',
   styleUrls: ['./driver-medical-modal.component.scss'],
+  providers: [ModalService],
 })
 export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

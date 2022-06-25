@@ -22,6 +22,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   selector: 'app-contact-modal',
   templateUrl: './contact-modal.component.html',
   styleUrls: ['./contact-modal.component.scss'],
+  providers: [ModalService],
 })
 export class ContactModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

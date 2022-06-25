@@ -16,7 +16,6 @@ import {
   GetDriverModalResponse,
   UpdateDriverCommand,
 } from 'appcoretruckassist';
-import moment from 'moment';
 import {
   accountBankRegex,
   einNumberRegex,
@@ -42,6 +41,7 @@ import {
     tab_modal_animation('animationTabsModal'),
     card_modal_animation('showHidePayroll', '6px'),
   ],
+  providers: [ModalService],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

@@ -36,6 +36,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   templateUrl: './owner-modal.component.html',
   styleUrls: ['./owner-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
   @ViewChild(TabSwitcherComponent) tabSwitcher: any;
@@ -364,14 +365,14 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: OwnerModalResponse) => {
-          this.labelsBank = res.banks.map(item => {
+          this.labelsBank = res.banks.map((item) => {
             return {
               ...item,
               folder: 'common',
-              subFolder: 'banks'
-            }
+              subFolder: 'banks',
+            };
           });
-          console.log(this.labelsBank)
+          console.log(this.labelsBank);
         },
         error: () => {
           this.notificationService.error(

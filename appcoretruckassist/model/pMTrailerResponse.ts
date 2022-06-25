@@ -13,6 +13,7 @@ import { EnumValue } from './enumValue';
 
 
 export interface PMTrailerResponse { 
+    trailerId?: number | null;
     id?: number;
     title?: string | null;
     status?: EnumValue;
