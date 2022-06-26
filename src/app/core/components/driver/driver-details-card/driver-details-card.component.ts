@@ -29,8 +29,6 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { Clipboard } from '@angular/cdk/clipboard';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
-// import { DriversQueryIn } from '../state/driver-inactive-state/driver-inactive.query';
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',
@@ -86,15 +84,15 @@ export class DriverDetailsCardComponent
       value: '46,755.2',
       image: 'assets/svg/common/round_yellow.svg',
       sufix: 'mi',
-      elementId: 1
+      elementId: 1,
     },
     {
       title: 'Salary',
       value: '36.854.27',
       image: 'assets/svg/common/round_blue.svg',
       prefix: '$',
-      elementId: 0
-    }
+      elementId: 0,
+    },
   ];
 
   public barAxes: object = {
@@ -103,20 +101,20 @@ export class DriverDetailsCardComponent
       minValue: 0,
       maxValue: 4000,
       stepSize: 1000,
-      showGridLines: true
+      showGridLines: true,
     },
     verticalRightAxes: {
       visible: true,
       minValue: 0,
       maxValue: 2800,
       stepSize: 700,
-      showGridLines: false
+      showGridLines: false,
     },
     horizontalAxes: {
       visible: true,
       position: 'bottom',
-      showGridLines: false
-    }
+      showGridLines: false,
+    },
   };
 
   constructor(
@@ -131,21 +129,19 @@ export class DriverDetailsCardComponent
     private tableService: TruckassistTableService
   ) {}
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-    if(!changes?.driver?.firstChange && changes?.driver){
+    if (!changes?.driver?.firstChange && changes?.driver) {
       this.note.patchValue(changes.driver.currentValue.note);
       this.getExpireDate(changes.driver.currentValue);
       this.getYearsAndDays(changes.driver.currentValue);
       this.widthOfProgress();
     }
-   if(changes?.driver?.firstChange){
-
-     if (this.templateCard == true) {
-       this.hideArrow = true;
-     } else {
-       this.hideArrow = false;
-     }
-   }
+    if (changes?.driver?.firstChange) {
+      if (this.templateCard == true) {
+        this.hideArrow = true;
+      } else {
+        this.hideArrow = false;
+      }
+    }
   }
 
   ngOnInit(): void {
@@ -573,19 +569,18 @@ export class DriverDetailsCardComponent
           active: item.id === this.driver.id,
         };
       });
-    // }else{
-    //   this.driversDropdowns= this.driverQueryIn.getAll().map((item) => {
-    //     return {
-    //       id: item.id,
-    //       name: item.fullName,
-    //       status: item.status,
-    //       svg: item.owner ? 'driver-owner' : null,
-    //       folder: 'common',
-    //       active: item.id === this.driver.id,
-    //     };
-    //   });
-     }
-    
+      // }else{
+      //   this.driversDropdowns= this.driverQueryIn.getAll().map((item) => {
+      //     return {
+      //       id: item.id,
+      //       name: item.fullName,
+      //       status: item.status,
+      //       svg: item.owner ? 'driver-owner' : null,
+      //       folder: 'common',
+      //       active: item.id === this.driver.id,
+      //     };
+      //   });
+    }
   }
 
   public onSelectedDriver(event: any) {
@@ -605,9 +600,10 @@ export class DriverDetailsCardComponent
   }
 
   public onChangeDriver(action: string) {
-    let currentIndex = this.driversList
-      .map((driver) => driver.id)
-      .indexOf(this.driver.id);
+    let currentIndex = this.driversList.findIndex(
+      (driver) => driver.id === this.driver.id
+    );
+
     switch (action) {
       case 'previous': {
         currentIndex = --currentIndex;
@@ -635,5 +631,7 @@ export class DriverDetailsCardComponent
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+  }
 }

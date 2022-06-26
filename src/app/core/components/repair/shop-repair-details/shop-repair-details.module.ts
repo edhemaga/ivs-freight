@@ -15,13 +15,12 @@ import { ShopRepairCardViewComponent } from '../shop-repair-card-view/shop-repai
     ShopRepairDetailsItemComponent,
     ShopRepairCardViewComponent
   ],
-  exports:[PipesModule,ShopRepairCardViewComponent,SharedModule],
+  exports:[ShopRepairCardViewComponent,SharedModule],
   imports: [
     CommonModule,
     ShopRepairDetailsRoutes,
     TruckassistProgressExpirationModule,
     SharedModule,
-    PipesModule,
     TruckassistTableModule
   ],
 })

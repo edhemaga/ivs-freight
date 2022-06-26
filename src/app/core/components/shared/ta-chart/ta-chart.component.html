@@ -1,5 +1,5 @@
-<div class="charts-item-wrapper revenue" [class.row]="legendAttributes.length > 2">
-  <div class="charts-template-item" [class.col-4]="legendAttributes.length > 2" *ngFor="let item of legendAttributes; let indx = index">
+<div class="charts-item-wrapper revenue" [class.row]="legendAttributes?.length > 2">
+  <div class="charts-template-item" [class.col-4]="legendAttributes?.length > 2" *ngFor="let item of legendAttributes; let indx = index">
     <div class="icon-name-item">
       <svg-icon src={{item.image}}></svg-icon>
       <div class="charts-template-item-name">{{ item.title }}</div>

@@ -153,8 +153,7 @@ export class TrailerDetailsCardComponent implements OnInit,OnChanges {
   }
   public onChangeTrailer(action: string) {
     let currentIndex = this.trailer_list
-      .map((trailer) => trailer.id)
-      .indexOf(this.trailer.id);
+      .findIndex((trailer)=>trailer.id===this.trailer.id)
     switch (action) {
       case 'previous': {
         currentIndex = --currentIndex;

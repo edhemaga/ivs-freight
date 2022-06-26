@@ -396,8 +396,7 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
   }
   public onChangeTruck(action: string) {
     let currentIndex = this.truck_list
-      .map((truck) => truck.id)
-      .indexOf(this.truck.id);
+      .findIndex((truck)=>truck.id===this.truck.id)
     switch (action) {
       case 'previous': {
         currentIndex = --currentIndex;
