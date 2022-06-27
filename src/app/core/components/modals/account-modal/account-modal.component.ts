@@ -31,7 +31,12 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
   public accountForm: FormGroup;
   public accountLabels: any[] = [];
-  public selectedAccountLabel: any = null;
+  public selectedAccountLabel: any = {
+    id: 1,
+    name: 'No Color',
+    color: null,
+    count: null,
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -44,6 +49,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getAccountLabels();
+    this.companyAccountModal();
 
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
@@ -100,12 +106,26 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  private companyAccountModal(): void {
+    this.accountModalService
+      .companyAccountModal()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: any) => {
+          console.log('MODAL');
+          console.log(res);
+        },
+      });
+  }
+
   private getAccountLabels(): void {
     this.accountModalService
       .companyAccountLabelsList()
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: GetCompanyAccountLabelListResponse) => {
+          console.log('LISTA');
+          console.log(res.pagination.data);
           this.accountLabels = res.pagination.data;
         },
         error: () => {},
@@ -216,8 +236,14 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onSelectLabel(event: any): void {
+  public onSelectColorLabel(event: any): void {
     this.selectedAccountLabel = event;
+  }
+
+  public onSaveLabel(event: string) {
+    console.log('ACCOUNT MODAL');
+    console.log(this.accountForm.get('companyAccountLabelId').value);
+    console.log(event, this.selectedAccountLabel);
   }
 
   ngOnDestroy(): void {}

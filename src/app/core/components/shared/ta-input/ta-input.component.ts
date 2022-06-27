@@ -49,6 +49,8 @@ export class TaInputComponent
   @ViewChild('t2') t2: any;
 
   @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
+  @Output('commandEvent') inputCommandEvent: EventEmitter<any> =
+    new EventEmitter<any>();
 
   @ViewChild(NgbPopover)
   private ngbMainPopover: NgbPopover;
@@ -74,7 +76,7 @@ export class TaInputComponent
 
   public capsLockOn: boolean = false;
 
-  // PM Modal Input
+  // Input Commands
   public isVisibleCommands: boolean = false;
 
   constructor(
@@ -181,7 +183,7 @@ export class TaInputComponent
     }
 
     // Repair PM Modal
-    if (this.inputConfig.commands.active) {
+    if (this.inputConfig.commands?.active) {
       this.isVisibleCommands = true;
     }
 
@@ -228,8 +230,6 @@ export class TaInputComponent
         }
 
         this.focusInput = false;
-        this.inputService.onFocusOutInputSubject.next(true);
-        this.touchedInput = true;
       } else {
         this.blurOnDropDownArrow();
       }
@@ -242,11 +242,6 @@ export class TaInputComponent
       // Password
       if (this.inputConfig.type === 'password') {
         this.blurOnPassword();
-      }
-
-      // PM REPAIR MODAL
-      if (this.inputConfig.commands.active) {
-        this.blurOnCommands();
       }
     }
     this.inputService.onFocusOutInputSubject.next(true);
@@ -269,8 +264,8 @@ export class TaInputComponent
     }
     this.timeout = setTimeout(() => {
       this.isVisibleCommands = false;
-      clearTimeout(this.timeout);
-    }, 2500);
+      this.changeDetection.detectChanges();
+    }, this.inputConfig.commands.setTimeout);
   }
 
   private blurOnDropDownArrow() {
@@ -462,10 +457,27 @@ export class TaInputComponent
         }
         break;
       }
+      case 'confirm-cancel': {
+        switch (action) {
+          case 'confirm': {
+            this.inputCommandEvent.emit('confirm');
+            break;
+          }
+          case 'cancel': {
+            this.inputCommandEvent.emit('cancel');
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+        break;
+      }
       default: {
         break;
       }
     }
+    this.blurOnCommands();
   }
 
   public titleCaseInput(value: string) {
@@ -702,7 +714,6 @@ export class TaInputComponent
   public onDatePaste(e: any) {
     e.preventDefault();
     const pasteText = e.clipboardData.getData('text');
-    console.log(pasteText);
   }
 
   public onPaste(event: any, maxLength?: number) {
@@ -852,7 +863,6 @@ export class TaInputComponent
       e.preventDefault();
     } else {
       e.preventDefault();
-      console.log('rest of input click');
       this.handleKeyboardInputs(e);
     }
   }
@@ -903,7 +913,6 @@ export class TaInputComponent
             this.selectionInput = 1;
             this.selectSpanByTabIndex(1);
           } else {
-            console.log('possible months');
             this.selectSpanByTabIndex(0);
           }
         }
@@ -1056,7 +1065,6 @@ export class TaInputComponent
       if (direction == 'up') {
         if (this.selectionInput == 0) {
           const selectedHours = this.dateTimeInputDate.getHours() + 1;
-          console.log(selectedHours);
           this.dateTimeInputDate = new Date(
             this.dateTimeInputDate.setHours(selectedHours)
           );
@@ -1095,11 +1103,9 @@ export class TaInputComponent
       } else {
         if (this.selectionInput == 0) {
           const decreaseHour = this.dateTimeInputDate.getHours() - 1;
-          console.log(decreaseHour);
 
           let selectedHours = decreaseHour === 0 ? 24 : decreaseHour;
           selectedHours = decreaseHour === -1 ? 23 : selectedHours;
-          console.log(selectedHours);
           this.dateTimeInputDate = new Date(
             this.dateTimeInputDate.setHours(selectedHours)
           );

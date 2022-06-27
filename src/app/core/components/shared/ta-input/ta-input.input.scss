@@ -94,7 +94,8 @@
     }
   }
 
-  &.password-eye {
+  &.password-eye,
+  &.input-commands {
     background-color: #6c6c6c !important;
     color: #ffffff;
 

@@ -16,7 +16,6 @@ export class TaSvgPipe implements PipeTransform {
     if (!svgPath.includes('ic_')) {
       svgPath = 'ic_'.concat(svgPath);
     }
-
     if (!subFolder) {
       return `assets/svg/${folder}/${svgPath}`;
     }

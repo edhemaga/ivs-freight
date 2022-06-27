@@ -29,14 +29,29 @@
           [inputConfig]="{
             name: 'Input Dropdown Label',
             type: 'text',
-            label: 'Select Label',
+            label: 'Label',
             isDropdownLabel: true,
-            placeholderIcon: 'tag',
+            placeholderIcon: 'ic_dynamic_label',
             blackInput: true,
+            dropdownLabelSelected: selectedAccountLabel,
+            commands: {
+              active: true,
+              type: 'confirm-cancel',
+              firstCommand: {
+                name: 'confirm',
+                svg: 'assets/svg/ic_spec-confirm.svg'
+              },
+              secondCommand: {
+                name: 'cancel',
+                svg: 'assets/svg/ic_x.svg'
+              },
+              setTimeout: 50
+            },
             dropdownWidthClass: 'w-col-dropdown-label'
           }"
           [options]="accountLabels"
-          (selectedItem)="onSelectLabel($event)"
+          (selectedColorLabel)="onSelectColorLabel($event)"
+          (labelEvent)="onSaveLabel($event)"
         >
         </app-ta-input-dropdown-label>
       </div>

@@ -17,7 +17,10 @@ import {
   providedIn: 'root',
 })
 export class AccountModalService {
-  constructor(private companyAccountService: CompanyAccountService, private companyLabelService: CompanyAccountLabelService) {}
+  constructor(
+    private companyAccountService: CompanyAccountService,
+    private companyLabelService: CompanyAccountLabelService
+  ) {}
 
   public addCompanyAccount(
     data: CreateCompanyAccountCommand
@@ -39,15 +42,23 @@ export class AccountModalService {
     return this.companyAccountService.apiCompanyaccountPut(data);
   }
 
+  public companyAccountModal(): Observable<CompanyAccountModalResponse> {
+    return this.companyAccountService.apiCompanyaccountModalGet();
+  }
+
   public companyAccountLabelsList(): Observable<GetCompanyAccountLabelListResponse> {
     return this.companyLabelService.apiCompanyaccountlabelListGet();
   }
 
-  public addCompanyLabel(data: CreateCompanyAccountLabelCommand): Observable<CreateResponse> {
-    return this.companyLabelService.apiCompanyaccountlabelPost(data)
+  public addCompanyLabel(
+    data: CreateCompanyAccountLabelCommand
+  ): Observable<CreateResponse> {
+    return this.companyLabelService.apiCompanyaccountlabelPost(data);
   }
 
-  public updateCompanyLabel(data: UpdateCompanyAccountLabelCommand): Observable<any> {
-    return this.companyLabelService.apiCompanyaccountlabelPut(data)
+  public updateCompanyLabel(
+    data: UpdateCompanyAccountLabelCommand
+  ): Observable<any> {
+    return this.companyLabelService.apiCompanyaccountlabelPut(data);
   }
 }

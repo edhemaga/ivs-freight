@@ -1,7 +1,7 @@
 <div
   class="input-custom-group"
   [ngClass]="{
-    'hover-focus-out': !focusInput,
+    'hover-focus-out': !focusInput && !inputConfig.isDropdownLabel,
     invalid: getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required':
       inputConfig.isRequired &&
@@ -12,7 +12,9 @@
       inputConfig.isRequired &&
       !getSuperControl.value &&
       getSuperControl.invalid &&
-      focusInput,
+      focusInput &&
+      !inputConfig.dropdownLabelSelected &&
+      !inputConfig.isDropdownLabel,
     valid: getSuperControl.value && getSuperControl.valid && !focusInput,
     'invalid-empty-dropdown':
       inputConfig.isRequired &&
@@ -165,7 +167,10 @@
         (!inputConfig.isDisabled && focusInput) ||
         (inputConfig.multiSelectDropdownActive && focusInput),
       valid:
-        (getSuperControl.value && getSuperControl.valid && focusInput) ||
+        (!inputConfig.isDropdownLabel &&
+          getSuperControl.value &&
+          getSuperControl.valid &&
+          focusInput) ||
         (inputConfig.multiSelectDropdownActive && focusInput),
       'valid-focus-out-required':
         getSuperControl.value && getSuperControl.valid && !focusInput,
@@ -182,6 +187,14 @@
     (click)="toggleDropdownOptions()"
   ></svg-icon>
 
+  <!-- Dropdown Label Selected Name -->
+  <p
+    *ngIf="inputConfig.isDropdownLabel && focusInput"
+    class="ta-input-label-selected-item"
+  >
+    {{ inputConfig.dropdownLabelSelected?.name }}
+  </p>
+
   <!-- Dropdown Label Divider -->
   <div
     *ngIf="inputConfig.isDropdownLabel && focusInput"
@@ -191,11 +204,11 @@
   <!-- Input Commands -->
   <div
     *ngIf="inputConfig.commands?.active && isVisibleCommands"
-    class="input-pm-incrementation"
+    class="ta-input-commands"
   >
-    <div class="input-pm-decrement">
+    <div class="ta-input-command-first">
       <svg-icon
-        class="pm-svg-decrement"
+        class="ta-input-command-svg-first"
         [src]="inputConfig.commands.firstCommand.svg"
         (click)="
           onCommands(
@@ -206,9 +219,9 @@
         "
       ></svg-icon>
     </div>
-    <div class="input-pm-increment">
+    <div class="ta-input-command-second">
       <svg-icon
-        class="pm-svg-increment"
+        class="ta-input-command-svg-second"
         [src]="inputConfig.commands.secondCommand.svg"
         (click)="
           onCommands(
@@ -236,16 +249,31 @@
     (hidden)="onPopoverHidden()"
     class="input-icon {{ inputConfig.customClass }}"
     *ngIf="inputConfig.placeholderIcon"
+    [svgStyle]="{
+      fill: inputConfig.isDropdownLabel
+        ? inputConfig.dropdownLabelSelected.color
+          ? inputConfig.dropdownLabelSelected.color
+          : '#b7b7b7'
+        : null
+    }"
     [ngClass]="{
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
+      'default-svg-color':
+        !inputConfig.dropdownLabelSelected && !inputConfig.isDropdownLabel,
       'valid-required-in':
         !inputConfig.commands?.active &&
         getSuperControl.value &&
         getSuperControl.valid &&
-        focusInput,
+        focusInput &&
+        !inputConfig.dropdownLabelSelected &&
+        !inputConfig.isDropdownLabel,
       'valid-required-out':
-        getSuperControl.value && getSuperControl.valid && !focusInput,
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        !focusInput &&
+        !inputConfig.dropdownLabelSelected &&
+        !inputConfig.isDropdownLabel,
       'invalid-required-in':
         getSuperControl.value && getSuperControl.invalid && focusInput,
       'invalid-required-empty':
@@ -337,7 +365,8 @@
       'multiSelect-dropdown-active':
         inputConfig.multiSelectDropdownActive && focusInput,
       'blue-input-color': inputConfig.blueInputColor && !focusInput,
-      'dropdown-label-active': inputConfig.isDropdownLabel && focusInput
+      'dropdown-label-active': inputConfig.isDropdownLabel && focusInput,
+      'input-commands': inputConfig.commands?.active && isVisibleCommands
     }"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"

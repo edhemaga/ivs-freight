@@ -28,22 +28,26 @@ export interface ITaInput {
   hideErrorMessage?: boolean;
   thousandSeparator?: boolean; // type of input must be string
   commands?: {
-    active: boolean;
-    type: string; // 'increment-decrement', 'confirm-cancel'
-    firstCommand: {
-      name: string;
-      svg: string;
+    active?: boolean;
+    type?: string; // 'increment-decrement', 'confirm-cancel'
+    firstCommand?: {
+      popupName?: string;
+      name?: string;
+      svg?: string;
     };
-    secondCommand: {
-      name: string;
-      svg: string;
+    secondCommand?: {
+      popupName?: string;
+      name?: string;
+      svg?: string;
     };
+    setTimeout?: number; // if must keep focus on input
   };
   // Dropdown
   isDropdown?: boolean;
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class (width of dropdowns)
   // Label dropdown
   isDropdownLabel?: boolean;
+  dropdownLabelSelected?: any;
   // MultiSelect Dropdown
   multiselectDropdown?: boolean;
   multiSelectDropdownActive?: boolean;

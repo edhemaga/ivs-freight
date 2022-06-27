@@ -1,15 +1,15 @@
 import {
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   Self,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { TaInputComponent } from '../ta-input/ta-input.component';
 import { ITaInput } from '../ta-input/ta-input.config';
 import { TaInputService } from '../ta-input/ta-input.service';
 
@@ -19,37 +19,35 @@ import { TaInputService } from '../ta-input/ta-input.service';
   styleUrls: ['./ta-input-dropdown-label.component.scss'],
 })
 export class TaInputDropdownLabelComponent
-  implements OnInit, OnChanges, ControlValueAccessor
+  implements OnChanges, ControlValueAccessor
 {
+  @ViewChild(TaInputComponent) inputRef: TaInputComponent;
   @Input() options: any[] = [];
   @Input() inputConfig: ITaInput;
 
-  @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectedColorLabel: EventEmitter<any> = new EventEmitter<any>();
+  @Output() labelEvent: EventEmitter<string> = new EventEmitter<string>();
 
-  public originalOptions: any[] = [];
-
-  constructor(
-    @Self() public superControl: NgControl,
-    private inputService: TaInputService,
-    private changeDetectionRef: ChangeDetectorRef
-  ) {
+  constructor(@Self() public superControl: NgControl) {
     this.superControl.valueAccessor = this;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.options.length) {
-      this.originalOptions = [...this.options];
-    } else {
-      this.options.push({
+    this.options = [
+      {
         id: 1,
+        name: 'No Color',
+        color: null,
+        count: null,
+      },
+      {
+        id: 2,
         name: 'Green',
-        color: 'green',
-        count: 30,
-      });
-    }
+        color: '#00FF00',
+        count: 20,
+      },
+    ];
   }
-
-  ngOnInit() {}
 
   get getSuperControl() {
     return this.superControl.control;
@@ -59,7 +57,25 @@ export class TaInputDropdownLabelComponent
   registerOnChange(fn: any): void {}
   registerOnTouched(fn: any): void {}
 
+  public onSelectLabel(event: Event, label: any) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.inputRef.isVisibleCommands = true;
+    this.inputRef.focusInput = true;
+    this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
+    console.log('LABELL SELEECT');
+    this.selectedColorLabel.emit(label);
+  }
+
+  public onLabelNameEvent(event: string) {
+    this.labelEvent.emit(event);
+  }
+
   public identity(index: number, item: any): number {
     return item.id;
+  }
+
+  public onClick() {
+    console.log('ON CLICKKK');
   }
 }
