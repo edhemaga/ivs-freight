@@ -163,11 +163,13 @@
             class="checkbox-card-body"
             [ngClass]="{ active: driverForm.get('isOwner').value }"
           >
-            <app-ta-tab-switch
-            [tabs]="ownerTabs"
-            (switchClicked)="tabOwnerChange($event)"
-            [type]="'type2-modal-popup'"
-            ></app-ta-tab-switch>
+            <div class="switch-margin">
+              <app-ta-tab-switch
+              [tabs]="ownerTabs"
+              (switchClicked)="tabOwnerChange($event)"
+              [type]="'type2-modal-popup'"
+              ></app-ta-tab-switch>  
+            </div>
 
             <!-- <app-status-switcher
               (switchClicked)="tabOwnerChange($event)"

@@ -4,7 +4,7 @@
     height: 32px;
     border-radius: 3px;
     background-color: #fff;
-    padding: 2px;
+    padding: 4px;
     box-sizing: border-box;
     display: flex;
     justify-content: flex-start;
@@ -16,7 +16,7 @@
         position: relative;
         flex: 1 auto;
         height: 32px;
-        padding: 5px 9px;
+        padding: 3px 8px;
         box-sizing: border-box;
         border-radius: 2px;
         background-color: #EEEEEE00;
@@ -30,6 +30,10 @@
         cursor: pointer;
 
         &.active{
+            color: #6C6C6C;
+        }
+
+        &:hover:not(.active){
             color: #919191;
         }
     }
@@ -39,7 +43,7 @@
         background-color: #EEEEEE;
         color: #fff;
         border-radius: 2px;
-        height: calc(100% - 4px);
+        height: calc(100% - 8px);
         left: 2px;
         transition: all 0.25s ease-out;
         pointer-events: none;
@@ -50,6 +54,7 @@
         height: 30px;
         background-color: #f7f7f7;
         line-height: 30px;
+        padding: 2px;
 
         .tab-switch-items-holder{
             height: 30px;
@@ -59,25 +64,20 @@
             &.active{
                 color: #536bc2 !important;
 
-                &:hover{
-                    background-color: transparent;
-                }
+            } 
+            
+            &:hover:not(.active){
+                background-color: #F3F3F3;
+                color: #6C6C6C;
+    
             }    
         }
 
         .slide-active-holder{
             background-color: #fff;
             box-shadow: 0 0 2px #ffffff1A;
+            height: calc(100% - 4px);
 
-
-        }
-
-        &:hover{
-            background-color: #F3F3F3;
-
-            .tab-switch-items-holder{
-                color: #6C6C6C;
-            }
         }
 
     }
@@ -86,38 +86,32 @@
         height: 26px;
         background-color: #f7f7f7;
         line-height: 26px;
-        margin-bottom: 12px;
+        padding: 2px;
 
         .tab-switch-items-holder{
             height: 26px;
             font-size: 12px;
             font-weight: 700;
-            padding: 4px 8px;
 
 
             &.active{
                 color: #536bc2 !important;
-
-                &:hover{
-                    background-color: transparent;
-                }
-            }    
+            }  
+            
+            
+            &:hover:not(.active){
+                background-color: #F3F3F3;
+                color: #6C6C6C;
+            }  
         }
 
         .slide-active-holder{
             background-color: #fff;
             box-shadow: 0 0 2px #ffffff1A;
-
+            height: calc(100% - 4px);
 
         }
 
-        &:hover{
-            background-color: #F3F3F3;
-
-            .tab-switch-items-holder{
-                color: #6C6C6C;
-            }
-        }  
     }
 
     &.driver-details-popup{
@@ -153,4 +147,5 @@
         }
 
     }
+
 }

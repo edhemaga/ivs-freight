@@ -316,10 +316,18 @@
           >
             <div class="broker-billing-field credit">
               <p>Credit</p>
-              <app-ta-input-radiobuttons
+
+              <app-ta-tab-switch
+              [tabs]="billingCredit"
+              (switchClicked)="isCredit($event)" 
+              [type]="'type2-modal-popup'"
+              >
+              </app-ta-tab-switch>              
+
+              <!-- <app-ta-input-radiobuttons
                 [buttons]="billingCredit"
                 (changedValue)="isCredit($event)"
-              ></app-ta-input-radiobuttons>
+              ></app-ta-input-radiobuttons> -->
             </div>
             <div class="broker-billing-field">
               <app-ta-input

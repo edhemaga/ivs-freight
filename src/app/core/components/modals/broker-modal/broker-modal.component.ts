@@ -109,16 +109,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public billingCredit = [
     {
       id: 301,
-      label: 'Enable',
+      label: 'credit',
       value: 'enable',
-      name: 'credit',
+      name: 'Enable',
       checked: true,
     },
     {
       id: 300,
-      label: 'Disable',
+      label: 'credit',
       value: 'disable',
-      name: 'credit',
+      name: 'Disable',
       checked: false,
     },
   ];
