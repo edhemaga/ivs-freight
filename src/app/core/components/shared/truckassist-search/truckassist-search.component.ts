@@ -1,11 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 
 @Component({
   selector: 'app-truckassist-search',
   templateUrl: './truckassist-search.component.html',
   styleUrls: ['./truckassist-search.component.scss'],
 })
-export class TruckassistSearchComponent implements OnInit {
+export class TruckassistSearchComponent implements OnInit, OnChanges {
+  @Input() selectedTabData: any = {};
   openSearch: boolean;
   searchText: string = '';
 
@@ -13,5 +20,11 @@ export class TruckassistSearchComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onTyping(){}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes?.selectedTabData?.firstChange && changes?.selectedTabData) {
+      this.selectedTabData = changes.selectedTabData.currentValue;
+    }
+  }
+
+  onTyping() {}
 }
