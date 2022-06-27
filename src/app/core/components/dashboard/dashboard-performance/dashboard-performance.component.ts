@@ -142,7 +142,7 @@ export class DashboardPerformanceComponent implements OnInit {
         }
       }
     ],
-    showLegend: true,
+    showLegend: false,
     chartValues: [2, 2],
     defaultType: 'bar',
     chartWidth: '1800',
