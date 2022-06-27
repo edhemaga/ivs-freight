@@ -92,7 +92,7 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
         id: 2,
         nameDefault: 'Contact',
         template: 'contact',
-        length: 1,
+        length: data?.shipperContacts?.length,
         hide: false,
         icon: true,
         hasArrow:false,

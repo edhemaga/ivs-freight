@@ -42,6 +42,9 @@
             font-size: 14px;
             font-weight: 400;
             color: $color-gray-dark;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
@@ -53,6 +56,14 @@
         }
     }
 }
-.svg-appoiment{
-    margin-right: 5px;
+
+.icon-wrapper{
+    display: flex;
+    align-items: center;
+    .svg-appoiment{
+        margin-right: 5px;
+        svg{
+            display: flex;
+        }
+    }
 }

@@ -6,6 +6,9 @@
 }
 .arrow-le{
     margin-right: 6px;
+    svg{
+        display: flex;
+    }
 }
 .icon-svg-repair{
     display: flex;
@@ -14,6 +17,7 @@
     .arrow-ri{
         margin-right: 6px;
         svg{
+            display: flex;
             path{
                 fill: #E57373;
             }
@@ -43,14 +47,11 @@
 .date{
     width: fit-content !important;
     line-height: 12px !important;
-    height: 12px;
 }
 .repair-items-wrapper{
  height: fit-content !important;
 min-height: fit-content !important;
 }
 .unit{
-    line-height: 28px !important;
-    position: relative;
-    top: 1px;
+    height: 18px;
 }

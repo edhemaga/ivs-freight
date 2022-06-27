@@ -21,7 +21,8 @@ export class ShipperCardViewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getShipperDropdown();   
+    this.getShipperDropdown();
+    this.note.patchValue(this.shipper.note)
   }
   public getShipperDropdown() {
     this.shipperDropdowns = this.shipperQuery.getAll().map((item) => {
