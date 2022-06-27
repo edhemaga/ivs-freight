@@ -7,6 +7,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardTopDriverComponent implements OnInit {
 
+  public chartConfig: object = {
+    dataProperties: [
+      {
+        defaultConfig: {
+          type: 'doughnut',
+          data: [10, 9, 8, 7, 6, 5, 4, 3, 3, 2, 45.49],
+          backgroundColor: ['#8A9AEF', '#FDB46B', '#F27B8E', '#6DC089', '#A574C3', '#38BDEB', '#FFD54F', '#BDE08E', '#F69FF3', '#A1887F', '#CCCCCC'],
+          borderColor: '#fff',
+          hoverBackgroundColor: '#6C6C6C',
+          hoverBorderColor: '#fff'
+        }
+      }
+    ],
+    showLegend: false,
+    chartValues: [2, 2],
+    defaultType: 'doughnut',
+    chartWidth: '322',
+    chartHeight: '322',
+    removeChartMargin: true,
+    dataLabels: [],
+    noChartImage: 'assets/svg/common/no_data_pay.svg'
+  };
+
+  public chartAxes: object = {};
+
   driverTopSwitchTabs: any[] = [];
 
   driverTopSwitch: any[] = [];

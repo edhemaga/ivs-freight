@@ -266,5 +266,11 @@
                 border: 6px solid #fff;
             }
         }
+
+        .col-3{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
 }
