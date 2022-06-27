@@ -23,7 +23,6 @@ import {
 import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
-import { ShopTService } from '../../../repair/state/shop.service';
 
 @Component({
   selector: 'app-repair-order-modal',
@@ -101,7 +100,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private repairService: RepairTService,
-    private repairShopService: ShopTService,
     private notificationService: NotificationService,
     private modalService: ModalService,
     private ngbActiveModal: NgbActiveModal,
@@ -312,7 +310,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       }
       case 'repair-shop': {
         this.selectedRepairShop = event;
-        this.repairShopService
+        this.repairService
           .getRepairShopById(this.selectedRepairShop.id)
           .pipe(untilDestroyed(this))
           .subscribe({
@@ -602,7 +600,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           });
 
           // Repair Shop
-          this.repairShopService
+          this.repairService
             .getRepairShopById(res.repairShopId)
             .pipe(untilDestroyed(this))
             .subscribe({
