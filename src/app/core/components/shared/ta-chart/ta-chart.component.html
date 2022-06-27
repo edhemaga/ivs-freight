@@ -1,24 +1,25 @@
-<div class="charts-item-wrapper revenue">
-  <div class="charts-template-item" *ngFor="let item of legendProperties; let indx = index">
+<div class="charts-item-wrapper revenue" [class.row]="legendAttributes.length > 2">
+  <div class="charts-template-item" [class.col-4]="legendAttributes.length > 2" *ngFor="let item of legendAttributes; let indx = index">
     <div class="icon-name-item">
       <svg-icon src={{item.image}}></svg-icon>
       <div class="charts-template-item-name">{{ item.title }}</div>
     </div>
-    <div class="charts-template-item-value">{{ item.value }}</div>
+    <div class="charts-template-item-value">{{item.prefix}}{{ item.value }} {{item.sufix}}</div>
   </div>
 </div>
-<div class="main_chart_container">
+<div class="main_chart_container" [class.remove_chart_margin]="removeChartMargin">
+  <div class="no_chart_data" *ngIf="noChartData">
+    <svg-icon src={{noChartImage}}></svg-icon>
+  </div>
   <div class="chart_text_holder" *ngIf="lineChartType == 'doughnut' && doughnutChartLegend">
     <div class="chart_inner">
       <div class="chart_value_holder" *ngFor="let item of chartInnitProperties; let indx = index" [ngStyle]="{'margin-bottom': indx+1 < chartInnitProperties.length ? '22px': '11px'}">
         <div class="chart_label" [ngStyle]="{'color': item.color}" >{{ item.name }}</div>
-        <div class="chart_value_hold" [ngStyle]="{'background-color': item.color}">
-          <div class="chart_value">{{ item.value }}%</div>
-        </div>
+        <div class="chart_value">{{ item.value }}%</div>
       </div>
     </div>
   </div>
-  <canvas baseChart width={{chartWidth}} height={{chartHeight}} [class.dotted_background]="dottedBackground" [ngStyle]="{'width': chartWidth+'px', 'height': chartHeight+'px'}"
+  <canvas *ngIf="!noChartData" baseChart id="myChart" width={{chartWidth}} height={{chartHeight}} [class.dotted_background]="dottedBackground" [ngStyle]="{'width': chartWidth+'px', 'height': chartHeight+'px'}"
     [datasets]="lineChartData"
     [labels]="lineChartLabels"
     [options]="lineChartOptions"

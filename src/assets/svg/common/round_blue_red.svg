@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="13.416" height="13.417" viewBox="0 0 13.416 13.417">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_70360" data-name="Rectangle 70360" width="5.5" height="11" transform="translate(709.527 814.75) rotate(45)" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <rect id="Rectangle_70357" data-name="Rectangle 70357" width="11" height="11" rx="5.5" fill="#6d82c7"/>
+  <g id="Mask_Group_63789" data-name="Mask Group 63789" transform="translate(-700 -813)" clip-path="url(#clip-path)">
+    <rect id="Rectangle_70359" data-name="Rectangle 70359" width="11" height="11" rx="5.5" transform="translate(700 813)" fill="#e57373"/>
+  </g>
+</svg>

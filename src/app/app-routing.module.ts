@@ -6,7 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/authentication.guard';
 import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
-import { DriverResolver } from './core/components/driver/state/driver.resolver';
+import { DriverActiveResolver } from './core/components/driver/state/driver-active-state/driver-active.resolver';
 import { HelperSignupUserComponent } from './core/components/authentication/helper-signup-user/helper-signup-user.component';
 import { HelperComponent } from './core/components/authentication/helper/helper.component';
 import { HelperForgotPasswordComponent } from './core/components/authentication/helper-forgot-password/helper-forgot-password.component';
@@ -14,6 +14,8 @@ import { TruckResolver } from './core/components/truck/state/truck.resolver';
 import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
 import { BrokerResolver } from './core/components/customer/state/broker-state/broker.resolver';
 import { ShipperResolver } from './core/components/customer/state/shipper-state/shipper.resolver';
+import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
+import { DriverInactiveResolver } from './core/components/driver/state/driver-inactive-state/driver-inactive.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -72,7 +74,7 @@ const routes: Routes = [
         (m) => m.DriverModule
       ),
     canActivate: [AuthGuard],
-    resolve: { driver: DriverResolver },
+    resolve: { driverActive: DriverActiveResolver, driversInactive: DriverInactiveResolver },
   },
   {
     path: 'truck',
@@ -112,6 +114,7 @@ const routes: Routes = [
         (m) => m.RepairModule
       ),
     canActivate: [AuthGuard],
+    resolve: { shop: ShopResolver },
   },
   {
     path: 'pm',

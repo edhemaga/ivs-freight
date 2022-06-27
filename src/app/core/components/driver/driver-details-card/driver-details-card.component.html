@@ -552,28 +552,19 @@
           <div id="chart">
             <app-ta-chart
               [chartConfig]="{
-                legendAttributes: [
-                  {
-                    title: 'Miles',
-                    value: '46,755.2 mi',
-                    image: 'assets/svg/common/round_yellow.svg'
-                  },
-                  {
-                    title: 'Salary',
-                    value: '$36.854.27',
-                    image: 'assets/svg/common/round_blue.svg'
-                  }
-                ],
                 dataProperties: [
                   {
                     defaultConfig: {
                       type: 'line',
                       data: [1050, 950, 2200, 1100, 1250, 1550, 2100, 2500, 2000, 1150, 1300, 1700],
                       label: 'Salary',
-                      yAxisID: 'y-axis-1'
-                    },
-                    colorProperties: {
-                      borderColor: '#6D82C7'
+                      yAxisID: 'y-axis-1',
+                      borderColor: '#6D82C7',
+                      pointBackgroundColor: '#FFFFFF',
+                      pointHoverBackgroundColor: '#6D82C7',
+                      pointHoverBorderColor: '#FFFFFF',
+                      pointHoverRadius: 3,
+                      pointBorderWidth: 2
                     }
                   },
                   {
@@ -581,9 +572,7 @@
                       type: 'bar',
                       data: [2200, 1700, 2800, 1100, 1500, 2200, 3300, 3700, 2500, 1400, 2200, 2800],
                       label: 'Miles',
-                      yAxisID: 'y-axis-0'
-                    },
-                    colorProperties: {
+                      yAxisID: 'y-axis-0',
                       borderColor: '#FFCC80',
                       backgroundColor: '#FFCC80',
                       hoverBackgroundColor: '#FFA726'
@@ -591,32 +580,15 @@
                   }
                 ],
                 showLegend: false,
+                chartValues: [46,755,000, 36.854],
                 defaultType: 'bar',
                 chartWidth: '417',
                 chartHeight: '130',
-                dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP']
+                dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP'],
+                noChartImage: 'assets/svg/common/yellow_no_data.svg'
               }"
-              [axesProperties]="{
-                verticalLeftAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 4000,
-                  stepSize: 1000,
-                  showGridLines: true
-                },
-                verticalRightAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 2800,
-                  stepSize: 700,
-                  showGridLines: false
-                },
-                horizontalAxes: {
-                  visible: true,
-                  position: 'bottom',
-                  showGridLines: false
-                }
-              }"
+              [axesProperties]="barAxes"
+              [legendAttributes]="barChartLegend"
             >
             </app-ta-chart>
           </div>

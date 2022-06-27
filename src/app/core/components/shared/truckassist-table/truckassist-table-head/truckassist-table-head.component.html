@@ -44,6 +44,17 @@
         <div
           *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
           class="th-title"
+          (click)="sortHeaderClick(column)"
+          [ngStyle]="{
+            'width.px':
+              column.resizable && !locked
+                ? column.width - 55
+                : column.width - 20
+          }"
+          [ngClass]="{
+            'sort-active': column.sortDirection !== '' && column.sortDirection,
+            'th-title-locked-cursor': locked
+          }"
         >
           {{ column.name }}
         </div>
@@ -57,6 +68,30 @@
             }"
             [src]="
               column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''
+            "
+          ></svg-icon>
+        </div>
+
+        <!-- Sort -->
+        <div
+          class="sort-indicator-container"
+          *ngIf="
+            column.sortable &&
+            column.sortDirection !== '' &&
+            column.sortDirection &&
+            locked &&
+            viewData.length > 1
+          "
+        >
+          <svg-icon
+            [svgStyle]="{
+              'width.px': 12,
+              'height.px': 12
+            }"
+            [src]="
+              column.sortDirection === 'asc'
+                ? 'assets/svg/truckassist-table/ascending-sort.svg'
+                : 'assets/svg/truckassist-table/descending-sort.svg'
             "
           ></svg-icon>
         </div>
@@ -89,8 +124,6 @@
         </div>
       </th>
     </tr>
-
-   
 
     <!-- Not Pined -->
     <div class="not-pined-border" *ngIf="showBorder"></div>
@@ -131,6 +164,16 @@
           <div
             *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
             class="th-title"
+            (click)="sortHeaderClick(column)"
+            [ngStyle]="{
+              'width.px':
+                column.resizable && !locked
+                  ? column.width - 55
+                  : column.width - 20
+            }"
+            [ngClass]="{
+              'sort-active': column.sortDirection !== '' && column.sortDirection
+            }"
           >
             {{ column.name }}
           </div>
@@ -144,6 +187,30 @@
               }"
               [src]="
                 column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''
+              "
+            ></svg-icon>
+          </div>
+
+          <!-- Sort -->
+          <div
+            class="sort-indicator-container"
+            *ngIf="
+              column.sortable &&
+              column.sortDirection !== '' &&
+              column.sortDirection &&
+              locked &&
+              viewData.length > 1
+            "
+          >
+            <svg-icon
+              [svgStyle]="{
+                'width.px': 12,
+                'height.px': 12
+              }"
+              [src]="
+                column.sortDirection === 'asc'
+                  ? 'assets/svg/truckassist-table/ascending-sort.svg'
+                  : 'assets/svg/truckassist-table/descending-sort.svg'
               "
             ></svg-icon>
           </div>

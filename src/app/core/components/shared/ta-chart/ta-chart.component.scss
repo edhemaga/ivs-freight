@@ -4,11 +4,14 @@
   align-items: center;
   position: relative;
   margin-top: 14px;
-}
 
-.dotted_background{
-  background-image: url('../../../../../assets/png/doted-line.png');
-  background-size: 10px;
+  &.remove_chart_margin{
+    margin: 0;
+  }
+
+  .no_chart_data{
+    user-select: none;
+  }
 }
 
 .chart_text_holder{
@@ -48,4 +51,8 @@
       }
     }
   }
+}
+
+.charts-template-item{
+  padding: 0 !important;
 }

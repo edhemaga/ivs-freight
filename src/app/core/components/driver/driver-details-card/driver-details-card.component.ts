@@ -21,7 +21,7 @@ import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
-import { DriversQuery } from '../state/driver.query';
+import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 
 @Component({
@@ -72,10 +72,49 @@ export class DriverDetailsCardComponent
   // public driver_active_id: number = +this.activated_route.snapshot.params['id'];
   public driversList: any[] = this.driversQuery.getAll();
 
+  public barChartLegend: any[] = [
+    {
+      title: 'Miles',
+      value: '46,755.2',
+      image: 'assets/svg/common/round_yellow.svg',
+      sufix: 'mi',
+      elementId: 1
+    },
+    {
+      title: 'Salary',
+      value: '36.854.27',
+      image: 'assets/svg/common/round_blue.svg',
+      prefix: '$',
+      elementId: 0
+    }
+  ];
+
+  public barAxes: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 4000,
+      stepSize: 1000,
+      showGridLines: true
+    },
+    verticalRightAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 2800,
+      stepSize: 700,
+      showGridLines: false
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false
+    }
+  };
+
   constructor(
     private sanitazer: DomSanitizer,
     private modalService: ModalService,
-    private driversQuery: DriversQuery,
+    private driversQuery: DriversActiveQuery,
     private activated_route: ActivatedRoute,
     private detailsPageDriverSer: DetailsPageService,
     private sumArr: SumArraysPipe

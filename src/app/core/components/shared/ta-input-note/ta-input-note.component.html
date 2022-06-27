@@ -9,7 +9,12 @@
       src="assets/svg/common/ic_arrow_down_updated.svg"
     ></svg-icon>
   </div>
-  <div class="note-body" #noteBody [@showHideNote]="_isVisibleNote">
+  <div 
+    class="note-body unopened" 
+    #noteBody 
+    [@showHideNote]="_isVisibleNote"
+    [class.unopened]="_isVisibleNote === null"
+  >
     <textarea
       #note
       [readOnly]="isReadOnly"
