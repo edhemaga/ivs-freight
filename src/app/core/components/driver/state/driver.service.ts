@@ -1,6 +1,6 @@
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import {
   CheckOwnerSsnEinResponse,
   CreateDriverCommand,
@@ -42,7 +42,16 @@ export class DriverTService {
     search1?: string,
     search2?: string
   ): Observable<DriverListResponse> {
-    return this.driverService.apiDriverListGet(active, pageIndex, pageSize);
+    return this.driverService.apiDriverListGet(
+      active,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
   }
 
   // Create Driver

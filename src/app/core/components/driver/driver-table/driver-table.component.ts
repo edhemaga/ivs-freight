@@ -18,6 +18,7 @@ import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-
 import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
 import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
+import { DriverListResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-driver-table',
@@ -403,12 +404,36 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       event.action === 'tab-selected' &&
       event.tabData.field !== 'applicants'
     ) {
-      console.log('Tab select se radi');
       this.selectedTab = event.tabData.field;
 
       this.sendDriverData();
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
+    }
+  }
+
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+        this.driverTService
+          .getDrivers(
+            this.selectedTab === 'active' ? 1 : 0,
+            1,
+            25,
+            undefined,
+            event.direction
+          )
+          .pipe(untilDestroyed(this))
+          .subscribe((drivers: DriverListResponse) => {
+            this.viewData = drivers.pagination.data;
+
+            this.viewData = this.viewData.map((data: any) => {
+              return this.mapDriverData(data);
+            });
+          });
+      } else {
+        this.sendDriverData();
+      }
     }
   }
 
@@ -456,15 +481,12 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         .pipe(untilDestroyed(this))
         .subscribe({
           next: () => {
-            console.log('Poziva se next u komponenti');
-
             this.notificationService.success(
               `Driver successfully Change Status`,
               'Success:'
             );
           },
           error: () => {
-            console.log('Poziva se error u komponenti');
             this.notificationService.error(
               `Driver with id: ${event.id}, status couldn't be changed`,
               'Error:'

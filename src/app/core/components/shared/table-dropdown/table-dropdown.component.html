@@ -5,9 +5,10 @@
   [ngbPopover]="dropdownPopover"
   [placement]="placement"
   class="table-dropdown-container"
-  [ngClass]="customClassDropDown"
+  [ngClass]="{ 'active-drop': dropDownActive === id }"
   popoverClass="table-dropdown-popover"
   triggers="manual"
+  (hidden)="dropDownActive = -1"
 ></div>
 
 <ng-template #dropdownPopover let-data="data">

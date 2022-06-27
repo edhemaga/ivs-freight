@@ -30,6 +30,7 @@ export class TruckassistTableToolbarComponent
   listName: string = '';
   optionsPopup: any;
   optionsPopupOpen: boolean = false;
+  tableLocked: boolean = true;
   optionsPopupContent: any[] = [
     {
       text: 'Unlock table',
@@ -146,7 +147,7 @@ export class TruckassistTableToolbarComponent
     });
   }
 
-  deleteSelectedRows(){
+  deleteSelectedRows() {
     this.tableService.sendDeleteSelectedRows(this.tableRowsSelected);
   }
 
@@ -164,7 +165,17 @@ export class TruckassistTableToolbarComponent
   }
 
   onOptions(action: any) {
-    if (action.text === 'Unlock table') {
+    if (action.text === 'Unlock table' || action.text === 'Lock table') {
+      this.tableLocked = !this.tableLocked;
+
+      this.optionsPopupContent[0].text = this.tableLocked
+        ? 'Unlock table'
+        : 'Lock table';
+
+      this.optionsPopupContent[0].svgPath = this.tableLocked
+        ? 'assets/svg/truckassist-table/lock.svg'
+        : 'assets/svg/truckassist-table/unlocked-table.svg';
+
       this.tableService.sendUnlockTable({
         toaggleUnlockTable: true,
       });

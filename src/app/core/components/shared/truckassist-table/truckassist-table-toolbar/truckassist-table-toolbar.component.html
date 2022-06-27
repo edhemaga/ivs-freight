@@ -101,8 +101,9 @@
         [placement]="'bottom-right'"
         [autoClose]="'outside'"
         popoverClass="options-popover"
-        [ngClass]="{ 'active-options': optionsPopup?.isOpen() }"
+        [ngClass]="{ 'active-options': optionsPopupOpen }"
         triggers="manual"
+        (hidden)="optionsPopupOpen = false"
       >
         <svg-icon
           [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
