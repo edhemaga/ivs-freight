@@ -4,6 +4,13 @@
     justify-content: flex-start;
     align-items: flex-start;
 
+    &.main-calendar-holder{
+        height: calc(100vh - 36px);
+
+        overflow: hidden;
+    }
+
+
     .calendar-info-holder{
         width: 326px;
         display: flex;
@@ -711,10 +718,12 @@
 
         .calendar-month-holder{
             width: 100%;
+            height: calc(100vh - 36px);
             display: flex;
             justify-content: flex-start;
             align-items: flex-start;
             flex-wrap: wrap;
+            overflow: auto;
 
             app-calendar-month{
                 display: flex;
@@ -1120,7 +1129,7 @@
                 justify-content: center;
                 align-items: center;
 
-                height: 163px;
+                //height: 163px;
                 flex: 0 0 14.28%;
                 background-color: #fff;
                 transform: scale(0.99);
@@ -1578,10 +1587,13 @@
 }
 
 .fc-scrollgrid-section-header .fc-col-header-cell-cushion {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
     padding: 0;
     font-size: 13px;
     font-weight: 700;
-    line-height: 19px;
+    line-height: 24px;
     color: #6C6C6C;
 
 
@@ -1606,7 +1618,7 @@
 }
 
 .fc-dayGridMonth-view .fc-daygrid-body .fc-scrollgrid-sync-inner{
-    height: 163px;
+   // height: 163px;
 }
 
 .fc-daygrid-body .fc-scrollgrid-sync-inner{

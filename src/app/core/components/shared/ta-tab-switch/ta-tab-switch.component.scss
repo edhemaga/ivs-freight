@@ -10,10 +10,11 @@
     justify-content: flex-start;
     align-items: center;
     user-select: none;
+    line-height: 32px;
 
     .tab-switch-items-holder{
         position: relative;
-        flex: 1;
+        flex: 1 auto;
         padding: 5px 9px;
         box-sizing: border-box;
         border-radius: 2px;
@@ -47,6 +48,7 @@
         margin-top: 12px;
         height: 30px;
         background-color: #cccccc;
+        line-height: 30px;
 
         .tab-switch-items-holder{
             color: #fff;
@@ -66,6 +68,7 @@
     &.driver-details-popup{
         height: 26px;
         background-color: #F3F3F3;
+        line-height: 26px;
 
         .tab-switch-items-holder{
             font-size: 11px;
@@ -85,5 +88,13 @@
         .slide-active-holder{
             background-color: #fff;
         }
+    }
+
+    &.performance-switch{
+        .tab-switch-items-holder{
+            padding: 5px 8px;
+            box-sizing: border-box;
+        }
+
     }
 }
