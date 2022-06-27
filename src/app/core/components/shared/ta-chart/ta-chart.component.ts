@@ -32,6 +32,7 @@ export class TaChartComponent implements OnInit {
   removeChartMargin: boolean = false;
   chartInnitProperties: any = [];
   animationDuration: number = 1000;
+  allowAnimation: any;
 
   constructor() { }
 
@@ -64,12 +65,12 @@ export class TaChartComponent implements OnInit {
       responsive: false,
       cutoutPercentage: 90,
       animation: {
-        duration: this.animationDuration
+        duration: this.allowAnimation ? this.animationDuration : 0
       },
       onHover: (evt, elements) => {
         if ( elements && elements[0] ) {
           this.animationDuration = 0;
-          if ( this.legendAttributes && this.legendAttributes.lenght && this.legendAttributes.lenght > 0) { this.setChartLegendData(elements); }
+          if ( this.legendAttributes && this.legendAttributes.length && this.legendAttributes.length > 0) { this.setChartLegendData(elements); }
           this.changeChartFillProperty(evt, elements);
           this.setHoverAnnotation(elements[0]['_index']);
         }
@@ -251,6 +252,7 @@ export class TaChartComponent implements OnInit {
       this.noChartImage = this.chartConfig['noChartImage'];
       this.removeChartMargin = this.chartConfig['removeChartMargin'];
       this.chartInnitProperties = this.chartConfig['chartInnitProperties'];
+      this.allowAnimation = this.chartConfig['allowAnimation'];
       this.chartDataCheck(this.chartConfig['chartValues']);
     });
   }
