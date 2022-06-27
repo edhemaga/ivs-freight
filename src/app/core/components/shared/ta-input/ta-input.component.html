@@ -29,7 +29,7 @@
       !inputConfig.hideClear &&
       !inputConfig.isDisabled &&
       !inputConfig.customClass?.includes('details-pages') &&
-      !inputConfig.plusMinusCommands
+      !inputConfig.commands?.active
     "
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
@@ -133,7 +133,7 @@
   </div>
 
   <!-- Input Confirm New Item in Dropdown -->
-  <div
+  <!-- <div
     *ngIf="isDropdownAddModeActive && inputConfig.isDropdown && focusInput"
     class="input-dropdown-confirm"
     (click)="onAddItemInDropdown($event)"
@@ -146,7 +146,7 @@
       class="input-dropdow-confirm-svg"
       src="assets/svg/common/ic_confirm.svg"
     ></svg-icon>
-  </div>
+  </div> -->
 
   <!-- Input Drodown Arrow -->
   <svg-icon
@@ -157,7 +157,8 @@
         !isDropdownAddModeActive &&
         !inputConfig.multiSelectDropdownActive) ||
       inputConfig.name === 'datepicker' ||
-      inputConfig.name === 'timepicker'
+      inputConfig.name === 'timepicker' ||
+      inputConfig.isDropdownLabel
     "
     [ngClass]="{
       active:
@@ -174,29 +175,48 @@
         !getSuperControl.value &&
         getSuperControl.invalid &&
         touchedInput &&
-        !focusInput
+        !focusInput,
+      'dropdown-label-active': inputConfig.isDropdownLabel && focusInput
     }"
     src="assets/svg/common/ic_arrow_down_updated.svg"
     (click)="toggleDropdownOptions()"
   ></svg-icon>
 
-  <!-- Modal PM -,+ buttons -->
+  <!-- Dropdown Label Divider -->
   <div
-    *ngIf="inputConfig.plusMinusCommands && isVisiblePmCommands"
+    *ngIf="inputConfig.isDropdownLabel && focusInput"
+    class="ta-input-label-vertical-divider"
+  ></div>
+
+  <!-- Input Commands -->
+  <div
+    *ngIf="inputConfig.commands?.active && isVisibleCommands"
     class="input-pm-incrementation"
   >
     <div class="input-pm-decrement">
       <svg-icon
         class="pm-svg-decrement"
-        src="assets/svg/common/ic_pm_decrement.svg"
-        (click)="onPmIncrementation($event, 'decrement')"
+        [src]="inputConfig.commands.firstCommand.svg"
+        (click)="
+          onCommands(
+            $event,
+            inputConfig.commands.type,
+            inputConfig.commands.firstCommand.name
+          )
+        "
       ></svg-icon>
     </div>
     <div class="input-pm-increment">
       <svg-icon
         class="pm-svg-increment"
-        src="assets/svg/common/ic_pm_increment.svg"
-        (click)="onPmIncrementation($event, 'increment')"
+        [src]="inputConfig.commands.secondCommand.svg"
+        (click)="
+          onCommands(
+            $event,
+            inputConfig.commands.type,
+            inputConfig.commands.secondCommand.name
+          )
+        "
       ></svg-icon>
     </div>
   </div>
@@ -220,7 +240,7 @@
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-required-in':
-        !inputConfig.plusMinusCommands &&
+        !inputConfig.commands?.active &&
         getSuperControl.value &&
         getSuperControl.valid &&
         focusInput,
@@ -291,7 +311,7 @@
         getSuperControl.valid &&
         focusInput &&
         !isVisiblePasswordEye &&
-        !isVisiblePmCommands &&
+        !isVisibleCommands &&
         !inputConfig.blackInput,
       'invalid-focus-in':
         getSuperControl.value &&
@@ -300,7 +320,7 @@
         !inputConfig.blackInput,
       'password-eye':
         ((inputConfig.type === 'password' && isVisiblePasswordEye) ||
-          isVisiblePmCommands) &&
+          isVisibleCommands) &&
         !getSuperControl.invalid,
       'password-eye-invalid':
         inputConfig.type === 'password' &&
@@ -316,7 +336,8 @@
         !inputConfig.blackInput,
       'multiSelect-dropdown-active':
         inputConfig.multiSelectDropdownActive && focusInput,
-      'blue-input-color': inputConfig.blueInputColor && !focusInput
+      'blue-input-color': inputConfig.blueInputColor && !focusInput,
+      'dropdown-label-active': inputConfig.isDropdownLabel && focusInput
     }"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"

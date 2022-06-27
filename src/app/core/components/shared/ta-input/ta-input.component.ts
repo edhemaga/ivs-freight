@@ -75,7 +75,7 @@ export class TaInputComponent
   public capsLockOn: boolean = false;
 
   // PM Modal Input
-  public isVisiblePmCommands: boolean = false;
+  public isVisibleCommands: boolean = false;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -181,8 +181,8 @@ export class TaInputComponent
     }
 
     // Repair PM Modal
-    if (this.inputConfig.plusMinusCommands) {
-      this.isVisiblePmCommands = true;
+    if (this.inputConfig.commands.active) {
+      this.isVisibleCommands = true;
     }
 
     // Datepicker
@@ -245,8 +245,8 @@ export class TaInputComponent
       }
 
       // PM REPAIR MODAL
-      if (this.inputConfig.plusMinusCommands) {
-        this.blurOnPmCommands();
+      if (this.inputConfig.commands.active) {
+        this.blurOnCommands();
       }
     }
     this.inputService.onFocusOutInputSubject.next(true);
@@ -263,12 +263,12 @@ export class TaInputComponent
     }, 150);
   }
 
-  private blurOnPmCommands() {
+  private blurOnCommands() {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
     this.timeout = setTimeout(() => {
-      this.isVisiblePmCommands = false;
+      this.isVisibleCommands = false;
       clearTimeout(this.timeout);
     }, 2500);
   }
@@ -401,57 +401,64 @@ export class TaInputComponent
     }
   }
 
-  public onPmIncrementation(event: Event, action: string) {
+  public onCommands(event: Event, type: string, action: string) {
     event.stopPropagation();
     event.preventDefault();
-    const value = convertThousanSepInNumber(this.getSuperControl.value);
-
-    switch (action) {
-      case 'decrement': {
-        if (value >= 10000 && value < 20000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value - 1000)
-          );
-        } else if (value >= 20001 && value < 50000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value - 3000)
-          );
-        } else if (value >= 50001 && value < 100000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value - 5000)
-          );
-        } else if (value >= 10000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value - 10000)
-          );
-        } else {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value - 500)
-          );
-        }
-        break;
-      }
-      case 'increment': {
-        if (value > 10000 && value < 20000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value + 1000)
-          );
-        } else if (value >= 20001 && value < 50000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value + 3000)
-          );
-        } else if (value >= 50001 && value < 100000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value + 5000)
-          );
-        } else if (value >= 10000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value + 10000)
-          );
-        } else {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value + 500)
-          );
+    switch (type) {
+      case 'pm-increment-decrement': {
+        const value = convertThousanSepInNumber(this.getSuperControl.value);
+        switch (action) {
+          case 'decrement': {
+            if (value >= 10000 && value < 20000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value - 1000)
+              );
+            } else if (value >= 20001 && value < 50000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value - 3000)
+              );
+            } else if (value >= 50001 && value < 100000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value - 5000)
+              );
+            } else if (value >= 10000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value - 10000)
+              );
+            } else {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value - 500)
+              );
+            }
+            break;
+          }
+          case 'increment': {
+            if (value > 10000 && value < 20000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value + 1000)
+              );
+            } else if (value >= 20001 && value < 50000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value + 3000)
+              );
+            } else if (value >= 50001 && value < 100000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value + 5000)
+              );
+            } else if (value >= 10000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value + 10000)
+              );
+            } else {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value + 500)
+              );
+            }
+            break;
+          }
+          default: {
+            break;
+          }
         }
         break;
       }

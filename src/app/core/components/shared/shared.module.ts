@@ -101,6 +101,7 @@ import { ChartsModule } from 'ng2-charts';
 import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 import { ProfileImagesModule } from './profile-images/profile-images.module';
 import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
+import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-input-dropdown-label.component';
 
 @NgModule({
   declarations: [
@@ -167,6 +168,7 @@ import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
     RepairShopModalComponent,
     RepairPmModalComponent,
     RepairOrderModalComponent,
+    TaInputDropdownLabelComponent,
     TaTabSwitchComponent,
   ],
   imports: [
@@ -312,6 +314,7 @@ import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
     AccidentModalComponent,
     RepairPmModalComponent,
     RepairOrderModalComponent,
+    TaInputDropdownLabelComponent
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

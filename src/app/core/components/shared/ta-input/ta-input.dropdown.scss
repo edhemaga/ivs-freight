@@ -1,7 +1,7 @@
 //-------------------- Input Dropdown arrow -----------------
 .input-dropdown-arrow {
   position: absolute;
-  right: 6px;
+  right: 5px;
   top: 3px;
   width: 18px;
   height: 18px;
@@ -186,6 +186,10 @@
       }
     }
   }
+
+  &.dropdown-label-active {
+    right: 327px;
+  }
 }
 
 //-------------------- Input Dropdwon confirmation ----------
@@ -217,4 +221,17 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
   }
+}
+
+// -------------------- Input Dropdown Label ------------------
+.ta-input-label-vertical-divider {
+  content: "";
+    display: block;
+    height: 16px;
+    width: 1px;
+    border-radius: 3px;
+    background: #e5e5e5;
+    position: absolute;
+    left: 135px;
+    top: 5px;
 }

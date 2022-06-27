@@ -63,7 +63,18 @@
                 name: editData?.header?.includes('Truck') ? 'MILES' : 'MONTHS',
                 type: 'text',
                 blackInput: true,
-                plusMinusCommands: true,
+                commands: {
+                  active: true,
+                  type: 'pm-increment-decrement',
+                  firstCommand: {
+                    name: 'decrement',
+                    svg: 'assets/svg/common/ic_pm_decrement.svg'
+                  },
+                  secondCommand: {
+                    name: 'increment',
+                    svg: 'assets/svg/common/ic_pm_increment.svg'
+                  }
+                },
                 thousandSeparator: true,
                 maxLength: editData?.header?.includes('Truck') ? 999999999 : 2
               }"
@@ -116,7 +127,18 @@
                 name: editData?.header?.includes('Truck') ? 'MILES' : 'MONTHS',
                 type: 'text',
                 blackInput: true,
-                plusMinusCommands: true,
+                commands: {
+                  active: true,
+                  type: 'pm-increment-decrement',
+                  firstCommand: {
+                    name: 'decrement',
+                    svg: 'assets/svg/common/ic_pm_decrement.svg'
+                  },
+                  secondCommand: {
+                    name: 'increment',
+                    svg: 'assets/svg/common/ic_pm_increment.svg'
+                  }
+                },
                 thousandSeparator: true,
                 maxLength: editData?.header?.includes('Truck') ? 999999999 : 2
               }"

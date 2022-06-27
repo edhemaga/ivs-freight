@@ -1,0 +1,26 @@
+<app-ta-input
+  [formControl]="getSuperControl"
+  [inputConfig]="inputConfig"
+  #t2="ngbPopover"
+  [ngbPopover]="taInputDropdownPopover"
+  [placement]="['bottom-left']"
+  popoverClass="ta-input-dropdown-label"
+  [container]="'body'"
+></app-ta-input>
+
+<ng-template #taInputDropdownPopover>
+  <div class="ta-label-options">
+    <div
+      class="ta-label-option"
+      *ngFor="let label of options; trackBy: identity"
+    >
+      <svg-icon
+        class="ta-label-option-svg"
+        src="assets/svg/common/ic_tag.svg"
+      ></svg-icon>
+      <div class="ta-label-vertical-divider"></div>
+      <p class="ta-label-option-name">{{ label.name }}</p>
+      <div class="ta-label-option-count">{{ label.count }}</div>
+    </div>
+  </div>
+</ng-template>

@@ -9,9 +9,9 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
-  CompanyAccountModalResponse,
   CompanyAccountResponse,
   CreateCompanyAccountCommand,
+  GetCompanyAccountLabelListResponse,
   UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
 import { AccountModalService } from './account-modal.service';
@@ -30,7 +30,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
 
   public accountForm: FormGroup;
-  public accountLabels$: Observable<CompanyAccountModalResponse>;
+  public accountLabels: any[] = [];
   public selectedAccountLabel: any = null;
 
   constructor(
@@ -101,7 +101,15 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   private getAccountLabels(): void {
-    this.accountLabels$ = this.accountModalService.companyAccountLabels();
+    this.accountModalService
+      .companyAccountLabelsList()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: GetCompanyAccountLabelListResponse) => {
+          this.accountLabels = res.pagination.data;
+        },
+        error: () => {},
+      });
   }
 
   private editCompanyAccount(id: number) {

@@ -27,10 +27,23 @@ export interface ITaInput {
   hideRequiredCheck?: boolean;
   hideErrorMessage?: boolean;
   thousandSeparator?: boolean; // type of input must be string
-  plusMinusCommands?: boolean; // +,- (example: pm modal options)
+  commands?: {
+    active: boolean;
+    type: string; // 'increment-decrement', 'confirm-cancel'
+    firstCommand: {
+      name: string;
+      svg: string;
+    };
+    secondCommand: {
+      name: string;
+      svg: string;
+    };
+  };
   // Dropdown
   isDropdown?: boolean;
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class (width of dropdowns)
+  // Label dropdown
+  isDropdownLabel?: boolean;
   // MultiSelect Dropdown
   multiselectDropdown?: boolean;
   multiSelectDropdownActive?: boolean;

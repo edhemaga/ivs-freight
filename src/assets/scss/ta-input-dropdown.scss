@@ -64,7 +64,6 @@
           color: #3c3c3c;
           border-radius: 2px;
           cursor: pointer;
-          // transition: all 0.2s ease-in-out;
 
           .svg-template-logo,
           .svg-template-grayscale {
@@ -346,6 +345,11 @@
 
       &.w-col-repair-m-shop {
         width: 686px;
+      }
+
+      &.w-col-dropdown-label {
+        width: 164px;
+        max-height: 304px;
       }
 
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------

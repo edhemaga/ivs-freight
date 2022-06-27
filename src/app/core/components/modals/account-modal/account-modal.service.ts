@@ -1,19 +1,23 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
+  CompanyAccountLabelService,
   CompanyAccountModalResponse,
   CompanyAccountResponse,
   CompanyAccountService,
   CreateCompanyAccountCommand,
+  CreateCompanyAccountLabelCommand,
   CreateResponse,
+  GetCompanyAccountLabelListResponse,
   UpdateCompanyAccountCommand,
+  UpdateCompanyAccountLabelCommand,
 } from 'appcoretruckassist';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountModalService {
-  constructor(private companyAccountService: CompanyAccountService) {}
+  constructor(private companyAccountService: CompanyAccountService, private companyLabelService: CompanyAccountLabelService) {}
 
   public addCompanyAccount(
     data: CreateCompanyAccountCommand
@@ -35,7 +39,15 @@ export class AccountModalService {
     return this.companyAccountService.apiCompanyaccountPut(data);
   }
 
-  public companyAccountLabels(): Observable<CompanyAccountModalResponse> {
-    return this.companyAccountService.apiCompanyaccountModalGet();
+  public companyAccountLabelsList(): Observable<GetCompanyAccountLabelListResponse> {
+    return this.companyLabelService.apiCompanyaccountlabelListGet();
+  }
+
+  public addCompanyLabel(data: CreateCompanyAccountLabelCommand): Observable<CreateResponse> {
+    return this.companyLabelService.apiCompanyaccountlabelPost(data)
+  }
+
+  public updateCompanyLabel(data: UpdateCompanyAccountLabelCommand): Observable<any> {
+    return this.companyLabelService.apiCompanyaccountlabelPut(data)
   }
 }
