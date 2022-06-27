@@ -59,6 +59,8 @@ p {
 // Common Class
 .details-component {
   display: grid;
+  grid-auto-flow: column;
+  column-gap: 12px;
   row-gap: 12px;
 
   // BODY
