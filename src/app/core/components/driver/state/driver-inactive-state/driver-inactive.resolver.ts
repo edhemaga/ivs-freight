@@ -4,7 +4,10 @@ import { DriverListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { DriverTService } from '../driver.service';
-import { DriversInactiveState, DriversInactiveStore } from './driver-inactive.store';
+import {
+  DriversInactiveState,
+  DriversInactiveStore,
+} from './driver-inactive.store';
 
 @Injectable({
   providedIn: 'root',
@@ -18,23 +21,26 @@ export class DriverInactiveResolver implements Resolve<DriversInactiveState> {
     private driversStore: DriversInactiveStore
   ) {}
   resolve(): Observable<DriversInactiveState | boolean> {
-    return this.driverService
+    /* return this.driverService
     .getDrivers(0, this.pageIndex, this.pageSize)
     .pipe(
       catchError(() => {
         return of('No drivers data...');
       }),
       tap((driverPagination: DriverListResponse) => {
-        localStorage.setItem('driverTableCount', JSON.stringify({
-          active: driverPagination.activeCount,
-          inactive: driverPagination.inactiveCount
-        }));
+        localStorage.setItem(
+          'driverTableCount',
+          JSON.stringify({
+            active: driverPagination.activeCount,
+            inactive: driverPagination.inactiveCount,
+          })
+        );
 
         this.driversStore.set(driverPagination.pagination.data);
       })
-    );
+    ); */
     
-   /*  if (this.driversStore.getValue().ids?.length) {
+    if (this.driversStore.getValue().ids?.length) {
       return of(true);
     } else {
       return this.driverService
@@ -44,14 +50,17 @@ export class DriverInactiveResolver implements Resolve<DriversInactiveState> {
             return of('No drivers data...');
           }),
           tap((driverPagination: DriverListResponse) => {
-            localStorage.setItem('driverTableCount', JSON.stringify({
-              active: driverPagination.activeCount,
-              inactive: driverPagination.inactiveCount
-            }));
+            localStorage.setItem(
+              'driverTableCount',
+              JSON.stringify({
+                active: driverPagination.activeCount,
+                inactive: driverPagination.inactiveCount,
+              })
+            );
 
             this.driversStore.set(driverPagination.pagination.data);
           })
         );
-    } */
+    }
   }
 }
