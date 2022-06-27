@@ -16,6 +16,7 @@ export class AppTooltipComponent implements AfterViewInit {
   @Input() mainTooltip: string = '';
   @Input() position: string = '';
   @Input() tooltipBackground: string = 'rgb(40, 82, 159)';
+  
 
   @ViewChild(TemplateRef, { static: false }) template: TemplateRef<void>;
 
@@ -32,5 +33,6 @@ export class AppTooltipComponent implements AfterViewInit {
   constructor(@Host() private ngbTooltop: NgbTooltip) {
     this.ngbTooltop.openDelay = 300;
     this.ngbTooltop.container = "body";
+    
   }
 }

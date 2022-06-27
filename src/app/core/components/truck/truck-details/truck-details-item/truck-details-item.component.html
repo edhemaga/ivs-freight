@@ -2,8 +2,7 @@
   <div [ngSwitch]="truck.template">
     <!---------------------------- GENERAL TEMPLATE ----------------------------->
     <div *ngSwitchCase="'general'">
-      <app-truck-details-card [truck]="truck.data">
-      </app-truck-details-card>
+      <app-truck-details-card [truck]="truck.data"> </app-truck-details-card>
     </div>
     <!---------------------------- Registration TEMPLATE ----------------------------->
     <div *ngSwitchCase="'registration'">
@@ -83,7 +82,7 @@
           [cardDocumentCounter]="1"
           [cardNameCommon]="fhwa.issueDate | formatDateP"
           (resizePage)="toggleResizePage(i)"
-          [expDateClose]="'04/04/25' | formatDateP"
+          [expDateClose]="fhwa.issueDate | setFutureYear "
           [optionsId]="fhwa.id"
           (dropActions)="optionsEvent($event, 'edit-inspection')"
         >
@@ -95,7 +94,7 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="fhwa.issueDate | formatDateP"
+                    [expireDate]=" fhwa.issueDate | setFutureYear"
                     [startDate]="fhwa.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
@@ -157,7 +156,7 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="'04/04/27'"
+                    [expireDate]="title.issueDate | formatDateP"
                     [startDate]="title.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
@@ -184,7 +183,6 @@
     </div>
     <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
     <div *ngSwitchCase="'lease-purchase'">
-      
       <app-ta-re-card
         [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
         (resizePage)="toggleResizePage(5)"
@@ -259,7 +257,7 @@
           </div>
 
           <!----------Amortization table Card---------->
-          <div *ngIf="toggler[5]">
+          <div [@showHideCardBody]="toggler[5] ? 'true' : 'false'">
             <div class="details-document-container amortization-details">
               <div class="divider"></div>
               <div class="icon-counter-wrapper">
@@ -393,7 +391,7 @@
                 </app-ta-files>
               </div>
             </div>
-           
+
             <div class="note-cards-lease">
               <app-ta-input-note
                 [formControl]="note"

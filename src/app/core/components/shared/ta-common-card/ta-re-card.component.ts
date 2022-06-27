@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import moment from 'moment';
 import { card_component_animation } from '../animations/card-component.animations';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-ta-re-card',
   templateUrl: './ta-re-card.component.html',
@@ -23,7 +23,7 @@ export class TaReCardComponent implements OnInit, OnChanges {
   @Input() public hasSvg: string = '';
   @Input() public options: any = [];
   @Input() public hasCopyIcon: boolean = false;
-  @Input() public expDateClose: string = '';
+  @Input() public expDateClose: any;
   @Input() public hasFooter: boolean = true;
   @Input() public settingsIcon: boolean = false;
   @Input() public haveHeaderText: boolean = false;
@@ -38,16 +38,15 @@ export class TaReCardComponent implements OnInit, OnChanges {
   @Input() public cardSecondName: string = '';
   @Output() public dropActions = new EventEmitter<any>();
   @Input() public weeklyWidth: string = '';
+  @Input() public setPositionDrop:boolean;
   @Input() isDeactivated: any;
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
   public toggleDropDown: boolean;
-  constructor() {}
+  constructor(private clipboard:Clipboard) {}
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
-    console.log('changes from common');
     
-    this.expDateClose;
   }
   ngOnInit(): void {
     this.CloseCard();
@@ -57,7 +56,7 @@ export class TaReCardComponent implements OnInit, OnChanges {
     let currentDate = moment().format('MM/DD/YYYY');
     if (moment(this.expDateClose).isBefore(currentDate) || this.isDeactivated) {
       this.isCardOpen = false;
-    }
+    }    
   }
 
   public toggleCard(event: any) {
@@ -85,20 +84,9 @@ export class TaReCardComponent implements OnInit, OnChanges {
     event.preventDefault();
     event.stopPropagation();
     this.copiedCommon = true;
-    const timeoutCommon = setInterval(() => {
-      this.copiedCommon = false;
-      clearInterval(timeoutCommon);
-    }, 300);
-    let selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = val;
-    document.body.appendChild(selBox);
-    // selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
+   setTimeout(() => {
+    this.copiedCommon=false
+   }, 1500);
+   this.clipboard.copy(val);
   }
 }

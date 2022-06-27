@@ -263,24 +263,24 @@
 }
 .copied {
   .card-item-value {
-    animation-duration: 300ms;
+    animation-duration: 1500ms;
     animation-name: change;
   }
   .purchase-template-item-value {
-    animation-duration: 300ms;
+    animation-duration:1500ms;
     animation-name: change;
   }
   .information-value {
-    animation-duration: 300ms;
+    animation-duration: 1500ms;
     animation-name: change;
   }
   .card-icon {
     svg {
       path {
-        animation-duration: 300ms;
+        animation-duration: 1500ms;
         animation-name: changeSVG;
         &:hover {
-          animation-duration: 300ms;
+          animation-duration: 1500ms;
           animation-name: changeSVG;
         }
       }
@@ -476,7 +476,7 @@
 }
 .details-page-row-5 {
   padding: 0 7px;
-  padding-bottom: 6px;
+  // padding-bottom: 6px;
 }
 
 .divider-employment {

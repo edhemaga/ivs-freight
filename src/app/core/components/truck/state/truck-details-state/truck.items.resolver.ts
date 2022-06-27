@@ -1,11 +1,10 @@
-import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap,take } from 'rxjs/operators';
-import { TruckTService } from './truck.service';
+import { TruckTService } from '../truck.service';
 
-import { TruckState, TruckStore } from './truck.store';
+import { TruckState, TruckStore } from '../truck.store';
 
 @Injectable({
   providedIn: 'root',
