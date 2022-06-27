@@ -44,9 +44,9 @@ export function getRepairTruckColumnDefinition() {
       disabled: true,
       export: true,
       resizable: true,
-      linkField: {
-        routerLinkStart: '/trucks/edit/',
-        routerLinkEnd: '/detail',
+      link: {
+        routerLinkStart: '/repair/',
+        routerLinkEnd: '/truck-details',
       },
     },
     {
@@ -295,9 +295,9 @@ export function getRepairTrailerColumnDefinition() {
       disabled: true,
       export: true,
       resizable: true,
-      linkField: {
-        routerLinkStart: '/trailers/edit/',
-        routerLinkEnd: '/detail',
+      link: {
+        routerLinkStart: '/repair/',
+        routerLinkEnd: '/trailer-details',
       },
     },
     {
@@ -566,9 +566,9 @@ export function getRepairsShopColumnDefinition() {
       disabled: true,
       export: true,
       resizable: true,
-      linkField: {
-        routerLinkStart: '/repairs/edit/',
-        routerLinkEnd: '/detail',
+      link: {
+        routerLinkStart: '/repair/',
+        routerLinkEnd: '/shop-details',
       },
     },
     {

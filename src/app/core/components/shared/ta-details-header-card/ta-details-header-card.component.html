@@ -1,7 +1,6 @@
 <div class="details-header-wrapper">
   <div class="details-header-wrapper-switcher">
     <div class="inactive-icon-input">
-    
       <div
         *ngIf="!selectedDropdown"
         class="current-active-item"
@@ -15,16 +14,17 @@
           {{ (options | detailActiveItem).name }}
         </p>
         <span
-        ngbTooltip
-        [mainTooltip]="searchName"
-        position="top"
-        [tooltipBackground]="searchName ? '#6C6C6C':''"
+          ngbTooltip
+          [mainTooltip]="searchName"
+          position="top"
+          [tooltipBackground]="searchName ? '#6C6C6C' : ''"
+          class="owner-tooltip"
         >
-        <svg-icon
-          class="current-active-owner"
-          src="{{ (options | detailActiveItem).svg }}"
-        ></svg-icon>
-      </span>
+          <svg-icon
+            class="current-active-owner"
+            src="{{ (options | detailActiveItem).svg }}"
+          ></svg-icon>
+        </span>
       </div>
       <!-- Input dropdown -->
       <app-ta-input-dropdown
@@ -55,12 +55,9 @@
         [mainTooltip]="tooltipPrevious"
         position="top"
         tooltipBackground="#6C6C6C"
+        (click)="onAction('next')"
       >
-        <svg-icon
-          class="arrow-left"
-          (click)="onAction('next')"
-          src="assets/svg/common/arrow-left.svg"
-        >
+        <svg-icon class="arrow-left" src="assets/svg/common/arrow-left.svg">
         </svg-icon>
       </span>
       <span
@@ -68,24 +65,24 @@
         ngbTooltip
         [mainTooltip]="tooltipNext"
         position="top"
+        (click)="onAction('previous')"
       >
         <svg-icon
           class="arrow-right"
-          (click)="onAction('previous')"
           src="assets/svg/common/arrow-left.svg"
         ></svg-icon>
       </span>
     </div>
     <div *ngIf="hasArrow" class="verical-dots-header">
-    <app-table-dropdown
-    [options]="optionsDrop.actions"
-    [id]="optionsId"
-    [placement]="'bottom-left'"
-    (dropDownActions)="dropAct($event)"
-    [customClassDropDown]="'table-dropdown-container-vertical'"
-  >
-  </app-table-dropdown>
-</div>
+      <app-table-dropdown
+        [options]="optionsDrop.actions"
+        [id]="optionsId"
+        [placement]="'bottom-left'"
+        (dropDownActions)="dropAct($event)"
+        [customClassDropDown]="'table-dropdown-container-vertical'"
+      >
+      </app-table-dropdown>
+    </div>
   </div>
   <!-- <div *ngIf="haveTwoInput" class="details-header-wrapper-switcher">
     <div class="inactive-icon-input">
@@ -185,6 +182,26 @@
             src="assets/svg/common/ic_terminated.svg"
           ></svg-icon>
           <p class="vin-text">{{ cardDetailsDateTerminated }}</p>
+        </div>
+      </span>
+
+      <span
+        style="margin-left: 130px"
+        *ngIf="dateChecked"
+        tooltipBackground="#6C6C6C"
+        ngbTooltip
+        mainTooltip="Date Check"
+        position="top"
+      >
+        <div
+          *ngIf="dateChecked"
+          class="details-header-wrapper-data-item bottom"
+        >
+          <svg-icon
+            class="date-terminated"
+            src="assets/svg/common/ic_date_checked.svg"
+          ></svg-icon>
+          <p class="vin-text">{{ dateChecked }}</p>
         </div>
       </span>
     </div>

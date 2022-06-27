@@ -5,9 +5,9 @@
     [tooltipPrevious]="'Previous Truck'"
     [searchInputName]="'Search Truck'"
     [options]="truckDropDowns"
-    (selectValue)="onSelectedTruck($event)" 
+    (selectValue)="onSelectedTruck($event)"
     (changeEvent)="onChangeTruck($event)"
-    >
+  >
     <ng-container>
       <div class="truck-details-wrapper">
         <div class="details-header-avatar">
@@ -33,14 +33,30 @@
           </div>
         </div>
         <div class="details-header-data">
-          <div class="details-header-data-item">
+          <div class="details-header-data-item" [ngClass]="{'copied':copiedVin}">
             <svg-icon src="assets/svg/common/vin.svg"></svg-icon>
             <p class="vin-text">{{ truck.vin }}</p>
+            <span
+            [tooltipBackground]="copiedVin ? '#536BC2' : '#6c6c6c'"
+            ngbTooltip
+            [mainTooltip]="copiedVin ? 'Copied' : 'Copy'"
+            position="top"
+            class="tooltip-copy"
+            [autoClose]="false"
+            (click)="copyText(truck.vin, 'vin')"
+          >
+            <svg-icon
+              class="card-icon"
+              id="card-icon"
+              src="assets/svg/common/ic_copy.svg"
+              (mouseleave)="copiedVin = false"
+            ></svg-icon>
+          </span>
           </div>
           <div class="details-header-data-item second">
             <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
             <p class="vin-text date">{{ truck.year }}</p>
-            <div class="light-green">
+            <div *ngIf="truck.color" class="light-green">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
@@ -62,13 +78,16 @@
                 </g>
               </svg>
             </div>
-            <p class="vin-text">{{ truck?.color.name }}</p>
+            <p *ngIf="truck.color" class="vin-text">{{ truck?.color.name }}</p>
           </div>
         </div>
       </div>
     </ng-container>
   </app-ta-details-header-card>
-  <div class="wrapper-additional-cards">
+  <div
+    class="wrapper-additional-cards"
+    [ngClass]="{ 'bind-height': !templateCard }"
+  >
     <div class="details-cards">
       <!--------Assinged to--------->
       <app-ta-custom-card
@@ -116,7 +135,9 @@
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Starting Mileage</div>
-            <div class="common-template-item-value">{{ truck?.mileage }} mi</div>
+            <div class="common-template-item-value">
+              {{ truck?.mileage }} mi
+            </div>
           </div>
           <div class="common-template-item">
             <div class="common-template-item-name">Empty Weight</div>
@@ -179,9 +200,86 @@
             </div>
           </div>
         </div>
-        <!-- <div class="single-icon-wrapper">
-            <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
-          </div> -->
+        <div
+          class="wrapper-owner"
+          [@showHideCardBody]="toggler ? 'true' : 'false'"
+        >
+          <div class="owner-items" [ngClass]="{ copied: copiedPhone }">
+            <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+            <p class="information-value">
+              {{ truck.owner.phone | formatPhoneP }}
+            </p>
+            <span
+              [tooltipBackground]="copiedPhone ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText(truck.owner.phone, 'phone')"
+            >
+              <svg-icon
+                class="card-icon"
+                id="card-icon"
+                src="assets/svg/common/ic_copy.svg"
+                (mouseleave)="copiedPhone = false"
+              ></svg-icon>
+            </span>
+          </div>
+          <div class="owner-items" [ngClass]="{ copied: copiedEmail }">
+            <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+            <p class="information-value">
+              {{ truck.owner.email }}
+            </p>
+            <span
+              [tooltipBackground]="copiedEmail ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="copiedEmail ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText(truck.owner.email, 'email')"
+            >
+              <svg-icon
+                class="card-icon"
+                id="card-icon"
+                src="assets/svg/common/ic_copy.svg"
+                (mouseleave)="copiedEmail = false"
+              ></svg-icon>
+            </span>
+          </div>
+          <div class="owner-items">
+            <svg-icon src="assets/svg/common/ic_address.svg"></svg-icon>
+            <p class="information-value">
+              {{ truck.owner.address.address }}
+            </p>
+          </div>
+        </div>
+        <div [ngClass]="{ 'rotate-owner': toggler }">
+          <div (click)="toggler = !toggler" class="single-icon-wrapper">
+            <span
+            [tooltipBackground]="'#6c6c6c'"
+            ngbTooltip
+            [mainTooltip]="toggler ? 'Hide Contact' : 'Show More'"
+            position="top"
+            
+          >
+            <svg-icon
+              class="icon-rotate"
+              src="assets/svg/common/fill_arrow_down.svg"
+            ></svg-icon>
+            </span>
+            <span
+            tooltipBackground="#6c6c6c"
+            ngbTooltip
+            [mainTooltip]="toggler ? 'Hide Contact' : 'Show More'"
+            position="top"
+            class="hide-show"
+          >
+            {{ toggler? "HIDE CONTACT" : "" }}
+          </span>
+          </div>
+        </div>
       </app-ta-custom-card>
 
       <!--------Perfomance--------->
@@ -193,12 +291,12 @@
         [isCardOpen]="true"
       >
         <div class="charts-template perfomance">
-          <app-tab-switcher
-            [customClass]="'chart-tabs'"
+          <app-ta-tab-switch
+            [type]="'driver-details-popup'"
             (switchClicked)="changeTabPerfomance($event)"
             [tabs]="buttonsArrayPerfomance"
           >
-          </app-tab-switcher>
+          </app-ta-tab-switch>
 
           <div class="charts-item-wrapper revenue">
             <div class="charts-template-item">
@@ -229,12 +327,12 @@
         class="item-cards"
       >
         <div class="charts-template perfomance">
-          <app-tab-switcher
-            [customClass]="'chart-tabs'"
+          <app-ta-tab-switch
             (switchClicked)="changeTabFuel($event)"
             [tabs]="buttonsArrayFuel"
+            [type]="'driver-details-popup'"
           >
-          </app-tab-switcher>
+          </app-ta-tab-switch>
           <app-ta-chart
               [chartConfig]="{
                 dataProperties: [
@@ -290,12 +388,12 @@
         [isCardOpen]="true"
       >
         <div class="charts-template perfomance">
-          <app-tab-switcher
-            [customClass]="'chart-tabs'"
+          <app-ta-tab-switch
+            [type]="'driver-details-popup'"
             (switchClicked)="changeTabRevenue($event)"
             [tabs]="buttonsArrayRevenue"
           >
-          </app-tab-switcher>
+          </app-ta-tab-switch>
           <app-ta-chart
               [chartConfig]="{
                 dataProperties: [
@@ -465,12 +563,16 @@
       </app-ta-custom-card>
 
       <!--------Note--------->
+      <div class="divider"></div>
       <div class="note-cards">
         <app-ta-input-note
           [formControl]="noteControl"
-          [isReadOnly]="true"
+          [isVisibleDivider]="false"
+          [isVisibleNote]="true"
+          [isVisibleArrow]="true"
+          [minRows]="1"
           [isVisibleSecondDivider]="false"
-          [isVisibleNote]="noteControl.value"
+          [placeholder]="'Write something.'"
         ></app-ta-input-note>
       </div>
     </div>

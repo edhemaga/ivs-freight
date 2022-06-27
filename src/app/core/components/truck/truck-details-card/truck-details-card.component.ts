@@ -1,6 +1,6 @@
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute } from '@angular/router';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
@@ -8,14 +8,16 @@ import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckQuery } from '../state/truck.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-
+import { card_component_animation } from '../../shared/animations/card-component.animations';
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-truck-details-card',
   templateUrl: './truck-details-card.component.html',
   styleUrls: ['./truck-details-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  animations: [card_component_animation('showHideCardBody')],
 })
-export class TruckDetailsCardComponent implements OnInit {
+export class TruckDetailsCardComponent implements OnInit,OnChanges {
   public noteControl: FormControl = new FormControl();
   public buttonsArrayPerfomance: any;
   public buttonsArrayFuel: any;
@@ -27,6 +29,9 @@ export class TruckDetailsCardComponent implements OnInit {
   @Input() truck: TruckResponse | any;
   public truck_active_id: number = +this.activeted_route.snapshot.params['id'];
   public truck_list: any[] = this.trucksQuery.getAll();
+  public copiedPhone:boolean;
+  public copiedEmail:boolean;
+  public copiedVin:boolean;
 
   public barChartLegend: any[] = [
     {
@@ -183,16 +188,19 @@ export class TruckDetailsCardComponent implements OnInit {
     private activeted_route: ActivatedRoute,
     private modalService: ModalService,
     private trucksQuery: TruckQuery,
-    private detailsPageDriverSer: DetailsPageService
+    private detailsPageDriverSer: DetailsPageService,
+    private clipboar: Clipboard,
   ) {}
-
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    this.noteControl.patchValue(changes.truck.currentValue.note);
+  }
   ngOnInit(): void {
-    console.log(this.truck);
     this.getTruckDropdown();
-
-    this.noteControl.patchValue(this.truck.note);
-
+    this.buttonSwitcher();
     this.initTableOptions();
+  }
+  public buttonSwitcher() {
     this.buttonsArrayPerfomance = [
       {
         id: 5,
@@ -273,7 +281,6 @@ export class TruckDetailsCardComponent implements OnInit {
       },
     ];
   }
-
   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataEdit = {
@@ -389,8 +396,7 @@ export class TruckDetailsCardComponent implements OnInit {
   }
   public onChangeTruck(action: string) {
     let currentIndex = this.truck_list
-      .map((truck) => truck.id)
-      .indexOf(this.truck.id);
+      .findIndex((truck)=>truck.id===this.truck.id)
     switch (action) {
       case 'previous': {
         currentIndex = --currentIndex;
@@ -418,4 +424,20 @@ export class TruckDetailsCardComponent implements OnInit {
       }
     }
   }
+    /* To copy any Text */
+    public copyText(val: any, copyVal: string) {
+      switch (copyVal) {
+        case 'phone':
+          this.copiedPhone = true;
+          break;
+        case 'email':
+          this.copiedEmail = true;
+          break;
+          case 'vin':
+          this.copiedVin = true;
+          break;
+       
+      }
+      this.clipboar.copy(val);
+    }
 }

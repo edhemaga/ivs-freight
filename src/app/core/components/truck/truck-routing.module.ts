@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TruckItemResolver } from './state/truck.items.resolver';
+import { TruckItemResolver } from './state/truck-details-state/truck.items.resolver';
 import { TruckCardComponent } from './truck-card/truck-card.component';
 import { TruckTableComponent } from './truck-table/truck-table.component';
 

@@ -1,5 +1,5 @@
 import { TrailerResponse } from './../../../../../../appcoretruckassist/model/trailerResponse';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
@@ -9,7 +9,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerQuery } from '../state/trailer.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { ActivatedRoute } from '@angular/router';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-trailer-details-card',
   templateUrl: './trailer-details-card.component.html',
@@ -17,25 +17,31 @@ import { ActivatedRoute } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-export class TrailerDetailsCardComponent implements OnInit {
+export class TrailerDetailsCardComponent implements OnInit,OnChanges {
   @Input() trailer: TrailerResponse | any;
   @Input() templateCard: boolean = false;
   public note: FormControl = new FormControl();
   public toggler: boolean = false;
   public dataEdit: any;
+  public toggleOwner: boolean = true;
   public trailerDropDowns: any[] = [];
-  public trailer_active_id: number =
-    +this.activeted_route.snapshot.params['id'];
+  public trailer_active_id: number =+this.activeted_route.snapshot.params['id'];
   public trailer_list: any[] = this.trailerQuery.getAll();
+  public copiedPhone:boolean;
+  public copiedEmail:boolean;
+  public copiedVin:boolean;
   constructor(
     private modalService: ModalService,
     private detailsPageDriverSer: DetailsPageService,
     private trailerQuery: TrailerQuery,
-    private activeted_route: ActivatedRoute
+    private activeted_route: ActivatedRoute,
+    private clipboar: Clipboard,
   ) {}
-
+  ngOnChanges(changes: SimpleChanges): void {
+    this.note.patchValue(changes.trailer.currentValue.note);  
+  }
   ngOnInit(): void {
-    this.note.patchValue(this.trailer.note);
+  
     this.initTableOptions();
     this.getTrailerDropdown();
   }
@@ -147,8 +153,7 @@ export class TrailerDetailsCardComponent implements OnInit {
   }
   public onChangeTrailer(action: string) {
     let currentIndex = this.trailer_list
-      .map((trailer) => trailer.id)
-      .indexOf(this.trailer.id);
+      .findIndex((trailer)=>trailer.id===this.trailer.id)
     switch (action) {
       case 'previous': {
         currentIndex = --currentIndex;
@@ -175,5 +180,22 @@ export class TrailerDetailsCardComponent implements OnInit {
         break;
       }
     }
+  }
+
+  /* To copy any Text */
+  public copyText(val: any, copyVal: string) {
+    switch (copyVal) {
+      case 'phone':
+        this.copiedPhone = true;
+        break;
+      case 'email':
+        this.copiedEmail = true;
+        break;
+        case 'vin':
+        this.copiedVin = true;
+        break;
+     
+    }
+    this.clipboar.copy(val);
   }
 }

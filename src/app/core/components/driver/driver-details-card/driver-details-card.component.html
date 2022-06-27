@@ -3,8 +3,6 @@
     [tooltipNext]="'Next Driver'"
     [tooltipPrevious]="'Previous Driver'"
     [searchName]="'Driver is Owner'"
-    [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
-    [cardDetailsName]="driver.currentDriverName"
     [cardDetailsDate]="driver.hired | formatDateP"
     [cardDetailsDateTerminated]="driver.dateTerminated | formatDateP"
     [statusInactive]="driver.status"
@@ -40,12 +38,15 @@
               [mainTooltip]="copiedSSN ? 'Copied' : 'Copy'"
               position="top"
               class="tooltip-copy"
+              [autoClose]="false"
+              
               (click)="copyText(driver.ssn, 'ssn')"
             >
               <svg-icon
                 class="card-icon"
+                id="card-icon"
                 src="assets/svg/common/ic_copy.svg"
-                (click)="copyText(driver.ssn, 'ssn')"
+                (mouseleave)="copiedSSN = false"
               ></svg-icon>
             </span>
             <div *ngIf="driver.status==0" class="inactive-wrapper">
@@ -68,12 +69,13 @@
               ngbTooltip
               [mainTooltip]="copiedDriverPhone ? 'Copied' : 'Copy'"
               position="top"
+              [autoClose]="false"
               class="tooltip-copy"
               (click)="copyText(driver.phone, 'driver-phone')"
             >
               <svg-icon
-                (click)="copyText(driver.phone, 'driver-phone')"
                 class="card-icon"
+                (mouseleave)="copiedDriverPhone = false"
                 src="assets/svg/common/ic_copy.svg"
               >
               </svg-icon>
@@ -96,12 +98,13 @@
               [mainTooltip]="copiedDriverEmail ? 'Copied' : 'Copy'"
               position="top"
               class="tooltip-copy"
+              [autoClose]="false"
               (click)="copyText(driver.email, 'driver-email')"
             >
               <svg-icon
-                (click)="copyText(driver.email, 'driver-email')"
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
+                (mouseleave)="copiedDriverEmail = false"
               ></svg-icon>
             </span>
           </div>
@@ -249,10 +252,9 @@
             <div class="addres-name">{{ offDuty?.nickname }}</div>
             <div class="addres-value-icon">
               <div class="addres-value">
-                {{ offDuty?.address.addressUnit }}
-                {{ offDuty?.address.address }}, {{ offDuty?.address.city }},
-                {{ offDuty.address.stateShortName }}
-                {{ offDuty?.address.zipCode }}, {{ offDuty?.address.country }}
+            
+                {{ offDuty?.address?.address ? offDuty.address.address : '' }}
+              
               </div>
               <span
                 tooltipBackground="#6c6c6c"
@@ -458,12 +460,14 @@
               <span
                 [tooltipBackground]="copiedEin ? '#536BC2' : '#6c6c6c'"
                 ngbTooltip
+                [autoClose]="false"
                 [mainTooltip]="copiedEin ? 'Copied' : 'Copy'"
                 position="top"
               >
                 <svg-icon
                   (click)="copyText(driver.owner.ssnEin, 'ein')"
                   class="card-icon"
+                  (mouseleave)="copiedEin = false"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
               </span>
@@ -541,13 +545,6 @@
           [type]="'driver-details-popup'"
           >
           </app-ta-tab-switch>  
-        
-          <!-- <app-tab-switcher
-            [tabs]="tabsDriver"
-            (switchClicked)="changeTab($event)" 
-            [customClass]="'chart-tabs'"
-          >
-          </app-tab-switcher> -->
           
           <div id="chart">
             <app-ta-chart
@@ -621,10 +618,11 @@
                 [mainTooltip]="copiedBankRouting ? 'Copied' : 'Copy'"
                 position="top"
                 class="tooltip-ein"
+                [autoClose]="false"
                 (click)="copyText(driver?.routing, 'bankRouting')"
               >
                 <svg-icon
-                  (click)="copyText(driver?.routing, 'bankRouting')"
+                (mouseleave)="copiedBankRouting = false"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -679,16 +677,11 @@
                 [mainTooltip]="copiedBankAccount ? 'Copied' : 'Copy'"
                 position="top"
                 class="tooltip-ein"
+                [autoClose]="false"
                 (click)="copyText(driver.account, 'bankAcc')"
               >
                 <svg-icon
-                  *ngIf="driver?.account !== null"
-                  (click)="
-                    copyText(
-                      driver.account ? driver.account : 'No account',
-                      'bankAcc'
-                    )
-                  "
+                  (mouseleave)="copiedBankAccount = false"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -711,7 +704,7 @@
             !driver.emergencyContactName ||
             !driver.emergencyContactPhone
           "
-          class="no-driver"
+          class="no-data"
         >
           No Contact
         </div>
@@ -742,10 +735,11 @@
                 ngbTooltip
                 [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
                 position="top"
+                [autoClose]="false"
                 (click)="copyText(driver.emergencyContactPhone, 'phone')"
               >
                 <svg-icon
-                  (click)="copyText(driver.emergencyContactPhone, 'phone')"
+                (mouseleave)="copiedPhone = false"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -782,9 +776,10 @@
           [hasCounter]="driver.cdls.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
+          (onActionEvent)="onModalAction('CDL')"
         >
           <div
-            *ngFor="let cdl of driver.cdls; let i = index; trackBy: identity"
+            *ngFor="let cdl of dataCDl; let i = index; trackBy: identity"
           >
             <app-ta-re-card
               [options]="dataTest"
@@ -799,6 +794,7 @@
               [stateTooltipName]="cdl.state.stateName"
               [shortName]="cdl.state.stateShortName"
               (dropActions)="optionsEvent($event, 'edit-licence')"
+              [setPositionDrop]="true"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -880,6 +876,14 @@
                       >
                       </app-truckassist-progress-expiration>
                     </div>
+                    <div
+                    *ngIf="cdl.dateDeactivated && cdl.showButton"
+                    class="activate-button"
+                    [ngClass]="{'activate-button-card':templateCard}"
+                  >
+                    Activate
+                  </div>
+                  <div *ngIf="!cdl.showButton"  [ngClass]="{'activate-button-card':templateCard}" class="activate-button">Renew</div>
                   </div>
                 </div>
                 <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
@@ -964,6 +968,7 @@
           [hasCounter]="driver.tests.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
+          (onActionEvent)="onModalAction('DrugAlcohol')"
         >
           <div
             *ngFor="let test of driver.tests; let i = index; trackBy: identity"
@@ -978,6 +983,7 @@
               [shortName]="test.testType.name[0]"
               [stateTooltipName]="test.testType.name + ' Test'"
               (dropActions)="optionsEvent($event, 'edit-drug')"
+              [setPositionDrop]="true"
             >
               <div [ngClass]="{ 'second-progress': toggler[i] }"></div>
               <div class="cards-container">
@@ -1061,6 +1067,7 @@
           [hasCounter]="driver.medicals.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
+          (onActionEvent)="onModalAction('Medical')"
         >
           <div
             *ngFor="
@@ -1076,6 +1083,7 @@
               [optionsId]="med.id"
               (resizePage)="toggleResizePage(i)"
               (dropActions)="optionsEvent($event, 'edit-medical')"
+              [setPositionDrop]="true"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -1174,6 +1182,7 @@
           [hasCounter]="driver.mvrs.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
+          (onActionEvent)="onModalAction('MVR')"
         >
           <div
             *ngFor="let mvr of driver.mvrs; let i = index; trackBy: identity"
@@ -1185,6 +1194,7 @@
               [cardNameCommon]="mvr?.issueDate | formatDateP"
               [expDateClose]="mvr?.issueDate | formatDateP"
               [optionsId]="mvr.id"
+              [setPositionDrop]="true"
               (dropActions)="optionsEvent($event, 'edit-mvr')"
             >
               <div class="cards-container">

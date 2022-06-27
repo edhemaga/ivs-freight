@@ -7,17 +7,14 @@ import { DriverDetailsComponent } from './driver-details.component';
 import { DriverDetailsRoutes } from './driver-details.routing';
 import { DriverDetailsItemComponent } from './driver-details-item/driver-details-item.component';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
-import { RenderMultipleItemsPipe } from './driver-details-item/renderMultipleItems.pipe';
 import { DriverMvrModalComponent } from './driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from './driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import {NgApexchartsModule} from "ng-apexcharts";
 
 @NgModule({
   declarations: [
     DriverDetailsComponent,
     DriverDetailsItemComponent,
-    RenderMultipleItemsPipe,
     DriverDetailsCardComponent,
     // ModalsA
     DriverCdlModalComponent,
@@ -32,7 +29,6 @@ import {NgApexchartsModule} from "ng-apexcharts";
     CommonModule,
     DriverDetailsRoutes,
     SharedModule,
-    NgApexchartsModule,
     TruckassistProgressExpirationModule,
   ],
 })

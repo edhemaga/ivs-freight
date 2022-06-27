@@ -26,7 +26,6 @@ import { card_component_animation } from '../../../shared/animations/card-compon
   selector: 'app-driver-details-item',
   templateUrl: './driver-details-item.component.html',
   styleUrls: ['./driver-details-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
@@ -39,9 +38,10 @@ export class DriverDetailsItemComponent
   public mvrNote: FormControl = new FormControl();
   public toggler: boolean[] = [];
   public showMoreEmployment: boolean = false;
-
   public dataTest: any;
   public expDateCard: any;
+  public dataCDl: any;
+
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService
@@ -49,9 +49,8 @@ export class DriverDetailsItemComponent
 
   ngOnChanges(changes: SimpleChanges): void {
     this.getExpireDate();
-    if(!changes.driver.firstChange && changes.driver.currentValue){
+    if (!changes.driver.firstChange && changes.driver.currentValue) {
       this.driver = changes.driver.currentValue;
-
     }
   }
 
@@ -59,19 +58,18 @@ export class DriverDetailsItemComponent
     this.initTableOptions();
     this.getExpireDate();
   }
-
   public getExpireDate() {
-
-      // this.driver.data = this.driver.data.cdls.forEach((ele) => {
-      //   if (moment(ele.expDate).isBefore(moment())) {
-      //     this.expDateCard = false;
-      //   } else {
-      //     this.expDateCard = true;
-      //   }
-      //     console.log(this.expDateCard);
-          
-      // });
-  
+    this.dataCDl = this.driver.data.cdls.map((ele) => {
+      if (moment(ele.expDate).isBefore(moment())) {
+        this.expDateCard = false;
+      } else {
+        this.expDateCard = true;
+      }
+      return {
+        ...ele,
+        showButton: this.expDateCard,
+      };
+    });
   }
 
   /**Function for dots in cards */

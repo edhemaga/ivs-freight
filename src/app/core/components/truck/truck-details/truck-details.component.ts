@@ -17,6 +17,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 @Component({
   selector: 'app-truck-details',
   templateUrl: './truck-details.component.html',
@@ -97,24 +98,24 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         minWidth: 60,
       },
       actions: [
-        {
-          title: 'Send Message',
-          name: 'dm',
-          class: 'regular-text',
-          contentType: 'dm',
-        },
-        {
-          title: 'Print',
-          name: 'print',
-          class: 'regular-text',
-          contentType: 'print',
-        },
-        {
-          title: 'Deactivate',
-          name: 'deactivate',
-          class: 'regular-text',
-          contentType: 'deactivate',
-        },
+        // {
+        //   title: 'Send Message',
+        //   name: 'dm',
+        //   class: 'regular-text',
+        //   contentType: 'dm',
+        // },
+        // {
+        //   title: 'Print',
+        //   name: 'print',
+        //   class: 'regular-text',
+        //   contentType: 'print',
+        // },
+        // {
+        //   title: 'Deactivate',
+        //   name: 'deactivate',
+        //   class: 'regular-text',
+        //   contentType: 'deactivate',
+        // },
         {
           title: 'Edit',
           name: 'edit',
@@ -125,8 +126,8 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         {
           title: 'Delete',
           name: 'delete-item',
-          type: 'driver',
-          text: 'Are you sure you want to delete driver(s)?',
+          type: 'truck',
+          text: 'Are you sure you want to delete truck(s)?',
           class: 'delete-text',
           contentType: 'delete',
         },
@@ -196,7 +197,52 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
       },
     ];
 
-    this.truckId = data.id;
+    this.truckId = data?.id ? data.id : null;
+  }
+
+  public onTrackActions(event: any) {
+    
+    console.log(event);
+    switch (event.type) {
+      case 'edit': {
+        this.modalService.openModal(
+          TruckModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            type: 'edit',
+            disableButton: true,
+            id:this.truckId
+          }
+        );
+        break;
+      }
+    
+      case 'delete-item': {
+        this.truckTService
+          .deleteTruckById(event.id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Truck successfully deleted',
+                'Success:'
+              );
+            
+            },
+            error: () => {
+              this.notificationService.error(
+                `Truck with id: ${event.id} couldn't be deleted`,
+                'Error:'
+              );
+            },
+          });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   ngOnDestroy(): void {}
