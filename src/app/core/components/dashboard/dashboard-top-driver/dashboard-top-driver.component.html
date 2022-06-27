@@ -1,0 +1,76 @@
+<div class="dashboard-top-driver-holder">
+    <div class="dashboard-top-driver-header-holder">
+        <div class="dashboard-top-driver-header-box-list">67</div>
+        <div class="dashboard-top-driver-header-title-holder">
+            <div class="dashboard-top-driver-header-title">Top Driver</div>
+            <div class="dashboard-top-driver-header-arrow-down">
+                <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
+            </div>
+        </div>
+        <div class="dashboard-top-driver-header-toolbar-holder">
+            <div class="dashboard-top-driver-header-toolbar-items-holder">
+                <div class="dashboard-top-driver-header-toolbar-switch-left">
+                    <app-ta-tab-switch
+                    [tabs]="driverTopSwitchTabs"
+                    (switchClicked)="changeDriverSwitchTabs($event)" 
+                    [type]="'performance-switch'"    
+                    >
+                    </app-ta-tab-switch>
+                </div>
+                <div class="dashboard-top-driver-header-toolbar-border"></div>
+                <div class="dashboard-top-driver-header-toolbar-search-icon">
+                    <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-top-driver-header-toolbar-items-holder">
+                <div class="dashboard-top-driver-header-toolbar-switch-right">
+                    <app-ta-tab-switch
+                    [tabs]="driverTopSwitch"
+                    (switchClicked)="changeDriverSwitchTabs($event)" 
+                    [type]="'performance-switch'"    
+                    >
+                    </app-ta-tab-switch>
+                </div>
+                <div class="dashboard-top-driver-header-toolbar-border different-margin"></div>
+                <div class="dashboard-top-driver-header-toolbar-dropdown">
+                    <div class="dashboard-top-driver-header-toolbar-dropdown-text">Monthly</div>
+                    <div class="dashboard-top-driver-header-toolbar-dropdown-arrow">
+                        <svg-icon src="assets/svg/common/calendar/arrow-right.svg"></svg-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-top-driver-body-holder">
+        <div class="row">
+            <div class="col-4">
+                <div class="dashboard-top-driver-body-list-holder">
+                    <div *ngFor="let item of driverList; let indx=index" class="dashboard-top-driver-body-list-items-holder">
+                        <div class="dashboard-top-driver-body-list-items">
+                            <div class="dashboard-top-driver-body-list-frame">
+                                <div class="dashboard-top-driver-body-list-id">{{item.id}}</div>
+                                <div class="dashboard-top-driver-body-list-circle"></div> 
+                                <div class="dashboard-top-driver-body-list-name">{{item.name}}</div>   
+                            </div>
+                            <div class="dashboard-top-driver-body-list-frame">
+                                <div class="dashboard-top-driver-body-list-price">{{item.price}}</div>
+                                <div class="dashboard-top-driver-body-list-percent">{{item.percent}}</div>
+                            </div>
+                        </div>
+                        <div class="dashboard-top-driver-body-list-border"></div>
+                    </div>
+                </div>        
+            </div>
+            <div class="col-3">
+                <div class="doughnut_chart_holder">
+                    <app-ta-chart
+                    [chartConfig]="chartConfig"
+                    [axesProperties]="chartAxes"
+                    [legendAttributes]="{}"
+                    >
+                    </app-ta-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
