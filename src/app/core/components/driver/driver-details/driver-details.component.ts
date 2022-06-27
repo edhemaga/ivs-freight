@@ -99,7 +99,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   /**Function template and names for header and other options in header */
-  detailCongif(data: DriverResponse | any) {
+public  detailCongif(data: DriverResponse | any) {
     this.checkExpiration(data);
     if (data.status == 0) {
       this.statusDriver = true;

@@ -194,6 +194,11 @@ svg {
         path {
             fill: #6d82c7;
         }
+        &:hover{
+            path {
+                fill: #536BC2 !important;
+            }
+        }
     }
 }
 .hide-buttons {

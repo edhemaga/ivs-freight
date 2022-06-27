@@ -68,6 +68,7 @@
           >
             <svg-icon
               *ngIf="isCardOpen && hasCopyIcon"
+              (mouseleave)=" copiedCommon=false"
               class="card-icon-common"
               src="assets/svg/common/ic_copy.svg"
             ></svg-icon>

@@ -108,7 +108,7 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
         id: 3,
         nameDefault: 'Review',
         template: 'review',
-        length: 1,
+        length: data?.reviews?.length ? data.reviews.length : 0,
         customText: 'Date',
         hide: false,
         data: data,

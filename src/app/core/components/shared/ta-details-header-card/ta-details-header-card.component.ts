@@ -43,8 +43,7 @@ export class TaDetailsHeaderCardComponent implements OnInit {
     // console.log(this.options);
   }
   public onAction(action: string) {
-    console.log(action);
-    
+
     this.changeEvent.emit(action);
   }
 

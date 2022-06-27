@@ -82,9 +82,6 @@ export class TaReCardComponent implements OnInit, OnChanges {
     event.preventDefault();
     event.stopPropagation();
     this.copiedCommon = true;
-   setTimeout(() => {
-    this.copiedCommon=false
-   }, 1500);
    this.clipboard.copy(val);
   }
 }
