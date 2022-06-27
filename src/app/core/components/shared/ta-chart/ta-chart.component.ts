@@ -21,7 +21,6 @@ export class TaChartComponent implements OnInit {
   public lineChartLegend: boolean = false;
   public lineChartType: string  = 'bar';
   public lineChartPlugins = [];
-  chartInnitProperties: any = [];
   doughnutChartLegend: boolean = false;
   chartWidth: string = '';
   chartHeight: string = '';
@@ -31,6 +30,7 @@ export class TaChartComponent implements OnInit {
   annotationHovered: any;
   saveValues: any = [];
   removeChartMargin: boolean = false;
+  chartInnitProperties: any = [];
 
   constructor() { }
 
@@ -62,7 +62,7 @@ export class TaChartComponent implements OnInit {
   seChartOptions() {
     this.lineChartOptions = {
       responsive: false,
-      cutoutPercentage: 80,
+      cutoutPercentage: 90,
       animation: {
         duration: 0
       },
@@ -100,8 +100,6 @@ export class TaChartComponent implements OnInit {
           }
         ]
       },
-      rotation: 1 * Math.PI,
-      circumference: 1 * Math.PI,
       tooltips: {
         enabled: this.chartConfig['tooltip']
       },
@@ -231,13 +229,13 @@ export class TaChartComponent implements OnInit {
         this.setGradientBackground();
       }
       
-      if ( item['defaultConfig']['type'] == 'doughnut' ) {
-        allData = item['defaultConfig']['data'];
-        allBackgrounds = ['#24C1A1B3', '#F78585B3'];
-        item['colorProperties']['backgroundColor'].map((item1, indx1) => {
-          //allBackgrounds.push(item1+'B3');
-        });
-      }
+      // if ( item['defaultConfig']['type'] == 'doughnut' ) {
+      //   allData = item['defaultConfig']['data'];
+      //   allBackgrounds = ['#24C1A1B3', '#F78585B3'];
+      //   item['colorProperties']['backgroundColor'].map((item1, indx1) => {
+      //     //allBackgrounds.push(item1+'B3');
+      //   });
+      // }
       
       this.lineChartData.push(chartDataArray);
       this.lineChartLegend = this.chartConfig['defaultType'] != 'doughnut' ?  this.chartConfig['showLegend'] : false;
@@ -250,6 +248,7 @@ export class TaChartComponent implements OnInit {
       this.dottedBackground = this.chartConfig['dottedBackground'];
       this.noChartImage = this.chartConfig['noChartImage'];
       this.removeChartMargin = this.chartConfig['removeChartMargin'];
+      this.chartInnitProperties = this.chartConfig['chartInnitProperties'];
       this.chartDataCheck(this.chartConfig['chartValues']);
     });
   }
@@ -335,15 +334,33 @@ export class TaChartComponent implements OnInit {
   }
 
   changeChartFillProperty(evt: any, elements: any) {
-    console.log(evt, )
-    console.log(elements[0]['_chart']['config']['data']['datasets'][0]['fill'], 'ELEEEEMENTSSSS');
     //elements[0]['_chart']['config']['data']['datasets'][0]['fill'] = true;
     elements.forEach((item, i) => {
       //console.log(chartValue, 'ELEEEEMENTSSSS');
-      var chartValue = item['_chart']['config']['data']['datasets'][i]['data'][elements[i]['_index']];
-      console.log(item, 'iteeeeeeeeem')
       
     });
     //this.seChartOptions();
+  }
+
+  insertNewChartData(mod, type, color){
+    console.log(color, 'colorcolorcolor')
+    console.log(this.chart, 'this.chart');
+    console.log(mod, type, 'insertNewChartDatainsertNewChartDatainsertNewChartData');
+
+    this.chart.chart.config.data.datasets.forEach((item, i) => {
+      console.log(item['id'], 'itemitemitem');
+      console.log('testingvalue 111');
+      if ( item['id'] == type ) {
+        console.log('testingvalue 222');
+        if ( mod == 'add' ) { 
+          console.log('testingvalue 333');
+          item['hidden'] = false;
+          item['borderColor'] = '#'+color;
+          item['pointHoverBorderColor'] = '#'+color;
+        }
+        if ( mod == 'remove' ) { console.log('testingvalue 444'); item['hidden'] = true; }
+      }
+    });
+    this.seChartOptions();
   }
 }

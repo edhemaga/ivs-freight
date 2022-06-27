@@ -1,6 +1,22 @@
+.dashboard-container{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+
+    app-dashboard-performance{
+        width: 100%;
+    }
+
+    app-dashboard-top-driver{
+        width: 100%;
+    }
+}
 .dahsboard_charts_holder{
     background-color: #fff;
     padding: 12px 12px 14px 12px;
+    margin-bottom: 18px;
 
     .dashboard_chart_title{
         color: #AAAAAA;
