@@ -49,8 +49,7 @@ export class ShipperCardViewComponent implements OnInit {
 
   public onChangeShipper(action: string) {
     let currentIndex = this.shipperList
-      .map((shipper) => shipper.id)
-      .indexOf(this.shipper.id);
+      .findIndex((shipperId) => shipperId.id===this.shipper.id)
     switch (action) {
       case 'previous': {
         currentIndex = --currentIndex;
