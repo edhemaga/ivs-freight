@@ -425,7 +425,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             ? res.trailerLength
             : null;
           this.selectedOwner = res.owner ? res.owner : null;
-          this.selectedSuspension = res.suspension ? res.suspension : null;
+          this.selectedSuspension = res.suspension ? res.suspension.name : null;
           this.selectedTireSize = res.tireSize ? res.tireSize : null;
           this.selectedDoorType = res.doorType ? res.doorType : null;
           this.selectedReeferType = res.reeferUnit ? res.reeferUnit : null;

@@ -14,9 +14,9 @@
     .repair-header-fuel {
         padding: 0 10px;
         display: grid;
-        grid-template-columns: 72px 140px 105px 65px 90px 204px 76px 67px 52px;
-        grid-column-gap: 11px;
-        column-gap: 13px;
+        grid-template-columns: 72px 140px 105px 77px 80px 202px 86px 88px 52px;
+
+        column-gap: 9px;
         height: 18px;
         margin-bottom: 6px;
 
@@ -64,17 +64,19 @@
         .items-header-fuel {
             padding: 0 4px;
             display: grid;
-            grid-template-columns: 74px 142px 106px 69px 90px 227px 38px 77px 49px;
+            grid-template-columns: 70px 138px 103px 76px 77px 221px 45px 88px 49px;
             align-content: center;
             grid-auto-flow: column;
             column-gap: 11px;
             margin-top: 8px;
             margin-bottom: 8px;
-        
+
             .dots-vertical {
                 width: 5px;
-                height: 18px !important;
-                top: -2px;
+                height: 20px !important;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
                 position: relative;
                 margin-left: 12px;
             }
@@ -86,7 +88,7 @@
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            height: 18px;
+      
             width: 294px;
             &::-moz-selection {
                 color: $color-gray-dark;
@@ -101,7 +103,7 @@
             font-size: $font-size14;
             font-weight: $font-bold;
             color: $color-gray-dark;
-            height: 18px;
+            line-height: 20px;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
@@ -116,7 +118,7 @@
             font-weight: $font-semibold;
             color: $color-gray-dark;
             text-align: right;
-            height: 18px;
+            line-height: 20px;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);

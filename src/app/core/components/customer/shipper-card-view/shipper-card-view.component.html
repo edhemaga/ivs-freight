@@ -1,0 +1,93 @@
+<div class="cards-item-wrapper-1">
+  <app-ta-details-header-card
+    [cardDetailsDate]="shipper.createdAt | formatDateP"
+    [tooltipNext]="'Next Shipper'"
+    [tooltipPrevious]="'Previous Shipper'"
+    [searchInputName]="'Search Shipper'"
+    [dateChecked]="'5 days ago'"
+    [options]="shipperDropdowns"
+    (selectValue)="onSelectedShipper($event)"
+    (changeEvent)="onChangeShipper($event)"
+  >
+    <div class="repair-information-wrapper">
+      <div class="repair-information-item">
+        <svg-icon
+          class="repair-icon"
+          src="assets/svg/common/ic_phone.svg"
+        ></svg-icon>
+        <p class="repair-value">
+          {{ shipper?.phone | formatPhoneP }}
+        </p>
+      </div>
+      <div class="repair-information-item">
+        <svg-icon
+          class="repair-icon"
+          src="assets/svg/common/ic_email.svg"
+        ></svg-icon>
+        <p class="repair-value">{{ shipper?.email }}</p>
+      </div>
+      <div class="repair-information-item">
+        <svg-icon
+          class="repair-icon"
+          src="assets/svg/common/ic_address.svg"
+        ></svg-icon>
+        <p class="repair-value">{{ shipper?.address?.address }}</p>
+      </div>
+    </div>
+  </app-ta-details-header-card>
+  <div class="wrapper-additional-cards">
+    <div class="repair-cards">
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="false"
+        [cardName]="'Avillable Hours'"
+        [isCardOpen]="true"
+      >
+        <div class="hours-template">
+          <div class="hours-item">
+            <span class="name-item">Receiving Hours</span>
+            <div class="icon-wrapper">
+              <svg-icon
+              *ngIf="shipper.receivingAppointment"
+                class="svg-appoiment"
+                src="assets/svg/common/ic_appoiment.svg"
+              ></svg-icon>
+              <span class="value-item"
+                >{{ shipper.receivingFrom }} AM -
+                {{ shipper.receivingTo }} PM</span
+              >
+            </div>
+          </div>
+          <div class="hours-item">
+            <span class="name-item">Shipping Hours</span>
+            <div class="icon-wrapper">
+              <svg-icon
+               *ngIf="shipper.shippingAppointment"
+                class="svg-appoiment"
+                src="assets/svg/common/ic_appoiment.svg"
+              ></svg-icon>
+              <span class="value-item"
+                >{{ shipper.shippingFrom }} AM -
+                {{ shipper.shippingTo }} PM</span
+              >
+            </div>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <!--------Note--------->
+      <div class="divider"></div>
+      <div class="note-cards">
+        <app-ta-input-note
+          [formControl]="note"
+          [isVisibleSecondDivider]="false"
+          [isVisibleArrow]="true"
+          [minRows]="1"
+          [isVisibleDivider]="false"
+          [placeholder]="'Write something.'"
+          [customClass]="'note-small'"
+        ></app-ta-input-note>
+      </div>
+    </div>
+  </div>
+</div>

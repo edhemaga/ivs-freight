@@ -1,0 +1,57 @@
+@import '../../../../../assets/scss/repair-details-items.scss';
+
+.items-header{
+    grid-template-columns: 89px 117px 72px 93px 78px 82px !important ;
+    column-gap: 20px;
+}
+.arrow-le{
+    margin-right: 6px;
+    svg{
+        display: flex;
+    }
+}
+.icon-svg-repair{
+    display: flex;
+    align-items: center;
+    height: 14px;
+    .arrow-ri{
+        margin-right: 6px;
+        svg{
+            display: flex;
+            path{
+                fill: #E57373;
+            }
+        }
+    }
+}
+.time-date{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    bottom: 4px;
+    .time{
+        font-size: 11px;
+        font-weight: 800;
+        color: #919191;
+        height: 3px;
+    }
+}
+.wait-time{
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 700;
+    color: $color-gray-dark;
+    height: 8px;
+    line-height: 1;
+}
+.date{
+    width: fit-content !important;
+    line-height: 12px !important;
+}
+.repair-items-wrapper{
+ height: fit-content !important;
+min-height: fit-content !important;
+}
+.unit{
+    height: 18px;
+}

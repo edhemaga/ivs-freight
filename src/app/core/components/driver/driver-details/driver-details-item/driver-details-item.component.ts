@@ -26,7 +26,6 @@ import { card_component_animation } from '../../../shared/animations/card-compon
   selector: 'app-driver-details-item',
   templateUrl: './driver-details-item.component.html',
   styleUrls: ['./driver-details-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
@@ -34,44 +33,48 @@ export class DriverDetailsItemComponent
   implements OnInit, OnDestroy, OnChanges
 {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-  @Input() driver: DriverResponse | any = null;
+  @Input() drivers: DriverResponse | any = null;
   public cdlNote: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
   public toggler: boolean[] = [];
   public showMoreEmployment: boolean = false;
-
   public dataTest: any;
   public expDateCard: any;
+  public dataCDl: any;
+
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.getExpireDate();
-    if(!changes.driver.firstChange && changes.driver.currentValue){
-      this.driver = changes.driver.currentValue;
-
+   
+    if (!changes.drivers.firstChange && changes.drivers.currentValue) {
+      this.drivers = changes.drivers.currentValue;
+      this.getExpireDate();
     }
+    
   }
 
   ngOnInit(): void {
+    
     this.initTableOptions();
     this.getExpireDate();
   }
-
   public getExpireDate() {
-
-      // this.driver.data = this.driver.data.cdls.forEach((ele) => {
-      //   if (moment(ele.expDate).isBefore(moment())) {
-      //     this.expDateCard = false;
-      //   } else {
-      //     this.expDateCard = true;
-      //   }
-      //     console.log(this.expDateCard);
-          
-      // });
+    this.dataCDl = this.drivers[1].data.cdls.map((ele) => {
+      if (moment(ele.expDate).isBefore(moment())) {
+        this.expDateCard = false;
+      } else {
+        this.expDateCard = true;
+      }
+      return {
+        ...ele,
+        showButton: this.expDateCard,
+      };
+    });
   
+    console.log(this.expDateCard);
   }
 
   /**Function for dots in cards */
@@ -129,7 +132,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.id,
+            id: this.drivers[0].data.id,
             type: action,
           }
         );
@@ -141,7 +144,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.id,
+            id: this.drivers[0].data.id,
             type: action,
           }
         );
@@ -153,7 +156,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.id,
+            id: this.drivers[0].data.id,
             type: action,
           }
         );
@@ -165,7 +168,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.id,
+            id: this.drivers[0].data.id,
             type: action,
           }
         );
