@@ -210,7 +210,7 @@ export class DriverTService {
 
   public changeDriverStatus(
     driverId: number,
-    tabSelected: string
+    tabSelected?: string
   ): Observable<any> {
     return this.driverService.apiDriverStatusIdPut(driverId, 'response').pipe(
       tap(() => {
