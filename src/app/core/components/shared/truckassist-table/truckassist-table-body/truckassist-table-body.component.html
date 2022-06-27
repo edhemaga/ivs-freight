@@ -20,7 +20,7 @@
           class="columns-container"
           (mouseenter)="hoverActive = i"
           (mouseleave)="hoverActive = -1"
-          [ngClass]="{ 'regular-columns-hover': hoverActive === i }"
+          [ngClass]="{ 'regular-columns-hover': hoverActive === i && !row.actionAnimation }"
         >
           <td *ngFor="let column of columns">
             <!-- NO TEMPLATE -->
@@ -801,7 +801,7 @@
           class="columns-container"
           (mouseenter)="hoverActive = i"
           (mouseleave)="hoverActive = -1"
-          [ngClass]="{ 'regular-columns-hover': hoverActive === i }"
+          [ngClass]="{ 'regular-columns-hover': hoverActive === i && !row.actionAnimation }"
         >
           <td *ngFor="let column of columns">
             <!-- NO TEMPLATE -->
@@ -1514,7 +1514,7 @@
           class="columns-container"
           (mouseenter)="hoverActive = i"
           (mouseleave)="hoverActive = -1"
-          [ngClass]="{ 'regular-columns-hover': hoverActive === i }"
+          [ngClass]="{ 'regular-columns-hover': hoverActive === i && !row.actionAnimation }"
         >
           <td *ngFor="let column of columns">
             <!-- ATTACHMENTS COLUMN TEMPLATE -->

@@ -46,7 +46,6 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
     this.sendDriverData();
 
     // Reset Columns
@@ -83,8 +82,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
             clearInterval(inetval);
           }, 1000);
-        }
-        else if (res.animation === 'add' && this.selectedTab === 'inactive') {
+        } else if (res.animation === 'add' && this.selectedTab === 'inactive') {
           this.updateDataCount();
         } else if (res.animation === 'update') {
           const updatedDriver = this.mapDriverData(res.data);
@@ -117,10 +115,30 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
           this.updateDataCount();
 
-          const inetval = setInterval(() => { 
+          const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
-            this.viewData.splice(driverIndex, 1);    
+            this.viewData.splice(driverIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
+        } else if (res.animation === 'delete') {
+          let driverIndex: number;
+
+          this.viewData = this.viewData.map((driver: any, index: number) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'delete';
+              driverIndex = index;
+            }
+
+            return driver;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(driverIndex, 1);
             clearInterval(inetval);
           }, 1000);
         }
@@ -208,8 +226,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
           contentType: 'add',
         },
         {
-          title: 'Activate',
-          reverseTitle: 'Deactivate',
+          title: this.selectedTab === 'inactive' ? 'Deactivate' : 'Activate',
           name: 'activate-item',
           class: 'regular-text',
           contentType: 'activate',
@@ -228,11 +245,11 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   }
 
   sendDriverData() {
+    this.initTableOptions();
+
     const driverCount = JSON.parse(localStorage.getItem('driverTableCount'));
 
     const applicantsData = this.getTabData(null);
-
-    console.log(this.selectedTab);
 
     const driverActiveData =
       this.selectedTab === 'active' ? this.getTabData('active') : [];
@@ -317,7 +334,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       this.viewData = this.viewData.map((data: any) => {
         return this.mapDriverData(data);
       });
-    }else{
+    } else {
       this.viewData = [];
     }
   }
@@ -435,16 +452,19 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       );
     } else if (event.type === 'activate-item') {
       this.driverTService
-        .changeDriverStatus(event.id)
+        .changeDriverStatus(event.id, this.selectedTab)
         .pipe(untilDestroyed(this))
         .subscribe({
           next: () => {
+            console.log('Poziva se next u komponenti');
+
             this.notificationService.success(
               `Driver successfully Change Status`,
               'Success:'
             );
           },
           error: () => {
+            console.log('Poziva se error u komponenti');
             this.notificationService.error(
               `Driver with id: ${event.id}, status couldn't be changed`,
               'Error:'
