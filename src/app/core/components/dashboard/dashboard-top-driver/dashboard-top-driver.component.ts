@@ -20,7 +20,18 @@ export class DashboardTopDriverComponent implements OnInit {
         }
       }
     ],
-    showLegend: false,
+    chartInnitProperties: [
+      {
+        name: '54.51%',
+        value: '$773.08K',
+        percent: 'TOP 10'
+      },
+      {
+        name: 45,
+        value: 773.08
+      }
+    ],
+    showLegend: true,
     chartValues: [2, 2],
     defaultType: 'doughnut',
     chartWidth: '322',

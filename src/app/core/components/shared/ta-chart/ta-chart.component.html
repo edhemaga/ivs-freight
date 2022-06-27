@@ -15,9 +15,7 @@
     <div class="chart_inner">
       <div class="chart_value_holder" *ngFor="let item of chartInnitProperties; let indx = index" [ngStyle]="{'margin-bottom': indx+1 < chartInnitProperties.length ? '22px': '11px'}">
         <div class="chart_label" [ngStyle]="{'color': item.color}" >{{ item.name }}</div>
-        <div class="chart_value_hold" [ngStyle]="{'background-color': item.color}">
-          <div class="chart_value">{{ item.value }}%</div>
-        </div>
+        <div class="chart_value">{{ item.value }}%</div>
       </div>
     </div>
   </div>

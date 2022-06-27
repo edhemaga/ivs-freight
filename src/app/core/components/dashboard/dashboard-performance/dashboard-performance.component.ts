@@ -185,19 +185,6 @@ export class DashboardPerformanceComponent implements OnInit {
     }
   };
 
-  public chartInnitProperties: object = [
-    {
-      name: 54,
-      value: 773.08,
-      color: '#6C6C6C'
-    },
-    {
-      name: 45,
-      value: 773.08,
-      color: '#6C6C6C'
-    }
-  ]
-
   constructor() { }
 
   ngOnInit(): void {

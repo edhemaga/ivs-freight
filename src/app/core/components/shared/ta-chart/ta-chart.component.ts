@@ -21,18 +21,6 @@ export class TaChartComponent implements OnInit {
   public lineChartLegend: boolean = false;
   public lineChartType: string  = 'bar';
   public lineChartPlugins = [];
-  public chartInnitProperties: object = [
-    {
-      name: 54,
-      value: 773.08,
-      color: '#6C6C6C'
-    },
-    {
-      name: 45,
-      value: 773.08,
-      color: '#6C6C6C'
-    }
-  ]
   doughnutChartLegend: boolean = false;
   chartWidth: string = '';
   chartHeight: string = '';
@@ -42,6 +30,7 @@ export class TaChartComponent implements OnInit {
   annotationHovered: any;
   saveValues: any = [];
   removeChartMargin: boolean = false;
+  chartInnitProperties: any = [];
 
   constructor() { }
 
@@ -259,6 +248,7 @@ export class TaChartComponent implements OnInit {
       this.dottedBackground = this.chartConfig['dottedBackground'];
       this.noChartImage = this.chartConfig['noChartImage'];
       this.removeChartMargin = this.chartConfig['removeChartMargin'];
+      this.chartInnitProperties = this.chartConfig['chartInnitProperties'];
       this.chartDataCheck(this.chartConfig['chartValues']);
     });
   }
