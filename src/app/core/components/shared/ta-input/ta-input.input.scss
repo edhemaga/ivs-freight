@@ -95,7 +95,8 @@
   }
 
   &.password-eye,
-  &.input-commands {
+  &.input-commands,
+  &.dropdown-label-active {
     background-color: #6c6c6c !important;
     color: #ffffff;
 
@@ -176,7 +177,7 @@
   }
 
   &.dropdown-label-active {
-    padding-left: 142px !important;
+    padding-left: 143px !important;
   }
 
   //------------------------- Custom class -------------------------

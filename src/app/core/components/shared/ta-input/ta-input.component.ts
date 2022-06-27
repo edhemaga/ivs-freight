@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -9,7 +8,6 @@ import {
   Output,
   Self,
   ViewChild,
-  ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -45,15 +43,15 @@ export class TaInputComponent
   @ViewChild('span1', { static: false }) span1: ElementRef;
   @ViewChild('span2', { static: false }) span2: ElementRef;
   @ViewChild('span3', { static: false }) span3: ElementRef;
-  @Input() inputConfig: ITaInput;
   @ViewChild('t2') t2: any;
+  @ViewChild(NgbPopover)
+  private ngbMainPopover: NgbPopover;
+
+  @Input() inputConfig: ITaInput;
 
   @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
   @Output('commandEvent') inputCommandEvent: EventEmitter<any> =
     new EventEmitter<any>();
-
-  @ViewChild(NgbPopover)
-  private ngbMainPopover: NgbPopover;
 
   public focusInput: boolean = false;
   public touchedInput: boolean = false;
@@ -74,6 +72,7 @@ export class TaInputComponent
   // Date Timer
   private dateTimeMainTimer: any;
 
+  // Capslock input
   public capsLockOn: boolean = false;
 
   // Input Commands
@@ -81,7 +80,6 @@ export class TaInputComponent
 
   constructor(
     @Self() public superControl: NgControl,
-    private changeDetection: ChangeDetectorRef,
     private inputService: TaInputService,
     private calendarService: CalendarScrollService,
     private titlecasePipe: TitleCasePipe,
@@ -89,7 +87,6 @@ export class TaInputComponent
     private thousandSeparatorPipe: TaThousandSeparatorPipe
   ) {
     this.superControl.valueAccessor = this;
-    // this.input.nativeElement.value = this.getSuperControl.value;
   }
 
   ngOnInit(): void {
@@ -122,6 +119,7 @@ export class TaInputComponent
         });
     }
 
+    // Dropdown add mode
     if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
       this.inputService.dropdownAddModeSubject
         .pipe(untilDestroyed(this))
@@ -134,6 +132,7 @@ export class TaInputComponent
           }
         });
 
+      // Dropdown selecte with enter
       this.inputService.isDropDownItemSelectedOnEnter
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
@@ -182,7 +181,7 @@ export class TaInputComponent
       this.isVisiblePasswordEye = true;
     }
 
-    // Repair PM Modal
+    // Input Commands
     if (this.inputConfig.commands?.active) {
       this.isVisibleCommands = true;
     }
@@ -212,6 +211,7 @@ export class TaInputComponent
   public onBlur(): void {
     // Dropdown
     if (this.inputConfig.isDropdown) {
+      console.log('in');
       if (
         this.inputConfig.name === 'datepicker' ||
         this.inputConfig.name === 'timepicker'
@@ -234,7 +234,7 @@ export class TaInputComponent
         this.blurOnDropDownArrow();
       }
     } else {
-      this.focusInput = false;
+      console.log('else');
 
       let selection = window.getSelection();
       selection.removeAllRanges();
@@ -243,7 +243,15 @@ export class TaInputComponent
       if (this.inputConfig.type === 'password') {
         this.blurOnPassword();
       }
+
+      // Input Commands
+      if (this.inputConfig.commands?.active) {
+        this.blurOnCommands();
+      }
+
+      this.focusInput = false;
     }
+
     this.inputService.onFocusOutInputSubject.next(true);
     this.touchedInput = true;
   }
@@ -254,7 +262,7 @@ export class TaInputComponent
     }
     this.timeout = setTimeout(() => {
       this.isVisiblePasswordEye = false;
-      this.changeDetection.detectChanges();
+      clearTimeout(this.timeout);
     }, 150);
   }
 
@@ -264,8 +272,12 @@ export class TaInputComponent
     }
     this.timeout = setTimeout(() => {
       this.isVisibleCommands = false;
-      this.changeDetection.detectChanges();
-    }, this.inputConfig.commands.setTimeout);
+      clearTimeout(this.timeout);
+    }, 150);
+
+    console.log(this.inputConfig.commands);
+    console.log(this.focusInput);
+    console.log(this.isVisibleCommands);
   }
 
   private blurOnDropDownArrow() {
@@ -338,7 +350,7 @@ export class TaInputComponent
     const timeout = setTimeout(() => {
       input.focus();
       clearTimeout(timeout);
-    }, 150);
+    }, 120);
   }
 
   public onKeyUp(event): void {
@@ -455,6 +467,8 @@ export class TaInputComponent
             break;
           }
         }
+        clearTimeout(this.timeout);
+        this.setInputCursorAtTheEnd(this.input.nativeElement);
         break;
       }
       case 'confirm-cancel': {
@@ -464,6 +478,7 @@ export class TaInputComponent
             break;
           }
           case 'cancel': {
+            this.getSuperControl.patchValue(null);
             this.inputCommandEvent.emit('cancel');
             break;
           }
@@ -477,7 +492,6 @@ export class TaInputComponent
         break;
       }
     }
-    this.blurOnCommands();
   }
 
   public titleCaseInput(value: string) {

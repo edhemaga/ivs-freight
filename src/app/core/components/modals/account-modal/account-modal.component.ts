@@ -18,6 +18,7 @@ import { AccountModalService } from './account-modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { urlRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-account-modal',
@@ -66,7 +67,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required, Validators.maxLength(23)]],
       username: [null, [Validators.required, Validators.maxLength(40)]],
       password: [null, [Validators.required, Validators.maxLength(20)]],
-      url: [null, [Validators.required, Validators.maxLength(400)]],
+      url: [null, [Validators.required, ...urlRegex]],
       companyAccountLabelId: [null],
       note: [null],
     });

@@ -23,7 +23,7 @@ import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.com
 @Component({
   selector: 'app-ta-logo-change',
   templateUrl: './ta-logo-change.component.html',
-  styleUrls: ['./ta-logo-change.component.scss']
+  styleUrls: ['./ta-logo-change.component.scss'],
 })
 export class TaLogoChangeComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() imageUrl: string;

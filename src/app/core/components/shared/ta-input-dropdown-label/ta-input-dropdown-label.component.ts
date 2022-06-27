@@ -9,6 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { ITaInput } from '../ta-input/ta-input.config';
 import { TaInputService } from '../ta-input/ta-input.service';
@@ -28,7 +29,10 @@ export class TaInputDropdownLabelComponent
   @Output() selectedColorLabel: EventEmitter<any> = new EventEmitter<any>();
   @Output() labelEvent: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(@Self() public superControl: NgControl) {
+  constructor(
+    @Self() public superControl: NgControl,
+    private inputService: TaInputService
+  ) {
     this.superControl.valueAccessor = this;
   }
 
@@ -49,6 +53,25 @@ export class TaInputDropdownLabelComponent
     ];
   }
 
+  ngOnInit() {
+    // Dropdown Labels
+    this.getSuperControl.valueChanges
+      .pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (!value) {
+          this.inputConfig = {
+            ...this.inputConfig,
+            placeholder: 'Label Name',
+          };
+        } else {
+          this.inputConfig = {
+            ...this.inputConfig,
+            placeholder: null,
+          };
+        }
+      });
+  }
+
   get getSuperControl() {
     return this.superControl.control;
   }
@@ -58,12 +81,10 @@ export class TaInputDropdownLabelComponent
   registerOnTouched(fn: any): void {}
 
   public onSelectLabel(event: Event, label: any) {
-    event.stopPropagation();
     event.preventDefault();
-    this.inputRef.isVisibleCommands = true;
-    this.inputRef.focusInput = true;
+
     this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
-    console.log('LABELL SELEECT');
+
     this.selectedColorLabel.emit(label);
   }
 
@@ -78,4 +99,6 @@ export class TaInputDropdownLabelComponent
   public onClick() {
     console.log('ON CLICKKK');
   }
+
+  ngOnDestroy() {}
 }

@@ -251,7 +251,7 @@
     *ngIf="inputConfig.placeholderIcon"
     [svgStyle]="{
       fill: inputConfig.isDropdownLabel
-        ? inputConfig.dropdownLabelSelected.color
+        ? inputConfig.dropdownLabelSelected?.color
           ? inputConfig.dropdownLabelSelected.color
           : '#b7b7b7'
         : null
@@ -319,7 +319,9 @@
     [disabled]="inputConfig.isDisabled"
     [autocomplete]="inputConfig.autocomplete ? inputConfig.autocomplete : 'off'"
     [pattern]="inputConfig.pattern"
-    [placeholder]="inputConfig.placeholder ? inputConfig.placeholder : ''"
+    [placeholder]="
+      inputConfig.placeholder && focusInput ? inputConfig.placeholder : ''
+    "
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
     mask="{{ inputConfig.mask }}"
@@ -347,8 +349,8 @@
         focusInput &&
         !inputConfig.blackInput,
       'password-eye':
-        ((inputConfig.type === 'password' && isVisiblePasswordEye) ||
-          isVisibleCommands) &&
+        inputConfig.type === 'password' &&
+        isVisiblePasswordEye &&
         !getSuperControl.invalid,
       'password-eye-invalid':
         inputConfig.type === 'password' &&
@@ -365,7 +367,7 @@
       'multiSelect-dropdown-active':
         inputConfig.multiSelectDropdownActive && focusInput,
       'blue-input-color': inputConfig.blueInputColor && !focusInput,
-      'dropdown-label-active': inputConfig.isDropdownLabel && focusInput,
+      'dropdown-label-active': inputConfig.isDropdownLabel && isVisibleCommands,
       'input-commands': inputConfig.commands?.active && isVisibleCommands
     }"
     (keypress)="manipulateWithInput($event)"

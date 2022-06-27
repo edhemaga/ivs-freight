@@ -30,8 +30,9 @@
             name: 'Input Dropdown Label',
             type: 'text',
             label: 'Label',
-            isDropdownLabel: true,
+            placeholder: 'Label Name',
             placeholderIcon: 'ic_dynamic_label',
+            isDropdownLabel: true,
             blackInput: true,
             dropdownLabelSelected: selectedAccountLabel,
             commands: {
@@ -44,10 +45,10 @@
               secondCommand: {
                 name: 'cancel',
                 svg: 'assets/svg/ic_x.svg'
-              },
-              setTimeout: 50
+              }
             },
-            dropdownWidthClass: 'w-col-dropdown-label'
+            dropdownWidthClass: 'w-col-dropdown-label',
+            textTransform: 'capitalize'
           }"
           [options]="accountLabels"
           (selectedColorLabel)="onSelectColorLabel($event)"
