@@ -680,3 +680,23 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
         }
     }
 }
+
+.round_dark_grey{
+    svg-icon{
+        svg{
+            rect{
+                fill: #919191;
+            }
+        }
+    }
+}
+
+.round_light_grey{
+    svg-icon{
+        svg{
+            rect{
+                fill: #CCCCCC;
+            }
+        }
+    }
+}

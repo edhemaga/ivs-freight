@@ -31,13 +31,13 @@ export class TaChartComponent implements OnInit {
   saveValues: any = [];
   removeChartMargin: boolean = false;
   chartInnitProperties: any = [];
+  animationDuration: number = 1000;
 
   constructor() { }
 
   ngOnInit(): void {
     this.saveValues = JSON.parse(JSON.stringify(this.legendAttributes));
     
-    console.log(this.saveValues, 'mainthis.legendAttributesmainthis 111111');
     let namedChartAnnotation = annotation;
     namedChartAnnotation["id"]="annotation";
     Chart.pluginService.register(namedChartAnnotation);
@@ -64,15 +64,17 @@ export class TaChartComponent implements OnInit {
       responsive: false,
       cutoutPercentage: 90,
       animation: {
-        duration: 0
+        duration: this.animationDuration
       },
       onHover: (evt, elements) => {
         if ( elements && elements[0] ) {
+          this.animationDuration = 0;
           if ( this.legendAttributes && this.legendAttributes.lenght && this.legendAttributes.lenght > 0) { this.setChartLegendData(elements); }
           this.changeChartFillProperty(evt, elements);
           this.setHoverAnnotation(elements[0]['_index']);
         }
         else{
+          this.animationDuration = 1000;
           this.setHoverAnnotation(null);
           this.legendAttributes = JSON.parse(JSON.stringify(this.saveValues));
         }
@@ -226,7 +228,7 @@ export class TaChartComponent implements OnInit {
       var chartDataArray = currentChartConfig;
 
       if ( item['defaultConfig']['hasGradiendBackground'] ) {
-        this.setGradientBackground();
+        this.setGradientBackground('gradient');
       }
       
       // if ( item['defaultConfig']['type'] == 'doughnut' ) {
@@ -253,7 +255,7 @@ export class TaChartComponent implements OnInit {
     });
   }
 
-  setGradientBackground() {
+  setGradientBackground(type) {
     this.lineChartPlugins = [{
       afterLayout: chart => {
         var ctx = chart.chart.ctx;
@@ -299,7 +301,8 @@ export class TaChartComponent implements OnInit {
           }
         }
       }
-    }];
+    }
+  ];
   }
 
   chartDataCheck(values) {
