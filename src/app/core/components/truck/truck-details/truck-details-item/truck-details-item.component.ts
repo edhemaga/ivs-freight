@@ -1,21 +1,14 @@
-import { Subject } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
+
 import { FormControl } from '@angular/forms';
-import { truck_details_animation } from './../truck-details.animation';
 import {
   Component,
-  EventEmitter,
   Input,
   OnInit,
-  Output,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-
-import moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
-import { TruckTService } from '../../state/truck.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TtRegistrationModalComponent } from '../../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';

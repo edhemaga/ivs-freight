@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { TruckDetailsRoutes } from './truck-details.routing';
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { TruckDetailsCardComponent } from '../truck-details-card/truck-details-card.component';
 
 @NgModule({
@@ -21,7 +20,6 @@ import { TruckDetailsCardComponent } from '../truck-details-card/truck-details-c
         TruckDetailsRoutes,
         TruckassistProgressExpirationModule,
         SharedModule,
-        MatButtonToggleModule,
     ],
    
 })

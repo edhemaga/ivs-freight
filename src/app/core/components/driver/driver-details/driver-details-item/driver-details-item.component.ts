@@ -26,7 +26,6 @@ import { card_component_animation } from '../../../shared/animations/card-compon
   selector: 'app-driver-details-item',
   templateUrl: './driver-details-item.component.html',
   styleUrls: ['./driver-details-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })

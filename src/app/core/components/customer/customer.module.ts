@@ -1,3 +1,4 @@
+import { ShipperDetailsModule } from './shipper-details/shipper-details.module';
 import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,6 +17,7 @@ import { ShipperCardViewComponent } from './shipper-card-view/shipper-card-view.
     CommonModule,
     TruckassistTableModule,
     CustomerRoutingModule,
+    ShipperDetailsModule,
     AngularSvgIconModule,
     SharedModule
   ],

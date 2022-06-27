@@ -9,7 +9,6 @@ import { ShipperTService } from '../state/shipper-state/shipper.service';
   selector: 'app-shipper-details',
   templateUrl: './shipper-details.component.html',
   styleUrls: ['./shipper-details.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers:[DetailsPageService]
 })
 export class ShipperDetailsComponent implements OnInit,OnDestroy {
@@ -25,7 +24,7 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
    
-
+    this.shipperConf(this.activated_route.snapshot.data.shipper);
     this.detailsPageService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
@@ -47,7 +46,7 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
             },
           });
       });
-      this.shipperConf(this.activated_route.snapshot.data.shipper);
+     
   }
 
   public shipperConf(data: ShipperResponse) {

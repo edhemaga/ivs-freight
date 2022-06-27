@@ -25,7 +25,6 @@ import moment from 'moment';
   selector: 'app-driver-details',
   templateUrl: './driver-details.component.html',
   styleUrls: ['./driver-details.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DetailsPageService],
 })
 export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {

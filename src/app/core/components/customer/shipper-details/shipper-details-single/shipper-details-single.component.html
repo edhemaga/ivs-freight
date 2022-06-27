@@ -1,7 +1,8 @@
 <div class="repair-component">
-  <div [ngSwitch]="shipper.template">
+  <div *ngFor="let shipperData of shipper; trackBy:identity">
+  <div [ngSwitch]="shipperData.template">
     <div *ngSwitchCase="'general'">
-      <app-shipper-card-view [shipper]="shipper.data"> </app-shipper-card-view>
+      <app-shipper-card-view [shipper]="shipperData.data"> </app-shipper-card-view>
     </div>
     <div *ngSwitchCase="'load'">
       <div class="repair-container">
@@ -239,7 +240,7 @@
               [countColor]="'#919191'"
               [countHeight]="'24px'"
               [countWidth]="'24px'"
-              [count]="shipper.data.upRatingCount"
+              [count]="shipperData.data.upRatingCount"
             >
             </app-ta-counter>
           </div>
@@ -250,7 +251,7 @@
               [countColor]="'#919191'"
               [countHeight]="'24px'"
               [countWidth]="'24px'"
-              [count]="shipper.data.downRatingCount"
+              [count]="shipperData.data.downRatingCount"
             >
             </app-ta-counter>
             <svg-icon
@@ -270,4 +271,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

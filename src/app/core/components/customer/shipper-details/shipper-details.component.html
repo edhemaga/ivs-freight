@@ -15,11 +15,10 @@
       >
       </app-ta-details-header>
     </div>
-    <div class="repair-details-cmp">
+   
       <app-shipper-details-single
-        *ngFor="let item of shipperConfig; trackBy: identity"
-        [shipper]="item"
+        [shipper]="shipperConfig"
       >
       </app-shipper-details-single>
-    </div>
+  
   </div>

@@ -35,7 +35,6 @@ export class ShipperCardViewComponent implements OnInit {
   }
 
   public onSelectedShipper(event: any) {
-    
     if (event.id !== this.shipper.id) {
       this.shipperList = this.shipperQuery.getAll().map((item) => {
         return {

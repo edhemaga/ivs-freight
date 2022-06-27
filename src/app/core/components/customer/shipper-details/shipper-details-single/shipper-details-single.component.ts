@@ -1,14 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
 import { ShipperResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-shipper-details-single',
   templateUrl: './shipper-details-single.component.html',
   styleUrls: ['./shipper-details-single.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class ShipperDetailsSingleComponent implements OnInit {
+export class ShipperDetailsSingleComponent implements OnInit,OnChanges {
   @Input() shipper: ShipperResponse | any = null;
   public reviewsRepair: any = [
     {
@@ -99,9 +98,18 @@ export class ShipperDetailsSingleComponent implements OnInit {
     },
   ];
   constructor() { }
-
+ ngOnChanges(changes: SimpleChanges): void {
+  if (!changes.shipper.firstChange && changes.shipper.currentValue) {
+    this.shipper = changes.shipper.currentValue;
+  }
+ }
   ngOnInit(): void {
   }
+
+    /**Function return id */
+    public identity(index: number, item: any): number {
+      return item.id;
+    }
   public changeReviewsEvent(reviews: { data: any[]; action: string }) {
     this.reviewsRepair = [...reviews.data];
     // TODO: API CREATE OR DELETE
