@@ -7,7 +7,7 @@
           [driver]="driverItem.data"
         ></app-driver-details-card>
       </div>
-      <div *ngSwitchCase="'cdl'">
+      <div class="card-width" *ngSwitchCase="'cdl'">
         <div *ngFor="let cdl of dataCDl; let i = index; trackBy: identity">
           <app-ta-re-card
             [options]="dataTest"
@@ -194,7 +194,7 @@
           </app-ta-re-card>
         </div>
       </div>
-      <div *ngSwitchCase="'drug-alcohol'">
+      <div class="card-width" *ngSwitchCase="'drug-alcohol'">
         <div
           *ngFor="
             let test of driverItem.data.tests;
@@ -285,7 +285,7 @@
           </app-ta-re-card>
         </div>
       </div>
-      <div *ngSwitchCase="'medical'">
+      <div class="card-width" *ngSwitchCase="'medical'">
         <div
           *ngFor="
             let med of driverItem.data.medicals;
@@ -386,7 +386,7 @@
           </app-ta-re-card>
         </div>
       </div>
-      <div *ngSwitchCase="'mvr'">
+      <div class="card-width" *ngSwitchCase="'mvr'">
         <div
           *ngFor="
             let mvr of driverItem.data.mvrs;

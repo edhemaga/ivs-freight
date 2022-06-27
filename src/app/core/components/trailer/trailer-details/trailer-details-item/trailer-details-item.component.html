@@ -1,15 +1,16 @@
 <div class="details-component">
-  <div [ngSwitch]="trailer.template">
+  <div *ngFor="let trailers of trailer">
+  <div [ngSwitch]="trailers.template">
     <!---------------------- GENERAL TEMPLATE ------------------>
     <div *ngSwitchCase="'general'">
-      <app-trailer-details-card [trailer]="trailer.data">
+      <app-trailer-details-card [trailer]="trailers.data">
       </app-trailer-details-card>
     </div>
     <!---------------------------- Registration TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'registration'">
+    <div class="card-width" *ngSwitchCase="'registration'">
       <div
         *ngFor="
-          let reg of trailer.data.registrations;
+          let reg of trailers.data.registrations;
           let i = index;
           trackBy: identity
         "
@@ -72,10 +73,10 @@
       </div>
     </div>
     <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'fhwa-insepction'">
+    <div class="card-width" *ngSwitchCase="'fhwa-insepction'">
       <div
         *ngFor="
-          let fhwa of trailer.data.inspections;
+          let fhwa of trailers.data.inspections;
           let i = index;
           trackBy: identity
         "
@@ -126,10 +127,10 @@
     </div>
 
     <!---------------------------- Title TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'title'">
+    <div class="card-width" *ngSwitchCase="'title'">
       <div
         *ngFor="
-          let title of trailer.data.titles;
+          let title of trailers.data.titles;
           let i = index;
           trackBy: identity
         "
@@ -191,8 +192,9 @@
       </div>
     </div>
     <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'lease-purchase'">
+    <div class="card-width" *ngSwitchCase="'lease-purchase'">
       <div class="test" style="background-color: #ffffff; height: 200px"></div>
     </div>
   </div>
+</div>
 </div>

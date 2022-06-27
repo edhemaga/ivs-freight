@@ -70,19 +70,16 @@
       </div>
       <div *ngSwitchCase="'contact'">
         <div class="contact-wrapper">
-          <div
-            *ngFor="
-              let shipperContact of shipperData?.data?.shipperContacts;
-              trackBy: identity
-            "
-            class="shipper-contact-container"
-          >
+         
             <app-ta-custom-card
+              *ngFor="let shipperContact of shipperData?.data?.shipperContacts;trackBy: identity
+              "
               [bodyTemplate]="'card'"
               [animationsDisabled]="false"
               [hasDivider]="false"
               [cardName]="shipperContact.department.name"
               [isCardOpen]="true"
+              class="shipper-contact-container"
             >
               <div *ngIf="shipperContact" class="parking-template-data">
                 <div
@@ -109,11 +106,11 @@
                       position="top"
                       tooltipBackground="#6C6C6C"
                     >
-                    <svg-icon
-                      src="assets/svg/common/ic_trash.svg"
-                      class="svg-icon-trash"
-                    ></svg-icon>
-                  </span>
+                      <svg-icon
+                        src="assets/svg/common/ic_trash.svg"
+                        class="svg-icon-trash"
+                      ></svg-icon>
+                    </span>
                   </div>
                 </div>
                 <div class="parking-template-item">
@@ -139,10 +136,8 @@
                   }}</span>
                 </div>
               </div>
+              <div class="divider"></div>
             </app-ta-custom-card>
-            <div class="divider"></div>
-          </div>
-        
         </div>
       </div>
       <div *ngSwitchCase="'review'">

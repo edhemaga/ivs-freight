@@ -1,408 +1,414 @@
 <div class="details-component">
-  <div [ngSwitch]="truck.template">
-    <!---------------------------- GENERAL TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'general'">
-      <app-truck-details-card [truck]="truck.data"> </app-truck-details-card>
-    </div>
-    <!---------------------------- Registration TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'registration'">
-      <div
-        *ngFor="
-          let reg of truck.data.registrations;
-          let i = index;
-          trackBy: identity
-        "
-      >
-        <app-ta-re-card
-          [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage(i)"
-          [cardNameCommon]="reg.licensePlate"
-          [hasCopyIcon]="false"
-          [options]="dataEdit"
-          [expDateClose]="reg.expDate | formatDateP"
-          [optionsId]="reg.id"
-          (dropActions)="optionsEvent($event, 'edit-registration')"
-        >
-          <div class="cards-container">
-            <div class="card-body-cdl">
-              <div class="card-row-endor">
-                <div class="card-item">
-                  <div class="card-item-name">State</div>
-                  <div class="card-item-value">KV</div>
-                </div>
-                <div class="card-item">
-                  <div class="card-item-name">Issued</div>
-                  <div class="card-item-value">
-                    {{ reg.issueDate | formatDateP }}
-                  </div>
-                </div>
-              </div>
-              <div
-                class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i] }"
-              >
-                <div class="card-details-progress-container">
-                  <app-truckassist-progress-expiration
-                    [expireDate]="reg.expDate | formatDateP"
-                    [startDate]="reg.issueDate | formatDateP"
-                    [expiresSettings]="'details'"
-                  >
-                  </app-truckassist-progress-expiration>
-                </div>
-              </div>
-            </div>
-            <div class="divider" *ngIf="toggler[i]"></div>
-            <div *ngIf="toggler[i]" class="note-wrapper">
-              <app-ta-input-note
-                [formControl]="registrationNote"
-                [isVisibleDivider]="false"
-                [isVisibleSecondDivider]="false"
-                [placeholder]="'Write something.'"
-                [customClass]="'note-small'"
-                [isVisibleArrow]="false"
-                [minRows]="1"
-                [isVisibleNote]="true"
-              ></app-ta-input-note>
-            </div>
-          </div>
-        </app-ta-re-card>
+  <div *ngFor="let trucks of truck; trackBy: identity">
+    <div [ngSwitch]="trucks.template">
+      <!---------------------------- GENERAL TEMPLATE ----------------------------->
+      <div *ngSwitchCase="'general'">
+        <app-truck-details-card [truck]="trucks.data"> </app-truck-details-card>
       </div>
-    </div>
-    <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'fhwa-insepction'">
-      <div
-        *ngFor="
-          let fhwa of truck.data.inspections;
-          let i = index;
-          trackBy: identity
-        "
-      >
-        <app-ta-re-card
-          [options]="dataEdit"
-          [cardDocumentCounter]="1"
-          [cardNameCommon]="fhwa.issueDate | formatDateP"
-          (resizePage)="toggleResizePage(i)"
-          [expDateClose]="fhwa.issueDate | setFutureYear "
-          [optionsId]="fhwa.id"
-          (dropActions)="optionsEvent($event, 'edit-inspection')"
+      <!---------------------------- Registration TEMPLATE ----------------------------->
+      <div class="card-width" *ngSwitchCase="'registration'">
+        <div
+          *ngFor="
+            let reg of trucks.data.registrations;
+            let i = index;
+            trackBy: identity
+          "
         >
-          <div class="cards-container">
-            <div class="card-body-cdl">
-              <div
-                class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i] }"
-              >
-                <div class="card-details-progress-container">
-                  <app-truckassist-progress-expiration
-                    [expireDate]=" fhwa.issueDate | setFutureYear"
-                    [startDate]="fhwa.issueDate | formatDateP"
-                    [expiresSettings]="'details'"
-                  >
-                  </app-truckassist-progress-expiration>
-                </div>
-              </div>
-            </div>
-            <div *ngIf="toggler[i]" class="note-wrapper">
-              <app-ta-input-note
-                [formControl]="fhwaNote"
-                [placeholder]="'Write something.'"
-                [isVisibleSecondDivider]="false"
-                [customClass]="'note-small'"
-                [isVisibleArrow]="false"
-                [minRows]="1"
-                [isVisibleNote]="true"
-              ></app-ta-input-note>
-            </div>
-          </div>
-        </app-ta-re-card>
-      </div>
-    </div>
-
-    <!---------------------------- Title TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'title'">
-      <div
-        *ngFor="
-          let title of truck.data.titles;
-          let i = index;
-          trackBy: identity
-        "
-      >
-        <app-ta-re-card
-          [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage(i)"
-          [cardNameCommon]="title.number"
-          [options]="dataEdit"
-          [expDateClose]="'04/04/27' | formatDateP"
-          [optionsId]="title.id"
-          (dropActions)="optionsEvent($event, 'edit-title')"
-        >
-          <div class="cards-container">
-            <div class="card-body-cdl">
-              <div class="card-row-endor">
-                <div class="card-item">
-                  <div class="card-item-name">State</div>
-                  <div class="card-item-value">KV</div>
-                </div>
-                <div class="card-item">
-                  <div class="card-item-name">Issued</div>
-                  <div class="card-item-value">
-                    {{ title.issueDate | formatDateP }}
-                  </div>
-                </div>
-              </div>
-              <div
-                class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i] }"
-              >
-                <div class="card-details-progress-container">
-                  <app-truckassist-progress-expiration
-                    [expireDate]="title.issueDate | formatDateP"
-                    [startDate]="title.issueDate | formatDateP"
-                    [expiresSettings]="'details'"
-                  >
-                  </app-truckassist-progress-expiration>
-                </div>
-              </div>
-            </div>
-            <div class="divider" *ngIf="toggler[i]"></div>
-            <div *ngIf="toggler[i]" class="note-wrapper">
-              <app-ta-input-note
-                [formControl]="titleNote"
-                [placeholder]="'Write something.'"
-                [isVisibleSecondDivider]="false"
-                [customClass]="'note-small'"
-                [isVisibleArrow]="false"
-                [minRows]="1"
-                [isVisibleDivider]="false"
-                [isVisibleNote]="true"
-              ></app-ta-input-note>
-            </div>
-          </div>
-        </app-ta-re-card>
-      </div>
-    </div>
-    <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'lease-purchase'">
-      <app-ta-re-card
-        [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
-        (resizePage)="toggleResizePage(5)"
-        [cardNameCommon]="'KSKA FREIGHT, INC'"
-        [isCardOpen]="true"
-        [expDateClose]="'04/04/27' | formatDateP"
-      >
-        <div class="purchase-container">
-          <div class="purchase-template">
-            <div class="purchase-template-item">
-              <div class="purchase-template-item-name">Purchased</div>
-              <div class="purchase-template-item-value">09/01/20</div>
-            </div>
-            <div class="purchase-template-item second-name">
-              <div class="purchase-template-item-name">Price</div>
-              <div class="purchase-template-item-value">$81,600.00</div>
-            </div>
-          </div>
-          <div class="purchase-template">
-            <div class="purchase-template-item">
-              <div class="purchase-template-item-name">No. of Payment</div>
-              <div class="purchase-template-item-value">12</div>
-            </div>
-            <div class="purchase-template-item second-name">
-              <div class="purchase-template-item-name">Down Payment</div>
-              <div class="purchase-template-item-value">$30.000.00</div>
-            </div>
-          </div>
-          <div class="purchase-template">
-            <div class="purchase-template-item">
-              <div class="purchase-template-item-name">Pay Period</div>
-              <div class="purchase-template-item-value">Monthly</div>
-            </div>
-            <div class="purchase-template-item second-name">
-              <div class="purchase-template-item-name">Rate</div>
-              <div class="purchase-template-item-value">10%</div>
-            </div>
-          </div>
-          <div class="purchase-template">
-            <div class="purchase-template-item">
-              <div class="purchase-template-item-name">Payment Amount</div>
-              <div class="purchase-template-item-value amount">$4,597.16</div>
-            </div>
-            <div class="purchase-template-item second-name">
-              <div class="purchase-template-item-name">Next Payment</div>
-              <div class="purchase-template-item-value payment">01/01/21</div>
-            </div>
-          </div>
-          <div class="purchase-template">
-            <div class="purchase-template-item">
-              <div class="purchase-template-item-name">Total Value</div>
-              <div class="purchase-template-item-value amount">$54,279.16</div>
-            </div>
-            <div class="purchase-template-item second-name">
-              <div class="purchase-template-item-name">Total Interest</div>
-              <div class="purchase-template-item-value payment">$2,679.16</div>
-            </div>
-          </div>
-
-          <!----------Progress Card---------->
-          <div
-            class="details-progress-container purchase-progress"
-            [ngClass]="{ 'no-toggler': !toggler[5] }"
+          <app-ta-re-card
+            [cardDocumentCounter]="1"
+            (resizePage)="toggleResizePage(i)"
+            [cardNameCommon]="reg.licensePlate"
+            [hasCopyIcon]="false"
+            [options]="dataEdit"
+            [expDateClose]="reg.expDate | formatDateP"
+            [optionsId]="reg.id"
+            (dropActions)="optionsEvent($event, 'edit-registration')"
           >
-            <app-ta-currency-progress-bar
-              [template]="'payments'"
-              [totalAmount]="12"
-              [paidSoFarAmount]="4"
-              [progressBarName]="'Payments'"
-            >
-            </app-ta-currency-progress-bar>
-          </div>
-
-          <!----------Amortization table Card---------->
-          <div [@showHideCardBody]="toggler[5] ? 'true' : 'false'">
-            <div class="details-document-container amortization-details">
-              <div class="divider"></div>
-              <div class="icon-counter-wrapper">
-                <p class="details-document-name amortization-details-name">
-                  Amortization Table
-                </p>
-                <svg-icon
-                  (click)="onFileAction('download')"
-                  src="assets/svg/common/ic_download.svg"
-                >
-                </svg-icon>
-              </div>
-
-              <div class="table-amor-data">
-                <div class="table-amor-data-items-header">
-                  <p class="p-data p-header">#</p>
-                  <p class="p-date p-header">DATE</p>
-                  <p class="p-balance p-header">BALANCE</p>
-                </div>
-                <div class="divider"></div>
-                <div class="table-amor-data-items-body">
-                  <p class="p-data-text">1</p>
-                  <p class="p-date-text">09/01/20</p>
-                  <p class="p-balance-text">$54,279.16</p>
-                </div>
-                <div class="divider"></div>
-                <div class="table-amor-data-items-body">
-                  <p class="p-data-text">2</p>
-                  <p class="p-date-text">10/01/20</p>
-                  <p class="p-balance-text">$49,358.35</p>
-                </div>
-                <div class="divider"></div>
-                <div class="table-amor-data-items-body">
-                  <p class="p-data-text">3</p>
-                  <p class="p-date-text">11/01/20</p>
-                  <p class="p-balance-text">$44,452.20</p>
-                </div>
-                <div class="divider"></div>
-                <div class="table-amor-data-items-body bottom">
-                  <p class="p-data-text">4</p>
-                  <p class="p-date-text">12/01/20</p>
-                  <p class="p-balance-text">$38,658.52</p>
-                </div>
-              </div>
-            </div>
-            <div class="divider"></div>
-            <!----------Bank Card---------->
-            <div class="bank-card">
-              <app-ta-custom-card
-                [cardName]="'Bank Account'"
-                [hasArrow]="false"
-                [hasHeaderSvg]="'assets/svg/common/ic_bankAccount_dummy.svg'"
-                [isCardOpen]="true"
-                [hasDivider]="false"
-              >
-                <div class="purchase-template">
-                  <div class="purchase-template-item">
-                    <div class="purchase-template-item-name">Routing</div>
-                    <div class="purchase-template-item-value">052001633</div>
+            <div class="cards-container">
+              <div class="card-body-cdl">
+                <div class="card-row-endor">
+                  <div class="card-item">
+                    <div class="card-item-name">State</div>
+                    <div class="card-item-value">KV</div>
                   </div>
-                  <div class="purchase-template-item second-name">
-                    <div class="purchase-template-item-name">Account</div>
-                    <div class="purchase-template-item-value acc-number">
-                      <p>
-                        {{
-                          accountText
-                            ? accountText
-                            : hiddenPassword(cardNumberFake, 4)
-                        }}
-                      </p>
-                      <svg-icon
-                        (click)="showHideValue(cardNumberFake)"
-                        class="hidden-svg-eye"
-                        src="{{
-                          isAccountVisible
-                            ? 'assets/svg/common/ic_eye-visible.svg'
-                            : 'assets/svg/common/ic_eye-hidden.svg'
-                        }}"
-                      >
-                      </svg-icon>
+                  <div class="card-item">
+                    <div class="card-item-name">Issued</div>
+                    <div class="card-item-value">
+                      {{ reg.issueDate | formatDateP }}
                     </div>
                   </div>
                 </div>
-              </app-ta-custom-card>
-            </div>
-
-            <!----------Pdf Card---------->
-            <div class="details-document-container">
-              <div class="divider"></div>
-              <div class="icon-counter-wrapper">
-                <div class="counter-text-wrapper">
-                  <app-ta-counter
-                    [countBackgroud]="'#F3F3F3'"
-                    [countHeight]="'24px'"
-                    [countWidth]="'24px'"
-                    [count]="3"
-                  >
-                  </app-ta-counter>
-                  <p class="details-document-name">Document</p>
+                <div
+                  class="card-row-progress"
+                  [ngClass]="{ 'second-progress': toggler[i] }"
+                >
+                  <div class="card-details-progress-container">
+                    <app-truckassist-progress-expiration
+                      [expireDate]="reg.expDate | formatDateP"
+                      [startDate]="reg.issueDate | formatDateP"
+                      [expiresSettings]="'details'"
+                    >
+                    </app-truckassist-progress-expiration>
+                  </div>
                 </div>
-                <svg-icon
-                  (click)="onFileAction('download')"
-                  src="assets/svg/common/ic_download.svg"
-                >
-                </svg-icon>
+              </div>
+              <div class="divider" *ngIf="toggler[i]"></div>
+              <div *ngIf="toggler[i]" class="note-wrapper">
+                <app-ta-input-note
+                  [formControl]="registrationNote"
+                  [isVisibleDivider]="false"
+                  [isVisibleSecondDivider]="false"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [isVisibleNote]="true"
+                ></app-ta-input-note>
               </div>
             </div>
-            <div class="files-item">
-              <div class="details-page-row-7">
-                <app-ta-files
-                  [files]="[
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    }
-                  ]"
-                  [fileType]="'multiple-pdf'"
-                  [customClassName]="'driver-details-multiple-pdf'"
+          </app-ta-re-card>
+        </div>
+      </div>
+      <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
+      <div class="card-width" *ngSwitchCase="'fhwa-insepction'">
+        <div
+          *ngFor="
+            let fhwa of trucks.data.inspections;
+            let i = index;
+            trackBy: identity
+          "
+        >
+          <app-ta-re-card
+            [options]="dataEdit"
+            [cardDocumentCounter]="1"
+            [cardNameCommon]="fhwa.issueDate | formatDateP"
+            (resizePage)="toggleResizePage(i)"
+            [expDateClose]="fhwa.issueDate | setFutureYear"
+            [optionsId]="fhwa.id"
+            (dropActions)="optionsEvent($event, 'edit-inspection')"
+          >
+            <div class="cards-container">
+              <div class="card-body-cdl">
+                <div
+                  class="card-row-progress"
+                  [ngClass]="{ 'second-progress': toggler[i] }"
                 >
-                </app-ta-files>
+                  <div class="card-details-progress-container">
+                    <app-truckassist-progress-expiration
+                      [expireDate]="fhwa.issueDate | setFutureYear"
+                      [startDate]="fhwa.issueDate | formatDateP"
+                      [expiresSettings]="'details'"
+                    >
+                    </app-truckassist-progress-expiration>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="toggler[i]" class="note-wrapper">
+                <app-ta-input-note
+                  [formControl]="fhwaNote"
+                  [placeholder]="'Write something.'"
+                  [isVisibleSecondDivider]="false"
+                  [customClass]="'note-small'"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [isVisibleNote]="true"
+                ></app-ta-input-note>
+              </div>
+            </div>
+          </app-ta-re-card>
+        </div>
+      </div>
+
+      <!---------------------------- Title TEMPLATE ----------------------------->
+      <div class="card-width" *ngSwitchCase="'title'">
+        <div
+          *ngFor="
+            let title of trucks.data.titles;
+            let i = index;
+            trackBy: identity
+          "
+        >
+          <app-ta-re-card
+            [cardDocumentCounter]="1"
+            (resizePage)="toggleResizePage(i)"
+            [cardNameCommon]="title.number"
+            [options]="dataEdit"
+            [expDateClose]="'04/04/27' | formatDateP"
+            [optionsId]="title.id"
+            (dropActions)="optionsEvent($event, 'edit-title')"
+          >
+            <div class="cards-container">
+              <div class="card-body-cdl">
+                <div class="card-row-endor">
+                  <div class="card-item">
+                    <div class="card-item-name">State</div>
+                    <div class="card-item-value">KV</div>
+                  </div>
+                  <div class="card-item">
+                    <div class="card-item-name">Issued</div>
+                    <div class="card-item-value">
+                      {{ title.issueDate | formatDateP }}
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="card-row-progress"
+                  [ngClass]="{ 'second-progress': toggler[i] }"
+                >
+                  <div class="card-details-progress-container">
+                    <app-truckassist-progress-expiration
+                      [expireDate]="title.issueDate | formatDateP"
+                      [startDate]="title.issueDate | formatDateP"
+                      [expiresSettings]="'details'"
+                    >
+                    </app-truckassist-progress-expiration>
+                  </div>
+                </div>
+              </div>
+              <div class="divider" *ngIf="toggler[i]"></div>
+              <div *ngIf="toggler[i]" class="note-wrapper">
+                <app-ta-input-note
+                  [formControl]="titleNote"
+                  [placeholder]="'Write something.'"
+                  [isVisibleSecondDivider]="false"
+                  [customClass]="'note-small'"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [isVisibleDivider]="false"
+                  [isVisibleNote]="true"
+                ></app-ta-input-note>
+              </div>
+            </div>
+          </app-ta-re-card>
+        </div>
+      </div>
+      <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
+      <div class="card-width" *ngSwitchCase="'lease-purchase'">
+        <app-ta-re-card
+          [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
+          (resizePage)="toggleResizePage(5)"
+          [cardNameCommon]="'KSKA FREIGHT, INC'"
+          [isCardOpen]="true"
+          [expDateClose]="'04/04/27' | formatDateP"
+        >
+          <div class="purchase-container">
+            <div class="purchase-template">
+              <div class="purchase-template-item">
+                <div class="purchase-template-item-name">Purchased</div>
+                <div class="purchase-template-item-value">09/01/20</div>
+              </div>
+              <div class="purchase-template-item second-name">
+                <div class="purchase-template-item-name">Price</div>
+                <div class="purchase-template-item-value">$81,600.00</div>
+              </div>
+            </div>
+            <div class="purchase-template">
+              <div class="purchase-template-item">
+                <div class="purchase-template-item-name">No. of Payment</div>
+                <div class="purchase-template-item-value">12</div>
+              </div>
+              <div class="purchase-template-item second-name">
+                <div class="purchase-template-item-name">Down Payment</div>
+                <div class="purchase-template-item-value">$30.000.00</div>
+              </div>
+            </div>
+            <div class="purchase-template">
+              <div class="purchase-template-item">
+                <div class="purchase-template-item-name">Pay Period</div>
+                <div class="purchase-template-item-value">Monthly</div>
+              </div>
+              <div class="purchase-template-item second-name">
+                <div class="purchase-template-item-name">Rate</div>
+                <div class="purchase-template-item-value">10%</div>
+              </div>
+            </div>
+            <div class="purchase-template">
+              <div class="purchase-template-item">
+                <div class="purchase-template-item-name">Payment Amount</div>
+                <div class="purchase-template-item-value amount">$4,597.16</div>
+              </div>
+              <div class="purchase-template-item second-name">
+                <div class="purchase-template-item-name">Next Payment</div>
+                <div class="purchase-template-item-value payment">01/01/21</div>
+              </div>
+            </div>
+            <div class="purchase-template">
+              <div class="purchase-template-item">
+                <div class="purchase-template-item-name">Total Value</div>
+                <div class="purchase-template-item-value amount">
+                  $54,279.16
+                </div>
+              </div>
+              <div class="purchase-template-item second-name">
+                <div class="purchase-template-item-name">Total Interest</div>
+                <div class="purchase-template-item-value payment">
+                  $2,679.16
+                </div>
               </div>
             </div>
 
-            <div class="note-cards-lease">
-              <app-ta-input-note
-                [formControl]="note"
-                [isReadOnly]="true"
-                [isVisibleArrow]="false"
-                [isVisibleSecondDivider]="false"
-              ></app-ta-input-note>
+            <!----------Progress Card---------->
+            <div
+              class="details-progress-container purchase-progress"
+              [ngClass]="{ 'no-toggler': !toggler[5] }"
+            >
+              <app-ta-currency-progress-bar
+                [template]="'payments'"
+                [totalAmount]="12"
+                [paidSoFarAmount]="4"
+                [progressBarName]="'Payments'"
+              >
+              </app-ta-currency-progress-bar>
+            </div>
+
+            <!----------Amortization table Card---------->
+            <div [@showHideCardBody]="toggler[5] ? 'true' : 'false'">
+              <div class="details-document-container amortization-details">
+                <div class="divider"></div>
+                <div class="icon-counter-wrapper">
+                  <p class="details-document-name amortization-details-name">
+                    Amortization Table
+                  </p>
+                  <svg-icon
+                    (click)="onFileAction('download')"
+                    src="assets/svg/common/ic_download.svg"
+                  >
+                  </svg-icon>
+                </div>
+
+                <div class="table-amor-data">
+                  <div class="table-amor-data-items-header">
+                    <p class="p-data p-header">#</p>
+                    <p class="p-date p-header">DATE</p>
+                    <p class="p-balance p-header">BALANCE</p>
+                  </div>
+                  <div class="divider"></div>
+                  <div class="table-amor-data-items-body">
+                    <p class="p-data-text">1</p>
+                    <p class="p-date-text">09/01/20</p>
+                    <p class="p-balance-text">$54,279.16</p>
+                  </div>
+                  <div class="divider"></div>
+                  <div class="table-amor-data-items-body">
+                    <p class="p-data-text">2</p>
+                    <p class="p-date-text">10/01/20</p>
+                    <p class="p-balance-text">$49,358.35</p>
+                  </div>
+                  <div class="divider"></div>
+                  <div class="table-amor-data-items-body">
+                    <p class="p-data-text">3</p>
+                    <p class="p-date-text">11/01/20</p>
+                    <p class="p-balance-text">$44,452.20</p>
+                  </div>
+                  <div class="divider"></div>
+                  <div class="table-amor-data-items-body bottom">
+                    <p class="p-data-text">4</p>
+                    <p class="p-date-text">12/01/20</p>
+                    <p class="p-balance-text">$38,658.52</p>
+                  </div>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <!----------Bank Card---------->
+              <div class="bank-card">
+                <app-ta-custom-card
+                  [cardName]="'Bank Account'"
+                  [hasArrow]="false"
+                  [hasHeaderSvg]="'assets/svg/common/ic_bankAccount_dummy.svg'"
+                  [isCardOpen]="true"
+                  [hasDivider]="false"
+                >
+                  <div class="purchase-template">
+                    <div class="purchase-template-item">
+                      <div class="purchase-template-item-name">Routing</div>
+                      <div class="purchase-template-item-value">052001633</div>
+                    </div>
+                    <div class="purchase-template-item second-name">
+                      <div class="purchase-template-item-name">Account</div>
+                      <div class="purchase-template-item-value acc-number">
+                        <p>
+                          {{
+                            accountText
+                              ? accountText
+                              : hiddenPassword(cardNumberFake, 4)
+                          }}
+                        </p>
+                        <svg-icon
+                          (click)="showHideValue(cardNumberFake)"
+                          class="hidden-svg-eye"
+                          src="{{
+                            isAccountVisible
+                              ? 'assets/svg/common/ic_eye-visible.svg'
+                              : 'assets/svg/common/ic_eye-hidden.svg'
+                          }}"
+                        >
+                        </svg-icon>
+                      </div>
+                    </div>
+                  </div>
+                </app-ta-custom-card>
+              </div>
+
+              <!----------Pdf Card---------->
+              <div class="details-document-container">
+                <div class="divider"></div>
+                <div class="icon-counter-wrapper">
+                  <div class="counter-text-wrapper">
+                    <app-ta-counter
+                      [countBackgroud]="'#F3F3F3'"
+                      [countHeight]="'24px'"
+                      [countWidth]="'24px'"
+                      [count]="3"
+                    >
+                    </app-ta-counter>
+                    <p class="details-document-name">Document</p>
+                  </div>
+                  <svg-icon
+                    (click)="onFileAction('download')"
+                    src="assets/svg/common/ic_download.svg"
+                  >
+                  </svg-icon>
+                </div>
+              </div>
+              <div class="files-item">
+                <div class="details-page-row-7">
+                  <app-ta-files
+                    [files]="[
+                      {
+                        fileName: 'truckassist0',
+                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                        extension: 'pdf'
+                      },
+                      {
+                        fileName: 'truckassist0',
+                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                        extension: 'pdf'
+                      },
+                      {
+                        fileName: 'truckassist0',
+                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                        extension: 'pdf'
+                      }
+                    ]"
+                    [fileType]="'multiple-pdf'"
+                    [customClassName]="'driver-details-multiple-pdf'"
+                  >
+                  </app-ta-files>
+                </div>
+              </div>
+
+              <div class="note-cards-lease">
+                <app-ta-input-note
+                  [formControl]="note"
+                  [isReadOnly]="true"
+                  [isVisibleArrow]="false"
+                  [isVisibleSecondDivider]="false"
+                ></app-ta-input-note>
+              </div>
             </div>
           </div>
-        </div>
-      </app-ta-re-card>
+        </app-ta-re-card>
+      </div>
     </div>
   </div>
 </div>
