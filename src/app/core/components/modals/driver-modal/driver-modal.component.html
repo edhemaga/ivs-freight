@@ -14,7 +14,7 @@
   <app-ta-tab-switch
   [tabs]="tabs"
   (switchClicked)="tabChange($event)" 
-  [type]="'modal-popup'"
+  [type]="'type1-modal-popup'"
   >
   </app-ta-tab-switch>  
 
@@ -163,11 +163,17 @@
             class="checkbox-card-body"
             [ngClass]="{ active: driverForm.get('isOwner').value }"
           >
-            <app-status-switcher
+            <app-ta-tab-switch
+            [tabs]="ownerTabs"
+            (switchClicked)="tabOwnerChange($event)"
+            [type]="'type2-modal-popup'"
+            ></app-ta-tab-switch>
+
+            <!-- <app-status-switcher
               (switchClicked)="tabOwnerChange($event)"
               [data]="ownerTabs"
               [customClass]="'owner-switch'"
-            ></app-status-switcher>
+            ></app-status-switcher> -->
             <div
               class="animation-checkbox-card-tabs"
               [ngClass]="{

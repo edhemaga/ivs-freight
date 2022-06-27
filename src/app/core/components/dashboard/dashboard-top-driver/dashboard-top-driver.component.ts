@@ -110,6 +110,8 @@ export class DashboardTopDriverComponent implements OnInit {
     }
   ];
 
+  circleColor: any[] = ['8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F']
+
   constructor() { }
 
   ngOnInit(): void {

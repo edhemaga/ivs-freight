@@ -15,6 +15,7 @@
     .tab-switch-items-holder{
         position: relative;
         flex: 1 auto;
+        height: 32px;
         padding: 5px 9px;
         box-sizing: border-box;
         border-radius: 2px;
@@ -44,25 +45,79 @@
         pointer-events: none;
     }
 
-    &.modal-popup{
+    &.type1-modal-popup{
         margin-top: 12px;
         height: 30px;
-        background-color: #cccccc;
+        background-color: #f7f7f7;
         line-height: 30px;
 
         .tab-switch-items-holder{
-            color: #fff;
+            height: 30px;
             font-weight: 700;
+
 
             &.active{
                 color: #536bc2 !important;
+
+                &:hover{
+                    background-color: transparent;
+                }
             }    
         }
 
         .slide-active-holder{
             background-color: #fff;
+            box-shadow: 0 0 2px #ffffff1A;
+
 
         }
+
+        &:hover{
+            background-color: #F3F3F3;
+
+            .tab-switch-items-holder{
+                color: #6C6C6C;
+            }
+        }
+
+    }
+
+    &.type2-modal-popup{
+        height: 26px;
+        background-color: #f7f7f7;
+        line-height: 26px;
+        margin-bottom: 12px;
+
+        .tab-switch-items-holder{
+            height: 26px;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 8px;
+
+
+            &.active{
+                color: #536bc2 !important;
+
+                &:hover{
+                    background-color: transparent;
+                }
+            }    
+        }
+
+        .slide-active-holder{
+            background-color: #fff;
+            box-shadow: 0 0 2px #ffffff1A;
+
+
+        }
+
+        &:hover{
+            background-color: #F3F3F3;
+
+            .tab-switch-items-holder{
+                color: #6C6C6C;
+            }
+        }  
     }
 
     &.driver-details-popup{
@@ -71,6 +126,7 @@
         line-height: 26px;
 
         .tab-switch-items-holder{
+            height: 26px;
             font-size: 11px;
             font-weight: 700;
             color: #B7B7B7;
