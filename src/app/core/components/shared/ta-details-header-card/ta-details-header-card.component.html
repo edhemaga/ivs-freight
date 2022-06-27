@@ -55,7 +55,7 @@
         [mainTooltip]="tooltipPrevious"
         position="top"
         tooltipBackground="#6C6C6C"
-        (click)="onAction('next')"
+        (click)="onAction('previous')"
       >
         <svg-icon class="arrow-left" src="assets/svg/common/arrow-left.svg">
         </svg-icon>
@@ -65,7 +65,7 @@
         ngbTooltip
         [mainTooltip]="tooltipNext"
         position="top"
-        (click)="onAction('previous')"
+        (click)="onAction('next')"
       >
         <svg-icon
           class="arrow-right"
