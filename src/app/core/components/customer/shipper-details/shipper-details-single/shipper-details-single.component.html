@@ -75,6 +75,7 @@
               let shipperContact of shipperData?.data?.shipperContacts;
               trackBy: identity
             "
+            class="shipper-contact-container"
           >
             <app-ta-custom-card
               [bodyTemplate]="'card'"
@@ -139,8 +140,9 @@
                 </div>
               </div>
             </app-ta-custom-card>
-            <div *ngIf="!shipperContact" class="no-contant">No contact</div>
+            <div class="divider"></div>
           </div>
+        
         </div>
       </div>
       <div *ngSwitchCase="'review'">
