@@ -132,8 +132,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     this.tableOptions = {
       disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        hideViewMode: true,
+        hideLocationFilter: false,
+        hideViewMode: false,
+        viewModeActive: 'List'
       },
       config: {
         showSort: true,
@@ -263,6 +264,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
   // Toolbar Actions
   onToolBarAction(event: any) {
+    console.log('onToolbarAction event', event);
     // Add Call
     if (event.action === 'open-modal') {
       // Add Broker Call Modal
@@ -279,6 +281,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       this.selectedTab = event.tabData.field;
 
       this.sendCustomerData();
+    }
+    else if (event.action === 'view-mode') {
+      this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
   }
 

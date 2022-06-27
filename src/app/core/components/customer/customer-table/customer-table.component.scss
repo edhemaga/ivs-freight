@@ -2,4 +2,24 @@
     width: calc(100% - 74px);
     position: absolute;
     top: 0;
+
+    .toolbar-absolute {
+        position: absolute;
+        width: 100%;
+        z-index: 2;
+    }
+
+    .customer-map-container {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        padding-left: 56px;
+        z-index: 1;
+
+        agm-map {
+            height: 100vh;
+        }
+    }
 }

@@ -6,8 +6,10 @@ import { CustomerRoutingModule } from './customer-routing.module';
 import { BrokerCardComponent } from './broker-card/broker-card.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
+import { AgmCoreModule } from '@agm/core';
+
 @NgModule({
   declarations: [CustomerTableComponent, BrokerCardComponent],
-  imports: [CommonModule, TruckassistTableModule, CustomerRoutingModule, AngularSvgIconModule],
+  imports: [CommonModule, TruckassistTableModule, CustomerRoutingModule, AngularSvgIconModule, AgmCoreModule],
 })
 export class CustomerModule {}

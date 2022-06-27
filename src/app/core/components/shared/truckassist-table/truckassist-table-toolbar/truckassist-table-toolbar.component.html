@@ -43,6 +43,15 @@
     >
       Card
     </div>
+    <div
+      class="mode"
+      [ngClass]="{
+        'mode-active': options.toolbarActions.viewModeActive == 'Map'
+      }"
+      (click)="changeModeView('Map')"
+    >
+      Map
+    </div>
   </div>
 
   <!-- PM AND REGULAR SWITCH -->

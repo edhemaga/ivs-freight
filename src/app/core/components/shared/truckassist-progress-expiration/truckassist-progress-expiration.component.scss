@@ -22,6 +22,30 @@
       justify-content: center;
       white-space: nowrap;
     }
+
+    &.bg-progress-short {
+      background: #FFE1E4;
+    
+      .table-progress-bar {
+        background: #E57373;
+      }
+    }
+    
+    &.bg-progress-medium {
+      background: #FFECD1;
+    
+      .table-progress-bar {
+        background: #FFB74D;
+      }
+    }
+    
+    &.bg-progress-long {
+      background: #DADADA;
+    
+      .table-progress-bar {
+        background: #AAAAAA;
+      }
+    }
   }
 
   .table-progress-panel {
@@ -78,6 +102,46 @@
           background: rgb(108, 108, 108, 0.2);
         }
       }
+    }
+
+    .progress-text-todo {
+      font-weight: 500;
+    }
+  }
+
+  &.big-progress-bar {
+    flex-direction: column !important;
+  
+    .table-progress {
+      order: 1 !important;
+      width: 100% !important;
+      height: 8px !important;
+      border-radius: 2px;
+    }
+  
+    .table-progress-panel {
+      order: -1 !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      color: #6c6c6c !important;
+  
+      .progress-text {
+        margin: 2px 0px !important;
+      }
+    }
+  }
+
+  &.todo-progress {
+    .table-progress {
+      transform: scaleX(-1);
+    }
+
+    .progress-text {
+      font-weight: 500!important;
+    }
+  
+    .progress-days {
+      font-weight: 500!important;
     }
   }
 }

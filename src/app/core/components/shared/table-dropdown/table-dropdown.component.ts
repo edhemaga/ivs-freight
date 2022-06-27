@@ -61,6 +61,8 @@ export class TableDropdownComponent implements OnInit, OnChanges {
   }
 
   onAction(action: any) {
+console.log('dropdown action', action);
+
     this.dropDownActions.emit({
       id: this.id,
       type: action.name,

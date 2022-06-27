@@ -42,6 +42,30 @@ export class DriverDetailsItemComponent
 
   public dataTest: any;
   public expDateCard: any;
+
+  public documentsList: any = [
+    {
+      fileName: 'truckassist0',
+      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+      extension: 'pdf'
+    },
+    {
+      fileName: 'truckassist0',
+      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+      extension: 'pdf'
+    },
+    {
+      fileName: 'truckassist0',
+      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+      extension: 'pdf'
+    },
+    {
+      fileName: 'truckassist0',
+      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+      extension: 'pdf'
+    }
+  ];
+
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService
@@ -51,6 +75,7 @@ export class DriverDetailsItemComponent
     this.getExpireDate();
     if(!changes.driver.firstChange && changes.driver.currentValue){
       this.driver = changes.driver.currentValue;
+      console.log('driver onChanges', this.driver);
 
     }
   }
@@ -58,6 +83,8 @@ export class DriverDetailsItemComponent
   ngOnInit(): void {
     this.initTableOptions();
     this.getExpireDate();
+
+    console.log('driver onInit', this.driver);
   }
 
   public getExpireDate() {
@@ -122,6 +149,8 @@ export class DriverDetailsItemComponent
   }
 
   public optionsEvent(any: any, action: string) {
+    console.log('optionsEvent', any, action);
+    console.log('driver optionsEvent', this.driver);
     switch (action) {
       case 'edit-licence': {
         this.modalService.openModal(
@@ -129,7 +158,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.id,
+            id: this.driver.data.id,
             type: action,
           }
         );
@@ -141,7 +170,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.id,
+            id: this.driver.data.id,
             type: action,
           }
         );
@@ -153,7 +182,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.id,
+            id: this.driver.data.id,
             type: action,
           }
         );
@@ -165,7 +194,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.id,
+            id: this.driver.data.id,
             type: action,
           }
         );
@@ -227,6 +256,12 @@ export class DriverDetailsItemComponent
         a.click();
       });
     });
+  }
+
+  addYearToDate(startDate: any) {
+    //console.log('addYearToDate startDate', startDate);
+    //console.log('addYearToDate add year', moment(startDate).add(1, 'years').format());
+    return moment(startDate).add(1, 'years').format();
   }
 
   ngOnDestroy(): void {}

@@ -10,7 +10,7 @@
       >
         <app-ta-re-card
           [options]="dataTest"
-          [cardDocumentCounter]="6"
+          [cardDocumentCounter]="documentsList.length"
           (resizePage)="toggleResizePage(i)"
           [cardNameCommon]="cdl?.cdlNumber"
           [expDateClose]="cdl?.expDate | formatDateP"
@@ -106,8 +106,8 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="cdl?.expDate | formatDateP"
-                    [startDate]="cdl?.issueDate | formatDateP"
+                    [expireDate]="cdl?.expDate"
+                    [startDate]="cdl?.issueDate"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -131,7 +131,7 @@
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
                       [countWidth]="'24px'"
-                      [count]="6"
+                      [count]="documentsList.length"
                     >
                     </app-ta-counter>
                     <p class="details-document-name">Document</p>
@@ -145,28 +145,7 @@
               </div>
               <div class="card-pdf">
                 <app-ta-files
-                  [files]="[
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    }
-                  ]"
+                  [files]="documentsList"
                   [fileType]="'multiple-pdf'"
                   [customClassName]="'driver-details-multiple-pdf'"
                 >
@@ -200,7 +179,7 @@
           [cardNameCommon]="test?.testingDate | formatDateP"
           (resizePage)="toggleResizePage(i)"
           [optionsId]="test.id"
-          [cardDocumentCounter]="6"
+          [cardDocumentCounter]="documentsList.length"
           [weeklyWidth]="'18'"
           [cardSecondName]="test?.testReason.name"
           [shortName]="test.testType.name[0]"
@@ -218,7 +197,7 @@
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
                       [countWidth]="'24px'"
-                      [count]="6"
+                      [count]="documentsList.length"
                     >
                     </app-ta-counter>
                     <p class="details-document-name">Document</p>
@@ -232,28 +211,7 @@
               </div>
               <div class="card-pdf">
                 <app-ta-files
-                  [files]="[
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    }
-                  ]"
+                  [files]="documentsList"
                   [fileType]="'multiple-pdf'"
                   [customClassName]="'driver-details-multiple-pdf'"
                 >
@@ -302,8 +260,8 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="med?.expDate | formatDateP"
-                    [startDate]="med?.issueDate | formatDateP"
+                    [expireDate]="med?.expDate"
+                    [startDate]="med?.issueDate"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -319,7 +277,7 @@
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
                       [countWidth]="'24px'"
-                      [count]="6"
+                      [count]="documentsList.length"
                     >
                     </app-ta-counter>
                     <p class="details-document-name">Document</p>
@@ -333,28 +291,7 @@
               </div>
               <div class="card-pdf">
                 <app-ta-files
-                  [files]="[
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    }
-                  ]"
+                  [files]="documentsList"
                   [fileType]="'multiple-pdf'"
                   [customClassName]="'driver-details-multiple-pdf'"
                 >
@@ -385,10 +322,10 @@
       >
         <app-ta-re-card
           [options]="dataTest"
-          [cardDocumentCounter]="6"
+          [cardDocumentCounter]="documentsList.length"
           (resizePage)="toggleResizePage(i)"
           [cardNameCommon]="mvr?.issueDate | formatDateP"
-          [expDateClose]="mvr?.issueDate | formatDateP"
+          [expDateClose]="addYearToDate(mvr?.issueDate) | formatDateP"
           [optionsId]="mvr.id"
           (dropActions)="optionsEvent($event, 'edit-mvr')"
         >
@@ -400,8 +337,8 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [startDate]="mvr?.issueDate | formatDateP"
-                    [expireDate]="mvr?.issueDate | formatDateP"
+                    [startDate]="mvr?.issueDate"
+                    [expireDate]="addYearToDate(mvr?.issueDate)"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -417,7 +354,7 @@
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
                       [countWidth]="'24px'"
-                      [count]="6"
+                      [count]="documentsList.length"
                     >
                     </app-ta-counter>
                     <p class="details-document-name">Document</p>
@@ -431,28 +368,7 @@
               </div>
               <div class="card-pdf">
                 <app-ta-files
-                  [files]="[
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      fileName: 'truckassist0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    }
-                  ]"
+                  [files]="documentsList"
                   [fileType]="'multiple-pdf'"
                   [customClassName]="'driver-details-multiple-pdf'"
                 >
