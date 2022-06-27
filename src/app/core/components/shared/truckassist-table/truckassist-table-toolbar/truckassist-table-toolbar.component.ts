@@ -70,10 +70,13 @@ export class TruckassistTableToolbarComponent
     },
   ];
   tableRowsSelected: any[] = [];
+  activeTableData: any = {};
 
   constructor(private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
+    this.getSelectedTabTableData();
+
     // Columns Reorder
     this.tableService.currentColumnsOrder
       .pipe(untilDestroyed(this))
@@ -97,11 +100,6 @@ export class TruckassistTableToolbarComponent
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
         this.tableRowsSelected = response;
-
-        console.log('Tabke Row Selected In Toolbar');
-        console.log(this.tableRowsSelected);
-
-        /* this.changeDetectorRef.detectChanges(); */
       });
   }
 
@@ -112,6 +110,8 @@ export class TruckassistTableToolbarComponent
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
       this.tableData = changes.tableData.currentValue;
+
+      this.getSelectedTabTableData();
     }
 
     if (!changes?.columns?.firstChange && changes?.columns) {
@@ -149,6 +149,14 @@ export class TruckassistTableToolbarComponent
 
   deleteSelectedRows() {
     this.tableService.sendDeleteSelectedRows(this.tableRowsSelected);
+  }
+
+  getSelectedTabTableData() {
+    if (this.tableData.length) {
+      this.activeTableData = this.tableData.find(
+        (t) => t.field === this.selectedTab
+      );
+    }
   }
 
   onShowOptions(optionsPopup: any) {

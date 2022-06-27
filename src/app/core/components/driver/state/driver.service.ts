@@ -60,8 +60,6 @@ export class DriverTService {
   ): Observable<CreateDriverResponse> {
     return this.driverService.apiDriverPost(data).pipe(
       tap((res: any) => {
-        console.log('Radi se dodavanje drivera');
-
         const subDriver = this.getDriverById(res.id).subscribe({
           next: (driver: DriverResponse | any) => {
             driver = {

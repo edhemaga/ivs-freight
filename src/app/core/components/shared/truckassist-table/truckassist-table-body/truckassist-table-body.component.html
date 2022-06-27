@@ -20,7 +20,9 @@
           class="columns-container"
           (mouseenter)="hoverActive = i"
           (mouseleave)="hoverActive = -1"
-          [ngClass]="{ 'regular-columns-hover': hoverActive === i && !row.actionAnimation }"
+          [ngClass]="{
+            'regular-columns-hover': hoverActive === i && !row.actionAnimation
+          }"
         >
           <td *ngFor="let column of columns">
             <!-- NO TEMPLATE -->
@@ -801,7 +803,9 @@
           class="columns-container"
           (mouseenter)="hoverActive = i"
           (mouseleave)="hoverActive = -1"
-          [ngClass]="{ 'regular-columns-hover': hoverActive === i && !row.actionAnimation }"
+          [ngClass]="{
+            'regular-columns-hover': hoverActive === i && !row.actionAnimation
+          }"
         >
           <td *ngFor="let column of columns">
             <!-- NO TEMPLATE -->
@@ -1514,7 +1518,9 @@
           class="columns-container"
           (mouseenter)="hoverActive = i"
           (mouseleave)="hoverActive = -1"
-          [ngClass]="{ 'regular-columns-hover': hoverActive === i && !row.actionAnimation }"
+          [ngClass]="{
+            'regular-columns-hover': hoverActive === i && !row.actionAnimation
+          }"
         >
           <td *ngFor="let column of columns">
             <!-- ATTACHMENTS COLUMN TEMPLATE -->
@@ -1583,6 +1589,10 @@
 </table>
 
 <div class="show-more-container" *ngIf="viewData.length">
-  <div class="showing">6 of 6 Showing</div>
-  <div class="show-more">Show More</div>
+  <div class="showing">
+    {{ viewData.length }} of {{ activeTableData.length }} Showing
+  </div>
+  <div class="show-more" *ngIf="viewData.length < activeTableData.length">
+    Show More
+  </div>
 </div>
