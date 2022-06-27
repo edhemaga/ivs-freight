@@ -261,9 +261,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
     };
   }
   public onDriverActions(event: any) {
-    console.log(event);
-    console.log(this.driverId);
-
+    
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,

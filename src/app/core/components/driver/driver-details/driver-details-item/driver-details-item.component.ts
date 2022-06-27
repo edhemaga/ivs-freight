@@ -33,7 +33,7 @@ export class DriverDetailsItemComponent
   implements OnInit, OnDestroy, OnChanges
 {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-  @Input() driver: DriverResponse | any = null;
+  @Input() drivers: DriverResponse | any = null;
   public cdlNote: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
   public toggler: boolean[] = [];
@@ -48,18 +48,21 @@ export class DriverDetailsItemComponent
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.getExpireDate();
-    if (!changes.driver.firstChange && changes.driver.currentValue) {
-      this.driver = changes.driver.currentValue;
+   
+    if (!changes.drivers.firstChange && changes.drivers.currentValue) {
+      this.drivers = changes.drivers.currentValue;
+      this.getExpireDate();
     }
+    
   }
 
   ngOnInit(): void {
+    
     this.initTableOptions();
     this.getExpireDate();
   }
   public getExpireDate() {
-    this.dataCDl = this.driver.data.cdls.map((ele) => {
+    this.dataCDl = this.drivers[1].data.cdls.map((ele) => {
       if (moment(ele.expDate).isBefore(moment())) {
         this.expDateCard = false;
       } else {
@@ -70,6 +73,8 @@ export class DriverDetailsItemComponent
         showButton: this.expDateCard,
       };
     });
+  
+    console.log(this.expDateCard);
   }
 
   /**Function for dots in cards */
@@ -127,7 +132,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.id,
+            id: this.drivers[0].data.id,
             type: action,
           }
         );
@@ -139,7 +144,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.id,
+            id: this.drivers[0].data.id,
             type: action,
           }
         );
@@ -151,7 +156,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.id,
+            id: this.drivers[0].data.id,
             type: action,
           }
         );
@@ -163,7 +168,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.id,
+            id: this.drivers[0].data.id,
             type: action,
           }
         );
