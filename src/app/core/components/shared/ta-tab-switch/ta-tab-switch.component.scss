@@ -114,38 +114,35 @@
 
     }
 
-    &.driver-details-popup{
+    &.type3-modal-popup{
         height: 26px;
-        background-color: #F3F3F3;
+        background-color: #f7f7f7;
         line-height: 26px;
+        padding: 2px;
 
         .tab-switch-items-holder{
             height: 26px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #B7B7B7;
-            border-radius: 1px;
+            font-size: 16px;
+            font-weight: 800;
+
 
             &.active{
-                color: #536BC2 !important;
+                color: #536bc2 !important;
             }  
             
-            &:hover{
-                color: #919191;
-            }
+            
+            &:hover:not(.active){
+                background-color: #F3F3F3;
+                color: #6C6C6C;
+            }  
         }
 
         .slide-active-holder{
             background-color: #fff;
-        }
-    }
+            box-shadow: 0 0 2px #ffffff1A;
+            height: calc(100% - 4px);
 
-    &.performance-switch{
-        .tab-switch-items-holder{
-            padding: 5px 8px;
-            box-sizing: border-box;
         }
-
     }
 
 }

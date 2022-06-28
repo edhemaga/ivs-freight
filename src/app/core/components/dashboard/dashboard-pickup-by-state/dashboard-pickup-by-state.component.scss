@@ -1,44 +1,25 @@
-$top_driver_hover_color: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38BDEB', 'FFCA28', 'A2D35F', 'F276EF', '8D6E63';
-$top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F';
-
-.dashboard-top-driver-holder{
+.dashboard-pickup-holder{
     width: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
 
-    .dashboard-top-driver-header-holder{
+    .dashboard-pickup-header-holder{
         width: 100%;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        margin-bottom: 11px;
+        margin-bottom: 12px;
 
-        .dashboard-top-driver-header-box-list{
-            min-width: 34px;
-            height: 32px;
-            border-radius: 3px;
-            background-color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 4px;
-            box-sizing: border-box;
-            font-size: 20px;
-            font-weight: 900;
-            color: #919191;
-            line-height: 32px;
-        }
-
-        .dashboard-top-driver-header-title-holder{
+        .dashboard-pickup-title-holder{
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            padding: 0px 12px 0px 6px;
+            padding-right: 12px;
             box-sizing: border-box;
 
-            .dashboard-top-driver-header-title{
+            .dashboard-pickup-title{
                 font-size: 26px;
                 font-weight: 900;
                 color: #919191;
@@ -46,7 +27,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                 box-sizing: border-box;
             }
 
-            .dashboard-top-driver-header-arrow-down{
+            .dashboard-pickup-arrow-down{
                 width: 18px;
                 height: 18px;
                 display: flex;
@@ -65,10 +46,10 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
             }
         }
 
-        .dashboard-top-driver-header-toolbar-holder{
+        .dashboard-pickup-toolbar-holder{
             width: 100%;
-            height: 32px;
             flex: 1;
+            height: 32px;
             border-radius: 3px;
             background-color: #fff;
             display: flex;
@@ -76,28 +57,28 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
             align-items: center;
             line-height: 32px;
 
-            .dashboard-top-driver-header-toolbar-items-holder{
+            .dashboard-pickup-toolbar-items-holder{
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
 
-                .dashboard-top-driver-header-toolbar-switch-left{
+                .dashboard-pickup-toolbar-switch-left{
                     height: 32px;
                 }
 
-                .dashboard-top-driver-header-toolbar-border{
+                .dashboard-pickup-toolbar-border{
                     width: 2px;
                     height: 24px;
                     border-radius: 1px;
                     background-color: #F3F3F3;
                     margin: 0px 4px;
 
-                    &.different-margin{
+                    &.margin-right{
                         margin: 0px 6px;
                     }
                 }
 
-                .dashboard-top-driver-header-toolbar-search-icon{
+                .dashboard-pickup-toolbar-icons-holder{
                     width: 28px;
                     height: 28px;
                     display: flex;
@@ -106,9 +87,9 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
 
                     svg-icon{
                         svg{
-                            display: flex;
                             width: 18px;
                             height: 18px;
+                            display: flex;
 
                             path{
                                 fill: #AAAAAA;
@@ -117,11 +98,26 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                     }
                 }
 
-                .dashboard-top-driver-header-toolbar-switch-right{
+                .dashboard-pickup-toolbar-filter-selected{
+                    height: 28px;
+                    padding: 5px 8px;
+                    box-sizing: border-box;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 2px;
+                    background-color: #F3F3F3;
+                    font-size: 14px;
+                    font-weight: 800;
+                    color: #6C6C6C;
+                    margin-left: 2px;
+                }
+
+                .dashboard-pickup-toolbar-switch-right{
                     height: 32px;
                 }
 
-                .dashboard-top-driver-header-toolbar-dropdown{
+                .dashboard-pickup-toolbar-dropdown{
                     position: relative;
                     width: 108px;
                     height: 32px;
@@ -131,7 +127,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                     border-radius: 3px;
                     background-color: #fff;
 
-                    .dashboard-top-driver-header-toolbar-dropdown-text{
+                    .dashboard-pickup-toolbar-dropdown-text{
                         font-size: 14px;
                         font-weight: 800;
                         color: #6C6C6C;
@@ -139,7 +135,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                         box-sizing: border-box;
                     }
 
-                    .dashboard-top-driver-header-toolbar-dropdown-arrow{
+                    .dashboard-pickup-toolbar-dropdown-arrow{
                         position: absolute;
                         width: 18px;
                         height: 18px;
@@ -167,15 +163,14 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
         }
     }
 
-    .dashboard-top-driver-body-holder{
+    .dashboard-pickup-body-holder{
         width: 100%;
         height: 366px;
         border-radius: 3px;
         background-color: #fff;
         display: flex;
         justify-content: flex-start;
-        align-items: flex-start;
-        margin-bottom: 19px;
+        align-items: center;
 
         .row{
             width: 100%;
@@ -186,7 +181,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
             }
         }
 
-        .dashboard-top-driver-body-list-holder{
+        .dashboard-pickup-body-state-list-holder{
             width: 100%;
             height: 366px;
             padding: 0px 6px;
@@ -197,14 +192,14 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
             flex-direction: column;
             overflow: auto;
 
-            .dashboard-top-driver-body-list-items-holder{
+            .dashboard-pickup-body-state-list-items-holder{
                 width: 100%;
                 display: flex;
                 justify-content: flex-start;
                 align-items: flex-start;
                 flex-direction: column;
 
-                .dashboard-top-driver-body-list-items{
+                .dashboard-pickup-body-state-list-items{
                     width: 100%;
                     display: flex;
                     justify-content: space-between;
@@ -214,12 +209,12 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                     border-radius: 2px;
                     margin: 2px 0px;
 
-                    .dashboard-top-driver-body-list-frame{
+                    .dashboard-pickup-body-state-list-frame{
                         display: flex;
                         justify-content: flex-start;
                         align-items: center;
 
-                        .dashboard-top-driver-body-list-id{
+                        .dashboard-pickup-body-state-list-id{
                             width: 30px;
                             display: flex;
                             justify-content: center;
@@ -230,23 +225,15 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                             padding: 0px 16px 0px 0px;
                             box-sizing: border-box;
                         }
-    
-                        .dashboard-top-driver-body-list-circle{
+
+                        .dashboard-pickup-body-state-list-circle{
                             width: 14px;
                             height: 14px;
                             border-radius: 100%;
-                            background-color: #8A9AEF;
+                            background-color: #6278C7;
+                        }
 
-                            @each $col1 in $top_driver_color{
-                                &.top-ten-#{$col1}-color{
-                                    background-color: unquote('#' + $col1);
-                                }
-                            }
-    
-
-                        }   
-
-                        .dashboard-top-driver-body-list-name{
+                        .dashboard-pickup-body-state-list-name{
                             font-size: 14px;
                             font-weight: 700;
                             color: #6C6C6C;
@@ -254,13 +241,13 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                             box-sizing: border-box;
                         }
 
-                        .dashboard-top-driver-body-list-price{
+                        .dashboard-pickup-body-state-list-price{
                             font-size: 14px;
                             font-weight: 400;
                             color: #6C6C6C;
                         }
 
-                        .dashboard-top-driver-body-list-percent{
+                        .dashboard-pickup-body-state-list-percent{
                             font-size: 14px;
                             font-weight: 500;
                             color: #6C6C6C;
@@ -269,147 +256,25 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                         }
                     }
 
-                    
-
                     &:hover{
                         cursor: pointer;
                         background-color: #F3F3F3;
-
-                        .dashboard-top-driver-body-list-id{
-                            color: #3C3C3C !important;
-                        }
-
-                        .dashboard-top-driver-body-list-name{
-                            color: #3C3C3C !important;
-                        }
-
-                        .dashboard-top-driver-body-list-price{
-                            color: #3C3C3C !important;
-                        }
-
-                        .dashboard-top-driver-body-list-percent{
-                            color: #3C3C3C !important;
-                        }
-
-                        $ii: 1;
-                        @each $col1 in $top_driver_color{
-                            $hover_color : nth($top_driver_hover_color, $ii);
-                            $ii: $ii + 1;
-                            .top-ten-#{$col1}-color{
-                                background-color: unquote('#' + $hover_color) !important;
-                            }
-                        }
-
-                    } 
-
-    
+                    }
                 }
 
-                .dashboard-top-driver-body-list-border{
+                .dashboard-pickup-body-state-list-border{
                     width: 100%;
                     height: 2px;
                     border-radius: 1px;
                     background-color: #F3F3F3;
                 }
-
             }
 
             &::-webkit-scrollbar-thumb{
                 border: 6px solid #fff;
             }
+
         }
 
-        .col-3{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            padding: 9px 0px 7px 0px;
-
-            .doughnut_chart_holder{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                width: 100%;
-                height: 100%;
-
-                border: 2px solid #F3F3F3;
-                border-top: none;
-                border-bottom: none;
-                border-radius: 1px;
-            }
-        }
-
-        .col-5{
-            padding: 13px 12px 11px 12px;
-            .bar_chart_holder{
-                width: 100%;
-                height: 100%;
-
-                .chart_top_line_holder{
-                    display: flex;
-                    margin-bottom: 19px;
-
-                    .chart_line_title{
-                        font-size: 18px;
-                        line-height: 22px;
-                        font-weight: 700;
-                        color: #AAAAAA;
-                        flex: 1
-                    }
-
-                    .chart_legend_hold{
-                        .chart_legend_line{
-                            display: flex;
-                            align-items: center;
-
-                            &.line_sep{
-                                margin-bottom: 8px;
-                            }
-
-                            .chart_legend_title{
-                                font-size: 11px;
-                                font-weight: 500;
-                                line-height: 14px;
-                                color: #6C6C6C;
-                            }
-
-                            .chart_legend_dot{
-                                svg-icon{
-                                    svg{
-                                        display: flex;
-                                        width: 10px;
-                                        height: 10px;
-
-                                        margin-right: 4px;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-.round_dark_grey{
-    svg-icon{
-        svg{
-            rect{
-                fill: #919191;
-            }
-        }
-    }
-}
-
-.round_light_grey{
-    svg-icon{
-        svg{
-            rect{
-                fill: #CCCCCC;
-            }
-        }
     }
 }
