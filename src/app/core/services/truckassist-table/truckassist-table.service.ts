@@ -57,7 +57,16 @@ export class TruckassistTableService {
   private toolBarSwitchActive = new BehaviorSubject<any>(null);
   public currentSwitchOptionSelected = this.toolBarSwitchActive.asObservable();
 
+  /* Search  */
+  private searchTableData = new BehaviorSubject<any>(null);
+  public currentSearchTableData = this.searchTableData.asObservable();
+
   constructor() {}
+
+  /*  Search  */
+  public sendCurrentSearchTableData(search: any) {
+    this.searchTableData.next(search);
+  }
 
   /*  Switch Select  */
   public sendCurrentSwitchOptionSelected(option: any) {
