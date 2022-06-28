@@ -1,10 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+import { Subscription } from 'rxjs';
+
+import { isFormValueEqual } from '../../state/utils/utils';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Applicant } from '../../state/model/applicant.model';
-import { License, CDLInformation } from '../../state/model/cdl-information';
+import {
+  License,
+  CDLInformation,
+  LicenseModel,
+} from '../../state/model/cdl-information';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -19,7 +27,30 @@ export class Step3Component implements OnInit, OnDestroy {
 
   public applicant: Applicant | undefined;
 
+  private subscription: Subscription;
+
+  public permitForm: FormGroup;
   public licenseForm: FormGroup;
+  public licenseArray: LicenseModel[] = [
+    {
+      license: 'd263-540-92-166-0',
+      countryType: 'USA',
+      stateId: 'AL',
+      classType: '1234',
+      expDate: '01/18/20',
+      endorsments: 'Endorsment 1',
+      restrictions: 'Restriction 1',
+    },
+    {
+      license: 'd263-540-92-166-0',
+      countryType: 'USA',
+      stateId: 'AL',
+      classType: '1234',
+      expDate: '01/18/20',
+      endorsments: 'Endorsment 2',
+      restrictions: 'Restriction 2',
+    },
+  ];
 
   public canadaStates: any[] = [];
   public usStates: any[] = [];
@@ -30,35 +61,40 @@ export class Step3Component implements OnInit, OnDestroy {
   public endorsmentsList: any[] = [];
   public restrictionsList: any[] = [];
 
+  public selectedLicenseIndex: number;
   public selectedCountryType: any = null;
   public selectedStateType: any = null;
   public selectedClassType: any = null;
   public selectedEndorsments: any = null;
   public selectedRestrictions: any = null;
 
-  public editLicense: number = -1;
-  public licenseFormArray: License[] = [];
-
-  public cdlInformation: CDLInformation | undefined;
+  public isEditing: boolean = false;
+  public isLicenseEdited: boolean = false;
 
   public answerChoices: AnswerChoices[] = [
     {
       id: 1,
-      label: 'Yes',
+      label: 'YES',
       value: 'permitYes',
       name: 'permitYes',
       checked: false,
     },
     {
       id: 2,
-      label: 'No',
+      label: 'NO',
       value: 'permitNo',
       name: 'permitNo',
       checked: false,
     },
   ];
 
-  public trackByIdentity = (index: number, item: any): number => index;
+  //
+
+  /*  public licenseArray: License[] = []; */
+
+  public editLicense: number = -1;
+
+  public cdlInformation: CDLInformation | undefined;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -66,7 +102,7 @@ export class Step3Component implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.formInit();
+    this.createForm();
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -75,9 +111,10 @@ export class Step3Component implements OnInit, OnDestroy {
     }
   }
 
-  private formInit(): void {
+  public trackByIdentity = (index: number, item: any): number => index;
+
+  private createForm(): void {
     this.licenseForm = this.formBuilder.group({
-      id: [null],
       license: [null, Validators.required],
       countryType: [null, Validators.required],
       stateId: [null, Validators.required],
@@ -85,6 +122,9 @@ export class Step3Component implements OnInit, OnDestroy {
       expDate: [null, Validators.required],
       endorsments: [null],
       restrictions: [null],
+    });
+
+    this.permitForm = this.formBuilder.group({
       permit: [null, Validators.required],
       permitExplain: [null],
     });
@@ -129,15 +169,17 @@ export class Step3Component implements OnInit, OnDestroy {
         );
 
         if (selectedCheckbox.label === 'Yes') {
-          this.inputService.changeValidators(this.licenseForm.get('permit'));
+          this.inputService.changeValidators(
+            this.permitForm.get('permitExplain')
+          );
         } else {
           this.inputService.changeValidators(
-            this.licenseForm.get('permit'),
+            this.permitForm.get('permitExplain'),
             false
           );
         }
 
-        this.licenseForm.get('permit').patchValue(selectedCheckbox.label);
+        this.permitForm.get('permit').patchValue(selectedCheckbox.label);
 
         break;
       default:
@@ -146,9 +188,12 @@ export class Step3Component implements OnInit, OnDestroy {
   }
 
   public onAddLicense(): void {
-    /*  this.shared.clearNotifications(); */
+    if (this.licenseForm.invalid) {
+      this.inputService.markInvalid(this.licenseForm);
+      return;
+    }
 
-    const licenseForm = this.licenseForm.value;
+    /* const licenseForm = this.licenseForm.value;
     const license = new License();
 
     license.license = licenseForm.license;
@@ -169,20 +214,106 @@ export class Step3Component implements OnInit, OnDestroy {
       })
       .join(',');
 
-    this.licenseFormArray.push(license);
+    this.licenseArray.push(license);
 
     this.licenseForm.reset();
-    this.editLicense = -1;
+    this.editLicense = -1; */
   }
 
-  public onUpdateLicense(): void {
-    /*  this.shared.clearNotifications();
-     */
-    if (this.licenseFormArray?.length) {
+  public onDeleteLicense(index: number): void {
+    if (this.isEditing) {
+      return;
+    }
+
+    this.licenseArray.splice(index, 1);
+
+    /*    if (this.licenseArray[index].id) {
+      this.licenseArray[index].isDeleted = true;
+    } else {
+      this.licenseArray.splice(index, 1);
+    } */
+  }
+
+  public onEditLicense(index: number): void {
+    if (this.isEditing) {
+      return;
+    }
+
+    this.isLicenseEdited = false;
+
+    this.isEditing = true;
+
+    this.selectedLicenseIndex = index;
+
+    const selectedLicense = this.licenseArray[index];
+
+    this.licenseForm.patchValue({
+      license: selectedLicense.license,
+      countryType: selectedLicense.countryType,
+      stateId: selectedLicense.stateId,
+      classType: selectedLicense.classType,
+      expDate: selectedLicense.expDate,
+      endorsments: selectedLicense.endorsments,
+      restrictions: selectedLicense.restrictions,
+    });
+
+    this.subscription = this.licenseForm.valueChanges.subscribe(
+      (newFormValue) => {
+        if (isFormValueEqual(selectedLicense, newFormValue)) {
+          this.isLicenseEdited = false;
+        } else {
+          this.isLicenseEdited = true;
+        }
+      }
+    );
+
+    /*   this.licenseForm.patchValue({
+      id: this.licenseArray[index].id,
+      license: this.licenseArray[index].license,
+      countryType: this.licenseArray[index].countryType,
+      stateId: this.licenseArray[index].stateId,
+      classType: this.licenseArray[index].classType,
+      expDate: this.licenseArray[index].expDate,
+      endorsments: this.licenseArray[index].endorsments
+        .split(',')
+        .map((a: any) => {
+          let endorsment: any = { name: a };
+          return endorsment;
+        }),
+      restrictions: this.licenseArray[index].restrictions
+        .split(',')
+        .map((a: any) => {
+          let restriction: any = { name: a };
+          return restriction;
+        }),
+    });
+
+    this.editLicense = index; */
+  }
+
+  public onSaveEditedLicense(): void {
+    if (this.licenseForm.invalid) {
+      this.inputService.markInvalid(this.licenseForm);
+      return;
+    }
+
+    if (!this.isLicenseEdited) {
+      return;
+    }
+
+    this.licenseArray[this.selectedLicenseIndex] = this.licenseForm.value;
+
+    this.isEditing = false;
+
+    this.isLicenseEdited = false;
+
+    this.licenseForm.reset();
+
+    this.subscription.unsubscribe();
+
+    /* if (this.licenseArray?.length) {
       const licenseForm = this.licenseForm.value;
-      const license: License = new License(
-        this.licenseFormArray[this.editLicense]
-      );
+      const license: License = new License(this.licenseArray[this.editLicense]);
 
       license.license = licenseForm.license;
       license.countryType = licenseForm.countryType;
@@ -202,44 +333,21 @@ export class Step3Component implements OnInit, OnDestroy {
         })
         .join(',');
 
-      this.licenseFormArray[this.editLicense] = license;
+      this.licenseArray[this.editLicense] = license;
     }
 
     this.licenseForm.reset();
-    this.editLicense = -1;
+    this.editLicense = -1; */
   }
 
-  public onEditLicense(index: number): void {
-    this.licenseForm.patchValue({
-      id: this.licenseFormArray[index].id,
-      license: this.licenseFormArray[index].license,
-      countryType: this.licenseFormArray[index].countryType,
-      stateId: this.licenseFormArray[index].stateId,
-      classType: this.licenseFormArray[index].classType,
-      expDate: this.licenseFormArray[index].expDate,
-      endorsments: this.licenseFormArray[index].endorsments
-        .split(',')
-        .map((a: any) => {
-          let endorsment: any = { name: a };
-          return endorsment;
-        }),
-      restrictions: this.licenseFormArray[index].restrictions
-        .split(',')
-        .map((a: any) => {
-          let restriction: any = { name: a };
-          return restriction;
-        }),
-    });
+  public onCancelEditLicense(): void {
+    this.isEditing = false;
 
-    this.editLicense = index;
-  }
+    this.isLicenseEdited = false;
 
-  public onDeleteLicense(index: number): void {
-    if (this.licenseFormArray[index].id) {
-      this.licenseFormArray[index].isDeleted = true;
-    } else {
-      this.licenseFormArray.splice(index, 1);
-    }
+    this.licenseForm.reset();
+
+    this.subscription.unsubscribe();
   }
 
   public onSubmitForm(): void {
@@ -247,12 +355,12 @@ export class Step3Component implements OnInit, OnDestroy {
 
         let isValid = true;
 
-        if (!this.licenseFormArray.filter(a => !a.isDeleted).length) {
+        if (!this.licenseArray.filter(a => !a.isDeleted).length) {
             if (!this.shared.markInvalid(this.licenseForm)) {
                 isValid = false;
             }
 
-            if (this.licenseFormArray.length < 1) {
+            if (this.licenseArray.length < 1) {
                 if (this.shared.markInvalid(this.licenseForm)) {
                     this.onAddLicense();
                 } else {
@@ -275,17 +383,15 @@ export class Step3Component implements OnInit, OnDestroy {
         if (!isValid) {
             return false;
         } */
-
-    const cdlInfo: CDLInformation = {
+    /*  const cdlInfo: CDLInformation = {
       id: this.cdlInformation?.id ? this.cdlInformation?.id : undefined,
       applicantId: this.applicant?.id,
-      licences: this.licenseFormArray,
+      licences: this.licenseArray,
       permit: this.licenseForm.get('permit').value,
       explain: this.licenseForm.get('permitExplain').value,
     };
-
+ */
     // REDUX
-
     // this.apppEntityServices.CDLInformationService.upsert(
     //   cdlInfo
     // ).subscribe(

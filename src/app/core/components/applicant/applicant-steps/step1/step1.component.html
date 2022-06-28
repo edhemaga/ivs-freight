@@ -363,8 +363,15 @@
             <div
               class="d-flex explain-container"
               *ngIf="
-                personalInfoForm.get(question.formControlName)?.value === 'Yes'
+                personalInfoForm.get(question.formControlName)?.value === 'YES'
               "
+              [ngStyle]="{
+                'margin-bottom':
+                  personalInfoForm.get(question.formControlName)?.value ===
+                  'YES'
+                    ? '20px'
+                    : '0'
+              }"
             >
               <div class="w-100">
                 <app-ta-input
@@ -372,7 +379,7 @@
                   [inputConfig]="{
                     name: 'Explain',
                     type: 'text',
-                    label: 'Please Explain',
+                    label: 'Please explain',
                     isRequired: true,
                     textTransform: 'capitalize'
                   }"
@@ -388,6 +395,10 @@
       <div class="previous-addresses-section">
         <h5
           class="d-flex justify-content-center noselect ta-font-bold previous-address-title"
+          [ngStyle]="{
+            'margin-bottom':
+              previousAddresses?.controls.length > 0 ? '26px' : '12px'
+          }"
         >
           Previous addresses for the past 3 years?
         </h5>
@@ -405,6 +416,7 @@
               <p class="m-0 ta-font-bold">Unit #</p>
             </div>
           </div>
+
           <div
             class="d-flex align-items-center dets-container"
             formArrayName="previousAddresses"
@@ -414,22 +426,32 @@
               let last = last;
               trackBy: trackByIdentity
             "
+            [ngStyle]="{
+              margin:
+                isEditingArray[i]?.isEditing && isEditingMiddlePositionAddress
+                  ? '32px auto'
+                  : '0 auto 2px auto'
+            }"
           >
             <div
               class="d-flex align-items-center"
               [formGroupName]="i"
               [ngStyle]="{
                 'margin-top':
-                  previousAddresses?.controls.length > 1 && last ? '32px' : '0'
+                  (previousAddresses?.controls.length > 1 &&
+                    last &&
+                    !isLastInputDeleted &&
+                    !isLastAddressInList) ||
+                  (previousAddresses?.controls.length > 1 &&
+                    last &&
+                    isLastInputDeleted &&
+                    isLastAddressInList)
+                    ? '32px'
+                    : '0'
               }"
             >
               <div
                 class="d-flex justify-content-center align-items-center left-container"
-                [ngStyle]="{
-                  'background-color': !isEditingArray[i]?.isEditing
-                    ? '#97a8dc'
-                    : '#6D82C7'
-                }"
               >
                 <span class="badge ta-font-bold">{{ i + 1 }}</span>
               </div>
@@ -438,7 +460,7 @@
                 class="d-flex align-items-center right-container"
                 [ngStyle]="{
                   'background-color': isEditingArray[i]?.isEditing
-                    ? '#f3f3f3'
+                    ? '#ffffff'
                     : '#eeeeee',
                   padding: isEditingArray[i]?.isEditing ? '0' : '4px 6px'
                 }"
@@ -448,7 +470,17 @@
                   *ngIf="isEditingArray[i]?.isEditing"
                 >
                   <div class="d-flex align-items-center">
-                    <div class="address-container">
+                    <div
+                      class="address-container"
+                      [ngStyle]="{
+                        width:
+                          isEditingArray[i]?.isEditing &&
+                          i === previousAddresses?.controls.length - 1 &&
+                          !isLastInputDeleted
+                            ? '419px'
+                            : '449px'
+                      }"
+                    >
                       <app-ta-input-address
                         formControlName="address"
                         [inputConfig]="{
@@ -465,7 +497,17 @@
                       ></app-ta-input-address>
                     </div>
 
-                    <div class="address-unit-container">
+                    <div
+                      class="address-unit-container"
+                      [ngStyle]="{
+                        'margin-right':
+                          isEditingArray[i]?.isEditing &&
+                          i === previousAddresses?.controls.length - 1 &&
+                          !isLastInputDeleted
+                            ? '4px'
+                            : '0'
+                      }"
+                    >
                       <app-ta-input
                         formControlName="addressUnit"
                         [inputConfig]="{
@@ -476,6 +518,36 @@
                         }"
                       ></app-ta-input>
                     </div>
+
+                    <div
+                      class="d-flex align-items-center justify-content-center delete-btn-container"
+                      *ngIf="
+                        isEditingArray[i]?.isEditing &&
+                        i === previousAddresses?.controls.length - 1 &&
+                        !isLastInputDeleted
+                      "
+                    >
+                      <svg-icon
+                        class="delete-icon"
+                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                        [svgStyle]="{
+                          'width.px': 18,
+                          'height.px': 18
+                        }"
+                        appTooltip="Delete"
+                        tooltipColor="#FFFFFF"
+                        tooltipBackground="#EF5350"
+                        position="top-middle"
+                        borderRadius="2px"
+                        fontSize="11px"
+                        fontWeight="bold"
+                        (click)="
+                          onRemoveNewAddress(
+                            previousAddresses?.controls.length - 1
+                          )
+                        "
+                      ></svg-icon>
+                    </div>
                   </div>
                 </div>
 
@@ -483,7 +555,9 @@
                   class="d-flex align-items-center info-container"
                   *ngIf="!isEditingArray[i]?.isEditing"
                 >
-                  <div class="d-flex align-items-center address-container">
+                  <div
+                    class="d-flex align-items-center text-truncate address-container"
+                  >
                     <svg-icon
                       class="address-icon"
                       src="assets/svg/common/ic_address.svg"
@@ -501,13 +575,19 @@
                   </div>
 
                   <div class="d-flex align-items-center address-unit-container">
-                    <p class="m-0 ta-font-regular">
+                    <p
+                      class="d-inline-block text-truncate m-0 ta-font-regular"
+                      style="max-width: 300px"
+                    >
                       {{ address.value?.addressUnit }}
                     </p>
                   </div>
                 </div>
 
-                <div class="d-flex align-items-center btn-container">
+                <div
+                  class="d-flex align-items-center btn-container"
+                  *ngIf="!isEditingArray[i]?.isEditing"
+                >
                   <svg-icon
                     class="edit-icon"
                     src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
@@ -522,7 +602,7 @@
                     borderRadius="2px"
                     fontSize="11px"
                     fontWeight="bold"
-                    (click)="onEditAddress(i)"
+                    (click)="onEditNewAddress(i)"
                   ></svg-icon>
 
                   <svg-icon
@@ -539,7 +619,7 @@
                     borderRadius="2px"
                     fontSize="11px"
                     fontWeight="bold"
-                    (click)="removeNewAddress(i)"
+                    (click)="onRemoveNewAddress(i)"
                   ></svg-icon>
                 </div>
               </div>
@@ -560,21 +640,24 @@
           </div>
         </div>
 
+        <!-- ADD BTN -->
+
         <div
           class="d-flex justify-content-center"
           [ngStyle]="{
-            'margin-top': !previousAddresses.controls?.length ? '0' : '12px'
+            'margin-top': !previousAddresses.controls?.length ? '0' : '22px'
           }"
           *ngIf="previousAddresses.controls?.length < 5"
         >
           <button
             type="button"
             class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn"
-            (click)="addNewAddress()"
+            (click)="onAddNewAddress()"
             [ngClass]="{
               disabled:
                 previousAddresses.controls.length !== 0 &&
-                !isLastAddedPreviousAddressValid
+                !isLastAddedPreviousAddressValid &&
+                !isLastInputDeleted
             }"
           >
             Add Address

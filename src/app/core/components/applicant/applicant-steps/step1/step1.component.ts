@@ -32,29 +32,23 @@ import { ReviewFeedbackService } from '../../state/services/review-feedback.serv
   styleUrls: ['./step1.component.scss'],
 })
 export class Step1Component implements OnInit, OnDestroy {
-  public loadingApplicant$: Observable<boolean>;
-  public loadingBankData$: Observable<boolean>;
-  public loadingPersonalInfo$: Observable<boolean>;
-
-  public selectedMode: string = SelectedMode.APPLICANT;
-
   public applicant: Applicant | undefined;
 
   public personalInfoForm!: FormGroup;
-  public personalInfo: PersonalInfo | undefined;
+
+  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedAddress: Address = null;
+  public selectedBank: any = null;
 
   public isLastAddedPreviousAddressValid: boolean = false;
   public isBankSelected: boolean = false;
 
-  public selectedAddress: Address = null;
-  public selectedBank: any = null;
+  public isLastInputDeleted: boolean = false;
+  public isLastAddressInList: boolean = false;
+  public isEditingMiddlePositionAddress: boolean = false;
 
-  public bankData: any[] = [
-    {
-      svg: null,
-      name: 'Test Bank',
-    },
-  ];
+  public isEditingArray: { id: number; isEditing: boolean }[] = [];
+  public isEditingId: number = -1;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -64,7 +58,7 @@ export class Step1Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 1,
-          label: 'Yes',
+          label: 'YES',
           value: 'legalWorkYes',
           name: 'legalWorkYes',
           checked: false,
@@ -72,7 +66,7 @@ export class Step1Component implements OnInit, OnDestroy {
         },
         {
           id: 2,
-          label: 'No',
+          label: 'NO',
           value: 'legalWorkNo',
           name: 'legalWorkNo',
           checked: false,
@@ -87,7 +81,7 @@ export class Step1Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 3,
-          label: 'Yes',
+          label: 'YES',
           value: 'anotherNameYes',
           name: 'anotherNameYes',
           checked: false,
@@ -95,7 +89,7 @@ export class Step1Component implements OnInit, OnDestroy {
         },
         {
           id: 4,
-          label: 'No',
+          label: 'NO',
           value: 'anotherNameNo',
           name: 'anotherNameNo',
           checked: false,
@@ -110,7 +104,7 @@ export class Step1Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 5,
-          label: 'Yes',
+          label: 'YES',
           value: 'inMilitaryYes',
           name: 'inMilitaryYes',
           checked: false,
@@ -118,7 +112,7 @@ export class Step1Component implements OnInit, OnDestroy {
         },
         {
           id: 6,
-          label: 'No',
+          label: 'NO',
           value: 'inMilitaryNo',
           name: 'inMilitaryNo',
           checked: false,
@@ -133,7 +127,7 @@ export class Step1Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 7,
-          label: 'Yes',
+          label: 'YES',
           value: 'felonyYes',
           name: 'felonyYes',
           checked: false,
@@ -141,7 +135,7 @@ export class Step1Component implements OnInit, OnDestroy {
         },
         {
           id: 8,
-          label: 'No',
+          label: 'NO',
           value: 'felonyNo',
           name: 'felonyNo',
           checked: false,
@@ -156,7 +150,7 @@ export class Step1Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 9,
-          label: 'Yes',
+          label: 'YES',
           value: 'misdemeanorYes',
           name: 'misdemeanorYes',
           checked: false,
@@ -164,7 +158,7 @@ export class Step1Component implements OnInit, OnDestroy {
         },
         {
           id: 10,
-          label: 'No',
+          label: 'NO',
           value: 'misdemeanorNo',
           name: 'misdemeanorNo',
           checked: false,
@@ -179,7 +173,7 @@ export class Step1Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 11,
-          label: 'Yes',
+          label: 'YES',
           value: 'drunkDrivingYes',
           name: 'drunkDrivingYes',
           checked: false,
@@ -187,7 +181,7 @@ export class Step1Component implements OnInit, OnDestroy {
         },
         {
           id: 12,
-          label: 'No',
+          label: 'NO',
           value: 'drunkDrivingNo',
           name: 'drunkDrivingNo',
           checked: false,
@@ -197,13 +191,22 @@ export class Step1Component implements OnInit, OnDestroy {
     },
   ];
 
+  //
+  public loadingApplicant$: Observable<boolean>;
+  public loadingBankData$: Observable<boolean>;
+  public loadingPersonalInfo$: Observable<boolean>;
+
+  public personalInfo: PersonalInfo | undefined;
+
+  public bankData: any[] = [
+    {
+      svg: null,
+      name: 'Test Bank',
+    },
+  ];
+
   public reviewFeedback: any[] = getPersonalInfoReviewFeedbackData();
   private countOfReview: number = 0;
-
-  public isEditingArray: { id: number; isEditing: boolean }[] = [];
-  public isEditingId: number = -1;
-
-  public trackByIdentity = (index: number, item: any): number => index;
 
   public get previousAddresses(): FormArray {
     return this.personalInfoForm.get('previousAddresses') as FormArray;
@@ -215,7 +218,7 @@ export class Step1Component implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.formInit();
+    this.createForm();
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -224,7 +227,9 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
-  private formInit(): void {
+  public trackByIdentity = (index: number, item: any): number => index;
+
+  private createForm(): void {
     this.personalInfoForm = this.formBuilder.group({
       isAgreement: [false, Validators.requiredTrue],
 
@@ -293,14 +298,15 @@ export class Step1Component implements OnInit, OnDestroy {
         } else {
           this.previousAddresses.at(index).patchValue({
             address: address.address,
-            city: address.city,
-            state: address.state,
-            stateShortName: address.stateShortName,
-            country: address.country,
-            zipCode: address.zipCode,
-            // streetNumber: address,
-            // streetName: address,
           });
+
+          if (this.previousAddresses.controls.length === 5) {
+            this.isLastAddressInList = true;
+
+            this.isEditingArray[
+              this.previousAddresses.controls.length - 1
+            ].isEditing = false;
+          }
         }
 
         break;
@@ -310,26 +316,30 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
-  private createNewAddress(): FormGroup {
+  private onCreateNewAddress(): FormGroup {
     return this.formBuilder.group({
       address: [null, Validators.required],
       addressUnit: [null],
     });
   }
 
-  public addNewAddress(): void {
+  public onAddNewAddress(): void {
     if (
       this.previousAddresses.controls.length !== 0 &&
-      !this.isLastAddedPreviousAddressValid
+      !this.isLastAddedPreviousAddressValid &&
+      !this.isLastInputDeleted
     ) {
       return;
     }
 
     if (
       !this.previousAddresses.controls.length ||
-      this.isLastAddedPreviousAddressValid
+      this.isLastAddedPreviousAddressValid ||
+      this.isLastInputDeleted
     ) {
-      this.previousAddresses.push(this.createNewAddress());
+      this.isLastInputDeleted = false;
+
+      this.previousAddresses.push(this.onCreateNewAddress());
 
       this.isEditingId++;
 
@@ -352,16 +362,52 @@ export class Step1Component implements OnInit, OnDestroy {
     this.isLastAddedPreviousAddressValid = false;
   }
 
-  public removeNewAddress(index: number): void {
+  public onRemoveNewAddress(index: number): void {
+    if (index === this.previousAddresses?.controls.length - 1) {
+      this.isLastInputDeleted = true;
+    }
+
+    this.isEditingArray = this.isEditingArray.map((item) => {
+      return { ...item, isEditing: false };
+    });
+
     this.previousAddresses.removeAt(index);
 
     this.isEditingArray.splice(index, 1);
   }
 
-  public onEditAddress(index: number): void {
+  public onEditNewAddress(index: number): void {
+    const lastPreviousAddressAdded = this.previousAddresses.length - 1;
+
     if (this.previousAddresses.controls[index].value.address) {
-      this.isEditingArray[index].isEditing =
-        !this.isEditingArray[index].isEditing;
+      if (index !== 0) {
+        this.isEditingMiddlePositionAddress = true;
+
+        if (
+          !this.previousAddresses.at(lastPreviousAddressAdded).value.address
+        ) {
+          this.previousAddresses.removeAt(lastPreviousAddressAdded);
+
+          this.isLastInputDeleted = true;
+        }
+      } else {
+        this.isEditingMiddlePositionAddress = false;
+
+        if (
+          !this.previousAddresses.at(lastPreviousAddressAdded).value.address
+        ) {
+          this.previousAddresses.removeAt(lastPreviousAddressAdded);
+
+          this.isLastInputDeleted = true;
+        }
+      }
+
+      this.isEditingArray = this.isEditingArray.map((item, itemIndex) => {
+        if (index === itemIndex) {
+          return { ...item, isEditing: true };
+        }
+        return { ...item, isEditing: false };
+      });
     }
   }
 
@@ -446,7 +492,7 @@ export class Step1Component implements OnInit, OnDestroy {
 
     if (personalInfo?.previousAddresses?.length) {
       for (let i = 0; i < personalInfo?.previousAddresses.length; i++) {
-        this.addNewAddress();
+        this.onAddNewAddress();
         this.previousAddresses.at(i)?.patchValue({
           id: personalInfo?.previousAddresses[i].id,
           address: personalInfo?.previousAddresses[i].address,

@@ -161,26 +161,27 @@
 
     .explain-container {
       width: 616px;
-      margin-top: 22px;
+      margin-top: 12px;
     }
   }
 
   .previous-addresses-section {
     width: 616px;
+    margin-bottom: 85px;
 
     .previous-address-title {
       color: $bw6-2;
       font-size: 14px;
-      margin-bottom: 12px;
       line-height: 22px;
       height: 18px;
     }
 
     .title-container {
       .address-title-container {
+        width: 174px;
         margin-left: 68px;
         margin-bottom: 6px;
-        margin-right: 235px;
+        margin-right: 257px;
 
         p {
           text-transform: uppercase;
@@ -195,7 +196,7 @@
       }
 
       .address-unit-title-container {
-        width: 53px;
+        width: 43px;
 
         p {
           text-transform: uppercase;
@@ -208,13 +209,16 @@
 
     .dets-container {
       width: 616px;
-      margin-bottom: 2px;
 
       &:hover div .left-container {
         background-color: $ta-light-blue !important;
       }
 
-      &:hover .right-container .info-container .address-icon {
+      &:hover
+        .right-container
+        .info-container
+        .address-container
+        .address-icon {
         svg {
           path {
             fill: $ta-light-blue;
@@ -253,24 +257,8 @@
         border-radius: 2px;
 
         .info-container {
-          .address-icon {
-            svg {
-              path {
-                transition: fill 0.2s ease-in-out;
-                fill: $ta-blue-3;
-              }
-            }
-          }
-
-          .pipe {
-            width: 1px;
-            height: 14px;
-            margin: 2px 6px;
-            background-color: $ta-gray-02;
-          }
-
           .address-container {
-            width: 439px;
+            width: 449px;
             margin-right: 12px;
 
             p {
@@ -279,10 +267,27 @@
               color: $bw6-2;
               transition: color 0.2s ease-in-out;
             }
+
+            .address-icon {
+              svg {
+                path {
+                  transition: fill 0.2s ease-in-out;
+                  fill: $ta-blue-3;
+                }
+              }
+            }
+
+            .pipe {
+              width: 1px;
+              height: 14px;
+              margin: 2px 6px;
+              background-color: $ta-gray-02;
+            }
           }
 
           .address-unit-container {
-            width: 53px;
+            width: 51px;
+            margin-right: 18px;
 
             p {
               text-transform: uppercase;
@@ -294,18 +299,48 @@
 
         .input-container {
           .address-container {
-            width: 439px;
             margin-right: 12px;
           }
 
           .address-unit-container {
-            width: 53px;
+            width: 123px;
+          }
+
+          .delete-btn-container {
+            width: 26px;
+            height: 26px;
+            border-radius: 3px;
+            background: $ta-light-grey-5;
+            transition: background 0.2s ease-in-out;
+            cursor: pointer;
+
+            &:hover {
+              background: $bw6-2;
+            }
+
+            &:hover .delete-icon {
+              svg {
+                path {
+                  fill: $white;
+                }
+              }
+            }
+
+            .delete-icon {
+              cursor: pointer;
+
+              svg {
+                path {
+                  transition: fill 0.2s ease-in-out;
+                  fill: $bw4;
+                }
+              }
+            }
           }
         }
 
         .btn-container {
           width: 42px;
-          margin-left: 25px;
           visibility: hidden !important;
           opacity: 0;
           transition: opacity 0.2s ease-in-out;
@@ -338,7 +373,7 @@
     }
 
     .add-btn {
-      margin: 0 auto 85px auto;
+      margin: 0 auto;
       width: 136px;
       height: 34px;
       border: none;
@@ -360,12 +395,12 @@
         -ms-user-select: none !important;
         user-select: none !important;
 
-        transition: color 0.2s ease-in-out;
-        background-color: $ta-gray-01;
-        color: $bw5;
+        transition: background 0.2s ease-in-out;
+        background: $ta-light-grey-6;
+        color: $white;
 
         &:hover {
-          color: $bw6-2;
+          background: $ta-light-grey-2;
         }
       }
     }

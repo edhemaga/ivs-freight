@@ -3,115 +3,107 @@
 
   <!-- TOP SECTION -->
 
-  <div class="d-flex flex-column text-center top-section">
-    <p class="d-flex justify-content-center noselect ta-font-regular">
+  <div class="d-flex text-center top-section">
+    <p class="m-0 noselect ta-font-regular">
       No person who operates a commercial motor vehicle shall at any time have
-      more than one driver’s license (49 CFR 383.21). I certify that I do not
-      have more than one motor vehicle license, the information for which is
-      listed below.
+      more than one driver’s license (49 CFR<br />
+      383.21). I certify that I do not have more than one motor vehicle license,
+      the information for which is listed below.
     </p>
+  </div>
+
+  <!-- CREATED LICENSE DATA -->
+
+  <div
+    class="d-flex flex-column justify-content-center license-view-container"
+    *ngIf="licenseArray.length > 0"
+  >
+    <div class="d-flex align-items-center title-container">
+      <div class="d-flex align-items-center license-title-box">
+        <p class="m-0 ta-font-bold">LICENSE # <span>*</span></p>
+      </div>
+      <div class="d-flex align-items-center state-title-box">
+        <p class="m-0 ta-font-bold">STATE <span>*</span></p>
+      </div>
+      <div class="d-flex align-items-center class-title-box">
+        <p class="m-0 ta-font-bold">CLASS <span>*</span></p>
+      </div>
+      <div class="d-flex align-items-center date-title-box">
+        <p class="m-0 ta-font-bold">EXP. DATE <span>*</span></p>
+      </div>
+    </div>
+
+    <div
+      class="d-flex align-items-center license-info-container"
+      *ngFor="
+        let license of licenseArray;
+        let i = index;
+        trackBy: trackByIdentity
+      "
+    >
+      <div class="d-flex align-items-center license-box">
+        <p class="m-0 ta-font-regular">
+          {{ license.license }}
+        </p>
+      </div>
+      <div class="d-flex align-items-center state-box">
+        <p class="m-0 ta-font-regular">
+          {{ license.stateId }}
+        </p>
+      </div>
+      <div class="d-flex align-items-center class-box">
+        <p class="m-0 ta-font-regular">
+          {{ license.classType }}
+        </p>
+      </div>
+      <div class="d-flex align-items-center date-box">
+        <p class="m-0 ta-font-regular">
+          {{ license.expDate }}
+        </p>
+      </div>
+      <div class="d-flex align-items-center btn-container">
+        <svg-icon
+          class="edit-icon"
+          src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+          [svgStyle]="{
+            'width.px': 18,
+            'height.px': 18
+          }"
+          appTooltip="Edit"
+          tooltipColor="#FFFFFF"
+          tooltipBackground="#6C6C6C"
+          position="top-middle"
+          borderRadius="2px"
+          fontSize="11px"
+          fontWeight="bold"
+          (click)="onEditLicense(i)"
+        ></svg-icon>
+
+        <svg-icon
+          class="delete-icon"
+          src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+          [svgStyle]="{
+            'width.px': 18,
+            'height.px': 18
+          }"
+          appTooltip="Delete"
+          tooltipColor="#FFFFFF"
+          tooltipBackground="#EF5350"
+          position="top-middle"
+          borderRadius="2px"
+          fontSize="11px"
+          fontWeight="bold"
+          (click)="onDeleteLicense(i)"
+        ></svg-icon>
+      </div>
+    </div>
   </div>
 
   <!-- FORM SECTION -->
 
-  <div class="d-flex form-section">
-    <!-- CREATED LICENSE DATA -->
-
-    <div
-      class="d-flex justify-content-center license-view-container"
-      *ngIf="licenseFormArray.length"
-    >
-      <div
-        class="d-flex flex-column"
-        *ngFor="
-          let license of licenseFormArray | filter: false;
-          let i = index;
-          trackBy: trackByIdentity
-        "
-      >
-        <div class="d-flex justify-content-center title-container">
-          <div class="d-flex justify-content-center license-title-box">
-            <p class="m-0 ta-font-bold">LICENSE #</p>
-          </div>
-          <div class="d-flex justify-content-center state-title-box">
-            <p class="m-0 ta-font-bold">STATE</p>
-          </div>
-          <div class="d-flex justify-content-center class-title-box">
-            <p class="m-0 ta-font-bold">CLASS</p>
-          </div>
-          <div class="d-flex justify-content-center date-title-box">
-            <p class="m-0 ta-font-bold">EXP.DATE</p>
-          </div>
-        </div>
-
-        <div class="d-flex justify-content-center license-info-container">
-          <div
-            class="d-flex justify-content-center align-items-center license-box"
-          >
-            <p class="m-0 ta-font-regular">
-              {{ license.license }}
-            </p>
-          </div>
-          <div
-            class="d-flex justify-content-center align-items-center state-box"
-          >
-            <p class="m-0 ta-font-regular">
-              {{ license.state }}
-            </p>
-          </div>
-          <div
-            class="d-flex justify-content-center align-items-center class-box"
-          >
-            <p class="m-0 ta-font-regular">
-              {{ license.classData }}
-            </p>
-          </div>
-          <div
-            class="d-flex justify-content-center align-items-center date-box"
-          >
-            <p class="m-0 ta-font-regular">
-              {{ license.expDate }}
-            </p>
-          </div>
-
-          <div
-            class="d-flex justify-content-center align-items-center edit-delete-box"
-          >
-            <button
-              type="button"
-              class="d-flex justify-content-center align-items-center edit-btn"
-              (click)="onEditLicense(i)"
-            >
-              <svg-icon
-                class="edit-icon"
-                src="assets/svg/common/ic_pen.svg"
-                [svgStyle]="{
-                  'width.px': 10,
-                  'height.px': 10
-                }"
-              ></svg-icon>
-            </button>
-            <button
-              type="button"
-              class="d-flex justify-content-center align-items-center delete-btn"
-              (click)="onDeleteLicense(i)"
-            >
-              <svg-icon
-                class="delete-icon"
-                src="assets/svg/common/ic_trash.svg"
-                [svgStyle]="{
-                  'width.px': 8,
-                  'height.px': 9
-                }"
-              ></svg-icon>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
+  <div class="d-flex flex-column justify-content-center form-section">
     <form [formGroup]="licenseForm">
-      <!-- LICENSE, COUNTRY, STATE, CLASS  -->
+      <!-- LICENSE, COUNTRY -->
 
       <div class="d-flex">
         <div class="form-label-group license-group">
@@ -120,7 +112,7 @@
             [inputConfig]="{
               name: 'License',
               type: 'text',
-              label: 'License',
+              label: 'License #',
               isRequired: true,
               textTransform: 'capitalize',
               autoFocus: true
@@ -143,6 +135,21 @@
             (selectedItem)="handleInputSelect($event, 'COUNTRY-TYPE')"
           ></app-ta-input-dropdown>
         </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="0"
+            [reviewFeedbackData]=""
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <!-- STATE, CLASS, EXP. DATE -->
+
+      <div class="d-flex">
         <div class="form-label-group state-group">
           <app-ta-input-dropdown
             formControlName="stateId"
@@ -176,21 +183,6 @@
             (selectedItem)="handleInputSelect($event, 'CLASS-TYPE')"
           ></app-ta-input-dropdown>
         </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-          <app-applicant-review-feedback
-            [index]="0"
-            [reviewFeedbackData]=""
-            (sendReview)="onSubmitReview($event)"
-          ></app-applicant-review-feedback>
-        </div>
-      </div>
-
-      <!-- EXP. DATE, ENDORSMENTS -->
-
-      <div class="d-flex">
         <div class="form-label-group exp-date-group">
           <app-ta-input
             formControlName="expDate"
@@ -205,6 +197,20 @@
           ></app-ta-input>
         </div>
 
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+          <app-applicant-review-feedback
+            [index]="1"
+            [reviewFeedbackData]=""
+            (sendReview)="onSubmitReview($event)"
+          ></app-applicant-review-feedback>
+        </div>
+      </div>
+
+      <!-- ENDORSMENTS, RESTRICTIONS -->
+
+      <div class="d-flex">
         <div class="form-label-group endorsments-group">
           <app-ta-input-dropdown
             formControlName="endorsments"
@@ -220,22 +226,7 @@
             (selectedItem)="handleInputSelect($event, 'ENDORSMENTS')"
           ></app-ta-input-dropdown>
         </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-          <app-applicant-review-feedback
-            [index]="1"
-            [reviewFeedbackData]=""
-            (sendReview)="onSubmitReview($event)"
-          ></app-applicant-review-feedback>
-        </div>
-      </div>
-
-      <!-- RESTRICTIONS -->
-
-      <div class="d-flex">
-        <div class="form-label-group">
+        <div class="form-label-group restrictions-group">
           <app-ta-input-dropdown
             formControlName="restrictions"
             [inputConfig]="{
@@ -273,25 +264,43 @@
 
         <button
           type="button"
-          class="add-license-btn ta-font-semi-bold"
+          class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn"
           (click)="onAddLicense()"
-          *ngIf="editLicense === -1"
+          [ngClass]="{
+            disabled: licenseForm.invalid
+          }"
+          *ngIf="!isEditing"
         >
-          Add license
+          Add License
         </button>
-        <button
-          type="button"
-          class="add-license-btn ta-font-semi-bold"
-          (click)="onUpdateLicense()"
-          *ngIf="editLicense !== -1"
+
+        <div
+          class="d-flex align-items-center justify-content-center"
+          *ngIf="isEditing"
         >
-          Save license
-        </button>
+          <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+            (click)="onCancelEditLicense()"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+            (click)="onSaveEditedLicense()"
+            [ngClass]="{
+              disabled: !isLicenseEdited
+            }"
+          >
+            Save Changes
+          </button>
+        </div>
       </div>
 
       <!-- PERMIT -->
 
-      <div class="d-flex flex-column permit-container">
+      <div class="d-flex flex-column permit-container" [formGroup]="permitForm">
         <div class="d-flex align-items-center justify-content-between">
           <div class="permit-title-box">
             <p class="m-0 ta-font-regular">
@@ -313,7 +322,7 @@
 
         <div
           class="d-flex explain-container"
-          *ngIf="licenseForm.get('permit')?.value === 'Yes'"
+          *ngIf="licenseForm.get('permit')?.value === 'YES'"
         >
           <div class="w-100">
             <app-ta-input
@@ -321,7 +330,7 @@
               [inputConfig]="{
                 name: 'Explain',
                 type: 'text',
-                label: 'Please Explain',
+                label: 'Please explain',
                 isRequired: true,
                 textTransform: 'capitalize'
               }"
@@ -339,14 +348,24 @@
           ></app-applicant-review-feedback>
         </div>
       </div>
-
-      <!-- NEXT, BACK STEP -->
-
-      <app-applicant-next-step
-        (stepEvent)="onStepAction($event)"
-      ></app-applicant-next-step>
     </form>
   </div>
+</div>
+
+<!-- NEXT BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+</div>
+
+<!-- BACK BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center back-btn-container"
+>
+  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>
 
 <!-- CONFIRM ALL REVIEW -->

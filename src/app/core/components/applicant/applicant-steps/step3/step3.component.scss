@@ -1,151 +1,158 @@
 @import 'src/theme/variables.scss';
 
 .step-container {
+  padding-top: 22px;
+
   .step-title {
-    color: $light-blue;
+    color: $ta-blue;
     font-size: 32px;
-    margin-top: 30px;
+    height: 39px;
   }
 
   .top-section {
-    margin-top: 20px;
-    width: 680px;
+    margin-top: 12px;
+    width: 820px;
 
     p {
       color: $bw6-2;
       font-size: 14px;
+      line-height: 22px;
+    }
+  }
+
+  .license-view-container {
+    width: 616px;
+    margin-top: 22px;
+    margin-bottom: 12px;
+
+    .title-container {
+      width: 100%;
+      margin-bottom: 6px;
+      padding-left: 6px;
+
+      .license-title-box,
+      .state-title-box,
+      .class-title-box,
+      .date-title-box {
+        p {
+          color: $bw5;
+          font-size: 12px;
+
+          span {
+            color: $progress-danger;
+          }
+        }
+
+        &.license-title-box {
+          width: 84px;
+          margin-right: 116px;
+        }
+
+        &.state-title-box {
+          width: 57px;
+          margin-right: 55px;
+        }
+
+        &.class-title-box {
+          width: 59px;
+          margin-right: 53px;
+        }
+
+        &.date-title-box {
+          width: 84px;
+        }
+      }
+    }
+
+    .license-info-container {
+      width: 100%;
+      height: 26px;
+      padding: 4px 6px;
+      background-color: $ta-light-grey-4;
+      border-radius: 3px;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      color: $bw6-2;
+      font-size: 14px;
+      transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+      &:hover {
+        background: $bw2;
+        color: $ta-light-grey-3;
+      }
+
+      &:hover .btn-container {
+        opacity: 1;
+        visibility: visible !important;
+      }
+
+      .license-box,
+      .state-box,
+      .class-box,
+      .date-box {
+        &.license-box {
+          width: 182px;
+          margin-right: 12px;
+        }
+
+        &.state-box {
+          width: 100px;
+          margin-right: 12px;
+          padding-left: 6px;
+        }
+
+        &.class-box {
+          width: 100px;
+          margin-right: 12px;
+          padding-left: 6px;
+        }
+
+        &.date-box {
+          width: 136px;
+          margin-right: 8px;
+          padding-left: 6px;
+        }
+      }
+
+      .btn-container {
+        width: 42px;
+        visibility: hidden !important;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+
+        .edit-icon,
+        .delete-icon {
+          cursor: pointer;
+
+          &:hover {
+            svg {
+              path {
+                transition: fill 0.2s ease-in-out;
+                fill: $bw6-2;
+              }
+            }
+          }
+
+          svg {
+            path {
+              fill: $bw4;
+            }
+          }
+        }
+
+        .edit-icon {
+          margin-right: 6px;
+        }
+      }
     }
   }
 
   .form-section {
     margin-top: 22px;
 
-    .license-view-container {
-      margin-bottom: 12px;
-
-      .title-container {
-        margin-bottom: 2px;
-
-        .license-title-box,
-        .state-title-box,
-        .class-title-box,
-        .date-title-box {
-          margin-right: 12px;
-
-          &.license-title-box {
-            width: 148px;
-          }
-
-          &.state-title-box {
-            width: 83px;
-          }
-
-          &.class-title-box {
-            width: 77px;
-          }
-
-          &.date-title-box {
-            width: 113px;
-            margin-right: 0;
-          }
-
-          p {
-            color: $bw6-2;
-            font-size: 10px;
-          }
-        }
-      }
-
-      .license-info-container {
-        &:hover .edit-delete-box {
-          visibility: visible;
-        }
-
-        .license-box,
-        .state-box,
-        .class-box,
-        .date-box {
-          background-color: $bw5;
-          color: $white;
-          border-radius: 3px;
-          height: 26px;
-          padding: 0;
-          margin-right: 12px;
-
-          &.license-box {
-            width: 148px;
-          }
-
-          &.state-box {
-            width: 83px;
-          }
-
-          &.class-box {
-            width: 77px;
-          }
-
-          &.date-box {
-            width: 113px;
-            margin-right: 0;
-          }
-
-          p {
-            font-size: 14px;
-          }
-        }
-
-        .edit-delete-box {
-          visibility: hidden;
-          height: 26px;
-          width: 38px;
-          margin-left: 6px;
-
-          .edit-btn,
-          .delete-btn {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: none;
-            outline: none;
-            opacity: 0.7;
-
-            &:hover {
-              opacity: 1;
-            }
-
-            &.edit-btn {
-              background-color: $bw6-2;
-              margin-right: 6px;
-
-              .edit-icon {
-                svg {
-                  path {
-                    fill: $white;
-                  }
-                }
-              }
-            }
-
-            &.delete-btn {
-              background-color: $progress-danger;
-
-              .delete-icon {
-                svg {
-                  path {
-                    fill: $white;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
     .form-label-group {
-      margin-bottom: 22px;
+      margin-bottom: 32px;
       margin-right: 12px;
-      width: 456px;
 
       &:last-child {
         margin-right: 0;
@@ -154,27 +161,29 @@
     }
 
     .license-group {
-      width: 149px;
+      width: 368px;
     }
 
     .country-group {
-      width: 111px;
+      width: 234px;
     }
 
     .state-group {
-      width: 83px;
+      width: 244px;
     }
 
     .class-group {
-      width: 77px;
+      width: 174px;
     }
 
     .exp-date-group {
-      width: 122px;
+      width: 172px;
     }
 
-    .endorsments-group {
-      width: 322px;
+    .endorsments-group,
+    .restrictions-group {
+      width: 302px;
+      margin-bottom: 0;
     }
 
     .add-more-license-container {
@@ -185,26 +194,55 @@
         font-size: 14px;
       }
 
-      .add-license-btn {
-        margin-top: 12px;
-        border: 0;
-        outline: 0;
+      .add-btn {
+        margin: 12px auto 0 auto;
+        width: 132px;
+        height: 34px;
+        border: none;
+        outline: none;
         font-size: 14px;
-        height: 18px;
-        color: $light-blue;
-        background-color: transparent;
-        opacity: 0.7;
+        border-radius: 3px;
+        color: $white;
+        background: $ta-light-blue;
+        transition: background 0.3s ease-in-out;
 
         &:hover {
-          opacity: 1;
+          background: $ta-blue;
         }
+
+        &.disabled {
+          -webkit-user-select: none !important;
+          -moz-user-select: none !important;
+          -ms-user-select: none !important;
+          user-select: none !important;
+
+          transition: background 0.3s ease-in-out;
+          background: $ta-light-grey-4;
+          color: $bw4;
+        }
+      }
+
+      .cancel-btn {
+        width: 150px;
+        margin-right: 22px;
+        color: $bw5;
+        background: $ta-light-grey-4;
+        transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
+
+        &:hover {
+          background: $bw6-2;
+          color: $white;
+        }
+      }
+
+      .save-btn {
+        width: 150px;
       }
     }
 
     .permit-container {
-      margin-top: 12px;
-      margin-bottom: 32px;
-      width: 456px;
+      margin-top: 22px;
+      width: 616px;
 
       .permit-title-box {
         p {
@@ -218,7 +256,7 @@
       }
 
       .permit-radios-box {
-        width: 80px;
+        width: 86px;
 
         .ta-input-radiobutons {
           width: 100%;
@@ -226,9 +264,25 @@
       }
 
       .explain-container {
-        width: 456px;
-        margin-top: 22px;
+        width: 616px;
+        margin-top: 12px;
       }
     }
   }
+}
+
+.next-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  right: 42px;
+}
+
+.back-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  left: 42px;
 }

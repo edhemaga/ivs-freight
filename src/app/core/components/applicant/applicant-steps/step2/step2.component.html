@@ -15,7 +15,12 @@
 
   <!-- MID SECTION -->
 
-  <div class="d-flex justify-content-center text-center mid-section">
+  <div
+    class="d-flex justify-content-center text-center mid-section"
+    [ngStyle]="{
+      'margin-bottom': workExperienceArray.length > 0 ? '22px' : '32px'
+    }"
+  >
     <h5 class="m-0 step-subtitle noselect ta-font-bold">
       Please list starting with most recent employer, use add employer link if
       needed
@@ -24,363 +29,448 @@
 
   <!-- FORM SECTION -->
 
-  <div class="d-flex justify-content-center">
+  <div
+    class="d-flex justify-content-center"
+    *ngIf="!workExperienceForm.get('noWorkExperience').value"
+  >
     <div class="d-flex justify-content-center flex-column">
-      <div class="d-flex flex-column work-history-panel-container">
+      <div
+        class="d-flex flex-column history-panel-container"
+        *ngIf="workExperienceArray.length > 0"
+      >
         <!-- CREATED WORK HISTORY DATA -->
 
-        <!-- <div
-                    class="d-flex"
-                    *ngFor="
-                        let workHistory of workExperienceArray | filter: false;
-                        let i = index;
-                        let last = last;
-                        trackBy: trackByIdentity
-                    "
-                >
-                    <div class="d-flex" *ngIf="!workHistory.isExpanded">
-                        <div
-                            class="d-flex justify-content-between work-history-panel"
-                            [ngClass]="{
-                                'work-history-panel-current-employer':
-                                    !workHistory.isCompleted || last
-                            }"
-                        >
-                            <p
-                                class="m-0 history-title ta-font-semi-bold"
-                                *ngIf="workHistory.employer; else emptyForm"
-                            >
-                                <span class="company-name">{{
-                                    workHistory.employer
-                                }}</span>
+        <div class="d-flex align-items-center history-title-container">
+          <div class="d-flex align-items-center employer-title-container">
+            <p class="m-0 ta-font-bold">
+              current or last employer <span>*</span>
+            </p>
+          </div>
+          <div class="d-flex align-items-center from-title-container">
+            <p class="m-0 ta-font-bold">from <span>*</span></p>
+          </div>
+          <div class="d-flex align-items-center to-title-container">
+            <p class="m-0 ta-font-bold">to <span>*</span></p>
+          </div>
+        </div>
 
-                                <span>
-                                    {{
-                                        workHistory.fromDate +
-                                            ' - ' +
-                                            workHistory.toDate
-                                    }}</span
-                                >
-                            </p>
+        <div
+          class="d-flex align-items-center history-panel"
+          *ngFor="
+            let workHistory of workExperienceArray;
+            let i = index;
+            trackBy: trackByIdentity
+          "
+        >
+          <div class="d-flex align-items-center history-employer">
+            <p class="m-0 ta-font-regular">{{ workHistory.employer }}</p>
+          </div>
+          <div class="d-flex align-items-center history-from-date">
+            <p class="m-0 ta-font-regular">{{ workHistory.fromDate }}</p>
+          </div>
+          <div class="d-flex align-items-center history-to-date">
+            <p class="m-0 ta-font-regular">{{ workHistory.toDate }}</p>
+          </div>
+          <div class="d-flex align-items-center btn-container">
+            <svg-icon
+              class="edit-icon"
+              src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+              [svgStyle]="{
+                'width.px': 18,
+                'height.px': 18
+              }"
+              appTooltip="Edit"
+              tooltipColor="#FFFFFF"
+              tooltipBackground="#6C6C6C"
+              position="top-middle"
+              borderRadius="2px"
+              fontSize="11px"
+              fontWeight="bold"
+              (click)="onEditWorkExperience(i)"
+            ></svg-icon>
 
-                            <div
-                                class="d-flex justify-content-center align-items-center edit-delete-box"
-                            >
-                                <button
-                                    type="button"
-                                    class="d-flex justify-content-center align-items-center edit-btn"
-                                    (click)="formFilling(i)"
-                                >
-                                    <svg-icon
-                                        class="edit-icon"
-                                        src="assets/svg/common/ic_pen.svg"
-                                        [svgStyle]="{
-                                            'width.px': 10,
-                                            'height.px': 10
-                                        }"
-                                    ></svg-icon>
-                                </button>
-                                <button
-                                    type="button"
-                                    class="d-flex justify-content-center align-items-center delete-btn"
-                                    (click)="onDeleteWorkExperience(i)"
-                                >
-                                    <svg-icon
-                                        class="delete-icon"
-                                        src="assets/svg/common/ic_trash.svg"
-                                        [svgStyle]="{
-                                            'width.px': 8,
-                                            'height.px': 9
-                                        }"
-                                    ></svg-icon>
-                                </button>
-                            </div>
+            <svg-icon
+              class="delete-icon"
+              src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+              [svgStyle]="{
+                'width.px': 18,
+                'height.px': 18
+              }"
+              appTooltip="Delete"
+              tooltipColor="#FFFFFF"
+              tooltipBackground="#EF5350"
+              position="top-middle"
+              borderRadius="2px"
+              fontSize="11px"
+              fontWeight="bold"
+              (click)="onDeleteWorkExperience(i)"
+            ></svg-icon>
+          </div>
+        </div>
+      </div>
 
-                            <ng-template #emptyForm>
-                                <span
-                                    class="history-title ta-font-semi-bold"
-                                ></span>
-                            </ng-template>
-                        </div>
-                    </div>
-                </div> -->
+      <div class="d-flex form-section">
+        <form [formGroup]="workExperienceForm" (ngSubmit)="onSubmitForm()">
+          <div class="d-flex flex-column">
+            <!-- EMPLOYER -->
 
-        <div class="d-flex form-section">
-          <!--  *ngIf="workHistory.isExpanded" -->
-          <form [formGroup]="workExperienceForm" (ngSubmit)="onSubmitForm()">
-            <div class="d-flex flex-column">
-              <!-- EMPLOYER -->
+            <div class="d-flex">
+              <div class="form-label-group">
+                <app-ta-input
+                  formControlName="employer"
+                  [inputConfig]="{
+                    name: 'Employer',
+                    type: 'text',
+                    label: 'Current or last employer',
+                    isRequired: true,
+                    textTransform: 'capitalize',
+                    autoFocus: true
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
 
+            <!-- JOB DESCRIPTION, FROM, TO -->
+
+            <div class="d-flex">
+              <div class="form-label-group job-description-group">
+                <app-ta-input
+                  formControlName="jobDescription"
+                  [inputConfig]="{
+                    name: 'Job Description',
+                    type: 'text',
+                    label: 'Job description',
+                    isRequired: true,
+                    textTransform: 'capitalize'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="form-label-group date-group">
+                <app-ta-input
+                  formControlName="fromDate"
+                  [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'From',
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    customClass: 'datetimeclass'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="form-label-group date-group">
+                <app-ta-input
+                  formControlName="toDate"
+                  [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'To',
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    customClass: 'datetimeclass'
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+
+            <!-- PHONE, EMAIL, FAX -->
+
+            <div class="d-flex">
+              <div class="form-label-group phone-group">
+                <app-ta-input
+                  formControlName="employerPhone"
+                  [inputConfig]="{
+                    name: 'Phone',
+                    type: 'text',
+                    label: 'Employer Phone',
+                    isRequired: true,
+                    placeholderIcon: 'phone',
+                    mask: '(000) 000-0000'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="form-label-group email-group">
+                <app-ta-input
+                  formControlName="employerEmail"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'text',
+                    label: 'Employer Email',
+                    isRequired: true,
+                    placeholderIcon: 'email'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="form-label-group fax-group">
+                <app-ta-input
+                  formControlName="employerFax"
+                  [inputConfig]="{
+                    name: 'Fax',
+                    type: 'text',
+                    label: 'Employer Fax',
+                    placeholderIcon: 'fax'
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+
+            <!-- ADDRESS -->
+
+            <div class="d-flex">
+              <div class="form-label-group address-group">
+                <app-ta-input-address
+                  formControlName="employerAddress"
+                  [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    label: 'Employer Address, City, State Zip',
+                    isRequired: true,
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize'
+                  }"
+                  (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+                ></app-ta-input-address>
+              </div>
+              <div class="form-label-group address-unit-group">
+                <app-ta-input
+                  formControlName="employerAddressUnit"
+                  [inputConfig]="{
+                    name: 'Address Unit',
+                    type: 'text',
+                    label: 'Unit #',
+                    maxLength: 6
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+
+            <!-- DRIVING POSITION CHECKBOX -->
+
+            <div class="d-flex driving-position-group">
+              <app-ta-checkbox
+                formControlName="isDrivingPosition"
+                [name]="'isDrivingPosition'"
+                [label]="'Was this a driving position?'"
+              ></app-ta-checkbox>
+            </div>
+
+            <!-- TRUCK TYPE, TRAILER TYPE, LENGTH -->
+
+            <div
+              class="d-flex flex-column"
+              *ngIf="workExperienceForm.get('isDrivingPosition').value"
+            >
               <div class="d-flex">
-                <div class="form-label-group">
-                  <app-ta-input
-                    formControlName="employer"
-                    [inputConfig]="{
-                      name: 'Employer',
-                      type: 'text',
-                      label: 'Current or last employer',
-                      isRequired: true,
-                      textTransform: 'capitalize',
-                      autoFocus: true
-                    }"
-                  ></app-ta-input>
-                </div>
-              </div>
-
-              <!-- JOB DESCRIPTION, FROM, TO -->
-
-              <div class="d-flex">
-                <div class="form-label-group job-description-group">
-                  <app-ta-input
-                    formControlName="jobDescription"
-                    [inputConfig]="{
-                      name: 'Job Description',
-                      type: 'text',
-                      label: 'Job description',
-                      isRequired: true,
-                      textTransform: 'capitalize'
-                    }"
-                  ></app-ta-input>
-                </div>
-                <div class="form-label-group date-group">
-                  <app-ta-input
-                    formControlName="fromDate"
-                    [inputConfig]="{
-                      name: 'datepicker',
-                      type: 'text',
-                      label: 'From',
-                      placeholderIcon: 'date',
-                      isRequired: true,
-                      customClass: 'datetimeclass'
-                    }"
-                  ></app-ta-input>
-                </div>
-                <div class="form-label-group date-group">
-                  <app-ta-input
-                    formControlName="toDate"
-                    [inputConfig]="{
-                      name: 'datepicker',
-                      type: 'text',
-                      label: 'To',
-                      placeholderIcon: 'date',
-                      isRequired: true,
-                      customClass: 'datetimeclass'
-                    }"
-                  ></app-ta-input>
-                </div>
-              </div>
-
-              <!-- PHONE, EMAIL -->
-
-              <div class="d-flex">
-                <div class="form-label-group phone-group">
-                  <app-ta-input
-                    formControlName="phone"
-                    [inputConfig]="{
-                      name: 'Phone',
-                      type: 'text',
-                      label: 'Employer Phone',
-                      isRequired: true,
-                      placeholderIcon: 'phone',
-                      mask: '(000) 000-0000'
-                    }"
-                  ></app-ta-input>
-                </div>
-                <div class="form-label-group email-group">
-                  <app-ta-input
-                    formControlName="email"
-                    [inputConfig]="{
-                      name: 'Email',
-                      type: 'text',
-                      label: 'Employer Email',
-                      isRequired: true,
-                      placeholderIcon: 'email'
-                    }"
-                  ></app-ta-input>
-                </div>
-              </div>
-
-              <!-- ADDRESS -->
-
-              <div class="d-flex">
-                <div class="form-label-group address-group">
-                  <app-ta-input-address
-                    formControlName="address"
-                    [inputConfig]="{
-                      name: 'Address',
-                      type: 'text',
-                      label: 'Employer Address, City, State Zip',
-                      isRequired: true,
-                      placeholderIcon: 'address',
-                      textTransform: 'capitalize'
-                    }"
-                    (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-                  ></app-ta-input-address>
-                </div>
-                <div class="form-label-group address-unit-group">
-                  <app-ta-input
-                    formControlName="addressUnit"
-                    [inputConfig]="{
-                      name: 'Address Unit',
-                      type: 'text',
-                      label: 'Unit #',
-                      maxLength: 6
-                    }"
-                  ></app-ta-input>
-                </div>
-              </div>
-
-              <!-- DRIVING POSITION CHECKBOX -->
-
-              <div class="d-flex driving-position-group">
-                <app-ta-checkbox
-                  formControlName="isDrivingPosition"
-                  [name]="'isDrivingPosition'"
-                  [label]="'Was this a driving position?'"
-                ></app-ta-checkbox>
-              </div>
-
-              <!-- TRUCK TYPE, TRAILER TYPE, LENGTH -->
-
-              <div
-                class="d-flex flex-column"
-                *ngIf="workExperienceForm.get('isDrivingPosition').value"
-              >
-                <div class="d-flex">
-                  <div class="form-label-group truck-type-group">
-                    <app-ta-input-dropdown
-                      formControlName="truckType"
-                      [template]="'svgtext-template'"
-                      [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Truck type',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-applicant-t-type'
-                      }"
-                      [options]="truckType"
-                      (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
-                    ></app-ta-input-dropdown>
-                  </div>
-                  <div class="form-label-group trailer-type-group">
-                    <app-ta-input-dropdown
-                      formControlName="trailerType"
-                      [template]="'svgtext-template'"
-                      [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Trailer Type',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-applicant-t-type'
-                      }"
-                      [options]="trailerType"
-                      (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
-                    ></app-ta-input-dropdown>
-                  </div>
-                  <div class="form-label-group length-group">
-                    <app-ta-input-dropdown
-                      formControlName="trailerLength"
-                      [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Length',
-                        isDropdown: true,
-                        isRequired: true,
-                        dropdownWidthClass: 'w-col-applicant-length'
-                      }"
-                      [options]="trailerLengthType"
-                      (selectedItem)="
-                        handleInputSelect($event, 'TRAILER-LENGTH')
-                      "
-                    ></app-ta-input-dropdown>
-                  </div>
-                </div>
-
-                <!-- ANOTHER CLASS -->
-
-                <div class="d-flex another-class-group">
-                  <p class="m-0 ta-font-semi-bold noselect">
-                    Add another class of equipment
-                  </p>
-                </div>
-
-                <!-- QUESTIONS -->
-
-                <ng-container *ngIf="questions">
-                  <div
-                    class="d-flex justify-content-between questions-container"
-                  >
-                    <div
-                      class="d-flex align-items-center question-box"
-                      *ngFor="
-                        let question of questions;
-                        let i = index;
-                        trackBy: trackByIdentity
-                      "
-                    >
-                      <div class="question-title-box">
-                        <p class="m-0 noselect">
-                          {{ question.title }}
-                        </p>
-                      </div>
-
-                      <div class="question-radios-box">
-                        <app-ta-input-radiobuttons
-                          [buttons]="question.answerChoices"
-                          (changedValue)="
-                            handleInputSelect($event, 'ANSWER-CHOICE')
-                          "
-                        ></app-ta-input-radiobuttons>
-                      </div>
-                    </div>
-                  </div>
-                </ng-container>
-              </div>
-
-              <!-- REASON FOR LEAVING -->
-
-              <div class="d-flex">
-                <div class="form-label-group reason-for-leaving-group">
+                <div class="form-label-group vehicle-type-group">
                   <app-ta-input-dropdown
-                    formControlName="reasonForLeaving"
+                    formControlName="truckType"
                     [template]="'svgtext-template'"
                     [inputConfig]="{
                       name: 'Input Dropdown',
                       type: 'text',
-                      label: 'Reason for leaving',
+                      label: 'Vehicle type',
                       isRequired: true,
                       isDropdown: true,
-                      dropdownWidthClass: 'w-col-12'
+                      dropdownWidthClass: 'w-col-applicant-t-type'
                     }"
-                    [options]="reasonsForLeaving"
-                    (selectedItem)="
-                      handleInputSelect($event, 'REASON-FOR-LEAVING')
-                    "
+                    [options]="truckType"
+                    (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
+                  ></app-ta-input-dropdown>
+                </div>
+                <div class="form-label-group trailer-type-group">
+                  <app-ta-input-dropdown
+                    formControlName="trailerType"
+                    [template]="'svgtext-template'"
+                    [inputConfig]="{
+                      name: 'Input Dropdown',
+                      type: 'text',
+                      label: 'Trailer Type',
+                      isDisabled: !isTruckSelected,
+                      isRequired: isTruckSelected,
+                      isDropdown: true,
+                      dropdownWidthClass: 'w-col-applicant-t-type'
+                    }"
+                    [options]="trailerType"
+                    (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
+                  ></app-ta-input-dropdown>
+                </div>
+                <div class="form-label-group length-group">
+                  <app-ta-input-dropdown
+                    formControlName="trailerLength"
+                    [inputConfig]="{
+                      name: 'Input Dropdown',
+                      type: 'text',
+                      label: 'Length',
+                      isDropdown: true,
+                      isDisabled: !isTruckSelected,
+                      isRequired: isTruckSelected,
+                      dropdownWidthClass: 'w-col-applicant-length'
+                    }"
+                    [options]="trailerLengthType"
+                    (selectedItem)="handleInputSelect($event, 'TRAILER-LENGTH')"
                   ></app-ta-input-dropdown>
                 </div>
               </div>
 
-              <!-- ACCOUNT FOR PERIOD -->
+              <!-- ANOTHER CLASS -->
 
-              <div class="d-flex">
-                <div class="mb-0 form-label-group">
-                  <app-ta-input
-                    formControlName="accountForPeriod"
-                    [inputConfig]="{
-                      name: 'Account for Period',
-                      type: 'text',
-                      label: 'Account for period between jobs (include reason)',
-                      textTransform: 'capitalize'
-                    }"
-                  ></app-ta-input>
-                </div>
+              <div class="d-flex another-class-group">
+                <p class="m-0 ta-font-semi-bold noselect">
+                  Add another class of equipment
+                </p>
               </div>
 
-              <!-- EDIT BTNS -->
+              <!-- QUESTIONS -->
+
+              <ng-container *ngIf="questions">
+                <div class="d-flex align-items-center questions-container">
+                  <div
+                    class="d-flex align-items-center question-box"
+                    *ngFor="
+                      let question of questions;
+                      let i = index;
+                      trackBy: trackByIdentity
+                    "
+                  >
+                    <div class="question-title-box">
+                      <p class="m-0 noselect ta-font-regular">
+                        {{ question.title }} <span>*</span>
+                      </p>
+                    </div>
+
+                    <div class="question-radios-box">
+                      <app-ta-input-radiobuttons
+                        [buttons]="question.answerChoices"
+                        (changedValue)="
+                          handleInputSelect($event, 'ANSWER-CHOICE')
+                        "
+                      ></app-ta-input-radiobuttons>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- REASON FOR LEAVING -->
+
+            <div class="d-flex">
+              <div class="form-label-group reason-for-leaving-group">
+                <app-ta-input-dropdown
+                  formControlName="reasonForLeaving"
+                  [template]="'svgtext-template'"
+                  [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Reason for leaving',
+                    isRequired: true,
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-12'
+                  }"
+                  [options]="reasonsForLeaving"
+                  (selectedItem)="
+                    handleInputSelect($event, 'REASON-FOR-LEAVING')
+                  "
+                ></app-ta-input-dropdown>
+              </div>
+            </div>
+
+            <!-- ACCOUNT FOR PERIOD -->
+
+            <div class="d-flex">
+              <div class="mb-0 form-label-group">
+                <app-ta-input
+                  formControlName="accountForPeriod"
+                  [inputConfig]="{
+                    name: 'Account for Period',
+                    type: 'text',
+                    label: 'Account for period between jobs (include reason)',
+                    textTransform: 'capitalize'
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+
+            <!-- ADD BTN -->
+
+            <div
+              class="d-flex justify-content-center second-or-last-employer-group"
+            >
+              <button
+                type="button"
+                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn"
+                (click)="onAddSecondOrLastEmployer()"
+                [ngClass]="{
+                  disabled: workExperienceForm.invalid
+                }"
+                *ngIf="!isEditing"
+              >
+                Add Second Or Last Employer
+              </button>
 
               <div
+                class="d-flex align-items-center justify-content-center"
+                *ngIf="isEditing"
+              >
+                <button
+                  type="button"
+                  class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+                  (click)="onCancelEditWorkExperience()"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+                  (click)="onSaveEditedWorkExperience()"
+                  [ngClass]="{
+                    disabled: !isWorkExperienceEdited
+                  }"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORK EXPERINCE CHECKBOX -->
+
+  <div
+    class="d-flex justify-content-center work-experience-group"
+    [formGroup]="workExperienceForm"
+    [ngStyle]="{
+      'margin-bottom': workExperienceArray.length > 0 ? '22px' : '0'
+    }"
+  >
+    <app-ta-checkbox
+      formControlName="noWorkExperience"
+      [name]="'noWorkExperience'"
+      [label]="'I don’t have work experience'"
+    ></app-ta-checkbox>
+  </div>
+</div>
+
+<!-- NEXT BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+</div>
+
+<!-- BACK BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center back-btn-container"
+>
+  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
+</div>
+
+<!-- 
+  <div
                 class="d-flex justify-content-end edit-btn-group"
                 *ngIf="selectedItemIndex !== -1"
               >
@@ -413,54 +503,4 @@
                   ></svg-icon>
                 </button>
               </div>
-
-              <!-- SECOND OR LAST EMPLOYER -->
-
-              <div
-                class="d-flex justify-content-center second-or-last-employer-group"
-                *ngIf="
-                  !workExperienceForm.get('noWorkExperience').value &&
-                  showAddNew
-                "
-              >
-                <button
-                  class="d-flex justify-content-center ta-font-semi-bold add-employer-btn"
-                  type="button"
-                  (click)="onAddSecondOrLastEmployer()"
-                >
-                  Add second or last employer
-                </button>
-              </div>
-
-              <!-- WORK EXPERINCE CHECKBOX -->
-
-              <div class="d-flex justify-content-center work-experience-group">
-                <app-ta-checkbox
-                  formControlName="noWorkExperience"
-                  [name]="'noWorkExperience'"
-                  [label]="'I don’t have work experience'"
-                ></app-ta-checkbox>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- NEXT BTN -->
-
-<div
-  class="d-flex justify-content-center align-items-center next-btn-container"
->
-  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
-</div>
-
-<!-- BACK BTN -->
-
-<div
-  class="d-flex justify-content-center align-items-center back-btn-container"
->
-  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
-</div>
+-->
