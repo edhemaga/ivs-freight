@@ -128,7 +128,35 @@ export class DashboardTopDriverComponent implements OnInit {
     }
   ];
 
-  circleColor: any[] = ['8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F', 'CCCCCC']
+  circleColor: any[] = ['8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F', 'CCCCCC'];
+
+  popoverTopTen: any[] = [
+    {
+      name: 'DISPATCHER'
+    },
+    {
+      name: 'DRIVER',
+      active: true
+    },
+    {
+      name: 'TRUCK'
+    },
+    {
+      name: 'BROKER'
+    },
+    {
+      name: 'SHIPPER'
+    },
+    {
+      name: 'OWNER'
+    },
+    {
+      name: 'REPAIR SHOP'
+    },
+    {
+      name: 'FUEL STOP'
+    }
+  ];
 
   constructor() { }
 
@@ -226,6 +254,14 @@ export class DashboardTopDriverComponent implements OnInit {
 
   changeDriverSwitchTabs(ev){
 
+  }
+
+  changeTopTen(item){
+    this.popoverTopTen.map((item) => {
+      item.active = false;
+      return item;
+    })
+    item.active = true;
   }
 
 }
