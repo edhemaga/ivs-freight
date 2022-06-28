@@ -127,7 +127,6 @@ export class TaInputComponent
           if (action) {
             this.dropdownToggler = false;
             this.isDropdownAddModeActive = action;
-            this.focusInput = true;
             this.setInputCursorAtTheEnd(this.input.nativeElement);
           }
         });

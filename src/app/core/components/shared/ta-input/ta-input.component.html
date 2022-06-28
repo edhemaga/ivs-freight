@@ -54,6 +54,8 @@
         !isDropdownAddModeActive &&
         !inputConfig.multiSelectDropdownActive &&
         !inputConfig.blackInput,
+      'dropdown-add-mode':
+        isDropdownAddModeActive && inputConfig.isDropdown && focusInput,
       focus: focusInput,
       'password-eye':
         inputConfig.type === 'password' &&
@@ -135,8 +137,13 @@
   </div>
 
   <!-- Input Confirm New Item in Dropdown -->
-  <!-- <div
-    *ngIf="isDropdownAddModeActive && inputConfig.isDropdown && focusInput"
+  <div
+    *ngIf="
+      isDropdownAddModeActive &&
+      inputConfig.isDropdown &&
+      focusInput &&
+      getSuperControl.value
+    "
     class="input-dropdown-confirm"
     (click)="onAddItemInDropdown($event)"
     ngbTooltip
@@ -146,9 +153,9 @@
   >
     <svg-icon
       class="input-dropdow-confirm-svg"
-      src="assets/svg/common/ic_confirm.svg"
+      src="assets/svg/ic_spec-confirm.svg"
     ></svg-icon>
-  </div> -->
+  </div>
 
   <!-- Input Drodown Arrow -->
   <svg-icon
