@@ -76,6 +76,10 @@
     color: #6c6c6c;
   }
 
+  &.hidden-label {
+    display: none !important;
+  }
+
   //------------------------- Custom class -------------------------
   &.input-big {
     top: 7px;
@@ -83,5 +87,9 @@
     &.up-label {
       top: -19px;
     }
+  }
+
+  &.regular {
+    font-weight: 400;
   }
 }

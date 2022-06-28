@@ -124,10 +124,6 @@ export class TaInputAddressComponent
       this.isVisibleCommands = false;
       clearTimeout(this.timeout);
     }, 150);
-
-    console.log(this.inputConfig.commands);
-    console.log(this.focusInput);
-    console.log(this.isVisibleCommands);
   }
 
   public clearInput(): void {

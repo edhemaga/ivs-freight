@@ -210,7 +210,6 @@ export class TaInputComponent
   public onBlur(): void {
     // Dropdown
     if (this.inputConfig.isDropdown) {
-      console.log('in');
       if (
         this.inputConfig.name === 'datepicker' ||
         this.inputConfig.name === 'timepicker'
@@ -233,8 +232,6 @@ export class TaInputComponent
         this.blurOnDropDownArrow();
       }
     } else {
-      console.log('else');
-
       let selection = window.getSelection();
       selection.removeAllRanges();
 
@@ -273,10 +270,6 @@ export class TaInputComponent
       this.isVisibleCommands = false;
       clearTimeout(this.timeout);
     }, 150);
-
-    console.log(this.inputConfig.commands);
-    console.log(this.focusInput);
-    console.log(this.isVisibleCommands);
   }
 
   private blurOnDropDownArrow() {

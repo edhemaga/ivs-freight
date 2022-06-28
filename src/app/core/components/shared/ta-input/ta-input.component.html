@@ -327,7 +327,12 @@
     [autocomplete]="inputConfig.autocomplete ? inputConfig.autocomplete : 'off'"
     [pattern]="inputConfig.pattern"
     [placeholder]="
-      inputConfig.placeholder && focusInput ? inputConfig.placeholder : ''
+      (inputConfig.placeholder && focusInput ? inputConfig.placeholder : '') ||
+      (inputConfig.placeholderInsteadOfLabel &&
+      inputConfig.placeholder &&
+      focusInput
+        ? inputConfig.placeholder
+        : '')
     "
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
@@ -462,7 +467,10 @@
       'valid-focus-out':
         getSuperControl.value && getSuperControl.valid && !focusInput,
       'invalid-focus-out':
-        getSuperControl.value && getSuperControl.invalid && !focusInput
+        getSuperControl.value && getSuperControl.invalid && !focusInput,
+      'hidden-label':
+        inputConfig.placeholderInsteadOfLabel &&
+        (focusInput || getSuperControl.value)
     }"
   >
     {{ inputConfig.label }}

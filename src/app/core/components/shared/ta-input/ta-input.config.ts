@@ -55,4 +55,6 @@ export interface ITaInput {
   blackInput?: boolean; // has only black background && input clear, no validations
   // Blue Input Text
   blueInputColor?: boolean; // some inputs has blue color on focus out
+  // Specific label input
+  placeholderInsteadOfLabel?: boolean;
 }
