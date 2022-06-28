@@ -12,12 +12,16 @@ import {
 } from 'appcoretruckassist';
 import moment from 'moment';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-tt-fhwa-inspection-modal',
   templateUrl: './tt-fhwa-inspection-modal.component.html',
   styleUrls: ['./tt-fhwa-inspection-modal.component.scss'],
+  providers: [ModalService],
 })
 export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

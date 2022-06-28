@@ -5,6 +5,7 @@ import {
   emailRegex,
   monthsValidRegex,
   routingBankRegex,
+  urlRegex,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -27,6 +28,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
   templateUrl: './settings-basic-modal.component.html',
   styleUrls: ['./settings-basic-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
+  providers: [ModalService],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   @ViewChild(TabSwitcherComponent) tabSwitcher: any;
@@ -157,9 +159,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       phone: [null, phoneRegex],
       email: [null, emailRegex],
       fax: [null],
-      url: [null],
+      url: [null, [...urlRegex]],
       address: [null, Validators.required],
-      addressUnit: [null],
+      addressUnit: [null, Validators.maxLength(6)],
       irp: [null],
       ifta: [null],
       toll: [null],

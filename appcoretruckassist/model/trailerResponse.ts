@@ -45,6 +45,8 @@ export interface TrailerResponse {
     model?: string | null;
     year?: number;
     note?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
     registrations?: Array<RegistrationResponse> | null;
     inspections?: Array<InspectionResponse> | null;
     titles?: Array<TitleResponse> | null;

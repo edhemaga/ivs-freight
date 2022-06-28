@@ -1,7 +1,7 @@
 <div
   class="input-custom-group"
   [ngClass]="{
-    'hover-focus-out': !focusInput,
+    'hover-focus-out': !focusInput && !inputConfig.isDropdownLabel,
     invalid: getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required':
       inputConfig.isRequired &&
@@ -12,7 +12,9 @@
       inputConfig.isRequired &&
       !getSuperControl.value &&
       getSuperControl.invalid &&
-      focusInput,
+      focusInput &&
+      !inputConfig.dropdownLabelSelected &&
+      !inputConfig.isDropdownLabel,
     valid: getSuperControl.value && getSuperControl.valid && !focusInput,
     'invalid-empty-dropdown':
       inputConfig.isRequired &&
@@ -28,7 +30,8 @@
     *ngIf="
       !inputConfig.hideClear &&
       !inputConfig.isDisabled &&
-      !inputConfig.customClass?.includes('details-pages')
+      !inputConfig.customClass?.includes('details-pages') &&
+      !inputConfig.commands?.active
     "
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
@@ -51,6 +54,8 @@
         !isDropdownAddModeActive &&
         !inputConfig.multiSelectDropdownActive &&
         !inputConfig.blackInput,
+      'dropdown-add-mode':
+        isDropdownAddModeActive && inputConfig.isDropdown && focusInput,
       focus: focusInput,
       'password-eye':
         inputConfig.type === 'password' &&
@@ -91,7 +96,8 @@
       !inputConfig.isDisabled &&
       !inputConfig.placeholderIcon &&
       !inputConfig.isDropdown &&
-      !inputConfig.blackInput
+      !inputConfig.blackInput &&
+      !inputConfig.hideRequiredCheck
     "
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
@@ -132,7 +138,12 @@
 
   <!-- Input Confirm New Item in Dropdown -->
   <div
-    *ngIf="isDropdownAddModeActive && inputConfig.isDropdown && focusInput"
+    *ngIf="
+      isDropdownAddModeActive &&
+      inputConfig.isDropdown &&
+      focusInput &&
+      getSuperControl.value
+    "
     class="input-dropdown-confirm"
     (click)="onAddItemInDropdown($event)"
     ngbTooltip
@@ -142,7 +153,7 @@
   >
     <svg-icon
       class="input-dropdow-confirm-svg"
-      src="assets/svg/common/ic_confirm.svg"
+      src="assets/svg/ic_spec-confirm.svg"
     ></svg-icon>
   </div>
 
@@ -151,18 +162,22 @@
     class="input-dropdown-arrow {{ inputConfig.customClass }}"
     *ngIf="
       (inputConfig.isDropdown &&
-      !inputConfig.isDisabled &&
-      !isDropdownAddModeActive &&
-      !inputConfig.multiSelectDropdownActive) ||
-      (inputConfig.name === 'datepicker' ||
-        inputConfig.name === 'timepicker')
+        !inputConfig.isDisabled &&
+        !isDropdownAddModeActive &&
+        !inputConfig.multiSelectDropdownActive) ||
+      inputConfig.name === 'datepicker' ||
+      inputConfig.name === 'timepicker' ||
+      inputConfig.isDropdownLabel
     "
     [ngClass]="{
       active:
         (!inputConfig.isDisabled && focusInput) ||
         (inputConfig.multiSelectDropdownActive && focusInput),
       valid:
-        (getSuperControl.value && getSuperControl.valid && focusInput) ||
+        (!inputConfig.isDropdownLabel &&
+          getSuperControl.value &&
+          getSuperControl.valid &&
+          focusInput) ||
         (inputConfig.multiSelectDropdownActive && focusInput),
       'valid-focus-out-required':
         getSuperControl.value && getSuperControl.valid && !focusInput,
@@ -172,29 +187,56 @@
         !getSuperControl.value &&
         getSuperControl.invalid &&
         touchedInput &&
-        !focusInput
+        !focusInput,
+      'dropdown-label-active': inputConfig.isDropdownLabel && focusInput
     }"
     src="assets/svg/common/ic_arrow_down_updated.svg"
     (click)="toggleDropdownOptions()"
   ></svg-icon>
 
-  <!-- Modal PM -,+ buttons -->
-  <div
-    *ngIf="inputConfig.modalPM && isVisiblePmCommands"
-    class="input-pm-incrementation"
+  <!-- Dropdown Label Selected Name -->
+  <p
+    *ngIf="inputConfig.isDropdownLabel && focusInput"
+    class="ta-input-label-selected-item"
   >
-    <div class="input-pm-decrement">
+    {{ inputConfig.dropdownLabelSelected?.name }}
+  </p>
+
+  <!-- Dropdown Label Divider -->
+  <div
+    *ngIf="inputConfig.isDropdownLabel && focusInput"
+    class="ta-input-label-vertical-divider"
+  ></div>
+
+  <!-- Input Commands -->
+  <div
+    *ngIf="inputConfig.commands?.active && isVisibleCommands"
+    class="ta-input-commands"
+  >
+    <div class="ta-input-command-first">
       <svg-icon
-        class="pm-svg-decrement"
-        src="assets/svg/common/ic_pm_decrement.svg"
-        (click)="onPmIncrementation($event, 'decrement')"
+        class="ta-input-command-svg-first"
+        [src]="inputConfig.commands.firstCommand.svg"
+        (click)="
+          onCommands(
+            $event,
+            inputConfig.commands.type,
+            inputConfig.commands.firstCommand.name
+          )
+        "
       ></svg-icon>
     </div>
-    <div class="input-pm-increment">
+    <div class="ta-input-command-second">
       <svg-icon
-        class="pm-svg-increment"
-        src="assets/svg/common/ic_pm_increment.svg"
-        (click)="onPmIncrementation($event, 'increment')"
+        class="ta-input-command-svg-second"
+        [src]="inputConfig.commands.secondCommand.svg"
+        (click)="
+          onCommands(
+            $event,
+            inputConfig.commands.type,
+            inputConfig.commands.secondCommand.name
+          )
+        "
       ></svg-icon>
     </div>
   </div>
@@ -214,13 +256,31 @@
     (hidden)="onPopoverHidden()"
     class="input-icon {{ inputConfig.customClass }}"
     *ngIf="inputConfig.placeholderIcon"
+    [svgStyle]="{
+      fill: inputConfig.isDropdownLabel
+        ? inputConfig.dropdownLabelSelected?.color
+          ? inputConfig.dropdownLabelSelected.color
+          : '#b7b7b7'
+        : null
+    }"
     [ngClass]="{
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
+      'default-svg-color':
+        !inputConfig.dropdownLabelSelected && !inputConfig.isDropdownLabel,
       'valid-required-in':
-        getSuperControl.value && getSuperControl.valid && focusInput,
+        !inputConfig.commands?.active &&
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        focusInput &&
+        !inputConfig.dropdownLabelSelected &&
+        !inputConfig.isDropdownLabel,
       'valid-required-out':
-        getSuperControl.value && getSuperControl.valid && !focusInput,
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        !focusInput &&
+        !inputConfig.dropdownLabelSelected &&
+        !inputConfig.isDropdownLabel,
       'invalid-required-in':
         getSuperControl.value && getSuperControl.invalid && focusInput,
       'invalid-required-empty':
@@ -257,12 +317,7 @@
   >
   </svg-icon>
 
-  <!-- Input Control 
-  
-     thousandSeparator="{{ inputConfig.mask === 'separator.2' ? ',' : null }}"
-    separatorLimit="99999999999999"
-  
-  -->
+  <!-- Input Control -->
   <input
     #input
     [type]="inputConfig.type | inputType: togglePassword"
@@ -271,7 +326,14 @@
     [disabled]="inputConfig.isDisabled"
     [autocomplete]="inputConfig.autocomplete ? inputConfig.autocomplete : 'off'"
     [pattern]="inputConfig.pattern"
-    [placeholder]="inputConfig.placeholder ? inputConfig.placeholder : ''"
+    [placeholder]="
+      (inputConfig.placeholder && focusInput ? inputConfig.placeholder : '') ||
+      (inputConfig.placeholderInsteadOfLabel &&
+      inputConfig.placeholder &&
+      focusInput
+        ? inputConfig.placeholder
+        : '')
+    "
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
     mask="{{ inputConfig.mask }}"
@@ -279,9 +341,9 @@
     [max]="inputConfig.max"
     [step]="inputConfig.step ? inputConfig.step : null"
     inputformat="dd-mm-yy"
-    class="input-control 
-    {{ inputConfig.textTransform }} 
-    {{ inputConfig.textAlign }} 
+    class="input-control
+    {{ inputConfig.textTransform }}
+    {{ inputConfig.textAlign }}
     {{ inputConfig.customClass }}"
     [ngClass]="{
       disabled: !getSuperControl.value && inputConfig.isDisabled,
@@ -291,7 +353,7 @@
         getSuperControl.valid &&
         focusInput &&
         !isVisiblePasswordEye &&
-        !isVisiblePmCommands &&
+        !isVisibleCommands &&
         !inputConfig.blackInput,
       'invalid-focus-in':
         getSuperControl.value &&
@@ -299,8 +361,8 @@
         focusInput &&
         !inputConfig.blackInput,
       'password-eye':
-        ((inputConfig.type === 'password' && isVisiblePasswordEye) ||
-          isVisiblePmCommands) &&
+        inputConfig.type === 'password' &&
+        isVisiblePasswordEye &&
         !getSuperControl.invalid,
       'password-eye-invalid':
         inputConfig.type === 'password' &&
@@ -315,7 +377,10 @@
         focusInput &&
         !inputConfig.blackInput,
       'multiSelect-dropdown-active':
-        inputConfig.multiSelectDropdownActive && focusInput
+        inputConfig.multiSelectDropdownActive && focusInput,
+      'blue-input-color': inputConfig.blueInputColor && !focusInput,
+      'dropdown-label-active': inputConfig.isDropdownLabel && isVisibleCommands,
+      'input-commands': inputConfig.commands?.active && isVisibleCommands
     }"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"
@@ -323,7 +388,7 @@
     (focus)="onFocus()"
     (paste)="onPaste($event, inputConfig.maxLength)"
     (input)="onChange($event.target.value); transformText($event.target.value)"
-    [(ngModel)]="inputConfig.mask ? '' : input.value"
+    [(ngModel)]="input.value"
   />
 
   <!-- DateTime Picker -->
@@ -402,7 +467,10 @@
       'valid-focus-out':
         getSuperControl.value && getSuperControl.valid && !focusInput,
       'invalid-focus-out':
-        getSuperControl.value && getSuperControl.invalid && !focusInput
+        getSuperControl.value && getSuperControl.invalid && !focusInput,
+      'hidden-label':
+        inputConfig.placeholderInsteadOfLabel &&
+        (focusInput || getSuperControl.value)
     }"
   >
     {{ inputConfig.label }}

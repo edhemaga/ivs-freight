@@ -21,6 +21,8 @@ export interface ShipperResponse {
     phoneExt?: string | null;
     email?: string | null;
     address?: AddressEntity;
+    longitude?: number | null;
+    latitude?: number | null;
     receivingAppointment?: boolean;
     receivingFrom?: string | null;
     receivingTo?: string | null;

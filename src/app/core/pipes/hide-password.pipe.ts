@@ -28,18 +28,15 @@ export class HidePasswordPipe implements PipeTransform {
         break;
       }
       case 'account': {
-        console.log(toogleVisibility)
-        if(!toogleVisibility) {
+        if (!toogleVisibility) {
           for (let i = 0; i < value.length; i++) {
             if (i < 3) {
               hideNumber += '●';
-            } 
-            else {
+            } else {
               hideNumber += value[i];
             }
           }
-        }
-        else {
+        } else {
           hideNumber = value;
         }
       }

@@ -31,7 +31,6 @@ import { TitleService } from './api/title.service';
 import { TodoService } from './api/todo.service';
 import { TrailerService } from './api/trailer.service';
 import { TruckService } from './api/truck.service';
-import { UserService } from './api/user.service';
 
 @NgModule({
   imports:      [],

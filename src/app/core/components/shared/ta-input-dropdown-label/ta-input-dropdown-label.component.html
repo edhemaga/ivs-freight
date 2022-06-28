@@ -1,0 +1,31 @@
+<app-ta-input
+  [formControl]="getSuperControl"
+  [inputConfig]="inputConfig"
+  (commandEvent)="onLabelNameEvent($event)"
+  #t2="ngbPopover"
+  [ngbPopover]="taInputDropdownPopover"
+  [placement]="['bottom-left']"
+  popoverClass="ta-input-dropdown-label"
+  [container]="'body'"
+></app-ta-input>
+
+<ng-template #taInputDropdownPopover (click)="onClick()">
+  <div class="ta-label-options">
+    <div
+      class="ta-label-option"
+      *ngFor="let label of options; trackBy: identity"
+      (click)="onSelectLabel($event, label)"
+    >
+      <svg-icon
+        class="ta-label-option-svg"
+        src="assets/svg/common/ic_dynamic_label.svg"
+        [svgStyle]="{ fill: label?.color ? label?.color : '#b7b7b7' }"
+      ></svg-icon>
+      <div class="ta-label-vertical-divider"></div>
+      <p class="ta-label-option-name">{{ label.name }}</p>
+      <div *ngIf="label.count" class="ta-label-option-count">
+        {{ label.count }}
+      </div>
+    </div>
+  </div>
+</ng-template>

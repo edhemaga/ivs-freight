@@ -5,23 +5,20 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TaSvgPipe implements PipeTransform {
   transform(svgPath: string, folder: string, subFolder?: string): any {
-
     if (!svgPath) {
       return null;
     }
 
-    if(!svgPath.includes('.svg')) {
+    if (!svgPath.includes('.svg')) {
       svgPath = svgPath.concat('.svg');
     }
 
-    if(!svgPath.includes('ic_')) {
+    if (!svgPath.includes('ic_')) {
       svgPath = 'ic_'.concat(svgPath);
     }
-    
     if (!subFolder) {
       return `assets/svg/${folder}/${svgPath}`;
     }
-    console.log(`assets/svg/${folder}/${subFolder}/${svgPath}`)
     return `assets/svg/${folder}/${subFolder}/${svgPath}`;
   }
 }
