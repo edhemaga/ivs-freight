@@ -109,16 +109,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public billingCredit = [
     {
       id: 301,
-      label: 'Enable',
+      label: 'credit',
       value: 'enable',
-      name: 'credit',
+      name: 'Enable',
       checked: true,
     },
     {
       id: 300,
-      label: 'Disable',
+      label: 'credit',
       value: 'disable',
-      name: 'credit',
+      name: 'Disable',
       checked: false,
     },
   ];
@@ -352,9 +352,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public tabPhysicalAddressChange(event: any): void {
-    this.selectedPhysicalAddressTab = event.find(
-      (item) => item.checked === true
-    );
+    this.selectedPhysicalAddressTab = event;
+    
     if (
       this.selectedPhysicalAddressTab?.id.toLowerCase() === 'physicaladdress'
     ) {
@@ -383,9 +382,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public tabBillingAddressChange(event: any): void {
-    this.selectedBillingAddressTab = event.find(
-      (item) => item.checked === true
-    );
+    this.selectedBillingAddressTab = event;
 
     if (this.selectedBillingAddressTab?.id === 'billingaddress') {
       this.inputService.changeValidators(this.brokerForm.get('billingAddress'));

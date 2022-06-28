@@ -1,3 +1,6 @@
+$top_driver_hover_color: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38BDEB', 'FFCA28', 'A2D35F', 'F276EF', '8D6E63';
+$top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F';
+
 .dashboard-top-driver-holder{
     width: 100%;
     display: flex;
@@ -177,6 +180,7 @@
 
             .col-4{
                 display: flex;
+                padding-right: 0px;
             }
         }
 
@@ -203,8 +207,10 @@
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding: 13px 12px 8px 12px;
+                    padding: 13px 12px 8px 6px;
                     box-sizing: border-box;
+                    border-radius: 2px;
+                    margin: 2px 0px;
 
                     .dashboard-top-driver-body-list-frame{
                         display: flex;
@@ -212,13 +218,14 @@
                         align-items: center;
 
                         .dashboard-top-driver-body-list-id{
+                            width: 30px;
                             display: flex;
                             justify-content: center;
                             align-items: center;
                             font-size: 14px;
                             font-weight: 700;
                             color: #6C6C6C;
-                            padding: 0px 28px 0px 12px;
+                            padding: 0px 16px 0px 0px;
                             box-sizing: border-box;
                         }
     
@@ -227,7 +234,15 @@
                             height: 14px;
                             border-radius: 100%;
                             background-color: #8A9AEF;
-                        }    
+
+                            @each $col1 in $top_driver_color{
+                                &.top-ten-#{$col1}-color{
+                                    background-color: unquote('#' + $col1);
+                                }
+                            }
+    
+
+                        }   
 
                         .dashboard-top-driver-body-list-name{
                             font-size: 14px;
@@ -252,6 +267,40 @@
                         }
                     }
 
+                    
+
+                    &:hover{
+                        cursor: pointer;
+                        background-color: #F3F3F3;
+
+                        .dashboard-top-driver-body-list-id{
+                            color: #3C3C3C !important;
+                        }
+
+                        .dashboard-top-driver-body-list-name{
+                            color: #3C3C3C !important;
+                        }
+
+                        .dashboard-top-driver-body-list-price{
+                            color: #3C3C3C !important;
+                        }
+
+                        .dashboard-top-driver-body-list-percent{
+                            color: #3C3C3C !important;
+                        }
+
+                        $ii: 1;
+                        @each $col1 in $top_driver_color{
+                            $hover_color : nth($top_driver_hover_color, $ii);
+                            $ii: $ii + 1;
+                            .top-ten-#{$col1}-color{
+                                background-color: unquote('#' + $hover_color) !important;
+                            }
+                        }
+
+                    } 
+
+    
                 }
 
                 .dashboard-top-driver-body-list-border{
@@ -260,6 +309,7 @@
                     border-radius: 1px;
                     background-color: #F3F3F3;
                 }
+
             }
 
             &::-webkit-scrollbar-thumb{
@@ -271,6 +321,93 @@
             display: flex;
             justify-content: center;
             align-items: center;
+
+            padding: 9px 0px 7px 0px;
+
+            .doughnut_chart_holder{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                width: 100%;
+                height: 100%;
+
+                border: 2px solid #F3F3F3;
+                border-top: none;
+                border-bottom: none;
+                border-radius: 1px;
+            }
+        }
+
+        .col-5{
+            padding: 13px 12px 11px 12px;
+            .bar_chart_holder{
+                width: 100%;
+                height: 100%;
+
+                .chart_top_line_holder{
+                    display: flex;
+                    margin-bottom: 19px;
+
+                    .chart_line_title{
+                        font-size: 18px;
+                        line-height: 22px;
+                        font-weight: 700;
+                        color: #AAAAAA;
+                        flex: 1
+                    }
+
+                    .chart_legend_hold{
+                        .chart_legend_line{
+                            display: flex;
+                            align-items: center;
+
+                            &.line_sep{
+                                margin-bottom: 8px;
+                            }
+
+                            .chart_legend_title{
+                                font-size: 11px;
+                                font-weight: 500;
+                                line-height: 14px;
+                                color: #6C6C6C;
+                            }
+
+                            .chart_legend_dot{
+                                svg-icon{
+                                    svg{
+                                        display: flex;
+                                        width: 10px;
+                                        height: 10px;
+
+                                        margin-right: 4px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.round_dark_grey{
+    svg-icon{
+        svg{
+            rect{
+                fill: #919191;
+            }
+        }
+    }
+}
+
+.round_light_grey{
+    svg-icon{
+        svg{
+            rect{
+                fill: #CCCCCC;
+            }
         }
     }
 }

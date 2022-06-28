@@ -452,7 +452,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public tabOwnerChange(event: any[]): void {
-    this.selectedOwnerTab = event.find((item) => item.checked === true);
+    this.selectedOwnerTab = event;
     this.driverForm.get('ownerType').patchValue(this.selectedOwnerTab.name);
     if (
       this.driverForm.get('isOwner').value &&

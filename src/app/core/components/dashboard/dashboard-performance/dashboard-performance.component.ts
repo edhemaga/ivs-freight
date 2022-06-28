@@ -24,7 +24,6 @@ export class DashboardPerformanceComponent implements OnInit {
         defaultConfig: {
           type: 'line',
           data: [12, 21, 27, 37, 28, 25, 21, 10, 15, 45, 27, 46, 41, 28, 24, 12, 21, 27, 37, 28, 25, 21, 10, 20],
-          yAxisID: 'y-axis-0',
           borderColor: '#8A9AEF',
           pointBorderColor: 'rgba(0, 0, 0, 0)',
           pointBackgroundColor: 'rgba(0, 0, 0, 0)',
@@ -43,7 +42,6 @@ export class DashboardPerformanceComponent implements OnInit {
         defaultConfig: {
           type: 'line',
           data: [10, 14, 30, 7, 28, 11, 20, 39, 46, 10, 12, 46, 10, 14, 30, 7, 28, 11, 20, 39, 46, 10, 12, 10],
-          yAxisID: 'y-axis-0',
           borderColor: '#FDB46B',
           pointBorderColor: 'rgba(0, 0, 0, 0)',
           pointBackgroundColor: 'rgba(0, 0, 0, 0)',
@@ -59,7 +57,6 @@ export class DashboardPerformanceComponent implements OnInit {
         defaultConfig: {
           type: 'line',
           data: [10, 12, 46, 10, 14, 30, 7, 28, 11, 20, 10, 12, 46, 10, 14, 30, 29, 11, 19, 20, 39, 46, 10, 15],
-          yAxisID: 'y-axis-0',
           borderColor: '#F27B8E',
           pointBorderColor: 'rgba(0, 0, 0, 0)',
           pointBackgroundColor: 'rgba(0, 0, 0, 0)',
@@ -75,7 +72,6 @@ export class DashboardPerformanceComponent implements OnInit {
         defaultConfig: {
           type: 'line',
           data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          yAxisID: 'y-axis-0',
           borderColor: '#A574C3',
           pointBorderColor: 'rgba(0, 0, 0, 0)',
           pointBackgroundColor: 'rgba(0, 0, 0, 0)',
@@ -91,7 +87,6 @@ export class DashboardPerformanceComponent implements OnInit {
         defaultConfig: {
           type: 'line',
           data: [0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 0],
-          yAxisID: 'y-axis-0',
           borderColor: '#6DC089',
           pointBorderColor: 'rgba(0, 0, 0, 0)',
           pointBackgroundColor: 'rgba(0, 0, 0, 0)',
@@ -102,6 +97,188 @@ export class DashboardPerformanceComponent implements OnInit {
           id: 'driver',
           hidden: false
         }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [20, 50, 40, 10, 0, 20, 35, 40, 20, 50, 40, 10, 0, 20, 35, 40, 20, 50, 40, 10, 0, 20, 35, 40],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'revenue',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [30, 20, 11, 15, 22, 0, 35, 50, 30, 20, 11, 15, 22, 0, 35, 50, 30, 20, 11, 15, 22, 0, 35, 50],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'load',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [0, 11, 0, 30, 40, 50, 16, 30, 0, 11, 0, 30, 40, 50, 16, 30, 30, 11, 0, 30, 40, 50, 16, 30],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'fuel',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [10, 32, 10, 0, 52, 11, 15, 30, 10, 32, 10, 0, 50, 11, 15, 30, 10, 32, 10, 0, 50, 11, 15, 30],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'fuel-cost',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [50, 30, 45, 20, 22, 25, 16, 40, 50, 30, 45, 20, 22, 25, 16, 40, 50, 30, 45, 20, 22, 25, 16, 40],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'repair',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [8, 15, 30, 12, 22, 16, 18, 50, 8, 15, 30, 12, 22, 16, 18, 50, 8, 15, 30, 12, 22, 16, 18, 50],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'violation',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [18, 22, 40, 45, 30, 12, 42, 12, 18, 22, 40, 45, 30, 12, 42, 12, 18, 22, 40, 45, 30, 12, 42, 12],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'expences',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [15, 20, 25, 30, 45, 40, 50, 12, 15, 20, 25, 30, 45, 40, 50, 12, 15, 20, 25, 30, 45, 40, 50, 12],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'truck',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [0, 5, 10, 15, 20, 25, 30, 35, 0, 5, 10, 15, 20, 25, 30, 35, 0, 5, 10, 15, 20, 25, 30, 35],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'trailer',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [40, 35, 35, 35, 30, 21, 20, 35, 40, 35, 35, 35, 30, 21, 20, 35, 40, 35, 35, 35, 30, 21, 20, 35],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'owner',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [12, 50, 20, 5, 30, 18, 40, 50, 12, 50, 20, 5, 30, 18, 40, 50, 12, 50, 20, 5, 30, 18, 40, 50],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'user',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [10, 5, 10, 15, 20, 25, 30, 50, 0, 5, 10, 15, 20, 11, 30, 35, 0, 5, 10, 15, 20, 25, 30, 35],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'repair-shop',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [18, 15, 10, 12, 22, 19, 18, 2, 8, 15, 30, 12, 22, 16, 18, 50, 40, 15, 30, 12, 22, 16, 18, 30],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'broker',
+          hidden: true
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [20, 30, 40, 10, 10, 20, 35, 40, 20, 50, 40, 10, 10, 20, 35, 40, 20, 50, 40, 10, 20, 20, 35, 40],
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2,
+          id: 'shipper',
+          hidden: true
+        }
       }
     ],
     showLegend: false,
@@ -110,6 +287,7 @@ export class DashboardPerformanceComponent implements OnInit {
     chartWidth: '1800',
     chartHeight: '222',
     removeChartMargin: true,
+    allowAnimation: true,
     dataLabels: [['01', 'WED'], ['02', 'THU'], ['03', 'FRI'], ['04', 'SAT'], ['05', 'SUN'], ['06', 'MON'], ['07', 'TUE'], ['08', 'WED'], ['09', 'THU'],
       ['10', 'FRI'], ['11', 'SAT'], ['12', 'SUN'], ['13', 'MON'], ['14', 'TUE'], ['15', 'WED'], ['16', 'THU'], ['17', 'FRI'], ['18', 'SAT'],
       ['19', 'SUN'], ['20', 'MON'], ['21', 'TUE'], ['22', 'WED'], ['23', 'THU'], ['24', 'FRI']
