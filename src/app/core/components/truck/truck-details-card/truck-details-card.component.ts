@@ -1,6 +1,6 @@
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute } from '@angular/router';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
@@ -8,14 +8,16 @@ import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckQuery } from '../state/truck.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-
+import { card_component_animation } from '../../shared/animations/card-component.animations';
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-truck-details-card',
   templateUrl: './truck-details-card.component.html',
   styleUrls: ['./truck-details-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  animations: [card_component_animation('showHideCardBody')],
 })
-export class TruckDetailsCardComponent implements OnInit {
+export class TruckDetailsCardComponent implements OnInit,OnChanges {
   public noteControl: FormControl = new FormControl();
   public buttonsArrayPerfomance: any;
   public buttonsArrayFuel: any;
@@ -27,20 +29,178 @@ export class TruckDetailsCardComponent implements OnInit {
   @Input() truck: TruckResponse | any;
   public truck_active_id: number = +this.activeted_route.snapshot.params['id'];
   public truck_list: any[] = this.trucksQuery.getAll();
+  public copiedPhone:boolean;
+  public copiedEmail:boolean;
+  public copiedVin:boolean;
+
+  public barChartLegend: any[] = [
+    {
+      title: 'Miles Per Gallon',
+      value: '0.00',
+      image: 'assets/svg/common/round_yellow.svg',
+      sufix: 'mi',
+      elementId: 1
+    },
+    {
+      title: 'Revenue',
+      value: '0.00',
+      image: 'assets/svg/common/round_blue.svg',
+      prefix: '$',
+      elementId: 0
+    }
+  ];
+
+  public barChartLegend2: any[] = [
+    {
+      title: 'Miles',
+      value: '150,257.7',
+      image: 'assets/svg/common/round_blue_light.svg',
+      sufix: 'mi',
+      elementId: 1
+    },
+    {
+      title: 'Revenue',
+      value: '190,568.85',
+      image: 'assets/svg/common/round_blue.svg',
+      prefix: '$',
+      elementId: 0
+    }
+  ];
+
+  public mixedBarChartLegend: any[] = [
+    {
+      title: 'Avg. Rate',
+      value: 2.37,
+      image: 'assets/svg/common/round_blue.svg',
+      prefix: '$',
+      elementId: 0
+    },
+    {
+      title: 'Highest Rate',
+      value: 2.86,
+      image: 'assets/svg/common/round_green.svg',
+      prefix: '$',
+      elementId: [1, 0]
+    },
+    {
+      title: 'Lowest Rate',
+      value: 1.29,
+      image: 'assets/svg/common/round_yellow.svg',
+      prefix: '$',
+      elementId: [1, 1]
+    }
+  ];
+
+  public paymentChartLegend: any[] = [
+    {
+      title: 'Avg. Pay Period',
+      value: 27,
+      image: 'assets/svg/common/round_blue_red.svg',
+      sufix: 'days',
+      elementId: 0,
+      titleReplace: 'Pay Period',
+      imageReplace: 'assets/svg/common/round_blue.svg'
+    },
+    {
+      title: 'Pay Term',
+      value: 32,
+      image: 'assets/svg/common/dash_line.svg',
+      sufix: 'days'
+    }
+  ];
+
+  public barAxes: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 60,
+      stepSize: 15,
+      showGridLines: true
+    },
+    verticalRightAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 24000,
+      stepSize: 6000,
+      showGridLines: false
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false
+    }
+  };
+
+  public barAxes2: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 60,
+      stepSize: 15,
+      showGridLines: true
+    },
+    verticalRightAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 24000,
+      stepSize: 6000,
+      showGridLines: false
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false
+    }
+  };
+
+  public mixedBarAxes: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 1,
+      maxValue: 3,
+      stepSize: 0.5,
+      showGridLines: true,
+      decimal: true
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false
+    }
+  };
+
+  public paymentAxes: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 52,
+      stepSize: 13,
+      showGridLines: true
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false
+    }
+  };
+
   constructor(
     private activeted_route: ActivatedRoute,
     private modalService: ModalService,
     private trucksQuery: TruckQuery,
-    private detailsPageDriverSer: DetailsPageService
+    private detailsPageDriverSer: DetailsPageService,
+    private clipboar: Clipboard,
   ) {}
-
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    this.noteControl.patchValue(changes.truck.currentValue.note);
+  }
   ngOnInit(): void {
-    console.log(this.truck);
     this.getTruckDropdown();
-
-    this.noteControl.patchValue(this.truck.note);
-
+    this.buttonSwitcher();
     this.initTableOptions();
+  }
+  public buttonSwitcher() {
     this.buttonsArrayPerfomance = [
       {
         id: 5,
@@ -121,7 +281,6 @@ export class TruckDetailsCardComponent implements OnInit {
       },
     ];
   }
-
   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataEdit = {
@@ -237,8 +396,7 @@ export class TruckDetailsCardComponent implements OnInit {
   }
   public onChangeTruck(action: string) {
     let currentIndex = this.truck_list
-      .map((truck) => truck.id)
-      .indexOf(this.truck.id);
+      .findIndex((truck)=>truck.id===this.truck.id)
     switch (action) {
       case 'previous': {
         currentIndex = --currentIndex;
@@ -266,4 +424,20 @@ export class TruckDetailsCardComponent implements OnInit {
       }
     }
   }
+    /* To copy any Text */
+    public copyText(val: any, copyVal: string) {
+      switch (copyVal) {
+        case 'phone':
+          this.copiedPhone = true;
+          break;
+        case 'email':
+          this.copiedEmail = true;
+          break;
+          case 'vin':
+          this.copiedVin = true;
+          break;
+       
+      }
+      this.clipboar.copy(val);
+    }
 }

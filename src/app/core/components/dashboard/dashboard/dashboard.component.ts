@@ -13,7 +13,7 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss', '../dashboard.global.scss'],
+  styleUrls: ['./dashboard.component.scss',],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -161,6 +161,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       statusPercentage: 90.0
     }
   ];
+
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(

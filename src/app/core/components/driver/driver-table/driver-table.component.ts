@@ -4,18 +4,21 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
-import { DriversQuery } from '../state/driver.query';
+import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 import { DatePipe } from '@angular/common';
 import { DriverTService } from '../state/driver.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { DriversState, DriversStore } from '../state/driver.store';
+import { DriversActiveState } from '../state/driver-active-state/driver-active.store';
 import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
+import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
+import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
+import { DriverListResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-driver-table',
@@ -28,13 +31,15 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   public viewData: any[] = [];
   public columns: any[] = [];
   public selectedTab = 'active';
-  public drivers: DriversState[] = [];
+  public driversActive: DriversActiveState[] = [];
+  public driversInactive: DriversInactiveState[] = [];
   resetColumns: boolean;
   loadingPage: boolean = true;
 
   constructor(
     private modalService: ModalService,
-    private driversQuery: DriversQuery,
+    private driversActiveQuery: DriversActiveQuery,
+    private driversInactiveQuery: DriversInactiveQuery,
     private tableService: TruckassistTableService,
     public datePipe: DatePipe,
     private driverTService: DriverTService,
@@ -42,7 +47,6 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
     this.sendDriverData();
 
     // Reset Columns
@@ -60,7 +64,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
-        if (res.animation === 'add') {
+        // On Add In Active Tab
+        if (res.animation === 'add' && this.selectedTab === 'active') {
           this.viewData.push(this.mapDriverData(res.data));
 
           this.viewData = this.viewData.map((driver: any) => {
@@ -78,6 +83,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
             clearInterval(inetval);
           }, 1000);
+        } else if (res.animation === 'add' && this.selectedTab === 'inactive') {
+          this.updateDataCount();
         } else if (res.animation === 'update') {
           const updatedDriver = this.mapDriverData(res.data);
 
@@ -106,6 +113,28 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
             return driver;
           });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(driverIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
+        } else if (res.animation === 'delete') {
+          let driverIndex: number;
+
+          this.viewData = this.viewData.map((driver: any, index: number) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'delete';
+              driverIndex = index;
+            }
+
+            return driver;
+          });
+
+          this.updateDataCount();
 
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
@@ -198,8 +227,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
           contentType: 'add',
         },
         {
-          title: 'Activate',
-          reverseTitle: 'Deactivate',
+          title: this.selectedTab === 'inactive' ? 'Deactivate' : 'Activate',
           name: 'activate-item',
           class: 'regular-text',
           contentType: 'activate',
@@ -218,14 +246,24 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   }
 
   sendDriverData() {
+    this.initTableOptions();
+
     const driverCount = JSON.parse(localStorage.getItem('driverTableCount'));
+
+    const applicantsData = this.getTabData(null);
+
+    const driverActiveData =
+      this.selectedTab === 'active' ? this.getTabData('active') : [];
+
+    const driverInactiveData =
+      this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
 
     this.tableData = [
       {
         title: 'Applicants',
         field: 'applicants',
         length: 0,
-        data: this.getTabData(),
+        data: applicantsData,
         extended: true,
         gridNameTitle: 'Driver',
         stateName: 'applicants',
@@ -235,7 +273,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Active',
         field: 'active',
         length: driverCount.active,
-        data: this.getTabData(),
+        data: driverActiveData,
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -245,7 +283,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         title: 'Inactive',
         field: 'inactive',
         length: driverCount.inactive,
-        data: this.getTabData(),
+        data: driverInactiveData,
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -258,10 +296,18 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.setDriverData(td);
   }
 
-  getTabData() {
-    this.drivers = this.driversQuery.getAll();
+  getTabData(dataType: string) {
+    if (dataType === 'active') {
+      this.driversActive = this.driversActiveQuery.getAll();
 
-    return this.drivers?.length ? this.drivers : [];
+      return this.driversActive?.length ? this.driversActive : [];
+    } else if (dataType === 'inactive') {
+      this.driversInactive = this.driversInactiveQuery.getAll();
+
+      return this.driversInactive?.length ? this.driversInactive : [];
+    } else {
+      return [];
+    }
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
@@ -286,9 +332,11 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     if (td.data.length) {
       this.viewData = td.data;
 
-      this.viewData = this.viewData.map((data: DriversState) => {
+      this.viewData = this.viewData.map((data: any) => {
         return this.mapDriverData(data);
       });
+    } else {
+      this.viewData = [];
     }
   }
 
@@ -352,11 +400,40 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       this.modalService.openModal(DriverModalComponent, {
         size: 'small',
       });
-    } else if (event.action === 'tab-selected') {
+    } else if (
+      event.action === 'tab-selected' &&
+      event.tabData.field !== 'applicants'
+    ) {
       this.selectedTab = event.tabData.field;
-      this.setDriverData(event.tabData);
+
+      this.sendDriverData();
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
+    }
+  }
+
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+        this.driverTService
+          .getDrivers(
+            this.selectedTab === 'active' ? 1 : 0,
+            1,
+            25,
+            undefined,
+            event.direction
+          )
+          .pipe(untilDestroyed(this))
+          .subscribe((drivers: DriverListResponse) => {
+            this.viewData = drivers.pagination.data;
+
+            this.viewData = this.viewData.map((data: any) => {
+              return this.mapDriverData(data);
+            });
+          });
+      } else {
+        this.sendDriverData();
+      }
     }
   }
 
@@ -400,7 +477,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       );
     } else if (event.type === 'activate-item') {
       this.driverTService
-        .changeDriverStatus(event.id)
+        .changeDriverStatus(event.id, this.selectedTab)
         .pipe(untilDestroyed(this))
         .subscribe({
           next: () => {
@@ -418,7 +495,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         });
     } else if (event.type === 'delete-item') {
       this.driverTService
-        .deleteDriverById(event.id)
+        .deleteDriverById(event.id, this.selectedTab)
         .pipe(untilDestroyed(this))
         .subscribe({
           next: () => {

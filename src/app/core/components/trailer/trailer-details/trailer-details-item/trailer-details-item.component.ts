@@ -13,34 +13,34 @@ import { card_component_animation } from '../../../shared/animations/card-compon
   templateUrl: './trailer-details-item.component.html',
   styleUrls: ['./trailer-details-item.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations:[card_component_animation('showHideCardBody')]
+  animations: [card_component_animation('showHideCardBody')],
 })
 export class TrailerDetailsItemComponent implements OnInit {
   @Input() trailer: TrailerResponse | any = null;
   public note: FormControl = new FormControl();
   public trailerData: any;
   public svgColorVar: string;
-  public toggleOwner: boolean = false;
+
   public trailerName: string;
-  public dataTest:any;
-  public toggler:boolean[]=[];
+  public dataTest: any;
+  public toggler: boolean[] = [];
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
-    this.note.patchValue(this.trailer.data.note)
+    this.note.patchValue(this.trailer.data.note);
     this.initTableOptions();
   }
   /**Function return trailer by id */
- 
-   
+
   /**Function for toggle page in cards */
   public toggleResizePage(value: number) {
     this.toggler[value] = !this.toggler[value];
   }
-   /**Function for dots in cards */
+
+  /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataTest = {
       disabledMutedStyle: null,
@@ -74,8 +74,8 @@ export class TrailerDetailsItemComponent implements OnInit {
       export: true,
     };
   }
-   /**Function retrun id */
-   public identity(index: number, item: any): number {
+  /**Function retrun id */
+  public identity(index: number, item: any): number {
     return item.id;
   }
   public optionsEvent(any: any, action: string) {

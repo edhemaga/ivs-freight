@@ -16,7 +16,14 @@
         }"
         class="pined-tr-container"
       >
-        <div class="columns-container">
+        <div
+          class="columns-container"
+          (mouseenter)="hoverActive = i"
+          (mouseleave)="hoverActive = -1"
+          [ngClass]="{
+            'regular-columns-hover': hoverActive === i && !row.actionAnimation
+          }"
+        >
           <td *ngFor="let column of columns">
             <!-- NO TEMPLATE -->
             <div
@@ -767,7 +774,7 @@
       </tr>
     </div>
 
-    <!-- Not Pined -->
+    <!-- Border For Not Pined -->
     <div
       class="not-pined-border"
       *ngIf="showScrollSectionBorder"
@@ -776,6 +783,7 @@
       }"
     ></div>
 
+    <!-- Not Pined -->
     <div class="not-pined-tr" id="scroll-container" (scroll)="onScroll($event)">
       <tr
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
@@ -791,7 +799,14 @@
         }"
         class="not-pined-tr-container"
       >
-        <div class="columns-container">
+        <div
+          class="columns-container"
+          (mouseenter)="hoverActive = i"
+          (mouseleave)="hoverActive = -1"
+          [ngClass]="{
+            'regular-columns-hover': hoverActive === i && !row.actionAnimation
+          }"
+        >
           <td *ngFor="let column of columns">
             <!-- NO TEMPLATE -->
             <div
@@ -1474,6 +1489,7 @@
       </tr>
     </div>
 
+    <!-- Border For Not Pined -->
     <div
       class="not-pined-border"
       *ngIf="showScrollSectionBorder"
@@ -1498,7 +1514,14 @@
         }"
         class="actions-tr-container"
       >
-        <div class="columns-container">
+        <div
+          class="columns-container"
+          (mouseenter)="hoverActive = i"
+          (mouseleave)="hoverActive = -1"
+          [ngClass]="{
+            'regular-columns-hover': hoverActive === i && !row.actionAnimation
+          }"
+        >
           <td *ngFor="let column of columns">
             <!-- ATTACHMENTS COLUMN TEMPLATE -->
             <div
@@ -1566,6 +1589,10 @@
 </table>
 
 <div class="show-more-container" *ngIf="viewData.length">
-  <div class="showing">6 of 6 Showing</div>
-  <div class="show-more">Show More</div>
+  <div class="showing">
+    {{ viewData.length }} of {{ activeTableData.length }} Showing
+  </div>
+  <div class="show-more" *ngIf="viewData.length < activeTableData.length">
+    Show More
+  </div>
 </div>

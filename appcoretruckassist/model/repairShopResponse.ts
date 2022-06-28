@@ -9,8 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RepairByUnitResponse } from './repairByUnitResponse';
 import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
 import { BankResponse } from './bankResponse';
+import { RepairResponse } from './repairResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
 import { AddressEntity } from './addressEntity';
 import { ReviewResponse } from './reviewResponse';
@@ -41,5 +43,11 @@ export interface RepairShopResponse {
     reviews?: Array<ReviewResponse> | null;
     downRatingCount?: number;
     upRatingCount?: number;
+    currentCompanyUserRating?: number | null;
+    repairs?: Array<RepairResponse> | null;
+    repairsByUnit?: Array<RepairByUnitResponse> | null;
+    createdAt?: string;
+    updatedAt?: string;
+    lastVisited?: string | null;
 }
 

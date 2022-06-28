@@ -34,6 +34,7 @@ export class RepairTService {
   public getRepairsList(
     active?: number,
     pinned?: boolean,
+    companyOwned?: boolean,
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
@@ -42,7 +43,13 @@ export class RepairTService {
     search1?: string,
     search2?: string
   ): Observable<RepairShopListResponse> {
-    return this.shopServices.apiRepairshopListGet(active, pinned, pageIndex, pageSize);
+    return this.shopServices.apiRepairshopListGet(
+      active,
+      pinned,
+      companyOwned,
+      pageIndex,
+      pageSize
+    );
   }
 
   public getRepairShopById(id: number): Observable<RepairShopResponse> {

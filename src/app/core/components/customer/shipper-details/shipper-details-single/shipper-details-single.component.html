@@ -1,0 +1,275 @@
+<div class="repair-component">
+  <div *ngFor="let shipperData of shipper; trackBy:identity">
+  <div [ngSwitch]="shipperData.template">
+    <div *ngSwitchCase="'general'">
+      <app-shipper-card-view [shipper]="shipperData.data"> </app-shipper-card-view>
+    </div>
+    <div *ngSwitchCase="'load'">
+      <div class="repair-container">
+        <div class="repair-header">
+          <span class="repaier-headers">LOAD</span>
+          <span class="repaier-headers">TRUCK</span>
+          <span class="repaier-headers">TRAILER</span>
+          <span class="repaier-headers">DRIVER</span>
+          <span class="repaier-headers">ARRIVE</span>
+          <span class="repaier-headers">DEPART</span>
+          <span class="repaier-headers">WAIT</span>
+        </div>
+        <div class="divider"></div>
+        <div class="repair-items-wrapper">
+          <div class="repair-items">
+            <div class="items-header">
+              <div class="icon-svg-repair">
+                <svg-icon
+                  class="arrow-ri"
+                  src="assets/svg/common/ic_arrow-right-line.svg"
+                ></svg-icon>
+                <span class="unit">5469</span>
+              </div>
+              <span class="date">A.Djordjevic</span>
+              <span class="date">3568</span>
+              <span class="date">V101</span>
+              <div class="time-date">
+                <span class="date">20/12/20</span>
+                <span class="time"> 04:44 AM</span>
+              </div>
+              <div class="time-date">
+                <span class="date">20/12/20</span>
+                <span class="time"> 04:44 AM</span>
+              </div>
+              <span class="wait-time">57 min</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="repair-items">
+            <div class="items-header">
+              <div class="icon-svg-repair">
+                <svg-icon
+                  class="arrow-le"
+                  src="assets/svg/common/ic_arrow-line-left.svg"
+                ></svg-icon>
+                <span class="unit">5469</span>
+              </div>
+              <span class="date">A.Djordjevic</span>
+              <span class="date">3568</span>
+              <span class="date">V101</span>
+              <div class="time-date">
+                <span class="date">20/12/20</span>
+                <span class="time"> 04:44 AM</span>
+              </div>
+              <div class="time-date">
+                <span class="date">20/12/20</span>
+                <span class="time"> 04:44 AM</span>
+              </div>
+              <span class="wait-time">57 min</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngSwitchCase="'contact'">
+      <div class="contact-wrapper">
+        <app-ta-custom-card
+          [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
+          [hasDivider]="false"
+          [cardName]="'Gate House'"
+          [isCardOpen]="true"
+        >
+          <div class="parking-template-data">
+            <div
+              class="parking-template-item parking-template-email parking-name"
+            >
+              <span class="parking-template-name">Pera Antic</span>
+              <div class="svg-wrapper">
+                <svg-icon
+                  src="assets/svg/truckassist-table/dropdown/content/edit.svg"
+                  class="svg-icon"
+                ></svg-icon>
+                <svg-icon
+                  src="assets/svg/common/ic_trash.svg"
+                  class="svg-icon"
+                ></svg-icon>
+              </div>
+            </div>
+            <div class="parking-template-item">
+              <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+              <span class="parking-template-text">(123) 456-7890</span>
+            </div>
+            <div class="parking-template-item">
+              <div class="parking-template-item">
+                <svg-icon
+                  src="assets/svg/common/ic_phone-extension.svg"
+                ></svg-icon>
+                <span class="parking-template-text">12345</span>
+              </div>
+            </div>
+            <div class="parking-template-item parking-template-email">
+              <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+              <span class="parking-template-text">denisrodman@gmail.com</span>
+            </div>
+          </div>
+          <div class="parking-template-data second">
+            <div
+              class="parking-template-item parking-template-email parking-name"
+            >
+              <span class="parking-template-name">Mika Antic</span>
+              <div class="svg-wrapper">
+                <svg-icon
+                  src="assets/svg/truckassist-table/dropdown/content/edit.svg"
+                  class="svg-icon"
+                ></svg-icon>
+                <svg-icon
+                  src="assets/svg/common/ic_trash.svg"
+                  class="svg-icon"
+                ></svg-icon>
+              </div>
+            </div>
+            <div class="parking-template-item">
+              <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+              <span class="parking-template-text">(123) 456-7890</span>
+            </div>
+            <div class="parking-template-item">
+              <div class="parking-template-item">
+                <svg-icon
+                  src="assets/svg/common/ic_phone-extension.svg"
+                ></svg-icon>
+                <span class="parking-template-text">12345</span>
+              </div>
+            </div>
+            <div class="parking-template-item parking-template-email">
+              <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+              <span class="parking-template-text">denisrodman@gmail.com</span>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card
+          [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
+          [hasDivider]="true"
+          [cardName]="'Warehouse Manager'"
+          [isCardOpen]="true"
+        >
+          <div class="parking-template-data">
+            <div
+              class="parking-template-item parking-template-email parking-name"
+            >
+              <span class="parking-template-name">Mika Antic</span>
+              <div class="svg-wrapper">
+                <svg-icon
+                  src="assets/svg/truckassist-table/dropdown/content/edit.svg"
+                  class="svg-icon"
+                ></svg-icon>
+                <svg-icon
+                  src="assets/svg/common/ic_trash.svg"
+                  class="svg-icon"
+                ></svg-icon>
+              </div>
+            </div>
+            <div class="parking-template-item">
+              <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+              <span class="parking-template-text">(123) 456-7890</span>
+            </div>
+            <div class="parking-template-item">
+              <div class="parking-template-item">
+                <svg-icon
+                  src="assets/svg/common/ic_phone-extension.svg"
+                ></svg-icon>
+                <span class="parking-template-text">12345</span>
+              </div>
+            </div>
+            <div class="parking-template-item parking-template-email">
+              <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+              <span class="parking-template-text">denisrodman@gmail.com</span>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card
+          [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
+          [hasDivider]="true"
+          [cardName]="'Other'"
+          [isCardOpen]="true"
+        >
+          <div class="parking-template-data">
+            <div
+              class="parking-template-item parking-template-email parking-name"
+            >
+              <span class="parking-template-name">Mika Antic</span>
+              <div class="svg-wrapper">
+                <svg-icon
+                  src="assets/svg/truckassist-table/dropdown/content/edit.svg"
+                  class="svg-icon"
+                ></svg-icon>
+                <svg-icon
+                  src="assets/svg/common/ic_trash.svg"
+                  class="svg-icon"
+                ></svg-icon>
+              </div>
+            </div>
+            <div class="parking-template-item">
+              <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+              <span class="parking-template-text">(123) 456-7890</span>
+            </div>
+            <div class="parking-template-item">
+              <div class="parking-template-item">
+                <svg-icon
+                  src="assets/svg/common/ic_phone-extension.svg"
+                ></svg-icon>
+                <span class="parking-template-text">12345</span>
+              </div>
+            </div>
+            <div class="parking-template-item parking-template-email">
+              <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+              <span class="parking-template-text">denisrodman@gmail.com</span>
+            </div>
+          </div>
+        </app-ta-custom-card>
+      </div>
+    </div>
+    <div *ngSwitchCase="'review'">
+      <div class="likes-count-container">
+        <div class="likes-item">
+          <div class="ic-counter">
+            <svg-icon
+              class="like"
+              src="assets/svg/common/ic_dislike.svg"
+            ></svg-icon>
+            <app-ta-counter
+              [countBackgroud]="'#F3F3F3'"
+              [countColor]="'#919191'"
+              [countHeight]="'24px'"
+              [countWidth]="'24px'"
+              [count]="shipperData.data.upRatingCount"
+            >
+            </app-ta-counter>
+          </div>
+          <div class="border-vertical"></div>
+          <div class="ic-counter">
+            <app-ta-counter
+              [countBackgroud]="'#F3F3F3'"
+              [countColor]="'#919191'"
+              [countHeight]="'24px'"
+              [countWidth]="'24px'"
+              [count]="shipperData.data.downRatingCount"
+            >
+            </app-ta-counter>
+            <svg-icon
+              class="dislike"
+              src="assets/svg/common/ic_dislike.svg"
+            ></svg-icon>
+          </div>
+        </div>
+      </div>
+      <div class="review-container">
+        <app-ta-user-review
+          *ngIf="reviewsRepair.length"
+          [reviewData]="reviewsRepair"
+          [isNewReview]="reviewsRepair[0].isNewReview"
+          (changeReviewsEvent)="changeReviewsEvent($event)"
+        ></app-ta-user-review>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

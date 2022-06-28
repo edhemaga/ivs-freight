@@ -5,14 +5,13 @@
   position: relative;
   margin-top: 14px;
 
+  &.remove_chart_margin{
+    margin: 0;
+  }
+
   .no_chart_data{
     user-select: none;
   }
-}
-
-.dotted_background{
-  background-image: url('../../../../../assets/png/doted-line.png');
-  background-size: 10px;
 }
 
 .chart_text_holder{
@@ -25,30 +24,34 @@
   .chart_inner{
     position: absolute;
     top: 50%;
-
+    right: 50%;
+    transform: translate(50%,-50%);
+    
     text-align: center;
-    transform: translateY(-50%);
 
     .chart_value_holder{
       margin-bottom: 22px;
 
       .chart_label{
-        margin-bottom: 4px;
-
-        font-size: 16px;
-        font-weight: 600;
-        line-height: 19px;
+        font-size: 28px;
+        font-weight: 700;
+        color: #6C6C6C;
+        line-height: 34px;
       }
-  
-      .chart_value_hold{
-        border-radius: 1px;
-        .chart_value{
-          padding: 2px 6px;
-          font-size: 22px;
-          font-weight: 700;
-          line-height: 27px;
-          color: #ffffff;
-        }
+
+      .chart_value{
+        margin-bottom: 4px;
+        font-size: 18px;
+        line-height: 22px;
+        font-weight: 600;
+        color: #6C6C6C;
+      }
+
+      .chart_data_name{
+        font-size: 11px;
+        line-height: 14px;
+        font-weight: 700;
+        color: #B7B7B7;
       }
     }
   }

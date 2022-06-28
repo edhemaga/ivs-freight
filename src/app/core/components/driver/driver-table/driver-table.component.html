@@ -12,6 +12,7 @@
       [options]="tableOptions"
       [viewData]="viewData"
       [columns]="columns"
+      (headActions)="onTableHeadActions($event)"
     ></app-truckassist-table-head>
 
     <app-truckassist-table-body

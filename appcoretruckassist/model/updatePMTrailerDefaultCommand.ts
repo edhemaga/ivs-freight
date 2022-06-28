@@ -13,7 +13,8 @@ import { PMStatus } from './pMStatus';
 
 
 export interface UpdatePMTrailerDefaultCommand { 
-    id?: number;
+    id?: number | null;
+    title?: string | null;
     months?: number;
     status?: PMStatus;
 }

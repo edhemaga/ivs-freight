@@ -4,17 +4,19 @@
     height: 32px;
     border-radius: 3px;
     background-color: #fff;
-    padding: 2px;
+    padding: 4px;
     box-sizing: border-box;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     user-select: none;
+    line-height: 32px;
 
     .tab-switch-items-holder{
         position: relative;
-        flex: 1;
-        padding: 5px 9px;
+        flex: 1 auto;
+        height: 32px;
+        padding: 3px 8px;
         box-sizing: border-box;
         border-radius: 2px;
         background-color: #EEEEEE00;
@@ -28,6 +30,10 @@
         cursor: pointer;
 
         &.active{
+            color: #6C6C6C;
+        }
+
+        &:hover:not(.active){
             color: #919191;
         }
     }
@@ -37,37 +43,84 @@
         background-color: #EEEEEE;
         color: #fff;
         border-radius: 2px;
-        height: calc(100% - 4px);
+        height: calc(100% - 8px);
         left: 2px;
         transition: all 0.25s ease-out;
         pointer-events: none;
     }
 
-    &.modal-popup{
+    &.type1-modal-popup{
         margin-top: 12px;
         height: 30px;
-        background-color: #cccccc;
+        background-color: #f7f7f7;
+        line-height: 30px;
+        padding: 2px;
 
         .tab-switch-items-holder{
-            color: #fff;
+            height: 30px;
             font-weight: 700;
+
 
             &.active{
                 color: #536bc2 !important;
+
+            } 
+            
+            &:hover:not(.active){
+                background-color: #F3F3F3;
+                color: #6C6C6C;
+    
             }    
         }
 
         .slide-active-holder{
             background-color: #fff;
+            box-shadow: 0 0 2px #ffffff1A;
+            height: calc(100% - 4px);
 
         }
+
+    }
+
+    &.type2-modal-popup{
+        height: 26px;
+        background-color: #f7f7f7;
+        line-height: 26px;
+        padding: 2px;
+
+        .tab-switch-items-holder{
+            height: 26px;
+            font-size: 12px;
+            font-weight: 700;
+
+
+            &.active{
+                color: #536bc2 !important;
+            }  
+            
+            
+            &:hover:not(.active){
+                background-color: #F3F3F3;
+                color: #6C6C6C;
+            }  
+        }
+
+        .slide-active-holder{
+            background-color: #fff;
+            box-shadow: 0 0 2px #ffffff1A;
+            height: calc(100% - 4px);
+
+        }
+
     }
 
     &.driver-details-popup{
         height: 26px;
         background-color: #F3F3F3;
+        line-height: 26px;
 
         .tab-switch-items-holder{
+            height: 26px;
             font-size: 11px;
             font-weight: 700;
             color: #B7B7B7;
@@ -86,4 +139,13 @@
             background-color: #fff;
         }
     }
+
+    &.performance-switch{
+        .tab-switch-items-holder{
+            padding: 5px 8px;
+            box-sizing: border-box;
+        }
+
+    }
+
 }

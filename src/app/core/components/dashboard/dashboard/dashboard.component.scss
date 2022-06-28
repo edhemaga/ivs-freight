@@ -1,0 +1,61 @@
+.dashboard-container{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+
+    app-dashboard-performance{
+        width: 100%;
+    }
+
+    app-dashboard-top-driver{
+        width: 100%;
+    }
+}
+.dahsboard_charts_holder{
+    background-color: #fff;
+    padding: 12px 12px 14px 12px;
+    margin-bottom: 18px;
+
+    .dashboard_chart_title{
+        color: #AAAAAA;
+
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 22px;
+    }
+
+    .dashboard_chart_data{
+        display: flex;
+        margin-top: 12px;
+
+        .chart_data_inner{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &.separate_inner{
+                margin-right: 22px;
+            }
+
+            .chart_data_text{
+                color: #6C6C6C;
+                font-size: 11px;
+                line-height: 14px;
+                font-weight: 500;
+                padding-left: 4px;
+           }
+
+           .chart_data_icon{
+                svg-icon{
+                    svg{
+                        display: flex;
+                        width: 10px;
+                        height: 10px;
+                    }
+                }
+           }
+        }
+    }
+}

@@ -47,15 +47,15 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
   }
 
   addResizer() {
-    const row = this.renderer.parentNode(this.column);
+    /* const row = this.renderer.parentNode(this.column);
     const thead = this.renderer.parentNode(row);
-    this.table = this.renderer.parentNode(thead);
+    this.table = this.renderer.parentNode(thead); */
 
     this.resizer = this.renderer.createElement('div');
     this.renderer.addClass(this.resizer, 'resise-btn');
     this.renderer.appendChild(this.column, this.resizer);
     this.renderer.listen(this.resizer, 'mousedown', this.onMouseDown);
-    this.renderer.listen(this.table, 'mousemove', this.onMouseMove);
+    this.renderer.listen(/* this.table */ 'document', 'mousemove', this.onMouseMove);
     this.renderer.listen('document', 'mouseup', this.onMouseUp);
   }
 

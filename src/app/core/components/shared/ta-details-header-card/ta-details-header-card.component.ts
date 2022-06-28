@@ -15,24 +15,24 @@ import { FormControl } from '@angular/forms';
   encapsulation: ViewEncapsulation.None,
 })
 export class TaDetailsHeaderCardComponent implements OnInit {
-  @Input() cardDetailsName: string = '';
-  @Input() cardDetailsDate: any;
-  @Input() cardDetailsDateTerminated: string = null;
-  @Input() hasSvgHeader: string = '';
-  @Input() tooltipNext: string = '';
-  @Input() tooltipPrevious: string = '';
-  @Input() searchName: string = '';
-  @Input() options: any = [];
+  @Input() public cardDetailsName: string = '';
+  @Input() public cardDetailsDate: any;
+  @Input() public cardDetailsDateTerminated: string = null;
+  @Input() public hasSvgHeader: string = '';
+  @Input() public tooltipNext: string = '';
+  @Input() public tooltipPrevious: string = '';
+  @Input() public searchName: string = '';
+  @Input() public options: any = [];
   @Input() public optionsDrop: any = [];
-  @Input() statusInactive: number = 1;
-  @Input() haveTwoInput: boolean;
-  @Input() searchInputName: string;
-  @Input() hasArrow: boolean;
+  @Input() public statusInactive: number = 1;
+  @Input() public haveTwoInput: boolean;
+  @Input() public searchInputName: string;
+  @Input() public hasArrow: boolean;
   @Input() public optionsId: number;
   @Output() public dropActions = new EventEmitter<any>();
   @Output() selectValue = new EventEmitter<string>();
   @Output() changeEvent = new EventEmitter<string>();
-  id: number = 0;
+  @Input() public dateChecked:string='';
   public inputFormControl: FormControl = new FormControl();
 
   public selectedDropdown: boolean = false;
@@ -42,8 +42,9 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   ngOnInit(): void {
     // console.log(this.options);
   }
-
   public onAction(action: string) {
+    console.log(action);
+    
     this.changeEvent.emit(action);
   }
 
@@ -53,6 +54,7 @@ export class TaDetailsHeaderCardComponent implements OnInit {
 
   public onSelecItem(value: any): void {
     console.log(value);
+    
     this.selectValue.emit(value);
     this.selectedDropdown = false;
   }

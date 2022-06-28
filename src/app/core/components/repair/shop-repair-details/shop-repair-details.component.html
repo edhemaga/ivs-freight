@@ -3,11 +3,12 @@
     <app-ta-details-header
       [route]="'/repair'"
       [tooltipHeaderName]="'Back to Repair List'"
-      [headerText]="item.name"
-      [counterData]="item.data"
+      [headerText]="item.nameDefault"
+      [counterData]="item.length"
       [hasIcon]="item.icon"
       [hidePlus]="item.hide"
       [customText]="item.customText"
+      [statusInactive]="item.hide"
       [arrayIcons]="item.icons"
       [hasDateArrow]="true"
     >
@@ -16,7 +17,7 @@
   <div class="repair-details-cmp">
     <app-shop-repair-details-item
       *ngFor="let item of shopRepairConfig; trackBy: identity"
-      [data]="item"
+      [shopData]="item"
     >
     </app-shop-repair-details-item>
   </div>

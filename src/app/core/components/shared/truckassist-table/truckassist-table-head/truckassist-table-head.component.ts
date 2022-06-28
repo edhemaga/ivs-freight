@@ -198,7 +198,7 @@ export class TruckassistTableHeadComponent
             column.sortDirection?.substr(1).toLowerCase())
         : '';
 
-      /* this.headActions.emit({ action: 'sort', direction: directionSort }); */
+      this.headActions.emit({ action: 'sort', direction: directionSort });
 
       this.changeDetectorRef.detectChanges();
     }

@@ -6,7 +6,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap,take } from 'rxjs/operators';
 import { RepairTService } from './repair.service';
 import { ShopState, ShopStore } from './shop-state/shop.store';
 
@@ -28,9 +28,10 @@ export class ShopRepairItemResolver implements Resolve<ShopState> {
       catchError(() => {
         return of('No shop data for...' + shop_id);
       }),
-      tap((driverRespon: RepairShopResponse) => {
-        this.shopStore.set({ entities: driverRespon[shop_id] });
-      })
+      take(1)
+      // tap((driverRespon: RepairShopResponse) => {
+      //   this.shopStore.set({ entities: driverRespon[shop_id] });
+      // })
     );
   }
 }

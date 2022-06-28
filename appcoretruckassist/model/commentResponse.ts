@@ -20,6 +20,7 @@ export interface CommentResponse {
     commentContent?: string | null;
     downRatingCount?: number;
     upRatingCount?: number;
+    currentCompanyUserRating?: number | null;
     createdAt?: string;
     updatedAt?: string;
 }

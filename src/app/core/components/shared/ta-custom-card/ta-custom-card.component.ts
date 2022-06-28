@@ -63,7 +63,7 @@ export class TaCustomCardComponent {
     this.onOpenCard.emit(this.isCardOpen);
   }
 
-  public onAdd(event: any): void {
+  public onAdd(event: any): void { 
     event.preventDefault();
     event.stopPropagation();
     this.onActionEvent.emit(true);

@@ -30,6 +30,7 @@ export class TruckassistTableToolbarComponent
   listName: string = '';
   optionsPopup: any;
   optionsPopupOpen: boolean = false;
+  tableLocked: boolean = true;
   optionsPopupContent: any[] = [
     {
       text: 'Unlock table',
@@ -69,10 +70,13 @@ export class TruckassistTableToolbarComponent
     },
   ];
   tableRowsSelected: any[] = [];
+  activeTableData: any = {};
 
   constructor(private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
+    this.getSelectedTabTableData();
+
     // Columns Reorder
     this.tableService.currentColumnsOrder
       .pipe(untilDestroyed(this))
@@ -96,11 +100,6 @@ export class TruckassistTableToolbarComponent
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
         this.tableRowsSelected = response;
-
-        console.log('Tabke Row Selected In Toolbar');
-        console.log(this.tableRowsSelected);
-
-        /* this.changeDetectorRef.detectChanges(); */
       });
   }
 
@@ -111,6 +110,8 @@ export class TruckassistTableToolbarComponent
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
       this.tableData = changes.tableData.currentValue;
+
+      this.getSelectedTabTableData();
     }
 
     if (!changes?.columns?.firstChange && changes?.columns) {
@@ -146,8 +147,16 @@ export class TruckassistTableToolbarComponent
     });
   }
 
-  deleteSelectedRows(){
+  deleteSelectedRows() {
     this.tableService.sendDeleteSelectedRows(this.tableRowsSelected);
+  }
+
+  getSelectedTabTableData() {
+    if (this.tableData.length) {
+      this.activeTableData = this.tableData.find(
+        (t) => t.field === this.selectedTab
+      );
+    }
   }
 
   onShowOptions(optionsPopup: any) {
@@ -164,7 +173,17 @@ export class TruckassistTableToolbarComponent
   }
 
   onOptions(action: any) {
-    if (action.text === 'Unlock table') {
+    if (action.text === 'Unlock table' || action.text === 'Lock table') {
+      this.tableLocked = !this.tableLocked;
+
+      this.optionsPopupContent[0].text = this.tableLocked
+        ? 'Unlock table'
+        : 'Lock table';
+
+      this.optionsPopupContent[0].svgPath = this.tableLocked
+        ? 'assets/svg/truckassist-table/lock.svg'
+        : 'assets/svg/truckassist-table/unlocked-table.svg';
+
       this.tableService.sendUnlockTable({
         toaggleUnlockTable: true,
       });

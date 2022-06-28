@@ -91,6 +91,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         break;
       }
       case 'logout': {
+        localStorage.clear();
         this.authService.accountLogut();
         break;
       }

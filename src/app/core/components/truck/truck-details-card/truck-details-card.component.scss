@@ -1,6 +1,6 @@
-@import '../truck-details/truck-details-item/truck-details-item.component.scss';
+@import "../truck-details/truck-details-item/truck-details-item.component.scss";
 
-.custom-card-single{
+.custom-card-single {
     background-color: #ffffff;
     border-radius: 3px;
     padding-left: 4px;
@@ -10,42 +10,114 @@
     max-width: 440px;
     margin-top: 8px;
 }
-.wrapper-additional-cards{
-    max-height: 1080px;
+.wrapper-additional-cards {
+    max-height: calc(75vh - 74px);
+    min-height: calc(24vh - 10px);
     display: grid;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
-    overflow-y: scroll; 
-    &::-webkit-scrollbar{
-        display: none; 
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        display: none;
     }
-    .card-footer-cmp{
-        padding-bottom:  0 !important;
+    .card-footer-cmp {
+        padding-bottom: 0 !important;
     }
 }
-.cards-item-wrapper-1{
+.cards-item-wrapper-1 {
     overflow: hidden;
 }
-.details-cards{
+.details-cards {
     background-color: #ffffff;
     width: 440px;
     padding: 9px 6px;
 }
-.note-cards{
-    padding-right: 1px;
+.note-cards {
+    padding: 0 1px;
+    .note-body {
+        padding: 0 9px !important;
+        .note-textarea {
+            color: #6c6c6c !important;
+            font-weight: 400 !important;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+    }
 }
-.assignTo-item{
+.assignTo-item {
     height: 34px;
-    .assignTo-vehicle{
+    .assignTo-vehicle {
         padding-left: 6px;
-        svg{
+        svg {
             width: fit-content !important;
         }
     }
 }
 .details-header-model {
-    svg{
+    svg {
         width: 165px;
         height: 30px;
     }
 }
+
+.rotate-owner{
+    .single-icon-wrapper{
+        justify-content: flex-start;
+        margin-top: 12px !important;
+        svg{
+            transform: rotate(180deg);
+            path{
+               fill: #6D82C7;
+               &:hover{
+                fill: #536BC2 !important;
+               }
+            }
+        }
+    }
+  
+}
+.single-icon-wrapper{
+    padding: 0 10px;
+    margin-top: 4px;
+    cursor: pointer;
+.icon-rotate{
+    cursor: pointer;
+    svg{
+        &:hover{
+            path{
+                fill: #6c6c6c;
+            }
+        }
+    }
+}
+}
+.wrapper-owner{
+    padding: 0 10px;
+}
+.card-icon {
+    display: none;
+    position: relative;
+    margin-left: 6px;
+    height: 18px;
+    svg {
+      &:hover {
+        path {
+          fill: #6c6c6c;
+        }
+      }
+    }
+  }
+.details-header-data-item {
+    &:hover {
+      .card-icon {
+        display: flex;
+        cursor: pointer;
+      }
+    }
+  }

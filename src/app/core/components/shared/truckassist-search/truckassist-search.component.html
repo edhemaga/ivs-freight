@@ -3,7 +3,7 @@
   <div class="icon-container" (click)="openSearch = !openSearch">
     <svg-icon
       [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
-      [src]="'assets/svg/truckassist-search/search-icon.svg'"
+      [src]="'assets/svg/truckassist-search/new-search-icon.svg'"
     ></svg-icon>
   </div>
 
@@ -14,6 +14,7 @@
       *ngIf="openSearch"
       (keypress)="onTyping()"
       [(ngModel)]="searchText"
+      placeholder="Find {{selectedTabData?.gridNameTitle ? selectedTabData.gridNameTitle : 'No Tab Name'}}"
     />
   </div>
 </div>

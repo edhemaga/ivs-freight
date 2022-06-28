@@ -40,6 +40,8 @@ export class TruckassistTableBodyComponent
   decryptedPassword: any[] = [];
   actionsMinWidth: number = 0;
   showScrollSectionBorder: boolean = false;
+  hoverActive: number = -1;
+  activeTableData: any = {};
 
   constructor(
     private router: Router,
@@ -48,6 +50,9 @@ export class TruckassistTableBodyComponent
   ) {}
 
   ngOnInit(): void {
+    // Get Selected Tab Data
+    this.getSelectedTabTableData();
+
     // Select Or Deselect All
     this.tableService.currentSelectOrDeselect
       .pipe(untilDestroyed(this))
@@ -169,6 +174,8 @@ export class TruckassistTableBodyComponent
       changes?.selectedTab
     ) {
       this.selectedTab = changes.selectedTab.currentValue;
+
+      this.getSelectedTabTableData();
     }
   }
 
@@ -182,6 +189,14 @@ export class TruckassistTableBodyComponent
   onScroll(event: any) {
     if (event.target.className === 'not-pined-tr') {
       this.tableService.sendScroll(event.path[0].scrollLeft);
+    }
+  }
+
+  getSelectedTabTableData() {
+    if (this.tableData?.length) {
+      this.activeTableData = this.tableData.find(
+        (t) => t.field === this.selectedTab
+      );
     }
   }
 
