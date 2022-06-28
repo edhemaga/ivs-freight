@@ -35,7 +35,9 @@
         <div class="common-fake-table-label">
           <p></p>
           <p>TITLE</p>
-          <p>{{ editData?.header?.includes("Truck") ? "MILES" : "MONTHS" }}</p>
+          <p>
+            {{ editData?.header?.includes("Truck") ? "mileage" : "MONTHS" }}
+          </p>
         </div>
         <div
           *ngFor="
@@ -58,9 +60,11 @@
             </app-ta-checkbox>
 
             <app-ta-input
-              formControlName="miles"
+              formControlName="mileage"
               [inputConfig]="{
-                name: editData?.header?.includes('Truck') ? 'MILES' : 'MONTHS',
+                name: editData?.header?.includes('Truck')
+                  ? 'mileage'
+                  : 'MONTHS',
                 type: 'text',
                 blackInput: true,
                 commands: {
@@ -122,9 +126,11 @@
             </div>
 
             <app-ta-input
-              formControlName="miles"
+              formControlName="mileage"
               [inputConfig]="{
-                name: editData?.header?.includes('Truck') ? 'MILES' : 'MONTHS',
+                name: editData?.header?.includes('Truck')
+                  ? 'mileage'
+                  : 'MONTHS',
                 type: 'text',
                 blackInput: true,
                 commands: {
