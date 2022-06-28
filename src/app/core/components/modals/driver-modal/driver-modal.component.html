@@ -90,8 +90,22 @@
                 label: 'Address, City, State Zip',
                 isRequired: true,
                 placeholderIcon: 'address',
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                blackInput: true,
+                commands: {
+                  active: true,
+                  type: 'confirm-cancel',
+                  firstCommand: {
+                    name: 'confirm',
+                    svg: 'assets/svg/ic_spec-confirm.svg'
+                  },
+                  secondCommand: {
+                    name: 'cancel',
+                    svg: 'assets/svg/ic_x.svg'
+                  }
+                }
               }"
+              (commandEvent)="onCommandEvent($event)"
               (selectedAddress)="onHandleAddress($event)"
             ></app-ta-input-address>
           </div>

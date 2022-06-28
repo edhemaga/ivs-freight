@@ -477,7 +477,7 @@ export class TaInputComponent
             break;
           }
           case 'cancel': {
-            this.getSuperControl.patchValue(null);
+            // this.getSuperControl.patchValue(null);
             this.inputCommandEvent.emit('cancel');
             break;
           }

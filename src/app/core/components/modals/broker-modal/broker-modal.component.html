@@ -6,13 +6,12 @@
   [customClass]="'modal-container-M'"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-
   <app-ta-tab-switch
-  [tabs]="tabs"
-  (switchClicked)="tabChange($event)" 
-  [type]="'type1-modal-popup'"
+    [tabs]="tabs"
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
   >
-  </app-ta-tab-switch>  
+  </app-ta-tab-switch>
 
   <form
     [formGroup]="brokerForm"
@@ -105,9 +104,9 @@
         <!---------------------------- PHYSICAL TABS ---------------------------->
 
         <app-ta-tab-switch
-        [tabs]="physicalAddressTabs"
-        (switchClicked)="tabPhysicalAddressChange($event)" 
-        [type]="'type2-modal-popup'"        
+          [tabs]="physicalAddressTabs"
+          (switchClicked)="tabPhysicalAddressChange($event)"
+          [type]="'type2-modal-popup'"
         ></app-ta-tab-switch>
 
         <!-- Physical address -->
@@ -203,11 +202,10 @@
         ></app-ta-checkbox>
 
         <div *ngIf="!brokerForm.get('isCheckedBillingAddress').value">
-
           <app-ta-tab-switch
-          [tabs]="billingAddressTabs"
-          (switchClicked)="tabBillingAddressChange($event)" 
-          [type]="'type2-modal-popup'"        
+            [tabs]="billingAddressTabs"
+            (switchClicked)="tabBillingAddressChange($event)"
+            [type]="'type2-modal-popup'"
           ></app-ta-tab-switch>
 
           <!-- Billing address -->
@@ -306,12 +304,11 @@
               <p>Credit</p>
 
               <app-ta-tab-switch
-              [tabs]="billingCredit"
-              (switchClicked)="isCredit($event)" 
-              [type]="'type2-modal-popup'"
+                [tabs]="billingCredit"
+                (switchClicked)="isCredit($event)"
+                [type]="'type2-modal-popup'"
               >
-              </app-ta-tab-switch>              
-
+              </app-ta-tab-switch>
             </div>
             <div class="broker-billing-field">
               <app-ta-input

@@ -145,6 +145,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onCommandEvent(event: any) {
+    console.log(event);
+  }
+
   public onModalAction(data: { action: string; bool: boolean }): void {
     if (data.action === 'close') {
       this.driverForm.reset();
@@ -860,7 +864,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   private deleteDriverById(id: number): void {
     this.driverTService
-      .deleteDriverById(id,  !this.driverStatus ? 'active' : 'inactive')
+      .deleteDriverById(id, !this.driverStatus ? 'active' : 'inactive')
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {

@@ -34,6 +34,8 @@
             placeholderIcon: 'ic_dynamic_label',
             isDropdownLabel: true,
             dropdownLabelSelected: selectedAccountLabel,
+            dropdownWidthClass: 'w-col-dropdown-label',
+            textTransform: 'capitalize',
             blackInput: true,
             commands: {
               active: true,
@@ -46,9 +48,7 @@
                 name: 'cancel',
                 svg: 'assets/svg/ic_x.svg'
               }
-            },
-            dropdownWidthClass: 'w-col-dropdown-label',
-            textTransform: 'capitalize'
+            }
           }"
           [options]="accountLabels"
           (selectedColorLabel)="onSelectColorLabel($event)"
