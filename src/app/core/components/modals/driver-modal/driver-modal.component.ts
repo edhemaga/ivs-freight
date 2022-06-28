@@ -152,7 +152,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     // Change Driver Status
     if (data.action === 'deactivate' && this.editData) {
       this.driverTService
-        .changeDriverStatus(this.editData.id)
+        .changeDriverStatus(
+          this.editData.id,
+          !this.driverStatus ? 'active' : 'inactive'
+        )
         .pipe(untilDestroyed(this))
         .subscribe({
           next: (res: HttpResponseBase) => {
@@ -170,6 +173,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 }.`,
                 'Success:'
               );
+
+              this.modalService.setModalSpinner({
+                action: null,
+                status: false,
+              });
             }
           },
           error: () => {
@@ -467,7 +475,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public tabOwnerChange(event: any[]): void {
-    this.selectedOwnerTab = event.find((item) => item.checked === true);
+    this.selectedOwnerTab = event;
     this.driverForm.get('ownerType').patchValue(this.selectedOwnerTab.name);
     if (
       this.driverForm.get('isOwner').value &&
@@ -852,7 +860,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   private deleteDriverById(id: number): void {
     this.driverTService
-      .deleteDriverById(id)
+      .deleteDriverById(id,  !this.driverStatus ? 'active' : 'inactive')
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {

@@ -26,6 +26,8 @@ import { DetailsActiveItemPipe } from './detailsActiveItem.pipe';
 import { TaThousandSeparatorPipe } from './taThousandSeparator.pipe';
 import { DynamicNavHeightPipe } from '../components/navigation/pipe/dynamic-nav-card.pipe';
 import { UserDataPipe } from '../components/navigation/pipe/user-data.pipe';
+import { formatCurrency } from './formatCurrency.pipe';
+import { setFutureYear } from './setFutureYear.pipe';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,9 @@ import { UserDataPipe } from '../components/navigation/pipe/user-data.pipe';
     TaThousandSeparatorPipe,
     DynamicNavHeightPipe,
     UserDataPipe,
+    formatCurrency,
+    setFutureYear
+
   ],
   imports: [CommonModule],
   exports: [
@@ -85,6 +90,8 @@ import { UserDataPipe } from '../components/navigation/pipe/user-data.pipe';
     TaThousandSeparatorPipe,
     DynamicNavHeightPipe,
     UserDataPipe,
+    formatCurrency,
+    setFutureYear
   ],
   providers: [
     DatePipe,

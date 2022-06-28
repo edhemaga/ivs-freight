@@ -10,14 +10,10 @@
   <app-ta-tab-switch
   [tabs]="tabs"
   (switchClicked)="tabChange($event)" 
-  [type]="'modal-popup'"
+  [type]="'type1-modal-popup'"
   >
   </app-ta-tab-switch>  
 
-  <!-- <app-tab-switcher
-    (switchClicked)="tabChange($event)"
-    [tabs]="tabs"
-  ></app-tab-switcher> -->
   <form
     [formGroup]="brokerForm"
     class="form-container"
@@ -107,10 +103,13 @@
           </div>
         </div>
         <!---------------------------- PHYSICAL TABS ---------------------------->
-        <app-status-switcher
-          (switchClicked)="tabPhysicalAddressChange($event)"
-          [data]="physicalAddressTabs"
-        ></app-status-switcher>
+
+        <app-ta-tab-switch
+        [tabs]="physicalAddressTabs"
+        (switchClicked)="tabPhysicalAddressChange($event)" 
+        [type]="'type2-modal-popup'"        
+        ></app-ta-tab-switch>
+
         <!-- Physical address -->
         <div
           *ngIf="
@@ -204,10 +203,13 @@
         ></app-ta-checkbox>
 
         <div *ngIf="!brokerForm.get('isCheckedBillingAddress').value">
-          <app-status-switcher
-            (switchClicked)="tabBillingAddressChange($event)"
-            [data]="billingAddressTabs"
-          ></app-status-switcher>
+
+          <app-ta-tab-switch
+          [tabs]="billingAddressTabs"
+          (switchClicked)="tabBillingAddressChange($event)" 
+          [type]="'type2-modal-popup'"        
+          ></app-ta-tab-switch>
+
           <!-- Billing address -->
           <div
             *ngIf="
@@ -302,10 +304,14 @@
           >
             <div class="broker-billing-field credit">
               <p>Credit</p>
-              <app-ta-input-radiobuttons
-                [buttons]="billingCredit"
-                (changedValue)="isCredit($event)"
-              ></app-ta-input-radiobuttons>
+
+              <app-ta-tab-switch
+              [tabs]="billingCredit"
+              (switchClicked)="isCredit($event)" 
+              [type]="'type2-modal-popup'"
+              >
+              </app-ta-tab-switch>              
+
             </div>
             <div class="broker-billing-field">
               <app-ta-input

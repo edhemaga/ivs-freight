@@ -96,9 +96,6 @@ export class ShipperTService {
 
   // Delete Shipper List
   public deleteShipperList(shippersToDelete: any[]): Observable<any> {
-    console.log('Shipers To Delete');
-    console.log(shippersToDelete);
-
     let deleteOnBack = shippersToDelete.map((shipper: any) => {
       return shipper.id;
     });

@@ -96,9 +96,6 @@ export class BrokerTService {
 
   // Delete Broker List
   public deleteBrokerList(brokersToDelete: any[]): Observable<any> {
-    console.log('Brokers To Delete');
-    console.log(brokersToDelete);
-
     let deleteOnBack = brokersToDelete.map((broker: any) => {
       return broker.id;
     });

@@ -25,9 +25,6 @@ export class ShopResolver implements Resolve<ShopState> {
           return of('No shops data...');
         }),
         tap((repairPagination: RepairShopListResponse) => {
-          console.log('Pozvao se api, podaci za repair');
-          console.log(repairPagination);
-
           this.shopStore.set(repairPagination.pagination.data);
         })
       );

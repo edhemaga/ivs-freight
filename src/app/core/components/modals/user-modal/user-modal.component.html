@@ -9,14 +9,9 @@
   <app-ta-tab-switch
   [tabs]="tabs"
   (switchClicked)="tabChange($event)" 
-  [type]="'modal-popup'"
+  [type]="'type1-modal-popup'"
   >
   </app-ta-tab-switch>  
-
-  <!-- <app-tab-switcher
-    (switchClicked)="tabChange($event)"
-    [tabs]="tabs"
-  ></app-tab-switcher> -->
 
   <form [formGroup]="userForm" class="form-container">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -133,10 +128,14 @@
               ></app-ta-input-dropdown>
             </div>
             <div class="col-3 no-p-left">
-              <app-ta-input-radiobuttons
-                [buttons]="typeOfEmploye"
-                (changedValue)="onTypeOfEmploye($event)"
-              ></app-ta-input-radiobuttons>
+
+              <app-ta-tab-switch
+              [tabs]="typeOfEmploye"
+              (switchClicked)="onTypeOfEmploye($event)" 
+              [type]="'type2-modal-popup'"
+              >
+              </app-ta-tab-switch>              
+
             </div>
           </div>
           <div
@@ -245,10 +244,14 @@
                 ></app-ta-input>
               </div>
               <div class="col-3 no-p-left">
-                <app-ta-input-radiobuttons
-                  [buttons]="typeOfPayroll"
-                  (changedValue)="onTypeOfPayroll($event)"
-                ></app-ta-input-radiobuttons>
+
+                <app-ta-tab-switch
+                [tabs]="typeOfPayroll"
+                (switchClicked)="onTypeOfPayroll($event)" 
+                [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>                
+
               </div>
             </div>
             <div

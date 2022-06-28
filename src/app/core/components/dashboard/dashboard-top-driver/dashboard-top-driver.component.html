@@ -49,7 +49,7 @@
                         <div class="dashboard-top-driver-body-list-items">
                             <div class="dashboard-top-driver-body-list-frame">
                                 <div class="dashboard-top-driver-body-list-id">{{item.id}}</div>
-                                <div class="dashboard-top-driver-body-list-circle"></div> 
+                                <div class="dashboard-top-driver-body-list-circle top-ten-{{circleColor[indx]}}-color"></div> 
                                 <div class="dashboard-top-driver-body-list-name">{{item.name}}</div>   
                             </div>
                             <div class="dashboard-top-driver-body-list-frame">
@@ -66,6 +66,33 @@
                     <app-ta-chart
                     [chartConfig]="chartConfig"
                     [axesProperties]="chartAxes"
+                    [legendAttributes]="{}"
+                    >
+                    </app-ta-chart>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="bar_chart_holder">
+                    <div class="chart_top_line_holder">
+                        <div class="chart_line_title">March, 2023 - March, 2025</div>
+                        <div class="chart_legend_hold">
+                            <div class="chart_legend_line line_sep">
+                                <div class="chart_legend_dot round_dark_grey">
+                                    <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                                </div>
+                                <div class="chart_legend_title">Top 10</div>
+                            </div>
+                            <div class="chart_legend_line">
+                                <div class="chart_legend_dot round_light_grey">
+                                    <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                                </div>
+                                <div class="chart_legend_title">All Others</div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-ta-chart
+                    [chartConfig]="barChartConfig"
+                    [axesProperties]="barAxes"
                     [legendAttributes]="{}"
                     >
                     </app-ta-chart>

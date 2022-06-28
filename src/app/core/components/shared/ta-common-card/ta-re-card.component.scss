@@ -199,17 +199,17 @@ p {
     .card-icon-common {
         svg {
             path {
-                animation-duration: 300ms;
+                animation-duration: 1500ms;
                 animation-name: changeSVG;
                 &:hover {
-                    animation-duration: 300ms;
+                    animation-duration: 1500ms;
                     animation-name: changeSVG;
                 }
             }
         }
     }
     .open-name {
-        animation-duration: 300ms;
+        animation-duration: 1500ms;
         animation-name: change;
     }
 }
@@ -229,14 +229,21 @@ p {
 .resize-icon {
     height: 18px;
     cursor: pointer;
+    svg {
+        path {
+            &:hover {
+                fill: #6c6c6c;
+            }
+        }
+    }
 }
 .resize-icon-svg {
     svg {
         path {
             fill: #aaaaaa;
-            &:hover {
-                fill: #6c6c6c;
-            }
+            // &:hover {
+            //     fill: #6c6c6c;
+            // }
         }
     }
 }

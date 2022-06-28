@@ -41,6 +41,10 @@ export function getBrokerColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
+      link: {
+        routerLinkStart: '/customer/',
+        routerLinkEnd: '/broker-details',
+      },
     },
     {
       ngTemplate: 'text',
@@ -330,6 +334,10 @@ export function getShipperColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
+      link: {
+        routerLinkStart: '/customer/',
+        routerLinkEnd: '/shiper-details',
+      },
     },
     {
       ngTemplate: 'text',

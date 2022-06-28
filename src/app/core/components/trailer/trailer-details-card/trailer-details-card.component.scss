@@ -12,7 +12,10 @@
     margin-top: 8px;
 }
 .wrapper-additional-cards{
-    max-height: 1080px;
+    
+    max-height: calc(77vh - 74px);
+    // min-height: calc(26vh - 10px);
+    min-height: fit-content;
     display: grid;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
@@ -61,4 +64,7 @@
         width: 165px;
         height: 30px;
     }
+}
+.note-cards{
+    padding: 0 7px;
 }

@@ -8,6 +8,8 @@
       [counterData]="item.length"
       [hidePlus]="item.hide"
       [statusInactive]="false"
+      [optionsId]="truckId"
+      (dropActions)="onTrackActions($event)"
       (openModalAction)="onModalAction($event)"
     >
     </app-ta-details-header>

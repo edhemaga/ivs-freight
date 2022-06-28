@@ -32,6 +32,7 @@ export class FuelDetailsComponent implements OnInit {
         icon: true,
         data: 25,
         customText: 'Date',
+        status:false,
         icons: [
           {
             id: Math.random() * 1000,
@@ -58,6 +59,7 @@ export class FuelDetailsComponent implements OnInit {
         template: 'fuel-vehicle',
         data: 18,
         hide: true,
+        status:true,
         customText: 'Cost',
       },
     ];
