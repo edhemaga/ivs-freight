@@ -35,6 +35,16 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   public driversInactive: DriversInactiveState[] = [];
   resetColumns: boolean;
   loadingPage: boolean = true;
+  backFilterQuery = {
+    active: 1,
+    pageIndex: 1,
+    pageSize: 25,
+    companyId: undefined,
+    sort: undefined,
+    searchOne: undefined,
+    searchTwo: undefined,
+    searchThree: undefined,
+  };
 
   constructor(
     private modalService: ModalService,
@@ -175,6 +185,22 @@ export class DriverTableComponent implements OnInit, OnDestroy {
               this.tableService.sendRowsSelected([]);
               this.tableService.sendResetSelectedColumns(true);
             });
+        }
+      });
+
+    // Search
+    this.tableService.currentSearchTableData
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res) {
+          if (!res.isChipsSet && !res.reset) {
+            this.backFilterQuery.searchOne = res.searchText;
+            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+
+            this.driverBackFilter(this.backFilterQuery);
+          }else if(res.reset){
+            this.sendDriverData();
+          }
         }
       });
 
@@ -395,6 +421,37 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.tableData[2].length = driverCount.inactive;
   }
 
+  driverBackFilter(filter: {
+    active: number;
+    pageIndex: number;
+    pageSize: number;
+    companyId: number | undefined;
+    sort: string | undefined;
+    searchOne: string | undefined;
+    searchTwo: string | undefined;
+    searchThree: string | undefined;
+  }) {
+    this.driverTService
+      .getDrivers(
+        filter.active,
+        filter.pageIndex,
+        filter.pageSize,
+        filter.companyId,
+        filter.sort,
+        filter.searchOne,
+        filter.searchTwo,
+        filter.searchThree
+      )
+      .pipe(untilDestroyed(this))
+      .subscribe((drivers: DriverListResponse) => {
+        this.viewData = drivers.pagination.data;
+
+        this.viewData = this.viewData.map((data: any) => {
+          return this.mapDriverData(data);
+        });
+      });
+  }
+
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
       this.modalService.openModal(DriverModalComponent, {
@@ -415,22 +472,10 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   onTableHeadActions(event: any) {
     if (event.action === 'sort') {
       if (event.direction) {
-        this.driverTService
-          .getDrivers(
-            this.selectedTab === 'active' ? 1 : 0,
-            1,
-            25,
-            undefined,
-            event.direction
-          )
-          .pipe(untilDestroyed(this))
-          .subscribe((drivers: DriverListResponse) => {
-            this.viewData = drivers.pagination.data;
+        this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.sort = event.direction;
 
-            this.viewData = this.viewData.map((data: any) => {
-              return this.mapDriverData(data);
-            });
-          });
+        this.driverBackFilter(this.backFilterQuery);
       } else {
         this.sendDriverData();
       }

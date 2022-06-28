@@ -1,20 +1,47 @@
-<div class="search-container" [ngClass]="{ 'search-input-active': openSearch }">
-  <!-- Icon -->
-  <div class="icon-container" (click)="openSearch = !openSearch">
-    <svg-icon
-      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
-      [src]="'assets/svg/truckassist-search/new-search-icon.svg'"
-    ></svg-icon>
+<div class="search-chips-container">
+  <div
+    class="search-container"
+    [ngClass]="{ 'search-input-active': openSearch }"
+  >
+    <!-- Icon -->
+    <div class="icon-container" (click)="toggleSearch()">
+      <svg-icon
+        [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+        [src]="'assets/svg/truckassist-search/new-search-icon.svg'"
+      ></svg-icon>
+    </div>
+
+    <!-- Serach Input -->
+    <div class="search-input">
+      <input
+        *ngIf="openSearch"
+        id="table-search"
+        type="text"
+        (keyup)="onTyping()"
+        (keyup.enter)="onEnter()"
+        autofocus
+        [(ngModel)]="searchText"
+        placeholder="Find {{
+          selectedTabData?.gridNameTitle
+            ? selectedTabData.gridNameTitle
+            : 'No Tab Name'
+        }}"
+      />
+    </div>
   </div>
 
-  <!-- Serach Input -->
-  <div class="search-input">
-    <input
-      type="text"
-      *ngIf="openSearch"
-      (keypress)="onTyping()"
-      [(ngModel)]="searchText"
-      placeholder="Find {{selectedTabData?.gridNameTitle ? selectedTabData.gridNameTitle : 'No Tab Name'}}"
-    />
+  <div class="chips-container" *ngIf="chips.length">
+    <div
+      class="chip"
+      *ngFor="let chip of chips; let i = index"
+      [ngClass]="{
+        'first-chip-animation': i === 0,
+        'second-chip-animation': i === 1,
+        'third-chip-animation': i === 2
+      }"
+      [ngStyle]="{ background: chip.color }"
+    >
+      {{ chip.searchText }}
+    </div>
   </div>
 </div>

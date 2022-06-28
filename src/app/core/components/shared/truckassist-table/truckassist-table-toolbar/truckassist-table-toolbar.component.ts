@@ -119,7 +119,7 @@ export class TruckassistTableToolbarComponent
     }
 
     if (changes?.selectedTab) {
-      this.selectedTab = changes.selectedTab.currentValue;
+      this.selectedTab = changes.selectedTab.currentValue; 
 
       const td = this.tableData.find((t) => t.field === this.selectedTab);
 
