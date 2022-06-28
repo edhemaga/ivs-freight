@@ -193,13 +193,20 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
-          if (!res.isChipsSet && !res.reset) {
-            this.backFilterQuery.searchOne = res.searchText;
+          if (!res.doReset) {
+            this.backFilterQuery[res.chip] = res.search;
             this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
 
+
             this.driverBackFilter(this.backFilterQuery);
-          }else if(res.reset){
-            this.sendDriverData();
+          } else if (res.doReset) {
+            this.backFilterQuery[res.chip] = undefined;
+
+            if(res.all){
+              this.sendDriverData();
+            }else{
+              this.driverBackFilter(this.backFilterQuery);
+            }
           }
         }
       });

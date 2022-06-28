@@ -72,6 +72,7 @@
     margin-right: 6px;
 
     .chip {
+      cursor: pointer;
       min-width: 57px;
       height: 32px;
       border-radius: 3px;
@@ -83,6 +84,42 @@
       justify-content: center;
       align-items: center;
       position: relative;
+
+      &:hover{
+        .delete-chip{
+          opacity: 1;
+          transition: 0.25s;
+        }
+      }
+
+      .delete-chip {
+        position: absolute;
+        right: -6px;
+        top: -6px;
+        width: 14px;
+        height: 14px;
+        background: #aaaaaa;
+        border: 2px solid #f1f1f1;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: background 0.25s, opacity 0.25s;
+
+        &:hover{
+          background: #EF5350;
+          transition: 0.25s;
+        }
+        svg-icon{
+          display: flex;
+          svg{
+            path{
+              fill: #FFFFFF;
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -119,16 +156,16 @@
   }
 }
 
-.first-chip-animation{
-  animation: searchOneAnimation 0.25s ease-in-out;
+.first-chip-animation {
+  animation: searchOneAnimation 0.2s ease-in-out;
 }
 
-.second-chip-animation{
-  animation: searchTwoAnimation 0.25s ease-in-out;
+.second-chip-animation {
+  animation: searchTwoAnimation 0.2s ease-in-out;
 }
 
-.third-chip-animation{
-  animation: searchThreeAnimation 0.25s ease-in-out;
+.third-chip-animation {
+  animation: searchThreeAnimation 0.2s ease-in-out;
 }
 
 @keyframes searchOneAnimation {
@@ -151,7 +188,8 @@
 
 @keyframes searchThreeAnimation {
   from {
-    left: -184px;
+    /* -184px */
+    left: -140px;
   }
   to {
     left: 0px;

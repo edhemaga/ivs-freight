@@ -33,82 +33,91 @@ export class TruckassistSearchComponent
   }
 
   toggleSearch() {
-    if (this.chips.length < 3) {
-      this.openSearch = !this.openSearch;
+    this.openSearch = !this.openSearch;
 
-      if (this.openSearch) {
-        setTimeout(() => {
-          document.getElementById('table-search').focus();
-        }, 100);
-      }
+    if (this.openSearch && this.chips.length < 3) {
+      setTimeout(() => {
+        document.getElementById('table-search').focus();
+      }, 100);
     }
   }
 
-  onTyping() {
-     /* if (this.searchText.length >= 3) {
-      this.searchIsActive = true;
+  onTyping(event: KeyboardEvent) {
+    const searchNumber = !this.chips.length
+      ? 'searchOne'
+      : this.chips.length === 1
+      ? 'searchTwo'
+      : 'searchThree';
 
-      this.tableService.sendCurrentSearchTableData({
-        isChipsSet: false,
-        searchText: this.searchText,
-      });
+    if (event.key !== 'Enter') {
+      if (this.searchText.length >= 3) {
+        this.searchIsActive = true;
 
-    } else if (this.searchIsActive && this.searchText.length < 3) {
-      this.searchIsActive = false;
+        this.tableService.sendCurrentSearchTableData({
+          chip: searchNumber,
+          search: this.searchText,
+        });
+      } else if (this.searchIsActive && this.searchText.length < 3) {
+        this.searchIsActive = false;
 
-      this.tableService.sendCurrentSearchTableData({
-        reset: true,
-      });
-    } */
+        this.tableService.sendCurrentSearchTableData({
+          chip: searchNumber,
+          doReset: true,
+          all: searchNumber === 'searchOne',
+        });
+      }
+    }
   }
 
   onEnter() {
     if (this.chips.length < 3) {
       this.chips.push({
-        chipId: this.chips.length + 1,
         searchText: this.searchText,
-        color: this.getChipColor(this.chips.length + 1),
-        position: -63
+        color: this.getChipColor(this.chips.length),
+        canDoAnimation: true,
       });
 
       this.searchText = '';
-
-      /* if(this.chips.length >= 3){
-        this.openSearch = false;
-      } */
-
-      // Treba da se ukloni posle
-      this.tableService.sendCurrentSearchTableData({
-        reset: true,
-      });
+      this.searchIsActive = false;
     }
   }
 
-  getChipColor(id: number) {
-    const chipsColors = [
-      {
-        id: 1,
-        color: '#4DB6A2',
-      },
-      {
-        id: 2,
-        color: '#BA68C8',
-      },
-      {
-        id: 3,
-        color: '#FFB74D',
-      },
-    ];
+  onDeleteChip(index: number) {
+    this.chips.splice(index, 1);
 
-    let color: any = {};
+    this.chips = this.chips.map((chip, i) => {
+      chip = {
+        searchText: chip.searchText,
+        color: this.getChipColor(i),
+        canDoAnimation: false,
+      };
 
-    chipsColors.filter((chipColor) => {
-      if (id === chipColor.id) {
-        color = chipColor.color;
-      }
+      return chip;
     });
 
-    return color;
+    if (this.openSearch) {
+      setTimeout(() => {
+        document.getElementById('table-search').focus();
+      }, 100);
+    }
+
+    const searchNumber = !this.chips.length
+      ? 'searchOne'
+      : this.chips.length === 1
+      ? 'searchTwo'
+      : 'searchThree';
+
+    this.tableService.sendCurrentSearchTableData({
+      chip: searchNumber,
+      doReset: true,
+      all: searchNumber === 'searchOne',
+    });
+  }
+
+  getChipColor(index: number) {
+    const chipsColors = ['#4DB6A2', '#BA68C8', '#FFB74D'];
+
+    return chipsColors[index];
   }
 
   ngOnDestroy(): void {
