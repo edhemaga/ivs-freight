@@ -52,7 +52,7 @@
   ></app-truckassist-table-toolbar-switch> -->
 
   <!-- SEARCH -->
-  <app-truckassist-search></app-truckassist-search>
+  <app-truckassist-search [selectedTabData]="activeTableData"></app-truckassist-search>
 
   <!-- LOCATION FILTER -->
   <div
@@ -101,8 +101,9 @@
         [placement]="'bottom-right'"
         [autoClose]="'outside'"
         popoverClass="options-popover"
-        [ngClass]="{ 'active-options': optionsPopup?.isOpen() }"
+        [ngClass]="{ 'active-options': optionsPopupOpen }"
         triggers="manual"
+        (hidden)="optionsPopupOpen = false"
       >
         <svg-icon
           [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"

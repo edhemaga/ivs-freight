@@ -6,7 +6,6 @@
   margin-right: 6px;
   display: flex;
   transition: background 0.25s;
-  cursor: pointer;
 
   .icon-container {
     width: 32px;
@@ -14,6 +13,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+
+    &:hover {
+      svg-icon {
+        svg {
+          path {
+            fill: #6c6c6c;
+            transition: 0.25s;
+          }
+        }
+      }
+    }
+
+    svg-icon {
+      display: flex;
+      svg {
+        rect,
+        path {
+          stroke-width: none !important;
+          stroke: none !important;
+        }
+      }
+    }
   }
 
   .search-input {
@@ -27,23 +49,39 @@
       background: transparent;
       padding: 0;
       outline: none;
-      color: white;
-      font-size: 16px;
+      color: #ffffff;
+      font-size: 14px;
       font-weight: 400;
+    }
+
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    input::placeholder {
+      color: #aaaaaa;
     }
   }
 }
 
 /* NG Class */
 .search-input-active {
-  background: #b7b7b7;
+  background: #6c6c6c;
   transition: 0.25s;
+
   .icon-container {
+    &:hover {
+      svg-icon {
+        svg {
+          path {
+            fill: #eeeeee;
+            transition: 0.25s;
+          }
+        }
+      }
+    }
+
     svg-icon {
       svg {
         path {
-          fill: white;
-          transition: 0.25s;
+          fill: #b7b7b7;
         }
       }
     }

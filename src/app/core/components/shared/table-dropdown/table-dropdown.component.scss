@@ -10,30 +10,12 @@
     background-image: url("../../../../../assets/svg/truckassist-table/dropdown/dropdown-hover.svg");
   }
 }
-.table-dropdown-container-vertical{
-  width: 18px;
-  height: 22px;
-  background-image: url("../../../../../assets/svg/common/ic_dots.svg") !important;
-  background-repeat: no-repeat;
-  background-position: center;
-  position: relative;
-  background-size: contain;
-  right: 7px;
-  cursor: pointer;
+
+// NG CLASS
+.active-drop {
+  background-image: url("../../../../../assets/svg/truckassist-table/dropdown/dropdown-select.svg");
 
   &:hover {
-    background-image: url("../../../../../assets/svg/common/ic_vertical_hover_dots.svg") !important;
-  }
-}
-.table-dropdown-container-horizontal-details{
-  width: 30px;
-  height: 28px;
-  background-image: url("../../../../../assets/svg/common/ic_horizontal_dots_details.svg") !important;
-  background-repeat: no-repeat;
-  background-position: center;
-  cursor: pointer;
-
-  &:hover {
-    background-image: url("../../../../../assets/svg/common/ic_horizonatal-dots-hover.svg") !important;
+    background-image: url("../../../../../assets/svg/truckassist-table/dropdown/dropdown-select-hover.svg");
   }
 }

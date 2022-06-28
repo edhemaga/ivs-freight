@@ -13,8 +13,6 @@
       .table-dropdown-content {
         cursor: pointer;
         width: 100%;
-        min-width: 97px;
-        max-width: 120px;
         height: 26px;
         border-radius: 2px;
         display: flex;
@@ -94,6 +92,7 @@
           font-size: 12px;
           font-weight: 400;
           padding-right: 4px;
+          white-space: nowrap;
         }
       }
 

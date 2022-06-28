@@ -1,6 +1,6 @@
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import {
   CheckOwnerSsnEinResponse,
   CreateDriverCommand,
@@ -42,7 +42,16 @@ export class DriverTService {
     search1?: string,
     search2?: string
   ): Observable<DriverListResponse> {
-    return this.driverService.apiDriverListGet(active, pageIndex, pageSize);
+    return this.driverService.apiDriverListGet(
+      active,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
   }
 
   // Create Driver
@@ -51,8 +60,6 @@ export class DriverTService {
   ): Observable<CreateDriverResponse> {
     return this.driverService.apiDriverPost(data).pipe(
       tap((res: any) => {
-        console.log('Radi se dodavanje drivera');
-
         const subDriver = this.getDriverById(res.id).subscribe({
           next: (driver: DriverResponse | any) => {
             driver = {
@@ -117,6 +124,11 @@ export class DriverTService {
             inactive: driverCount.inactive,
           })
         );
+
+        this.tableService.sendActionAnimation({
+          animation: 'delete',
+          id: driverId,
+        });
       })
     );
   }
@@ -196,28 +208,53 @@ export class DriverTService {
     return this.ownerService.apiOwnerCheckSsnEinGet(number);
   }
 
-  public changeDriverStatus(driverId: number): Observable<any> {
+  public changeDriverStatus(
+    driverId: number,
+    tabSelected?: string
+  ): Observable<any> {
     return this.driverService.apiDriverStatusIdPut(driverId, 'response').pipe(
       tap(() => {
-        const driverToUpdate = this.driversActiveQuery.getAll({
-          filterBy: ({ id }) => id === driverId,
-        });
-
-        this.driverActiveStore.update(({ id }) => id === driverId, {
-          status: driverToUpdate[0].status === 0 ? 1 : 0,
-        });
-
+        /* Get Table Tab Count */
         const driverCount = JSON.parse(
           localStorage.getItem('driverTableCount')
         );
 
-        driverToUpdate[0].status === 0
-          ? driverCount.active++
-          : driverCount.active--;
-        driverToUpdate[0].status === 0
-          ? driverCount.inactive--
-          : driverCount.inactive++;
+        /* Get Data From Store To Update */
+        let driverToUpdate =
+          tabSelected === 'active'
+            ? this.driversActiveQuery.getAll({
+                filterBy: ({ id }) => id === driverId,
+              })
+            : this.driversInactiveQuery.getAll({
+                filterBy: ({ id }) => id === driverId,
+              });
 
+        /* Remove Data From Store */
+        tabSelected === 'active'
+          ? this.driverActiveStore.remove(({ id }) => id === driverId)
+          : this.driverInactiveStore.remove(({ id }) => id === driverId);
+
+        /* Add Data To New Store */
+        tabSelected === 'active'
+          ? this.driverInactiveStore.add({
+              ...driverToUpdate[0],
+              status: 0,
+            })
+          : this.driverActiveStore.add({
+              ...driverToUpdate[0],
+              status: 1,
+            });
+
+        /* Update Table Tab Count */
+        if (tabSelected === 'active') {
+          driverCount.active--;
+          driverCount.inactive++;
+        } else if (tabSelected === 'inactive') {
+          driverCount.active++;
+          driverCount.inactive--;
+        }
+
+        /* Send Table Tab Count To Local Storage */
         localStorage.setItem(
           'driverTableCount',
           JSON.stringify({
@@ -226,6 +263,7 @@ export class DriverTService {
           })
         );
 
+        /* Send Info For Table To Do Action Animation */
         this.tableService.sendActionAnimation({
           animation: 'update-status',
           id: driverId,
