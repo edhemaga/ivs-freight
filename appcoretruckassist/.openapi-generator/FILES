@@ -31,7 +31,6 @@ api/title.service.ts
 api/todo.service.ts
 api/trailer.service.ts
 api/truck.service.ts
-api/user.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -81,7 +80,6 @@ model/companyOfficeShortResponse.ts
 model/companyPayrollResponse.ts
 model/companyResponse.ts
 model/companyShortResponse.ts
-model/companyUserListResponse.ts
 model/companyUserModalResponse.ts
 model/companyUserResponse.ts
 model/companyUserResponsePagination.ts
@@ -118,7 +116,6 @@ model/createTitleCommand.ts
 model/createTodoCommand.ts
 model/createTrailerCommand.ts
 model/createTruckCommand.ts
-model/createUserCommand.ts
 model/creditType.ts
 model/deleteMultipleBrokerCommand.ts
 model/deleteMultipleCompanyAccountsCommand.ts
@@ -321,7 +318,6 @@ model/updateTrailerCommand.ts
 model/updateTrailerPMUnitCommand.ts
 model/updateTruckCommand.ts
 model/updateTruckPMUnitCommand.ts
-model/userType.ts
 model/verifyForgotPasswordCommand.ts
 model/verifyOwnerCommand.ts
 model/verifyUserCommand.ts

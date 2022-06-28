@@ -25,6 +25,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
   selector: 'app-repair-shop-modal',
   templateUrl: './repair-shop-modal.component.html',
   styleUrls: ['./repair-shop-modal.component.scss'],
+  providers: [ModalService],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -38,57 +39,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   public labelsBank: any[] = [];
   public selectedBank: any = null;
 
-  public services: any[] = [
-    {
-      id: 1,
-      serviceType: 'Truck',
-      svg: 'assets/svg/common/repair-services/ic_truck.svg',
-      active: false,
-    },
-    {
-      id: 2,
-      serviceType: 'Trailer',
-      svg: 'assets/svg/common/repair-services/ic_trailer.svg',
-      active: false,
-    },
-    {
-      id: 3,
-      serviceType: 'Mobile',
-      svg: 'assets/svg/common/repair-services/ic_mobile.svg',
-      active: false,
-    },
-    {
-      id: 4,
-      serviceType: 'Shop',
-      svg: 'assets/svg/common/repair-services/ic_shop.svg',
-      active: false,
-    },
-    {
-      id: 5,
-      serviceType: 'Towing',
-      svg: 'assets/svg/common/repair-services/ic_towing.svg',
-      active: false,
-    },
-    {
-      id: 6,
-      serviceType: 'Parts',
-      svg: 'assets/svg/common/repair-services/ic_parts.svg',
-      active: false,
-    },
-    {
-      id: 7,
-      serviceType: 'Tire',
-      svg: 'assets/svg/common/repair-services/ic_tire.svg',
-      active: false,
-    },
-    {
-      id: 8,
-      serviceType: 'Dealer',
-      svg: 'assets/svg/common/repair-services/ic_dealer.svg',
-      active: false,
-    },
-  ];
-
+  public services: any[] = [];
   public openHoursDays = [
     'Sunday',
     'Monday',
@@ -110,11 +61,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getRepairShopModalDropdowns();
-    
+
     if (this.editData) {
       this.editData = {
         ...this.editData,
-        id: 2,
+        id: 1,
       };
       this.editRepairShopById(this.editData.id);
     }
@@ -304,6 +255,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             account: res.account,
             note: res.note,
           });
+          console.log(res);
           this.selectedAddress = res.address;
           this.selectedBank = res.bank;
           this.isPhoneExtExist = res.phoneExt ? true : false;
@@ -312,7 +264,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             return {
               id: item.serviceType.id,
               serviceType: item.serviceType.name,
-              svg: 'assets/svg/common/ic_dealer.svg',
+              svg: `assets/svg/common/repair-service/${item.logoName}`,
               active: item.active,
             };
           });
@@ -326,8 +278,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
               endTime: el.endTime,
             });
           });
-
-          console.log(this.openHours.value);
         },
         error: () => {
           this.notificationService.error(
@@ -339,7 +289,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   }
 
   private addRepairShop() {
-    let { address, addressUnit, openHours, ...form } =
+    let { address, addressUnit, openHours, bankId, ...form } =
       this.repairShopForm.value;
 
     openHours = openHours.map((item) => {
@@ -368,6 +318,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     const newData: CreateRepairShopCommand = {
       ...form,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
+      bankId: this.selectedBank.id,
       openHours: openHours,
       serviceTypes: this.services,
     };
@@ -378,6 +329,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success('Repair shop added', 'Success: ');
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -389,7 +341,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   }
 
   private updateRepairShop(id: number) {
-    let { address, addressUnit, openHours, ...form } =
+    let { address, addressUnit, openHours, bankId, ...form } =
       this.repairShopForm.value;
 
     openHours = openHours.map((item) => {
@@ -418,6 +370,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     const newData: UpdateRepairShopCommand = {
       id: id,
       ...form,
+      bankId: this.selectedBank.id,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       openHours: openHours,
       serviceTypes: this.services,
@@ -432,6 +385,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             'Repair shop successfully updated',
             'Success: '
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -443,7 +397,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   }
 
   private deleteRepairShopById(id: number) {
-    console.log(id);
     this.shopService
       .deleteRepairById(id)
       .pipe(untilDestroyed(this))
@@ -453,6 +406,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             'Repair shop successfully deleted',
             'Success: '
           );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error(
@@ -469,14 +426,29 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RepairShopModalResponse) => {
-          // this.labelsBank = 
+          this.labelsBank = res.banks.map((item) => {
+            return {
+              ...item,
+              folder: 'common',
+              subFolder: 'banks',
+            };
+          });
+          this.services = res.serviceTypes.map((item) => {
+            return {
+              id: item.serviceType.id,
+              serviceType: item.serviceType.name,
+              svg: `assets/svg/common/repair-services/${item.logoName}`,
+              active: false,
+            };
+          });
+          console.log(res);
         },
         error: () => {
           this.notificationService.error(
             "Repair shop can't get dropdowns",
             'Error: '
           );
-        }
+        },
       });
   }
 

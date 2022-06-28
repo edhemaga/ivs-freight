@@ -6,6 +6,7 @@ import {
   getTrailerPMColumnDefinition,
   getTruckPMColumnDefinition,
 } from 'src/assets/utils/settings/pm-columns';
+import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 
 @Component({
   selector: 'app-pm-truck-trailer',
@@ -47,7 +48,7 @@ export class PmTruckTrailerComponent implements OnInit {
       toolbarActions: {
         hideLocationFilter: true,
         hideViewMode: true,
-        showGeneralPmBtn: true
+        showGeneralPmBtn: true,
       },
       config: {
         showSort: true,
@@ -197,14 +198,81 @@ export class PmTruckTrailerComponent implements OnInit {
   }
 
   onToolBarAction(event: any) {
-    if (event.action === 'tab-selected') {
-      this.selectedTab = event.tabData.field;
-
-      this.sendPMData();
+    switch (event.action) {
+      case 'tab-selected': {
+        this.selectedTab = event.tabData.field;
+        this.sendPMData();
+        break;
+      }
+      case 'open-general-pm': {
+        switch (this.selectedTab) {
+          case 'active': {
+            this.modalService.openModal(
+              RepairPmModalComponent,
+              { size: 'small' },
+              {
+                type: 'new',
+                header: 'Truck',
+                action: 'generic-pm',
+              }
+            );
+            break;
+          }
+          case 'inactive': {
+            this.modalService.openModal(
+              RepairPmModalComponent,
+              { size: 'small' },
+              {
+                type: 'new',
+                header: 'Trailer',
+                action: 'generic-pm',
+              }
+            );
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 
-  public onTableBodyActions(event: any) {}
+  public onTableBodyActions(event: any) {
+    switch (this.selectedTab) {
+      case 'active': {
+        this.modalService.openModal(
+          RepairPmModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            header: 'Truck',
+            action: 'unit-pm',
+          }
+        );
+        break;
+      }
+      case 'inactive': {
+        this.modalService.openModal(
+          RepairPmModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            header: 'Trailer',
+            action: 'unit-pm',
+          }
+        );
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
 
   ngOnDestroy(): void {}
 }

@@ -92,9 +92,10 @@ export const convertDateFromBackend = (date: string) => {
 
 //------------------------------- Convert thousand separator in number -------------------------------
 export const convertThousanSepInNumber = (value: string) => {
-  return parseFloat(value.replace(/,/g, ''));
+  if (value) return parseFloat(value.replace(/,/g, ''));
 };
 //------------------------------- Convert number in thousand separator -------------------------------
 export const convertNumberInThousandSep = (value: number) => {
-  return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
+  if (value)
+    return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
 };

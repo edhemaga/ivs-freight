@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -8,26 +8,20 @@ import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
   providedIn: 'root',
 })
 export class TaInputService {
-  public onClearInputSubject: Subject<boolean> =
-    new Subject<boolean>();
+  public onClearInputSubject: Subject<boolean> = new Subject<boolean>();
 
-  public onFocusOutInputSubject: Subject<boolean> =
-    new Subject<boolean>();
+  public onFocusOutInputSubject: Subject<boolean> = new Subject<boolean>();
 
-  public dropDownShowHideSubject: Subject<boolean> =
-    new Subject<boolean>();
+  public dropDownShowHideSubject: Subject<boolean> = new Subject<boolean>();
 
-  public dropDownNavigatorSubject: Subject<number> =
-    new Subject<number>();
+  public dropDownNavigatorSubject: Subject<number> = new Subject<number>();
 
   public isDropDownItemSelectedOnEnter: Subject<boolean> =
     new Subject<boolean>();
 
-  public dropdownAddModeSubject: Subject<boolean> =
-    new Subject<boolean>();
+  public dropdownAddModeSubject: Subject<boolean> = new Subject<boolean>();
 
-  public addDropdownItemSubject: Subject<boolean> =
-    new Subject<boolean>();
+  public addDropdownItemSubject: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     public notificationService: NotificationService,

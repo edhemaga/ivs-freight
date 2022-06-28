@@ -24,7 +24,6 @@ import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purcha
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { AccidentModalComponent } from '../../safety/accident/accident-modal/accident-modal.component';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
-import { RepairPmModalComponent } from '../../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 
 @Component({
@@ -148,12 +147,6 @@ export class NavigationModalsComponent {
       }
       case 'fuel-stop': {
         this.modalService.openModal(FuelStopModalComponent, {
-          size: 'small',
-        });
-        break;
-      }
-      case 'ltl': {
-        this.modalService.openModal(RepairPmModalComponent, {
           size: 'small',
         });
         break;

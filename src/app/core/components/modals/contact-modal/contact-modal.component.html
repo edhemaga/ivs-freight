@@ -7,7 +7,7 @@
 >
   <form [formGroup]="contactForm" class="form-container">
     <div class="row">
-      <div class="col-7">
+      <div class="col-12">
         <app-ta-input
           formControlName="name"
           [inputConfig]="{
@@ -21,20 +21,38 @@
           }"
         ></app-ta-input>
       </div>
-      <div class="col-5">
-        <app-ta-input-dropdown
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <app-ta-input-dropdown-label
           formControlName="companyContactLabelId"
           [inputConfig]="{
-            name: 'Input Dropdown',
+            name: 'Input Dropdown Label',
             type: 'text',
-            label: 'Select Label',
-            isDropdown: true,
-            dropdownWidthClass: 'w-col-5'
+            label: 'Label',
+            isDropdownLabel: true,
+            placeholderIcon: 'ic_dynamic_label',
+            blackInput: true,
+            dropdownLabelSelected: selectedContactLabel,
+            commands: {
+              active: true,
+              type: 'confirm-cancel',
+              firstCommand: {
+                name: 'confirm',
+                svg: 'assets/svg/ic_spec-confirm.svg'
+              },
+              secondCommand: {
+                name: 'cancel',
+                svg: 'assets/svg/ic_x.svg'
+              }
+            },
+            dropdownWidthClass: 'w-col-dropdown-label'
           }"
-          [canAddNew]="true"
           [options]="contactLabels"
-          (selectedItem)="onSelectDropdown($event, 'label')"
-        ></app-ta-input-dropdown>
+          (selectedColorLabel)="onSelectColorLabel($event)"
+          (labelEvent)="onSaveLabel($event)"
+        >
+        </app-ta-input-dropdown-label>
       </div>
     </div>
     <div class="row">
@@ -62,7 +80,7 @@
         ></app-ta-input>
       </div>
     </div>
-    <div class="row">
+    <div class="row last-row">
       <div class="col-10">
         <app-ta-input-address
           formControlName="address"
@@ -103,13 +121,12 @@
         <svg-icon
           class="checkbox-card-header-arrow"
           src="assets/svg/common/ic_arrow_down_updated.svg"
-          [ngClass]="{ 'visible': contactForm.get('shared').value }"
+          [ngClass]="{ visible: contactForm.get('shared').value }"
         ></svg-icon>
       </div>
       <div
         class="checkbox-card-body"
-        [ngClass]="{'active-20': contactForm.get('shared').value}"
-        
+        [ngClass]="{ 'active-20': contactForm.get('shared').value }"
       >
         <div *ngIf="contactForm.get('shared').value">
           <div class="row shared-contact-dropdown">
@@ -122,6 +139,7 @@
                   type: 'text',
                   label: 'Share Contact',
                   isDropdown: true,
+                  isRequired: true,
                   dropdownWidthClass: 'w-col-12'
                 }"
                 [options]="sharedDepartments"
@@ -131,8 +149,20 @@
           </div>
         </div>
       </div>
+      <div class="ta-card-body-overflow-none">
+        <app-ta-custom-card [cardName]="'Contact Image'" [isCardOpen]="true">
+          <app-ta-logo-change
+            [imageUrl]="this.contactForm.get('avatar').value"
+            [viewPortType]="'circle'"
+            (base64ImageEvent)="onUploadImage($event)"
+          ></app-ta-logo-change>
+        </app-ta-custom-card>
+      </div>
       <!-- Note -->
-      <app-ta-input-note formControlName="note" [isVisibleNote]="contactForm.get('note').value"></app-ta-input-note>
+      <app-ta-input-note
+        formControlName="note"
+        [isVisibleNote]="contactForm.get('note').value"
+      ></app-ta-input-note>
     </div>
   </form>
 </app-ta-modal>

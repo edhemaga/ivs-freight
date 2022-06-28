@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -9,7 +8,6 @@ import {
   Output,
   Self,
   ViewChild,
-  ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -25,6 +23,7 @@ import {
   convertThousanSepInNumber,
 } from 'src/app/core/utils/methods.calculations';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { TaInputResetService } from './ta-input-reset.service';
 
 @Component({
   selector: 'app-ta-input',
@@ -45,13 +44,15 @@ export class TaInputComponent
   @ViewChild('span1', { static: false }) span1: ElementRef;
   @ViewChild('span2', { static: false }) span2: ElementRef;
   @ViewChild('span3', { static: false }) span3: ElementRef;
-  @Input() inputConfig: ITaInput;
   @ViewChild('t2') t2: any;
-
-  @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
-
   @ViewChild(NgbPopover)
   private ngbMainPopover: NgbPopover;
+
+  @Input() inputConfig: ITaInput;
+
+  @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
+  @Output('commandEvent') inputCommandEvent: EventEmitter<any> =
+    new EventEmitter<any>();
 
   public focusInput: boolean = false;
   public touchedInput: boolean = false;
@@ -72,22 +73,22 @@ export class TaInputComponent
   // Date Timer
   private dateTimeMainTimer: any;
 
+  // Capslock input
   public capsLockOn: boolean = false;
 
-  // PM Modal Input
-  public isVisiblePmCommands: boolean = false;
+  // Input Commands
+  public isVisibleCommands: boolean = false;
 
   constructor(
     @Self() public superControl: NgControl,
-    private changeDetection: ChangeDetectorRef,
     private inputService: TaInputService,
+    private inputResetService: TaInputResetService,
     private calendarService: CalendarScrollService,
     private titlecasePipe: TitleCasePipe,
     private uppercasePipe: UpperCasePipe,
     private thousandSeparatorPipe: TaThousandSeparatorPipe
   ) {
     this.superControl.valueAccessor = this;
-    // this.input.nativeElement.value = this.getSuperControl.value;
   }
 
   ngOnInit(): void {
@@ -120,6 +121,7 @@ export class TaInputComponent
         });
     }
 
+    // Dropdown add mode
     if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
       this.inputService.dropdownAddModeSubject
         .pipe(untilDestroyed(this))
@@ -127,11 +129,11 @@ export class TaInputComponent
           if (action) {
             this.dropdownToggler = false;
             this.isDropdownAddModeActive = action;
-            this.focusInput = true;
             this.setInputCursorAtTheEnd(this.input.nativeElement);
           }
         });
 
+      // Dropdown selecte with enter
       this.inputService.isDropDownItemSelectedOnEnter
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
@@ -151,6 +153,17 @@ export class TaInputComponent
         clearTimeout(timeout);
       }, 300);
     }
+
+    // Reset Inputs
+    this.inputResetService.resetInputSubject
+      .pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.touchedInput = false;
+          this.getSuperControl.patchValue(null);
+          this.inputResetService.resetInputSubject.next(false);
+        }
+      });
   }
 
   get getSuperControl() {
@@ -180,8 +193,9 @@ export class TaInputComponent
       this.isVisiblePasswordEye = true;
     }
 
-    if (this.inputConfig.modalPM) {
-      this.isVisiblePmCommands = true;
+    // Input Commands
+    if (this.inputConfig.commands?.active) {
+      this.isVisibleCommands = true;
     }
 
     // Datepicker
@@ -227,14 +241,10 @@ export class TaInputComponent
         }
 
         this.focusInput = false;
-        this.inputService.onFocusOutInputSubject.next(true);
-        this.touchedInput = true;
       } else {
         this.blurOnDropDownArrow();
       }
     } else {
-      this.focusInput = false;
-
       let selection = window.getSelection();
       selection.removeAllRanges();
 
@@ -242,22 +252,36 @@ export class TaInputComponent
       if (this.inputConfig.type === 'password') {
         this.blurOnPassword();
       }
+
+      // Input Commands
+      if (this.inputConfig.commands?.active) {
+        this.blurOnCommands();
+      }
+
+      this.focusInput = false;
     }
+
     this.inputService.onFocusOutInputSubject.next(true);
     this.touchedInput = true;
   }
 
   private blurOnPassword() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
     this.timeout = setTimeout(() => {
       this.isVisiblePasswordEye = false;
-      this.changeDetection.detectChanges();
+      clearTimeout(this.timeout);
     }, 150);
   }
 
-  private blurOnPmCommands() {
+  private blurOnCommands() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
     this.timeout = setTimeout(() => {
-      this.isVisiblePmCommands = false;
-      this.changeDetection.detectChanges();
+      this.isVisibleCommands = false;
+      clearTimeout(this.timeout);
     }, 150);
   }
 
@@ -331,7 +355,7 @@ export class TaInputComponent
     const timeout = setTimeout(() => {
       input.focus();
       clearTimeout(timeout);
-    }, 150);
+    }, 120);
   }
 
   public onKeyUp(event): void {
@@ -389,57 +413,83 @@ export class TaInputComponent
     }
   }
 
-  public onPmIncrementation(event: Event, action: string) {
+  public onCommands(event: Event, type: string, action: string) {
     event.stopPropagation();
     event.preventDefault();
-    const value = convertThousanSepInNumber(this.getSuperControl.value);
-
-    switch (action) {
-      case 'decrement': {
-        if (value >= 10000 && value < 20000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value - 1000)
-          );
-        } else if (value >= 20001 && value < 50000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value - 3000)
-          );
-        } else if (value >= 50001 && value < 100000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value - 5000)
-          );
-        } else if (value >= 10000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value - 10000)
-          );
-        } else {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value - 500)
-          );
+    switch (type) {
+      case 'pm-increment-decrement': {
+        const value = convertThousanSepInNumber(this.getSuperControl.value);
+        switch (action) {
+          case 'decrement': {
+            if (value >= 10000 && value < 20000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value - 1000)
+              );
+            } else if (value >= 20001 && value < 50000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value - 3000)
+              );
+            } else if (value >= 50001 && value < 100000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value - 5000)
+              );
+            } else if (value >= 10000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value - 10000)
+              );
+            } else {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value - 500)
+              );
+            }
+            break;
+          }
+          case 'increment': {
+            if (value > 10000 && value < 20000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value + 1000)
+              );
+            } else if (value >= 20001 && value < 50000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value + 3000)
+              );
+            } else if (value >= 50001 && value < 100000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value + 5000)
+              );
+            } else if (value >= 10000) {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value + 10000)
+              );
+            } else {
+              this.getSuperControl.patchValue(
+                convertNumberInThousandSep(value + 500)
+              );
+            }
+            break;
+          }
+          default: {
+            break;
+          }
         }
+        clearTimeout(this.timeout);
+        this.setInputCursorAtTheEnd(this.input.nativeElement);
         break;
       }
-      case 'increment': {
-        if (value > 10000 && value < 20000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value + 1000)
-          );
-        } else if (value >= 20001 && value < 50000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value + 3000)
-          );
-        } else if (value >= 50001 && value < 100000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value + 5000)
-          );
-        } else if (value >= 10000) {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value + 10000)
-          );
-        } else {
-          this.getSuperControl.patchValue(
-            convertNumberInThousandSep(value + 500)
-          );
+      case 'confirm-cancel': {
+        switch (action) {
+          case 'confirm': {
+            this.inputCommandEvent.emit('confirm');
+            break;
+          }
+          case 'cancel': {
+            // this.getSuperControl.patchValue(null);
+            this.inputCommandEvent.emit('cancel');
+            break;
+          }
+          default: {
+            break;
+          }
         }
         break;
       }
@@ -549,6 +599,7 @@ export class TaInputComponent
         'phone extension',
         'qty',
         'price',
+        'odometer',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
@@ -682,7 +733,6 @@ export class TaInputComponent
   public onDatePaste(e: any) {
     e.preventDefault();
     const pasteText = e.clipboardData.getData('text');
-    console.log(pasteText);
   }
 
   public onPaste(event: any, maxLength?: number) {
@@ -792,7 +842,7 @@ export class TaInputComponent
   changeSelection(e): void {
     e.preventDefault();
     e.stopPropagation();
-  
+
     if (
       e.keyCode == 37 ||
       e.keyCode == 38 ||
@@ -832,110 +882,99 @@ export class TaInputComponent
       e.preventDefault();
     } else {
       e.preventDefault();
-      console.log('rest of input click');
       this.handleKeyboardInputs(e);
     }
   }
 
-  handleKeyboardInputs(e: KeyboardEvent ) {
-    const span1Value = isNaN(this.span1.nativeElement.innerHTML) ? undefined : parseInt(this.span1.nativeElement.innerHTML);
-    const span2Value = isNaN(this.span2.nativeElement.innerHTML) ? undefined : parseInt(this.span2.nativeElement.innerHTML);
-    const span3Value = isNaN(this.span3.nativeElement.innerHTML) ? "" : parseInt(this.span3.nativeElement.innerHTML);
+  handleKeyboardInputs(e: KeyboardEvent) {
+    const span1Value = isNaN(this.span1.nativeElement.innerHTML)
+      ? undefined
+      : parseInt(this.span1.nativeElement.innerHTML);
+    const span2Value = isNaN(this.span2.nativeElement.innerHTML)
+      ? undefined
+      : parseInt(this.span2.nativeElement.innerHTML);
+    const span3Value = isNaN(this.span3.nativeElement.innerHTML)
+      ? ''
+      : parseInt(this.span3.nativeElement.innerHTML);
     if (this.inputConfig.name === 'datepicker') {
       if (this.selectionInput == 0) {
-       
-        if( span1Value ){
-          if(parseInt(`${span1Value}${e.key}`) > 12){ 
-            this.span2.nativeElement.innerHTML = (
-              '0' +
-              (parseInt(e.key))
-            ).slice(-2);
+        if (span1Value) {
+          if (parseInt(`${span1Value}${e.key}`) > 12) {
+            this.span2.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
+              -2
+            );
             this.selectionInput = 1;
             this.selectSpanByTabIndex(1);
-          }else{
+          } else {
             this.dateTimeInputDate = new Date(
               this.dateTimeInputDate.setMonth(
-                parseInt(this.span1.nativeElement.innerHTML + (parseInt(e.key) -1))
+                parseInt(
+                  this.span1.nativeElement.innerHTML + (parseInt(e.key) - 1)
+                )
               )
             );
             this.span1.nativeElement.innerHTML = (
-              this.span1.nativeElement.innerHTML +
-              (parseInt(e.key))
+              this.span1.nativeElement.innerHTML + parseInt(e.key)
             ).slice(-2);
             this.selectionInput = 1;
             this.selectSpanByTabIndex(1);
           }
-
-        }else{
+        } else {
           this.dateTimeInputDate = new Date(
-            this.dateTimeInputDate.setMonth(
-              parseInt(e.key) -1
-            )
+            this.dateTimeInputDate.setMonth(parseInt(e.key) - 1)
           );
 
-          this.span1.nativeElement.innerHTML = (
-            '0' +
-            (parseInt(e.key))
-          ).slice(-2);
+          this.span1.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
+            -2
+          );
 
-          if(parseInt(`1${e.key}`) > 12){
+          if (parseInt(`1${e.key}`) > 12) {
             this.selectionInput = 1;
             this.selectSpanByTabIndex(1);
-          }else{
-            console.log("possible months");
+          } else {
             this.selectSpanByTabIndex(0);
           }
         }
-
-      }else if(this.selectionInput == 1){
-        
-        if( span2Value ){
-          if(parseInt(`${span2Value}${e.key}`) > 31){
-            this.span3.nativeElement.innerHTML = (
-              '0' +
-              (parseInt(e.key))
-            ).slice(-2);
+      } else if (this.selectionInput == 1) {
+        if (span2Value) {
+          if (parseInt(`${span2Value}${e.key}`) > 31) {
+            this.span3.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
+              -2
+            );
             this.selectionInput = 2;
             this.selectSpanByTabIndex(2);
-          }else{
+          } else {
             this.dateTimeInputDate = new Date(
               this.dateTimeInputDate.setDate(
-                parseInt(this.span2.nativeElement.innerHTML + (parseInt(e.key)))
+                parseInt(this.span2.nativeElement.innerHTML + parseInt(e.key))
               )
             );
             this.span2.nativeElement.innerHTML = (
-              this.span2.nativeElement.innerHTML +
-              (parseInt(e.key))
+              this.span2.nativeElement.innerHTML + parseInt(e.key)
             ).slice(-2);
             this.selectionInput = 3;
             this.selectSpanByTabIndex(3);
           }
-
-        }else{
+        } else {
           this.dateTimeInputDate = new Date(
-            this.dateTimeInputDate.setDate(
-              parseInt(e.key)
-            )
+            this.dateTimeInputDate.setDate(parseInt(e.key))
           );
-          this.span2.nativeElement.innerHTML = (
-            '0' +
-            (parseInt(e.key))
-          ).slice(-2);
+          this.span2.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
+            -2
+          );
 
-          if(parseInt(`1${e.key}`) > 31){
+          if (parseInt(`1${e.key}`) > 31) {
             this.selectionInput = 3;
             this.selectSpanByTabIndex(3);
-          }else{
+          } else {
             this.selectSpanByTabIndex(1);
           }
         }
-      }else{
-        
-        if( !span3Value || span3Value.toString().length == 2){
-          this.span3.nativeElement.innerHTML = (
-            '0' +
-            (parseInt(e.key))
-          ).slice(-2);
+      } else {
+        if (!span3Value || span3Value.toString().length == 2) {
+          this.span3.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
+            -2
+          );
           this.dateTimeInputDate = new Date(
             this.dateTimeInputDate.setFullYear(
               parseInt(`200${parseInt(e.key)}`)
@@ -943,24 +982,23 @@ export class TaInputComponent
           );
 
           this.selectSpanByTabIndex(3);
-        }else{
+        } else {
           this.dateTimeInputDate = new Date(
             this.dateTimeInputDate.setFullYear(
-              parseInt(`2${this.span3.nativeElement.innerHTML + (parseInt(e.key))}`)
+              parseInt(
+                `2${this.span3.nativeElement.innerHTML + parseInt(e.key)}`
+              )
             )
           );
           this.span3.nativeElement.innerHTML = (
-            this.span3.nativeElement.innerHTML +
-            (parseInt(e.key))
+            this.span3.nativeElement.innerHTML + parseInt(e.key)
           ).slice(-2);
           this.selectSpanByTabIndex(3);
         }
       }
-    }else{
-
+    } else {
     }
   }
-
 
   selectSpanByTabIndex(indx) {
     switch (indx) {
@@ -1046,7 +1084,6 @@ export class TaInputComponent
       if (direction == 'up') {
         if (this.selectionInput == 0) {
           const selectedHours = this.dateTimeInputDate.getHours() + 1;
-          console.log(selectedHours);
           this.dateTimeInputDate = new Date(
             this.dateTimeInputDate.setHours(selectedHours)
           );
@@ -1085,11 +1122,9 @@ export class TaInputComponent
       } else {
         if (this.selectionInput == 0) {
           const decreaseHour = this.dateTimeInputDate.getHours() - 1;
-          console.log(decreaseHour);
-          
+
           let selectedHours = decreaseHour === 0 ? 24 : decreaseHour;
-          selectedHours = decreaseHour === -1  ? 23 : selectedHours;
-          console.log(selectedHours);
+          selectedHours = decreaseHour === -1 ? 23 : selectedHours;
           this.dateTimeInputDate = new Date(
             this.dateTimeInputDate.setHours(selectedHours)
           );
@@ -1132,7 +1167,9 @@ export class TaInputComponent
   isNumber(evt) {
     evt = evt ? evt : window.event;
     let charCode = evt.which ? evt.which : evt.keyCode;
-    return ((charCode >= 48 && charCode <= 57) || (charCode >= 96 && charCode <= 105));
+    return (
+      (charCode >= 48 && charCode <= 57) || (charCode >= 96 && charCode <= 105)
+    );
   }
 
   onPopoverShown() {
