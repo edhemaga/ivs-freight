@@ -3,6 +3,7 @@ import { Chart, ChartDataSets, ChartOptions, scaleService } from 'chart.js';
 import { BaseChartDirective, Color, Label, MultiDataSet } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
 import { hexToRgbA } from 'src/assets/utils/methods-global';
+import { elementMatches } from '@fullcalendar/core';
 
 @Component({
   selector: 'app-ta-chart',
@@ -53,7 +54,6 @@ export class TaChartComponent implements OnInit {
   setHoverAnnotation(value: any, config?) {
     let sameValue = false;
     this.annotationConfig = config;
-    console.log(this.annotationConfig, 'annotationConfigannotationConfigannotationConfig')
     this.lineChartOptions['annotation']['annotations'].map((item, i) => {
       if ( item['id'] == 'a-line-2' && item['value'] == value ) {
         sameValue = true;
@@ -351,6 +351,9 @@ export class TaChartComponent implements OnInit {
       console.log(startcolorRGBA, endColorRGBA, 'endColorRGBA')
     }
 
+    let averageAnnotation = 0;
+    let averageLenght = 0;
+
     this.chart.chart.config.data.datasets.map((item, i) => {
       console.log('changeChartFillProperty 222');
       if ( item['id'] == type && (color && color != '') ) {
@@ -361,6 +364,10 @@ export class TaChartComponent implements OnInit {
         let colorProp = item['borderColor'].toString();
         item['borderColor'] = colorProp.slice(0,7);
         lineHovered = item['borderColor'];
+        averageLenght = item['data'].length;
+        item['data'].map((val, l) => {
+          averageAnnotation = averageAnnotation + val;
+        });
       }
       else if ( item['id'] == type && color == '' ) {
         console.log('testingvalue 333');
@@ -381,6 +388,8 @@ export class TaChartComponent implements OnInit {
       }
     });
     
+    const annotationValue = averageAnnotation / averageLenght;
+    
     if ( updateChart ) { this.animationDuration = 0; this.setChartOptions(); }
     else { this.animationDuration = 1000; }
     if ( lineHovered ) {
@@ -390,7 +399,7 @@ export class TaChartComponent implements OnInit {
         axis: 'y-axis-0',
         dash: [3, 4]
       }
-      this.setHoverAnnotation(25, config);
+      this.setHoverAnnotation(annotationValue, config);
     }
     else {
       this.setHoverAnnotation(null);
@@ -406,7 +415,7 @@ export class TaChartComponent implements OnInit {
           item['pointHoverBorderColor'] = '#'+color;
           this.changeChartFillProperty(type, color);
         }
-        if ( mod == 'remove' ) { item['hidden'] = true; }
+        if ( mod == 'remove' ) { item['hidden'] = true; this.changeChartFillProperty(type, ''); }
       }
     });
 
@@ -415,9 +424,22 @@ export class TaChartComponent implements OnInit {
   }
 
   hoverDoughnut(elements: any, type?) {
-    let driverDetails;
-    if ( type == 'object' && elements && elements[0] ) { driverDetails = this.driversList[elements[0]['_index']]; }
-    else if ( type == 'number' ) { driverDetails = this.driversList[elements]; }
+    let driverDetails, dataIndex;
+    if ( type == 'object' && elements && elements[0] ) { driverDetails = this.driversList[elements[0]['_index']]; dataIndex = elements[0]['_index']; }
+    else if ( type == 'number' ) { driverDetails = this.driversList[elements]; dataIndex = elements; }
+    this.chart.chart.config.data.datasets[0].data.map((item, i) => {
+      if ( i == dataIndex || elements == null ){
+        let color = this.chart.chart.config.data.datasets[0].backgroundColor[i];
+        let colorProp = color;
+        this.chart.chart.config.data.datasets[0].backgroundColor[i] = colorProp.slice(0,7);
+      }
+      else{
+        let color = this.chart.chart.config.data.datasets[0].backgroundColor[i];
+        let colorProp = color+'33';
+        this.chart.chart.config.data.datasets[0].backgroundColor[i] = colorProp.slice(0,9);
+      }
+      this.setChartOptions();
+    });
     
     if ( driverDetails ) {
       this.chartInnitProperties = [
