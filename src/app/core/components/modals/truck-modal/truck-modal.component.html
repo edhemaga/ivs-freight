@@ -6,16 +6,11 @@
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-ta-tab-switch
-  [tabs]="tabs"
-  (switchClicked)="tabChange($event)" 
-  [type]="'modal-popup'"
-  >
-  </app-ta-tab-switch>  
-
-  <!-- <app-tab-switcher
-    (switchClicked)="tabChange($event)"
     [tabs]="tabs"
-  ></app-tab-switcher> -->
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
+  >
+  </app-ta-tab-switch>
 
   <form [formGroup]="truckForm" class="form-container">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">

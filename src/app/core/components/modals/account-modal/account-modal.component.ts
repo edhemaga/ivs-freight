@@ -9,28 +9,35 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
-  CompanyAccountModalResponse,
   CompanyAccountResponse,
   CreateCompanyAccountCommand,
+  GetCompanyAccountLabelListResponse,
   UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
 import { AccountModalService } from './account-modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { urlRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-account-modal',
   templateUrl: './account-modal.component.html',
   styleUrls: ['./account-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
 
   public accountForm: FormGroup;
-  public accountLabels$: Observable<CompanyAccountModalResponse>;
-  public selectedAccountLabel: any = null;
+  public accountLabels: any[] = [];
+  public selectedAccountLabel: any = {
+    id: 1,
+    name: 'No Color',
+    color: null,
+    count: null,
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,6 +50,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getAccountLabels();
+    this.companyAccountModal();
 
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
@@ -59,7 +67,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required, Validators.maxLength(23)]],
       username: [null, [Validators.required, Validators.maxLength(40)]],
       password: [null, [Validators.required, Validators.maxLength(20)]],
-      url: [null, [Validators.required, Validators.maxLength(400)]],
+      url: [null, [Validators.required, ...urlRegex]],
       companyAccountLabelId: [null],
       note: [null],
     });
@@ -99,8 +107,30 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  private companyAccountModal(): void {
+    this.accountModalService
+      .companyAccountModal()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: any) => {
+          console.log('MODAL');
+          console.log(res);
+        },
+      });
+  }
+
   private getAccountLabels(): void {
-    this.accountLabels$ = this.accountModalService.companyAccountLabels();
+    this.accountModalService
+      .companyAccountLabelsList()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: GetCompanyAccountLabelListResponse) => {
+          console.log('LISTA');
+          console.log(res.pagination.data);
+          this.accountLabels = res.pagination.data;
+        },
+        error: () => {},
+      });
   }
 
   private editCompanyAccount(id: number) {
@@ -207,8 +237,14 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onSelectLabel(event: any): void {
+  public onSelectColorLabel(event: any): void {
     this.selectedAccountLabel = event;
+  }
+
+  public onSaveLabel(event: string) {
+    console.log('ACCOUNT MODAL');
+    console.log(this.accountForm.get('companyAccountLabelId').value);
+    console.log(event, this.selectedAccountLabel);
   }
 
   ngOnDestroy(): void {}

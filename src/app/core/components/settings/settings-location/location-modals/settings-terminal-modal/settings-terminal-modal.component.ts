@@ -17,6 +17,7 @@ import { debounceTime } from 'rxjs';
   templateUrl: './settings-terminal-modal.component.html',
   styleUrls: ['./settings-terminal-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
+  providers: [ModalService],
 })
 export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

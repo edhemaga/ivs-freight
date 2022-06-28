@@ -53,24 +53,23 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
     ToastrModule.forRoot({
       preventDuplicates: true,
       enableHtml: true,
-      timeOut: 5000, 
+      timeOut: 5000,
     }),
     NgIdleModule.forRoot(),
-    ApiModule
+    ApiModule,
   ],
   providers: [
     GoogleMapsAPIWrapper,
     {
       provide: Configuration,
-      useFactory: (authService: UserLoggedService) => new Configuration(
-        {
+      useFactory: (authService: UserLoggedService) =>
+        new Configuration({
           basePath: environment.API_ENDPOINT,
-          credentials: {'bearer': authService.getAccessToken.bind(authService)}
-        }
-      ),
+          credentials: { bearer: authService.getAccessToken.bind(authService) },
+        }),
       deps: [UserLoggedService],
-      multi: false
-    }
+      multi: false,
+    },
   ],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

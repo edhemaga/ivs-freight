@@ -13,6 +13,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
   selector: 'app-settings-insurance-policy-modal',
   templateUrl: './settings-insurance-policy-modal.component.html',
   styleUrls: ['./settings-insurance-policy-modal.component.scss'],
+  providers: [ModalService],
 })
 export class SettingsInsurancePolicyModalComponent
   implements OnInit, OnDestroy

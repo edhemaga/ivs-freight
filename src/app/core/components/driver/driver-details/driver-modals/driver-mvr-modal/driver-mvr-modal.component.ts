@@ -13,12 +13,16 @@ import { DriverTService } from '../../../state/driver.service';
 import { MvrTService } from '../../../state/mvr.service';
 import moment from 'moment';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-driver-mvr-modal',
   templateUrl: './driver-mvr-modal.component.html',
   styleUrls: ['./driver-mvr-modal.component.scss'],
+  providers: [ModalService],
 })
 export class DriverMvrModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

@@ -13,7 +13,9 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
+import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ITaInput } from '../ta-input/ta-input.config';
+import { TaInputService } from '../ta-input/ta-input.service';
 
 @Component({
   selector: 'app-ta-input-address',
@@ -30,6 +32,8 @@ export class TaInputAddressComponent
     address: AddressEntity;
     valid: boolean;
   }> = new EventEmitter<{ address: AddressEntity; valid: boolean }>(null);
+  @Output('commandEvent') inputCommandEvent: EventEmitter<any> =
+    new EventEmitter<any>();
 
   public focusInput: boolean = false;
   public touchedInput: boolean = false;
@@ -43,14 +47,30 @@ export class TaInputAddressComponent
     componentRestrictions: { country: ['US', 'CA'] },
   };
 
+  // Input Commands
+  public isVisibleCommands: boolean = false;
+
+  public timeout: any = null;
+
   constructor(
     @Self() public superControl: NgControl,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private inputResetService: TaInputResetService
   ) {
     this.superControl.valueAccessor = this;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Reset Inputs
+    this.inputResetService.resetInputSubject
+      .pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.touchedInput = false;
+          this.inputResetService.resetInputSubject.next(false);
+        }
+      });
+  }
 
   public handleAddressChange(address: AddressEntity) {
     this.activeAddress = this.sharedService.selectAddress(null, address);
@@ -88,6 +108,11 @@ export class TaInputAddressComponent
       this.getSuperControl.setErrors({ invalid: true });
       this.selectedAddress.emit({ address: null, valid: false });
     }
+
+    // Input Commands
+    if (this.inputConfig.commands?.active) {
+      this.isVisibleCommands = true;
+    }
   }
 
   public onBlur(): void {
@@ -97,6 +122,21 @@ export class TaInputAddressComponent
     if (!this.getSuperControl.value && this.inputConfig.isRequired) {
       this.getSuperControl.setErrors({ required: true });
     }
+
+    // Input Commands
+    if (this.inputConfig.commands?.active) {
+      this.blurOnCommands();
+    }
+  }
+
+  private blurOnCommands() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      this.isVisibleCommands = false;
+      clearTimeout(this.timeout);
+    }, 150);
   }
 
   public clearInput(): void {
@@ -161,6 +201,32 @@ export class TaInputAddressComponent
       }
     } else {
       this.numberOfSpaces = 0;
+    }
+  }
+
+  public onCommands(event: Event, type: string, action: string) {
+    event.stopPropagation();
+    event.preventDefault();
+    switch (type) {
+      case 'confirm-cancel': {
+        switch (action) {
+          case 'confirm': {
+            this.inputCommandEvent.emit('confirm');
+            break;
+          }
+          case 'cancel': {
+            this.inputCommandEvent.emit('cancel');
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 

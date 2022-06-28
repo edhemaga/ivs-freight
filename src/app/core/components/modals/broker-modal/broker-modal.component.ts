@@ -42,6 +42,7 @@ import { BrokerTService } from '../../customer/state/broker-state/broker.service
   styleUrls: ['./broker-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -109,16 +110,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public billingCredit = [
     {
       id: 301,
-      label: 'Enable',
+      label: 'credit',
       value: 'enable',
-      name: 'credit',
+      name: 'Enable',
       checked: true,
     },
     {
       id: 300,
-      label: 'Disable',
+      label: 'credit',
       value: 'disable',
-      name: 'credit',
+      name: 'Disable',
       checked: false,
     },
   ];
@@ -352,9 +353,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public tabPhysicalAddressChange(event: any): void {
-    this.selectedPhysicalAddressTab = event.find(
-      (item) => item.checked === true
-    );
+    this.selectedPhysicalAddressTab = event;
+
     if (
       this.selectedPhysicalAddressTab?.id.toLowerCase() === 'physicaladdress'
     ) {
@@ -383,9 +383,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public tabBillingAddressChange(event: any): void {
-    this.selectedBillingAddressTab = event.find(
-      (item) => item.checked === true
-    );
+    this.selectedBillingAddressTab = event;
 
     if (this.selectedBillingAddressTab?.id === 'billingaddress') {
       this.inputService.changeValidators(this.brokerForm.get('billingAddress'));
@@ -441,10 +439,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public isCredit(event: any) {
-    this.billingCredit = [...event];
+    console.log(event);
     this.billingCredit.forEach((item) => {
-      if (item.checked) {
-        this.brokerForm.get('creditType').patchValue(item.label);
+      if (item.name === event.name) {
+        this.brokerForm.get('creditType').patchValue(item.name);
       }
     });
 
@@ -916,16 +914,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             },
             commentContent: item.comment,
           }));
+          console.log(reasponse);
 
-          if (reasponse.creditType === 'Enable') {
-            this.billingCredit[0].checked = true;
-            this.billingCredit[1].checked = false;
-            this.isCredit(this.billingCredit);
-          } else {
-            this.billingCredit[0].checked = false;
-            this.billingCredit[1].checked = true;
-            this.isCredit(this.billingCredit);
-          }
+          this.isCredit(reasponse.creditType);
         },
         error: () => {
           this.notificationService.error("Broker can't be loaded.", 'Error:');

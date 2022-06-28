@@ -1,18 +1,18 @@
-.input-pm-incrementation {
+.ta-input-commands {
   display: flex;
   align-items: center;
   gap: 4px;
   position: absolute;
   right: 4px;
 
-  .input-pm-decrement {
+  .ta-input-command-first {
     border-radius: 1px;
     display: block;
     transition: all 0.3s ease-in-out;
-    z-index: 10;
+    z-index: 20;
     cursor: pointer;
 
-    .pm-svg-decrement {
+    .ta-input-command-svg-first {
       svg {
         width: 18px !important;
         height: 18px !important;
@@ -42,14 +42,14 @@
     }
   }
 
-  .input-pm-increment {
+  .ta-input-command-second {
     border-radius: 1px;
     display: block;
     transition: all 0.3s ease-in-out;
-    z-index: 10;
+    z-index: 20;
     cursor: pointer;
 
-    .pm-svg-increment {
+    .ta-input-command-svg-second {
       svg {
         width: 18px !important;
         height: 18px !important;
@@ -78,4 +78,18 @@
       }
     }
   }
+}
+
+// --------------------------- Dropdown Label Name ----------------------------
+.ta-input-label-selected-item {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+  left: 37px;
+  top: 1px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  pointer-events: none !important
 }

@@ -94,7 +94,9 @@
     }
   }
 
-  &.password-eye {
+  &.password-eye,
+  &.input-commands,
+  &.dropdown-label-active {
     background-color: #6c6c6c !important;
     color: #ffffff;
 
@@ -168,6 +170,14 @@
     &::selection {
       background-color: #e57373 !important;
     }
+  }
+
+  &.blue-input-color {
+    color: #536bc2 !important;
+  }
+
+  &.dropdown-label-active {
+    padding-left: 143px !important;
   }
 
   //------------------------- Custom class -------------------------

@@ -44,6 +44,8 @@ export interface TruckResponse {
     insurancePolicy?: string | null;
     mileage?: number | null;
     ipasEzpass?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
     registrations?: Array<RegistrationResponse> | null;
     inspections?: Array<InspectionResponse> | null;
     titles?: Array<TitleResponse> | null;

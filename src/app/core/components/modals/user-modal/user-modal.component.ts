@@ -27,6 +27,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   styleUrls: ['./user-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -53,16 +54,16 @@ export class UserModalComponent implements OnInit, OnDestroy {
   public typeOfEmploye = [
     {
       id: 998,
-      label: 'User',
+      label: 'employe',
       value: 'user',
-      name: 'employe',
+      name: 'User',
       checked: true,
     },
     {
       id: 999,
-      label: 'Admin',
+      label: 'employe',
       value: 'admin',
-      name: 'employe',
+      name: 'Admin',
       checked: false,
     },
   ];
@@ -70,16 +71,16 @@ export class UserModalComponent implements OnInit, OnDestroy {
   public typeOfPayroll = [
     {
       id: 300,
-      label: '1099',
+      label: 'payroll',
       value: '1099',
-      name: 'payroll',
+      name: '1099',
       checked: true,
     },
     {
       id: 301,
-      label: 'W-2',
-      value: 'w-2',
-      name: 'payroll',
+      label: 'payroll',
+      value: 'W-2',
+      name: 'W-2',
       checked: false,
     },
   ];

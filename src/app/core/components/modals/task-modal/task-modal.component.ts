@@ -24,11 +24,13 @@ import { TodoTService } from '../../to-do/state/todo.service';
 import { AuthQuery } from '../../authentication/state/auth.query';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
+import { urlRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-task-modal',
   templateUrl: './task-modal.component.html',
   styleUrls: ['./task-modal.component.scss'],
+  providers: [ModalService],
 })
 export class TaskModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -75,7 +77,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.taskForm = this.formBuilder.group({
       title: [null],
       description: [null],
-      url: [null, Validators.maxLength(400)],
+      url: [null, [...urlRegex]],
       deadline: [null],
       departmentIds: [null],
       companyUserIds: [null],

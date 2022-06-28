@@ -30,6 +30,7 @@ import { TrailerTService } from '../../trailer/state/trailer.service';
   styleUrls: ['./trailer-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -406,7 +407,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             colorId: res.color ? res.color.name : null,
             year: res.year,
             trailerLengthId: res.trailerLength ? res.trailerLength.name : null,
-            ownerId: res.owner ? res.owner.name : null,
+            ownerId: res.companyOwned
+              ? null
+              : res.owner
+              ? res.owner.name
+              : null,
             note: res.note,
             axles: res.axles,
             suspension: res.suspension ? res.suspension.name : null,

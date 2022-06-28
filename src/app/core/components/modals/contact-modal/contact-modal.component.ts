@@ -22,6 +22,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   selector: 'app-contact-modal',
   templateUrl: './contact-modal.component.html',
   styleUrls: ['./contact-modal.component.scss'],
+  providers: [ModalService],
 })
 export class ContactModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -64,8 +65,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       email: [null, [emailRegex]],
       address: [null],
       addressUnit: [null, [Validators.maxLength(6)]],
-      shared: [false],
-      sharedLabelId: [null],
+      shared: [true],
+      sharedLabelId: [null, Validators.required],
+      avatar: [null],
       note: [null],
     });
   }
@@ -249,10 +251,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   public onSelectDropdown(event: any, action): void {
     switch (action) {
-      case 'label': {
-        this.selectedContactLabel = event;
-        break;
-      }
       case 'departments': {
         this.selectedSharedDepartment = event;
         break;
@@ -261,6 +259,20 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  public onSelectColorLabel(event: any): void {
+    this.selectedContactLabel = event;
+  }
+
+  public onUploadImage(event: any) {
+    this.contactForm.get('avatar').patchValue(event);
+  }
+
+  public onSaveLabel(event: string) {
+    console.log('Contact MODAL');
+    console.log(this.contactForm.get('companyContactLabelId').value);
+    console.log(event, this.selectedContactLabel);
   }
 
   public onHandleAddress(event: {
