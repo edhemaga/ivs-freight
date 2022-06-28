@@ -588,7 +588,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
 
                 &:hover:not(.active){
                     cursor: pointer;
-                    box-shadow: 0 0 6px #0000004D;
+                    box-shadow: 0 0 4px #00000026;
 
                     .dashboard-performance-body-right-cards-trend-holder{
                         display: none !important;

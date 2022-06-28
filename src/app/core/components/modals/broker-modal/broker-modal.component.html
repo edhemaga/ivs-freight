@@ -14,10 +14,6 @@
   >
   </app-ta-tab-switch>  
 
-  <!-- <app-tab-switcher
-    (switchClicked)="tabChange($event)"
-    [tabs]="tabs"
-  ></app-tab-switcher> -->
   <form
     [formGroup]="brokerForm"
     class="form-container"
@@ -114,10 +110,6 @@
         [type]="'type2-modal-popup'"        
         ></app-ta-tab-switch>
 
-        <!-- <app-status-switcher
-          (switchClicked)="tabPhysicalAddressChange($event)"
-          [data]="physicalAddressTabs"
-        ></app-status-switcher> -->
         <!-- Physical address -->
         <div
           *ngIf="
@@ -218,10 +210,6 @@
           [type]="'type2-modal-popup'"        
           ></app-ta-tab-switch>
 
-          <!-- <app-status-switcher
-            (switchClicked)="tabBillingAddressChange($event)"
-            [data]="billingAddressTabs"
-          ></app-status-switcher> -->
           <!-- Billing address -->
           <div
             *ngIf="
@@ -324,10 +312,6 @@
               >
               </app-ta-tab-switch>              
 
-              <!-- <app-ta-input-radiobuttons
-                [buttons]="billingCredit"
-                (changedValue)="isCredit($event)"
-              ></app-ta-input-radiobuttons> -->
             </div>
             <div class="broker-billing-field">
               <app-ta-input

@@ -13,7 +13,7 @@
 
     .calendar-info-holder{
         width: 326px;
-        height: 100vh;
+        height: calc(100vh - 36px);
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
@@ -560,6 +560,7 @@
             align-items: flex-start;
             flex-direction: column;
             overflow-y: auto;
+            flex: 1;
 
             &::-webkit-scrollbar{
                 width: 6px;
