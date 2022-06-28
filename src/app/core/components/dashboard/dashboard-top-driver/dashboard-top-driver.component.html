@@ -43,7 +43,7 @@
         <div class="row">
             <div class="col-4">
                 <div class="dashboard-top-driver-body-list-holder">
-                    <div *ngFor="let item of driverList; let indx=index" class="dashboard-top-driver-body-list-items-holder">
+                    <div *ngFor="let item of driverList; let indx=index" class="dashboard-top-driver-body-list-items-holder" (mouseenter)="hoverDoughnutChart(indx)" (mouseleave)="removeDoughnutChart()">
                         <div class="dashboard-top-driver-body-list-items">
                             <div class="dashboard-top-driver-body-list-frame">
                                 <div class="dashboard-top-driver-body-list-id">{{item.id}}</div>
@@ -62,6 +62,7 @@
             <div class="col-3">
                 <div class="doughnut_chart_holder">
                     <app-ta-chart
+                    #doughnutChart
                     [chartConfig]="chartConfig"
                     [axesProperties]="chartAxes"
                     [legendAttributes]="{}"
