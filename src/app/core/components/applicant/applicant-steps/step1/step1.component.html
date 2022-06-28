@@ -404,35 +404,55 @@
         </h5>
         <div class="d-flex flex-column justify-content-center">
           <div
-            class="d-flex align-items-center title-container"
-            *ngIf="previousAddresses?.controls.length > 1"
-          >
-            <div class="address-title-container">
-              <p class="m-0 ta-font-bold">
-                Address, City, State Zip <span>*</span>
-              </p>
-            </div>
-            <div class="address-unit-title-container">
-              <p class="m-0 ta-font-bold">Unit #</p>
-            </div>
-          </div>
-
-          <div
-            class="d-flex align-items-center dets-container"
+            class="d-flex flex-column justify-content-center dets-container"
             formArrayName="previousAddresses"
             *ngFor="
               let address of previousAddresses?.controls;
               let i = index;
               let last = last;
+              let first = first;
               trackBy: trackByIdentity
             "
             [ngStyle]="{
-              margin:
-                isEditingArray[i]?.isEditing && isEditingMiddlePositionAddress
-                  ? '32px auto'
-                  : '0 auto 2px auto'
+              'margin-top':
+                (isEditingArray[i]?.isEditing &&
+                  isEditingMiddlePositionAddress) ||
+                (isEditingArray[i]?.isEditing &&
+                  isEditingMiddlePositionAddress &&
+                  last)
+                  ? '32px'
+                  : '0',
+              'margin-bottom':
+                isEditingArray[i]?.isEditing &&
+                isEditingMiddlePositionAddress &&
+                !last
+                  ? '32px'
+                  : isEditingArray[i]?.isEditing &&
+                    !isEditingMiddlePositionAddress &&
+                    first &&
+                    previousAddresses?.controls.length > 1
+                  ? '22px'
+                  : '2px'
             }"
           >
+            <div
+              class="d-flex align-items-center title-container"
+              *ngIf="
+                (previousAddresses.controls.length > 1 &&
+                  helperIndex !== 0 &&
+                  i === 0) ||
+                (helperIndex === 0 && i === 1)
+              "
+            >
+              <div class="address-title-container">
+                <p class="m-0 ta-font-bold">
+                  Address, City, State Zip <span>*</span>
+                </p>
+              </div>
+              <div class="address-unit-title-container">
+                <p class="m-0 ta-font-bold">Unit #</p>
+              </div>
+            </div>
             <div
               class="d-flex align-items-center"
               [formGroupName]="i"
@@ -645,7 +665,7 @@
         <div
           class="d-flex justify-content-center"
           [ngStyle]="{
-            'margin-top': !previousAddresses.controls?.length ? '0' : '22px'
+            'margin-top': !previousAddresses.controls?.length > 1 ? '0' : '22px'
           }"
           *ngIf="previousAddresses.controls?.length < 5"
         >

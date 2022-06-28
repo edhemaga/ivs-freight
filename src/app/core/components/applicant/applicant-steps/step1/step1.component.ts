@@ -191,6 +191,8 @@ export class Step1Component implements OnInit, OnDestroy {
     },
   ];
 
+  public helperIndex = 2;
+
   //
   public loadingApplicant$: Observable<boolean>;
   public loadingBankData$: Observable<boolean>;
@@ -324,6 +326,10 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   public onAddNewAddress(): void {
+    this.isEditingMiddlePositionAddress = false;
+
+    this.helperIndex = 2;
+
     if (
       this.previousAddresses.controls.length !== 0 &&
       !this.isLastAddedPreviousAddressValid &&
@@ -367,16 +373,14 @@ export class Step1Component implements OnInit, OnDestroy {
       this.isLastInputDeleted = true;
     }
 
-    this.isEditingArray = this.isEditingArray.map((item) => {
-      return { ...item, isEditing: false };
-    });
-
     this.previousAddresses.removeAt(index);
 
     this.isEditingArray.splice(index, 1);
   }
 
   public onEditNewAddress(index: number): void {
+    this.helperIndex = index;
+
     const lastPreviousAddressAdded = this.previousAddresses.length - 1;
 
     if (this.previousAddresses.controls[index].value.address) {
@@ -388,6 +392,8 @@ export class Step1Component implements OnInit, OnDestroy {
         ) {
           this.previousAddresses.removeAt(lastPreviousAddressAdded);
 
+          this.isEditingArray.splice(lastPreviousAddressAdded, 1);
+
           this.isLastInputDeleted = true;
         }
       } else {
@@ -398,6 +404,8 @@ export class Step1Component implements OnInit, OnDestroy {
         ) {
           this.previousAddresses.removeAt(lastPreviousAddressAdded);
 
+          this.isEditingArray.splice(lastPreviousAddressAdded, 1);
+
           this.isLastInputDeleted = true;
         }
       }
@@ -406,6 +414,7 @@ export class Step1Component implements OnInit, OnDestroy {
         if (index === itemIndex) {
           return { ...item, isEditing: true };
         }
+
         return { ...item, isEditing: false };
       });
     }
