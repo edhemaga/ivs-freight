@@ -23,6 +23,7 @@ import {
   convertThousanSepInNumber,
 } from 'src/app/core/utils/methods.calculations';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { TaInputResetService } from './ta-input-reset.service';
 
 @Component({
   selector: 'app-ta-input',
@@ -81,6 +82,7 @@ export class TaInputComponent
   constructor(
     @Self() public superControl: NgControl,
     private inputService: TaInputService,
+    private inputResetService: TaInputResetService,
     private calendarService: CalendarScrollService,
     private titlecasePipe: TitleCasePipe,
     private uppercasePipe: UpperCasePipe,
@@ -151,6 +153,17 @@ export class TaInputComponent
         clearTimeout(timeout);
       }, 300);
     }
+
+    // Reset Inputs
+    this.inputResetService.resetInputSubject
+      .pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.touchedInput = false;
+          this.getSuperControl.patchValue(null);
+          this.inputResetService.resetInputSubject.next(false);
+        }
+      });
   }
 
   get getSuperControl() {

@@ -13,7 +13,9 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
+import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ITaInput } from '../ta-input/ta-input.config';
+import { TaInputService } from '../ta-input/ta-input.service';
 
 @Component({
   selector: 'app-ta-input-address',
@@ -52,12 +54,23 @@ export class TaInputAddressComponent
 
   constructor(
     @Self() public superControl: NgControl,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private inputResetService: TaInputResetService
   ) {
     this.superControl.valueAccessor = this;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Reset Inputs
+    this.inputResetService.resetInputSubject
+      .pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.touchedInput = false;
+          this.inputResetService.resetInputSubject.next(false);
+        }
+      });
+  }
 
   public handleAddressChange(address: AddressEntity) {
     this.activeAddress = this.sharedService.selectAddress(null, address);
