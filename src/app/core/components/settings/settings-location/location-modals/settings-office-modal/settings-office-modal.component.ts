@@ -24,6 +24,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
   styleUrls: ['./settings-office-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService],
 })
 export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

@@ -12,11 +12,11 @@
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-ta-tab-switch
-  [tabs]="tabs"
-  (switchClicked)="tabChange($event)" 
-  [type]="'type1-modal-popup'"
+    [tabs]="tabs"
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
   >
-  </app-ta-tab-switch>  
+  </app-ta-tab-switch>
 
   <form
     [formGroup]="driverForm"
@@ -160,10 +160,10 @@
           >
             <div class="switch-margin">
               <app-ta-tab-switch
-              [tabs]="ownerTabs"
-              (switchClicked)="tabOwnerChange($event)"
-              [type]="'type2-modal-popup'"
-              ></app-ta-tab-switch>  
+                [tabs]="ownerTabs"
+                (switchClicked)="tabOwnerChange($event)"
+                [type]="'type2-modal-popup'"
+              ></app-ta-tab-switch>
             </div>
 
             <div

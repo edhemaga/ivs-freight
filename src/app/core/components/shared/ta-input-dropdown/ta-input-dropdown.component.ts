@@ -21,6 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ITaInput } from '../ta-input/ta-input.config';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputComponent } from '../ta-input/ta-input.component';
+import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 
 @Component({
   selector: 'app-ta-input-dropdown',
@@ -38,12 +39,13 @@ export class TaInputDropdownComponent
   @Input() isDetailsActive: boolean = false;
   @Input() inputConfig: ITaInput;
   @Input() canAddNew: boolean = false;
+  @Input() activeItem: any;
   @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
   @Input() preloadMultiselectItems: any[] = [];
+
   @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
 
-  public activeItem: any;
   public originalOptions: any[] = [];
   private dropdownPosition: number = -1;
 
@@ -55,6 +57,7 @@ export class TaInputDropdownComponent
   constructor(
     @Self() public superControl: NgControl,
     private inputService: TaInputService,
+    private inputResetService: TaInputResetService,
     private changeDetectionRef: ChangeDetectorRef
   ) {
     this.superControl.valueAccessor = this;
@@ -111,7 +114,7 @@ export class TaInputDropdownComponent
     }
 
     // Options
-    if (this.options) {
+    if (this.options?.length) {
       this.originalOptions = [...this.options];
     }
 
@@ -130,6 +133,12 @@ export class TaInputDropdownComponent
           this.popoverRef.close();
           this.onClearSearch();
         }
+      });
+
+    this.inputResetService.resetInputSubject
+      .pipe(debounceTime(50), untilDestroyed(this))
+      .subscribe((action) => {
+        this.inputRef.touchedInput = false;
       });
 
     this.dropDownShowHideEvent();

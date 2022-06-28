@@ -11,6 +11,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
   selector: 'app-settings-factoring-modal',
   templateUrl: './settings-factoring-modal.component.html',
   styleUrls: ['./settings-factoring-modal.component.scss'],
+  providers: [ModalService],
 })
 export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

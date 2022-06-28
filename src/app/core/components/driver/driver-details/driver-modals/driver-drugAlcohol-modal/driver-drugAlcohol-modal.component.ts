@@ -12,13 +12,17 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
 import { DriverTService } from '../../../state/driver.service';
 import { TestTService } from '../../../state/test.service';
 @Component({
   selector: 'app-driver-drugAlcohol-modal',
   templateUrl: './driver-drugAlcohol-modal.component.html',
   styleUrls: ['./driver-drugAlcohol-modal.component.scss'],
+  providers: [ModalService],
 })
 export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -113,8 +117,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: GetTestModalResponse) => {
           this.testTypes = res.testTypes;
-          this.alcoholTests = res.alcoholTestReasons
-          this.drugTests = res.drugTestReasons
+          this.alcoholTests = res.alcoholTestReasons;
+          this.drugTests = res.drugTestReasons;
         },
         error: () => {
           this.notificationService.error(

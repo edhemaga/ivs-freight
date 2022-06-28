@@ -9,7 +9,8 @@ export class ModalService {
   public modalStatusChange: Subject<{ name: string; status: boolean | null }> =
     new Subject<{ name: string; status: boolean }>();
 
-  public modalSpinner: Subject<{action: string, status: boolean}> = new Subject<{action: string, status: boolean}>();
+  public modalSpinner: Subject<{ action: string; status: boolean }> =
+    new Subject<{ action: string; status: boolean }>();
 
   constructor(private ngbModal: NgbModal) {}
 
@@ -17,18 +18,18 @@ export class ModalService {
     return this.modalSpinner.asObservable();
   }
 
-  public setModalSpinner({action: string, status: boolean}) {
-    this.modalSpinner.next({action: string, status: boolean});
+  public setModalSpinner({ action: string, status: boolean }) {
+    this.modalSpinner.next({ action: string, status: boolean });
   }
 
   public get modalStatus$() {
     return this.modalStatusChange.asObservable();
   }
 
-  public changeModalStatus(data:{ name: string, status: boolean | null }) {
-    console.log("MODAL STATUS " )
+  public changeModalStatus(data: { name: string; status: boolean | null }) {
+    console.log('MODAL STATUS ');
     console.log(data);
-    this.modalStatusChange.next({name: data.name , status: data.status});
+    this.modalStatusChange.next({ name: data.name, status: data.status });
   }
 
   public openModal(component: any, options: ModalOptions, editData?: any) {
@@ -55,34 +56,6 @@ export class ModalService {
       instance.windowClass = '';
       setTimeout(fx, 250);
     };
-
-    // setTimeout(() => {
-    //   document
-    //     .getElementsByTagName('ngb-modal-window')[0]
-    //     .addEventListener('scroll', (event) => {
-    //       const dropdownPanel = Array.from(
-    //         document.getElementsByClassName(
-    //           'ng-dropdown-panel'
-    //         ) as HTMLCollectionOf<HTMLElement>
-    //       );
-    //       const ngSelectF =
-    //         document.getElementsByClassName('ng-select-opened')[0];
-    //       let leftOffset;
-    //       let topOffset;
-    //       if (ngSelectF !== null && ngSelectF !== undefined) {
-    //         leftOffset = ngSelectF.getBoundingClientRect().left;
-    //         topOffset = ngSelectF.getBoundingClientRect().top + 26;
-    //       }
-    //       if (
-    //         dropdownPanel !== null &&
-    //         dropdownPanel !== undefined &&
-    //         dropdownPanel.length > 0
-    //       ) {
-    //         dropdownPanel[0].style.left = leftOffset.toString() + 'px';
-    //         dropdownPanel[0].style.top = topOffset.toString() + 'px';
-    //       }
-    //     });
-    // }, 500);
 
     return modal;
   }

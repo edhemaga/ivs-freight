@@ -778,4 +778,26 @@
   column-gap: 12px;
   margin-bottom: 32px;
 }
+
+//---------------- Repair Modal Bill ----------------
+.repair-modal-bill-first-row {
+  display: grid;
+  grid-template-columns: 114px 129px 140px 105px 150px;
+  align-items: center;
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 32px;
+}
+
+//---------------- Repair Modal Order ----------------
+.repair-modal-order-first-row {
+  display: grid;
+  grid-template-columns: 114px 291px 140px 105px;
+  align-items: center;
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 32px;
+}
 // ------------------------------------------------ end ------------------------------------------------

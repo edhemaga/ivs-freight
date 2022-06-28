@@ -195,19 +195,19 @@
       <div class="custom-bank-row">
         <div class="bank-field">
           <app-ta-input-dropdown
-            formControlName="bankId"
-            [template]="'svg-template'"
-            [inputConfig]="{
-              name: 'Input Dropdown',
-              type: 'text',
-              label: 'Bank Name',
-              isDropdown: true,
-              dropdownWidthClass: 'w-col-banks'
-            }"
-            [canAddNew]="true"
-            [options]="labelsBank"
-            (selectedItem)="onSelectDropdown($event, 'bank')"
-          ></app-ta-input-dropdown>
+          formControlName="bankId"
+          [template]="'svg-template'"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Bank Name',
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-banks'
+          }"
+          [canAddNew]="true"
+          [options]="labelsBank"
+          (selectedItem)="onSelectDropdown($event, 'bank')"
+        ></app-ta-input-dropdown>
         </div>
         <div class="bank-field">
           <app-ta-input
