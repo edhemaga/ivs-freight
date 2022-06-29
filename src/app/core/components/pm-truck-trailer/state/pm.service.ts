@@ -31,10 +31,18 @@ export class PmTService {
     return this.repairService.apiRepairPmTruckPut(data);
   }
 
+  public deletePMTruckList(id: number): Observable<object> {
+    return this.repairService.apiRepairPmTruckIdDelete(id);
+  }
+
   public addUpdatePMTrailerList(
     data: UpdatePMTrailerListDefaultCommand
   ): Observable<object> {
     return this.repairService.apiRepairPmTrailerPut(data);
+  }
+
+  public deletePMTrailerList(id: number): Observable<object> {
+    return this.repairService.apiRepairPmTrailerIdDelete(id);
   }
 
   // PM UNITS

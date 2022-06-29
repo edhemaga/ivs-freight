@@ -83,6 +83,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   }
 
   private createNewPMs(
+    id: number = null,
     isChecked: boolean = false,
     svg: string,
     title: string,
@@ -91,6 +92,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     hidden: boolean
   ): FormGroup {
     return this.formBuilder.group({
+      id: [id],
       isChecked: [isChecked],
       svg: [svg],
       title: [title],
@@ -112,16 +114,31 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     event: any
   ) {
     if (event === 'new-pm') {
-      this.newPMs.push(
-        this.createNewPMs(
-          true,
-          'assets/svg/common/repair-pm/ic_default_pm.svg',
-          '',
-          convertNumberInThousandSep(5000),
-          null,
-          false
-        )
-      );
+      if (data) {
+        this.newPMs.push(
+          this.createNewPMs(
+            data.id,
+            data.isChecked,
+            data.svg,
+            data.title,
+            data.mileage,
+            data.title,
+            false
+          )
+        );
+      } else {
+        this.newPMs.push(
+          this.createNewPMs(
+            null,
+            true,
+            'assets/svg/common/repair-pm/ic_custom_pm.svg',
+            '',
+            convertNumberInThousandSep(5000),
+            null,
+            false
+          )
+        );
+      }
     } else {
       this.defaultPMs.push(
         this.createDefaultPMs(
@@ -147,7 +164,24 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   }
 
   public removeNewPMs(id: number) {
-    this.newPMs.removeAt(id);
+    if (this.editData.type === 'new') {
+      switch (this.editData.header) {
+        case 'Truck': {
+          this.deleteTruckPMList(this.newPMs.at(id).value.id);
+          break;
+        }
+        case 'Trailer': {
+          this.deleteTrailerPMList(this.newPMs.at(id).value.id);
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+      console.log('BEFORE DELETE');
+      console.log(this.newPMs.at(id).value);
+      this.newPMs.removeAt(id);
+    }
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -240,7 +274,10 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
               mileage: convertNumberInThousandSep(item.mileage),
               status: item.status,
             };
-            this.addPMs(data, null);
+            this.addPMs(
+              data,
+              item.logoName.includes('custom') ? 'new-pm' : null
+            );
           });
         },
         error: () => {
@@ -264,7 +301,10 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
               mileage: convertNumberInThousandSep(item.mileage),
               status: item.status.name,
             };
-            this.addPMs(data, null);
+            this.addPMs(
+              data,
+              item.logoName.includes('custom') ? 'new-pm' : null
+            );
           });
         },
         error: () => {
@@ -291,7 +331,10 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
               mileage: convertNumberInThousandSep(item.months),
               status: item.status.name,
             };
-            this.addPMs(data, null);
+            this.addPMs(
+              data,
+              item.logoName.includes('custom') ? 'new-pm' : null
+            );
           });
         },
         error: () => {
@@ -315,7 +358,10 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
               mileage: convertNumberInThousandSep(item.months),
               status: item.status,
             };
-            this.addPMs(data, null);
+            this.addPMs(
+              data,
+              item.logoName.includes('custom') ? 'new-pm' : null
+            );
           });
         },
         error: () => {
@@ -381,9 +427,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     const newData: UpdatePMTrailerListDefaultCommand = {
       pmTrailerDefaults: [
         ...this.defaultPMs.controls.map((item, index) => {
-          if (index < 1) {
-            console.log(item.get('status').value);
-          }
           return {
             id: item.get('id').value,
             title: item.get('title').value,
@@ -469,10 +512,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     const newData: UpdatePMTrailerUnitListCommand = {
       trailerId: this.editData.id,
       pmTrailers: [
-        ...this.defaultPMs.controls.map((item, index) => {
-          if (index < 1) {
-            console.log(item.get('status').value);
-          }
+        ...this.defaultPMs.controls.map((item) => {
           return {
             id: item.get('id').value,
             months: convertThousanSepInNumber(item.get('mileage').value),
@@ -632,6 +672,46 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  private deleteTruckPMList(id: number) {
+    this.pmTService
+      .deletePMTruckList(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `Successfully delete Truck PM By ${id}`,
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Can't delete Truck PM By ${id}`,
+            'Error'
+          );
+        },
+      });
+  }
+
+  private deleteTrailerPMList(id: number) {
+    this.pmTService
+      .deletePMTrailerList(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `Successfully delete Trailer PM By ${id}`,
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Can't delete Trailer Unit By ${id}`,
+            'Error'
+          );
+        },
+      });
   }
 
   ngOnDestroy(): void {}
