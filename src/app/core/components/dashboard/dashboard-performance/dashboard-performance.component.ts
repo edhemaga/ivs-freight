@@ -432,7 +432,6 @@ export class DashboardPerformanceComponent implements OnInit {
   }
 
   hoverFocusCard(type: string, color: any){
-    console.log(color, 'hoverFocusCard');
     this.topChart.changeChartFillProperty(type, color);
   }
 

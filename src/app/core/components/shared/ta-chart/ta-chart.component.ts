@@ -76,15 +76,15 @@ export class TaChartComponent implements OnInit {
       onHover: (evt, elements) => {
         if ( elements && elements[0] ) {
           this.animationDuration = 0;
-          if ( this.legendAttributes && this.legendAttributes.length && this.legendAttributes.length > 0 ) { this.setChartLegendData(elements); }
+          if ( this.legendAttributes?.length ) { this.setChartLegendData(elements); }
          // this.changeChartFillProperty(evt, elements);
           this.setHoverAnnotation(elements[0]['_index']);
-          if ( this.lineChartType == 'doughnut' && this.driversList && this.driversList.length && this.driversList.length > 0 ) { this.hoverDoughnut(elements, 'object') }
+          if ( this.lineChartType == 'doughnut' && this.driversList?.length ) { this.hoverDoughnut(elements, 'object') }
         }
         else{
           this.animationDuration = 1000;
           this.setHoverAnnotation(null);
-          if ( this.lineChartType == 'doughnut' && this.driversList && this.driversList.length && this.driversList.length > 0 ) { this.hoverDoughnut(null) }
+          if ( this.lineChartType == 'doughnut' && this.driversList?.length ) { this.hoverDoughnut(null) }
           this.legendAttributes = JSON.parse(JSON.stringify(this.saveValues));
         }
       },
@@ -348,16 +348,13 @@ export class TaChartComponent implements OnInit {
     if ( color ) {
       startcolorRGBA = hexToRgbA('#'+color, 0.4);
       endColorRGBA = hexToRgbA('#'+color, 0);
-      console.log(startcolorRGBA, endColorRGBA, 'endColorRGBA')
     }
 
     let averageAnnotation = 0;
     let averageLenght = 0;
 
     this.chart.chart.config.data.datasets.map((item, i) => {
-      console.log('changeChartFillProperty 222');
       if ( item['id'] == type && (color && color != '') ) {
-        console.log('testingvalue 222');
         item['fill'] = true;
         item['colors'] = [startcolorRGBA, endColorRGBA]
         updateChart = true;
@@ -370,7 +367,6 @@ export class TaChartComponent implements OnInit {
         });
       }
       else if ( item['id'] == type && color == '' ) {
-        console.log('testingvalue 333');
         item['fill'] = false;
         updateChart = true;
         let colorProp = item['borderColor'].toString();
