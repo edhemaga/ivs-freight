@@ -85,7 +85,7 @@
       <!-- FIRST NAME, LAST NAME, DOB -->
 
       <div class="d-flex form-input-container">
-        <div class="form-label-group first-name-group">
+        <div class="group first-name-group">
           <app-ta-input
             formControlName="firstName"
             [inputConfig]="{
@@ -98,7 +98,7 @@
             }"
           ></app-ta-input>
         </div>
-        <div class="form-label-group last-name-group">
+        <div class="group last-name-group">
           <app-ta-input
             formControlName="lastName"
             [inputConfig]="{
@@ -110,7 +110,7 @@
             }"
           ></app-ta-input>
         </div>
-        <div class="form-label-group date-group">
+        <div class="group date-group">
           <app-ta-input
             formControlName="dateOfBirth"
             [inputConfig]="{
@@ -138,7 +138,7 @@
       <!--  PHONE, EMAIL-->
 
       <div class="d-flex form-input-container">
-        <div class="form-label-group phone-group">
+        <div class="group phone-group">
           <app-ta-input
             formControlName="phone"
             [inputConfig]="{
@@ -151,7 +151,7 @@
             }"
           ></app-ta-input>
         </div>
-        <div class="form-label-group email-group">
+        <div class="group email-group">
           <app-ta-input
             formControlName="email"
             [inputConfig]="{
@@ -179,7 +179,7 @@
       <!-- ADDRESS -->
 
       <div class="d-flex form-input-container">
-        <div class="form-label-group address-group">
+        <div class="group address-group">
           <app-ta-input-address
             formControlName="address"
             [inputConfig]="{
@@ -193,7 +193,7 @@
             (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
           ></app-ta-input-address>
         </div>
-        <div class="form-label-group address-unit-group">
+        <div class="group address-unit-group">
           <app-ta-input
             formControlName="addressUnit"
             [inputConfig]="{
@@ -219,7 +219,7 @@
       <!-- SSN, BANK NAME -->
 
       <div class="d-flex form-input-container">
-        <div class="form-label-group ssn-group">
+        <div class="group ssn-group">
           <app-ta-input
             formControlName="ssn"
             [inputConfig]="{
@@ -231,7 +231,7 @@
             }"
           ></app-ta-input>
         </div>
-        <div class="form-label-group bank-group">
+        <div class="group bank-group">
           <app-ta-input-dropdown
             formControlName="bankId"
             [template]="'banks'"
@@ -262,7 +262,7 @@
       <!-- ACCOUNT NUMBER, ROUTING NUMBER -->
 
       <div class="d-flex form-input-container">
-        <div class="form-label-group account-number-group">
+        <div class="group account-number-group">
           <app-ta-input
             formControlName="accountNumber"
             [inputConfig]="{
@@ -276,7 +276,7 @@
             }"
           ></app-ta-input>
         </div>
-        <div class="form-label-group routing-number-group">
+        <div class="group routing-number-group">
           <app-ta-input
             formControlName="routingNumber"
             [inputConfig]="{
@@ -381,7 +381,9 @@
                     type: 'text',
                     label: 'Please explain',
                     isRequired: true,
-                    textTransform: 'capitalize'
+                    textTransform: 'capitalize',
+                    placeholder: 'Please explain',
+                    placeholderInsteadOfLabel: true
                   }"
                 ></app-ta-input>
               </div>
@@ -509,11 +511,29 @@
                           label: 'Address, City, State Zip',
                           isRequired: true,
                           placeholderIcon: 'address',
-                          textTransform: 'capitalize'
+                          textTransform: 'capitalize',
+                          blackInput:
+                            isEditingArray[i]?.isEditing &&
+                            isEditingArray[i]?.isEditingAddress,
+                          commands: {
+                            active:
+                              isEditingArray[i]?.isEditing &&
+                              isEditingArray[i]?.isEditingAddress,
+                            type: 'confirm-cancel',
+                            firstCommand: {
+                              name: 'confirm',
+                              svg: 'assets/svg/ic_spec-confirm.svg'
+                            },
+                            secondCommand: {
+                              name: 'cancel',
+                              svg: 'assets/svg/ic_x.svg'
+                            }
+                          }
                         }"
                         (selectedAddress)="
                           handleInputSelect($event, 'PREVIOUS-ADDRESS', i)
                         "
+                        (commandEvent)="handleAddressChange($event, i)"
                       ></app-ta-input-address>
                     </div>
 

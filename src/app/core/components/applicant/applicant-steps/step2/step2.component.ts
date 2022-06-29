@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -27,12 +27,12 @@ import { TruckType } from '../../state/model/truck-type.model';
 import { TrailerType } from '../../state/model/trailer-type.model';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 @Component({
   selector: 'app-step2',
   templateUrl: './step2.component.html',
   styleUrls: ['./step2.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class Step2Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.APPLICANT;
@@ -133,7 +133,8 @@ export class Step2Component implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private inputResetService: TaInputResetService
   ) {}
 
   ngOnInit(): void {
@@ -287,6 +288,8 @@ export class Step2Component implements OnInit, OnDestroy {
 
     this.workExperienceForm.reset();
 
+    this.inputResetService.resetInputSubject.next(true);
+
     /*   const workExperienceForm = this.workExperienceForm.value;
     const workExperience = new WorkHistory();
  */
@@ -396,6 +399,8 @@ export class Step2Component implements OnInit, OnDestroy {
 
     this.workExperienceForm.reset();
 
+    this.inputResetService.resetInputSubject.next(true);
+
     this.subscription.unsubscribe();
   }
 
@@ -405,6 +410,8 @@ export class Step2Component implements OnInit, OnDestroy {
     this.isWorkExperienceEdited = false;
 
     this.workExperienceForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }

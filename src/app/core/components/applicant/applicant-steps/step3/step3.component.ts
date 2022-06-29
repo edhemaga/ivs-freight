@@ -16,6 +16,7 @@ import {
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 @Component({
   selector: 'app-step3',
@@ -98,7 +99,8 @@ export class Step3Component implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private inputResetService: TaInputResetService
   ) {}
 
   ngOnInit(): void {
@@ -192,6 +194,8 @@ export class Step3Component implements OnInit, OnDestroy {
       this.inputService.markInvalid(this.licenseForm);
       return;
     }
+
+    this.inputResetService.resetInputSubject.next(true);
 
     /* const licenseForm = this.licenseForm.value;
     const license = new License();
@@ -309,6 +313,8 @@ export class Step3Component implements OnInit, OnDestroy {
 
     this.licenseForm.reset();
 
+    this.inputResetService.resetInputSubject.next(true);
+
     this.subscription.unsubscribe();
 
     /* if (this.licenseArray?.length) {
@@ -346,6 +352,8 @@ export class Step3Component implements OnInit, OnDestroy {
     this.isLicenseEdited = false;
 
     this.licenseForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }

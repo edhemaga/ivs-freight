@@ -47,7 +47,11 @@ export class Step1Component implements OnInit, OnDestroy {
   public isLastAddressInList: boolean = false;
   public isEditingMiddlePositionAddress: boolean = false;
 
-  public isEditingArray: { id: number; isEditing: boolean }[] = [];
+  public isEditingArray: {
+    id: number;
+    isEditing: boolean;
+    isEditingAddress: boolean;
+  }[] = [];
   public isEditingId: number = -1;
 
   public questions: ApplicantQuestion[] = [
@@ -193,6 +197,8 @@ export class Step1Component implements OnInit, OnDestroy {
 
   public helperIndex = 2;
 
+  public addressCurrentlyBeingEdited: string;
+
   //
   public loadingApplicant$: Observable<boolean>;
   public loadingBankData$: Observable<boolean>;
@@ -318,6 +324,24 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
+  public handleAddressChange(event: string, index: number) {
+    switch (event) {
+      case InputSwitchActions.CONFIRM:
+        this.isEditingArray[index].isEditing = false;
+        this.isEditingArray[index].isEditingAddress = false;
+
+        break;
+
+      case InputSwitchActions.CANCEL:
+        this.isEditingArray[index].isEditing = false;
+        this.isEditingArray[index].isEditingAddress = false;
+
+        break;
+      default:
+        break;
+    }
+  }
+
   private onCreateNewAddress(): FormGroup {
     return this.formBuilder.group({
       address: [null, Validators.required],
@@ -351,7 +375,7 @@ export class Step1Component implements OnInit, OnDestroy {
 
       this.isEditingArray = [
         ...this.isEditingArray,
-        { id: this.isEditingId, isEditing: true },
+        { id: this.isEditingId, isEditing: true, isEditingAddress: false },
       ];
 
       if (this.previousAddresses.controls.length > 1) {
@@ -380,6 +404,9 @@ export class Step1Component implements OnInit, OnDestroy {
 
   public onEditNewAddress(index: number): void {
     this.helperIndex = index;
+
+    this.addressCurrentlyBeingEdited =
+      this.previousAddresses.controls[index].value.address;
 
     const lastPreviousAddressAdded = this.previousAddresses.length - 1;
 
@@ -412,10 +439,10 @@ export class Step1Component implements OnInit, OnDestroy {
 
       this.isEditingArray = this.isEditingArray.map((item, itemIndex) => {
         if (index === itemIndex) {
-          return { ...item, isEditing: true };
+          return { ...item, isEditing: true, isEditingAddress: true };
         }
 
-        return { ...item, isEditing: false };
+        return { ...item, isEditing: false, isEditingAddress: false };
       });
     }
   }

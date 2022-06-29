@@ -115,7 +115,7 @@
             <!-- EMPLOYER -->
 
             <div class="d-flex">
-              <div class="form-label-group">
+              <div class="group">
                 <app-ta-input
                   formControlName="employer"
                   [inputConfig]="{
@@ -133,7 +133,7 @@
             <!-- JOB DESCRIPTION, FROM, TO -->
 
             <div class="d-flex">
-              <div class="form-label-group job-description-group">
+              <div class="group job-description-group">
                 <app-ta-input
                   formControlName="jobDescription"
                   [inputConfig]="{
@@ -145,7 +145,7 @@
                   }"
                 ></app-ta-input>
               </div>
-              <div class="form-label-group date-group">
+              <div class="group date-group">
                 <app-ta-input
                   formControlName="fromDate"
                   [inputConfig]="{
@@ -158,7 +158,7 @@
                   }"
                 ></app-ta-input>
               </div>
-              <div class="form-label-group date-group">
+              <div class="group date-group">
                 <app-ta-input
                   formControlName="toDate"
                   [inputConfig]="{
@@ -176,7 +176,7 @@
             <!-- PHONE, EMAIL, FAX -->
 
             <div class="d-flex">
-              <div class="form-label-group phone-group">
+              <div class="group phone-group">
                 <app-ta-input
                   formControlName="employerPhone"
                   [inputConfig]="{
@@ -189,7 +189,7 @@
                   }"
                 ></app-ta-input>
               </div>
-              <div class="form-label-group email-group">
+              <div class="group email-group">
                 <app-ta-input
                   formControlName="employerEmail"
                   [inputConfig]="{
@@ -201,7 +201,7 @@
                   }"
                 ></app-ta-input>
               </div>
-              <div class="form-label-group fax-group">
+              <div class="group fax-group">
                 <app-ta-input
                   formControlName="employerFax"
                   [inputConfig]="{
@@ -217,7 +217,7 @@
             <!-- ADDRESS -->
 
             <div class="d-flex">
-              <div class="form-label-group address-group">
+              <div class="group address-group">
                 <app-ta-input-address
                   formControlName="employerAddress"
                   [inputConfig]="{
@@ -231,7 +231,7 @@
                   (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
                 ></app-ta-input-address>
               </div>
-              <div class="form-label-group address-unit-group">
+              <div class="group address-unit-group">
                 <app-ta-input
                   formControlName="employerAddressUnit"
                   [inputConfig]="{
@@ -261,7 +261,7 @@
               *ngIf="workExperienceForm.get('isDrivingPosition').value"
             >
               <div class="d-flex">
-                <div class="form-label-group vehicle-type-group">
+                <div class="group vehicle-type-group">
                   <app-ta-input-dropdown
                     formControlName="truckType"
                     [template]="'svgtext-template'"
@@ -277,7 +277,7 @@
                     (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
                   ></app-ta-input-dropdown>
                 </div>
-                <div class="form-label-group trailer-type-group">
+                <div class="group trailer-type-group">
                   <app-ta-input-dropdown
                     formControlName="trailerType"
                     [template]="'svgtext-template'"
@@ -294,7 +294,7 @@
                     (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
                   ></app-ta-input-dropdown>
                 </div>
-                <div class="form-label-group length-group">
+                <div class="group length-group">
                   <app-ta-input-dropdown
                     formControlName="trailerLength"
                     [inputConfig]="{
@@ -354,7 +354,7 @@
             <!-- REASON FOR LEAVING -->
 
             <div class="d-flex">
-              <div class="form-label-group reason-for-leaving-group">
+              <div class="group reason-for-leaving-group">
                 <app-ta-input-dropdown
                   formControlName="reasonForLeaving"
                   [template]="'svgtext-template'"
@@ -367,6 +367,7 @@
                     dropdownWidthClass: 'w-col-12'
                   }"
                   [options]="reasonsForLeaving"
+                  [activeItem]="selectedReasonForLeaving"
                   (selectedItem)="
                     handleInputSelect($event, 'REASON-FOR-LEAVING')
                   "
@@ -377,7 +378,7 @@
             <!-- ACCOUNT FOR PERIOD -->
 
             <div class="d-flex">
-              <div class="mb-0 form-label-group">
+              <div class="mb-0 group">
                 <app-ta-input
                   formControlName="accountForPeriod"
                   [inputConfig]="{

@@ -106,7 +106,7 @@
       <!-- LICENSE, COUNTRY -->
 
       <div class="d-flex">
-        <div class="form-label-group license-group">
+        <div class="group license-group">
           <app-ta-input
             formControlName="license"
             [inputConfig]="{
@@ -119,7 +119,7 @@
             }"
           ></app-ta-input>
         </div>
-        <div class="form-label-group country-group">
+        <div class="group country-group">
           <app-ta-input-dropdown
             formControlName="countryType"
             [inputConfig]="{
@@ -150,7 +150,7 @@
       <!-- STATE, CLASS, EXP. DATE -->
 
       <div class="d-flex">
-        <div class="form-label-group state-group">
+        <div class="group state-group">
           <app-ta-input-dropdown
             formControlName="stateId"
             [inputConfig]="{
@@ -167,7 +167,7 @@
             (selectedItem)="handleInputSelect($event, 'STATE-TYPE')"
           ></app-ta-input-dropdown>
         </div>
-        <div class="form-label-group class-group">
+        <div class="group class-group">
           <app-ta-input-dropdown
             formControlName="classType"
             [inputConfig]="{
@@ -183,7 +183,7 @@
             (selectedItem)="handleInputSelect($event, 'CLASS-TYPE')"
           ></app-ta-input-dropdown>
         </div>
-        <div class="form-label-group exp-date-group">
+        <div class="group exp-date-group">
           <app-ta-input
             formControlName="expDate"
             [inputConfig]="{
@@ -211,7 +211,7 @@
       <!-- ENDORSMENTS, RESTRICTIONS -->
 
       <div class="d-flex">
-        <div class="form-label-group endorsments-group">
+        <div class="group endorsments-group">
           <app-ta-input-dropdown
             formControlName="endorsments"
             [inputConfig]="{
@@ -226,7 +226,7 @@
             (selectedItem)="handleInputSelect($event, 'ENDORSMENTS')"
           ></app-ta-input-dropdown>
         </div>
-        <div class="form-label-group restrictions-group">
+        <div class="group restrictions-group">
           <app-ta-input-dropdown
             formControlName="restrictions"
             [inputConfig]="{
@@ -322,7 +322,7 @@
 
         <div
           class="d-flex explain-container"
-          *ngIf="licenseForm.get('permit')?.value === 'YES'"
+          *ngIf="permitForm.get('permit')?.value === 'YES'"
         >
           <div class="w-100">
             <app-ta-input
@@ -332,7 +332,9 @@
                 type: 'text',
                 label: 'Please explain',
                 isRequired: true,
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                placeholder: 'Please explain',
+                placeholderInsteadOfLabel: true
               }"
             ></app-ta-input>
           </div>
