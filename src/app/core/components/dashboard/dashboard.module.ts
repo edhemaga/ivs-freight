@@ -6,11 +6,13 @@ import {SharedModule} from "../shared/shared.module";
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardPerformanceComponent } from './dashboard-performance/dashboard-performance.component';
 import { DashboardTopDriverComponent } from './dashboard-top-driver/dashboard-top-driver.component';
+import { DashboardPickupByStateComponent } from './dashboard-pickup-by-state/dashboard-pickup-by-state.component';
 @NgModule({
   declarations: [
     DashboardComponent,
     DashboardPerformanceComponent,
-    DashboardTopDriverComponent
+    DashboardTopDriverComponent,
+    DashboardPickupByStateComponent
   ],
   imports: [
     CommonModule,

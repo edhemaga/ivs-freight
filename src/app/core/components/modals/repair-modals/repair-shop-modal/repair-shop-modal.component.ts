@@ -7,6 +7,7 @@ import {
   RepairShopResponse,
   UpdateRepairShopCommand,
 } from 'appcoretruckassist';
+import moment from 'moment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { distinctUntilChanged } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -139,8 +140,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       isDay: [isDay],
       dayOfWeek: [dayOfWeek],
       dayLabel: [day],
-      startTime: ['08:00'],
-      endTime: ['05:00'],
+      startTime: [moment("8:00:00 AM", "HH:mm:SS A").toDate()],
+      endTime: [moment("5:00:00 PM", "HH:mm:SS A").toDate()],
     });
   }
 
