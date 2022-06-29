@@ -69,9 +69,10 @@
 
   .repair-shop-additional {
     display: grid;
-    grid-template-columns: 97px 190px 1fr;
+    grid-template-columns: 97px repeat(2, 1fr);
     column-gap: 32px;
     align-items: center;
+    overflow: hidden;
 
     .repair-shop-info {
       display: flex;
@@ -207,5 +208,5 @@
 }
 
 ::ng-deep .card-item-active .input-custom-group .input-control {
-  color: red !important;
+  color: #536bc2 !important;
 }

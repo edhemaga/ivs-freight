@@ -1,0 +1,63 @@
+<div class="dashboard-pickup-holder">
+    <div class="dashboard-pickup-header-holder">
+        <div class="dashboard-pickup-title-holder">
+            <div class="dashboard-pickup-title">Pickup by State</div>
+            <div class="dashboard-pickup-arrow-down">
+                <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
+            </div>
+        </div>
+        <div class="dashboard-pickup-toolbar-holder">
+            <div class="dashboard-pickup-toolbar-items-holder">
+                <div class="dashboard-pickup-toolbar-switch-left">
+                    <app-ta-tab-switch
+                    [tabs]="pickupSwitchTabs"
+                    (switchClicked)="changePickupSwitchTabs($event)" 
+                    ></app-ta-tab-switch>
+                </div>
+                <div class="dashboard-pickup-toolbar-border"></div>
+                <div class="dashboard-pickup-toolbar-icons-holder">
+                    <svg-icon src="assets/svg/truckassist-search/new-search-icon.svg"></svg-icon>
+                </div>
+                <div class="dashboard-pickup-toolbar-border"></div>
+                <div class="dashboard-pickup-toolbar-filter-selected">Clear Selection</div>
+            </div>
+            <div class="dashboard-pickup-toolbar-items-holder">
+                <div class="dashboard-pickup-toolbar-switch-right">
+                    <app-ta-tab-switch
+                    [tabs]="pickupSwitch"
+                    (switchClicked)="changePickupSwitchTabs($event)" 
+                    ></app-ta-tab-switch>    
+                </div>
+                <div class="dashboard-pickup-toolbar-border margin-right"></div>
+                <div class="dashboard-pickup-toolbar-dropdown">
+                    <div class="dashboard-pickup-toolbar-dropdown-text">Daily</div>
+                    <div class="dashboard-pickup-toolbar-dropdown-arrow">
+                        <svg-icon src="assets/svg/common/calendar/arrow-right.svg"></svg-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-pickup-body-holder">
+        <div class="row">
+            <div class="col-3">
+                <div class="dashboard-pickup-body-state-list-holder">
+                    <div *ngFor="let item of pickupStateList; let indx=index" class="dashboard-pickup-body-state-list-items-holder">
+                        <div class="dashboard-pickup-body-state-list-items">
+                            <div class="dashboard-pickup-body-state-list-frame">
+                                <div class="dashboard-pickup-body-state-list-id">{{item.id}}</div>
+                                <div class="dashboard-pickup-body-state-list-circle" [ngStyle]="{'background-color': pickupCircleColor[indx]}"></div>
+                                <div class="dashboard-pickup-body-state-list-name">{{item.name}}</div>
+                            </div>
+                            <div class="dashboard-pickup-body-state-list-frame">
+                                <div class="dashboard-pickup-body-state-list-price">{{item.price}}</div>
+                                <div class="dashboard-pickup-body-state-list-percent">{{item.percent}}</div>
+                            </div>
+                        </div>
+                        <div class="dashboard-pickup-body-state-list-border"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

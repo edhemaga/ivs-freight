@@ -19,5 +19,7 @@ export interface BankAccountResponse {
     routing?: string | null;
     account?: string | null;
     status?: BankAccountStatus;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

@@ -17,7 +17,7 @@
             isRequired: true,
             maxLength: 23,
             textTransform: 'capitalize',
-            autoFocus: true
+            autoFocus: editData?.type === 'edit' ? false : true
           }"
         ></app-ta-input>
       </div>
@@ -38,10 +38,18 @@
               active: true,
               type: 'confirm-cancel',
               firstCommand: {
+                popup: {
+                  name: 'Confirm',
+                  backgroundColor: '#536BC2'
+                },
                 name: 'confirm',
                 svg: 'assets/svg/ic_spec-confirm.svg'
               },
               secondCommand: {
+                popup: {
+                  name: 'Cancel',
+                  backgroundColor: '#6c6c6c'
+                },
                 name: 'cancel',
                 svg: 'assets/svg/ic_x.svg'
               }

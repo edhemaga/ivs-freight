@@ -92,6 +92,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
   // PMs
   public selectedPM: any[] = [];
+  public selectedPMIndex: number;
   public pmOptions: any[] = []; // this array fill when truck/trailer switch change
   private pmTrucks: any[] = [];
   private pmTrailers: any[] = [];
@@ -132,7 +133,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     if (this.editData?.type.includes('edit')) {
       this.editData = {
         ...this.editData,
-        id: 3,
+        id: 1,
       };
       this.editRepairById(this.editData.id);
     }
@@ -192,10 +193,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       id: [id],
       description: [null],
-      pm: [null],
       price: [null],
       quantity: [null],
       subtotal: [null],
+      pmTruckId: [null],
+      pmTrailerId: [null],
     });
   }
 
@@ -204,14 +206,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       this.items.push(this.createItems(++this.itemsCounter));
       this.subtotal = [...this.subtotal, { id: this.itemsCounter, value: 0 }];
       this.selectedPM.push({
-        id: this.itemsCounter,
-        logoName: 'assets/svg/common/repair-pm/ic_default_pm.svg',
-        mileage: 0,
-        passedMileage: null,
-        status: null,
-        title: null,
+        id: null,
+        logoName: 'assets/svg/common/repair-pm/ic_custom_pm.svg',
       });
-      console.log(this.selectedPM);
     }
   }
 
@@ -274,19 +271,18 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.repairOrderForm.get('repairShopId'),
         false
       );
-      this.repairOrderForm.get('repairType').patchValue('Bill');
+      this.repairOrderForm.get('repairType').patchValue('Order');
     } else {
       this.inputService.changeValidators(
         this.repairOrderForm.get('repairShopId')
       );
-      this.repairOrderForm.get('repairType').patchValue('Order');
+      this.repairOrderForm.get('repairType').patchValue('Bill');
     }
   }
 
   public onTypeOfRepair(event: any) {
     this.typeOfRepair = [...event];
-    console.log('METHOD TYPE OF REPAIR');
-    console.log(this.typeOfRepair);
+
     this.typeOfRepair.forEach((item) => {
       if (item.checked) {
         this.repairOrderForm.get('unitType').patchValue(item.label);
@@ -321,6 +317,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 phone: res.phone,
                 email: res.email,
                 address: res.address.address,
+                pinned: res.pinned,
               };
             },
             error: () => {
@@ -343,7 +340,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event);
+    this.documents = event;
   }
 
   public identity(index: number, item: any): string {
@@ -356,6 +353,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RepairModalResponse) => {
+          // PM Trucks
           this.pmTrucks = this.pmOptions = res.pmTrucks.map((item) => {
             return {
               ...item,
@@ -372,7 +370,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               title: 'Add New',
             });
           }
-
+          // PM Trailers
           this.pmTrailers = res.pmTrailers.map((item) => {
             return {
               ...item,
@@ -389,21 +387,21 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               title: 'Add New',
             });
           }
-
+          // Unit Trucks
           this.unitTrucks = this.labelsUnit = res.trucks.map((item) => {
             return {
               id: item.id,
               name: item.truckNumber,
             };
           });
-
+          // Unit Trailers
           this.unitTrailers = res.trailers.map((item) => {
             return {
               id: item.id,
               name: item.trailerNumber,
             };
           });
-
+          // Services
           this.services = res.serviceTypes.map((item) => {
             return {
               id: item.serviceType.id,
@@ -420,13 +418,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onAction(action: any, index) {
+  public onAction(action: any, index: number) {
     this.selectedPM[index] = action;
+    this.selectedPMIndex = index;
 
-    if (
-      this.selectedPM[index].id !== 0 &&
-      this.selectedPM[index].id !== this.pmOptions[this.pmOptions.length - 1]
-    ) {
+    if (this.selectedPM[index].title !== 'Add New') {
       this.inputService.changeValidators(this.repairOrderForm.get('odometer'));
     } else {
       this.inputService.changeValidators(
@@ -467,9 +463,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.repairOrderForm.get('unitType').value === 'Trailer'
           ? this.selectedUnit.id
           : null,
-      repairShopId: this.selectedRepairShop.id,
+      repairShopId: this.selectedRepairShop ? this.selectedRepairShop.id : null,
       odometer: odometer ? convertThousanSepInNumber(odometer) : null,
-      total: this.sumArrayPipe.transform(this.subtotal),
+      total:
+        this.repairOrderForm.get('repairType').value === 'Bill'
+          ? this.sumArrayPipe.transform(this.subtotal)
+          : null,
       serviceTypes: this.services.map((item) => {
         return {
           serviceType: item.serviceType,
@@ -478,7 +477,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       }),
       items: this.premmapedItems(),
     };
-
+    console.log(newData);
     this.repairService
       .addRepair(newData)
       .pipe(untilDestroyed(this))
@@ -499,7 +498,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   private updateRepair(id: number) {
     const { repairShopId, items, date, unit, odometer, ...form } =
       this.repairOrderForm.value;
-
     const newData: UpdateRepairCommand = {
       id: id,
       ...form,
@@ -512,9 +510,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.repairOrderForm.get('unitType').value === 'Trailer'
           ? this.selectedUnit.id
           : null,
-      repairShopId: this.selectedRepairShop.id,
-      odometer: odometer ? convertThousanSepInNumber(odometer) : null,
-      total: this.sumArrayPipe.transform(this.subtotal),
+      repairShopId: this.selectedRepairShop ? this.selectedRepairShop.id : null,
+      odometer: odometer
+        ? convertThousanSepInNumber(this.repairOrderForm.get('odometer').value)
+        : null,
+      total:
+        this.repairOrderForm.get('repairType').value === 'Bill'
+          ? this.sumArrayPipe.transform(this.subtotal)
+          : null,
       serviceTypes: this.services.map((item) => {
         return {
           serviceType: item.serviceType,
@@ -571,11 +574,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           this.repairOrderForm.patchValue({
             repairType: res.repairType.name,
             unitType: res.unitType.name,
-            unit: 545,
-            // res.unitType.name === 'Truck'
-            //   ? res.truck.truckNumber
-            //   : res.trailer.trailerNumber,
-            odometer: convertNumberInThousandSep(res.odometer),
+            unit:
+              res.unitType.name === 'Truck'
+                ? res.truck.truckNumber
+                : res.trailer.trailerNumber,
+            odometer: res.odometer
+              ? convertNumberInThousandSep(res.odometer)
+              : null,
             date: convertDateFromBackend(res.date),
             invoice: res.invoice,
             repairShopId: res.repairShopId,
@@ -584,10 +589,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           });
 
           // Truck/Trailer Unit number
-          this.selectedUnit = {
-            id: 2,
-            name: '545',
-          };
+          this.selectedUnit =
+            res.unitType.name === 'Truck' ? res.truck : res.trailer;
 
           // Repair Services
           this.services = res.serviceTypes.map((item) => {
@@ -600,26 +603,29 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           });
 
           // Repair Shop
-          this.repairService
-            .getRepairShopById(res.repairShopId)
-            .pipe(untilDestroyed(this))
-            .subscribe({
-              next: (res: RepairShopResponse) => {
-                this.selectedRepairShop = {
-                  id: res.id,
-                  name: res.name,
-                  phone: res.phone,
-                  email: res.email,
-                  address: res.address.address,
-                };
-              },
-              error: () => {
-                this.notificationService.error(
-                  `Cant' get repair shop by ${this.selectedRepairShop.id}`,
-                  'Error'
-                );
-              },
-            });
+          if (res.repairShopId) {
+            this.repairService
+              .getRepairShopById(res.repairShopId)
+              .pipe(untilDestroyed(this))
+              .subscribe({
+                next: (res: RepairShopResponse) => {
+                  this.selectedRepairShop = {
+                    id: res.id,
+                    name: res.name,
+                    phone: res.phone,
+                    email: res.email,
+                    address: res.address.address,
+                    pinned: res.pinned,
+                  };
+                },
+                error: () => {
+                  this.notificationService.error(
+                    `Cant' get repair shop by ${this.selectedRepairShop.id}`,
+                    'Error'
+                  );
+                },
+              });
+          }
 
           // Bill/Order Tab
           this.headerTabs.filter((item) => {
@@ -637,10 +643,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.formBuilder.group({
                   id: iterator.id,
                   description: iterator.description,
-                  pm: null,
                   price: iterator.price,
                   quantity: iterator.quantity,
                   subtotal: iterator.subtotal,
+                  pmTruckId: iterator.pmTruck,
+                  pmTrailerId: iterator.pmTrailer,
                 })
               );
               this.subtotal = [
@@ -650,24 +657,24 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                   value: iterator.subtotal,
                 },
               ];
-              console.log(this.subtotal);
+
               if (res.unitType.name === 'Truck') {
                 this.selectedPM.push({
-                  id: iterator.pmTruck.id,
-                  logoName: `assets/svg/common/repair-pm/${iterator.pmTruck.logoName}`,
-                  mileage: 0,
-                  passedMileage: null,
-                  status: iterator.pmTruck.status,
-                  title: iterator.pmTruck.title,
+                  id: iterator.pmTruck ? iterator.pmTruck.id : null,
+                  logoName: `assets/svg/common/repair-pm/${
+                    iterator.pmTruck
+                      ? iterator.pmTruck.logoName
+                      : 'ic_custom_pm.svg'
+                  }`,
                 });
               } else {
                 this.selectedPM.push({
-                  id: iterator.pmTrailer.id,
-                  logoName: `assets/svg/common/repair-pm/${iterator.pmTrailer.logoName}`,
-                  mileage: 0,
-                  passedMileage: null,
-                  status: iterator.pmTrailer.status,
-                  title: iterator.pmTrailer.title,
+                  id: iterator.pmTrailer ? iterator.pmTrailer.id : null,
+                  logoName: `assets/svg/common/repair-pm/${
+                    iterator.pmTrailer
+                      ? iterator.pmTrailer.logoName
+                      : 'ic_custom_pm.svg'
+                  }`,
                 });
               }
             }

@@ -213,7 +213,17 @@
     *ngIf="inputConfig.commands?.active && isVisibleCommands"
     class="ta-input-commands"
   >
-    <div class="ta-input-command-first">
+    {{ inputConfig.popup?.name }}
+    <div
+      class="ta-input-command-first"
+      ngbTooltip
+      [mainTooltip]="inputConfig.commands?.firstCommand?.popup?.name"
+      [tooltipBackground]="
+        inputConfig.commands?.firstCommand?.popup?.backgroundColor
+      "
+      [disableTooltip]="!inputConfig.commands?.firstCommand?.popup"
+      position="top"
+    >
       <svg-icon
         class="ta-input-command-svg-first"
         [src]="inputConfig.commands.firstCommand.svg"
@@ -226,7 +236,16 @@
         "
       ></svg-icon>
     </div>
-    <div class="ta-input-command-second">
+    <div
+      class="ta-input-command-second"
+      ngbTooltip
+      [mainTooltip]="inputConfig.commands?.secondCommand?.popup?.name"
+      [tooltipBackground]="
+        inputConfig.commands?.secondCommand?.popup?.backgroundColor
+      "
+      [disableTooltip]="!inputConfig.commands?.secondCommand?.popup"
+      position="top"
+    >
       <svg-icon
         class="ta-input-command-svg-second"
         [src]="inputConfig.commands.secondCommand.svg"
@@ -274,7 +293,8 @@
         getSuperControl.valid &&
         focusInput &&
         !inputConfig.dropdownLabelSelected &&
-        !inputConfig.isDropdownLabel,
+        !inputConfig.isDropdownLabel &&
+        !inputConfig.blackInput,
       'valid-required-out':
         getSuperControl.value &&
         getSuperControl.valid &&
@@ -282,7 +302,10 @@
         !inputConfig.dropdownLabelSelected &&
         !inputConfig.isDropdownLabel,
       'invalid-required-in':
-        getSuperControl.value && getSuperControl.invalid && focusInput,
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        !inputConfig.blackInput,
       'invalid-required-empty':
         !getSuperControl.value &&
         getSuperControl.invalid &&

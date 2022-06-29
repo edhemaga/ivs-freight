@@ -16,7 +16,7 @@
           label: 'CDL #',
           isRequired: true,
           textTransform: 'capitalize',
-          autoFocus: true
+          autoFocus: editData?.type === 'edit' ? false : true
         }"
       ></app-ta-input>
       <app-ta-input
@@ -138,7 +138,7 @@
         [isCardOpen]="documents.length"
       >
         <app-ta-modal-upload
-          [files]="[]"
+          [files]="documents"
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-modal-upload>
       </app-ta-custom-card>

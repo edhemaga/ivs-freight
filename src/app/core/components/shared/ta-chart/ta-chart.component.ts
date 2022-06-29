@@ -1,7 +1,9 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Chart, ChartDataSets, ChartOptions, scaleService } from 'chart.js';
 import { BaseChartDirective, Color, Label, MultiDataSet } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
+import { hexToRgbA } from 'src/assets/utils/methods-global';
+import { elementMatches } from '@fullcalendar/core';
 
 @Component({
   selector: 'app-ta-chart',
@@ -31,10 +33,13 @@ export class TaChartComponent implements OnInit {
   saveValues: any = [];
   removeChartMargin: boolean = false;
   chartInnitProperties: any = [];
+  saveChartProperties: any = [];
   animationDuration: number = 1000;
   allowAnimation: any;
+  driversList: any;
+  annotationConfig: any;
 
-  constructor() { }
+  constructor(private ref: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.saveValues = JSON.parse(JSON.stringify(this.legendAttributes));
@@ -42,13 +47,14 @@ export class TaChartComponent implements OnInit {
     let namedChartAnnotation = annotation;
     namedChartAnnotation["id"]="annotation";
     Chart.pluginService.register(namedChartAnnotation);
-    this.seChartOptions();
+    this.setChartOptions();
     this.setChartData();
   }
 
-  setHoverAnnotation(value: any) {
-    var sameValue = false;
-    this.lineChartOptions['annotation']['annotations'].forEach((item, i) => {
+  setHoverAnnotation(value: any, config?) {
+    let sameValue = false;
+    this.annotationConfig = config;
+    this.lineChartOptions['annotation']['annotations'].map((item, i) => {
       if ( item['id'] == 'a-line-2' && item['value'] == value ) {
         sameValue = true;
       }
@@ -56,11 +62,11 @@ export class TaChartComponent implements OnInit {
 
     if ( !sameValue ) {
       this.annotationHovered = value;
-      this.seChartOptions();
+      this.setChartOptions();
     }
   }
 
-  seChartOptions() {
+  setChartOptions() {
     this.lineChartOptions = {
       responsive: false,
       cutoutPercentage: 90,
@@ -70,13 +76,15 @@ export class TaChartComponent implements OnInit {
       onHover: (evt, elements) => {
         if ( elements && elements[0] ) {
           this.animationDuration = 0;
-          if ( this.legendAttributes && this.legendAttributes.length && this.legendAttributes.length > 0) { this.setChartLegendData(elements); }
-          this.changeChartFillProperty(evt, elements);
+          if ( this.legendAttributes?.length ) { this.setChartLegendData(elements); }
+         // this.changeChartFillProperty(evt, elements);
           this.setHoverAnnotation(elements[0]['_index']);
+          if ( this.lineChartType == 'doughnut' && this.driversList?.length ) { this.hoverDoughnut(elements, 'object') }
         }
         else{
           this.animationDuration = 1000;
           this.setHoverAnnotation(null);
+          if ( this.lineChartType == 'doughnut' && this.driversList?.length ) { this.hoverDoughnut(null) }
           this.legendAttributes = JSON.parse(JSON.stringify(this.saveValues));
         }
       },
@@ -95,11 +103,12 @@ export class TaChartComponent implements OnInit {
           {
             id: 'a-line-2',
             type: 'line',
-            mode: 'vertical',
-            scaleID: 'x-axis-0',
+            mode: this.annotationConfig ? this.annotationConfig['type'] : 'vertical',
+            scaleID: this.annotationConfig ? this.annotationConfig['axis'] : 'x-axis-0',
             value: this.annotationHovered,
-            borderColor: '#DADADA',
-            borderWidth: 2
+            borderColor: this.annotationConfig ? this.annotationConfig['color'] : '#DADADA',
+            borderWidth: 2,
+            borderDash: this.annotationConfig ? this.annotationConfig['dash'] : 0
           }
         ]
       },
@@ -152,12 +161,12 @@ export class TaChartComponent implements OnInit {
                     return value;
                   }
                   else {
-                    var ranges = [
+                    let ranges = [
                       { divider: 1e6, suffix: 'M' },
                       { divider: 1e3, suffix: 'K' }
                     ];
                     function formatNumber(n) {
-                      for (var i = 0; i < ranges.length; i++) {
+                      for (let i = 0; i < ranges.length; i++) {
                           if (n >= ranges[i].divider) {
                             return (n / ranges[i].divider).toString() + ranges[i].suffix;
                           }
@@ -184,12 +193,12 @@ export class TaChartComponent implements OnInit {
               fontSize: 11,
               padding: -4,
               callback: function(value: any) {
-                var ranges = [
+                let ranges = [
                   { divider: 1e6, suffix: 'M' },
                   { divider: 1e3, suffix: 'K' }
                 ];
                 function formatNumber(n) {
-                  for (var i = 0; i < ranges.length; i++) {
+                  for (let i = 0; i < ranges.length; i++) {
                       if (n >= ranges[i].divider) {
                         return (n / ranges[i].divider).toString() + ranges[i].suffix;
                       }
@@ -222,25 +231,14 @@ export class TaChartComponent implements OnInit {
   }
 
   setChartData() {
-    var allData;
-    var allBackgrounds = [];
     this.chartConfig['dataProperties'].map((item, indx) => {
-      var currentChartConfig = item['defaultConfig'];
-      var chartDataArray = currentChartConfig;
+      const currentChartConfig = item['defaultConfig'];
 
       if ( item['defaultConfig']['hasGradiendBackground'] ) {
-        this.setGradientBackground('gradient');
+        this.setGradientBackground();
       }
       
-      // if ( item['defaultConfig']['type'] == 'doughnut' ) {
-      //   allData = item['defaultConfig']['data'];
-      //   allBackgrounds = ['#24C1A1B3', '#F78585B3'];
-      //   item['colorProperties']['backgroundColor'].map((item1, indx1) => {
-      //     //allBackgrounds.push(item1+'B3');
-      //   });
-      // }
-      
-      this.lineChartData.push(chartDataArray);
+      this.lineChartData.push(currentChartConfig);
       this.lineChartLegend = this.chartConfig['defaultType'] != 'doughnut' ?  this.chartConfig['showLegend'] : false;
       this.doughnutChartLegend = this.chartConfig['showLegend'];
       this.lineChartType = this.chartConfig['defaultType'];
@@ -251,65 +249,70 @@ export class TaChartComponent implements OnInit {
       this.dottedBackground = this.chartConfig['dottedBackground'];
       this.noChartImage = this.chartConfig['noChartImage'];
       this.removeChartMargin = this.chartConfig['removeChartMargin'];
+      this.saveChartProperties = this.chartConfig['chartInnitProperties'];
       this.chartInnitProperties = this.chartConfig['chartInnitProperties'];
       this.allowAnimation = this.chartConfig['allowAnimation'];
+      this.driversList = this.chartConfig['driversList'];
       this.chartDataCheck(this.chartConfig['chartValues']);
     });
   }
 
-  setGradientBackground(type) {
+  setGradientBackground() {
     this.lineChartPlugins = [{
       afterLayout: chart => {
-        var ctx = chart.chart.ctx;
-        var canvas = <HTMLCanvasElement> document.getElementById('myChart');
-        var gradientStroke = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        var gradientStroke2 = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        var dataset = chart.data.datasets[0]['colors'] ? chart.data.datasets[0] : chart.data.datasets[1];
+        const ctx = chart.chart.ctx;
+        const canvas = <HTMLCanvasElement> document.getElementById('myChart');
         
-        if ( dataset.hoverColors ) {
-          dataset.hoverColors.forEach((c, i) => {
-            var stop = 1 / (dataset.hoverColors.length - 1) * i;
-            gradientStroke2.addColorStop(stop, c);
-          });
-          dataset.hoverBackgroundColor = gradientStroke2;
-        }
-
-        if ( dataset.colors ) {
-           dataset.colors.forEach((c, i) => {
-            var stop = 1 / (dataset.colors.length - 1) * i;
-            gradientStroke.addColorStop(stop, c);
-          });
-
-          dataset.backgroundColor = gradientStroke;
-          
-          if ( this.chartConfig['annotation'] ) {
-            const yScale = chart.scales['y-axis-0'];
-            const yPos = yScale.getPixelForValue(this.chartConfig['annotation']);
+        let dataset = chart.data.datasets;
         
-            const gradientFill = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradientFill.addColorStop(0, 'rgb(229, 115, 115)');
-            gradientFill.addColorStop(yPos / canvas.height, 'rgb(229, 115, 115)');
-            gradientFill.addColorStop(yPos / canvas.height, 'rgb(109, 130, 199)');
-            gradientFill.addColorStop(1, 'rgb(109, 130, 199)');
-
-            gradientStroke.addColorStop(0, 'rgb(239, 154, 154)');
-            gradientStroke.addColorStop(yPos / canvas.height, 'rgb(255, 255, 255)');
-            gradientStroke.addColorStop(yPos / canvas.height, 'rgb(189, 202, 235)');
-            gradientStroke.addColorStop(1, 'rgb(255, 255, 255)');
-
-            dataset.backgroundColor = gradientStroke;
-            dataset.borderColor = gradientFill;
-            dataset.pointHoverBackgroundColor = gradientFill;
+        dataset.map((item, p) => {
+          let gradientStroke = ctx.createLinearGradient(0, 0, 0, canvas.height);
+          let gradientStroke2 = ctx.createLinearGradient(0, 0, 0, canvas.height);
+          if ( item.hoverColors ) {
+            item.hoverColors.map((c, i) => {
+              let stop = 1 / (item.hoverColors.length - 1) * i;
+              gradientStroke2.addColorStop(stop, c);
+            });
+            item.hoverBackgroundColor = gradientStroke2;
           }
-        }
+  
+          if ( item.colors ) {
+            item.colors.map((c, i) => {
+              let stop = 1 / (item.colors.length - 1) * i;
+              gradientStroke.addColorStop(stop, c);
+            });
+  
+            item.backgroundColor = gradientStroke;
+            
+            if ( this.chartConfig['annotation'] ) {
+              const yScale = chart.scales['y-axis-0'];
+              const yPos = yScale.getPixelForValue(this.chartConfig['annotation']);
+          
+              const gradientFill = ctx.createLinearGradient(0, 0, 0, canvas.height);
+              gradientFill.addColorStop(0, 'rgb(229, 115, 115)');
+              gradientFill.addColorStop(yPos / canvas.height, 'rgb(229, 115, 115)');
+              gradientFill.addColorStop(yPos / canvas.height, 'rgb(109, 130, 199)');
+              gradientFill.addColorStop(1, 'rgb(109, 130, 199)');
+  
+              gradientStroke.addColorStop(0, 'rgb(239, 154, 154)');
+              gradientStroke.addColorStop(yPos / canvas.height, 'rgb(255, 255, 255)');
+              gradientStroke.addColorStop(yPos / canvas.height, 'rgb(189, 202, 235)');
+              gradientStroke.addColorStop(1, 'rgb(255, 255, 255)');
+  
+              item.backgroundColor = gradientStroke;
+              item.borderColor = gradientFill;
+              item.pointHoverBackgroundColor = gradientFill;
+            }
+          }
+        });
       }
     }
   ];
   }
 
   chartDataCheck(values) {
-    var hasData = false;
-    values.forEach((item, i) => {
+    let hasData = false;
+    values.map((item, i) => {
       if ( item > 0 ) {
         hasData = true;
       }
@@ -320,10 +323,10 @@ export class TaChartComponent implements OnInit {
   }
 
   setChartLegendData(elements: any) {
-    elements.forEach((item, i) => {
-      var chartValue = item['_chart']['config']['data']['datasets'][i]['data'][elements[i]['_index']];
+    elements.map((item, i) => {
+      const chartValue = item['_chart']['config']['data']['datasets'][i]['data'][elements[i]['_index']];
 
-      this.legendAttributes.forEach((item2, a) => {
+      this.legendAttributes.map((item2, a) => {
           if ( item2['elementId'] == i ) {
             item2['value'] = chartValue;
           }
@@ -338,34 +341,114 @@ export class TaChartComponent implements OnInit {
     });
   }
 
-  changeChartFillProperty(evt: any, elements: any) {
-    //elements[0]['_chart']['config']['data']['datasets'][0]['fill'] = true;
-    elements.forEach((item, i) => {
-      //console.log(chartValue, 'ELEEEEMENTSSSS');
-      
+  changeChartFillProperty(type: string, color: any) {
+    let updateChart = false;
+    let startcolorRGBA, endColorRGBA, lineHovered;
+
+    if ( color ) {
+      startcolorRGBA = hexToRgbA('#'+color, 0.4);
+      endColorRGBA = hexToRgbA('#'+color, 0);
+    }
+
+    let averageAnnotation = 0;
+    let averageLenght = 0;
+
+    this.chart.chart.config.data.datasets.map((item, i) => {
+      if ( item['id'] == type && (color && color != '') ) {
+        item['fill'] = true;
+        item['colors'] = [startcolorRGBA, endColorRGBA]
+        updateChart = true;
+        let colorProp = item['borderColor'].toString();
+        item['borderColor'] = colorProp.slice(0,7);
+        lineHovered = item['borderColor'];
+        averageLenght = item['data'].length;
+        item['data'].map((val, l) => {
+          averageAnnotation = averageAnnotation + val;
+        });
+      }
+      else if ( item['id'] == type && color == '' ) {
+        item['fill'] = false;
+        updateChart = true;
+        let colorProp = item['borderColor'].toString();
+        item['borderColor'] = colorProp.slice(0,7);
+      }
+      else if (item['id'] != type && (color && color != '') ) {
+        item['fill'] = false;
+        let colorProp = item['borderColor']+'33';
+        item['borderColor'] = colorProp.slice(0,9);
+        updateChart = true;
+      }
+      if ( color == '' ) {
+        let colorProp = item['borderColor'].toString();
+        item['borderColor'] = colorProp.slice(0,7);
+      }
     });
-    //this.seChartOptions();
+    
+    const annotationValue = averageAnnotation / averageLenght;
+    
+    if ( updateChart ) { this.animationDuration = 0; this.setChartOptions(); }
+    else { this.animationDuration = 1000; }
+    if ( lineHovered ) {
+      let config = {
+        type: 'horizontal',
+        color: lineHovered,
+        axis: 'y-axis-0',
+        dash: [3, 4]
+      }
+      this.setHoverAnnotation(annotationValue, config);
+    }
+    else {
+      this.setHoverAnnotation(null);
+    }
   }
 
   insertNewChartData(mod, type, color){
-    console.log(color, 'colorcolorcolor')
-    console.log(this.chart, 'this.chart');
-    console.log(mod, type, 'insertNewChartDatainsertNewChartDatainsertNewChartData');
-
-    this.chart.chart.config.data.datasets.forEach((item, i) => {
-      console.log(item['id'], 'itemitemitem');
-      console.log('testingvalue 111');
+    this.chart.chart.config.data.datasets.map((item, i) => {
       if ( item['id'] == type ) {
-        console.log('testingvalue 222');
-        if ( mod == 'add' ) { 
-          console.log('testingvalue 333');
+        if ( mod == 'add' ) {
           item['hidden'] = false;
           item['borderColor'] = '#'+color;
           item['pointHoverBorderColor'] = '#'+color;
+          this.changeChartFillProperty(type, color);
         }
-        if ( mod == 'remove' ) { console.log('testingvalue 444'); item['hidden'] = true; }
+        if ( mod == 'remove' ) { item['hidden'] = true; this.changeChartFillProperty(type, ''); }
       }
     });
-    this.seChartOptions();
+
+    this.animationDuration = 1000;
+    this.setChartOptions();
+  }
+
+  hoverDoughnut(elements: any, type?) {
+    let driverDetails, dataIndex;
+    if ( type == 'object' && elements && elements[0] ) { driverDetails = this.driversList[elements[0]['_index']]; dataIndex = elements[0]['_index']; }
+    else if ( type == 'number' ) { driverDetails = this.driversList[elements]; dataIndex = elements; }
+    this.chart.chart.config.data.datasets[0].data.map((item, i) => {
+      if ( i == dataIndex || elements == null ){
+        let color = this.chart.chart.config.data.datasets[0].backgroundColor[i];
+        let colorProp = color;
+        this.chart.chart.config.data.datasets[0].backgroundColor[i] = colorProp.slice(0,7);
+      }
+      else{
+        let color = this.chart.chart.config.data.datasets[0].backgroundColor[i];
+        let colorProp = color+'33';
+        this.chart.chart.config.data.datasets[0].backgroundColor[i] = colorProp.slice(0,9);
+      }
+      this.setChartOptions();
+    });
+    
+    if ( driverDetails ) {
+      this.chartInnitProperties = [
+        {
+          name: driverDetails.name,
+          value: driverDetails.price,
+          percent: driverDetails.percent
+        }
+      ];
+    }
+    else {
+      this.chartInnitProperties = this.saveChartProperties;
+    }
+    this.ref.detectChanges();
   }
 }

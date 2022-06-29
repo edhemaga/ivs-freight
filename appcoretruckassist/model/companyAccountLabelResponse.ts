@@ -15,5 +15,7 @@ export interface CompanyAccountLabelResponse {
     id?: number;
     name?: string | null;
     color?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

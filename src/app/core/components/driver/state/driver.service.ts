@@ -1,6 +1,6 @@
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import {
   CheckOwnerSsnEinResponse,
   CreateDriverCommand,
@@ -138,33 +138,34 @@ export class DriverTService {
       return driver.id;
     });
 
-    return this.driverService.apiDriverListDelete({ ids: deleteOnBack }).pipe(
-      tap(() => {
-        let storeDrivers = this.driversActiveQuery.getAll();
+    // return this.driverService.apiDriverListDelete({ ids: deleteOnBack }).pipe(
+    //   tap(() => {
+    //     let storeDrivers = this.driversActiveQuery.getAll();
 
-        storeDrivers.map((driver: any) => {
-          deleteOnBack.map((d) => {
-            if (d === driver.id) {
-              this.driverActiveStore.remove(({ id }) => id === driver.id);
-            }
-          });
-        });
+    //     storeDrivers.map((driver: any) => {
+    //       deleteOnBack.map((d) => {
+    //         if (d === driver.id) {
+    //           this.driverActiveStore.remove(({ id }) => id === driver.id);
+    //         }
+    //       });
+    //     });
 
-        alert('Proveri jel sljaka driver count update');
+    //     alert('Proveri jel sljaka driver count update');
 
-        const driverCount = JSON.parse(
-          localStorage.getItem('driverTableCount')
-        );
+    //     const driverCount = JSON.parse(
+    //       localStorage.getItem('driverTableCount')
+    //     );
 
-        localStorage.setItem(
-          'driverTableCount',
-          JSON.stringify({
-            active: storeDrivers.length,
-            inactive: driverCount.inactive,
-          })
-        );
-      })
-    );
+    //     localStorage.setItem(
+    //       'driverTableCount',
+    //       JSON.stringify({
+    //         active: storeDrivers.length,
+    //         inactive: driverCount.inactive,
+    //       })
+    //     );
+    //   })
+    // );
+    return of(null);
   }
 
   public updateDriver(data: UpdateDriverCommand): Observable<object> {

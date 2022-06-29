@@ -14,6 +14,7 @@
 export interface InspectionResponse { 
     id?: number;
     issueDate?: string;
+    expDate?: string;
     note?: string | null;
 }
 

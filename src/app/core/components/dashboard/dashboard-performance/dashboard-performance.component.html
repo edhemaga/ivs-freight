@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="dashboard-performance-body">
-        <div class="dashboard-performance-body-left-holder dashboard-performance-{{selectedColors['income']}}-box" (click)="setColor('income')">
+        <div class="dashboard-performance-body-left-holder dashboard-performance-{{selectedColors['income']}}-box" (mouseenter)="hoverFocusCard('income', selectedColors['income'])" (mouseleave)="hoverFocusCard('income', '')" (click)="setColor('income')">
             <div 
             ngbTooltip
             mainTooltip="Hide from chart"
@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="dashboard-performance-body-right-holder">
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['revenue']}}-box" (click)="setColor('revenue')" [class.active]="selectedColors['revenue']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['revenue']}}-box" (mouseenter)="hoverFocusCard('revenue', selectedColors['revenue'])" (mouseleave)="hoverFocusCard('revenue', '')" (click)="setColor('revenue')" [class.active]="selectedColors['revenue']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -94,7 +94,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['load']}}-box" (click)="setColor('load')"  [class.active]="selectedColors['load']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['load']}}-box" (mouseenter)="hoverFocusCard('load', selectedColors['load'])" (mouseleave)="hoverFocusCard('load', '')" (click)="setColor('load')"  [class.active]="selectedColors['load']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -126,7 +126,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['miles']}}-box" (click)="setColor('miles')" [class.active]="selectedColors['miles']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['miles']}}-box" (mouseenter)="hoverFocusCard('miles', selectedColors['miles'])" (mouseleave)="hoverFocusCard('miles', '')" (click)="setColor('miles')" [class.active]="selectedColors['miles']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -158,7 +158,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['fuel']}}-box"  (click)="setColor('fuel')" [class.active]="selectedColors['fuel']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['fuel']}}-box" (mouseenter)="hoverFocusCard('fuel', selectedColors['fuel'])" (mouseleave)="hoverFocusCard('fuel', '')"  (click)="setColor('fuel')" [class.active]="selectedColors['fuel']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -190,7 +190,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['fuel-cost']}}-box"  (click)="setColor('fuel-cost')" [class.active]="selectedColors['fuel-cost']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['fuel-cost']}}-box" (mouseenter)="hoverFocusCard('fuel-cost', selectedColors['fuel-cost'])" (mouseleave)="hoverFocusCard('fuel-cost', '')" (click)="setColor('fuel-cost')" [class.active]="selectedColors['fuel-cost']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -222,7 +222,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['repair']}}-box"  (click)="setColor('repair')" [class.active]="selectedColors['repair']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['repair']}}-box" (mouseenter)="hoverFocusCard('income', selectedColors['repair'])" (mouseleave)="hoverFocusCard('repair', '')" (click)="setColor('repair')" [class.active]="selectedColors['repair']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -254,7 +254,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['roadside']}}-box"  (click)="setColor('roadside')" [class.active]="selectedColors['roadside']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['roadside']}}-box" (mouseenter)="hoverFocusCard('roadside', selectedColors['roadside'])" (mouseleave)="hoverFocusCard('roadside', '')" (click)="setColor('roadside')" [class.active]="selectedColors['roadside']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -286,7 +286,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['violation']}}-box"  (click)="setColor('violation')" [class.active]="selectedColors['violation']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['violation']}}-box" (mouseenter)="hoverFocusCard('violation', selectedColors['violation'])" (mouseleave)="hoverFocusCard('violation', '')" (click)="setColor('violation')" [class.active]="selectedColors['violation']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -318,7 +318,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['accident']}}-box"  (click)="setColor('accident')" [class.active]="selectedColors['accident']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['accident']}}-box" (mouseenter)="hoverFocusCard('accident', selectedColors['accident'])" (mouseleave)="hoverFocusCard('accident', '')" (click)="setColor('accident')" [class.active]="selectedColors['accident']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -343,7 +343,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder different-width">SAME AS LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['expences']}}-box"  (click)="setColor('expences')" [class.active]="selectedColors['expences']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['expences']}}-box" (mouseenter)="hoverFocusCard('expences', selectedColors['expences'])" (mouseleave)="hoverFocusCard('expences', '')" (click)="setColor('expences')" [class.active]="selectedColors['expences']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -375,7 +375,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['driver']}}-box"  (click)="setColor('driver')" [class.active]="selectedColors['driver']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['driver']}}-box" (mouseenter)="hoverFocusCard('driver', selectedColors['driver'])" (mouseleave)="hoverFocusCard('driver', '')" (click)="setColor('driver')" [class.active]="selectedColors['driver']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -400,7 +400,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder different-width">SAME AS LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['truck']}}-box"  (click)="setColor('truck')" [class.active]="selectedColors['truck']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['truck']}}-box" (mouseenter)="hoverFocusCard('truck', selectedColors['truck'])" (mouseleave)="hoverFocusCard('truck', '')" (click)="setColor('truck')" [class.active]="selectedColors['truck']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -432,7 +432,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['trailer']}}-box"  (click)="setColor('trailer')" [class.active]="selectedColors['trailer']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['trailer']}}-box" (mouseenter)="hoverFocusCard('trailer', selectedColors['trailer'])" (mouseleave)="hoverFocusCard('trailer', '')" (click)="setColor('trailer')" [class.active]="selectedColors['trailer']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -465,7 +465,7 @@
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
 
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['owner']}}-box"  (click)="setColor('owner')" [class.active]="selectedColors['owner']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['owner']}}-box" (mouseenter)="hoverFocusCard('owner', selectedColors['owner'])" (mouseleave)="hoverFocusCard('owner', '')" (click)="setColor('owner')" [class.active]="selectedColors['owner']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -497,7 +497,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['user']}}-box"  (click)="setColor('user')" [class.active]="selectedColors['user']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['user']}}-box" (mouseenter)="hoverFocusCard('user', selectedColors['user'])" (mouseleave)="hoverFocusCard('user', '')" (click)="setColor('user')" [class.active]="selectedColors['user']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -529,7 +529,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['repair-shop']}}-box"  (click)="setColor('repair-shop')" [class.active]="selectedColors['repair-shop']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['repair-shop']}}-box" (mouseenter)="hoverFocusCard('repair-shop', selectedColors['repair-shop'])" (mouseleave)="hoverFocusCard('repair-shop', '')" (click)="setColor('repair-shop')" [class.active]="selectedColors['repair-shop']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -561,7 +561,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['broker']}}-box"  (click)="setColor('broker')" [class.active]="selectedColors['broker']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['broker']}}-box" (mouseenter)="hoverFocusCard('broker', selectedColors['broker'])" (mouseleave)="hoverFocusCard('broker', '')" (click)="setColor('broker')" [class.active]="selectedColors['broker']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
@@ -593,7 +593,7 @@
                 <div class="dashboard-performance-body-right-cards-text-holder">LAST MONTH</div>
                 <div class="dashboard-performance-body-right-cards-text-hover">MONTHLY AVERAGE</div>
             </div>
-            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['shipper']}}-box"  (click)="setColor('shipper')" [class.active]="selectedColors['shipper']">
+            <div class="dashboard-performance-body-right-cards-holder dashboard-performance-{{selectedColors['shipper']}}-box" (mouseenter)="hoverFocusCard('shipper', selectedColors['shipper'])" (mouseleave)="hoverFocusCard('shipper', '')" (click)="setColor('shipper')" [class.active]="selectedColors['shipper']">
                 <div 
                 ngbTooltip
                 mainTooltip="Hide from chart"
