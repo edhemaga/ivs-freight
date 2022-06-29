@@ -20,7 +20,7 @@
       </div>
     </div>
   </div>
-  <canvas *ngIf="!noChartData" baseChart id="myChart" width={{chartWidth}} height={{chartHeight}} [class.dotted_background]="dottedBackground" [ngStyle]="{'width': chartWidth+'px', 'height': chartHeight+'px'}"
+  <canvas *ngIf="!noChartData" baseChart id="myChart" width={{chartWidth}} height={{chartHeight}} [class.dotted_background]="dottedBackground" [ngStyle]="{'width': '100%', 'height': chartHeight+'px'}"
     [datasets]="lineChartData"
     [labels]="lineChartLabels"
     [options]="lineChartOptions"

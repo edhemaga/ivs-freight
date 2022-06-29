@@ -33,7 +33,7 @@ export class DashboardPerformanceComponent implements OnInit {
           pointBorderWidth: 2,
           fill: false,
           hasGradiendBackground: true,
-          colors: ['rgba(189, 202, 235, 1)', 'rgba(255, 255, 255, 1)'],
+          colors: ['rgba(189, 202, 235, 0.4)', 'rgba(189, 202, 235, 0)'],
           id: 'income',
           hidden: false
         }
@@ -49,6 +49,9 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverBorderColor: '#FDB46B',
           pointHoverRadius: 3,
           pointBorderWidth: 2,
+          fill: false,
+          hasGradiendBackground: true,
+          colors: ['rgba(165, 116, 195, 0.4)', 'rgba(165, 116, 195, 0)'],
           id: 'miles',
           hidden: false
         }
@@ -64,6 +67,9 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverBorderColor: '#F27B8E',
           pointHoverRadius: 3,
           pointBorderWidth: 2,
+          fill: false,
+          hasGradiendBackground: true,
+          colors: ['rgba(165, 116, 195, 0.4)', 'rgba(165, 116, 195, 0)'],
           id: 'roadside',
           hidden: false
         }
@@ -79,6 +85,9 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverBorderColor: '#A574C3',
           pointHoverRadius: 3,
           pointBorderWidth: 2,
+          fill: false,
+          hasGradiendBackground: true,
+          colors: ['rgba(165, 116, 195, 0.4)', 'rgba(165, 116, 195, 0)'],
           id: 'accident',
           hidden: false
         }
@@ -94,6 +103,9 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverBorderColor: '#6DC089',
           pointHoverRadius: 3,
           pointBorderWidth: 2,
+          fill: false,
+          hasGradiendBackground: true,
+          colors: ['rgba(165, 116, 195, 0.4)', 'rgba(165, 116, 195, 0)'],
           id: 'driver',
           hidden: false
         }
@@ -417,7 +429,10 @@ export class DashboardPerformanceComponent implements OnInit {
         this.topChart.insertNewChartData('add', type, firstInArray);
       }
     }
-    
+  }
+
+  hoverFocusCard(type: string, color: any){
+    this.topChart.changeChartFillProperty(type, color);
   }
 
 }
