@@ -157,7 +157,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event);
+    this.documents = event;
   }
 
   ngOnDestroy(): void {}

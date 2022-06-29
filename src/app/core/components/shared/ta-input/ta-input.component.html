@@ -213,7 +213,14 @@
     *ngIf="inputConfig.commands?.active && isVisibleCommands"
     class="ta-input-commands"
   >
-    <div class="ta-input-command-first">
+    {{ inputConfig.popup?.name }}
+    <div
+      class="ta-input-command-first"
+      ngbTooltip
+      [mainTooltip]="inputConfig.popup?.name"
+      [tooltipBackground]="inputConfig.popup?.backgroundColor"
+      position="top"
+    >
       <svg-icon
         class="ta-input-command-svg-first"
         [src]="inputConfig.commands.firstCommand.svg"
@@ -226,7 +233,13 @@
         "
       ></svg-icon>
     </div>
-    <div class="ta-input-command-second">
+    <div
+      class="ta-input-command-second"
+      ngbTooltip
+      mainTooltip="{{ inputConfig.popup?.name }}"
+      tooltipBackground="{{ inputConfig.popup?.backgroundColor }}"
+      position="top"
+    >
       <svg-icon
         class="ta-input-command-svg-second"
         [src]="inputConfig.commands.secondCommand.svg"

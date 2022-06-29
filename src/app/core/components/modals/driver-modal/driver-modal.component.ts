@@ -33,6 +33,7 @@ import {
   convertDateFromBackend,
   convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
+import { createBase64 } from 'src/app/core/utils/base64.image';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -422,30 +423,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         streetNumber: address.streetNumber,
       });
     }
-    console.log(this.offDutyLocations.controls);
   }
 
   public premmapedOffDutyLocation() {
-    console.log(this.offDutyLocations.controls);
-    console.log(
-      this.offDutyLocations.controls.map((item) => {
-        return {
-          id: item.get('id').value ? item.get('id').value : 0,
-          nickname: item.get('nickname').value,
-          address: {
-            address: item.get('address').value,
-            city: item.get('city').value,
-            state: item.get('state').value,
-            stateShortName: item.get('stateShortName').value,
-            country: item.get('country').value,
-            zipCode: item.get('zipCode').value,
-            addressUnit: item.get('addressUnit').value,
-            street: item.get('street').value,
-            streetNumber: item.get('streetNumber').value,
-          },
-        };
-      })
-    );
     return this.offDutyLocations.controls.map((item) => {
       return {
         id: item.get('id').value ? item.get('id').value : 0,
@@ -478,7 +458,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  public tabOwnerChange(event: any[]): void {
+  public tabOwnerChange(event: any): void {
     this.selectedOwnerTab = event;
     this.driverForm.get('ownerType').patchValue(this.selectedOwnerTab.name);
     if (
@@ -663,7 +643,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         addressUnit: this.driverForm.get('addressUnit').value,
       },
       bankId: this.selectedBank ? this.selectedBank.id : null,
-      payType: this.selectedPayType ? this.selectedPayType.name : null,
+      payType: this.selectedPayType ? this.selectedPayType.id : null,
       solo: {
         emptyMile: soloEmptyMile,
         loadedMile: soloLoadedMile,
@@ -734,7 +714,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         addressUnit: this.driverForm.get('addressUnit').value,
       },
       bankId: this.selectedBank ? this.selectedBank.id : null,
-      payType: this.selectedPayType ? this.selectedPayType.name : null,
+      payType: this.selectedPayType ? this.selectedPayType.id : null,
       solo: {
         emptyMile: soloEmptyMile,
         loadedMile: soloLoadedMile,
@@ -784,7 +764,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             email: res.email,
             ssn: res.ssn,
             note: res.note,
-            avatar: res.avatar,
+            avatar: createBase64(res.avatar),
             dateOfBirth: convertDateFromBackend(res.dateOfBirth),
             offDutyLocations: [],
             isOwner: res.owner ? true : false,
@@ -821,21 +801,34 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             res.firstName.charAt(0).toUpperCase() + res.firstName.slice(1);
           res.lastName =
             res.lastName.charAt(0).toUpperCase() + res.lastName.slice(1);
-
+          console.log(this.driverForm.value);
           this.driverFullName = res.firstName.concat(' ', res.lastName);
           this.selectedBank = res.bank ? res.bank : null;
           this.selectedPayType = res.payType ? res.payType : null;
+
           this.onHandleAddress({
             address: res.address,
             valid: res.address ? true : false,
           });
 
+          const activeOwnerTab = this.ownerTabs
+            .map((item) => {
+              return {
+                ...item,
+                checked: res.owner?.ownerType.name === item.name,
+              };
+            })
+            .find((item) => item.checked);
+
+          this.tabOwnerChange(activeOwnerTab);
+
           this.modalService.changeModalStatus({
             name: 'deactivate',
             status: res.status === 1 ? false : true,
           });
+
           this.driverStatus = res.status === 1 ? false : true;
-          console.log(res.offDutyLocations);
+
           if (res.offDutyLocations.length) {
             for (const offDuty of res.offDutyLocations) {
               this.offDutyLocations.push(

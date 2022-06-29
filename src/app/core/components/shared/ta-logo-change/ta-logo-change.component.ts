@@ -8,9 +8,11 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import * as Croppie from 'croppie';
@@ -25,8 +27,10 @@ import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.com
   templateUrl: './ta-logo-change.component.html',
   styleUrls: ['./ta-logo-change.component.scss'],
 })
-export class TaLogoChangeComponent implements AfterViewInit, OnInit, OnDestroy {
-  @Input() imageUrl: string;
+export class TaLogoChangeComponent
+  implements AfterViewInit, OnInit, OnChanges, OnDestroy
+{
+  @Input() imageUrl: string | any;
   @Input() customClass: string;
   @Output() base64ImageEvent: EventEmitter<string> = new EventEmitter<string>();
 
@@ -68,6 +72,12 @@ export class TaLogoChangeComponent implements AfterViewInit, OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private uploadFileService: TaUploadFileService
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.imageUrl = changes.imageUrl.currentValue
+      ? this.sanitizer.bypassSecurityTrustUrl(changes.imageUrl.currentValue)
+      : null;
+  }
 
   ngOnInit(): void {
     this.uploadFileService.uploadedFiles$
