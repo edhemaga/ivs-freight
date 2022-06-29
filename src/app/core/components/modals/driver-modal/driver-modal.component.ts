@@ -143,6 +143,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.onTwicTypeSelected();
     this.getDriverDropdowns();
     this.validateMiles();
+    this.isCheckedOwner();
 
     if (this.editData) {
       this.editDriverById(this.editData.id);
@@ -462,19 +463,32 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public tabOwnerChange(event: any): void {
-    this.selectedOwnerTab = event;
-    this.driverForm.get('ownerType').patchValue(this.selectedOwnerTab.name);
-    if (
-      this.driverForm.get('isOwner').value &&
-      this.selectedOwnerTab?.name.toLowerCase() === 'company'
-    ) {
-      this.inputService.changeValidators(this.driverForm.get('ein'), true, [
-        einNumberRegex,
-      ]);
-      this.einNumberChange();
-    } else {
-      this.inputService.changeValidators(this.driverForm.get('ein'), false);
+    if (event) {
+      this.selectedOwnerTab = event;
+      this.driverForm.get('ownerType').patchValue(this.selectedOwnerTab.name);
+      if (
+        this.driverForm.get('isOwner').value &&
+        this.selectedOwnerTab?.name.toLowerCase() === 'company'
+      ) {
+        this.inputService.changeValidators(this.driverForm.get('ein'), true, [
+          einNumberRegex,
+        ]);
+        this.einNumberChange();
+      } else {
+        this.inputService.changeValidators(this.driverForm.get('ein'), false);
+      }
     }
+  }
+
+  private isCheckedOwner() {
+    this.driverForm
+      .get('isOwner')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value && !this.driverForm.get('ownerType').value) {
+          this.driverForm.get('ownerType').patchValue('Sole Proprietor');
+        }
+      });
   }
 
   private einNumberChange() {
@@ -486,6 +500,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         untilDestroyed(this)
       )
       .subscribe((value) => {
+        console.log('EIN NUMBER CHANGE ');
+        console.log(value);
         if (value) {
           this.driverTService
             .checkOwnerEinNumber(value)
@@ -494,7 +510,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               next: (res: CheckOwnerSsnEinResponse) => {
                 this.owner = res?.name ? res : null;
 
-                if (this.owner) {
+                if (this.owner?.name) {
                   this.driverForm
                     .get('bussinesName')
                     .patchValue(this.owner.name);
@@ -695,7 +711,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       avatar,
       ...form
     } = this.driverForm.value;
-    // console.log(this.driverForm.get('ownerType').value);
+
     const newData: UpdateDriverCommand = {
       id: id,
       ...form,
@@ -714,9 +730,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bussinesName:
         this.driverForm.get('ownerType').value === 'Sole Proprietor'
           ? null
-          : this.owner
-          ? this.driverForm.get('bussinesName').value
-          : null,
+          : this.driverForm.get('bussinesName').value,
       address: {
         ...this.selectedAddress,
         addressUnit: this.driverForm.get('addressUnit').value,
@@ -741,8 +755,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       offDutyLocations: this.premmapedOffDutyLocation(),
     };
 
-    // console.log(newData);
-
     this.driverTService
       .updateDriver(newData)
       .pipe(untilDestroyed(this))
@@ -765,8 +777,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: DriverResponse) => {
-          // console.log('EDIT DRIVER');
-          // console.log(res);
           this.driverForm.patchValue({
             firstName: res.firstName,
             lastName: res.lastName,
@@ -791,7 +801,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 ? null
                 : res.owner?.ssnEin
               : null,
-            bussinesName: res.owner ? res.owner.name : null,
+            bussinesName: res.owner
+              ? res.owner?.ownerType?.name.includes('Proprietor')
+                ? null
+                : res.owner?.name
+              : null,
             address: res.address ? res.address.address : null,
             addressUnit: res.address ? res.address.addressUnit : null,
             bankId: res.bank ? res.bank.name : null,
@@ -817,14 +831,20 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             emergencyContactPhone: res.emergencyContactPhone,
             emergencyContactRelationship: res.emergencyContactRelationship,
           });
+
           res.firstName =
             res.firstName.charAt(0).toUpperCase() + res.firstName.slice(1);
           res.lastName =
             res.lastName.charAt(0).toUpperCase() + res.lastName.slice(1);
-          // console.log(this.driverForm.value);
+
           this.driverFullName = res.firstName.concat(' ', res.lastName);
+
           this.selectedBank = res.bank ? res.bank : null;
-          this.selectedPayType = res.payType ? res.payType : null;
+          this.selectedPayType = res.payType
+            ? res.payType.id === 0
+              ? null
+              : res.payType
+            : null;
 
           this.onHandleAddress({
             address: res.address,
@@ -848,6 +868,31 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           });
 
           this.driverStatus = res.status === 1 ? false : true;
+
+          if (res.owner) {
+            console.log('IMA OWNER');
+            console.log(this.driverForm.get('ein').value);
+            this.driverTService
+              .checkOwnerEinNumber(this.driverForm.get('ein').value)
+              .pipe(untilDestroyed(this))
+              .subscribe({
+                next: (res: CheckOwnerSsnEinResponse) => {
+                  this.owner = res?.name ? res : null;
+
+                  if (this.owner?.name) {
+                    this.driverForm
+                      .get('bussinesName')
+                      .patchValue(this.owner.name);
+                  }
+                },
+                error: () => {
+                  this.notificationService.error(
+                    "Owner can't be loaded.",
+                    'Error:'
+                  );
+                },
+              });
+          }
 
           if (res.offDutyLocations.length) {
             for (const offDuty of res.offDutyLocations) {
