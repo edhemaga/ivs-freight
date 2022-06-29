@@ -7,6 +7,7 @@ import {
   RepairShopResponse,
   UpdateRepairShopCommand,
 } from 'appcoretruckassist';
+import moment from 'moment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { distinctUntilChanged } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -139,8 +140,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       isDay: [isDay],
       dayOfWeek: [dayOfWeek],
       dayLabel: [day],
-      startTime: ['08:00'],
-      endTime: ['05:00'],
+      startTime: [moment("8:00:00 AM", "HH:mm:SS A").toDate()],
+      endTime: [moment("5:00:00 PM", "HH:mm:SS A").toDate()],
     });
   }
 
@@ -318,7 +319,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     const newData: CreateRepairShopCommand = {
       ...form,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
-      bankId: this.selectedBank.id,
+      bankId: this.selectedBank ? this.selectedBank.id : null,
       openHours: openHours,
       serviceTypes: this.services,
     };
@@ -370,7 +371,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     const newData: UpdateRepairShopCommand = {
       id: id,
       ...form,
-      bankId: this.selectedBank.id,
+      bankId: this.selectedBank ? this.selectedBank.id : null,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       openHours: openHours,
       serviceTypes: this.services,

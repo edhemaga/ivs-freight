@@ -100,7 +100,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event);
+    this.documents = event;
   }
 
   private updateMVR() {

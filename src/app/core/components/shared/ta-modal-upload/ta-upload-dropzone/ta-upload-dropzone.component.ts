@@ -67,6 +67,8 @@ export class TaUploadDropzoneComponent {
   }
 
   public async onFileUpload(files: FileList) {
+    console.log('DROPZONE');
+    console.log(files);
     await this.addFiles(files);
     this.files = [];
   }

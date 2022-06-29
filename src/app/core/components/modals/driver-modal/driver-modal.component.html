@@ -234,7 +234,8 @@
                   [inputConfig]="{
                     name: 'NICKNAME',
                     type: 'text',
-                    textTransform: 'capitalize'
+                    textTransform: 'capitalize',
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <app-ta-input-address
@@ -386,10 +387,8 @@
         <!-- Pay Type Per Mile -->
         <div
           class="paytype-permile"
-          [class.active]="
-            driverForm.get('payType').value?.toLowerCase() === 'per mile'
-          "
-          *ngIf="driverForm.get('payType').value?.toLowerCase() === 'per mile'"
+          [class.active]="selectedPayType?.name.toLowerCase() === 'per mile'"
+          *ngIf="selectedPayType?.name.toLowerCase() === 'per mile'"
         >
           <div class="permile-fields">
             <p>Solo</p>
@@ -482,10 +481,8 @@
         <!-- Pay Type Commission -->
         <div
           class="paytype-commission"
-          *ngIf="driverForm.get('payType').value?.toLowerCase() === 'commision'"
-          [class.active]="
-            driverForm.get('payType').value?.toLowerCase() === 'commision'
-          "
+          *ngIf="selectedPayType?.name.toLowerCase() === 'commission'"
+          [class.active]="selectedPayType?.name.toLowerCase() === 'commission'"
         >
           <div class="paytype-field">
             <app-ta-ngx-slider

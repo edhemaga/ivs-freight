@@ -171,7 +171,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event);
+    this.documents = event;
   }
 
   public updateTest() {

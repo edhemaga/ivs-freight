@@ -23,5 +23,7 @@ export interface CompanyAccountResponse {
     apiCategory?: EnumValue;
     note?: string | null;
     companyAccountLabel?: CompanyAccountLabelResponse;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

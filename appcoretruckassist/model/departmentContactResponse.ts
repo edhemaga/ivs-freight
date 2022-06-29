@@ -17,5 +17,7 @@ export interface DepartmentContactResponse {
     phone?: string | null;
     extensionPhone?: string | null;
     email?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

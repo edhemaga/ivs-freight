@@ -23,5 +23,7 @@ export interface InsurancePolicyResponse {
     address?: AddressEntity;
     insurancePolicyAddons?: Array<InsurancePolicyAddonResponse> | null;
     note?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

@@ -17,5 +17,7 @@ export interface BankCardResponse {
     card?: string | null;
     cvc?: string | null;
     expireDate?: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

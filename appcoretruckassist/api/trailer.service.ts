@@ -19,7 +19,6 @@ import { Observable }                                        from 'rxjs';
 
 import { CreateResponse } from '../model/models';
 import { CreateTrailerCommand } from '../model/models';
-import { DeleteMultipleTrailerCommand } from '../model/models';
 import { GetTrailerModalResponse } from '../model/models';
 import { MultipleChangeTrailerStatusCommand } from '../model/models';
 import { ProblemDetails } from '../model/models';
@@ -200,14 +199,22 @@ export class TrailerService {
     }
 
     /**
-     * @param deleteMultipleTrailerCommand 
+     * @param ids 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTrailerListDelete(deleteMultipleTrailerCommand?: DeleteMultipleTrailerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiTrailerListDelete(deleteMultipleTrailerCommand?: DeleteMultipleTrailerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiTrailerListDelete(deleteMultipleTrailerCommand?: DeleteMultipleTrailerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiTrailerListDelete(deleteMultipleTrailerCommand?: DeleteMultipleTrailerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiTrailerListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
+    public apiTrailerListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
+    public apiTrailerListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
+    public apiTrailerListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (ids) {
+            ids.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'Ids');
+            })
+        }
 
         let headers = this.defaultHeaders;
 
@@ -233,17 +240,6 @@ export class TrailerService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType = 'text';
@@ -251,6 +247,7 @@ export class TrailerService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/trailer/list`,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

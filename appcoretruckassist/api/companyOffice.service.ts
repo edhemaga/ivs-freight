@@ -22,7 +22,6 @@ import { CompanyOfficeModalResponse } from '../model/models';
 import { CompanyOfficeResponse } from '../model/models';
 import { CreateCompanyOfficeCommand } from '../model/models';
 import { CreateResponse } from '../model/models';
-import { DeleteMultipleCompanyOfficesCommand } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { UpdateCompanyOfficeCommand } from '../model/models';
 
@@ -198,14 +197,22 @@ export class CompanyOfficeService {
     }
 
     /**
-     * @param deleteMultipleCompanyOfficesCommand 
+     * @param ids 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyofficeListDelete(deleteMultipleCompanyOfficesCommand?: DeleteMultipleCompanyOfficesCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiCompanyofficeListDelete(deleteMultipleCompanyOfficesCommand?: DeleteMultipleCompanyOfficesCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiCompanyofficeListDelete(deleteMultipleCompanyOfficesCommand?: DeleteMultipleCompanyOfficesCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiCompanyofficeListDelete(deleteMultipleCompanyOfficesCommand?: DeleteMultipleCompanyOfficesCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCompanyofficeListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
+    public apiCompanyofficeListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
+    public apiCompanyofficeListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
+    public apiCompanyofficeListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (ids) {
+            ids.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'Ids');
+            })
+        }
 
         let headers = this.defaultHeaders;
 
@@ -231,17 +238,6 @@ export class CompanyOfficeService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType = 'text';
@@ -249,6 +245,7 @@ export class CompanyOfficeService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/companyoffice/list`,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -16,5 +16,7 @@ export interface OffDutyLocationResponse {
     id?: number;
     nickname?: string | null;
     address?: AddressEntity;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
