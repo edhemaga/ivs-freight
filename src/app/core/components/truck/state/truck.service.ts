@@ -1,5 +1,5 @@
 import { TruckQuery } from './truck.query';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { TruckStore } from './truck.store';
 import {
@@ -91,19 +91,20 @@ export class TruckTService {
       return driver.id;
     });
 
-    return this.truckService.apiTruckListDelete({ ids: deleteOnBack }).pipe(
-      tap(() => {
-        let storeTrucks = this.truckQuery.getAll();
+    // return this.truckService.apiTruckListDelete({ ids: deleteOnBack }).pipe(
+    //   tap(() => {
+    //     let storeTrucks = this.truckQuery.getAll();
 
-        storeTrucks.map((truck: any) => {
-          deleteOnBack.map((d) => {
-            if (d === truck.id) {
-              this.truckStore.remove(({ id }) => id === truck.id);
-            }
-          });
-        });
-      })
-    );
+    //     storeTrucks.map((truck: any) => {
+    //       deleteOnBack.map((d) => {
+    //         if (d === truck.id) {
+    //           this.truckStore.remove(({ id }) => id === truck.id);
+    //         }
+    //       });
+    //     });
+    //   })
+    // );
+    return of(null);
   }
 
   public getTruckById(id: number): Observable<TruckResponse> {
@@ -114,16 +115,16 @@ export class TruckTService {
     return this.truckService.apiTruckStatusIdPut(truckId, 'response').pipe(
       tap(() => {
         const truckToUpdate = this.truckQuery.getAll({
-          filterBy: ({ id }) => id === truckId
+          filterBy: ({ id }) => id === truckId,
         });
 
         this.truckStore.update(({ id }) => id === truckId, {
-          status: truckToUpdate[0].status === 0 ? 1 : 0
+          status: truckToUpdate[0].status === 0 ? 1 : 0,
         });
 
         this.tableService.sendActionAnimation({
           animation: 'update-status',
-          id: truckId
+          id: truckId,
         });
       })
     );
