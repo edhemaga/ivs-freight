@@ -156,6 +156,8 @@ export class TaInputComponent
           this.touchedInput = false;
           this.getSuperControl.patchValue(null);
           this.inputResetService.resetInputSubject.next(false);
+
+          this.resetDateTimeInputs();
         }
       });
   }
@@ -319,23 +321,25 @@ export class TaInputComponent
     this.isDropdownAddModeActive = false;
     this.touchedInput = true;
 
+    this.resetDateTimeInputs();
+
+    this.inputService.onClearInputSubject.next(true);
+  }
+
+
+  public resetDateTimeInputs() {
     if (this.inputConfig.name === 'datepicker') {
-      this.focusInput = false;
-      this.showDateInput = false;
       this.span1.nativeElement.innerHTML = 'mm';
       this.span2.nativeElement.innerHTML = 'dd';
       this.span3.nativeElement.innerHTML = 'yy';
-    }
-
-    if (this.inputConfig.name === 'timepicker') {
-      this.focusInput = false;
-      this.showDateInput = false;
+    } else if (this.inputConfig.name === 'timepicker') {
       this.span1.nativeElement.innerHTML = 'HH';
       this.span2.nativeElement.innerHTML = 'MM';
       this.span3.nativeElement.innerHTML = 'AM';
     }
 
-    this.inputService.onClearInputSubject.next(true);
+    this.focusInput = false;
+    this.showDateInput = false;
   }
 
   public onAddItemInDropdown(event: Event) {
