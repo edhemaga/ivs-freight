@@ -696,22 +696,94 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
     }
 }
 
-.round_dark_grey{
-    svg-icon{
-        svg{
-            rect{
-                fill: #919191;
+.dahsboard_charts_holder{
+    background-color: #fff;
+    padding: 12px 12px 14px 12px;
+    margin-bottom: 18px;
+
+    .line_chart_title_hold{
+        display: flex;
+
+        .dashboard_chart_title{
+            color: #AAAAAA;
+    
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 22px;
+            flex: 1;
+        }
+
+        .dashboard_chart_average_hold{
+            display: flex;
+            align-items: center;
+            height: 14px;
+
+            .chart_average_icon{
+                margin-right: 5px;
+            }
+
+            .chart_average_title{
+                font-size: 11px;
+                line-height: 14px;
+                color: #6C6C6C;
+
+                span{
+                    font-weight: 700;
+                }
             }
         }
     }
-}
 
-.round_light_grey{
-    svg-icon{
-        svg{
-            rect{
-                fill: #CCCCCC;
+    .dashboard_chart_data{
+        display: flex;
+        margin-top: 12px;
+
+        .chart_data_inner{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &.separate_inner{
+                margin-right: 22px;
             }
+
+            .chart_data_text{
+                color: #6C6C6C;
+                font-size: 11px;
+                line-height: 14px;
+                font-weight: 500;
+                padding-left: 4px;
+           }
+
+           .round_dark_grey{
+                svg-icon{
+                    svg{
+                        rect{
+                            fill: #919191;
+                        }
+                    }
+                }
+            }
+            
+            .round_light_grey{
+                svg-icon{
+                    svg{
+                        rect{
+                            fill: #CCCCCC;
+                        }
+                    }
+                }
+            }
+
+           .chart_data_icon{
+                svg-icon{
+                    svg{
+                        display: flex;
+                        width: 10px;
+                        height: 10px;
+                    }
+                }
+           }
         }
     }
 }

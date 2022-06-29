@@ -638,7 +638,17 @@
 </div>
 <div class="dahsboard_chart_container">
     <div class="dahsboard_charts_holder">
-        <div class="dashboard_chart_title">March, 2023</div>
+        <div class="line_chart_title_hold">
+            <div class="dashboard_chart_title">March, 2023</div>
+            <div class="dashboard_chart_average_hold" *ngIf="topChart.focusCardHovered">
+                <div class="chart_average_icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="3" viewBox="0 0 22 3">
+                        <path id="Path_38850" data-name="Path 38850" d="M-20422-21150h22" transform="translate(20422 21151.5)" fill="none" [attr.stroke]="topChart.averageLineCover" stroke-width="3" stroke-dasharray="3 3"/>
+                    </svg>
+                </div>
+                <div class="chart_average_title">Daily avg. <span>$67.42K</span></div>
+            </div>
+        </div>
         <app-ta-chart
         #topChart
         [chartConfig]="lineChartConfig"
