@@ -51,9 +51,6 @@ export function tableSearch(
   }
   // On Delete Chip
   else if (res.isChipDelete) {
-    console.log('Radi brisanje chipa');
-    console.log(res);
-
     // If Other Chips Exist
     if (res.chips.length || res.search) {
       res.querys.map((query: any, i: number) => {
