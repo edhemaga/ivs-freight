@@ -133,7 +133,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     if (this.editData?.type.includes('edit')) {
       this.editData = {
         ...this.editData,
-        id: 3,
+        id: 1,
       };
       this.editRepairById(this.editData.id);
     }
@@ -266,7 +266,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
   public onModalHeaderTabChange(event: any) {
     this.selectedTab = event.id;
-    console.log(event);
     if (this.selectedTab === 2) {
       this.inputService.changeValidators(
         this.repairOrderForm.get('repairShopId'),
@@ -341,7 +340,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event);
+    this.documents = event;
   }
 
   public identity(index: number, item: any): string {
@@ -466,7 +465,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           : null,
       repairShopId: this.selectedRepairShop ? this.selectedRepairShop.id : null,
       odometer: odometer ? convertThousanSepInNumber(odometer) : null,
-      total: this.sumArrayPipe.transform(this.subtotal),
+      total:
+        this.repairOrderForm.get('repairType').value === 'Bill'
+          ? this.sumArrayPipe.transform(this.subtotal)
+          : null,
       serviceTypes: this.services.map((item) => {
         return {
           serviceType: item.serviceType,
@@ -475,7 +477,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       }),
       items: this.premmapedItems(),
     };
-
+    console.log(newData);
     this.repairService
       .addRepair(newData)
       .pipe(untilDestroyed(this))
@@ -508,11 +510,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.repairOrderForm.get('unitType').value === 'Trailer'
           ? this.selectedUnit.id
           : null,
-      repairShopId: this.selectedRepairShop.id,
+      repairShopId: this.selectedRepairShop ? this.selectedRepairShop.id : null,
       odometer: odometer
         ? convertThousanSepInNumber(this.repairOrderForm.get('odometer').value)
         : null,
-      total: this.sumArrayPipe.transform(this.subtotal),
+      total:
+        this.repairOrderForm.get('repairType').value === 'Bill'
+          ? this.sumArrayPipe.transform(this.subtotal)
+          : null,
       serviceTypes: this.services.map((item) => {
         return {
           serviceType: item.serviceType,
@@ -598,27 +603,29 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           });
 
           // Repair Shop
-          this.repairService
-            .getRepairShopById(res.repairShopId)
-            .pipe(untilDestroyed(this))
-            .subscribe({
-              next: (res: RepairShopResponse) => {
-                this.selectedRepairShop = {
-                  id: res.id,
-                  name: res.name,
-                  phone: res.phone,
-                  email: res.email,
-                  address: res.address.address,
-                  pinned: res.pinned,
-                };
-              },
-              error: () => {
-                this.notificationService.error(
-                  `Cant' get repair shop by ${this.selectedRepairShop.id}`,
-                  'Error'
-                );
-              },
-            });
+          if (res.repairShopId) {
+            this.repairService
+              .getRepairShopById(res.repairShopId)
+              .pipe(untilDestroyed(this))
+              .subscribe({
+                next: (res: RepairShopResponse) => {
+                  this.selectedRepairShop = {
+                    id: res.id,
+                    name: res.name,
+                    phone: res.phone,
+                    email: res.email,
+                    address: res.address.address,
+                    pinned: res.pinned,
+                  };
+                },
+                error: () => {
+                  this.notificationService.error(
+                    `Cant' get repair shop by ${this.selectedRepairShop.id}`,
+                    'Error'
+                  );
+                },
+              });
+          }
 
           // Bill/Order Tab
           this.headerTabs.filter((item) => {
@@ -630,7 +637,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           });
 
           // Repair Items
-          console.log(res.items);
           if (res.items.length) {
             for (const iterator of res.items) {
               this.items.push(
