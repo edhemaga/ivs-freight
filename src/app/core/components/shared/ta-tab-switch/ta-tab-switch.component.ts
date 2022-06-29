@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, EventEmitter, Output, ElementRef, AfterViewInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Component, Input, OnInit, EventEmitter, Output, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-ta-tab-switch',
@@ -10,7 +11,10 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit {
   @Input() tabs: any[];
   @Input() type: string = '';
   @Output() switchClicked = new EventEmitter<any>();
+  @ViewChild('t2') t2: any;
 
+  public date1: FormControl = new FormControl();
+  public date2: FormControl = new FormControl();
 
   switchItems: any[] = [
     {
@@ -64,6 +68,10 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit {
       width: elementItem.width
     }
 
+  }
+
+  closeCustomPopover(){
+    this.t2.close();
   }
 
 }

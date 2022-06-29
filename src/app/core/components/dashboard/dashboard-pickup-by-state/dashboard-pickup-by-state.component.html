@@ -1,8 +1,16 @@
 <div class="dashboard-pickup-holder">
     <div class="dashboard-pickup-header-holder">
         <div class="dashboard-pickup-title-holder">
-            <div class="dashboard-pickup-title">Pickup by State</div>
-            <div class="dashboard-pickup-arrow-down">
+            <div class="dashboard-pickup-title">{{pickupTitle}} by State</div>
+            <div class="dashboard-pickup-arrow-down"
+            #t2="ngbPopover"
+            [ngbPopover]="topTenPopover"
+            [placement]="['bottom']"
+            [popoverClass]="'toptenpopovermain'"
+            autoClose="outside"
+            [container]="'body'"
+            [ngClass]="{ 'active-options': t2?.isOpen() }"
+            >
                 <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
             </div>
         </div>
@@ -61,3 +69,12 @@
         </div>
     </div>
 </div>
+<ng-template #topTenPopover let-data="data">
+    <div class="state-popover-holder">
+        <div *ngFor="let item of popoverState; let indx=index" class="state-popover-items-holder" [ngClass]="{'active': item.active}" (click)="changeState(item)">{{item.name.toUpperCase()}}
+            <div class="state-popover-icon-holder">
+                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+            </div>
+        </div>
+    </div>
+</ng-template>

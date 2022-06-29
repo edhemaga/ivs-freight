@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardPickupByStateComponent implements OnInit {
 
+  pickupTitle: string = "Pickup";
+
   pickupSwitchTabs: any[] = [];
 
   pickupSwitch: any[] = [];
@@ -74,7 +76,33 @@ export class DashboardPickupByStateComponent implements OnInit {
     }
   ];
 
-  pickupCircleColor: any[] = ['#6278C7', '#7A8DCB', '#7A8DCB', '#A0AFDE', '#A0AFDE', '#C2CEEC', '#C2CEEC', '#C2CEEC', '#D7E1F4', '#D7E1F4']
+  pickupCircleColor: any[] = ['#6278C7', '#7A8DCB', '#7A8DCB', '#A0AFDE', '#A0AFDE', '#C2CEEC', '#C2CEEC', '#C2CEEC', '#D7E1F4', '#D7E1F4'];
+
+  popoverState: any[] = [
+    {
+      name: 'Pickup',
+      active: true
+    },
+    {
+      name: 'Delivery'
+    },
+    {
+      name: 'Load'
+    },
+    {
+      name: 'Violation'
+    },
+    {
+      name: 'Accident'
+    },
+    {
+      name: 'Repair'
+    },
+    {
+      name: 'Fuel'
+    }
+  ];
+
 
   constructor() { }
 
@@ -113,5 +141,15 @@ export class DashboardPickupByStateComponent implements OnInit {
   changePickupSwitchTabs(ev){
 
   }
+
+  changeState(item){
+    this.pickupTitle = item.name;
+    this.popoverState.map((item) => {
+      item.active = false;
+      return item;
+    })
+    item.active = true;
+  }
+
 
 }

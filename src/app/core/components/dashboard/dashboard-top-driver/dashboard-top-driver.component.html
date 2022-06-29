@@ -2,7 +2,7 @@
     <div class="dashboard-top-driver-header-holder">
         <div class="dashboard-top-driver-header-box-list">67</div>
         <div class="dashboard-top-driver-header-title-holder">
-            <div class="dashboard-top-driver-header-title">Top Driver</div>
+            <div class="dashboard-top-driver-header-title">Top {{topTenTitle}}</div>
             <div 
             class="dashboard-top-driver-header-arrow-down"
             #t2="ngbPopover"
@@ -11,6 +11,7 @@
             [popoverClass]="'toptenpopovermain'"
             autoClose="outside"
             [container]="'body'"
+            [ngClass]="{ 'active-options': t2?.isOpen() }"
                         >
                 <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
             </div>
@@ -110,7 +111,7 @@
 </div>
 <ng-template #topTenPopover let-data="data">
     <div class="top-ten-popover-holder">
-        <div *ngFor="let item of popoverTopTen; let indx=index" class="top-ten-popover-items-holder" [ngClass]="{'active': item.active}" (click)="changeTopTen(item)">{{item.name}}
+        <div *ngFor="let item of popoverTopTen; let indx=index" class="top-ten-popover-items-holder" [ngClass]="{'active': item.active}" (click)="changeTopTen(item)">{{item.name.toUpperCase()}}
             <div class="popover-icon-holder">
                 <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
             </div>

@@ -7,6 +7,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class DashboardTopDriverComponent implements OnInit {
   @ViewChild('doughnutChart', {static: false}) public doughnutChart: any;
+
+  topTenTitle: string = "Driver";
+
   public chartConfig: object = {};
 
   public barChartConfig: object = {
@@ -132,29 +135,29 @@ export class DashboardTopDriverComponent implements OnInit {
 
   popoverTopTen: any[] = [
     {
-      name: 'DISPATCHER'
+      name: 'Dispatcher'
     },
     {
-      name: 'DRIVER',
+      name: 'Driver',
       active: true
     },
     {
-      name: 'TRUCK'
+      name: 'Truck'
     },
     {
-      name: 'BROKER'
+      name: 'Broker'
     },
     {
-      name: 'SHIPPER'
+      name: 'Shipper'
     },
     {
-      name: 'OWNER'
+      name: 'Owner'
     },
     {
-      name: 'REPAIR SHOP'
+      name: 'Repair Shop'
     },
     {
-      name: 'FUEL STOP'
+      name: 'Fuel Stop'
     }
   ];
 
@@ -258,6 +261,7 @@ export class DashboardTopDriverComponent implements OnInit {
   }
 
   changeTopTen(item){
+    this.topTenTitle = item.name;
     this.popoverTopTen.map((item) => {
       item.active = false;
       return item;
