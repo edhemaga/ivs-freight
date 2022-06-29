@@ -511,29 +511,11 @@
                           label: 'Address, City, State Zip',
                           isRequired: true,
                           placeholderIcon: 'address',
-                          textTransform: 'capitalize',
-                          blackInput:
-                            isEditingArray[i]?.isEditing &&
-                            isEditingArray[i]?.isEditingAddress,
-                          commands: {
-                            active:
-                              isEditingArray[i]?.isEditing &&
-                              isEditingArray[i]?.isEditingAddress,
-                            type: 'confirm-cancel',
-                            firstCommand: {
-                              name: 'confirm',
-                              svg: 'assets/svg/ic_spec-confirm.svg'
-                            },
-                            secondCommand: {
-                              name: 'cancel',
-                              svg: 'assets/svg/ic_x.svg'
-                            }
-                          }
+                          textTransform: 'capitalize'
                         }"
                         (selectedAddress)="
                           handleInputSelect($event, 'PREVIOUS-ADDRESS', i)
                         "
-                        (commandEvent)="handleAddressChange($event, i)"
                       ></app-ta-input-address>
                     </div>
 
