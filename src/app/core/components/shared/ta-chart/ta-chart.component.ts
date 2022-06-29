@@ -1,9 +1,8 @@
 import { Component, Input, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { Chart, ChartDataSets, ChartOptions, scaleService } from 'chart.js';
-import { BaseChartDirective, Color, Label, MultiDataSet } from 'ng2-charts';
+import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
+import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
 import { hexToRgbA } from 'src/assets/utils/methods-global';
-import { elementMatches } from '@fullcalendar/core';
 
 @Component({
   selector: 'app-ta-chart',
@@ -38,6 +37,12 @@ export class TaChartComponent implements OnInit {
   allowAnimation: any;
   driversList: any;
   annotationConfig: any;
+  focusCardHovered: boolean = false;
+  averageLineCover: string = '';
+  gridHoverBackground: boolean = false;
+  lastHoveredIndex: number = -1;
+  hoveringStatus: boolean = false;
+  showHoverData: boolean = false;
 
   constructor(private ref: ChangeDetectorRef) { }
 
@@ -52,6 +57,7 @@ export class TaChartComponent implements OnInit {
   }
 
   setHoverAnnotation(value: any, config?) {
+    if ( this.lineChartType == 'doughnut' ) { return false; }
     let sameValue = false;
     this.annotationConfig = config;
     this.lineChartOptions['annotation']['annotations'].map((item, i) => {
@@ -75,15 +81,21 @@ export class TaChartComponent implements OnInit {
       },
       onHover: (evt, elements) => {
         if ( elements && elements[0] ) {
+          this.hoveringStatus = true;
           this.animationDuration = 0;
-          if ( this.legendAttributes?.length ) { this.setChartLegendData(elements); }
-         // this.changeChartFillProperty(evt, elements);
-          this.setHoverAnnotation(elements[0]['_index']);
-          if ( this.lineChartType == 'doughnut' && this.driversList?.length ) { this.hoverDoughnut(elements, 'object') }
+          if ( elements[0]['_index'] != this.lastHoveredIndex ) {
+            this.lastHoveredIndex = elements[0]['_index'];
+            if ( this.legendAttributes?.length ) { this.setChartLegendData(elements); }
+            if ( this.chartConfig['onHoverAnnotation'] ) { this.setHoverAnnotation(elements[0]['_index']); }
+            if ( this.gridHoverBackground ) { this.drawGridBackground(elements[0]['_index']); }
+            if ( this.lineChartType == 'doughnut' && this.driversList?.length ) { this.hoverDoughnut(elements, 'object'); }
+          }
         }
         else{
+          this.hoveringStatus = false;
+          this.lastHoveredIndex = -1;
           this.animationDuration = 1000;
-          this.setHoverAnnotation(null);
+          if (this.chartConfig['onHoverAnnotation'] ) { this.setHoverAnnotation(null); }
           if ( this.lineChartType == 'doughnut' && this.driversList?.length ) { this.hoverDoughnut(null) }
           this.legendAttributes = JSON.parse(JSON.stringify(this.saveValues));
         }
@@ -253,6 +265,7 @@ export class TaChartComponent implements OnInit {
       this.chartInnitProperties = this.chartConfig['chartInnitProperties'];
       this.allowAnimation = this.chartConfig['allowAnimation'];
       this.driversList = this.chartConfig['driversList'];
+      this.gridHoverBackground = this.chartConfig['gridHoverBackground'];
       this.chartDataCheck(this.chartConfig['chartValues']);
     });
   }
@@ -261,7 +274,7 @@ export class TaChartComponent implements OnInit {
     this.lineChartPlugins = [{
       afterLayout: chart => {
         const ctx = chart.chart.ctx;
-        const canvas = <HTMLCanvasElement> document.getElementById('myChart');
+        const canvas = chart.chart.canvas;
         
         let dataset = chart.data.datasets;
         
@@ -308,6 +321,42 @@ export class TaChartComponent implements OnInit {
       }
     }
   ];
+  }
+
+  drawGridBackground(value){
+    this.setChartOptions();
+    let gridBeforeDraw = {beforeDraw: chart => {
+      if ( this.hoveringStatus ) {
+        const canvas = chart.chart.canvas;
+        const ctx = chart.chart.ctx;
+        const xAxis = chart.scales['x-axis-0'];
+        let xPoint1 = 0;
+        let xPoint2 = 0;
+        if ( xAxis['_gridLineItems'] ) {
+          xPoint1 = xAxis['_gridLineItems'][1]['x1'];
+          xPoint2 = xAxis['_gridLineItems'][0]['x2'];
+        }
+
+        const gridWidth = xPoint1 - xPoint2;
+        ctx.save();
+        ctx.fillStyle = '#F3F3F3';
+        ctx.beginPath();
+        const yLeft = xAxis.getPixelForValue(value);
+        const reduce = this.chartConfig['startGridBackgroundFromZero'] ? xAxis.height : 0;
+        ctx.fillRect(yLeft - gridWidth/2, 0, gridWidth, canvas.height - reduce);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }}
+
+    this.lineChartPlugins.map((item, i) => {
+      if ( item['beforeDraw'] ) {
+        this.lineChartPlugins.splice(i, 1);
+      }
+    });
+
+    this.lineChartPlugins.push(gridBeforeDraw);
+    this.ref.detectChanges();
   }
 
   chartDataCheck(values) {
@@ -389,6 +438,8 @@ export class TaChartComponent implements OnInit {
     if ( updateChart ) { this.animationDuration = 0; this.setChartOptions(); }
     else { this.animationDuration = 1000; }
     if ( lineHovered ) {
+      this.focusCardHovered = true;
+      this.averageLineCover = lineHovered;
       let config = {
         type: 'horizontal',
         color: lineHovered,
@@ -398,6 +449,7 @@ export class TaChartComponent implements OnInit {
       this.setHoverAnnotation(annotationValue, config);
     }
     else {
+      this.focusCardHovered = false;
       this.setHoverAnnotation(null);
     }
   }
@@ -420,9 +472,20 @@ export class TaChartComponent implements OnInit {
   }
 
   hoverDoughnut(elements: any, type?) {
-    let driverDetails, dataIndex;
-    if ( type == 'object' && elements && elements[0] ) { driverDetails = this.driversList[elements[0]['_index']]; dataIndex = elements[0]['_index']; }
-    else if ( type == 'number' ) { driverDetails = this.driversList[elements]; dataIndex = elements; }
+    let driverDetails, dataIndex, showOthers;
+
+    if ( type == 'object' && elements && elements[0] ) {
+      driverDetails = this.driversList[elements[0]['_index']];
+      dataIndex = elements[0]['_index']; 
+    }
+    else if ( type == 'number' ) { 
+      driverDetails = this.driversList[elements];
+      dataIndex = elements; 
+    }
+
+    let dataLength = this.chart.chart.config.data.datasets[0].data.length;
+    
+    if ( dataIndex == dataLength-1 ) { showOthers = true; }
     this.chart.chart.config.data.datasets[0].data.map((item, i) => {
       if ( i == dataIndex || elements == null ){
         let color = this.chart.chart.config.data.datasets[0].backgroundColor[i];
@@ -434,8 +497,9 @@ export class TaChartComponent implements OnInit {
         let colorProp = color+'33';
         this.chart.chart.config.data.datasets[0].backgroundColor[i] = colorProp.slice(0,9);
       }
-      this.setChartOptions();
     });
+
+    this.setChartOptions();
     
     if ( driverDetails ) {
       this.chartInnitProperties = [
@@ -447,7 +511,12 @@ export class TaChartComponent implements OnInit {
       ];
     }
     else {
-      this.chartInnitProperties = this.saveChartProperties;
+      if ( !showOthers ) { this.chartInnitProperties = this.saveChartProperties; }
+      else { 
+          let innitProp = [];
+          innitProp.push(this.saveChartProperties[1]);
+          this.chartInnitProperties = innitProp;
+       }
     }
     this.ref.detectChanges();
   }

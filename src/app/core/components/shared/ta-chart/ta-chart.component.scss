@@ -12,6 +12,17 @@
   .no_chart_data{
     user-select: none;
   }
+
+  .hover_data_holder{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    width: 105px;
+    height: 152px;
+    transform: translateY(50%);
+    border: 1px solid #000000;
+  }
 }
 
 .chart_text_holder{

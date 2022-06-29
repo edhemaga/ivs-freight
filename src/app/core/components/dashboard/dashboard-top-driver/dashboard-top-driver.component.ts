@@ -40,6 +40,8 @@ export class DashboardTopDriverComponent implements OnInit {
     chartWidth: '750',
     chartHeight: '290',
     removeChartMargin: true,
+    gridHoverBackground: true,
+    startGridBackgroundFromZero: true,
     dataLabels: ['MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2024', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2025', '', 'MAR'],
     noChartImage: 'assets/svg/common/no_data_pay.svg'
   };
