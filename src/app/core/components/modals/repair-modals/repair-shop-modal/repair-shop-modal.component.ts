@@ -277,11 +277,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
           this.selectedBank = res.bank;
           this.isPhoneExtExist = res.phoneExt ? true : false;
           this.isRepairShopFavourite = res.pinned;
+
           this.services = res.serviceTypes.map((item) => {
             return {
               id: item.serviceType.id,
               serviceType: item.serviceType.name,
-              svg: `assets/svg/common/repair-service/${item.logoName}`,
+              svg: `assets/svg/common/repair-services/${item.logoName}`,
               active: item.active,
             };
           });
@@ -450,6 +451,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
               subFolder: 'banks',
             };
           });
+
           this.services = res.serviceTypes.map((item) => {
             return {
               id: item.serviceType.id,
