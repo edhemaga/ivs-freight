@@ -168,7 +168,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event);
+    this.documents = event;
   }
 
   ngOnDestroy(): void {}

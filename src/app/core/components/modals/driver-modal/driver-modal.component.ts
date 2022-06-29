@@ -33,6 +33,10 @@ import {
   convertDateFromBackend,
   convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
+import {
+  createBase64,
+  getStringFromBase64,
+} from 'src/app/core/utils/base64.image';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -146,7 +150,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onCommandEvent(event: any) {
-    console.log(event);
+    // console.log(event);
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
@@ -422,30 +426,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         streetNumber: address.streetNumber,
       });
     }
-    console.log(this.offDutyLocations.controls);
   }
 
   public premmapedOffDutyLocation() {
-    console.log(this.offDutyLocations.controls);
-    console.log(
-      this.offDutyLocations.controls.map((item) => {
-        return {
-          id: item.get('id').value ? item.get('id').value : 0,
-          nickname: item.get('nickname').value,
-          address: {
-            address: item.get('address').value,
-            city: item.get('city').value,
-            state: item.get('state').value,
-            stateShortName: item.get('stateShortName').value,
-            country: item.get('country').value,
-            zipCode: item.get('zipCode').value,
-            addressUnit: item.get('addressUnit').value,
-            street: item.get('street').value,
-            streetNumber: item.get('streetNumber').value,
-          },
-        };
-      })
-    );
     return this.offDutyLocations.controls.map((item) => {
       return {
         id: item.get('id').value ? item.get('id').value : 0,
@@ -478,7 +461,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  public tabOwnerChange(event: any[]): void {
+  public tabOwnerChange(event: any): void {
     this.selectedOwnerTab = event;
     this.driverForm.get('ownerType').patchValue(this.selectedOwnerTab.name);
     if (
@@ -663,7 +646,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         addressUnit: this.driverForm.get('addressUnit').value,
       },
       bankId: this.selectedBank ? this.selectedBank.id : null,
-      payType: this.selectedPayType ? this.selectedPayType.name : null,
+      payType: this.selectedPayType ? this.selectedPayType.id : null,
       solo: {
         emptyMile: soloEmptyMile,
         loadedMile: soloLoadedMile,
@@ -709,15 +692,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       address,
       addressUnit,
       bussinesName,
+      avatar,
       ...form
     } = this.driverForm.value;
-
+    // console.log(this.driverForm.get('ownerType').value);
     const newData: UpdateDriverCommand = {
       id: id,
       ...form,
       dateOfBirth: convertDateToBackend(
         this.driverForm.get('dateOfBirth').value
       ),
+      avatar: getStringFromBase64(avatar),
       ownerId:
         this.driverForm.get('ownerType').value === 'Sole Proprietor'
           ? null
@@ -726,15 +711,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           : null,
       ownerType:
         this.driverForm.get('ownerType').value === 'Sole Proprietor' ? 2 : 1,
-      bussinesName: this.owner
-        ? null
-        : this.driverForm.get('bussinesName').value,
+      bussinesName:
+        this.driverForm.get('ownerType').value === 'Sole Proprietor'
+          ? null
+          : this.owner
+          ? this.driverForm.get('bussinesName').value
+          : null,
       address: {
         ...this.selectedAddress,
         addressUnit: this.driverForm.get('addressUnit').value,
       },
       bankId: this.selectedBank ? this.selectedBank.id : null,
-      payType: this.selectedPayType ? this.selectedPayType.name : null,
+      payType: this.selectedPayType ? this.selectedPayType.id : null,
       solo: {
         emptyMile: soloEmptyMile,
         loadedMile: soloLoadedMile,
@@ -753,7 +741,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       offDutyLocations: this.premmapedOffDutyLocation(),
     };
 
-    console.log(newData);
+    // console.log(newData);
 
     this.driverTService
       .updateDriver(newData)
@@ -777,6 +765,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: DriverResponse) => {
+          // console.log('EDIT DRIVER');
+          // console.log(res);
           this.driverForm.patchValue({
             firstName: res.firstName,
             lastName: res.lastName,
@@ -784,13 +774,23 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             email: res.email,
             ssn: res.ssn,
             note: res.note,
-            avatar: res.avatar,
+            avatar: createBase64(res.avatar),
             dateOfBirth: convertDateFromBackend(res.dateOfBirth),
             offDutyLocations: [],
             isOwner: res.owner ? true : false,
             ownerId: res.owner ? res.owner.id : null,
-            ownerType: res.owner ? res.owner.name : null,
-            ein: res.owner ? res.owner.ssnEin : null,
+            ownerType: res.owner
+              ? res.owner?.ownerType?.name
+                ? res.owner?.ownerType?.name.includes('Proprietor')
+                  ? 'Sole'.concat(' ', res.owner?.ownerType?.name)
+                  : res.owner?.ownerType?.name
+                : null
+              : null,
+            ein: res.owner
+              ? res.owner?.ownerType?.name.includes('Proprietor')
+                ? null
+                : res.owner?.ssnEin
+              : null,
             bussinesName: res.owner ? res.owner.name : null,
             address: res.address ? res.address.address : null,
             addressUnit: res.address ? res.address.addressUnit : null,
@@ -821,21 +821,34 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             res.firstName.charAt(0).toUpperCase() + res.firstName.slice(1);
           res.lastName =
             res.lastName.charAt(0).toUpperCase() + res.lastName.slice(1);
-
+          // console.log(this.driverForm.value);
           this.driverFullName = res.firstName.concat(' ', res.lastName);
           this.selectedBank = res.bank ? res.bank : null;
           this.selectedPayType = res.payType ? res.payType : null;
+
           this.onHandleAddress({
             address: res.address,
             valid: res.address ? true : false,
           });
 
+          const activeOwnerTab = this.ownerTabs
+            .map((item) => {
+              return {
+                ...item,
+                checked: res.owner?.ownerType.name === item.name,
+              };
+            })
+            .find((item) => item.checked);
+
+          this.tabOwnerChange(activeOwnerTab);
+
           this.modalService.changeModalStatus({
             name: 'deactivate',
             status: res.status === 1 ? false : true,
           });
+
           this.driverStatus = res.status === 1 ? false : true;
-          console.log(res.offDutyLocations);
+
           if (res.offDutyLocations.length) {
             for (const offDuty of res.offDutyLocations) {
               this.offDutyLocations.push(

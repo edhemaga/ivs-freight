@@ -28,5 +28,7 @@ export interface CdlResponse {
     cdlRestrictions?: Array<CdlRestrictionResponse> | null;
     cdlEndorsements?: Array<CdlEndorsementResponse> | null;
     note?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

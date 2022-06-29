@@ -19,7 +19,6 @@ import { Observable }                                        from 'rxjs';
 
 import { CreateDriverCommand } from '../model/models';
 import { CreateResponse } from '../model/models';
-import { DeleteMultipleDriverCommand } from '../model/models';
 import { DriverListResponse } from '../model/models';
 import { DriverMinimalListResponse } from '../model/models';
 import { DriverResponse } from '../model/models';
@@ -200,14 +199,22 @@ export class DriverService {
     }
 
     /**
-     * @param deleteMultipleDriverCommand 
+     * @param ids 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDriverListDelete(deleteMultipleDriverCommand?: DeleteMultipleDriverCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiDriverListDelete(deleteMultipleDriverCommand?: DeleteMultipleDriverCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiDriverListDelete(deleteMultipleDriverCommand?: DeleteMultipleDriverCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiDriverListDelete(deleteMultipleDriverCommand?: DeleteMultipleDriverCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiDriverListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
+    public apiDriverListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
+    public apiDriverListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
+    public apiDriverListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (ids) {
+            ids.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'Ids');
+            })
+        }
 
         let headers = this.defaultHeaders;
 
@@ -233,17 +240,6 @@ export class DriverService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType = 'text';
@@ -251,6 +247,7 @@ export class DriverService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/driver/list`,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

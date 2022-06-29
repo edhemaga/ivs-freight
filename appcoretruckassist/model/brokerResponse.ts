@@ -48,5 +48,6 @@ export interface BrokerResponse {
     upRatingCount?: number;
     currentCompanyUserRating?: number | null;
     createdAt?: string;
+    updatedAt?: string;
 }
 
