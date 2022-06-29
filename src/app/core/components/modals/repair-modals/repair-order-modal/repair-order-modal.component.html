@@ -35,14 +35,13 @@
         [options]="labelsUnit"
         (selectedItem)="onSelectDropDown($event, 'repair-unit')"
       ></app-ta-input-dropdown>
-      <!--           isRequired: selectedPM.id !== 0, -->
       <app-ta-input
         formControlName="odometer"
         [inputConfig]="{
           name: 'Odometer',
           type: 'text',
           label: 'Odometer',
-
+          isRequired: selectedPM[selectedPMIndex]?.id,
           thousandSeparator: true
         }"
       ></app-ta-input>
@@ -79,6 +78,7 @@
             {{ selectedRepairShop?.name }}
             <svg-icon
               class="repair-shop-star"
+              [ngClass]="{ active: selectedRepairShop?.pinned }"
               src="assets/svg/common/ic_star.svg"
             ></svg-icon>
           </p>
@@ -106,7 +106,7 @@
               class="clear-x"
               (click)="
                 selectedRepairShop = null;
-                repairOrderForm.get('repairShop').patchValue(null)
+                repairOrderForm.get('repairShopId').patchValue(null)
               "
             ></svg-icon>
           </div>
@@ -162,7 +162,10 @@
             <div
               [formGroupName]="ind"
               class="common-fake-table-card"
-              [ngClass]="{ 'card-item-active': selectedPM[ind]?.status }"
+              [ngClass]="{
+                'card-item-active':
+                  !selectedPM[ind]?.logoName.includes('default_pm')
+              }"
             >
               <p>
                 {{ item.controls.id.value }}
@@ -283,7 +286,7 @@
         <div
           *ngFor="let repair of services; trackBy: identity"
           class="repair-shop-service"
-          [class.active]="repair.active"
+          [ngClass]="{ active: repair.active }"
           (click)="repair.active = !repair.active"
         >
           <svg-icon src="{{ repair.svg }}"></svg-icon>

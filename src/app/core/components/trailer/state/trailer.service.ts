@@ -1,4 +1,4 @@
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import { TrailerStore } from './trailer.store';
@@ -20,7 +20,7 @@ export class TrailerTService {
     private trailerStore: TrailerStore,
     private trailerService: TrailerService,
     private trailerQuery: TrailerQuery,
-    private tableService: TruckassistTableService,
+    private tableService: TruckassistTableService
   ) {}
 
   public addTrailer(
@@ -35,8 +35,8 @@ export class TrailerTService {
             this.tableService.sendActionAnimation({
               animation: 'add',
               data: trailer,
-              id: trailer.id
-            })
+              id: trailer.id,
+            });
 
             subTrailer.unsubscribe();
           },
@@ -70,8 +70,8 @@ export class TrailerTService {
             this.tableService.sendActionAnimation({
               animation: 'update',
               data: trailer,
-              id: trailer.id
-            })
+              id: trailer.id,
+            });
 
             subTrailer.unsubscribe();
           },
@@ -93,19 +93,20 @@ export class TrailerTService {
       return trailer.id;
     });
 
-    return this.trailerService.apiTrailerListDelete({ ids: deleteOnBack }).pipe(
-      tap(() => {
-        let storeTrailer = this.trailerQuery.getAll();
+    // return this.trailerService.apiTrailerListDelete({ ids: deleteOnBack }).pipe(
+    //   tap(() => {
+    //     let storeTrailer = this.trailerQuery.getAll();
 
-        storeTrailer.map((trailer: any) => {
-          deleteOnBack.map((d) => {
-            if (d === trailer.id) {
-              this.trailerStore.remove(({ id }) => id === trailer.id);
-            }
-          });
-        });
-      })
-    );
+    //     storeTrailer.map((trailer: any) => {
+    //       deleteOnBack.map((d) => {
+    //         if (d === trailer.id) {
+    //           this.trailerStore.remove(({ id }) => id === trailer.id);
+    //         }
+    //       });
+    //     });
+    //   })
+    // );
+    return of(null);
   }
 
   public getTrailerById(id: number): Observable<TrailerResponse> {
@@ -113,28 +114,30 @@ export class TrailerTService {
   }
 
   public changeTrailerStatus(trailerId: number): Observable<any> {
-    return this.trailerService.apiTrailerStatusIdPut(trailerId, 'response').pipe(
-      tap(() => {
-        const subTrailer = this.getTrailerById(trailerId).subscribe({
-          next: () => {
-            const trailerToUpdate = this.trailerQuery.getAll({
-              filterBy: ({ id }) => id === trailerId
-            });
-    
-            this.trailerStore.update(({ id }) => id === trailerId, {
-              status: trailerToUpdate[0].status === 0 ? 1 : 0
-            });
-    
-            this.tableService.sendActionAnimation({
-              animation: 'update-status',
-              id: trailerId
-            });
+    return this.trailerService
+      .apiTrailerStatusIdPut(trailerId, 'response')
+      .pipe(
+        tap(() => {
+          const subTrailer = this.getTrailerById(trailerId).subscribe({
+            next: () => {
+              const trailerToUpdate = this.trailerQuery.getAll({
+                filterBy: ({ id }) => id === trailerId,
+              });
 
-            subTrailer.unsubscribe();
-          },
-        });
-      })
-    );
+              this.trailerStore.update(({ id }) => id === trailerId, {
+                status: trailerToUpdate[0].status === 0 ? 1 : 0,
+              });
+
+              this.tableService.sendActionAnimation({
+                animation: 'update-status',
+                id: trailerId,
+              });
+
+              subTrailer.unsubscribe();
+            },
+          });
+        })
+      );
   }
 
   public getTrailerDropdowns(): Observable<GetTrailerModalResponse> {

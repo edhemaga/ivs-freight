@@ -22,5 +22,7 @@ export interface CompanyContactResponse {
     address?: AddressEntity;
     shared?: boolean;
     companyContactLabel?: CompanyContactLabelResponse;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

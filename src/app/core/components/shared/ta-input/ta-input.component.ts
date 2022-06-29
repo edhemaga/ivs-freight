@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
@@ -38,8 +39,7 @@ import { TaInputResetService } from './ta-input-reset.service';
   ],
 })
 export class TaInputComponent
-  implements OnInit, OnDestroy, ControlValueAccessor
-{
+  implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor {
   @ViewChild('input', { static: true }) public input: ElementRef;
   @ViewChild('span1', { static: false }) span1: ElementRef;
   @ViewChild('span2', { static: false }) span2: ElementRef;
@@ -91,6 +91,17 @@ export class TaInputComponent
     this.superControl.valueAccessor = this;
   }
 
+  ngAfterViewInit() {
+    if (
+      this.inputConfig.name === 'datepicker' ||
+      this.inputConfig.name === 'timepicker'
+    ) {
+      if (this.getSuperControl.value) {
+        this.setTimeDateInput(this.getSuperControl.value);
+      }
+    }
+  }
+
   ngOnInit(): void {
     if (
       this.inputConfig.name === 'datepicker' ||
@@ -99,24 +110,7 @@ export class TaInputComponent
       this.calendarService.dateChanged
         .pipe(untilDestroyed(this))
         .subscribe((date) => {
-          let text, dateFormat, timeFormat;
-          if (this.inputConfig.name === 'datepicker') {
-            text = moment(new Date(date)).format('MM/DD/YY');
-            dateFormat = text.split('/');
-          } else {
-            text = moment(new Date(date)).format('HH:mm');
-            timeFormat = moment(new Date(date)).format('hh/mm/A');
-            dateFormat = timeFormat.split('/');
-          }
-
-          this.input.nativeElement.value = text;
-          this.onChange(this.input.nativeElement.value);
-          this.focusInput = false;
-
-          this.span1.nativeElement.innerHTML = dateFormat[0];
-          this.span2.nativeElement.innerHTML = dateFormat[1];
-          this.span3.nativeElement.innerHTML = dateFormat[2];
-          this.dateTimeInputDate = new Date(date);
+          this.setTimeDateInput(date);
           this.t2.close();
         });
     }
@@ -162,8 +156,32 @@ export class TaInputComponent
           this.touchedInput = false;
           this.getSuperControl.patchValue(null);
           this.inputResetService.resetInputSubject.next(false);
+
+          this.resetDateTimeInputs();
         }
       });
+  }
+
+  public setTimeDateInput(date) {
+    let text, dateFormat, timeFormat;
+    if (this.inputConfig.name === 'datepicker') {
+      text = moment(new Date(date)).format('MM/DD/YY');
+      dateFormat = text.split('/');
+    } else {
+      text = moment(new Date(date)).format('HH:mm');
+      timeFormat = moment(new Date(date)).format('hh/mm/A');
+      dateFormat = timeFormat.split('/');
+    }
+
+    this.input.nativeElement.value = text;
+    this.onChange(this.input.nativeElement.value);
+    this.focusInput = false;
+
+    this.span1.nativeElement.innerHTML = dateFormat[0];
+    this.span2.nativeElement.innerHTML = dateFormat[1];
+    this.span3.nativeElement.innerHTML = dateFormat[2];
+    this.dateTimeInputDate = new Date(date);
+    this.showDateInput = true;
   }
 
   get getSuperControl() {
@@ -179,9 +197,9 @@ export class TaInputComponent
     this.onChange = fn;
   }
 
-  public onChange(event: any): void {}
+  public onChange(event: any): void { }
 
-  public registerOnTouched(fn: any): void {}
+  public registerOnTouched(fn: any): void { }
 
   public setDisabledState?(isDisabled: boolean): void {
     this.inputConfig.isDisabled = isDisabled;
@@ -303,23 +321,25 @@ export class TaInputComponent
     this.isDropdownAddModeActive = false;
     this.touchedInput = true;
 
+    this.resetDateTimeInputs();
+
+    this.inputService.onClearInputSubject.next(true);
+  }
+
+
+  public resetDateTimeInputs() {
     if (this.inputConfig.name === 'datepicker') {
-      this.focusInput = false;
-      this.showDateInput = false;
       this.span1.nativeElement.innerHTML = 'mm';
       this.span2.nativeElement.innerHTML = 'dd';
       this.span3.nativeElement.innerHTML = 'yy';
-    }
-
-    if (this.inputConfig.name === 'timepicker') {
-      this.focusInput = false;
-      this.showDateInput = false;
+    } else if (this.inputConfig.name === 'timepicker') {
       this.span1.nativeElement.innerHTML = 'HH';
       this.span2.nativeElement.innerHTML = 'MM';
       this.span3.nativeElement.innerHTML = 'AM';
     }
 
-    this.inputService.onClearInputSubject.next(true);
+    this.focusInput = false;
+    this.showDateInput = false;
   }
 
   public onAddItemInDropdown(event: Event) {
@@ -786,7 +806,7 @@ export class TaInputComponent
     this.onChange(this.input.nativeElement.value);
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
   // OVAJ DEO OVDE JE ZA CUSTOM DATEPICKERS
 

@@ -31,12 +31,18 @@ export interface ITaInput {
     active?: boolean;
     type?: string; // 'increment-decrement', 'confirm-cancel'
     firstCommand?: {
-      popupName?: string;
+      popup?: {
+        name?: string;
+        backgroundColor?: string;
+      };
       name?: string;
       svg?: string;
     };
     secondCommand?: {
-      popupName?: string;
+      popup?: {
+        name?: string;
+        backgroundColor?: string;
+      };
       name?: string;
       svg?: string;
     };
