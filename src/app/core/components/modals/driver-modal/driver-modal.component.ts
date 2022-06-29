@@ -500,6 +500,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         untilDestroyed(this)
       )
       .subscribe((value) => {
+        console.log('EIN NUMBER CHANGE ');
+        console.log(value);
         if (value) {
           this.driverTService
             .checkOwnerEinNumber(value)
@@ -830,15 +832,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             emergencyContactRelationship: res.emergencyContactRelationship,
           });
 
-          console.log('EDIT DRIVER');
-          console.log(this.driverForm.value);
-
           res.firstName =
             res.firstName.charAt(0).toUpperCase() + res.firstName.slice(1);
           res.lastName =
             res.lastName.charAt(0).toUpperCase() + res.lastName.slice(1);
 
           this.driverFullName = res.firstName.concat(' ', res.lastName);
+
           this.selectedBank = res.bank ? res.bank : null;
           this.selectedPayType = res.payType
             ? res.payType.id === 0
@@ -861,12 +861,38 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .find((item) => item.checked);
 
           this.tabOwnerChange(activeOwnerTab);
+
           this.modalService.changeModalStatus({
             name: 'deactivate',
             status: res.status === 1 ? false : true,
           });
 
           this.driverStatus = res.status === 1 ? false : true;
+
+          if (res.owner) {
+            console.log('IMA OWNER');
+            console.log(this.driverForm.get('ein').value);
+            this.driverTService
+              .checkOwnerEinNumber(this.driverForm.get('ein').value)
+              .pipe(untilDestroyed(this))
+              .subscribe({
+                next: (res: CheckOwnerSsnEinResponse) => {
+                  this.owner = res?.name ? res : null;
+
+                  if (this.owner?.name) {
+                    this.driverForm
+                      .get('bussinesName')
+                      .patchValue(this.owner.name);
+                  }
+                },
+                error: () => {
+                  this.notificationService.error(
+                    "Owner can't be loaded.",
+                    'Error:'
+                  );
+                },
+              });
+          }
 
           if (res.offDutyLocations.length) {
             for (const offDuty of res.offDutyLocations) {
