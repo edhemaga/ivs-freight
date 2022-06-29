@@ -2,8 +2,7 @@
 
 .sign-up-container {
   background-color: $white;
-  height: 100vh;
-  min-height: 750px;
+  min-height: 100vh;
   padding-top: 60px;
 
   .sign-up-text {
@@ -43,7 +42,7 @@
   }
 
   form {
-    .form-label-group {
+    .group {
       margin-bottom: 32px;
       margin-right: 12px;
 
@@ -149,6 +148,7 @@
   .copyright {
     height: 42px;
     border-top: 0.1rem solid $ta-gray-02;
+    margin-top: 60px;
 
     p {
       color: $ta-blue-2;

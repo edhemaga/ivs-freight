@@ -427,6 +427,10 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                     }
 
                     .dashboard-performance-body-right-cards-title{
+                        width: 110px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
                         font-size: 14px;
                         font-weight: 700;
                         color: #6C6C6C;

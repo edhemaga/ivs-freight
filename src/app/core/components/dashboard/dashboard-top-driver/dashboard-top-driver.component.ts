@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard-top-driver',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard-top-driver.component.scss']
 })
 export class DashboardTopDriverComponent implements OnInit {
-  
+  @ViewChild('doughnutChart', {static: false}) public doughnutChart: any;
   public chartConfig: object = {};
 
   public barChartConfig: object = {
@@ -128,7 +128,35 @@ export class DashboardTopDriverComponent implements OnInit {
     }
   ];
 
-  circleColor: any[] = ['8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F', 'CCCCCC']
+  circleColor: any[] = ['8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F', 'CCCCCC'];
+
+  popoverTopTen: any[] = [
+    {
+      name: 'DISPATCHER'
+    },
+    {
+      name: 'DRIVER',
+      active: true
+    },
+    {
+      name: 'TRUCK'
+    },
+    {
+      name: 'BROKER'
+    },
+    {
+      name: 'SHIPPER'
+    },
+    {
+      name: 'OWNER'
+    },
+    {
+      name: 'REPAIR SHOP'
+    },
+    {
+      name: 'FUEL STOP'
+    }
+  ];
 
   constructor() { }
 
@@ -161,20 +189,20 @@ export class DashboardTopDriverComponent implements OnInit {
             data: dataValues,
             backgroundColor: dataColors,
             borderColor: '#fff',
-            hoverBackgroundColor: '#6C6C6C',
+            hoverBackgroundColor: ['#596FE8'],
             hoverBorderColor: '#fff'
           }
         }
       ],
       chartInnitProperties: [
         {
-          name: 'TOP 10',
+          name: 'TOP '+this.driverList.length,
           value: '$773.08K',
           percent: topTenPercentage+'%'
         },
         {
           name: 'ALL OTHERS',
-          value: '$773.08K',
+          value: '$623.56K',
           percent: otherPercent+'%'
         }
       ],
@@ -185,6 +213,7 @@ export class DashboardTopDriverComponent implements OnInit {
       chartHeight: '322',
       removeChartMargin: true,
       dataLabels: [],
+      driversList: this.driverList,
       noChartImage: 'assets/svg/common/no_data_pay.svg'
     };
   }
@@ -228,4 +257,19 @@ export class DashboardTopDriverComponent implements OnInit {
 
   }
 
+  changeTopTen(item){
+    this.popoverTopTen.map((item) => {
+      item.active = false;
+      return item;
+    })
+    item.active = true;
+  }
+
+  hoverDoughnutChart(index){
+    this.doughnutChart.hoverDoughnut(index, 'number');
+  }
+
+  removeDoughnutChart(){
+    this.doughnutChart.hoverDoughnut(null);
+  }
 }

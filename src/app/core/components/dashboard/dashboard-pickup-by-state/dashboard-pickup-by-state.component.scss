@@ -1,0 +1,280 @@
+.dashboard-pickup-holder{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+
+    .dashboard-pickup-header-holder{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 12px;
+
+        .dashboard-pickup-title-holder{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding-right: 12px;
+            box-sizing: border-box;
+
+            .dashboard-pickup-title{
+                font-size: 26px;
+                font-weight: 900;
+                color: #919191;
+                padding-right: 8px;
+                box-sizing: border-box;
+            }
+
+            .dashboard-pickup-arrow-down{
+                width: 18px;
+                height: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                svg-icon{
+                    svg{
+                        display: flex;
+
+                        path{
+                            fill: #919191;
+                        }
+                    }
+                }
+            }
+        }
+
+        .dashboard-pickup-toolbar-holder{
+            width: 100%;
+            flex: 1;
+            height: 32px;
+            border-radius: 3px;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            line-height: 32px;
+
+            .dashboard-pickup-toolbar-items-holder{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                .dashboard-pickup-toolbar-switch-left{
+                    height: 32px;
+                }
+
+                .dashboard-pickup-toolbar-border{
+                    width: 2px;
+                    height: 24px;
+                    border-radius: 1px;
+                    background-color: #F3F3F3;
+                    margin: 0px 4px;
+
+                    &.margin-right{
+                        margin: 0px 6px;
+                    }
+                }
+
+                .dashboard-pickup-toolbar-icons-holder{
+                    width: 28px;
+                    height: 28px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    svg-icon{
+                        svg{
+                            width: 18px;
+                            height: 18px;
+                            display: flex;
+
+                            path{
+                                fill: #AAAAAA;
+                            }
+                        }
+                    }
+                }
+
+                .dashboard-pickup-toolbar-filter-selected{
+                    height: 28px;
+                    padding: 5px 8px;
+                    box-sizing: border-box;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 2px;
+                    background-color: #F3F3F3;
+                    font-size: 14px;
+                    font-weight: 800;
+                    color: #6C6C6C;
+                    margin-left: 2px;
+                }
+
+                .dashboard-pickup-toolbar-switch-right{
+                    height: 32px;
+                }
+
+                .dashboard-pickup-toolbar-dropdown{
+                    position: relative;
+                    width: 108px;
+                    height: 32px;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    border-radius: 3px;
+                    background-color: #fff;
+
+                    .dashboard-pickup-toolbar-dropdown-text{
+                        font-size: 14px;
+                        font-weight: 800;
+                        color: #6C6C6C;
+                        padding-left: 12px;
+                        box-sizing: border-box;
+                    }
+
+                    .dashboard-pickup-toolbar-dropdown-arrow{
+                        position: absolute;
+                        width: 18px;
+                        height: 18px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        top: 50%;
+                        right: 8px;
+                        transform: translateY(-50%);
+    
+                        svg-icon{
+                            svg{
+                                display: flex;
+                                width: 13px;
+                                height: 8.15px;
+    
+                                path{
+                                    fill: #B7B7B7;
+                                }
+                            }
+                        }                            
+                    }
+                }
+            }
+        }
+    }
+
+    .dashboard-pickup-body-holder{
+        width: 100%;
+        height: 366px;
+        border-radius: 3px;
+        background-color: #fff;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .row{
+            width: 100%;
+
+            .col-4{
+                display: flex;
+                padding-right: 0px;
+            }
+        }
+
+        .dashboard-pickup-body-state-list-holder{
+            width: 100%;
+            height: 366px;
+            padding: 0px 6px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-direction: column;
+            overflow: auto;
+
+            .dashboard-pickup-body-state-list-items-holder{
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                flex-direction: column;
+
+                .dashboard-pickup-body-state-list-items{
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 13px 12px 8px 6px;
+                    box-sizing: border-box;
+                    border-radius: 2px;
+                    margin: 2px 0px;
+
+                    .dashboard-pickup-body-state-list-frame{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+
+                        .dashboard-pickup-body-state-list-id{
+                            width: 30px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #6C6C6C;
+                            padding: 0px 16px 0px 0px;
+                            box-sizing: border-box;
+                        }
+
+                        .dashboard-pickup-body-state-list-circle{
+                            width: 14px;
+                            height: 14px;
+                            border-radius: 100%;
+                            background-color: #6278C7;
+                        }
+
+                        .dashboard-pickup-body-state-list-name{
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #6C6C6C;
+                            padding-left: 6px;
+                            box-sizing: border-box;
+                        }
+
+                        .dashboard-pickup-body-state-list-price{
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: #6C6C6C;
+                        }
+
+                        .dashboard-pickup-body-state-list-percent{
+                            font-size: 14px;
+                            font-weight: 500;
+                            color: #6C6C6C;
+                            padding-left: 22px;
+                            box-sizing: border-box;
+                        }
+                    }
+
+                    &:hover{
+                        cursor: pointer;
+                        background-color: #F3F3F3;
+                    }
+                }
+
+                .dashboard-pickup-body-state-list-border{
+                    width: 100%;
+                    height: 2px;
+                    border-radius: 1px;
+                    background-color: #F3F3F3;
+                }
+            }
+
+            &::-webkit-scrollbar-thumb{
+                border: 6px solid #fff;
+            }
+
+        }
+
+    }
+}

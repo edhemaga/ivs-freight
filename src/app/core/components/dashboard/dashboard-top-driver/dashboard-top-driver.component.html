@@ -3,7 +3,15 @@
         <div class="dashboard-top-driver-header-box-list">67</div>
         <div class="dashboard-top-driver-header-title-holder">
             <div class="dashboard-top-driver-header-title">Top Driver</div>
-            <div class="dashboard-top-driver-header-arrow-down">
+            <div 
+            class="dashboard-top-driver-header-arrow-down"
+            #t2="ngbPopover"
+            [ngbPopover]="topTenPopover"
+            [placement]="['bottom']"
+            [popoverClass]="'toptenpopovermain'"
+            autoClose="outside"
+            [container]="'body'"
+                        >
                 <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
             </div>
         </div>
@@ -13,7 +21,6 @@
                     <app-ta-tab-switch
                     [tabs]="driverTopSwitchTabs"
                     (switchClicked)="changeDriverSwitchTabs($event)" 
-                    [type]="'performance-switch'"    
                     >
                     </app-ta-tab-switch>
                 </div>
@@ -27,7 +34,6 @@
                     <app-ta-tab-switch
                     [tabs]="driverTopSwitch"
                     (switchClicked)="changeDriverSwitchTabs($event)" 
-                    [type]="'performance-switch'"    
                     >
                     </app-ta-tab-switch>
                 </div>
@@ -45,7 +51,7 @@
         <div class="row">
             <div class="col-4">
                 <div class="dashboard-top-driver-body-list-holder">
-                    <div *ngFor="let item of driverList; let indx=index" class="dashboard-top-driver-body-list-items-holder">
+                    <div *ngFor="let item of driverList; let indx=index" class="dashboard-top-driver-body-list-items-holder" (mouseenter)="hoverDoughnutChart(indx)" (mouseleave)="removeDoughnutChart()">
                         <div class="dashboard-top-driver-body-list-items">
                             <div class="dashboard-top-driver-body-list-frame">
                                 <div class="dashboard-top-driver-body-list-id">{{item.id}}</div>
@@ -64,6 +70,7 @@
             <div class="col-3">
                 <div class="doughnut_chart_holder">
                     <app-ta-chart
+                    #doughnutChart
                     [chartConfig]="chartConfig"
                     [axesProperties]="chartAxes"
                     [legendAttributes]="{}"
@@ -101,3 +108,12 @@
         </div>
     </div>
 </div>
+<ng-template #topTenPopover let-data="data">
+    <div class="top-ten-popover-holder">
+        <div *ngFor="let item of popoverTopTen; let indx=index" class="top-ten-popover-items-holder" [ngClass]="{'active': item.active}" (click)="changeTopTen(item)">{{item.name}}
+            <div class="popover-icon-holder">
+                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+            </div>
+        </div>
+    </div>
+</ng-template>
