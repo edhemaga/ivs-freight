@@ -217,8 +217,10 @@
     <div
       class="ta-input-command-first"
       ngbTooltip
-      [mainTooltip]="inputConfig.popup?.name"
-      [tooltipBackground]="inputConfig.popup?.backgroundColor"
+      [mainTooltip]="inputConfig.commands?.firstCommand?.popup?.name"
+      [tooltipBackground]="
+        inputConfig.commands?.firstCommand?.popup.backgroundColor
+      "
       position="top"
     >
       <svg-icon
@@ -236,8 +238,10 @@
     <div
       class="ta-input-command-second"
       ngbTooltip
-      mainTooltip="{{ inputConfig.popup?.name }}"
-      tooltipBackground="{{ inputConfig.popup?.backgroundColor }}"
+      [mainTooltip]="inputConfig.commands?.secondCommand?.popup.name"
+      [tooltipBackground]="
+        inputConfig.commands?.secondCommand?.popup.backgroundColor
+      "
       position="top"
     >
       <svg-icon

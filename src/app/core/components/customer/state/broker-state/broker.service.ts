@@ -11,7 +11,7 @@ import {
   UpdateBrokerCommand,
   UpdateReviewCommand,
 } from 'appcoretruckassist';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, of } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { BrokerQuery } from './broker.query';
 import { BrokerStore } from './broker.store';
@@ -100,19 +100,20 @@ export class BrokerTService {
       return broker.id;
     });
 
-    return this.brokerService.apiBrokerListDelete({ ids: deleteOnBack }).pipe(
-      tap(() => {
-        let storeBrokers = this.brokerQuery.getAll();
+    // return this.brokerService.apiBrokerListDelete({ ids: deleteOnBack }).pipe(
+    //   tap(() => {
+    //     let storeBrokers = this.brokerQuery.getAll();
 
-        storeBrokers.map((broker: any) => {
-          deleteOnBack.map((d) => {
-            if (d === broker.id) {
-              this.brokerStore.remove(({ id }) => id === broker.id);
-            }
-          });
-        });
-      })
-    );
+    //     storeBrokers.map((broker: any) => {
+    //       deleteOnBack.map((d) => {
+    //         if (d === broker.id) {
+    //           this.brokerStore.remove(({ id }) => id === broker.id);
+    //         }
+    //       });
+    //     });
+    //   })
+    // );
+    return of(null);
   }
 
   // Delete Broker By Id

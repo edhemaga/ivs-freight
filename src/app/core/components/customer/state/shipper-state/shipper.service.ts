@@ -11,7 +11,7 @@ import {
   UpdateReviewCommand,
   UpdateShipperCommand,
 } from 'appcoretruckassist';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ShipperStore } from './shipper.store';
 import { ShipperQuery } from './shipper.query';
@@ -100,19 +100,20 @@ export class ShipperTService {
       return shipper.id;
     });
 
-    return this.shipperService.apiShipperListDelete({ ids: deleteOnBack }).pipe(
-      tap(() => {
-        let storeShippers = this.shipperQuery.getAll();
+    // return this.shipperService.apiShipperListDelete({ ids: deleteOnBack }).pipe(
+    //   tap(() => {
+    //     let storeShippers = this.shipperQuery.getAll();
 
-        storeShippers.map((shipper: any) => {
-          deleteOnBack.map((d) => {
-            if (d === shipper.id) {
-              this.shipperStore.remove(({ id }) => id === shipper.id);
-            }
-          });
-        });
-      })
-    );
+    //     storeShippers.map((shipper: any) => {
+    //       deleteOnBack.map((d) => {
+    //         if (d === shipper.id) {
+    //           this.shipperStore.remove(({ id }) => id === shipper.id);
+    //         }
+    //       });
+    //     });
+    //   })
+    // );
+    return of(null);
   }
 
   // Delete Shipper By Id
