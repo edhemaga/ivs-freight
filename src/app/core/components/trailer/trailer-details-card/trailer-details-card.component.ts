@@ -38,7 +38,8 @@ export class TrailerDetailsCardComponent implements OnInit,OnChanges {
     private clipboar: Clipboard,
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    this.note.patchValue(changes.trailer.currentValue.note);  
+    this.getTrailerDropdown()
+    // this.note.patchValue(changes.trailer.currentValue.note);  
   }
   ngOnInit(): void {
   

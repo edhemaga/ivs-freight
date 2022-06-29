@@ -59,8 +59,7 @@ import { setFutureYear } from './setFutureYear.pipe';
     DynamicNavHeightPipe,
     UserDataPipe,
     formatCurrency,
-    setFutureYear
-
+    setFutureYear,
   ],
   imports: [CommonModule],
   exports: [
@@ -91,7 +90,8 @@ import { setFutureYear } from './setFutureYear.pipe';
     DynamicNavHeightPipe,
     UserDataPipe,
     formatCurrency,
-    setFutureYear
+    setFutureYear,
+    
   ],
   providers: [
     DatePipe,

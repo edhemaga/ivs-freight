@@ -57,12 +57,13 @@ export class DriverDetailsItemComponent
   }
 
   ngOnInit(): void {
+    console.log(this.drivers);
     
     this.initTableOptions();
     this.getExpireDate();
   }
   public getExpireDate() {
-    this.dataCDl = this.drivers[1].data.cdls.map((ele) => {
+    this.dataCDl = this.drivers[1]?.data?.cdls?.map((ele) => {
       if (moment(ele.expDate).isBefore(moment())) {
         this.expDateCard = false;
       } else {
@@ -74,7 +75,6 @@ export class DriverDetailsItemComponent
       };
     });
   
-    console.log(this.expDateCard);
   }
 
   /**Function for dots in cards */
@@ -200,7 +200,7 @@ export class DriverDetailsItemComponent
   }
   /**Function retrun id */
   public identity(index: number, item: any): number {
-    return item.id;
+    return index;
   }
 
   /**Function for toggle page in cards */

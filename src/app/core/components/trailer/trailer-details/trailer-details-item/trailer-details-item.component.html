@@ -11,7 +11,7 @@
         
           <app-ta-re-card
             *ngFor="
-              let reg of trailers.data.registrations;
+              let reg of trailers?.data?.registrations;
               let i = index;
               trackBy: identity
             "
@@ -75,7 +75,7 @@
       <div class="card-width" *ngSwitchCase="'fhwa-insepction'">
         <app-ta-re-card
           *ngFor="
-            let fhwa of trailers.data.inspections;
+            let fhwa of trailers?.data?.inspections;
             let i = index;
             trackBy: identity
           "
@@ -126,7 +126,7 @@
       <div class="card-width" *ngSwitchCase="'title'">
         <app-ta-re-card
           *ngFor="
-            let title of trailers.data.titles;
+            let title of trailers?.data?.titles;
             let i = index;
             trackBy: identity
           "

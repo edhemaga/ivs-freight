@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ShipperResponse } from 'appcoretruckassist';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
@@ -9,7 +9,7 @@ import { ShipperQuery } from '../state/shipper-state/shipper.query';
   templateUrl: './shipper-card-view.component.html',
   styleUrls: ['./shipper-card-view.component.scss'],
 })
-export class ShipperCardViewComponent implements OnInit {
+export class ShipperCardViewComponent implements OnInit,OnChanges {
   @Input() shipper: any;
   @Input() templateCard: boolean;
   public shipperDropdowns: any[] = [];
@@ -19,7 +19,13 @@ export class ShipperCardViewComponent implements OnInit {
     private shipperQuery: ShipperQuery,
     private detailsPageDriverSer: DetailsPageService
   ) {}
-
+  ngOnChanges(changes: SimpleChanges): void {
+    
+      if(!changes?.shipper?.firstChange && changes?.shipper){
+        this.getShipperDropdown();
+      }
+      
+  }
   ngOnInit(): void {
     this.getShipperDropdown();
     this.note.patchValue(this.shipper.note)

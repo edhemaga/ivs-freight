@@ -193,9 +193,13 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
   ) {}
   
   ngOnChanges(changes: SimpleChanges): void {
-    this.noteControl.patchValue(changes.truck.currentValue.note);
+    if(!changes?.truck.firstChange && changes?.truck){
+
+      // this.noteControl.patchValue(changes.truck.currentValue.note);
+    }
   }
   ngOnInit(): void {
+    this.noteControl.patchValue(this.truck.note)
     this.getTruckDropdown();
     this.buttonSwitcher();
     this.initTableOptions();
@@ -369,7 +373,7 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
   }
   /**Function retrun id */
   public identity(index: number, item: any): number {
-    return item.id;
+    return index;
   }
   public getTruckDropdown() {
     this.truckDropDowns = this.trucksQuery.getAll().map((item) => {

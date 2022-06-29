@@ -1,6 +1,6 @@
 <div class="cards-item-wrapper-1">
   <app-ta-details-header-card
-    [cardDetailsDate]="'08/03/20'"
+    [cardDetailsDate]="shopResponse?.createdAt | formatDateP"
     [tooltipNext]="'Next Repair'"
     [tooltipPrevious]="'Previous Repair'"
     [searchInputName]="'Search Repair'"
@@ -129,7 +129,7 @@
           <app-ta-tab-switch [type]="'driver-details-popup'" [tabs]="tabs">
           </app-ta-tab-switch>
 
-          <div id="chart">
+          <!-- <div id="chart">
             <app-ta-chart
               [chartConfig]="{
                 legendAttributes: [
@@ -219,7 +219,7 @@
               }"
             >
             </app-ta-chart>
-          </div>
+          </div> -->
         </div>
       </app-ta-custom-card>
 

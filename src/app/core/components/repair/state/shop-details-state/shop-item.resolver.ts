@@ -1,4 +1,4 @@
-import { RepairShopResponse } from './../../../../../../appcoretruckassist/model/repairShopResponse';
+import { RepairShopResponse } from '../../../../../../../appcoretruckassist/model/repairShopResponse';
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
@@ -7,8 +7,8 @@ import {
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap,take } from 'rxjs/operators';
-import { RepairTService } from './repair.service';
-import { ShopState, ShopStore } from './shop-state/shop.store';
+import { RepairTService } from '../repair.service';
+import { ShopState, ShopStore } from '../shop-state/shop.store';
 
 @Injectable({
   providedIn: 'root',

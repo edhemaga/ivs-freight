@@ -584,11 +584,11 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="truck.registrations.length"
+          [hasCounter]="truck?.registrations?.length?truck.registrations.length : 0"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let reg of truck.registrations; trackBy: identity">
+          <div *ngFor="let reg of truck?.registrations; trackBy: identity">
             <app-ta-re-card
               [cardDocumentCounter]="1"
               (resizePage)="toggleResizePage($event)"
@@ -650,11 +650,11 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="truck.inspections.length"
+          [hasCounter]="truck?.inspections?.length?truck.inspections.length:0"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let fhwa of truck.inspections; trackBy: identity">
+          <div *ngFor="let fhwa of truck?.inspections; trackBy: identity">
             <app-ta-re-card
               [options]="dataEdit"
               [cardNameCommon]="fhwa.issueDate | formatDateP"
@@ -699,11 +699,11 @@
           [hasDivider]="false"
           class="item-cards"
           [bodyTemplate]="'card'"
-          [hasCounter]="truck.titles.length"
+          [hasCounter]="truck?.titles?.length?truck.titles.length:0"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let title of truck.titles; trackBy: identity">
+          <div *ngFor="let title of truck?.titles; trackBy: identity">
             <app-ta-re-card
               [cardDocumentCounter]="1"
               (resizePage)="toggleResizePage($event)"
