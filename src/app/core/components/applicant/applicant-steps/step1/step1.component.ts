@@ -324,24 +324,6 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
-  public handleAddressChange(event: string, index: number) {
-    switch (event) {
-      case InputSwitchActions.CONFIRM:
-        this.isEditingArray[index].isEditing = false;
-        this.isEditingArray[index].isEditingAddress = false;
-
-        break;
-
-      case InputSwitchActions.CANCEL:
-        this.isEditingArray[index].isEditing = false;
-        this.isEditingArray[index].isEditingAddress = false;
-
-        break;
-      default:
-        break;
-    }
-  }
-
   private onCreateNewAddress(): FormGroup {
     return this.formBuilder.group({
       address: [null, Validators.required],

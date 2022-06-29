@@ -288,6 +288,8 @@ export class Step2Component implements OnInit, OnDestroy {
 
     this.workExperienceForm.reset();
 
+    this.selectedReasonForLeaving = null;
+
     this.inputResetService.resetInputSubject.next(true);
 
     /*   const workExperienceForm = this.workExperienceForm.value;
@@ -399,6 +401,8 @@ export class Step2Component implements OnInit, OnDestroy {
 
     this.workExperienceForm.reset();
 
+    this.selectedReasonForLeaving = null;
+
     this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
@@ -410,6 +414,8 @@ export class Step2Component implements OnInit, OnDestroy {
     this.isWorkExperienceEdited = false;
 
     this.workExperienceForm.reset();
+
+    this.selectedReasonForLeaving = null;
 
     this.inputResetService.resetInputSubject.next(true);
 
