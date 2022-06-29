@@ -207,7 +207,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       this.subtotal = [...this.subtotal, { id: this.itemsCounter, value: 0 }];
       this.selectedPM.push({
         id: null,
-        logoName: 'assets/svg/common/repair-pm/ic_default_pm.svg',
+        logoName: 'assets/svg/common/repair-pm/ic_custom_pm.svg',
       });
     }
   }
@@ -658,7 +658,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                   logoName: `assets/svg/common/repair-pm/${
                     iterator.pmTruck
                       ? iterator.pmTruck.logoName
-                      : 'ic_default_pm.svg'
+                      : 'ic_custom_pm.svg'
                   }`,
                 });
               } else {
@@ -667,7 +667,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                   logoName: `assets/svg/common/repair-pm/${
                     iterator.pmTrailer
                       ? iterator.pmTrailer.logoName
-                      : 'ic_default_pm.svg'
+                      : 'ic_custom_pm.svg'
                   }`,
                 });
               }
