@@ -143,7 +143,7 @@ export class TruckassistTableBodyComponent
       }
     });
   }
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {
       this.viewData = changes.viewData.currentValue;

@@ -12,6 +12,7 @@
         [cdkDragPreviewClass]="'cdk-drag-preview'"
         [ngStyle]="{
           width: column.width + 'px',
+          'min-width.px': column?.minWidth ? column.minWidth : 'unset',
           'margin-left': column.moveRight ? 'auto' : 'unset',
           'justify-content': column?.headAlign ? column?.headAlign : ''
         }"
@@ -141,6 +142,7 @@
             column.resizable && !locked && i !== notPinedColumns.length - 1
           "
           [index]="i"
+          [tableColumn]="column"
           [tableSection]="'not-pined'"
           (resizeing)="onResize($event)"
           *ngFor="let column of notPinedColumns; let i = index"
@@ -152,6 +154,7 @@
           [cdkDragPreviewClass]="'cdk-drag-preview'"
           [ngStyle]="{
             width: column.width + 'px',
+            'min-width.px': column?.minWidth ? column.minWidth : 'unset',
             'justify-content': column?.headAlign ? column?.headAlign : ''
           }"
           [ngClass]="{
@@ -257,6 +260,7 @@
         *ngFor="let column of actionColumns; let i = index"
         [ngStyle]="{
           width: column.isAction ? column.width + 'px' : '0px',
+          'min-width.px': column?.minWidth ? column.minWidth : 'unset',
           display: column.isAction ? 'flex' : 'none',
           'justify-content': column?.headAlign ? column?.headAlign : ''
         }"
