@@ -43,5 +43,7 @@ export interface CompanyResponse {
     companyPayrolls?: Array<CompanyPayrollResponse> | null;
     insurancePolicies?: Array<InsurancePolicyResponse> | null;
     divisions?: Array<CompanyShortResponse> | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

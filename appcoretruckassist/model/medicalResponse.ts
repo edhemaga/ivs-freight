@@ -16,5 +16,7 @@ export interface MedicalResponse {
     note?: string | null;
     issueDate?: string;
     expDate?: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

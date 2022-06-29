@@ -43,5 +43,7 @@ export interface CompanyUserResponse {
     base?: number | null;
     commission?: number | null;
     note?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

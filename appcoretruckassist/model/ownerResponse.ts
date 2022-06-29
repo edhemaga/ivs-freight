@@ -28,5 +28,7 @@ export interface OwnerResponse {
     accountNumber?: string | null;
     routingNumber?: string | null;
     address?: AddressEntity;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

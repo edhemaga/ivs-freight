@@ -117,16 +117,6 @@ model/createTodoCommand.ts
 model/createTrailerCommand.ts
 model/createTruckCommand.ts
 model/creditType.ts
-model/deleteMultipleBrokerCommand.ts
-model/deleteMultipleCompanyAccountsCommand.ts
-model/deleteMultipleCompanyCommand.ts
-model/deleteMultipleCompanyOfficesCommand.ts
-model/deleteMultipleCompanyUsersCommand.ts
-model/deleteMultipleDriverCommand.ts
-model/deleteMultipleOwnerCommand.ts
-model/deleteMultipleShipperCommand.ts
-model/deleteMultipleTrailerCommand.ts
-model/deleteMultipleTruckCommand.ts
 model/departmentContactResponse.ts
 model/departmentResponse.ts
 model/driverListResponse.ts

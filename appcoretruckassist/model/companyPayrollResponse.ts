@@ -23,5 +23,7 @@ export interface CompanyPayrollResponse {
     loadedAndEmptySameRate?: boolean | null;
     defaultDriverCommission?: number | null;
     defaultOwnerCommission?: number | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

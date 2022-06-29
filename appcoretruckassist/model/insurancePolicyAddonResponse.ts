@@ -32,5 +32,7 @@ export interface InsurancePolicyAddonResponse {
     deductable?: number | null;
     comprehensiveAndCollision?: number | null;
     value?: number | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

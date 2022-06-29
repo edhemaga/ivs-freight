@@ -319,7 +319,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     const newData: CreateRepairShopCommand = {
       ...form,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
-      bankId: this.selectedBank.id,
+      bankId: this.selectedBank ? this.selectedBank.id : null,
       openHours: openHours,
       serviceTypes: this.services,
     };
@@ -371,7 +371,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     const newData: UpdateRepairShopCommand = {
       id: id,
       ...form,
-      bankId: this.selectedBank.id,
+      bankId: this.selectedBank ? this.selectedBank.id : null,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       openHours: openHours,
       serviceTypes: this.services,
