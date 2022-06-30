@@ -26,9 +26,10 @@ export class DashboardTopDriverComponent implements OnInit {
           data: [90000, 70000, 25000, 13000, 28000, 80000, 120000, 70000, 40000, 50000, 25000, 13000, 28000, 80000, 120000, 70000, 40000, 50000, 25000, 13000, 28000, 80000, 120000, 70000, 50000],
           yAxisID: 'y-axis-0',
           backgroundColor: '#919191',
-          borderColor: '#707070',
+          borderColor: '#919191',
           hoverBackgroundColor: '#6C6C6C',
-          hoverBorderColor: '#707070'
+          hoverBorderColor: '#707070',
+          label: 'Top 10'
         }
       },
       {
@@ -37,9 +38,10 @@ export class DashboardTopDriverComponent implements OnInit {
           data: [60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 50000, 100000, 120000],
           yAxisID: 'y-axis-0',
           backgroundColor: '#CCCCCC',
-          borderColor: '#707070',
+          borderColor: '#CCCCCC',
           hoverBackgroundColor: '#AAAAAA',
-          hoverBorderColor: '#707070'
+          hoverBorderColor: '#707070',
+          label: 'All Others'
         }
       }
     ],
@@ -51,6 +53,8 @@ export class DashboardTopDriverComponent implements OnInit {
     removeChartMargin: true,
     gridHoverBackground: true,
     startGridBackgroundFromZero: true,
+    hasHoverData: true,
+    hasPercentage: true,
     dataLabels: ['MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2024', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2025', '', 'MAR'],
     noChartImage: 'assets/svg/common/no_data_pay.svg'
   };

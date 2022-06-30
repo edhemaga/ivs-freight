@@ -18,10 +18,77 @@
     top: 0;
     left: 0;
     background-color: #fff;
-    width: 105px;
-    height: 152px;
-    transform: translateY(50%);
-    border: 1px solid #000000;
+    border-radius: 2px;
+    box-shadow: 0 0 4px #707070;
+
+    padding: 6px 8px 8px 8px;
+
+    z-index: 2;
+
+    .hover_data_title{
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 14px;
+      text-align: center;
+      color: #6C6C6C;
+    }
+
+    .hover_data_border_line{
+      height: 2px;
+      width: 100%;
+      margin: 6px 0px 8px 0px;
+
+      border-radius: 1px;
+      background-color: #F3F3F3;
+    }
+
+    .hover_data_info_holder{
+
+      .hover_data_info_top_line{
+        display: flex;
+        align-items: center;
+        margin-bottom: 2px;
+
+        .hover_data_icon{
+            svg{
+              display: flex;
+              width: 10px;
+              height: 10px;
+            }
+        }
+
+        .hover_data_info_title{
+          font-size: 11px;
+          font-weight: 500;
+          line-height: 14px;
+          text-align: center;
+          color: #6C6C6C;
+          padding-left: 4px;
+        }
+      }
+
+      .hover_data_price{
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: 600;
+        color: #6C6C6C;
+      }
+
+      .hover_data_percent{
+        font-size: 11px;
+        line-height: 14px;
+        font-weight: 700;
+        color: #B7B7B7;
+      }
+
+      &.hover_data_bigger_hold{
+        .hover_title_container{
+          display: flex;
+          flex: 1;
+          align-items: center;
+        }
+      }
+    }
   }
 }
 
