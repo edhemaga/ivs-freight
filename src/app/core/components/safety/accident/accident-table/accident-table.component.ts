@@ -197,9 +197,8 @@ export class AccidentTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      this.modalService.openModal(AccidentModalComponent, { size: 'large' });
-    } 
-    else if (event.action === 'tab-selected') {
+      this.modalService.openModal(AccidentModalComponent, { size: 'large-xl' });
+    } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setAccidentData(event.tabData);
     }
@@ -210,7 +209,7 @@ export class AccidentTableComponent implements OnInit {
       case 'edit-accident': {
         this.modalService.openModal(
           AccidentModalComponent,
-          { size: 'large' },
+          { size: 'large-xl' },
           { id: 21, type: 'edit' }
         );
       }

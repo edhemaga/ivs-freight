@@ -36,7 +36,7 @@
                 label: 'First Name',
                 isRequired: true,
                 textTransform: 'capitalize',
-                autoFocus: true
+                autoFocus: editData?.type === 'edit' ? false : true
               }"
             ></app-ta-input>
           </div>
@@ -235,7 +235,7 @@
                     name: 'NICKNAME',
                     type: 'text',
                     textTransform: 'capitalize',
-                    hideRequiredCheck: false
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <app-ta-input-address

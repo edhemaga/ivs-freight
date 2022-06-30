@@ -44,14 +44,19 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(){
+    const selectedIndex = this.tabs.findIndex(item => item.checked);
+
+    this.indexSwitch = selectedIndex == -1 ? 0 : selectedIndex;
     setTimeout(() => {
-      this.hoverStyle = this.getElementOffset(this.elem.nativeElement.childNodes[0].childNodes[0]);
+      this.hoverStyle = this.getElementOffset(this.elem.nativeElement.childNodes[0].childNodes[this.indexSwitch]);
     }, 350);
   }
 
   switchTab(e, indx, item){
-
     this.indexSwitch = indx;
+
+    this.tabs.map(item => item.checked = false);
+    item.checked = true;
     this.hoverStyle = this.getElementOffset(e.target);
     this.switchClicked.emit(item);
   }

@@ -15,7 +15,7 @@
             label: 'Title',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: true
+            autoFocus: editData?.type === 'edit' ? false : true
           }"
         ></app-ta-input>
       </div>

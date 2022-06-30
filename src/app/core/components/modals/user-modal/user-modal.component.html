@@ -5,13 +5,12 @@
   [isModalValid]="userForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-
   <app-ta-tab-switch
-  [tabs]="tabs"
-  (switchClicked)="tabChange($event)" 
-  [type]="'type1-modal-popup'"
+    [tabs]="tabs"
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
   >
-  </app-ta-tab-switch>  
+  </app-ta-tab-switch>
 
   <form [formGroup]="userForm" class="form-container">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -27,7 +26,7 @@
                 label: 'First Name',
                 isRequired: true,
                 textTransform: 'capitalize',
-                autoFocus: true
+                autoFocus: editData?.type === 'edit' ? false : true
               }"
             ></app-ta-input>
           </div>
@@ -128,14 +127,12 @@
               ></app-ta-input-dropdown>
             </div>
             <div class="col-3 no-p-left">
-
               <app-ta-tab-switch
-              [tabs]="typeOfEmploye"
-              (switchClicked)="onTypeOfEmploye($event)" 
-              [type]="'type2-modal-popup'"
+                [tabs]="typeOfEmploye"
+                (switchClicked)="onTypeOfEmploye($event)"
+                [type]="'type2-modal-popup'"
               >
-              </app-ta-tab-switch>              
-
+              </app-ta-tab-switch>
             </div>
           </div>
           <div
@@ -244,14 +241,12 @@
                 ></app-ta-input>
               </div>
               <div class="col-3 no-p-left">
-
                 <app-ta-tab-switch
-                [tabs]="typeOfPayroll"
-                (switchClicked)="onTypeOfPayroll($event)" 
-                [type]="'type2-modal-popup'"
+                  [tabs]="typeOfPayroll"
+                  (switchClicked)="onTypeOfPayroll($event)"
+                  [type]="'type2-modal-popup'"
                 >
-                </app-ta-tab-switch>                
-
+                </app-ta-tab-switch>
               </div>
             </div>
             <div
