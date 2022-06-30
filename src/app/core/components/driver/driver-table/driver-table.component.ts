@@ -370,6 +370,11 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       this.viewData = this.viewData.map((data: any) => {
         return this.mapDriverData(data);
       });
+
+      // For Testing
+      /* for(let i = 0; i < 500; i++){
+        this.viewData.push(this.viewData[0]);
+      } */
     } else {
       this.viewData = [];
     }
