@@ -7,8 +7,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class DashboardTopDriverComponent implements OnInit {
   @ViewChild('doughnutChart', {static: false}) public doughnutChart: any;
+  @ViewChild('t2') t2: any;
+  @ViewChild('t3') t3: any;
+
+  periodTitle: string = "Monthly";
 
   topTenTitle: string = "Driver";
+
+  periodSwitchItems: any[] = [];
 
   public chartConfig: object = {};
 
@@ -66,7 +72,12 @@ export class DashboardTopDriverComponent implements OnInit {
 
   public chartAxes: object = {};
 
-  driverTopSwitchTabs: any[] = [];
+  topTenSwitchTabstype1: any[] = [];
+
+  topTenSwitchTabstype2: any[] = [];
+
+  topTenSwitchTabstype3: any[] = [];
+ 
 
   driverTopSwitch: any[] = [];
 
@@ -135,31 +146,50 @@ export class DashboardTopDriverComponent implements OnInit {
 
   circleColor: any[] = ['8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F', 'CCCCCC'];
 
+  compareColor: any = {};
+  savedColors: any[] = [];
+
   popoverTopTen: any[] = [
     {
-      name: 'Dispatcher'
+      name: 'Dispatcher',
+      tab1: 'Load',
+      tab2: 'Revenue'
     },
     {
       name: 'Driver',
-      active: true
+      active: true,
+      tab1: 'Mileage',
+      tab2: 'Revenue'
     },
     {
-      name: 'Truck'
+      name: 'Truck',
+      tab1: 'Mileage',
+      tab2: 'Revenue'
     },
     {
-      name: 'Broker'
+      name: 'Broker',
+      tab1: 'Load',
+      tab2: 'Revenue'
     },
     {
-      name: 'Shipper'
+      name: 'Shipper',
+      tab1: 'Load',
+      tab2: 'Revenue'
     },
     {
-      name: 'Owner'
+      name: 'Owner',
+      tab1: 'Load',
+      tab2: 'Revenue'
     },
     {
-      name: 'Repair Shop'
+      name: 'Repair Shop',
+      tab1: 'Visit',
+      tab2: 'Cost'
     },
     {
-      name: 'Fuel Stop'
+      name: 'Fuel Stop',
+      tab1: 'Visit',
+      tab2: 'Cost'
     }
   ];
 
@@ -227,7 +257,7 @@ export class DashboardTopDriverComponent implements OnInit {
 
     this.setChartData();
 
-    this.driverTopSwitchTabs = [
+    this.topTenSwitchTabstype1 = [
       {
         name: 'Mileage',
       },
@@ -253,9 +283,26 @@ export class DashboardTopDriverComponent implements OnInit {
         name: 'All Time'
       },
       {
-        name: 'Custom'
+        name: 'Custom',
+        custom: true
       }
-    ]
+    ];
+
+    this.periodSwitchItems = [
+      {
+        name: 'Hourly'
+      },
+      {
+        name: 'Daily',
+      },
+      {
+        name: 'Weekly'
+      },
+      {
+        name: 'Monthly',
+        active: true
+      }
+    ];
   }
 
   changeDriverSwitchTabs(ev){
@@ -263,12 +310,52 @@ export class DashboardTopDriverComponent implements OnInit {
   }
 
   changeTopTen(item){
+    const newSwitchValue = [
+      {
+        name: item.tab1,
+        checked: true
+      },
+      {
+        name: item.tab2
+      }
+    ];
+    this.topTenSwitchTabstype1 = newSwitchValue;
+
     this.topTenTitle = item.name;
     this.popoverTopTen.map((item) => {
       item.active = false;
       return item;
     })
     item.active = true;
+    this.t3.close();
+  }
+
+  changePeriod(item){
+    this.periodTitle = item.name;
+    this.periodSwitchItems.map((item) => {
+      item.active = false;
+      return item;
+    })
+    item.active = true;
+    this.t2.close();
+  }
+
+  selectCompare(item, indx){
+    const itemId: any = item.id;
+    if(!(itemId in this.compareColor)){
+      if( !this.savedColors.length ){
+        this.savedColors = [...this.circleColor]; 
+        this.circleColor = [];
+      }
+  
+      const firstInArray = this.savedColors.shift();
+      
+      const objectSize = Object.keys(this.compareColor).length;
+      this.compareColor[item.id] = firstInArray;
+      this.driverList.splice(indx, 1);
+      this.driverList.splice(objectSize, 0, item);
+    }
+
   }
 
   hoverDoughnutChart(index){

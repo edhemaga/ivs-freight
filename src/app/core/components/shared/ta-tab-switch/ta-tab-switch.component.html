@@ -3,13 +3,15 @@
     *ngFor="let item of tabs; let indx=index" 
     class="tab-switch-items-holder" 
     [class.active]="indx == indexSwitch" 
-    (click)="switchTab($event, indx, item)"
+    (click)="switchTab($event, indx, item, t2)"
     #t2="ngbPopover"
     [ngbPopover]="customPopover"
     [placement]="['bottom-right']"
     [popoverClass]="'custompopovermain'"
     autoClose="outside"
     [container]="'body'"
+    triggers="'manual'" 
+    [disablePopover]="!item.custom"
     >
         {{item.name}}
     </div>

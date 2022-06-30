@@ -36,6 +36,7 @@
 
                 svg-icon{
                     svg{
+                        transition: all 0.3s;
                         display: flex;
 
                         path{
@@ -48,7 +49,6 @@
                     svg-icon{
                         svg{
                             transform: rotate(180deg);
-                            transition: all 0.3s;
                         }
                     }
                 }
@@ -157,6 +157,7 @@
     
                         svg-icon{
                             svg{
+                                transition: all 0.3s;
                                 display: flex;
                                 width: 13px;
                                 height: 8.15px;
@@ -166,6 +167,16 @@
                                 }
                             }
                         }                            
+                    }
+
+                    &.active-options{
+                        .dashboard-pickup-toolbar-dropdown-arrow{
+                            svg-icon{
+                                svg{
+                                    transform: rotate(180deg);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -194,7 +205,7 @@
         .dashboard-pickup-body-state-list-holder{
             width: 100%;
             height: 366px;
-            padding: 0px 6px;
+            padding: 4px 6px;
             box-sizing: border-box;
             display: flex;
             justify-content: flex-start;
@@ -211,13 +222,15 @@
 
                 .dashboard-pickup-body-state-list-items{
                     width: 100%;
+                    height: 30px;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding: 13px 12px 8px 6px;
+                    padding: 0px 12px 0px 6px;
                     box-sizing: border-box;
                     border-radius: 2px;
                     margin: 2px 0px;
+                    line-height: 30px;
 
                     .dashboard-pickup-body-state-list-frame{
                         display: flex;
@@ -297,80 +310,3 @@
     }
 }
 
-.state-popover-holder{
-    width: 146px;
-    height: 222px;
-    border-radius: 2px;
-    background-color: #fff;
-    box-shadow: 0 0 2px #0000004D;
-    padding: 5px 4px;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-direction: column;
-    overflow: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none; 
-
-    .state-popover-items-holder{
-        position: relative;
-        width: 100%;
-        height: 28px;
-        padding: 5px 8px;
-        box-sizing: border-box;
-        border-radius: 2px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        font-size: 14px;
-        font-weight: 700;
-        color: #6C6C6C;
-        margin: 2px 0px;
-        line-height: 28px;
-
-        .state-popover-icon-holder{
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            top: 5px;
-            right: 8px;
-
-            svg-icon{
-                svg{
-                    display: flex;
-                    width: 12.74px;
-                    height: 9.85px;
-
-                    path{
-                        fill: #97A8DC;
-                    }
-                }
-            }    
-
-        }
-
-        &:hover:not(.active){
-            cursor: pointer;
-            background-color: #F3F3F3;
-            color: #3C3C3C;
-        }
-
-        &.active{
-            color: #536BC2;
-            cursor: pointer;
-
-            .state-popover-icon-holder{
-                display: flex;
-            }
-        }
-
-    }
-
-    &::-webkit-scrollbar{
-        display: none;
-    }    
-}

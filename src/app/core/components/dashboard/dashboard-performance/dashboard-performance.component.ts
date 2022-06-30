@@ -7,6 +7,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class DashboardPerformanceComponent implements OnInit {
   @ViewChild('topChart', {static: false}) public topChart: any;
+  @ViewChild('t2') t2: any;
 
   periodTitle: string = "Daily";
 
@@ -395,20 +396,21 @@ export class DashboardPerformanceComponent implements OnInit {
         name: 'WTD'
       },
       {
-        id: 1,
+        id: 3,
         name: 'MTD'
       },
       {
-        id: 1,
+        id: 4,
         name: 'YTD'
       },
       {
-        id: 1,
+        id: 5,
         name: 'All Time'
       },
       {
-        id: 1,
-        name: 'Custom'
+        id: 6,
+        name: 'Custom',
+        custom: true
       }
     ]
 
@@ -464,6 +466,7 @@ export class DashboardPerformanceComponent implements OnInit {
       return item;
     })
     item.active = true;
+    this.t2.close();
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard-pickup-by-state',
@@ -6,12 +6,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard-pickup-by-state.component.scss']
 })
 export class DashboardPickupByStateComponent implements OnInit {
+  @ViewChild('t2') t2: any;
+  @ViewChild('t3') t3: any;
+
+
+  periodTitle: string = "Daily";
 
   pickupTitle: string = "Pickup";
 
-  pickupSwitchTabs: any[] = [];
+  stateSwitchTabsType1: any[] = [];
+
+  stateSwitchTabsType2: any[] = [];
+
+  stateSwitchTabsType3: any[] = [];
+
+  stateSwitchTabsType4: any[] = [];
 
   pickupSwitch: any[] = [];
+
+  periodSwitchItems: any[] = [];
 
   pickupStateList: any[] = [
     {
@@ -81,25 +94,39 @@ export class DashboardPickupByStateComponent implements OnInit {
   popoverState: any[] = [
     {
       name: 'Pickup',
-      active: true
+      active: true,
+      tabSwitch1: 'Count',
+      tabSwitch2: 'Revenue'
     },
     {
-      name: 'Delivery'
+      name: 'Delivery',
+      tabSwitch1: 'Count',
+      tabSwitch2: 'Revenue'
     },
     {
-      name: 'Load'
+      name: 'Load',
+      tabSwitch1: 'Count',
+      tabSwitch2: 'Revenue'
     },
     {
-      name: 'Violation'
+      name: 'Violation',
+      tabSwitch1: 'Count',
+      tabSwitch2: 'SW'
     },
     {
-      name: 'Accident'
+      name: 'Accident',
+      tabSwitch1: 'Count',
+      tabSwitch2: 'SW'
     },
     {
-      name: 'Repair'
+      name: 'Repair',
+      tabSwitch1: 'Count',
+      tabSwitch2: 'Cost'
     },
     {
-      name: 'Fuel'
+      name: 'Fuel',
+      tabSwitch1: 'Price',
+      tabSwitch2: 'Cost'
     }
   ];
 
@@ -107,7 +134,7 @@ export class DashboardPickupByStateComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.pickupSwitchTabs = [
+    this.stateSwitchTabsType1 = [
       {
         name: 'Count'
       },
@@ -133,23 +160,60 @@ export class DashboardPickupByStateComponent implements OnInit {
         name: 'All Time'
       },
       {
-        name: 'Custom'
+        name: 'Custom',
+        custom: true
+      }
+    ];
+
+    this.periodSwitchItems = [
+      {
+        name: 'Hourly'
+      },
+      {
+        name: 'Daily',
+        active: true
+      },
+      {
+        name: 'Weekly'
+      },
+      {
+        name: 'Monthly'
       }
     ];
   }
 
-  changePickupSwitchTabs(ev){
+  changeStateSwitchTabs(ev){
 
   }
 
   changeState(item){
+    const newSwitchValue = [
+      {
+        name: item.tabSwitch1,
+        checked: true
+      },
+      {
+        name: item.tabSwitch2
+      }
+    ];
+    this.stateSwitchTabsType1 = newSwitchValue;
     this.pickupTitle = item.name;
     this.popoverState.map((item) => {
       item.active = false;
       return item;
     })
     item.active = true;
+    this.t3.close();
   }
 
+  changePeriod(item){
+    this.periodTitle = item.name;
+    this.periodSwitchItems.map((item) => {
+      item.active = false;
+      return item;
+    })
+    item.active = true;
+    this.t2.close();
+  }
 
 }
