@@ -565,6 +565,7 @@
         <app-ta-custom-card [cardName]="'Profile Picture'" [isCardOpen]="true">
           <app-ta-logo-change
             [imageUrl]="this.driverForm.get('avatar').value"
+            [customClass]="'modal-container-M'"
             (base64ImageEvent)="onUploadImage($event)"
           ></app-ta-logo-change>
         </app-ta-custom-card>
