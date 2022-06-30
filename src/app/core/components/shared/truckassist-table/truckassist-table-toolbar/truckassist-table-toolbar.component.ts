@@ -143,7 +143,9 @@ export class TruckassistTableToolbarComponent
   }
 
   ngAfterViewInit(): void {
-    this.getToolbarWidth();
+    setTimeout(() => {
+      this.getToolbarWidth();
+    }, 10)
   }
 
   getToolbarWidth() {
