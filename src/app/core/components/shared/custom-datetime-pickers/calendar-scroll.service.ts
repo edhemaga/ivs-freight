@@ -10,11 +10,17 @@ export class CalendarScrollService {
   public indexAuto$ = new Subject<any>();
   public scrollToDate = new Subject<any>();
   public dateChanged = new Subject<any>();
+  public selectedIndex = 0;
   scrolledIndexChange = this.index$.pipe(distinctUntilChanged());
   scrollToAutoIndex = this.indexAuto$.pipe(distinctUntilChanged());
   private scrolledScroll: string;
 
   constructor() {
+  }
+
+  public set setAutoIndex(number){
+    this.selectedIndex = number;
+    this.indexAuto$.next(number);
   }
 
   public set scrolledScrollItem(name) {

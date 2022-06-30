@@ -665,4 +665,8 @@ export class CustomDatetimePickersComponent implements OnInit {
       this.selectedDateTime = this.createStringFromOutput();
     }
   }
+
+  ngOnDestroy(){
+    this.listPreview = "full_list";
+  }
 }

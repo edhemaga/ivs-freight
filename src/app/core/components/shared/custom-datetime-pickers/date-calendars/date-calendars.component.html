@@ -20,7 +20,7 @@
           <div class="today" (click)="selectCurrentDay()">Today</div>
         </div>
         <div class="calendars_list_view">
-          <div class="calendar_month_days d-flex" *ngIf="listPreview == 'full_list'">
+          <div class="calendar_month_days d-flex" [class.hideVisibility]="listPreview != 'full_list'">
             <div class="cal_day">S</div>
             <div class="cal_day">M</div>
             <div class="cal_day">T</div>
