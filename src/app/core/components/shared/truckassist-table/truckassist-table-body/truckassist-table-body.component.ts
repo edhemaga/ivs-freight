@@ -201,7 +201,12 @@ export class TruckassistTableBodyComponent
   }
 
   checkForScroll() {
-    const div = document.getElementById('scroll-container');
+    /* pined-tr */
+    /* not-pined-tr */
+    /* actions */
+
+    
+    /* const div = document.getElementById('scroll-container');
 
     if (div) {
       this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
@@ -209,7 +214,7 @@ export class TruckassistTableBodyComponent
       this.tableService.sendShowingScroll(this.showScrollSectionBorder);
 
       this.changeDetectorRef.detectChanges();
-    }
+    } */
   }
 
   trackByFn(index) {

@@ -9,35 +9,35 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { NotificationService } from '../services/notification/notification.service';
 
 @Directive({
   selector: '[resizeColumn]',
 })
 export class ResizeColumnDirective implements OnInit, OnChanges {
+  @Output() resizeing: EventEmitter<any> = new EventEmitter();
   @Input('resizeColumn') canDoResize: boolean;
   @Input() index: number;
   @Input() tableSection: string;
   @Input() tableColumn: any;
-  @Output() resizeing: EventEmitter<any> = new EventEmitter();
 
   private startX: number;
   private startWidth: number;
   private column: HTMLElement;
-  private table: HTMLElement;
+  private table: any;
   private pressed: boolean;
   resizer: any;
   newColumnWidth: number;
 
   constructor(
     private renderer: Renderer2,
-    private el: ElementRef,
-    private notificationService: NotificationService
+    private el: ElementRef
   ) {
     this.column = this.el.nativeElement;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.table = document.querySelector('.table-container');
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.canDoResize?.currentValue !== undefined) {
@@ -72,6 +72,10 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
 
   onMouseDown = (event: MouseEvent) => {
     if (!this.pressed) {
+      /* this.renderer.setStyle(document.body, 'cursor', 'ew-resize');
+      this.renderer.setStyle(document.body, 'height', '10000px'); */
+      /* this.renderer.setStyle(this.table, 'cursor', 'ew-resize'); */
+
       this.resizeing.emit({
         isResizeing: true,
         section: this.tableSection,
@@ -92,7 +96,9 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
 
       /* TODO: ukloni kada se doda na sve tabele i kolone minWidth */
       if (!this.tableColumn.minWidth) {
-        console.log('Ne postoji min sirina na ovoj tabeli ili koloni, resize se radi normalno bez limita');
+        console.log(
+          'Ne postoji min sirina na ovoj tabeli ili koloni, resize se radi normalno bez limita'
+        );
         this.resizeing.emit({
           isResizeing: true,
           width: this.newColumnWidth,
@@ -100,7 +106,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
           section: this.tableSection,
         });
         return;
-      } 
+      }
 
       // Send Resizeing Data If Width Is Between Min And Max Width
       if (
@@ -116,22 +122,26 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
       }
       // If It Has Reached Min Or Max Width, Show Notification
       else {
-        this.onMouseUp();
+        this.resizeing.emit({
+          beyondTheLimits: true,
+          index: this.index,
+          isResizeing: false,
+          isPined: this.tableColumn.isPined,
+        });
 
-        if (this.newColumnWidth <= this.tableColumn.minWidth) {
-          this.notificationService.warning(
-            `Reached a minimum width`,
-            'Warning:'
-          );
-        } else if (this.newColumnWidth >= maxWidth) {
-          this.notificationService.warning(`Reached maximum width`, 'Warning:');
-        }
+        this.pressed = false;
+       /*  this.renderer.removeStyle(document.body, 'cursor');
+        this.renderer.removeStyle(document.body, 'height'); */
+        window.getSelection().removeAllRanges();
       }
     }
   };
 
   onMouseUp = () => {
     if (this.pressed) {
+      /* this.renderer.removeStyle(document.body, 'cursor');
+      this.renderer.removeStyle(document.body, 'height'); */
+
       this.pressed = false;
 
       this.resizeing.emit({

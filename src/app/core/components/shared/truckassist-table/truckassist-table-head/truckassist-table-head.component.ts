@@ -47,6 +47,8 @@ export class TruckassistTableHeadComponent
   notPinedColumns: any[] = [];
   actionColumns: any[] = [];
   showBorder: boolean = false;
+  resizeHitLimit: number = -1;
+  resizeIsPined: boolean;
 
   constructor(
     private tableService: TruckassistTableService,
@@ -239,8 +241,8 @@ export class TruckassistTableHeadComponent
   // Rezaize
   onResize(event: any) {
     this.rezaizeing = event.isResizeing;
-    
-    if (this.rezaizeing) {
+
+    if (this.rezaizeing && !event.beyondTheLimits) {
       this.tableService.sendColumnWidth({
         event: event,
         columns:
@@ -248,6 +250,15 @@ export class TruckassistTableHeadComponent
             ? this.notPinedColumns
             : this.pinedColumns,
       });
+    }
+
+    if (event.beyondTheLimits) {
+      this.resizeHitLimit = event.index;
+      this.resizeIsPined = event.isPined;
+
+      setTimeout(() => {
+        this.resizeHitLimit = -1;
+      }, 1000);
     }
   }
 
