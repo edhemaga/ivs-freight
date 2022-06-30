@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -16,11 +16,16 @@ import { BrokerState } from '../state/broker-state/broker.store';
 import { ShipperState } from '../state/shipper-state/shipper.store';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
+import * as AppConst from 'src/app/const';
+import { input_note_animation } from '../../shared/ta-input-note/ta-input-note.animation';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-table',
   templateUrl: './customer-table.component.html',
   styleUrls: ['./customer-table.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: [input_note_animation('showHideNote')]
 })
 export class CustomerTableComponent implements OnInit, OnDestroy {
   public tableOptions: any = {};
@@ -31,6 +36,19 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   public shipper: ShipperState[] = [];
   public selectedTab = 'broker';
   public resetColumns: boolean;
+  public agmMap: any;
+  public styles = AppConst.GOOGLE_MAP_STYLES;
+  mapRestrictions = {
+    latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
+    strictBounds: true,
+  };
+
+  public searchForm!: FormGroup;
+  public sortTypes: any[] = [];
+  public mapListExpanded: boolean = true;
+  public sortDirection: string = 'asc';
+  public activeSortType: any = {};
+  private tooltip: any;
 
   constructor(
     private modalService: ModalService,
@@ -39,7 +57,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     private brokerService: BrokerTService,
     private shipperQuery: ShipperQuery,
     private shipperService: ShipperTService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private ref: ChangeDetectorRef,
+    private formBuilder: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -126,6 +146,25 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+      console.log('viewData', this.viewData);
+
+      this.sortTypes = [
+        {name: 'Business Name', id: 1},
+        {name: 'Rating', id: 2},
+        {name: 'Date Added', id: 3},
+        {name: 'Last Used Date', id: 4},
+        {name: 'Pickups', id: 5},
+        {name: 'Deliveries', id: 6},
+        {name: 'Avg. Pickup Time', id: 7},
+        {name: 'Avg. Delivery Time', id: 8}
+      ];
+
+      this.activeSortType = this.sortTypes[0];
+  
+      this.searchForm = this.formBuilder.group({
+        search: ''
+      });
   }
 
   public initTableOptions(): void {
@@ -134,7 +173,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       toolbarActions: {
         hideLocationFilter: false,
         hideViewMode: false,
-        viewModeActive: 'List'
+        viewModeActive: 'Map'
       },
       config: {
         showSort: true,
@@ -185,7 +224,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         data: this.brokers,
         extended: false,
         isCustomer: true,
-        gridNameTitle: 'Broker',
+        gridNameTitle: 'Customer',
         stateName: 'brokers',
         gridColumns: this.getGridColumns('brokers', this.resetColumns),
       },
@@ -196,7 +235,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         data: this.shipper,
         extended: false,
         isCustomer: true,
-        gridNameTitle: 'Shipper',
+        gridNameTitle: 'Customer',
         stateName: 'shippers',
         gridColumns: this.getGridColumns('shippers', this.resetColumns),
       },
@@ -223,6 +262,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
   setCustomerData(td: any) {
     this.viewData = td.data;
+    console.log('viewData', this.viewData);
     this.columns = td.gridColumns;
 
     this.viewData = this.viewData.map((data: any) => {
@@ -289,6 +329,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
   // Table Body Actions
   onTableBodyActions(event: any) {
+    console.log('onTableBodyActions event', event);
     // Edit Call
     if (event.type === 'edit-cutomer-or-shipper') {
       // Edit Broker Call Modal
@@ -442,5 +483,60 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
     this.tableService.sendDeleteSelectedRows([]);
+  }
+
+  public getMapInstance(map) {
+    this.agmMap = map;
+  }
+
+  clickedMarker(i) {
+    this.viewData.map((data: any, index) => {
+      if (data.isExpanded) {
+        data.isExpanded = false;
+      }
+
+      if (data.isSelected && index != i) {
+        data.isSelected = false;
+      }
+      else if ( index == i ) {
+        data.isSelected = !data.isSelected;
+      }
+    });
+  }
+
+  expandInfo(item) {
+    item.isExpanded = !item.isExpanded;
+    console.log('expandInfo', item.isExpanded);
+    this.ref.detectChanges();
+  }
+
+  resizeMapList() {
+    this.mapListExpanded = !this.mapListExpanded;
+  }
+
+  showMoreOptions(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  changeSortDirection() {
+    this.sortDirection = this.sortDirection == 'asc' ? 'desc' : 'asc';
+  }
+  
+  changeSortType(item) {
+    this.sortTypes.map((data: any, index) => {
+      if (data.isActive) {
+        data.isActive = false;
+      }
+    });
+    
+    item.isActive = true;
+    this.activeSortType = item;
+    this.tooltip.close();
+  }
+
+  openPopover(t2) {
+    t2.open();
+    this.tooltip = t2;
   }
 }

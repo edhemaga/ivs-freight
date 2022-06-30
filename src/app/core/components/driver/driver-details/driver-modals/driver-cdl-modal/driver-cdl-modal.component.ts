@@ -177,6 +177,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             };
           });
           this.classTypes = res.classTypes;
+          console.log('classTypes', this.classTypes);
           this.countryTypes = res.countryTypes;
           this.endorsements = res.endorsements;
           this.restrictions = res.restrictions;
