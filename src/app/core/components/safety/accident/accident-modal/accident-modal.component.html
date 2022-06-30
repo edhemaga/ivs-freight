@@ -3,17 +3,16 @@
   [editData]="editData"
   [editName]="editData?.id"
   [isModalValid]="accidentForm.valid"
-  [customClass]="'modal-container-L'"
+  [customClass]="'modal-container-XL'"
   [disableDelete]="true"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-
   <app-ta-tab-switch
-  [tabs]="tabs"
-  (switchClicked)="tabChange($event)" 
-  [type]="'type1-modal-popup'"
+    [tabs]="tabs"
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
   >
-  </app-ta-tab-switch>  
+  </app-ta-tab-switch>
 
   <form
     [formGroup]="accidentForm"
@@ -483,7 +482,7 @@
           [isCardOpen]="documents.length"
         >
           <app-ta-modal-upload
-            [files]="[]"
+            [files]="documents"
             [modalSize]="'modal-large'"
             (onFileEvent)="onFilesEvent($event, 'documents')"
           ></app-ta-modal-upload>
@@ -495,7 +494,7 @@
           [isCardOpen]="media.length"
         >
           <app-ta-modal-upload
-            [files]="[]"
+            [files]="media"
             [modalSize]="'modal-large'"
             (onFileEvent)="onFilesEvent($event, 'media')"
           ></app-ta-modal-upload>

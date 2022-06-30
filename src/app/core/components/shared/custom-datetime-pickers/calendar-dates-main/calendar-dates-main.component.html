@@ -20,18 +20,18 @@
       </div>
       <div *ngIf="listPreview == 'month_list'">
           <div class="month_list">
-            <div class="month_list_item" (click)="setCalendarListPreview(0)" [class.current_month]="currentYear == item && 0 == currentMonth">JAN</div>
-            <div class="month_list_item" (click)="setCalendarListPreview(1)" [class.current_month]="currentYear == item && 1 == currentMonth">FEB</div>
-            <div class="month_list_item" (click)="setCalendarListPreview(2)" [class.current_month]="currentYear == item && 2 == currentMonth">MAR</div>
-            <div class="month_list_item" (click)="setCalendarListPreview(3)" [class.current_month]="currentYear == item && 3 == currentMonth">APR</div>
-            <div class="month_list_item" (click)="setCalendarListPreview(4)" [class.current_month]="currentYear == item && 4 == currentMonth">MAY</div>
-            <div class="month_list_item" (click)="setCalendarListPreview(5)" [class.current_month]="currentYear == item && 5 == currentMonth">JUN</div>
-            <div class="month_list_item" (click)="setCalendarListPreview(6)" [class.current_month]="currentYear == item && 6 == currentMonth">JUL</div>
-            <div class="month_list_item" (click)="setCalendarListPreview(7)" [class.current_month]="currentYear == item && 7 == currentMonth">AUG</div>
-            <div class="month_list_item" (click)="setCalendarListPreview(8)" [class.current_month]="currentYear == item && 8 == currentMonth">SEP</div>
-            <div class="month_list_item" (click)="setCalendarListPreview(9)" [class.current_month]="currentYear == item && 9 == currentMonth">OCT</div>
-            <div class="month_list_item" (click)="setCalendarListPreview(10)" [class.current_month]="currentYear == item && 10 == currentMonth">NOV</div>
-            <div class="month_list_item" (click)="setCalendarListPreview(11)" [class.current_month]="currentYear == item && 11 == currentMonth">DEC</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(0)" [class.current_month]="selectedYearFromInput == month.getFullYear() && 0 == selMonth">JAN</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(1)" [class.current_month]="selectedYearFromInput == month.getFullYear() && 1 == selMonth">FEB</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(2)" [class.current_month]="selectedYearFromInput == month.getFullYear() && 2 == selMonth">MAR</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(3)" [class.current_month]="selectedYearFromInput == month.getFullYear() && 3 == selMonth">APR</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(4)" [class.current_month]="selectedYearFromInput == month.getFullYear() && 4 == selMonth">MAY</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(5)" [class.current_month]="selectedYearFromInput == month.getFullYear() && 5 == selMonth">JUN</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(6)" [class.current_month]="selectedYearFromInput == month.getFullYear() && 6 == selMonth">JUL</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(7)" [class.current_month]="selectedYearFromInput == month.getFullYear() && 7 == selMonth">AUG</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(8)" [class.current_month]="selectedYearFromInput == month.getFullYear() && 8 == selMonth">SEP</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(9)" [class.current_month]="selectedYearFromInput == month.getFullYear() && 9 == selMonth">OCT</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(10)" [class.current_month]="selectedYearFromInput == month.getFullYear() && 10 == selMonth">NOV</div>
+            <div class="month_list_item" (click)="setCalendarListPreview(11)" [class.current_month]="selectedYearFromInput == month.getFullYear() && 11 == selMonth">DEC</div>
         </div>
       </div>
     </ng-container>

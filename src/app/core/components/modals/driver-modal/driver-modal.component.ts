@@ -1,7 +1,7 @@
 import { FormArray } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
@@ -24,6 +24,7 @@ import {
   emailRegex,
   phoneRegex,
   bankRoutingValidator,
+  mileValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-modal-upload/ta-upload-file.service';
@@ -37,6 +38,7 @@ import {
   createBase64,
   getStringFromBase64,
 } from 'src/app/core/utils/base64.image';
+import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.component';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -49,7 +51,7 @@ import {
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
-
+  @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
   public driverForm: FormGroup;
   public labelsBank: any[] = [];
   public labelsPayType: any[] = [];
@@ -83,10 +85,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     },
     {
       id: 2,
-      name: 'Pay',
-    },
-    {
-      id: 3,
       name: 'Additional',
     },
   ];
@@ -126,6 +124,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   };
 
   public driverStatus: boolean = true;
+
+  public documents: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -232,30 +232,34 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       ownerId: [null],
       ownerType: ['Sole Proprietor'],
       ein: [null],
+      mvr: [5, Validators.required],
       bussinesName: [null],
       address: [null, [Validators.required]],
       addressUnit: [null, [Validators.maxLength(6)]],
       bankId: [null],
       account: [null],
       routing: [null],
-      payroll: [false],
-      payType: [null],
-      mailNotification: [true],
-      phoneCallNotification: [false],
-      smsNotification: [false],
-      soloEmptyMile: [null, [Validators.min(0), Validators.max(10)]],
-      soloLoadedMile: [null, [Validators.min(0), Validators.max(10)]],
-      soloPerStop: [null, [Validators.min(0), Validators.max(10)]],
-      teamEmptyMile: [null, [Validators.min(0), Validators.max(10)]],
-      teamLoadedMile: [null, [Validators.min(0), Validators.max(10)]],
-      teamPerStop: [null, [Validators.min(0), Validators.max(10)]],
+      truckAsssistACH: [false],
+      payType: [null, Validators.required],
+      mailNotificationGeneral: [true],
+      pushNotificationGeneral: [false],
+      smsNotificationGeneral: [false],
+      mailNotificationPayroll: [true],
+      pushNotificationPayroll: [false],
+      smsNotificationPayroll: [false],
+      soloEmptyMile: [null, mileValidation],
+      soloLoadedMile: [null, mileValidation],
+      soloPerStop: [null, mileValidation],
+      teamEmptyMile: [null, mileValidation],
+      teamLoadedMile: [null, mileValidation],
+      teamPerStop: [null, mileValidation],
       commissionSolo: [25],
       commissionTeam: [25],
       twic: [false],
       twicExpDate: [null],
       fuelCard: [null],
-      emergencyContactName: [null],
-      emergencyContactPhone: [null, phoneRegex],
+      emergencyContactName: [null, Validators.required],
+      emergencyContactPhone: [null, [phoneRegex, Validators.required]],
       emergencyContactRelationship: [null],
     });
   }
@@ -292,18 +296,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   private onIncludePayroll(): void {
     this.driverForm
-      .get('payroll')
+      .get('truckAsssistACH')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
-            this.driverForm.get('payType'),
+            this.driverForm.get('bankId'),
             true,
             [Validators.required]
           );
         } else {
           this.inputService.changeValidators(
-            this.driverForm.get('payType'),
+            this.driverForm.get('bankId'),
             false
           );
         }
@@ -478,6 +482,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.inputService.changeValidators(this.driverForm.get('ein'), false);
       }
     }
+    console.log(this.selectedOwnerTab.id);
+    console.log(
+      this.ownerTabs.findIndex((item) => item.id === this.selectedOwnerTab.id)
+    );
+    this.tabSwitch.indexSwitch = this.ownerTabs.findIndex(
+      (item) => item.id === this.selectedOwnerTab.id
+    );
+    console.log('INDEX SWTICH ', this.tabSwitch.indexSwitch);
   }
 
   private isCheckedOwner() {
@@ -489,6 +501,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm.get('ownerType').patchValue('Sole Proprietor');
         }
       });
+  }
+
+  public onFilesEvent(event: any) {
+    this.documents = event.files;
   }
 
   private einNumberChange() {
@@ -811,11 +827,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             bankId: res.bank ? res.bank.name : null,
             account: res.account,
             routing: res.routing,
-            payroll: res.payroll,
+            truckAsssistACH: res.payroll,
             payType: res.payType ? res.payType.name : null,
-            mailNotification: res.mailNotification,
-            phoneCallNotification: res.phoneCallNotification,
-            smsNotification: res.smsNotification,
+            mailNotificationGeneral: res.mailNotification,
+            phoneCallNotificationGeneral: res.phoneCallNotification,
+            smsNotificationGeneral: res.smsNotification,
             soloEmptyMile: res.solo ? res.solo.emptyMile : null,
             soloLoadedMile: res.solo ? res.solo.loadedMile : null,
             soloPerStop: res.solo ? res.solo.perStop : null,

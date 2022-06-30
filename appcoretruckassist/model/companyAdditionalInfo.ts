@@ -20,8 +20,8 @@ export interface CompanyAdditionalInfo {
     factorByDefault?: boolean | null;
     customerPayTerm?: string | null;
     customerCredit?: string | null;
-    mvrMonths?: number | null;
-    truckInspectionMonths?: number | null;
-    trailerInspectionMonths?: number | null;
+    mvrMonths?: number;
+    truckInspectionMonths?: number;
+    trailerInspectionMonths?: number;
 }
 

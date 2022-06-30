@@ -23,7 +23,7 @@ export interface CreateRepairCommand {
     odometer?: number | null;
     date?: string;
     invoice?: string | null;
-    repairShopId?: number;
+    repairShopId?: number | null;
     total?: number | null;
     serviceTypes?: Array<RepairServiceTypeCommand> | null;
     note?: string | null;
