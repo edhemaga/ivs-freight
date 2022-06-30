@@ -30,7 +30,7 @@
         {{ cardName }}
       </span>
       <div
-        *ngIf="hasHeaderSvg && isCardOpen"
+        *ngIf="hasHeaderSvg && (isCardOpen || headerSvgEnabled)"
         ngbTooltip
         [mainTooltip]="tooltipName"
         [tooltipBackground]="tooltipName ? '#6c6c6c' : '#ffffff'"
