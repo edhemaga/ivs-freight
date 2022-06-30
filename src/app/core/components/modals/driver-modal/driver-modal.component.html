@@ -148,6 +148,258 @@
             ></app-ta-input>
           </div>
         </div>
+        <!-- Payroll -->
+        <app-ta-custom-card [cardName]="'Payroll'" [isCardOpen]="true">
+          <div
+            class="custom-row-paytype-driver"
+            [ngStyle]="
+              driverForm.get('truckAsssistACH').value && {
+                'margin-bottom': '32px'
+              }
+            "
+          >
+            <div class="checkbox-paytype-driver">
+              <app-ta-checkbox
+                formControlName="truckAsssistACH"
+                [customClass]="'medium'"
+                [name]="'truckassistACH'"
+                [label]="'Use TruckAssist ACH'"
+              ></app-ta-checkbox>
+              <div class="paytype-driver">
+                <app-ta-input-dropdown
+                  formControlName="payType"
+                  [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Pay type',
+                    isRequired: true,
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-paytype'
+                  }"
+                  [canAddNew]="true"
+                  [options]="labelsPayType"
+                  (selectedItem)="onSelectDropdown($event, 'paytype')"
+                ></app-ta-input-dropdown>
+              </div>
+            </div>
+
+            <!-- <div class="paytype-field-notification">
+              <p>Notifications</p>
+              <div class="btn-group" role="group">
+                <label class="btn" ngbButtonLabel>
+                  <input
+                    type="checkbox"
+                    class="btn-check"
+                    formControlName="mailNotification"
+                    ngbButton
+                  />
+                  Email
+                </label>
+                <label class="btn" ngbButtonLabel>
+                  <input
+                    type="checkbox"
+                    class="btn-check"
+                    formControlName="phoneCallNotification"
+                    ngbButton
+                  />
+                  Phone Call
+                </label>
+                <label class="btn" ngbButtonLabel>
+                  <input
+                    type="checkbox"
+                    class="btn-check"
+                    formControlName="smsNotification"
+                    ngbButton
+                  />
+                  SMS
+                </label>
+              </div>
+            </div> -->
+          </div>
+
+          <!-- Pay Type Per Mile -->
+          <div
+            class="paytype-permile"
+            [class.active]="selectedPayType?.name.toLowerCase() === 'per mile'"
+            *ngIf="selectedPayType?.name.toLowerCase() === 'per mile'"
+          >
+            <div class="permile-fields">
+              <p>SOLO</p>
+              <app-ta-input
+                formControlName="soloEmptyMile"
+                [inputConfig]="{
+                  name: 'Empty Mile',
+                  type: 'number',
+                  label: 'Empty Mi',
+                  isRequired: true,
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  step: 0.01,
+                  min: 0,
+                  max: 10
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="soloLoadedMile"
+                [inputConfig]="{
+                  name: 'Loaded Mile',
+                  type: 'number',
+                  label: 'Loaded Mi',
+                  isRequired: true,
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  step: 0.01,
+                  min: 0,
+                  max: 10
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="soloPerStop"
+                [inputConfig]="{
+                  name: 'Per Stop',
+                  type: 'number',
+                  label: 'Per Stop',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  step: 0.01,
+                  min: 0,
+                  max: 10
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="permile-fields">
+              <p>TEAM</p>
+              <app-ta-input
+                formControlName="teamEmptyMile"
+                [inputConfig]="{
+                  name: 'Empty Mile',
+                  type: 'number',
+                  label: 'Empty Mi',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  step: 0.01,
+                  min: 0,
+                  max: 10
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="teamLoadedMile"
+                [inputConfig]="{
+                  name: 'Loaded Mile',
+                  type: 'number',
+                  label: 'Loaded Mi',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  step: 0.01,
+                  min: 0,
+                  max: 10
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="teamPerStop"
+                [inputConfig]="{
+                  name: 'Per Stop',
+                  type: 'number',
+                  label: 'Per Stop',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  step: 0.01,
+                  min: 0,
+                  max: 10
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+
+          <!-- Pay Type Commission -->
+          <div
+            class="paytype-commission"
+            *ngIf="selectedPayType?.name.toLowerCase() === 'commission'"
+            [class.active]="
+              selectedPayType?.name.toLowerCase() === 'commission'
+            "
+          >
+            <div class="paytype-field">
+              <app-ta-ngx-slider
+                [sliderName]="'SOLO'"
+                [sliderOptions]="soloSliderOptions"
+                [startedValue]="driverForm.get('commissionSolo')?.value"
+                [customClass]="
+                  'custom-slider-with-percentage custom-driver-modal'
+                "
+                (onUserValueChange)="
+                  driverForm.get('commissionSolo').setValue($event)
+                "
+              ></app-ta-ngx-slider>
+            </div>
+            <div class="paytype-field">
+              <app-ta-ngx-slider
+                [sliderName]="'TEAM'"
+                [sliderOptions]="teamSliderOptions"
+                [startedValue]="driverForm.get('commissionTeam')?.value"
+                [customClass]="
+                  'custom-slider-with-percentage custom-driver-modal'
+                "
+                (onUserValueChange)="
+                  driverForm.get('commissionTeam').setValue($event)
+                "
+              ></app-ta-ngx-slider>
+            </div>
+          </div>
+
+          <!-- Bank -->
+          <div
+            *ngIf="driverForm.get('truckAsssistACH').value"
+            class="custom-bank-row custom-bank-row-driver"
+          >
+            <div class="bank-field">
+              <app-ta-input-dropdown
+                formControlName="bankId"
+                [template]="'svg-template'"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Bank Name',
+                  isDropdown: true,
+                  isRequired: driverForm.get('truckAsssistACH').value,
+                  dropdownWidthClass: 'w-col-banks-driver'
+                }"
+                [canAddNew]="true"
+                [options]="labelsBank"
+                (selectedItem)="onSelectDropdown($event, 'bank')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="bank-field">
+              <app-ta-input
+                formControlName="routing"
+                [inputConfig]="{
+                  name: 'Routing Number',
+                  type: 'text',
+                  label: 'Routing #',
+                  isDisabled: !selectedBank,
+                  isRequired: selectedBank,
+                  minLength: 9,
+                  maxLength: 9
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="bank-field">
+              <app-ta-input
+                formControlName="account"
+                [inputConfig]="{
+                  name: 'Account Number',
+                  type: 'text',
+                  label: 'Account #',
+                  isDisabled: !selectedBank,
+                  isRequired: selectedBank,
+                  maxLength: 17,
+                  minLength: 4
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+
         <!-- IsOwner -->
         <div class="custom-checkbox-card">
           <div class="divider"></div>
@@ -221,6 +473,12 @@
           [hasCounter]="offDutyLocations.length ? offDutyLocations.length : '0'"
           [cardName]="'Off duty Location'"
           [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
+          [tooltipName]="
+            'Location where driver can go
+          off duty and disable GPS tracking.
+          Company parking will be off duty
+          location automatically.'
+          "
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [isCardOpen]="offDutyLocations.length"
           [hasBodyData]="offDutyLocations.length"
@@ -248,7 +506,8 @@
                     name: 'NICKNAME',
                     type: 'text',
                     textTransform: 'capitalize',
-                    hideRequiredCheck: true
+                    hideRequiredCheck: true,
+                    blackInput: true
                   }"
                 ></app-ta-input>
                 <app-ta-input-address
@@ -256,7 +515,8 @@
                   [inputConfig]="{
                     name: 'Address',
                     type: 'text',
-                    textTransform: 'capitalize'
+                    textTransform: 'capitalize',
+                    blackInput: true
                   }"
                   (selectedAddress)="onHandleAddressFormArray($event, ind)"
                 ></app-ta-input-address>
@@ -332,251 +592,7 @@
           [isVisibleNote]="driverForm.get('note').value"
         ></app-ta-input-note>
       </div>
-      <!-------------------------------- Pay Tab -------------------------------->
-      <div class="m-tab" *ngIf="selectedTab === 4">
-        <div class="divider"></div>
-        <div class="payroll-checkbox">
-          <app-ta-checkbox
-            formControlName="payroll"
-            [label]="'Include in Payroll'"
-          ></app-ta-checkbox>
-        </div>
-        <div
-          class="custom-bank-row first-row"
-          [ngClass]="{ 'row-mb-10 ': !driverForm.get('payroll').value }"
-        >
-          <div class="bank-field">
-            <app-ta-input-dropdown
-              formControlName="bankId"
-              [template]="'svg-template'"
-              [inputConfig]="{
-                name: 'Input Dropdown',
-                type: 'text',
-                label: 'Bank Name',
-                isDropdown: true,
-                dropdownWidthClass: 'w-col-banks'
-              }"
-              [canAddNew]="true"
-              [options]="labelsBank"
-              (selectedItem)="onSelectDropdown($event, 'bank')"
-            ></app-ta-input-dropdown>
-          </div>
-          <div class="bank-field">
-            <app-ta-input
-              formControlName="routing"
-              [inputConfig]="{
-                name: 'Routing Number',
-                type: 'text',
-                label: 'Routing #',
-                isDisabled: !selectedBank,
-                isRequired: selectedBank,
-                minLength: 9,
-                maxLength: 9
-              }"
-            ></app-ta-input>
-          </div>
-          <div class="bank-field">
-            <app-ta-input
-              formControlName="account"
-              [inputConfig]="{
-                name: 'Account Number',
-                type: 'text',
-                label: 'Account #',
-                isDisabled: !selectedBank,
-                isRequired: selectedBank,
-                maxLength: 17,
-                minLength: 4
-              }"
-            ></app-ta-input>
-          </div>
-        </div>
-        <div
-          class="custom-row-paytype-notification"
-          [ngClass]="{ 'divide-margin': driverForm.get('payType').value }"
-          *ngIf="driverForm.get('payroll').value"
-          [@showHidePayroll]="
-            driverForm.get('payroll').value ? 'true' : 'false'
-          "
-        >
-          <div class="paytype-field">
-            <app-ta-input-dropdown
-              formControlName="payType"
-              [inputConfig]="{
-                name: 'Input Dropdown',
-                type: 'text',
-                label: 'Pay type',
-                isRequired: true,
-                isDropdown: true,
-                dropdownWidthClass: 'w-col-paytype'
-              }"
-              [canAddNew]="true"
-              [options]="labelsPayType"
-              (selectedItem)="onSelectDropdown($event, 'paytype')"
-            ></app-ta-input-dropdown>
-          </div>
-          <div class="paytype-field-notification">
-            <p>Notifications</p>
-            <div class="btn-group" role="group">
-              <label class="btn" ngbButtonLabel>
-                <input
-                  type="checkbox"
-                  class="btn-check"
-                  formControlName="mailNotification"
-                  ngbButton
-                />
-                Email
-              </label>
-              <label class="btn" ngbButtonLabel>
-                <input
-                  type="checkbox"
-                  class="btn-check"
-                  formControlName="phoneCallNotification"
-                  ngbButton
-                />
-                Phone Call
-              </label>
-              <label class="btn" ngbButtonLabel>
-                <input
-                  type="checkbox"
-                  class="btn-check"
-                  formControlName="smsNotification"
-                  ngbButton
-                />
-                SMS
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pay Type Per Mile -->
-        <div
-          class="paytype-permile"
-          [class.active]="selectedPayType?.name.toLowerCase() === 'per mile'"
-          *ngIf="selectedPayType?.name.toLowerCase() === 'per mile'"
-        >
-          <div class="permile-fields">
-            <p>Solo</p>
-            <app-ta-input
-              formControlName="soloEmptyMile"
-              [inputConfig]="{
-                name: 'Empty Mile',
-                type: 'number',
-                label: 'Empty Mi',
-                isRequired: true,
-                placeholderIcon: 'dollar',
-                customClass: 'dollar-placeholderIcon',
-                step: 0.01,
-                min: 0,
-                max: 10
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="soloLoadedMile"
-              [inputConfig]="{
-                name: 'Loaded Mile',
-                type: 'number',
-                label: 'Loaded Mi',
-                isRequired: true,
-                placeholderIcon: 'dollar',
-                customClass: 'dollar-placeholderIcon',
-                step: 0.01,
-                min: 0,
-                max: 10
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="soloPerStop"
-              [inputConfig]="{
-                name: 'Per Stop',
-                type: 'number',
-                label: 'Per Stop',
-                placeholderIcon: 'dollar',
-                customClass: 'dollar-placeholderIcon',
-                step: 0.01,
-                min: 0,
-                max: 10
-              }"
-            ></app-ta-input>
-          </div>
-          <div class="permile-fields">
-            <p>Team</p>
-            <app-ta-input
-              formControlName="teamEmptyMile"
-              [inputConfig]="{
-                name: 'Empty Mile',
-                type: 'number',
-                label: 'Empty Mi',
-                placeholderIcon: 'dollar',
-                customClass: 'dollar-placeholderIcon',
-                step: 0.01,
-                min: 0,
-                max: 10
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="teamLoadedMile"
-              [inputConfig]="{
-                name: 'Loaded Mile',
-                type: 'number',
-                label: 'Loaded Mi',
-                placeholderIcon: 'dollar',
-                customClass: 'dollar-placeholderIcon',
-                step: 0.01,
-                min: 0,
-                max: 10
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="teamPerStop"
-              [inputConfig]="{
-                name: 'Per Stop',
-                type: 'number',
-                label: 'Per Stop',
-                placeholderIcon: 'dollar',
-                customClass: 'dollar-placeholderIcon',
-                step: 0.01,
-                min: 0,
-                max: 10
-              }"
-            ></app-ta-input>
-          </div>
-        </div>
-
-        <!-- Pay Type Commission -->
-        <div
-          class="paytype-commission"
-          *ngIf="selectedPayType?.name.toLowerCase() === 'commission'"
-          [class.active]="selectedPayType?.name.toLowerCase() === 'commission'"
-        >
-          <div class="paytype-field">
-            <app-ta-ngx-slider
-              [sliderName]="'Solo'"
-              [sliderOptions]="soloSliderOptions"
-              [startedValue]="driverForm.get('commissionSolo')?.value"
-              [customClass]="
-                'custom-slider-with-percentage custom-driver-modal'
-              "
-              (onUserValueChange)="
-                driverForm.get('commissionSolo').setValue($event)
-              "
-            ></app-ta-ngx-slider>
-          </div>
-          <div class="paytype-field">
-            <app-ta-ngx-slider
-              [sliderName]="'Team'"
-              [sliderOptions]="teamSliderOptions"
-              [startedValue]="driverForm.get('commissionTeam')?.value"
-              [customClass]="
-                'custom-slider-with-percentage custom-driver-modal'
-              "
-              (onUserValueChange)="
-                driverForm.get('commissionTeam').setValue($event)
-              "
-            ></app-ta-ngx-slider>
-          </div>
-        </div>
-      </div>
-
+      <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
         <app-ta-logo-change
           [imageUrl]="this.driverForm.get('avatar').value"
