@@ -888,19 +888,25 @@ export class TaInputComponent
           this.selectSpanByTabIndex(this.selectionInput);
         }
       } else if (e.keyCode == 39 || e.keyCode == 9) {
-        if (this.selectionInput != 2) {
-
-          if (e.keyCode == 9) {
-
-          }
-
+        if (this.selectionInput != 2 && !e.shiftKey) {
           this.selectionInput = this.selectionInput + 1;
           this.selectSpanByTabIndex(this.selectionInput);
-        } else if (e.keyCode == 9) {
+        } else if (e.keyCode == 9 && !e.shiftKey) {
           let allInputs = document.querySelectorAll('input');
           [...(allInputs as any)].map((item, indx) => {
             if (item === this.input.nativeElement) {
               allInputs[indx + 1].focus();
+              return;
+            }
+          });
+        } else if(e.shiftKey && e.keyCode == 9 && this.selectionInput != 0){
+          this.selectionInput = this.selectionInput - 1;
+          this.selectSpanByTabIndex(this.selectionInput);
+        }else{
+          let allInputs = document.querySelectorAll('input');
+          [...(allInputs as any)].map((item, indx) => {
+            if (item === this.input.nativeElement) {
+              allInputs[indx - 1].focus();
               return;
             }
           });

@@ -99,9 +99,6 @@ export class DateCalendarsComponent implements OnInit {
     this.selectedMonth = this.monthNames[this.dateTime.getMonth()];
     this.selectedYear = this.dateTime.getFullYear();
 
-    console.log("---------------------");
-    console.log(this.calendarService.selectedIndex);
-
     this.activeIndex = this.calendarService.selectedIndex;
     this.calendarService.scrolledIndexChange
       .pipe(takeUntil(this.destroy$))
