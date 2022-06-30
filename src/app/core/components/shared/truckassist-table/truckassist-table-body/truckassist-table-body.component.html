@@ -784,7 +784,12 @@
     ></div>
 
     <!-- Not Pined -->
-    <div class="not-pined-tr" id="scroll-container" (scroll)="onScroll($event)">
+    <!-- [ngStyle]="{ 'min-width.px': this.scrollContainerMinWidth }" -->
+    <div
+      class="not-pined-tr"
+      id="scroll-container"
+      (scroll)="onScroll($event)"
+    >
       <tr
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
