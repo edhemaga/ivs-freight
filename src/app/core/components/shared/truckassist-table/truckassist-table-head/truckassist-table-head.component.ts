@@ -49,6 +49,7 @@ export class TruckassistTableHeadComponent
   showBorder: boolean = false;
   resizeHitLimit: number = -1;
   resizeIsPined: boolean;
+  notPinedMaxWidth: number = 0;
 
   constructor(
     private tableService: TruckassistTableService,
@@ -109,6 +110,10 @@ export class TruckassistTableHeadComponent
       .subscribe((response: boolean) => {
         this.showBorder = response;
       });
+
+    setTimeout(() => {
+      this.getNotPinedMaxWidth();
+    }, 10);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -167,6 +172,19 @@ export class TruckassistTableHeadComponent
         this.actionColumns.push(v);
       }
     });
+
+    this.changeDetectorRef.detectChanges();
+  }
+
+  getNotPinedMaxWidth() {
+    const tableContainer = document.querySelector('.table-container');
+    const pinedColumns = document.querySelector('.pined-columns-container');
+    const actionColumns = document.querySelector('.actions-columns-container');
+
+    this.notPinedMaxWidth =
+      tableContainer.clientWidth -
+      (pinedColumns.clientWidth + actionColumns.clientWidth) -
+      6;
 
     this.changeDetectorRef.detectChanges();
   }
@@ -250,6 +268,8 @@ export class TruckassistTableHeadComponent
             ? this.notPinedColumns
             : this.pinedColumns,
       });
+
+      this.getNotPinedMaxWidth();
     }
 
     if (event.beyondTheLimits) {

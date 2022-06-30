@@ -136,6 +136,7 @@
       cdkDropList
       (cdkDropListDropped)="onReorder($event)"
       class="tr not-pined-columns-container"
+      [ngStyle]="{'max-width.px': notPinedMaxWidth}"
       id="scroll"
     >
       <div class="scroll-container">
