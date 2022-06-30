@@ -464,7 +464,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
       this.modalService.openModal(DriverModalComponent, {
-        size: 'small',
+        size: 'medium',
       });
     } else if (
       event.action === 'tab-selected' &&
@@ -495,7 +495,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
-        { size: 'small' },
+        { size: 'medium' },
         {
           ...event,
           disableButton: true,

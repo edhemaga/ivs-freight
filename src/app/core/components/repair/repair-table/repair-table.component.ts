@@ -500,7 +500,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
             this.modalService.openModal(
               RepairOrderModalComponent,
               {
-                size: 'small',
+                size: 'large',
               },
               {
                 type: 'new-truck',
@@ -512,7 +512,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
             this.modalService.openModal(
               RepairOrderModalComponent,
               {
-                size: 'small',
+                size: 'large',
               },
               {
                 type: 'new-trailer',
@@ -540,7 +540,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       case 'active': {
         this.modalService.openModal(
           RepairOrderModalComponent,
-          { size: 'small' },
+          { size: 'large' },
           { ...event, type: 'edit-truck' }
         );
         break;
@@ -548,7 +548,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       case 'inactive': {
         this.modalService.openModal(
           RepairOrderModalComponent,
-          { size: 'small' },
+          { size: 'large' },
           { ...event, type: 'edit-trailer' }
         );
         break;

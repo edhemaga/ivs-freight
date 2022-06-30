@@ -401,7 +401,8 @@
         !inputConfig.blackInput,
       'multiSelect-dropdown-active':
         inputConfig.multiSelectDropdownActive && focusInput,
-      'blue-input-color': inputConfig.blueInputColor && !focusInput,
+      'blue-input-color':
+        inputConfig.blueInputColor && !focusInput && getSuperControl.value,
       'dropdown-label-active': inputConfig.isDropdownLabel && isVisibleCommands,
       'input-commands': inputConfig.commands?.active && isVisibleCommands
     }"
