@@ -41,6 +41,11 @@
         position: relative;
         bottom: 3px;
       }
+
+      &.ta-modal-dropzone-text-big {
+        font-size: 16px;
+        font-weight: 600;
+      }
     }
 
     &:hover {

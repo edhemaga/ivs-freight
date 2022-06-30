@@ -3,7 +3,9 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnChanges,
   Output,
+  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { UploadFile } from '../ta-upload-file/ta-upload-file.component';
@@ -13,6 +15,7 @@ export interface DropZoneConfig {
   dropZoneSvg: string;
   dropZoneAvailableFiles: string;
   multiple: boolean;
+  globalDropZone?: boolean;
 }
 
 @Component({
@@ -21,7 +24,7 @@ export interface DropZoneConfig {
   styleUrls: ['./ta-upload-dropzone.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TaUploadDropzoneComponent {
+export class TaUploadDropzoneComponent implements OnChanges {
   private files: UploadFile[] = [];
 
   @Input() dropZoneConfig: DropZoneConfig = {
@@ -29,6 +32,7 @@ export class TaUploadDropzoneComponent {
     dropZoneSvg: 'assets/svg/common/ic_modal_upload_dropzone.svg',
     dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
     multiple: true,
+    globalDropZone: false,
   };
 
   @Input() disableUnsupportedPreview: boolean = false; // only for modals upload
@@ -41,6 +45,12 @@ export class TaUploadDropzoneComponent {
     value: boolean;
   }>();
 
+  public textChangeOverModal: boolean = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.dropZoneConfig);
+  }
+
   public unSupporetedType: boolean = false;
   public supportedExtensions: string[] = [];
 
@@ -48,6 +58,7 @@ export class TaUploadDropzoneComponent {
     evt.preventDefault();
     evt.stopPropagation();
     this.onDropBackground.emit({ action: 'dragover', value: true });
+    this.textChangeOverModal = true;
   }
 
   @HostListener('dragleave', ['$event'])
@@ -55,6 +66,7 @@ export class TaUploadDropzoneComponent {
     evt.preventDefault();
     evt.stopPropagation();
     this.onDropBackground.emit({ action: 'dragleave', value: false });
+    this.textChangeOverModal = false;
   }
 
   @HostListener('drop', ['$event'])
@@ -64,6 +76,7 @@ export class TaUploadDropzoneComponent {
     this.onDropBackground.emit({ action: 'drop', value: false });
 
     await this.onFileUpload(evt.dataTransfer.files);
+    this.textChangeOverModal = false;
   }
 
   public async onFileUpload(files: FileList) {

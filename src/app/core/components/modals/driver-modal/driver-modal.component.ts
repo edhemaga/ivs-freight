@@ -39,6 +39,7 @@ import {
   getStringFromBase64,
 } from 'src/app/core/utils/base64.image';
 import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.component';
+import { DropZoneConfig } from '../../shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -126,6 +127,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public driverStatus: boolean = true;
 
   public documents: any[] = [];
+
+  public dropZoneConfig: DropZoneConfig = {
+    dropZoneType: 'logo',
+    dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
+    dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
+    multiple: false,
+    globalDropZone: true,
+  };
 
   constructor(
     private formBuilder: FormBuilder,

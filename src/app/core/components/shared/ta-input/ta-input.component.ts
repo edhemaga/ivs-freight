@@ -39,7 +39,8 @@ import { TaInputResetService } from './ta-input-reset.service';
   ],
 })
 export class TaInputComponent
-  implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor {
+  implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor
+{
   @ViewChild('input', { static: true }) public input: ElementRef;
   @ViewChild('span1', { static: false }) span1: ElementRef;
   @ViewChild('span2', { static: false }) span2: ElementRef;
@@ -197,9 +198,9 @@ export class TaInputComponent
     this.onChange = fn;
   }
 
-  public onChange(event: any): void { }
+  public onChange(event: any): void {}
 
-  public registerOnTouched(fn: any): void { }
+  public registerOnTouched(fn: any): void {}
 
   public setDisabledState?(isDisabled: boolean): void {
     this.inputConfig.isDisabled = isDisabled;
@@ -325,7 +326,6 @@ export class TaInputComponent
 
     this.inputService.onClearInputSubject.next(true);
   }
-
 
   public resetDateTimeInputs() {
     if (this.inputConfig.name === 'datepicker') {
@@ -554,6 +554,16 @@ export class TaInputComponent
       } else {
         event.preventDefault();
         return false;
+      }
+    }
+
+    if (['file name'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[:*?"<>|/]*$/.test(String.fromCharCode(event.charCode))) {
+        event.preventDefault();
+        return false;
+      } else {
+        this.disableConsecutivelySpaces(event);
+        return true;
       }
     }
 
@@ -806,7 +816,7 @@ export class TaInputComponent
     this.onChange(this.input.nativeElement.value);
   }
 
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void {}
 
   // OVAJ DEO OVDE JE ZA CUSTOM DATEPICKERS
 

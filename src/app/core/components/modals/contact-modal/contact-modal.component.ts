@@ -17,6 +17,7 @@ import {
   phoneRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { DropZoneConfig } from '../../shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 
 @Component({
   selector: 'app-contact-modal',
@@ -34,6 +35,14 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   public selectedContactLabel: any = null;
   public selectedSharedDepartment: any = null;
   public selectedAddress: any = null;
+
+  public dropZoneConfig: DropZoneConfig = {
+    dropZoneType: 'logo',
+    dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
+    dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
+    multiple: false,
+    globalDropZone: true,
+  };
 
   constructor(
     private formBuilder: FormBuilder,

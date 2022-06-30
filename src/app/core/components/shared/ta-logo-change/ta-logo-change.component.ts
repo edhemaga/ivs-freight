@@ -46,11 +46,6 @@ export class TaLogoChangeComponent
 
   @Input() customClass: string;
   @Input() imageUrl: any | string = null;
-  @Input() viewport: any = {
-    width: 162,
-    height: 194,
-    type: 'square',
-  };
 
   @Output() base64ImageEvent: EventEmitter<string> = new EventEmitter<string>();
 
@@ -80,6 +75,7 @@ export class TaLogoChangeComponent
             createBase64(changes.imageUrl.currentValue)
           )
         : null;
+
       clearTimeout(timeout);
     }, 150);
   }
