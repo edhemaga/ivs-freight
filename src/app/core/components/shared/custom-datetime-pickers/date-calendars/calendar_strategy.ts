@@ -7,7 +7,7 @@ import { CalendarScrollService } from "../calendar-scroll.service";
 export const STARTING_YEAR = 1905;
 export const RANGE = 2352;
 
-export const FULL_SIZE = 156;
+export const FULL_SIZE = 182;
 const BUFFER = 500;
 const CYCLE = getCycle();
 export const CYCLE_HEIGHT = reduceCycle();
@@ -99,7 +99,7 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
     const offset = viewport.measureScrollOffset();
 
     const {start, end} = viewport.getRenderedRange();
-    const viewportSize = 200;
+    const viewportSize = 230;
 
     const dataLength = viewport.getDataLength();
   
@@ -130,7 +130,7 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
     viewport.setRenderedRange(newRange);
     viewport.setRenderedContentOffset(this.getOffsetForIndex(newRange.start));
     if( this.calendarService.selectedScroll === 'main' ){
-      this.index$.next({indx: firstVisibleIndex, scrollOffset: offset, cycleSize: FULL_SIZE, type: "main", offsetIndx: (offset / 156)});
+      this.index$.next({indx: firstVisibleIndex, scrollOffset: offset, cycleSize: FULL_SIZE, type: "main", offsetIndx: (offset / FULL_SIZE)});
     }
   }
 }

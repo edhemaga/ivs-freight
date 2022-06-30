@@ -23,7 +23,7 @@ import moment from "moment";
   providers: [NgbDropdownConfig],
 })
 export class CustomDatetimePickersComponent implements OnInit {
-  @Input() dateTime: any;
+  @Input() dateTime: Date;
   @ViewChild('ref', { read: ViewContainerRef }) ref: ViewContainerRef;
 
   @Output() closePopover: EventEmitter<any> = new EventEmitter();
@@ -134,7 +134,16 @@ export class CustomDatetimePickersComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    this.setTimeValue();
     this.changeOpened();
+  }
+
+  public setTimeValue(){
+    const dateInputArray = moment(this.dateTime).format("H/m/A").split("/");
+    console.log(dateInputArray);
+    this.scrollTypes.hourScroll = dateInputArray[0];
+    this.scrollTypes.minutesScroll = dateInputArray[1];
+    this.scrollTypes.pmAmScroll = dateInputArray[2] == "AM" ? 0 : 1;
   }
 
   public setListPreview(value: string): void {
@@ -655,5 +664,9 @@ export class CustomDatetimePickersComponent implements OnInit {
       this.outputType[2] = this.monthDayList[this.scrollTypes.dayScroll];
       this.selectedDateTime = this.createStringFromOutput();
     }
+  }
+
+  ngOnDestroy(){
+    this.listPreview = "full_list";
   }
 }

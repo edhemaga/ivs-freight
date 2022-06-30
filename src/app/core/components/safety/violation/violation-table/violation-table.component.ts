@@ -540,7 +540,7 @@ export class ViolationTableComponent implements OnInit, OnDestroy {
       case 'edit-violation': {
         this.modalService.openModal(
           ViolationModalComponent,
-          { size: 'large' },
+          { size: 'large-xl' },
           { id: 1, type: 'edit' }
         );
       }

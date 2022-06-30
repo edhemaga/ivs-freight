@@ -84,6 +84,7 @@ export class TaModalUploadComponent implements OnInit, OnDestroy {
     switch (data.action) {
       case 'add': {
         this.files = [...this.files, ...data.files];
+        this.onFileEvent.emit({ files: this.files, action: 'add' });
         break;
       }
     }

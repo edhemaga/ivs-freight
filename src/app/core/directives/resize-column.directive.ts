@@ -9,6 +9,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
+import { NotificationService } from '../services/notification/notification.service';
 
 @Directive({
   selector: '[resizeColumn]',
@@ -17,6 +18,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
   @Input('resizeColumn') canDoResize: boolean;
   @Input() index: number;
   @Input() tableSection: string;
+  @Input() tableColumn: any;
   @Output() resizeing: EventEmitter<any> = new EventEmitter();
 
   private startX: number;
@@ -27,7 +29,11 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
   resizer: any;
   newColumnWidth: number;
 
-  constructor(private renderer: Renderer2, private el: ElementRef) {
+  constructor(
+    private renderer: Renderer2,
+    private el: ElementRef,
+    private notificationService: NotificationService
+  ) {
     this.column = this.el.nativeElement;
   }
 
@@ -44,18 +50,18 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
         this.removeResizer();
       }
     }
+
+    if (!changes?.tableColumn?.firstChange && changes?.tableColumn) {
+      this.tableColumn = changes.tableColumn.currentValue;
+    }
   }
 
   addResizer() {
-    /* const row = this.renderer.parentNode(this.column);
-    const thead = this.renderer.parentNode(row);
-    this.table = this.renderer.parentNode(thead); */
-
     this.resizer = this.renderer.createElement('div');
     this.renderer.addClass(this.resizer, 'resise-btn');
     this.renderer.appendChild(this.column, this.resizer);
     this.renderer.listen(this.resizer, 'mousedown', this.onMouseDown);
-    this.renderer.listen(/* this.table */ 'document', 'mousemove', this.onMouseMove);
+    this.renderer.listen('document', 'mousemove', this.onMouseMove);
     this.renderer.listen('document', 'mouseup', this.onMouseUp);
   }
 
@@ -82,13 +88,45 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
       // Calculate width of column
       this.newColumnWidth = this.startWidth + (event.pageX - this.startX);
 
-      // Send Resizeing Data
-      this.resizeing.emit({
-        isResizeing: true,
-        width: this.newColumnWidth,
-        index: this.index,
-        section: this.tableSection,
-      });
+      const maxWidth = this.tableColumn.minWidth * 2;
+
+      /* TODO: ukloni kada se doda na sve tabele i kolone minWidth */
+      if (!this.tableColumn.minWidth) {
+        console.log('Ne postoji min sirina na ovoj tabeli ili koloni, resize se radi normalno bez limita');
+        this.resizeing.emit({
+          isResizeing: true,
+          width: this.newColumnWidth,
+          index: this.index,
+          section: this.tableSection,
+        });
+        return;
+      } 
+
+      // Send Resizeing Data If Width Is Between Min And Max Width
+      if (
+        this.newColumnWidth > this.tableColumn.minWidth &&
+        this.newColumnWidth < maxWidth
+      ) {
+        this.resizeing.emit({
+          isResizeing: true,
+          width: this.newColumnWidth,
+          index: this.index,
+          section: this.tableSection,
+        });
+      }
+      // If It Has Reached Min Or Max Width, Show Notification
+      else {
+        this.onMouseUp();
+
+        if (this.newColumnWidth <= this.tableColumn.minWidth) {
+          this.notificationService.warning(
+            `Reached a minimum width`,
+            'Warning:'
+          );
+        } else if (this.newColumnWidth >= maxWidth) {
+          this.notificationService.warning(`Reached maximum width`, 'Warning:');
+        }
+      }
     }
   };
 

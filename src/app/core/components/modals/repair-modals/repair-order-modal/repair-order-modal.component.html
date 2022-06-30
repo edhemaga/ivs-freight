@@ -30,7 +30,10 @@
           label: 'Unit',
           isDropdown: true,
           isRequired: true,
-          dropdownWidthClass: 'w-col-repair-m-unit'
+          dropdownWidthClass:
+            selectedTab === 2
+              ? 'w-col-repair-m-unit-order'
+              : 'w-col-repair-m-unit-bill'
         }"
         [options]="labelsUnit"
         (selectedItem)="onSelectDropDown($event, 'repair-unit')"
@@ -179,7 +182,8 @@
                     textTransform: 'capitalize',
                     hideRequiredCheck: true,
                     blueInputColor:
-                      !selectedPM[ind]?.logoName?.includes('ic_default_pm')
+                      !selectedPM[ind]?.logoName?.includes('ic_custom_pm'),
+                    customClass: 'repair-m-pm'
                   }"
                 ></app-ta-input>
                 <!-- PMs -->
@@ -194,7 +198,7 @@
                     class="pm-svg"
                     [class.active]="
                       selectedPM
-                        ? !selectedPM[ind]?.logoName?.includes('ic_default_pm')
+                        ? !selectedPM[ind]?.logoName?.includes('ic_custom_pm')
                         : false
                     "
                     [src]="selectedPM[ind]?.logoName"
@@ -233,7 +237,7 @@
                   thousandSeparator: true,
                   hideRequiredCheck: true,
                   blueInputColor:
-                    !selectedPM[ind]?.logoName?.includes('ic_default_pm')
+                    !selectedPM[ind]?.logoName?.includes('ic_custom_pm')
                 }"
                 (change)="onChange('price', ind)"
               ></app-ta-input>
@@ -246,7 +250,7 @@
                   textTransform: 'capitalize',
                   hideRequiredCheck: true,
                   blueInputColor:
-                    !selectedPM[ind]?.logoName?.includes('ic_default_pm')
+                    !selectedPM[ind]?.logoName?.includes('ic_custom_pm')
                 }"
                 (change)="onChange('quantity', ind)"
               ></app-ta-input>
@@ -302,6 +306,7 @@
       >
         <app-ta-modal-upload
           [files]="documents"
+          [modalSize]="'modal-large'"
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-modal-upload>
       </app-ta-custom-card>

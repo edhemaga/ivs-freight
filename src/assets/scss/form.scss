@@ -119,6 +119,39 @@
     -moz-column-gap: 12px;
     column-gap: 12px;
     margin-bottom: 32px;
+
+    &.custom-bank-row-driver {
+      grid-template-columns: 184px 160px 248px;
+      margin-bottom: 20px;
+    }
+  }
+
+  //---------------- Driver Notifications ----------------
+  .driver-notification {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    padding-left: 6px;
+    margin-bottom: 26px;
+    p {
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: #6c6c6c;
+      margin-right: 10px;
+    }
+
+    &-general {
+      margin-top: 20px;
+    }
+
+    &-payroll {
+      margin-bottom: 0px;
+      p {
+        margin-right: 13px;
+      }
+    }
   }
 
   //---------------- Custom Checkbox Card With Content In ----------------
@@ -220,61 +253,21 @@
     }
   }
 
-  //---------------- Pay Type & Notifications ----------------
-  .custom-row-paytype-notification {
-    display: grid;
-    grid-template-columns: 151px 1fr;
-    -moz-column-gap: 22px;
-    column-gap: 22px;
-    align-items: center;
+  //---------------- Pay Type DRIVER ----------------
+  .custom-row-paytype-driver {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 20px;
 
-    &.divide-margin {
-      margin-bottom: 0px;
-    }
-
-    .paytype-field-notification {
-      display: grid;
-      grid-template-columns: 91px 186px;
-      grid-template-rows: 26px;
+    .checkbox-paytype-driver {
+      display: flex;
+      grid-gap: 22px;
       align-items: center;
-      -moz-column-gap: 6px;
-      column-gap: 6px;
+      gap: 22px;
+      padding-left: 6px;
 
-      p {
-        margin: 0;
-        font-size: 14px;
-        font-weight: 500;
-        color: #919191;
-      }
-
-      .btn-group {
-        margin: 0px;
-        background: #f3f3f3;
-        border: none;
-        outline: none;
-        padding: 2px;
-        height: 26px;
-
-        .btn {
-          font-size: 12px;
-          font-weight: bold;
-          border: none;
-          outline: none;
-          color: #b7b7b7;
-          height: 22px;
-          border-radius: 1px;
-          padding: 2px 8px;
-
-          &:nth-child(2) {
-            margin: 0 2px;
-          }
-
-          &.active {
-            background: #ffffff;
-            color: #536bc2;
-          }
-        }
+      .paytype-driver {
+        width: 422px;
       }
     }
   }
@@ -282,19 +275,20 @@
   //---------------- PayType Commission ----------------
   .paytype-commission {
     display: grid;
-    grid-template-columns: 204px 213px;
+    grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 22px;
-    grid-column-gap: 27px;
-    -moz-column-gap: 27px;
-    column-gap: 27px;
-    padding: 0 6px;
-    margin-bottom: 12px;
+    grid-column-gap: 22px;
+    -moz-column-gap: 22px;
+    column-gap: 22px;
+    padding-left: 6px;
+    padding-right: 1px;
+    margin-bottom: 30px;
     max-height: 0px;
     overflow: hidden;
 
     &.active {
       max-height: 600px !important;
-      margin-top: 24px;
+      margin-top: 30px;
       transition: all 0.3s ease-in-out;
     }
   }
@@ -305,6 +299,7 @@
     max-height: 0px;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
+    margin-bottom: 30px;
 
     &.active {
       max-height: 600px !important;
@@ -315,7 +310,7 @@
 
     .permile-fields {
       display: grid;
-      grid-template-columns: auto repeat(3, 124px);
+      grid-template-columns: auto repeat(3, 177px);
       grid-template-rows: 26px;
       margin-bottom: 32px;
       -moz-column-gap: 12px;
@@ -325,7 +320,7 @@
       p {
         margin: 0;
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 600;
         color: #6c6c6c;
       }
 
@@ -338,11 +333,11 @@
   //---------------- Emergency Contact ----------------
   .emergency-contact {
     display: grid;
-    grid-template-columns: 150px 170px 112px;
+    grid-template-columns: 214px 190px 188px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     height: 36px;
-    margin-top: 26px;
+    margin-top: 11px;
     transition: all 0.3s ease-in-out;
   }
 

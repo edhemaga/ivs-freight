@@ -3,7 +3,7 @@
   [editData]="editData"
   [editName]="editData?.id"
   [isModalValid]="violationForm.valid"
-  [customClass]="'modal-container-L'"
+  [customClass]="'modal-container-XL'"
   [disableDelete]="true"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
@@ -333,77 +333,83 @@
         </app-ta-custom-card>
         <div class="violation-card">
           <app-ta-custom-card
-          [hasCounter]="violations.length ? violations.length : '0'"
-          [cardName]="'Violation'"
-          [isCardOpen]="violations.length"
-          [hasScrollBody]="violations.length > 10"
-        >
-          <div
-            formArrayName="violations"
-            class="common-fake-table-modal common-fake-table-modal-violations"
-            *ngIf="violations.length"
+            [hasCounter]="violations.length ? violations.length : '0'"
+            [cardName]="'Violation'"
+            [isCardOpen]="violations.length"
+            [hasScrollBody]="violations.length > 10"
           >
-            <div class="common-fake-table-label">
-              <p>CODE <span>*</span></p>
-              <p>CATEGORY</p>
-              <p>UNIT</p>
-              <p>SW</p>
-              <p>OOS</p>
-              <p>SMS</p>
-              <p>DESCRIPTION</p>
-            </div>
-            <div *ngFor="let violation of violations.controls; let ind = index">
-              <div [formGroupName]="ind" class="common-fake-table-card">
-                <p class="violation-code">{{ violation.get("code").value }}</p>
-                <p class="violation-category">
+            <div
+              formArrayName="violations"
+              class="common-fake-table-modal common-fake-table-modal-violations"
+              *ngIf="violations.length"
+            >
+              <div class="common-fake-table-label">
+                <p>CODE <span>*</span></p>
+                <p>CATEGORY</p>
+                <p>UNIT</p>
+                <p>SW</p>
+                <p>OOS</p>
+                <p>SMS</p>
+                <p>DESCRIPTION</p>
+              </div>
+              <div
+                *ngFor="let violation of violations.controls; let ind = index"
+              >
+                <div [formGroupName]="ind" class="common-fake-table-card">
+                  <p class="violation-code">
+                    {{ violation.get("code").value }}
+                  </p>
+                  <p class="violation-category">
+                    <svg-icon
+                      class="violation-category-svg"
+                      src="assets/svg/common/ic_vehicle_maintenance.svg"
+                    ></svg-icon>
+                    <span lass="violation-category-text">{{
+                      violation.get("categoryId").value
+                    }}</span>
+                  </p>
+                  <p class="violation-unit">
+                    {{ violation.get("unit").value }}
+                  </p>
+                  <p class="violation-sw">{{ violation.get("sw").value }}</p>
                   <svg-icon
-                    class="violation-category-svg"
-                    src="assets/svg/common/ic_vehicle_maintenance.svg"
+                    class="violation-oos"
+                    [class.active]="violation.get('oos').value"
+                    src="{{
+                      violation.get('oos').value
+                        ? 'assets/svg/common/ic_confirm.svg'
+                        : 'assets/svg/common/ic_x.svg'
+                    }}"
                   ></svg-icon>
-                  <span lass="violation-category-text">{{
-                    violation.get("categoryId").value
-                  }}</span>
-                </p>
-                <p class="violation-unit">{{ violation.get("unit").value }}</p>
-                <p class="violation-sw">{{ violation.get("sw").value }}</p>
-                <svg-icon
-                  class="violation-oos"
-                  [class.active]="violation.get('oos').value"
-                  src="{{
-                    violation.get('oos').value
-                      ? 'assets/svg/common/ic_confirm.svg'
-                      : 'assets/svg/common/ic_x.svg'
-                  }}"
-                ></svg-icon>
-                <svg-icon
-                  class="violation-sms"
-                  src="{{
-                    violation.get('sms').value
-                      ? 'assets/svg/common/ic_confirm.svg'
-                      : 'assets/svg/common/ic_x.svg'
-                  }}"
-                ></svg-icon>
-                <app-ta-input
-                  formControlName="description"
-                  [inputConfig]="{
-                    name: 'Description',
-                    type: 'text',
-                    textTransform: 'capitalize'
-                  }"
-                ></app-ta-input>
+                  <svg-icon
+                    class="violation-sms"
+                    src="{{
+                      violation.get('sms').value
+                        ? 'assets/svg/common/ic_confirm.svg'
+                        : 'assets/svg/common/ic_x.svg'
+                    }}"
+                  ></svg-icon>
+                  <app-ta-input
+                    formControlName="description"
+                    [inputConfig]="{
+                      name: 'Description',
+                      type: 'text',
+                      textTransform: 'capitalize'
+                    }"
+                  ></app-ta-input>
+                </div>
               </div>
             </div>
-          </div>
-        </app-ta-custom-card>
+          </app-ta-custom-card>
         </div>
-       
+
         <app-ta-custom-card
           [hasCounter]="documents.length ? documents.length : '0'"
           [cardName]="'Documents'"
           [isCardOpen]="documents.length"
         >
           <app-ta-modal-upload
-            [files]="[]"
+            [files]="documents"
             [modalSize]="'modal-large'"
             (onFileEvent)="onFilesEvent($event)"
           ></app-ta-modal-upload>

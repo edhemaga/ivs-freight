@@ -100,7 +100,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    this.documents = event;
+    this.documents = event.files;
   }
 
   private updateMedical(id: number) {

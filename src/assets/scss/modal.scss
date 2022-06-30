@@ -27,9 +27,11 @@ ngb-modal-window[aria-hidden="true"] {
     max-width: -webkit-max-content !important;
     max-width: -moz-max-content !important;
     max-width: max-content !important;
-    &.modal-large {
+
+    &.modal-large-xl {
       bottom: 6%;
     }
+
     @media (min-width: 576px) {
       max-width: -webkit-max-content !important;
       max-width: -moz-max-content !important;

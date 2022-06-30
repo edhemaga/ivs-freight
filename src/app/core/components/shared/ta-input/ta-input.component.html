@@ -219,8 +219,9 @@
       ngbTooltip
       [mainTooltip]="inputConfig.commands?.firstCommand?.popup?.name"
       [tooltipBackground]="
-        inputConfig.commands?.firstCommand?.popup.backgroundColor
+        inputConfig.commands?.firstCommand?.popup?.backgroundColor
       "
+      [disableTooltip]="!inputConfig.commands?.firstCommand?.popup"
       position="top"
     >
       <svg-icon
@@ -238,10 +239,11 @@
     <div
       class="ta-input-command-second"
       ngbTooltip
-      [mainTooltip]="inputConfig.commands?.secondCommand?.popup.name"
+      [mainTooltip]="inputConfig.commands?.secondCommand?.popup?.name"
       [tooltipBackground]="
-        inputConfig.commands?.secondCommand?.popup.backgroundColor
+        inputConfig.commands?.secondCommand?.popup?.backgroundColor
       "
+      [disableTooltip]="!inputConfig.commands?.secondCommand?.popup"
       position="top"
     >
       <svg-icon
@@ -291,7 +293,8 @@
         getSuperControl.valid &&
         focusInput &&
         !inputConfig.dropdownLabelSelected &&
-        !inputConfig.isDropdownLabel,
+        !inputConfig.isDropdownLabel &&
+        !inputConfig.blackInput,
       'valid-required-out':
         getSuperControl.value &&
         getSuperControl.valid &&
@@ -299,7 +302,10 @@
         !inputConfig.dropdownLabelSelected &&
         !inputConfig.isDropdownLabel,
       'invalid-required-in':
-        getSuperControl.value && getSuperControl.invalid && focusInput,
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput &&
+        !inputConfig.blackInput,
       'invalid-required-empty':
         !getSuperControl.value &&
         getSuperControl.invalid &&
@@ -395,7 +401,8 @@
         !inputConfig.blackInput,
       'multiSelect-dropdown-active':
         inputConfig.multiSelectDropdownActive && focusInput,
-      'blue-input-color': inputConfig.blueInputColor && !focusInput,
+      'blue-input-color':
+        inputConfig.blueInputColor && !focusInput && getSuperControl.value,
       'dropdown-label-active': inputConfig.isDropdownLabel && isVisibleCommands,
       'input-commands': inputConfig.commands?.active && isVisibleCommands
     }"

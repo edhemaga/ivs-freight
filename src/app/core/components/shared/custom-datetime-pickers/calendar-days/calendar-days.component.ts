@@ -9,6 +9,8 @@ export class CalendarDaysComponent implements OnInit {
   currentYear: any = new Date().getFullYear();
   currentMonth: any = new Date().getMonth();
   currentDay: any = new Date().getDate();
+  selectedMonthFromInput: any;
+  selectedYearFromInput: any;
   @Input() dateTime: any;
   @Input() year: string;
   @Input() selectedMonth: string;
@@ -24,6 +26,8 @@ export class CalendarDaysComponent implements OnInit {
 
   @Input()
   set month(month: Date) {
+    this.selectedMonthFromInput = ('0' + month.getMonth()+1).slice(-2);
+    this.selectedYearFromInput = month.getFullYear();
     const fillerCount = month.getDay();
     const lastDay = new Date(month.getFullYear(), month.getMonth() + 1, 0);
     const daysCount = lastDay.getDate();
