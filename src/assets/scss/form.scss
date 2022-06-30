@@ -126,6 +126,34 @@
     }
   }
 
+  //---------------- Driver Notifications ----------------
+  .driver-notification {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    padding-left: 6px;
+    margin-bottom: 26px;
+    p {
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: #6c6c6c;
+      margin-right: 10px;
+    }
+
+    &-general {
+      margin-top: 20px;
+    }
+
+    &-payroll {
+      margin-bottom: 20px;
+      p {
+        margin-right: 13px;
+      }
+    }
+  }
+
   //---------------- Custom Checkbox Card With Content In ----------------
   .custom-checkbox-card {
     display: block;

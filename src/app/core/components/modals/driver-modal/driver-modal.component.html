@@ -182,39 +182,6 @@
                 ></app-ta-input-dropdown>
               </div>
             </div>
-
-            <!-- <div class="paytype-field-notification">
-              <p>Notifications</p>
-              <div class="btn-group" role="group">
-                <label class="btn" ngbButtonLabel>
-                  <input
-                    type="checkbox"
-                    class="btn-check"
-                    formControlName="mailNotification"
-                    ngbButton
-                  />
-                  Email
-                </label>
-                <label class="btn" ngbButtonLabel>
-                  <input
-                    type="checkbox"
-                    class="btn-check"
-                    formControlName="phoneCallNotification"
-                    ngbButton
-                  />
-                  Phone Call
-                </label>
-                <label class="btn" ngbButtonLabel>
-                  <input
-                    type="checkbox"
-                    class="btn-check"
-                    formControlName="smsNotification"
-                    ngbButton
-                  />
-                  SMS
-                </label>
-              </div>
-            </div> -->
           </div>
 
           <!-- Pay Type Per Mile -->
@@ -594,46 +561,94 @@
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
-        <app-ta-logo-change
-          [imageUrl]="this.driverForm.get('avatar').value"
-          (base64ImageEvent)="onUploadImage($event)"
-        ></app-ta-logo-change>
-        <div class="row first-row last-row">
-          <div class="col-2 twic-driver">
+        <app-ta-custom-card [cardName]="'Profile Picture'" [isCardOpen]="true">
+          <app-ta-logo-change
+            [imageUrl]="this.driverForm.get('avatar').value"
+            (base64ImageEvent)="onUploadImage($event)"
+          ></app-ta-logo-change>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Cards & MVR Exp.'" [isCardOpen]="true">
+          <div class="row last-row">
+            <div class="col-2 twic-driver">
+              <app-ta-checkbox
+                formControlName="twic"
+                [label]="'TWIC'"
+                [customClass]="'medium'"
+              ></app-ta-checkbox>
+            </div>
+            <div class="col-3" *ngIf="driverForm.get('twic').value">
+              <app-ta-input
+                formControlName="twicExpDate"
+                [inputConfig]="{
+                  name: 'datepicker',
+                  type: 'text',
+                  isDropdown: true,
+                  label: 'Exp. Date',
+                  placeholderIcon: 'date',
+                  isRequired: true,
+                  customClass: 'datetimeclass'
+                }"
+              ></app-ta-input>
+            </div>
+            <div
+              class="col-7 no-p-left"
+              [ngClass]="{ 'col-10': !driverForm.get('twic').value }"
+            >
+              <app-ta-input
+                formControlName="fuelCard"
+                [inputConfig]="{
+                  name: 'Fuel Card',
+                  type: 'text',
+                  label: 'Fuel Card #'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </app-ta-custom-card>
+        <app-ta-custom-card [cardName]="'Notification'" [isCardOpen]="true">
+          <div class="driver-notification driver-notification-general">
+            <p>GENERAL</p>
             <app-ta-checkbox
-              formControlName="twic"
-              [label]="'TWIC'"
+              formControlName="mailNotificationGeneral"
               [customClass]="'medium'"
+              [name]="'Email General'"
+              [label]="'Email'"
+            ></app-ta-checkbox>
+            <app-ta-checkbox
+              formControlName="pushNotificationGeneral"
+              [customClass]="'medium'"
+              [name]="'Push General'"
+              [label]="'Push Notification'"
+            ></app-ta-checkbox>
+            <app-ta-checkbox
+              formControlName="smsNotificationGeneral"
+              [customClass]="'medium'"
+              [name]="'SMS General'"
+              [label]="'SMS'"
             ></app-ta-checkbox>
           </div>
-          <div class="col-4" *ngIf="driverForm.get('twic').value">
-            <app-ta-input
-              formControlName="twicExpDate"
-              [inputConfig]="{
-                name: 'datepicker',
-                type: 'text',
-                isDropdown: true,
-                label: 'Exp. Date',
-                placeholderIcon: 'date',
-                isRequired: true,
-                customClass: 'datetimeclass'
-              }"
-            ></app-ta-input>
+          <div class="driver-notification driver-notification-payroll">
+            <p>PAYROLL</p>
+            <app-ta-checkbox
+              formControlName="mailNotificationPayroll"
+              [customClass]="'medium'"
+              [name]="'Email Payroll'"
+              [label]="'Email'"
+            ></app-ta-checkbox>
+            <app-ta-checkbox
+              formControlName="pushNotificationPayroll"
+              [customClass]="'medium'"
+              [name]="'Push Payroll'"
+              [label]="'Push Notification'"
+            ></app-ta-checkbox>
+            <app-ta-checkbox
+              formControlName="smsNotificationPayroll"
+              [customClass]="'medium'"
+              [name]="'SMS Payroll'"
+              [label]="'SMS'"
+            ></app-ta-checkbox>
           </div>
-          <div
-            class="col-6 no-p-left"
-            [ngClass]="{ 'col-10': !driverForm.get('twic').value }"
-          >
-            <app-ta-input
-              formControlName="fuelCard"
-              [inputConfig]="{
-                name: 'Fuel Card',
-                type: 'text',
-                label: 'Fuel Card #'
-              }"
-            ></app-ta-input>
-          </div>
-        </div>
+        </app-ta-custom-card>
       </div>
     </div>
   </form>
