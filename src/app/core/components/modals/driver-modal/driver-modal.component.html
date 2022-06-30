@@ -2,6 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Driver' : 'Edit Driver'"
   [editName]="driverFullName"
   [editData]="editData"
+  [customClass]="'modal-container-M'"
   [isModalValid]="driverForm.valid"
   [dropZoneConfig]="{
     dropZoneType: 'logo',
@@ -108,7 +109,7 @@
           </div>
         </div>
         <div class="row last-row">
-          <div class="col-5">
+          <div class="col-4">
             <app-ta-input
               formControlName="dateOfBirth"
               [inputConfig]="{
@@ -122,7 +123,7 @@
               }"
             ></app-ta-input>
           </div>
-          <div class="col-7">
+          <div class="col-4">
             <app-ta-input
               formControlName="ssn"
               [inputConfig]="{
@@ -131,6 +132,18 @@
                 label: 'SSN',
                 isRequired: true,
                 mask: '000-00-0000'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-4 no-p-left">
+            <app-ta-input
+              formControlName="mvr"
+              [inputConfig]="{
+                name: 'MVR',
+                type: 'text',
+                label: 'MVR',
+                isRequired: true,
+                placeholderText: 'months'
               }"
             ></app-ta-input>
           </div>
@@ -261,7 +274,58 @@
             </div>
           </div>
         </app-ta-custom-card>
-
+        <!-- Documents -->
+        <div class="ta-card-body-overflow-none">
+          <app-ta-custom-card
+            [hasCounter]="documents.length ? documents.length : '0'"
+            [cardName]="'Documents'"
+            [isCardOpen]="documents.length"
+          >
+            <app-ta-modal-upload
+              [files]="documents"
+              [modalSize]="'modal-medium'"
+              (onFileEvent)="onFilesEvent($event)"
+            ></app-ta-modal-upload>
+          </app-ta-custom-card>
+        </div>
+        <!-- Emergency Contact -->
+        <app-ta-custom-card
+          [cardName]="'Emergency Contact'"
+          [isCardOpen]="true"
+        >
+          <div class="emergency-contact">
+            <app-ta-input
+              formControlName="emergencyContactName"
+              [inputConfig]="{
+                name: 'Name',
+                type: 'text',
+                label: 'Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="emergencyContactPhone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                isRequired: true,
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="emergencyContactRelationship"
+              [inputConfig]="{
+                name: 'Relationship',
+                type: 'text',
+                label: 'Relationship',
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+          </div>
+        </app-ta-custom-card>
         <!-- Note -->
         <app-ta-input-note
           formControlName="note"
@@ -269,7 +333,7 @@
         ></app-ta-input-note>
       </div>
       <!-------------------------------- Pay Tab -------------------------------->
-      <div class="m-tab" *ngIf="selectedTab === 2">
+      <div class="m-tab" *ngIf="selectedTab === 4">
         <div class="divider"></div>
         <div class="payroll-checkbox">
           <app-ta-checkbox
@@ -513,7 +577,7 @@
         </div>
       </div>
 
-      <div class="m-tab" *ngIf="selectedTab === 3">
+      <div class="m-tab" *ngIf="selectedTab === 2">
         <app-ta-logo-change
           [imageUrl]="this.driverForm.get('avatar').value"
           (base64ImageEvent)="onUploadImage($event)"
@@ -554,45 +618,6 @@
             ></app-ta-input>
           </div>
         </div>
-        <app-ta-custom-card
-          [cardName]="'Emergency Contact'"
-          [isCardOpen]="
-            driverForm.get('emergencyContactName').value ||
-            driverForm.get('emergencyContactPhone').value ||
-            driverForm.get('emergencyContactRelationship').value
-          "
-        >
-          <div class="emergency-contact">
-            <app-ta-input
-              formControlName="emergencyContactName"
-              [inputConfig]="{
-                name: 'Name',
-                type: 'text',
-                label: 'Name',
-                textTransform: 'capitalize'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="emergencyContactPhone"
-              [inputConfig]="{
-                name: 'Phone',
-                type: 'text',
-                label: 'Phone',
-                placeholderIcon: 'phone',
-                mask: '(000) 000-0000'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="emergencyContactRelationship"
-              [inputConfig]="{
-                name: 'Relationship',
-                type: 'text',
-                label: 'Relationship',
-                textTransform: 'capitalize'
-              }"
-            ></app-ta-input>
-          </div>
-        </app-ta-custom-card>
       </div>
     </div>
   </form>

@@ -84,10 +84,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     },
     {
       id: 2,
-      name: 'Pay',
-    },
-    {
-      id: 3,
       name: 'Additional',
     },
   ];
@@ -127,6 +123,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   };
 
   public driverStatus: boolean = true;
+
+  public documents: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -233,6 +231,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       ownerId: [null],
       ownerType: ['Sole Proprietor'],
       ein: [null],
+      mvr: [5],
       bussinesName: [null],
       address: [null, [Validators.required]],
       addressUnit: [null, [Validators.maxLength(6)]],
@@ -255,8 +254,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       twic: [false],
       twicExpDate: [null],
       fuelCard: [null],
-      emergencyContactName: [null],
-      emergencyContactPhone: [null, phoneRegex],
+      emergencyContactName: [null, Validators.required],
+      emergencyContactPhone: [null, [phoneRegex, Validators.required]],
       emergencyContactRelationship: [null],
     });
   }
@@ -498,6 +497,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm.get('ownerType').patchValue('Sole Proprietor');
         }
       });
+  }
+
+  public onFilesEvent(event: any) {
+    this.documents = event.files;
   }
 
   private einNumberChange() {

@@ -249,7 +249,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    this.documents = event;
+    this.documents = event.files;
   }
 
   private updateTaskById(id: number) {

@@ -220,7 +220,7 @@ export class SettingsInsurancePolicyModalComponent
   }
 
   public onFilesEvent(event) {
-    console.log(event);
+    this.documents = event.files;
   }
 
   ngOnDestroy(): void {}

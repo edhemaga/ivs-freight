@@ -340,7 +340,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    this.documents = event;
+    this.documents = event.files;
   }
 
   public identity(index: number, item: any): string {
