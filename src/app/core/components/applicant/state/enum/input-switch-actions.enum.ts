@@ -14,6 +14,4 @@ export enum InputSwitchActions {
   RESTRICTIONS = 'RESTRICTIONS',
   PERMIT = 'PERMIT',
   HAZMAT_SPILL = 'HAZMAT-SPILL',
-  CONFIRM = 'confirm',
-  CANCEL = 'cancel',
 }

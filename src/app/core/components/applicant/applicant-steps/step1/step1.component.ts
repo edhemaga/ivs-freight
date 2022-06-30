@@ -47,12 +47,18 @@ export class Step1Component implements OnInit, OnDestroy {
   public isLastAddressInList: boolean = false;
   public isEditingMiddlePositionAddress: boolean = false;
 
+  public helperIndex = 2;
+
   public isEditingArray: {
     id: number;
     isEditing: boolean;
     isEditingAddress: boolean;
+    isFirstAddress: boolean;
   }[] = [];
   public isEditingId: number = -1;
+
+  public previousAddressOnEdit: string;
+  public previousAddressUnitOnEdit: string;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -195,12 +201,13 @@ export class Step1Component implements OnInit, OnDestroy {
     },
   ];
 
-  public helperIndex = 2;
+  public get previousAddresses(): FormArray {
+    return this.personalInfoForm.get('previousAddresses') as FormArray;
+  }
 
-  public addressCurrentlyBeingEdited: string;
+  /* C */
 
-  //
-  public loadingApplicant$: Observable<boolean>;
+  /* public loadingApplicant$: Observable<boolean>;
   public loadingBankData$: Observable<boolean>;
   public loadingPersonalInfo$: Observable<boolean>;
 
@@ -215,18 +222,17 @@ export class Step1Component implements OnInit, OnDestroy {
 
   public reviewFeedback: any[] = getPersonalInfoReviewFeedbackData();
   private countOfReview: number = 0;
-
-  public get previousAddresses(): FormArray {
-    return this.personalInfoForm.get('previousAddresses') as FormArray;
-  }
+ */
 
   constructor(
-    private formBuilder: FormBuilder,
-    private reviewFeedbackService: ReviewFeedbackService
+    private formBuilder: FormBuilder /* 
+    private reviewFeedbackService: ReviewFeedbackService */
   ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.createFirstAddress();
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -331,6 +337,24 @@ export class Step1Component implements OnInit, OnDestroy {
     });
   }
 
+  private createFirstAddress(): void {
+    /*  NIJE GOTOVO */
+
+    this.previousAddresses.push(this.onCreateNewAddress());
+
+    this.isEditingId++;
+
+    this.isEditingArray = [
+      ...this.isEditingArray,
+      {
+        id: this.isEditingId,
+        isEditing: true,
+        isEditingAddress: false,
+        isFirstAddress: true,
+      },
+    ];
+  }
+
   public onAddNewAddress(): void {
     this.isEditingMiddlePositionAddress = false;
 
@@ -357,7 +381,12 @@ export class Step1Component implements OnInit, OnDestroy {
 
       this.isEditingArray = [
         ...this.isEditingArray,
-        { id: this.isEditingId, isEditing: true, isEditingAddress: false },
+        {
+          id: this.isEditingId,
+          isEditing: true,
+          isEditingAddress: false,
+          isFirstAddress: false,
+        },
       ];
 
       if (this.previousAddresses.controls.length > 1) {
@@ -387,12 +416,17 @@ export class Step1Component implements OnInit, OnDestroy {
   public onEditNewAddress(index: number): void {
     this.helperIndex = index;
 
-    this.addressCurrentlyBeingEdited =
-      this.previousAddresses.controls[index].value.address;
-
     const lastPreviousAddressAdded = this.previousAddresses.length - 1;
 
     if (this.previousAddresses.controls[index].value.address) {
+      this.isEditingArray[index].isEditingAddress = true;
+
+      this.previousAddressOnEdit =
+        this.previousAddresses.controls[index].value.address;
+
+      this.previousAddressUnitOnEdit =
+        this.previousAddresses.controls[index].value.addressUnit;
+
       if (index !== 0) {
         this.isEditingMiddlePositionAddress = true;
 
@@ -421,15 +455,42 @@ export class Step1Component implements OnInit, OnDestroy {
 
       this.isEditingArray = this.isEditingArray.map((item, itemIndex) => {
         if (index === itemIndex) {
-          return { ...item, isEditing: true, isEditingAddress: true };
+          return { ...item, isEditing: true };
         }
 
-        return { ...item, isEditing: false, isEditingAddress: false };
+        return { ...item, isEditing: false };
       });
     }
   }
 
-  private formFIlling(): void {
+  public onConfirmEditedNewAddress(index: number): void {
+    if (
+      this.previousAddresses.controls[index].value.address &&
+      this.previousAddresses.controls[index].valid
+    ) {
+      this.isEditingArray[index].isEditing = false;
+      this.isEditingArray[index].isEditingAddress = false;
+
+      this.helperIndex = 2;
+    }
+  }
+
+  public onCancelEditingNewAddress(index: number): void {
+    this.previousAddresses.controls[index].patchValue({
+      address: this.previousAddressOnEdit,
+      addressUnit: this.previousAddressUnitOnEdit,
+    });
+
+    this.isEditingArray[index].isEditing = false;
+    this.isEditingArray[index].isEditingAddress = false;
+
+    this.previousAddressOnEdit = null;
+    this.previousAddressUnitOnEdit = null;
+
+    this.helperIndex = 2;
+  }
+
+  /* private formFIlling(): void {
     // Redirect to next Step
     // if (this.personalInfo?.isCompleted) {
     //   // this.router.navigateByUrl(`/application/${this.applicant?.id}/2`);
@@ -522,12 +583,13 @@ export class Step1Component implements OnInit, OnDestroy {
     }
 
     // Bank Info
-    /*  this.requiredBankInfo(
-            this.personalInfo?.bank && this.bankData.length ? true : false
-        ); */
+    //  this.requiredBankInfo(
+    //         this.personalInfo?.bank && this.bankData.length ? true : false
+    //     );
   }
+ */
 
-  public onSubmitForm(): void {
+  /* public onSubmitForm(): void {
     const personalInfoForm = this.personalInfoForm.value;
 
     // Applicant Data
@@ -627,38 +689,38 @@ export class Step1Component implements OnInit, OnDestroy {
     }
 
     // Update Applicant
-    /*  if (applicant) {
-      this.apppEntityServices.ApplicantService.upsert(applicant).subscribe(
-        () => {
-          if (personalInfo) {
-            personalInfo.applicantId = applicant.id;
-            this.apppEntityServices.PersonalInfoService.upsert(
-              personalInfo
-            ).subscribe(
-              () => {
-                this.notification.success('Personal Info is updated');
-                this.router.navigateByUrl(`/application/${this.applicant?.id}/2`)
-              },
-              (error) => {
-                this.shared.handleError(error);
-              }
-            );
-          }
-        },
-        (error) => {
-          this.shared.handleError(error);
-        }
-      );
-    } */
-  }
+    //  if (applicant) {
+    //   this.apppEntityServices.ApplicantService.upsert(applicant).subscribe(
+    //     () => {
+    //       if (personalInfo) {
+    //         personalInfo.applicantId = applicant.id;
+    //         this.apppEntityServices.PersonalInfoService.upsert(
+    //           personalInfo
+    //         ).subscribe(
+    //           () => {
+    //             this.notification.success('Personal Info is updated');
+    //             this.router.navigateByUrl(`/application/${this.applicant?.id}/2`)
+    //           },
+    //           (error) => {
+    //             this.shared.handleError(error);
+    //           }
+    //         );
+    //       }
+    //     },
+    //     (error) => {
+    //       this.shared.handleError(error);
+    //     }
+    //   );
+    // }
+  } */
 
-  public onStepAction(event: any): void {
+  /* public onStepAction(event: any): void {
     if (event.action === 'next-step') {
       this.onSubmitForm();
     }
-  }
+  } */
 
-  public onSubmitReview(data: any): void {
+  /* public onSubmitReview(data: any): void {
     const numberOfPreviousAddresses =
       this.personalInfoForm.value.previousAddresses.length;
 
@@ -670,12 +732,12 @@ export class Step1Component implements OnInit, OnDestroy {
       this.countOfReview === 10 + numberOfPreviousAddresses &&
       !data.firstLoad
     ) {
-      /* TODO: Send data to backend and move to next step */
+      // TODO: Send data to backend and move to next step
       console.log(this.reviewFeedback);
     } else if (data.firstLoad) {
       this.countOfReview = 0;
     }
-  }
+  } */
 
-  ngOnDestroy() {}
+  ngOnDestroy(): void {}
 }

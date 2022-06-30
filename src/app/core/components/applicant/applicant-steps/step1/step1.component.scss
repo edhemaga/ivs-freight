@@ -55,6 +55,7 @@
 
       position: relative;
 
+      &:nth-child(3),
       &:nth-child(5) {
         margin-bottom: 22px;
       }
@@ -104,10 +105,12 @@
       }
 
       .ssn-group {
+        margin-top: 26px;
         width: 187px;
       }
 
       .bank-group {
+        margin-top: 26px;
         width: 416px;
       }
 
@@ -119,10 +122,298 @@
         width: 224px;
       }
     }
+
+    .previous-addresses {
+      .dets-container {
+        width: 616px;
+
+        &:hover
+          .right-container
+          .info-container
+          .address-container
+          .address-icon {
+          svg {
+            path {
+              fill: $ta-light-blue;
+            }
+          }
+        }
+
+        &:hover .right-container .info-container .address-container,
+        &:hover .right-container .info-container .address-unit-container {
+          p {
+            color: $ta-light-grey-3;
+          }
+        }
+
+        &:hover .right-container .btn-container {
+          opacity: 1;
+          visibility: visible !important;
+        }
+
+        .title-container {
+          .address-title-container {
+            width: 174px;
+            margin-left: 36px;
+            margin-bottom: 6px;
+            margin-right: 288px;
+
+            p {
+              text-transform: uppercase;
+              height: 15px;
+              font-size: 12px;
+              color: $bw5;
+
+              span {
+                color: $progress-danger;
+              }
+            }
+          }
+
+          .address-unit-title-container {
+            width: 43px;
+
+            p {
+              text-transform: uppercase;
+              height: 15px;
+              font-size: 12px;
+              color: $bw5;
+            }
+          }
+        }
+
+        .right-container {
+          width: 616px;
+          height: 26px;
+          border-radius: 2px;
+
+          .info-container {
+            .address-container {
+              width: 480px;
+              margin-right: 12px;
+
+              .address-icon {
+                svg {
+                  path {
+                    transition: fill 0.2s ease-in-out;
+                    fill: $ta-blue-3;
+                  }
+                }
+              }
+
+              .pipe {
+                width: 1px;
+                height: 14px;
+                margin: 2px 6px;
+                background-color: $ta-gray-02;
+              }
+
+              p {
+                text-transform: uppercase;
+                font-size: 14px;
+                color: $bw6-2;
+                transition: color 0.2s ease-in-out;
+              }
+            }
+
+            .address-unit-container {
+              width: 52px;
+              margin-right: 18px;
+
+              p {
+                text-transform: uppercase;
+                font-size: 14px;
+                color: $bw6-2;
+                transition: color 0.2s ease-in-out;
+              }
+            }
+          }
+
+          .btn-container {
+            width: 42px;
+            visibility: hidden !important;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+
+            .edit-icon,
+            .delete-icon {
+              cursor: pointer;
+
+              &:hover {
+                svg {
+                  path {
+                    transition: fill 0.2s ease-in-out;
+                    fill: $bw6-2;
+                  }
+                }
+              }
+
+              svg {
+                path {
+                  fill: $bw4;
+                }
+              }
+            }
+
+            .edit-icon {
+              margin-right: 6px;
+            }
+          }
+
+          .input-container {
+            .address-container {
+              margin-right: 12px;
+            }
+
+            .address-unit-container {
+              width: 124px;
+              margin-right: 12px;
+            }
+
+            .confirm-cancel-btn-container {
+              width: 56px;
+              height: 26px;
+
+              .confirm-icon,
+              .cancel-icon {
+                cursor: pointer;
+
+                svg {
+                  rect {
+                    transition: fill 0.2s ease-in-out;
+                    fill: $ta-light-grey-4;
+                  }
+
+                  path {
+                    transition: fill 0.2s ease-in-out;
+                    fill: $bw4;
+                  }
+                }
+
+                &:hover {
+                  svg {
+                    rect {
+                      fill: $bw6-2;
+                    }
+
+                    path {
+                      fill: $white;
+                    }
+                  }
+                }
+
+                &.confirm-icon {
+                  margin-right: 8px;
+                }
+              }
+            }
+
+            .delete-btn-container {
+              width: 26px;
+              height: 26px;
+              border-radius: 3px;
+              background: $ta-light-grey-5;
+              transition: background 0.2s ease-in-out;
+              cursor: pointer;
+
+              &:hover {
+                background: $bw2;
+              }
+
+              &:hover .delete-icon {
+                svg {
+                  path {
+                    fill: $bw6-2;
+                  }
+                }
+              }
+
+              .delete-icon {
+                cursor: pointer;
+
+                svg {
+                  path {
+                    transition: fill 0.2s ease-in-out;
+                    fill: $bw4;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .previous-address-btn-container {
+        width: 616px;
+
+        .previous-address-title {
+          color: $bw6-2;
+          font-size: 14px;
+          height: 18px;
+          margin-right: 12px !important;
+        }
+
+        .add-btn {
+          width: 134px;
+          height: 26px;
+          padding: 4px 8px;
+          border: none;
+          outline: none;
+          font-size: 14px;
+          border-radius: 2px;
+          color: $ta-blue;
+          background: $ta-light-grey-4;
+          transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+          &:hover {
+            color: $white;
+            background: $ta-blue;
+          }
+
+          &:hover .plus-icon {
+            svg {
+              path {
+                fill: $white;
+              }
+            }
+          }
+
+          &.disabled {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+
+            cursor: auto;
+            background: $ta-light-grey-4;
+            color: $bw4;
+
+            .plus-icon {
+              svg {
+                path {
+                  fill: $ta-light-grey-6;
+                }
+              }
+            }
+          }
+
+          .plus-icon {
+            margin-right: 6px;
+
+            svg {
+              path {
+                transition: fill 0.2s ease-in-out;
+                fill: $ta-light-blue;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   .questions-section {
-    margin-bottom: 22px;
+    margin-bottom: 97px;
     width: 616px;
 
     .question-container {
@@ -162,247 +453,6 @@
     .explain-container {
       width: 616px;
       margin-top: 12px;
-    }
-  }
-
-  .previous-addresses-section {
-    width: 616px;
-    margin-bottom: 85px;
-
-    .previous-address-title {
-      color: $bw6-2;
-      font-size: 14px;
-      line-height: 22px;
-      height: 18px;
-    }
-
-    .dets-container {
-      width: 616px;
-
-      &:hover div .left-container {
-        background-color: $ta-light-blue !important;
-      }
-
-      &:hover
-        .right-container
-        .info-container
-        .address-container
-        .address-icon {
-        svg {
-          path {
-            fill: $ta-light-blue;
-          }
-        }
-      }
-
-      &:hover .right-container .info-container .address-container {
-        p {
-          color: $ta-light-grey-3;
-        }
-      }
-
-      &:hover .right-container .btn-container {
-        opacity: 1;
-        visibility: visible !important;
-      }
-
-      .title-container {
-        .address-title-container {
-          width: 174px;
-          margin-left: 68px;
-          margin-bottom: 6px;
-          margin-right: 257px;
-
-          p {
-            text-transform: uppercase;
-            height: 15px;
-            font-size: 12px;
-            color: $bw5;
-
-            span {
-              color: $progress-danger;
-            }
-          }
-        }
-
-        .address-unit-title-container {
-          width: 43px;
-
-          p {
-            text-transform: uppercase;
-            height: 15px;
-            font-size: 12px;
-            color: $bw5;
-          }
-        }
-      }
-
-      .left-container {
-        width: 26px;
-        height: 26px;
-        margin-right: 6px;
-        border-radius: 3px;
-        color: $white;
-        background: $ta-blue-3;
-        transition: background 0.2s ease-in-out;
-
-        .badge {
-          font-size: 14px;
-        }
-      }
-
-      .right-container {
-        width: 584px;
-        height: 26px;
-        border-radius: 2px;
-
-        .info-container {
-          .address-container {
-            width: 449px;
-            margin-right: 12px;
-
-            p {
-              text-transform: uppercase;
-              font-size: 14px;
-              color: $bw6-2;
-              transition: color 0.2s ease-in-out;
-            }
-
-            .address-icon {
-              svg {
-                path {
-                  transition: fill 0.2s ease-in-out;
-                  fill: $ta-blue-3;
-                }
-              }
-            }
-
-            .pipe {
-              width: 1px;
-              height: 14px;
-              margin: 2px 6px;
-              background-color: $ta-gray-02;
-            }
-          }
-
-          .address-unit-container {
-            width: 51px;
-            margin-right: 18px;
-
-            p {
-              text-transform: uppercase;
-              font-size: 14px;
-              color: $bw6-2;
-            }
-          }
-        }
-
-        .input-container {
-          .address-container {
-            margin-right: 12px;
-          }
-
-          .address-unit-container {
-            width: 123px;
-          }
-
-          .delete-btn-container {
-            width: 26px;
-            height: 26px;
-            border-radius: 3px;
-            background: $ta-light-grey-5;
-            transition: background 0.2s ease-in-out;
-            cursor: pointer;
-
-            &:hover {
-              background: $bw6-2;
-            }
-
-            &:hover .delete-icon {
-              svg {
-                path {
-                  fill: $white;
-                }
-              }
-            }
-
-            .delete-icon {
-              cursor: pointer;
-
-              svg {
-                path {
-                  transition: fill 0.2s ease-in-out;
-                  fill: $bw4;
-                }
-              }
-            }
-          }
-        }
-
-        .btn-container {
-          width: 42px;
-          visibility: hidden !important;
-          opacity: 0;
-          transition: opacity 0.2s ease-in-out;
-
-          .edit-icon,
-          .delete-icon {
-            cursor: pointer;
-
-            &:hover {
-              svg {
-                path {
-                  transition: fill 0.2s ease-in-out;
-                  fill: $bw6-2;
-                }
-              }
-            }
-
-            svg {
-              path {
-                fill: $bw4;
-              }
-            }
-          }
-
-          .edit-icon {
-            margin-right: 6px;
-          }
-        }
-      }
-    }
-
-    .add-btn {
-      margin: 0 auto;
-      width: 136px;
-      height: 34px;
-      border: none;
-      outline: none;
-      font-size: 14px;
-      font-weight: bold;
-      border-radius: 3px;
-      color: $white;
-      background: $ta-light-blue;
-      transition: background 0.3s ease-in-out;
-
-      &:hover {
-        background: $ta-blue;
-      }
-
-      &.disabled {
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-        user-select: none !important;
-
-        transition: background 0.2s ease-in-out;
-        background: $ta-light-grey-6;
-        color: $white;
-
-        &:hover {
-          background: $ta-light-grey-2;
-        }
-      }
     }
   }
 
