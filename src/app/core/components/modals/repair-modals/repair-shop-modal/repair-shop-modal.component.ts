@@ -140,8 +140,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       isDay: [isDay],
       dayOfWeek: [dayOfWeek],
       dayLabel: [day],
-      startTime: [moment("8:00:00 AM", "HH:mm:SS A").toDate()],
-      endTime: [moment("5:00:00 PM", "HH:mm:SS A").toDate()],
+      startTime: [moment("10:50:00 AM", "HH:mm:SS A").toDate()],
+      endTime: [moment("3:28:00 PM", "HH:mm:SS A").toDate()],
     });
   }
 

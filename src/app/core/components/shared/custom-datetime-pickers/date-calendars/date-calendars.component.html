@@ -17,7 +17,7 @@
               <span *ngIf="listPreview == 'full_list'">{{selectedMonth}}</span> {{selectedYear}}
             </span>
           </div>
-          <div class="today">Today</div>
+          <div class="today" (click)="selectCurrentDay()">Today</div>
         </div>
         <div class="calendars_list_view">
           <div class="calendar_month_days d-flex" *ngIf="listPreview == 'full_list'">

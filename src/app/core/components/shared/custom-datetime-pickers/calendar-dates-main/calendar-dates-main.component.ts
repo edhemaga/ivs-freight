@@ -96,7 +96,7 @@ export class CalendarDatesMainComponent implements OnInit {
         } else {
           this.virtualScrollViewport.scrollToIndex(this.currentIndex);
         }
-      });
+      }, 0);
     });
   }
 

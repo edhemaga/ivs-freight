@@ -95,8 +95,8 @@ export class DateCalendarsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.selectedMonth = this.monthNames[new Date().getMonth()]; 
-    this.selectedYear = new Date().getFullYear();
+    this.selectedMonth = this.monthNames[this.dateTime.getMonth()];
+    this.selectedYear = this.dateTime.getFullYear();
 
     this.calendarService.scrolledIndexChange.subscribe(res => {
       this.activeIndex = res.indx;
@@ -147,6 +147,11 @@ export class DateCalendarsComponent implements OnInit {
       //this.virtualScrollViewport.scrollToIndex(this.currentIndex);
     });
 
+  }
+
+  public selectCurrentDay(){
+    const new_date = moment(new Date()).format();
+    this.calendarService.dateChanged.next(new_date);
   }
 
   public scrollIndexChange(e): void {

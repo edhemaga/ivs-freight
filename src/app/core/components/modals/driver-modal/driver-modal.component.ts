@@ -226,7 +226,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       ssn: [null, [Validators.required, ssnNumberRegex]],
       note: [null],
       avatar: [null],
-      dateOfBirth: [null, [Validators.required]],
+      dateOfBirth: [new Date("2001"), [Validators.required]],
       offDutyLocations: this.formBuilder.array([]),
       isOwner: [false],
       ownerId: [null],
