@@ -38,7 +38,8 @@ export class DashboardPerformanceComponent implements OnInit {
           hasGradiendBackground: true,
           colors: ['rgba(189, 202, 235, 0.4)', 'rgba(189, 202, 235, 0)'],
           id: 'income',
-          hidden: false
+          hidden: false,
+          label: 'Net Gross'
         }
       },
       {
@@ -56,7 +57,8 @@ export class DashboardPerformanceComponent implements OnInit {
           hasGradiendBackground: true,
           colors: ['rgba(165, 116, 195, 0.4)', 'rgba(165, 116, 195, 0)'],
           id: 'miles',
-          hidden: false
+          hidden: false,
+          label: 'Miles'
         }
       },
       {
@@ -74,7 +76,8 @@ export class DashboardPerformanceComponent implements OnInit {
           hasGradiendBackground: true,
           colors: ['rgba(165, 116, 195, 0.4)', 'rgba(165, 116, 195, 0)'],
           id: 'roadside',
-          hidden: false
+          hidden: false,
+          label: 'Roadside Insp.'
         }
       },
       {
@@ -92,7 +95,8 @@ export class DashboardPerformanceComponent implements OnInit {
           hasGradiendBackground: true,
           colors: ['rgba(165, 116, 195, 0.4)', 'rgba(165, 116, 195, 0)'],
           id: 'accident',
-          hidden: false
+          hidden: false,
+          label: 'Accident'
         }
       },
       {
@@ -110,7 +114,8 @@ export class DashboardPerformanceComponent implements OnInit {
           hasGradiendBackground: true,
           colors: ['rgba(165, 116, 195, 0.4)', 'rgba(165, 116, 195, 0)'],
           id: 'driver',
-          hidden: false
+          hidden: false,
+          label: 'Driver'
         }
       },
       {
@@ -123,7 +128,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'revenue',
-          hidden: true
+          hidden: true,
+          label: 'Revenue'
         }
       },
       {
@@ -136,7 +142,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'load',
-          hidden: true
+          hidden: true,
+          label: 'Load'
         }
       },
       {
@@ -149,7 +156,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'fuel',
-          hidden: true
+          hidden: true,
+          label: 'Fuel Gallon'
         }
       },
       {
@@ -162,7 +170,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'fuel-cost',
-          hidden: true
+          hidden: true,
+          label: 'Fuel Cost'
         }
       },
       {
@@ -175,7 +184,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'repair',
-          hidden: true
+          hidden: true,
+          label: 'Repair'
         }
       },
       {
@@ -188,7 +198,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'violation',
-          hidden: true
+          hidden: true,
+          label: 'Violation'
         }
       },
       {
@@ -201,7 +212,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'expences',
-          hidden: true
+          hidden: true,
+          label: 'Expences'
         }
       },
       {
@@ -214,7 +226,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'truck',
-          hidden: true
+          hidden: true,
+          label: 'Truck'
         }
       },
       {
@@ -227,7 +240,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'trailer',
-          hidden: true
+          hidden: true,
+          label: 'Trailer'
         }
       },
       {
@@ -240,7 +254,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'owner',
-          hidden: true
+          hidden: true,
+          label: 'Owner'
         }
       },
       {
@@ -253,7 +268,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'user',
-          hidden: true
+          hidden: true,
+          label: 'User'
         }
       },
       {
@@ -266,7 +282,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'repair-shop',
-          hidden: true
+          hidden: true,
+          label: 'Repair Shop'
         }
       },
       {
@@ -279,7 +296,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'broker',
-          hidden: true
+          hidden: true,
+          label: 'Broker'
         }
       },
       {
@@ -292,7 +310,8 @@ export class DashboardPerformanceComponent implements OnInit {
           pointHoverRadius: 3,
           pointBorderWidth: 2,
           id: 'shipper',
-          hidden: true
+          hidden: true,
+          label: 'Shipper'
         }
       }
     ],
@@ -304,6 +323,8 @@ export class DashboardPerformanceComponent implements OnInit {
     removeChartMargin: true,
     gridHoverBackground: true,
     allowAnimation: true,
+    hasHoverData: true,
+    multiHoverData: true,
     dataLabels: [['01', 'WED'], ['02', 'THU'], ['03', 'FRI'], ['04', 'SAT'], ['05', 'SUN'], ['06', 'MON'], ['07', 'TUE'], ['08', 'WED'], ['09', 'THU'],
       ['10', 'FRI'], ['11', 'SAT'], ['12', 'SUN'], ['13', 'MON'], ['14', 'TUE'], ['15', 'WED'], ['16', 'THU'], ['17', 'FRI'], ['18', 'SAT'],
       ['19', 'SUN'], ['20', 'MON'], ['21', 'TUE'], ['22', 'WED'], ['23', 'THU'], ['24', 'FRI']

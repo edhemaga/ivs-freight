@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
@@ -15,6 +15,7 @@ export class TaChartComponent implements OnInit {
   @Input() legendAttributes: any;
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   lineChartData: ChartDataSets[] = [];
+  @ViewChild('hoverDataHolder') hoverDataHolder: ElementRef;
   
   public lineChartLabels: Label[] = [];
   public lineChartOptions: ChartOptions = {};
@@ -43,6 +44,8 @@ export class TaChartComponent implements OnInit {
   lastHoveredIndex: number = -1;
   hoveringStatus: boolean = false;
   showHoverData: boolean = false;
+  hoverDataPosition: number = 0;
+  selectedDataRows: any = [];
 
   constructor(private ref: ChangeDetectorRef) { }
 
@@ -92,7 +95,8 @@ export class TaChartComponent implements OnInit {
           }
         }
         else{
-          this.hoveringStatus = false;
+          if ( this.chartConfig['hasHoverData'] ) { this.hoveringStatus = false;  this.ref.detectChanges(); }
+          this.showHoverData = false;
           this.lastHoveredIndex = -1;
           this.animationDuration = 1000;
           if (this.chartConfig['onHoverAnnotation'] ) { this.setHoverAnnotation(null); }
@@ -335,6 +339,25 @@ export class TaChartComponent implements OnInit {
         if ( xAxis['_gridLineItems'] ) {
           xPoint1 = xAxis['_gridLineItems'][1]['x1'];
           xPoint2 = xAxis['_gridLineItems'][0]['x2'];
+
+          const elWidth = xPoint1 - xPoint2;
+
+          if ( xAxis['_gridLineItems'][value] && this.chartConfig['hasHoverData'] ) {
+            this.updateHoverData(value);
+            let oversizedHover = false;
+
+            let clientWidth = this.hoverDataHolder ? this.hoverDataHolder.nativeElement.offsetWidth + 16 : 0;
+
+            if (this.hoverDataHolder && this.hoverDataHolder.nativeElement && xAxis['_gridLineItems'][value]['x2'] + clientWidth > canvas.width ) {
+              oversizedHover = true;
+            }
+            if ( oversizedHover ) {
+              this.hoverDataPosition = xAxis['_gridLineItems'][value]['x2'] - clientWidth - elWidth;
+            }
+            else{
+              this.hoverDataPosition = xAxis['_gridLineItems'][value]['x2'];
+            }
+          }
         }
 
         const gridWidth = xPoint1 - xPoint2;
@@ -346,6 +369,9 @@ export class TaChartComponent implements OnInit {
         ctx.fillRect(yLeft - gridWidth/2, 0, gridWidth, canvas.height - reduce);
         ctx.stroke();
         ctx.restore();
+
+        this.showHoverData = true;
+        this.ref.detectChanges();
       }
     }}
 
@@ -519,5 +545,42 @@ export class TaChartComponent implements OnInit {
        }
     }
     this.ref.detectChanges();
+  }
+
+  updateHoverData(value: number) {
+    let dataValues = [];
+    this.chart.chart.config.data.datasets.map((item, i) => {
+      let dataProp = {
+        name: item['label'],
+        value: '$'+item['data'][value],
+        percent: this.chartConfig['hasPercentage'] ? '35.45%' : null,
+        color: item['borderColor']
+      }
+      if ( !item['hidden'] ) { dataValues.push(dataProp); }
+    });
+
+    if ( this.chartConfig['multiHoverData'] ){
+      let dataPropMulti = [
+        {
+          name: 'Price per Gallon',
+          value: '$23',
+          percent: null,
+          color: '#919191'
+        },
+        {
+          name: 'Load Rate per Mile',
+          value: '$23',
+          percent: null,
+          color: '#CCCCCC'
+        }
+      ];
+
+      dataPropMulti.map((item, i) => {
+        dataValues.push(item);
+      });
+     
+    }
+    
+    this.selectedDataRows = dataValues;
   }
 }
