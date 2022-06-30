@@ -24,6 +24,7 @@ import {
   emailRegex,
   phoneRegex,
   bankRoutingValidator,
+  mileValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-modal-upload/ta-upload-file.service';
@@ -84,10 +85,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     },
     {
       id: 2,
-      name: 'Pay',
-    },
-    {
-      id: 3,
       name: 'Additional',
     },
   ];
@@ -127,6 +124,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   };
 
   public driverStatus: boolean = true;
+
+  public documents: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -233,30 +232,34 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       ownerId: [null],
       ownerType: ['Sole Proprietor'],
       ein: [null],
+      mvr: [5, Validators.required],
       bussinesName: [null],
       address: [null, [Validators.required]],
       addressUnit: [null, [Validators.maxLength(6)]],
       bankId: [null],
       account: [null],
       routing: [null],
-      payroll: [false],
-      payType: [null],
-      mailNotification: [true],
-      phoneCallNotification: [false],
-      smsNotification: [false],
-      soloEmptyMile: [null, [Validators.min(0), Validators.max(10)]],
-      soloLoadedMile: [null, [Validators.min(0), Validators.max(10)]],
-      soloPerStop: [null, [Validators.min(0), Validators.max(10)]],
-      teamEmptyMile: [null, [Validators.min(0), Validators.max(10)]],
-      teamLoadedMile: [null, [Validators.min(0), Validators.max(10)]],
-      teamPerStop: [null, [Validators.min(0), Validators.max(10)]],
+      truckAsssistACH: [false],
+      payType: [null, Validators.required],
+      mailNotificationGeneral: [true],
+      pushNotificationGeneral: [false],
+      smsNotificationGeneral: [false],
+      mailNotificationPayroll: [true],
+      pushNotificationPayroll: [false],
+      smsNotificationPayroll: [false],
+      soloEmptyMile: [null, mileValidation],
+      soloLoadedMile: [null, mileValidation],
+      soloPerStop: [null, mileValidation],
+      teamEmptyMile: [null, mileValidation],
+      teamLoadedMile: [null, mileValidation],
+      teamPerStop: [null, mileValidation],
       commissionSolo: [25],
       commissionTeam: [25],
       twic: [false],
       twicExpDate: [null],
       fuelCard: [null],
-      emergencyContactName: [null],
-      emergencyContactPhone: [null, phoneRegex],
+      emergencyContactName: [null, Validators.required],
+      emergencyContactPhone: [null, [phoneRegex, Validators.required]],
       emergencyContactRelationship: [null],
     });
   }
@@ -293,18 +296,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   private onIncludePayroll(): void {
     this.driverForm
-      .get('payroll')
+      .get('truckAsssistACH')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
-            this.driverForm.get('payType'),
+            this.driverForm.get('bankId'),
             true,
             [Validators.required]
           );
         } else {
           this.inputService.changeValidators(
-            this.driverForm.get('payType'),
+            this.driverForm.get('bankId'),
             false
           );
         }
@@ -498,6 +501,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm.get('ownerType').patchValue('Sole Proprietor');
         }
       });
+  }
+
+  public onFilesEvent(event: any) {
+    this.documents = event.files;
   }
 
   private einNumberChange() {
@@ -820,11 +827,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             bankId: res.bank ? res.bank.name : null,
             account: res.account,
             routing: res.routing,
-            payroll: res.payroll,
+            truckAsssistACH: res.payroll,
             payType: res.payType ? res.payType.name : null,
-            mailNotification: res.mailNotification,
-            phoneCallNotification: res.phoneCallNotification,
-            smsNotification: res.smsNotification,
+            mailNotificationGeneral: res.mailNotification,
+            phoneCallNotificationGeneral: res.phoneCallNotification,
+            smsNotificationGeneral: res.smsNotification,
             soloEmptyMile: res.solo ? res.solo.emptyMile : null,
             soloLoadedMile: res.solo ? res.solo.loadedMile : null,
             soloPerStop: res.solo ? res.solo.perStop : null,

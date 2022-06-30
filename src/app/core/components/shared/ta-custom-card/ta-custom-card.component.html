@@ -30,10 +30,10 @@
         {{ cardName }}
       </span>
       <div
-        *ngIf="hasHeaderSvg && isCardOpen"
+        *ngIf="hasHeaderSvg && (isCardOpen || headerSvgEnabled)"
         ngbTooltip
         [mainTooltip]="tooltipName"
-        [tooltipBackground]="tooltipName? '#6c6c6c' :'#ffffff'"
+        [tooltipBackground]="tooltipName ? '#6c6c6c' : '#ffffff'"
         position="top"
       >
         <svg-icon class="header-svg" src="{{ hasHeaderSvg }}"></svg-icon>
@@ -58,6 +58,7 @@
         (click)="onAdd($event)"
       >
         <svg-icon
+          *ngIf="!hasBodyData && !isHeaderHover"
           class="header-action-svg"
           [ngClass]="{ 'new-position': !hasArrow || !hasBodyData }"
           src="{{ hasActionSvg }}"
@@ -66,37 +67,37 @@
           *ngIf="isHeaderHover || (hasBodyData && isCardOpen)"
           class="header-action-text"
         >
-          Add New
+          ADD NEW
         </p>
       </div>
       <div class="arrow-down-plus">
-        <div 
-        class="add-custom-card"
-        ngbTooltip
-        mainTooltip="Add New Event"
-        position="top"
-        tooltipBackground="#536BC2"
+        <div
+          class="add-custom-card"
+          ngbTooltip
+          mainTooltip="Add New Event"
+          position="top"
+          tooltipBackground="#536BC2"
         >
           <svg-icon
-          *ngIf="(hasPlusHeader && isCardOpen) || stayOpen"
-          class="plus-custom-card"
-          src="assets/svg/common/ic_plus.svg"
-          (click)="onAdd($event)"
-        ></svg-icon>
+            *ngIf="(hasPlusHeader && isCardOpen) || stayOpen"
+            class="plus-custom-card"
+            src="assets/svg/common/ic_plus.svg"
+            (click)="onAdd($event)"
+          ></svg-icon>
         </div>
         <div class="status-icon-weekly">
-         <div *ngIf="hasWeeklyStatus" class="weekly-status">
-           <div class="weekly-status-value">
-             {{hasWeeklyStatus}}
-           </div>
-         </div>
-        <svg-icon
-          *ngIf="hasArrow && hasBodyData"
-          class="header-arrow"
-          [ngClass]="{ rotate: isCardOpen }"
-          src="assets/svg/common/ic_arrow_down_updated.svg"
-        ></svg-icon>
-      </div>
+          <div *ngIf="hasWeeklyStatus" class="weekly-status">
+            <div class="weekly-status-value">
+              {{ hasWeeklyStatus }}
+            </div>
+          </div>
+          <svg-icon
+            *ngIf="hasArrow && hasBodyData"
+            class="header-arrow"
+            [ngClass]="{ rotate: isCardOpen }"
+            src="assets/svg/common/ic_arrow_down_updated.svg"
+          ></svg-icon>
+        </div>
       </div>
     </div>
   </div>
@@ -107,7 +108,10 @@
     [@.disabled]="animationsDisabled"
     [ngClass]="{ active: isCardOpen, scroll: hasScrollBody }"
   >
-    <div [@showHideCardBody]="isCardOpen ? 'true' : 'false'" class="content-holder">
+    <div
+      [@showHideCardBody]="isCardOpen ? 'true' : 'false'"
+      class="content-holder"
+    >
       <ng-content></ng-content>
     </div>
   </div>

@@ -342,7 +342,11 @@
     }
 
     .common-fake-table-card {
-      grid-template-columns: 110px 304px 1fr;
+      grid-template-columns: 110px 1fr 18px;
+
+      .common-fake-table-delete {
+        right: 7.5px;
+      }
     }
   }
 

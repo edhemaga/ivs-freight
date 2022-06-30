@@ -235,7 +235,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event) {
-    this.documents = event;
+    this.documents = event.files;
   }
 
   public pickedSpecialChecks() {

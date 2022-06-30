@@ -14,7 +14,7 @@ import { TaUploadFileService } from '../ta-modal-upload/ta-upload-file.service';
   templateUrl: './ta-custom-card.component.html',
   styleUrls: ['./ta-custom-card.component.scss'],
   animations: [card_modal_animation('showHideCardBody')],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class TaCustomCardComponent {
   @Input()
@@ -24,6 +24,7 @@ export class TaCustomCardComponent {
   @Input() cardName: string = null;
   @Input() hasCounter: number;
   @Input() hasArrow: boolean = true;
+  @Input() headerSvgEnabled: boolean = false;
   @Input() hasHeaderSvg: string = null;
   @Input() hasActionSvg: string = null;
   @Input() isCardOpen: boolean = false; // if has data, set on true
@@ -34,11 +35,11 @@ export class TaCustomCardComponent {
   @Input() isCommentData: boolean = false;
   @Input() hasCheckbox: boolean = false;
   @Input() tooltipName: string = '';
-  @Input() hasPlusHeader:boolean=false;
-  @Input() textBottomPossiton:string;
-  @Input() hasWeeklyStatus:string=null;
-  @Input() controlName:FormControl;
-  @Input() stayOpen : boolean = false;
+  @Input() hasPlusHeader: boolean = false;
+  @Input() textBottomPossiton: string;
+  @Input() hasWeeklyStatus: string = null;
+  @Input() controlName: FormControl;
+  @Input() stayOpen: boolean = false;
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );
@@ -63,7 +64,7 @@ export class TaCustomCardComponent {
     this.onOpenCard.emit(this.isCardOpen);
   }
 
-  public onAdd(event: any): void { 
+  public onAdd(event: any): void {
     event.preventDefault();
     event.stopPropagation();
     this.onActionEvent.emit(true);
