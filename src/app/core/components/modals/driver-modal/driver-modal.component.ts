@@ -1,7 +1,7 @@
 import { FormArray } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
@@ -37,6 +37,7 @@ import {
   createBase64,
   getStringFromBase64,
 } from 'src/app/core/utils/base64.image';
+import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.component';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -49,7 +50,7 @@ import {
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
-
+  @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
   public driverForm: FormGroup;
   public labelsBank: any[] = [];
   public labelsPayType: any[] = [];
@@ -478,6 +479,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.inputService.changeValidators(this.driverForm.get('ein'), false);
       }
     }
+    console.log(this.selectedOwnerTab.id);
+    console.log(
+      this.ownerTabs.findIndex((item) => item.id === this.selectedOwnerTab.id)
+    );
+    this.tabSwitch.indexSwitch = this.ownerTabs.findIndex(
+      (item) => item.id === this.selectedOwnerTab.id
+    );
+    console.log('INDEX SWTICH ', this.tabSwitch.indexSwitch);
   }
 
   private isCheckedOwner() {

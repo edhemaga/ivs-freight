@@ -6,13 +6,12 @@
   [customClass]="'modal-container-M'"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-
   <app-ta-tab-switch
-  [tabs]="tabs"
-  (switchClicked)="tabChange($event)" 
-  [type]="'type1-modal-popup'"
+    [tabs]="tabs"
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
   >
-  </app-ta-tab-switch>  
+  </app-ta-tab-switch>
 
   <form
     [formGroup]="shipperForm"
@@ -35,7 +34,7 @@
                 label: 'Bussines Name',
                 isRequired: true,
                 textTransform: 'capitalize',
-                autoFocus: true
+                autoFocus: editData?.type === 'edit' ? false : true
               }"
             ></app-ta-input>
           </div>

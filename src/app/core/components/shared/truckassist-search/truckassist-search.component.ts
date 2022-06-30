@@ -75,6 +75,13 @@ export class TruckassistSearchComponent
         searchText: this.searchText,
         color: this.getChipColor(this.chips.length),
         canDoAnimation: true,
+        query: this.getChipQuery(this.chips.length),
+      });
+
+      this.tableService.sendCurrentSearchTableData({
+        chipAdded: true,
+        search: this.searchText,
+        query: this.getChipQuery(this.chips.length - 1)
       });
 
       this.searchText = '';
@@ -85,15 +92,18 @@ export class TruckassistSearchComponent
   onDeleteChip(index: number) {
     this.chips.splice(index, 1);
 
-    this.chips = this.chips.map((chip, i) => {
-      chip = {
-        searchText: chip.searchText,
-        color: this.getChipColor(i),
-        canDoAnimation: false,
-      };
+    if (this.chips.length) {
+      this.chips = this.chips.map((chip, i) => {
+        chip = {
+          searchText: chip.searchText,
+          color: this.getChipColor(i),
+          canDoAnimation: false,
+          query: this.getChipQuery(i),
+        };
 
-      return chip;
-    });
+        return chip;
+      });
+    }
 
     if (this.openSearch) {
       setTimeout(() => {
@@ -101,16 +111,12 @@ export class TruckassistSearchComponent
       }, 100);
     }
 
-    const searchNumber = !this.chips.length
-      ? 'searchOne'
-      : this.chips.length === 1
-      ? 'searchTwo'
-      : 'searchThree';
-
     this.tableService.sendCurrentSearchTableData({
-      chip: searchNumber,
-      doReset: true,
-      all: searchNumber === 'searchOne',
+      isChipDelete: true,
+      search: this.searchText?.length >= 3 ? this.searchText : undefined,
+      addToQuery: this.getChipQuery(this.chips.length),
+      querys: ['searchOne', 'searchTwo', 'searchThree'],
+      chips: this.chips,
     });
   }
 
@@ -118,6 +124,12 @@ export class TruckassistSearchComponent
     const chipsColors = ['#4DB6A2', '#BA68C8', '#FFB74D'];
 
     return chipsColors[index];
+  }
+
+  getChipQuery(index: number) {
+    const chipsQuery = ['searchOne', 'searchTwo', 'searchThree'];
+
+    return chipsQuery[index];
   }
 
   ngOnDestroy(): void {

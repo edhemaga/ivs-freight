@@ -98,7 +98,14 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       companyOwned: [false],
       trailerNumber: [null, [Validators.required, Validators.maxLength(8)]],
       trailerTypeId: [null, [Validators.required]],
-      vin: [null, [Validators.required]],
+      vin: [
+        null,
+        [
+          Validators.required,
+          Validators.minLength(17),
+          Validators.maxLength(17),
+        ],
+      ],
       trailerMakeId: [null, [Validators.required]],
       model: [null],
       colorId: [null],

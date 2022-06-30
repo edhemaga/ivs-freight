@@ -5,6 +5,79 @@ import {
   process,
 } from '@progress/kendo-data-query';
 
+export function tableSearch(
+  res: any,
+  backFilterQuery: any,
+  selectedTab: string
+): any {
+  // On Typing
+  if (!res.doReset && !res.isChipDelete && !res.chipAdded) {
+    backFilterQuery[res.chip] = res.search;
+    backFilterQuery.active = selectedTab === 'active' ? 1 : 0;
+
+    return {
+      query: backFilterQuery,
+      action: 'api',
+    };
+  }
+  // On Reset If In Input Less Then 3 Char
+  else if (res.doReset) {
+    backFilterQuery[res.chip] = undefined;
+
+    if (res.all) {
+      return {
+        action: 'store',
+      };
+    } else {
+      return {
+        query: backFilterQuery,
+        action: 'api',
+      };
+    }
+  }
+  // On Chip Add
+  else if (res.chipAdded) {
+    if (
+      !backFilterQuery[res.query] ||
+      backFilterQuery[res.query] !== res.search
+    ) {
+      backFilterQuery[res.query] = res.search;
+
+      return {
+        query: backFilterQuery,
+        action: 'api',
+      };
+    }
+  }
+  // On Delete Chip
+  else if (res.isChipDelete) {
+    // If Other Chips Exist
+    if (res.chips.length || res.search) {
+      res.querys.map((query: any, i: number) => {
+        backFilterQuery[query] = res.chips[i]?.searchText
+          ? res.chips[i].searchText
+          : undefined;
+      });
+
+      // If In Input Char Exist, Add To Next Search Query
+      if (res.search) {
+        backFilterQuery[res.addToQuery] = res.search;
+      }
+
+      return {
+        query: backFilterQuery,
+        action: 'api',
+      };
+    }
+    // If No Other Exist
+    else {
+      return {
+        action: 'store',
+      };
+    }
+  }
+}
+
 export function closeAnimationAction(isDelete?: boolean, viewData?: any): any {
   if (!isDelete) {
     viewData = viewData.map((data: any) => {

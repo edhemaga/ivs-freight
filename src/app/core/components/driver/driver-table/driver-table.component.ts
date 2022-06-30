@@ -15,10 +15,14 @@ import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
+import {
+  closeAnimationAction,
+  tableSearch,
+} from 'src/app/core/utils/methods.globals';
 import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
 import { DriverListResponse } from 'appcoretruckassist';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-driver-table',
@@ -193,19 +197,17 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
-          if (!res.doReset) {
-            this.backFilterQuery[res.chip] = res.search;
-            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+          const searchEvent = tableSearch(
+            res,
+            this.backFilterQuery,
+            this.selectedTab
+          );
 
-
-            this.driverBackFilter(this.backFilterQuery);
-          } else if (res.doReset) {
-            this.backFilterQuery[res.chip] = undefined;
-
-            if(res.all){
+          if (searchEvent) {
+            if (searchEvent.action === 'api') {
+              this.driverBackFilter(searchEvent.query);
+            } else if (searchEvent.action === 'store') {
               this.sendDriverData();
-            }else{
-              this.driverBackFilter(this.backFilterQuery);
             }
           }
         }
@@ -462,7 +464,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
       this.modalService.openModal(DriverModalComponent, {
-        size: 'small',
+        size: 'medium',
       });
     } else if (
       event.action === 'tab-selected' &&
@@ -493,7 +495,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
-        { size: 'small' },
+        { size: 'medium' },
         {
           ...event,
           disableButton: true,
