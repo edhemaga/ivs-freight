@@ -1,8 +1,8 @@
 <div class="repair-component">
   <div *ngFor="let shipperData of shipper; trackBy: identity">
-    <div [ngSwitch]="shipperData.template">
+    <div [ngSwitch]="shipperData?.template">
       <div *ngSwitchCase="'general'">
-        <app-shipper-card-view [shipper]="shipperData.data">
+        <app-shipper-card-view [shipper]="shipperData?.data">
         </app-shipper-card-view>
       </div>
       <div *ngSwitchCase="'load'">
@@ -70,74 +70,75 @@
       </div>
       <div *ngSwitchCase="'contact'">
         <div class="contact-wrapper">
-         
-            <app-ta-custom-card
-              *ngFor="let shipperContact of shipperData?.data?.shipperContacts;trackBy: identity
-              "
-              [bodyTemplate]="'card'"
-              [animationsDisabled]="false"
-              [hasDivider]="false"
-              [cardName]="shipperContact.department.name"
-              [isCardOpen]="true"
-              class="shipper-contact-container"
-            >
-              <div *ngIf="shipperContact" class="parking-template-data">
-                <div
-                  class="parking-template-item parking-template-email parking-name"
-                >
-                  <span class="parking-template-name">{{
-                    shipperContact.fullName
-                  }}</span>
-                  <div class="svg-wrapper">
-                    <span
-                      ngbTooltip
-                      mainTooltip="Edit"
-                      position="top"
-                      tooltipBackground="#6C6C6C"
-                    >
-                      <svg-icon
-                        src="assets/svg/common/ic_pen.svg"
-                        class="svg-icon-edit"
-                      ></svg-icon>
-                    </span>
-                    <span
-                      ngbTooltip
-                      mainTooltip="Delete"
-                      position="top"
-                      tooltipBackground="#6C6C6C"
-                    >
-                      <svg-icon
-                        src="assets/svg/common/ic_trash.svg"
-                        class="svg-icon-trash"
-                      ></svg-icon>
-                    </span>
-                  </div>
-                </div>
-                <div class="parking-template-item">
-                  <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-                  <span class="parking-template-text">{{
-                    shipperContact.phone | formatPhoneP
-                  }}</span>
-                </div>
-                <div class="parking-template-item">
-                  <div class="parking-template-item">
+          <app-ta-custom-card
+            *ngFor="
+              let shipperContact of shipperData?.data?.shipperContacts;
+              trackBy: identity
+            "
+            [bodyTemplate]="'card'"
+            [animationsDisabled]="false"
+            [hasDivider]="false"
+            [cardName]="shipperContact.department.name"
+            [isCardOpen]="true"
+            class="shipper-contact-container"
+          >
+            <div *ngIf="shipperContact" class="parking-template-data">
+              <div
+                class="parking-template-item parking-template-email parking-name"
+              >
+                <span class="parking-template-name">{{
+                  shipperContact.fullName
+                }}</span>
+                <div class="svg-wrapper">
+                  <span
+                    ngbTooltip
+                    mainTooltip="Edit"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                  >
                     <svg-icon
-                      src="assets/svg/common/ic_phone-extension.svg"
+                      src="assets/svg/common/ic_pen.svg"
+                      class="svg-icon-edit"
                     ></svg-icon>
-                    <span class="parking-template-text">{{
-                      shipperContact.phoneExt
-                    }}</span>
-                  </div>
+                  </span>
+                  <span
+                    ngbTooltip
+                    mainTooltip="Delete"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                  >
+                    <svg-icon
+                      src="assets/svg/common/ic_trash.svg"
+                      class="svg-icon-trash"
+                    ></svg-icon>
+                  </span>
                 </div>
-                <div class="parking-template-item parking-template-email">
-                  <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+              </div>
+              <div class="parking-template-item">
+                <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+                <span class="parking-template-text">{{
+                  shipperContact.phone | formatPhoneP
+                }}</span>
+              </div>
+              <div class="parking-template-item">
+                <div class="parking-template-item">
+                  <svg-icon
+                    src="assets/svg/common/ic_phone-extension.svg"
+                  ></svg-icon>
                   <span class="parking-template-text">{{
-                    shipperContact.email
+                    shipperContact.phoneExt
                   }}</span>
                 </div>
               </div>
-              <div class="divider"></div>
-            </app-ta-custom-card>
+              <div class="parking-template-item parking-template-email">
+                <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+                <span class="parking-template-text">{{
+                  shipperContact.email
+                }}</span>
+              </div>
+            </div>
+            <div class="divider"></div>
+          </app-ta-custom-card>
         </div>
       </div>
       <div *ngSwitchCase="'review'">
@@ -153,7 +154,7 @@
                 [countColor]="'#919191'"
                 [countHeight]="'24px'"
                 [countWidth]="'24px'"
-                [count]="shipperData.data.upRatingCount"
+                [count]="shipperData?.data?.upRatingCount"
               >
               </app-ta-counter>
             </div>
@@ -164,7 +165,7 @@
                 [countColor]="'#919191'"
                 [countHeight]="'24px'"
                 [countWidth]="'24px'"
-                [count]="shipperData.data.downRatingCount"
+                [count]="shipperData?.data?.downRatingCount"
               >
               </app-ta-counter>
               <svg-icon

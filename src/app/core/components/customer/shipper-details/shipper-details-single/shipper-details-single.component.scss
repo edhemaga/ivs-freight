@@ -1,4 +1,6 @@
 @import "../shipper-details.component.scss";
+app-shipper-details-single{
+
 .note-cards {
   padding: 0 7px;
   .note-body {
@@ -162,5 +164,6 @@
     .divider {
         display: none;
     }
+}
 }
 }

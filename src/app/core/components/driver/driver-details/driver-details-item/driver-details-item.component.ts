@@ -56,9 +56,7 @@ export class DriverDetailsItemComponent
     
   }
 
-  ngOnInit(): void {
-    console.log(this.drivers);
-    
+  ngOnInit(): void {    
     this.initTableOptions();
     this.getExpireDate();
   }

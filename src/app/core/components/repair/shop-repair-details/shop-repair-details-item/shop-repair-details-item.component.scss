@@ -1,20 +1,36 @@
 @import "../shop-repair-details.component.scss";
 
-.working-hours-container {
-  padding: 0 10px;
-  .open-now-wrapper {
-    .open-now-icon-text {
-      display: flex;
-      align-items: center;
-    }
+app-shop-repair-details-item {
+  .working-hours-container {
+    padding: 0 10px;
+    .open-now-wrapper {
+      .open-now-icon-text {
+        display: flex;
+        align-items: center;
+      }
 
-    .open-time {
-      font-size: $font-size18;
-      color: $color-gray-dark;
-      height: 18px;
-      position: relative;
-      bottom: 2px;
+      .open-time {
+        font-size: $font-size18;
+        color: $color-gray-dark;
+        height: 18px;
+        position: relative;
+        bottom: 2px;
+        font-weight: $font-semibold;
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(183, 183, 183, 0.2);
+        }
+      }
+    }
+    .open-header {
+      font-size: $font-size12;
       font-weight: $font-semibold;
+      color: $color-gray-dark;
+      padding-right: 4px;
       &::-moz-selection {
         color: $color-gray-dark;
         background: rgb(183, 183, 183, 0.2);
@@ -24,186 +40,170 @@
         background: rgb(183, 183, 183, 0.2);
       }
     }
-  }
-  .open-header {
-    font-size: $font-size12;
-    font-weight: $font-semibold;
-    color: $color-gray-dark;
-    padding-right: 4px;
-    &::-moz-selection {
-      color: $color-gray-dark;
-      background: rgb(183, 183, 183, 0.2);
+    .open-hours-wrapper {
+      display: grid;
+      grid-template-columns: 190px 180px;
+      margin-top: 12px;
     }
-    &::selection {
-      color: $color-gray-dark;
-      background: rgb(183, 183, 183, 0.2);
-    }
-  }
-  .open-hours-wrapper {
-    display: grid;
-    grid-template-columns: 190px 180px;
-    margin-top: 12px;
-  }
-  .open-working-days-value {
-    font-size: 14px;
-    font-weight: 400;
-    color: #6c6c6c;
-    height: 18px;
-    &::-moz-selection {
-      color: $color-gray-dark;
-      background: rgb(183, 183, 183, 0.2);
-    }
-    &::selection {
-      color: $color-gray-dark;
-      background: rgb(183, 183, 183, 0.2);
-    }
-  }
-  .sunday {
-    margin-top: 12px;
-  }
-}
-
-.note-cards {
-  padding: 0 7px;
-  .note-body {
-    padding: 0 2px !important;
-    // margin-bottom: 7px !important;
-    .note-textarea {
-      color: #6c6c6c !important;
-      font-weight: 400 !important;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-    }
-  }
-}
-
-.service-container {
-  padding: 0 23px;
-  display: grid;
-  grid-template-columns: 32px 32px 32px 32px;
-  column-gap: 78px;
-  row-gap: 13px;
-  .service-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    svg {
-      width: 32px;
-      height: 32px;
-      path {
-        fill: #aaaaaa;
-      }
-    }
-    .service-type {
-      font-size: 12px;
-      font-weight: $font-semibold;
+    .open-working-days-value {
+      font-size: 14px;
+      font-weight: 400;
       color: #6c6c6c;
+      height: 18px;
       &::-moz-selection {
         color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
+        background: rgb(183, 183, 183, 0.2);
       }
       &::selection {
         color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
+        background: rgb(183, 183, 183, 0.2);
+      }
+    }
+    .sunday {
+      margin-top: 12px;
+    }
+  }
+
+  .note-cards {
+    padding: 0 7px;
+    .note-body {
+      padding: 0 2px !important;
+      // margin-bottom: 7px !important;
+      .note-textarea {
+        color: #6c6c6c !important;
+        font-weight: 400 !important;
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
+        }
       }
     }
   }
-}
 
-.border-vertical {
-  margin: 0;
-  width: 2px;
-  height: 28px;
-  border: none;
-  border-radius: 1px;
-  border-left: 2px solid #f3f3f3;
-  margin-top: 10px;
-}
-.review-container {
-  background-color: $color-white;
-  border-radius: 3px;
-  max-width: 280px;
-  height: fit-content;
-  min-height: 50px;
-  margin-top: 12px;
-  padding: 6px;
-}
-.button-wrapper-shop {
-  position: relative;
-  display: flex;
-  left: 14px;
-  background-color: #6d82c7;
-  color: #ffffff;
-  cursor: pointer;
-  margin: auto;
-  font-size: 12px;
-  font-weight: 700;
-  border-radius: 2px;
-  align-items: center;
-  justify-content: center;
-  line-height: 20px;
-  height: 22px;
-  text-align: center;
-  border: none;
-  padding: 0px 8px;
-  &:hover {
-    background-color: #536bc2;
-  }
-}
-.finish-order-cont {
-  .repair-items {
-    .items-header {
-      background-color: #fff3e0;
-      margin-bottom: 2px !important;
-      margin-top: 2px !important;
-      padding: 6px 4px;
-      padding-left: 10px;
-      border-radius: 2px;
-     
-    }
-  }
-  .unit {
-    position: relative;
-  }
-  
-}
-.disabled {
-  svg {
-    path {
-      fill: #dadada !important;
-    }
-  }
-}
-.cross-out {
-  text-decoration: line-through;
-  color: #b7b7b7 !important;
-  &::-moz-selection {
-    color: #b7b7b7 !important;
-    background: rgb(183, 183, 183, 0.2) !important;
-  }
-  &::selection {
-    color: #b7b7b7 !important;
-    background: rgb(183, 183, 183, 0.2) !important;
-  }
-}
-.no-invoice{
-  display: flex;
-  align-items: center;
-  .no-inv{
-    svg{
+  .service-container {
+    padding: 0 23px;
+    display: grid;
+    grid-template-columns: 32px 32px 32px 32px;
+    column-gap: 78px;
+    row-gap: 13px;
+    .service-item {
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      svg {
+        width: 32px;
+        height: 32px;
+        path {
+          fill: #aaaaaa;
+        }
+      }
+      .service-type {
+        font-size: 12px;
+        font-weight: $font-semibold;
+        color: #6c6c6c;
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
+        }
+      }
     }
   }
-  .date-order{
-    font-size: 14px;
-    font-weight: 400;
-    color: #6c6c6c;
-    margin-left: 4px;
+
+  .border-vertical {
+    margin: 0;
+    width: 2px;
+    height: 28px;
+    border: none;
+    border-radius: 1px;
+    border-left: 2px solid #f3f3f3;
+    margin-top: 10px;
+  }
+  .review-container {
+    background-color: $color-white;
+    border-radius: 3px;
+    max-width: 280px;
+    height: fit-content;
+    min-height: 50px;
+    margin-top: 12px;
+    padding: 6px;
+  }
+  .button-wrapper-shop {
+    position: relative;
+    display: flex;
+    left: 14px;
+    background-color: #6d82c7;
+    color: #ffffff;
+    cursor: pointer;
+    margin: auto;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: center;
+    line-height: 20px;
+    height: 22px;
+    text-align: center;
+    border: none;
+    padding: 0px 8px;
+    &:hover {
+      background-color: #536bc2;
+    }
+  }
+  .finish-order-cont {
+    .repair-items {
+      .items-header {
+        background-color: #fff3e0;
+        margin-bottom: 2px !important;
+        margin-top: 2px !important;
+        padding: 6px 4px;
+        padding-left: 10px;
+        border-radius: 2px;
+      }
+    }
+    .unit {
+      position: relative;
+    }
+  }
+  .disabled {
+    svg {
+      path {
+        fill: #dadada !important;
+      }
+    }
+  }
+  .cross-out {
+    text-decoration: line-through;
+    color: #b7b7b7 !important;
+    &::-moz-selection {
+      color: #b7b7b7 !important;
+      background: rgb(183, 183, 183, 0.2) !important;
+    }
+    &::selection {
+      color: #b7b7b7 !important;
+      background: rgb(183, 183, 183, 0.2) !important;
+    }
+  }
+  .no-invoice {
+    display: flex;
+    align-items: center;
+    .no-inv {
+      svg {
+        display: flex;
+      }
+    }
+    .date-order {
+      font-size: 14px;
+      font-weight: 400;
+      color: #6c6c6c;
+      margin-left: 4px;
+    }
   }
 }

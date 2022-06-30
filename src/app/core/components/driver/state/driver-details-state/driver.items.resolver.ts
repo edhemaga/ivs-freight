@@ -27,11 +27,7 @@ export class DriverItemResolver implements Resolve<DriverResponse[]> {
   ): Observable<DriverResponse[]> | Observable<any> {
     const driver_id = route.paramMap.get('id');
     let id = parseInt(driver_id);
-    console.log(this.driverItemQuery.getAll());
-
     if (this.driverItemQuery.hasEntity(id)) {
-      console.log('has entity');
-
       return this.driverItemQuery.selectEntity(id).pipe(
         catchError((error) => {
           return of('error');
@@ -39,8 +35,6 @@ export class DriverItemResolver implements Resolve<DriverResponse[]> {
         take(1)
       );
     } else {
-      console.log('no entity');
-
       return this.driverService.getDriverById(id).pipe(
         catchError((error) => {
           return of('No drivers data for...' + driver_id);

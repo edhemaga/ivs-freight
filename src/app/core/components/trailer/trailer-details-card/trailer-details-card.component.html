@@ -2,7 +2,7 @@
   <app-ta-details-header-card
     [tooltipNext]="'Next Trailer'"
     [tooltipPrevious]="'Previous Trailer'"
-    [cardDetailsDate]="'08/03/20'"
+    [cardDetailsDate]="trailer.createdAt | formatDateP"
     [options]="trailerDropDowns"
     [searchInputName]="'Search Trailer'"
     (selectValue)="onSelectedTrailer($event)"
