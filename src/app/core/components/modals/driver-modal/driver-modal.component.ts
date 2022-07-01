@@ -129,7 +129,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public documents: any[] = [];
 
   public dropZoneConfig: DropZoneConfig = {
-    dropZoneType: 'logo',
+    dropZoneType: 'image',
     dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
     dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
     multiple: false,
@@ -157,10 +157,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     if (this.editData) {
       this.editDriverById(this.editData.id);
     }
-  }
-
-  public onCommandEvent(event: any) {
-    // console.log(event);
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
@@ -465,7 +461,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public tabChange(event: any): void {
     this.selectedTab = event.id;
 
-    this.uploadFileService.visibilityDropZone(this.selectedTab === 3);
+    this.uploadFileService.visibilityDropZone(this.selectedTab === 2);
 
     let dotAnimation = document.querySelector('.animation-three-tabs');
 

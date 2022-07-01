@@ -9,6 +9,7 @@ import { tab_modal_animation } from '../../../shared/animations/tabs-modal.anima
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { DropZoneConfig } from '../../../shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 
 @Component({
   selector: 'app-accident-modal',
@@ -54,6 +55,22 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   public addressDestination: AddressEntity = null;
   public addressOrigin: AddressEntity = null;
   public addressAuthority: AddressEntity = null;
+
+  public dropZoneConfigFile: DropZoneConfig = {
+    dropZoneType: 'files', // files | image | media
+    dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
+    dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
+    multiple: true,
+    globalDropZone: false,
+  };
+
+  public dropZoneConfigMedia: DropZoneConfig = {
+    dropZoneType: 'media',
+    dropZoneAvailableFiles: 'video/mp4,video/x-m4v,video/*',
+    dropZoneSvg: 'assets/svg/common/ic_media_dropzone.svg',
+    multiple: false,
+    globalDropZone: false,
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -232,8 +249,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onFilesEvent(event: any, action: string) {
-    switch (action) {
+  public onFilesEvent(event: any) {
+    switch (event.type) {
       case 'documents': {
         this.documents = event.files;
         break;

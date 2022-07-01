@@ -484,7 +484,8 @@
           <app-ta-modal-upload
             [files]="documents"
             [modalSize]="'modal-large'"
-            (onFileEvent)="onFilesEvent($event, 'documents')"
+            [dropZoneConfig]="dropZoneConfigFile"
+            (onFileEvent)="onFilesEvent($event)"
           ></app-ta-modal-upload>
         </app-ta-custom-card>
 
@@ -496,7 +497,8 @@
           <app-ta-modal-upload
             [files]="media"
             [modalSize]="'modal-large'"
-            (onFileEvent)="onFilesEvent($event, 'media')"
+            [dropZoneConfig]="dropZoneConfigMedia"
+            (onFileEvent)="onFilesEvent($event)"
           ></app-ta-modal-upload>
         </app-ta-custom-card>
 
