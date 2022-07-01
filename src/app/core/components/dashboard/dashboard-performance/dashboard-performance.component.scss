@@ -21,6 +21,14 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
             color: #919191;
             padding-right: 12px;
             box-sizing: border-box;
+            &::-moz-selection {
+                background: #91919133;
+                color: #919191;
+            }
+              &::selection {
+                background: #91919133;
+                color: #919191;
+            }
         }
 
         .dashboard-performance-toolbar{
@@ -56,6 +64,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 justify-content: flex-start;
                 align-items: center;
                 cursor: pointer;
+                user-select: none;
 
                 .dashboard-performance-dropdown-text{
                     font-size: 14px;
@@ -88,6 +97,17 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                         }
                     }
                 }
+
+                &.active-options{
+                    .dashboard-performance-arrow-holder{
+                        svg-icon{
+                            svg{
+                                transform: rotate(180deg);
+                                transition: all 0.3s;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -111,6 +131,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
             box-sizing: border-box;
             margin-bottom: 8px;
             margin-right: 8px;
+            user-select: none;
 
             .dashboard-performance-left-close{
                 position: absolute;
@@ -272,7 +293,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
 
             &:hover{
                 cursor: pointer;
-                box-shadow: 0 0 6px #0000004D;
+                box-shadow: 0 0 4px #00000026;
 
                 .dashboard-performance-body-title-circle{
                     background-color: #AAAAAA !important;
@@ -385,6 +406,8 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 flex-direction: column;
                 margin-right: 8px;
                 margin-bottom: 8px;
+                user-select: none;
+                transition: all 0.2s;
 
                 .dashboard-performance-right-close{
                     position: absolute;
@@ -424,6 +447,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                         height: 14px;
                         border-radius: 100%;
                         background-color: #DADADA;
+                        transition: all 0.2s;
                     }
 
                     .dashboard-performance-body-right-cards-title{
@@ -514,6 +538,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                     display: none;
                     justify-content: flex-start;
                     align-items: center;
+                    transition: all 0.3s;
 
                     .dashboard-performance-body-right-cards-trend-up{
                         width: 18px;
@@ -685,22 +710,95 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
     }
 }
 
-.round_dark_grey{
-    svg-icon{
-        svg{
-            rect{
-                fill: #919191;
+.dahsboard_charts_holder{
+    background-color: #fff;
+    padding: 12px 12px 14px 12px;
+    margin-bottom: 18px;
+
+    .line_chart_title_hold{
+        display: flex;
+
+        .dashboard_chart_title{
+            color: #AAAAAA;
+    
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 22px;
+            flex: 1;
+        }
+
+        .dashboard_chart_average_hold{
+            display: flex;
+            align-items: center;
+            height: 14px;
+
+            .chart_average_icon{
+                margin-right: 5px;
             }
+
+            .chart_average_title{
+                font-size: 11px;
+                line-height: 14px;
+                color: #6C6C6C;
+
+                span{
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+
+    .dashboard_chart_data{
+        display: flex;
+        margin-top: 12px;
+
+        .chart_data_inner{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &.separate_inner{
+                margin-right: 22px;
+            }
+
+            .chart_data_text{
+                color: #6C6C6C;
+                font-size: 11px;
+                line-height: 14px;
+                font-weight: 500;
+                padding-left: 4px;
+           }
+
+           .round_dark_grey{
+                svg-icon{
+                    svg{
+                        rect{
+                            fill: #919191;
+                        }
+                    }
+                }
+            }
+            
+            .round_light_grey{
+                svg-icon{
+                    svg{
+                        rect{
+                            fill: #CCCCCC;
+                        }
+                    }
+                }
+            }
+
+           .chart_data_icon{
+                svg-icon{
+                    svg{
+                        display: flex;
+                        width: 10px;
+                        height: 10px;
+                    }
+                }
+           }
         }
     }
 }
 
-.round_light_grey{
-    svg-icon{
-        svg{
-            rect{
-                fill: #CCCCCC;
-            }
-        }
-    }
-}
