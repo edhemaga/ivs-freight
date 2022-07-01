@@ -6,10 +6,10 @@ import { UploadFile } from './ta-upload-file/ta-upload-file.component';
   providedIn: 'root',
 })
 export class TaUploadFileService {
-  private uploadDocumentsSubject: BehaviorSubject<{
+  private uploadDocumentsSubject: Subject<{
     files: UploadFile[];
     action: string;
-  }> = new BehaviorSubject<{ files: UploadFile[]; action: string }>(null);
+  }> = new Subject<{ files: UploadFile[]; action: string }>();
 
   private visibilityDropZoneSubject: Subject<boolean> = new Subject<boolean>();
 

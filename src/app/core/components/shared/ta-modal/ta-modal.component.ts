@@ -65,6 +65,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     dropZoneSvg: 'assets/svg/common/ic_modal_upload_dropzone.svg',
     dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
     multiple: true,
+    globalDropZone: true,
   };
 
   @Input() tabChange: any;
@@ -153,10 +154,12 @@ export class TaModalComponent implements OnInit, OnDestroy {
     $(document).on('dragover', '.modal', (event) => {
       event.preventDefault();
       event.stopPropagation();
+      console.log('DRAG OVER');
       if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
         this.dropZoneCounter++;
       }
       this.isDropZoneVisible = true;
+      console.log(this.isDropZoneVisible);
     });
   }
 

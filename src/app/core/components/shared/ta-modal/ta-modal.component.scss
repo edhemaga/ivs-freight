@@ -61,6 +61,20 @@
         }
       }
     }
+
+    // Upload Part Override
+    .ta-modal-dropzone-area {
+      transform: scale(2);
+    }
+
+    .ta-modal-dropzone-text {
+      position: absolute !important;
+      top: 84% !important;
+      text-align: center;
+      left: 40%;
+      left: 50% !important;
+      transform: translate(-50%, -50%);
+    }
   }
 
   &.modal-container-M {
