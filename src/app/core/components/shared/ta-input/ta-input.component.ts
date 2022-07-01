@@ -331,6 +331,7 @@ export class TaInputComponent
   }
 
   public resetDateTimeInputs() {
+    
     if (this.inputConfig.name === 'datepicker') {
       this.span1.nativeElement.innerHTML = 'mm';
       this.span2.nativeElement.innerHTML = 'dd';

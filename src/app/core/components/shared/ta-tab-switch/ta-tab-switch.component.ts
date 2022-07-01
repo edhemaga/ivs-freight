@@ -58,6 +58,13 @@ implements OnInit, AfterViewInit, OnChanges {
     });
   }
 
+  clearFields(){
+    this.date1.setValue(null);
+    this.date1.updateValueAndValidity();
+    this.date2.patchValue(null);
+    this.date2.updateValueAndValidity();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes)
     if(changes.tabs){
