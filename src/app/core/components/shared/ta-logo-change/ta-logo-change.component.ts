@@ -32,7 +32,7 @@ export class TaLogoChangeComponent
   implements AfterViewInit, OnInit, OnChanges, OnDestroy
 {
   @ViewChild('croppie') croppieDirective: CroppieDirective | any;
-  public croppieOptions: Croppie.CroppieOptions = {
+  @Input() croppieOptions: Croppie.CroppieOptions = {
     enableExif: true,
     viewport: {
       width: 162,
@@ -158,5 +158,7 @@ export class TaLogoChangeComponent
     this.imageUrl = null;
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.croppieDirective.croppie.destroy();
+  }
 }

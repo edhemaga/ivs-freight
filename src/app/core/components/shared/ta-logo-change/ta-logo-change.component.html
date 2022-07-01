@@ -82,11 +82,18 @@
       (click)="onDeleteSavedImage()"
     >
       <svg-icon
-        class="delete-logo-svg"
+        class="ta-delete-logo-svg"
         src="assets/svg/common/ic_trash.svg"
       ></svg-icon>
     </div>
-    <img [src]="imageUrl" alt="Not Allowed Image" />
+    <img
+      class="ta-logo-image"
+      [ngClass]="{
+        'ta-logo-image-circle': croppieOptions.viewport.type == 'circle'
+      }"
+      [src]="imageUrl"
+      alt="Not Allowed Image"
+    />
   </div>
 
   <!------------------------ DROP ZONE ------------------------>
