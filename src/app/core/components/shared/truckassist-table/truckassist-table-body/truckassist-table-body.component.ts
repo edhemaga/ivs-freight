@@ -42,6 +42,7 @@ export class TruckassistTableBodyComponent
   showScrollSectionBorder: boolean = false;
   hoverActive: number = -1;
   activeTableData: any = {};
+  notPinedMaxWidth: number = 0;
 
   constructor(
     private router: Router,
@@ -82,9 +83,11 @@ export class TruckassistTableBodyComponent
       .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response?.event?.width) {
+          let isPined: boolean;
           this.columns = this.columns.map((c) => {
             if (c.title === response.columns[response.event.index].title) {
               c.width = response.event.width;
+              isPined = c.isPined;
             }
 
             return c;
@@ -92,7 +95,15 @@ export class TruckassistTableBodyComponent
 
           this.changeDetectorRef.detectChanges();
 
-          this.checkForScroll();
+          if (isPined) {
+            this.getNotPinedMaxWidth();
+
+            setTimeout(() => {
+              this.checkForScroll();
+            }, 10);
+          } else {
+            this.checkForScroll();
+          }
         }
       });
 
@@ -180,6 +191,8 @@ export class TruckassistTableBodyComponent
   }
 
   ngAfterViewInit(): void {
+    this.getNotPinedMaxWidth();
+
     setTimeout(() => {
       this.checkForScroll();
     }, 10);
@@ -190,6 +203,19 @@ export class TruckassistTableBodyComponent
     if (event.target.className === 'not-pined-tr') {
       this.tableService.sendScroll(event.path[0].scrollLeft);
     }
+  }
+
+  getNotPinedMaxWidth() {
+    const tableContainer = document.querySelector('.table-container');
+    const pinedColumns = document.querySelector('.pined-tr');
+    const actionColumns = document.querySelector('.actions');
+
+    this.notPinedMaxWidth =
+      tableContainer.clientWidth -
+      (pinedColumns.clientWidth + actionColumns.clientWidth) -
+      6;
+
+    this.changeDetectorRef.detectChanges();
   }
 
   getSelectedTabTableData() {
