@@ -264,6 +264,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                             color: #6C6C6C;
                             padding: 0px 16px 0px 0px;
                             box-sizing: border-box;
+                            user-select: none;
                         }
     
                         .dashboard-top-driver-body-list-circle{
@@ -287,12 +288,29 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                             color: #6C6C6C;
                             padding-left: 6px;
                             box-sizing: border-box;
+                            &::-moz-selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+                            &::selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
                         }
 
                         .dashboard-top-driver-body-list-price{
                             font-size: 14px;
                             font-weight: 400;
                             color: #6C6C6C;
+                            &::-moz-selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+                            &::selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+
                         }
 
                         .dashboard-top-driver-body-list-percent{
@@ -301,6 +319,36 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                             color: #6C6C6C;
                             padding-left: 22px;
                             box-sizing: border-box;
+                            &::-moz-selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+                            &::selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+                        }
+
+                        .dashboard-top-driver-body-list-remove{
+                            width: 18px;
+                            height: 18px;
+                            display: none;
+                            justify-content: center;
+                            align-items: center;
+                            margin-left: 12px;
+                            cursor: pointer;
+
+                            svg-icon{
+                                svg{
+                                    display: flex;
+                                    width: 12.38px;
+                                    height: 12.38px;
+
+                                    path{
+                                        fill: #fff;
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -358,18 +406,47 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
 
                             .dashboard-top-driver-body-list-name{
                                 color: #fff !important;
+                                &::-moz-selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+                                &::selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+    
                             }
 
                             .dashboard-top-driver-body-list-price{
                                 color: #fff !important;
+                                &::-moz-selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+                                &::selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
                             }
 
                             .dashboard-top-driver-body-list-percent{
                                 color: #fff !important;
+                                &::-moz-selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+                                &::selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
                             }
 
                             &:hover{
                                 background-color: unquote('#' + $hover_color);
+
+                                .dashboard-top-driver-body-list-remove{
+                                    display: flex;
+                                }
                             }
                         }
                     }

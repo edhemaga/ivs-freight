@@ -95,6 +95,9 @@
                 <div class="dashboard-top-driver-body-list-percent">
                   {{ item.percent }}
                 </div>
+                <div class="dashboard-top-driver-body-list-remove" (click)="removeDriverFromList($event, indx, item)">
+                  <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
               </div>
             </div>
             <div class="dashboard-top-driver-body-list-border"></div>

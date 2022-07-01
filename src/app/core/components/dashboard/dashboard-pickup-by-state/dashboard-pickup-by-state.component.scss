@@ -1,3 +1,5 @@
+$top_state_color:'6278C7', '7A8DCB', '7A8DCB', 'A0AFDE', 'A0AFDE', 'C2CEEC', 'C2CEEC', 'C2CEEC', 'D7E1F4', 'D7E1F4';
+
 .dashboard-pickup-holder{
     width: 100%;
     display: flex;
@@ -257,6 +259,7 @@
                             color: #6C6C6C;
                             padding: 0px 16px 0px 0px;
                             box-sizing: border-box;
+                            user-select: none;
                         }
 
                         .dashboard-pickup-body-state-list-circle{
@@ -272,12 +275,28 @@
                             color: #6C6C6C;
                             padding-left: 6px;
                             box-sizing: border-box;
+                            &::-moz-selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+                            &::selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
                         }
 
                         .dashboard-pickup-body-state-list-price{
                             font-size: 14px;
                             font-weight: 400;
                             color: #6C6C6C;
+                            &::-moz-selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+                            &::selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
                         }
 
                         .dashboard-pickup-body-state-list-percent{
@@ -286,6 +305,36 @@
                             color: #6C6C6C;
                             padding-left: 22px;
                             box-sizing: border-box;
+                            &::-moz-selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+                            &::selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+                        }
+
+                        .dashboard-pickup-body-state-list-remove{
+                            width: 18px;
+                            height: 18px;
+                            display: none;
+                            justify-content: center;
+                            align-items: center;
+                            margin-left: 12px;
+                            cursor: pointer;
+
+                            svg-icon{
+                                svg{
+                                    display: flex;
+                                    width: 12.38px;
+                                    height: 12.38px;
+
+                                    path{
+                                        fill: #fff;
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -293,6 +342,64 @@
                         cursor: pointer;
                         background-color: #F3F3F3;
                     }
+
+                    $ii: 1;
+                    @each $col1 in $top_state_color {
+                        &.state-compare-#{$col1}{
+                            background-color: unquote('#' + $col1);
+
+                            .dashboard-pickup-body-state-list-id{
+                                color: #fff !important;
+                            }
+
+                            .dashboard-pickup-body-state-list-circle{
+                                background-color: #ffffff99 !important;
+                            }
+
+                            .dashboard-pickup-body-state-list-name{
+                                color: #fff !important;
+                                &::-moz-selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+                                &::selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+                            }
+
+                            .dashboard-pickup-body-state-list-price{
+                                color: #fff !important;
+                                &::-moz-selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+                                &::selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+                            }
+
+                            .dashboard-pickup-body-state-list-percent{
+                                color: #fff !important;
+                                &::-moz-selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+                                &::selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+                            }
+
+                            &:hover{
+                                .dashboard-pickup-body-state-list-remove{
+                                    display: flex;
+                                }
+                            }
+                        }
+                    }
+
                 }
 
                 .dashboard-pickup-body-state-list-border{

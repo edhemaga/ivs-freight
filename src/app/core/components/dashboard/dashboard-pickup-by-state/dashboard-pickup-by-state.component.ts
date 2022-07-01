@@ -89,7 +89,10 @@ export class DashboardPickupByStateComponent implements OnInit {
     }
   ];
 
-  pickupCircleColor: any[] = ['#6278C7', '#7A8DCB', '#7A8DCB', '#A0AFDE', '#A0AFDE', '#C2CEEC', '#C2CEEC', '#C2CEEC', '#D7E1F4', '#D7E1F4'];
+  pickupCircleColor: any[] = ['6278C7', '7A8DCB', '7A8DCB', 'A0AFDE', 'A0AFDE', 'C2CEEC', 'C2CEEC', 'C2CEEC', 'D7E1F4', 'D7E1F4'];
+
+  compareColor: any = {};
+  savedColors: any[] = [];
 
   popoverState: any[] = [
     {
@@ -184,6 +187,26 @@ export class DashboardPickupByStateComponent implements OnInit {
 
   changeStateSwitchTabs(ev){
 
+  }
+
+  selectStateCompare(item, indx){
+    const itemId: any = item.id;
+    if(!(itemId in this.compareColor)){
+
+      const firstInArray = this.pickupCircleColor[indx];
+      const objectSize = Object.keys(this.compareColor).length;
+      this.compareColor[item.id] = firstInArray;
+      this.pickupStateList.splice(indx, 1);
+      this.pickupStateList.splice(objectSize, 0, item);
+    }
+  }
+
+  removeFromStateList(e: Event,indx, item){
+    e.stopPropagation()
+    this.pickupStateList.splice(indx, 1);
+    this.pickupStateList.push(item);
+    this.savedColors.unshift(this.compareColor[item.id]);
+    delete this.compareColor[item.id];
   }
 
   changeState(item){

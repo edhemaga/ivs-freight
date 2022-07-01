@@ -313,6 +313,14 @@ export class DashboardTopDriverComponent implements OnInit {
 
   }
 
+  removeDriverFromList(e: Event,indx, item){
+    e.stopPropagation()
+    this.driverList.splice(indx, 1);
+    this.driverList.push(item);
+    this.savedColors.unshift(this.compareColor[item.id]);
+    delete this.compareColor[item.id];
+  }
+
   changeTopTen(item){
     const newSwitchValue = [
       {
