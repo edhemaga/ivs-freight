@@ -256,9 +256,10 @@ export class TaInputComponent
             this.inputConfig.type = 'text';
             this.blurOnDateTime();
           }
+        }else {
+          this.focusInput = false;
         }
 
-        this.focusInput = false;
       } else {
         this.blurOnDropDownArrow();
       }
@@ -849,6 +850,7 @@ export class TaInputComponent
 
   setSpanSelection(element) {
     var range, selection;
+    console.log("seet span selection");
 
     if (window.getSelection && document.createRange) {
       selection = window.getSelection();
@@ -1257,6 +1259,7 @@ export class TaInputComponent
         }
       }
       clearTimeout(this.dateTimeMainTimer);
+      this.focusInput = false;
     }, 100);
   }
 }
