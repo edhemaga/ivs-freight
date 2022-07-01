@@ -143,7 +143,9 @@ export class TaInputDropdownComponent
 
     this.dropDownShowHideEvent();
     this.dropDownKeyboardNavigationEvent();
-    this.addNewItemInDropDownEvent();
+    if (this.canAddNew) {
+      this.addNewItemInDropDownEvent();
+    }
   }
 
   get getSuperControl() {
@@ -154,16 +156,15 @@ export class TaInputDropdownComponent
   registerOnChange(fn: any): void {}
   registerOnTouched(fn: any): void {}
 
+  // Confirm new item from input component
   private addNewItemInDropDownEvent() {
-    if (this.canAddNew) {
-      this.inputService.addDropdownItemSubject
-        .pipe(distinctUntilChanged(), untilDestroyed(this))
-        .subscribe((action: boolean) => {
-          if (action) {
-            this.addNewItem();
-          }
-        });
-    }
+    this.inputService.addDropdownItemSubject
+      .pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((action: boolean) => {
+        if (action) {
+          this.addNewItem();
+        }
+      });
   }
 
   private dropDownShowHideEvent() {
@@ -208,7 +209,7 @@ export class TaInputDropdownComponent
   }
 
   private dropDownKeyboardNavigationEvent() {
-    this.inputService.dropDownNavigatorSubject
+    this.inputService.dropDownKeyNavigationSubject
       .pipe(untilDestroyed(this))
       .subscribe((keyEvent) => {
         if (keyEvent === 40) {
@@ -220,7 +221,7 @@ export class TaInputDropdownComponent
         }
 
         if (keyEvent === 13) {
-          const selectedItem = $('.dropdown-option-hovered').text();
+          const selectedItem = $('.dropdown-option-hovered').text().trim();
           const existItem = this.options
             .map((item) => {
               if (item.name) {
@@ -242,6 +243,7 @@ export class TaInputDropdownComponent
           if (this.inputConfig.multiselectDropdown) {
             this.onMultiselectSelect(existItem, this.template);
           } else {
+            console.log(existItem);
             this.getSuperControl.setValue(existItem.name);
             this.selectedItem.emit(existItem);
             this.activeItem = existItem;
@@ -354,9 +356,14 @@ export class TaInputDropdownComponent
       id: uuidv4(),
       name: this.getSuperControl.value,
     };
+
     this.originalOptions = [...this.originalOptions, newItem];
     this.options = this.originalOptions;
     this.activeItem = newItem;
+
+    console.log('ADD NEW ITEM');
+    console.log(newItem);
+    console.log(this.options);
     this.selectedItem.emit(newItem);
   }
 
@@ -525,11 +532,13 @@ export class TaInputDropdownComponent
       elOffset + dropdownOption.height() > viewport
     )
       $(dropdownContainer).scrollTop(elOffset);
-
+    console.log(dropdownOption);
     dropdownOption
       .removeClass(cssClass)
       .eq(this.dropdownPosition)
       .addClass(cssClass);
+
+    console.log(dropdownOption);
   }
 
   public identity(index: number, item: any): number {

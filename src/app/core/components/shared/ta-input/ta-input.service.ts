@@ -14,7 +14,7 @@ export class TaInputService {
 
   public dropDownShowHideSubject: Subject<boolean> = new Subject<boolean>();
 
-  public dropDownNavigatorSubject: Subject<number> = new Subject<number>();
+  public dropDownKeyNavigationSubject: Subject<number> = new Subject<number>();
 
   public isDropDownItemSelectedOnEnter: Subject<boolean> =
     new Subject<boolean>();

@@ -128,7 +128,7 @@ export class TaInputComponent
           }
         });
 
-      // Dropdown selecte with enter
+      // Dropdown select item with enter
       this.inputService.isDropDownItemSelectedOnEnter
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
@@ -322,7 +322,9 @@ export class TaInputComponent
     this.isDropdownAddModeActive = false;
     this.touchedInput = true;
 
-    this.resetDateTimeInputs();
+    if (['datepicker', 'timepicker'].includes(this.inputConfig.name)) {
+      this.resetDateTimeInputs();
+    }
 
     this.inputService.onClearInputSubject.next(true);
   }
@@ -381,6 +383,9 @@ export class TaInputComponent
   public onKeyUp(event): void {
     if (event.keyCode == 8 && !this.inputConfig.isDropdown) {
       this.numberOfSpaces = 0;
+      console.log('CLEARING');
+      console.log(this.input.nativeElement.value);
+      console.log(this.getSuperControl.value);
       if (!this.input.nativeElement.value) {
         this.clearInput(event);
       }
@@ -388,10 +393,10 @@ export class TaInputComponent
 
     if (this.inputConfig.isDropdown) {
       if (event.keyCode === 40 || event.keyCode === 38) {
-        this.inputService.dropDownNavigatorSubject.next(event.keyCode);
+        this.inputService.dropDownKeyNavigationSubject.next(event.keyCode);
       }
       if (event.keyCode === 13) {
-        this.inputService.dropDownNavigatorSubject.next(event.keyCode);
+        this.inputService.dropDownKeyNavigationSubject.next(event.keyCode);
       }
       if (event.keyCode === 27) {
         this.blurOnDropDownArrow();
@@ -400,7 +405,7 @@ export class TaInputComponent
       if (event.keyCode === 9) {
         this.onFocus();
         this.input.nativeElement.focus();
-        this.inputService.dropDownNavigatorSubject.next(event.keyCode);
+        this.inputService.dropDownKeyNavigationSubject.next(event.keyCode);
       }
     }
 
