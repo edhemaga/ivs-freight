@@ -1,4 +1,4 @@
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
@@ -35,6 +35,7 @@ export class TaInputDropdownComponent
 {
   @ViewChild(TaInputComponent) inputRef: TaInputComponent;
   @ViewChild('t2') public popoverRef: NgbPopover;
+
   @Input() template: string;
   @Input() isDetailsActive: boolean = false;
   @Input() inputConfig: ITaInput;
@@ -54,6 +55,9 @@ export class TaInputDropdownComponent
   public isMultiSelectInputFocus: boolean = false;
   public multiSelectLabel: string = null;
 
+  // Add mode
+  public isInAddMode: boolean = false;
+
   constructor(
     @Self() public superControl: NgControl,
     private inputService: TaInputService,
@@ -68,6 +72,7 @@ export class TaInputDropdownComponent
     if (this.options.length) {
       this.originalOptions = [...this.options];
     }
+
     // MultiSelect Selected Items From Backend
     if (
       this.preloadMultiselectItems.length &&
@@ -126,7 +131,7 @@ export class TaInputDropdownComponent
       });
 
     // Clear Input
-    this.inputService.onClearInputSubject
+    this.inputService.onClearInput$
       .pipe(debounceTime(50), untilDestroyed(this))
       .subscribe((action: boolean) => {
         if (action) {
@@ -135,6 +140,7 @@ export class TaInputDropdownComponent
         }
       });
 
+    // Reset Input
     this.inputResetService.resetInputSubject
       .pipe(debounceTime(50), untilDestroyed(this))
       .subscribe((action) => {
@@ -143,9 +149,6 @@ export class TaInputDropdownComponent
 
     this.dropDownShowHideEvent();
     this.dropDownKeyboardNavigationEvent();
-    if (this.canAddNew) {
-      this.addNewItemInDropDownEvent();
-    }
   }
 
   get getSuperControl() {
@@ -156,19 +159,8 @@ export class TaInputDropdownComponent
   registerOnChange(fn: any): void {}
   registerOnTouched(fn: any): void {}
 
-  // Confirm new item from input component
-  private addNewItemInDropDownEvent() {
-    this.inputService.addDropdownItemSubject
-      .pipe(distinctUntilChanged(), untilDestroyed(this))
-      .subscribe((action: boolean) => {
-        if (action) {
-          this.addNewItem();
-        }
-      });
-  }
-
   private dropDownShowHideEvent() {
-    this.inputService.dropDownShowHideSubject
+    this.inputService.dropDownShowHide$
       .pipe(untilDestroyed(this))
       .subscribe((action: boolean) => {
         this.isMultiSelectInputFocus = action;
@@ -194,9 +186,15 @@ export class TaInputDropdownComponent
               ? this.getSuperControl.value
               : this.activeItem?.name,
           };
-
           this.getSuperControl.setValue(null);
           this.popoverRef.close();
+
+          if (this.isInAddMode) {
+            this.inputConfig = {
+              ...this.inputConfig,
+              placeholder: null,
+            };
+          }
         }
 
         if (
@@ -209,7 +207,7 @@ export class TaInputDropdownComponent
   }
 
   private dropDownKeyboardNavigationEvent() {
-    this.inputService.dropDownKeyNavigationSubject
+    this.inputService.dropDownKeyNavigation$
       .pipe(untilDestroyed(this))
       .subscribe((keyEvent) => {
         if (keyEvent === 40) {
@@ -222,34 +220,37 @@ export class TaInputDropdownComponent
 
         if (keyEvent === 13) {
           const selectedItem = $('.dropdown-option-hovered').text().trim();
-          const existItem = this.options
-            .map((item) => {
-              if (item.name) {
-                return {
-                  id: item.id,
-                  name: item.name,
-                };
-              } else if (item.code) {
-                return {
-                  id: item.id,
-                  name: item.code.concat(' - ', item.description),
-                };
-              }
-            })
-            .find(
-              (item) => item.name.toLowerCase() === selectedItem.toLowerCase()
-            );
+          if (selectedItem !== 'Add New') {
+            const existItem = this.options
+              .map((item) => {
+                if (item.name) {
+                  return {
+                    id: item.id,
+                    name: item.name,
+                  };
+                } else if (item.code) {
+                  return {
+                    id: item.id,
+                    name: item.code.concat(' - ', item.description),
+                  };
+                }
+              })
+              .find(
+                (item) => item.name.toLowerCase() === selectedItem.toLowerCase()
+              );
 
-          if (this.inputConfig.multiselectDropdown) {
-            this.onMultiselectSelect(existItem, this.template);
+            if (this.inputConfig.multiselectDropdown) {
+              this.onMultiselectSelect(existItem, this.template);
+            } else {
+              this.getSuperControl.setValue(existItem.name);
+              this.selectedItem.emit(existItem);
+              this.activeItem = existItem;
+              this.inputService.dropDownItemSelectedOnEnter$.next(true);
+            }
+            this.popoverRef.close();
           } else {
-            console.log(existItem);
-            this.getSuperControl.setValue(existItem.name);
-            this.selectedItem.emit(existItem);
-            this.activeItem = existItem;
-            this.inputService.isDropDownItemSelectedOnEnter.next(true);
+            this.onAddNewEvent();
           }
-          this.popoverRef.close();
         }
 
         if (keyEvent === 9) {
@@ -330,7 +331,12 @@ export class TaInputDropdownComponent
       return;
     } else if (option.id === 7655) {
       // Add New
-      this.inputService.dropdownAddModeSubject.next(true);
+      this.onAddNewEvent();
+      this.isInAddMode = true;
+      const timeout = setTimeout(() => {
+        this.isInAddMode = false;
+        clearTimeout(timeout);
+      }, 500);
       return;
     } else {
       this.activeItem = option;
@@ -361,10 +367,86 @@ export class TaInputDropdownComponent
     this.options = this.originalOptions;
     this.activeItem = newItem;
 
-    console.log('ADD NEW ITEM');
-    console.log(newItem);
-    console.log(this.options);
     this.selectedItem.emit(newItem);
+  }
+
+  public onAddNewEvent() {
+    this.inputConfig = {
+      ...this.inputConfig,
+      commands: {
+        active: true,
+        type: 'confirm-cancel',
+        firstCommand: {
+          popup: {
+            name: 'Confirm',
+            backgroundColor: '#536BC2',
+          },
+          name: 'confirm',
+          svg: 'assets/svg/ic_spec-confirm.svg',
+        },
+        secondCommand: {
+          popup: {
+            name: 'Cancel',
+            backgroundColor: '#6c6c6c',
+          },
+          name: 'cancel',
+          svg: 'assets/svg/ic_x.svg',
+        },
+      },
+      placeholder: null,
+    };
+    this.inputService.dropdownAddModeSubject$.next(true);
+    this.popoverRef.close();
+  }
+
+  /**
+   *
+   * Navigate through dropdown with keyboard arrows
+   */
+  private dropdownNavigation(step: number) {
+    this.dropdownPosition += step;
+
+    if (this.dropdownPosition > this.options.length - 1) {
+      this.dropdownPosition = 0;
+    }
+
+    if (this.dropdownPosition < 0) {
+      this.dropdownPosition = this.options.length - 1;
+    }
+
+    let cssClass = 'dropdown-option-hovered';
+    let dropdownContainer: any = $('.dropdown-options');
+    let dropdownOption: any = $('.dropdown-option');
+
+    let elOffset =
+      dropdownOption.height() * this.dropdownPosition +
+      (this.dropdownPosition !== 0 ? this.dropdownPosition * 6 : 0);
+    let viewport = dropdownContainer.scrollTop() + dropdownContainer.height();
+
+    if (
+      elOffset < dropdownContainer.scrollTop() ||
+      elOffset + dropdownOption.height() > viewport
+    )
+      $(dropdownContainer).scrollTop(elOffset);
+
+    dropdownOption
+      .removeClass(cssClass)
+      .eq(this.dropdownPosition)
+      .addClass(cssClass);
+  }
+
+  public onCommandInput(event: string) {
+    if (event === 'confirm') {
+      this.addNewItem();
+      this.inputConfig = {
+        ...this.inputConfig,
+        commands: null,
+      };
+    }
+  }
+
+  public identity(index: number, item: any): number {
+    return item.id;
   }
 
   // ----------------------------------  Multiselect Dropdown ----------------------------------
@@ -501,48 +583,6 @@ export class TaInputDropdownComponent
       this.inputRef.focusInput = false;
       this.popoverRef.close();
     }
-  }
-
-  /**
-   *
-   * Navigate through dropdown with keyboard arrows
-   */
-  private dropdownNavigation(step: number) {
-    this.dropdownPosition += step;
-
-    if (this.dropdownPosition > this.options.length - 1) {
-      this.dropdownPosition = 0;
-    }
-
-    if (this.dropdownPosition < 0) {
-      this.dropdownPosition = this.options.length - 1;
-    }
-
-    let cssClass = 'dropdown-option-hovered';
-    let dropdownContainer: any = $('.dropdown-options');
-    let dropdownOption: any = $('.dropdown-option');
-
-    let elOffset =
-      dropdownOption.height() * this.dropdownPosition +
-      (this.dropdownPosition !== 0 ? this.dropdownPosition * 6 : 0);
-    let viewport = dropdownContainer.scrollTop() + dropdownContainer.height();
-
-    if (
-      elOffset < dropdownContainer.scrollTop() ||
-      elOffset + dropdownOption.height() > viewport
-    )
-      $(dropdownContainer).scrollTop(elOffset);
-    console.log(dropdownOption);
-    dropdownOption
-      .removeClass(cssClass)
-      .eq(this.dropdownPosition)
-      .addClass(cssClass);
-
-    console.log(dropdownOption);
-  }
-
-  public identity(index: number, item: any): number {
-    return item.id;
   }
 
   // Must be here, because of "untilDestroyed"

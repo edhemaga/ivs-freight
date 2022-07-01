@@ -25,6 +25,7 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { TaInputResetService } from './ta-input-reset.service';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-ta-input',
@@ -69,7 +70,6 @@ export class TaInputComponent
 
   // Dropdown
   public dropdownToggler: boolean = false;
-  public isDropdownAddModeActive: boolean = false;
 
   // Date Timer
   private dateTimeMainTimer: any;
@@ -118,20 +118,21 @@ export class TaInputComponent
 
     // Dropdown add mode
     if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
-      this.inputService.dropdownAddModeSubject
+      this.inputService.dropdownAddModeSubject$
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
           if (action) {
             this.dropdownToggler = false;
-            this.isDropdownAddModeActive = action;
+
             this.setInputCursorAtTheEnd(this.input.nativeElement);
           }
         });
 
       // Dropdown select item with enter
-      this.inputService.isDropDownItemSelectedOnEnter
+      this.inputService.dropDownItemSelectedOnEnter$
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
+          console.log('SELECT ON ENTER');
           if (action) {
             this.dropdownToggler = false;
             this.input.nativeElement.blur();
@@ -231,9 +232,9 @@ export class TaInputComponent
     }
 
     // Dropdown
-    if (this.inputConfig.isDropdown && !this.isDropdownAddModeActive) {
+    if (this.inputConfig.isDropdown) {
       this.dropdownToggler = true;
-      this.inputService.dropDownShowHideSubject.next(true);
+      this.inputService.dropDownShowHide$.next(true);
     }
 
     this.focusInput = true;
@@ -280,7 +281,7 @@ export class TaInputComponent
       this.focusInput = false;
     }
 
-    this.inputService.onFocusOutInputSubject.next(true);
+    this.inputService.onFocusOutInput$.next(true);
     this.touchedInput = true;
   }
 
@@ -308,7 +309,7 @@ export class TaInputComponent
     this.timeout = setTimeout(() => {
       this.dropdownToggler = false;
       this.focusInput = false;
-      this.inputService.dropDownShowHideSubject.next(false);
+      this.inputService.dropDownShowHide$.next(false);
       clearTimeout(this.timeout);
     }, 150);
   }
@@ -319,14 +320,13 @@ export class TaInputComponent
     this.input.nativeElement.value = null;
     this.getSuperControl.setValue(null);
     this.numberOfSpaces = 0;
-    this.isDropdownAddModeActive = false;
     this.touchedInput = true;
 
     if (['datepicker', 'timepicker'].includes(this.inputConfig.name)) {
       this.resetDateTimeInputs();
     }
 
-    this.inputService.onClearInputSubject.next(true);
+    this.inputService.onClearInput$.next(true);
   }
 
   public resetDateTimeInputs() {
@@ -344,17 +344,10 @@ export class TaInputComponent
     this.showDateInput = false;
   }
 
-  public onAddItemInDropdown(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.isDropdownAddModeActive = false;
-    this.inputService.addDropdownItemSubject.next(true);
-  }
-
   public toggleDropdownOptions() {
     this.dropdownToggler = !this.dropdownToggler;
 
-    this.inputService.dropDownShowHideSubject.next(this.dropdownToggler);
+    this.inputService.dropDownShowHide$.next(this.dropdownToggler);
 
     if (this.dropdownToggler) {
       clearTimeout(this.timeout);
@@ -383,9 +376,7 @@ export class TaInputComponent
   public onKeyUp(event): void {
     if (event.keyCode == 8 && !this.inputConfig.isDropdown) {
       this.numberOfSpaces = 0;
-      console.log('CLEARING');
-      console.log(this.input.nativeElement.value);
-      console.log(this.getSuperControl.value);
+
       if (!this.input.nativeElement.value) {
         this.clearInput(event);
       }
@@ -393,10 +384,10 @@ export class TaInputComponent
 
     if (this.inputConfig.isDropdown) {
       if (event.keyCode === 40 || event.keyCode === 38) {
-        this.inputService.dropDownKeyNavigationSubject.next(event.keyCode);
+        this.inputService.dropDownKeyNavigation$.next(event.keyCode);
       }
       if (event.keyCode === 13) {
-        this.inputService.dropDownKeyNavigationSubject.next(event.keyCode);
+        this.inputService.dropDownKeyNavigation$.next(event.keyCode);
       }
       if (event.keyCode === 27) {
         this.blurOnDropDownArrow();
@@ -405,7 +396,7 @@ export class TaInputComponent
       if (event.keyCode === 9) {
         this.onFocus();
         this.input.nativeElement.focus();
-        this.inputService.dropDownKeyNavigationSubject.next(event.keyCode);
+        this.inputService.dropDownKeyNavigation$.next(event.keyCode);
       }
     }
 
