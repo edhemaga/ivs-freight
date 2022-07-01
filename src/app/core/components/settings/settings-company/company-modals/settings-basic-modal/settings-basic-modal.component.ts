@@ -22,6 +22,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Options } from '@angular-slider/ngx-slider';
 import { TabSwitcherComponent } from 'src/app/core/components/switchers/tab-switcher/tab-switcher.component';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { DropZoneConfig } from 'src/app/core/components/shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -112,6 +113,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public animationObject = {
     value: this.selectedTab,
     params: { height: '0px' },
+  };
+
+  public dropZoneConfig: DropZoneConfig = {
+    dropZoneType: 'image',
+    dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
+    dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
+    multiple: false,
+    globalDropZone: true,
   };
 
   public isLogoDropZoneVisibile: boolean = false;

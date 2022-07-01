@@ -2,6 +2,7 @@ import {
   Component,
   EventEmitter,
   HostListener,
+  Injectable,
   Input,
   OnChanges,
   Output,
@@ -18,6 +19,10 @@ export interface DropZoneConfig {
   globalDropZone?: boolean;
 }
 
+// FILES: assets/svg/common/ic_modal_upload_dropzone.svg
+// IMAGE: image/gif, image/jpeg, image/jpg, image/png
+// MEDIA: video/mp4,video/x-m4v,video/*
+
 @Component({
   selector: 'app-ta-upload-dropzone',
   templateUrl: './ta-upload-dropzone.component.html',
@@ -28,8 +33,8 @@ export class TaUploadDropzoneComponent implements OnChanges {
   private files: UploadFile[] = [];
 
   @Input() dropZoneConfig: DropZoneConfig = {
-    dropZoneType: 'files', // files | logo
-    dropZoneSvg: 'assets/svg/common/ic_modal_upload_dropzone.svg',
+    dropZoneType: 'files', // files | image | media
+    dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
     dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
     multiple: true,
     globalDropZone: false,
@@ -47,12 +52,13 @@ export class TaUploadDropzoneComponent implements OnChanges {
 
   public textChangeOverModal: boolean = false;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.dropZoneConfig);
-  }
-
   public unSupporetedType: boolean = false;
   public supportedExtensions: string[] = [];
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.dropZoneConfig = { ...this.dropZoneConfig };
+    console.log(this.dropZoneConfig);
+  }
 
   @HostListener('dragover', ['$event']) onDragOver(evt) {
     evt.preventDefault();
@@ -80,8 +86,6 @@ export class TaUploadDropzoneComponent implements OnChanges {
   }
 
   public async onFileUpload(files: FileList) {
-    console.log('DROPZONE');
-    console.log(files);
     await this.addFiles(files);
     this.files = [];
   }

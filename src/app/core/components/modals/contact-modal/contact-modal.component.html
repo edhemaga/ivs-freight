@@ -161,6 +161,7 @@
       <div class="ta-card-body-overflow-none">
         <app-ta-custom-card [cardName]="'Contact Image'" [isCardOpen]="true">
           <app-ta-logo-change
+            [croppieOptions]="croppieOptions"
             [imageUrl]="this.contactForm.get('avatar').value"
             (base64ImageEvent)="onUploadImage($event)"
           ></app-ta-logo-change>
