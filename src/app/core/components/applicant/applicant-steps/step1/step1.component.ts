@@ -37,14 +37,11 @@ export class Step1Component implements OnInit, OnDestroy {
   public personalInfoForm!: FormGroup;
 
   public selectedMode: string = SelectedMode.APPLICANT;
-  public selectedAddress: Address = null;
   public selectedBank: any = null;
 
-  public isLastAddedPreviousAddressValid: boolean = false;
   public isBankSelected: boolean = false;
-
+  public isLastAddedPreviousAddressValid: boolean = false;
   public isLastInputDeleted: boolean = false;
-  public isLastAddressInList: boolean = false;
   public isEditingMiddlePositionAddress: boolean = false;
 
   public helperIndex = 2;
@@ -277,14 +274,6 @@ export class Step1Component implements OnInit, OnDestroy {
 
   public handleInputSelect(event: any, action: string, index?: number): void {
     switch (action) {
-      case InputSwitchActions.ADDRESS:
-        this.selectedAddress = event.address;
-
-        if (!event.valid) {
-          this.personalInfoForm.get('address').setErrors({ invalid: true });
-        }
-
-        break;
       case InputSwitchActions.BANK:
         this.selectedBank = event;
 
@@ -315,8 +304,6 @@ export class Step1Component implements OnInit, OnDestroy {
           });
 
           if (this.previousAddresses.controls.length === 5) {
-            this.isLastAddressInList = true;
-
             this.isEditingArray[
               this.previousAddresses.controls.length - 1
             ].isEditing = false;
@@ -338,8 +325,6 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   private createFirstAddress(): void {
-    /*  NIJE GOTOVO */
-
     this.previousAddresses.push(this.onCreateNewAddress());
 
     this.isEditingId++;
@@ -368,49 +353,60 @@ export class Step1Component implements OnInit, OnDestroy {
       return;
     }
 
-    if (
-      !this.previousAddresses.controls.length ||
-      this.isLastAddedPreviousAddressValid ||
-      this.isLastInputDeleted
-    ) {
-      this.isLastInputDeleted = false;
+    this.isLastInputDeleted = false;
 
-      this.previousAddresses.push(this.onCreateNewAddress());
+    this.previousAddresses.push(this.onCreateNewAddress());
 
-      this.isEditingId++;
+    this.isEditingId++;
 
-      this.isEditingArray = [
-        ...this.isEditingArray,
-        {
-          id: this.isEditingId,
-          isEditing: true,
-          isEditingAddress: false,
-          isFirstAddress: false,
-        },
-      ];
+    this.isEditingArray = [
+      ...this.isEditingArray,
+      {
+        id: this.isEditingId,
+        isEditing: true,
+        isEditingAddress: false,
+        isFirstAddress: false,
+      },
+    ];
 
-      if (this.previousAddresses.controls.length > 1) {
-        this.isEditingArray = this.isEditingArray.map((item, index) => {
-          if (index === this.isEditingArray.length - 1) {
-            return { ...item, isEditing: true };
-          }
+    if (this.previousAddresses.controls.length > 1) {
+      this.isEditingArray = this.isEditingArray.map((item, index) => {
+        if (index === this.isEditingArray.length - 1) {
+          return { ...item, isEditing: true };
+        }
 
-          return { ...item, isEditing: false };
-        });
-      }
+        return { ...item, isEditing: false };
+      });
     }
 
     this.isLastAddedPreviousAddressValid = false;
   }
 
   public onRemoveNewAddress(index: number): void {
+    const isEditingAnyAddress = this.isEditingArray.some(
+      (item) => item.isEditing && item.isEditingAddress
+    );
+
+    if (isEditingAnyAddress || this.previousAddresses.controls.length === 1) {
+      return;
+    }
+
     if (index === this.previousAddresses?.controls.length - 1) {
       this.isLastInputDeleted = true;
+    } else {
+      this.isLastInputDeleted = false;
     }
+
+    this.isEditingMiddlePositionAddress = false;
 
     this.previousAddresses.removeAt(index);
 
     this.isEditingArray.splice(index, 1);
+
+    if (this.previousAddresses.controls.length < 2) {
+      this.isEditingArray[0].isEditing = true;
+      this.isEditingArray[0].isEditingAddress = false;
+    }
   }
 
   public onEditNewAddress(index: number): void {
@@ -454,11 +450,15 @@ export class Step1Component implements OnInit, OnDestroy {
       }
 
       this.isEditingArray = this.isEditingArray.map((item, itemIndex) => {
-        if (index === itemIndex) {
-          return { ...item, isEditing: true };
+        if (index === 0 && this.previousAddresses.controls.length === 1) {
+          return { ...item, isEditing: true, isEditingAddress: false };
         }
 
-        return { ...item, isEditing: false };
+        if (index === itemIndex) {
+          return { ...item, isEditing: true, isEditingAddress: true };
+        }
+
+        return { ...item, isEditing: false, isEditingAddress: false };
       });
     }
   }

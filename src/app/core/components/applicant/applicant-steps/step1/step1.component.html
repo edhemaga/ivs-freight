@@ -174,46 +174,6 @@
         </div>
       </div>
 
-      <!-- ADDRESS, ADDRESS UNIT -->
-
-      <!-- <div class="d-flex form-input-container">
-        <div class="group address-group">
-          <app-ta-input-address
-            formControlName="address"
-            [inputConfig]="{
-              name: 'Address',
-              type: 'text',
-              label: 'Address, City, State Zip',
-              isRequired: true,
-              placeholderIcon: 'address',
-              textTransform: 'capitalize'
-            }"
-            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-          ></app-ta-input-address>
-        </div>
-        <div class="group address-unit-group">
-          <app-ta-input
-            formControlName="addressUnit"
-            [inputConfig]="{
-              name: 'Address Unit',
-              type: 'text',
-              label: 'Unit #',
-              maxLength: 6
-            }"
-          ></app-ta-input>
-        </div>
- -->
-      <!-- REVIEW AND FEEDBACK -->
-      <!-- 
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-          <app-applicant-review-feedback
-            [index]="2"
-            [reviewFeedbackData]="reviewFeedback[2]"
-            (sendReview)="onSubmitReview($event)"
-          ></app-applicant-review-feedback>
-        </div>
-      </div> -->
-
       <!-- PREVIOUS ADDRESSES -->
 
       <div
@@ -237,7 +197,7 @@
                 (isEditingArray[i]?.isEditing &&
                   isEditingMiddlePositionAddress &&
                   last)
-                  ? '32x'
+                  ? '36px'
                   : '0',
               'margin-bottom':
                 isEditingArray[i]?.isEditing &&
@@ -276,14 +236,10 @@
               [formGroupName]="i"
               [ngStyle]="{
                 'margin-top':
-                  (previousAddresses?.controls.length > 1 &&
-                    last &&
-                    !isLastInputDeleted &&
-                    !isLastAddressInList) ||
-                  (previousAddresses?.controls.length > 1 &&
-                    last &&
-                    isLastInputDeleted &&
-                    isLastAddressInList)
+                  previousAddresses?.controls.length > 1 &&
+                  last &&
+                  isEditingArray[i].isEditing &&
+                  !isLastInputDeleted
                     ? '32px'
                     : '0'
               }"
@@ -313,7 +269,8 @@
                             ? '442px'
                             : isEditingArray[i]?.isEditing &&
                               !isEditingArray[i]?.isEditingAddress &&
-                              isEditingArray[i]?.isFirstAddress
+                              isEditingArray[i]?.isFirstAddress &&
+                              previousAddresses.controls.length === 1
                             ? '480px'
                             : '412px'
                       }"
@@ -412,11 +369,7 @@
                         borderRadius="2px"
                         fontSize="11px"
                         fontWeight="bold"
-                        (click)="
-                          onRemoveNewAddress(
-                            previousAddresses?.controls.length - 1
-                          )
-                        "
+                        (click)="onRemoveNewAddress(i)"
                       ></svg-icon>
                     </div>
                   </div>
@@ -424,7 +377,10 @@
 
                 <div
                   class="d-flex align-items-center info-container"
-                  *ngIf="!isEditingArray[i]?.isEditing"
+                  *ngIf="
+                    !isEditingArray[i]?.isEditing &&
+                    !isEditingArray[i]?.isEditingAddress
+                  "
                 >
                   <div
                     class="d-flex align-items-center text-truncate address-container"
@@ -524,13 +480,13 @@
           <button
             type="button"
             class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+            (click)="onAddNewAddress()"
             [ngClass]="{
               disabled:
                 previousAddresses.controls.length !== 0 &&
                 !isLastAddedPreviousAddressValid &&
                 !isLastInputDeleted
             }"
-            (click)="onAddNewAddress()"
           >
             <svg-icon
               class="plus-icon"
