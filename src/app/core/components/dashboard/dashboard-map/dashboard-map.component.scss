@@ -25,6 +25,14 @@
                 color: #919191;
                 padding-right: 8px;
                 box-sizing: border-box;
+                &::-moz-selection {
+                    background: #91919133;
+                    color: #919191;
+                }
+                  &::selection {
+                    background: #91919133;
+                    color: #919191;
+                }    
             }
 
             .dashboard-map-header-arrow-down{

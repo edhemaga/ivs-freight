@@ -21,6 +21,14 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
             color: #919191;
             padding-right: 12px;
             box-sizing: border-box;
+            &::-moz-selection {
+                background: #91919133;
+                color: #919191;
+            }
+              &::selection {
+                background: #91919133;
+                color: #919191;
+            }
         }
 
         .dashboard-performance-toolbar{
@@ -56,6 +64,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 justify-content: flex-start;
                 align-items: center;
                 cursor: pointer;
+                user-select: none;
 
                 .dashboard-performance-dropdown-text{
                     font-size: 14px;
@@ -122,6 +131,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
             box-sizing: border-box;
             margin-bottom: 8px;
             margin-right: 8px;
+            user-select: none;
 
             .dashboard-performance-left-close{
                 position: absolute;
@@ -396,6 +406,8 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 flex-direction: column;
                 margin-right: 8px;
                 margin-bottom: 8px;
+                user-select: none;
+                transition: all 0.2s;
 
                 .dashboard-performance-right-close{
                     position: absolute;
@@ -435,6 +447,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                         height: 14px;
                         border-radius: 100%;
                         background-color: #DADADA;
+                        transition: all 0.2s;
                     }
 
                     .dashboard-performance-body-right-cards-title{
@@ -525,6 +538,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                     display: none;
                     justify-content: flex-start;
                     align-items: center;
+                    transition: all 0.3s;
 
                     .dashboard-performance-body-right-cards-trend-up{
                         width: 18px;

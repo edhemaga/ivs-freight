@@ -25,6 +25,14 @@
                 color: #919191;
                 padding-right: 8px;
                 box-sizing: border-box;
+                &::-moz-selection {
+                    background: #91919133;
+                    color: #919191;
+                }
+                  &::selection {
+                    background: #91919133;
+                    color: #919191;
+                }
             }
 
             .dashboard-pickup-arrow-down{
@@ -120,6 +128,7 @@
                     font-weight: 800;
                     color: #6C6C6C;
                     margin-left: 2px;
+                    user-select: none;
                 }
 
                 .dashboard-pickup-toolbar-switch-right{
@@ -135,6 +144,7 @@
                     align-items: center;
                     border-radius: 3px;
                     background-color: #fff;
+                    user-select: none;
 
                     .dashboard-pickup-toolbar-dropdown-text{
                         font-size: 14px;

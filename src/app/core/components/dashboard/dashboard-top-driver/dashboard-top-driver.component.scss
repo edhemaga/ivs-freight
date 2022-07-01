@@ -29,6 +29,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
             font-weight: 900;
             color: #919191;
             line-height: 32px;
+            user-select: none;
         }
 
         .dashboard-top-driver-header-title-holder{
@@ -44,6 +45,14 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                 color: #919191;
                 padding-right: 8px;
                 box-sizing: border-box;
+                &::-moz-selection {
+                    background: #91919133;
+                    color: #919191;
+                }
+                  &::selection {
+                    background: #91919133;
+                    color: #919191;
+                }
             }
 
             .dashboard-top-driver-header-arrow-down{
@@ -140,6 +149,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                     align-items: center;
                     border-radius: 3px;
                     background-color: #fff;
+                    user-select: none;
 
                     .dashboard-top-driver-header-toolbar-dropdown-text{
                         font-size: 14px;
