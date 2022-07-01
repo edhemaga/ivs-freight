@@ -36,10 +36,6 @@
     }
   }
 
-  &.dropdown-add-mode {
-    display: inline-block;
-  }
-
   &.valid-focus-in {
     display: inline-block;
     .input-clear-x {
@@ -88,7 +84,8 @@
   }
 
   // If dropdown
-  &.dropdown-position {
+  &.dropdown-position,
+  &.repair-m-pm {
     right: 27px !important;
   }
 

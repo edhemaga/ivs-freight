@@ -57,6 +57,14 @@
           background-color: #f3f3f3;
           color: #3c3c3c;
           transition: all 0.2s ease-out;
+
+          .svg-template-logo,
+          .svg-template-grayscale {
+            svg {
+              -webkit-filter: grayscale(0);
+              filter: grayscale(0);
+            }
+          }
         }
 
         &:hover {
@@ -298,8 +306,12 @@
         width: 163px;
       }
 
+      &.w-col-banks-driver {
+        width: 184px;
+      }
+
       &.w-col-paytype {
-        width: 151px;
+        width: 422px;
       }
 
       &.w-col-trailerColor {
@@ -339,8 +351,12 @@
         width: 100px;
       }
 
-      &.w-col-repair-m-unit {
+      &.w-col-repair-m-unit-bill {
         width: 129px;
+      }
+
+      &.w-col-repair-m-unit-order {
+        width: 291px;
       }
 
       &.w-col-repair-m-shop {

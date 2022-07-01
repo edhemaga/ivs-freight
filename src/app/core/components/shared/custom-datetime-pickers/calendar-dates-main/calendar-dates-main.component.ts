@@ -1,5 +1,5 @@
 import {CalendarScrollService} from './../calendar-scroll.service';
-import { Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild, OnDestroy, AfterViewInit, OnChanges } from '@angular/core';
 import {CdkVirtualScrollViewport, VIRTUAL_SCROLL_STRATEGY} from "@angular/cdk/scrolling";
 import {FULL_SIZE, MobileCalendarStrategy} from "./../date-calendars/calendar_strategy";
 import moment from "moment";
@@ -33,7 +33,7 @@ const MONTHS = [
     }
   ]
 })
-export class CalendarDatesMainComponent implements OnInit {
+export class CalendarDatesMainComponent implements OnInit, OnChanges {
   @Input() months: any;
   @Input() dateTime: any;
   @Input() currentIndex: any;
@@ -62,13 +62,22 @@ export class CalendarDatesMainComponent implements OnInit {
   ];
 
   selectedYear: any;
+  selectedYearFromInput: any;
+  selMonth: any;
   selectedMonth: any;
   private activeMonth = 0;
 
   constructor(private calendarService: CalendarScrollService) {
   }
 
+  ngOnChanges(change: any){
+    console.log("changesss", change);
+  }
+
   ngOnInit(): void {
+    this.selMonth = this.dateTime.getMonth();
+    this.selectedYearFromInput = this.dateTime.getFullYear();
+    //this.selectedYearFromInput = this.months.getFullYear();
 
     this.calendarService.scrollToAutoIndex
     .pipe(takeUntil(this.destroy$))
@@ -96,7 +105,7 @@ export class CalendarDatesMainComponent implements OnInit {
         } else {
           this.virtualScrollViewport.scrollToIndex(this.currentIndex);
         }
-      });
+      }, 200);
     });
   }
 
@@ -123,9 +132,9 @@ export class CalendarDatesMainComponent implements OnInit {
   }
 
   setCalendarListPreview(num){
+    this.selMonth = num;
     this.setListPreviewToFull.emit(num);
   }
-
 
   public selectDay(data): void {
     const selectedMonth = this.months[data.index];

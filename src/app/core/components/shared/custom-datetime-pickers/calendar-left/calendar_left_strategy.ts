@@ -105,7 +105,7 @@ export class CalendarLeftStrategy implements VirtualScrollStrategy {
     // koliko je scrolovano
     const offset = viewport.measureScrollOffset();
     const {start, end} = viewport.getRenderedRange();
-    const viewportSize = 258;
+    const viewportSize = 290;
 
     const dataLength = viewport.getDataLength();
     const newRange = {start, end};

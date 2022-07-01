@@ -370,6 +370,11 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       this.viewData = this.viewData.map((data: any) => {
         return this.mapDriverData(data);
       });
+
+      // For Testing
+      /* for(let i = 0; i < 500; i++){
+        this.viewData.push(this.viewData[0]);
+      } */
     } else {
       this.viewData = [];
     }
@@ -464,7 +469,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
       this.modalService.openModal(DriverModalComponent, {
-        size: 'small',
+        size: 'medium',
       });
     } else if (
       event.action === 'tab-selected' &&
@@ -495,7 +500,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
-        { size: 'small' },
+        { size: 'medium' },
         {
           ...event,
           disableButton: true,

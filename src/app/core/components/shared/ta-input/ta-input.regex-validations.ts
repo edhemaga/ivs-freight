@@ -34,7 +34,7 @@ export const daysValidRegex = Validators.pattern(
 export const urlRegex = [
   Validators.maxLength(400),
   Validators.pattern(
-    /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig
+    /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi
   ),
 ];
 
@@ -42,3 +42,5 @@ export const insurancePolicyRegex = [
   Validators.minLength(8),
   Validators.maxLength(14),
 ];
+
+export const mileValidation = [Validators.min(0), Validators.max(10)];

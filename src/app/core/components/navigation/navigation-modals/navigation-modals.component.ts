@@ -71,7 +71,7 @@ export class NavigationModalsComponent {
     switch (navItem.path) {
       case 'driver': {
         this.modalService.openModal(DriverModalComponent, {
-          size: 'small',
+          size: 'medium',
         });
         break;
       }
@@ -123,7 +123,7 @@ export class NavigationModalsComponent {
       }
       case 'repair-order': {
         this.modalService.openModal(RepairOrderModalComponent, {
-          size: 'small',
+          size: 'large',
         });
         break;
       }
@@ -153,7 +153,7 @@ export class NavigationModalsComponent {
       }
       case 'accident': {
         this.modalService.openModal(AccidentModalComponent, {
-          size: 'large',
+          size: 'large-xl',
         });
         break;
       }

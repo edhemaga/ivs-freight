@@ -3,7 +3,7 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import calendarJson from '../../../../../../assets/calendarjson/calendar.json';
 
 import {RANGE, STARTING_YEAR} from "./calendar_strategy";
-import {Subscription} from "rxjs";
+import {Subject, Subscription, takeUntil} from "rxjs";
 import moment from "moment";
 
 const SCROLL_DEBOUNCE_TIME = 80;
@@ -90,15 +90,19 @@ export class DateCalendarsComponent implements OnInit {
   selectedMonth: any;
   private activeMonth = 0;
   private subscription?: Subscription;
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(private calendarService: CalendarScrollService) {
   }
 
   ngOnInit(): void {
-    this.selectedMonth = this.monthNames[new Date().getMonth()]; 
-    this.selectedYear = new Date().getFullYear();
+    this.selectedMonth = this.monthNames[this.dateTime.getMonth()];
+    this.selectedYear = this.dateTime.getFullYear();
 
-    this.calendarService.scrolledIndexChange.subscribe(res => {
+    this.activeIndex = this.calendarService.selectedIndex;
+    this.calendarService.scrolledIndexChange
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(res => {
       this.activeIndex = res.indx;
       this.onMonthChange(res.indx);
     });
@@ -133,13 +137,13 @@ export class DateCalendarsComponent implements OnInit {
 
     if(this.listPreview === "full_list"){
       this.setListPreviewValue.emit("month_list");
-      this.calendarService.indexAuto$.next(Math.floor(this.activeIndex / 12));
+      this.calendarService.setAutoIndex = Math.floor(this.activeIndex / 12);
     }
   }
 
   public setListPreviewToFull(num){
     this.setListPreviewValue.emit("full_list");
-    this.calendarService.indexAuto$.next(this.activeIndex * 12 + num);
+    this.calendarService.setAutoIndex = this.activeIndex * 12 + num;
   }
 
   public scrollToDate(): void {
@@ -147,6 +151,12 @@ export class DateCalendarsComponent implements OnInit {
       //this.virtualScrollViewport.scrollToIndex(this.currentIndex);
     });
 
+  }
+
+  public selectCurrentDay(){
+    const new_date = moment(new Date()).format();
+    this.calendarService.dateChanged.next(new_date);
+    this.setListPreviewValue.emit("full_list");
   }
 
   public scrollIndexChange(e): void {
@@ -157,6 +167,8 @@ export class DateCalendarsComponent implements OnInit {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

@@ -51,11 +51,9 @@
         getSuperControl.value &&
         inputConfig.isDropdown &&
         !inputConfig.isDisabled &&
-        !isDropdownAddModeActive &&
         !inputConfig.multiSelectDropdownActive &&
         !inputConfig.blackInput,
-      'dropdown-add-mode':
-        isDropdownAddModeActive && inputConfig.isDropdown && focusInput,
+
       focus: focusInput,
       'password-eye':
         inputConfig.type === 'password' &&
@@ -136,34 +134,12 @@
     ></svg-icon>
   </div>
 
-  <!-- Input Confirm New Item in Dropdown -->
-  <div
-    *ngIf="
-      isDropdownAddModeActive &&
-      inputConfig.isDropdown &&
-      focusInput &&
-      getSuperControl.value
-    "
-    class="input-dropdown-confirm"
-    (click)="onAddItemInDropdown($event)"
-    ngbTooltip
-    mainTooltip="Confirm"
-    tooltipBackground="#536BC2"
-    position="top"
-  >
-    <svg-icon
-      class="input-dropdow-confirm-svg"
-      src="assets/svg/ic_spec-confirm.svg"
-    ></svg-icon>
-  </div>
-
   <!-- Input Drodown Arrow -->
   <svg-icon
     class="input-dropdown-arrow {{ inputConfig.customClass }}"
     *ngIf="
       (inputConfig.isDropdown &&
         !inputConfig.isDisabled &&
-        !isDropdownAddModeActive &&
         !inputConfig.multiSelectDropdownActive) ||
       inputConfig.name === 'datepicker' ||
       inputConfig.name === 'timepicker' ||
@@ -401,7 +377,8 @@
         !inputConfig.blackInput,
       'multiSelect-dropdown-active':
         inputConfig.multiSelectDropdownActive && focusInput,
-      'blue-input-color': inputConfig.blueInputColor && !focusInput,
+      'blue-input-color':
+        inputConfig.blueInputColor && !focusInput && getSuperControl.value,
       'dropdown-label-active': inputConfig.isDropdownLabel && isVisibleCommands,
       'input-commands': inputConfig.commands?.active && isVisibleCommands
     }"

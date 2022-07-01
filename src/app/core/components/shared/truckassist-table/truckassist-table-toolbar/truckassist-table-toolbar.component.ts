@@ -9,6 +9,8 @@ import {
   EventEmitter,
   OnDestroy,
   ChangeDetectionStrategy,
+  AfterViewInit,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -20,7 +22,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   encapsulation: ViewEncapsulation.None,
 })
 export class TruckassistTableToolbarComponent
-  implements OnInit, OnChanges, OnDestroy
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
   @Output() toolBarAction: EventEmitter<any> = new EventEmitter();
   @Input() tableData: any[];
@@ -71,8 +73,12 @@ export class TruckassistTableToolbarComponent
   ];
   tableRowsSelected: any[] = [];
   activeTableData: any = {};
+  toolbarWidth: number = 0;
 
-  constructor(private tableService: TruckassistTableService) {}
+  constructor(
+    private tableService: TruckassistTableService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.getSelectedTabTableData();
@@ -101,6 +107,15 @@ export class TruckassistTableToolbarComponent
       .subscribe((response: any[]) => {
         this.tableRowsSelected = response;
       });
+
+    // Rezaize
+    this.tableService.currentColumnWidth
+      .pipe(untilDestroyed(this))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.getToolbarWidth();
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -119,12 +134,33 @@ export class TruckassistTableToolbarComponent
     }
 
     if (changes?.selectedTab) {
-      this.selectedTab = changes.selectedTab.currentValue; 
+      this.selectedTab = changes.selectedTab.currentValue;
 
       const td = this.tableData.find((t) => t.field === this.selectedTab);
 
       this.listName = td.gridNameTitle;
     }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.getToolbarWidth();
+    }, 10)
+  }
+
+  getToolbarWidth() {
+    const pinedColumns = document.querySelector('.pined-tr');
+    const notPinedColumns = document.querySelector('.not-pined-tr');
+    const actionColumns = document.querySelector('.actions');
+    const borderColumns = document.querySelector('.not-pined-border');
+
+    this.toolbarWidth =
+      pinedColumns.clientWidth +
+      notPinedColumns.clientWidth +
+      actionColumns.clientWidth +
+      (borderColumns ? 6 : 0);
+
+    this.changeDetectorRef.detectChanges();
   }
 
   onSelectTab(selectedTabData: any) {

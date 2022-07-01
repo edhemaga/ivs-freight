@@ -1,11 +1,12 @@
 <table>
-  <thead>
+  <thead [ngClass]="{'set-cursor-resize': rezaizeing}">
     <!-- Pined -->
     <tr class="tr pined-columns-container">
       <th
         [resizeColumn]="column.resizable && !locked"
         [index]="i"
         [tableSection]="'pined'"
+        [tableColumn]="column"
         (resizeing)="onResize($event)"
         *ngFor="let column of pinedColumns; let i = index"
         cdkDragBoundary="tr"
@@ -18,7 +19,8 @@
         }"
         [ngClass]="{
           'set-center': column.ngTemplate === 'checkbox' || column.setCenter,
-          'column-unlocket': !locked
+          'column-unlocket': !locked,
+          'resize-hit-limit': resizeHitLimit === i && resizeIsPined
         }"
       >
         <!-- Selected Row Count -->
@@ -134,6 +136,7 @@
       cdkDropList
       (cdkDropListDropped)="onReorder($event)"
       class="tr not-pined-columns-container"
+      [ngStyle]="{'max-width.px': notPinedMaxWidth}"
       id="scroll"
     >
       <div class="scroll-container">
@@ -160,7 +163,8 @@
           [ngClass]="{
             'set-center': column.ngTemplate === 'checkbox' || column.setCenter,
             'column-unlocket': !locked,
-            'column-locked': locked
+            'column-locked': locked,
+            'resize-hit-limit': resizeHitLimit === i && !resizeIsPined
           }"
         >
           <!-- Title -->

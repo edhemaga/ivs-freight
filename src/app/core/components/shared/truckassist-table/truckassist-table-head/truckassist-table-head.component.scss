@@ -209,7 +209,6 @@ table {
 
 .not-pined-columns-container {
   padding: 2px 0px 2px 0px;
-  max-width: 1132px;
   overflow: hidden;
 
   .scroll-container {
@@ -219,7 +218,6 @@ table {
 
 .actions-columns-container {
   padding: 2px 2px 2px 0px;
-  flex: 1;
   justify-content: flex-end;
 
   th {
@@ -277,10 +275,33 @@ table {
 }
 
 // NG CLASS
+.set-cursor-resize{
+  /* cursor: ew-resize !important; */
+  user-select: none !important;
+}
+
 .sort-active{
   user-select: none !important;
 }
 
 .th-title-locked-cursor{
   cursor: pointer !important;
+}
+
+.resize-hit-limit{
+  .resise-btn{
+    animation: resizeLimitAnimation 0.5s ease-in-out !important;
+  }
+}
+
+@keyframes resizeLimitAnimation {
+  0% {
+    background: #aaaaaa;
+  }
+  50% {
+    background: #EF5350;
+  }
+  100%{
+    background: #aaaaaa;
+  }
 }

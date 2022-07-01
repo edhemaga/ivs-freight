@@ -235,11 +235,11 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   public onFilesEvent(event: any, action: string) {
     switch (action) {
       case 'documents': {
-        this.documents = event;
+        this.documents = event.files;
         break;
       }
       case 'media': {
-        this.media = event;
+        this.media = event.files;
         break;
       }
       default: {

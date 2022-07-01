@@ -141,15 +141,17 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       trailerPlateNumber: [null],
       trailerState: [null],
       trailerVIN: [null],
-      violations: this.formBuilder.array([this.formBuilder.group({
-        code: ["392.2-SLLS3"],
-        categoryId: ["Vehicle Maintenance"],
-        unit: ["Trailer"],
-        sw: ["10+2"],
-        oos: [true],
-        sms: [false],
-        description: ["Allowing or requiring a driver to use i…"]
-      })]),
+      violations: this.formBuilder.array([
+        this.formBuilder.group({
+          code: ['392.2-SLLS3'],
+          categoryId: ['Vehicle Maintenance'],
+          unit: ['Trailer'],
+          sw: ['10+2'],
+          oos: [true],
+          sms: [false],
+          description: ['Allowing or requiring a driver to use i…'],
+        }),
+      ]),
       note: [null],
       policeDepartment: [null],
       policeOfficer: [null],
@@ -179,7 +181,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
   public onModalAction(data: { action: string; bool: boolean }): void {
     // Update
-    switch(data.action) {
+    switch (data.action) {
       case 'close': {
         this.violationForm.reset();
         break;
@@ -205,11 +207,14 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     return this.violationForm.get('violations') as FormArray;
   }
 
-  public onHandleAddress(event: {
-    address: AddressEntity | any;
-    valid: boolean;
-  }, action) {
-    switch(action) {
+  public onHandleAddress(
+    event: {
+      address: AddressEntity | any;
+      valid: boolean;
+    },
+    action
+  ) {
+    switch (action) {
       case 'address-authority': {
         this.selectedAuthorityAddress = event;
         break;
@@ -230,11 +235,11 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event) {
-    console.log(event)
+    this.documents = event.files;
   }
 
   public pickedSpecialChecks() {
-    return this.specialChecks.filter(item => item.active).length;
+    return this.specialChecks.filter((item) => item.active).length;
   }
 
   public identity(index: number, item: any): number {
