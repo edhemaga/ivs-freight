@@ -7,23 +7,92 @@
     max-height: 254px;
   }
 
+  &.image-zone-flex {
+    display: grid;
+    grid-template-columns: 162px 1fr;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    align-items: center;
+  }
+
+  //---------------------- DROP ZONE --------------------------
   .dropzone-logo-container {
     width: 100%;
-    height: 100%;
+    height: 194px;
+
     &.modal-container-M {
-      width: 616px;
+      width: 100%;
       height: 194px;
     }
   }
 
+  //---------------------- Logo Image --------------------------
+
+  .ta-logo-saved-image {
+    width: 100%;
+    height: 194px;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+
+    img {
+      -o-object-fit: fill;
+      object-fit: fill;
+    }
+
+    .ta-logo-image-delete {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      border-radius: 2px;
+      background-color: #6c6c6c;
+      width: 23px;
+      height: 23px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      .delete-logo-svg {
+        svg {
+          width: 18px;
+          height: 18px;
+          path {
+            fill: #dadada;
+          }
+        }
+      }
+
+      &:hover {
+        transition: all 0.3s ease-in-out;
+        .delete-logo-svg {
+          svg {
+            path {
+              fill: #ef5350;
+            }
+          }
+        }
+      }
+    }
+
+    &:hover {
+      .ta-logo-image-delete {
+        display: flex;
+      }
+    }
+  }
+
+  //--------------------- CROPPIE -----------------------------
   ::ng-deep.croppie-container {
     * {
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
       user-select: none !important;
     }
 
     .cr-boundary {
       border-radius: 3px !important;
-      height: 194px !important;
       width: 100% !important;
     }
 
@@ -31,7 +100,6 @@
       border: 2px dashed #e5e5e5 !important;
       border-spacing: 8px !important;
       border-radius: 3px !important;
-      height: 194px !important;
 
       &:focus {
         outline: none !important;
@@ -84,56 +152,6 @@
           }
         }
       }
-    }
-  }
-
-  .ta-logo-saved-image {
-    width: 100%;
-    height: 194px;
-    background-color: #F9F9F9;
-    border-radius: 2px;
-    position: relative;
-    text-align: center;
-
-    .delete-logo-saved-image {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      border-radius: 2px; 
-      background-color: #6C6C6C;
-      width: 26px;
-      height: 26px;
-      cursor: pointer;
-
-      .delete-logo-svg {
-        width: 16px;
-        height: 16px;
-        svg {
-          width: 100%;
-          height: 16px;
-          path {
-            fill: #DADADA;
-          }
-        }
-      }
-
-      &:hover {
-          transition: all 0.3s ease-in-out;
-          .delete-logo-svg {
-            svg {
-              path {
-                fill: #EF5350;
-              }
-            }
-          }
-      }
-    }
-
-    .ta-logo-image {
-      height: 100%;
-      width: 162px;
-      object-fit: fill;
-      border-radius: 2px;
     }
   }
 }

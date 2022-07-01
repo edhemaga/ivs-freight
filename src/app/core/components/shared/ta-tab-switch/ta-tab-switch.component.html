@@ -58,8 +58,8 @@
         </div>
         <div class="custom-popover-border"></div>
         <div class="custom-popover-button-holder">
-            <div class="custom-popover-button-clear">Clear All</div>
-            <div class="custom-popover-button-clear custom-popover-button-set">Set</div>
+            <div class="custom-popover-button-clear" [class.active]="data1Valid || data2Valid">Clear All</div>
+            <div class="custom-popover-button-clear custom-popover-button-set" [class.active]="data1Valid && data2Valid">Set</div>
         </div>
     </div>
 </ng-template>

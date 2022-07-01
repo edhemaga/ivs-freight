@@ -57,6 +57,14 @@
           background-color: #f3f3f3;
           color: #3c3c3c;
           transition: all 0.2s ease-out;
+
+          .svg-template-logo,
+          .svg-template-grayscale {
+            svg {
+              -webkit-filter: grayscale(0);
+              filter: grayscale(0);
+            }
+          }
         }
 
         &:hover {

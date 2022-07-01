@@ -9,15 +9,37 @@
       class="ta-modal-dropzone-text"
       *ngIf="dropZoneConfig.dropZoneType === 'files'"
     >
-      <span class="ta-modal-dropzone-text-big">DRAG FILES HERE</span>
-      <span class="ta-modal-dropzone-text-small">OR CLICK TO ADD</span>
+      <span
+        [ngClass]="{
+          'ta-modal-dropzone-text-big': dropZoneConfig.globalDropZone
+        }"
+      >
+        {{
+          !textChangeOverModal ? "DRAG FILES HERE" : "DROP IT LIKE IT’S HOT"
+        }}</span
+      >
+      <span
+        *ngIf="!dropZoneConfig.globalDropZone"
+        class="ta-modal-dropzone-text-small"
+        >OR CLICK TO ADD</span
+      >
     </div>
     <div
       class="ta-modal-dropzone-text"
       *ngIf="dropZoneConfig.dropZoneType === 'logo'"
     >
-      <span class="ta-modal-dropzone-text-big"
-        >DRAG IMAGE HERE OR CLICK TO ADD</span
+      <span
+        [ngClass]="{
+          'ta-modal-dropzone-text-big': dropZoneConfig.globalDropZone
+        }"
+        >{{
+          !textChangeOverModal ? "DRAG IMAGE HERE" : "DROP IT LIKE IT'S HOT"
+        }}</span
+      >
+      <span
+        *ngIf="!dropZoneConfig.globalDropZone"
+        class="ta-modal-dropzone-text-small"
+        >OR CLICK TO ADD</span
       >
     </div>
   </label>
