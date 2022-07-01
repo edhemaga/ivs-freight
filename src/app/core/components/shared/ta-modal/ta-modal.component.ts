@@ -12,7 +12,6 @@ import {
 import { ModalService } from './modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
-import { TaInputService } from '../ta-input/ta-input.service';
 import { DropZoneConfig } from '../ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../ta-modal-upload/ta-upload-file.service';
 import {
@@ -91,8 +90,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
   constructor(
     private ngbActiveModal: NgbActiveModal,
     private modalService: ModalService,
-    private uploadFileService: TaUploadFileService,
-    private inputService: TaInputService
+    private uploadFileService: TaUploadFileService
   ) {}
 
   ngOnInit(): void {
@@ -154,12 +152,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
     $(document).on('dragover', '.modal', (event) => {
       event.preventDefault();
       event.stopPropagation();
-      console.log('DRAG OVER');
+
       if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
         this.dropZoneCounter++;
       }
       this.isDropZoneVisible = true;
-      console.log(this.isDropZoneVisible);
     });
   }
 

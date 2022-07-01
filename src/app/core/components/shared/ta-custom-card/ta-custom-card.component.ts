@@ -40,6 +40,9 @@ export class TaCustomCardComponent {
   @Input() hasWeeklyStatus: string = null;
   @Input() controlName: FormControl;
   @Input() stayOpen: boolean = false;
+
+  public zoneTriger: boolean = false;
+
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );
@@ -49,7 +52,6 @@ export class TaCustomCardComponent {
   );
 
   public isHeaderHover: boolean = false;
-  public zoneTriger: boolean = false;
 
   constructor(private uploadFileService: TaUploadFileService) {}
 

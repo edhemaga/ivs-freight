@@ -3,9 +3,7 @@ import {
   EventEmitter,
   HostListener,
   Input,
-  OnChanges,
   Output,
-  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { UploadFile } from '../ta-upload-file/ta-upload-file.component';
@@ -24,7 +22,7 @@ export interface DropZoneConfig {
   styleUrls: ['./ta-upload-dropzone.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TaUploadDropzoneComponent implements OnChanges {
+export class TaUploadDropzoneComponent {
   private files: UploadFile[] = [];
 
   @Input() dropZoneConfig: DropZoneConfig = {
@@ -46,10 +44,6 @@ export class TaUploadDropzoneComponent implements OnChanges {
   }>();
 
   public textChangeOverModal: boolean = false;
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.dropZoneConfig);
-  }
 
   public unSupporetedType: boolean = false;
   public supportedExtensions: string[] = [];
@@ -80,8 +74,6 @@ export class TaUploadDropzoneComponent implements OnChanges {
   }
 
   public async onFileUpload(files: FileList) {
-    console.log('DROPZONE');
-    console.log(files);
     await this.addFiles(files);
     this.files = [];
   }

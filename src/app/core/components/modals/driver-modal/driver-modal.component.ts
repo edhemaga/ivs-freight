@@ -159,10 +159,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onCommandEvent(event: any) {
-    // console.log(event);
-  }
-
   public onModalAction(data: { action: string; bool: boolean }): void {
     if (data.action === 'close') {
       this.driverForm.reset();
@@ -465,7 +461,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public tabChange(event: any): void {
     this.selectedTab = event.id;
 
-    this.uploadFileService.visibilityDropZone(this.selectedTab === 3);
+    this.uploadFileService.visibilityDropZone(this.selectedTab === 2);
 
     let dotAnimation = document.querySelector('.animation-three-tabs');
 

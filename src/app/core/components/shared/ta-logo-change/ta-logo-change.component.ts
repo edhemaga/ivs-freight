@@ -21,6 +21,7 @@ import { Options } from '@angular-slider/ngx-slider';
 import { DomSanitizer } from '@angular/platform-browser';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
+import { DropZoneConfig } from '../ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 
 @Component({
   selector: 'app-ta-logo-change',
@@ -46,6 +47,14 @@ export class TaLogoChangeComponent
 
   @Input() customClass: string;
   @Input() imageUrl: any | string = null;
+
+  @Input() dropZoneConfig: DropZoneConfig = {
+    dropZoneType: 'logo',
+    dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
+    dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
+    multiple: false,
+    globalDropZone: false,
+  };
 
   @Output() base64ImageEvent: EventEmitter<string> = new EventEmitter<string>();
 
