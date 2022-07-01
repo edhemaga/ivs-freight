@@ -49,7 +49,7 @@ export class TaLogoChangeComponent
   @Input() imageUrl: any | string = null;
 
   @Input() dropZoneConfig: DropZoneConfig = {
-    dropZoneType: 'logo',
+    dropZoneType: 'image',
     dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
     dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
     multiple: false,
@@ -158,7 +158,5 @@ export class TaLogoChangeComponent
     this.imageUrl = null;
   }
 
-  ngOnDestroy(): void {
-    this.croppieDirective.croppie.destroy();
-  }
+  ngOnDestroy(): void {}
 }

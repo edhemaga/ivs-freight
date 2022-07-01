@@ -60,8 +60,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() specificCaseModalName: boolean = false;
 
   @Input() dropZoneConfig: DropZoneConfig = {
-    dropZoneType: 'files', // files | logo
-    dropZoneSvg: 'assets/svg/common/ic_modal_upload_dropzone.svg',
+    dropZoneType: 'files', // files | image | media
+    dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
     dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
     multiple: true,
     globalDropZone: true,
