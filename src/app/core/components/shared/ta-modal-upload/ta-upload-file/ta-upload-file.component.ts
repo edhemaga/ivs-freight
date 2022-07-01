@@ -51,7 +51,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   public isFileDelete: boolean = false;
 
   ngOnInit(): void {
-    this.inputService.onFocusOutInputSubject
+    this.inputService.onFocusOutInput$
       .pipe(untilDestroyed(this))
       .subscribe((value) => {
         if (value) {

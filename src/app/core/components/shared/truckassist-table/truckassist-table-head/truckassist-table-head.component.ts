@@ -47,6 +47,9 @@ export class TruckassistTableHeadComponent
   notPinedColumns: any[] = [];
   actionColumns: any[] = [];
   showBorder: boolean = false;
+  resizeHitLimit: number = -1;
+  resizeIsPined: boolean;
+  notPinedMaxWidth: number = 0;
 
   constructor(
     private tableService: TruckassistTableService,
@@ -107,6 +110,10 @@ export class TruckassistTableHeadComponent
       .subscribe((response: boolean) => {
         this.showBorder = response;
       });
+
+    setTimeout(() => {
+      this.getNotPinedMaxWidth();
+    }, 10);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -165,6 +172,19 @@ export class TruckassistTableHeadComponent
         this.actionColumns.push(v);
       }
     });
+
+    this.changeDetectorRef.detectChanges();
+  }
+
+  getNotPinedMaxWidth() {
+    const tableContainer = document.querySelector('.table-container');
+    const pinedColumns = document.querySelector('.pined-columns-container');
+    const actionColumns = document.querySelector('.actions-columns-container');
+
+    this.notPinedMaxWidth =
+      tableContainer.clientWidth -
+      (pinedColumns.clientWidth + actionColumns.clientWidth) -
+      6;
 
     this.changeDetectorRef.detectChanges();
   }
@@ -239,8 +259,8 @@ export class TruckassistTableHeadComponent
   // Rezaize
   onResize(event: any) {
     this.rezaizeing = event.isResizeing;
-    
-    if (this.rezaizeing) {
+
+    if (this.rezaizeing && !event.beyondTheLimits) {
       this.tableService.sendColumnWidth({
         event: event,
         columns:
@@ -248,6 +268,17 @@ export class TruckassistTableHeadComponent
             ? this.notPinedColumns
             : this.pinedColumns,
       });
+
+      this.getNotPinedMaxWidth();
+    }
+
+    if (event.beyondTheLimits) {
+      this.resizeHitLimit = event.index;
+      this.resizeIsPined = event.isPined;
+
+      setTimeout(() => {
+        this.resizeHitLimit = -1;
+      }, 1000);
     }
   }
 

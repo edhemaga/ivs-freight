@@ -4,12 +4,7 @@
   [editData]="editData"
   [customClass]="'modal-container-M'"
   [isModalValid]="driverForm.valid"
-  [dropZoneConfig]="{
-    dropZoneType: 'logo',
-    dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
-    dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
-    multiple: false
-  }"
+  [dropZoneConfig]="dropZoneConfig"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-ta-tab-switch
@@ -565,6 +560,7 @@
         <app-ta-custom-card [cardName]="'Profile Picture'" [isCardOpen]="true">
           <app-ta-logo-change
             [imageUrl]="this.driverForm.get('avatar').value"
+            [customClass]="'modal-container-M'"
             (base64ImageEvent)="onUploadImage($event)"
           ></app-ta-logo-change>
         </app-ta-custom-card>

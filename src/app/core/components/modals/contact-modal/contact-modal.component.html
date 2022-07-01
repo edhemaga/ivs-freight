@@ -3,6 +3,7 @@
   [editData]="editData"
   [editName]="editData?.id"
   [isModalValid]="contactForm.valid"
+  [dropZoneConfig]="dropZoneConfig"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="contactForm" class="form-container">
@@ -161,7 +162,6 @@
         <app-ta-custom-card [cardName]="'Contact Image'" [isCardOpen]="true">
           <app-ta-logo-change
             [imageUrl]="this.contactForm.get('avatar').value"
-            [viewPortType]="'circle'"
             (base64ImageEvent)="onUploadImage($event)"
           ></app-ta-logo-change>
         </app-ta-custom-card>

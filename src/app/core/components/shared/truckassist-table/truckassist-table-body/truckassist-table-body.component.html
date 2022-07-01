@@ -789,6 +789,7 @@
       class="not-pined-tr"
       id="scroll-container"
       (scroll)="onScroll($event)"
+      [ngStyle]="{'max-width.px': notPinedMaxWidth}"
     >
       <tr
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"

@@ -146,3 +146,105 @@
     }
 
 }
+
+.custom-popover-holder{
+    position: relative;
+    width: 360px;
+    border-radius: 3px;
+    background-color: #fff;
+    box-shadow: 0 0 2px #0000004D;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 12px 0px;
+    box-sizing: border-box;
+
+    .custom-popover-close{
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 12px;
+        right: 12px;
+        cursor: pointer;
+
+        svg-icon{
+            svg{
+                display: flex;
+                width: 18px;
+                height: 18px;
+
+                path{
+                    fill: #AAAAAA;
+                }
+            }
+        }
+
+        &:hover{
+            cursor: pointer;
+            svg-icon{
+                svg{
+                    path{
+                        fill: #6C6C6C;
+                    }
+                }
+            }
+        }
+    }
+
+    .custom-popover-title{
+        font-size: 18px;
+        font-weight: 800;
+        color: #6C6C6C;
+        padding: 0px 0px 8px 12px;
+        box-sizing: border-box;
+    }
+
+    .custom-popover-border{
+        width: calc(100% - 16px);
+        height: 2px;
+        border-radius: 1px;
+        background-color: #F3F3F3;
+        margin: 0px 8px;
+    }
+
+    .custom-popover-date-picker-holder{
+        width: 100%;
+        padding: 26px 12px 22px 12px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .custom-popover-button-holder{
+        width: 100%;
+        padding: 12px 12px 0px 12px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        user-select: none;
+
+        .custom-popover-button-clear{
+            width: 132px;
+            height: 32px;
+            border-radius: 2px;
+            background-color: #F3F3F3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #AAAAAA;
+            line-height: 32px;
+        }
+
+        .custom-popover-button-set{
+
+        }
+    }
+}

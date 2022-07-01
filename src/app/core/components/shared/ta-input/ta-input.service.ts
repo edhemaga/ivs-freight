@@ -8,20 +8,18 @@ import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
   providedIn: 'root',
 })
 export class TaInputService {
-  public onClearInputSubject: Subject<boolean> = new Subject<boolean>();
+  public onClearInput$: Subject<boolean> = new Subject<boolean>();
 
-  public onFocusOutInputSubject: Subject<boolean> = new Subject<boolean>();
+  public onFocusOutInput$: Subject<boolean> = new Subject<boolean>();
 
-  public dropDownShowHideSubject: Subject<boolean> = new Subject<boolean>();
+  public dropDownShowHide$: Subject<boolean> = new Subject<boolean>();
 
-  public dropDownNavigatorSubject: Subject<number> = new Subject<number>();
+  public dropDownKeyNavigation$: Subject<number> = new Subject<number>();
 
-  public isDropDownItemSelectedOnEnter: Subject<boolean> =
+  public dropDownItemSelectedOnEnter$: Subject<boolean> =
     new Subject<boolean>();
 
-  public dropdownAddModeSubject: Subject<boolean> = new Subject<boolean>();
-
-  public addDropdownItemSubject: Subject<boolean> = new Subject<boolean>();
+  public dropdownAddModeSubject$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     public notificationService: NotificationService,

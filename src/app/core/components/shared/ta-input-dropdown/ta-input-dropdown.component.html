@@ -102,6 +102,7 @@
     [placement]="['bottom-left']"
     popoverClass="ta-input-dropdown"
     [container]="'body'"
+    (commandEvent)="onCommandInput($event)"
   ></app-ta-input>
 </div>
 
@@ -137,7 +138,6 @@
             [src]="option.logoName | taSvg: option.folder:option?.subFolder"
           ></svg-icon>
           <div
-            *ngIf="!option.logoName"
             [innerHtml]="
               option.name
                 | taHighlight: [{ index: 45632, text: getSuperControl.value }]
