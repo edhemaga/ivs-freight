@@ -30,14 +30,20 @@
 
   .ta-logo-saved-image {
     width: 100%;
-    height: 194px;
     border-radius: 2px;
     overflow: hidden;
     position: relative;
 
-    img {
+    .ta-logo-image {
       -o-object-fit: fill;
       object-fit: fill;
+      width: 162px;
+      height: 194px;
+
+      &-circle {
+        width: 162px;
+        height: 162px;
+      }
     }
 
     .ta-logo-image-delete {
@@ -53,7 +59,7 @@
       justify-content: center;
       cursor: pointer;
 
-      .delete-logo-svg {
+      .ta-delete-logo-svg {
         svg {
           width: 18px;
           height: 18px;
@@ -97,9 +103,12 @@
     }
 
     .cr-viewport {
-      border: 2px dashed #e5e5e5 !important;
+      border: 4px dashed #fff !important;
       border-spacing: 8px !important;
-      border-radius: 3px !important;
+
+      &.cr-vp-square {
+        border-radius: 2px;
+      }
 
       &:focus {
         outline: none !important;

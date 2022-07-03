@@ -1,7 +1,6 @@
 import { ContactModalService } from './contact-modal.service';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -18,6 +17,7 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadFileService } from '../../shared/ta-modal-upload/ta-upload-file.service';
 
 @Component({
   selector: 'app-contact-modal',
@@ -37,11 +37,24 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   public selectedAddress: any = null;
 
   public dropZoneConfig: DropZoneConfig = {
-    dropZoneType: 'logo',
+    dropZoneType: 'image',
     dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
     dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
     multiple: false,
     globalDropZone: true,
+  };
+
+  public croppieOptions: Croppie.CroppieOptions = {
+    enableExif: true,
+    viewport: {
+      width: 194,
+      height: 194,
+      type: 'circle',
+    },
+    boundary: {
+      width: 456,
+      height: 194,
+    },
   };
 
   constructor(
@@ -49,12 +62,16 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private contactModalService: ContactModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private uploadFileService: TaUploadFileService
   ) {}
 
   ngOnInit() {
     this.createForm();
     this.getContactLabelsAndDepartments();
+    setTimeout(() => {
+      this.uploadFileService.visibilityDropZone(true);
+    }, 300);
 
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA

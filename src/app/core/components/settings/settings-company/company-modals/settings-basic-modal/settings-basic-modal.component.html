@@ -3,12 +3,7 @@
   [editData]="editData"
   [isModalValid]="companyForm.valid"
   [customClass]="'modal-container-M'"
-  [dropZoneConfig]="{
-    dropZoneType: 'logo',
-    dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
-    dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
-    multiple: false
-  }"
+  [dropZoneConfig]="dropZoneConfig"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher

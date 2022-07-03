@@ -43,10 +43,19 @@ implements OnInit, AfterViewInit, OnChanges {
   
 
   indexSwitch: number = 0;
+  data1Valid: boolean;
+  data2Valid: boolean;
 
   constructor(public elem: ElementRef, public det: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.date1.valueChanges.subscribe(data => {
+      this.data1Valid = data!!;
+    });
+
+    this.date2.valueChanges.subscribe(data => {
+      this.data2Valid = data!!;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
