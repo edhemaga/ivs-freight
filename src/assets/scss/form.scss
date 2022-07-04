@@ -795,4 +795,197 @@
   column-gap: 12px;
   margin-bottom: 32px;
 }
+//---------------- Load FTL Page ----------------
+.load-ftl-first-row {
+  display: grid;
+  grid-template-columns: 140px repeat(2, 220px) 226px;
+  column-gap: 12px;
+  margin-top: 26px;
+  margin-bottom: 32px;
+
+  .ftl-load-status {
+    border-radius: 2px;
+    background-color: #f3f3f3;
+    color: #c1c1c1;
+    font-size: 12px;
+    font-weight: 900;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.load-ftl-second-row {
+  display: grid;
+  grid-template-columns: 397px 114px 178px 117px;
+  column-gap: 12px;
+  margin-bottom: 32px;
+}
+
+.load-ftl-third-row {
+  display: grid;
+  grid-template-columns: 439px 391px;
+  column-gap: 12px;
+  margin-bottom: 22px;
+
+  .broker-load-information {
+    display: flex;
+  }
+}
+
+.load-requirements-load {
+  display: grid;
+  grid-template-columns: repeat(2, 164px) 107px 117px 88px 66px 1fr;
+  column-gap: 12px;
+  align-items: center;
+}
+
+.stop-load-first-row {
+  display: grid;
+  grid-template-columns: 134px 696px;
+  column-gap: 12px;
+  margin-bottom: 32px;
+}
+
+.stop-load-second-row {
+  display: grid;
+  grid-template-columns: 202px 106px repeat(2, 172px);
+  column-gap: 12px;
+  margin-bottom: 22px;
+
+  .date-range {
+    display: grid;
+    grid-template-columns: 172px 26px;
+    column-gap: 4px;
+
+    .billing-plus {
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f3f3f3;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+      border-radius: 2px;
+
+      &.billing-date-range {
+        .billing-date-range-plus {
+          svg {
+            #plus {
+              fill: #b7b7b7;
+            }
+          }
+        }
+
+        &:hover {
+          background-color: #b7b7b7;
+
+          .billing-date-range-plus {
+            svg {
+              #plus {
+                fill: #ffffff;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.date-range-active {
+    grid-template-columns: 356px 106px repeat(2, 172px);
+    column-gap: 12px;
+
+    .date-range {
+      grid-template-columns: repeat(2, 172px);
+      column-gap: 12px;
+    }
+  }
+}
+
+.billing-payment-load {
+  display: grid;
+  grid-template-columns: 137px repeat(3, 26px);
+  column-gap: 12px;
+
+  .billing-plus {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f3f3;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    border-radius: 2px;
+
+    &.billing-adjusted {
+      .billing-adjusted-plus {
+        svg {
+          #plus {
+            fill: #ffa726;
+          }
+        }
+      }
+
+      &:hover {
+        background-color: #ffa726;
+
+        .billing-adjusted-plus {
+          svg {
+            #plus {
+              fill: #ffffff;
+            }
+          }
+        }
+      }
+    }
+
+    &.billing-additional {
+      .billing-additional-plus {
+        svg {
+          #plus {
+            fill: #536bc2;
+          }
+        }
+      }
+
+      &:hover {
+        background-color: #536bc2;
+
+        .billing-additional-plus {
+          svg {
+            #plus {
+              fill: #ffffff;
+            }
+          }
+        }
+      }
+    }
+
+    &.billing-advance {
+      .billing-advance-plus {
+        svg {
+          #plus {
+            fill: #26a690;
+          }
+        }
+      }
+
+      &:hover {
+        background-color: #26a690;
+
+        .billing-advance-plus {
+          svg {
+            #plus {
+              fill: #ffffff;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 // ------------------------------------------------ end ------------------------------------------------

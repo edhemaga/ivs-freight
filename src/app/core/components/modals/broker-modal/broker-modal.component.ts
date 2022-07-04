@@ -512,7 +512,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           ' ',
           this.companyUser.lastName
         ),
-        avatar: 'https://picsum.photos/id/237/200/300',
+        avatar: this.companyUser.avatar,
       },
       commentContent: '',
       createdAt: new Date().toISOString(),

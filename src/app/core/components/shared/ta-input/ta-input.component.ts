@@ -627,6 +627,7 @@ export class TaInputComponent
         'per stop',
         'empty weight',
         'axles',
+        'base rate',
         'mileage',
         'ipas ezpass',
         'credit limit',

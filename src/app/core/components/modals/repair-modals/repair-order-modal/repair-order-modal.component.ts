@@ -42,16 +42,16 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   public headerTabs = [
     {
       id: 1,
-      label: 'Bill',
+      label: 'headerTab',
       value: 'Bill',
-      name: 'header-tabs',
+      name: 'Bill',
       checked: true,
     },
     {
       id: 2,
-      label: 'Order',
+      label: 'headerTab',
       value: 'Order',
-      name: 'header-tabs',
+      name: 'Order',
       checked: false,
     },
   ];

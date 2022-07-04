@@ -21,8 +21,6 @@ export class FormService {
     form.statusChanges.subscribe(() => {
       if (!form.dirty) {
         this.originalValue = JSON.stringify(form.value);
-        console.log('INIT FORM');
-        console.log(this.originalValue);
         this.lastNotify = true;
         this.formValueChange$.next(true);
       }
