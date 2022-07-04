@@ -2,11 +2,8 @@ import {
   Component,
   EventEmitter,
   HostListener,
-  Injectable,
   Input,
-  OnChanges,
   Output,
-  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { UploadFile } from '../ta-upload-file/ta-upload-file.component';
@@ -29,7 +26,7 @@ export interface DropZoneConfig {
   styleUrls: ['./ta-upload-dropzone.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TaUploadDropzoneComponent implements OnChanges {
+export class TaUploadDropzoneComponent {
   private files: UploadFile[] = [];
 
   @Input() dropZoneConfig: DropZoneConfig = {
@@ -54,11 +51,6 @@ export class TaUploadDropzoneComponent implements OnChanges {
 
   public unSupporetedType: boolean = false;
   public supportedExtensions: string[] = [];
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.dropZoneConfig = { ...this.dropZoneConfig };
-    console.log(this.dropZoneConfig);
-  }
 
   @HostListener('dragover', ['$event']) onDragOver(evt) {
     evt.preventDefault();
