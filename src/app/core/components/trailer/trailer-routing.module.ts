@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TrailerItemResolver } from './state/trailer.items.resolver';
+import { TrailerItemResolver } from './state/trailer-details-state/trailer.items.resolver';
 import { TrailerTableComponent } from './trailer-table/trailer-table.component';
 
 const routes: Routes = [

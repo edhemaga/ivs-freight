@@ -30,11 +30,10 @@ export class TrailerDetailsItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.note.patchValue(this.trailer.data.note);
+  
+    this.note.patchValue(this.trailer[0].data.note);
     this.initTableOptions();
   }
-  /**Function return trailer by id */
-
   /**Function for toggle page in cards */
   public toggleResizePage(value: number) {
     this.toggler[value] = !this.toggler[value];

@@ -1,6 +1,6 @@
 @import '../shipper-details/shipper-details-single/shipper-details-single.component.scss';
 
-.wrapper-additional-cards{
+app-shipper-card-view{.wrapper-additional-cards{
     max-height: calc(77vh - 74px);
     // min-height: calc(26vh - 10px);
     min-height: fit-content;
@@ -66,4 +66,5 @@
             display: flex;
         }
     }
+}
 }

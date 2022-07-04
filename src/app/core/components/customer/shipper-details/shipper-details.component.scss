@@ -1,6 +1,6 @@
 @import '../../../../../assets/scss/repair-details-items.scss';
 
-.items-header{
+app-shipper-details{.items-header{
     grid-template-columns: 89px 117px 72px 93px 78px 82px !important ;
     column-gap: 20px;
 }
@@ -54,4 +54,5 @@ min-height: fit-content !important;
 }
 .unit{
     height: 18px;
+}
 }
