@@ -31,18 +31,10 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   constructor(
     public router: Router,
     private authService: AuthStoreService,
-    private navigationService: NavigationService,
+    private navigationService: NavigationService
   ) {}
 
-  ngOnInit() {
-    // this.communicatorUserDataService.chatUser
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((chatUser: any) => {
-    //     setTimeout(() => {
-    //       this.currentUserStatus = chatUser?.status;
-    //     });
-    //   });
-  }
+  ngOnInit() {}
 
   public onUserPanelClose() {
     this.navigationService.onDropdownActivation({
@@ -54,26 +46,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   public onAction(data: NavigationUserPanel) {
     switch (data.action) {
       case 'update': {
-        // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-        // this.userService
-        //   .getUserByUsername(currentUser.username)
-        //   .pipe(takeUntil(this.destroy$))
-        //   .subscribe(
-        //     (user: any) => {
-        //       this.customModalService.openModal(
-        //         ChangePasswordComponent,
-        //         user,
-        //         null,
-        //         {
-        //           size: 'small',
-        //         }
-        //       );
-        //     },
-        //     (error: any) => {
-        //       error ? this.sharedService.handleServerError() : null;
-        //     }
-        //   );
         break;
       }
       case 'status': {
@@ -104,24 +76,9 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     return item.id;
   }
 
-  private changeMyStatus() {
-    // this.communicatorUserService.changeMyStatus(this.changeStatusOption);
-  }
+  private changeMyStatus() {}
 
   private get changeStatusOption() {
-    // if (
-    //   ['online', 'active', 'away'].includes(
-    //     this.communicatorUserService.user?.status
-    //   )
-    // ) {
-    //   return 'busy';
-    // } else {
-    //   if (this.isUserInChat()) {
-    //     return 'active';
-    //   } else {
-    //     return 'online';
-    //   }
-    // }
     return 'online';
   }
 

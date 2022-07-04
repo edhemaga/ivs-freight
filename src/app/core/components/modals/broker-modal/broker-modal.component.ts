@@ -35,6 +35,8 @@ import {
   TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
+import { debounceTime } from 'rxjs';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-broker-modal',
@@ -42,7 +44,7 @@ import { BrokerTService } from '../../customer/state/broker-state/broker.service
   styleUrls: ['./broker-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -146,6 +148,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public companyUser: SignInResponse = null;
   public hasCompanyUserReview: boolean = false;
 
+  public isDirty: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -153,7 +157,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     private brokerModalService: BrokerTService,
     private notificationService: NotificationService,
     private reviewRatingService: ReviewsRatingService,
-    private taLikeDislikeService: TaLikeDislikeService
+    private taLikeDislikeService: TaLikeDislikeService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -203,6 +208,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       dnu: [null],
       brokerContacts: this.formBuilder.array([]),
     });
+
+    if (this.editData) {
+      this.formService.checkFormChange(this.brokerForm);
+
+      this.formService.formValueChange$
+        .pipe(untilDestroyed(this))
+        .subscribe((isFormChange: boolean) => {
+          isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+        });
+    }
   }
 
   public get brokerContacts(): FormArray {
@@ -439,7 +454,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public isCredit(event: any) {
-    console.log(event);
     this.billingCredit.forEach((item) => {
       if (item.name === event.name) {
         this.brokerForm.get('creditType').patchValue(item.name);
@@ -914,7 +928,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             },
             commentContent: item.comment,
           }));
-          console.log(reasponse);
 
           this.isCredit(reasponse.creditType);
         },

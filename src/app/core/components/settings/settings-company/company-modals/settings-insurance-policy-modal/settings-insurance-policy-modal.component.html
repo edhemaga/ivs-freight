@@ -4,7 +4,9 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="insurancePolicyForm.valid"
+  [isModalValid]="
+    editData ? insurancePolicyForm.valid && isDirty : insurancePolicyForm.valid
+  "
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="insurancePolicyForm" class="form-container">

@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="'Company'"
   [editData]="editData"
-  [isModalValid]="companyForm.valid"
+  [isModalValid]="editData ? companyForm.valid && isDirty : companyForm.valid"
   [customClass]="'modal-container-M'"
   [dropZoneConfig]="dropZoneConfig"
   (modalActionTypeEmitter)="onModalAction($event)"

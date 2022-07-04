@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Office' : 'Edit Office'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="officeForm.valid"
+  [isModalValid]="editData ? officeForm.valid && isDirty : officeForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher

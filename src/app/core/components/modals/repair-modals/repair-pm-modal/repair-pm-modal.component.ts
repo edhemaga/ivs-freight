@@ -18,6 +18,7 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { debounceTime } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-repair-pm-modal',
@@ -29,12 +30,15 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
   public PMform: FormGroup;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private pmTService: PmTService,
     private notificationService: NotificationService,
     private inputService: TaInputService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -54,6 +58,14 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       defaultPMs: this.formBuilder.array([]),
       newPMs: this.formBuilder.array([]),
     });
+
+    this.formService.checkFormChange(this.PMform);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public get defaultPMs(): FormArray {

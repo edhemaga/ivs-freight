@@ -10,6 +10,7 @@ import {
 import moment from 'moment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { distinctUntilChanged } from 'rxjs';
+import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { RepairTService } from '../../../repair/state/repair.service';
 import {
@@ -51,12 +52,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     'Saturday',
   ];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private shopService: RepairTService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -94,6 +98,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       account: [null],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.repairShopForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

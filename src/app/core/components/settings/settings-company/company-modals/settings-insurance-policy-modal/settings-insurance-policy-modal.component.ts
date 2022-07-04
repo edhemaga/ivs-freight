@@ -9,6 +9,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { AddressEntity } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 @Component({
   selector: 'app-settings-insurance-policy-modal',
   templateUrl: './settings-insurance-policy-modal.component.html',
@@ -32,11 +33,14 @@ export class SettingsInsurancePolicyModalComponent
 
   public documents: any[] = [];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -95,6 +99,14 @@ export class SettingsInsurancePolicyModalComponent
       trailerValue: [null],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.insurancePolicyForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(event: any) {}

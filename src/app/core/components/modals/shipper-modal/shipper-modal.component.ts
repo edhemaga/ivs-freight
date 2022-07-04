@@ -32,6 +32,7 @@ import {
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-shipper-modal',
@@ -82,6 +83,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   public companyUser: SignInResponse = null;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -89,7 +92,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private taLikeDislikeService: TaLikeDislikeService,
-    private reviewRatingService: ReviewsRatingService
+    private reviewRatingService: ReviewsRatingService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -128,6 +132,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       note: [null],
       shipperContacts: this.formBuilder.array([]),
     });
+
+    this.formService.checkFormChange(this.shipperForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

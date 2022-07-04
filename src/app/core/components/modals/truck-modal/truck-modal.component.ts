@@ -15,6 +15,7 @@ import {
   UpdateTruckCommand,
 } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
@@ -80,12 +81,15 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   public truckStatus: boolean = true;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private truckModalService: TruckTService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -130,6 +134,14 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       mileage: [null, Validators.maxLength(10)],
       ipasEzpass: [null, Validators.maxLength(14)],
     });
+
+    this.formService.checkFormChange(this.truckForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public tabChange(event: any): void {

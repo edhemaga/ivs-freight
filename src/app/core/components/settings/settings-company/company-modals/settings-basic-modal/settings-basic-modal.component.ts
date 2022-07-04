@@ -23,6 +23,7 @@ import { Options } from '@angular-slider/ngx-slider';
 import { TabSwitcherComponent } from 'src/app/core/components/switchers/tab-switcher/tab-switcher.component';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { DropZoneConfig } from 'src/app/core/components/shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -139,11 +140,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   // Payroll tab
   public truckAssistText: string = "Use Truck Assist's ACH Payout";
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -238,6 +242,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       otherEndingIn: ['Monday', Validators.required],
       otherDefaultBase: [null],
     });
+
+    this.formService.checkFormChange(this.companyForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(event) {}

@@ -40,6 +40,7 @@ import {
 } from 'src/app/core/utils/base64.image';
 import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.component';
 import { DropZoneConfig } from '../../shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { FormService } from 'src/app/core/services/form/form.service';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -136,13 +137,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     globalDropZone: true,
   };
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private driverTService: DriverTService,
     private notificationService: NotificationService,
     private modalService: ModalService,
-    private uploadFileService: TaUploadFileService
+    private uploadFileService: TaUploadFileService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -267,6 +271,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       emergencyContactPhone: [null, [phoneRegex, Validators.required]],
       emergencyContactRelationship: [null],
     });
+
+    this.formService.checkFormChange(this.driverForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public get offDutyLocations(): FormArray {

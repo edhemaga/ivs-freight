@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-columns';
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';

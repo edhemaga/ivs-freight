@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
 import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
@@ -13,7 +12,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 })
 export class SettingsUserComponent implements OnInit {
   private destroy$: Subject<void> = new Subject<void>();
-  
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -21,7 +20,10 @@ export class SettingsUserComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  constructor(private modalService: ModalService, private tableService: TruckassistTableService) {}
+  constructor(
+    private modalService: ModalService,
+    private tableService: TruckassistTableService
+  ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -235,10 +237,7 @@ export class SettingsUserComponent implements OnInit {
 
   onTableBodyActions(event: any) {
     if (event.type === 'edit') {
-      this.modalService.openModal(
-        UserModalComponent,
-        { size: 'small' },
-      );
+      this.modalService.openModal(UserModalComponent, { size: 'small' });
     }
   }
 

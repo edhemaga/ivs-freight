@@ -25,6 +25,7 @@ import { AuthQuery } from '../../authentication/state/auth.query';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { urlRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-task-modal',
@@ -49,6 +50,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   public companyUser: SignInResponse = null;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -56,7 +59,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     private todoService: TodoTService,
     private commentsService: CommentsService,
     private notificationService: NotificationService,
-    private authQuery: AuthQuery
+    private authQuery: AuthQuery,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -83,6 +87,14 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       companyUserIds: [null],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.taskForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

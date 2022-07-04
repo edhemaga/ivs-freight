@@ -18,6 +18,7 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../../shared/ta-modal-upload/ta-upload-file.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-contact-modal',
@@ -35,6 +36,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   public selectedContactLabel: any = null;
   public selectedSharedDepartment: any = null;
   public selectedAddress: any = null;
+
+  public isDirty: boolean;
 
   public dropZoneConfig: DropZoneConfig = {
     dropZoneType: 'image',
@@ -63,7 +66,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private contactModalService: ContactModalService,
     private notificationService: NotificationService,
-    private uploadFileService: TaUploadFileService
+    private uploadFileService: TaUploadFileService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -96,6 +100,14 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       avatar: [null],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.contactForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

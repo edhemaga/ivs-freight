@@ -3,7 +3,7 @@
   [editName]="driverFullName"
   [editData]="editData"
   [customClass]="'modal-container-M'"
-  [isModalValid]="driverForm.valid"
+  [isModalValid]="editData ? driverForm.valid && isDirty : driverForm.valid"
   [dropZoneConfig]="dropZoneConfig"
   (modalActionTypeEmitter)="onModalAction($event)"
 >

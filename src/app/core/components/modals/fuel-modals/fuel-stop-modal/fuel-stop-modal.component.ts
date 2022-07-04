@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { phoneRegex } from '../../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-fuel-stop-modal',
@@ -12,7 +14,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
   styleUrls: ['./fuel-stop-modal.component.scss'],
   providers: [ModalService],
 })
-export class FuelStopModalComponent implements OnInit {
+export class FuelStopModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
 
   public fuelStopForm: FormGroup;
@@ -24,11 +26,14 @@ export class FuelStopModalComponent implements OnInit {
 
   public isFavouriteFuelStop: boolean = false;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -55,6 +60,14 @@ export class FuelStopModalComponent implements OnInit {
       addressUnit: [null, Validators.maxLength(6)],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.fuelStopForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

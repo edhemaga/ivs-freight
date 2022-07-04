@@ -10,6 +10,7 @@ import {
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { calculateParkingSlot } from 'src/app/core/utils/methods.calculations';
 
@@ -93,11 +94,14 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
   public isPhoneExtExist: boolean = false;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -124,6 +128,14 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       payPeriod: [null],
       day: [null],
     });
+
+    this.formService.checkFormChange(this.parkingForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public tabChange(event: any): void {
