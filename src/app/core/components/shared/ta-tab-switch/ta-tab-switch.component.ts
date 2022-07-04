@@ -59,9 +59,9 @@ implements OnInit, AfterViewInit, OnChanges {
   }
 
   clearFields(){
-    this.date1.setValue(null);
+    this.date1.reset();
     this.date1.updateValueAndValidity();
-    this.date2.patchValue(null);
+    this.date2.reset();
     this.date2.updateValueAndValidity();
   }
 
