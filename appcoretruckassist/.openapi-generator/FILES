@@ -151,6 +151,8 @@ model/getTruckModalResponse.ts
 model/inspectionResponse.ts
 model/insurancePolicyAddonResponse.ts
 model/insurancePolicyResponse.ts
+model/mapMarker.ts
+model/mapMarkerListResponse.ts
 model/medicalResponse.ts
 model/models.ts
 model/multipleChangeBanFlagCommand.ts
