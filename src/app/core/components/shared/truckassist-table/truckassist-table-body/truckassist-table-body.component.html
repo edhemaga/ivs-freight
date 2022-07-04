@@ -6,6 +6,7 @@
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
         [ngClass]="{
+          'border-inactive': !showScrollSectionBorder,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
@@ -779,22 +780,22 @@
       class="not-pined-border"
       *ngIf="showScrollSectionBorder"
       [ngStyle]="{
-        height: viewData.length * 32 + 2 * viewData.length - 1 + 'px'
+        height: viewData.length * 32 + 2 * viewData.length - 1 - 1 + 'px'
       }"
     ></div>
 
     <!-- Not Pined -->
-    <!-- [ngStyle]="{ 'min-width.px': this.scrollContainerMinWidth }" -->
     <div
       class="not-pined-tr"
       id="scroll-container"
       (scroll)="onScroll($event)"
-      [ngStyle]="{'max-width.px': notPinedMaxWidth}"
+      [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
     >
       <tr
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
         [ngClass]="{
+          'border-inactive': !showScrollSectionBorder,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
@@ -1500,7 +1501,7 @@
       class="not-pined-border"
       *ngIf="showScrollSectionBorder"
       [ngStyle]="{
-        height: viewData.length * 32 + 2 * viewData.length - 1 + 'px'
+        height: viewData.length * 32 + 2 * viewData.length - 1 - 1 + 'px'
       }"
     ></div>
 

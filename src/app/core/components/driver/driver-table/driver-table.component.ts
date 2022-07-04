@@ -1,5 +1,5 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
@@ -29,7 +29,7 @@ import { Console } from 'console';
   templateUrl: './driver-table.component.html',
   styleUrls: ['./driver-table.component.scss'],
 })
-export class DriverTableComponent implements OnInit, OnDestroy {
+export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -49,6 +49,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     searchTwo: undefined,
     searchThree: undefined,
   };
+  tableContainerWidth: number = 0;
 
   constructor(
     private modalService: ModalService,
@@ -59,6 +60,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     private driverTService: DriverTService,
     private notificationService: NotificationService
   ) {}
+  
 
   ngOnInit(): void {
     this.sendDriverData();
@@ -214,6 +216,20 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       });
 
     this.loadingPage = false;
+  }
+
+  ngAfterViewInit(): void {
+    this.observTableContainer();
+  }
+
+  observTableContainer() {
+    const observer = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        this.tableContainerWidth = entry.contentRect.width
+      });
+    });
+
+    observer.observe(document.querySelector('.table-container'));
   }
 
   public initTableOptions(): void {
@@ -372,7 +388,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       });
 
       // For Testing
-      /* for(let i = 0; i < 500; i++){
+     /*  for(let i = 0; i < 300; i++){
         this.viewData.push(this.viewData[0]);
       } */
     } else {

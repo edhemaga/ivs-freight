@@ -32,6 +32,7 @@ export class TruckassistTableBodyComponent
   @Input() options: any[];
   @Input() tableData: any[];
   @Input() selectedTab: string;
+  @Input() tableContainerWidth: number;
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
   showItemDrop: number = -1;
@@ -160,8 +161,12 @@ export class TruckassistTableBodyComponent
       this.viewData = changes.viewData.currentValue;
     }
 
-    if (!changes?.tableData?.firstChange && changes?.tableData) {
-      this.tableData = changes.tableData.currentValue;
+    if (!changes?.viewData?.firstChange && changes?.viewData) {
+      this.viewData = changes.viewData.currentValue;
+    }
+
+    if (!changes?.tableContainerWidth?.firstChange && changes?.tableContainerWidth) {
+      this.getNotPinedMaxWidth(true);
     }
 
     if (
@@ -205,17 +210,25 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  getNotPinedMaxWidth() {
-    const tableContainer = document.querySelector('.table-container');
-    const pinedColumns = document.querySelector('.pined-tr');
-    const actionColumns = document.querySelector('.actions');
+  getNotPinedMaxWidth(checkScroll?: boolean) {
+    if (this.viewData.length) {
+      const tableContainer = document.querySelector('.table-container');
+      const pinedColumns = document.querySelector('.pined-tr');
+      const actionColumns = document.querySelector('.actions');
 
-    this.notPinedMaxWidth =
-      tableContainer.clientWidth -
-      (pinedColumns.clientWidth + actionColumns.clientWidth) -
-      6;
+      this.notPinedMaxWidth =
+        tableContainer.clientWidth -
+        (pinedColumns.clientWidth + actionColumns.clientWidth) -
+        6;
 
-    this.changeDetectorRef.detectChanges();
+      if (checkScroll) {
+        setTimeout(() => {
+          this.checkForScroll();
+        }, 10);
+      } else {
+        this.changeDetectorRef.detectChanges();
+      }
+    }
   }
 
   getSelectedTabTableData() {
@@ -231,8 +244,6 @@ export class TruckassistTableBodyComponent
 
     if (div) {
       this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-
-      this.tableService.sendShowingScroll(this.showScrollSectionBorder);
 
       this.changeDetectorRef.detectChanges();
     }

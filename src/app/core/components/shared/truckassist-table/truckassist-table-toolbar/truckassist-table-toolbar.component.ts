@@ -29,6 +29,7 @@ export class TruckassistTableToolbarComponent
   @Input() options: any;
   @Input() selectedTab: string;
   @Input() columns: any[];
+  @Input() tableContainerWidth: number;
   listName: string = '';
   optionsPopup: any;
   optionsPopupOpen: boolean = false;
@@ -113,7 +114,9 @@ export class TruckassistTableToolbarComponent
       .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response?.event?.width) {
-          this.getToolbarWidth();
+          setTimeout(() => {
+            this.getToolbarWidth();
+          }, 10);
         }
       });
   }
@@ -121,6 +124,15 @@ export class TruckassistTableToolbarComponent
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.options?.firstChange && changes?.options) {
       this.options = changes.options.currentValue;
+    }
+
+    if (
+      !changes?.tableContainerWidth?.firstChange &&
+      changes?.tableContainerWidth
+    ) {
+      setTimeout(() => {
+        this.getToolbarWidth();
+      }, 10);
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -145,7 +157,7 @@ export class TruckassistTableToolbarComponent
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.getToolbarWidth();
-    }, 10)
+    }, 10);
   }
 
   getToolbarWidth() {
@@ -154,13 +166,15 @@ export class TruckassistTableToolbarComponent
     const actionColumns = document.querySelector('.actions');
     const borderColumns = document.querySelector('.not-pined-border');
 
-    this.toolbarWidth =
-      pinedColumns.clientWidth +
-      notPinedColumns.clientWidth +
-      actionColumns.clientWidth +
-      (borderColumns ? 6 : 0);
+    if (pinedColumns && notPinedColumns && actionColumns) {
+      this.toolbarWidth =
+        pinedColumns.clientWidth +
+        notPinedColumns.clientWidth +
+        actionColumns.clientWidth +
+        (borderColumns ? 6 : 0);
 
-    this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
   onSelectTab(selectedTabData: any) {

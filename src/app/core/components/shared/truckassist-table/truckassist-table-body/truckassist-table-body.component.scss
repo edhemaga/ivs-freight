@@ -1,16 +1,3 @@
-/* .regular-row {
-  &:hover {
-    .columns-container {
-      background: #f7f7f7;
-    }
-  }
-} */
-
-.regular-columns-hover{
-  background: #f7f7f7 !important;
-  transition: 0.25s;
-}
-
 /* Table Body */
 table {
   width: 100%;
@@ -38,7 +25,7 @@ table {
 
       &::-webkit-scrollbar-thumb {
         background-color: #ff6a6a;
-        border: 6px solid #EEEEEE;
+        border: 6px solid #eeeeee;
         border-radius: 1px;
       }
 
@@ -51,8 +38,8 @@ table {
       }
     }
 
-    .actions{
-      tr{
+    .actions {
+      tr {
         width: 100%;
       }
     }
@@ -67,14 +54,14 @@ table {
       padding: 2px 0px 2px 0px;
     }
 
-    .actions-tr-container{
+    .actions-tr-container {
       border-radius: 0px 3px 3px 0px;
       padding: 2px 2px 2px 0px;
 
-      .columns-container{
+      .columns-container {
         justify-content: flex-end;
 
-        .td-content{
+        .td-content {
           justify-content: center;
         }
       }
@@ -208,13 +195,13 @@ table {
               display: flex;
               justify-content: center;
               align-items: center;
-              color: #6C6C6C;
+              color: #6c6c6c;
               font-size: 16px;
               font-weight: 400;
 
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C20;
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
             }
 
@@ -224,26 +211,26 @@ table {
               height: 28px;
               font-size: 16px;
               font-weight: bold;
-              color: #6C6C6C;
+              color: #6c6c6c;
               display: flex;
               justify-content: center;
               align-items: center;
 
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C20;
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
             }
 
             // VL COLUMN
             .active-vl-count,
             .zero-vl-count {
-              color: #6C6C6C;
+              color: #6c6c6c;
               font-size: 16px;
 
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C20;
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
             }
 
@@ -287,7 +274,7 @@ table {
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
-              color: #6C6C6C;
+              color: #6c6c6c;
               font-size: 14px;
               font-weight: bold;
               align-items: center;
@@ -299,8 +286,8 @@ table {
               }
 
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C20;
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
             }
 
@@ -330,8 +317,8 @@ table {
               width: 64px;
               height: 20px;
               border-radius: 2px;
-              background: #6C6C6C20;
-              color: #6C6C6C;
+              background: #6c6c6c20;
+              color: #6c6c6c;
               font-size: 12px;
               font-weight: bold;
               display: flex;
@@ -339,8 +326,8 @@ table {
               align-items: center;
 
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C;
+                color: #6c6c6c;
+                background: #6c6c6c;
               }
             }
 
@@ -348,7 +335,7 @@ table {
             .table-name-link {
               font-size: 14px;
               font-weight: bold;
-              color: #6C6C6C;
+              color: #6c6c6c;
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
@@ -358,8 +345,8 @@ table {
               align-items: center;
               cursor: pointer;
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C20;
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
 
               &:hover {
@@ -381,7 +368,7 @@ table {
               .customer-name {
                 font-size: 16px;
                 font-weight: 400;
-                color: #6C6C6C;
+                color: #6c6c6c;
                 white-space: nowrap;
               }
             }
@@ -390,15 +377,15 @@ table {
             .table-text {
               font-size: 14px;
               font-weight: 400;
-              color: #6C6C6C;
+              color: #6c6c6c;
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
               width: 100%;
 
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C20;
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
             }
 
@@ -410,15 +397,15 @@ table {
             .semi-bold-table-text {
               font-size: 14px;
               font-weight: 600;
-              color: #6C6C6C;
+              color: #6c6c6c;
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
               width: 100%;
 
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C20;
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
             }
 
@@ -462,12 +449,12 @@ table {
                 width: fit-content;
                 display: flex;
                 align-self: center;
-                color: #6C6C6C;
+                color: #6c6c6c;
                 font-size: 14px;
                 font-weight: 400;
                 &::selection {
-                  color: #6C6C6C;
-                  background: #6C6C6C20;
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
                 }
               }
             }
@@ -496,7 +483,7 @@ table {
               height: 26px;
               background: #eeeeee;
               border-radius: 3px;
-              color: #6C6C6C;
+              color: #6c6c6c;
 
               .checkbox-content {
                 user-select: none;
@@ -579,13 +566,13 @@ table {
             // ITEM DROP COLUMN
             .table-item {
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C20;
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
 
               display: flex;
               white-space: pre;
-              color: #6C6C6C;
+              color: #6c6c6c;
               font-size: 14px;
               font-weight: 400;
               .description-dot {
@@ -593,7 +580,7 @@ table {
                 height: 6px;
                 margin: 8px 5px 0 5px;
                 border-radius: 50%;
-                background: #6C6C6C;
+                background: #6c6c6c;
               }
             }
 
@@ -605,7 +592,7 @@ table {
               .item-title {
                 width: 100%;
                 height: 24px;
-                background: #6C6C6C;
+                background: #6c6c6c;
                 padding: 0 20px 0 17px;
                 display: flex;
                 border-radius: 1px;
@@ -740,11 +727,11 @@ table {
             .table-total {
               font-size: 14px;
               font-weight: 600;
-              color: #6C6C6C;
+              color: #6c6c6c;
 
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C20;
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
             }
 
@@ -835,7 +822,7 @@ table {
               text-decoration: none;
               font-size: 14px;
               font-weight: 400;
-              color: #6C6C6C;
+              color: #6c6c6c;
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
@@ -848,8 +835,8 @@ table {
               }
 
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C20;
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
             }
 
@@ -858,7 +845,7 @@ table {
               margin-right: 6px;
               &:hover {
                 path {
-                  fill: #6C6C6C;
+                  fill: #6c6c6c;
                 }
               }
               position: relative;
@@ -867,19 +854,19 @@ table {
             .decrypted-password,
             .crypted-password {
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C20;
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
             }
 
             .decrypted-password {
-              color: #6C6C6C;
+              color: #6c6c6c;
               font-size: 14px;
               font-weight: 400;
             }
 
             .crypted-password {
-              color: #6C6C6C;
+              color: #6c6c6c;
             }
 
             .table-password-icon,
@@ -905,11 +892,11 @@ table {
             }
 
             .table-lable-text {
-              color: #6C6C6C;
+              color: #6c6c6c;
               margin-top: 1px;
               &::selection {
-                color: #6C6C6C;
-                background: #6C6C6C20;
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
             }
           }
@@ -959,19 +946,28 @@ table {
   justify-content: center;
 }
 
+// NG CLASS
+.regular-columns-hover {
+  background: #f7f7f7 !important;
+}
+
+.border-inactive{
+  border-right: 3px solid white;
+}
 
 /* Action Animations */
-.add-animation{
+.add-animation {
   background: green !important;
   transition: 0.4s;
 }
 
-.update-animation{
+.update-animation {
   background: orange !important;
   transition: 0.4s;
 }
 
-.delete-animation{
+.delete-animation {
   background: red !important;
   transition: 0.4s;
 }
+
