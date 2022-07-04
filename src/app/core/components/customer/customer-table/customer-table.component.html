@@ -25,97 +25,73 @@
     </div>
     
     <div class="customer-map-container" *ngIf="tableOptions.toolbarActions.viewModeActive == 'Map'">
-      <div class="map-list-container">
-        <div class="map-list" [ngClass]="{ 'map-list-short': !mapListExpanded}">
-          <div class="map-list-header" [formGroup]="searchForm">
-            <app-ta-input
-              formControlName="search"
-              [inputConfig]="{
-                name: 'search',
-                type: 'text',
-                label: 'Search',
-                placeholderIcon: 'ic_search',
-                blackInput: true,
-                customClass: 'hide-label'
-              }"
-            ></app-ta-input>
-            <div class="map-list-sort-container">
-              <div class="map-list-sort-text">Sort by</div>
-              <div class="map-list-sort">
-                <div class="map-list-sort-category-container"
-                  #t2="ngbPopover"
-                  [ngbPopover]="sortPopover"
-                  [placement]="['bottom-right']"
-                  [triggers]="'manual'"
-                  autoClose="outside"
-                  [container]="'body'"
-                  [popoverClass]="'map-list-sort-popover'"
-                  (click)="openPopover(t2)">
-                    <div class="map-list-sort-category marker-info-text">{{ activeSortType.name }}</div>
-                </div>
-                <div class="map-list-sort-arrows" (click)="changeSortDirection()">
+      <app-map-list>
+        <!-- <app-map-list-card
+          [title]="latlong?.businessName"
+          [isSelected]="latlong?.isSelected"
+          [status]="latlong?.status"
+          [item]="latlong"
+          [address]="latlong.mainAddress"
+        ></app-map-list-card> -->
+        <div class="map-list-card-container" *ngFor="let latlong of viewData; let i = index;" [ngClass]="{ 'map-list-card-selected': latlong?.isSelected }" (click)="clickedMarker(i)">
+          <div class="map-list-card-info">
+            <div class="title-container">
+              <div class="marker-info-text marker-bold-text uppercase" [ngClass]="{ 'permanently-closed-text': latlong?.status == 2 }">
+                <span *ngIf="latlong?.status == 2">
                   <svg-icon
-                    src="assets/svg/common/ic_sort_arrows.svg"
-                    class="sort-arrows-svg"
-                    [ngClass]="{ 'blue-svg': sortDirection == 'desc'}"
+                    class="permanently-closed-svg"
+                    src="assets/svg/common/ic_permanently_closed.svg"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                   ></svg-icon>
-                </div>
+                </span>
+                <span>{{ latlong?.businessName }}</span>
+              </div>
+              <div class="show-more" (click)="showMoreOptions($event)">
+                <app-table-dropdown
+                  [options]="tableOptions.actions"
+                  [placement]="'bottom-left'"
+                  [id]="latlong.id"
+                  (dropDownActions)="onTableBodyActions($event)"
+                >
+                </app-table-dropdown>
               </div>
             </div>
-          </div>
-          <div class="marker-divider"></div>
-          <div class="map-list-body">
-            <div class="map-list-card-container" *ngFor="let latlong of viewData; let i = index;" [ngClass]="{ 'map-list-card-selected': latlong?.isSelected }" (click)="clickedMarker(i)">
-              <div class="map-list-card-info">
-                <div class="title-container">
-                  <div class="marker-info-text marker-bold-text uppercase">{{ latlong?.businessName }}</div>
-                  <div class="show-more" (click)="showMoreOptions($event)">
-                    <app-table-dropdown
-                      [options]="tableOptions.actions"
-                      [placement]="'bottom-left'"
-                      [id]="latlong.id"
-                      (dropDownActions)="onTableBodyActions($event)"
-                    >
-                    </app-table-dropdown>
-                  </div>
-                </div>
-                <div class="marker-rating-container">
-                  <span class="marker-rating">
-                    <svg-icon
-                        class="marker-rating-svg"
-                        src="assets/svg/common/ic_like.svg"
-                        [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                    ></svg-icon>
-                    <span class="marker-like-text marker-bold-text">{{ latlong?.upCount }}</span>
-                  </span>
-                  <span class="marker-rating">
-                    <svg-icon
-                        class="marker-rating-svg"
-                        src="assets/svg/common/ic_dislike.svg"
-                        [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                    ></svg-icon>
-                    <span class="marker-like-text marker-bold-text">{{ latlong?.downCount }}</span>
-                  </span>
-                </div>
-                <div class="map-list-card-address">
-                  {{ latlong?.mainAddress.city }},
-                  {{ latlong?.mainAddress.state }}
-                  {{ latlong?.mainAddress.zipCode }},
-                  {{ latlong?.mainAddress.country }}
-                </div>
+            <div class="marker-rating-container mg-top-2">
+              <span class="marker-rating">
+                <svg-icon
+                    class="marker-rating-svg"
+                    src="assets/svg/common/ic_like.svg"
+                    [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                ></svg-icon>
+                <span class="marker-like-text marker-bold-text">{{ latlong?.upRatingCount }}</span>
+              </span>
+              <span class="marker-rating">
+                <svg-icon
+                    class="marker-rating-svg"
+                    src="assets/svg/common/ic_dislike.svg"
+                    [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                ></svg-icon>
+                <span class="marker-like-text marker-bold-text">{{ latlong?.downRatingCount }}</span>
+              </span>
+            </div>
+            <div class="map-list-card-address mg-top-2">
+              <!-- <span class="marker-bold-text">127 mi - </span> -->
+              <div *ngIf="latlong?.mainAddress">
+                {{ latlong?.mainAddress.city }},
+                {{ latlong?.mainAddress.state }}
+                {{ latlong?.mainAddress.zipCode }},
+                {{ latlong?.mainAddress.country }}
+              </div>
+              <div *ngIf="latlong?.address">
+                {{ latlong?.address.city }},
+                {{ latlong?.address.state }}
+                {{ latlong?.address.zipCode }},
+                {{ latlong?.address.country }}
               </div>
             </div>
-          </div>
-          <div class="map-list-resize-button" (click)="resizeMapList()">
-            <svg-icon
-              src="assets/svg/common/fill_arrow_down.svg"
-              class="map-list-resize-svg"
-              [ngClass]="{ 'rotate': mapListExpanded}"
-              [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
-            ></svg-icon>
           </div>
         </div>
-      </div>
+      </app-map-list>
 
       <agm-map 
         [latitude]="41.860119"
@@ -123,17 +99,22 @@
         [restriction]="mapRestrictions"
         [streetViewControl]="false"
         [styles]="styles"
-        [zoom]="1">
+        [zoom]="1"
+        (mapClick)="mapClick()">
           <agm-marker 
             *ngFor="let latlong of viewData; let i = index;" 
-            (markerClick)="clickedMarker(i)" 
+            (markerClick)="clickedMarker(i, $event)" 
             [label]="!latlong?.isSelected ? latlong?.businessName : ''" 
             [latitude]="latlong.latitude" 
             [longitude]="latlong.longitude"
             [agmFitBounds]="true" 
-            [animation]="'DROP'" 
+            [animation]="latlong?.markerAnimation ? latlong?.markerAnimation : 'DROP'" 
             [iconUrl]="{
-              url: latlong?.isSelected ? 'assets/svg/common/ic_marker_selected.svg' : 'assets/svg/common/ic_marker.svg'
+              url: 
+                latlong?.isSelected && latlong?.status == 2 ? 'assets/svg/common/ic_marker_closed_big.svg' :
+                latlong?.status == 2 ? 'assets/svg/common/ic_marker_closed.svg' :
+                latlong?.isSelected ? 'assets/svg/common/ic_marker_selected.svg' : 
+                'assets/svg/common/ic_marker.svg'
             }">
             <agm-snazzy-info-window
               [closeOnMapClick]="false"
@@ -162,14 +143,24 @@
                       </app-table-dropdown>
                     </div>
                   </div>
-                  <div class="marker-rating-container">
+                  <div class="marker-info-text marker-bold-text uppercase red-text mg-bottom-2 mg-top-4" *ngIf="latlong?.status == 2">
+                    Permanently Closed
+                  </div>
+                  <div class="marker-distance-left" [ngClass]="{ 'mg-top-4': latlong?.status == 2 }">
+                    <span class="marker-title">123.4 mi </span>
+                    <span class="marker-info-text">away </span>
+                    <span class="marker-time-left-text">
+                      <span class="marker-bold-text">- 1 hour 27 minutes</span> est.
+                    </span>
+                  </div>
+                  <div class="marker-rating-container mg-top-4">
                     <span class="marker-rating">
                       <svg-icon
                           class="marker-rating-svg"
                           src="assets/svg/common/ic_like.svg"
                           [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
                       ></svg-icon>
-                      <span class="marker-like-text marker-bold-text">{{ latlong?.upCount }}</span>
+                      <span class="marker-like-text marker-bold-text">{{ latlong?.upRatingCount }}</span>
                     </span>
                     <span class="marker-rating">
                       <svg-icon
@@ -177,7 +168,7 @@
                           src="assets/svg/common/ic_dislike.svg"
                           [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
                       ></svg-icon>
-                      <span class="marker-like-text marker-bold-text">{{ latlong?.downCount }}</span>
+                      <span class="marker-like-text marker-bold-text">{{ latlong?.downRatingCount }}</span>
                     </span>
                   </div>
                 </div>
@@ -208,38 +199,54 @@
                       ></svg-icon>
                     </div>
                     <div class="marker-info-text">
-                      <div *ngIf="latlong?.mainAddress.street">
-                        {{ latlong?.mainAddress.streetNumber ? latlong?.mainAddress.streetNumber : '' }} 
-                        {{ latlong?.mainAddress.street }}
-                        {{ latlong?.mainAddress.addressUnit ? latlong?.mainAddress.addressUnit : '' }}
+                      <div *ngIf="latlong?.mainAddress">
+                        <div *ngIf="latlong?.mainAddress.street">
+                          {{ latlong?.mainAddress.streetNumber ? latlong?.mainAddress.streetNumber : '' }} 
+                          {{ latlong?.mainAddress.street }}
+                          {{ latlong?.mainAddress.addressUnit ? latlong?.mainAddress.addressUnit : '' }}
+                        </div>
+                        <div>
+                          {{ latlong?.mainAddress.city }}, 
+                          {{ latlong?.mainAddress.state }}
+                          {{ latlong?.mainAddress.zipCode }},
+                          {{ latlong?.mainAddress.country }}
+                        </div>
                       </div>
-                      <div>
-                        {{ latlong?.mainAddress.city }}, 
-                        {{ latlong?.mainAddress.state }}
-                        {{ latlong?.mainAddress.zipCode }},
-                        {{ latlong?.mainAddress.country }}
+                      <div *ngIf="latlong?.address">
+                        <div *ngIf="latlong?.address.street">
+                          {{ latlong?.address.streetNumber ? latlong?.address.streetNumber : '' }} 
+                          {{ latlong?.address.street }}
+                          {{ latlong?.address.addressUnit ? latlong?.address.addressUnit : '' }}
+                        </div>
+                        <div>
+                          {{ latlong?.address.city }}, 
+                          {{ latlong?.address.state }}<span *ngIf="latlong?.address.zipCode"> {{ latlong?.address.zipCode }}</span>,
+                          {{ latlong?.address.country }}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="marker-expanded-view unopened" 
                 [class.unopened]="latlong?.isExpanded === undefined"
-                [@showHideNote]="latlong?.isExpanded">
+                [@showHideDrop]="latlong?.isExpanded">
                   <div class="marker-divider"></div>
-                  <div class="marker-info-container-all ">
-                    <div class="marker-title">Available Hours</div>
-                    <div class="marker-expanded-info-container">
-                      <div class="marker-dual-info-container mg-bottom-8">
-                        <div class="marker-like-text marker-bold-text mg-bottom-4">Shipping</div>
-                        <div class="marker-info-text">10:00 AM - 02:00 PM</div>
-                      </div>
-                      <div class="marker-dual-info-container mg-bottom-8">
-                        <div class="marker-like-text marker-bold-text mg-bottom-4">Receiving</div>
-                        <div class="marker-info-text">08:00 AM - 07:00 PM</div>
+                  <div *ngIf="(latlong?.shippingFrom && latlong?.shippingTo) || (latlong?.receivingFrom && latlong?.receivingTo)">
+                    <div class="marker-info-container-all">
+                      <div class="marker-title">Available Hours</div>
+                      <div class="marker-expanded-info-container">
+                        <div class="marker-dual-info-container mg-bottom-8" *ngIf="latlong?.shippingFrom && latlong?.shippingTo">
+                          <div class="marker-like-text marker-bold-text mg-bottom-4">Shipping</div>
+                          <div class="marker-info-text">{{ latlong?.shippingFrom }} - {{ latlong?.shippingTo }}</div>
+                        </div>
+                        <div class="marker-dual-info-container mg-bottom-8" *ngIf="latlong?.receivingFrom && latlong?.receivingTo">
+                          <div class="marker-like-text marker-bold-text mg-bottom-4">Receiving</div>
+                          <div class="marker-info-text">{{ latlong?.receivingFrom }} - {{ latlong?.receivingTo }}</div>
+                        </div>
                       </div>
                     </div>
+                    <div class="marker-divider"></div>
                   </div>
-                  <div class="marker-divider"></div>
                   <div class="marker-info-container-all">
                     <div class="marker-title"><span class="data-count">769</span>Load</div>
                     <div class="marker-expanded-info-container">
@@ -258,10 +265,10 @@
                     <div class="marker-expanded-info-container">
                       <div class="marker-dual-info-container mg-bottom-4">
                         <div class="marker-like-text marker-bold-text mg-bottom-4">Date Added</div>
-                        <div class="marker-info-text">02/17/20</div>
+                        <div class="marker-info-text">{{ latlong?.createdAt | formatDateP }}</div>
                       </div>
                       <div class="marker-dual-info-container mg-bottom-4">
-                        <div class="marker-like-text marker-bold-text mg-bottom-4">Last Used</div>
+                        <div class="marker-like-text marker-bold-text mg-bottom-4">{{ latlong?.status == 2 ? 'Perm. Closed' : 'Last Used' }}</div>
                         <div class="marker-info-text">137 days ago</div>
                       </div>
                     </div>
@@ -269,7 +276,7 @@
                 </div>
                 <div class="marker-container-expand" (click)="expandInfo(latlong)">
                   <svg-icon
-                    src="assets/svg/common/ic_expand.svg"
+                    src="assets/svg/common/resize-arrow.svg"
                     class="marker-expand-svg"
                     [ngClass]="{ 'rotate': latlong?.isExpanded}"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
@@ -293,20 +300,3 @@
 
     </div>
   </div>
-  
-<ng-template #sortPopover>
-  <div class="sort-filter-holder">
-    <div class="sort-items-holder" 
-        *ngFor="let item of sortTypes; let i = index;" 
-        (click)="changeSortType(item)" 
-        [ngClass]="{ 'sort-item-active': item.id == activeSortType.id }">
-          <div class="sort-items">
-            {{ item.name }}
-            <svg-icon
-              *ngIf="item.id == activeSortType.id"
-              src="assets/svg/truckassist-table/check-new.svg"
-            ></svg-icon>
-          </div>
-    </div>
-  </div>
-</ng-template>

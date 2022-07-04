@@ -17,7 +17,7 @@ import { ShipperState } from '../state/shipper-state/shipper.store';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
 import * as AppConst from 'src/app/const';
-import { input_note_animation } from '../../shared/ta-input-note/ta-input-note.animation';
+import { input_dropdown_animation } from '../../shared/ta-input-dropdown/ta-input-dropdown.animation';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 @Component({
@@ -25,7 +25,7 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
   templateUrl: './customer-table.component.html',
   styleUrls: ['./customer-table.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: [input_note_animation('showHideNote')]
+  animations: [input_dropdown_animation('showHideDrop')]
 })
 export class CustomerTableComponent implements OnInit, OnDestroy {
   public tableOptions: any = {};
@@ -45,7 +45,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
   public searchForm!: FormGroup;
   public sortTypes: any[] = [];
-  public mapListExpanded: boolean = true;
   public sortDirection: string = 'asc';
   public activeSortType: any = {};
   private tooltip: any;
@@ -172,8 +171,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: false,
-        hideViewMode: false,
-        viewModeActive: 'Map'
+        hideViewMode: this.selectedTab === 'broker' ? true : false,
+        showMapView: this.selectedTab === 'broker' ? false : true,
+        viewModeActive: 'List'
       },
       config: {
         showSort: true,
@@ -264,6 +264,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     this.viewData = td.data;
     console.log('viewData', this.viewData);
     this.columns = td.gridColumns;
+    
+    this.initTableOptions();
 
     this.viewData = this.viewData.map((data: any) => {
       if (this.selectedTab === 'broker') {
@@ -500,18 +502,19 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       }
       else if ( index == i ) {
         data.isSelected = !data.isSelected;
+
+        // data.markerAnimation = 'BOUNCE';
+
+        // setTimeout(function() {
+        //   data.markerAnimation = 'none';
+        // }, 500);
       }
     });
   }
 
   expandInfo(item) {
     item.isExpanded = !item.isExpanded;
-    console.log('expandInfo', item.isExpanded);
     this.ref.detectChanges();
-  }
-
-  resizeMapList() {
-    this.mapListExpanded = !this.mapListExpanded;
   }
 
   showMoreOptions(event) {
@@ -538,5 +541,13 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   openPopover(t2) {
     t2.open();
     this.tooltip = t2;
+  }
+
+  mapClick() {
+    this.viewData.map((data: any, index) => {
+      if (data.isSelected) {
+        data.isSelected = false;
+      }
+    });
   }
 }

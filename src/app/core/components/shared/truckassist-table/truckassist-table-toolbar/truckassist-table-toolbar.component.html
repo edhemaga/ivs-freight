@@ -49,6 +49,7 @@
         'mode-active': options.toolbarActions.viewModeActive == 'Map'
       }"
       (click)="changeModeView('Map')"
+      *ngIf="options.toolbarActions.showMapView"
     >
       Map
     </div>
