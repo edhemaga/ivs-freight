@@ -114,6 +114,8 @@ export * from './getTruckModalResponse';
 export * from './inspectionResponse';
 export * from './insurancePolicyAddonResponse';
 export * from './insurancePolicyResponse';
+export * from './mapMarker';
+export * from './mapMarkerListResponse';
 export * from './medicalResponse';
 export * from './multipleChangeBanFlagCommand';
 export * from './multipleChangeBanFlagShippersCommand';
