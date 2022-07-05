@@ -5,7 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class BlockedContentPipe implements PipeTransform {
   transform(value: string): boolean {
-    console.log(value);
     if (
       [
         'login',
