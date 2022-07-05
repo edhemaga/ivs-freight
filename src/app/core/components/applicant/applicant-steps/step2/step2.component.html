@@ -246,7 +246,9 @@
 
             <!-- DRIVING POSITION CHECKBOX -->
 
-            <div class="d-flex driving-position-group">
+            <div
+              class="d-flex justify-content-center align-items-center driving-position-group"
+            >
               <app-ta-checkbox
                 formControlName="isDrivingPosition"
                 [name]="'isDrivingPosition'"
@@ -314,10 +316,25 @@
 
               <!-- ANOTHER CLASS -->
 
-              <div class="d-flex another-class-group">
-                <p class="m-0 ta-font-semi-bold noselect">
-                  Add another class of equipment
-                </p>
+              <div
+                class="d-flex justify-content-center align-items-center another-class-group"
+              >
+                <button
+                  type="button"
+                  class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+                >
+                  <svg-icon
+                    class="plus-icon"
+                    src="assets/svg/common/ic_plus.svg
+          "
+                    [svgStyle]="{
+                      'width.px': 18,
+                      'height.px': 18
+                    }"
+                  ></svg-icon>
+
+                  Add Another Class Of Equipment
+                </button>
               </div>
 
               <!-- QUESTIONS -->
@@ -398,13 +415,23 @@
             >
               <button
                 type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn"
+                class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
                 (click)="onAddSecondOrLastEmployer()"
                 [ngClass]="{
                   disabled: workExperienceForm.invalid
                 }"
                 *ngIf="!isEditing"
               >
+                <svg-icon
+                  class="plus-icon"
+                  src="assets/svg/common/ic_plus.svg
+          "
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                ></svg-icon>
+
                 Add Second Or Last Employer
               </button>
 
@@ -414,14 +441,14 @@
               >
                 <button
                   type="button"
-                  class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+                  class="d-flex justify-content-center align-items-center ta-font-bold add-btn cancel-btn"
                   (click)="onCancelEditWorkExperience()"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+                  class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
                   (click)="onSaveEditedWorkExperience()"
                   [ngClass]="{
                     disabled: !isWorkExperienceEdited
@@ -442,9 +469,6 @@
   <div
     class="d-flex justify-content-center work-experience-group"
     [formGroup]="workExperienceForm"
-    [ngStyle]="{
-      'margin-bottom': workExperienceArray.length > 0 ? '22px' : '0'
-    }"
   >
     <app-ta-checkbox
       formControlName="noWorkExperience"

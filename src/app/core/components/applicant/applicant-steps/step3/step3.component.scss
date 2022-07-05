@@ -161,7 +161,7 @@
     }
 
     .license-group {
-      width: 368px;
+      width: 370px;
     }
 
     .country-group {
@@ -169,7 +169,7 @@
     }
 
     .state-group {
-      width: 244px;
+      width: 246px;
     }
 
     .class-group {
@@ -180,34 +180,46 @@
       width: 172px;
     }
 
-    .endorsments-group,
     .restrictions-group {
-      width: 302px;
-      margin-bottom: 0;
+      width: 616px;
+      margin-bottom: 32px;
+    }
+
+    .endorsments-group {
+      width: 616px;
     }
 
     .add-more-license-container {
-      margin-top: 12px;
+      margin-top: 22px;
 
       h4 {
         color: $bw6-2;
         font-size: 14px;
+        margin-right: 12px !important;
       }
 
       .add-btn {
-        margin: 12px auto 0 auto;
-        width: 132px;
-        height: 34px;
+        height: 26px;
+        padding: 4px 8px;
         border: none;
         outline: none;
         font-size: 14px;
-        border-radius: 3px;
-        color: $white;
-        background: $ta-light-blue;
-        transition: background 0.3s ease-in-out;
+        border-radius: 2px;
+        color: $ta-blue;
+        background: $ta-gray-01;
+        transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
         &:hover {
+          color: $white;
           background: $ta-blue;
+        }
+
+        &:hover .plus-icon {
+          svg {
+            path {
+              fill: $white;
+            }
+          }
         }
 
         &.disabled {
@@ -216,9 +228,28 @@
           -ms-user-select: none !important;
           user-select: none !important;
 
-          transition: background 0.3s ease-in-out;
+          cursor: auto;
           background: $ta-light-grey-4;
           color: $bw4;
+
+          .plus-icon {
+            svg {
+              path {
+                fill: $ta-light-grey-6;
+              }
+            }
+          }
+        }
+
+        .plus-icon {
+          margin-right: 6px;
+
+          svg {
+            path {
+              transition: fill 0.2s ease-in-out;
+              fill: $ta-light-blue;
+            }
+          }
         }
       }
 

@@ -42,7 +42,7 @@ export class Step2Component implements OnInit, OnDestroy {
 
   private subscription: Subscription;
 
-  public workExperienceForm!: FormGroup;
+  public workExperienceForm: FormGroup;
   public workExperienceArray: WorkHistoryModel[] = [];
 
   public selectedWorkExperienceIndex: number;
@@ -116,10 +116,10 @@ export class Step2Component implements OnInit, OnDestroy {
   public reasonsForLeaving: ReasonForLeaving[] = [
     { id: 1, name: 'Better opportunity' },
     { id: 2, name: 'Illness' },
-    { id: 3, name: 'Personal problems' },
-    { id: 4, name: 'Company went out of business' },
-    { id: 5, name: 'Fired or terminated' },
-    { id: 6, name: 'Had to relocate' },
+    { id: 3, name: 'Company went out of business' },
+    { id: 4, name: 'Fired or terminated' },
+    { id: 5, name: 'Family obligations' },
+    { id: 6, name: 'Other' },
   ];
 
   // public get showAddNew(): boolean {

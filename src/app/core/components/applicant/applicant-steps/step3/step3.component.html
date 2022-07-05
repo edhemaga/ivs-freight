@@ -208,25 +208,10 @@
         </div>
       </div>
 
-      <!-- ENDORSMENTS, RESTRICTIONS -->
+      <!-- RESTRICTIONS -->
 
       <div class="d-flex">
-        <div class="group endorsments-group">
-          <app-ta-input-dropdown
-            formControlName="endorsments"
-            [inputConfig]="{
-              name: 'Input Dropdown',
-              type: 'text',
-              label: 'Endorsments',
-              isDropdown: true,
-              dropdownWidthClass: 'w-col-applicant-endorsments'
-            }"
-            [canAddNew]="true"
-            [options]="endorsmentsList"
-            (selectedItem)="handleInputSelect($event, 'ENDORSMENTS')"
-          ></app-ta-input-dropdown>
-        </div>
-        <div class="group restrictions-group">
+        <div class="restrictions-group">
           <app-ta-input-dropdown
             formControlName="restrictions"
             [inputConfig]="{
@@ -239,6 +224,26 @@
             [canAddNew]="true"
             [options]="restrictionsList"
             (selectedItem)="handleInputSelect($event, 'RESTRICTIONS')"
+          ></app-ta-input-dropdown>
+        </div>
+      </div>
+
+      <!-- ENDORSMENTS -->
+
+      <div class="d-flex">
+        <div class="endorsments-group">
+          <app-ta-input-dropdown
+            formControlName="endorsments"
+            [inputConfig]="{
+              name: 'Input Dropdown',
+              type: 'text',
+              label: 'Endorsments',
+              isDropdown: true,
+              dropdownWidthClass: 'w-col-applicant-endorsments'
+            }"
+            [canAddNew]="true"
+            [options]="endorsmentsList"
+            (selectedItem)="handleInputSelect($event, 'ENDORSMENTS')"
           ></app-ta-input-dropdown>
         </div>
 
@@ -255,22 +260,30 @@
 
       <!-- ADD MORE LICENSES -->
 
-      <div
-        class="d-flex flex-column align-items-center add-more-license-container"
-      >
+      <div class="d-flex align-items-center add-more-license-container">
         <h4 class="text-center m-0 noselect ta-font-bold">
           List any additional license(s) held in past 3 years
         </h4>
 
         <button
           type="button"
-          class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn"
+          class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
           (click)="onAddLicense()"
           [ngClass]="{
             disabled: licenseForm.invalid
           }"
           *ngIf="!isEditing"
         >
+          <svg-icon
+            class="plus-icon"
+            src="assets/svg/common/ic_plus.svg
+          "
+            [svgStyle]="{
+              'width.px': 18,
+              'height.px': 18
+            }"
+          ></svg-icon>
+
           Add License
         </button>
 
