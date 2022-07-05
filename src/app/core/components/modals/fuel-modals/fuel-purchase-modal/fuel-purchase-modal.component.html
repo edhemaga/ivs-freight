@@ -22,6 +22,7 @@
             dropdownWidthClass: 'w-col-6-truckType'
           }"
           [options]="truckType"
+          [activeItem]="selectedTruckType"
           (selectedItem)="onSelectDropdown($event, 'truck')"
         ></app-ta-input-dropdown>
       </div>
@@ -81,6 +82,7 @@
             dropdownWidthClass: 'w-col-8-fuelstop'
           }"
           [options]="fuelStops"
+          [activeItem]="selectedFuelStop"
           (selectedItem)="onSelectDropdown($event, 'fuel')"
         ></app-ta-input-dropdown>
       </div>
@@ -95,6 +97,7 @@
             dropdownWidthClass: 'w-col-4'
           }"
           [options]="storeType"
+          [activeItem]="selectedStoreType"
           (selectedItem)="onSelectDropdown($event, 'store')"
         ></app-ta-input-dropdown>
       </div>
@@ -150,6 +153,7 @@
                 dropdownWidthClass: 'w-col-custom-fuel-modal-dropdown'
               }"
               [options]="fuelItemsDropdown"
+              [activeItem]="selectedFuelItemsFormArray[ind]"
               (selectedItem)="onSelectDropDown($event, 'fuel-items', ind)"
             ></app-ta-input-dropdown>
 

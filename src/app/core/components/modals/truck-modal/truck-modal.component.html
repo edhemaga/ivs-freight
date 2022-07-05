@@ -44,6 +44,7 @@
                 dropdownWidthClass: 'w-col-8'
               }"
               [options]="truckType"
+              [activeItem]="selectedTruckType"
               (selectedItem)="onSelectDropdown($event, 'truck-type')"
             ></app-ta-input-dropdown>
           </div>
@@ -76,6 +77,7 @@
                 dropdownWidthClass: 'w-col-6'
               }"
               [options]="truckMakeType"
+              [activeItem]="selectedTruckMake"
               (selectedItem)="onSelectDropdown($event, 'truck-make')"
             ></app-ta-input-dropdown>
           </div>
@@ -118,6 +120,7 @@
                 dropdownWidthClass: 'w-col-4'
               }"
               [options]="colorType"
+              [activeItem]="selectedColor"
               (selectedItem)="onSelectDropdown($event, 'color')"
             ></app-ta-input-dropdown>
           </div>
@@ -161,6 +164,7 @@
                       dropdownWidthClass: 'w-col-6-companyOwned'
                     }"
                     [options]="ownerType"
+                    [activeItem]="selectedOwner"
                     (selectedItem)="onSelectDropdown($event, 'owner')"
                   ></app-ta-input-dropdown>
                 </div>
@@ -198,6 +202,7 @@
                 dropdownWidthClass: 'w-col-7'
               }"
               [options]="grossWeight"
+              [activeItem]="selectedTruckGrossWeight"
               (selectedItem)="onSelectDropdown($event, 'gross-weight')"
             ></app-ta-input-dropdown>
           </div>
@@ -226,6 +231,7 @@
                 dropdownWidthClass: 'w-col-7'
               }"
               [options]="engineType"
+              [activeItem]="selectedEngineType"
               (selectedItem)="onSelectDropdown($event, 'engine-type')"
             ></app-ta-input-dropdown>
           </div>
@@ -240,6 +246,7 @@
                 dropdownWidthClass: 'w-col-5-tireSize'
               }"
               [options]="tireSize"
+              [activeItem]="selectedTireSize"
               (selectedItem)="onSelectDropdown($event, 'tire-size')"
             ></app-ta-input-dropdown>
             <app-ta-input

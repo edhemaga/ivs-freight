@@ -799,6 +799,7 @@
 .load-ftl-first-row {
   display: grid;
   grid-template-columns: 140px repeat(2, 220px) 226px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   margin-top: 26px;
   margin-bottom: 32px;
@@ -819,6 +820,7 @@
 .load-ftl-second-row {
   display: grid;
   grid-template-columns: 397px 114px 178px 117px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 32px;
 }
@@ -826,6 +828,7 @@
 .load-ftl-third-row {
   display: grid;
   grid-template-columns: 439px 391px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 22px;
 
@@ -837,6 +840,7 @@
 .load-requirements-load {
   display: grid;
   grid-template-columns: repeat(2, 164px) 107px 117px 88px 66px 1fr;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   align-items: center;
 }
@@ -844,6 +848,7 @@
 .stop-load-first-row {
   display: grid;
   grid-template-columns: 134px 696px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 32px;
 }
@@ -851,12 +856,14 @@
 .stop-load-second-row {
   display: grid;
   grid-template-columns: 202px 106px repeat(2, 172px);
+  -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 22px;
 
   .date-range {
     display: grid;
     grid-template-columns: 172px 26px;
+    -moz-column-gap: 4px;
     column-gap: 4px;
 
     .billing-plus {
@@ -896,19 +903,25 @@
 
   &.date-range-active {
     grid-template-columns: 356px 106px repeat(2, 172px);
+    -moz-column-gap: 12px;
     column-gap: 12px;
 
     .date-range {
       grid-template-columns: repeat(2, 172px);
+      -moz-column-gap: 12px;
       column-gap: 12px;
     }
   }
 }
 
 .billing-payment-load {
-  display: grid;
-  grid-template-columns: 137px repeat(3, 26px);
-  column-gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .billing-payment-rate {
+    width: 130px;
+  }
 
   .billing-plus {
     width: 26px;

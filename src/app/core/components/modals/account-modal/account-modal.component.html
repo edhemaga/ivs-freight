@@ -8,7 +8,7 @@
   <form [formGroup]="accountForm" class="form-container">
     <div class="row">
       <div class="col-12">
-        <app-ta-input
+        <app-ta-inputapp-ta-input-dropdown-label
           formControlName="name"
           [inputConfig]="{
             name: 'Account Name',
@@ -19,7 +19,7 @@
             textTransform: 'capitalize',
             autoFocus: editData?.type === 'edit' ? false : true
           }"
-        ></app-ta-input>
+        ></app-ta-inputapp-ta-input-dropdown-label>
       </div>
     </div>
     <div class="row">

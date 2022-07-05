@@ -340,6 +340,7 @@
                   dropdownWidthClass: 'w-col-broker-payterm'
                 }"
                 [options]="labelsPayTerms"
+                [activeItem]="selectedPayTerm"
                 (selectedItem)="onSelectDropDown($event, 'paytype')"
               ></app-ta-input-dropdown>
             </div>

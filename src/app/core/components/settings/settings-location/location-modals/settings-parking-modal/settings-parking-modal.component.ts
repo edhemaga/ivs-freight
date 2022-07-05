@@ -219,7 +219,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     this.selectedAddress = event.address;
   }
 
-  public onAction(event: any, action: string) {
+  public onSelectDropdown(event: any, action: string) {
     switch (action) {
       case 'pay-period': {
         this.selectedPayPeriod = event;

@@ -198,6 +198,7 @@
                 dropdownWidthClass: 'w-col-medium-8'
               }"
               [options]="[]"
+              [activeItem]="selectedTimezone"
               (selectedItem)="onSelectDropdown($event, 'timezone')"
             ></app-ta-input-dropdown>
           </div>
@@ -213,6 +214,7 @@
                 dropdownWidthClass: 'w-col-medium-4'
               }"
               [options]="[]"
+              [activeItem]="selectedCurrency"
               (selectedItem)="onSelectDropdown($event, 'currency')"
             ></app-ta-input-dropdown>
           </div>
@@ -271,6 +273,7 @@
                     dropdownWidthClass: 'w-col-broker-department'
                   }"
                   [options]="[]"
+                  [activeItem]="selectedDepartmentFormArray[ind]"
                   (selectedItem)="
                     onSelectFakeTableData($event, ind, 'department')
                   "
@@ -348,6 +351,7 @@
                   }"
                   [canAddNew]="true"
                   [options]="[]"
+                  [activeItem]="selectedBankAccountFormArray[ind]"
                   (selectedItem)="
                     onSelectFakeTableData($event, ind, 'bankaccount')
                   "
@@ -653,6 +657,7 @@
                   dropdownWidthClass: 'w-col-medium-6'
                 }"
                 [options]="[]"
+                [activeItem]="selectedDriverPayPeriod"
                 (selectedItem)="onSelectDropdown($event, 'driver-pay-period')"
               ></app-ta-input-dropdown>
             </div>
@@ -668,6 +673,7 @@
                   dropdownWidthClass: 'w-col-medium-6-second-col'
                 }"
                 [options]="[]"
+                [activeItem]="selectedDriverEndingIn"
                 (selectedItem)="onSelectDropdown($event, 'driver-ending-in')"
               ></app-ta-input-dropdown>
             </div>
@@ -755,6 +761,7 @@
                   dropdownWidthClass: 'w-col-medium-4-col-1'
                 }"
                 [options]="[]"
+                [activeItem]="selectedAccountingPayPeriod"
                 (selectedItem)="
                   onSelectDropdown($event, 'accounting-pay-period')
                 "
@@ -772,6 +779,7 @@
                   dropdownWidthClass: 'w-col-medium-4'
                 }"
                 [options]="[]"
+                [activeItem]="selectedAccountingEndingIn"
                 (selectedItem)="
                   onSelectDropdown($event, 'accounting-ending-in')
                 "
@@ -806,6 +814,7 @@
                   dropdownWidthClass: 'w-col-medium-4-col-1'
                 }"
                 [options]="[]"
+                [activeItem]="selectedCompanyPayPeriod"
                 (selectedItem)="
                   onSelectDropdown($event, 'companyOwner-pay-period')
                 "
@@ -823,6 +832,7 @@
                   dropdownWidthClass: 'w-col-medium-4'
                 }"
                 [options]="[]"
+                [activeItem]="selectedCompanyEndingIn"
                 (selectedItem)="
                   onSelectDropdown($event, 'companyOwner-ending-in')
                 "
@@ -857,6 +867,7 @@
                   dropdownWidthClass: 'w-col-medium-6'
                 }"
                 [options]="[]"
+                [activeItem]="selectedDispatchPayPeriod"
                 (selectedItem)="onSelectDropdown($event, 'dispatch-pay-period')"
               ></app-ta-input-dropdown>
             </div>
@@ -872,6 +883,7 @@
                   dropdownWidthClass: 'w-col-medium-6-second-col'
                 }"
                 [options]="[]"
+                [activeItem]="selectedDispatchEndingIn"
                 (selectedItem)="onSelectDropdown($event, 'dispatch-ending-in')"
               ></app-ta-input-dropdown>
             </div>
@@ -921,6 +933,7 @@
                   dropdownWidthClass: 'w-col-medium-6'
                 }"
                 [options]="[]"
+                [activeItem]="selectedManagerPayPeriod"
                 (selectedItem)="onSelectDropdown($event, 'manager-pay-period')"
               ></app-ta-input-dropdown>
             </div>
@@ -936,6 +949,7 @@
                   dropdownWidthClass: 'w-col-medium-6-second-col'
                 }"
                 [options]="[]"
+                [activeItem]="selectedManagerEndingIn"
                 (selectedItem)="onSelectDropdown($event, 'manager-ending-in')"
               ></app-ta-input-dropdown>
             </div>
@@ -985,6 +999,7 @@
                   dropdownWidthClass: 'w-col-medium-4-col-1'
                 }"
                 [options]="[]"
+                [activeItem]="selectedRecPayPeriod"
                 (selectedItem)="
                   onSelectDropdown($event, 'recruiting-pay-period')
                 "
@@ -1002,6 +1017,7 @@
                   dropdownWidthClass: 'w-col-medium-4'
                 }"
                 [options]="[]"
+                [activeItem]="selectedRecEndingIn"
                 (selectedItem)="
                   onSelectDropdown($event, 'recruiting-ending-in')
                 "
@@ -1036,6 +1052,7 @@
                   dropdownWidthClass: 'w-col-medium-4-col-1'
                 }"
                 [options]="[]"
+                [activeItem]="selectedRepairPayPeriod"
                 (selectedItem)="onSelectDropdown($event, 'repair-pay-period')"
               ></app-ta-input-dropdown>
             </div>
@@ -1051,6 +1068,7 @@
                   dropdownWidthClass: 'w-col-medium-4'
                 }"
                 [options]="[]"
+                [activeItem]="selectedRepairEndingIn"
                 (selectedItem)="onSelectDropdown($event, 'repair-ending-in')"
               ></app-ta-input-dropdown>
             </div>
@@ -1083,6 +1101,7 @@
                   dropdownWidthClass: 'w-col-medium-4-col-1'
                 }"
                 [options]="[]"
+                [activeItem]="selectedSafetyPayPeriod"
                 (selectedItem)="onSelectDropdown($event, 'safety-pay-period')"
               ></app-ta-input-dropdown>
             </div>
@@ -1098,6 +1117,7 @@
                   dropdownWidthClass: 'w-col-medium-4'
                 }"
                 [options]="[]"
+                [activeItem]="selectedSafetyEndingIn"
                 (selectedItem)="onSelectDropdown($event, 'safety-ending-in')"
               ></app-ta-input-dropdown>
             </div>
@@ -1130,6 +1150,7 @@
                   dropdownWidthClass: 'w-col-medium-4-col-1'
                 }"
                 [options]="[]"
+                [activeItem]="selectedOtherPayPeriod"
                 (selectedItem)="onSelectDropdown($event, 'other-pay-period')"
               ></app-ta-input-dropdown>
             </div>
@@ -1145,6 +1166,7 @@
                   dropdownWidthClass: 'w-col-medium-4'
                 }"
                 [options]="[]"
+                [activeItem]="selectedOtherEndingIn"
                 (selectedItem)="onSelectDropdown($event, 'other-ending-in')"
               ></app-ta-input-dropdown>
             </div>

@@ -205,7 +205,7 @@ export class SettingsInsurancePolicyModalComponent
       });
   }
 
-  public onSelectRating(event: any, action: string) {
+  public onSelectDropdown(event: any, action: string) {
     switch (action) {
       case 'commercial': {
         this.selectedCommericalRating = event;

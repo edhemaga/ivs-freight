@@ -173,7 +173,8 @@
                   dropdownWidthClass: 'w-col-3'
                 }"
                 [options]="[]"
-                (selectedItem)="onSelectRating($event, 'commercial')"
+                [activeItem]="selectedCommericalRating"
+                (selectedItem)="onSelectDropdown($event, 'commercial')"
               ></app-ta-input-dropdown>
             </div>
           </div>
@@ -330,7 +331,8 @@
                   dropdownWidthClass: 'w-col-3'
                 }"
                 [options]="[]"
-                (selectedItem)="onSelectRating($event, 'automobile')"
+                [activeItem]="selectedAutomobileRating"
+                (selectedItem)="onSelectDropdown($event, 'automobile')"
               ></app-ta-input-dropdown>
             </div>
           </div>
@@ -468,7 +470,8 @@
                   dropdownWidthClass: 'w-col-3'
                 }"
                 [options]="[]"
-                (selectedItem)="onSelectRating($event, 'motor')"
+                [activeItem]="selectedMotorRating"
+                (selectedItem)="onSelectDropdown($event, 'motor')"
               ></app-ta-input-dropdown>
             </div>
           </div>
@@ -570,7 +573,8 @@
                   dropdownWidthClass: 'w-col-3'
                 }"
                 [options]="[]"
-                (selectedItem)="onSelectRating($event, 'physical damage')"
+                [activeItem]="selectedPhysicalDamageRating"
+                (selectedItem)="onSelectDropdown($event, 'physical damage')"
               ></app-ta-input-dropdown>
             </div>
           </div>
@@ -672,7 +676,8 @@
                   dropdownWidthClass: 'w-col-3'
                 }"
                 [options]="[]"
-                (selectedItem)="onSelectRating($event, 'trailer interchange')"
+                [activeItem]="selectedTrailerRating"
+                (selectedItem)="onSelectDropdown($event, 'trailer interchange')"
               ></app-ta-input-dropdown>
             </div>
           </div>

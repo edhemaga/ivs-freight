@@ -22,6 +22,7 @@
             dropdownWidthClass: 'w-col-load-selectTemplate'
           }"
           [options]="labelsTemplate"
+          [activeItem]="selectedTemplate"
           (selectedItem)="onSelectDropdown($event, 'template')"
         ></app-ta-input-dropdown>
         <app-ta-input-dropdown
@@ -34,6 +35,7 @@
             dropdownWidthClass: 'w-col-load-dispatcher'
           }"
           [options]="labelsDispatcher"
+          [activeItem]="selectedDispatcher"
           (selectedItem)="onSelectDropdown($event, 'dispatcher')"
         ></app-ta-input-dropdown>
         <app-ta-input
@@ -69,6 +71,7 @@
             dropdownWidthClass: 'w-col-load-commodity'
           }"
           [options]="labelsGeneralCommodity"
+          [activeItem]="selectedGeneralCommodity"
           (selectedItem)="onSelectDropdown($event, 'general-commodity')"
         ></app-ta-input-dropdown>
         <app-ta-input
@@ -90,9 +93,11 @@
             type: 'text',
             label: 'Broker',
             isDropdown: true,
+            isRequired: true,
             dropdownWidthClass: 'w-col-load-broker'
           }"
           [options]="labelsBroker"
+          [activeItem]="selectedBroker"
           (selectedItem)="onSelectDropdown($event, 'broker')"
         ></app-ta-input-dropdown>
         <div class="broker-load-information">
@@ -139,6 +144,7 @@
               dropdownWidthClass: 'w-col-load-req'
             }"
             [options]="labelsTruckReq"
+            [activeItem]="selectedTruckReq"
             (selectedItem)="onSelectDropdown($event, 'truck-req')"
           ></app-ta-input-dropdown>
 
@@ -152,6 +158,7 @@
               dropdownWidthClass: 'w-col-load-req'
             }"
             [options]="labelsTrailerReq"
+            [activeItem]="selectedTrailerReq"
             (selectedItem)="onSelectDropdown($event, 'trailer-req')"
           ></app-ta-input-dropdown>
 
@@ -165,6 +172,7 @@
               dropdownWidthClass: 'w-col-load-door-type'
             }"
             [options]="labelsDoorType"
+            [activeItem]="selectedDoorType"
             (selectedItem)="onSelectDropdown($event, 'door-type')"
           ></app-ta-input-dropdown>
 
@@ -178,6 +186,7 @@
               dropdownWidthClass: 'w-col-load-suspension'
             }"
             [options]="labelsSuspension"
+            [activeItem]="selectedSuspension"
             (selectedItem)="onSelectDropdown($event, 'suspension')"
           ></app-ta-input-dropdown>
 
@@ -191,6 +200,7 @@
               dropdownWidthClass: 'w-col-load-length'
             }"
             [options]="labelsLength"
+            [activeItem]="selectedLength"
             (selectedItem)="onSelectDropdown($event, 'length')"
           ></app-ta-input-dropdown>
 
@@ -204,6 +214,7 @@
               dropdownWidthClass: 'w-col-load-year'
             }"
             [options]="labelsYear"
+            [activeItem]="selectedYear"
             (selectedItem)="onSelectDropdown($event, 'year')"
           ></app-ta-input-dropdown>
 
@@ -222,6 +233,7 @@
             (switchClicked)="onTabChange($event, 'stop-tab')"
             [type]="'type2-modal-popup'"
           ></app-ta-tab-switch>
+
           <span>NEW DROPDOWN</span>
         </div>
         <div
@@ -275,7 +287,6 @@
               [type]="'type2-modal-popup'"
             ></app-ta-tab-switch>
           </div>
-
           <!-- Time Picker -->
           <app-ta-input
             formControlName="fromTime"
@@ -285,6 +296,7 @@
               label: 'From',
               placeholderIcon: 'time',
               isDropdown: true,
+              isRequired: true,
               customClass: 'datetimeclass'
             }"
           ></app-ta-input>
@@ -297,6 +309,8 @@
               label: 'To',
               placeholderIcon: 'time',
               isDropdown: true,
+              isRequired: true,
+              isDisabled: selectedStopTime === 6,
               customClass: 'datetimeclass'
             }"
           ></app-ta-input>
@@ -308,29 +322,79 @@
 
       <app-ta-custom-card [cardName]="'Billing & Payment'" [isCardOpen]="true">
         <div class="billing-payment-load">
-          <app-ta-input
-            formControlName="billingPaymentBaseRate"
-            [inputConfig]="{
-              name: 'Base Rate',
-              type: 'number',
-              label: 'Base Rate',
-              isRequired: true,
-              placeholderIcon: 'dollar',
-              customClass: 'dollar-placeholderIcon',
-              thousandSeparator: true
-            }"
-          ></app-ta-input>
+          <!-- Base Rate -->
+          <div class="billing-payment-rate">
+            <app-ta-input
+              formControlName="billingPaymentBaseRate"
+              [inputConfig]="{
+                name: 'Base Rate',
+                type: 'number',
+                label: 'Base Rate',
+                isRequired: true,
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon',
+                thousandSeparator: true,
+                blackInput: true
+              }"
+            ></app-ta-input>
+          </div>
+          <!-- Adjusted Rate -->
           <div
+            *ngIf="!isAvailableAdjustedRate"
             class="billing-plus billing-adjusted"
             ngbTooltip
             mainTooltip="Adjusted"
             tooltipBackground="#FFA726"
             position="top"
+            (click)="isAvailableAdjustedRate = true"
           >
             <svg-icon
               class="billing-adjusted-plus"
               src="assets/svg/common/ic_plus.svg"
             ></svg-icon>
+          </div>
+          <div *ngIf="isAvailableAdjustedRate" class="billing-payment-rate">
+            <app-ta-input
+              formControlName="billingPaymentAdjustedRate"
+              [inputConfig]="{
+                name: 'Adjusted',
+                type: 'number',
+                label: 'Adjusted',
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon load-adjusted-rate',
+                thousandSeparator: true,
+                blackInput: true
+              }"
+            ></app-ta-input>
+          </div>
+          <!-- Advance Rate -->
+          <div
+            *ngIf="!isAvailableAdvanceRate"
+            class="billing-plus billing-advance"
+            ngbTooltip
+            mainTooltip="Advance"
+            tooltipBackground="#26A690"
+            position="top"
+            (click)="isAvailableAdvanceRate = true"
+          >
+            <svg-icon
+              class="billing-advance-plus"
+              src="assets/svg/common/ic_plus.svg"
+            ></svg-icon>
+          </div>
+          <div *ngIf="isAvailableAdvanceRate" class="billing-payment-rate">
+            <app-ta-input
+              formControlName="lingPaymentAdvanceRate"
+              [inputConfig]="{
+                name: 'Advance',
+                type: 'number',
+                label: 'Advance',
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon load-advance-rate',
+                thousandSeparator: true,
+                blackInput: true
+              }"
+            ></app-ta-input>
           </div>
 
           <div
@@ -342,19 +406,6 @@
           >
             <svg-icon
               class="billing-additional-plus"
-              src="assets/svg/common/ic_plus.svg"
-            ></svg-icon>
-          </div>
-
-          <div
-            class="billing-plus billing-advance"
-            ngbTooltip
-            mainTooltip="Advance"
-            tooltipBackground="#26A690"
-            position="top"
-          >
-            <svg-icon
-              class="billing-advance-plus"
               src="assets/svg/common/ic_plus.svg"
             ></svg-icon>
           </div>

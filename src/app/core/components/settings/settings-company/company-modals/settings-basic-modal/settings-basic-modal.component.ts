@@ -142,6 +142,27 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   public isDirty: boolean;
 
+  // Dropdowns
+
+  public selectedDriverPayPeriod: any = null;
+  public selectedDriverEndingIn: any = null;
+  public selectedAccountingPayPeriod: any = null;
+  public selectedAccountingEndingIn: any = null;
+  public selectedCompanyPayPeriod: any = null;
+  public selectedCompanyEndingIn: any = null;
+  public selectedDispatchPayPeriod: any = null;
+  public selectedDispatchEndingIn: any = null;
+  public selectedManagerPayPeriod: any = null;
+  public selectedManagerEndingIn: any = null;
+  public selectedRecPayPeriod: any = null;
+  public selectedRecEndingIn: any = null;
+  public selectedRepairPayPeriod: any = null;
+  public selectedRepairEndingIn: any = null;
+  public selectedSafetyPayPeriod: any = null;
+  public selectedSafetyEndingIn: any = null;
+  public selectedOtherPayPeriod: any = null;
+  public selectedOtherEndingIn: any = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -299,10 +320,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.onBankSelected(index);
         break;
       }
-      case 'bankcard': {
-        this.selectedBankCardFormArray[index] = event;
-        break;
-      }
       default: {
         break;
       }
@@ -425,6 +442,77 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       }
       case 'currency': {
         this.selectedCurrency = event;
+        break;
+      }
+      case 'driver-pay-period': {
+        this.selectedDriverPayPeriod = event;
+        break;
+      }
+      case 'driver-ending-in': {
+        this.selectedDriverEndingIn = event;
+        break;
+      }
+      case 'accounting-pay-period': {
+        this.selectedAccountingPayPeriod = event;
+      }
+      case 'accounting-ending-in': {
+        this.selectedAccountingEndingIn = event;
+        break;
+      }
+      case 'companyOwner-pay-period': {
+        this.selectedCompanyPayPeriod = event;
+        break;
+      }
+      case 'companyOwner-ending-in': {
+        this.selectedCompanyEndingIn = event;
+        break;
+      }
+      case 'dispatch-pay-period': {
+        this.selectedDispatchPayPeriod = event;
+        break;
+      }
+      case 'dispatch-ending-in': {
+        this.selectedDispatchEndingIn = event;
+        break;
+      }
+      case 'manager-pay-period': {
+        this.selectedManagerPayPeriod = event;
+        break;
+      }
+      case 'manager-ending-in': {
+        this.selectedManagerEndingIn = event;
+        break;
+      }
+      case 'recruiting-pay-period': {
+        this.selectedRecPayPeriod = event;
+        break;
+      }
+      case 'recruiting-ending-in': {
+        this.selectedRecEndingIn = event;
+        break;
+      }
+      case 'repair-pay-period': {
+        this.selectedRepairPayPeriod = event;
+        break;
+      }
+      case 'repair-ending-in': {
+        this.selectedRepairEndingIn = event;
+        break;
+      }
+      case 'safety-pay-period': {
+        this.selectedSafetyPayPeriod = event;
+        break;
+      }
+      case 'safety-ending-in': {
+        this.selectedSafetyEndingIn = event;
+        break;
+      }
+      case 'other-pay-period': {
+        this.selectedOtherPayPeriod = event;
+        break;
+      }
+      case 'other-ending-in': {
+        this.selectedOtherEndingIn = event;
         break;
       }
       default: {

@@ -95,6 +95,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public selectedStopTab: number = 3;
   public selectedStopTime: number = 5;
 
+  public isAvailableAdjustedRate: boolean = false;
+  public isAvailableAdvanceRate: boolean = false;
+
   public documents: any[] = [];
   public comments: any[] = [];
 
@@ -134,14 +137,16 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       year: [null],
       lifgate: [null],
       stopMode: ['Pickup'],
-      shipper: [null],
+      shipper: [null, Validators.required],
       location: [null],
       date: [null, Validators.required],
       dateRange: [null],
       timeMode: ['Open'],
-      fromTime: [null],
-      toTime: [null],
-      billingPaymentBaseRate: [null],
+      fromTime: [null, Validators.required],
+      toTime: [null, Validators.required],
+      billingPaymentBaseRate: [null, Validators.required],
+      billingPaymentAdjustedRate: [null],
+      lingPaymentAdvanceRate: [null],
       note: [null],
     });
 
@@ -216,6 +221,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
       case 'stop-time': {
         this.selectedStopTime = event.id;
+        if (this.selectedStopTime === 6) {
+          this.inputService.changeValidators(
+            this.loadForm.get('toTime'),
+            false
+          );
+        } else {
+          this.inputService.changeValidators(this.loadForm.get('toTime'));
+        }
         break;
       }
     }
@@ -247,7 +260,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           ' ',
           this.companyUser.lastName
         ),
-        avatar: this.companyUser,
+        avatar: this.companyUser.avatar,
       },
       commentContent: '',
       createdAt: new Date().toISOString(),

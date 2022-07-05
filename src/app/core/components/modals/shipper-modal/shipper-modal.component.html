@@ -295,6 +295,7 @@
                     dropdownWidthClass: 'w-col-shipper-department'
                   }"
                   [options]="labelsDepartments"
+                  [activeItem]="selectedContractDepartmentFormArray[ind]"
                   (selectedItem)="onSelectContactDepartment($event, ind)"
                 ></app-ta-input-dropdown>
                 <app-ta-input

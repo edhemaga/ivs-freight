@@ -173,6 +173,7 @@
                   }"
                   [canAddNew]="true"
                   [options]="labelsPayType"
+                  [activeItem]="selectedPayType"
                   (selectedItem)="onSelectDropdown($event, 'paytype')"
                 ></app-ta-input-dropdown>
               </div>
@@ -328,6 +329,7 @@
                 }"
                 [canAddNew]="true"
                 [options]="labelsBank"
+                [activeItem]="selectedBank"
                 (selectedItem)="onSelectDropdown($event, 'bank')"
               ></app-ta-input-dropdown>
             </div>

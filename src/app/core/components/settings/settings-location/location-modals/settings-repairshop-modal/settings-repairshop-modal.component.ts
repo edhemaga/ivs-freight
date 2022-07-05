@@ -179,7 +179,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onAction(event: any, action: string) {
+  public onSelectDropdown(event: any, action: string) {
     switch (action) {
       case 'pay-period': {
         this.selectedPayPeriod = event;

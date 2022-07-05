@@ -184,6 +184,7 @@
                     dropdownWidthClass: 'w-col-broker-department'
                   }"
                   [options]="[]"
+                  [activeItem]="selectedDepartmentFormArray[ind]"
                   (selectedItem)="onSelectContactDepartment($event, ind)"
                 ></app-ta-input-dropdown>
                 <app-ta-input
@@ -259,7 +260,8 @@
                 dropdownWidthClass: 'w-col-4'
               }"
               [options]="[]"
-              (selectedItem)="onAction($event, 'pay-period')"
+              [activeItem]="selectedPayPeriod"
+              (selectedItem)="onSelectDropdown($event, 'pay-period')"
             ></app-ta-input-dropdown>
           </div>
           <div class="col-4 no-p-left">
@@ -273,7 +275,8 @@
                 dropdownWidthClass: 'w-col-4'
               }"
               [options]="[]"
-              (selectedItem)="onAction($event, 'day')"
+              [activeItem]="selectedDay"
+              (selectedItem)="onSelectDropdown($event, 'day')"
             ></app-ta-input-dropdown>
           </div>
         </div>
