@@ -32,7 +32,7 @@
     }
     &::-webkit-scrollbar-thumb {
       background-color: transparent;
-      border: 6px solid $nav-text-color;
+      border: 6px solid transparent;
       border-radius: 1px;
     }
     &::-webkit-scrollbar-track {
