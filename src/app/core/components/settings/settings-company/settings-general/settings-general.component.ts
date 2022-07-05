@@ -33,12 +33,13 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy {
   public toggleSelect:boolean;
   @Output() selectValue = new EventEmitter<string>();
   @Input() public companyData: any;
+  public timeZoneName:string='';
   constructor(
     private settingsStoreService: SettingsStoreService,
   ) {}
  
   ngOnInit(): void {
-   console.log(this.companyData);
+    this.timeZoneName=this.companyData.timeZone.name.substring(0,7)
    
     
   }

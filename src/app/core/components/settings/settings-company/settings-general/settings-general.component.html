@@ -170,14 +170,14 @@
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Time Zone</p>
-            <p class="additional-template-value">
-              {{ companyData?.timeZone.name }}
+            <p *ngIf="companyData.timeZone.name" class="additional-template-value">
+              {{ timeZoneName }}
             </p>
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Currency</p>
-            <p class="additional-template-value">
-              {{ companyData?.currency.name }}
+            <p *ngIf="companyData.currency.name" class="additional-template-value">
+              {{ companyData?.currency?.name.includes('US') ? 'USD ($)':'CAD ($)' }}
             </p>
           </div>
         </div>
@@ -188,7 +188,7 @@
         [isCardOpen]="true"
         [animationsDisabled]="false"
         [textBottomPossiton]="'-1px'"
-        *ngIf="companyData?.departmentContacts.length > 0"
+        *ngIf="companyData?.departmentContacts.length"
         [hasCounter]="companyData.departmentContacts.length"
       >
         <div class="department-template-data">
@@ -223,7 +223,7 @@
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
         [animationsDisabled]="false"
-        *ngIf="companyData?.bankAccounts.length > 0"
+        *ngIf="companyData?.bankAccounts.length"
       >
         <div
           class="additional-template-data"
@@ -233,7 +233,7 @@
             <p class="additional-template-value-name">Bank Name</p>
             <svg-icon
               class="additional-template-value bank-logo-settings"
-              src="{{ 'assets/svg/common/banks/' + bank.logoName }}"
+              src="{{ 'assets/svg/common/banks/' + bank.bank.logoName }}"
             ></svg-icon>
           </div>
           <div class="additional-template-item">
@@ -282,7 +282,7 @@
         [bodyTemplate]="'card'"
         [hasCounter]="companyData?.bankCards?.length"
         [isCardOpen]="true"
-        *ngIf="companyData?.bankCards?.length > 0"
+        *ngIf="companyData.bankCards.length"
         [animationsDisabled]="false"
         [textBottomPossiton]="'-1px'"
       >
@@ -361,14 +361,14 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">Customer Pay Term</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.customerPayTerm }}
+              {{ companyData?.additionalInfo.customerPayTerm }} days
             </p>
           </div>
 
           <div class="additional-template-item">
             <p class="additional-template-value-name">Customer Credit</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.customerCredit }}
+              ${{ companyData?.additionalInfo.customerCredit }}
             </p>
           </div>
 

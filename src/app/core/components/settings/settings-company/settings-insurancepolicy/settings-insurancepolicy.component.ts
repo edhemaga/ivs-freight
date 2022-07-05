@@ -131,11 +131,8 @@ export class SettingsInsurancepolicyComponent implements OnInit,OnChanges {
     private settingsStoreService: SettingsStoreService,
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
   }
   ngOnInit(): void {  
- console.log(this.insurancePolicyData);
- 
   }
   public onAction(modal: { type: boolean; modalName: string; action: string }) {
     this.settingsStoreService.onModalAction(modal);

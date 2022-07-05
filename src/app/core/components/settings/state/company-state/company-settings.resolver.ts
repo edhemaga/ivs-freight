@@ -11,20 +11,22 @@ import { CompanyQuery } from './company-settings.query';
 import { CompanyStore } from './company-settings.store';
 
 @Injectable({ providedIn: 'root' })
-export class companySettingsResolver implements Resolve<CompanyResponse> {
+export class companySettingsResolver implements Resolve<CompanyResponse[]> {
   constructor(
     private settingsService: SettingsStoreService,
     private settingsQuery: CompanyQuery,
     private companyStore: CompanyStore
   ) {}
   resolve(
-  ): Observable<CompanyResponse> | Observable<any> {
+  ): Observable<CompanyResponse[]> | Observable<any> {
+  
       return this.settingsService.getCompany().pipe(
         catchError((error) => {
           return of('error');
         }),
         tap((companyResponse: CompanyResponse) => {
-          this.companyStore.set([companyResponse]);
+    
+          this.companyStore.set({0:companyResponse});    
         })
       );
     }

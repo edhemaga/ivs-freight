@@ -36,16 +36,12 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
     private cdRef: ChangeDetectorRef
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
   }
   ngOnInit(): void {
     this.getData(this.activated.snapshot.data.company);
-    // this.getCompanyDivision()
     this.detailsPageSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
-      .subscribe((id) => {
-        console.log(id);
-
+      .subscribe((id) => { 
         this.settingsStoreService
           .getCompanyDivisionById(id)
           .pipe(untilDestroyed(this))
@@ -74,9 +70,7 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getData(data: CompanyResponse) {
-    this.data = data;
-    console.log(this.data);
-    
+    this.data = data;    
   }
 
   public toggle(event:any){
