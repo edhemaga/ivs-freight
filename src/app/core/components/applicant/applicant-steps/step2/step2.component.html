@@ -18,7 +18,7 @@
   <div
     class="d-flex justify-content-center text-center mid-section"
     [ngStyle]="{
-      'margin-bottom': workExperienceArray.length > 0 ? '22px' : '32px'
+      'margin-bottom': workExperienceArray.length ? '22px' : '32px'
     }"
   >
     <h5 class="m-0 step-subtitle noselect ta-font-bold">
@@ -36,7 +36,7 @@
     <div class="d-flex justify-content-center flex-column">
       <div
         class="d-flex flex-column history-panel-container"
-        *ngIf="workExperienceArray.length > 0"
+        *ngIf="workExperienceArray.length"
       >
         <!-- CREATED WORK HISTORY DATA -->
 
