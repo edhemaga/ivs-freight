@@ -346,7 +346,7 @@ export class Step1Component implements OnInit, OnDestroy {
     this.helperIndex = 2;
 
     if (
-      this.previousAddresses.controls.length !== 0 &&
+      this.previousAddresses.controls.length &&
       !this.isLastAddedPreviousAddressValid &&
       !this.isLastInputDeleted
     ) {

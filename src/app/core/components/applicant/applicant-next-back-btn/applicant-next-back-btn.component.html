@@ -8,9 +8,8 @@
     }"
   >
     <span
-      class="ta-font-semi-bold step-text"
+      class="ta-font-semi-bold step-text step-next-text"
       [ngStyle]="{
-        'margin-right': '12px',
         color: filledCorrectly ? '#3551B7' : '#6c6c6c'
       }"
       >{{ lastStep ? 'Finish' : lastPage ? 'Finish & Save Profile' : 'Next' }}
@@ -42,12 +41,6 @@
       }"
     ></svg-icon>
 
-    <span
-      class="ta-font-semi-bold step-text"
-      [ngStyle]="{
-        'margin-left': '12px'
-      }"
-      >Back</span
-    >
+    <span class="ta-font-semi-bold step-text step-back-text">Back</span>
   </button>
 </div>
