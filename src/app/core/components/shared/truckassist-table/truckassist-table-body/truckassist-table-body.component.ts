@@ -165,7 +165,10 @@ export class TruckassistTableBodyComponent
       this.viewData = changes.viewData.currentValue;
     }
 
-    if (!changes?.tableContainerWidth?.firstChange && changes?.tableContainerWidth) {
+    if (
+      !changes?.tableContainerWidth?.firstChange &&
+      changes?.tableContainerWidth
+    ) {
       this.getNotPinedMaxWidth(true);
     }
 
@@ -221,13 +224,11 @@ export class TruckassistTableBodyComponent
         (pinedColumns.clientWidth + actionColumns.clientWidth) -
         6;
 
-      if (checkScroll) {
-        setTimeout(() => {
+      /* if(checkScroll){
+        setInterval(() => {
           this.checkForScroll();
         }, 10);
-      } else {
-        this.changeDetectorRef.detectChanges();
-      }
+      } */
     }
   }
 

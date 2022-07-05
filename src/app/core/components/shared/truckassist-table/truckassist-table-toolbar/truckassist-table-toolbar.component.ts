@@ -74,7 +74,7 @@ export class TruckassistTableToolbarComponent
   ];
   tableRowsSelected: any[] = [];
   activeTableData: any = {};
-  toolbarWidth: number = 0;
+  toolbarWidth: string = '';
 
   constructor(
     private tableService: TruckassistTableService,
@@ -130,9 +130,10 @@ export class TruckassistTableToolbarComponent
       !changes?.tableContainerWidth?.firstChange &&
       changes?.tableContainerWidth
     ) {
+      console.log('tableContainerWidth se promenio')
       setTimeout(() => {
         this.getToolbarWidth();
-      }, 10);
+      }, 10)
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -161,17 +162,28 @@ export class TruckassistTableToolbarComponent
   }
 
   getToolbarWidth() {
+    console.log('Poziva se getToolbarWidth');
     const pinedColumns = document.querySelector('.pined-tr');
     const notPinedColumns = document.querySelector('.not-pined-tr');
     const actionColumns = document.querySelector('.actions');
-    const borderColumns = document.querySelector('.not-pined-border');
 
-    if (pinedColumns && notPinedColumns && actionColumns) {
+    /* console.log(pinedColumns.clientWidth)
+    console.log(notPinedColumns.clientWidth)
+    console.log(actionColumns.clientWidth) */
+
+    if (
+      pinedColumns?.clientWidth &&
+      notPinedColumns?.clientWidth &&
+      actionColumns?.clientWidth
+    ) {
+      console.log('Postoje sve clientWidth')
       this.toolbarWidth =
         pinedColumns.clientWidth +
         notPinedColumns.clientWidth +
         actionColumns.clientWidth +
-        (borderColumns ? 6 : 0);
+        6 + 'px';
+
+      console.log(this.toolbarWidth);
 
       this.changeDetectorRef.detectChanges();
     }

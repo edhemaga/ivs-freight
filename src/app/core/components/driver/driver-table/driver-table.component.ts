@@ -50,6 +50,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     searchThree: undefined,
   };
   tableContainerWidth: number = 0;
+  resizeObserver: ResizeObserver;
 
   constructor(
     private modalService: ModalService,
@@ -219,17 +220,19 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.observTableContainer();
+    setTimeout(() => {
+      this.observTableContainer();
+    }, 10)
   }
 
   observTableContainer() {
-    const observer = new ResizeObserver((entries) => {
+    this.resizeObserver = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
         this.tableContainerWidth = entry.contentRect.width
       });
     });
 
-    observer.observe(document.querySelector('.table-container'));
+    this.resizeObserver.observe(document.querySelector('.table-container'));
   }
 
   public initTableOptions(): void {
@@ -607,5 +610,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
+    this.resizeObserver.unobserve(document.querySelector('.table-container'))
+    this.resizeObserver.disconnect();
   }
 }
