@@ -69,7 +69,7 @@
       height: 26px;
       padding: 4px 6px;
       background-color: $ta-light-grey-4;
-      border-radius: 3px;
+      border-radius: 2px;
       margin-bottom: 2px;
       text-transform: uppercase;
       color: $bw6-2;
@@ -239,6 +239,11 @@
               }
             }
           }
+
+          &:hover {
+            background: $ta-light-grey-4 !important;
+            color: $bw4 !important;
+          }
         }
 
         .plus-icon {
@@ -255,6 +260,7 @@
 
       .cancel-btn {
         width: 150px;
+        height: 32px;
         margin-right: 22px;
         color: $bw5;
         background: $ta-light-grey-4;
@@ -268,6 +274,13 @@
 
       .save-btn {
         width: 150px;
+        height: 32px;
+        color: $white;
+        background: $ta-light-blue;
+
+        &:hover {
+          background-color: $ta-blue;
+        }
       }
     }
 

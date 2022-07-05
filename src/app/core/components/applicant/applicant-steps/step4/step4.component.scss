@@ -25,141 +25,161 @@
     margin-bottom: 32px;
   }
 
-  /* 
+  .form-section {
+    width: 616px;
+
     .accident-view-container {
-      margin-bottom: 10px;
+      width: 616px;
+      margin-bottom: 32px;
 
       .title-container {
-        margin-bottom: 2px;
+        width: 100%;
+        margin-bottom: 6px;
+        padding-left: 6px;
 
         .date-title-box,
         .state-title-box,
-        .fat-title-box,
-        .inj-title-box,
-        .hazmat-spill-title-box,
+        .fatalities-title-box,
+        .injuries-title-box,
+        .hazmat-title-box,
         .description-title-box {
-          margin-right: 12px;
+          p {
+            color: $bw5;
+            font-size: 12px;
+
+            span {
+              color: $progress-danger;
+            }
+          }
 
           &.date-title-box {
-            width: 73px;
-          }
-
-          &.state-title-box,
-          &.hazmat-spill-title-box {
             width: 43px;
+            margin-right: 51px;
           }
 
-          &.fat-title-box,
-          &.inj-title-box {
-            width: 40px;
+          &.state-title-box {
+            width: 48px;
+            margin-right: 18px;
+          }
+
+          &.fatalities-title-box {
+            width: 26px;
+            margin-right: 26px;
+          }
+
+          &.injuries-title-box {
+            width: 23px;
+            margin-right: 29px;
+          }
+
+          &.hazmat-title-box {
+            width: 60px;
+            margin-right: 18px;
           }
 
           &.description-title-box {
-            width: 157px;
-            margin-right: 0;
-          }
-
-          p {
-            color: $bw6-2;
-            font-size: 10px;
+            width: 96px;
           }
         }
       }
 
       .accident-info-container {
-        margin-bottom: 12px;
+        width: 100%;
+        height: 26px;
+        padding: 4px 6px;
+        background-color: $ta-light-grey-4;
+        border-radius: 2px;
+        margin-bottom: 2px;
+        text-transform: uppercase;
+        color: $bw6-2;
+        font-size: 14px;
+        transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
-        &:hover .edit-delete-box {
-          visibility: visible;
+        &:hover {
+          background: $bw2;
+          color: $ta-light-grey-3;
+        }
+
+        &:hover .btn-container {
+          opacity: 1;
+          visibility: visible !important;
         }
 
         .date-box,
         .state-box,
-        .fat-box,
-        .inj-box,
-        .hazmat-spill-box,
+        .fatalities-box,
+        .injuries-box,
+        .hazmat-box,
         .description-box {
-          background-color: $bw5;
-          color: $white;
-          border-radius: 3px;
-          height: 26px;
-          padding: 0;
-          margin-right: 12px;
-
           &.date-box {
-            width: 73px;
+            width: 55px;
+            margin-right: 34px;
           }
 
-          &.state-box,
-          &.hazmat-spill-box {
-            width: 43px;
+          &.state-box {
+            width: 18px;
+            margin-right: 47px;
+            padding-left: 6px;
           }
 
-          &.fat-box,
-          &.inj-box {
-            width: 40px;
+          &.fatalities-box {
+            width: 5px;
+            margin-right: 47px;
+            padding-left: 6px;
+          }
+
+          &.injuries-box {
+            width: 5px;
+            margin-right: 47px;
+            padding-left: 6px;
+          }
+
+          &.hazmat-box {
+            width: 23px;
+            margin-right: 53px;
+            padding-left: 6px;
           }
 
           &.description-box {
-            width: 157px;
-            margin-right: 0;
-          }
-
-          p {
-            font-size: 14px;
+            width: 207px;
+            margin-right: 19px;
+            padding-left: 6px;
+            text-transform: none;
           }
         }
 
-        .edit-delete-box {
-          visibility: hidden;
-          height: 26px;
-          width: 38px;
-          margin-left: 6px;
+        .btn-container {
+          width: 42px;
+          visibility: hidden !important;
+          opacity: 0;
+          transition: opacity 0.2s ease-in-out;
 
-          .edit-btn,
-          .delete-btn {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: none;
-            outline: none;
-            opacity: 0.7;
+          .edit-icon,
+          .delete-icon {
+            cursor: pointer;
 
             &:hover {
-              opacity: 1;
-            }
-
-            &.edit-btn {
-              background-color: $bw6-2;
-              margin-right: 6px;
-
-              .edit-icon {
-                svg {
-                  path {
-                    fill: $white;
-                  }
+              svg {
+                path {
+                  transition: fill 0.2s ease-in-out;
+                  fill: $bw6-2;
                 }
               }
             }
 
-            &.delete-btn {
-              background-color: $progress-danger;
-
-              .delete-icon {
-                svg {
-                  path {
-                    fill: $white;
-                  }
-                }
+            svg {
+              path {
+                fill: $bw4;
               }
             }
+          }
+
+          .edit-icon {
+            margin-right: 6px;
           }
         }
       }
-    } */
-
-  .form-section {
-    width: 616px;
+    }
 
     .group {
       margin-bottom: 22px;
@@ -194,11 +214,6 @@
           color: $bw6-2;
           margin-right: 12px !important;
         }
-
-        .arrow-input-group {
-          width: 79px;
-          background-color: #ccc;
-        }
       }
 
       .injuries-group {
@@ -210,10 +225,53 @@
           color: $bw6-2;
           margin-right: 12px !important;
         }
+      }
 
+      .fatalities-group,
+      .injuries-group {
         .arrow-input-group {
           width: 79px;
-          background-color: #ccc;
+
+          .btn-container {
+            width: 42px;
+            margin-right: 6px;
+
+            .minus-icon,
+            .plus-icon {
+              cursor: pointer;
+
+              svg {
+                transition: transform 0.2s ease-in-out;
+
+                rect {
+                  transition: fill 0.2s ease-in-out;
+                  fill: $bw-9;
+                }
+
+                path {
+                  fill: $white;
+                }
+              }
+
+              &.minus-icon {
+                margin-right: 6px;
+              }
+
+              &:hover {
+                svg {
+                  transform: scale(1.2);
+
+                  rect {
+                    fill: $bw4;
+                  }
+                }
+              }
+            }
+          }
+
+          .input-container {
+            width: 32px;
+          }
         }
       }
     }
@@ -301,6 +359,11 @@
               }
             }
           }
+
+          &:hover {
+            background: $ta-light-grey-4 !important;
+            color: $bw4 !important;
+          }
         }
 
         .plus-icon {
@@ -312,6 +375,31 @@
               fill: $ta-light-blue;
             }
           }
+        }
+      }
+
+      .cancel-btn {
+        width: 150px;
+        height: 32px;
+        margin-right: 22px;
+        color: $bw5;
+        background: $ta-light-grey-4;
+        transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
+
+        &:hover {
+          background: $bw6-2;
+          color: $white;
+        }
+      }
+
+      .save-btn {
+        width: 150px;
+        height: 32px;
+        color: $white;
+        background: $ta-light-blue;
+
+        &:hover {
+          background-color: $ta-blue;
         }
       }
     }

@@ -31,112 +31,110 @@
     *ngIf="!accidentForm.get('hasPastAccident').value"
   >
     <!-- CREATED ACCIDENT DATA -->
-    <!-- 
-    <div class="d-flex flex-column accident-view-container">
+
+    <div
+      class="d-flex flex-column justify-content-center accident-view-container"
+      *ngIf="accidentArray.length > 0"
+    >
+      <div class="d-flex align-items-center title-container">
+        <div class="d-flex align-items-center date-title-box">
+          <p class="m-0 ta-font-bold">DATE <span>*</span></p>
+        </div>
+        <div class="d-flex align-items-center state-title-box">
+          <p class="m-0 ta-font-bold">STATE <span>*</span></p>
+        </div>
+        <div class="d-flex align-items-center fatalities-title-box">
+          <p class="m-0 ta-font-bold">FAT.</p>
+        </div>
+        <div class="d-flex align-items-center injuries-title-box">
+          <p class="m-0 ta-font-bold">INJ.</p>
+        </div>
+        <div class="d-flex align-items-center hazmat-title-box">
+          <p class="m-0 ta-font-bold">H. SPILL <span>*</span></p>
+        </div>
+        <div class="d-flex align-items-center description-title-box">
+          <p class="m-0 ta-font-bold">DESCRIPTION <span>*</span></p>
+        </div>
+      </div>
+
       <div
-        class="d-flex flex-column"
+        class="d-flex align-items-center accident-info-container"
         *ngFor="
-          let accident of accidentFormArray;
+          let accident of accidentArray;
           let i = index;
           trackBy: trackByIdentity
         "
       >
-        <div class="d-flex title-container">
-          <div class="d-flex justify-content-center date-title-box">
-            <p class="m-0 ta-font-bold">DATE</p>
-          </div>
-          <div class="d-flex justify-content-center state-title-box">
-            <p class="m-0 ta-font-bold">STATE</p>
-          </div>
-          <div class="d-flex justify-content-center fat-title-box">
-            <p class="m-0 ta-font-bold">FAT. #</p>
-          </div>
-          <div class="d-flex justify-content-center inj-title-box">
-            <p class="m-0 ta-font-bold">INJ. #</p>
-          </div>
-          <div class="d-flex justify-content-center hazmat-spill-title-box">
-            <p class="m-0 ta-font-bold">H. SPILL</p>
-          </div>
-          <div class="d-flex justify-content-center description-title-box">
-            <p class="m-0 ta-font-bold">DESCRIPTION</p>
-          </div>
+        <div class="d-flex align-items-center date-box">
+          <p class="m-0 ta-font-regular">
+            {{ accident.accidentDate }}
+          </p>
         </div>
+        <div class="d-flex align-items-center state-box">
+          <p class="m-0 ta-font-regular">
+            {{ accident.accidentState }}
+          </p>
+        </div>
+        <div class="d-flex align-items-center fatalities-box">
+          <p class="m-0 ta-font-regular">
+            {{ accident.fatalities }}
+          </p>
+        </div>
+        <div class="d-flex align-items-center injuries-box">
+          <p class="m-0 ta-font-regular">
+            {{ accident.injuries }}
+          </p>
+        </div>
+        <div class="d-flex align-items-center hazmat-box">
+          <p class="m-0 ta-font-regular">
+            {{ accident.hazmatSpill }}
+          </p>
+        </div>
+        <div class="d-flex align-items-center description-box">
+          <p
+            class="m-0 ta-font-regular d-inline-block text-truncate"
+            style="max-width: 207px"
+          >
+            {{ accident.accidentDescription }}
+          </p>
+        </div>
+        <div class="d-flex align-items-center btn-container">
+          <svg-icon
+            class="edit-icon"
+            src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+            [svgStyle]="{
+              'width.px': 18,
+              'height.px': 18
+            }"
+            appTooltip="Edit"
+            tooltipColor="#FFFFFF"
+            tooltipBackground="#6C6C6C"
+            position="top-middle"
+            borderRadius="2px"
+            fontSize="11px"
+            fontWeight="bold"
+            (click)="onEditAccident(i)"
+          ></svg-icon>
 
-        <div class="d-flex justify-content-center accident-info-container">
-          <div
-            class="d-flex justify-content-center align-items-center date-box"
-          >
-            <p class="m-0 ta-font-regular">
-              {{ accident.dateAccident }}
-            </p>
-          </div>
-          <div
-            class="d-flex justify-content-center align-items-center state-box"
-          >
-            <p class="m-0 ta-font-regular">
-              {{ accident.accidentLocation.stateShortName }}
-            </p>
-          </div>
-          <div class="d-flex justify-content-center align-items-center fat-box">
-            <p class="m-0 ta-font-regular">
-              {{ accident.fatalities }}
-            </p>
-          </div>
-          <div class="d-flex justify-content-center align-items-center inj-box">
-            <p class="m-0 ta-font-regular">
-              {{ accident.injuries }}
-            </p>
-          </div>
-          <div
-            class="d-flex justify-content-center align-items-center hazmat-spill-box"
-          >
-            <p class="m-0 ta-font-regular">
-              {{ accident.isHazmatSpill }}
-            </p>
-          </div>
-          <div
-            class="d-flex justify-content-center align-items-center description-box"
-          >
-            <p class="m-0 ta-font-regular">
-              {{ accident.descriptionAccident }}
-            </p>
-          </div>
-
-          <div
-            class="d-flex justify-content-center align-items-center edit-delete-box"
-          >
-            <button
-              type="button"
-              class="d-flex justify-content-center align-items-center edit-btn"
-              (click)="onEditAccident(i)"
-            >
-              <svg-icon
-                class="edit-icon"
-                src="assets/svg/common/ic_pen.svg"
-                [svgStyle]="{
-                  'width.px': 10,
-                  'height.px': 10
-                }"
-              ></svg-icon>
-            </button>
-            <button
-              type="button"
-              class="d-flex justify-content-center align-items-center delete-btn"
-              (click)="onDeleteAccident(i)"
-            >
-              <svg-icon
-                class="delete-icon"
-                src="assets/svg/common/ic_trash.svg"
-                [svgStyle]="{
-                  'width.px': 8,
-                  'height.px': 9
-                }"
-              ></svg-icon>
-            </button>
-          </div>
+          <svg-icon
+            class="delete-icon"
+            src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+            [svgStyle]="{
+              'width.px': 18,
+              'height.px': 18
+            }"
+            appTooltip="Delete"
+            tooltipColor="#FFFFFF"
+            tooltipBackground="#EF5350"
+            position="top-middle"
+            borderRadius="2px"
+            fontSize="11px"
+            fontWeight="bold"
+            (click)="onDeleteAccident(i)"
+          ></svg-icon>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <!-- FORM SECTION -->
 
@@ -193,13 +191,101 @@
           <div class="d-flex align-items-center fatalities-group">
             <p class="m-0 ta-font-regular">Fatalities #</p>
 
-            <div class="arrow-input-group">A</div>
+            <!-- <div class="arrow-input-group"></div> -->
+
+            <div
+              class="d-flex align-items-center justify-content-between arrow-input-group"
+            >
+              <div class="d-flex align-items-center btn-container">
+                <svg-icon
+                  class="minus-icon"
+                  src="
+                      assets/svg/common/ic_pm_decrement.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="onIncrementDecrement('fatalities', 'decrement')"
+                ></svg-icon>
+
+                <svg-icon
+                  class="plus-icon"
+                  src="
+                      assets/svg/common/ic_pm_increment.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="onIncrementDecrement('fatalities', 'increment')"
+                ></svg-icon>
+              </div>
+
+              <div class="d-flex align-items-center input-container">
+                <app-ta-input
+                  formControlName="fatalities"
+                  [inputConfig]="{
+                    name: 'Arrow Input',
+                    type: 'number',
+                    hideClear: true,
+                    textAlign: 'center',
+                    min: 0,
+                    max: 24,
+                    hideErrorMessage: true,
+                    blackInput: true
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
           </div>
 
           <div class="d-flex align-items-center injuries-group">
             <p class="m-0 ta-font-regular">Injuries #</p>
 
-            <div class="arrow-input-group">B</div>
+            <!-- <div class="arrow-input-group"></div> -->
+
+            <div
+              class="d-flex align-items-center justify-content-between arrow-input-group"
+            >
+              <div class="d-flex align-items-center btn-container">
+                <svg-icon
+                  class="minus-icon"
+                  src="
+                      assets/svg/common/ic_pm_decrement.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="onIncrementDecrement('injuries', 'decrement')"
+                ></svg-icon>
+
+                <svg-icon
+                  class="plus-icon"
+                  src="
+                      assets/svg/common/ic_pm_increment.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="onIncrementDecrement('injuries', 'increment')"
+                ></svg-icon>
+              </div>
+
+              <div class="d-flex align-items-center input-container">
+                <app-ta-input
+                  formControlName="injuries"
+                  [inputConfig]="{
+                    name: 'Arrow Input',
+                    type: 'number',
+                    hideClear: true,
+                    textAlign: 'center',
+                    min: 0,
+                    max: 24,
+                    hideErrorMessage: true,
+                    blackInput: true
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -299,6 +385,29 @@
 
           Add Another Accident
         </button>
+
+        <div
+          class="d-flex align-items-center mx-auto justify-content-center"
+          *ngIf="isEditing"
+        >
+          <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+            (click)="onCancelEditAccident()"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+            [ngClass]="{
+              disabled: !isAccidentEdited
+            }"
+            (click)="onSaveEditedAccident()"
+          >
+            Save Changes
+          </button>
+        </div>
       </div>
     </form>
   </div>

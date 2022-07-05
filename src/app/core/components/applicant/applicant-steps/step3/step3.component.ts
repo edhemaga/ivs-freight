@@ -230,12 +230,6 @@ export class Step3Component implements OnInit, OnDestroy {
     }
 
     this.licenseArray.splice(index, 1);
-
-    /*    if (this.licenseArray[index].id) {
-      this.licenseArray[index].isDeleted = true;
-    } else {
-      this.licenseArray.splice(index, 1);
-    } */
   }
 
   public onEditLicense(index: number): void {
@@ -270,29 +264,6 @@ export class Step3Component implements OnInit, OnDestroy {
         }
       }
     );
-
-    /*   this.licenseForm.patchValue({
-      id: this.licenseArray[index].id,
-      license: this.licenseArray[index].license,
-      countryType: this.licenseArray[index].countryType,
-      stateId: this.licenseArray[index].stateId,
-      classType: this.licenseArray[index].classType,
-      expDate: this.licenseArray[index].expDate,
-      endorsments: this.licenseArray[index].endorsments
-        .split(',')
-        .map((a: any) => {
-          let endorsment: any = { name: a };
-          return endorsment;
-        }),
-      restrictions: this.licenseArray[index].restrictions
-        .split(',')
-        .map((a: any) => {
-          let restriction: any = { name: a };
-          return restriction;
-        }),
-    });
-
-    this.editLicense = index; */
   }
 
   public onSaveEditedLicense(): void {
@@ -316,34 +287,6 @@ export class Step3Component implements OnInit, OnDestroy {
     this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
-
-    /* if (this.licenseArray?.length) {
-      const licenseForm = this.licenseForm.value;
-      const license: License = new License(this.licenseArray[this.editLicense]);
-
-      license.license = licenseForm.license;
-      license.countryType = licenseForm.countryType;
-      license.stateId = licenseForm.stateId;
-      license.classType = licenseForm.classType;
-      license.expDate = licenseForm.expDate;
-
-      license.endorsments = licenseForm.endorsments
-        .map((item: any) => {
-          return item['name'];
-        })
-        .join(',');
-
-      license.restrictions = licenseForm.restrictions
-        .map((item: any) => {
-          return item['name'];
-        })
-        .join(',');
-
-      this.licenseArray[this.editLicense] = license;
-    }
-
-    this.licenseForm.reset();
-    this.editLicense = -1; */
   }
 
   public onCancelEditLicense(): void {
