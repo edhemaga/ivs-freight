@@ -9,13 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
+import { DepartmentResponse } from './departmentResponse';
 
 
 export interface CompanyPayrollResponse { 
     id?: number;
-    departmentId?: number;
-    payPeriod?: number;
-    endingIn?: number;
+    department?: DepartmentResponse;
+    payPeriod?: EnumValue;
+    endingIn?: EnumValue;
     defaultBase?: number | null;
     defaultCommission?: number | null;
     defaultEmptyMile?: number | null;

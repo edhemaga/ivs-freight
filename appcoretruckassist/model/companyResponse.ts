@@ -12,6 +12,7 @@
 import { CompanyShortResponse } from './companyShortResponse';
 import { FactoringCompany } from './factoringCompany';
 import { CompanyAdditionalInfo } from './companyAdditionalInfo';
+import { EnumValue } from './enumValue';
 import { DepartmentContactResponse } from './departmentContactResponse';
 import { InsurancePolicyResponse } from './insurancePolicyResponse';
 import { BankCardResponse } from './bankCardResponse';
@@ -35,6 +36,8 @@ export interface CompanyResponse {
     ifta?: string | null;
     toll?: string | null;
     scac?: string | null;
+    timeZone?: EnumValue;
+    currency?: EnumValue;
     additionalInfo?: CompanyAdditionalInfo;
     factoringCompany?: FactoringCompany;
     departmentContacts?: Array<DepartmentContactResponse> | null;

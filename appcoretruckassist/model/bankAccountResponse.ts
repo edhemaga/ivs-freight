@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BankResponse } from './bankResponse';
 import { BankAccountStatus } from './bankAccountStatus';
 
 
 export interface BankAccountResponse { 
     id?: number;
-    bankId?: number;
-    bankName?: string | null;
+    bank?: BankResponse;
     routing?: string | null;
     account?: string | null;
     status?: BankAccountStatus;

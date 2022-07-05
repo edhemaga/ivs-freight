@@ -14,6 +14,7 @@
 export interface BankCardResponse { 
     id?: number;
     nickname?: string | null;
+    readonly cardType?: string | null;
     card?: string | null;
     cvc?: string | null;
     expireDate?: string;

@@ -13,6 +13,7 @@ import { FactoringCompany } from './factoringCompany';
 
 
 export interface UpdateFactoringCompanyCommand { 
+    companyId?: number | null;
     factoringCompany?: FactoringCompany;
 }
 
