@@ -1,5 +1,5 @@
 @import "../../settings.global.scss";
-
+app-settings-insurancepolicy{
 .settings-insurancepolicy {
   width: 100%;
   display: grid;
@@ -72,5 +72,10 @@
       }
       }
     }
+  }
+}
+
+ .card-footer-cmp{
+    margin-right: 5px !important;
   }
 }
