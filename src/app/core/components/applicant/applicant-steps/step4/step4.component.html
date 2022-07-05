@@ -1,12 +1,14 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="step-title text-center noselect ta-font-bold">Accident record</h1>
+  <h1 class="m-0 step-title text-center noselect ta-font-bold">
+    Accident record
+  </h1>
 
   <!-- TOP SECTION -->
 
-  <div class="d-flex flex-column text-center top-section">
-    <p class="d-flex justify-content-center noselect ta-font-regular">
-      Please list all motor vehicle collisions in which you were involved (both
-      commercial and private vehicle) during the past 3 years prior to the
+  <div class="d-flex justify-content-center text-center top-section">
+    <p class="m-0 noselect ta-font-bold">
+      Please list all motor vehicle collisions in which you were involved<br />
+      (both commercial and private vehicle) during the past 3 years prior to the
       application date.
     </p>
   </div>
@@ -14,7 +16,7 @@
   <!-- MID SECTION -->
 
   <div
-    class="d-flex flex-column text-center mid-section"
+    class="d-flex judtify-content-center text-center mid-section"
     [formGroup]="accidentForm"
   >
     <app-ta-checkbox
@@ -24,19 +26,17 @@
     ></app-ta-checkbox>
   </div>
 
-  <!-- FORM SECTION -->
-
   <div
     class="d-flex flex-column form-section"
     *ngIf="!accidentForm.get('hasPastAccident').value"
   >
     <!-- CREATED ACCIDENT DATA -->
-
+    <!-- 
     <div class="d-flex flex-column accident-view-container">
       <div
         class="d-flex flex-column"
         *ngFor="
-          let accident of accidentFormArray | filter: false;
+          let accident of accidentFormArray;
           let i = index;
           trackBy: trackByIdentity
         "
@@ -136,13 +136,15 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
+
+    <!-- FORM SECTION -->
 
     <form [formGroup]="accidentForm">
       <!-- LOCATION, DATE -->
 
       <div class="d-flex">
-        <div class="form-label-group location-group">
+        <div class="group location-group">
           <app-ta-input-address
             formControlName="accidentLocation"
             [inputConfig]="{
@@ -157,7 +159,7 @@
             (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
           ></app-ta-input-address>
         </div>
-        <div class="form-label-group date-group">
+        <div class="group date-group">
           <app-ta-input
             formControlName="accidentDate"
             [inputConfig]="{
@@ -185,36 +187,24 @@
       <!-- FATALITIES, INJURIES, HAZMAT SPILL -->
 
       <div class="d-flex">
-        <div class="form-label-group fatalities-group">
-          <app-ta-input
-            formControlName="accidentDate"
-            [inputConfig]="{
-              name: 'datepicker',
-              type: 'text',
-              label: 'Date',
-              placeholderIcon: 'date',
-              isRequired: true,
-              customClass: 'datetimeclass'
-            }"
-          ></app-ta-input>
-        </div>
+        <div
+          class="d-flex align-items-center justify-content-between fatalities-injuries-group"
+        >
+          <div class="d-flex align-items-center fatalities-group">
+            <p class="m-0 ta-font-regular">Fatalities #</p>
 
-        <div class="form-label-group injuries-group">
-          <app-ta-input
-            formControlName="accidentDate"
-            [inputConfig]="{
-              name: 'datepicker',
-              type: 'text',
-              label: 'Date',
-              placeholderIcon: 'date',
-              isRequired: true,
-              customClass: 'datetimeclass'
-            }"
-          ></app-ta-input>
+            <div class="arrow-input-group">A</div>
+          </div>
+
+          <div class="d-flex align-items-center injuries-group">
+            <p class="m-0 ta-font-regular">Injuries #</p>
+
+            <div class="arrow-input-group">B</div>
+          </div>
         </div>
 
         <div
-          class="d-flex align-items-center justify-content-between form-label-group hazmat-spill-group"
+          class="d-flex align-items-center justify-content-between group hazmat-spill-group"
         >
           <div class="title-box">
             <p class="m-0 ta-font-regular">
@@ -228,22 +218,22 @@
             ></app-ta-input-radiobuttons>
           </div>
         </div>
+      </div>
 
-        <!-- REVIEW AND FEEDBACK -->
+      <!-- REVIEW AND FEEDBACK -->
 
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-          <app-applicant-review-feedback
-            [index]="1"
-            [reviewFeedbackData]=""
-            (sendReview)="onSubmitReview($event)"
-          ></app-applicant-review-feedback>
-        </div>
+      <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+        <app-applicant-review-feedback
+          [index]="1"
+          [reviewFeedbackData]=""
+          (sendReview)="onSubmitReview($event)"
+        ></app-applicant-review-feedback>
       </div>
 
       <!-- TRUCK TYPE, DESCRIPTION -->
 
       <div class="d-flex">
-        <div class="form-label-group truck-type-group">
+        <div class="group truck-type-group">
           <app-ta-input-dropdown
             formControlName="truckType"
             [template]="'svgtext-template'"
@@ -259,7 +249,7 @@
             (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
           ></app-ta-input-dropdown>
         </div>
-        <div class="form-label-group description-group">
+        <div class="group description-group">
           <app-ta-input
             formControlName="accidentDescription"
             [inputConfig]="{
@@ -283,36 +273,51 @@
         </div>
       </div>
 
-      <!-- ADD MORE LICENSES -->
+      <!-- ADD ANOTHER ACCIDENT -->
 
       <div
-        class="d-flex flex-column align-items-center add-more-accident-container"
+        class="d-flex justify-content-center align-items-center add-more-accident-container"
       >
         <button
           type="button"
-          class="add-accident-btn ta-font-semi-bold"
+          class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
           (click)="onAddAccident()"
-          *ngIf="editAccident === -1"
+          [ngClass]="{
+            disabled: accidentForm.invalid
+          }"
+          *ngIf="!isEditing"
         >
-          Add another accident
-        </button>
-        <button
-          type="button"
-          class="add-accident-btn ta-font-semi-bold"
-          (click)="onUpdateAccident()"
-          *ngIf="editAccident !== -1"
-        >
-          Save accident
+          <svg-icon
+            class="plus-icon"
+            src="assets/svg/common/ic_plus.svg
+          "
+            [svgStyle]="{
+              'width.px': 18,
+              'height.px': 18
+            }"
+          ></svg-icon>
+
+          Add Another Accident
         </button>
       </div>
     </form>
   </div>
+</div>
 
-  <!-- NEXT, BACK STEP -->
+<!-- NEXT BTN -->
 
-  <app-applicant-next-step
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-step>
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+</div>
+
+<!-- BACK BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center back-btn-container"
+>
+  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>
 
 <!-- CONFIRM ALL REVIEW -->

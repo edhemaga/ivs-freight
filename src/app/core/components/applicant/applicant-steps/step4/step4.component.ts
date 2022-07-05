@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -15,7 +15,6 @@ import { TruckType } from '../../state/model/truck-type.model';
   selector: 'app-step4',
   templateUrl: './step4.component.html',
   styleUrls: ['./step4.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class Step4Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.APPLICANT;
@@ -49,6 +48,8 @@ export class Step4Component implements OnInit, OnDestroy {
     },
   ];
 
+  public isEditing: boolean = false;
+
   public trackByIdentity = (index: number, item: any): number => index;
 
   constructor(private formBuilder: FormBuilder) {}
@@ -66,7 +67,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
   public formInit(): void {
     this.accidentForm = this.formBuilder.group({
-      hasPastAccident: [false, Validators.requiredTrue],
+      hasPastAccident: [false],
       accidentLocation: [null, Validators.required],
       accidentDate: [null, Validators.required],
       hazmatSpill: [null, Validators.required],
