@@ -7,8 +7,8 @@
     <div class="ta-user-information">
       <img
         class="ta-user-image"
-        src="{{ data.companyUser.avatar }}"
-        alt="{{ data.companyUser.fullName.substring(0,1) }}"
+        src="{{ data.companyUser?.avatar }}"
+        alt="{{ data.companyUser.fullName.substring(0, 1) }}"
       />
       <svg-icon
         *ngIf="data.companyUser.reaction && !data.isEditMode"
@@ -54,7 +54,9 @@
     </div>
   </div>
   <div class="ta-review-message">
-    <div *ngIf="!data.isEditMode" class="message">{{ data.commentContent }}</div>
+    <div *ngIf="!data.isEditMode" class="message">
+      {{ data.commentContent }}
+    </div>
     <textarea
       [class.show]="data.isEditMode"
       #reviewMessage
