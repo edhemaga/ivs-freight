@@ -68,6 +68,7 @@
           >
             <svg-icon
               *ngIf="isCardOpen && hasCopyIcon"
+              (mouseleave)=" copiedCommon=false"
               class="card-icon-common"
               src="assets/svg/common/ic_copy.svg"
             ></svg-icon>
@@ -80,6 +81,7 @@
           </svg-icon>
         </div>
       </div>
+      <div class="dots-common-cards">
       <app-table-dropdown
         [options]="options.actions"
         [id]="optionsId"
@@ -88,6 +90,7 @@
         [customClassDropDown]="'table-dropdown-container-vertical'"
       >
       </app-table-dropdown>
+    </div>
     </div>
   </div>
   <div

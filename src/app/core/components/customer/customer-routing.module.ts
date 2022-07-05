@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BrokerCardComponent } from './broker-card/broker-card.component';
 import { CustomerTableComponent } from './customer-table/customer-table.component';
-import { ShipperSingleResolver } from './state/shipper-state/shipper-single.resolver';
+import { ShipperSingleResolver } from './state/shipper-state/shipper-details-state/shipper-single.resolver';
+
 
 const routes: Routes = [
   {

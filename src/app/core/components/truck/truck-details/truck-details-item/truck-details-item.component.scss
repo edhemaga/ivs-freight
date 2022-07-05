@@ -1,5 +1,5 @@
 @import "../truck-details.component.scss";
-
+app-truck-details-item{
 .truck-toolbar-plus {
   svg {
     rect {
@@ -164,4 +164,5 @@
       }
     }
   }
+}
 }

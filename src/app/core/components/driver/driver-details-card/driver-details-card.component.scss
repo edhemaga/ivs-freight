@@ -1,5 +1,5 @@
 @import '../driver-details/driver-details-item/driver-details-item.component.scss';
-
+app-driver-details-card{
 .custom-card-single{
     background-color: #ffffff;
     border-radius: 3px;
@@ -63,4 +63,5 @@
 }
 .activate-button-card{
     width: 398px !important;
+}
 }

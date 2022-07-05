@@ -35,6 +35,8 @@ export class ShopRepairCardViewComponent implements OnInit, OnChanges,OnDestroy 
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.shopResponse?.firstChange && changes?.shopResponse) {
       this.getActiveServices(changes.shopResponse.currentValue);
+      this.getShopsDropdown();
+      this.noteControl.patchValue(changes.shopResponse.currentValue.note);
     }
   }
   ngOnInit(): void {

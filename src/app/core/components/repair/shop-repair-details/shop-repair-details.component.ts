@@ -12,6 +12,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { RepairTService } from '../state/repair.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ShopDetailsQuery } from '../state/shop-details-state/shop-details.query';
 @Component({
   selector: 'app-shop-repair-details',
   templateUrl: './shop-repair-details.component.html',
@@ -29,7 +30,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private tableService: TruckassistTableService,
     private notificationService: NotificationService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private shopDetailsQuery: ShopDetailsQuery
   ) {}
 
   ngOnInit(): void {
@@ -46,25 +48,28 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     this.detailsPageDriverService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
-        this.shopService
-          .getRepairShopById(id)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: (res: RepairShopResponse) => {
-              this.shopConf(res);
-              if (this.router.url.includes('shop-details')) {
-                this.router.navigate([`/repair/${res.id}/shop-details`]);
-              }
-              this.notificationService.success(
-                'Shop successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error("Shop can't be loaded", 'Error:');
-            },
-          });
+        let query;
+        if (!this.shopDetailsQuery.hasEntity(id)) {
+          query = this.shopService.getRepairById(id);
+        } else {
+          query = this.shopDetailsQuery.selectEntity(id);
+        }
+        query.pipe(untilDestroyed(this)).subscribe({
+          next: (res: RepairShopResponse) => {
+            this.shopConf(res);
+            if (this.router.url.includes('shop-details')) {
+              this.router.navigate([`/repair/${res.id}/shop-details`]);
+            }
+            this.notificationService.success(
+              'Shop successfully changed',
+              'Success:'
+            );
+            this.cdRef.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error("Shop can't be loaded", 'Error:');
+          },
+        });
       });
   }
 

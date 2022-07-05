@@ -43,8 +43,7 @@ export class TaDetailsHeaderCardComponent implements OnInit {
     // console.log(this.options);
   }
   public onAction(action: string) {
-    console.log(action);
-    
+
     this.changeEvent.emit(action);
   }
 
@@ -52,11 +51,9 @@ export class TaDetailsHeaderCardComponent implements OnInit {
     this.selectedDropdown = true;
   }
 
-  public onSelecItem(value: any): void {
-    console.log(value);
-    
+  public onSelecItem(value: any): void {    
+    this.selectedDropdown = !this.selectedDropdown;
     this.selectValue.emit(value);
-    this.selectedDropdown = false;
   }
 
   public dropAct(action: any) {

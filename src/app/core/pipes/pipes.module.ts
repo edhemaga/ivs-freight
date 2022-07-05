@@ -30,6 +30,7 @@ import { formatCurrency } from './formatCurrency.pipe';
 import { setFutureYear } from './setFutureYear.pipe';
 import { LogoSliderPipe } from '../components/shared/ta-logo-change/logoSlider.pipe';
 
+
 @NgModule({
   declarations: [
     SafeHtmlPipe,

@@ -12,7 +12,7 @@ import { SharedModule } from '../../shared/shared.module';
     ShipperDetailsSingleComponent,
     ShipperCardViewComponent,
   ],
-  exports: [SharedModule, ShipperCardViewComponent],
+  exports: [ShipperCardViewComponent,SharedModule ],
   imports: [
     CommonModule,
     ShipperDetailsRoutes,
