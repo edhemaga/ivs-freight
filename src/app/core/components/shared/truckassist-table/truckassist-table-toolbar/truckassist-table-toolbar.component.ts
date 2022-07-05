@@ -8,9 +8,7 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
-  ChangeDetectionStrategy,
   AfterViewInit,
-  ChangeDetectorRef,
 } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -29,6 +27,7 @@ export class TruckassistTableToolbarComponent
   @Input() options: any;
   @Input() selectedTab: string;
   @Input() columns: any[];
+  @Input() tableContainerWidth: number;
   listName: string = '';
   optionsPopup: any;
   optionsPopupOpen: boolean = false;
@@ -73,11 +72,10 @@ export class TruckassistTableToolbarComponent
   ];
   tableRowsSelected: any[] = [];
   activeTableData: any = {};
-  toolbarWidth: number = 0;
+  toolbarWidth: string = '';
 
   constructor(
-    private tableService: TruckassistTableService,
-    private changeDetectorRef: ChangeDetectorRef
+    private tableService: TruckassistTableService
   ) {}
 
   ngOnInit(): void {
@@ -113,7 +111,9 @@ export class TruckassistTableToolbarComponent
       .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response?.event?.width) {
-          this.getToolbarWidth();
+          setTimeout(() => {
+            this.getToolbarWidth();
+          }, 10);
         }
       });
   }
@@ -121,6 +121,15 @@ export class TruckassistTableToolbarComponent
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.options?.firstChange && changes?.options) {
       this.options = changes.options.currentValue;
+    }
+
+    if (
+      !changes?.tableContainerWidth?.firstChange &&
+      changes?.tableContainerWidth
+    ) {
+      setTimeout(() => {
+        this.getToolbarWidth();
+      }, 10);
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -145,22 +154,29 @@ export class TruckassistTableToolbarComponent
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.getToolbarWidth();
-    }, 10)
+    }, 10);
   }
 
   getToolbarWidth() {
     const pinedColumns = document.querySelector('.pined-tr');
     const notPinedColumns = document.querySelector('.not-pined-tr');
     const actionColumns = document.querySelector('.actions');
-    const borderColumns = document.querySelector('.not-pined-border');
 
-    this.toolbarWidth =
-      pinedColumns.clientWidth +
-      notPinedColumns.clientWidth +
-      actionColumns.clientWidth +
-      (borderColumns ? 6 : 0);
+    const border = document.querySelector('.table-select-border');
 
-    this.changeDetectorRef.detectChanges();
+    if (
+      pinedColumns?.clientWidth &&
+      notPinedColumns?.clientWidth &&
+      actionColumns?.clientWidth
+    ) {
+      let borderWidth = border ? 6 : 0;
+      this.toolbarWidth =
+        pinedColumns.clientWidth +
+        notPinedColumns.clientWidth +
+        actionColumns.clientWidth +
+        borderWidth +
+        'px';
+    }
   }
 
   onSelectTab(selectedTabData: any) {
