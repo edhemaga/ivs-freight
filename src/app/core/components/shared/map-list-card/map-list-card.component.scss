@@ -1,0 +1,148 @@
+@import 'src/theme/variables.scss';
+
+.map-list-card-container {
+    position: relative;
+    width: 100%;
+    padding: 6px;
+    border-bottom: 1px solid $ta-light-grey-4;
+    cursor: pointer;
+
+    &:hover {
+        background: #F7F7F7;
+    }
+
+    &.map-list-card-selected {
+        background: $ta-light-grey;
+
+        &:hover {
+            background: $ta-light-grey;
+        }
+        
+        .marker-info-text {
+            color: #3C3C3C;
+        }
+
+        .marker-like-text {
+            color: #3C3C3C;
+        }
+        
+        .map-list-card-address {
+            color: #6C6C6C;
+        }
+
+        .marker-rating-svg {
+            svg {
+                path {
+                    fill: #B7B7B7;
+                }
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        fill: #4DB6A2;
+                    }
+                }
+            }
+        }
+    }
+
+    .map-list-card-address {
+        font-size: 11px;
+        line-height: 14px;
+        color: $ta-light-grey-2;
+    }
+
+    .title-container {
+        margin-top: 2px;
+    }
+    
+    .show-more {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+    
+        cursor: pointer;
+    }
+
+    .marker-info-text {
+        font-size: 14px;
+        line-height: 18px;
+        color: $bw6-2;
+    }
+    
+    .marker-medium-text {
+        font-weight: 500;
+    }
+
+    .marker-bold-text {
+        font-weight: 700;
+    }
+    
+    .marker-like-text {
+        font-size: 11px;
+        line-height: 14px;
+        color: $bw6-2;
+    }
+
+    .permanently-closed-text {
+        display: flex;
+        color: $ta-light-grey-2;
+    }
+    
+    .permanently-closed-svg {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 4px;
+    }
+
+    .marker-rating-container {
+        display: flex;
+        align-items: center;
+        height: 14px;
+    
+        .marker-rating {
+            margin-right: 12px;
+            cursor: pointer;
+        
+            .marker-rating-svg {
+                margin-right: 4px;
+    
+                &:hover {
+                    svg {
+                        path {
+                            fill: $ta-light-grey-2;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .map-list-card-info {
+        .marker-rating {
+            margin-right: 22px;
+        }
+    }
+
+    .mg-bottom-2 {
+        margin-bottom: 2px;
+    }
+    
+    .mg-bottom-4 {
+        margin-bottom: 4px;
+    }
+    
+    .mg-bottom-8 {
+        margin-bottom: 8px;
+    }
+    
+    .mg-top-2 {
+        margin-top: 2px;
+    }
+    
+    .mg-top-4 {
+        margin-top: 4px;
+    }
+}

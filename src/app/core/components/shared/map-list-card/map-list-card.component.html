@@ -1,1 +1,76 @@
-<p>map-list-card works!</p>
+<div class="map-list-card-container" [ngClass]="{ 'map-list-card-selected': isSelected }" (click)="selectCard()">
+    <div class="map-list-card-info">
+      <div class="title-container">
+        <div class="marker-info-text marker-bold-text uppercase" [ngClass]="{ 'permanently-closed-text': status == 2 }">
+          <span *ngIf="status == 2">
+            <svg-icon
+              class="permanently-closed-svg"
+              src="assets/svg/common/ic_permanently_closed.svg"
+              [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+            ></svg-icon>
+          </span>
+          <span>{{ title }}</span>
+        </div>
+        <!-- <div class="show-more" (click)="showMoreOptions($event)">
+          <app-table-dropdown
+            [options]="tableOptions.actions"
+            [placement]="'bottom-left'"
+            [id]="latlong.id"
+            (dropDownActions)="onTableBodyActions($event)"
+          >
+          </app-table-dropdown>
+        </div> -->
+        <ng-content></ng-content>
+      </div>
+      <div class="marker-rating-container mg-top-2">
+        <div *ngIf="sortCategory.name == 'Business Name' || sortCategory.name == 'Rating'">
+          <span class="marker-rating">
+            <svg-icon
+                class="marker-rating-svg"
+                src="assets/svg/common/ic_like.svg"
+                [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+            ></svg-icon>
+            <span class="marker-like-text marker-bold-text">{{ rating.up }}</span>
+            </span>
+            <span class="marker-rating">
+            <svg-icon
+                class="marker-rating-svg"
+                src="assets/svg/common/ic_dislike.svg"
+                [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+            ></svg-icon>
+            <span class="marker-like-text marker-bold-text">{{ rating.down }}</span>
+            </span>
+        </div>
+        <div *ngIf="sortCategory.name == 'Date Added'">
+            <div class="marker-like-text marker-medium-text">Added <span class="marker-bold-text">{{ item.createdAt | formatDateP }}</span></div>
+        </div>
+        <div *ngIf="sortCategory.name == 'Last Used Date'">
+            <div class="marker-like-text marker-medium-text">Last Used <span class="marker-bold-text">10/09/21</span></div>
+        </div>
+        <div *ngIf="sortCategory.name == 'Pickups'">
+            <div class="marker-like-text marker-medium-text"><span class="marker-bold-text">73</span> Pickup</div>
+        </div>
+        <div *ngIf="sortCategory.name == 'Deliveries'">
+            <div class="marker-like-text marker-medium-text"><span class="marker-bold-text">246</span> Deliveries</div>
+        </div>
+        <div *ngIf="sortCategory.name == 'Avg. Pickup Time'">
+            <div class="marker-like-text marker-medium-text">Avg. Pickup<span class="marker-bold-text">22m 37s</span></div>
+        </div>
+        <div *ngIf="sortCategory.name == 'Avg. Delivery Time'">
+            <div class="marker-like-text marker-medium-text">Avg. Delivery<span class="marker-bold-text">37m 12s</span></div>
+        </div>
+        <div *ngIf="sortCategory.name == 'Location'">
+            <div class="marker-like-text"><span class="marker-bold-text">456.5 mi</span> away</div>
+        </div>
+      </div>
+      <div class="map-list-card-address mg-top-2" *ngIf="address">
+        <!-- <span class="marker-bold-text">127 mi - </span> -->
+        <div>
+          {{ address.city }},
+          {{ address.state }}
+          {{ address.zipCode }},
+          {{ address.country }}
+        </div>
+      </div>
+    </div>
+  </div>

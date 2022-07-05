@@ -526,16 +526,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     this.sortDirection = this.sortDirection == 'asc' ? 'desc' : 'asc';
   }
   
-  changeSortType(item) {
-    this.sortTypes.map((data: any, index) => {
-      if (data.isActive) {
-        data.isActive = false;
-      }
-    });
-    
-    item.isActive = true;
+  changeSortCategory(item) {
+    console.log('changeSortCategory item', item);
     this.activeSortType = item;
-    this.tooltip.close();
   }
 
   openPopover(t2) {

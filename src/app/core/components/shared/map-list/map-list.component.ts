@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 @Component({
@@ -8,9 +8,10 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 })
 export class MapListComponent implements OnInit {
 
+  @Input() sortTypes: any[] = [];
+  @Output() changeSortCategory: EventEmitter<any> = new EventEmitter<any>();
   public mapListExpanded: boolean = true;
   public searchForm!: FormGroup;
-  public sortTypes: any[] = [];
   public sortDirection: string = 'asc';
   public activeSortType: any = {};
   private tooltip: any;
@@ -21,16 +22,6 @@ export class MapListComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('map list ngOnInit');
-    this.sortTypes = [
-      {name: 'Business Name', id: 1},
-      {name: 'Rating', id: 2},
-      {name: 'Date Added', id: 3},
-      {name: 'Last Used Date', id: 4},
-      {name: 'Pickups', id: 5},
-      {name: 'Deliveries', id: 6},
-      {name: 'Avg. Pickup Time', id: 7},
-      {name: 'Avg. Delivery Time', id: 8}
-    ];
 
     console.log('sortTypes', this.sortTypes);
 
@@ -69,6 +60,10 @@ export class MapListComponent implements OnInit {
     item.isActive = true;
     this.activeSortType = item;
     this.tooltip.close();
+
+    console.log('changeSortType item', item);
+
+    this.changeSortCategory.emit(item);
   }
 
 }

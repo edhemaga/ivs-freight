@@ -103,6 +103,7 @@ import { ProfileImagesModule } from './profile-images/profile-images.module';
 import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
 import { MapListComponent } from './map-list/map-list.component';
 import { MapListCardComponent } from './map-list-card/map-list-card.component';
+import { MapMarkerDropdownComponent } from './map-marker-dropdown/map-marker-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -171,7 +172,8 @@ import { MapListCardComponent } from './map-list-card/map-list-card.component';
     RepairOrderModalComponent,
     TaTabSwitchComponent,
     MapListComponent,
-    MapListCardComponent
+    MapListCardComponent,
+    MapMarkerDropdownComponent
   ],
   imports: [
     CommonModule,
@@ -294,6 +296,7 @@ import { MapListCardComponent } from './map-list-card/map-list-card.component';
     TaTabSwitchComponent,
     MapListComponent,
     MapListCardComponent,
+    MapMarkerDropdownComponent,
 
     // Modals Components
     TaModalComponent,

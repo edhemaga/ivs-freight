@@ -1,0 +1,112 @@
+@import 'src/theme/variables.scss';
+
+.marker-business-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: $bw6-2;
+    text-transform: uppercase;
+    line-height: 22px;
+}
+
+.marker-expanded-view {
+    transition: height 0.2s ease-in-out;
+
+    &.unopened{
+        height: 0px;
+        transition: height 0.2s ease-in-out;
+      }
+}
+
+.marker-title {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 18px;
+    color: $bw6-2;
+    margin-top: 6px;
+}
+
+.marker-dual-info-container {
+    //display: flex;
+    //justify-content: space-between;
+
+    display: inline-block;
+    width: 50%;
+
+    padding: 0px 4px 0px 4px;
+}
+
+.marker-container-expand {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+
+    cursor: pointer;
+    
+    .marker-expand-svg {
+        display: inline-block;
+        transition: all 0.2s ease-in-out;
+        
+        &:hover {
+            svg {
+                path {
+                    fill: $bw6-2;
+                }
+            }
+        }
+
+        &.rotate {
+            transform: rotate(180deg);
+
+            svg {
+                path {
+                    fill: $bc1;
+                }
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        fill: #3551B7;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.marker-expanded-info-container {
+    margin-top: 12px;
+}
+
+.data-count {
+    height: 24px;
+    min-width: 24px;
+    border-radius: 2px;
+    background: $ta-light-grey-4;
+    padding: 3px 4px;
+    margin-right: 4px;
+    font-size: 14px;
+    font-weight: 800;
+    color: $bw6-2;
+    line-height: 18px;
+}
+
+.marker-info-container-all {
+    padding-left: 4px;
+    
+    .show-more {
+        top: 7px;
+        .table-dropdown-container {
+            transform: rotate(90deg);
+        }
+    }
+}
+
+.marker-info-container {
+    display: flex;
+    margin-top: 12px;
+}
+
+.marker-info-svg {
+    margin-right: 6px;
+}
