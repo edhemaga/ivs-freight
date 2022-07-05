@@ -46,6 +46,7 @@ export class TaChartComponent implements OnInit {
   showHoverData: boolean = false;
   hoverDataPosition: number = 0;
   selectedDataRows: any = [];
+  selectedDrivers: any = [];
 
   constructor(private ref: ChangeDetectorRef) { }
 
@@ -227,7 +228,7 @@ export class TaChartComponent implements OnInit {
        }
      ],
       xAxes: [{
-        offset: false,
+          offset: this.chartConfig['offset'] ? this.chartConfig['offset'] : false,
           display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['visible'] : false,
           position: this.axesProperties['horizontalAxes'] && this.axesProperties['horizontalAxes']['position'] ? this.axesProperties['horizontalAxes']['position'] : 'bottom',
           gridLines: {
@@ -347,6 +348,7 @@ export class TaChartComponent implements OnInit {
             let oversizedHover = false;
 
             let clientWidth = this.hoverDataHolder ? this.hoverDataHolder.nativeElement.offsetWidth + 16 : 0;
+            
 
             if (this.hoverDataHolder && this.hoverDataHolder.nativeElement && xAxis['_gridLineItems'][value]['x2'] + clientWidth > canvas.width ) {
               oversizedHover = true;
@@ -537,12 +539,24 @@ export class TaChartComponent implements OnInit {
       ];
     }
     else {
-      if ( !showOthers ) { this.chartInnitProperties = this.saveChartProperties; }
-      else { 
-          let innitProp = [];
-          innitProp.push(this.saveChartProperties[1]);
-          this.chartInnitProperties = innitProp;
+      if ( !showOthers ) {
+          this.chartInnitProperties = this.saveChartProperties;
+      }
+      else {
+        let innitProp = [];
+        innitProp.push(this.saveChartProperties[1]);
+        this.chartInnitProperties = innitProp;
        }
+    }
+
+    if ( elements == null && this.selectedDrivers?.length ){
+      this.chartInnitProperties = [
+        {
+          name: this.selectedDrivers.length+' SELECTED',
+          percent: '$773.08K',
+          value: ''
+        }
+      ];
     }
     this.ref.detectChanges();
   }
@@ -582,5 +596,30 @@ export class TaChartComponent implements OnInit {
     }
     
     this.selectedDataRows = dataValues;
+  }
+
+  chartUpdated(data){
+    this.chart.chart.config.data.datasets[0].data = data;
+    this.setChartOptions();
+  }
+
+  updateMultiBarData(updateData){
+    updateData.map((item, i) => {
+      
+      let sameFound = false;
+      this.chart.chart.config.data.datasets.map((ch, a) => {
+        if ( ch['id'] == 'top10' || ch['id'] == 'allOthers' ){
+          ch.hidden = true;
+        }
+        if ( item['id'] == ch['id'] ){
+          sameFound = true;
+        }
+      });
+
+      if(!sameFound){
+        this.chart.chart.config.data.datasets.push(item);
+      }
+    });
+    this.setChartOptions();
   }
 }

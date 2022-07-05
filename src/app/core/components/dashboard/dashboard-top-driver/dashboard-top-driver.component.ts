@@ -7,6 +7,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class DashboardTopDriverComponent implements OnInit {
   @ViewChild('doughnutChart', {static: false}) public doughnutChart: any;
+  @ViewChild('topDriverBarChart', {static: false}) public topDriverBarChart: any;
   @ViewChild('t2') t2: any;
   @ViewChild('t3') t3: any;
 
@@ -15,6 +16,8 @@ export class DashboardTopDriverComponent implements OnInit {
   topTenTitle: string = "Driver";
 
   periodSwitchItems: any[] = [];
+
+  selectedDrivers: any[] = [];
 
   public chartConfig: object = {};
 
@@ -29,7 +32,8 @@ export class DashboardTopDriverComponent implements OnInit {
           borderColor: '#919191',
           hoverBackgroundColor: '#6C6C6C',
           hoverBorderColor: '#707070',
-          label: 'Top 10'
+          label: 'Top 10',
+          id: 'top10'
         }
       },
       {
@@ -41,7 +45,8 @@ export class DashboardTopDriverComponent implements OnInit {
           borderColor: '#CCCCCC',
           hoverBackgroundColor: '#AAAAAA',
           hoverBorderColor: '#707070',
-          label: 'All Others'
+          label: 'All Others',
+          id: 'allOthers'
         }
       }
     ],
@@ -149,7 +154,7 @@ export class DashboardTopDriverComponent implements OnInit {
   ];
 
   circleColor: any[] = ['8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F', 'CCCCCC'];
-
+  chartColors: any[] = [];
   compareColor: any = {};
   savedColors: any[] = [];
 
@@ -199,12 +204,12 @@ export class DashboardTopDriverComponent implements OnInit {
 
   constructor() { }
 
-  setChartData() {
+  setChartData(drivers, selectedDrivers?) {
     var dataValues = [];
     var dataColors = [];
     var topTenPercentage = 0;
 
-    this.driverList.map((item, i) => {
+    drivers.map((item, i) => {
       dataValues.push(parseFloat(item.percent));
       topTenPercentage = topTenPercentage + parseFloat(item.percent);
     });
@@ -213,12 +218,41 @@ export class DashboardTopDriverComponent implements OnInit {
     var otherPercent = 100 - topTenPercentage;
     otherPercent = parseFloat(otherPercent.toFixed(2));
 
-    dataValues.push(otherPercent);
+    if ( !selectedDrivers ) { dataValues.push(otherPercent); }
 
     this.circleColor.map((item, i) => {
       var color = '#'+item;
       dataColors.push(color);
     });
+
+    if ( this.circleColor?.length ) {
+      this.chartColors = this.circleColor;
+    }
+
+    let chartProp = [];
+
+    if ( selectedDrivers ){
+      chartProp = [
+        {
+          name: drivers.length+' SELECTED',
+          percent: '$773.08K'
+        }
+      ];
+    }
+    else{
+      chartProp = [
+        {
+          name: 'TOP '+drivers.length,
+          value: '$773.08K',
+          percent: topTenPercentage+'%'
+        },
+        {
+          name: 'ALL OTHERS',
+          value: '$623.56K',
+          percent: otherPercent+'%'
+        }
+      ];
+    }
 
     this.chartConfig = {
       dataProperties: [
@@ -233,18 +267,7 @@ export class DashboardTopDriverComponent implements OnInit {
           }
         }
       ],
-      chartInnitProperties: [
-        {
-          name: 'TOP '+this.driverList.length,
-          value: '$773.08K',
-          percent: topTenPercentage+'%'
-        },
-        {
-          name: 'ALL OTHERS',
-          value: '$623.56K',
-          percent: otherPercent+'%'
-        }
-      ],
+      chartInnitProperties: chartProp,
       showLegend: true,
       chartValues: [2, 2],
       defaultType: 'doughnut',
@@ -252,14 +275,19 @@ export class DashboardTopDriverComponent implements OnInit {
       chartHeight: '322',
       removeChartMargin: true,
       dataLabels: [],
-      driversList: this.driverList,
+      driversList: drivers,
       noChartImage: 'assets/svg/common/no_data_pay.svg'
     };
+
+    if ( this.doughnutChart ) {
+      this.doughnutChart.chartInnitProperties = chartProp;
+      this.doughnutChart.chartUpdated(dataValues);
+    }
   }
 
   ngOnInit(): void {
 
-    this.setChartData();
+    this.setChartData(this.driverList);
 
     this.topTenSwitchTabstype1 = [
       {
@@ -316,8 +344,16 @@ export class DashboardTopDriverComponent implements OnInit {
   removeDriverFromList(e: Event,indx, item){
     e.stopPropagation()
     this.driverList.splice(indx, 1);
+    this.selectedDrivers.splice(indx, 1);
+    if ( this.selectedDrivers?.length > 0 ) {
+      this.setChartData(this.selectedDrivers, true);
+    }
+    
     this.driverList.push(item);
     this.savedColors.unshift(this.compareColor[item.id]);
+    if ( this.selectedDrivers?.length == 0 ) {
+      this.setChartData(this.driverList);
+    }
     delete this.compareColor[item.id];
   }
 
@@ -364,8 +400,14 @@ export class DashboardTopDriverComponent implements OnInit {
       
       const objectSize = Object.keys(this.compareColor).length;
       this.compareColor[item.id] = firstInArray;
+      this.selectedDrivers.push(this.driverList[indx]);
+      this.doughnutChart.selectedDrivers = this.selectedDrivers;
       this.driverList.splice(indx, 1);
+      this.setChartData(this.selectedDrivers, true);
+      this.updateBarChart(this.selectedDrivers);
       this.driverList.splice(objectSize, 0, item);
+
+      this.hoverDoughnutChart(indx);
     }
 
   }
@@ -376,5 +418,26 @@ export class DashboardTopDriverComponent implements OnInit {
 
   removeDoughnutChart(){
     this.doughnutChart.hoverDoughnut(null);
+  }
+
+  updateBarChart(selectedDrivers){
+    let updateData = [];
+    selectedDrivers.map((item, i) => {
+      let dataArray = {
+        backgroundColor: '#'+this.chartColors[i],
+        borderColor: '#'+this.chartColors[i],
+        data: [60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 50000, 100000, 120000],
+        label: item['name'],
+        type: "bar",
+        yAxisID: "y-axis-0",
+        id: item['id']
+      }
+
+      updateData.push(dataArray);
+    });
+   
+    if ( this.topDriverBarChart ) {
+      this.topDriverBarChart.updateMultiBarData(updateData);
+    }
   }
 }

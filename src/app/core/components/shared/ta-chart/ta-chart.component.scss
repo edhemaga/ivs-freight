@@ -15,13 +15,14 @@
 
   .hover_data_holder{
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 0;
     background-color: #fff;
     border-radius: 2px;
     box-shadow: 0 0 4px #707070;
 
     padding: 6px 8px 8px 8px;
+    transform: translateY(-50%);
 
     z-index: 2;
 
