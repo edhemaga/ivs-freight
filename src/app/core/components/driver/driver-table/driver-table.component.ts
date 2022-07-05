@@ -1,5 +1,11 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  AfterViewInit,
+} from '@angular/core';
 
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
@@ -61,7 +67,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private driverTService: DriverTService,
     private notificationService: NotificationService
   ) {}
-  
 
   ngOnInit(): void {
     this.sendDriverData();
@@ -222,13 +227,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.observTableContainer();
-    }, 10)
+    }, 10);
   }
 
   observTableContainer() {
     this.resizeObserver = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
-        this.tableContainerWidth = entry.contentRect.width
+        this.tableContainerWidth = entry.contentRect.width;
       });
     });
 
@@ -391,7 +396,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
       // For Testing
-     /*  for(let i = 0; i < 300; i++){
+      /*  for(let i = 0; i < 500; i++){
         this.viewData.push(this.viewData[0]);
       } */
     } else {
@@ -610,7 +615,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
-    this.resizeObserver.unobserve(document.querySelector('.table-container'))
+    this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();
   }
 }

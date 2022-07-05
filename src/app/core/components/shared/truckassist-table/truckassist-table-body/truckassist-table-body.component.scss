@@ -951,8 +951,9 @@ table {
   background: #f7f7f7 !important;
 }
 
-.border-inactive{
+.border-inactive {
   border-right: 3px solid white;
+  border-left: 3px solid white;
 }
 
 /* Action Animations */
@@ -970,4 +971,3 @@ table {
   background: red !important;
   transition: 0.4s;
 }
-

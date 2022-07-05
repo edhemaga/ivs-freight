@@ -8,9 +8,7 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
-  ChangeDetectionStrategy,
   AfterViewInit,
-  ChangeDetectorRef,
 } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -77,8 +75,7 @@ export class TruckassistTableToolbarComponent
   toolbarWidth: string = '';
 
   constructor(
-    private tableService: TruckassistTableService,
-    private changeDetectorRef: ChangeDetectorRef
+    private tableService: TruckassistTableService
   ) {}
 
   ngOnInit(): void {
@@ -130,10 +127,9 @@ export class TruckassistTableToolbarComponent
       !changes?.tableContainerWidth?.firstChange &&
       changes?.tableContainerWidth
     ) {
-      console.log('tableContainerWidth se promenio')
       setTimeout(() => {
         this.getToolbarWidth();
-      }, 10)
+      }, 10);
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -162,30 +158,24 @@ export class TruckassistTableToolbarComponent
   }
 
   getToolbarWidth() {
-    console.log('Poziva se getToolbarWidth');
     const pinedColumns = document.querySelector('.pined-tr');
     const notPinedColumns = document.querySelector('.not-pined-tr');
     const actionColumns = document.querySelector('.actions');
 
-    /* console.log(pinedColumns.clientWidth)
-    console.log(notPinedColumns.clientWidth)
-    console.log(actionColumns.clientWidth) */
+    const border = document.querySelector('.table-select-border');
 
     if (
       pinedColumns?.clientWidth &&
       notPinedColumns?.clientWidth &&
       actionColumns?.clientWidth
     ) {
-      console.log('Postoje sve clientWidth')
+      let borderWidth = border ? 6 : 0;
       this.toolbarWidth =
         pinedColumns.clientWidth +
         notPinedColumns.clientWidth +
         actionColumns.clientWidth +
-        6 + 'px';
-
-      console.log(this.toolbarWidth);
-
-      this.changeDetectorRef.detectChanges();
+        borderWidth +
+        'px';
     }
   }
 

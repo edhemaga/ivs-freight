@@ -6,7 +6,6 @@
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
         [ngClass]="{
-          'border-inactive': !showScrollSectionBorder,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
@@ -777,7 +776,7 @@
 
     <!-- Border For Not Pined -->
     <div
-      class="not-pined-border"
+      class="not-pined-border table-select-border"
       *ngIf="showScrollSectionBorder"
       [ngStyle]="{
         height: viewData.length * 32 + 2 * viewData.length - 1 - 1 + 'px'
@@ -1498,7 +1497,7 @@
 
     <!-- Border For Not Pined -->
     <div
-      class="not-pined-border"
+      class="not-pined-border table-select-border"
       *ngIf="showScrollSectionBorder"
       [ngStyle]="{
         height: viewData.length * 32 + 2 * viewData.length - 1 - 1 + 'px'

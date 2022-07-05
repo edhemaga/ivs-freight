@@ -16,6 +16,7 @@ import {
 import { Router } from '@angular/router';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { clearInterval } from 'timers';
 
 @Component({
   selector: 'app-truckassist-table-body',
@@ -84,27 +85,15 @@ export class TruckassistTableBodyComponent
       .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response?.event?.width) {
-          let isPined: boolean;
           this.columns = this.columns.map((c) => {
             if (c.title === response.columns[response.event.index].title) {
               c.width = response.event.width;
-              isPined = c.isPined;
             }
 
             return c;
           });
 
-          this.changeDetectorRef.detectChanges();
-
-          if (isPined) {
-            this.getNotPinedMaxWidth();
-
-            setTimeout(() => {
-              this.checkForScroll();
-            }, 10);
-          } else {
-            this.checkForScroll();
-          }
+          this.getNotPinedMaxWidth(true);
         }
       });
 
@@ -226,11 +215,8 @@ export class TruckassistTableBodyComponent
 
       if (checkScroll) {
         const div = document.getElementById('scroll-container');
-
         if (div) {
           this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-
-          this.changeDetectorRef.detectChanges();
         }
       }
     }
