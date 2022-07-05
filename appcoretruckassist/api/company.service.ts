@@ -443,13 +443,13 @@ export class CompanyService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CompanyResponse>;
-    public apiCompanyIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CompanyResponse>>;
-    public apiCompanyIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CompanyResponse>>;
-    public apiCompanyIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling apiCompanyIdGet.');
-        }
+    public apiCompanyIdGet( observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CompanyResponse>;
+    public apiCompanyIdGet( observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CompanyResponse>>;
+    public apiCompanyIdGet( observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CompanyResponse>>;
+    public apiCompanyIdGet( observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+        // if (id === null || id === undefined) {
+        //     throw new Error('Required parameter id was null or undefined when calling apiCompanyIdGet.');
+        // }
 
         let headers = this.defaultHeaders;
 
@@ -480,7 +480,7 @@ export class CompanyService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<CompanyResponse>(`${this.configuration.basePath}/api/company/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<CompanyResponse>(`${this.configuration.basePath}/api/company`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

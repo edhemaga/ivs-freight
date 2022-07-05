@@ -1,25 +1,42 @@
-import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { CompanyResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-settings-factoring',
   templateUrl: './settings-factoring.component.html',
   styleUrls: ['./settings-factoring.component.scss'],
+  providers: [DetailsPageService],
 })
-export class SettingsFactoringComponent {
-  public factoringData = {
-      phone:'(123) 456-7890',
-      email:'peraperic@gmail.com',
-      address:'5462 N East River Rd apt 611,Chicago, IL 60656, USA',
-      noticeAssigment:{
-        text:'This invoice has been assigned to,and must be paid directly to:',
-        param1:'Advance Business Capital LLC DBA Triumph Business Capital P.O. Box 610028 Dallas TX 75261-0028',
-        param2:'Claims or offsets should be directed to 866-414-9600'
-      }
-  };
-
+export class SettingsFactoringComponent implements OnInit {
+  @Input() public factoringData: any;
+  public changeDefaultNotice: boolean;
   constructor(private settingsStoreService: SettingsStoreService) {}
 
+  ngOnInit(): void {
+    console.log(this.factoringData);
+    this.getFactoringData(this.factoringData)
+  }
+  public getFactoringData(data: CompanyResponse) {
+    // this.factoringData = data;
+    if (this.factoringData.customNoticeOfAssigment != null) {
+      this.changeDefaultNotice = true;
+    } else {
+      this.changeDefaultNotice = false;
+    }
+    console.log(this.changeDefaultNotice);
+    
+  }
   public onAction(modal: { type: boolean; modalName: string; action: string }) {
     switch (modal.action) {
       case 'edit': {

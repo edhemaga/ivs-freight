@@ -7,35 +7,36 @@
     <div class="settings-header-button">
       <div class="border-left"></div>
       <svg-icon
-        src="assets/svg/common/ic_pen.svg"
-        class="settings-edit-button"
-        (click)="
-          onAction({ type: true, modalName: 'insurance-policy', action: 'new' })
-        "
-      ></svg-icon>
+          src="assets/svg/common/ic_plus.svg"
+          class="settings-plus-button"
+          (click)="onAction({ modalName: 'basic', type: true, action: 'new' })"
+        ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
-    <div class="settings-insuarnce">
+    <div
+      class="settings-insuarnce"
+      *ngFor="let insurance of insurancePolicyData; trackBy:identity"
+    >
       <app-ta-re-card
-        [cardNameCommon]="'KNIGHTBROOK INS CO.'"
+        [cardNameCommon]="insurance.producerName"
         [haveHeaderText]="true"
         [cardDocumentCounter]="1"
       >
         <div class="settings-body-items">
-          <div *ngIf="insuranceData.phone !== ''" class="single-item">
+          <div *ngIf="insurance?.phone" class="single-item">
             <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-            <span>{{ insuranceData.phone }}</span>
+            <span>{{ insurance?.phone | formatPhoneP }}</span>
           </div>
-          <div *ngIf="insuranceData.email !== ''" class="single-item">
+          <div *ngIf="insurance.email" class="single-item">
             <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-            <span>{{ insuranceData.email }}</span>
+            <span>{{ insurance?.email }}</span>
           </div>
-          <div *ngIf="insuranceData.address !== ''" class="single-item">
+          <div *ngIf="insurance.address" class="single-item">
             <svg-icon
               src="assets/svg/truckassist-table/location-icon.svg"
             ></svg-icon>
-            <span class="single-item-address">{{ insuranceData.address }}</span>
+            <span class="single-item-address">{{ insurance?.address?.address }}</span>
           </div>
         </div>
         <app-ta-custom-card
@@ -44,7 +45,6 @@
           [isCardOpen]="true"
           [hasDivider]="true"
           [animationsDisabled]="false"
-          [textBottomPossiton]="'-2px'"
         >
           <div class="insuarance-card-top-container">
             <div class="name-div-wrapper">
@@ -85,7 +85,10 @@
               <span class="insurer-name">{{
                 insuranceData.automobileLiability.insurerName
               }}</span>
-              <div *ngIf="insuranceData.automobileLiability.rating " class="rating">
+              <div
+                *ngIf="insuranceData.automobileLiability.rating"
+                class="rating"
+              >
                 <div class="rating-value">
                   {{ insuranceData.automobileLiability.rating }}
                 </div>
@@ -108,7 +111,6 @@
         <app-ta-custom-card
           [cardName]="'Motor Truck Cargo / Reefer Breakdown'"
           [bodyTemplate]="'card'"
-         
           [hasDivider]="true"
           [animationsDisabled]="false"
           [textBottomPossiton]="'-2px'"
@@ -117,7 +119,6 @@
         <app-ta-custom-card
           [cardName]="'Psysical Damage'"
           [bodyTemplate]="'card'"
-        
           [hasDivider]="true"
           [animationsDisabled]="false"
           [textBottomPossiton]="'-2px'"
@@ -126,7 +127,6 @@
         <app-ta-custom-card
           [cardName]="'Traller Interchange'"
           [bodyTemplate]="'card'"
-        
           [hasDivider]="true"
           [animationsDisabled]="false"
           [textBottomPossiton]="'-2px'"

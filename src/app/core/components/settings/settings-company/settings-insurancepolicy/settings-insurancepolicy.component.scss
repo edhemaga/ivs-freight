@@ -12,9 +12,10 @@
   }
 }
 .single-item-address{
-    width: 256px;
+    max-width: 310px;
+    white-space: pre-wrap;
     position: relative;
-    top: 12px; 
+    // top: 12px; 
 }
 .insuarance-card-top-container{
   padding: 0 10px;

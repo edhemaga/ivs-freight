@@ -1,5 +1,9 @@
 @import "../../settings.global.scss";
-
+.dropInputCompany {
+  width: 512px;
+  
+}
+ 
 .additional-template-data {
   display: grid;
   grid-template-columns: repeat(3, 130px);
@@ -294,5 +298,146 @@
       }
     }
     margin-left: 6px;
+  }
+}
+.department-template-data {
+  display: grid;
+  grid-template-columns: 105px 123px 89px 60px;
+  grid-column-gap: 15px;
+  column-gap: 15px;
+  grid-auto-flow: column;
+  padding: 0 10px;
+  padding-bottom: 6px;
+  .department-header-name {
+    font-size: 12px;
+    font-weight: $settings-font-semibold;
+    color: #6c6c6c;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+}
+.department-template-body {
+  display: grid;
+  padding: 0 10px;
+  grid-template-columns: 105px 125px 87px 60px;
+  column-gap: 15px;
+  padding-bottom: 6px;
+  .body-value-department {
+    font-size: 14px;
+    font-weight: $settings-font-semibold;
+    color: #6c6c6c;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+  .body-value {
+    font-size: 14px;
+    font-weight: 400;
+    color: #6c6c6c;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+  .body-value-email {
+    font-size: 14px;
+    font-weight: 400;
+    color: #6c6c6c;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 220px;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+}
+
+.current-active-item-company {
+  width:512px;
+  max-width: 512px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+  border-radius: 2px;
+  padding: 4px 5px;
+  cursor: pointer;
+
+  .current-active-name {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 24px;
+    color: #6c6c6c;
+    padding-left: 7px;
+    cursor: pointer;
+  }
+
+  .arrow-down{
+    display: flex;
+  }
+
+  &:hover {
+    // background-color: #f3f3f3;
+    // transition: all 0.3s ease-in-out;
+
+    .current-active-name {
+      color: #3c3c3c;
+    }
+
+    .current-active-owner {
+      svg {
+        path {
+          fill: #536bc2;
+          
+        }
+      }
+    }
+  }
+}
+.bank-logo-settings{
+  svg{
+    path{
+      fill: #CCCCCC !important;
+    }
+    &:hover{
+      path{
+        fill: #6c6c6c !important;
+      }
+    }
+  }
+}
+.division-name-wrapper{
+  display: flex;
+  align-items: center;
+  .division-company{
+    background-color: #f3f3f3;
+    border-radius: 2px;
+    color: #919191;
+    font-size: 11px;
+    font-weight: 800;
+    margin-left: 6px;
+    line-height: 18px;
+    padding: 0 6px;
   }
 }
