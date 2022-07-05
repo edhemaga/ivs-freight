@@ -224,11 +224,15 @@ export class TruckassistTableBodyComponent
         (pinedColumns.clientWidth + actionColumns.clientWidth) -
         6;
 
-      /* if(checkScroll){
-        setInterval(() => {
-          this.checkForScroll();
-        }, 10);
-      } */
+      if (checkScroll) {
+        const div = document.getElementById('scroll-container');
+
+        if (div) {
+          this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+
+          this.changeDetectorRef.detectChanges();
+        }
+      }
     }
   }
 
