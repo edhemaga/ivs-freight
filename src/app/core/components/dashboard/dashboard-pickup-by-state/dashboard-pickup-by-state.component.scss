@@ -212,6 +212,57 @@ $top_state_color:'6278C7', '7A8DCB', '7A8DCB', 'A0AFDE', 'A0AFDE', 'C2CEEC', 'C2
                 display: flex;
                 padding-right: 0px;
             }
+
+            .col-5{
+                padding: 13px 12px 11px 12px;
+                .bar_chart_holder{
+                    width: 100%;
+                    height: 100%;
+    
+                    .chart_top_line_holder{
+                        display: flex;
+                        margin-bottom: 19px;
+    
+                        .chart_line_title{
+                            font-size: 18px;
+                            line-height: 22px;
+                            font-weight: 700;
+                            color: #AAAAAA;
+                            flex: 1
+                        }
+    
+                        .chart_legend_hold{
+                            .chart_legend_line{
+                                display: flex;
+                                align-items: center;
+    
+                                &.line_sep{
+                                    margin-bottom: 8px;
+                                }
+    
+                                .chart_legend_title{
+                                    font-size: 11px;
+                                    font-weight: 500;
+                                    line-height: 14px;
+                                    color: #6C6C6C;
+                                }
+    
+                                .chart_legend_dot{
+                                    svg-icon{
+                                        svg{
+                                            display: flex;
+                                            width: 10px;
+                                            height: 10px;
+    
+                                            margin-right: 4px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         .dashboard-pickup-body-state-list-holder{

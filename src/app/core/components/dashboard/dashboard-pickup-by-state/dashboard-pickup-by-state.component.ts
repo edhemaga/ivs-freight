@@ -9,6 +9,61 @@ export class DashboardPickupByStateComponent implements OnInit {
   @ViewChild('t2') t2: any;
   @ViewChild('t3') t3: any;
 
+  public barChartConfig: object = {
+    dataProperties: [
+      {
+        defaultConfig: {
+          type: 'bar',
+          data: [12, 18, 13, 17, 13],
+          yAxisID: 'y-axis-0',
+          backgroundColor: '#919191',
+          borderColor: '#919191',
+          hoverBackgroundColor: '#6C6C6C',
+          hoverBorderColor: '#707070',
+          label: 'Top 10'
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'bar',
+          data: [8, 10, 9, 16, 17],
+          yAxisID: 'y-axis-0',
+          backgroundColor: '#CCCCCC',
+          borderColor: '#CCCCCC',
+          hoverBackgroundColor: '#AAAAAA',
+          hoverBorderColor: '#707070',
+          label: 'All Others'
+        }
+      }
+    ],
+    showLegend: false,
+    chartValues: [2, 2],
+    defaultType: 'bar',
+    chartWidth: '750',
+    chartHeight: '290',
+    removeChartMargin: true,
+    gridHoverBackground: true,
+    startGridBackgroundFromZero: true,
+    hasHoverData: true,
+    hasPercentage: true,
+    offset: true,
+    dataLabels: [[20, 'MON'], [21, 'TUE'], [22, 'WED'], [23, 'THU'], [24, 'FRI']],
+    noChartImage: 'assets/svg/common/no_data_pay.svg'
+  };
+  public barAxes: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 20,
+      stepSize: 5,
+      showGridLines: true
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: true
+    }
+  };  
 
   periodTitle: string = "Daily";
 
