@@ -235,6 +235,7 @@
         p {
           font-size: 14px;
           color: $bw6-2;
+          user-select: none !important;
 
           .required-star {
             color: $progress-danger;

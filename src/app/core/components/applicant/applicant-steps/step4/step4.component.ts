@@ -273,43 +273,6 @@ export class Step4Component implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  public onUpdateAccident(): void {
-    /*  this.shared.clearNotifications();
-
-        let isValid = true;
-
-        if (this.isHazmatSpill === undefined) {
-            this.notification.warning(
-                'Please answer hazmat spill.',
-                'Warning:'
-            );
-            isValid = false;
-        }
-        if (!isValid) {
-            return false;
-        } */
-    /* 
-    if (this.accidentArray?.length) {
-      const accidentForm = this.accidentForm.value;
-      const accident: Accident = new Accident(
-        this.accidentArray[this.editAccident]
-      );
-
-      accident.accidentDate = accidentForm.accidentDate;
-      accident.accidentLocation = accidentForm.accidentLocation;
-      accident.hazmatSpill = accidentForm.hazmatSpill;
-      accident.fatalities = accidentForm.fatalities;
-      accident.injuries = accidentForm.injuries;
-      accident.truckType = accidentForm.truckType;
-      accident.accidentDescription = accidentForm.accidentDescription;
-
-      this.accidentArray[this.editAccident] = accident;
-    }
-
-    this.accidentForm.reset();
-    this.editAccident = -1; */
-  }
-
   private formFilling(): void {
     /*   this.accidentForm.patchValue({
       hasPastAccident: [

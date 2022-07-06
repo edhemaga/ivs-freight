@@ -18,175 +18,273 @@
   }
 
   .form-section {
-    .past-monts-violations-container {
+    .past-months-violations-container {
       margin-bottom: 12px;
     }
 
     .not-been-convicted-container {
-      margin-bottom: 12px;
+      margin-bottom: 22px;
+
+      p {
+        font-size: 12px;
+        margin-left: -80px !important;
+        cursor: pointer;
+      }
     }
 
     .license-view-container {
+      width: 616px;
+      margin-bottom: 12px;
+
       .title-container {
-        margin-bottom: 2px;
+        width: 100%;
+        margin-bottom: 6px;
+        padding-left: 6px;
 
         .license-title-box,
         .state-title-box,
         .class-title-box,
         .date-title-box {
-          margin-right: 12px;
+          p {
+            color: $bw5;
+            font-size: 12px;
+
+            span {
+              color: $progress-danger;
+            }
+          }
 
           &.license-title-box {
-            width: 148px;
+            width: 84px;
+            margin-right: 116px;
           }
 
           &.state-title-box {
-            width: 83px;
+            width: 57px;
+            margin-right: 55px;
           }
 
           &.class-title-box {
-            width: 77px;
+            width: 59px;
+            margin-right: 53px;
           }
 
           &.date-title-box {
-            width: 113px;
-            margin-right: 0;
-          }
-
-          p {
-            color: $bw6-2;
-            font-size: 10px;
+            width: 84px;
           }
         }
       }
 
       .license-info-container {
-        margin-bottom: 12px;
+        width: 100%;
+        height: 26px;
+        padding: 4px 6px;
+        background-color: $ta-light-grey-4;
+        border-radius: 2px;
+        margin-bottom: 2px;
+        text-transform: uppercase;
+        color: $bw6-2;
+        font-size: 14px;
+        transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+        &:hover {
+          background: $bw2;
+          color: $ta-light-grey-3;
+        }
+
+        &:hover .btn-container {
+          opacity: 1;
+          visibility: visible !important;
+        }
 
         .license-box,
         .state-box,
         .class-box,
         .date-box {
-          background-color: $bw5;
-          color: $white;
-          border-radius: 3px;
-          height: 26px;
-          padding: 0;
-          margin-right: 12px;
-
           &.license-box {
-            width: 148px;
+            width: 182px;
+            margin-right: 12px;
           }
 
           &.state-box {
-            width: 83px;
+            width: 100px;
+            margin-right: 12px;
+            padding-left: 6px;
           }
 
           &.class-box {
-            width: 77px;
+            width: 100px;
+            margin-right: 12px;
+            padding-left: 6px;
           }
 
           &.date-box {
-            width: 113px;
-            margin-right: 0;
+            width: 136px;
+            margin-right: 8px;
+            padding-left: 6px;
+          }
+        }
+
+        .btn-container {
+          width: 42px;
+          visibility: hidden !important;
+          opacity: 0;
+          transition: opacity 0.2s ease-in-out;
+
+          .edit-icon,
+          .delete-icon {
+            cursor: pointer;
+
+            &:hover {
+              svg {
+                path {
+                  transition: fill 0.2s ease-in-out;
+                  fill: $bw6-2;
+                }
+              }
+            }
+
+            svg {
+              path {
+                fill: $bw4;
+              }
+            }
           }
 
-          p {
-            font-size: 14px;
+          .edit-icon {
+            margin-right: 6px;
           }
         }
       }
     }
 
     .only-license-container {
-      margin-bottom: 12px;
+      margin-bottom: 32px;
+
+      .ta-checkbox-label {
+        font-size: 12px !important;
+        font-weight: bold !important;
+      }
     }
 
     .violations-view-container {
-      margin-bottom: 18px;
+      width: 616px;
+      margin-bottom: 32px;
 
       .title-container {
+        width: 100%;
         margin-bottom: 6px;
+        padding-left: 36px;
 
         .date-title-box,
         .vehicle-title-box,
         .location-title-box,
         .description-title-box {
-          margin-right: 12px;
-          padding-left: 6px;
+          p {
+            color: $bw5;
+            font-size: 12px;
+
+            span {
+              color: $progress-danger;
+            }
+          }
 
           &.date-title-box {
-            width: 100px;
-            padding-left: 37px;
+            width: 43px;
+            margin-right: 39px;
           }
 
           &.vehicle-title-box {
-            width: 105px;
+            width: 99px;
+            margin-right: 48px;
           }
 
           &.location-title-box {
-            width: 165px;
-            padding-left: 37px;
+            width: 75px;
+            margin-right: 72px;
           }
 
           &.description-title-box {
-            width: 210px;
-            margin-right: 0;
+            width: 191px;
           }
-
-          p {
-            color: $bw6-2;
-            font-size: 12px;
-          }
-        }
-      }
-
-      .violation {
-        &:hover .edit-delete-box {
-          visibility: visible;
         }
       }
 
       .violation-info-container {
-        margin-bottom: 6px;
+        width: 100%;
         height: 26px;
-        background-color: $bw1;
+        margin-bottom: 2px;
+        padding: 4px 6px;
         border-radius: 2px;
-        padding: 4px 0;
+        background: $bw1;
+        color: $bw6-2;
+        transition: color 0.2s ease-in-out, background 0.2s ease-in-out;
+
+        &:hover {
+          background: $bw2;
+          color: $ta-light-grey-3;
+        }
+
+        &:hover > .date-box > .icon-box > .date-icon,
+        &:hover > .location-box > .icon-box > .location-icon {
+          svg {
+            path {
+              fill: $ta-light-blue !important;
+            }
+          }
+        }
+
+        &:hover > .btn-container {
+          visibility: visible !important;
+          opacity: 1 !important;
+        }
 
         .date-box,
         .vehicle-box,
         .location-box,
         .description-box {
-          margin-right: 12px;
-          padding-left: 6px;
-
           &.date-box {
-            width: 100px;
+            margin-right: 27px;
+
+            .icon-box {
+              width: 18px;
+              height: 18px;
+
+              .date-icon {
+                svg {
+                  path {
+                    fill: $ta-blue-3;
+                  }
+                }
+              }
+            }
           }
 
           &.vehicle-box {
-            width: 105px;
+            width: 73px;
+            margin-right: 43px;
           }
 
           &.location-box {
-            width: 165px;
+            width: 159px;
+            margin-right: 18px;
+
+            .icon-box {
+              width: 18px;
+              height: 18px;
+
+              .location-icon {
+                svg {
+                  path {
+                    fill: $ta-blue-3;
+                  }
+                }
+              }
+            }
           }
 
           &.description-box {
-            width: 210px;
-            margin-right: 0;
-          }
-
-          .icon-box {
-            width: 18px;
-            height: 18px;
-
-            svg {
-              path {
-                fill: $ta-light-blue;
-              }
-            }
+            width: 153px;
           }
 
           .pipe-border {
@@ -202,58 +300,43 @@
             color: $bw6-2;
           }
         }
-      }
 
-      .edit-delete-box {
-        visibility: hidden;
-        height: 26px;
-        width: 38px;
-        margin-left: 6px;
-        background-color: $white;
+        .btn-container {
+          width: 42px;
+          padding-left: 10px;
+          visibility: hidden !important;
+          opacity: 0;
+          transition: opacity 0.2s ease-in-out;
 
-        .edit-btn,
-        .delete-btn {
-          width: 16px;
-          height: 16px;
-          border-radius: 50%;
-          border: none;
-          outline: none;
-          opacity: 0.7;
+          .edit-icon,
+          .delete-icon {
+            cursor: pointer;
 
-          &:hover {
-            opacity: 1;
+            &:hover {
+              svg {
+                path {
+                  transition: fill 0.2s ease-in-out;
+                  fill: $bw6-2;
+                }
+              }
+            }
+
+            svg {
+              path {
+                fill: $bw4;
+              }
+            }
           }
 
-          &.edit-btn {
-            background-color: $bw6-2;
+          .edit-icon {
             margin-right: 6px;
-
-            .edit-icon {
-              svg {
-                path {
-                  fill: $white;
-                }
-              }
-            }
-          }
-
-          &.delete-btn {
-            background-color: $progress-danger;
-
-            .delete-icon {
-              svg {
-                path {
-                  fill: $white;
-                }
-              }
-            }
           }
         }
       }
     }
 
-    .form-label-group {
-      margin-bottom: 12px;
+    .group {
+      margin-bottom: 32px;
       margin-right: 12px;
 
       &:last-child {
@@ -263,41 +346,141 @@
     }
 
     .date-group {
-      width: 97px;
+      width: 145px;
     }
 
     .truck-type-group {
-      width: 171px;
+      width: 192px;
     }
 
     .location-group {
-      width: 193px;
+      width: 255px;
     }
 
     .description-group {
-      width: 226px;
+      width: 616px;
+      margin-bottom: 22px;
     }
 
     .add-another-violation-container {
-      margin-bottom: 12px;
+      margin-bottom: 22px;
 
-      .add-violation-btn {
-        border: 0;
-        outline: 0;
+      .add-btn {
+        height: 26px;
+        padding: 4px 8px;
+        border: none;
+        outline: none;
         font-size: 14px;
-        height: 18px;
-        color: $light-blue;
-        background-color: transparent;
-        opacity: 0.7;
+        border-radius: 2px;
+        color: $ta-blue;
+        background: $ta-gray-01;
+        transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
         &:hover {
-          opacity: 1;
+          color: $white;
+          background: $ta-blue;
+        }
+
+        &:hover .plus-icon {
+          svg {
+            path {
+              fill: $white;
+            }
+          }
+        }
+
+        &.disabled {
+          -webkit-user-select: none !important;
+          -moz-user-select: none !important;
+          -ms-user-select: none !important;
+          user-select: none !important;
+
+          cursor: auto;
+          background: $ta-light-grey-4;
+          color: $bw4;
+
+          .plus-icon {
+            svg {
+              path {
+                fill: $ta-light-grey-6;
+              }
+            }
+          }
+
+          &:hover {
+            background: $ta-light-grey-4 !important;
+            color: $bw4 !important;
+          }
+        }
+
+        .plus-icon {
+          margin-right: 6px;
+
+          svg {
+            path {
+              transition: fill 0.2s ease-in-out;
+              fill: $ta-light-blue;
+            }
+          }
+        }
+      }
+
+      .cancel-btn {
+        width: 150px;
+        height: 32px;
+        margin-right: 22px;
+        color: $bw5;
+        background: $ta-light-grey-4;
+        transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
+
+        &:hover {
+          background: $bw6-2;
+          color: $white;
+        }
+      }
+
+      .save-btn {
+        width: 150px;
+        height: 32px;
+        color: $white;
+        background: $ta-light-blue;
+
+        &:hover {
+          background-color: $ta-blue;
         }
       }
     }
 
     .certify-container {
-      margin-bottom: 32px;
+      margin: 0 auto;
+      width: 600px;
+
+      .ta-checkbox-label {
+        font-size: 12px !important;
+        font-weight: bold !important;
+      }
+
+      p {
+        font-size: 12px;
+        margin-left: -6px !important;
+        cursor: pointer;
+      }
     }
   }
+}
+
+.next-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  right: 42px;
+}
+
+.back-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  left: 42px;
 }
