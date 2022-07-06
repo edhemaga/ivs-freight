@@ -11,18 +11,15 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewEncapsulation,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { clearInterval } from 'timers';
 
 @Component({
   selector: 'app-truckassist-table-body',
   templateUrl: './truckassist-table-body.component.html',
   styleUrls: ['./truckassist-table-body.component.scss'],
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableBodyComponent
@@ -30,7 +27,7 @@ export class TruckassistTableBodyComponent
 {
   @Input() viewData: any[];
   @Input() columns: any[];
-  @Input() options: any[];
+  @Input() options: any;
   @Input() tableData: any[];
   @Input() selectedTab: string;
   @Input() tableContainerWidth: number;
@@ -45,6 +42,9 @@ export class TruckassistTableBodyComponent
   hoverActive: number = -1;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
+  dropContent: any[] = [];
+  tooltip: any;
+  dropDownActive: number = -1;
 
   constructor(
     private router: Router,
@@ -55,6 +55,9 @@ export class TruckassistTableBodyComponent
   ngOnInit(): void {
     // Get Selected Tab Data
     this.getSelectedTabTableData();
+
+    // Set Dropdown Content
+    this.setDropContent();
 
     // Select Or Deselect All
     this.tableService.currentSelectOrDeselect
@@ -77,23 +80,6 @@ export class TruckassistTableBodyComponent
           this.tableService.sendRowsSelected(this.mySelection);
 
           this.changeDetectorRef.detectChanges();
-        }
-      });
-
-    // Rezaize
-    this.tableService.currentColumnWidth
-      .pipe(untilDestroyed(this))
-      .subscribe((response: any) => {
-        if (response?.event?.width) {
-          this.columns = this.columns.map((c) => {
-            if (c.title === response.columns[response.event.index].title) {
-              c.width = response.event.width;
-            }
-
-            return c;
-          });
-
-          this.getNotPinedMaxWidth(true);
         }
       });
 
@@ -230,6 +216,39 @@ export class TruckassistTableBodyComponent
     }
   }
 
+  // DROPDOWN
+  /* --------------------------------Set Dropdown Content--------------------------------- */
+  setDropContent() {
+    /* Drop Down Actions*/
+    if (this.options.actions.length) {
+      for (let i = 0; i < this.options.actions.length; i++) {
+        this.dropContent.push(this.options.actions[i]);
+      }
+    }
+  }
+
+  /* --------------------------------Toggle Dropdown--------------------------------- */
+  toggleDropdown(tooltip: any, id: number) {
+    this.tooltip = tooltip;
+    if (tooltip.isOpen()) {
+      tooltip.close();
+    } else {
+      tooltip.open({ data: this.dropContent });
+    }
+
+    this.dropDownActive = tooltip.isOpen() ? id : -1;
+  }
+
+  /* --------------------------------Dropdown Actions--------------------------------- */
+  onDropAction(action: any) {
+    this.bodyActions.emit({
+      id: this.dropDownActive,
+      type: action.name,
+    });
+
+    this.tooltip.close();
+  }
+
   checkForScroll() {
     const div = document.getElementById('scroll-container');
 
@@ -252,10 +271,6 @@ export class TruckassistTableBodyComponent
 
   saveNote(note: string, row: any) {
     alert('Treba da se odradi servis za slanje note-a');
-  }
-
-  onDropAction(event: any) {
-    this.bodyActions.emit(event);
   }
 
   public onSelectItem(event: any, index: number): void {

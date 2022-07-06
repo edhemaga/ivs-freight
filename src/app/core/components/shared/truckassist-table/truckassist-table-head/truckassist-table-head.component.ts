@@ -26,7 +26,6 @@ const rotate: { [key: string]: any } = {
   selector: 'app-truckassist-table-head',
   templateUrl: './truckassist-table-head.component.html',
   styleUrls: ['./truckassist-table-head.component.scss'],
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableHeadComponent

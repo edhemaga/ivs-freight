@@ -899,6 +899,20 @@ table {
                 background: #6c6c6c20;
               }
             }
+
+            // DROPDOWN
+            .table-dropdown-container {
+              width: 30px;
+              height: 28px;
+              background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown.svg");
+              background-repeat: no-repeat;
+              background-position: center;
+              cursor: pointer;
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown-hover.svg");
+              }
+            }
           }
         }
       }
@@ -954,6 +968,14 @@ table {
 .border-inactive {
   border-right: 3px solid white;
   border-left: 3px solid white;
+}
+
+.active-drop {
+  background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select.svg") !important;
+
+  &:hover {
+    background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select-hover.svg") !important;
+  }
 }
 
 /* Action Animations */
