@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { ModalOptions } from './modal.options';
@@ -27,8 +28,6 @@ export class ModalService {
   }
 
   public changeModalStatus(data: { name: string; status: boolean | null }) {
-    console.log('MODAL STATUS ');
-    console.log(data);
     this.modalStatusChange.next({ name: data.name, status: data.status });
   }
 

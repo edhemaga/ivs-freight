@@ -15,6 +15,7 @@ import {
   UpdateTruckCommand,
 } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
@@ -31,7 +32,7 @@ import { TruckTService } from '../../truck/state/truck.service';
   styleUrls: ['./truck-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -80,12 +81,15 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   public truckStatus: boolean = true;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private truckModalService: TruckTService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -130,6 +134,14 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       mileage: [null, Validators.maxLength(10)],
       ipasEzpass: [null, Validators.maxLength(14)],
     });
+
+    this.formService.checkFormChange(this.truckForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public tabChange(event: any): void {
@@ -425,6 +437,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             ipasEzpass: res.ipasEzpass,
           });
           this.selectedTruckType = res.truckType ? res.truckType : null;
+          console.log(this.selectedTruckType);
           this.selectedTruckMake = res.truckMake ? res.truckMake : null;
           this.selectedColor = res.color ? res.color : null;
           this.selectedOwner = res.owner ? res.owner : null;

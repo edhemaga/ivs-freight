@@ -20,6 +20,7 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 import { distinctUntilChanged } from 'rxjs';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-user-modal',
@@ -27,7 +28,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   styleUrls: ['./user-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -97,10 +98,13 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   public isBankSelected: boolean = false;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -140,6 +144,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
       accountNumber: [null],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.userForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {

@@ -11,13 +11,14 @@ import { tab_modal_animation } from 'src/app/core/components/shared/animations/t
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-settings-repairshop-modal',
   templateUrl: './settings-repairshop-modal.component.html',
   styleUrls: ['./settings-repairshop-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -98,10 +99,13 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
+    private formService: FormService,
     private notificationService: NotificationService
   ) {}
 
@@ -123,6 +127,14 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
       payPeriod: [null],
       day: [null],
     });
+
+    this.formService.checkFormChange(this.repairShopForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public tabChange(event: any): void {
@@ -167,7 +179,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onAction(event: any, action: string) {
+  public onSelectDropdown(event: any, action: string) {
     switch (action) {
       case 'pay-period': {
         this.selectedPayPeriod = event;

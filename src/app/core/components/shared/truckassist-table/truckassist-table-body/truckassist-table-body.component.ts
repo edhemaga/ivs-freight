@@ -16,6 +16,7 @@ import {
 import { Router } from '@angular/router';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { clearInterval } from 'timers';
 
 @Component({
   selector: 'app-truckassist-table-body',
@@ -32,6 +33,7 @@ export class TruckassistTableBodyComponent
   @Input() options: any[];
   @Input() tableData: any[];
   @Input() selectedTab: string;
+  @Input() tableContainerWidth: number;
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
   showItemDrop: number = -1;
@@ -83,27 +85,15 @@ export class TruckassistTableBodyComponent
       .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response?.event?.width) {
-          let isPined: boolean;
           this.columns = this.columns.map((c) => {
             if (c.title === response.columns[response.event.index].title) {
               c.width = response.event.width;
-              isPined = c.isPined;
             }
 
             return c;
           });
 
-          this.changeDetectorRef.detectChanges();
-
-          if (isPined) {
-            this.getNotPinedMaxWidth();
-
-            setTimeout(() => {
-              this.checkForScroll();
-            }, 10);
-          } else {
-            this.checkForScroll();
-          }
+          this.getNotPinedMaxWidth(true);
         }
       });
 
@@ -160,8 +150,15 @@ export class TruckassistTableBodyComponent
       this.viewData = changes.viewData.currentValue;
     }
 
-    if (!changes?.tableData?.firstChange && changes?.tableData) {
-      this.tableData = changes.tableData.currentValue;
+    if (!changes?.viewData?.firstChange && changes?.viewData) {
+      this.viewData = changes.viewData.currentValue;
+    }
+
+    if (
+      !changes?.tableContainerWidth?.firstChange &&
+      changes?.tableContainerWidth
+    ) {
+      this.getNotPinedMaxWidth(true);
     }
 
     if (
@@ -205,17 +202,24 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  getNotPinedMaxWidth() {
-    const tableContainer = document.querySelector('.table-container');
-    const pinedColumns = document.querySelector('.pined-tr');
-    const actionColumns = document.querySelector('.actions');
+  getNotPinedMaxWidth(checkScroll?: boolean) {
+    if (this.viewData.length) {
+      const tableContainer = document.querySelector('.table-container');
+      const pinedColumns = document.querySelector('.pined-tr');
+      const actionColumns = document.querySelector('.actions');
 
-    this.notPinedMaxWidth =
-      tableContainer.clientWidth -
-      (pinedColumns.clientWidth + actionColumns.clientWidth) -
-      6;
+      this.notPinedMaxWidth =
+        tableContainer.clientWidth -
+        (pinedColumns.clientWidth + actionColumns.clientWidth) -
+        6;
 
-    this.changeDetectorRef.detectChanges();
+      if (checkScroll) {
+        const div = document.getElementById('scroll-container');
+        if (div) {
+          this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+        }
+      }
+    }
   }
 
   getSelectedTabTableData() {
@@ -231,8 +235,6 @@ export class TruckassistTableBodyComponent
 
     if (div) {
       this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-
-      this.tableService.sendShowingScroll(this.showScrollSectionBorder);
 
       this.changeDetectorRef.detectChanges();
     }

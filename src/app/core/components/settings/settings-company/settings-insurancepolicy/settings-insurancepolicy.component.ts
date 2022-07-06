@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CompanyResponse } from 'appcoretruckassist';
+import { CompanyQuery } from '../../state/company-state/company-settings.query';
 import { SettingsStoreService } from '../../state/settings.service';
 
 @Component({
@@ -6,13 +9,12 @@ import { SettingsStoreService } from '../../state/settings.service';
   templateUrl: './settings-insurancepolicy.component.html',
   styleUrls: ['./settings-insurancepolicy.component.scss'],
 })
-export class SettingsInsurancepolicyComponent {
+export class SettingsInsurancepolicyComponent implements OnInit,OnChanges {
   public insuranceData = {
-     
-      phone:'(123) 456-7890',
-      email:'peraperic@gmail.com',
-      address:'5462 N East River Rd apt 611,Chicago, IL 60656, USA',
-    
+    phone: '(123) 456-7890',
+    email: 'peraperic@gmail.com',
+    address: '5462 N East River Rd apt 611,Chicago, IL 60656, USA',
+
     generalLiability: {
       insurerName: 'LLOYDS OF LONDON',
       rating: 'A++',
@@ -124,12 +126,18 @@ export class SettingsInsurancepolicyComponent {
       ],
     },
   };
-
-  constructor(private settingsStoreService: SettingsStoreService) {}
-
+ @Input() public insurancePolicyData: any;
+  constructor(
+    private settingsStoreService: SettingsStoreService,
+  ) {}
+  ngOnChanges(changes: SimpleChanges): void {
+  }
+  ngOnInit(): void {  
+  }
   public onAction(modal: { type: boolean; modalName: string; action: string }) {
     this.settingsStoreService.onModalAction(modal);
   }
+
   public identity(index: number, item: any): number {
     return item.id;
   }

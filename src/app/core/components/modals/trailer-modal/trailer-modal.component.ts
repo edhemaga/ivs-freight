@@ -23,6 +23,7 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-trailer-modal',
@@ -30,7 +31,7 @@ import { TrailerTService } from '../../trailer/state/trailer.service';
   styleUrls: ['./trailer-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -75,12 +76,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
   public trailerStatus: boolean = true;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private trailerModalService: TrailerTService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -123,6 +127,14 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       volume: [null],
       insurancePolicy: [null, insurancePolicyRegex],
     });
+
+    this.formService.checkFormChange(this.trailerForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   private isCompanyOwned() {

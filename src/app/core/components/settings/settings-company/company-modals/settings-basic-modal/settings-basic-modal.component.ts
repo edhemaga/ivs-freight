@@ -23,13 +23,14 @@ import { Options } from '@angular-slider/ngx-slider';
 import { TabSwitcherComponent } from 'src/app/core/components/switchers/tab-switcher/tab-switcher.component';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { DropZoneConfig } from 'src/app/core/components/shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-settings-basic-modal',
   templateUrl: './settings-basic-modal.component.html',
   styleUrls: ['./settings-basic-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   @ViewChild(TabSwitcherComponent) tabSwitcher: any;
@@ -139,11 +140,35 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   // Payroll tab
   public truckAssistText: string = "Use Truck Assist's ACH Payout";
 
+  public isDirty: boolean;
+
+  // Dropdowns
+
+  public selectedDriverPayPeriod: any = null;
+  public selectedDriverEndingIn: any = null;
+  public selectedAccountingPayPeriod: any = null;
+  public selectedAccountingEndingIn: any = null;
+  public selectedCompanyPayPeriod: any = null;
+  public selectedCompanyEndingIn: any = null;
+  public selectedDispatchPayPeriod: any = null;
+  public selectedDispatchEndingIn: any = null;
+  public selectedManagerPayPeriod: any = null;
+  public selectedManagerEndingIn: any = null;
+  public selectedRecPayPeriod: any = null;
+  public selectedRecEndingIn: any = null;
+  public selectedRepairPayPeriod: any = null;
+  public selectedRepairEndingIn: any = null;
+  public selectedSafetyPayPeriod: any = null;
+  public selectedSafetyEndingIn: any = null;
+  public selectedOtherPayPeriod: any = null;
+  public selectedOtherEndingIn: any = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -238,6 +263,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       otherEndingIn: ['Monday', Validators.required],
       otherDefaultBase: [null],
     });
+
+    this.formService.checkFormChange(this.companyForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(event) {}
@@ -285,10 +318,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       case 'bankaccount': {
         this.selectedBankAccountFormArray[index] = event;
         this.onBankSelected(index);
-        break;
-      }
-      case 'bankcard': {
-        this.selectedBankCardFormArray[index] = event;
         break;
       }
       default: {
@@ -413,6 +442,77 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       }
       case 'currency': {
         this.selectedCurrency = event;
+        break;
+      }
+      case 'driver-pay-period': {
+        this.selectedDriverPayPeriod = event;
+        break;
+      }
+      case 'driver-ending-in': {
+        this.selectedDriverEndingIn = event;
+        break;
+      }
+      case 'accounting-pay-period': {
+        this.selectedAccountingPayPeriod = event;
+      }
+      case 'accounting-ending-in': {
+        this.selectedAccountingEndingIn = event;
+        break;
+      }
+      case 'companyOwner-pay-period': {
+        this.selectedCompanyPayPeriod = event;
+        break;
+      }
+      case 'companyOwner-ending-in': {
+        this.selectedCompanyEndingIn = event;
+        break;
+      }
+      case 'dispatch-pay-period': {
+        this.selectedDispatchPayPeriod = event;
+        break;
+      }
+      case 'dispatch-ending-in': {
+        this.selectedDispatchEndingIn = event;
+        break;
+      }
+      case 'manager-pay-period': {
+        this.selectedManagerPayPeriod = event;
+        break;
+      }
+      case 'manager-ending-in': {
+        this.selectedManagerEndingIn = event;
+        break;
+      }
+      case 'recruiting-pay-period': {
+        this.selectedRecPayPeriod = event;
+        break;
+      }
+      case 'recruiting-ending-in': {
+        this.selectedRecEndingIn = event;
+        break;
+      }
+      case 'repair-pay-period': {
+        this.selectedRepairPayPeriod = event;
+        break;
+      }
+      case 'repair-ending-in': {
+        this.selectedRepairEndingIn = event;
+        break;
+      }
+      case 'safety-pay-period': {
+        this.selectedSafetyPayPeriod = event;
+        break;
+      }
+      case 'safety-ending-in': {
+        this.selectedSafetyEndingIn = event;
+        break;
+      }
+      case 'other-pay-period': {
+        this.selectedOtherPayPeriod = event;
+        break;
+      }
+      case 'other-ending-in': {
+        this.selectedOtherEndingIn = event;
         break;
       }
       default: {

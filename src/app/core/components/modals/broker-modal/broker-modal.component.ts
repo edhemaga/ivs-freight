@@ -35,6 +35,8 @@ import {
   TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
+import { debounceTime } from 'rxjs';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-broker-modal',
@@ -42,7 +44,7 @@ import { BrokerTService } from '../../customer/state/broker-state/broker.service
   styleUrls: ['./broker-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService, TaLikeDislikeService],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -146,6 +148,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public companyUser: SignInResponse = null;
   public hasCompanyUserReview: boolean = false;
 
+  public isDirty: boolean = false;
+
+  public disableOneMoreReview: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -153,7 +159,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     private brokerModalService: BrokerTService,
     private notificationService: NotificationService,
     private reviewRatingService: ReviewsRatingService,
-    private taLikeDislikeService: TaLikeDislikeService
+    private taLikeDislikeService: TaLikeDislikeService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -203,6 +210,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       dnu: [null],
       brokerContacts: this.formBuilder.array([]),
     });
+
+    if (this.editData) {
+      this.formService.checkFormChange(this.brokerForm);
+
+      this.formService.formValueChange$
+        .pipe(untilDestroyed(this))
+        .subscribe((isFormChange: boolean) => {
+          isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+        });
+    }
   }
 
   public get brokerContacts(): FormArray {
@@ -439,7 +456,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public isCredit(event: any) {
-    console.log(event);
     this.billingCredit.forEach((item) => {
       if (item.name === event.name) {
         this.brokerForm.get('creditType').patchValue(item.name);
@@ -477,7 +493,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public createReview(event: any) {
-    if (this.reviews.some((item) => item.isNewReview)) {
+    if (
+      this.reviews.some((item) => item.isNewReview) &&
+      !this.disableOneMoreReview
+    ) {
       return;
     }
     // ------------------------ PRODUCTION MODE -----------------------------
@@ -531,7 +550,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           .addRating(rating)
           .pipe(untilDestroyed(this))
           .subscribe({
-            next: () => {
+            next: (res: any) => {
               this.notificationService.success(
                 'Rating successfully updated.',
                 'Success:'
@@ -568,6 +587,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             }
             return item;
           });
+
+          this.disableOneMoreReview = true;
           this.notificationService.success(
             'Review successfully created.',
             'Success:'
@@ -581,7 +602,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   private deleteReview(reviews: ReviewCommentModal) {
     this.reviews = reviews.sortData;
-
+    this.disableOneMoreReview = false;
     this.reviewRatingService
       .deleteReview(reviews.data)
       .pipe(untilDestroyed(this))
@@ -910,11 +931,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             ...item,
             companyUser: {
               ...item.companyUser,
-              avatar: 'https://picsum.photos/id/237/200/300',
+              avatar: item.companyUser.avatar
+                ? item.companyUser.avatar
+                : 'assets/svg/common/ic_profile.svg',
             },
             commentContent: item.comment,
+            rating: reasponse.currentCompanyUserRating,
           }));
-          console.log(reasponse);
+
+          this.taLikeDislikeService.populateLikeDislikeEvent({
+            downRatingCount: reasponse.downRatingCount,
+            upRatingCount: reasponse.upRatingCount,
+            currentCompanyUserRating: reasponse.currentCompanyUserRating,
+          });
 
           this.isCredit(reasponse.creditType);
         },

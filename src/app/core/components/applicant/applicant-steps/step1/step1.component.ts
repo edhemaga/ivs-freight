@@ -32,29 +32,30 @@ import { ReviewFeedbackService } from '../../state/services/review-feedback.serv
   styleUrls: ['./step1.component.scss'],
 })
 export class Step1Component implements OnInit, OnDestroy {
-  public loadingApplicant$: Observable<boolean>;
-  public loadingBankData$: Observable<boolean>;
-  public loadingPersonalInfo$: Observable<boolean>;
-
-  public selectedMode: string = SelectedMode.APPLICANT;
-
   public applicant: Applicant | undefined;
 
   public personalInfoForm!: FormGroup;
-  public personalInfo: PersonalInfo | undefined;
 
-  public isLastAddedPreviousAddressValid: boolean = false;
-  public isBankSelected: boolean = false;
-
-  public selectedAddress: Address = null;
+  public selectedMode: string = SelectedMode.APPLICANT;
   public selectedBank: any = null;
 
-  public bankData: any[] = [
-    {
-      svg: null,
-      name: 'Test Bank',
-    },
-  ];
+  public isBankSelected: boolean = false;
+  public isLastAddedPreviousAddressValid: boolean = false;
+  public isLastInputDeleted: boolean = false;
+  public isEditingMiddlePositionAddress: boolean = false;
+
+  public helperIndex = 2;
+
+  public isEditingArray: {
+    id: number;
+    isEditing: boolean;
+    isEditingAddress: boolean;
+    isFirstAddress: boolean;
+  }[] = [];
+  public isEditingId: number = -1;
+
+  public previousAddressOnEdit: string;
+  public previousAddressUnitOnEdit: string;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -64,7 +65,7 @@ export class Step1Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 1,
-          label: 'Yes',
+          label: 'YES',
           value: 'legalWorkYes',
           name: 'legalWorkYes',
           checked: false,
@@ -72,7 +73,7 @@ export class Step1Component implements OnInit, OnDestroy {
         },
         {
           id: 2,
-          label: 'No',
+          label: 'NO',
           value: 'legalWorkNo',
           name: 'legalWorkNo',
           checked: false,
@@ -87,7 +88,7 @@ export class Step1Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 3,
-          label: 'Yes',
+          label: 'YES',
           value: 'anotherNameYes',
           name: 'anotherNameYes',
           checked: false,
@@ -95,7 +96,7 @@ export class Step1Component implements OnInit, OnDestroy {
         },
         {
           id: 4,
-          label: 'No',
+          label: 'NO',
           value: 'anotherNameNo',
           name: 'anotherNameNo',
           checked: false,
@@ -110,7 +111,7 @@ export class Step1Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 5,
-          label: 'Yes',
+          label: 'YES',
           value: 'inMilitaryYes',
           name: 'inMilitaryYes',
           checked: false,
@@ -118,7 +119,7 @@ export class Step1Component implements OnInit, OnDestroy {
         },
         {
           id: 6,
-          label: 'No',
+          label: 'NO',
           value: 'inMilitaryNo',
           name: 'inMilitaryNo',
           checked: false,
@@ -133,7 +134,7 @@ export class Step1Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 7,
-          label: 'Yes',
+          label: 'YES',
           value: 'felonyYes',
           name: 'felonyYes',
           checked: false,
@@ -141,7 +142,7 @@ export class Step1Component implements OnInit, OnDestroy {
         },
         {
           id: 8,
-          label: 'No',
+          label: 'NO',
           value: 'felonyNo',
           name: 'felonyNo',
           checked: false,
@@ -156,7 +157,7 @@ export class Step1Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 9,
-          label: 'Yes',
+          label: 'YES',
           value: 'misdemeanorYes',
           name: 'misdemeanorYes',
           checked: false,
@@ -164,7 +165,7 @@ export class Step1Component implements OnInit, OnDestroy {
         },
         {
           id: 10,
-          label: 'No',
+          label: 'NO',
           value: 'misdemeanorNo',
           name: 'misdemeanorNo',
           checked: false,
@@ -179,7 +180,7 @@ export class Step1Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 11,
-          label: 'Yes',
+          label: 'YES',
           value: 'drunkDrivingYes',
           name: 'drunkDrivingYes',
           checked: false,
@@ -187,7 +188,7 @@ export class Step1Component implements OnInit, OnDestroy {
         },
         {
           id: 12,
-          label: 'No',
+          label: 'NO',
           value: 'drunkDrivingNo',
           name: 'drunkDrivingNo',
           checked: false,
@@ -197,22 +198,38 @@ export class Step1Component implements OnInit, OnDestroy {
     },
   ];
 
-  public reviewFeedback: any[] = getPersonalInfoReviewFeedbackData();
-  private countOfReview: number = 0;
-
-  public trackByIdentity = (index: number, item: any): number => index;
-
   public get previousAddresses(): FormArray {
     return this.personalInfoForm.get('previousAddresses') as FormArray;
   }
 
+  /* C */
+
+  /* public loadingApplicant$: Observable<boolean>;
+  public loadingBankData$: Observable<boolean>;
+  public loadingPersonalInfo$: Observable<boolean>;
+
+  public personalInfo: PersonalInfo | undefined;
+
+  public bankData: any[] = [
+    {
+      svg: null,
+      name: 'Test Bank',
+    },
+  ];
+
+  public reviewFeedback: any[] = getPersonalInfoReviewFeedbackData();
+  private countOfReview: number = 0;
+ */
+
   constructor(
-    private formBuilder: FormBuilder,
-    private reviewFeedbackService: ReviewFeedbackService
+    private formBuilder: FormBuilder /* 
+    private reviewFeedbackService: ReviewFeedbackService */
   ) {}
 
   ngOnInit(): void {
-    this.formInit();
+    this.createForm();
+
+    this.createFirstAddress();
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -221,7 +238,9 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
-  private formInit(): void {
+  public trackByIdentity = (index: number, item: any): number => index;
+
+  private createForm(): void {
     this.personalInfoForm = this.formBuilder.group({
       isAgreement: [false, Validators.requiredTrue],
 
@@ -255,14 +274,6 @@ export class Step1Component implements OnInit, OnDestroy {
 
   public handleInputSelect(event: any, action: string, index?: number): void {
     switch (action) {
-      case InputSwitchActions.ADDRESS:
-        this.selectedAddress = event.address;
-
-        if (!event.valid) {
-          this.personalInfoForm.get('address').setErrors({ invalid: true });
-        }
-
-        break;
       case InputSwitchActions.BANK:
         this.selectedBank = event;
 
@@ -290,14 +301,13 @@ export class Step1Component implements OnInit, OnDestroy {
         } else {
           this.previousAddresses.at(index).patchValue({
             address: address.address,
-            city: address.city,
-            state: address.state,
-            stateShortName: address.stateShortName,
-            country: address.country,
-            zipCode: address.zipCode,
-            // streetNumber: address,
-            // streetName: address,
           });
+
+          if (this.previousAddresses.controls.length === 5) {
+            this.isEditingArray[
+              this.previousAddresses.controls.length - 1
+            ].isEditing = false;
+          }
         }
 
         break;
@@ -307,31 +317,180 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
-  private createNewAddress(): FormGroup {
+  private onCreateNewAddress(): FormGroup {
     return this.formBuilder.group({
       address: [null, Validators.required],
       addressUnit: [null],
     });
   }
 
-  public addNewAddress(): void {
-    const newAddress = this.createNewAddress();
+  private createFirstAddress(): void {
+    this.previousAddresses.push(this.onCreateNewAddress());
+
+    this.isEditingId++;
+
+    this.isEditingArray = [
+      ...this.isEditingArray,
+      {
+        id: this.isEditingId,
+        isEditing: true,
+        isEditingAddress: false,
+        isFirstAddress: true,
+      },
+    ];
+  }
+
+  public onAddNewAddress(): void {
+    this.isEditingMiddlePositionAddress = false;
+
+    this.helperIndex = 2;
 
     if (
-      !this.previousAddresses.controls.length ||
-      this.isLastAddedPreviousAddressValid
+      this.previousAddresses.controls.length &&
+      !this.isLastAddedPreviousAddressValid &&
+      !this.isLastInputDeleted
     ) {
-      this.previousAddresses.push(newAddress);
+      return;
+    }
+
+    this.isLastInputDeleted = false;
+
+    this.previousAddresses.push(this.onCreateNewAddress());
+
+    this.isEditingId++;
+
+    this.isEditingArray = [
+      ...this.isEditingArray,
+      {
+        id: this.isEditingId,
+        isEditing: true,
+        isEditingAddress: false,
+        isFirstAddress: false,
+      },
+    ];
+
+    if (this.previousAddresses.controls.length > 1) {
+      this.isEditingArray = this.isEditingArray.map((item, index) => {
+        if (index === this.isEditingArray.length - 1) {
+          return { ...item, isEditing: true };
+        }
+
+        return { ...item, isEditing: false };
+      });
     }
 
     this.isLastAddedPreviousAddressValid = false;
   }
 
-  public removeNewAddress(index: number): void {
+  public onRemoveNewAddress(index: number): void {
+    const isEditingAnyAddress = this.isEditingArray.some(
+      (item) => item.isEditing && item.isEditingAddress
+    );
+
+    if (isEditingAnyAddress || this.previousAddresses.controls.length === 1) {
+      return;
+    }
+
+    if (index === this.previousAddresses?.controls.length - 1) {
+      this.isLastInputDeleted = true;
+    } else {
+      this.isLastInputDeleted = false;
+    }
+
+    this.isEditingMiddlePositionAddress = false;
+
     this.previousAddresses.removeAt(index);
+
+    this.isEditingArray.splice(index, 1);
+
+    if (this.previousAddresses.controls.length < 2) {
+      this.isEditingArray[0].isEditing = true;
+      this.isEditingArray[0].isEditingAddress = false;
+    }
   }
 
-  private formFIlling(): void {
+  public onEditNewAddress(index: number): void {
+    this.helperIndex = index;
+
+    const lastPreviousAddressAdded = this.previousAddresses.length - 1;
+
+    if (this.previousAddresses.controls[index].value.address) {
+      this.isEditingArray[index].isEditingAddress = true;
+
+      this.previousAddressOnEdit =
+        this.previousAddresses.controls[index].value.address;
+
+      this.previousAddressUnitOnEdit =
+        this.previousAddresses.controls[index].value.addressUnit;
+
+      if (index !== 0) {
+        this.isEditingMiddlePositionAddress = true;
+
+        if (
+          !this.previousAddresses.at(lastPreviousAddressAdded).value.address
+        ) {
+          this.previousAddresses.removeAt(lastPreviousAddressAdded);
+
+          this.isEditingArray.splice(lastPreviousAddressAdded, 1);
+
+          this.isLastInputDeleted = true;
+        }
+      } else {
+        this.isEditingMiddlePositionAddress = false;
+
+        if (
+          !this.previousAddresses.at(lastPreviousAddressAdded).value.address
+        ) {
+          this.previousAddresses.removeAt(lastPreviousAddressAdded);
+
+          this.isEditingArray.splice(lastPreviousAddressAdded, 1);
+
+          this.isLastInputDeleted = true;
+        }
+      }
+
+      this.isEditingArray = this.isEditingArray.map((item, itemIndex) => {
+        if (index === 0 && this.previousAddresses.controls.length === 1) {
+          return { ...item, isEditing: true, isEditingAddress: false };
+        }
+
+        if (index === itemIndex) {
+          return { ...item, isEditing: true, isEditingAddress: true };
+        }
+
+        return { ...item, isEditing: false, isEditingAddress: false };
+      });
+    }
+  }
+
+  public onConfirmEditedNewAddress(index: number): void {
+    if (
+      this.previousAddresses.controls[index].value.address &&
+      this.previousAddresses.controls[index].valid
+    ) {
+      this.isEditingArray[index].isEditing = false;
+      this.isEditingArray[index].isEditingAddress = false;
+
+      this.helperIndex = 2;
+    }
+  }
+
+  public onCancelEditingNewAddress(index: number): void {
+    this.previousAddresses.controls[index].patchValue({
+      address: this.previousAddressOnEdit,
+      addressUnit: this.previousAddressUnitOnEdit,
+    });
+
+    this.isEditingArray[index].isEditing = false;
+    this.isEditingArray[index].isEditingAddress = false;
+
+    this.previousAddressOnEdit = null;
+    this.previousAddressUnitOnEdit = null;
+
+    this.helperIndex = 2;
+  }
+
+  /* private formFIlling(): void {
     // Redirect to next Step
     // if (this.personalInfo?.isCompleted) {
     //   // this.router.navigateByUrl(`/application/${this.applicant?.id}/2`);
@@ -412,7 +571,7 @@ export class Step1Component implements OnInit, OnDestroy {
 
     if (personalInfo?.previousAddresses?.length) {
       for (let i = 0; i < personalInfo?.previousAddresses.length; i++) {
-        this.addNewAddress();
+        this.onAddNewAddress();
         this.previousAddresses.at(i)?.patchValue({
           id: personalInfo?.previousAddresses[i].id,
           address: personalInfo?.previousAddresses[i].address,
@@ -424,12 +583,13 @@ export class Step1Component implements OnInit, OnDestroy {
     }
 
     // Bank Info
-    /*  this.requiredBankInfo(
-            this.personalInfo?.bank && this.bankData.length ? true : false
-        ); */
+    //  this.requiredBankInfo(
+    //         this.personalInfo?.bank && this.bankData.length ? true : false
+    //     );
   }
+ */
 
-  public onSubmitForm(): void {
+  /* public onSubmitForm(): void {
     const personalInfoForm = this.personalInfoForm.value;
 
     // Applicant Data
@@ -529,38 +689,38 @@ export class Step1Component implements OnInit, OnDestroy {
     }
 
     // Update Applicant
-    /*  if (applicant) {
-      this.apppEntityServices.ApplicantService.upsert(applicant).subscribe(
-        () => {
-          if (personalInfo) {
-            personalInfo.applicantId = applicant.id;
-            this.apppEntityServices.PersonalInfoService.upsert(
-              personalInfo
-            ).subscribe(
-              () => {
-                this.notification.success('Personal Info is updated');
-                this.router.navigateByUrl(`/application/${this.applicant?.id}/2`)
-              },
-              (error) => {
-                this.shared.handleError(error);
-              }
-            );
-          }
-        },
-        (error) => {
-          this.shared.handleError(error);
-        }
-      );
-    } */
-  }
+    //  if (applicant) {
+    //   this.apppEntityServices.ApplicantService.upsert(applicant).subscribe(
+    //     () => {
+    //       if (personalInfo) {
+    //         personalInfo.applicantId = applicant.id;
+    //         this.apppEntityServices.PersonalInfoService.upsert(
+    //           personalInfo
+    //         ).subscribe(
+    //           () => {
+    //             this.notification.success('Personal Info is updated');
+    //             this.router.navigateByUrl(`/application/${this.applicant?.id}/2`)
+    //           },
+    //           (error) => {
+    //             this.shared.handleError(error);
+    //           }
+    //         );
+    //       }
+    //     },
+    //     (error) => {
+    //       this.shared.handleError(error);
+    //     }
+    //   );
+    // }
+  } */
 
-  public onStepAction(event: any): void {
+  /* public onStepAction(event: any): void {
     if (event.action === 'next-step') {
       this.onSubmitForm();
     }
-  }
+  } */
 
-  public onSubmitReview(data: any): void {
+  /* public onSubmitReview(data: any): void {
     const numberOfPreviousAddresses =
       this.personalInfoForm.value.previousAddresses.length;
 
@@ -572,12 +732,12 @@ export class Step1Component implements OnInit, OnDestroy {
       this.countOfReview === 10 + numberOfPreviousAddresses &&
       !data.firstLoad
     ) {
-      /* TODO: Send data to backend and move to next step */
+      // TODO: Send data to backend and move to next step
       console.log(this.reviewFeedback);
     } else if (data.firstLoad) {
       this.countOfReview = 0;
     }
-  }
+  } */
 
-  ngOnDestroy() {}
+  ngOnDestroy(): void {}
 }

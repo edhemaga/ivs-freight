@@ -1,14 +1,13 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { DriverTService } from './../state/driver.service';
-import { DriverDetailsCardComponent } from './../driver-details-card/driver-details-card.component';
 import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { map } from 'rxjs';
 import { createBase64 } from 'src/app/core/utils/base64.image';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DriverResponse } from 'appcoretruckassist';
 import { Router } from '@angular/router';
+import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
 
 @Component({
   selector: 'app-driver-card',
@@ -24,6 +23,7 @@ export class DriverCardComponent implements OnInit, OnDestroy {
     private sanitazer:DomSanitizer,
     private notificationService: NotificationService,
     private detailsPageDriverService: DetailsPageService,
+    private driverDetailsQuery:DriversDetailsQuery,
     private cdRef: ChangeDetectorRef,
     private router: Router,
   ) { }
@@ -34,8 +34,7 @@ export class DriverCardComponent implements OnInit, OnDestroy {
     this.detailsPageDriverService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
-        this.driverService
-          .getDriverById(id)
+        this.driverDetailsQuery.selectEntity(id)
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: DriverResponse) => {

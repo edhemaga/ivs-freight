@@ -14,11 +14,6 @@
     >
     </app-ta-details-header>
   </div>
-  <div class="details-item-cmp">
-    <app-truck-details-item
-      *ngFor="let item of truckDetailsConfig; trackBy: identity"
-      [truck]="item"
-    >
-    </app-truck-details-item>
-  </div>
+  <app-truck-details-item [truck]="truckDetailsConfig">
+  </app-truck-details-item>
 </div>

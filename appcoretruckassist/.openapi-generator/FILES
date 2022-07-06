@@ -31,6 +31,7 @@ api/title.service.ts
 api/todo.service.ts
 api/trailer.service.ts
 api/truck.service.ts
+api/vinDecode.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -313,4 +314,5 @@ model/updateTruckPMUnitCommand.ts
 model/verifyForgotPasswordCommand.ts
 model/verifyOwnerCommand.ts
 model/verifyUserCommand.ts
+model/vinDecodeResponse.ts
 variables.ts

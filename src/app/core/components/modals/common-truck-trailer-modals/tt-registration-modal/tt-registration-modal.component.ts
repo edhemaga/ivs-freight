@@ -17,12 +17,13 @@ import {
   convertDateFromBackend,
   convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-tt-registration-modal',
   templateUrl: './tt-registration-modal.component.html',
   styleUrls: ['./tt-registration-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -31,12 +32,15 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private commonTruckTrailerService: CommonTruckTrailerService,
     private notificationService: NotificationService,
     private inputService: TaInputService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -54,6 +58,14 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       licensePlate: [null, Validators.required],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.registrationForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

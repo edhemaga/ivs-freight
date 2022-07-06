@@ -21,6 +21,7 @@ export interface CreateInsurancePolicyCommand {
     email?: string | null;
     address?: AddressEntity;
     insurancePolicyAddons?: Array<CreateInsurancePolicyAddonCommand> | null;
+    companyId?: number | null;
     note?: string | null;
 }
 

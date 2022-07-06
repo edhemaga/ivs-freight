@@ -13,7 +13,6 @@
 
 export interface UpdateInsurancePolicyAddonCommand { 
     id?: number | null;
-    insurancePolicyType?: number;
     policy?: string | null;
     insurerName?: string | null;
     rating?: number;

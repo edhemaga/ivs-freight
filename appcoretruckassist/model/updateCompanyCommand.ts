@@ -47,6 +47,7 @@ export interface UpdateCompanyCommand {
     departmentContacts?: Array<UpdateDepartmentContactCommand> | null;
     bankAccounts?: Array<UpdateBankAccountCommand> | null;
     bankCards?: Array<UpdateBankCardCommand> | null;
+    useACHPayout?: boolean | null;
     payrolls?: Array<UpdateCompanyPayrollCommand> | null;
 }
 

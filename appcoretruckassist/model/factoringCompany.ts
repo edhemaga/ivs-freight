@@ -17,6 +17,7 @@ export interface FactoringCompany {
     phone?: string | null;
     email?: string | null;
     address: AddressEntity;
+    customNoticeOfAssigment?: boolean | null;
     noticeOfAssigment?: string | null;
     note?: string | null;
 }

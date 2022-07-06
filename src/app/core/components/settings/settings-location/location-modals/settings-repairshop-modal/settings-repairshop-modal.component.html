@@ -4,7 +4,9 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="repairShopForm.valid"
+  [isModalValid]="
+    editData ? repairShopForm.valid && isDirty : repairShopForm.valid
+  "
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher
@@ -194,7 +196,8 @@
                 dropdownWidthClass: 'w-col-4'
               }"
               [options]="[]"
-              (selectedItem)="onAction($event, 'pay-period')"
+              [activeItem]="selectedPayPeriod"
+              (selectedItem)="onSelectDropdown($event, 'pay-period')"
             ></app-ta-input-dropdown>
           </div>
           <div class="col-4 no-p-left">
@@ -208,7 +211,8 @@
                 dropdownWidthClass: 'w-col-4'
               }"
               [options]="[]"
-              (selectedItem)="onAction($event, 'day')"
+              [activeItem]="selectedDay"
+              (selectedItem)="onSelectDropdown($event, 'day')"
             ></app-ta-input-dropdown>
           </div>
         </div>

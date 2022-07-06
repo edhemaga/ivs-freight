@@ -19,13 +19,14 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { urlRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-account-modal',
   templateUrl: './account-modal.component.html',
   styleUrls: ['./account-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -39,12 +40,15 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     count: null,
   };
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private accountModalService: AccountModalService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -71,6 +75,14 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       companyAccountLabelId: [null],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.accountForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

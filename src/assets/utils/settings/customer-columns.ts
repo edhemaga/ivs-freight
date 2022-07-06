@@ -23,7 +23,7 @@ export function getBrokerColumnDefinition() {
       resizable: false,
     },
     {
-      ngTemplate: 'customer-name',
+      ngTemplate: 'nameLink',
       title: 'Name',
       field: 'businessName',
       name: 'Name',
@@ -316,7 +316,7 @@ export function getShipperColumnDefinition() {
       resizable: false,
     },
     {
-      ngTemplate: 'customer-name',
+      ngTemplate: 'nameLink',
       title: 'Name',
       field: 'businessName',
       name: 'Name',
@@ -336,7 +336,7 @@ export function getShipperColumnDefinition() {
       resizable: true,
       link: {
         routerLinkStart: '/customer/',
-        routerLinkEnd: '/shiper-details',
+        routerLinkEnd: '/shipper-details',
       },
     },
     {

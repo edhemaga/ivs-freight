@@ -90,7 +90,7 @@ export class TruckDetailsItemComponent implements OnInit {
 
   /**Function retrun id */
   public identity(index: number, item: any): number {
-    return item.id;
+    return index;
   }
 
   /**Function for toggle page in cards */

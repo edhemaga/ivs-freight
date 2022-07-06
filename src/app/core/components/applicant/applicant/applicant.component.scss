@@ -3,6 +3,7 @@
 .applicant-container {
   background-color: $white;
   min-height: 100vh;
+  position: relative;
 
   .step-progress-bar {
     @media only screen and(max-width:414px) {

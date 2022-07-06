@@ -45,7 +45,6 @@ p {
     .header-name {
         margin: 0;
         color: #919191;
-        padding-left: 8px;
         font-size: 14px;
         font-weight: 800;
         padding-right: 12px;
@@ -193,6 +192,11 @@ svg {
     svg {
         path {
             fill: #6d82c7;
+        }
+        &:hover{
+            path {
+                fill: #536BC2 !important;
+            }
         }
     }
 }
