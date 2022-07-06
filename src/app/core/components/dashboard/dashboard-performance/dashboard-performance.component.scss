@@ -114,14 +114,19 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
 
     .dashboard-performance-body{
         width: 100%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        flex-wrap: wrap;
+        // display: flex;
+        // justify-content: flex-start;
+        // align-items: flex-start;
+        // flex-wrap: wrap;
+
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
 
         .dashboard-performance-body-left-holder{
             position: relative;
-            width: 177px;
+           // width: 177px;
+           grid-row-start: 1;
+            grid-row-end: 3;
             border-radius: 3px;
             background-color: #fff;
             display: flex;
@@ -388,8 +393,9 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
 
         .dashboard-performance-body-right-cards-holder{
             position: relative;
-            width: 175px;
-            height: 143px;
+            //width: 175px;
+            //height: 143px;
+
             background-color: #fff;
             border-radius: 3px;
             padding: 12px;
@@ -796,3 +802,9 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
     }
 }
 
+
+@media only screen and (max-width: 1400px) {
+    .dashboard-performance-holder .dashboard-performance-body{
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+}
