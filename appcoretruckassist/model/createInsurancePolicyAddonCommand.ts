@@ -12,10 +12,9 @@
 
 
 export interface CreateInsurancePolicyAddonCommand { 
-    insurancePolicyAddonType?: number;
     policy?: string | null;
     insurerName?: string | null;
-    rating?: number;
+    rating?: number | null;
     isCommercialGeneralLiabillityChecked?: boolean;
     eachOccurrence?: number | null;
     damageToRentedPremises?: number | null;

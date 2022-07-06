@@ -9,11 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DepartmentResponse } from './departmentResponse';
 
 
 export interface DepartmentContactResponse { 
     id?: number;
-    departmentId?: number;
+    department?: DepartmentResponse;
     phone?: string | null;
     extensionPhone?: string | null;
     email?: string | null;

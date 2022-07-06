@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Licence' : 'Edit Licence'"
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="cdlForm.valid"
+  [isModalValid]="editData ? cdlForm.valid && isDirty : cdlForm.valid"
   [specificCaseModalName]="true"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
@@ -58,6 +58,7 @@
           }"
           [canAddNew]="true"
           [options]="classTypes"
+          [activeItem]="selectedClassType"
           (selectedItem)="onSelectDropdown($event, 'class')"
         ></app-ta-input-dropdown>
       </div>
@@ -73,6 +74,7 @@
             dropdownWidthClass: 'w-col-4'
           }"
           [options]="countryTypes"
+          [activeItem]="selectedCountryType"
           (selectedItem)="onSelectDropdown($event, 'country')"
         ></app-ta-input-dropdown>
       </div>
@@ -89,6 +91,7 @@
             dropdownWidthClass: 'w-col-4'
           }"
           [options]="stateTypes"
+          [activeItem]="selectedStateType"
           (selectedItem)="onSelectDropdown($event, 'state')"
         ></app-ta-input-dropdown>
       </div>

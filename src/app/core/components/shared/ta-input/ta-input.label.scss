@@ -92,4 +92,12 @@
   &.regular {
     font-weight: 400;
   }
+
+  &.load-adjusted-rate {
+    color: #ffa726 !important;
+  }
+
+  &.load-advance-rate {
+    color: #26a690 !important;
+  }
 }

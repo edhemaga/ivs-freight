@@ -31,6 +31,7 @@ import { TitleService } from './api/title.service';
 import { TodoService } from './api/todo.service';
 import { TrailerService } from './api/trailer.service';
 import { TruckService } from './api/truck.service';
+import { VinDecodeService } from './api/vinDecode.service';
 
 @NgModule({
   imports:      [],

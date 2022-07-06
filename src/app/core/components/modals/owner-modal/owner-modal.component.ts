@@ -30,18 +30,21 @@ import {
   ssnNumberRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-owner-modal',
   templateUrl: './owner-modal.component.html',
   styleUrls: ['./owner-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
   @ViewChild(TabSwitcherComponent) tabSwitcher: any;
 
   @Input() editData: any;
+
+  public isDirty: boolean;
 
   public ownerForm: FormGroup;
 
@@ -69,7 +72,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private ownerModalService: OwnerModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -103,6 +107,14 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       routingNumber: [null],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.ownerForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public tabChange(event: any): void {

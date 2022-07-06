@@ -1,4 +1,7 @@
-import { TaLikeDislikeService } from './ta-like-dislike.service';
+import {
+  PopulateLikeDislikeModel,
+  TaLikeDislikeService,
+} from './ta-like-dislike.service';
 import {
   Component,
   Input,
@@ -6,6 +9,7 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-ta-like-dislike',
@@ -23,7 +27,16 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
 
   constructor(private taLikeDislikeService: TaLikeDislikeService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.taLikeDislikeService.populateLikeDislike$
+      .pipe(untilDestroyed(this))
+      .subscribe((data: PopulateLikeDislikeModel) => {
+        this.taLikes = data.upRatingCount ? data.upRatingCount : 0;
+        this.taDislikes = data.downRatingCount ? data.downRatingCount : 0;
+        this.isLiked = data.currentCompanyUserRating === 1;
+        this.isDisliked = data.currentCompanyUserRating === -1;
+      });
+  }
 
   public onAction(type: string, event: any) {
     event.preventDefault();

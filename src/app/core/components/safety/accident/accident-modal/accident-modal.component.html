@@ -2,7 +2,7 @@
   [modalTitle]="editData ? 'Edit Accident' : 'Add Accident'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="accidentForm.valid"
+  [isModalValid]="editData ? accidentForm.valid && isDirty : accidentForm.valid"
   [customClass]="'modal-container-XL'"
   [disableDelete]="true"
   (modalActionTypeEmitter)="onModalAction($event)"

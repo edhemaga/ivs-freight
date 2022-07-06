@@ -26,7 +26,7 @@ export class HelperSignupUserComponent implements OnInit {
         lastName: params['LastName'],
         address: params['Address'],
         addressUnit: params['AddressUnit'],
-        phone: params['Phone'] /* '(123) 123-1234' */,
+        phone: params['Phone'],
         email: params['Email'],
         code: params['Code'].split(' ').join('+'),
       };

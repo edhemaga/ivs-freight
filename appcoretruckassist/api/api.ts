@@ -56,4 +56,6 @@ export * from './trailer.service';
 import { TrailerService } from './trailer.service';
 export * from './truck.service';
 import { TruckService } from './truck.service';
-export const APIS = [AccountService, BankService, BrokerService, CdlService, CommentService, CompanyService, CompanyAccountService, CompanyAccountLabelService, CompanyContactService, CompanyContactLabelService, CompanyOfficeService, CompanyUserService, DriverService, EmploymentHistoryService, InspectionService, MedicalService, MvrService, OwnerService, OwnerHistoryService, RatingReviewService, RegistrationService, RepairService, RepairShopService, ShipperService, TestService, TitleService, TodoService, TrailerService, TruckService];
+export * from './vinDecode.service';
+import { VinDecodeService } from './vinDecode.service';
+export const APIS = [AccountService, BankService, BrokerService, CdlService, CommentService, CompanyService, CompanyAccountService, CompanyAccountLabelService, CompanyContactService, CompanyContactLabelService, CompanyOfficeService, CompanyUserService, DriverService, EmploymentHistoryService, InspectionService, MedicalService, MvrService, OwnerService, OwnerHistoryService, RatingReviewService, RegistrationService, RepairService, RepairShopService, ShipperService, TestService, TitleService, TodoService, TrailerService, TruckService, VinDecodeService];

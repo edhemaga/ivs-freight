@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Task' : 'Edit Task'"
   [editName]="editData?.id"
-  [isModalValid]="taskForm.valid"
+  [isModalValid]="editData ? taskForm.valid && isDirty : taskForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="taskForm" class="form-container">

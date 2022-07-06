@@ -2,6 +2,7 @@ import { debounceTime } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -29,6 +30,7 @@ import { TaInputResetService } from '../ta-input/ta-input-reset.service';
   styleUrls: ['./ta-input-dropdown.component.scss'],
   providers: [TaInputService],
   animations: [input_dropdown_animation('showHideDropdownOptions')],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaInputDropdownComponent
   implements OnInit, OnDestroy, OnChanges, ControlValueAccessor
@@ -264,6 +266,8 @@ export class TaInputDropdownComponent
     if (this.template !== 'groups') {
       if (
         term?.length &&
+        this.activeItem?.name &&
+        this.getSuperControl.value &&
         this.activeItem?.name !== this.getSuperControl.value
       ) {
         this.options = this.originalOptions.filter((item) =>

@@ -77,6 +77,24 @@
     }
   }
 
+  &.modal-container-load {
+    width: 1726px;
+    display: flex;
+    align-items: center;
+
+    .divider {
+      width: 841px;
+    }
+
+    .load-modal-content {
+      width: 866px;
+    }
+
+    .load-modal-map {
+      width: 860px;
+    }
+  }
+
   &.modal-container-M {
     width: 640px;
 

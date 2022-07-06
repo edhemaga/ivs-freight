@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
 import { ModalService } from '../../../shared/ta-modal/modal.service';

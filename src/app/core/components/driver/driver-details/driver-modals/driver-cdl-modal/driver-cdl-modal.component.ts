@@ -18,6 +18,7 @@ import {
   convertDateFromBackend,
   convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -48,13 +49,16 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private driverService: DriverTService,
     private cdlService: CdlTService,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -80,6 +84,14 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       endorsements: [null],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.cdlForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

@@ -1,0 +1,39 @@
+<div
+  class="d-flex align-items-center justify-content-between ta-input-arrows-container"
+>
+  <div class="d-flex align-items-center btn-container">
+    <svg-icon
+      class="minus-icon"
+      src="
+          assets/svg/common/ic_pm_decrement.svg"
+      [svgStyle]="{
+        'width.px': 18,
+        'height.px': 18
+      }"
+    ></svg-icon>
+
+    <svg-icon
+      class="plus-icon"
+      src="
+          assets/svg/common/ic_pm_increment.svg"
+      [svgStyle]="{
+        'width.px': 18,
+        'height.px': 18
+      }"
+    ></svg-icon>
+  </div>
+
+  <div class="d-flex align-items-center input-container">
+    <app-ta-input
+      [formControlName]="formControlName"
+      [inputConfig]="{
+        name: 'Arrow Input',
+        type: 'number',
+        hideClear: true,
+        textAlign: 'center',
+        max: 24,
+        hideErrorMessage: true
+      }"
+    ></app-ta-input>
+  </div>
+</div>

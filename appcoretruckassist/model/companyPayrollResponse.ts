@@ -9,19 +9,28 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
+import { DepartmentResponse } from './departmentResponse';
 
 
 export interface CompanyPayrollResponse { 
     id?: number;
-    departmentId?: number;
-    payPeriod?: number;
-    endingIn?: number;
+    department?: DepartmentResponse;
+    payPeriod?: EnumValue;
+    endingIn?: EnumValue;
     defaultBase?: number | null;
     defaultCommission?: number | null;
-    defaultEmptyMile?: number | null;
-    defaultLoadedMile?: number | null;
+    soloMileagePay?: number | null;
+    soloEmptyMile?: number | null;
+    soloLoadedMile?: number | null;
+    soloPerStop?: number | null;
+    teamEmptyMile?: number | null;
+    teamLoadedMile?: number | null;
+    teamMileagePay?: number | null;
+    teamPerStop?: number | null;
     loadedAndEmptySameRate?: boolean | null;
-    defaultDriverCommission?: number | null;
+    defaultSoloDriverCommission?: number | null;
+    defaultTeamDriverCommission?: number | null;
     defaultOwnerCommission?: number | null;
     createdAt?: string;
     updatedAt?: string;

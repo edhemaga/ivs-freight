@@ -20,7 +20,6 @@
     }
   }
 
-
   &::after {
     content: "";
     display: block;
@@ -131,6 +130,22 @@
     svg {
       path {
         fill: #b7b7b7 !important;
+      }
+    }
+  }
+
+  &.load-adjusted-rate {
+    svg {
+      path {
+        fill: #ffa726 !important;
+      }
+    }
+  }
+
+  &.load-advance-rate {
+    svg {
+      path {
+        fill: #26a690 !important;
       }
     }
   }

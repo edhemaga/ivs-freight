@@ -17,6 +17,7 @@ import { AddressEntity } from 'appcoretruckassist';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-settings-office-modal',
@@ -24,7 +25,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
   styleUrls: ['./settings-office-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -40,6 +41,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
   public isContactCardsScrolling: boolean = false;
   public selectedDepartmentFormArray: any[] = [];
+
+  public isDirty: boolean;
 
   public tabs: any[] = [
     {
@@ -61,7 +64,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -83,6 +87,14 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       payPeriod: [null],
       day: [null],
     });
+
+    this.formService.checkFormChange(this.officeForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public tabChange(event: any): void {
@@ -208,7 +220,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onAction(event: any, action: string) {
+  public onSelectDropdown(event: any, action: string) {
     switch (action) {
       case 'pay-period': {
         this.selectedPayPeriod = event;

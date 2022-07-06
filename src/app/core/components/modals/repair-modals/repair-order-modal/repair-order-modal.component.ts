@@ -23,12 +23,13 @@ import {
 import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-repair-order-modal',
   templateUrl: './repair-order-modal.component.html',
   styleUrls: ['./repair-order-modal.component.scss'],
-  providers: [SumArraysPipe, ModalService],
+  providers: [SumArraysPipe, ModalService, FormService],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
   @ViewChild('t2') public popoverRef: NgbPopover;
@@ -41,16 +42,16 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   public headerTabs = [
     {
       id: 1,
-      label: 'Bill',
+      label: 'headerTab',
       value: 'Bill',
-      name: 'header-tabs',
+      name: 'Bill',
       checked: true,
     },
     {
       id: 2,
-      label: 'Order',
+      label: 'headerTab',
       value: 'Order',
-      name: 'header-tabs',
+      name: 'Order',
       checked: false,
     },
   ];
@@ -97,6 +98,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   private pmTrucks: any[] = [];
   private pmTrailers: any[] = [];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -104,7 +107,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private modalService: ModalService,
     private ngbActiveModal: NgbActiveModal,
-    private sumArrayPipe: SumArraysPipe
+    private sumArrayPipe: SumArraysPipe,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -151,6 +155,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       items: this.formBuilder.array([]),
       note: [null],
     });
+
+    this.formService.checkFormChange(this.repairOrderForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

@@ -1,26 +1,38 @@
-<div class="applicant-container">
-  <app-applicant-header></app-applicant-header>
-
-  <div class="d-flex justify-content-center noselect step-progress-bar">
+<div class="container-fluid">
+  <div class="row">
     <div
-      class="step"
-      *ngFor="let menuItem of menuItems; index as i; trackBy: trackByIdentity"
-      [routerLink]="menuItem.route"
-      routerLinkActive="step-active"
+      class="container-fluid d-flex flex-column justify-content-between applicant-container"
     >
-      <div
-        class="d-inline-flex justify-content-center align-items-center bullet ta-font-semi-bold"
-        [class]="menuItem.class"
-      >
-        {{ menuItem.route }}
+      <div class="d-flex flex-column justify-content-center">
+        <app-applicant-header></app-applicant-header>
+
+        <div class="d-flex justify-content-center noselect step-progress-bar">
+          <div
+            class="step"
+            *ngFor="
+              let menuItem of menuItems;
+              index as i;
+              trackBy: trackByIdentity
+            "
+            [routerLink]="menuItem.route"
+            routerLinkActive="step-active"
+          >
+            <div
+              class="d-inline-flex justify-content-center align-items-center bullet ta-font-semi-bold"
+              [class]="menuItem.class"
+            >
+              {{ menuItem.route }}
+            </div>
+            <p class="step-text ta-font-regular">
+              {{ menuItem.title }}
+            </p>
+          </div>
+        </div>
+
+        <router-outlet></router-outlet>
       </div>
-      <p class="step-text ta-font-regular">
-        {{ menuItem.title }}
-      </p>
+
+      <app-applicant-footer></app-applicant-footer>
     </div>
   </div>
-
-  <router-outlet></router-outlet>
-
-  <app-applicant-footer></app-applicant-footer>
 </div>

@@ -5,12 +5,15 @@ import { tab_modal_animation } from '../../../shared/animations/tabs-modal.anima
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-violation-modal',
   templateUrl: './violation-modal.component.html',
   styleUrls: ['./violation-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
+  providers: [FormService, ModalService],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -96,11 +99,14 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -168,6 +174,14 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       bol: [null],
       cargo: [null],
     });
+
+    this.formService.checkFormChange(this.violationForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public tabChange(event: any): void {

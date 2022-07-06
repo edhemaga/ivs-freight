@@ -365,9 +365,39 @@
         width: 686px;
       }
 
-      &.w-col-dropdown-label {
+      &.w-col-dropdown-label,
+      &.w-col-load-req {
         width: 164px;
         max-height: 304px;
+      }
+
+      &.w-col-load-selectTemplate,
+      &.w-col-load-dispatcher {
+        width: 220px;
+      }
+
+      &.w-col-load-commodity {
+        width: 178px;
+      }
+
+      &.w-col-load-broker {
+        width: 439px;
+      }
+
+      &.w-col-load-door-type {
+        width: 107px;
+      }
+
+      &.w-col-load-suspension {
+        width: 117px;
+      }
+
+      &.w-col-load-length {
+        width: 88px;
+      }
+
+      &.w-col-load-year {
+        width: 66px;
       }
 
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------

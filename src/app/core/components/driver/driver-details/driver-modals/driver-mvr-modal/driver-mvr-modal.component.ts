@@ -17,6 +17,7 @@ import {
   convertDateFromBackend,
   convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-driver-mvr-modal',
@@ -33,13 +34,16 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
+  public isDirty: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private driverService: DriverTService,
     private inputService: TaInputService,
     private notificationService: NotificationService,
     private modalService: ModalService,
-    private mvrService: MvrTService
+    private mvrService: MvrTService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +59,14 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       issueDate: [null, Validators.required],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.mvrForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   private getDriverById(id: number) {
