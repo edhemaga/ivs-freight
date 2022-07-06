@@ -102,6 +102,7 @@ import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/
 import { ProfileImagesModule } from './profile-images/profile-images.module';
 import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
 
 @NgModule({
   declarations: [
@@ -144,6 +145,7 @@ import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-inpu
     TaUploadDropzoneComponent,
     FilterComponent,
     TaChartComponent,
+    TaInputArrowsComponent,
 
     // Modals Components
     TaModalComponent,
@@ -269,6 +271,7 @@ import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-inpu
     TaUploadFileComponent,
     TaUploadFilesCarouselComponent,
     TaUploadDropzoneComponent,
+    TaInputArrowsComponent,
 
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
@@ -314,7 +317,7 @@ import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-inpu
     AccidentModalComponent,
     RepairPmModalComponent,
     RepairOrderModalComponent,
-    TaInputDropdownLabelComponent
+    TaInputDropdownLabelComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
