@@ -13,7 +13,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   selector: 'app-settings-factoring-modal',
   templateUrl: './settings-factoring-modal.component.html',
   styleUrls: ['./settings-factoring-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

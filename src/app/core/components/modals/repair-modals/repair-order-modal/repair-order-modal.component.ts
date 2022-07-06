@@ -29,7 +29,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   selector: 'app-repair-order-modal',
   templateUrl: './repair-order-modal.component.html',
   styleUrls: ['./repair-order-modal.component.scss'],
-  providers: [SumArraysPipe, ModalService],
+  providers: [SumArraysPipe, ModalService, FormService],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
   @ViewChild('t2') public popoverRef: NgbPopover;

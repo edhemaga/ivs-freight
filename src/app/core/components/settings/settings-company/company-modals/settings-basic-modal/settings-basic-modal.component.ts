@@ -30,7 +30,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   templateUrl: './settings-basic-modal.component.html',
   styleUrls: ['./settings-basic-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   @ViewChild(TabSwitcherComponent) tabSwitcher: any;

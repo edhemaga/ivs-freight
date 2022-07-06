@@ -19,7 +19,7 @@ import { calculateParkingSlot } from 'src/app/core/utils/methods.calculations';
   templateUrl: './settings-parking-modal.component.html',
   styleUrls: ['./settings-parking-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

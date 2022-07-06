@@ -40,7 +40,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   styleUrls: ['./shipper-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, TaLikeDislikeService],
+  providers: [ModalService, TaLikeDislikeService, FormService],
 })
 export class ShipperModalComponent implements OnInit, OnDestroy {
   @Input() editData: any = null;

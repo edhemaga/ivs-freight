@@ -27,7 +27,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
   selector: 'app-repair-shop-modal',
   templateUrl: './repair-shop-modal.component.html',
   styleUrls: ['./repair-shop-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

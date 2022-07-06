@@ -24,7 +24,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   selector: 'app-contact-modal',
   templateUrl: './contact-modal.component.html',
   styleUrls: ['./contact-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class ContactModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

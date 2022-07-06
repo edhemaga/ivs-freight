@@ -31,7 +31,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   selector: 'app-task-modal',
   templateUrl: './task-modal.component.html',
   styleUrls: ['./task-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class TaskModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

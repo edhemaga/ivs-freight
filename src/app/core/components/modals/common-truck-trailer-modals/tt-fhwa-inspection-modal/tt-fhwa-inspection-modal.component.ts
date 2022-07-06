@@ -22,7 +22,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   selector: 'app-tt-fhwa-inspection-modal',
   templateUrl: './tt-fhwa-inspection-modal.component.html',
   styleUrls: ['./tt-fhwa-inspection-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

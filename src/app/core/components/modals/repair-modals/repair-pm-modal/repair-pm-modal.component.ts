@@ -24,7 +24,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   selector: 'app-repair-pm-modal',
   templateUrl: './repair-pm-modal.component.html',
   styleUrls: ['./repair-pm-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class RepairPmModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

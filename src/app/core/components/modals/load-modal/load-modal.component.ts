@@ -5,11 +5,13 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-load-modal',
   templateUrl: './load-modal.component.html',
   styleUrls: ['./load-modal.component.scss'],
+  providers: [FormService, ModalService],
 })
 export class LoadModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -108,6 +110,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private formService: FormService,
+    private modalService: ModalService,
     private inputService: TaInputService
   ) {}
 

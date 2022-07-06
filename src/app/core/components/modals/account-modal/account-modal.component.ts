@@ -26,7 +26,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   templateUrl: './account-modal.component.html',
   styleUrls: ['./account-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

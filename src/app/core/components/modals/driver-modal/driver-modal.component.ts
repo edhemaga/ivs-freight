@@ -49,7 +49,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
     tab_modal_animation('animationTabsModal'),
     card_modal_animation('showHidePayroll', '6px'),
   ],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

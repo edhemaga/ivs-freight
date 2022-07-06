@@ -18,6 +18,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   templateUrl: './accident-modal.component.html',
   styleUrls: ['./accident-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
+  providers: [ModalService, FormService],
 })
 export class AccidentModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

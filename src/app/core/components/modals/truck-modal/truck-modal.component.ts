@@ -32,7 +32,7 @@ import { TruckTService } from '../../truck/state/truck.service';
   styleUrls: ['./truck-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

@@ -12,7 +12,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   selector: 'app-fuel-stop-modal',
   templateUrl: './fuel-stop-modal.component.html',
   styleUrls: ['./fuel-stop-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class FuelStopModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

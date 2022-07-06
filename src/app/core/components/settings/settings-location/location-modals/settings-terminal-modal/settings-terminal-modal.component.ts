@@ -18,7 +18,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   templateUrl: './settings-terminal-modal.component.html',
   styleUrls: ['./settings-terminal-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

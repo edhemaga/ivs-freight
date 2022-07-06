@@ -14,7 +14,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   selector: 'app-settings-insurance-policy-modal',
   templateUrl: './settings-insurance-policy-modal.component.html',
   styleUrls: ['./settings-insurance-policy-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsInsurancePolicyModalComponent
   implements OnInit, OnDestroy

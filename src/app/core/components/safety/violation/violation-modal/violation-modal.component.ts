@@ -13,6 +13,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   templateUrl: './violation-modal.component.html',
   styleUrls: ['./violation-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
+  providers: [FormService, ModalService],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

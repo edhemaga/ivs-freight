@@ -25,7 +25,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   styleUrls: ['./settings-office-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

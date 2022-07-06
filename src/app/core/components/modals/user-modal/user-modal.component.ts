@@ -28,7 +28,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   styleUrls: ['./user-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

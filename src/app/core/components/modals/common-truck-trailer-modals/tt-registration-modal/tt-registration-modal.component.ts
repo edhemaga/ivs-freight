@@ -23,7 +23,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   selector: 'app-tt-registration-modal',
   templateUrl: './tt-registration-modal.component.html',
   styleUrls: ['./tt-registration-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

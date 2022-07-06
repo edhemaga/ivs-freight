@@ -17,7 +17,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
   selector: 'app-fuel-purchase-modal',
   templateUrl: './fuel-purchase-modal.component.html',
   styleUrls: ['./fuel-purchase-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
