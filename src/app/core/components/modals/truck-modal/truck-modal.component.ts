@@ -437,7 +437,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             ipasEzpass: res.ipasEzpass,
           });
           this.selectedTruckType = res.truckType ? res.truckType : null;
-          console.log(this.selectedTruckType);
+
           this.selectedTruckMake = res.truckMake ? res.truckMake : null;
           this.selectedColor = res.color ? res.color : null;
           this.selectedOwner = res.owner ? res.owner : null;

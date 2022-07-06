@@ -16,7 +16,7 @@ import {
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { AddressEntity } from 'appcoretruckassist';
+import { AddressEntity, CompanyModalResponse } from 'appcoretruckassist';
 import { distinctUntilChanged } from 'rxjs';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Options } from '@angular-slider/ngx-slider';
@@ -24,6 +24,7 @@ import { TabSwitcherComponent } from 'src/app/core/components/switchers/tab-swit
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { DropZoneConfig } from 'src/app/core/components/shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { SettingsStoreService } from '../../../state/settings.service';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -144,6 +145,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   // Dropdowns
 
+  public payPeriods: any[] = [];
+  public endingIns: any[] = [];
+  public timeZones: any[] = [];
+  public currencies: any[] = [];
+  public departments: any[] = [];
+
   public selectedDriverPayPeriod: any = null;
   public selectedDriverEndingIn: any = null;
   public selectedAccountingPayPeriod: any = null;
@@ -168,12 +175,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService
+    private formService: FormService,
+    private settingsService: SettingsStoreService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
+    this.getModalDropdowns();
     this.validateMiles();
+    console.log(this.editData);
     if (this.editData?.type === 'payroll-tab') {
       const timeout = setTimeout(() => {
         this.selectedTab = 3;
@@ -189,11 +199,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       companyName: [null, Validators.required],
       usdot: [null, Validators.required],
       ein: [null, einNumberRegex],
-      mcNumber: [null, Validators.maxLength(8)],
+      mc: [null, Validators.maxLength(8)],
       phone: [null, phoneRegex],
       email: [null, emailRegex],
       fax: [null],
-      url: [null, [...urlRegex]],
+      webURL: [null, [...urlRegex]],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       irp: [null],
@@ -208,16 +218,16 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       bankAccount: this.formBuilder.array([]),
       bankCard: this.formBuilder.array([]),
       prefix: [null],
-      startingNo: [null, Validators.required],
-      suffix: [null],
-      preferredLoadType: ['FTL'],
+      starting: [null, Validators.required],
+      sufix: [null],
       autoInvoicing: [false],
+      preferredLoadType: ['FTL'],
       factorByDefault: [false],
       customerPayTerm: [null, daysValidRegex],
       customerCredit: [null],
-      mvr: [12, [Validators.required, monthsValidRegex]],
-      truckInspection: [12, [Validators.required, monthsValidRegex]],
-      trailerInspection: [12, [Validators.required, monthsValidRegex]],
+      mvrMonths: [12, [Validators.required, monthsValidRegex]],
+      truckInspectionMonths: [12, [Validators.required, monthsValidRegex]],
+      trailerInspectionMonths: [12, [Validators.required, monthsValidRegex]],
       // Payroll Tab
       useTruckAssist: [true],
       // Driver & Owner
@@ -564,6 +574,46 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.companyForm.get('preferredLoadType').patchValue(item.label);
       }
     });
+  }
+
+  private getModalDropdowns() {
+    this.settingsService
+      .getCompanyModal()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: CompanyModalResponse) => {
+          this.payPeriods = res.payPeriods;
+          this.endingIns = res.endingIns;
+          this.timeZones = res.timeZones;
+          this.currencies = res.currencies;
+          this.departments = res.departments;
+
+          this.selectedDriverPayPeriod = res.payPeriods[0];
+          this.selectedDriverEndingIn = res.endingIns[0];
+          this.selectedAccountingPayPeriod = res.payPeriods[0];
+          this.selectedAccountingEndingIn = res.endingIns[0];
+          this.selectedCompanyPayPeriod = res.payPeriods[0];
+          this.selectedCompanyEndingIn = res.endingIns[0];
+          this.selectedDispatchPayPeriod = res.payPeriods[0];
+          this.selectedDispatchEndingIn = res.endingIns[0];
+          this.selectedManagerPayPeriod = res.payPeriods[0];
+          this.selectedManagerEndingIn = res.endingIns[0];
+          this.selectedRecPayPeriod = res.payPeriods[0];
+          this.selectedRecEndingIn = res.endingIns[0];
+          this.selectedRepairPayPeriod = res.payPeriods[0];
+          this.selectedRepairEndingIn = res.endingIns[0];
+          this.selectedSafetyPayPeriod = res.payPeriods[0];
+          this.selectedSafetyEndingIn = res.endingIns[0];
+          this.selectedOtherPayPeriod = res.payPeriods[0];
+          this.selectedOtherEndingIn = res.endingIns[0];
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't Load Settings Basic Dropdowns",
+            'Error'
+          );
+        },
+      });
   }
 
   ngOnDestroy(): void {}

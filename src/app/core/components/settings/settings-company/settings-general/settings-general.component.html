@@ -55,7 +55,11 @@
           src="assets/svg/common/ic_pen.svg"
           class="settings-edit-button"
           (click)="
-            onAction({ type: true, modalName: 'basic', action: 'edit-basic' })
+            onAction({
+              modalName: 'basic',
+              action: 'edit-basic',
+              company: null
+            })
           "
         ></svg-icon>
       </div>
@@ -64,7 +68,7 @@
         <svg-icon
           src="assets/svg/common/ic_plus.svg"
           class="settings-plus-button"
-          (click)="onAction({ modalName: 'basic', type: true, action: 'new' })"
+          (click)="onAction({ modalName: 'basic', action: 'new' })"
         ></svg-icon>
       </div>
     </div>
@@ -170,14 +174,24 @@
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Time Zone</p>
-            <p *ngIf="companyData.timeZone.name" class="additional-template-value">
+            <p
+              *ngIf="companyData.timeZone.name"
+              class="additional-template-value"
+            >
               {{ timeZoneName }}
             </p>
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Currency</p>
-            <p *ngIf="companyData.currency.name" class="additional-template-value">
-              {{ companyData?.currency?.name.includes('US') ? 'USD ($)':'CAD ($)' }}
+            <p
+              *ngIf="companyData.currency.name"
+              class="additional-template-value"
+            >
+              {{
+                companyData?.currency?.name.includes("US")
+                  ? "USD ($)"
+                  : "CAD ($)"
+              }}
             </p>
           </div>
         </div>
