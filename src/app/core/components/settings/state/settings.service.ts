@@ -22,7 +22,7 @@ export class SettingsStoreService {
   constructor(
     private settingsStore: SettingsStore,
     private modalService: ModalService,
-    private settingCompanyService:CompanyService,
+    private settingCompanyService: CompanyService,
     private http: HttpClient
   ) {}
 
@@ -87,10 +87,10 @@ export class SettingsStoreService {
     }
     this.isModalActive$.next(true);
   }
-  public getCompany():Observable<CompanyResponse>{
-    return this.settingCompanyService.apiCompanyIdGet();
+  public getCompany(): Observable<CompanyResponse> {
+    return this.settingCompanyService.apiCompanyGet();
   }
-  public getCompanyDivisionById(id:number):Observable<any>{
+  public getCompanyDivisionById(id: number): Observable<any> {
     return this.settingCompanyService.apiCompanyDivisionIdGet(id);
   }
 }

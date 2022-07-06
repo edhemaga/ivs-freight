@@ -43,9 +43,11 @@ export interface CompanyResponse {
     departmentContacts?: Array<DepartmentContactResponse> | null;
     bankAccounts?: Array<BankAccountResponse> | null;
     bankCards?: Array<BankCardResponse> | null;
+    useACHPayout?: boolean | null;
     companyPayrolls?: Array<CompanyPayrollResponse> | null;
     insurancePolicies?: Array<InsurancePolicyResponse> | null;
     divisions?: Array<CompanyShortResponse> | null;
+    logo?: string | null;
     createdAt?: string;
     updatedAt?: string;
 }
