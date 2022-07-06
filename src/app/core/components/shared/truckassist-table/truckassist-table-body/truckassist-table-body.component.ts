@@ -31,6 +31,7 @@ export class TruckassistTableBodyComponent
   @Input() tableData: any[];
   @Input() selectedTab: string;
   @Input() tableContainerWidth: number;
+  @Input() hasProgress: boolean;
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
   showItemDrop: number = -1;
@@ -42,9 +43,12 @@ export class TruckassistTableBodyComponent
   hoverActive: number = -1;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
+  /* Dropdown */
   dropContent: any[] = [];
   tooltip: any;
   dropDownActive: number = -1;
+  /* Progress */
+  progressData: any[] = [];
 
   constructor(
     private router: Router,
@@ -58,6 +62,11 @@ export class TruckassistTableBodyComponent
 
     // Set Dropdown Content
     this.setDropContent();
+
+    // Set Progress Data
+    if (this.hasProgress) {
+      this.setProgressData();
+    }
 
     // Select Or Deselect All
     this.tableService.currentSelectOrDeselect
@@ -216,39 +225,6 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  // DROPDOWN
-  /* --------------------------------Set Dropdown Content--------------------------------- */
-  setDropContent() {
-    /* Drop Down Actions*/
-    if (this.options.actions.length) {
-      for (let i = 0; i < this.options.actions.length; i++) {
-        this.dropContent.push(this.options.actions[i]);
-      }
-    }
-  }
-
-  /* --------------------------------Toggle Dropdown--------------------------------- */
-  toggleDropdown(tooltip: any, id: number) {
-    this.tooltip = tooltip;
-    if (tooltip.isOpen()) {
-      tooltip.close();
-    } else {
-      tooltip.open({ data: this.dropContent });
-    }
-
-    this.dropDownActive = tooltip.isOpen() ? id : -1;
-  }
-
-  /* --------------------------------Dropdown Actions--------------------------------- */
-  onDropAction(action: any) {
-    this.bodyActions.emit({
-      id: this.dropDownActive,
-      type: action.name,
-    });
-
-    this.tooltip.close();
-  }
-
   checkForScroll() {
     const div = document.getElementById('scroll-container');
 
@@ -300,7 +276,46 @@ export class TruckassistTableBodyComponent
   onShowPassword(index: number) {
     this.loadingPassword = index;
   }
+  // --------------------------------PROGGRESS BAR---------------------------------
+  setProgressData() {
+    this.viewData.map((data: any) => {
 
+    })
+  }
+
+  // --------------------------------DROPDOWN---------------------------------
+  /* Set Dropdown Content */
+  setDropContent() {
+    if (this.options.actions.length) {
+      for (let i = 0; i < this.options.actions.length; i++) {
+        this.dropContent.push(this.options.actions[i]);
+      }
+    }
+  }
+
+  /* Toggle Dropdown */
+  toggleDropdown(tooltip: any, id: number) {
+    this.tooltip = tooltip;
+    if (tooltip.isOpen()) {
+      tooltip.close();
+    } else {
+      tooltip.open({ data: this.dropContent });
+    }
+
+    this.dropDownActive = tooltip.isOpen() ? id : -1;
+  }
+
+  /* Dropdown Actions */
+  onDropAction(action: any) {
+    this.bodyActions.emit({
+      id: this.dropDownActive,
+      type: action.name,
+    });
+
+    this.tooltip.close();
+  }
+
+  // --------------------------------ON DESTROY---------------------------------
   ngOnDestroy(): void {
     this.tableService.sendRowsSelected([]);
   }

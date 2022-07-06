@@ -1495,6 +1495,21 @@
                 "
                 [status]="row['status']"
               ></app-truckassist-progress-expiration> -->
+
+              <div class="table-progress-cotnainer">
+                <!-- Progres Bar  -->
+                <div class="table-progress-bar-container">
+                  <div
+                    [class]="'bg-' + progressbarColor"
+                    [ngClass]="{ 'progres-default': !progressbarColor }"
+                    [ngStyle]="{ width: calculatedProgress + '%' }"
+                    class="table-progress-bar"
+                  ></div>
+                </div>
+
+                <!-- Progres Text -->
+                <div class="table-progress-text">DAYS</div>
+              </div>
             </div>
           </td>
         </div>
@@ -1603,7 +1618,6 @@
     Show More
   </div>
 </div>
-
 
 <!-- DROPDOWN -->
 <ng-template #dropdownPopover let-data="data">

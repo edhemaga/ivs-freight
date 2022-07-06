@@ -1,9 +1,8 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
   Component,
   Input,
   OnInit,
-  ViewEncapsulation,
   OnChanges,
   SimpleChanges,
   Output,
