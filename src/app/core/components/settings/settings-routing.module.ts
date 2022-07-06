@@ -2,6 +2,7 @@ import { SettingsLocationModule } from './settings-location/settings-location.mo
 import { SettingsComponent } from './settings.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { companySettingsResolver } from './state/company-state/company-settings.resolver';
 
 const routes: Routes = [
   {
@@ -15,6 +16,9 @@ const routes: Routes = [
           import('./settings-company/settings-company.module').then(
             (m) => m.SettingsCompanyModule
           ),
+          resolve:{
+            company:companySettingsResolver
+          },
         data: { title: 'Company' },
       },
       {

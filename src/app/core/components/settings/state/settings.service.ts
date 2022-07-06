@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { SettingsTerminalModalComponent } from './../settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
 import { SettingsRepairshopModalComponent } from './../settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsOfficeModalComponent } from './../settings-location/location-modals/settings-office-modal/settings-office-modal.component';
@@ -11,6 +12,7 @@ import { SettingsBasicModalComponent } from '../settings-company/company-modals/
 import { SettingsInsurancePolicyModalComponent } from '../settings-company/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
 import { SettingsFactoringModalComponent } from '../settings-company/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { CompanyResponse, CompanyService } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsStoreService {
@@ -20,6 +22,7 @@ export class SettingsStoreService {
   constructor(
     private settingsStore: SettingsStore,
     private modalService: ModalService,
+    private settingCompanyService:CompanyService,
     private http: HttpClient
   ) {}
 
@@ -83,5 +86,11 @@ export class SettingsStoreService {
         break;
     }
     this.isModalActive$.next(true);
+  }
+  public getCompany():Observable<CompanyResponse>{
+    return this.settingCompanyService.apiCompanyIdGet();
+  }
+  public getCompanyDivisionById(id:number):Observable<any>{
+    return this.settingCompanyService.apiCompanyDivisionIdGet(id);
   }
 }

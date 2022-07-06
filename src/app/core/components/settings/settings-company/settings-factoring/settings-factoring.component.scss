@@ -20,12 +20,12 @@
     }
   }
 }
-.notice-template-data{
+.notice-template-data-default{
   display: grid;
   grid-template-columns: 245px;
   row-gap: 15px;
   padding: 0 10px;
-  padding-bottom: 16px;
+
   .notice-item-value{
     font-size: 14px;
     font-weight: 400;
@@ -38,5 +38,100 @@
       color:  $settings-gray-dark;
       background: rgb(108, 108, 108, 0.2);
   }
+  }
+}
+.notice-template-data-change{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .bottom-notice-item{
+    padding-bottom: 0 !important;
+  }
+  .notice-change-item{
+    padding-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .notice-item-header{
+      font-size: 12px;
+      font-weight: 700;
+      color: #6c6c6c;
+      text-align: center;
+      width: 215px;
+      &::-moz-selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color:  $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
+    }
+    .notice-item-middle{
+      font-size: 16px;
+      font-weight: 800;
+      color: #6c6c6c;
+      width: 310px;
+      text-align: center;
+      &::-moz-selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color:  $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
+    }
+    .bottom-data-notice{
+      font-size: 14px;
+      font-weight: 400;
+      color: #6c6c6c;
+      width: 154px;
+      text-align: center;
+      &::-moz-selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color:  $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
+    }
+    .notice-item-bottom{
+      font-size: 14px;
+      font-weight: 400;
+      text-align: center;
+      color: #536BC2;
+      width: 190px;
+      a{
+        text-decoration: none;
+        color: #536BC2;
+        &:hover{
+          color: #6D82C7;
+        }
+      }
+      &::-moz-selection {
+        color: #536BC2;
+        background: rgb(83, 107, 194, 0.2);
+      }
+      &::selection {
+        color: #536BC2;
+        background: rgb(83, 107, 194, 0.2);
+    }
+      .phone-notice-item{
+        font-weight: 800 !important;
+        text-decoration: underline;
+        &::-moz-selection {
+          color: #536BC2;
+          background: rgb(83, 107, 194, 0.2);
+        }
+        &::selection {
+          color: #536BC2;
+          background: rgb(83, 107, 194, 0.2);
+      }
+      }
+    }
   }
 }

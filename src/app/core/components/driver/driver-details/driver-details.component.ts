@@ -61,6 +61,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.initTableOptions();
+    console.log(this.activated_route.snapshot.data.driver);
+    console.log(this.driverDetailsQuery.getAll());
+    
     this.detailCongif(this.activated_route.snapshot.data.driver);
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
