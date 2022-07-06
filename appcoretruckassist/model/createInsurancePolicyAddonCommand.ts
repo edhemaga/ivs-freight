@@ -12,7 +12,6 @@
 
 
 export interface CreateInsurancePolicyAddonCommand { 
-    insurancePolicyAddonType?: number;
     policy?: string | null;
     insurerName?: string | null;
     rating?: number;

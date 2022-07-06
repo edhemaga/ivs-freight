@@ -15,7 +15,7 @@ import { EnumValue } from './enumValue';
 export interface InsurancePolicyAddonResponse { 
     id?: number;
     insurancePolicyId?: number;
-    insurancePolicyAddonType?: number;
+    insurancePolicyAddonType?: EnumValue;
     policy?: string | null;
     insurerName?: string | null;
     rating?: EnumValue;

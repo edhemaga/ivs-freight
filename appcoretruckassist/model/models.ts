@@ -275,3 +275,4 @@ export * from './updateTruckPMUnitCommand';
 export * from './verifyForgotPasswordCommand';
 export * from './verifyOwnerCommand';
 export * from './verifyUserCommand';
+export * from './vinDecodeResponse';
