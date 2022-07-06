@@ -44,7 +44,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   styleUrls: ['./broker-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, FormService],
+  providers: [ModalService, FormService, TaLikeDislikeService],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -149,6 +149,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public hasCompanyUserReview: boolean = false;
 
   public isDirty: boolean = false;
+
+  public disableOneMoreReview: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -491,7 +493,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public createReview(event: any) {
-    if (this.reviews.some((item) => item.isNewReview)) {
+    if (
+      this.reviews.some((item) => item.isNewReview) &&
+      !this.disableOneMoreReview
+    ) {
       return;
     }
     // ------------------------ PRODUCTION MODE -----------------------------
@@ -512,7 +517,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           ' ',
           this.companyUser.lastName
         ),
-        avatar: this.companyUser.avatar,
+        avatar: 'https://picsum.photos/id/237/200/300',
       },
       commentContent: '',
       createdAt: new Date().toISOString(),
@@ -545,7 +550,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           .addRating(rating)
           .pipe(untilDestroyed(this))
           .subscribe({
-            next: () => {
+            next: (res: any) => {
               this.notificationService.success(
                 'Rating successfully updated.',
                 'Success:'
@@ -582,6 +587,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             }
             return item;
           });
+
+          this.disableOneMoreReview = true;
           this.notificationService.success(
             'Review successfully created.',
             'Success:'
@@ -595,7 +602,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   private deleteReview(reviews: ReviewCommentModal) {
     this.reviews = reviews.sortData;
-
+    this.disableOneMoreReview = false;
     this.reviewRatingService
       .deleteReview(reviews.data)
       .pipe(untilDestroyed(this))
@@ -924,10 +931,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             ...item,
             companyUser: {
               ...item.companyUser,
-              avatar: 'https://picsum.photos/id/237/200/300',
+              avatar: item.companyUser.avatar
+                ? item.companyUser.avatar
+                : 'assets/svg/common/ic_profile.svg',
             },
             commentContent: item.comment,
+            rating: reasponse.currentCompanyUserRating,
           }));
+
+          this.taLikeDislikeService.populateLikeDislikeEvent({
+            downRatingCount: reasponse.downRatingCount,
+            upRatingCount: reasponse.upRatingCount,
+            currentCompanyUserRating: reasponse.currentCompanyUserRating,
+          });
 
           this.isCredit(reasponse.creditType);
         },
