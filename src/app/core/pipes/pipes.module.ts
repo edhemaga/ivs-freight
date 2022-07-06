@@ -37,7 +37,6 @@ import { LogoSliderPipe } from '../components/shared/ta-logo-change/logoSlider.p
     formatPhonePipe,
     formatEinPipe,
     formatSsnPipe,
-    // Pipes
     InputErrorPipe,
     SortPipe,
     StatusPipePipe,

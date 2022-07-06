@@ -1,52 +1,62 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChangeDetectorRef, Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ShipperResponse } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
+import { ShipperDetailsQuery } from '../state/shipper-state/shipper-details-state/shipper.details.query';
 @Component({
   selector: 'app-shipper-details',
   templateUrl: './shipper-details.component.html',
   styleUrls: ['./shipper-details.component.scss'],
-  providers:[DetailsPageService]
+  providers: [DetailsPageService],
 })
-export class ShipperDetailsComponent implements OnInit,OnDestroy {
+export class ShipperDetailsComponent implements OnInit, OnDestroy {
   public shipperConfig: any[] = [];
   constructor(
     private activated_route: ActivatedRoute,
     private router: Router,
-    private shipperService:ShipperTService,
+    private shipperService: ShipperTService,
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
-    private detailsPageService: DetailsPageService
+    private detailsPageService: DetailsPageService,
+    private shipperQuery: ShipperDetailsQuery
   ) {}
 
   ngOnInit(): void {
    
-    this.shipperConf(this.activated_route.snapshot.data.shipper);
     this.detailsPageService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
-        this.shipperService
-          .getShipperById(id)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: (res: ShipperResponse) => {
-              this.shipperConf(res);
-                this.router.navigate([`/customer/${res.id}/shipper-details`]);            
-              this.notificationService.success(
-                'Shipper successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error("Shipper can't be loaded", 'Error:');
-            },
-          });
+        let query;
+        if (this.shipperQuery.hasEntity(id)) {
+          query = this.shipperQuery.selectEntity(id);
+        } else {
+          query = this.shipperService.getShipperById(id);
+        }
+        query.pipe(untilDestroyed(this)).subscribe({
+          next: (res: ShipperResponse) => {          
+            this.shipperConf(res);
+            this.router.navigate([`/customer/${res.id}/shipper-details`]);
+            this.notificationService.success(
+              'Shipper successfully changed',
+              'Success:'
+            );
+            this.cdRef.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error("Shipper can't be loaded", 'Error:');
+          },
+        });
       });
-     
+      this.shipperConf(this.activated_route.snapshot.data.shipper);
   }
 
   public shipperConf(data: ShipperResponse) {
@@ -64,7 +74,7 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
         icon: true,
         length: 25,
         hide: true,
-        hasArrow:true,
+        hasArrow: true,
         customText: 'Date',
         icons: [
           {
@@ -91,10 +101,10 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
         id: 2,
         nameDefault: 'Contact',
         template: 'contact',
-        length: data?.shipperContacts?.length,
+        length: data?.shipperContacts?.length?data.shipperContacts.length:0,
         hide: false,
         icon: true,
-        hasArrow:false,
+        hasArrow: false,
         icons: [
           {
             id: Math.random() * 1000,
@@ -108,11 +118,11 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
         id: 3,
         nameDefault: 'Review',
         template: 'review',
-        length: 1,
+        length: data?.reviews?.length ? data.reviews.length : 0,
         customText: 'Date',
         hide: false,
         data: data,
-        hasArrow:false,
+        hasArrow: false,
       },
     ];
   }
@@ -120,7 +130,5 @@ export class ShipperDetailsComponent implements OnInit,OnDestroy {
   public identity(index: number, item: any): number {
     return item.id;
   }
-  ngOnDestroy(): void {
-      
-  }
+  ngOnDestroy(): void {}
 }

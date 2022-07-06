@@ -36,6 +36,7 @@ export class TruckassistTableHeadComponent
   @Input() columns: any[];
   @Input() options: any;
   @Input() viewData: any[];
+  @Input() tableContainerWidth: number;
   @Output() headActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
   locked: boolean = true;
@@ -46,7 +47,6 @@ export class TruckassistTableHeadComponent
   pinedColumns: any[] = [];
   notPinedColumns: any[] = [];
   actionColumns: any[] = [];
-  showBorder: boolean = false;
   resizeHitLimit: number = -1;
   resizeIsPined: boolean;
   notPinedMaxWidth: number = 0;
@@ -104,13 +104,6 @@ export class TruckassistTableHeadComponent
         }
       });
 
-    // Showing Scroll
-    this.tableService.currentShowingScroll
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((response: boolean) => {
-        this.showBorder = response;
-      });
-
     setTimeout(() => {
       this.getNotPinedMaxWidth();
     }, 10);
@@ -121,6 +114,13 @@ export class TruckassistTableHeadComponent
       this.columns = changes.columns.currentValue;
 
       this.setVisibleColumns();
+    }
+
+    if (
+      !changes?.tableContainerWidth?.firstChange &&
+      changes?.tableContainerWidth
+    ) {
+      this.getNotPinedMaxWidth();
     }
 
     if (!changes?.options?.firstChange && changes?.options) {
@@ -177,16 +177,18 @@ export class TruckassistTableHeadComponent
   }
 
   getNotPinedMaxWidth() {
-    const tableContainer = document.querySelector('.table-container');
-    const pinedColumns = document.querySelector('.pined-columns-container');
-    const actionColumns = document.querySelector('.actions-columns-container');
+    if (this.viewData.length) {
+      const tableContainer = document.querySelector('.table-container');
+      const pinedColumns = document.querySelector('.pined-tr');
+      const actionColumns = document.querySelector('.actions');
 
-    this.notPinedMaxWidth =
-      tableContainer.clientWidth -
-      (pinedColumns.clientWidth + actionColumns.clientWidth) -
-      6;
+      this.notPinedMaxWidth =
+        tableContainer.clientWidth -
+        (pinedColumns.clientWidth + actionColumns.clientWidth) -
+        6;
 
-    this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
   // Sort

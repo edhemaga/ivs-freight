@@ -21,6 +21,10 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 import moment from 'moment';
+import { DriversActiveStore } from '../state/driver-active-state/driver-active.store';
+import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
+import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
+import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
 @Component({
   selector: 'app-driver-details',
   templateUrl: './driver-details.component.html',
@@ -46,6 +50,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
     private modalService: ModalService,
     private driverService: DriverTService,
     private router: Router,
+    private driverDetailsQuery: DriversDetailsQuery,
     private notificationService: NotificationService,
     private detailsPageDriverService: DetailsPageService,
     private cdRef: ChangeDetectorRef,
@@ -56,7 +61,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.initTableOptions();
-
+    console.log(this.activated_route.snapshot.data.driver);
+    console.log(this.driverDetailsQuery.getAll());
+    
     this.detailCongif(this.activated_route.snapshot.data.driver);
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
@@ -71,37 +78,35 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
     this.detailsPageDriverService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
-        this.driverService
-          .getDriverById(id)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: (res: DriverResponse) => {
-              this.checkExpiration(res);
-              this.detailCongif(res);
-
-              if (this.router.url.includes('details')) {
-                this.router.navigate([`/driver/${res.id}/details`]);
-              }
-              this.notificationService.success(
-                'Driver successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error(
-                "Driver can't be loaded",
-                'Error:'
-              );
-            },
-          });
+        let query;
+        if (!this.driverDetailsQuery.hasEntity(id)) {
+          query = this.driverService.getDriverById(id);
+        } else {
+          query = this.driverDetailsQuery.selectEntity(id);
+        }
+        query.pipe(untilDestroyed(this)).subscribe({
+          next: (res: DriverResponse) => {
+            this.detailCongif(res);
+            if (this.router.url.includes('details')) {
+              this.router.navigate([`/driver/${res.id}/details`]);
+            }
+            this.notificationService.success(
+              'Driver successfully changed',
+              'Success:'
+            );
+            this.cdRef.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error("Driver can't be loaded", 'Error:');
+          },
+        });
       });
   }
 
   /**Function template and names for header and other options in header */
-  detailCongif(data: DriverResponse | any) {
+  public detailCongif(data: DriverResponse | any) {
     this.checkExpiration(data);
-    if (data.status == 0) {
+    if (data?.status == 0) {
       this.statusDriver = true;
       this.showInc = true;
     } else {
@@ -162,30 +167,29 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   checkExpiration(data: DriverResponse) {
     this.hasDangerCDL = false;
     this.hasDangerMedical = false;
-    this.hasDangerMvr=false;
+    this.hasDangerMvr = false;
     this.arrayCDL = [];
     this.arrayMedical = [];
     this.arrayMvrs = [];
-  
-      data?.cdls.map((el) => {
-        if (moment(el.expDate).isAfter(moment())) {
-          this.arrayCDL.push(false);
-        }
-        if (moment(el.expDate).isBefore(moment())) {
-          this.arrayCDL.push(true);
-        }
-      });
-    
- 
-      data?.medicals.map((el) => {
-        if (moment(el.expDate).isAfter(moment())) {
-          this.arrayMedical.push(false);
-        }
-        if (moment(el.expDate).isBefore(moment())) {
-          this.arrayMedical.push(true);
-        }
-      });
-    
+
+    data?.cdls?.map((el) => {
+      if (moment(el.expDate).isAfter(moment())) {
+        this.arrayCDL.push(false);
+      }
+      if (moment(el.expDate).isBefore(moment())) {
+        this.arrayCDL.push(true);
+      }
+    });
+
+    data?.medicals?.map((el) => {
+      if (moment(el.expDate).isAfter(moment())) {
+        this.arrayMedical.push(false);
+      }
+      if (moment(el.expDate).isBefore(moment())) {
+        this.arrayMedical.push(true);
+      }
+    });
+
     // if(data.mvrs.length>0){
     //   data?.mvrs.map((el)=>{
     //     if(moment(el.issueDate).isAfter(moment())){
@@ -261,7 +265,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
     };
   }
   public onDriverActions(event: any) {
-    
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
@@ -367,7 +370,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   /**Function retrun id */
   public identity(index: number, item: any): number {
-    return item.id;
+    return index;
   }
 
   ngOnDestroy(): void {

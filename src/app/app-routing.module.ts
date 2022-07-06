@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/authentication.guard';
 import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
+import { ApplicantWelcomeScreenComponent } from './core/components/applicant/applicant-welcome-screen/applicant-welcome-screen.component';
 import { DriverActiveResolver } from './core/components/driver/state/driver-active-state/driver-active.resolver';
 import { HelperSignupUserComponent } from './core/components/authentication/helper-signup-user/helper-signup-user.component';
 import { HelperComponent } from './core/components/authentication/helper/helper.component';
@@ -74,7 +75,10 @@ const routes: Routes = [
         (m) => m.DriverModule
       ),
     canActivate: [AuthGuard],
-    resolve: { driverActive: DriverActiveResolver, driversInactive: DriverInactiveResolver },
+    resolve: {
+      driverActive: DriverActiveResolver,
+      driversInactive: DriverInactiveResolver,
+    },
   },
   {
     path: 'truck',
@@ -181,6 +185,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./core/components/to-do/to-do.module').then((m) => m.ToDoModule),
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'applicant/welcome',
+    component: ApplicantWelcomeScreenComponent,
+    data: { title: 'Welcome Screen' },
   },
   {
     path: 'applicant/:id',

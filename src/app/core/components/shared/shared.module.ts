@@ -103,6 +103,7 @@ import { ProfileImagesModule } from './profile-images/profile-images.module';
 import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
+import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
 
 @NgModule({
   declarations: [
@@ -145,6 +146,7 @@ import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
     TaUploadDropzoneComponent,
     FilterComponent,
     TaChartComponent,
+    TaInputArrowsComponent,
 
     // Modals Components
     TaModalComponent,
@@ -271,6 +273,7 @@ import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
     TaUploadFileComponent,
     TaUploadFilesCarouselComponent,
     TaUploadDropzoneComponent,
+    TaInputArrowsComponent,
 
     TaReCardComponent,
     TaDetailsHeaderCardComponent,

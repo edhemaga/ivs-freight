@@ -1,61 +1,106 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { Subscription } from 'rxjs';
+
+import { isFormValueEqual } from '../../state/utils/utils';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Applicant } from '../../state/model/applicant.model';
 import { Address } from '../../state/model/address.model';
-import { Accident, AccidentInfo } from '../../state/model/accident.model';
+import {
+  Accident,
+  AccidentInfo,
+  AccidentModel,
+} from '../../state/model/accident.model';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 import { TruckType } from '../../state/model/truck-type.model';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 @Component({
   selector: 'app-step4',
   templateUrl: './step4.component.html',
   styleUrls: ['./step4.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class Step4Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.APPLICANT;
+
   public applicant: Applicant | undefined;
 
+  private subscription: Subscription;
+
   public accidentForm: FormGroup;
-  public accidentFormArray: Accident[] = [];
-  public accidentInfo: AccidentInfo | undefined;
+  public accidentArray: AccidentModel[] = [
+    {
+      accidentDate: '01/09/2012',
+      accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
+      accidentState: 'AL',
+      fatalities: 1,
+      injuries: 1,
+      hazmatSpill: 'YES',
+      truckType: 'Truck',
+      accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+    },
+    {
+      accidentDate: '21/09/2012',
+      accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
+      accidentState: 'AL',
+      fatalities: 1,
+      injuries: 1,
+      hazmatSpill: 'YES',
+      truckType: 'Truck',
+      accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+    },
+  ];
 
-  public truckType: TruckType[] = [];
-
+  public selectedAccidentIndex: number;
   public selectedAddress: Address = null;
   public selectedTruckType: any = null;
 
-  public editAccident: number = -1;
+  public truckType: TruckType[] = [];
+
+  public isEditing: boolean = false;
+  public isAccidentEdited: boolean = false;
+
+  public totalFatalities: number = 0;
+  public totalInjuries: number = 0;
 
   public answerChoices: AnswerChoices[] = [
     {
       id: 1,
-      label: 'Yes',
+      label: 'YES',
       value: 'hazmatYes',
       name: 'hazmatYes',
       checked: false,
     },
     {
       id: 2,
-      label: 'No',
+      label: 'NO',
       value: 'hazmatNo',
       name: 'hazmatNo',
       checked: false,
     },
   ];
 
-  public trackByIdentity = (index: number, item: any): number => index;
+  //
 
-  constructor(private formBuilder: FormBuilder) {}
+  /* public accidentArray: Accident[] = []; */
+
+  public accidentInfo: AccidentInfo | undefined;
+
+  public editAccident: number = -1;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private inputResetService: TaInputResetService
+  ) {}
 
   ngOnInit(): void {
-    this.formInit();
-    this.isPastAccident();
+    this.createForm();
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -64,36 +109,19 @@ export class Step4Component implements OnInit, OnDestroy {
     }
   }
 
-  public formInit(): void {
+  public trackByIdentity = (index: number, item: any): number => index;
+
+  public createForm(): void {
     this.accidentForm = this.formBuilder.group({
-      hasPastAccident: [false, Validators.requiredTrue],
+      hasPastAccident: [false],
       accidentLocation: [null, Validators.required],
       accidentDate: [null, Validators.required],
+      fatalities: [0],
+      injuries: [0],
       hazmatSpill: [null, Validators.required],
       truckType: [null, Validators.required],
       accidentDescription: [null, Validators.required],
     });
-  }
-
-  private isPastAccident(): void {
-    this.accidentForm
-      .get('hasPastAccident')
-      .valueChanges.pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (!value) {
-          this.accidentFormArray = this.accidentFormArray.map((a) => {
-            a.isDeleted = false;
-
-            return a;
-          });
-        } else {
-          this.accidentFormArray = this.accidentFormArray.map((a) => {
-            a.isDeleted = true;
-
-            return a;
-          });
-        }
-      });
   }
 
   public handleInputSelect(event: any, action: string): void {
@@ -125,24 +153,53 @@ export class Step4Component implements OnInit, OnDestroy {
     }
   }
 
+  public onIncrementDecrement(type: string, action: string) {
+    if (type === 'fatalities') {
+      if (action === 'decrement') {
+        if (this.totalFatalities === 0) {
+          return;
+        }
+
+        this.totalFatalities--;
+
+        this.accidentForm.patchValue({ fatalities: this.totalFatalities });
+      }
+
+      if (action === 'increment') {
+        this.totalFatalities++;
+
+        this.accidentForm.patchValue({ fatalities: this.totalFatalities });
+      }
+    }
+
+    if (type === 'injuries') {
+      if (action === 'decrement') {
+        if (this.totalInjuries === 0) {
+          return;
+        }
+
+        this.totalInjuries--;
+
+        this.accidentForm.patchValue({ injuries: this.totalInjuries });
+      }
+
+      if (action === 'increment') {
+        this.totalInjuries++;
+
+        this.accidentForm.patchValue({ injuries: this.totalInjuries });
+      }
+    }
+  }
+
   public onAddAccident(): void {
-    /*    this.shared.clearNotifications();
+    if (this.accidentForm.invalid) {
+      this.inputService.markInvalid(this.accidentForm);
+      return;
+    }
 
-        let isValid = true;
+    this.inputResetService.resetInputSubject.next(true);
 
-        if (this.isHazmatSpill === undefined) {
-            this.notification.warning(
-                'Please answer hazmat spill.',
-                'Warning:'
-            );
-            isValid = false;
-        }
-
-        if (!isValid) {
-            return false;
-        }
- */
-    const accidentForm = this.accidentForm.value;
+    /*  const accidentForm = this.accidentForm.value;
     const accident: Accident = new Accident();
 
     accident.accidentDate = accidentForm.accidentDate;
@@ -153,10 +210,87 @@ export class Step4Component implements OnInit, OnDestroy {
     accident.truckType = accidentForm.truckType;
     accident.accidentDescription = accidentForm.accidentDescription;
 
-    this.accidentFormArray.push(accident);
+    this.accidentArray.push(accident);
 
     this.accidentForm.reset();
-    this.editAccident = -1;
+    this.editAccident = -1; */
+  }
+
+  public onDeleteAccident(index: number): void {
+    if (this.isEditing) {
+      return;
+    }
+
+    this.accidentArray.splice(index, 1);
+  }
+
+  public onEditAccident(index: number): void {
+    if (this.isEditing) {
+      return;
+    }
+
+    this.isAccidentEdited = false;
+
+    this.isEditing = true;
+
+    this.selectedAccidentIndex = index;
+
+    const selectedAccident = this.accidentArray[index];
+
+    this.accidentForm.patchValue({
+      accidentLocation: selectedAccident.accidentLocation,
+      accidentDate: selectedAccident.accidentDate,
+      fatalities: selectedAccident.fatalities,
+      injuries: selectedAccident.injuries,
+      hazmatSpill: selectedAccident.hazmatSpill,
+      truckType: selectedAccident.truckType,
+      accidentDescription: selectedAccident.accidentDescription,
+    });
+
+    this.subscription = this.accidentForm.valueChanges.subscribe(
+      (newFormValue) => {
+        if (isFormValueEqual(selectedAccident, newFormValue)) {
+          this.isAccidentEdited = false;
+        } else {
+          this.isAccidentEdited = true;
+        }
+      }
+    );
+  }
+
+  public onSaveEditedAccident(): void {
+    if (this.accidentForm.invalid) {
+      this.inputService.markInvalid(this.accidentForm);
+      return;
+    }
+
+    if (!this.isAccidentEdited) {
+      return;
+    }
+
+    this.accidentArray[this.selectedAccidentIndex] = this.accidentForm.value;
+
+    this.isEditing = false;
+
+    this.isAccidentEdited = false;
+
+    this.accidentForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
+  }
+
+  public onCancelEditAccident(): void {
+    this.isEditing = false;
+
+    this.isAccidentEdited = false;
+
+    this.accidentForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
   }
 
   public onUpdateAccident(): void {
@@ -174,11 +308,11 @@ export class Step4Component implements OnInit, OnDestroy {
         if (!isValid) {
             return false;
         } */
-
-    if (this.accidentFormArray?.length) {
+    /* 
+    if (this.accidentArray?.length) {
       const accidentForm = this.accidentForm.value;
       const accident: Accident = new Accident(
-        this.accidentFormArray[this.editAccident]
+        this.accidentArray[this.editAccident]
       );
 
       accident.accidentDate = accidentForm.accidentDate;
@@ -189,48 +323,24 @@ export class Step4Component implements OnInit, OnDestroy {
       accident.truckType = accidentForm.truckType;
       accident.accidentDescription = accidentForm.accidentDescription;
 
-      this.accidentFormArray[this.editAccident] = accident;
+      this.accidentArray[this.editAccident] = accident;
     }
 
     this.accidentForm.reset();
-    this.editAccident = -1;
-  }
-
-  public onEditAccident(index: number): void {
-    this.accidentForm.patchValue({
-      accidentDate: this.accidentFormArray[index].accidentDate,
-      accidentLocation: this.accidentFormArray[index].accidentLocation,
-      hazmatSpill: this.accidentFormArray[index].hazmatSpill,
-      fatalities: this.accidentFormArray[index].fatalities,
-      injuries: this.accidentFormArray[index].injuries,
-      truckType: this.accidentFormArray[index].truckType,
-      accidentDescription: this.accidentFormArray[index].accidentDescription,
-    });
-
-    this.editAccident = index;
-  }
-
-  public onDeleteAccident(index: number): void {
-    if (this.accidentFormArray?.length && this.accidentFormArray[index]) {
-      if (this.accidentFormArray[index].id) {
-        this.accidentFormArray[index].isDeleted = true;
-      } else {
-        this.accidentFormArray.splice(index, 1);
-      }
-    }
+    this.editAccident = -1; */
   }
 
   private formFilling(): void {
-    this.accidentForm.patchValue({
+    /*   this.accidentForm.patchValue({
       hasPastAccident: [
         this.accidentInfo?.hasPastAccident,
         Validators.required,
       ],
     });
 
-    this.accidentFormArray = this.accidentInfo?.accidents
+    this.accidentArray = this.accidentInfo?.accidents
       ? this.accidentInfo?.accidents
-      : [];
+      : []; */
   }
 
   public onSubmitForm(): void {
@@ -243,7 +353,7 @@ export class Step4Component implements OnInit, OnDestroy {
                 this.onAddAccident();
             }
 
-            if (!this.accidentFormArray?.length) {
+            if (!this.accidentArray?.length) {
                 if (this.accidentForm.get('hazmatSpill').value === undefined) {
                     this.notification.warning(
                         'Please answer hazmat spill.',
@@ -256,15 +366,14 @@ export class Step4Component implements OnInit, OnDestroy {
                 return false;
             }
         } */
+    /*   const accidentInfoData = new AccidentInfo(this.accidentInfo);
 
-    const accidentInfoData = new AccidentInfo(this.accidentInfo);
-
-    accidentInfoData.accidents = this.accidentFormArray;
+    accidentInfoData.accidents = this.accidentArray;
     accidentInfoData.applicantId = this.applicant?.id;
     accidentInfoData.hasPastAccident = this.accidentForm.value.hasPastAccident;
     accidentInfoData.isCompleted = true;
     accidentInfoData.isDeleted = false;
-
+ */
     /* REDUX
         this.apppEntityServices.AccidentService.upsert(
           accidentInfoData

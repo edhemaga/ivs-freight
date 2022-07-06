@@ -6,6 +6,9 @@ import {
   Output,
   OnChanges,
   SimpleChanges,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  AfterViewInit,
 } from '@angular/core';
 import moment from 'moment';
 import { card_component_animation } from '../animations/card-component.animations';
@@ -15,8 +18,9 @@ import { Clipboard } from '@angular/cdk/clipboard';
   templateUrl: './ta-re-card.component.html',
   styleUrls: ['./ta-re-card.component.scss'],
   animations: [card_component_animation('showHideCardBody')],
+
 })
-export class TaReCardComponent implements OnInit, OnChanges {
+export class TaReCardComponent implements OnInit {
   @Input() public cardNameCommon: string;
   @Input() public cardDocumentCounter: number;
   @Input() public isCardOpen: boolean = true;
@@ -43,9 +47,11 @@ export class TaReCardComponent implements OnInit, OnChanges {
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
   public toggleDropDown: boolean;
-  constructor(private clipboard:Clipboard) {}
-  ngOnChanges(changes: SimpleChanges): void {    
-  }
+  constructor(private clipboard:Clipboard,private cdr: ChangeDetectorRef) {}
+  
+
+ 
+
   ngOnInit(): void {
     this.CloseCard();
   }
@@ -82,9 +88,6 @@ export class TaReCardComponent implements OnInit, OnChanges {
     event.preventDefault();
     event.stopPropagation();
     this.copiedCommon = true;
-   setTimeout(() => {
-    this.copiedCommon=false
-   }, 1500);
    this.clipboard.copy(val);
   }
 }

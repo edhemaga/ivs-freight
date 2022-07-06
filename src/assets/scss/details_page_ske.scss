@@ -39,15 +39,6 @@ p {
     background: rgb(108, 108, 108, 0.2);
   }
 }
-.details-item-cmp {
-  display: grid;
-  grid-template-columns: 440px repeat(4, 335px);
-  column-gap: 12px;
-  row-gap: 12px;
-  p {
-    margin: 0px;
-  }
-}
 
 .details-container-items {
   display: grid;
@@ -816,7 +807,7 @@ p {
     background: rgb(108, 108, 108, 0.2);
   }
 }
-.no-data {
+.no-data-driver-details {
   font-size: 14px;
   font-weight: 400;
   padding: 0 10px;
@@ -940,4 +931,7 @@ p {
 }
 .bind-height {
   max-height: fit-content !important;
+}
+.card-width{
+  width: 335px;
 }

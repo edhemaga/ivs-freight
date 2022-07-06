@@ -1,4 +1,6 @@
 @import "../settings.global.scss";
+app-settings-company{
+
 
 .settings-company {
   position: relative;
@@ -22,4 +24,5 @@
   .settings-company-col-4 {
     grid-column: 4 / -1;
   }
+}
 }

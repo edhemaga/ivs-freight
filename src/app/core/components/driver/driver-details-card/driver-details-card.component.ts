@@ -134,6 +134,7 @@ export class DriverDetailsCardComponent
       this.getExpireDate(changes.driver.currentValue);
       this.getYearsAndDays(changes.driver.currentValue);
       this.widthOfProgress();
+      this.getDriversDropdown()
     }
     if (changes?.driver?.firstChange) {
       if (this.templateCard == true) {
@@ -145,6 +146,7 @@ export class DriverDetailsCardComponent
   }
 
   ngOnInit(): void {
+    this.note.patchValue(this.driver.note)
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
@@ -329,7 +331,7 @@ export class DriverDetailsCardComponent
 
   /**Function retrun id */
   public identity(index: number, item: any): number {
-    return item.id;
+    return index;
   }
 
   /**Function for dots in cards */
@@ -432,7 +434,6 @@ export class DriverDetailsCardComponent
         showButton: this.expDateCard,
       };
     });
-    console.log(this.dataCDl);
   }
 
   public onModalAction(action: string): void {
@@ -492,7 +493,6 @@ export class DriverDetailsCardComponent
           };
         })
       );
-      console.log(sum);
       this.dataProggress = this.driver.employmentHistories.map((element) => {
         let res = element.duration.Years * 365.25 + element.duration.Days;
         this.activePercentage = (res / sum) * 100;

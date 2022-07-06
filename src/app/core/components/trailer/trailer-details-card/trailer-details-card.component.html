@@ -2,7 +2,7 @@
   <app-ta-details-header-card
     [tooltipNext]="'Next Trailer'"
     [tooltipPrevious]="'Previous Trailer'"
-    [cardDetailsDate]="'08/03/20'"
+    [cardDetailsDate]="trailer.createdAt | formatDateP"
     [options]="trailerDropDowns"
     [searchInputName]="'Search Trailer'"
     (selectValue)="onSelectedTrailer($event)"
@@ -14,7 +14,7 @@
           <svg-icon
             class="truck"
             src="{{
-              'assets/svg/common/trailers/' + trailer.trailerType.logoName
+              'assets/svg/common/trailers/' + trailer?.trailerType?.logoName
             }}"
           >
           </svg-icon>
@@ -25,7 +25,7 @@
             <svg-icon
               class="details-header-model"
               src="{{
-                'assets/svg/common/trailermake/' + trailer.trailerMake.logoName
+                'assets/svg/common/trailermake/' + trailer?.trailerMake?.logoName
               }}"
             >
             </svg-icon>
@@ -272,7 +272,7 @@
                   src="assets/svg/common/fill_arrow_down.svg"
                 ></svg-icon>
               </span>
-              <p
+              <span
                 tooltipBackground="#6c6c6c"
                 ngbTooltip
                 [mainTooltip]="toggleOwner ? 'Hide Contact' : 'Show More'"
@@ -280,7 +280,7 @@
                 class="hide-show"
               >
                 {{ toggleOwner ? "HIDE CONTACT" : "" }}
-              </p>
+              </span>
             </div>
           </div>
         </div>

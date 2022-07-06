@@ -11,8 +11,6 @@ export const FULL_SIZE = 182;
 const BUFFER = 500;
 const CYCLE = getCycle();
 export const CYCLE_HEIGHT = reduceCycle();
-console.log("CICLE HEGIHT");
-console.log(CYCLE_HEIGHT);
 
 function getCycle(): ReadonlyArray<ReadonlyArray<number>> {
   return Array.from({length: 28}, (_, i) =>

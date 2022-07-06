@@ -10,6 +10,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
+import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
 @Component({
   selector: 'app-trailer-details',
   templateUrl: './trailer-details.component.html',
@@ -19,7 +20,7 @@ import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.
 export class TrailerDetailsComponent implements OnInit, OnDestroy {
   public trailerDetailsConfig: any[] = [];
   public trailerId: number = null;
-  public dataHeaderDropDown:any;
+  public dataHeaderDropDown: any;
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService,
@@ -28,7 +29,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private notificationService: NotificationService,
     private detailsPageDriverSer: DetailsPageService,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private trailerDetailsQuery: TrailerDetailsQuery
   ) {}
 
   ngOnInit(): void {
@@ -45,26 +47,26 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     this.detailsPageDriverSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
-        this.trailerService
-          .getTrailerById(id)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: (res: TrailerResponse) => {
-              this.trailerConf(res);
-              this.router.navigate([`/trailer/${res.id}/details`]);
-              this.notificationService.success(
-                'Trailer successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error(
-                "Trailer can't be loaded",
-                'Error:'
-              );
-            },
-          });
+        let query;
+        if (this.trailerDetailsQuery.hasEntity(id)) {
+          query = this.trailerDetailsQuery.selectEntity(id);
+        } else {
+          query = this.trailerService.getTrailerById(id);
+        }
+        query.pipe(untilDestroyed(this)).subscribe({
+          next: (res: TrailerResponse) => {
+            this.trailerConf(res);
+            this.router.navigate([`/trailer/${res.id}/details`]);
+            this.notificationService.success(
+              'Trailer successfully changed',
+              'Success:'
+            );
+            this.cdRef.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error("Trailer can't be loaded", 'Error:');
+          },
+        });
       });
     this.trailerConf(this.activated_route.snapshot.data.trailer);
   }
@@ -82,21 +84,21 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         name: 'Registration',
         template: 'registration',
         data: data,
-        length: data.registrations.length,
+        length: data?.registrations?.length ? data.registrations.length : 0,
       },
       {
         id: 2,
         name: 'FHWA Inspection',
         template: 'fhwa-insepction',
         data: data,
-        length: data.inspections.length,
+        length: data?.inspections?.length ? data.inspections.length : 0,
       },
       {
         id: 3,
         name: 'Title',
         template: 'title',
         data: data,
-        length: data.titles.length,
+        length: data?.titles?.length ? data.titles.length : 0,
       },
       {
         id: 4,
@@ -108,8 +110,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     ];
     this.trailerId = data?.id ? data.id : null;
   }
-   /**Function for dots in cards */
-   public initTableOptions(): void {
+  /**Function for dots in cards */
+  public initTableOptions(): void {
     this.dataHeaderDropDown = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -170,7 +172,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             ...event,
             type: 'edit',
             disableButton: true,
-            id:this.trailerId
+            id: this.trailerId,
           }
         );
         break;

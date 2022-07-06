@@ -1,6 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
+import { Subscription } from 'rxjs';
 
 import { untilDestroyed } from 'ngx-take-until-destroy';
 
@@ -9,39 +11,54 @@ import {
   emailRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
+import { isFormValueEqual } from '../../state/utils/utils';
+
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { Applicant } from '../../state/model/applicant.model';
-import { WorkHistory } from '../../state/model/work-history.model';
+import {
+  WorkHistory,
+  WorkHistoryModel,
+} from '../../state/model/work-history.model';
 import { Address } from '../../state/model/address.model';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { ReasonForLeaving } from '../../state/model/reason-for-leaving.model';
 import { TruckType } from '../../state/model/truck-type.model';
 import { TrailerType } from '../../state/model/trailer-type.model';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 @Component({
   selector: 'app-step2',
   templateUrl: './step2.component.html',
   styleUrls: ['./step2.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class Step2Component implements OnInit, OnDestroy {
+  public selectedMode: string = SelectedMode.APPLICANT;
+
   public applicant: Applicant;
+  public applicantId: string = '0';
 
-  public workExperienceForm!: FormGroup;
-  public workExperienceArray: WorkHistory[] | undefined;
+  private subscription: Subscription;
 
-  public truckType: TruckType[] = [];
-  public trailerType: TrailerType[] = [];
-  public trailerLengthType: any[] = [];
+  public workExperienceForm: FormGroup;
+  public workExperienceArray: WorkHistoryModel[] = [];
 
+  public selectedWorkExperienceIndex: number;
   public selectedAddress: Address = null;
   public selectedTruckType: any = null;
   public selectedTrailerType: any = null;
   public selectedTrailerLength: any = null;
   public selectedReasonForLeaving: any = null;
-  public selectedItemIndex: number = -1;
+
+  public truckType: TruckType[] = [];
+  public trailerType: TrailerType[] = [];
+  public trailerLengthType: any[] = [];
+
+  public isEditing: boolean = false;
+  public isWorkExperienceEdited: boolean = false;
+  public isTruckSelected: boolean = false;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -50,7 +67,7 @@ export class Step2Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 1,
-          label: 'Yes',
+          label: 'YES',
           value: 'cfrPartYes',
           name: 'cfrPartYes',
           checked: false,
@@ -58,7 +75,7 @@ export class Step2Component implements OnInit, OnDestroy {
         },
         {
           id: 2,
-          label: 'No',
+          label: 'NO',
           value: 'cfrPartNo',
           name: 'cfrPartNo',
           checked: false,
@@ -72,7 +89,7 @@ export class Step2Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 3,
-          label: 'Yes',
+          label: 'YES',
           value: 'fmcsaYes',
           name: 'fmcsaYes',
           checked: false,
@@ -80,7 +97,7 @@ export class Step2Component implements OnInit, OnDestroy {
         },
         {
           id: 4,
-          label: 'No',
+          label: 'NO',
           value: 'fmcsaNo',
           name: 'fmcsaNo',
           checked: false,
@@ -90,35 +107,40 @@ export class Step2Component implements OnInit, OnDestroy {
     },
   ];
 
+  //
+
+  /* public workExperienceArray: WorkHistory[]; */
+
+  public selectedItemIndex: number = -1;
+
   public reasonsForLeaving: ReasonForLeaving[] = [
     { id: 1, name: 'Better opportunity' },
     { id: 2, name: 'Illness' },
-    { id: 3, name: 'Personal problems' },
-    { id: 4, name: 'Company went out of business' },
-    { id: 5, name: 'Fired or terminated' },
-    { id: 6, name: 'Had to relocate' },
+    { id: 3, name: 'Company went out of business' },
+    { id: 4, name: 'Fired or terminated' },
+    { id: 5, name: 'Family obligations' },
+    { id: 6, name: 'Other' },
   ];
 
-  public trackByIdentity = (index: number, item: any): number => index;
-
-  public get showAddNew(): boolean {
-    /* return this.workHistories?.length &&
-        this.workHistories[this.workHistories?.length - 1]?.id
-        ? true
-        : false; */
-    return true;
-  }
+  // public get showAddNew(): boolean {
+  //   /* return this.workHistories?.length &&
+  //       this.workHistories[this.workHistories?.length - 1]?.id
+  //       ? true
+  //       : false; */
+  //   return true;
+  // }
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private inputResetService: TaInputResetService
   ) {}
 
   ngOnInit(): void {
-    this.formInit();
+    this.createForm();
     this.isDriverPosition();
-    this.isNoExperience();
+    /*     this.isNoExperience(); */
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -127,25 +149,28 @@ export class Step2Component implements OnInit, OnDestroy {
     }
   }
 
-  private formInit(): void {
+  public trackByIdentity = (index: number, item: any): number => index;
+
+  private createForm(): void {
     this.workExperienceForm = this.formBuilder.group({
       employer: [null, Validators.required],
       jobDescription: [null, Validators.required],
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
-      phone: [null, [Validators.required, phoneRegex]],
-      email: [null, [Validators.required, emailRegex]],
-      address: [null, Validators.required],
-      addressUnit: [null, Validators.maxLength(6)],
-      isDrivingPosition: [false, Validators.requiredTrue],
-      truckType: [null, Validators.required],
-      trailerType: [null, Validators.required],
-      trailerLength: [null, Validators.required],
-      cfrPart: [null, Validators.required],
-      fmCSA: [null, Validators.required],
+      employerPhone: [null, [Validators.required, phoneRegex]],
+      employerEmail: [null, [Validators.required, emailRegex]],
+      employerFax: [null, phoneRegex],
+      employerAddress: [null, Validators.required],
+      employerAddressUnit: [null, Validators.maxLength(6)],
+      isDrivingPosition: [false],
+      truckType: [null],
+      trailerType: [null],
+      trailerLength: [null],
+      cfrPart: [null],
+      fmCSA: [null],
       reasonForLeaving: [null, Validators.required],
       accountForPeriod: [null],
-      noWorkExperience: [false, Validators.requiredTrue],
+      noWorkExperience: [false],
     });
   }
 
@@ -155,7 +180,9 @@ export class Step2Component implements OnInit, OnDestroy {
         this.selectedAddress = event.address;
 
         if (!event.valid) {
-          this.workExperienceForm.get('address').setErrors({ invalid: true });
+          this.workExperienceForm
+            .get('employerAddress')
+            .setErrors({ invalid: true });
         }
 
         break;
@@ -179,9 +206,13 @@ export class Step2Component implements OnInit, OnDestroy {
         const selectedFormControlName =
           this.questions[selectedCheckbox.index].formControlName;
 
-        this.workExperienceForm
-          .get(selectedFormControlName)
-          .patchValue(selectedCheckbox.label);
+        if (selectedCheckbox.label === 'YES') {
+          this.workExperienceForm.get(selectedFormControlName).patchValue(true);
+        } else {
+          this.workExperienceForm
+            .get(selectedFormControlName)
+            .patchValue(false);
+        }
 
         break;
       case InputSwitchActions.REASON_FOR_LEAVING:
@@ -191,84 +222,6 @@ export class Step2Component implements OnInit, OnDestroy {
       default:
         break;
     }
-  }
-
-  public onAddWorkExperience(): any {
-    /*   this.shared.clearNotifications(); */
-
-    const workExperienceForm = this.workExperienceForm.value;
-    const workExperience = new WorkHistory();
-
-    workExperience.id = this.workExperienceForm[this.selectedItemIndex].id;
-    workExperience.applicantId = this.applicant?.id ? this.applicant?.id : null;
-    workExperience.employer = workExperienceForm.employer;
-    workExperience.jobDescription = workExperienceForm.jobDescription;
-    workExperience.fromDate = workExperienceForm.fromDate;
-    workExperience.toDate = workExperienceForm.toDate;
-    workExperience.employerPhone = workExperienceForm.phone;
-    workExperience.employerEmail = workExperienceForm.email;
-    workExperience.employerAddress = workExperienceForm.address;
-    workExperience.employerAddressUnit = workExperienceForm.addressUnit;
-    workExperience.truckType = workExperienceForm.truckType;
-    workExperience.trailerType = workExperienceForm.trailerType;
-    workExperience.trailerLength = workExperienceForm.trailerLength;
-    workExperience.cfrPart = workExperienceForm.cfrPart;
-    workExperience.fmCSA = workExperienceForm.fmCSA;
-    workExperience.reasonForLeaving = workExperienceForm.reasonForLeaving;
-    workExperience.accountForPeriod = workExperienceForm.accountForPeriod;
-    workExperience.isDrivingPosition = workExperienceForm.isDrivingPosition;
-    workExperience.isExpanded = false;
-    workExperience.isDeleted = false;
-    workExperience.isCompleted = true;
-
-    /*  this.apppEntityServices.WorkHistoryService.upsert(workExperience).subscribe(
-            (response) => {
-              this.notification.success(
-                'Work Experience has been deleted!',
-                'Success'
-              );
-            },
-            (error) => {
-              this.shared.handleError(error);
-            }
-          ); */
-  }
-
-  public onDeleteWorkExperience(index: number): void {
-    /*   if (this.workExperienceArray?.length) {
-            if (!this.workExperienceArray[index].isCompleted) {
-                this.workExperienceArray?.splice(index, 1);
-            } else {
-                this.workExperienceArray[index].isDeleted = true;
-                this.apppEntityServices.workHistoryService
-                    .delete(this.workExperienceArray[index])
-                    .subscribe(
-                        response => {
-                            this.notification.success(
-                                'Work Experience has been deleted!',
-                                'Success'
-                            );
-                        },
-                        error => {
-                            this.shared.handleError(error);
-                        }
-                    );
-            }
-        } */
-  }
-
-  public onAddSecondOrLastEmployer(): void {
-    const workHistory = new WorkHistory(undefined);
-
-    workHistory.isExpanded = true;
-
-    this.workExperienceArray?.push(workHistory);
-
-    this.formFilling(
-      this.workExperienceArray?.length
-        ? this.workExperienceArray?.length - 1
-        : -1
-    );
   }
 
   private isDriverPosition(): void {
@@ -299,7 +252,7 @@ export class Step2Component implements OnInit, OnDestroy {
           );
         } else {
           this.inputService.changeValidators(
-            this.workExperienceForm.get('trucktype')
+            this.workExperienceForm.get('truckType')
           );
           this.inputService.changeValidators(
             this.workExperienceForm.get('trailerType')
@@ -317,7 +270,182 @@ export class Step2Component implements OnInit, OnDestroy {
       });
   }
 
-  private isNoExperience(): void {
+  public onAddSecondOrLastEmployer(): void {
+    if (this.workExperienceForm.invalid) {
+      this.inputService.markInvalid(this.workExperienceForm);
+      return;
+    }
+
+    const { noWorkExperience, ...workExperienceForm } =
+      this.workExperienceForm.value;
+
+    const saveData: WorkHistoryModel = {
+      ...workExperienceForm,
+      applicantId: this.applicantId,
+    };
+
+    this.workExperienceArray = [...this.workExperienceArray, saveData];
+
+    this.workExperienceForm.reset();
+
+    this.selectedReasonForLeaving = null;
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    /*   const workExperienceForm = this.workExperienceForm.value;
+    const workExperience = new WorkHistory();
+ */
+
+    /* workExperience.id = this.workExperienceForm[this.selectedItemIndex].id;
+    workExperience.applicantId = this.applicant?.id ? this.applicant?.id : null;
+    workExperience.employer = workExperienceForm.employer;
+    workExperience.jobDescription = workExperienceForm.jobDescription;
+    workExperience.fromDate = workExperienceForm.fromDate;
+    workExperience.toDate = workExperienceForm.toDate;
+    workExperience.employerPhone = workExperienceForm.phone;
+    workExperience.employerEmail = workExperienceForm.email;
+    workExperience.employerAddress = workExperienceForm.address;
+    workExperience.employerAddressUnit = workExperienceForm.addressUnit;
+    workExperience.truckType = workExperienceForm.truckType;
+    workExperience.trailerType = workExperienceForm.trailerType;
+    workExperience.trailerLength = workExperienceForm.trailerLength;
+    workExperience.cfrPart = workExperienceForm.cfrPart;
+    workExperience.fmCSA = workExperienceForm.fmCSA;
+    workExperience.reasonForLeaving = workExperienceForm.reasonForLeaving;
+    workExperience.accountForPeriod = workExperienceForm.accountForPeriod;
+    workExperience.isDrivingPosition = workExperienceForm.isDrivingPosition;
+    workExperience.isExpanded = false;
+    workExperience.isDeleted = false;
+    workExperience.isCompleted = true;
+ */
+    /*  this.apppEntityServices.WorkHistoryService.upsert(workExperience).subscribe(
+            (response) => {
+              this.notification.success(
+                'Work Experience has been deleted!',
+                'Success'
+              );
+            },
+            (error) => {
+              this.shared.handleError(error);
+            }
+          ); */
+  }
+
+  public onDeleteWorkExperience(index: number): void {
+    if (this.isEditing) {
+      return;
+    }
+
+    this.workExperienceArray.splice(index, 1);
+  }
+
+  public onEditWorkExperience(index: number): void {
+    if (this.isEditing) {
+      return;
+    }
+
+    this.isWorkExperienceEdited = false;
+
+    this.isEditing = true;
+
+    this.selectedWorkExperienceIndex = index;
+
+    const selectedWorkExperience = this.workExperienceArray[index];
+
+    this.workExperienceForm.patchValue({
+      employer: selectedWorkExperience.employer,
+      jobDescription: selectedWorkExperience.jobDescription,
+      fromDate: selectedWorkExperience.fromDate,
+      toDate: selectedWorkExperience.toDate,
+      employerPhone: selectedWorkExperience.employerPhone,
+      employerEmail: selectedWorkExperience.employerEmail,
+      employerAddress: selectedWorkExperience.employerAddress,
+      employerAddressUnit: selectedWorkExperience.employerAddressUnit,
+      isDrivingPosition: selectedWorkExperience.isDrivingPosition,
+      truckType: selectedWorkExperience.truckType,
+      trailerType: selectedWorkExperience.trailerType,
+      trailerLength: selectedWorkExperience.trailerLength,
+      cfrPart: selectedWorkExperience.cfrPart,
+      fmCSA: selectedWorkExperience.fmCSA,
+      reasonForLeaving: selectedWorkExperience.reasonForLeaving,
+      accountForPeriod: selectedWorkExperience.accountForPeriod,
+    });
+
+    this.subscription = this.workExperienceForm.valueChanges.subscribe(
+      (newFormValue) => {
+        if (isFormValueEqual(selectedWorkExperience, newFormValue)) {
+          this.isWorkExperienceEdited = false;
+        } else {
+          this.isWorkExperienceEdited = true;
+        }
+      }
+    );
+  }
+
+  public onSaveEditedWorkExperience(): void {
+    if (this.workExperienceForm.invalid) {
+      this.inputService.markInvalid(this.workExperienceForm);
+      return;
+    }
+
+    if (!this.isWorkExperienceEdited) {
+      return;
+    }
+
+    this.workExperienceArray[this.selectedWorkExperienceIndex] =
+      this.workExperienceForm.value;
+
+    this.isEditing = false;
+
+    this.isWorkExperienceEdited = false;
+
+    this.workExperienceForm.reset();
+
+    this.selectedReasonForLeaving = null;
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
+  }
+
+  public onCancelEditWorkExperience(): void {
+    this.isEditing = false;
+
+    this.isWorkExperienceEdited = false;
+
+    this.workExperienceForm.reset();
+
+    this.selectedReasonForLeaving = null;
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
+  }
+
+  /* public onDeleteWorkExperience(index: number): void {
+      if (this.workExperienceArray?.length) {
+            if (!this.workExperienceArray[index].isCompleted) {
+                this.workExperienceArray?.splice(index, 1);
+            } else {
+                this.workExperienceArray[index].isDeleted = true;
+                this.apppEntityServices.workHistoryService
+                    .delete(this.workExperienceArray[index])
+                    .subscribe(
+                        response => {
+                            this.notification.success(
+                                'Work Experience has been deleted!',
+                                'Success'
+                            );
+                        },
+                        error => {
+                            this.shared.handleError(error);
+                        }
+                    );
+            }
+        }
+  } */
+
+  /* private isNoExperience(): void {
     this.workExperienceForm
       .get('noWorkExperience')
       .valueChanges.pipe(untilDestroyed(this))
@@ -350,16 +478,16 @@ export class Step2Component implements OnInit, OnDestroy {
           });
         }
       });
-  }
+  } */
 
-  public hideForm(): void {
+  /*   public hideForm(): void {
     if (this.workExperienceArray?.length) {
       this.workExperienceArray[this.selectedItemIndex].isExpanded = false;
       this.selectedItemIndex = -1;
     }
-  }
+  } */
 
-  private formFilling(index: number): void {
+  /* private formFilling(index: number): void {
     this.selectedItemIndex = index;
 
     if (this.workExperienceArray?.length) {
@@ -436,12 +564,26 @@ export class Step2Component implements OnInit, OnDestroy {
     } else {
       this.workExperienceForm.get('noWorkExperience').patchValue(true);
     }
-  }
+  } */
 
-  public onSubmitForm(): void {
+  /* public onAddSecondOrLastEmployer(): void {
+    const workHistory = new WorkHistory(undefined);
+
+    workHistory.isExpanded = true;
+
+    this.workExperienceArray?.push(workHistory);
+
+    this.formFilling(
+      this.workExperienceArray?.length
+        ? this.workExperienceArray?.length - 1
+        : -1
+    );
+  } */
+
+  /*  public onSubmitForm(): void {
     this.onAddWorkExperience();
   }
-
+ */
   public goBack(): void {
     this.router.navigateByUrl(`/applicant/${this.applicant.id}/1`);
   }

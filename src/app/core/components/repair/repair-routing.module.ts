@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RepairCardComponent } from './repair-card/repair-card.component';
 import { RepairTableComponent } from './repair-table/repair-table.component';
-import { ShopRepairItemResolver } from './state/shop-item.resolver';
+import { ShopRepairItemResolver } from './state/shop-details-state/shop-item.resolver';
+
 
 const routes: Routes = [
   {
