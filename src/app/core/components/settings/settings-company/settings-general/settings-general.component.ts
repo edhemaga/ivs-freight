@@ -62,9 +62,6 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
       }
       
     })
-    console.log(divisionArray);
-    
-    console.log(this.hasArrow);
     
     if (this.companyData.timeZone.name) {
       this.timeZoneName = this.companyData.timeZone.name.substring(0, 7);
