@@ -38,7 +38,6 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
     private cdRef: ChangeDetectorRef
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
   }
   ngOnInit(): void {
     this.getData(this.activated.snapshot.data.company);
