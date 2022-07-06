@@ -1,19 +1,6 @@
 <div class="settings-general">
   <div class="settings-header">
     <div
-      *ngIf="!optionsCompany"
-      class="current-active-item-company"
-      (click)="onPickItem($event)"
-    >
-      <div class="current-active-name">
-        {{ companyData.name }}
-      </div>
-      <svg-icon
-        class="arrow-down"
-        src="assets/svg/common/calendar/arrow-right.svg"
-      ></svg-icon>
-    </div>
-    <div
       *ngIf="!toggleSelect && optionsCompany"
       class="current-active-item-company"
       (click)="onPickItem($event)"
@@ -22,10 +9,13 @@
         <div class="current-active-name">
           {{ (optionsCompany | detailActiveItem).name }}
         </div>
-        <span class="division-company">Division Co.</span>
+        <span *ngIf="companyDivision" class="division-company"
+          >Division Co.</span
+        >
       </div>
 
       <svg-icon
+        *ngIf="hasArrow"
         class="arrow-down"
         src="assets/svg/common/calendar/arrow-right.svg"
       ></svg-icon>
@@ -170,14 +160,24 @@
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Time Zone</p>
-            <p *ngIf="companyData.timeZone.name" class="additional-template-value">
+            <p
+              *ngIf="companyData.timeZone.name"
+              class="additional-template-value"
+            >
               {{ timeZoneName }}
             </p>
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Currency</p>
-            <p *ngIf="companyData.currency.name" class="additional-template-value">
-              {{ companyData?.currency?.name.includes('US') ? 'USD ($)':'CAD ($)' }}
+            <p
+              *ngIf="companyData.currency.name"
+              class="additional-template-value"
+            >
+              {{
+                companyData?.currency?.name.includes("US")
+                  ? "USD ($)"
+                  : "CAD ($)"
+              }}
             </p>
           </div>
         </div>
