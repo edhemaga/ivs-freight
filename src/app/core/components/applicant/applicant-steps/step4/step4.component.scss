@@ -200,12 +200,10 @@
     }
 
     .fatalities-injuries-group {
-      width: 337px;
-      margin-right: 85px;
       margin-bottom: 22px;
 
       .fatalities-group {
-        width: 168px;
+        width: 178px;
         margin-right: 12px;
 
         p {
@@ -224,54 +222,6 @@
           font-size: 14px;
           color: $bw6-2;
           margin-right: 12px !important;
-        }
-      }
-
-      .fatalities-group,
-      .injuries-group {
-        .arrow-input-group {
-          width: 79px;
-
-          .btn-container {
-            width: 42px;
-            margin-right: 6px;
-
-            .minus-icon,
-            .plus-icon {
-              cursor: pointer;
-
-              svg {
-                transition: transform 0.2s ease-in-out;
-
-                rect {
-                  transition: fill 0.2s ease-in-out;
-                  fill: $bw-9;
-                }
-
-                path {
-                  fill: $white;
-                }
-              }
-
-              &.minus-icon {
-                margin-right: 6px;
-              }
-
-              &:hover {
-                svg {
-                  transform: scale(1.2);
-
-                  rect {
-                    fill: $bw4;
-                  }
-                }
-              }
-            }
-          }
-
-          .input-container {
-            width: 32px;
-          }
         }
       }
     }

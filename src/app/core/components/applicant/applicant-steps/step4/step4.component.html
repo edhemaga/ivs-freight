@@ -184,108 +184,24 @@
 
       <!-- FATALITIES, INJURIES, HAZMAT SPILL -->
 
-      <div class="d-flex">
-        <div
-          class="d-flex align-items-center justify-content-between fatalities-injuries-group"
-        >
+      <div class="d-flex justify-content-between">
+        <div class="d-flex align-items-center fatalities-injuries-group">
           <div class="d-flex align-items-center fatalities-group">
-            <p class="m-0 ta-font-regular">Fatalities #</p>
-
-            <!-- <div class="arrow-input-group"></div> -->
-
-            <div
-              class="d-flex align-items-center justify-content-between arrow-input-group"
-            >
-              <div class="d-flex align-items-center btn-container">
-                <svg-icon
-                  class="minus-icon"
-                  src="
-                      assets/svg/common/ic_pm_decrement.svg"
-                  [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                  }"
-                  (click)="onIncrementDecrement('fatalities', 'decrement')"
-                ></svg-icon>
-
-                <svg-icon
-                  class="plus-icon"
-                  src="
-                      assets/svg/common/ic_pm_increment.svg"
-                  [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                  }"
-                  (click)="onIncrementDecrement('fatalities', 'increment')"
-                ></svg-icon>
-              </div>
-
-              <div class="d-flex align-items-center input-container">
-                <app-ta-input
-                  formControlName="fatalities"
-                  [inputConfig]="{
-                    name: 'Arrow Input',
-                    type: 'number',
-                    hideClear: true,
-                    textAlign: 'center',
-                    min: 0,
-                    max: 24,
-                    hideErrorMessage: true,
-                    blackInput: true
-                  }"
-                ></app-ta-input>
-              </div>
-            </div>
+            <app-ta-input-arrows
+              name="Fatalities #"
+              [counter]="fatalitiesCounter"
+              (counterEmmiter)="
+                onIncrementDecrementCounter($event, 'fatalities')
+              "
+            ></app-ta-input-arrows>
           </div>
 
           <div class="d-flex align-items-center injuries-group">
-            <p class="m-0 ta-font-regular">Injuries #</p>
-
-            <!-- <div class="arrow-input-group"></div> -->
-
-            <div
-              class="d-flex align-items-center justify-content-between arrow-input-group"
-            >
-              <div class="d-flex align-items-center btn-container">
-                <svg-icon
-                  class="minus-icon"
-                  src="
-                      assets/svg/common/ic_pm_decrement.svg"
-                  [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                  }"
-                  (click)="onIncrementDecrement('injuries', 'decrement')"
-                ></svg-icon>
-
-                <svg-icon
-                  class="plus-icon"
-                  src="
-                      assets/svg/common/ic_pm_increment.svg"
-                  [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                  }"
-                  (click)="onIncrementDecrement('injuries', 'increment')"
-                ></svg-icon>
-              </div>
-
-              <div class="d-flex align-items-center input-container">
-                <app-ta-input
-                  formControlName="injuries"
-                  [inputConfig]="{
-                    name: 'Arrow Input',
-                    type: 'number',
-                    hideClear: true,
-                    textAlign: 'center',
-                    min: 0,
-                    max: 24,
-                    hideErrorMessage: true,
-                    blackInput: true
-                  }"
-                ></app-ta-input>
-              </div>
-            </div>
+            <app-ta-input-arrows
+              name="Injuries #"
+              [counter]="injuriesCounter"
+              (counterEmmiter)="onIncrementDecrementCounter($event, 'injuries')"
+            ></app-ta-input-arrows>
           </div>
         </div>
 

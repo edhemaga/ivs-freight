@@ -3,8 +3,15 @@
 .ta-input-arrows-container {
   width: 100%;
 
+  p {
+    font-size: 14px;
+    color: $bw6-2;
+    margin-right: 12px !important;
+  }
+
   .btn-container {
     width: 42px;
+    height: 18px;
     margin-right: 6px;
 
     .minus-icon,
@@ -42,5 +49,10 @@
 
   .input-container {
     width: 32px;
+    height: 26px;
+    border-radius: 3px;
+    background-color: $ta-light-grey-4;
+    color: $bw6-2;
+    font-size: 14px;
   }
 }

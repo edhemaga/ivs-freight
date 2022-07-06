@@ -85,6 +85,9 @@ export class Step4Component implements OnInit, OnDestroy {
     },
   ];
 
+  public fatalitiesCounter: number = 0;
+  public injuriesCounter: number = 0;
+
   //
 
   /* public accidentArray: Accident[] = []; */
@@ -116,8 +119,6 @@ export class Step4Component implements OnInit, OnDestroy {
       hasPastAccident: [false],
       accidentLocation: [null, Validators.required],
       accidentDate: [null, Validators.required],
-      fatalities: [0],
-      injuries: [0],
       hazmatSpill: [null, Validators.required],
       truckType: [null, Validators.required],
       accidentDescription: [null, Validators.required],
@@ -153,41 +154,13 @@ export class Step4Component implements OnInit, OnDestroy {
     }
   }
 
-  public onIncrementDecrement(type: string, action: string) {
+  public onIncrementDecrementCounter(event: any, type: string) {
     if (type === 'fatalities') {
-      if (action === 'decrement') {
-        if (this.totalFatalities === 0) {
-          return;
-        }
-
-        this.totalFatalities--;
-
-        this.accidentForm.patchValue({ fatalities: this.totalFatalities });
-      }
-
-      if (action === 'increment') {
-        this.totalFatalities++;
-
-        this.accidentForm.patchValue({ fatalities: this.totalFatalities });
-      }
+      this.fatalitiesCounter = event;
     }
 
     if (type === 'injuries') {
-      if (action === 'decrement') {
-        if (this.totalInjuries === 0) {
-          return;
-        }
-
-        this.totalInjuries--;
-
-        this.accidentForm.patchValue({ injuries: this.totalInjuries });
-      }
-
-      if (action === 'increment') {
-        this.totalInjuries++;
-
-        this.accidentForm.patchValue({ injuries: this.totalInjuries });
-      }
+      this.injuriesCounter = event;
     }
   }
 
@@ -240,12 +213,13 @@ export class Step4Component implements OnInit, OnDestroy {
     this.accidentForm.patchValue({
       accidentLocation: selectedAccident.accidentLocation,
       accidentDate: selectedAccident.accidentDate,
-      fatalities: selectedAccident.fatalities,
-      injuries: selectedAccident.injuries,
       hazmatSpill: selectedAccident.hazmatSpill,
       truckType: selectedAccident.truckType,
       accidentDescription: selectedAccident.accidentDescription,
     });
+
+    this.fatalitiesCounter = selectedAccident.fatalities;
+    this.injuriesCounter = selectedAccident.injuries;
 
     this.subscription = this.accidentForm.valueChanges.subscribe(
       (newFormValue) => {
@@ -274,6 +248,9 @@ export class Step4Component implements OnInit, OnDestroy {
 
     this.isAccidentEdited = false;
 
+    this.fatalitiesCounter = 0;
+    this.injuriesCounter = 0;
+
     this.accidentForm.reset();
 
     this.inputResetService.resetInputSubject.next(true);
@@ -285,6 +262,9 @@ export class Step4Component implements OnInit, OnDestroy {
     this.isEditing = false;
 
     this.isAccidentEdited = false;
+
+    this.fatalitiesCounter = 0;
+    this.injuriesCounter = 0;
 
     this.accidentForm.reset();
 
