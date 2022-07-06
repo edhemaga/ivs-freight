@@ -178,8 +178,8 @@
         <div class="divider"></div>
         <div class="settings-progress-container">
           <app-truckassist-progress-expiration
-            [expireDate]="'03/25/2023'"
-            [startDate]="'03/12/2023'"
+            [expireDate]="insurance.issued | formatDateP"
+            [startDate]="insurance.expires | formatDateP"
             [expiresSettings]="'settings-parking'"
           ></app-truckassist-progress-expiration>
         </div>

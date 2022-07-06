@@ -1,19 +1,6 @@
 <div class="settings-general">
   <div class="settings-header">
     <div
-      *ngIf="!optionsCompany"
-      class="current-active-item-company"
-      (click)="onPickItem($event)"
-    >
-      <div class="current-active-name">
-        {{ companyData.name }}
-      </div>
-      <svg-icon
-        class="arrow-down"
-        src="assets/svg/common/calendar/arrow-right.svg"
-      ></svg-icon>
-    </div>
-    <div
       *ngIf="!toggleSelect && optionsCompany"
       class="current-active-item-company"
       (click)="onPickItem($event)"
@@ -22,10 +9,13 @@
         <div class="current-active-name">
           {{ (optionsCompany | detailActiveItem).name }}
         </div>
-        <span class="division-company">Division Co.</span>
+        <span *ngIf="companyDivision" class="division-company"
+          >Division Co.</span
+        >
       </div>
 
       <svg-icon
+        *ngIf="hasArrow"
         class="arrow-down"
         src="assets/svg/common/calendar/arrow-right.svg"
       ></svg-icon>
@@ -57,7 +47,8 @@
           (click)="
             onAction({
               modalName: 'basic',
-              action: 'edit-basic'
+              action: 'edit-basic',
+              company: companyData
             })
           "
         ></svg-icon>
@@ -67,7 +58,13 @@
         <svg-icon
           src="assets/svg/common/ic_plus.svg"
           class="settings-plus-button"
-          (click)="onAction({ modalName: 'basic', action: 'new-devision' })"
+          (click)="
+            onAction({
+              modalName: 'basic',
+              action: 'new-division',
+              company: null
+            })
+          "
         ></svg-icon>
       </div>
     </div>

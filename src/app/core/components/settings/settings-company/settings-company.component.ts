@@ -16,6 +16,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { CompanyResponse } from 'appcoretruckassist';
+import { CompanyQuery } from '../state/company-state/company-settings.query';
 @Component({
   selector: 'app-settings-company',
   templateUrl: './settings-company.component.html',
@@ -28,6 +29,8 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
   public data: any;
   public dataDivison: any;
   public optionsCmp: any;
+  public dataCompany: any;
+
   constructor(
     private settingsStoreService: SettingsStoreService,
     private activated: ActivatedRoute,
@@ -35,10 +38,12 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef
   ) {}
+
   ngOnChanges(changes: SimpleChanges): void {}
+
   ngOnInit(): void {
     this.getData(this.activated.snapshot.data.company);
-
+    this.getCompanyDivision();
     this.detailsPageSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
@@ -49,15 +54,16 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
             next: (res: CompanyResponse) => {
               this.getData(res);
               this.notificationService.success(
-                'Company successfully changed',
+                'Company Division successfully changed',
                 'Success:'
               );
               this.cdRef.detectChanges();
             },
             error: () => {
-              this.notificationService.error(
-                "Company can't be loaded",
-                'Error:'
+              this.getData(this.activated.snapshot.data.company);
+              this.notificationService.success(
+                'Company successfully changed',
+                'Success:'
               );
             },
           });
@@ -72,19 +78,14 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
   public getData(data: CompanyResponse) {
     this.data = data;
   }
-
-  public toggle(event: any) {
-    this.getCompanyDivision();
-  }
   public getCompanyDivision() {
     this.optionsCmp = this.activated.snapshot.data.company.divisions.map(
       (item) => {
         return {
           ...item,
           id: item.id,
-          data: item,
           name: item.companyName,
-          active: item.id,
+          active: !item.isDivision,
         };
       }
     );

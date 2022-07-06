@@ -38,7 +38,7 @@ export class SettingsStoreService {
   public onModalAction(data: {
     modalName: string;
     action?: string;
-    companyDevision?: any;
+    company?: any;
   }) {
     switch (data.modalName) {
       case 'basic': {
@@ -49,7 +49,7 @@ export class SettingsStoreService {
           },
           {
             type: data.action,
-            companyDevision: data.companyDevision,
+            company: data.company,
           }
         );
         break;

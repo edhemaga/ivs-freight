@@ -19,7 +19,6 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import {
   AddressEntity,
   CompanyModalResponse,
-  CompanyResponse,
   UpdateCompanyCommand,
 } from 'appcoretruckassist';
 import { distinctUntilChanged } from 'rxjs';
@@ -30,7 +29,6 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 import { DropZoneConfig } from 'src/app/core/components/shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { SettingsStoreService } from '../../../state/settings.service';
-import { resolveAny } from 'dns';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -167,6 +165,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public timeZones: any[] = [];
   public currencies: any[] = [];
   public departments: any[] = [];
+  public companyData: any[] = [];
+
+  public selectedCompanyData: any = null;
 
   public selectedDriverPayPeriod: any = null;
   public selectedDriverEndingIn: any = null;
@@ -201,6 +202,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     this.getModalDropdowns();
     this.validateMiles();
 
+    console.log(this.editData);
+
     if (this.editData?.type === 'payroll-tab') {
       const timeout = setTimeout(() => {
         this.selectedTab = 3;
@@ -209,144 +212,93 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       }, 10);
     }
 
-    if (
-      this.editData.companyDevision ||
-      this.editData.type === 'new-devision'
-    ) {
+    if (this.editData.type === 'new-division') {
     } else {
-      this.settingsService
-        .getCompany()
-        .pipe(untilDestroyed(this))
-        .subscribe({
-          next: (res: CompanyResponse) => {
-            this.companyForm.patchValue({
-              //-------------------- Basic Tab
-              name: res.name,
-              usdot: res.usdot,
-              ein: res.ein,
-              mc: res.mc,
-              phone: res.phone,
-              email: res.email,
-              fax: res.fax,
-              webURL: res.webURL,
-              address: res.address.address,
-              addressUnit: res.address.addressUnit,
-              irp: res.irp,
-              ifta: res.ifta,
-              toll: res.toll,
-              scac: res.scac,
-              timeZone: res.timeZone.name,
-              currency: res.currency.name,
-              logo: res.logo,
-              //-------------------- Additional Tab
-              departmentContact: [],
-              bankAccount: [],
-              bankCard: [],
-              prefix: res.additionalInfo.prefix,
-              starting: res.additionalInfo.starting,
-              sufix: res.additionalInfo.sufix,
-              autoInvoicing: res.additionalInfo.autoInvoicing,
-              preferredLoadType: res.additionalInfo.preferredLoadType,
-              factorByDefault: res.additionalInfo.factorByDefault,
-              customerPayTerm: res.additionalInfo.customerPayTerm,
-              customerCredit: res.additionalInfo.customerCredit,
-              mvrMonths: res.additionalInfo.mvrMonths,
-              truckInspectionMonths: res.additionalInfo.truckInspectionMonths,
-              trailerInspectionMonths:
-                res.additionalInfo.trailerInspectionMonths,
-              //-------------------- Payroll Tab
-              useTruckAssist: res.useACHPayout,
-              // Driver & Owner
-              driveOwnerPayPeriod: ['Weekly', Validators.required],
-              driverOwnerEndingIn: ['Monday', Validators.required],
-              driverEmptyMile: [null],
-              driverLoadedMile: [null],
-              driverOwnerHasLoadedEmptyMiles: [false],
-              driverDefaultCommission: [25],
-              ownerDefaultCommission: [15],
-              // Accounting
-              // accountingPayPeriod: ['Weekly', Validators.required],
-              // accountingEndingIn: ['Monday', Validators.required],
-              // accountingDefaultBase: [null],
-              // // Company Owner
-              // companyOwnerPayPeriod: ['Weekly', Validators.required],
-              // companyOwnerEndingIn: ['Monday', Validators.required],
-              // companyOwnerDefaultBase: [null],
-              // // Dispatch
-              // dispatchPayPeriod: ['Weekly', Validators.required],
-              // dispatchEndingIn: ['Monday', Validators.required],
-              // dispatchDefaultBase: [null],
-              // dispatchDefaultCommission: [5],
-              // // Manager
-              // managerPayPeriod: ['Weekly', Validators.required],
-              // managerEndingIn: ['Monday', Validators.required],
-              // managerDefaultBase: [null],
-              // managerDefaultCommission: [2.5],
-              // // Recruiting
-              // recruitingPayPeriod: ['Weekly', Validators.required],
-              // recruitingEndingIn: ['Monday', Validators.required],
-              // recruitingDefaultBase: [null],
-              // // Repair
-              // repairPayPeriod: ['Weekly', Validators.required],
-              // repairEndingIn: ['Monday', Validators.required],
-              // repairDefaultBase: [null],
-              // // Safety
-              // safetyPayPeriod: ['Weekly', Validators.required],
-              // safetyEndingIn: ['Monday', Validators.required],
-              // safetyDefaultBase: [null],
-              // // Other
-              // otherPayPeriod: ['Weekly', Validators.required],
-              // otherEndingIn: ['Monday', Validators.required],
-              // otherDefaultBase: [null],
-            });
-
-            this.selectedAddress = res.address;
-            this.selectedTimeZone = res.timeZone;
-            this.selectedCurrency = res.currency;
-
-            if (res.departmentContacts.length) {
-              for (const department of res.departmentContacts) {
-                this.departments.push(
-                  this.formBuilder.group({
-                    departmentId: department.id,
-                    phone: department.phone,
-                    extensionPhone: department.extensionPhone,
-                    email: department.email,
-                  })
-                );
-              }
-            }
-
-            if (res.bankAccounts.length) {
-              for (const bank of res.bankAccounts) {
-                this.bankAccounts.push(
-                  this.formBuilder.group({
-                    bankId: bank.id,
-                    routing: bank.routing,
-                    account: bank.account,
-                  })
-                );
-              }
-            }
-
-            if (res.bankCards.length) {
-              for (const card of res.bankCards) {
-                this.bankCards.push(
-                  this.formBuilder.group({
-                    nickname: card.nickname,
-                    cardNumber: card.cardType,
-                    cvc: card.cvc,
-                    exp: card.expireDate,
-                  })
-                );
-              }
-            }
-            console.log(res.companyPayrolls);
-          },
-          error: () => {
-            this.notificationService.error("Can't Load Company", 'Error');
-          },
+      if (this.editData.company.divisions.length) {
+        this.companyForm.patchValue({
+          // -------------------- Basic Tab
+          name: this.editData.company.name,
+          usdot: this.editData.company.usdot,
+          ein: this.editData.company.ein,
+          mc: this.editData.company.mc,
+          phone: this.editData.company.phone,
+          email: this.editData.company.email,
+          fax: this.editData.company.fax,
+          webURL: this.editData.company.webURL,
+          address: this.editData.company.address.address,
+          addressUnit: this.editData.company.address.addressUnit,
+          irp: this.editData.company.irp,
+          ifta: this.editData.company.ifta,
+          toll: this.editData.company.toll,
+          scac: this.editData.company.scac,
+          timeZone: this.editData.company.timeZone.name,
+          currency: this.editData.company.currency.name,
+          logo: this.editData.company.logo,
+          //-------------------- Additional Tab
+          departmentContact: [],
+          bankAccount: [],
+          bankCard: [],
+          prefix: this.editData.company.additionalInfo.prefix,
+          starting: this.editData.company.additionalInfo.starting,
+          sufix: this.editData.company.additionalInfo.sufix,
+          autoInvoicing: this.editData.company.additionalInfo.autoInvoicing,
+          preferredLoadType:
+            this.editData.company.additionalInfo.preferredLoadType,
+          factorByDefault: this.editData.company.additionalInfo.factorByDefault,
+          customerPayTerm: this.editData.company.additionalInfo.customerPayTerm,
+          customerCredit: this.editData.company.additionalInfo.customerCredit,
+          mvrMonths: this.editData.company.additionalInfo.mvrMonths,
+          truckInspectionMonths:
+            this.editData.company.additionalInfo.truckInspectionMonths,
+          trailerInspectionMonths:
+            this.editData.company.additionalInfo.trailerInspectionMonths,
+          //-------------------- Payroll Tab
+          useTruckAssist: this.editData.company.useACHPayout,
         });
+
+        this.selectedAddress = this.editData.company.address;
+        this.selectedTimeZone = this.editData.company.timeZone;
+        this.selectedCurrency = this.editData.company.currency;
+
+        if (this.editData.company.departmentContacts.length) {
+          for (const department of this.editData.company.departmentContacts) {
+            this.departments.push(
+              this.formBuilder.group({
+                departmentId: department.id,
+                phone: department.phone,
+                extensionPhone: department.extensionPhone,
+                email: department.email,
+              })
+            );
+          }
+        }
+
+        if (this.editData.company.bankAccounts.length) {
+          for (const bank of this.editData.company.bankAccounts) {
+            this.bankAccounts.push(
+              this.formBuilder.group({
+                bankId: bank.id,
+                routing: bank.routing,
+                account: bank.account,
+              })
+            );
+          }
+        }
+
+        if (this.editData.company.bankCards.length) {
+          for (const card of this.editData.company.bankCards) {
+            this.bankCards.push(
+              this.formBuilder.group({
+                nickname: card.nickname,
+                cardNumber: card.cardType,
+                cvc: card.cvc,
+                exp: card.expireDate,
+              })
+            );
+          }
+        }
+        console.log(this.editData.company.companyPayrolls);
+      }
     }
   }
 
@@ -369,6 +321,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       scac: [null],
       timeZone: [null, Validators.required],
       currency: [null, Validators.required],
+      companyType: [null],
+      dateOfIncorporation: [null],
       logo: [null],
       // Additional Tab
       departmentContact: this.formBuilder.array([]),
@@ -390,10 +344,18 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       // Driver & Owner
       driveOwnerPayPeriod: ['Weekly', Validators.required],
       driverOwnerEndingIn: ['Monday', Validators.required],
-      driverEmptyMile: [null],
-      driverLoadedMile: [null],
+
+      soloEmptyMile: [null],
+      soloLoadedMile: [null],
+      soloPerStop: [null],
+
+      teamEmptyMile: [null],
+      teamLoadedMile: [null],
+      teamPerStop: [null],
+
       driverOwnerHasLoadedEmptyMiles: [false],
-      driverDefaultCommission: [25],
+      driverSoloDefaultCommission: [25],
+      driverTeamDefaultCommission: [25],
       ownerDefaultCommission: [15],
       // Accounting
       accountingPayPeriod: ['Weekly', Validators.required],
@@ -452,7 +414,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.companyForm);
           return;
         }
-        if (this.editData.companyDevision) {
+        if (this.editData.company.divisions) {
           this.updateCompanyDevision(this.editData.id);
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
@@ -463,7 +425,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'delete': {
-        if (this.editData.companyDevision) {
+        if (this.editData.company.divisions) {
           this.deleteCompanyDevisionById(this.editData.id);
           this.modalService.setModalSpinner({ action: 'delete', status: true });
         }
@@ -715,6 +677,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.selectedOtherEndingIn = event;
         break;
       }
+      case 'company-data': {
+        this.selectedCompanyData = event;
+        break;
+      }
       default: {
         break;
       }
@@ -723,24 +689,68 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   private validateMiles() {
     this.companyForm
-      .get('driverLoadedMile')
+      .get('soloEmptyMile')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         if (value > 10) {
-          this.companyForm.get('driverLoadedMile').setErrors({ invalid: true });
+          this.companyForm.get('soloEmptyMile').setErrors({ invalid: true });
         } else {
-          this.companyForm.get('driverLoadedMile').setErrors(null);
+          this.companyForm.get('soloEmptyMile').setErrors(null);
         }
       });
 
     this.companyForm
-      .get('driverEmptyMile')
+      .get('soloLoadedMile')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         if (value > 10) {
-          this.companyForm.get('driverEmptyMile').setErrors({ invalid: true });
+          this.companyForm.get('soloLoadedMile').setErrors({ invalid: true });
         } else {
-          this.companyForm.get('driverEmptyMile').setErrors(null);
+          this.companyForm.get('soloLoadedMile').setErrors(null);
+        }
+      });
+
+    this.companyForm
+      .get('soloPerStop')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value > 10) {
+          this.companyForm.get('soloPerStop').setErrors({ invalid: true });
+        } else {
+          this.companyForm.get('soloPerStop').setErrors(null);
+        }
+      });
+
+    this.companyForm
+      .get('teamEmptyMile')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value > 10) {
+          this.companyForm.get('teamEmptyMile').setErrors({ invalid: true });
+        } else {
+          this.companyForm.get('teamEmptyMile').setErrors(null);
+        }
+      });
+
+    this.companyForm
+      .get('teamLoadedMile')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value > 10) {
+          this.companyForm.get('teamLoadedMile').setErrors({ invalid: true });
+        } else {
+          this.companyForm.get('teamLoadedMile').setErrors(null);
+        }
+      });
+
+    this.companyForm
+      .get('teamPerStop')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value > 10) {
+          this.companyForm.get('teamPerStop').setErrors({ invalid: true });
+        } else {
+          this.companyForm.get('teamPerStop').setErrors(null);
         }
       });
   }

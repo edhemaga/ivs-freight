@@ -1,9 +1,10 @@
 <app-ta-modal
   [modalTitle]="
-    editData.type === 'new-devision' ? 'Add Devision Company' : 'Company'
+    editData.type === 'new-division' ? 'Add Division Company' : 'Company'
   "
   [editData]="editData"
   [editName]="null"
+  [disableDelete]="editData.company?.divisions?.length"
   [isModalValid]="editData ? companyForm.valid && isDirty : companyForm.valid"
   [customClass]="'modal-container-M'"
   [dropZoneConfig]="dropZoneConfig"
@@ -11,7 +12,11 @@
 >
   <app-tab-switcher
     (switchClicked)="tabChange($event)"
-    [tabs]="editData.type !== 'new-devision' ? tabsDevision : tabs"
+    [tabs]="
+      editData.type === 'new-division' || !editData.company?.divisions?.length
+        ? tabsDevision
+        : tabs
+    "
   ></app-tab-switcher>
 
   <form
@@ -30,8 +35,10 @@
                 name: 'Company name',
                 type: 'text',
                 label: 'Company Name',
-                isRequired: true,
-                isDisabled: editData.type === 'edit-basic',
+                isRequired: editData.type === 'new-division' ? true : false,
+                isDisabled:
+                  editData.type === 'edit-basic' &&
+                  this.editData.company?.divisions?.length,
                 textTransform: 'capitalize',
                 autoFocus: editData?.type === 'edit-basic' ? false : true
               }"
@@ -46,7 +53,8 @@
                 name: 'USDOT',
                 type: 'text',
                 label: 'USDOT',
-                isRequired: true,
+                isRequired:
+                  this.editData.type === 'new-division' ? false : true,
                 textTransform: 'capitalize'
               }"
             ></app-ta-input>
@@ -58,7 +66,9 @@
                 name: 'EIN',
                 type: 'text',
                 label: 'EIN #',
-                isDisabled: editData.type === 'edit-basic',
+                isDisabled:
+                  editData.type === 'edit-basic' &&
+                  this.editData.company?.divisions?.length,
                 mask: '00-0000000'
               }"
             ></app-ta-input>
@@ -96,7 +106,10 @@
                 name: 'Email',
                 type: 'text',
                 label: 'Email',
-                isDisabled: editData.type === 'edit-basic',
+                isRequired: editData.type === 'new-division' ? true : false,
+                isDisabled:
+                  editData.type === 'edit-basic' &&
+                  this.editData.company?.divisions?.length,
                 placeholderIcon: 'email'
               }"
             ></app-ta-input>
@@ -136,7 +149,9 @@
                 label: 'Address, City, State Zip',
                 isRequired: true,
                 placeholderIcon: 'address',
-                isDisabled: editData.type === 'edit-basic',
+                isDisabled:
+                  editData.type === 'edit-basic' &&
+                  this.editData.company?.divisions?.length,
                 textTransform: 'capitalize'
               }"
               (selectedAddress)="onHandleAddress($event)"
@@ -149,7 +164,9 @@
                 name: 'Address Unit',
                 type: 'text',
                 label: 'Unit No.',
-                isDisabled: editData.type === 'edit-basic',
+                isDisabled:
+                  editData.type === 'edit-basic' &&
+                  this.editData.company?.divisions?.length,
                 maxLength: 6
               }"
             ></app-ta-input>
@@ -193,7 +210,10 @@
             }"
           ></app-ta-input>
         </div>
-        <div class="row last-row">
+        <div
+          class="row"
+          [ngClass]="{ 'last-row': editData.type === 'new-division' }"
+        >
           <div class="col-8">
             <app-ta-input-dropdown
               formControlName="timeZone"
@@ -202,7 +222,7 @@
                 type: 'text',
                 label: 'Time Zone',
                 isDropdown: true,
-                isRequired: true,
+                isRequired: editData.type === 'new-division' ? false : true,
                 dropdownWidthClass: 'w-col-medium-8'
               }"
               [options]="timeZones"
@@ -218,13 +238,49 @@
                 type: 'text',
                 label: 'Currency',
                 isDropdown: true,
-                isRequired: true,
+                isRequired: editData.type === 'new-division' ? false : true,
                 dropdownWidthClass: 'w-col-medium-4'
               }"
               [options]="currencies"
               [activeItem]="selectedCurrency"
               (selectedItem)="onSelectDropdown($event, 'currency')"
             ></app-ta-input-dropdown>
+          </div>
+        </div>
+        <div
+          class="row last-row"
+          *ngIf="
+            editData.company?.divisions?.length &&
+            editData.type === 'edit-basic'
+          "
+        >
+          <div class="col-6">
+            <app-ta-input-dropdown
+              formControlName="companyType"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Company Type',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-medium-6'
+              }"
+              [options]="companyData"
+              [activeItem]="selectedCompanyData"
+              (selectedItem)="onSelectDropdown($event, 'company-data')"
+            ></app-ta-input-dropdown>
+          </div>
+          <div class="col-6">
+            <app-ta-input
+              formControlName="dateOfIncorporation"
+              [inputConfig]="{
+                name: 'datepicker',
+                type: 'text',
+                label: 'Date of Incorporation',
+                isDropdown: true,
+                placeholderIcon: 'date',
+                customClass: 'datetimeclass'
+              }"
+            ></app-ta-input>
           </div>
         </div>
         <app-ta-custom-card
@@ -486,7 +542,7 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <div *ngIf="editData.type !== 'new-devision'" class="company-part">
+        <div *ngIf="editData.type !== 'new-division'" class="company-part">
           <app-ta-custom-card
             [cardName]="'Load Format and Customer Billing'"
             [isCardOpen]="true"
@@ -688,14 +744,43 @@
               ></app-ta-input-dropdown>
             </div>
           </div>
-          <div class="row">
-            <div class="col-6">
+          <div class="paytype-permile active">
+            <div class="permile-fields">
+              <p>DEF. SOLO DRIVER</p>
               <app-ta-input
-                formControlName="driverEmptyMile"
+                formControlName="soloEmptyMile"
                 [inputConfig]="{
                   name: 'Empty Mile',
-                  type: 'text',
-                  label: 'Default Empty Mile',
+                  type: 'number',
+                  label: 'Empty Mi',
+                  isRequired: true,
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  step: 0.01,
+                  min: 0,
+                  max: 10
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="soloLoadedMile"
+                [inputConfig]="{
+                  name: 'Loaded Mile',
+                  type: 'number',
+                  label: 'Loaded Mi',
+                  isRequired: true,
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  step: 0.01,
+                  min: 0,
+                  max: 10
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="soloPerStop"
+                [inputConfig]="{
+                  name: 'Per Stop',
+                  type: 'number',
+                  label: 'Per Stop',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   step: 0.01,
@@ -704,13 +789,40 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="col-6">
+            <div class="permile-fields">
+              <p>DEF. TEAM DRIVER</p>
               <app-ta-input
-                formControlName="driverLoadedMile"
+                formControlName="teamEmptyMile"
+                [inputConfig]="{
+                  name: 'Empty Mile',
+                  type: 'number',
+                  label: 'Empty Mi',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  step: 0.01,
+                  min: 0,
+                  max: 10
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="teamLoadedMile"
                 [inputConfig]="{
                   name: 'Loaded Mile',
-                  type: 'text',
-                  label: 'Default Loaded Mile',
+                  type: 'number',
+                  label: 'Loaded Mi',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  step: 0.01,
+                  min: 0,
+                  max: 10
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="teamPerStop"
+                [inputConfig]="{
+                  name: 'Per Stop',
+                  type: 'number',
+                  label: 'Per Stop',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   step: 0.01,
@@ -728,20 +840,37 @@
               [customClass]="'medium'"
             ></app-ta-checkbox>
             <div class="row row-mt-8 last-row">
-              <div class="col-6">
+              <div class="col-4">
                 <app-ta-ngx-slider
-                  [sliderName]="'Default Driver Commission'"
+                  [sliderName]="'Def. Solo Driver Commission'"
                   [sliderOptions]="driverCommissionOptions"
                   [startedValue]="
-                    companyForm.get('driverDefaultCommission')?.value
+                    companyForm.get('driverSoloDefaultCommission')?.value
                   "
                   [customClass]="'custom-slider-with-percentage'"
                   (onUserValueChange)="
-                    companyForm.get('driverDefaultCommission').setValue($event)
+                    companyForm
+                      .get('driverSoloDefaultCommission')
+                      .setValue($event)
                   "
                 ></app-ta-ngx-slider>
               </div>
-              <div class="col-6">
+              <div class="col-4">
+                <app-ta-ngx-slider
+                  [sliderName]="'Def. Team Driver Commission'"
+                  [sliderOptions]="driverCommissionOptions"
+                  [startedValue]="
+                    companyForm.get('driverTeamDefaultCommission')?.value
+                  "
+                  [customClass]="'custom-slider-with-percentage'"
+                  (onUserValueChange)="
+                    companyForm
+                      .get('driverTeamDefaultCommission')
+                      .setValue($event)
+                  "
+                ></app-ta-ngx-slider>
+              </div>
+              <div class="col-4">
                 <app-ta-ngx-slider
                   [sliderName]="'Default Owner Commission'"
                   [sliderOptions]="ownerCommissionOptions"
