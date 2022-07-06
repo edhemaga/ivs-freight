@@ -1,5 +1,9 @@
 @import 'src/theme/variables.scss';
 
+.marker-tool-tip {
+    padding: 8px;
+}
+
 .marker-business-name {
     font-size: 18px;
     font-weight: 700;
@@ -9,6 +13,7 @@
 }
 
 .marker-expanded-view {
+    overflow: hidden;
     transition: height 0.2s ease-in-out;
 
     &.unopened{

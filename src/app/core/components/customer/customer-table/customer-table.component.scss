@@ -33,13 +33,21 @@
         agm-map {
             width: 100%;
             height: 100vh;
+            
+            .si-float-wrapper {
+                z-index: 998;
+
+                &:has(.show-marker-dropdown) {
+                    z-index: 999;
+                }
+            }
 
             .si-content-wrapper {
                 position: relative;
                 width: 360px;
                 border: none;
 
-                padding: 8px;
+                padding: 0px;
                 overflow: visible;
 
                 .si-content {
@@ -164,12 +172,16 @@
     }
 }
 
-.gm-style div[aria-hidden = "true"] {
+.marker-tooltip {
+    position: absolute;
+    left: 50%;
+    top: -35px;
+
     width: 90px;
 
-    color:#3551B7 !important;
+    color:#3551B7;
     //color: #F44336 !important;
-    margin-left: 120px;
+    margin-left: 15px;
     text-shadow: 1px 1px 0px #fff, 1px -1px 0px #fff, -1px -1px 0px #fff, -1px 1px 0px #fff;
     /*text-shadow:
         -1px -1px 0 #fff,
@@ -189,6 +201,9 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    opacity: 1;
+    transition: 0.15s;
+    pointer-events: none;
 
     @supports (-webkit-line-clamp: 2) {
       overflow: hidden;
@@ -197,6 +212,10 @@
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
+    }
+
+    &.hide-marker-tooltip {
+        opacity: 0;
     }
 }
 
@@ -265,7 +284,7 @@
 }
 
 .red-text {
-    color: #EF5350;
+    color: #EF5350!important;
 }
 
 .marker-distance-left {
@@ -308,4 +327,52 @@
 
 .mg-top-4 {
     margin-top: 4px;
+}
+
+.marker-icon {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    user-select: none;
+    z-index: 10;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+        svg {
+            #Ellipse_6005 {
+                fill: #3551B7;
+            }
+        }
+    }
+
+    &.permanently-closed-icon {
+        &:hover {
+            svg {
+                #Ellipse_6005 {
+                    fill: #F44336;
+                }
+            }
+        }
+    }
+    
+    &.selected-marker {
+        transform: translate(-50%, -35%) scale(2);
+
+        svg {
+            #Ellipse_6006 {
+                //r: 3;
+                transform: translate(14px, 14px) scale(0.5);
+            }
+        }
+    }
+}
+
+.marker-dropdown {
+    display: none;
+}
+
+.show-marker-dropdown {
+    display: block;
 }

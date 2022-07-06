@@ -47,6 +47,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   public sortTypes: any[] = [];
   public sortDirection: string = 'asc';
   public activeSortType: any = {};
+  public markerSelected: boolean = false;
   private tooltip: any;
 
   constructor(
@@ -492,6 +493,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   }
 
   clickedMarker(i) {
+    console.log('clickedMarker i', i);
     this.viewData.map((data: any, index) => {
       if (data.isExpanded) {
         data.isExpanded = false;
@@ -502,7 +504,18 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       }
       else if ( index == i ) {
         data.isSelected = !data.isSelected;
+        console.log('clickedMarker isSelected', data.isSelected);
 
+        if ( data.isSelected ) {
+          this.markerSelected = true;
+        }
+        else {
+          this.markerSelected = false;
+        }
+
+        $('.si-float-wrapper').css('z-index', '998');
+        setTimeout(function() { $('.si-float-wrapper:has(.show-marker-dropdown)').css('z-index', '999'); }, 1);
+        
         // data.markerAnimation = 'BOUNCE';
 
         // setTimeout(function() {

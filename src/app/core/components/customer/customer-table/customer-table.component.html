@@ -70,6 +70,7 @@
               [longitude]="latlong.longitude"
               [agmFitBounds]="true" 
               [animation]="latlong?.markerAnimation ? latlong?.markerAnimation : 'DROP'" 
+              [visible]="false"
               [iconUrl]="{
                 url: 
                   latlong?.isSelected && latlong?.status == 2 ? 'assets/svg/common/ic_marker_closed_big.svg' :
@@ -79,19 +80,43 @@
               }">
               <agm-snazzy-info-window
                 [closeOnMapClick]="false"
-                [closeWhenOthersOpen]="true"
-                [isOpen]="latlong?.isSelected"
+                [closeWhenOthersOpen]="false"
+                [isOpen]="true"
                 [latitude]="latlong.latitude"
                 [longitude]="latlong.longitude"
                 [maxHeight]="32"
                 [maxWidth]="26"
-                [openOnMarkerClick]="true"
+                [openOnMarkerClick]="false"
                 [pointer]="false"
                 [showCloseButton]="false"
                 placement="bottom"
               >
                 <ng-template>
-                  <app-map-marker-dropdown
+                  <div [ngClass]="{ 'hide-marker': !latlong.isSelected && markerSelected }">
+                    <div
+                    class="marker-tooltip"
+                    [ngClass]="{ 'red-text': latlong.status == 2, 'hide-marker-tooltip': latlong.isSelected }"
+                  >
+                    {{ latlong.businessName }}
+                  </div>
+                  <svg-icon
+                      class="marker-icon"
+                      src="assets/svg/common/ic_marker.svg"
+                      (click)="clickedMarker(i)" 
+                      [ngClass]="{ 'selected-marker': latlong.isSelected }"
+                      *ngIf="latlong.status != 2"
+                  ></svg-icon>
+                  <svg-icon
+                      class="marker-icon permanently-closed-icon"
+                      src="assets/svg/common/ic_marker_closed.svg"
+                      (click)="clickedMarker(i)" 
+                      [ngClass]="{ 'selected-marker': latlong.isSelected }"
+                      *ngIf="latlong.status == 2"
+                  ></svg-icon>
+                  </div>
+                 
+                  <div class="marker-dropdown" [ngClass]="{'show-marker-dropdown': latlong?.isSelected}">
+                    <app-map-marker-dropdown
                     [title]="latlong?.businessName"
                     [item]="latlong"
                     [type]="'Shipper'"
@@ -106,6 +131,7 @@
                       </app-table-dropdown>
                     </div>
                   </app-map-marker-dropdown>
+                  </div>
                 </ng-template>
               </agm-snazzy-info-window>
             </agm-marker>      
