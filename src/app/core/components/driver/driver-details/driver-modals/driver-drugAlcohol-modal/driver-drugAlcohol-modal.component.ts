@@ -11,6 +11,7 @@ import moment from 'moment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   convertDateFromBackend,
@@ -41,13 +42,16 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   public selectedTestType: any = null;
   public selectedReasonType: any = null;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private driverService: DriverTService,
     private testService: TestTService,
     private inputService: TaInputService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +71,14 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       testingDate: [null, Validators.required],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.drugForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

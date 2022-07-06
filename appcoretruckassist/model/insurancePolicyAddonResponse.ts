@@ -9,15 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
 export interface InsurancePolicyAddonResponse { 
     id?: number;
     insurancePolicyId?: number;
-    insurancePolicyAddonType?: number;
+    insurancePolicyAddonType?: EnumValue;
     policy?: string | null;
     insurerName?: string | null;
-    rating?: number;
+    rating?: EnumValue;
     eachOccurrence?: number | null;
     damageToRentedPremises?: number | null;
     personalAndAdvertisingInjury?: number | null;

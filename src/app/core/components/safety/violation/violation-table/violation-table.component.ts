@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getViolationsColums } from 'src/assets/utils/settings/safety-columns';
 import { ModalService } from '../../../shared/ta-modal/modal.service';

@@ -1,6 +1,9 @@
 <ng-content> </ng-content>
 <ng-template>
-  <div class="tooltip-holder" style="background-color: {{ tooltipBackground }}">
+  <div
+    class="tooltip-holder"
+    style="background-color: {{ tooltipBackground }}; color: {{ tooltipColor }}"
+  >
     {{ mainTooltip }}
   </div>
 </ng-template>

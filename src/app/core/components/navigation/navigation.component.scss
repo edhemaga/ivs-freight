@@ -23,6 +23,32 @@
   transition: $nav-transition;
   overflow: hidden;
 
+  &.scroll {
+    overflow-y: scroll;
+    scrollbar-width: none !important; /* Firefox */
+
+    &::-webkit-scrollbar {
+      width: 2px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: transparent;
+      border: 6px solid transparent;
+      border-radius: 1px;
+    }
+    &::-webkit-scrollbar-track {
+      padding: 0;
+      position: relative;
+      right: 0;
+      top: 0;
+      background: transparent;
+    }
+
+    &::-moz-selection {
+      background-color: rgb(229, 229, 229, 0.2);
+      color: #6c6c6c;
+    }
+  }
+
   &:hover {
     width: 200px;
     box-shadow: $nav-boxshadow;

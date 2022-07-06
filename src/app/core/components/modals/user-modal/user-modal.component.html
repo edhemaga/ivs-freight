@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add User' : 'Edit User'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="userForm.valid"
+  [isModalValid]="editData ? userForm.valid && isDirty : userForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-ta-tab-switch
@@ -109,6 +109,7 @@
                   dropdownWidthClass: 'w-col-4-department-user'
                 }"
                 [options]="departments"
+                [activeItem]="selectedDepartment"
                 (selectedItem)="onSelectDropdown($event, 'department')"
               ></app-ta-input-dropdown>
             </div>
@@ -123,6 +124,7 @@
                   dropdownWidthClass: 'w-col-5'
                 }"
                 [options]="offices"
+                [activeItem]="selectedOffice"
                 (selectedItem)="onSelectDropdown($event, 'office')"
               ></app-ta-input-dropdown>
             </div>
@@ -268,6 +270,7 @@
                   }"
                   [canAddNew]="true"
                   [options]="labelsBank"
+                  [activeItem]="selectedBank"
                   (selectedItem)="onSelectDropdown($event, 'bank')"
                 ></app-ta-input-dropdown>
               </div>

@@ -37,42 +37,46 @@
         user-select: none;
       }
 
-      .ta-user-reaction {
-        position: absolute;
-        left: 19px;
-        top: 16px;
-        svg {
-          width: 15px;
-          height: 15px;
-          path {
-            fill: #e57373;
-          }
-        }
-
-        &.like {
-          svg {
-            path {
-              fill: #4db6a2;
-            }
-          }
-        }
-      }
-
       .ta-user-data {
         display: flex;
         flex-direction: column;
 
-        .ta-user-fullname {
-          font-weight: 700;
+        .ta-user-name-rating {
+          display: flex;
+          align-items: center;
+          gap: 4px;
 
-          &::-moz-selection {
-            background-color: rgb(108, 108, 108, 0.2);
-            color: #6c6c6c;
+          .ta-user-fullname {
+            font-weight: 700;
+            color: #3c3c3c;
+
+            &::-moz-selection {
+              background-color: rgb(108, 108, 108, 0.2);
+              color: #6c6c6c;
+            }
+
+            &::selection {
+              background-color: rgb(108, 108, 108, 0.2);
+              color: #6c6c6c;
+            }
           }
 
-          &::selection {
-            background-color: rgb(108, 108, 108, 0.2);
-            color: #6c6c6c;
+          .ta-user-reaction {
+            svg {
+              width: 15px;
+              height: 15px;
+              path {
+                fill: #e57373;
+              }
+            }
+
+            &.like {
+              svg {
+                path {
+                  fill: #4db6a2;
+                }
+              }
+            }
           }
         }
 
@@ -80,9 +84,9 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
-          font-size: 10px;
+          font-size: 11px;
           font-weight: 600;
-          color: #919191;
+          color: #919191 !important;
 
           .ta-user-date,
           .ta-user-time {
@@ -153,7 +157,19 @@
   }
 
   .ta-review-message {
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+
+    &.focus {
+      background-color: #6c6c6c;
+    }
+
     .message {
+      position: relative;
+      left: 6px;
+      color: #6c6c6c;
+
       &::-moz-selection {
         background-color: rgb(108, 108, 108, 0.2);
         color: #6c6c6c;
@@ -164,18 +180,20 @@
         color: #6c6c6c;
       }
     }
+
     .review-textarea {
       width: 100%;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 400;
       color: #ffffff;
-      background-color: transparent;
-      padding: 0;
+      background-color: #6c6c6c;
+      padding: 4px 6px;
       resize: none;
       border: none;
       box-shadow: none;
       outline: none;
       display: none;
+      text-transform: capitalize;
 
       scrollbar-width: none !important; /* Firefox */
 
@@ -196,12 +214,12 @@
       }
 
       &::-moz-selection {
-        background-color: rgb(229, 229, 229, .2);
+        background-color: rgb(229, 229, 229, 0.2);
         color: #6c6c6c;
       }
 
       &::selection {
-        background-color: rgb(229, 229, 229, .2);
+        background-color: rgb(229, 229, 229, 0.2);
         color: #6c6c6c;
       }
 
@@ -214,38 +232,78 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      position: relative;
-      left: 4px;
+      position: absolute;
+      right: 4px;
+      bottom: 5px;
 
-      .action-confirm {
-        position: relative;
-        top: 1px;
-        left: 2px;
-        padding-left: 4px;
-      }
-
-      .action-confirm,
-      .action-cancel {
-        width: 22px;
-        height: 22px;
-        svg {
-          path {
-            fill: #e5e5e5;
+      .ta-review-message-confirm {
+        border-radius: 1px;
+        display: block;
+        transition: all 0.3s ease-in-out;
+        z-index: 20;
+        margin-right: 4px;
+        cursor: pointer;
+        .ta-review-message-confirm-first {
+          svg {
+            width: 18px !important;
+            height: 18px !important;
+            overflow: visible;
+            path {
+              fill: #6c6c6c;
+            }
+            rect {
+              transition: transform 0.3s;
+              transform: scale(1);
+              transform-origin: center;
+              fill: #b7b7b7;
+            }
           }
-          #Rectangle_20157 {
-            fill: transparent;
+
+          &:hover {
+            svg {
+              overflow: visible;
+              rect {
+                transform: scale(1.2);
+                transform-origin: center;
+                transition: transform 0.3s;
+                fill: #eeeeee;
+              }
+            }
           }
         }
+      }
 
-        &:hover {
-          cursor: pointer;
-          transition: all 0.3s ease-in-out;
+      .ta-review-message-cancel {
+        border-radius: 1px;
+        display: block;
+        transition: all 0.3s ease-in-out;
+        z-index: 20;
+        cursor: pointer;
+        .ta-review-message-cancel-first {
           svg {
+            width: 18px !important;
+            height: 18px !important;
+            overflow: visible;
             path {
-              fill: #ffffff;
+              fill: #6c6c6c;
             }
-            #Rectangle_20157 {
-              fill: transparent;
+            rect {
+              transition: transform 0.3s;
+              transform: scale(1);
+              transform-origin: center;
+              fill: #b7b7b7;
+            }
+          }
+
+          &:hover {
+            svg {
+              overflow: visible;
+              rect {
+                transform: scale(1.2);
+                transform-origin: center;
+                transition: transform 0.3s;
+                fill: #eeeeee;
+              }
             }
           }
         }
@@ -255,8 +313,8 @@
 
   // EDIT MODE
   &.edit-review {
-    background-color: #919191;
-    color: #ffffff;
+    background-color: #f7f7f7;
+    border-radius: 2px;
     transition: all 0.3s ease-in-out;
 
     .ta-user-datetime {

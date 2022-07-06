@@ -7,7 +7,7 @@
       : editData?.id
   "
   [disableDelete]="true"
-  [isModalValid]="PMform.valid"
+  [isModalValid]="editData ? PMform.valid && isDirty : PMform.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="PMform" class="form-container">
