@@ -24,8 +24,9 @@ import { CompanyQuery } from '../state/company-state/company-settings.query';
   encapsulation: ViewEncapsulation.None,
   providers: [DetailsPageService],
 })
-export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
-  public isModalOpen$: boolean; // TODO: FILL DATA WITH REAL DATA, IF NO DATA, SHOW NO_DATA_COMPONENT !!!
+export class SettingsCompanyComponent implements OnInit, OnDestroy {
+  public isModalOpen$: Observable<boolean> ;
+  // public isModalOpen$: boolean; // TODO: FILL DATA WITH REAL DATA, IF NO DATA, SHOW NO_DATA_COMPONENT !!!
   public data: any;
   public dataDivison: any;
   public optionsCmp: any;
@@ -35,12 +36,17 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
     private activated: ActivatedRoute,
     private detailsPageSer: DetailsPageService,
     private notificationService: NotificationService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private settingCompanyQuery: CompanyQuery
   ) {}
-  ngOnChanges(changes: SimpleChanges): void {
-  }
+
   ngOnInit(): void {
+    this.isModalOpen$ = this.settingsStoreService.isModalActive$;
     this.getData(this.activated.snapshot.data.company);
+    this.settingCompanyQuery.getAll().map((item) => {
+      this.dataCompany=item.divisions 
+    });
+
     this.getCompanyDivision();
     this.detailsPageSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
@@ -66,18 +72,13 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
             },
           });
       });
-    if (this.activated.snapshot.data.company) {
-      this.isModalOpen$ = false;
-    } else {
-      this.isModalOpen$ = true;
-    }
   }
 
   public getData(data: CompanyResponse) {
     this.data = data;
   }
   public getCompanyDivision() {
-    this.optionsCmp = this.activated.snapshot.data.company.divisions.map(
+    this.optionsCmp = this.dataCompany.map(
       (item) => {
         return {
           ...item,
@@ -89,7 +90,7 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
   public selectCompany(event: any) {
-    this.optionsCmp = this.activated.snapshot.data.company.divisions.map(
+    this.optionsCmp = this.dataCompany.map(
       (item) => {
         return {
           ...item,

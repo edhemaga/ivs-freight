@@ -7,7 +7,7 @@
     ></app-settings-general>
   </div>
   <div class="settings-company-col-2">
-    <app-settings-payroll></app-settings-payroll>
+    <app-settings-payroll [payrollData]="data.companyPayrolls"></app-settings-payroll>
   </div>
   <div class="settings-company-col-3">
     <app-settings-insurancepolicy [insurancePolicyData]="data.insurancePolicies"></app-settings-insurancepolicy>
@@ -16,5 +16,5 @@
     <app-settings-factoring [factoringData]="data.factoringCompany"></app-settings-factoring>
   </div>
 
-  <app-settings-nodata *ngIf="isModalOpen$"></app-settings-nodata>
+  <app-settings-nodata  *ngIf="(isModalOpen$ | async)"></app-settings-nodata>
 </div>
