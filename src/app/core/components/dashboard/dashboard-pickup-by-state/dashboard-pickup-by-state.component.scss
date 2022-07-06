@@ -478,3 +478,23 @@ $top_state_color:'6278C7', '7A8DCB', '7A8DCB', 'A0AFDE', 'A0AFDE', 'C2CEEC', 'C2
     }
 }
 
+.round_dark_grey{
+    svg-icon{
+        svg{
+            rect{
+                fill: #919191;
+            }
+        }
+    }
+}
+
+.round_light_grey{
+    svg-icon{
+        svg{
+            rect{
+                fill: #CCCCCC;
+            }
+        }
+    }
+}
+

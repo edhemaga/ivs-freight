@@ -60,7 +60,7 @@ export class TaChartComponent implements OnInit {
     this.setChartData();
   }
 
-  setHoverAnnotation(value: any, config?) {
+  setHoverAnnotation(value: any, config?: any) {
     if ( this.lineChartType == 'doughnut' ) { return false; }
     let sameValue = false;
     this.annotationConfig = config;
@@ -233,7 +233,8 @@ export class TaChartComponent implements OnInit {
           position: this.axesProperties['horizontalAxes'] && this.axesProperties['horizontalAxes']['position'] ? this.axesProperties['horizontalAxes']['position'] : 'bottom',
           gridLines: {
               display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['showGridLines'] : false,
-              borderDash: [3, 3]
+              borderDash: [3, 3],
+              zeroLineColor: 'rgba(0, 0, 0, 0)'
           },
           ticks: {
               fontColor: '#AAAAAA',
@@ -328,7 +329,7 @@ export class TaChartComponent implements OnInit {
   ];
   }
 
-  drawGridBackground(value){
+  drawGridBackground(value: any){
     this.setChartOptions();
     let gridBeforeDraw = {beforeDraw: chart => {
       if ( this.hoveringStatus ) {
@@ -349,15 +350,16 @@ export class TaChartComponent implements OnInit {
 
             let clientWidth = this.hoverDataHolder ? this.hoverDataHolder.nativeElement.offsetWidth + 16 : 0;
             
+            let xPos = this.chartConfig['offset'] ? xAxis['_gridLineItems'][value]['x2'] + elWidth : xAxis['_gridLineItems'][value]['x2'];
 
-            if (this.hoverDataHolder && this.hoverDataHolder.nativeElement && xAxis['_gridLineItems'][value]['x2'] + clientWidth > canvas.width ) {
+            if (this.hoverDataHolder && this.hoverDataHolder.nativeElement && xPos + clientWidth > canvas.width ) {
               oversizedHover = true;
             }
             if ( oversizedHover ) {
-              this.hoverDataPosition = xAxis['_gridLineItems'][value]['x2'] - clientWidth - elWidth;
+              this.hoverDataPosition = xPos - clientWidth - elWidth;
             }
             else{
-              this.hoverDataPosition = xAxis['_gridLineItems'][value]['x2'];
+              this.hoverDataPosition = xPos;
             }
           }
         }
@@ -387,7 +389,7 @@ export class TaChartComponent implements OnInit {
     this.ref.detectChanges();
   }
 
-  chartDataCheck(values) {
+  chartDataCheck(values: any[]) {
     let hasData = false;
     values.map((item, i) => {
       if ( item > 0 ) {
@@ -482,7 +484,7 @@ export class TaChartComponent implements OnInit {
     }
   }
 
-  insertNewChartData(mod, type, color){
+  insertNewChartData(mod: string, type: string, color: any){
     this.chart.chart.config.data.datasets.map((item, i) => {
       if ( item['id'] == type ) {
         if ( mod == 'add' ) {
@@ -598,14 +600,32 @@ export class TaChartComponent implements OnInit {
     this.selectedDataRows = dataValues;
   }
 
-  chartUpdated(data){
+  chartUpdated(data: any[]){
     this.chart.chart.config.data.datasets[0].data = data;
     this.setChartOptions();
   }
 
-  updateMultiBarData(updateData){
+  updateMuiliBar(selectedStates: any[], data: any[], colors: any[]){
+    let updateData = [];
+    selectedStates.map((item, i) => {
+      let dataArray = {
+        backgroundColor: '#'+colors[i],
+        borderColor: '#'+colors[i],
+        data: data,
+        label: item['name'],
+        type: "bar",
+        yAxisID: "y-axis-0",
+        id: item['id']
+      }
+
+      updateData.push(dataArray);
+    });
+
+    this.updateMultiBarDataInsert(updateData);
+  }
+
+  updateMultiBarDataInsert(updateData: any[]){
     updateData.map((item, i) => {
-      
       let sameFound = false;
       this.chart.chart.config.data.datasets.map((ch, a) => {
         if ( ch['id'] == 'top10' || ch['id'] == 'allOthers' ){
@@ -618,6 +638,35 @@ export class TaChartComponent implements OnInit {
 
       if(!sameFound){
         this.chart.chart.config.data.datasets.push(item);
+      }
+    });
+    this.setChartOptions();
+  }
+
+  removeMultiBarData(removedData: any[], showDefault?: boolean){
+    this.chart.chart.config.data.datasets.map((ch, a) => {
+      if( ch['id'] == removedData['id'] ){
+        this.chart.chart.config.data.datasets.splice(a, 1);
+      }
+
+      if ( showDefault && ch.hidden == true ){
+        ch.hidden = false;
+      }
+    });
+    this.setChartOptions();
+  }
+
+  hoverBarChart(hoveredData: any){
+    this.chart.chart.config.data.datasets.map((item, i) => {
+      if ( hoveredData == null || item['id'] == hoveredData['id'] ){
+        let color = item.backgroundColor;
+        let colorProp = color.toString();
+        item.backgroundColor = colorProp.slice(0,7);
+      }
+      else{
+        let color = item.backgroundColor;
+        let colorProp = color+'33';
+        item.backgroundColor = colorProp.slice(0,9);
       }
     });
     this.setChartOptions();

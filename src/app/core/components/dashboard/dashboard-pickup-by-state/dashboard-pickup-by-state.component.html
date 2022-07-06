@@ -72,6 +72,8 @@
             *ngFor="let item of pickupStateList; let indx = index"
             class="dashboard-pickup-body-state-list-items-holder"
             (click)="selectStateCompare(item, indx)"
+            (mouseenter)="hoverState(indx)"
+            (mouseleave)="removeStateHover()"
           >
             <div
               class="dashboard-pickup-body-state-list-items state-compare-{{
@@ -111,22 +113,23 @@
             <div class="bar_chart_holder">
                 <div class="chart_top_line_holder">
                     <div class="chart_line_title">March, 2023 - March, 2025</div>
-                    <div class="chart_legend_hold">
-                    <div class="chart_legend_line line_sep">
-                        <div class="chart_legend_dot round_dark_grey">
-                        <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                        </div>
-                        <div class="chart_legend_title">Top 10</div>
-                    </div>
-                    <div class="chart_legend_line">
-                        <div class="chart_legend_dot round_light_grey">
-                        <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                        </div>
-                        <div class="chart_legend_title">All Others</div>
-                    </div>
+                    <div class="chart_legend_hold" [ngStyle]="{'opacity': selectedStates?.length ? '0': '1'}">
+                      <div class="chart_legend_line line_sep">
+                          <div class="chart_legend_dot round_dark_grey">
+                          <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                          </div>
+                          <div class="chart_legend_title">Top 10</div>
+                      </div>
+                      <div class="chart_legend_line">
+                          <div class="chart_legend_dot round_light_grey">
+                          <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                          </div>
+                          <div class="chart_legend_title">All Others</div>
+                      </div>
                     </div>
                 </div>
                 <app-ta-chart
+                    #statesBarChart
                     [chartConfig]="barChartConfig"
                     [axesProperties]="barAxes"
                     [legendAttributes]="{}"

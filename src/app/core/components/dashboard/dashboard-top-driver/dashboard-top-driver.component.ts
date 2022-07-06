@@ -60,6 +60,7 @@ export class DashboardTopDriverComponent implements OnInit {
     startGridBackgroundFromZero: true,
     hasHoverData: true,
     hasPercentage: true,
+    offset: true,
     dataLabels: ['MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2024', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2025', '', 'MAR'],
     noChartImage: 'assets/svg/common/no_data_pay.svg'
   };
@@ -344,7 +345,13 @@ export class DashboardTopDriverComponent implements OnInit {
   removeDriverFromList(e: Event,indx, item){
     e.stopPropagation()
     this.driverList.splice(indx, 1);
+    let showDefault = false;
+    if ( this.selectedDrivers?.length == 1 ) {
+      showDefault = true;
+    }
+    this.topDriverBarChart.removeMultiBarData(this.selectedDrivers[indx], showDefault);
     this.selectedDrivers.splice(indx, 1);
+    this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
     if ( this.selectedDrivers?.length > 0 ) {
       this.setChartData(this.selectedDrivers, true);
     }
@@ -402,42 +409,31 @@ export class DashboardTopDriverComponent implements OnInit {
       this.compareColor[item.id] = firstInArray;
       this.selectedDrivers.push(this.driverList[indx]);
       this.doughnutChart.selectedDrivers = this.selectedDrivers;
+      this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
       this.driverList.splice(indx, 1);
       this.setChartData(this.selectedDrivers, true);
       this.updateBarChart(this.selectedDrivers);
       this.driverList.splice(objectSize, 0, item);
 
-      this.hoverDoughnutChart(indx);
+      this.hoverDriver(indx);
     }
 
   }
 
-  hoverDoughnutChart(index){
+  hoverDriver(index: any){
     this.doughnutChart.hoverDoughnut(index, 'number');
+    this.topDriverBarChart.hoverBarChart(this.selectedDrivers[index]);
   }
 
-  removeDoughnutChart(){
+  removeDriverHover(){
     this.doughnutChart.hoverDoughnut(null);
+    this.topDriverBarChart.hoverBarChart(null);
   }
 
-  updateBarChart(selectedDrivers){
-    let updateData = [];
-    selectedDrivers.map((item, i) => {
-      let dataArray = {
-        backgroundColor: '#'+this.chartColors[i],
-        borderColor: '#'+this.chartColors[i],
-        data: [60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 50000, 100000, 120000],
-        label: item['name'],
-        type: "bar",
-        yAxisID: "y-axis-0",
-        id: item['id']
-      }
-
-      updateData.push(dataArray);
-    });
-   
-    if ( this.topDriverBarChart ) {
-      this.topDriverBarChart.updateMultiBarData(updateData);
+  updateBarChart(selectedStates: any){
+    let dataSend = [60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 50000, 100000, 120000];
+    if ( this.topDriverBarChart ){
+      this.topDriverBarChart.updateMuiliBar(selectedStates, dataSend, this.chartColors);
     }
   }
 }
