@@ -13,6 +13,6 @@
 
 export interface CreateCompanyContactLabelCommand { 
     name?: string | null;
-    color?: string | null;
+    colorId?: number;
 }
 

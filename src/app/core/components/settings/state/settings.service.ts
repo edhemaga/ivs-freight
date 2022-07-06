@@ -15,6 +15,7 @@ import {
   CompanyModalResponse,
   CompanyResponse,
   CompanyService,
+  UpdateCompanyCommand,
 } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
@@ -37,7 +38,7 @@ export class SettingsStoreService {
   public onModalAction(data: {
     modalName: string;
     action?: string;
-    company?: any;
+    companyDevision?: any;
   }) {
     switch (data.modalName) {
       case 'basic': {
@@ -48,7 +49,7 @@ export class SettingsStoreService {
           },
           {
             type: data.action,
-            company: data.company,
+            companyDevision: data.companyDevision,
           }
         );
         break;
@@ -95,6 +96,11 @@ export class SettingsStoreService {
     this.isModalActive$.next(true);
   }
 
+  // Main Company
+  public updateCompany(data: UpdateCompanyCommand): Observable<object> {
+    return this.settingCompanyService.apiCompanyPut(data);
+  }
+
   public getCompany(): Observable<CompanyResponse> {
     return this.settingCompanyService.apiCompanyGet();
   }
@@ -103,6 +109,7 @@ export class SettingsStoreService {
     return this.settingCompanyService.apiCompanyModalGet();
   }
 
+  // Division Company
   public getCompanyDivisionById(id: number): Observable<any> {
     return this.settingCompanyService.apiCompanyDivisionIdGet(id);
   }

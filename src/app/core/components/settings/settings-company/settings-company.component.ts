@@ -27,7 +27,7 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
   public isModalOpen$: boolean; // TODO: FILL DATA WITH REAL DATA, IF NO DATA, SHOW NO_DATA_COMPONENT !!!
   public data: any;
   public dataDivison: any;
-  public optionsCmp:any
+  public optionsCmp: any;
   constructor(
     private settingsStoreService: SettingsStoreService,
     private activated: ActivatedRoute,
@@ -35,13 +35,13 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef
   ) {}
-  ngOnChanges(changes: SimpleChanges): void {
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
   ngOnInit(): void {
     this.getData(this.activated.snapshot.data.company);
+
     this.detailsPageSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
-      .subscribe((id) => { 
+      .subscribe((id) => {
         this.settingsStoreService
           .getCompanyDivisionById(id)
           .pipe(untilDestroyed(this))
@@ -70,33 +70,36 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getData(data: CompanyResponse) {
-    this.data = data;    
+    this.data = data;
   }
 
-  public toggle(event:any){
-    this.getCompanyDivision()
+  public toggle(event: any) {
+    this.getCompanyDivision();
   }
   public getCompanyDivision() {
-    this.optionsCmp = this.activated.snapshot.data.company.divisions.map((item) => {
-      return {
-        ...item,
-        id: item.id,
-        data: item,
-        name: item.companyName,
-        active: item.id,
-      };
-    })
+    this.optionsCmp = this.activated.snapshot.data.company.divisions.map(
+      (item) => {
+        return {
+          ...item,
+          id: item.id,
+          data: item,
+          name: item.companyName,
+          active: item.id,
+        };
+      }
+    );
   }
   public selectCompany(event: any) {
-  
-   this.optionsCmp= this.activated.snapshot.data.company.divisions.map((item) => {
-      return {
-        ...item,
-        id: item.id,
-        name: item.companyName,
-        active: item.id === event.id,
-      };
-    });
+    this.optionsCmp = this.activated.snapshot.data.company.divisions.map(
+      (item) => {
+        return {
+          ...item,
+          id: item.id,
+          name: item.companyName,
+          active: item.id === event.id,
+        };
+      }
+    );
     this.detailsPageSer.getDataDetailId(event.id);
   }
   ngOnDestroy(): void {}

@@ -40,21 +40,15 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.companyData);
     this.timeZoneName = this.companyData.timeZone.name.substring(0, 7);
   }
 
   public onAction(modal: {
     modalName: string;
-    type: boolean;
     action: string;
-    company?: any;
+    companyDevision?: any;
   }) {
-    if (modal.action === 'edit-basic') {
-      modal = {
-        ...modal,
-        company: this.optionsCompany,
-      };
-    }
     this.settingsStoreService.onModalAction(modal);
   }
 
@@ -68,7 +62,6 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy {
   }
 
   public onSelectItem(event: any) {
-    console.log(event);
     this.toggleSelect = !this.toggleSelect;
     this.selectValue.emit(event);
     this.selectDropDown.emit(event);

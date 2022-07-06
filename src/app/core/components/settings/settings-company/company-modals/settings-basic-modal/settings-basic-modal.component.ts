@@ -16,7 +16,12 @@ import {
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { AddressEntity, CompanyModalResponse } from 'appcoretruckassist';
+import {
+  AddressEntity,
+  CompanyModalResponse,
+  CompanyResponse,
+  UpdateCompanyCommand,
+} from 'appcoretruckassist';
 import { distinctUntilChanged } from 'rxjs';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Options } from '@angular-slider/ngx-slider';
@@ -25,6 +30,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 import { DropZoneConfig } from 'src/app/core/components/shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { SettingsStoreService } from '../../../state/settings.service';
+import { resolveAny } from 'dns';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -52,6 +58,17 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     {
       id: 3,
       name: 'Payroll',
+    },
+  ];
+
+  public tabsDevision: any[] = [
+    {
+      id: 1,
+      name: 'Basic',
+    },
+    {
+      id: 2,
+      name: 'Additional',
     },
   ];
 
@@ -129,7 +146,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   // Basic Tab
   public selectedAddress: AddressEntity;
-  public selectedTimezone: any = null;
+  public selectedTimeZone: any = null;
   public selectedCurrency: any = null;
 
   // Additional Tab
@@ -183,7 +200,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.getModalDropdowns();
     this.validateMiles();
-    console.log(this.editData);
+
     if (this.editData?.type === 'payroll-tab') {
       const timeout = setTimeout(() => {
         this.selectedTab = 3;
@@ -191,12 +208,152 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         clearTimeout(timeout);
       }, 10);
     }
+
+    if (
+      this.editData.companyDevision ||
+      this.editData.type === 'new-devision'
+    ) {
+    } else {
+      this.settingsService
+        .getCompany()
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: (res: CompanyResponse) => {
+            this.companyForm.patchValue({
+              //-------------------- Basic Tab
+              name: res.name,
+              usdot: res.usdot,
+              ein: res.ein,
+              mc: res.mc,
+              phone: res.phone,
+              email: res.email,
+              fax: res.fax,
+              webURL: res.webURL,
+              address: res.address.address,
+              addressUnit: res.address.addressUnit,
+              irp: res.irp,
+              ifta: res.ifta,
+              toll: res.toll,
+              scac: res.scac,
+              timeZone: res.timeZone.name,
+              currency: res.currency.name,
+              logo: res.logo,
+              //-------------------- Additional Tab
+              departmentContact: [],
+              bankAccount: [],
+              bankCard: [],
+              prefix: res.additionalInfo.prefix,
+              starting: res.additionalInfo.starting,
+              sufix: res.additionalInfo.sufix,
+              autoInvoicing: res.additionalInfo.autoInvoicing,
+              preferredLoadType: res.additionalInfo.preferredLoadType,
+              factorByDefault: res.additionalInfo.factorByDefault,
+              customerPayTerm: res.additionalInfo.customerPayTerm,
+              customerCredit: res.additionalInfo.customerCredit,
+              mvrMonths: res.additionalInfo.mvrMonths,
+              truckInspectionMonths: res.additionalInfo.truckInspectionMonths,
+              trailerInspectionMonths:
+                res.additionalInfo.trailerInspectionMonths,
+              //-------------------- Payroll Tab
+              useTruckAssist: res.useACHPayout,
+              // Driver & Owner
+              driveOwnerPayPeriod: ['Weekly', Validators.required],
+              driverOwnerEndingIn: ['Monday', Validators.required],
+              driverEmptyMile: [null],
+              driverLoadedMile: [null],
+              driverOwnerHasLoadedEmptyMiles: [false],
+              driverDefaultCommission: [25],
+              ownerDefaultCommission: [15],
+              // Accounting
+              // accountingPayPeriod: ['Weekly', Validators.required],
+              // accountingEndingIn: ['Monday', Validators.required],
+              // accountingDefaultBase: [null],
+              // // Company Owner
+              // companyOwnerPayPeriod: ['Weekly', Validators.required],
+              // companyOwnerEndingIn: ['Monday', Validators.required],
+              // companyOwnerDefaultBase: [null],
+              // // Dispatch
+              // dispatchPayPeriod: ['Weekly', Validators.required],
+              // dispatchEndingIn: ['Monday', Validators.required],
+              // dispatchDefaultBase: [null],
+              // dispatchDefaultCommission: [5],
+              // // Manager
+              // managerPayPeriod: ['Weekly', Validators.required],
+              // managerEndingIn: ['Monday', Validators.required],
+              // managerDefaultBase: [null],
+              // managerDefaultCommission: [2.5],
+              // // Recruiting
+              // recruitingPayPeriod: ['Weekly', Validators.required],
+              // recruitingEndingIn: ['Monday', Validators.required],
+              // recruitingDefaultBase: [null],
+              // // Repair
+              // repairPayPeriod: ['Weekly', Validators.required],
+              // repairEndingIn: ['Monday', Validators.required],
+              // repairDefaultBase: [null],
+              // // Safety
+              // safetyPayPeriod: ['Weekly', Validators.required],
+              // safetyEndingIn: ['Monday', Validators.required],
+              // safetyDefaultBase: [null],
+              // // Other
+              // otherPayPeriod: ['Weekly', Validators.required],
+              // otherEndingIn: ['Monday', Validators.required],
+              // otherDefaultBase: [null],
+            });
+
+            this.selectedAddress = res.address;
+            this.selectedTimeZone = res.timeZone;
+            this.selectedCurrency = res.currency;
+
+            if (res.departmentContacts.length) {
+              for (const department of res.departmentContacts) {
+                this.departments.push(
+                  this.formBuilder.group({
+                    departmentId: department.id,
+                    phone: department.phone,
+                    extensionPhone: department.extensionPhone,
+                    email: department.email,
+                  })
+                );
+              }
+            }
+
+            if (res.bankAccounts.length) {
+              for (const bank of res.bankAccounts) {
+                this.bankAccounts.push(
+                  this.formBuilder.group({
+                    bankId: bank.id,
+                    routing: bank.routing,
+                    account: bank.account,
+                  })
+                );
+              }
+            }
+
+            if (res.bankCards.length) {
+              for (const card of res.bankCards) {
+                this.bankCards.push(
+                  this.formBuilder.group({
+                    nickname: card.nickname,
+                    cardNumber: card.cardType,
+                    cvc: card.cvc,
+                    exp: card.expireDate,
+                  })
+                );
+              }
+            }
+            console.log(res.companyPayrolls);
+          },
+          error: () => {
+            this.notificationService.error("Can't Load Company", 'Error');
+          },
+        });
+    }
   }
 
   private createForm() {
     this.companyForm = this.formBuilder.group({
       // Basic Tab
-      companyName: [null, Validators.required],
+      name: [null, Validators.required],
       usdot: [null, Validators.required],
       ein: [null, einNumberRegex],
       mc: [null, Validators.maxLength(8)],
@@ -212,7 +369,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       scac: [null],
       timeZone: [null, Validators.required],
       currency: [null, Validators.required],
-      avatar: [null],
+      logo: [null],
       // Additional Tab
       departmentContact: this.formBuilder.array([]),
       bankAccount: this.formBuilder.array([]),
@@ -283,7 +440,40 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onModalAction(event) {}
+  public onModalAction(data: { action: string; bool: boolean }) {
+    switch (data.action) {
+      case 'close': {
+        this.companyForm.reset();
+        break;
+      }
+      case 'save': {
+        // If Form not valid
+        if (this.companyForm.invalid) {
+          this.inputService.markInvalid(this.companyForm);
+          return;
+        }
+        if (this.editData.companyDevision) {
+          this.updateCompanyDevision(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
+        } else {
+          this.updateCompany();
+          this.modalService.setModalSpinner({ action: null, status: true });
+        }
+
+        break;
+      }
+      case 'delete': {
+        if (this.editData.companyDevision) {
+          this.deleteCompanyDevisionById(this.editData.id);
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
+        }
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
@@ -447,7 +637,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public onSelectDropdown(event: any, action: string) {
     switch (action) {
       case 'timezone': {
-        this.selectedTimezone = event;
+        this.selectedTimeZone = event;
         break;
       }
       case 'currency': {
@@ -564,7 +754,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }
 
   public onUploadImage(event: any) {
-    this.companyForm.get('avatar').patchValue(event);
+    this.companyForm.get('logo').patchValue(event);
   }
 
   public onPrefferedLoadCheck(event: any) {
@@ -615,6 +805,19 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         },
       });
   }
+
+  public updateCompanyDevision(id: number) {}
+
+  public updateCompany() {
+    const { ...form } = this.companyForm.value;
+    const newData: UpdateCompanyCommand = {
+      ...form,
+    };
+
+    console.log(newData);
+  }
+
+  public deleteCompanyDevisionById(id: number) {}
 
   ngOnDestroy(): void {}
 }
