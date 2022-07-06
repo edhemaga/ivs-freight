@@ -68,29 +68,6 @@ export class TaChartComponent implements OnInit {
       animation: {
         duration: 0
       },
-      annotation: {
-        drawTime: 'beforeDatasetsDraw',
-        annotations: [
-          {
-            id: 'a-line-1',
-            type: 'line',
-            mode: 'horizontal',
-            scaleID: 'y-axis-0',
-            value: this.chartConfig['annotation'] ? this.chartConfig['annotation'] : null,
-            borderColor: '#E57373',
-            borderWidth: 1,
-          },
-          {
-            id: 'a-line-2',
-            type: 'line',
-            mode: 'vertical',
-            scaleID: 'x-axis-0',
-            value: this.annotationHovered,
-            borderColor: '#DADADA',
-            borderWidth: 2,
-          }
-        ]
-      },
       rotation: 1 * Math.PI,
       circumference: 1 * Math.PI,
       tooltips: {
