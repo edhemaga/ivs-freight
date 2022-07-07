@@ -112,13 +112,14 @@
               class="td-content"
             >
               <div class="avatar-container">
-                <app-profile-images
+                <!-- Ovde je komponenta -->
+                <!-- <app-profile-images
                   [indx]="i"
                   [size]="'small'"
                   [name]="row.fullName"
                   [type]="'driver'"
                 >
-                </app-profile-images>
+                </app-profile-images> -->
                 <img
                   alt="avatar"
                   *ngIf="row.isOwner"
@@ -337,7 +338,8 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw>
+              <!-- Ovde je komponenta -->
+              <!-- <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw> -->
             </div>
 
             <!-- ITEM DROP COLUMN -->
@@ -747,7 +749,8 @@
                 column.isPined
               "
             >
-              <app-truckassist-progress-expiration
+              <!-- Ovde je komponenta -->
+              <!-- <app-truckassist-progress-expiration
                 *ngIf="row[column.field] && row[column.field]['start']"
                 [startDate]="
                   row[column.field]['start']
@@ -767,7 +770,7 @@
                     : undefined
                 "
                 [status]="row['status']"
-              ></app-truckassist-progress-expiration>
+              ></app-truckassist-progress-expiration> -->
             </div>
           </td>
         </div>
@@ -776,7 +779,7 @@
 
     <!-- Border For Not Pined -->
     <div
-      class="not-pined-border table-select-border"
+      class="not-pined-border-left table-select-border"
       *ngIf="showScrollSectionBorder"
       [ngStyle]="{
         height: viewData.length * 32 + 2 * viewData.length - 1 - 1 + 'px'
@@ -842,13 +845,14 @@
               class="td-content"
             >
               <div class="avatar-container">
-                <app-profile-images
+                <!-- Ovde je komponenta -->
+                <!--  <app-profile-images
                   [indx]="i"
                   [size]="'small'"
                   [name]="row[column.field]"
                   [type]="'driver'"
                 >
-                </app-profile-images>
+                </app-profile-images> -->
                 <img
                   alt="avatar"
                   *ngIf="row.isOwner"
@@ -1063,7 +1067,8 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw>
+              <!-- Ovde je komponenta -->
+              <!-- <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw> -->
             </div>
 
             <!-- ITEM DROP COLUMN -->
@@ -1473,7 +1478,8 @@
                 !column.isPined
               "
             >
-              <app-truckassist-progress-expiration
+              <!-- Ovde je komponenta -->
+              <!-- <app-truckassist-progress-expiration
                 *ngIf="row[column.field] && row[column.field]['start']"
                 [startDate]="
                   row[column.field]['start']
@@ -1488,7 +1494,24 @@
                       | date: 'shortDate')
                 "
                 [status]="row['status']"
-              ></app-truckassist-progress-expiration>
+              ></app-truckassist-progress-expiration> -->
+
+
+              <!-- 
+              *ngIf="row[column.field] && row[column.field]['start']" -->
+              <div class="table-progress-cotnainer">
+                <!-- Progres Bar  -->
+                <div class="table-progress-bar-container">
+                  <div
+                    [ngClass]="{ 'bg-progress-orange': true }"
+                    [ngStyle]="{ width: 50 + '%' }"
+                    class="table-progress-bar"
+                  ></div>
+                </div>
+
+                <!-- Progres Text -->
+                <div class="table-progress-text">in 1,565 days</div>
+              </div>
             </div>
           </td>
         </div>
@@ -1497,7 +1520,7 @@
 
     <!-- Border For Not Pined -->
     <div
-      class="not-pined-border table-select-border"
+      class="not-pined-border-right table-select-border"
       *ngIf="showScrollSectionBorder"
       [ngStyle]="{
         height: viewData.length * 32 + 2 * viewData.length - 1 - 1 + 'px'
@@ -1552,11 +1575,12 @@
               }"
               class="td-content set-center"
             >
-              <app-app-note
+              <!-- Ovde je komponenta -->
+              <!-- <app-app-note
                 [note]="row?.note ? row.note : ''"
                 [note_expanded]="false"
                 [rowIndex]="i"
-              ></app-app-note>
+              ></app-app-note> -->
             </div>
 
             <!-- ACTIONS COLUMN TEMPLATE -->
@@ -1568,11 +1592,19 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <app-table-dropdown
-                (dropDownActions)="onDropAction($event)"
-                [id]="row.id"
-                [options]="options.actions"
-              ></app-table-dropdown>
+              <div
+                #t2="ngbPopover"
+                (click)="toggleDropdown(t2, row.id)"
+                [autoClose]="true"
+                [ngbPopover]="dropdownPopover"
+                [placement]="'bottom-right'"
+                class="table-dropdown-container"
+                [ngClass]="{
+                  'active-drop': dropDownActive === row.id && t2.isOpen()
+                }"
+                popoverClass="table-dropdown-popover"
+                triggers="manual"
+              ></div>
             </div>
           </td>
         </div>
@@ -1589,3 +1621,20 @@
     Show More
   </div>
 </div>
+
+<!-- DROPDOWN -->
+<ng-template #dropdownPopover let-data="data">
+  <div class="table-dropdown">
+    <div
+      (click)="onDropAction(action)"
+      *ngFor="let action of data"
+      class="table-dropdown-content"
+      [class]="action.class"
+    >
+      <div class="dropdown-content-icon">
+        <div [class]="action.contentType"></div>
+      </div>
+      <div class="dropdown-content-text">{{ action.title }}</div>
+    </div>
+  </div>
+</ng-template>

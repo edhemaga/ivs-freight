@@ -2,7 +2,6 @@ import {
   Component,
   Input,
   OnInit,
-  ViewEncapsulation,
   OnChanges,
   SimpleChanges,
   Output,
@@ -16,8 +15,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 @Component({
   selector: 'app-truckassist-table-toolbar',
   templateUrl: './truckassist-table-toolbar.component.html',
-  styleUrls: ['./truckassist-table-toolbar.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./truckassist-table-toolbar.component.scss']
 })
 export class TruckassistTableToolbarComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy
@@ -74,9 +72,7 @@ export class TruckassistTableToolbarComponent
   activeTableData: any = {};
   toolbarWidth: string = '';
 
-  constructor(
-    private tableService: TruckassistTableService
-  ) {}
+  constructor(private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     this.getSelectedTabTableData();
@@ -105,17 +101,6 @@ export class TruckassistTableToolbarComponent
       .subscribe((response: any[]) => {
         this.tableRowsSelected = response;
       });
-
-    // Rezaize
-    this.tableService.currentColumnWidth
-      .pipe(untilDestroyed(this))
-      .subscribe((response: any) => {
-        if (response?.event?.width) {
-          setTimeout(() => {
-            this.getToolbarWidth();
-          }, 10);
-        }
-      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -140,6 +125,8 @@ export class TruckassistTableToolbarComponent
 
     if (!changes?.columns?.firstChange && changes?.columns) {
       this.columns = changes.columns.currentValue;
+
+      this.getToolbarWidth();
     }
 
     if (changes?.selectedTab) {
