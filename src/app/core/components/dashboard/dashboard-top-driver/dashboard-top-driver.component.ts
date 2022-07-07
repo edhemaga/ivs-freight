@@ -58,6 +58,7 @@ export class DashboardTopDriverComponent implements OnInit {
     removeChartMargin: true,
     gridHoverBackground: true,
     startGridBackgroundFromZero: true,
+    dataMaxRows: 4,
     hasHoverData: true,
     hasPercentage: true,
     offset: true,
@@ -155,9 +156,12 @@ export class DashboardTopDriverComponent implements OnInit {
   ];
 
   circleColor: any[] = ['8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F', 'CCCCCC'];
+  hoverCircleColor: any[] = ['596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38BDEB', 'FFCA28', 'A2D35F', 'F276EF', '8D6E63'];
   chartColors: any[] = [];
   compareColor: any = {};
+  compareHoverColor: any = {};
   savedColors: any[] = [];
+  savedHoverColors: any[] = [];
 
   popoverTopTen: any[] = [
     {
@@ -358,10 +362,12 @@ export class DashboardTopDriverComponent implements OnInit {
     
     this.driverList.push(item);
     this.savedColors.unshift(this.compareColor[item.id]);
+    this.savedHoverColors.unshift(this.compareHoverColor[item.id]);
     if ( this.selectedDrivers?.length == 0 ) {
       this.setChartData(this.driverList);
     }
     delete this.compareColor[item.id];
+    delete this.compareHoverColor[item.id];
   }
 
   changeTopTen(item){
@@ -401,12 +407,16 @@ export class DashboardTopDriverComponent implements OnInit {
       if( !this.savedColors.length ){
         this.savedColors = [...this.circleColor]; 
         this.circleColor = [];
+        this.savedHoverColors = [...this.hoverCircleColor]; 
+        this.hoverCircleColor = [];
       }
   
       const firstInArray = this.savedColors.shift();
+      const firstInArrayHover = this.savedHoverColors.shift();
       
       const objectSize = Object.keys(this.compareColor).length;
       this.compareColor[item.id] = firstInArray;
+      this.compareHoverColor[item.id] = firstInArrayHover;
       this.selectedDrivers.push(this.driverList[indx]);
       this.doughnutChart.selectedDrivers = this.selectedDrivers;
       this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
@@ -433,7 +443,7 @@ export class DashboardTopDriverComponent implements OnInit {
   updateBarChart(selectedStates: any){
     let dataSend = [60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 50000, 100000, 120000];
     if ( this.topDriverBarChart ){
-      this.topDriverBarChart.updateMuiliBar(selectedStates, dataSend, this.chartColors);
+      this.topDriverBarChart.updateMuiliBar(selectedStates, dataSend, this.compareColor, this.compareHoverColor);
     }
   }
 }

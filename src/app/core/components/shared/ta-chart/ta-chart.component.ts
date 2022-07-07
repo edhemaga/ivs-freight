@@ -47,6 +47,7 @@ export class TaChartComponent implements OnInit {
   hoverDataPosition: number = 0;
   selectedDataRows: any = [];
   selectedDrivers: any = [];
+  dataMaxRows: number = 6;
 
   constructor(private ref: ChangeDetectorRef) { }
 
@@ -272,6 +273,9 @@ export class TaChartComponent implements OnInit {
       this.allowAnimation = this.chartConfig['allowAnimation'];
       this.driversList = this.chartConfig['driversList'];
       this.gridHoverBackground = this.chartConfig['gridHoverBackground'];
+      if ( this.chartConfig['dataMaxRows'] ){
+        this.dataMaxRows = this.chartConfig['dataMaxRows'];
+      }
       this.chartDataCheck(this.chartConfig['chartValues']);
     });
   }
@@ -605,12 +609,13 @@ export class TaChartComponent implements OnInit {
     this.setChartOptions();
   }
 
-  updateMuiliBar(selectedStates: any[], data: any[], colors: any[]){
+  updateMuiliBar(selectedStates: any[], data: any[], colors: any[], hoverColors: any[]){
     let updateData = [];
     selectedStates.map((item, i) => {
       let dataArray = {
-        backgroundColor: '#'+colors[i],
-        borderColor: '#'+colors[i],
+        backgroundColor: '#'+colors[item['id']],
+        borderColor: '#'+colors[item['id']],
+        hoverBackgroundColor: '#'+hoverColors[item['id']],
         data: data,
         label: item['name'],
         type: "bar",
