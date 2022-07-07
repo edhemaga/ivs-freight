@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -8,10 +7,12 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { v4 as uuidv4 } from 'uuid';
 import {
+  AccountColorResponse,
+  CompanyAccountModalResponse,
   CompanyAccountResponse,
   CreateCompanyAccountCommand,
-  GetCompanyAccountLabelListResponse,
   UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
 import { AccountModalService } from './account-modal.service';
@@ -32,12 +33,16 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
 
   public accountForm: FormGroup;
+
   public accountLabels: any[] = [];
-  public selectedAccountLabel: any = {
+  public selectedAccountLabel: any = null;
+
+  public colors: any[] = [];
+  public selectedAccountColor: any = {
     id: 1,
     name: 'No Color',
     color: null,
-    count: null,
+    count: 0,
   };
 
   public isDirty: boolean;
@@ -53,8 +58,8 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    this.getAccountLabels();
     this.companyAccountModal();
+    this.companyAccountColorLabels();
 
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
@@ -124,24 +129,26 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       .companyAccountModal()
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: (res: any) => {
-          console.log('MODAL');
-          console.log(res);
+        next: (res: CompanyAccountModalResponse) => {
+          this.accountLabels = res.labels;
         },
       });
   }
 
-  private getAccountLabels(): void {
+  private companyAccountColorLabels() {
     this.accountModalService
-      .companyAccountLabelsList()
+      .companyAccoundLabelsColorList()
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: (res: GetCompanyAccountLabelListResponse) => {
-          console.log('LISTA');
-          console.log(res.pagination.data);
-          this.accountLabels = res.pagination.data;
+        next: (res: Array<AccountColorResponse>) => {
+          this.colors = res;
         },
-        error: () => {},
+        error: () => {
+          this.notificationService.error(
+            "Can't get account color labels.",
+            'Error:'
+          );
+        },
       });
   }
 
@@ -250,13 +257,31 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectColorLabel(event: any): void {
-    this.selectedAccountLabel = event;
+    this.selectedAccountColor = event;
   }
 
-  public onSaveLabel(event: string) {
-    console.log('ACCOUNT MODAL');
-    console.log(this.accountForm.get('companyAccountLabelId').value);
-    console.log(event, this.selectedAccountLabel);
+  public onSaveLabel(data: { action: string; label: string }) {
+    if (data.action === 'cancel') {
+      this.selectedAccountLabel = {
+        name: data.label,
+        color: this.selectedAccountColor.name,
+        count: this.selectedAccountColor.count,
+        createdAt: null,
+        updatedAt: null,
+      };
+      return;
+    }
+    this.selectedAccountLabel = {
+      id: uuidv4(),
+      name: data.label,
+      color: this.selectedAccountColor.name,
+      count: this.selectedAccountColor.count,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    this.accountLabels = [...this.accountLabels, this.selectedAccountLabel];
+    console.log(this.accountLabels);
   }
 
   ngOnDestroy(): void {}

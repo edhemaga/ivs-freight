@@ -42,6 +42,7 @@ export class TaInputDropdownComponent
   @Input() isDetailsActive: boolean = false;
   @Input() inputConfig: ITaInput;
   @Input() canAddNew: boolean = false;
+  @Input() isOpenSomethingElse: boolean = false;
   @Input() activeItem: any;
   @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
   @Input() preloadMultiselectItems: any[] = [];
@@ -266,7 +267,6 @@ export class TaInputDropdownComponent
     if (this.template !== 'groups') {
       if (
         term?.length &&
-        this.activeItem?.name &&
         this.getSuperControl.value &&
         this.activeItem?.name !== this.getSuperControl.value
       ) {
@@ -335,13 +335,17 @@ export class TaInputDropdownComponent
       return;
     } else if (option.id === 7655) {
       // Add New
-      this.onAddNewEvent();
-      this.isInAddMode = true;
-      const timeout = setTimeout(() => {
-        this.isInAddMode = false;
-        clearTimeout(timeout);
-      }, 500);
-      return;
+      if (!this.isOpenSomethingElse) {
+        this.onAddNewEvent();
+        this.isInAddMode = true;
+        const timeout = setTimeout(() => {
+          this.isInAddMode = false;
+          clearTimeout(timeout);
+        }, 500);
+        return;
+      } else {
+        this.selectedItem.emit(option);
+      }
     } else {
       this.activeItem = option;
       this.getSuperControl.setValue(option.name);
@@ -442,11 +446,14 @@ export class TaInputDropdownComponent
   public onCommandInput(event: string) {
     if (event === 'confirm') {
       this.addNewItem();
-      this.inputConfig = {
-        ...this.inputConfig,
-        commands: null,
-      };
+    } else {
+      this.getSuperControl.patchValue(null);
     }
+
+    this.inputConfig = {
+      ...this.inputConfig,
+      commands: null,
+    };
   }
 
   public identity(index: number, item: any): number {

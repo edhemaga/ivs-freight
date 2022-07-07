@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
+  AccountColorResponse,
   CompanyAccountLabelService,
   CompanyAccountModalResponse,
   CompanyAccountResponse,
@@ -48,6 +49,12 @@ export class AccountModalService {
 
   public companyAccountLabelsList(): Observable<GetCompanyAccountLabelListResponse> {
     return this.companyLabelService.apiCompanyaccountlabelListGet();
+  }
+
+  public companyAccoundLabelsColorList(): Observable<
+    Array<AccountColorResponse>
+  > {
+    return this.companyLabelService.apiCompanyaccountlabelColorListGet();
   }
 
   public addCompanyLabel(

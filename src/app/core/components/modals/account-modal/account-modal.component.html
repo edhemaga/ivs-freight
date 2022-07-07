@@ -8,7 +8,7 @@
   <form [formGroup]="accountForm" class="form-container">
     <div class="row">
       <div class="col-12">
-        <app-ta-inputapp-ta-input-dropdown-label
+        <app-ta-input
           formControlName="name"
           [inputConfig]="{
             name: 'Account Name',
@@ -17,9 +17,9 @@
             isRequired: true,
             maxLength: 23,
             textTransform: 'capitalize',
-            autoFocus: editData?.type === 'edit' ? false : true
+            autoFocus: true
           }"
-        ></app-ta-inputapp-ta-input-dropdown-label>
+        ></app-ta-input>
       </div>
     </div>
     <div class="row">
@@ -33,7 +33,7 @@
             placeholder: 'Label Name',
             placeholderIcon: 'ic_dynamic_label',
             isDropdownLabel: true,
-            dropdownLabelSelected: selectedAccountLabel,
+            dropdownLabelSelected: selectedAccountColor,
             dropdownWidthClass: 'w-col-dropdown-label',
             textTransform: 'capitalize',
             blackInput: true,
@@ -58,7 +58,9 @@
               }
             }
           }"
+          [colors]="colors"
           [options]="accountLabels"
+          [selectedAccountLabel]="selectedAccountLabel"
           (selectedColorLabel)="onSelectColorLabel($event)"
           (labelEvent)="onSaveLabel($event)"
         >
