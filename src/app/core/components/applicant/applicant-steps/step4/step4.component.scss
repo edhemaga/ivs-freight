@@ -90,7 +90,6 @@
         background-color: $ta-light-grey-4;
         border-radius: 2px;
         margin-bottom: 2px;
-        text-transform: uppercase;
         color: $bw6-2;
         font-size: 14px;
         transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -112,39 +111,40 @@
         .hazmat-box,
         .description-box {
           &.date-box {
-            width: 55px;
-            margin-right: 34px;
+            width: 71px;
+            margin-right: 18px;
           }
 
           &.state-box {
-            width: 18px;
-            margin-right: 47px;
+            width: 41px;
+            margin-right: 24px;
             padding-left: 6px;
+            text-transform: uppercase;
           }
 
           &.fatalities-box {
-            width: 5px;
-            margin-right: 47px;
+            width: 28px;
+            margin-right: 24px;
             padding-left: 6px;
           }
 
           &.injuries-box {
-            width: 5px;
-            margin-right: 47px;
+            width: 28px;
+            margin-right: 24px;
             padding-left: 6px;
           }
 
           &.hazmat-box {
-            width: 23px;
-            margin-right: 53px;
+            width: 54px;
+            margin-right: 24px;
             padding-left: 6px;
+            text-transform: capitalize;
           }
 
           &.description-box {
             width: 207px;
             margin-right: 19px;
             padding-left: 6px;
-            text-transform: none;
           }
         }
 
@@ -200,12 +200,10 @@
     }
 
     .fatalities-injuries-group {
-      width: 337px;
-      margin-right: 85px;
-      margin-bottom: 22px;
+      margin-bottom: 32px;
 
       .fatalities-group {
-        width: 168px;
+        width: 178px;
         margin-right: 12px;
 
         p {
@@ -226,65 +224,18 @@
           margin-right: 12px !important;
         }
       }
-
-      .fatalities-group,
-      .injuries-group {
-        .arrow-input-group {
-          width: 79px;
-
-          .btn-container {
-            width: 42px;
-            margin-right: 6px;
-
-            .minus-icon,
-            .plus-icon {
-              cursor: pointer;
-
-              svg {
-                transition: transform 0.2s ease-in-out;
-
-                rect {
-                  transition: fill 0.2s ease-in-out;
-                  fill: $bw-9;
-                }
-
-                path {
-                  fill: $white;
-                }
-              }
-
-              &.minus-icon {
-                margin-right: 6px;
-              }
-
-              &:hover {
-                svg {
-                  transform: scale(1.2);
-
-                  rect {
-                    fill: $bw4;
-                  }
-                }
-              }
-            }
-          }
-
-          .input-container {
-            width: 32px;
-          }
-        }
-      }
     }
 
     .hazmat-spill-group {
       width: 194px;
       height: 26px;
-      margin-bottom: 22px;
+      margin-bottom: 32px;
 
       .title-box {
         p {
           font-size: 14px;
           color: $bw6-2;
+          user-select: none !important;
 
           .required-star {
             color: $progress-danger;

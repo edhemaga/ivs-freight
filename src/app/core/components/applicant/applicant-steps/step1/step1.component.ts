@@ -39,6 +39,13 @@ export class Step1Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.APPLICANT;
   public selectedBank: any = null;
 
+  public bankData: any[] = [
+    {
+      svg: null,
+      name: 'Test Bank',
+    },
+  ];
+
   public isBankSelected: boolean = false;
   public isLastAddedPreviousAddressValid: boolean = false;
   public isLastInputDeleted: boolean = false;
@@ -204,22 +211,14 @@ export class Step1Component implements OnInit, OnDestroy {
 
   /* C */
 
-  /* public loadingApplicant$: Observable<boolean>;
+  /*  public loadingApplicant$: Observable<boolean>;
   public loadingBankData$: Observable<boolean>;
   public loadingPersonalInfo$: Observable<boolean>;
 
   public personalInfo: PersonalInfo | undefined;
 
-  public bankData: any[] = [
-    {
-      svg: null,
-      name: 'Test Bank',
-    },
-  ];
-
   public reviewFeedback: any[] = getPersonalInfoReviewFeedbackData();
-  private countOfReview: number = 0;
- */
+  private countOfReview: number = 0; */
 
   constructor(
     private formBuilder: FormBuilder /* 

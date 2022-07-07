@@ -1,7 +1,7 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="step-title text-center noselect ta-font-bold">Education</h1>
+  <h1 class="m-0 step-title text-center noselect ta-font-bold">Education</h1>
 
-  <h3 class="step-subtitle noselect text-center ta-font-bold">
+  <h3 class="m-0 step-subtitle noselect text-center ta-font-bold">
     Please select the highest grade completed:
   </h3>
 
@@ -91,7 +91,7 @@
           "
         >
           <div class="d-flex align-items-center justify-content-between">
-            <div class="title-box">
+            <div [ngClass]="['title-box' + i, 'title-box']">
               <p class="m-0 ta-font-regular">
                 {{ question.title }}
                 <span class="required-star">*</span>
@@ -110,7 +110,13 @@
 
           <div
             class="d-flex explain-container"
-            *ngIf="educationForm.get(question.formControlName)?.value === 'Yes'"
+            *ngIf="educationForm.get(question.formControlName)?.value === 'YES'"
+            [ngStyle]="{
+              'margin-bottom':
+                educationForm.get(question.formControlName)?.value === 'YES'
+                  ? '20px'
+                  : '0'
+            }"
           >
             <div class="w-100">
               <app-ta-input
@@ -118,9 +124,11 @@
                 [inputConfig]="{
                   name: 'Explain',
                   type: 'text',
-                  label: 'Please Explain',
+                  label: 'Please explain',
                   isRequired: true,
-                  textTransform: 'capitalize'
+                  textTransform: 'capitalize',
+                  placeholder: 'Please explain',
+                  placeholderInsteadOfLabel: true
                 }"
               ></app-ta-input>
             </div>
@@ -140,7 +148,9 @@
 
       <!-- GENERAL -->
 
-      <h3 class="text-center noselect ta-font-bold step-title general-title">
+      <h3
+        class="m-0 text-center noselect ta-font-bold step-title general-title"
+      >
         General
       </h3>
 
@@ -154,12 +164,18 @@
             let i = index;
             trackBy: trackByIdentity
           "
+          [ngStyle]="{
+            margin:
+              educationForm.get('driverForCompany').value === 'YES'
+                ? '0 auto'
+                : '0 auto 12px auto'
+          }"
         >
-          <div class="d-flex align-items-center w-100">
+          <div class="d-flex flex-column align-items-center w-100">
             <div
               class="d-flex align-items-center justify-content-between w-100"
             >
-              <div class="title-box">
+              <div [ngClass]="['title-box' + i, 'title-box']">
                 <p class="m-0 ta-font-regular">
                   {{ question.title }}
                   <span class="required-star">*</span>
@@ -173,24 +189,84 @@
                 ></app-ta-input-radiobuttons>
               </div>
             </div>
-            <div class="d-flex" *ngIf="i === 0">
+
+            <!-- DATE EXPLAIN  -->
+
+            <div
+              class="d-flex"
+              *ngIf="i === 0"
+              [ngStyle]="{
+                margin:
+                  educationForm.get('driverForCompany').value === 'YES'
+                    ? '22px auto 32px auto'
+                    : '0 auto'
+              }"
+            >
               <div
-                class="form-label-group date-group"
+                class="d-flex"
+                *ngIf="educationForm.get('driverForCompany').value === 'YES'"
+              >
+                <div class="date-group">
+                  <app-ta-input
+                    formControlName="driverForCompanyBeforeExplain"
+                    [inputConfig]="{
+                      name: 'datepicker',
+                      type: 'text',
+                      label: 'From',
+                      placeholderIcon: 'date',
+                      isRequired: true,
+                      customClass: 'datetimeclass'
+                    }"
+                  ></app-ta-input>
+                </div>
+                <div class="date-group">
+                  <app-ta-input
+                    formControlName="driverForCompanyToExplain"
+                    [inputConfig]="{
+                      name: 'datepicker',
+                      type: 'text',
+                      label: 'To',
+                      placeholderIcon: 'date',
+                      isRequired: true,
+                      customClass: 'datetimeclass'
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+            </div>
+
+            <!-- EXPLAIN -->
+
+            <div class="d-flex" *ngIf="i === 1">
+              <div
+                class="d-flex"
                 *ngIf="
-                  educationForm.get('driverForCompanyBefore').value === 'Yes'
+                  educationForm.get(question.formControlName).value === 'YES'
                 "
               >
-                <app-ta-input
-                  formControlName="driverForCompanyBeforeExplain"
-                  [inputConfig]="{
-                    name: 'datepicker',
-                    type: 'text',
-                    label: 'Date',
-                    placeholderIcon: 'date',
-                    isRequired: true,
-                    customClass: 'datetimeclass'
+                <div
+                  class="explain-container"
+                  [ngStyle]="{
+                    'margin-bottom':
+                      educationForm.get(question.formControlName)?.value ===
+                      'YES'
+                        ? '20px'
+                        : '0'
                   }"
-                ></app-ta-input>
+                >
+                  <app-ta-input
+                    [formControlName]="question.formControlNameExplain"
+                    [inputConfig]="{
+                      name: 'Explain',
+                      type: 'text',
+                      label: 'Please explain',
+                      isRequired: true,
+                      textTransform: 'capitalize',
+                      placeholder: 'Please explain',
+                      placeholderInsteadOfLabel: true
+                    }"
+                  ></app-ta-input>
+                </div>
               </div>
             </div>
           </div>
@@ -208,123 +284,110 @@
       </div>
     </form>
 
-    <!-- CREATED CONTACT DATA -->
+    <!-- REVIEW AND FEEDBACK -->
 
-    <div
-      class="d-flex flex-column contacts-view-container"
-      *ngIf="contactsFormArray?.length"
-    >
-      <div class="d-flex flex-column">
-        <div class="d-flex title-container">
-          <div
-            class="d-flex justify-content-center align-items-center name-title-box"
-          >
-            <p class="m-0 ta-font-bold">NAME</p>
-          </div>
-          <div
-            class="d-flex justify-content-center align-items-center phone-title-box"
-          >
-            <p class="m-0 ta-font-bold">PHONE</p>
-          </div>
-          <div
-            class="d-flex justify-content-center align-items-center relationship-title-box"
-          >
-            <p class="m-0 ta-font-bold">RELATIONSHIP</p>
-          </div>
-        </div>
-
-        <div
-          class="d-flex align-items-center contact"
-          *ngFor="
-            let contact of contactsFormArray | filter: false;
-            let i = index;
-            trackBy: trackByIdentity
-          "
-        >
-          <div class="d-flex align-items-center contact-info-container">
-            <div
-              class="d-flex justify-content-center align-items-center name-box"
-            >
-              <p class="m-0 ta-font-regular">
-                {{ contact.contactName }}
-              </p>
-            </div>
-            <div
-              class="d-flex justify-content-center align-items-center phone-box"
-            >
-              <p class="m-0 ta-font-regular">
-                {{ contact.contactPhone }}
-              </p>
-            </div>
-            <div
-              class="d-flex justify-content-center align-items-center relationship-box"
-            >
-              <p class="m-0 ta-font-regular">
-                {{ contact.contactRelationship }}
-              </p>
-            </div>
-          </div>
-
-          <!-- REVIEW AND FEEDBACK -->
-
-          <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-            <app-applicant-review-feedback
-              [index]="4"
-              [reviewFeedbackData]=""
-              (sendReview)="onSubmitReview($event)"
-            ></app-applicant-review-feedback>
-          </div>
-
-          <div
-            class="d-flex justify-content-center align-items-center edit-delete-box"
-          >
-            <button
-              type="button"
-              class="d-flex justify-content-center align-items-center edit-btn"
-              (click)="onEditContact(i)"
-            >
-              <svg-icon
-                class="edit-icon"
-                src="assets/svg/common/ic_pen.svg"
-                [svgStyle]="{
-                  'width.px': 10,
-                  'height.px': 10
-                }"
-              ></svg-icon>
-            </button>
-            <button
-              type="button"
-              class="d-flex justify-content-center align-items-center delete-btn"
-              (click)="onDeleteContact(i)"
-            >
-              <svg-icon
-                class="delete-icon"
-                src="assets/svg/common/ic_trash.svg"
-                [svgStyle]="{
-                  'width.px': 8,
-                  'height.px': 9
-                }"
-              ></svg-icon>
-            </button>
-          </div>
-        </div>
-      </div>
+    <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+      <app-applicant-review-feedback
+        [index]="4"
+        [reviewFeedbackData]=""
+        (sendReview)="onSubmitReview($event)"
+      ></app-applicant-review-feedback>
     </div>
 
     <!-- CONTACT -->
 
-    <form [formGroup]="contactForm">
+    <form [formGroup]="contactForm" class="contact-form">
       <h3
-        class="step-subtitle contact-title noselect text-center ta-font-bold"
+        class="contact-title noselect text-center ta-font-bold"
         [ngStyle]="{
-          'margin-top': contactsFormArray.length ? '0' : '12px'
+          'margin-bottom': contactsArray.length ? '22px' : '32px'
         }"
       >
         In case of emergency, contact:
       </h3>
 
+      <!-- CREATED CONTACT DATA -->
+
+      <div
+        class="d-flex flex-column justify-content-center contacts-view-container"
+        *ngIf="contactsArray?.length"
+      >
+        <div class="d-flex align-items-center title-container">
+          <div class="d-flex align-items-center name-title-box">
+            <p class="m-0 ta-font-bold">NAME <span>*</span></p>
+          </div>
+          <div class="d-flex align-items-center phone-title-box">
+            <p class="m-0 ta-font-bold">PHONE <span>*</span></p>
+          </div>
+          <div class="d-flex align-items-center relationship-title-box">
+            <p class="m-0 ta-font-bold">RELATIONSHIP <span>*</span></p>
+          </div>
+        </div>
+
+        <div
+          class="d-flex align-items-center contact-info-container"
+          *ngFor="
+            let contact of contactsArray;
+            let i = index;
+            trackBy: trackByIdentity
+          "
+        >
+          <div class="d-flex align-items-center name-box">
+            <p class="m-0 ta-font-regular">
+              {{ contact.contactName }}
+            </p>
+          </div>
+          <div class="d-flex align-items-center phone-box">
+            <p class="m-0 ta-font-regular">
+              {{ contact.contactPhone }}
+            </p>
+          </div>
+          <div class="d-flex align-items-center relationship-box">
+            <p class="m-0 ta-font-regular">
+              {{ contact.contactRelationship }}
+            </p>
+          </div>
+
+          <div class="d-flex align-items-center btn-container">
+            <svg-icon
+              class="edit-icon"
+              src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+              [svgStyle]="{
+                'width.px': 18,
+                'height.px': 18
+              }"
+              appTooltip="Edit"
+              tooltipColor="#FFFFFF"
+              tooltipBackground="#6C6C6C"
+              position="top-middle"
+              borderRadius="2px"
+              fontSize="11px"
+              fontWeight="bold"
+              (click)="onEditContact(i)"
+            ></svg-icon>
+
+            <svg-icon
+              class="delete-icon"
+              src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+              [svgStyle]="{
+                'width.px': 18,
+                'height.px': 18
+              }"
+              appTooltip="Delete"
+              tooltipColor="#FFFFFF"
+              tooltipBackground="#EF5350"
+              position="top-middle"
+              borderRadius="2px"
+              fontSize="11px"
+              fontWeight="bold"
+              (click)="onDeleteWorkExperience(i)"
+            ></svg-icon>
+          </div>
+        </div>
+      </div>
+
       <div class="d-flex">
-        <div class="form-label-group name-group">
+        <div class="group name-group">
           <app-ta-input
             formControlName="contactName"
             [inputConfig]="{
@@ -336,7 +399,7 @@
             }"
           ></app-ta-input>
         </div>
-        <div class="form-label-group phone-group">
+        <div class="group phone-group">
           <app-ta-input
             formControlName="contactPhone"
             [inputConfig]="{
@@ -349,7 +412,7 @@
             }"
           ></app-ta-input>
         </div>
-        <div class="form-label-group relationship-group">
+        <div class="group relationship-group">
           <app-ta-input
             formControlName="contactRelationship"
             [inputConfig]="{
@@ -380,30 +443,67 @@
       >
         <button
           type="button"
-          class="add-contact-btn ta-font-semi-bold"
+          class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
           (click)="onAddContact()"
-          *ngIf="editContact === -1"
+          [ngClass]="{
+            disabled: contactForm.invalid
+          }"
+          *ngIf="!isEditing"
         >
-          Add second emergency contact
+          <svg-icon
+            class="plus-icon"
+            src="assets/svg/common/ic_plus.svg
+        "
+            [svgStyle]="{
+              'width.px': 18,
+              'height.px': 18
+            }"
+          ></svg-icon>
+
+          Add Second Emergency Contact
         </button>
-        <button
-          type="button"
-          class="add-contact-btn ta-font-semi-bold"
-          (click)="onUpdateContact()"
-          *ngIf="editContact !== -1"
+
+        <div
+          class="d-flex align-items-center mx-auto justify-content-center"
+          *ngIf="isEditing"
         >
-          Save contact
-        </button>
+          <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+            (click)="onCancelEditContact()"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+            [ngClass]="{
+              disabled: !isContactEdited
+            }"
+            (click)="onSaveEditedContact()"
+          >
+            Save Changes
+          </button>
+        </div>
       </div>
     </form>
-
-    <!-- NEXT, BACK STEP -->
-
-    <app-applicant-next-step
-      (stepEvent)="onStepAction($event)"
-      [isReview]="selectedMode == 'REVIEW_MODE'"
-    ></app-applicant-next-step>
   </div>
+</div>
+
+<!-- NEXT BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+</div>
+
+<!-- BACK BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center back-btn-container"
+>
+  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>
 
 <!-- CONFIRM ALL REVIEW -->
