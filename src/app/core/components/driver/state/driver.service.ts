@@ -5,6 +5,7 @@ import {
   CheckOwnerSsnEinResponse,
   CreateDriverCommand,
   DriverListResponse,
+  DriverMinimalListResponse,
   DriverResponse,
   GetDriverModalResponse,
   OwnerService,
@@ -30,6 +31,22 @@ export class DriverTService {
     private ownerService: OwnerService,
     private tableService: TruckassistTableService
   ) {}
+  
+
+  //Get Driver Minimal List
+
+  public getDriversMinimalList(
+    pageIndex?:number,
+    pageSize?:number,
+    count?:number,
+
+  ):Observable<DriverMinimalListResponse>{
+     return this.driverService.apiDriverListMinimalGet(
+      pageIndex,
+      pageSize,
+      count
+     )
+  }
 
   // Get Driver List
   public getDrivers(

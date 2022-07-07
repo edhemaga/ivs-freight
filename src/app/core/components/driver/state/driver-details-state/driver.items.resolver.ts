@@ -17,6 +17,8 @@ import { DriversDetailsQuery } from './driver-details.query';
   providedIn: 'root',
 })
 export class DriverItemResolver implements Resolve<DriverResponse[]> {
+  pageIndex:number=1;
+  pageSize:number=25;
   constructor(
     private driverService: DriverTService,
     private driverItemStore: DriversItemStore,

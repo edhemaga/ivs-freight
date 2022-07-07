@@ -47,21 +47,25 @@ app-driver-details-card{
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 15px;
+    line-height: 16px;
     background-color: #f3f3f3;
     border-radius: 2px;
     font-size: 11px;
     font-weight: 800;
     position: relative;
-    left: 98px;
+    left: 77px;
     color: $color-gray-dark;
     width: 60px;
     height: 18px;
 }
 .bind-heigth{
-      max-height: calc(100vh - 74px) !important;
+      max-height: fit-content !important;
 }
 .activate-button-card{
     width: 398px !important;
 }
+}
+.container-value{
+    margin-left: 6px;
+    line-height: 20px !important;
 }

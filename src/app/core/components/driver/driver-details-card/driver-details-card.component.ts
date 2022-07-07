@@ -1,5 +1,3 @@
-import { DriverListResponse } from './../../../../../../appcoretruckassist/model/driverListResponse';
-import { Observable } from 'rxjs';
 import { SumArraysPipe } from './../../../pipes/sum-arrays.pipe';
 import { card_component_animation } from './../../shared/animations/card-component.animations';
 import {
@@ -9,7 +7,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
@@ -29,6 +26,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { Clipboard } from '@angular/cdk/clipboard';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',
@@ -41,7 +39,7 @@ export class DriverDetailsCardComponent
   implements OnInit, OnDestroy, OnChanges
 {
   @Input() driver: any;
-
+  @Input() templateCard: boolean;
   public note: FormControl = new FormControl();
   public copiedPhone: boolean = false;
   public copiedBankRouting: boolean = false;
@@ -70,14 +68,15 @@ export class DriverDetailsCardComponent
   public mvrNote: FormControl = new FormControl();
   public dropData: any;
   public dataProggress: any;
-  @Input() templateCard: boolean;
+
   public hideArrow: boolean;
   public expDateCard: boolean;
   // Driver Dropdown
   public driversDropdowns: any[] = [];
-  // public driver_active_id: number = +this.activated_route.snapshot.params['id'];
-  public driversList: any[] = this.driversQuery.getAll();
+  public driversList: any[] = this.driverMinimalQuery.getAll();
   public dataCDl: any;
+
+  public driverOwner:boolean;
   public barChartLegend: any[] = [
     {
       title: 'Miles',
@@ -126,7 +125,8 @@ export class DriverDetailsCardComponent
     private sumArr: SumArraysPipe,
     private clipboar: Clipboard,
     private cdRef: ChangeDetectorRef,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private driverMinimalQuery:DriversMinimalListQuery
   ) {}
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.driver?.firstChange && changes?.driver) {
@@ -145,7 +145,7 @@ export class DriverDetailsCardComponent
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
     this.note.patchValue(this.driver.note)
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
@@ -558,37 +558,27 @@ export class DriverDetailsCardComponent
     this.showTooltip = true;
   }
   public getDriversDropdown() {
-    if (this.driver.status == 1) {
-      this.driversDropdowns = this.driversQuery.getAll().map((item) => {
+      this.driversDropdowns = this.driverMinimalQuery.getAll().map((item) => {
+        
+        let fullname=item.firstName + ' ' + item.lastName        
         return {
           id: item.id,
-          name: item.fullName,
+          name: fullname ,
           status: item.status,
-          svg: item.owner ? 'driver-owner' : null,
+          svg:item.owner ? 'driver-owner' : null,
           folder: 'common',
           active: item.id === this.driver.id,
         };
-      });
-      // }else{
-      //   this.driversDropdowns= this.driverQueryIn.getAll().map((item) => {
-      //     return {
-      //       id: item.id,
-      //       name: item.fullName,
-      //       status: item.status,
-      //       svg: item.owner ? 'driver-owner' : null,
-      //       folder: 'common',
-      //       active: item.id === this.driver.id,
-      //     };
-      //   });
-    }
+      });   
   }
 
   public onSelectedDriver(event: any) {
     if (event.id !== this.driver.id) {
-      this.driversDropdowns = this.driversQuery.getAll().map((item) => {
+      this.driversDropdowns = this.driverMinimalQuery.getAll().map((item) => {
+        let fullname=item.firstName + ' ' + item.lastName
         return {
           id: item.id,
-          name: item.fullName,
+          name:fullname,
           status: item.status,
           svg: item.owner ? 'driver-owner' : null,
           folder: 'common',
