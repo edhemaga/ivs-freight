@@ -173,4 +173,25 @@
       font-size: 14px;
     }
   }
+
+  &.regular-14 {
+    .ta-checkbox-label {
+      font-weight: 400;
+      font-size: 14px;
+    }
+  }
+
+  &.disclosure-release {
+    &:hover {
+      .ta-checkbox-label {
+        color: #3c3c3c;
+      }
+    }
+
+    .ta-checkbox-label {
+      font-weight: 400;
+      font-size: 14px;
+      color: #6c6c6c;
+    }
+  }
 }
