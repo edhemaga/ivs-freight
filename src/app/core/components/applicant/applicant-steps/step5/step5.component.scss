@@ -1,11 +1,12 @@
 @import 'src/theme/variables.scss';
 
 .step-container {
+  padding-top: 22px;
+
   .step-title {
-    color: $light-blue;
+    color: $ta-blue;
     font-size: 32px;
-    margin-top: 30px;
-    margin-bottom: 20px;
+    height: 39px;
   }
 
   .step-subtitle {
