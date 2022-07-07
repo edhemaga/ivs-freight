@@ -39,9 +39,11 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
        } else {
          this.companyDivision = false;
        }
-       if(!changes?.companyData?.firstChange){
+       if(!changes?.companyData?.firstChange && changes?.companyData?.currentValue !== changes?.companyData?.previousValue){
 
          this.companyData=changes?.companyData?.currentValue
+         console.log(this.companyData);
+         
        }    
   }
   ngOnInit(): void {
