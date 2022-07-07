@@ -13,13 +13,13 @@ import {
   CompanyAccountModalResponse,
   CompanyAccountResponse,
   CreateCompanyAccountCommand,
+  CreateResponse,
   UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
 import { AccountModalService } from './account-modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { urlRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
@@ -36,6 +36,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
   public accountLabels: any[] = [];
   public selectedAccountLabel: any = null;
+  public sendAccountLabelId: any = null;
 
   public colors: any[] = [];
   public selectedAccountColor: any = {
@@ -65,7 +66,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 1,
+        id: 2,
       };
       this.editCompanyAccount(this.editData.id);
     }
@@ -76,7 +77,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required, Validators.maxLength(23)]],
       username: [null, [Validators.required, Validators.maxLength(40)]],
       password: [null, [Validators.required, Validators.maxLength(20)]],
-      url: [null, [Validators.required, ...urlRegex]],
+      url: [null, [Validators.required]],
       companyAccountLabelId: [null],
       note: [null],
     });
@@ -137,7 +138,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
   private companyAccountColorLabels() {
     this.accountModalService
-      .companyAccoundLabelsColorList()
+      .companyAccountLabelsColorList()
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: Array<AccountColorResponse>) => {
@@ -181,7 +182,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.selectedAccountLabel
+      companyAccountLabelId: this.sendAccountLabelId
+        ? this.sendAccountLabelId
+        : this.selectedAccountLabel
         ? this.selectedAccountLabel.id
         : null,
     };
@@ -210,7 +213,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.selectedAccountLabel
+      companyAccountLabelId: this.sendAccountLabelId
+        ? this.sendAccountLabelId
+        : this.selectedAccountLabel
         ? this.selectedAccountLabel.id
         : null,
     };
@@ -256,6 +261,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public onPickExistLabel(event: any) {
+    this.selectedAccountLabel = event;
+  }
+
   public onSelectColorLabel(event: any): void {
     this.selectedAccountColor = event;
   }
@@ -281,7 +290,25 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     };
 
     this.accountLabels = [...this.accountLabels, this.selectedAccountLabel];
-    console.log(this.accountLabels);
+
+    this.accountModalService
+      .addCompanyLabel({
+        name: data.label,
+        colorId: this.selectedAccountColor.id,
+      })
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: CreateResponse) => {
+          this.sendAccountLabelId = res.id;
+          this.notificationService.success(
+            'Successfully add account label.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Can't add account label.", 'Error:');
+        },
+      });
   }
 
   ngOnDestroy(): void {}

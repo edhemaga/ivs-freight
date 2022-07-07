@@ -28,8 +28,9 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
   @Input() selectedAccountLabel: any = null;
 
   @Output() selectedColorLabel: EventEmitter<any> = new EventEmitter<any>();
-  @Output() labelEvent: EventEmitter<{ action: string; label: string }> =
+  @Output() saveLabel: EventEmitter<{ action: string; label: string }> =
     new EventEmitter<{ action: string; label: string }>();
+  @Output() pickExistLabel: EventEmitter<any> = new EventEmitter<any>();
 
   public newLabel: FormControl = new FormControl(null);
   public dropdownConfig: ITaInput = null;
@@ -88,6 +89,10 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
       case 'account-label': {
         this.selectedAccountLabel = event;
 
+        if (this.selectedAccountLabel?.name !== 'Add New') {
+          this.pickExistLabel.emit(this.selectedAccountLabel);
+        }
+
         const timeout = setTimeout(() => {
           this.inputRef.setInputCursorAtTheEnd(
             this.inputRef.input.nativeElement,
@@ -134,14 +139,14 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
    */
   public onLabelNameEvent(event: string) {
     if (event === 'cancel') {
-      this.labelEvent.emit({
+      this.saveLabel.emit({
         action: event,
         label: this.getSuperControl.value,
       });
       this.newLabel.patchValue(null);
       return;
     }
-    this.labelEvent.emit({ action: event, label: this.newLabel.value });
+    this.saveLabel.emit({ action: event, label: this.newLabel.value });
     this.getSuperControl.patchValue(this.newLabel.value);
     this.newLabel.patchValue(null);
   }

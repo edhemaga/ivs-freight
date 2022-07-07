@@ -31,12 +31,6 @@ export const monthsValidRegex = Validators.pattern(/^([1-9]|1[012])$/);
 export const daysValidRegex = Validators.pattern(
   /^([1-9][0-9]?|[12][0-9][0-9]|3[0-5][0-9]|36[0-5])$/
 );
-export const urlRegex = [
-  Validators.maxLength(400),
-  Validators.pattern(
-    /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi
-  ),
-];
 
 export const insurancePolicyRegex = [
   Validators.minLength(8),

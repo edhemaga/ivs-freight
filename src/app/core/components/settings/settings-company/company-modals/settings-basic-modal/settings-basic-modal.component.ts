@@ -5,7 +5,6 @@ import {
   emailRegex,
   monthsValidRegex,
   routingBankRegex,
-  urlRegex,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -312,7 +311,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       phone: [null, phoneRegex],
       email: [null, emailRegex],
       fax: [null],
-      webURL: [null, [...urlRegex]],
+      webURL: [null],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       irp: [null],
