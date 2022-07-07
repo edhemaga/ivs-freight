@@ -62,10 +62,12 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
     GoogleMapsAPIWrapper,
     {
       provide: Configuration,
-      useFactory: (authService: UserLoggedService) =>
+      useFactory: (userLoggedService: UserLoggedService) =>
         new Configuration({
           basePath: environment.API_ENDPOINT,
-          credentials: { bearer: authService.getAccessToken.bind(authService) },
+          credentials: {
+            bearer: userLoggedService.getAccessToken.bind(userLoggedService),
+          },
         }),
       deps: [UserLoggedService],
       multi: false,

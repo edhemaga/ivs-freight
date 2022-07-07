@@ -262,12 +262,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
   }
 
   public onTabChange(event): void {
-    this.tabChange = [...event];
-    this.tabChange.forEach((item) => {
-      if (item.checked) {
-        this.onTabHeaderChange.emit(item);
-      }
-    });
+    this.onTabHeaderChange.emit(event);
   }
 
   ngOnDestroy(): void {

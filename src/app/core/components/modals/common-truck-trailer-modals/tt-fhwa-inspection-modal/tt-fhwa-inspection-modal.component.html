@@ -5,7 +5,9 @@
       : 'Edit new FHWA Inspection'
   "
   [editData]="editData"
-  [isModalValid]="fhwaInspectionForm.valid"
+  [isModalValid]="
+    editData ? fhwaInspectionForm.valid && isDirty : fhwaInspectionForm.valid
+  "
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="fhwaInspectionForm" class="form-container">

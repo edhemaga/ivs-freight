@@ -4,7 +4,9 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="repairOrderForm.valid"
+  [isModalValid]="
+    editData ? repairOrderForm.valid && isDirty : repairOrderForm.valid
+  "
   [tabChange]="headerTabs"
   [customClass]="'modal-container-L'"
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
@@ -36,6 +38,7 @@
               : 'w-col-repair-m-unit-bill'
         }"
         [options]="labelsUnit"
+        [activeItem]="selectedUnit"
         (selectedItem)="onSelectDropDown($event, 'repair-unit')"
       ></app-ta-input-dropdown>
       <app-ta-input
@@ -126,6 +129,7 @@
             dropdownWidthClass: 'w-col-repair-m-shop'
           }"
           [options]="labelsRepairShop"
+          [activeItem]="selectedRepairShop"
           (selectedItem)="onSelectDropDown($event, 'repair-shop')"
         ></app-ta-input-dropdown>
       </div>

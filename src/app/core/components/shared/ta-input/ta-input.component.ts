@@ -258,10 +258,9 @@ export class TaInputComponent
             this.inputConfig.type = 'text';
             this.blurOnDateTime();
           }
-        }else {
+        } else {
           this.focusInput = false;
         }
-
       } else {
         this.blurOnDropDownArrow();
       }
@@ -431,7 +430,7 @@ export class TaInputComponent
       }
     }
 
-    if (this.inputConfig.thousandSeparator) {
+    if (this.inputConfig.thousandSeparator && this.getSuperControl.value) {
       this.getSuperControl.patchValue(
         this.thousandSeparatorPipe.transform(this.getSuperControl.value)
       );
@@ -628,6 +627,7 @@ export class TaInputComponent
         'per stop',
         'empty weight',
         'axles',
+        'base rate',
         'mileage',
         'ipas ezpass',
         'credit limit',
@@ -856,7 +856,7 @@ export class TaInputComponent
 
   setSpanSelection(element) {
     var range, selection;
-    console.log("seet span selection");
+    console.log('seet span selection');
 
     if (window.getSelection && document.createRange) {
       selection = window.getSelection();
@@ -907,10 +907,10 @@ export class TaInputComponent
               return;
             }
           });
-        } else if(e.shiftKey && e.keyCode == 9 && this.selectionInput != 0){
+        } else if (e.shiftKey && e.keyCode == 9 && this.selectionInput != 0) {
           this.selectionInput = this.selectionInput - 1;
           this.selectSpanByTabIndex(this.selectionInput);
-        }else{
+        } else {
           let allInputs = document.querySelectorAll('input');
           [...(allInputs as any)].map((item, indx) => {
             if (item === this.input.nativeElement) {

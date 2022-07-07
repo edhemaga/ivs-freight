@@ -16,8 +16,8 @@ import { AddressEntity } from './addressEntity';
 export interface InsurancePolicyResponse { 
     id?: number;
     producerName?: string | null;
-    issued?: string;
-    expires?: string;
+    issued?: string | null;
+    expires?: string | null;
     phone?: string | null;
     email?: string | null;
     address?: AddressEntity;

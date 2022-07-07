@@ -18,10 +18,17 @@ export interface UpdateCompanyPayrollCommand {
     endingIn?: number;
     defaultBase?: number | null;
     defaultCommission?: number | null;
-    defaultEmptyMile?: number | null;
-    defaultLoadedMile?: number | null;
+    soloMileagePay?: number | null;
+    soloEmptyMile?: number | null;
+    soloLoadedMile?: number | null;
+    soloPerStop?: number | null;
+    teamEmptyMile?: number | null;
+    teamLoadedMile?: number | null;
+    teamMileagePay?: number | null;
+    teamPerStop?: number | null;
     loadedAndEmptySameRate?: boolean | null;
-    defaultDriverCommission?: number | null;
+    defaultSoloDriverCommission?: number | null;
+    defaultTeamDriverCommission?: number | null;
     defaultOwnerCommission?: number | null;
 }
 
