@@ -779,7 +779,7 @@
 
     <!-- Border For Not Pined -->
     <div
-      class="not-pined-border table-select-border"
+      class="not-pined-border-left table-select-border"
       *ngIf="showScrollSectionBorder"
       [ngStyle]="{
         height: viewData.length * 32 + 2 * viewData.length - 1 - 1 + 'px'
@@ -1496,19 +1496,21 @@
                 [status]="row['status']"
               ></app-truckassist-progress-expiration> -->
 
+
+              <!-- 
+              *ngIf="row[column.field] && row[column.field]['start']" -->
               <div class="table-progress-cotnainer">
                 <!-- Progres Bar  -->
                 <div class="table-progress-bar-container">
                   <div
-                    [class]="'bg-' + progressbarColor"
-                    [ngClass]="{ 'progres-default': !progressbarColor }"
-                    [ngStyle]="{ width: calculatedProgress + '%' }"
+                    [ngClass]="{ 'bg-progress-orange': true }"
+                    [ngStyle]="{ width: 50 + '%' }"
                     class="table-progress-bar"
                   ></div>
                 </div>
 
                 <!-- Progres Text -->
-                <div class="table-progress-text">DAYS</div>
+                <div class="table-progress-text">in 1,565 days</div>
               </div>
             </div>
           </td>
@@ -1518,7 +1520,7 @@
 
     <!-- Border For Not Pined -->
     <div
-      class="not-pined-border table-select-border"
+      class="not-pined-border-right table-select-border"
       *ngIf="showScrollSectionBorder"
       [ngStyle]="{
         height: viewData.length * 32 + 2 * viewData.length - 1 - 1 + 'px'
@@ -1597,10 +1599,11 @@
                 [ngbPopover]="dropdownPopover"
                 [placement]="'bottom-right'"
                 class="table-dropdown-container"
-                [ngClass]="{ 'active-drop': dropDownActive === row.id }"
+                [ngClass]="{
+                  'active-drop': dropDownActive === row.id && t2.isOpen()
+                }"
                 popoverClass="table-dropdown-popover"
                 triggers="manual"
-                (hidden)="dropDownActive = -1"
               ></div>
             </div>
           </td>

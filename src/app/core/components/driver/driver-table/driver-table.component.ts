@@ -82,6 +82,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
+      // Resize
       this.tableService.currentColumnWidth
       .pipe(untilDestroyed(this))
       .subscribe((response: any) => {

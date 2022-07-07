@@ -31,7 +31,6 @@ export class TruckassistTableBodyComponent
   @Input() tableData: any[];
   @Input() selectedTab: string;
   @Input() tableContainerWidth: number;
-  @Input() hasProgress: boolean;
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
   showItemDrop: number = -1;
@@ -62,11 +61,6 @@ export class TruckassistTableBodyComponent
 
     // Set Dropdown Content
     this.setDropContent();
-
-    // Set Progress Data
-    if (this.hasProgress) {
-      this.setProgressData();
-    }
 
     // Select Or Deselect All
     this.tableService.currentSelectOrDeselect
@@ -163,11 +157,7 @@ export class TruckassistTableBodyComponent
     ) {
       this.columns = changes.columns.currentValue;
 
-      this.changeDetectorRef.detectChanges();
-
-      setTimeout(() => {
-        this.checkForScroll();
-      }, 10);
+      this.getNotPinedMaxWidth(true);
     }
 
     if (
@@ -275,12 +265,6 @@ export class TruckassistTableBodyComponent
 
   onShowPassword(index: number) {
     this.loadingPassword = index;
-  }
-  // --------------------------------PROGGRESS BAR---------------------------------
-  setProgressData() {
-    this.viewData.map((data: any) => {
-
-    })
   }
 
   // --------------------------------DROPDOWN---------------------------------

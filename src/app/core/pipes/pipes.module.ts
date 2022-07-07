@@ -60,7 +60,7 @@ import { LogoSliderPipe } from '../components/shared/ta-logo-change/logoSlider.p
     UserDataPipe,
     formatCurrency,
     setFutureYear,
-    LogoSliderPipe,
+    LogoSliderPipe
   ],
   imports: [CommonModule],
   exports: [
@@ -92,7 +92,7 @@ import { LogoSliderPipe } from '../components/shared/ta-logo-change/logoSlider.p
     UserDataPipe,
     formatCurrency,
     setFutureYear,
-    LogoSliderPipe,
+    LogoSliderPipe
   ],
   providers: [
     DatePipe,
