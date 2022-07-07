@@ -93,15 +93,15 @@ export class Step5Component implements OnInit, OnDestroy {
     });
 
     this.notBeenConvictedForm = this.formBuilder.group({
-      notBeenConvicted: [false],
+      notBeenConvicted: [false, Validators.required],
     });
 
     this.onlyOneHoldLicenseForm = this.formBuilder.group({
-      onlyOneHoldLicense: [false],
+      onlyOneHoldLicense: [false, Validators.required],
     });
 
     this.certifyForm = this.formBuilder.group({
-      certify: [false],
+      certify: [false, Validators.required],
     });
 
     this.violationsForm = this.formBuilder.group({

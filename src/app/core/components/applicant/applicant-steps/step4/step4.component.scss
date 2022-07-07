@@ -90,7 +90,6 @@
         background-color: $ta-light-grey-4;
         border-radius: 2px;
         margin-bottom: 2px;
-        text-transform: uppercase;
         color: $bw6-2;
         font-size: 14px;
         transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -112,39 +111,40 @@
         .hazmat-box,
         .description-box {
           &.date-box {
-            width: 55px;
-            margin-right: 34px;
+            width: 71px;
+            margin-right: 18px;
           }
 
           &.state-box {
-            width: 18px;
-            margin-right: 47px;
+            width: 41px;
+            margin-right: 24px;
             padding-left: 6px;
+            text-transform: uppercase;
           }
 
           &.fatalities-box {
-            width: 5px;
-            margin-right: 47px;
+            width: 28px;
+            margin-right: 24px;
             padding-left: 6px;
           }
 
           &.injuries-box {
-            width: 5px;
-            margin-right: 47px;
+            width: 28px;
+            margin-right: 24px;
             padding-left: 6px;
           }
 
           &.hazmat-box {
-            width: 23px;
-            margin-right: 53px;
+            width: 54px;
+            margin-right: 24px;
             padding-left: 6px;
+            text-transform: capitalize;
           }
 
           &.description-box {
             width: 207px;
             margin-right: 19px;
             padding-left: 6px;
-            text-transform: none;
           }
         }
 
@@ -200,7 +200,7 @@
     }
 
     .fatalities-injuries-group {
-      margin-bottom: 22px;
+      margin-bottom: 32px;
 
       .fatalities-group {
         width: 178px;
@@ -229,7 +229,7 @@
     .hazmat-spill-group {
       width: 194px;
       height: 26px;
-      margin-bottom: 22px;
+      margin-bottom: 32px;
 
       .title-box {
         p {
