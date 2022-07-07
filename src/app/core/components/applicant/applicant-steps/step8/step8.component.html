@@ -13,25 +13,28 @@
     </p>
   </div>
 
+  <!-- QUESTION -->
+
+  <div
+    class="d-flex flex-column align-items-center question-container"
+    [formGroup]="drugTestForm"
+  >
+    <p class="m-0 text-center ta-font-regular">
+      {{ question.title }} <span>*</span>
+    </p>
+
+    <div class="radios-box">
+      <app-ta-input-radiobuttons
+        [buttons]="question.answerChoices"
+        (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+      ></app-ta-input-radiobuttons>
+    </div>
+  </div>
+
   <!-- FORM SECTION -->
 
-  <div class="d-flex form-section">
+  <div class="d-flex form-section" *ngIf="drugTestForm.get('drugTest').value">
     <form [formGroup]="drugAlcoholStatementForm">
-      <!-- QUESTION -->
-
-      <div class="d-flex flex-column align-items-center question-container">
-        <p class="m-0 text-center ta-font-regular">
-          {{ question.title }} <span>*</span>
-        </p>
-
-        <div class="radios-box">
-          <app-ta-input-radiobuttons
-            [buttons]="question.answerChoices"
-            (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
-          ></app-ta-input-radiobuttons>
-        </div>
-      </div>
-
       <!-- MOTOR CARRIER, PHONE -->
 
       <div class="d-flex flex-column align-items-center">

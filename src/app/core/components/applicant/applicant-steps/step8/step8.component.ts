@@ -17,6 +17,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
   public applicant: Applicant | undefined;
 
+  public drugTestForm: FormGroup;
   public drugAlcoholStatementForm: FormGroup;
 
   public selectedAddress: Address = null;
@@ -59,8 +60,11 @@ export class Step8Component implements OnInit, OnDestroy {
   }
 
   public createForm(): void {
-    this.drugAlcoholStatementForm = this.formBuilder.group({
+    this.drugTestForm = this.formBuilder.group({
       drugTest: [true, Validators.required],
+    });
+
+    this.drugAlcoholStatementForm = this.formBuilder.group({
       motorCarrier: [null, Validators.required],
       phone: [null, Validators.required],
       address: [null, Validators.required],
@@ -86,14 +90,10 @@ export class Step8Component implements OnInit, OnDestroy {
 
         const selectedFormControlName = this.question.formControlName;
 
-        if (selectedCheckbox.label === 'Yes') {
-          this.drugAlcoholStatementForm
-            .get(selectedFormControlName)
-            .patchValue(true);
+        if (selectedCheckbox.label === 'YES') {
+          this.drugTestForm.get(selectedFormControlName).patchValue(true);
         } else {
-          this.drugAlcoholStatementForm
-            .get(selectedFormControlName)
-            .patchValue(false);
+          this.drugTestForm.get(selectedFormControlName).patchValue(false);
         }
 
         break;

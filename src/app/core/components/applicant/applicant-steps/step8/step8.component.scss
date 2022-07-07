@@ -17,33 +17,35 @@
     p {
       font-size: 14px;
       color: $bw6-2;
+      line-height: 22px;
+    }
+  }
+
+  .question-container {
+    margin-bottom: 22px;
+    width: 820px;
+
+    p {
+      font-size: 14px;
+      color: $bw6-2;
+      line-height: 22px;
+      margin-bottom: 12px !important;
+
+      span {
+        color: $progress-danger;
+      }
+    }
+
+    .radios-box {
+      width: 80px;
+
+      .ta-input-radiobutons {
+        width: 100%;
+      }
     }
   }
 
   .form-section {
-    .question-container {
-      margin-bottom: 22px;
-      width: 820px;
-
-      p {
-        font-size: 14px;
-        color: $bw6-2;
-        margin-bottom: 12px !important;
-
-        span {
-          color: $progress-danger;
-        }
-      }
-
-      .radios-box {
-        width: 80px;
-
-        .ta-input-radiobutons {
-          width: 100%;
-        }
-      }
-    }
-
     .group {
       margin-bottom: 32px;
       margin-right: 12px;
