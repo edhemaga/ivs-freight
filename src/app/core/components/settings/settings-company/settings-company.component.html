@@ -16,5 +16,5 @@
     <app-settings-factoring [factoringData]="data.factoringCompany"></app-settings-factoring>
   </div>
 
-  <app-settings-nodata  *ngIf="(isModalOpen$ | async)"></app-settings-nodata>
+  <app-settings-nodata [showComponent]="isModalOpen$"></app-settings-nodata>
 </div>
