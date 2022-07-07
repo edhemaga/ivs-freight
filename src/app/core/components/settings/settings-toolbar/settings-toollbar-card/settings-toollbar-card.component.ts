@@ -27,7 +27,7 @@ export class SettingsToollbarCardComponent implements OnInit, OnDestroy {
   };
 
   // TODO: ON RELOAD
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.onReloadRoute(window.location.pathname);
 
     this.router.events

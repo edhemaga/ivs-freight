@@ -7,11 +7,11 @@ import moment from 'moment';
 export class formatDatePipe implements PipeTransform {
   transform(date: string,template:string):any {
     switch(template){
-      default:{
-        return moment(date).format('MM/DD/YY');
-      }
       case 'short-format':{
         return moment(date).format('MM/YY')
+      }
+      default:{
+        return moment(date).format('MM/DD/YY');
       }
     }
    
