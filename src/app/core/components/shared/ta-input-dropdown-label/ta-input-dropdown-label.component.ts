@@ -120,6 +120,11 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
       );
       clearTimeout(timeout);
     }, 50);
+    this.dropdownConfig = {
+      ...this.dropdownConfig,
+      dropdownLabelSelected: label,
+    };
+
     this.selectedColorLabel.emit(label);
   }
 
