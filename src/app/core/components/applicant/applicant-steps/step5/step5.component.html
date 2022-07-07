@@ -103,39 +103,6 @@
               01/19/20
             </p>
           </div>
-          <div class="d-flex align-items-center btn-container">
-            <svg-icon
-              class="edit-icon"
-              src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-              appTooltip="Edit"
-              tooltipColor="#FFFFFF"
-              tooltipBackground="#6C6C6C"
-              position="top-middle"
-              borderRadius="2px"
-              fontSize="11px"
-              fontWeight="bold"
-            ></svg-icon>
-
-            <svg-icon
-              class="delete-icon"
-              src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-              appTooltip="Delete"
-              tooltipColor="#FFFFFF"
-              tooltipBackground="#EF5350"
-              position="top-middle"
-              borderRadius="2px"
-              fontSize="11px"
-              fontWeight="bold"
-            ></svg-icon>
-          </div>
         </div>
       </div>
 
@@ -188,21 +155,6 @@
           "
         >
           <div class="d-flex align-items-center date-box">
-            <div
-              class="d-flex justify-content-center align-items-center icon-box"
-            >
-              <svg-icon
-                class="date-icon"
-                src="assets/svg/common/ic_date.svg"
-                [svgStyle]="{
-                  'width.px': '14.17',
-                  'height.px': '16.2'
-                }"
-              ></svg-icon>
-            </div>
-
-            <div class="pipe-border"></div>
-
             <p class="m-0 ta-font-regular">
               {{ violation.violationDate }}
             </p>
@@ -215,24 +167,9 @@
           </div>
 
           <div class="d-flex align-items-center location-box">
-            <div
-              class="d-flex justify-content-center align-items-center icon-box"
-            >
-              <svg-icon
-                class="location-icon"
-                src="assets/svg/applicant/location.svg"
-                [svgStyle]="{
-                  'width.px': '14.24',
-                  'height.px': '17.1'
-                }"
-              ></svg-icon>
-            </div>
-
-            <div class="pipe-border"></div>
-
             <p
               class="m-0 ta-font-regular d-inline-block text-truncate"
-              style="max-width: 129px"
+              style="max-width: 123px"
             >
               {{ violation.violationLocation }}
             </p>
@@ -241,7 +178,14 @@
           <div class="d-flex align-items-center description-box">
             <p
               class="m-0 ta-font-regular d-inline-block text-truncate"
-              style="max-width: 153px"
+              style="max-width: 185px"
+              [appTooltip]="violation.violationDescription"
+              tooltipColor="#FFFFFF"
+              tooltipBackground="#6C6C6C"
+              position="bottom-right"
+              borderRadius="2px"
+              fontSize="11px"
+              fontWeight="bold"
             >
               {{ violation.violationDescription }}
             </p>
@@ -252,8 +196,8 @@
               class="edit-icon"
               src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
               [svgStyle]="{
-                'width.px': 16,
-                'height.px': 16
+                'width.px': 18,
+                'height.px': 18
               }"
               appTooltip="Edit"
               tooltipColor="#FFFFFF"
@@ -269,8 +213,8 @@
               class="delete-icon"
               src="assets/svg/truckassist-table/dropdown/content/delete.svg"
               [svgStyle]="{
-                'width.px': '14.22',
-                'height.px': 16
+                'width.px': 18,
+                'height.px': 18
               }"
               appTooltip="Delete"
               tooltipColor="#FFFFFF"

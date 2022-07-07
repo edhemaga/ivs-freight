@@ -95,6 +95,13 @@
           <p
             class="m-0 ta-font-regular d-inline-block text-truncate"
             style="max-width: 207px"
+            [appTooltip]="accident.accidentDescription"
+            tooltipColor="#FFFFFF"
+            tooltipBackground="#6C6C6C"
+            position="bottom-right"
+            borderRadius="2px"
+            fontSize="11px"
+            fontWeight="bold"
           >
             {{ accident.accidentDescription }}
           </p>

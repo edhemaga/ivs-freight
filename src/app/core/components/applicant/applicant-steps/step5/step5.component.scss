@@ -93,11 +93,6 @@
           color: $ta-light-grey-3;
         }
 
-        &:hover .btn-container {
-          opacity: 1;
-          visibility: visible !important;
-        }
-
         .license-box,
         .state-box,
         .class-box,
@@ -125,37 +120,6 @@
             padding-left: 6px;
           }
         }
-
-        .btn-container {
-          width: 42px;
-          visibility: hidden !important;
-          opacity: 0;
-          transition: opacity 0.2s ease-in-out;
-
-          .edit-icon,
-          .delete-icon {
-            cursor: pointer;
-
-            &:hover {
-              svg {
-                path {
-                  transition: fill 0.2s ease-in-out;
-                  fill: $bw6-2;
-                }
-              }
-            }
-
-            svg {
-              path {
-                fill: $bw4;
-              }
-            }
-          }
-
-          .edit-icon {
-            margin-right: 6px;
-          }
-        }
       }
     }
 
@@ -175,7 +139,7 @@
       .title-container {
         width: 100%;
         margin-bottom: 6px;
-        padding-left: 36px;
+        padding-left: 6px;
 
         .date-title-box,
         .vehicle-title-box,
@@ -192,12 +156,12 @@
 
           &.date-title-box {
             width: 43px;
-            margin-right: 39px;
+            margin-right: 52px;
           }
 
           &.vehicle-title-box {
             width: 99px;
-            margin-right: 48px;
+            margin-right: 18px;
           }
 
           &.location-title-box {
@@ -245,55 +209,23 @@
         .location-box,
         .description-box {
           &.date-box {
-            margin-right: 27px;
-
-            .icon-box {
-              width: 18px;
-              height: 18px;
-
-              .date-icon {
-                svg {
-                  path {
-                    fill: $ta-blue-3;
-                  }
-                }
-              }
-            }
+            width: 71px;
+            margin-right: 24px;
           }
 
           &.vehicle-box {
-            width: 73px;
-            margin-right: 43px;
+            width: 93px;
+            margin-right: 24px;
           }
 
           &.location-box {
-            width: 159px;
-            margin-right: 18px;
-
-            .icon-box {
-              width: 18px;
-              height: 18px;
-
-              .location-icon {
-                svg {
-                  path {
-                    fill: $ta-blue-3;
-                  }
-                }
-              }
-            }
+            width: 123px;
+            margin-right: 24px;
           }
 
           &.description-box {
-            width: 153px;
-          }
-
-          .pipe-border {
-            margin-left: 6px;
-            margin-right: 6px;
-            height: 14px;
-            width: 1px;
-            background-color: $ta-light-grey;
+            width: 185px;
+            margin-right: 18px;
           }
 
           p {
@@ -304,7 +236,7 @@
 
         .btn-container {
           width: 42px;
-          padding-left: 10px;
+          margin-left: auto !important;
           visibility: hidden !important;
           opacity: 0;
           transition: opacity 0.2s ease-in-out;
