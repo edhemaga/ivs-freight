@@ -1,46 +1,54 @@
 @import 'src/theme/variables.scss';
 
 .step-container {
+  padding-top: 22px;
+
   .step-title {
-    color: $light-blue;
+    color: $ta-blue;
     font-size: 32px;
-    margin-top: 30px;
-    margin-bottom: 20px;
+    height: 39px;
+    margin-bottom: 22px !important;
   }
 
   .step-subtitle {
     color: $bw6-2;
     font-size: 14px;
     height: 40px;
-    width: 680px;
+    width: 820px;
     line-height: 22px;
-    margin-bottom: 12px;
+    margin-bottom: 12px !important;
   }
 
   .group-text {
-    width: 680px;
-
-    p {
-      font-size: 14px;
-      color: $bw6-2;
-      opacity: 0.4;
-      margin-bottom: 12px !important;
-    }
+    width: 820px;
 
     .group-title {
       color: $bw6-2;
       font-size: 14px;
       height: 18px;
-      margin-bottom: 12px;
+      margin-bottom: 12px !important;
     }
 
-    .text-blue {
-      opacity: 1;
-      color: $light-blue;
+    p {
+      font-size: 14px;
+      color: $bw6-2;
+      margin-bottom: 12px !important;
     }
   }
+}
 
-  .rights-container {
-    margin-bottom: 32px;
-  }
+.next-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  right: 42px;
+}
+
+.back-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  left: 42px;
 }

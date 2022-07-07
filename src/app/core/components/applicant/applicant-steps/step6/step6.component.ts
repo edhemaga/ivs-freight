@@ -1,11 +1,24 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { Subscription } from 'rxjs';
+
+import { isFormValueEqual } from '../../state/utils/utils';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { Applicant } from '../../state/model/applicant.model';
-import { Contact, Education } from '../../state/model/education.model';
+import {
+  Contact,
+  Education,
+  ContactModel,
+} from '../../state/model/education.model';
+
+import { phoneRegex } from '../../../shared/ta-input/ta-input.regex-validations';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 @Component({
   selector: 'app-step6',
@@ -17,10 +30,12 @@ export class Step6Component implements OnInit, OnDestroy {
 
   public applicant: Applicant | undefined;
 
+  private subscription: Subscription;
+
   public educationForm: FormGroup;
-  public educationInfo: Education | undefined;
+
   public contactForm: FormGroup;
-  public contactsFormArray: Contact[] | undefined = [];
+  public contactsArray: ContactModel[] = [];
 
   public schoolGrades: string[] = [
     '1',
@@ -37,6 +52,7 @@ export class Step6Component implements OnInit, OnDestroy {
     '12',
   ];
   public collegeGrades: string[] = ['1', '2', '3', '4'];
+
   public questions: ApplicantQuestion[] = [
     {
       title: 'Have you received any safety awards or special training?',
@@ -45,7 +61,7 @@ export class Step6Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 1,
-          label: 'Yes',
+          label: 'YES',
           value: 'specialTrainingYes',
           name: 'specialTrainingYes',
           checked: false,
@@ -53,7 +69,7 @@ export class Step6Component implements OnInit, OnDestroy {
         },
         {
           id: 2,
-          label: 'No',
+          label: 'NO',
           value: 'specialTrainingNo',
           name: 'specialTrainingNo',
           checked: false,
@@ -68,7 +84,7 @@ export class Step6Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 3,
-          label: 'Yes',
+          label: 'YES',
           value: 'otherTrainingYes',
           name: 'otherTrainingYes',
           checked: false,
@@ -76,7 +92,7 @@ export class Step6Component implements OnInit, OnDestroy {
         },
         {
           id: 4,
-          label: 'No',
+          label: 'NO',
           value: 'otherTrainingNo',
           name: 'otherTrainingNo',
           checked: false,
@@ -92,7 +108,7 @@ export class Step6Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 5,
-          label: 'Yes',
+          label: 'YES',
           value: 'knowledgeOfSafetyRegulationsYes',
           name: 'knowledgeOfSafetyRegulationsYes',
           checked: false,
@@ -100,7 +116,7 @@ export class Step6Component implements OnInit, OnDestroy {
         },
         {
           id: 6,
-          label: 'No',
+          label: 'NO',
           value: 'knowledgeOfSafetyRegulationsNo',
           name: 'knowledgeOfSafetyRegulationsNo',
           checked: false,
@@ -110,12 +126,12 @@ export class Step6Component implements OnInit, OnDestroy {
     },
     {
       title: 'Have you been a driver for this company before?',
-      formControlName: 'driverForCompanyBefore',
+      formControlName: 'driverForCompany',
       formControlNameExplain: 'driverForCompanyBeforeExplain',
       answerChoices: [
         {
           id: 7,
-          label: 'Yes',
+          label: 'YES',
           value: 'driverForCompanyBeforeYes',
           name: 'driverForCompanyBeforeYes',
           checked: false,
@@ -123,7 +139,7 @@ export class Step6Component implements OnInit, OnDestroy {
         },
         {
           id: 8,
-          label: 'No',
+          label: 'NO',
           value: 'driverForCompanyBeforeNo',
           name: 'driverForCompanyBeforeNo',
           checked: false,
@@ -139,7 +155,7 @@ export class Step6Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 9,
-          label: 'Yes',
+          label: 'YES',
           value: 'unableForJobYes',
           name: 'unableForJobYes',
           checked: false,
@@ -147,7 +163,7 @@ export class Step6Component implements OnInit, OnDestroy {
         },
         {
           id: 10,
-          label: 'No',
+          label: 'NO',
           value: 'unableForJobNo',
           name: 'unableForJobNo',
           checked: false,
@@ -159,17 +175,29 @@ export class Step6Component implements OnInit, OnDestroy {
 
   public selectedGrade: number = -1;
   public selectedCollegeGrade: number = -1;
-
-  public editContact: number = -1;
+  public selectedContactIndex: number;
 
   public highlightGrade: number = -1;
 
-  public trackByIdentity = (index: number, item: any): number => index;
+  public isEditing: boolean = false;
+  public isContactEdited: boolean = false;
 
-  constructor(private formBuilder: FormBuilder) {}
+  //
+
+  /*  public contactsFormArray: Contact[] | undefined = [];
+   */
+  public educationInfo: Education | undefined;
+
+  public editContact: number = -1;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private inputResetService: TaInputResetService
+  ) {}
 
   ngOnInit(): void {
-    this.formInit();
+    this.createForm();
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -178,7 +206,9 @@ export class Step6Component implements OnInit, OnDestroy {
     }
   }
 
-  private formInit(): void {
+  public trackByIdentity = (index: number, item: any): number => index;
+
+  private createForm(): void {
     this.educationForm = this.formBuilder.group({
       specialTraining: [null, Validators.required],
       otherTraining: [null, Validators.required],
@@ -186,14 +216,16 @@ export class Step6Component implements OnInit, OnDestroy {
       specialTrainingExplain: [null, Validators.required],
       otherTrainingExplain: [null, Validators.required],
       knowledgeOfSafetyRegulationsExplain: [null, Validators.required],
-      driverForCompanyBefore: [null, Validators.required],
+      driverForCompany: [null, Validators.required],
       driverForCompanyBeforeExplain: [null, Validators.required],
+      driverForCompanyToExplain: [null, Validators.required],
       unableForJob: [null, Validators.required],
+      unableForJobExplain: [null, Validators.required],
     });
 
     this.contactForm = this.formBuilder.group({
       contactName: [null, Validators.required],
-      contactPhone: [null, Validators.required],
+      contactPhone: [null, [Validators.required, phoneRegex]],
       contactRelationship: [null, Validators.required],
     });
   }
@@ -220,57 +252,95 @@ export class Step6Component implements OnInit, OnDestroy {
   }
 
   public onAddContact(): void {
-    const contactForm = this.contactForm.value;
-    const contact = new Contact();
-
-    contact.contactName = contactForm.contactName;
-    contact.contactPhone = contactForm.contactPhone;
-    contact.contactRelationship = contactForm.contactRelationship;
-    contact.isDeleted = false;
-
-    this.contactsFormArray?.push(contact);
-
-    this.contactForm.reset();
-    this.editContact = -1;
-  }
-
-  public onUpdateContact(): void {
-    if (this.contactsFormArray?.length) {
-      const contactForm = this.contactForm.value;
-      const contact = new Contact(this.contactsFormArray[this.editContact]);
-
-      contact.contactName = contactForm.contactName;
-      contact.contactPhone = contactForm.contactPhone;
-      contact.contactRelationship = contactForm.contactRelationship;
-      contact.isDeleted = false;
-
-      this.contactsFormArray[this.editContact] = contact;
+    if (this.contactForm.invalid) {
+      this.inputService.markInvalid(this.contactForm);
+      return;
     }
 
+    const contactForm = this.contactForm.value;
+
+    const saveData: ContactModel = {
+      ...contactForm,
+    };
+
+    this.contactsArray = [...this.contactsArray, saveData];
+
     this.contactForm.reset();
-    this.editContact = -1;
+
+    this.inputResetService.resetInputSubject.next(true);
+  }
+
+  public onDeleteWorkExperience(index: number): void {
+    if (this.isEditing) {
+      return;
+    }
+
+    this.contactsArray.splice(index, 1);
   }
 
   public onEditContact(index: number): void {
-    if (this.contactsFormArray?.length && this.contactsFormArray[index]) {
-      this.contactForm.patchValue({
-        contactName: this.contactsFormArray[index].contactName,
-        contactPhone: this.contactsFormArray[index].contactPhone,
-        contactRelationship: this.contactsFormArray[index].contactRelationship,
-      });
+    if (this.isEditing) {
+      return;
     }
 
-    this.editContact = index;
+    this.isContactEdited = false;
+
+    this.isEditing = true;
+
+    this.selectedContactIndex = index;
+
+    const selectedContact = this.contactsArray[index];
+
+    this.contactForm.patchValue({
+      contactName: selectedContact.contactName,
+      contactPhone: selectedContact.contactPhone,
+      contactRelationship: selectedContact.contactRelationship,
+    });
+
+    this.subscription = this.contactForm.valueChanges.subscribe(
+      (newFormValue) => {
+        if (isFormValueEqual(selectedContact, newFormValue)) {
+          this.isContactEdited = false;
+        } else {
+          this.isContactEdited = true;
+        }
+      }
+    );
   }
 
-  public onDeleteContact(index: number): void {
-    if (this.contactsFormArray?.length && this.contactsFormArray[index]) {
-      if (this.contactsFormArray[index].id) {
-        this.contactsFormArray[index].isDeleted = true;
-      } else {
-        this.contactsFormArray.splice(index, 1);
-      }
+  public onSaveEditedContact(): void {
+    if (this.contactForm.invalid) {
+      this.inputService.markInvalid(this.contactForm);
+      return;
     }
+
+    if (!this.isContactEdited) {
+      return;
+    }
+
+    this.contactsArray[this.selectedContactIndex] = this.contactForm.value;
+
+    this.isEditing = false;
+
+    this.isContactEdited = false;
+
+    this.contactForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
+  }
+
+  public onCancelEditContact(): void {
+    this.isEditing = false;
+
+    this.isContactEdited = false;
+
+    this.contactForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
   }
 
   private formFIlling(): void {
@@ -335,7 +405,7 @@ export class Step6Component implements OnInit, OnDestroy {
     //     'knowledgeOfSafetyRegulationsExplain'
     // ].updateValueAndValidity();
 
-    this.contactsFormArray = this.educationInfo?.contacts;
+    /*   this.contactsFormArray = this.educationInfo?.contacts; */
 
     // this.generalForm = this.fb.group({
     //     when: since
@@ -391,8 +461,7 @@ export class Step6Component implements OnInit, OnDestroy {
         if (!isValid) {
             return false;
         } */
-
-    const educationForm = this.educationForm.value;
+    /*    const educationForm = this.educationForm.value;
     const education = new Education(this.educationInfo);
 
     education.applicantId = this.applicant?.id;
@@ -415,7 +484,7 @@ export class Step6Component implements OnInit, OnDestroy {
     education.unableForJob = educationForm.unableForJob;
 
     education.isCompleted = true;
-
+ */
     /*    this.apppEntityServices.EducationService.upsert(education).subscribe(
             () => {
                 this.notification.success('Education is updated');

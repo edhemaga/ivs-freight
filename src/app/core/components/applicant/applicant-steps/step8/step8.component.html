@@ -1,5 +1,5 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="step-title text-center noselect ta-font-bold">
+  <h1 class="m-0 step-title text-center noselect ta-font-bold">
     Drug & alcohol statement
   </h1>
 
@@ -13,33 +13,33 @@
     </p>
   </div>
 
+  <!-- QUESTION -->
+
+  <div
+    class="d-flex flex-column align-items-center question-container"
+    [formGroup]="drugTestForm"
+  >
+    <p class="m-0 text-center ta-font-regular">
+      {{ question.title }} <span>*</span>
+    </p>
+
+    <div class="radios-box">
+      <app-ta-input-radiobuttons
+        [buttons]="question.answerChoices"
+        (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+      ></app-ta-input-radiobuttons>
+    </div>
+  </div>
+
   <!-- FORM SECTION -->
 
-  <div class="d-flex form-section">
+  <div class="d-flex form-section" *ngIf="drugTestForm.get('drugTest').value">
     <form [formGroup]="drugAlcoholStatementForm">
-      <!-- QUESTION -->
-
-      <div class="d-flex flex-column align-items-center question-container">
-        <p class="m-0 text-center ta-font-regular">
-          {{ question.title }} <span>*</span>
-        </p>
-
-        <div class="radios-box">
-          <app-ta-input-radiobuttons
-            [buttons]="question.answerChoices"
-            (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
-          ></app-ta-input-radiobuttons>
-        </div>
-      </div>
-
       <!-- MOTOR CARRIER, PHONE -->
 
-      <div
-        class="d-flex flex-column align-items-center"
-        *ngIf="drugAlcoholStatementForm.get('drugTest').value"
-      >
+      <div class="d-flex flex-column align-items-center">
         <div class="d-flex">
-          <div class="form-label-group motor-carrier-group">
+          <div class="group motor-carrier-group">
             <app-ta-input
               formControlName="motorCarrier"
               [inputConfig]="{
@@ -51,7 +51,7 @@
               }"
             ></app-ta-input>
           </div>
-          <div class="form-label-group phone-group">
+          <div class="group phone-group">
             <app-ta-input
               formControlName="phone"
               [inputConfig]="{
@@ -79,7 +79,7 @@
         <!-- ADDRESS -->
 
         <div class="d-flex">
-          <div class="form-label-group address-group">
+          <div class="group address-group">
             <app-ta-input-address
               formControlName="address"
               [inputConfig]="{
@@ -93,7 +93,7 @@
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
             ></app-ta-input-address>
           </div>
-          <div class="form-label-group unit-group">
+          <div class="group unit-group">
             <app-ta-input
               formControlName="addressUnit"
               [inputConfig]="{
@@ -131,7 +131,7 @@
         <!-- SAP NAME, PHONE -->
 
         <div class="d-flex">
-          <div class="form-label-group sap-name-group">
+          <div class="group sap-name-group">
             <app-ta-input
               formControlName="sapName"
               [inputConfig]="{
@@ -143,7 +143,7 @@
               }"
             ></app-ta-input>
           </div>
-          <div class="form-label-group phone-group">
+          <div class="group phone-group">
             <app-ta-input
               formControlName="sapPhone"
               [inputConfig]="{
@@ -171,7 +171,7 @@
         <!-- SAP ADDRESS -->
 
         <div class="d-flex">
-          <div class="form-label-group sap-address-group">
+          <div class="group sap-address-group">
             <app-ta-input-address
               formControlName="sapAddress"
               [inputConfig]="{
@@ -185,7 +185,7 @@
               (selectedAddress)="handleInputSelect($event, 'ADDRESS', 'SAP')"
             ></app-ta-input-address>
           </div>
-          <div class="form-label-group sap-unit-group">
+          <div class="group sap-unit-group">
             <app-ta-input
               formControlName="sapAddressUnit"
               [inputConfig]="{
@@ -217,19 +217,29 @@
             [label]="
               'I certify that the information provided on this document is true and correct.'
             "
+            [customClass]="'bold-12'"
           >
           </app-ta-checkbox>
         </div>
-
-        <!-- NEXT, BACK STEP -->
-
-        <app-applicant-next-step
-          (stepEvent)="onStepAction($event)"
-          [isReview]="selectedMode == 'REVIEW_MODE'"
-        ></app-applicant-next-step>
       </div>
     </form>
   </div>
+</div>
+
+<!-- NEXT BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+</div>
+
+<!-- BACK BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center back-btn-container"
+>
+  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>
 
 <!-- CONFIRM ALL REVIEW -->
