@@ -1,27 +1,56 @@
 @import 'src/theme/variables.scss';
 
 .step-container {
+  padding-top: 22px;
+
   .step-title {
-    color: $light-blue;
+    color: $ta-blue;
     font-size: 32px;
-    margin-top: 30px;
-    margin-bottom: 20px;
+    height: 39px;
+    margin-bottom: 22px !important;
   }
 
   .checkbox-container {
-    width: 680px;
+    width: 820px;
     margin-bottom: 12px;
+
+    p {
+      width: 800px;
+      font-size: 14px;
+      line-height: 18px;
+      cursor: pointer;
+      margin-top: -3px !important;
+    }
   }
 
   .step-subtitle {
     height: 18px;
     color: $bw6-2;
     font-size: 14px;
-    margin-top: 10px;
-    margin-bottom: 12px;
+    margin-top: 12px !important;
+    margin-bottom: 12px !important;
   }
 
   .signature-pad-container {
-    margin-bottom: 32px;
+    margin: 10px auto 0 auto;
+    width: 616px;
+    height: 236px;
+    background-color: #aaaaaa;
   }
+}
+
+.next-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  right: 42px;
+}
+
+.back-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  left: 42px;
 }

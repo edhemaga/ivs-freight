@@ -24,4 +24,9 @@ export enum InputSwitchActions {
   FOURTH_DISCLOSURE = 'isFourthDisclosure',
   FIFTH_DISCLOSURE = 'isFifthDisclosure',
   SIXTH_DISCLOSURE = 'isSixthDisclosure',
+
+  FIRST_AUTHORIZATION = 'isFirstAuthorization',
+  SECOND_AUTHORIZATION = 'isSecondAuthorization',
+  THIRD_AUTHORIZATION = 'isThirdAuthorization',
+  FOURTH_AUTHORIZATION = 'isFourthAuthorization',
 }

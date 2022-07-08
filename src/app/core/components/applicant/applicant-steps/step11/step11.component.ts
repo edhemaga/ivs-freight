@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { Applicant } from '../../state/model/applicant.model';
 import { Authorization } from '../../state/model/authorization.model';
@@ -15,16 +16,17 @@ export class Step11Component implements OnInit, OnDestroy {
 
   public applicant: Applicant | undefined;
 
-  public authorizationForm!: FormGroup;
-  public authorizationInfo: Authorization | undefined;
+  public authorizationForm: FormGroup;
 
   public signature: any;
   public signatureToSave: any;
 
+  public authorizationInfo: Authorization | undefined;
+
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    this.formInit();
+    this.createForm();
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -33,13 +35,60 @@ export class Step11Component implements OnInit, OnDestroy {
     }
   }
 
-  public formInit(): void {
+  public createForm(): void {
     this.authorizationForm = this.formBuilder.group({
       isFirstAuthorization: [false, Validators.requiredTrue],
       isSecondAuthorization: [false, Validators.requiredTrue],
       isThirdAuthorization: [false, Validators.requiredTrue],
       isFourthAuthorization: [false, Validators.requiredTrue],
     });
+  }
+
+  public handleCheckboxParagraphClick(type: string) {
+    switch (type) {
+      case InputSwitchActions.FIRST_AUTHORIZATION:
+        this.authorizationForm.patchValue({
+          isFirstAuthorization: !this.authorizationForm.get(
+            'isFirstAuthorization'
+          ).value,
+        });
+
+        break;
+      case InputSwitchActions.SECOND_AUTHORIZATION:
+        this.authorizationForm.patchValue({
+          isSecondAuthorization: !this.authorizationForm.get(
+            'isSecondAuthorization'
+          ).value,
+        });
+
+        break;
+      case InputSwitchActions.THIRD_AUTHORIZATION:
+        this.authorizationForm.patchValue({
+          isThirdAuthorization: !this.authorizationForm.get(
+            'isThirdAuthorization'
+          ).value,
+        });
+
+        break;
+      case InputSwitchActions.FOURTH_AUTHORIZATION:
+        this.authorizationForm.patchValue({
+          isFourthAuthorization: !this.authorizationForm.get(
+            'isFourthAuthorization'
+          ).value,
+        });
+
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  public onSignatureAction(event: any): void {
+    this.signatureToSave = event.signature
+      ? event.signature.toDataURL()
+      : undefined;
+    this.signature = event.signature ? event.signature.toDataURL() : undefined;
   }
 
   private formFilling(): void {
@@ -51,13 +100,6 @@ export class Step11Component implements OnInit, OnDestroy {
     });
 
     this.signature = this.authorizationInfo?.signature;
-  }
-
-  public onSignatureAction(event: any): void {
-    this.signatureToSave = event.signature
-      ? event.signature.toDataURL()
-      : undefined;
-    this.signature = event.signature ? event.signature.toDataURL() : undefined;
   }
 
   public onSubmitForm(): void {
