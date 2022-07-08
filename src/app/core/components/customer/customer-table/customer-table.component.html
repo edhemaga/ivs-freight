@@ -52,12 +52,13 @@
       </app-map-list>
 
       <agm-map 
-        [latitude]="41.860119"
-        [longitude]="-87.660156"
+        [latitude]="mapLatitude"
+        [longitude]="mapLongitude"
         [restriction]="mapRestrictions"
         [streetViewControl]="false"
         [styles]="styles"
         [zoom]="1"
+        [usePanning]="true"
         (mapClick)="mapClick()">
           <!-- <agm-marker-cluster [minimumClusterSize]= "2"
           [averageCenter]="true"
@@ -89,37 +90,41 @@
                 [openOnMarkerClick]="false"
                 [pointer]="false"
                 [showCloseButton]="false"
+                [panOnOpen]="false"
                 placement="bottom"
               >
                 <ng-template>
-                  <div [ngClass]="{ 'hide-marker': !latlong.isSelected && markerSelected }">
-                    <div
-                    class="marker-tooltip"
-                    [ngClass]="{ 'red-text': latlong.status == 2, 'hide-marker-tooltip': latlong.isSelected }"
-                  >
-                    {{ latlong.businessName }}
-                  </div>
-                  <svg-icon
+                  <div class="marker-container">
+                    <svg-icon
                       class="marker-icon"
                       src="assets/svg/common/ic_marker.svg"
                       (click)="clickedMarker(i)" 
                       [ngClass]="{ 'selected-marker': latlong.isSelected }"
                       *ngIf="latlong.status != 2"
-                  ></svg-icon>
-                  <svg-icon
+                    ></svg-icon>
+                    <svg-icon
                       class="marker-icon permanently-closed-icon"
                       src="assets/svg/common/ic_marker_closed.svg"
                       (click)="clickedMarker(i)" 
                       [ngClass]="{ 'selected-marker': latlong.isSelected }"
                       *ngIf="latlong.status == 2"
-                  ></svg-icon>
+                    ></svg-icon>
+                    <div [ngClass]="{ 'hide-marker': !latlong.isSelected && markerSelected }">
+                      <div
+                        class="marker-tooltip"
+                        [ngClass]="{ 'hide-marker-tooltip': latlong.isSelected }"
+                      >
+                        {{ latlong.businessName }}
+                      </div>
+                    </div>
                   </div>
                  
-                  <div class="marker-dropdown" [ngClass]="{'show-marker-dropdown': latlong?.isSelected}">
+                  <div class="marker-dropdown" [ngClass]="{'show-marker-dropdown marker-dropdown-animation': latlong?.isSelected}">
                     <app-map-marker-dropdown
                     [title]="latlong?.businessName"
                     [item]="latlong"
                     [type]="'Shipper'"
+                    [sortCategory]="activeSortType"
                   >
                     <div class="show-more">
                       <app-table-dropdown

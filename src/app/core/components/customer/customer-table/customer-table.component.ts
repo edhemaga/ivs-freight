@@ -48,6 +48,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   public sortDirection: string = 'asc';
   public activeSortType: any = {};
   public markerSelected: boolean = false;
+  public mapLatitude: number = 41.860119;
+  public mapLongitude: number = -87.660156;
   private tooltip: any;
 
   constructor(
@@ -151,13 +153,14 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
       this.sortTypes = [
         {name: 'Business Name', id: 1},
-        {name: 'Rating', id: 2},
-        {name: 'Date Added', id: 3},
-        {name: 'Last Used Date', id: 4},
-        {name: 'Pickups', id: 5},
-        {name: 'Deliveries', id: 6},
-        {name: 'Avg. Pickup Time', id: 7},
-        {name: 'Avg. Delivery Time', id: 8}
+        {name: 'Location', id: 2},
+        {name: 'Rating', id: 3},
+        {name: 'Date Added', id: 4},
+        {name: 'Last Used Date', id: 5},
+        {name: 'Pickups', id: 6},
+        {name: 'Deliveries', id: 7},
+        {name: 'Avg. Pickup Time', id: 8},
+        {name: 'Avg. Delivery Time', id: 9}
       ];
 
       this.activeSortType = this.sortTypes[0];
@@ -508,13 +511,21 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
         if ( data.isSelected ) {
           this.markerSelected = true;
+          this.mapLatitude = data.latitude;
+          this.mapLongitude = data.longitude;
         }
         else {
           this.markerSelected = false;
         }
 
-        $('.si-float-wrapper').css('z-index', '998');
-        setTimeout(function() { $('.si-float-wrapper:has(.show-marker-dropdown)').css('z-index', '999'); }, 1);
+        document.querySelectorAll('.si-float-wrapper').forEach(function(parentElement: HTMLElement) {
+            parentElement.style.zIndex = '998';
+
+            setTimeout(function() { 
+              var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
+              if ( childElements.length ) parentElement.style.zIndex = '999';
+            }, 1);
+        });
         
         // data.markerAnimation = 'BOUNCE';
 

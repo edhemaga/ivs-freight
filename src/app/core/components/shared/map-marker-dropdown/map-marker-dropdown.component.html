@@ -17,7 +17,7 @@
       <div class="marker-info-text marker-bold-text uppercase red-text mg-bottom-2 mg-top-4" *ngIf="item.status == 2">
         Permanently Closed
       </div>
-      <div class="marker-distance-left" [ngClass]="{ 'mg-top-4': item.status == 2 }">
+      <div class="marker-distance-left" [ngClass]="{ 'mg-top-4': item.status == 2 }" *ngIf="sortCategory.name == 'Location'">
         <span class="marker-title">123.4 mi </span>
         <span class="marker-info-text">away </span>
         <span class="marker-time-left-text">
@@ -45,23 +45,51 @@
     </div>
     <div class="marker-divider"></div>
     <div class="marker-info-container-all">
-      <div class="marker-info-container">
+      <div class="marker-info-container" [ngClass]="{ copied: copiedPhone }">
         <svg-icon
             class="marker-info-svg"
             src="assets/svg/common/ic_phone.svg"
             [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
         ></svg-icon>
         <span class="marker-info-text">{{ item?.phone }}</span>
+        <span
+            [tooltipBackground]="copiedPhone ? '#536BC2' : '#6c6c6c'"
+            ngbTooltip
+            [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
+            position="top"
+            class="tooltip-copy"
+            (click)="copyText(item?.phone, 'phone')"
+          >
+          <svg-icon
+            class="copy-icon"
+            src="assets/svg/common/ic_copy.svg"
+            (click)="copyText(item?.phone, 'phone')"
+          ></svg-icon>
+        </span>
       </div>
-      <div class="marker-info-container" *ngIf="item.email">
+      <div class="marker-info-container" *ngIf="item.email" [ngClass]="{ copied: copiedEmail }">
         <svg-icon
             class="marker-info-svg"
             src="assets/svg/common/ic_email.svg"
             [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
         ></svg-icon>
         <span class="marker-info-text">{{ item?.email }}</span>
+        <span
+            [tooltipBackground]="copiedEmail ? '#536BC2' : '#6c6c6c'"
+            ngbTooltip
+            [mainTooltip]="copiedEmail ? 'Copied' : 'Copy'"
+            position="top"
+            class="tooltip-copy"
+            (click)="copyText(item?.email, 'email')"
+          >
+          <svg-icon
+            class="copy-icon"
+            src="assets/svg/common/ic_copy.svg"
+            (click)="copyText(item?.email, 'email')"
+          ></svg-icon>
+        </span>
       </div>
-      <div class="marker-info-container">
+      <div class="marker-info-container" [ngClass]="{ copied: copiedAddress }">
         <div>
           <svg-icon
             class="marker-info-svg"
@@ -83,6 +111,20 @@
             </div>
           </div>
         </div>
+        <span
+            [tooltipBackground]="copiedAddress ? '#536BC2' : '#6c6c6c'"
+            ngbTooltip
+            [mainTooltip]="copiedAddress ? 'Copied' : 'Copy'"
+            position="top"
+            class="tooltip-copy"
+            (click)="copyText(item?.address.address, 'address')"
+          >
+            <svg-icon
+              class="copy-icon"
+              src="assets/svg/common/ic_copy.svg"
+              (click)="copyText(item?.address.address, 'address')"
+            ></svg-icon>
+          </span>
       </div>
     </div>
     <div class="marker-expanded-view unopened" 

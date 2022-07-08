@@ -1,7 +1,26 @@
 @import 'src/theme/variables.scss';
 
+@keyframes change {
+    from {
+      color: #6c6c6c;
+    }
+    to {
+      color: #3551b7;
+    }
+  }
+  @keyframes changeSVG {
+    from {
+      fill: #6c6c6c;
+    }
+    to {
+      fill: #3551b7;
+    }
+  }
+
 .marker-tool-tip {
     padding: 8px;
+    background: #fff;
+    box-shadow: $box-shadow;
 }
 
 .marker-business-name {
@@ -110,8 +129,49 @@
 .marker-info-container {
     display: flex;
     margin-top: 12px;
+
+    &:hover {
+      .copy-icon {
+        display: flex;
+      }
+    }
 }
 
 .marker-info-svg {
     margin-right: 6px;
 }
+
+.copy-icon {
+    display: none;
+    position: relative;
+    margin-left: 6px;
+    bottom: 1px;
+    height: 18px;
+    cursor: pointer;
+    svg {
+      &:hover {
+        path {
+          fill: #6c6c6c;
+        }
+      }
+    }
+  }
+
+  .copied {
+    .marker-info-text {
+      animation-duration: 300ms;
+      animation-name: change;
+    }
+    .copy-icon {
+      svg {
+        path {
+          animation-duration: 300ms;
+          animation-name: changeSVG;
+          &:hover {
+            animation-duration: 300ms;
+            animation-name: changeSVG;
+          }
+        }
+      }
+    }
+  }

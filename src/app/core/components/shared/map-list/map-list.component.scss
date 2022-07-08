@@ -235,6 +235,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                user-select: none;
 
                 margin-top: 8px;
 
@@ -375,7 +376,7 @@
             cursor: pointer;
             transform: translate(-50%, 50%);
             border-radius: 50%;
-            box-shadow: 0 0 2px 0px rgba(0, 0, 0, 0.3);
+            box-shadow: $box-shadow;
             z-index: 1;
 
             &:hover {
@@ -402,6 +403,7 @@
     display: flex;
     align-items: center;
     height: 14px;
+    user-select: none;
 
     .marker-rating {
         margin-right: 12px;
@@ -499,6 +501,7 @@
     
     box-shadow: $box-shadow;
     overflow: hidden;
+    user-select: none;
     
     .sort-items-holder{
         width: 100%;
