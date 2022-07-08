@@ -211,7 +211,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     if (this.editData.type === 'new-division') {
     } else {
-      if (this.editData.company.divisions.length) {
+      if (this.editData.company?.divisions.length) {
         this.companyForm.patchValue({
           // -------------------- Basic Tab
           name: this.editData.company.name,
@@ -410,7 +410,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.companyForm);
           return;
         }
-        if (this.editData.company.divisions) {
+        if (this.editData.company?.divisions) {
           this.updateCompanyDevision(this.editData.id);
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
@@ -421,7 +421,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'delete': {
-        if (this.editData.company.divisions) {
+        if (this.editData.company?.divisions) {
           this.deleteCompanyDevisionById(this.editData.id);
           this.modalService.setModalSpinner({ action: 'delete', status: true });
         }

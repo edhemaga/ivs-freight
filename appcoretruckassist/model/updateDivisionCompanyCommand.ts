@@ -18,14 +18,13 @@ import { AddressEntity } from './addressEntity';
 export interface UpdateDivisionCompanyCommand { 
     id?: number;
     name?: string | null;
-    taxNumber?: string | null;
-    usdot?: string | null;
+    usDot?: string | null;
     ein?: string | null;
     mc?: string | null;
     phone?: string | null;
     email?: string | null;
     fax?: string | null;
-    webURL?: string | null;
+    webUrl?: string | null;
     address?: AddressEntity;
     irp?: string | null;
     ifta?: string | null;
