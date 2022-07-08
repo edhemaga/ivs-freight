@@ -91,7 +91,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         nameDefault: 'Repair',
         template: 'repair',
         icon: true,
-        length: data.repairs.length,
+        length: data?.repairs?.length?data.repairs.length:0,
         customText: 'Date',
         icons: [
           {
@@ -125,7 +125,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         id: 2,
         nameDefault: 'Repaired Vehicle',
         template: 'repaired-vehicle',
-        length: data.repairsByUnit.length,
+        length: data?.repairsByUnit?.length?data.repairsByUnit.length:0,
         hide: true,
         customText: 'Repairs',
         data: data,
@@ -134,7 +134,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         id: 3,
         nameDefault: 'Review',
         template: 'review',
-        length: data.reviews.length,
+        length: data?.reviews?.length?data.reviews.length: 0,
         customText: 'Date',
         hide: false,
         data: data,

@@ -40,7 +40,7 @@ export class ShopRepairCardViewComponent implements OnInit, OnChanges,OnDestroy 
     }
   }
   ngOnInit(): void {
-    this.noteControl.patchValue(this.shopResponse.note);
+    // this.noteControl.patchValue(this.shopResponse.note);
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
