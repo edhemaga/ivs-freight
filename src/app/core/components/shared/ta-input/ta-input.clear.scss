@@ -90,9 +90,13 @@
   }
 
   //------------------------- Custom class -------------------------
-  &.input-big {
+  &.input-32 {
     top: 3.5px;
     right: 6px;
+  }
+
+  &.input-30 {
+    top: 2px;
   }
 
   &.focus {

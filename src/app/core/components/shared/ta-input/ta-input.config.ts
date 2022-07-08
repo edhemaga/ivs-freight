@@ -18,7 +18,8 @@ export interface ITaInput {
   textTransform?: string | 'capitalize' | 'uppercase' | 'lowercase';
   textAlign?: string | 'center';
   // Custom classes
-  // 'input-big' -> height: 32px,
+  // 'input-32' -> height: 32px,
+  // 'input-30' -> height: 30px,
   // 'datetimeclass' -> date/time pickers
   // 'dollar-placeholderIcon' -> when input has dollar icon
   customClass?: string;
