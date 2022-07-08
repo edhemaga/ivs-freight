@@ -118,7 +118,7 @@ export class TaInputComponent
 
     // Dropdown add mode
     if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
-      this.inputService.dropdownAddModeSubject$
+      this.inputService.dropdownAddMode$
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
           if (action) {

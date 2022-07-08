@@ -403,7 +403,7 @@ export class TaInputDropdownComponent
       },
       placeholder: null,
     };
-    this.inputService.dropdownAddModeSubject$.next(true);
+    this.inputService.dropdownAddMode$.next(true);
     this.popoverRef.close();
   }
 
