@@ -24,7 +24,6 @@ import { TodoTService } from '../../to-do/state/todo.service';
 import { AuthQuery } from '../../authentication/state/auth.query';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
-import { urlRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
@@ -79,9 +78,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.taskForm = this.formBuilder.group({
-      title: [null],
+      title: [null, Validators.required],
       description: [null],
-      url: [null, [...urlRegex]],
+      url: [null, Validators.required],
       deadline: [null],
       departmentIds: [null],
       companyUserIds: [null],

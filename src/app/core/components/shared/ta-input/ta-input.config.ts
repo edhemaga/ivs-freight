@@ -18,7 +18,8 @@ export interface ITaInput {
   textTransform?: string | 'capitalize' | 'uppercase' | 'lowercase';
   textAlign?: string | 'center';
   // Custom classes
-  // 'input-big' -> height: 32px,
+  // 'input-32' -> height: 32px,
+  // 'input-30' -> height: 30px,
   // 'datetimeclass' -> date/time pickers
   // 'dollar-placeholderIcon' -> when input has dollar icon
   customClass?: string;
@@ -53,6 +54,7 @@ export interface ITaInput {
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class (width of dropdowns)
   // Label dropdown
   isDropdownLabel?: boolean;
+  specificDropdownLabel?: boolean;
   dropdownLabelSelected?: any;
   // MultiSelect Dropdown
   multiselectDropdown?: boolean;

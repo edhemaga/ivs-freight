@@ -12,7 +12,10 @@
         <h5 class="modal-title">{{ modalTitle }}</h5>
         <h5
           class="edit-name"
-          *ngIf="editData?.type?.includes('edit') || specificCaseModalName"
+          *ngIf="
+            (editData?.type?.includes('edit') || specificCaseModalName) &&
+            editName
+          "
         >
           {{ editName }}
         </h5>

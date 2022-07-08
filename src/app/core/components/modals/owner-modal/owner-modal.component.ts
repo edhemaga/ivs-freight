@@ -384,7 +384,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
               subFolder: 'banks',
             };
           });
-          console.log(this.labelsBank);
         },
         error: () => {
           this.notificationService.error(

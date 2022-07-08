@@ -13,10 +13,12 @@ import {
   GetTruckModalResponse,
   TruckResponse,
   UpdateTruckCommand,
+  VinDecodeResponse,
 } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { VinDecoderService } from 'src/app/core/services/VIN-DECODER/vindecoder.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
   insurancePolicyRegex,
@@ -89,13 +91,15 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     private truckModalService: TruckTService,
     private notificationService: NotificationService,
     private modalService: ModalService,
-    private formService: FormService
+    private formService: FormService,
+    private vinDecoderService: VinDecoderService
   ) {}
 
   ngOnInit() {
     this.createForm();
     this.isCompanyOwned();
     this.getTruckDropdowns();
+    this.vinDecoder();
 
     if (this.editData) {
       this.editTruckById(this.editData.id);
@@ -437,7 +441,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             ipasEzpass: res.ipasEzpass,
           });
           this.selectedTruckType = res.truckType ? res.truckType : null;
-          console.log(this.selectedTruckType);
+
           this.selectedTruckMake = res.truckMake ? res.truckMake : null;
           this.selectedColor = res.color ? res.color : null;
           this.selectedOwner = res.owner ? res.owner : null;
@@ -496,6 +500,50 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  private vinDecoder() {
+    this.truckForm
+      .get('vin')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value?.length === 17) {
+          this.vinDecoderService
+            .getVINDecoderData(value.toString())
+            .pipe(untilDestroyed(this))
+            .subscribe({
+              next: (res: VinDecodeResponse) => {
+                this.truckForm.patchValue({
+                  model: res?.model ? res.model : null,
+                  year: res?.year ? res.year : null,
+                  truckMakeId: res.truckMake?.name ? res.truckMake.name : null,
+                  truckEngineTypeId: res.engineType?.name
+                    ? res.engineType.name
+                    : null,
+                });
+
+                this.selectedTruckMake = res.truckMake;
+                this.selectedEngineType = res.engineType;
+              },
+              error: (error: any) => {
+                this.notificationService.error(
+                  `Can't get data for that ${value} VIN.`,
+                  'Error:'
+                );
+              },
+            });
+        } else {
+          this.truckForm.patchValue({
+            model: null,
+            year: null,
+            truckMakeId: null,
+            truckEngineTypeId: null,
+          });
+
+          this.selectedTruckMake = null;
+          this.selectedEngineType = null;
+        }
+      });
   }
 
   ngOnDestroy(): void {}

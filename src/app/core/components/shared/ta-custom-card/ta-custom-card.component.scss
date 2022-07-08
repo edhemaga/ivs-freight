@@ -239,6 +239,19 @@
       }
     }
 
+    &.disabled {
+      .header-text {
+        color: #b7b7b7 !important;
+      }
+      .header-arrow {
+        display: none !important;
+      }
+
+      .ta-counter-number {
+        color: #b7b7b7 !important;
+      }
+    }
+
     &.cursor {
       cursor: pointer;
     }

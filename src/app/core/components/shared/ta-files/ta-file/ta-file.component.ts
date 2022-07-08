@@ -26,9 +26,7 @@ export class TaFileComponent implements OnInit {
 
   public numberOfFilePages: string = '0';
 
-  ngOnInit(): void {
-    console.log(this.file);
-  }
+  ngOnInit(): void {}
 
   public afterLoadComplete(pdf: PDFDocumentProxy) {
     this.numberOfFilePages = pdf._pdfInfo.numPages

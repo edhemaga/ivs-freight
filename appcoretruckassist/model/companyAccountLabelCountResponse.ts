@@ -14,6 +14,7 @@
 export interface CompanyAccountLabelCountResponse { 
     id?: number;
     name?: string | null;
+    colorId?: number;
     color?: string | null;
     count?: number;
 }

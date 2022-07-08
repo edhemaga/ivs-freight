@@ -11,9 +11,10 @@
  */
 
 
-export interface UpdateCompanyAccountLabelCommand { 
+export interface ContactColorResponse { 
     id?: number;
     name?: string | null;
-    colorId?: number;
+    code?: string | null;
+    count?: number;
 }
 

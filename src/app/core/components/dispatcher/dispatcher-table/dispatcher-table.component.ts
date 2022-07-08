@@ -198,7 +198,6 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((gpsData: any) => {
         if (this.trucksPositionOnMap.length) {
-          console.log('Desila se promena');
           for (let i = 0; i < gpsData.length; i++) {
             if (
               gpsData[i].latitude !== this.trucksPositionOnMap[i]?.lat ||
@@ -215,13 +214,10 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
         }
 
         if (!this.trucksPositionOnMap.length) {
-          console.log('Prvi podaci');
           for (let i = 0; i < gpsData.length; i++) {
             this.trucksPositionOnMap.push(getDataFromGpsResponse(gpsData, i));
           }
 
-          console.log('Salju se podaci');
-          console.log(this.trucksPositionOnMap);
           this.gpsDataService.sendGpsData(this.trucksPositionOnMap);
         }
       });

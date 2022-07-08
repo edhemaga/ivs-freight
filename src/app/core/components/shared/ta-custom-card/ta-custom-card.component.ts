@@ -17,9 +17,7 @@ import { TaUploadFileService } from '../ta-modal-upload/ta-upload-file.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class TaCustomCardComponent {
-  @Input()
-  public animationsDisabled = true;
-
+  @Input() animationsDisabled = true;
   @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'
   @Input() cardName: string = null;
   @Input() hasCounter: number;
@@ -40,8 +38,7 @@ export class TaCustomCardComponent {
   @Input() hasWeeklyStatus: string = null;
   @Input() controlName: FormControl;
   @Input() stayOpen: boolean = false;
-
-  public zoneTriger: boolean = false;
+  @Input() disabledCard: boolean = false;
 
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
@@ -51,19 +48,22 @@ export class TaCustomCardComponent {
     false
   );
 
+  public zoneTriger: boolean = false;
   public isHeaderHover: boolean = false;
 
   constructor(private uploadFileService: TaUploadFileService) {}
 
   public isCardOpenEvent(event: any) {
-    event.preventDefault();
-    event.stopPropagation();
-    if (this.hasBodyData) {
-      this.isCardOpen = !this.isCardOpen;
+    if (!this.disabledCard) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (this.hasBodyData) {
+        this.isCardOpen = !this.isCardOpen;
+      }
+      this.zoneTriger = !this.zoneTriger;
+      this.uploadFileService.visibilityDropZone(this.zoneTriger);
+      this.onOpenCard.emit(this.isCardOpen);
     }
-    this.zoneTriger = !this.zoneTriger;
-    this.uploadFileService.visibilityDropZone(this.zoneTriger);
-    this.onOpenCard.emit(this.isCardOpen);
   }
 
   public onAdd(event: any): void {

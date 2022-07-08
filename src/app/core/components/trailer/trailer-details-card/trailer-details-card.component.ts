@@ -58,7 +58,6 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
   /**Function for toggle page in cards */
   public toggleResizePage(value: boolean) {
     this.toggler = value;
-    console.log(this.toggler);
   }
   /**Function for dots in cards */
   public initTableOptions(): void {

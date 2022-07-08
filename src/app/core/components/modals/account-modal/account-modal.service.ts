@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
+  AccountColorResponse,
   CompanyAccountLabelService,
   CompanyAccountModalResponse,
   CompanyAccountResponse,
@@ -19,9 +20,10 @@ import {
 export class AccountModalService {
   constructor(
     private companyAccountService: CompanyAccountService,
-    private companyLabelService: CompanyAccountLabelService
+    private accountLabelService: CompanyAccountLabelService
   ) {}
 
+  // --------------------- ACCOUNT ---------------------
   public addCompanyAccount(
     data: CreateCompanyAccountCommand
   ): Observable<CreateResponse> {
@@ -46,19 +48,26 @@ export class AccountModalService {
     return this.companyAccountService.apiCompanyaccountModalGet();
   }
 
+  // --------------------- ACCOUNT LABEL ---------------------
   public companyAccountLabelsList(): Observable<GetCompanyAccountLabelListResponse> {
-    return this.companyLabelService.apiCompanyaccountlabelListGet();
+    return this.accountLabelService.apiCompanyaccountlabelListGet();
+  }
+
+  public companyAccountLabelsColorList(): Observable<
+    Array<AccountColorResponse>
+  > {
+    return this.accountLabelService.apiCompanyaccountlabelColorListGet();
   }
 
   public addCompanyLabel(
     data: CreateCompanyAccountLabelCommand
   ): Observable<CreateResponse> {
-    return this.companyLabelService.apiCompanyaccountlabelPost(data);
+    return this.accountLabelService.apiCompanyaccountlabelPost(data);
   }
 
   public updateCompanyLabel(
     data: UpdateCompanyAccountLabelCommand
   ): Observable<any> {
-    return this.companyLabelService.apiCompanyaccountlabelPut(data);
+    return this.accountLabelService.apiCompanyaccountlabelPut(data);
   }
 }

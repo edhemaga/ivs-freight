@@ -21,9 +21,13 @@
   }
 
   // Custom class
-  &.input-big {
+  &.input-32 {
     position: absolute;
     right: 6px;
     top: 4px;
+  }
+
+  &.input-30 {
+    top: 2px;
   }
 }

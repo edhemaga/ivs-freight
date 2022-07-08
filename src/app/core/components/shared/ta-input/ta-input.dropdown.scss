@@ -52,10 +52,10 @@
       }
     }
 
-    &.datetimeclass{
+    &.datetimeclass {
       z-index: 1;
-      svg{
-        path{
+      svg {
+        path {
           fill: #dadada !important;
         }
       }
@@ -169,8 +169,12 @@
     }
   }
 
-  &.input-big {
+  &.input-32 {
     top: 6px;
+  }
+
+  &.input-30 {
+    top: 5px;
   }
 
   &.details-pages {
@@ -231,18 +235,17 @@
       }
     }
   }
-
 }
 
 // -------------------- Input Dropdown Label ------------------
 .ta-input-label-vertical-divider {
   content: "";
-    display: block;
-    height: 16px;
-    width: 1px;
-    border-radius: 3px;
-    background: #e5e5e5;
-    position: absolute;
-    left: 135px;
-    top: 5px;
+  display: block;
+  height: 16px;
+  width: 1px;
+  border-radius: 3px;
+  background: #e5e5e5;
+  position: absolute;
+  left: 135px;
+  top: 5px;
 }
