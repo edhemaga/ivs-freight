@@ -9,7 +9,5 @@ export const configFactory = (token?: string): Configuration => {
     basePath: environment.API_ENDPOINT,
     credentials: { Bearer: token },
   };
-  console.log('configFactory');
-  console.log(params);
   return new Configuration(params);
 };

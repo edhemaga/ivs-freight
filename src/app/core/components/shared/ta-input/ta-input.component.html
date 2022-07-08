@@ -53,7 +53,6 @@
         !inputConfig.isDisabled &&
         !inputConfig.multiSelectDropdownActive &&
         !inputConfig.blackInput,
-
       focus: focusInput,
       'password-eye':
         inputConfig.type === 'password' &&
@@ -236,6 +235,7 @@
   </div>
 
   <!-- Input Icon Placeholder -->
+
   <svg-icon
     #t2="ngbPopover"
     [ngbPopover]="dateTimePopover"
@@ -251,11 +251,12 @@
     class="input-icon {{ inputConfig.customClass }}"
     *ngIf="inputConfig.placeholderIcon"
     [svgStyle]="{
-      fill: inputConfig.isDropdownLabel
-        ? inputConfig.dropdownLabelSelected?.color
-          ? inputConfig.dropdownLabelSelected.color
-          : '#b7b7b7'
-        : null
+      fill:
+        inputConfig.isDropdownLabel || inputConfig.specificDropdownLabel
+          ? inputConfig.dropdownLabelSelected?.color
+            ? inputConfig.dropdownLabelSelected.color
+            : '#b7b7b7'
+          : null
     }"
     [ngClass]="{
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
@@ -263,13 +264,13 @@
       'default-svg-color':
         !inputConfig.dropdownLabelSelected && !inputConfig.isDropdownLabel,
       'valid-required-in':
-        !inputConfig.commands?.active &&
         getSuperControl.value &&
         getSuperControl.valid &&
         focusInput &&
         !inputConfig.dropdownLabelSelected &&
         !inputConfig.isDropdownLabel &&
-        !inputConfig.blackInput,
+        !inputConfig.blackInput &&
+        !inputConfig.commands?.active,
       'valid-required-out':
         getSuperControl.value &&
         getSuperControl.valid &&

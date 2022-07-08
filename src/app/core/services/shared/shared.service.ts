@@ -1,29 +1,24 @@
-import {EventEmitter, Injectable} from '@angular/core';
-import {FormGroup} from "@angular/forms";
-import {NotificationService} from "../notification/notification.service";
-import {Observable, Subject, tap} from "rxjs";
-import {environment} from "../../../../environments/environment";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {SpinnerService} from "../spinner/spinner.service";
+import { EventEmitter, Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { NotificationService } from '../notification/notification.service';
+import { Observable, Subject, tap } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { SpinnerService } from '../spinner/spinner.service';
 import { AddressEntity } from 'appcoretruckassist';
 
-class OwnerData {
-}
+class OwnerData {}
 
-class ManageMaintenance {
-}
+class ManageMaintenance {}
 
-class DriverOwnerData {
-}
+class DriverOwnerData {}
 
-class OwnerTabData {
-}
+class OwnerTabData {}
 
-class BankData {
-}
+class BankData {}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SharedService {
   public emitTogglePdf: EventEmitter<boolean> = new EventEmitter();
@@ -65,16 +60,17 @@ export class SharedService {
   public enableDisable: EventEmitter<boolean> = new EventEmitter();
   public emitTab: EventEmitter<number> = new EventEmitter();
   public reloadOwner: boolean;
-  headers = {'Content-Type': 'application/json', Accept: 'application/json'};
+  headers = { 'Content-Type': 'application/json', Accept: 'application/json' };
   private notify = new Subject<any>();
   public emitShipperClose: EventEmitter<boolean> = new EventEmitter();
   public emitShipperChange: EventEmitter<boolean> = new EventEmitter();
   public emitDeleteFiles: EventEmitter<any[]> = new EventEmitter();
 
-  constructor(public notification: NotificationService,
-              private spinner: SpinnerService,
-              public http: HttpClient
-              ) { }
+  constructor(
+    public notification: NotificationService,
+    private spinner: SpinnerService,
+    public http: HttpClient
+  ) {}
 
   public notifyOther(data: any) {
     if (data) {
@@ -98,7 +94,6 @@ export class SharedService {
         if (control.controls) {
           this.markInvalid(control);
         }
-        console.log(control)
       });
       this.notification.warning('Please fill all required fields.', 'Warning:');
       this.spinner.show(false);
@@ -133,7 +128,10 @@ export class SharedService {
    * Server error handling
    */
   public handleServerError() {
-    this.notification.error('Something went wrong. Please try again.', 'Error:');
+    this.notification.error(
+      'Something went wrong. Please try again.',
+      'Error:'
+    );
     this.spinner.show(false);
   }
 
@@ -159,7 +157,11 @@ export class SharedService {
           const control = form.controls[key2];
 
           control.valueChanges.subscribe(() => {
-            if (control.value !== undefined && control.value !== null && control.value !== '') {
+            if (
+              control.value !== undefined &&
+              control.value !== null &&
+              control.value !== ''
+            ) {
               switch (data[key1]) {
                 // First letter capitalized
                 case 'capitalize':
@@ -167,25 +169,30 @@ export class SharedService {
                   const newValue =
                     firstLetter.toUpperCase() +
                     control.value.slice(1, control.value.length).toLowerCase();
-                  control.patchValue(newValue, {emitEvent: false});
+                  control.patchValue(newValue, { emitEvent: false });
                   break;
 
                 // lowercased and uppercases with first letter capitalized
                 case 'nameInput':
                   const firstC = control.value.slice(0, 1);
                   const newName =
-                    firstC.toUpperCase() + control.value.slice(1, control.value.length);
-                  control.patchValue(newName, {emitEvent: false});
+                    firstC.toUpperCase() +
+                    control.value.slice(1, control.value.length);
+                  control.patchValue(newName, { emitEvent: false });
                   break;
 
                 // All letters lowercased
                 case 'lower':
-                  control.patchValue(control.value.toLowerCase(), {emitEvent: false});
+                  control.patchValue(control.value.toLowerCase(), {
+                    emitEvent: false,
+                  });
                   break;
 
                 // All letters uppercases
                 case 'upper':
-                  control.patchValue(control.value.toUpperCase(), {emitEvent: false});
+                  control.patchValue(control.value.toUpperCase(), {
+                    emitEvent: false,
+                  });
                   break;
 
                 default:
@@ -201,9 +208,21 @@ export class SharedService {
   public selectAddress(form: FormGroup, address: any) {
     const ret: AddressEntity = {
       address: address.formatted_address,
-      streetNumber: this.retrieveAddressComponents(address.address_components, 'street_number', 'long_name'),
-      street: this.retrieveAddressComponents(address.address_components, 'route', 'long_name'),
-      city: this.retrieveAddressComponents(address.address_components, 'locality', 'long_name'),
+      streetNumber: this.retrieveAddressComponents(
+        address.address_components,
+        'street_number',
+        'long_name'
+      ),
+      street: this.retrieveAddressComponents(
+        address.address_components,
+        'route',
+        'long_name'
+      ),
+      city: this.retrieveAddressComponents(
+        address.address_components,
+        'locality',
+        'long_name'
+      ),
       state: this.retrieveAddressComponents(
         address.address_components,
         'administrative_area_level_1',
@@ -214,22 +233,31 @@ export class SharedService {
         'administrative_area_level_1',
         'short_name'
       ),
-      country: this.retrieveAddressComponents(address.address_components, 'country', 'short_name'),
+      country: this.retrieveAddressComponents(
+        address.address_components,
+        'country',
+        'short_name'
+      ),
       zipCode: this.retrieveAddressComponents(
         address.address_components,
         'postal_code',
         'long_name'
       ),
-
     };
     return ret;
   }
 
-  public retrieveAddressComponents(addressArray: any, type: string, name: string) {
+  public retrieveAddressComponents(
+    addressArray: any,
+    type: string,
+    name: string
+  ) {
     if (!addressArray) {
       return '';
     }
-    const res = addressArray.find((addressComponents: any) => addressComponents.types[0] === type);
+    const res = addressArray.find(
+      (addressComponents: any) => addressComponents.types[0] === type
+    );
     if (res !== undefined) {
       return res[name];
     } else {
@@ -292,7 +320,8 @@ export class SharedService {
   // Bank
   getBankList() {
     return this.http.get<BankData[]>(
-      environment.API_ENDPOINT + `metadata/app/bank/list/1/${environment.perPage}`
+      environment.API_ENDPOINT +
+        `metadata/app/bank/list/1/${environment.perPage}`
     );
   }
 
@@ -306,11 +335,13 @@ export class SharedService {
   }
 
   addOwner(ownerData: OwnerData): Observable<OwnerData> {
-    return this.http.post<OwnerData>(environment.API_ENDPOINT + 'owner', ownerData).pipe(
-      tap((owner: OwnerData) => {
-        this.createOwner.next(owner);
-      })
-    );
+    return this.http
+      .post<OwnerData>(environment.API_ENDPOINT + 'owner', ownerData)
+      .pipe(
+        tap((owner: OwnerData) => {
+          this.createOwner.next(owner);
+        })
+      );
   }
 
   updateOwner(data: any, id: number) {
@@ -332,7 +363,9 @@ export class SharedService {
   }
 
   getOwner(id: number): Observable<OwnerData> {
-    return this.http.get<OwnerData>(environment.API_ENDPOINT + `owner/${id}/all`);
+    return this.http.get<OwnerData>(
+      environment.API_ENDPOINT + `owner/${id}/all`
+    );
   }
 
   pingSsn(ssn) {
@@ -354,17 +387,19 @@ export class SharedService {
   }
 
   updateMaintennace(id: number, data: any) {
-    return this.http.put(environment.API_ENDPOINT + `maintenance/${id}`, data).pipe(
-      tap(() => {
-        // if (data.category == 'truck') {
-        //   this.reloadTruckList.next();
-        // }
-        // if (data.category == 'trailer') {
-        //   this.reloadTrailerList.next();
-        // }
-        this.editMaintenanceSubject.next(data);
-      })
-    );
+    return this.http
+      .put(environment.API_ENDPOINT + `maintenance/${id}`, data)
+      .pipe(
+        tap(() => {
+          // if (data.category == 'truck') {
+          //   this.reloadTruckList.next();
+          // }
+          // if (data.category == 'trailer') {
+          //   this.reloadTrailerList.next();
+          // }
+          this.editMaintenanceSubject.next(data);
+        })
+      );
   }
 
   getMaintenanceList() {
@@ -390,30 +425,40 @@ export class SharedService {
   }
 
   getRepairShops() {
-    return this.http.get(environment.API_ENDPOINT + `repairshop/list/all/1/${environment.perPage}`);
+    return this.http.get(
+      environment.API_ENDPOINT + `repairshop/list/all/1/${environment.perPage}`
+    );
   }
 
   importShops(shop) {
-    return this.http.post(environment.API_ENDPOINT + `import/b64/repairshop`, shop);
+    return this.http.post(
+      environment.API_ENDPOINT + `import/b64/repairshop`,
+      shop
+    );
   }
 
   getRepairShopCommentById(repairShopId: number) {
     return this.http.get(
       environment.API_ENDPOINT +
-      `repairshop/rating/reviews/${repairShopId}/1/${environment.perPage}`
+        `repairshop/rating/reviews/${repairShopId}/1/${environment.perPage}`
     );
   }
 
   updateRepairShop(data: any, id) {
-    return this.http.put(environment.API_ENDPOINT + `repairshop/${id}`, data).pipe(
-      tap(() => {
-        this.updateRepairShopSubject.next(data);
-      })
-    );
+    return this.http
+      .put(environment.API_ENDPOINT + `repairshop/${id}`, data)
+      .pipe(
+        tap(() => {
+          this.updateRepairShopSubject.next(data);
+        })
+      );
   }
 
   pinRepairShop(id: number, data: any) {
-    return this.http.put(environment.API_ENDPOINT + `repairshop/pin/${id}`, data);
+    return this.http.put(
+      environment.API_ENDPOINT + `repairshop/pin/${id}`,
+      data
+    );
   }
 
   /* Comment Api */
@@ -422,7 +467,9 @@ export class SharedService {
   }
 
   getCommentList() {
-    return this.http.get(environment.API_ENDPOINT + `comment/list/1/${environment.perPage}`);
+    return this.http.get(
+      environment.API_ENDPOINT + `comment/list/1/${environment.perPage}`
+    );
   }
 
   updateComment(id: number, data: any) {
@@ -439,11 +486,15 @@ export class SharedService {
   }
 
   getRepairShopReview(repairShopReviewId: number) {
-    return this.http.get(environment.API_ENDPOINT + `repairshop/review/${repairShopReviewId}`);
+    return this.http.get(
+      environment.API_ENDPOINT + `repairshop/review/${repairShopReviewId}`
+    );
   }
 
   getRepairShopReviewList(repairShopId: number) {
-    return this.http.get(environment.API_ENDPOINT + `repairshop/review/list/${repairShopId}/1/100`);
+    return this.http.get(
+      environment.API_ENDPOINT + `repairshop/review/list/${repairShopId}/1/100`
+    );
   }
 
   updateRepairShopReview(data: any, repairShopReviewId: number) {
@@ -454,21 +505,30 @@ export class SharedService {
   }
 
   deleteRepairShopReview(repairShopReviewId: number) {
-    return this.http.delete(environment.API_ENDPOINT + `repairshop/review/${repairShopReviewId}`);
+    return this.http.delete(
+      environment.API_ENDPOINT + `repairshop/review/${repairShopReviewId}`
+    );
   }
 
   /* RepairShopRatingApi */
   createRepairShopRating(data: any) {
-    return this.http.post(environment.API_ENDPOINT + `repairshop/rating/`, data);
+    return this.http.post(
+      environment.API_ENDPOINT + `repairshop/rating/`,
+      data
+    );
   }
 
   updateRepairShopRating(data: any, id: number) {
-    return this.http.put(environment.API_ENDPOINT + `repairshop/rating/${id}`, data);
+    return this.http.put(
+      environment.API_ENDPOINT + `repairshop/rating/${id}`,
+      data
+    );
   }
 
   getRepairShopRating(repairShopId: number) {
     return this.http.get(
-      environment.API_ENDPOINT + `repairshop/rating/list/${repairShopId}/1/${environment.perPage}`,
+      environment.API_ENDPOINT +
+        `repairshop/rating/list/${repairShopId}/1/${environment.perPage}`,
       {
         headers: this.headers,
       }
@@ -476,7 +536,9 @@ export class SharedService {
   }
 
   deleteRepairShopRating(id: number) {
-    return this.http.delete(environment.API_ENDPOINT + `repairshop/rating/${id}`);
+    return this.http.delete(
+      environment.API_ENDPOINT + `repairshop/rating/${id}`
+    );
   }
 
   /* End of RepairShopRatingApi */
@@ -515,7 +577,9 @@ export class SharedService {
   }
 
   getDriverOwnerData(ein: number): Observable<DriverOwnerData> {
-    return this.http.get<DriverOwnerData>(environment.API_ENDPOINT + `ping/taxnumber/${ein}`);
+    return this.http.get<DriverOwnerData>(
+      environment.API_ENDPOINT + `ping/taxnumber/${ein}`
+    );
   }
 
   public touchFormFields(formGroup: FormGroup) {
@@ -531,5 +595,4 @@ export class SharedService {
   getNewFiles(files: any) {
     return files.filter((item: any) => item.url == null);
   }
-
 }

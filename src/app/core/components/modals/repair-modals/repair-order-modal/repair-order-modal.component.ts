@@ -489,7 +489,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       }),
       items: this.premmapedItems(),
     };
-    console.log(newData);
+
     this.repairService
       .addRepair(newData)
       .pipe(untilDestroyed(this))

@@ -5,6 +5,7 @@
     class="ta-card-header"
     [class.active]="isCardOpen"
     [class.no-data]="!hasBodyData"
+    [class.disabled]="disabledCard"
     (mouseenter)="isHeaderHover = true"
     (mouseleave)="isHeaderHover = false"
     (click)="isCardOpenEvent($event)"

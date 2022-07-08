@@ -16,6 +16,7 @@ import {
   GetTrailerModalResponse,
   TrailerResponse,
   UpdateTrailerCommand,
+  VinDecodeResponse,
 } from 'appcoretruckassist';
 import {
   insurancePolicyRegex,
@@ -24,6 +25,7 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { VinDecoderService } from 'src/app/core/services/VIN-DECODER/vindecoder.service';
 
 @Component({
   selector: 'app-trailer-modal',
@@ -84,13 +86,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     private trailerModalService: TrailerTService,
     private notificationService: NotificationService,
     private modalService: ModalService,
-    private formService: FormService
+    private formService: FormService,
+    private vinDecoderService: VinDecoderService
   ) {}
 
   ngOnInit() {
     this.createForm();
     this.isCompanyOwned();
     this.getTrailerDropdowns();
+    this.vinDecoder();
 
     if (this.editData) {
       this.editTrailerById(this.editData.id);
@@ -508,6 +512,45 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  private vinDecoder() {
+    this.trailerForm
+      .get('vin')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (value?.length === 17) {
+          this.vinDecoderService
+            .getVINDecoderData(value.toString())
+            .pipe(untilDestroyed(this))
+            .subscribe({
+              next: (res: VinDecodeResponse) => {
+                this.trailerForm.patchValue({
+                  model: res?.model ? res.model : null,
+                  year: res?.year ? res.year : null,
+                  trailerMakeId: res.truckMake?.name
+                    ? res.truckMake.name
+                    : null,
+                });
+
+                this.selectedTrailerMake = res.truckMake;
+              },
+              error: (error: any) => {
+                this.notificationService.error(
+                  `Can't get data for that ${value} VIN.`,
+                  'Error:'
+                );
+              },
+            });
+        } else {
+          this.trailerForm.patchValue({
+            model: null,
+            year: null,
+            trailerMakeId: null,
+          });
+          this.selectedTrailerMake = null;
+        }
+      });
   }
 
   ngOnDestroy(): void {}

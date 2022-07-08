@@ -150,12 +150,10 @@ export class ToDoListCardComponent implements OnInit {
   }
 
   dragStart = (e) => {
-    console.log('DRAG HAS START');
     this.dragStarted = true;
   };
 
   dragStoped = () => {
-    console.log('DRAG HAS Stopped');
     this.dragStarted = false;
   };
 
@@ -188,8 +186,6 @@ export class ToDoListCardComponent implements OnInit {
       .getTodoList()
       .pipe(takeUntil(this.destroy$))
       .subscribe((resp: TodoListResponse) => {
-        console.log('WHAT IS RESPONSE FROM TODO');
-        console.log(resp);
         this.updateTodosList(resp.pagination.data);
       });
   }
@@ -203,8 +199,6 @@ export class ToDoListCardComponent implements OnInit {
       .updateTodoItem(todo)
       .pipe(takeUntil(this.destroy$))
       .subscribe((resp: TodoListResponse) => {
-        console.log('WHAT IS RESPONSE FROM TODO');
-        console.log(resp);
         this.startChangingStatus = false;
         // this.notification.success('Task status updated successfully.', 'Success:');
         //this.updateTodosList(resp.pagination.data);
@@ -279,7 +273,7 @@ export class ToDoListCardComponent implements OnInit {
 
   toggleExpandControll(indx: number, isOpen: boolean) {
     const push = new GridsterPush(this.dashboardItems[indx]);
-    console.log(isOpen);
+
     if (isOpen) {
       this.dashboardItems[indx].$item.rows += 1; // move/resize your item
       push.pushItems(push.fromNorth);

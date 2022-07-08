@@ -1,6 +1,12 @@
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {SelectionRange} from '@progress/kendo-angular-dateinputs';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { SelectionRange } from '@progress/kendo-angular-dateinputs';
 import moment from 'moment';
 import { DISPATCH_BOARD_STATUS } from 'src/app/const';
 import { AppLoadService } from 'src/app/core/services/load/app-load.service';
@@ -8,7 +14,7 @@ import { AppLoadService } from 'src/app/core/services/load/app-load.service';
 @Component({
   selector: 'app-dispatcher-history',
   templateUrl: './dispatcher-history.component.html',
-  styleUrls: ['./dispatcher-history.component.scss']
+  styleUrls: ['./dispatcher-history.component.scss'],
 })
 export class DispatcherHistoryComponent implements OnInit {
   @ViewChild('t2') t2: any;
@@ -17,7 +23,7 @@ export class DispatcherHistoryComponent implements OnInit {
   selectBoard: number;
   selectTrailer: number;
   selectedDriver: number;
-  selectTime: any = "Today";
+  selectTime: any = 'Today';
   historyBoardList: any = [];
   dispatchersList: any = [];
   mainTruckList: any = [];
@@ -27,8 +33,8 @@ export class DispatcherHistoryComponent implements OnInit {
   dispatcBoardStatuses = DISPATCH_BOARD_STATUS;
   timeList: any = [];
   selectedPicker: any = {
-    type: "",
-    index: -1
+    type: '',
+    index: -1,
   };
   showDateRange: boolean;
   public range = {
@@ -50,26 +56,26 @@ export class DispatcherHistoryComponent implements OnInit {
     'December',
   ];
   periodList: any = {
-    "Today": "today",
-    "Yesterday": "last_24_hours",
-    "This Week": "last_7_days",
-    "Last week": "week_ago",
-    "1 week": "two_week_ago",
-    "This month": "thismonth",
-    "Last month": "lastmonth",
-    "January": "jan",
-    "February": "feb",
-    "March": "mar",
-    "April": "apr",
-    "May": "may",
-    "June": "jun",
-    "July": "jul",
-    "August": "aug",
-    "September": "sep",
-    "October": "oct",
-    "November": "nov",
-    "December": "dec"
-  }
+    Today: 'today',
+    Yesterday: 'last_24_hours',
+    'This Week': 'last_7_days',
+    'Last week': 'week_ago',
+    '1 week': 'two_week_ago',
+    'This month': 'thismonth',
+    'Last month': 'lastmonth',
+    January: 'jan',
+    February: 'feb',
+    March: 'mar',
+    April: 'apr',
+    May: 'may',
+    June: 'jun',
+    July: 'jul',
+    August: 'aug',
+    September: 'sep',
+    October: 'oct',
+    November: 'nov',
+    December: 'dec',
+  };
   lastFourMonth: any[] = [];
   customDateSelect: any = {};
   pickupChangeDate: any;
@@ -78,14 +84,11 @@ export class DispatcherHistoryComponent implements OnInit {
     private activeModal: NgbActiveModal,
     private loadService: AppLoadService,
     private changeRef: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
-  ngAfterViewInit(): void {
-  }
+  ngAfterViewInit(): void {}
 
   ngOnInit(): void {
-
     this.getDispatchBoardHistoryData();
     this.findLastFourMonth();
   }
@@ -103,8 +106,7 @@ export class DispatcherHistoryComponent implements OnInit {
   }
 
   handleSelectionRange(range: SelectionRange) {
-
-    this.selectTime = "Custom";
+    this.selectTime = 'Custom';
     this.customDateSelect = {
       startDate: moment(range.start).toDate(),
       endDate: moment(range.end).toDate(),
@@ -115,7 +117,7 @@ export class DispatcherHistoryComponent implements OnInit {
   }
 
   getDispatchBoardHistoryData(params?): void {
-    this.loadService.getDispatchboardHistoryUsed(params).subscribe(res => {
+    this.loadService.getDispatchboardHistoryUsed(params).subscribe((res) => {
       this.dispatchersList = res['dispatchers'];
       this.driversList = res['drivers'];
       this.trailersList = res['trailers'];
@@ -125,7 +127,9 @@ export class DispatcherHistoryComponent implements OnInit {
 
   setPickerEdit(data: any, type: string): void {
     this.selectedPicker = data;
-    this.pickupChangeDate = new Date(parseInt(this.historyBoardList[type][data.index].date));
+    this.pickupChangeDate = new Date(
+      parseInt(this.historyBoardList[type][data.index].date)
+    );
   }
 
   boardChanged(board?: any): void {
@@ -136,59 +140,77 @@ export class DispatcherHistoryComponent implements OnInit {
   }
 
   getDispatchBoardHistoryMainData(params?): void {
-    this.loadService.getDispatchboardHistoryData(params, this.selectedDriver).subscribe((res: any) => {
-      this.historyBoardList = res.reduce((data, item, indx) => {
+    this.loadService
+      .getDispatchboardHistoryData(params, this.selectedDriver)
+      .subscribe((res: any) => {
+        this.historyBoardList = res.reduce(
+          (data, item, indx) => {
+            if (
+              res[indx - 1] &&
+              res[indx - 1]['trailerNumber'] == item.trailerNumber
+            )
+              data.trailerList[data.trailerList.length - 1]['heightCount'] += 1;
+            else
+              data.trailerList.push({
+                trailerNumber: item.trailerNumber,
+                heightCount: 1,
+              });
 
-          if (res[indx - 1] && res[indx - 1]['trailerNumber'] == item.trailerNumber) data.trailerList[data.trailerList.length - 1]['heightCount'] += 1;
-          else data.trailerList.push({trailerNumber: item.trailerNumber, heightCount: 1});
+            if (res[indx - 1] && res[indx - 1]['driverId'] == item.driverId)
+              data.driversList[data.driversList.length - 1]['heightCount'] += 1;
+            else
+              data.driversList.push({
+                driverFullName: item.driverFullName,
+                heightCount: 1,
+              });
 
-          if (res[indx - 1] && res[indx - 1]['driverId'] == item.driverId) data.driversList[data.driversList.length - 1]['heightCount'] += 1;
-          else data.driversList.push({driverFullName: item.driverFullName, heightCount: 1});
+            data.pickupDates.push({
+              date: new Date(item.startDateTime).getTime(),
+              dispatchBoardId: item.dispatchBoardId,
+              truckloadId: item.truckloadId,
+            });
 
-          data.pickupDates.push({
-            date: new Date(item.startDateTime).getTime(),
-            dispatchBoardId: item.dispatchBoardId,
-            truckloadId: item.truckloadId
-          });
+            data.pickupTimes.push({
+              date: new Date(item.startDateTime).getTime(),
+              dispatchBoardId: item.dispatchBoardId,
+              truckloadId: item.truckloadId,
+            });
 
-          data.pickupTimes.push({
-            date: new Date(item.startDateTime).getTime(),
-            dispatchBoardId: item.dispatchBoardId,
-            truckloadId: item.truckloadId
-          });
+            data.deliveryDates.push({
+              date: new Date(item.endDateTime).getTime(),
+              dispatchBoardId: item.dispatchBoardId,
+              truckloadId: item.truckloadId,
+            });
 
-          data.deliveryDates.push({
-            date: new Date(item.endDateTime).getTime(),
-            dispatchBoardId: item.dispatchBoardId,
-            truckloadId: item.truckloadId
-          });
+            data.deliveryTimes.push({
+              date: new Date(item.endDateTime).getTime(),
+              dispatchBoardId: item.dispatchBoardId,
+              truckloadId: item.truckloadId,
+            });
 
-          data.deliveryTimes.push({
-            date: new Date(item.endDateTime).getTime(),
-            dispatchBoardId: item.dispatchBoardId,
-            truckloadId: item.truckloadId
-          });
+            data.statusList.push(
+              this.dispatcBoardStatuses.find((it) => it.id == item.statusId)
+            );
 
-          data.statusList.push(this.dispatcBoardStatuses.find(it => it.id == item.statusId));
+            const item_duration = item.duration.data;
+            data.durationList.push(
+              `${item_duration.days}d ${item_duration.hours}h ${item_duration.minutes}m`
+            );
 
-          const item_duration = item.duration.data;
-          data.durationList.push(`${item_duration.days}d ${item_duration.hours}h ${item_duration.minutes}m`);
-
-          return data;
-        },
-        {
-          trailerList: [],
-          driversList: [],
-          pickupDates: [],
-          pickupTimes: [],
-          deliveryDates: [],
-          deliveryTimes: [],
-          durationList: [],
-          statusList: []
-        }
-      );
-      console.log(this.historyBoardList);
-    });
+            return data;
+          },
+          {
+            trailerList: [],
+            driversList: [],
+            pickupDates: [],
+            pickupTimes: [],
+            deliveryDates: [],
+            deliveryTimes: [],
+            durationList: [],
+            statusList: [],
+          }
+        );
+      });
   }
 
   public createHistorySelectParams(): string {
@@ -201,19 +223,16 @@ export class DispatcherHistoryComponent implements OnInit {
 
     // FOR LATER
     //if( this.selectTime && params.length > 0) params.push(`period=${this.periodList[this.selectTime]}`);
-    return params.join("&");
+    return params.join('&');
   }
 
-  truckChange(e: any): void {
-  }
+  truckChange(e: any): void {}
 
   closeModal() {
     this.activeModal.close();
   }
 
-  getTrailersList(): void {
-
-  }
+  getTrailersList(): void {}
 
   createHistoryList(): void {
     this.historyBoardList = {
@@ -224,35 +243,51 @@ export class DispatcherHistoryComponent implements OnInit {
       deliveryDates: [],
       deliveryTimes: [],
       durationList: [],
-      statusList: []
+      statusList: [],
     };
   }
 
   closeEditInput(): void {
-    this.selectedPicker = {type: "", index: -1}
+    this.selectedPicker = { type: '', index: -1 };
   }
 
   saveDate(): void {
     if (this.pickupChangeDate) {
       const selectedDate = new Date(this.pickupChangeDate).getTime();
 
-      const type = this.selectedDriver ? this.historyBoardList['pickupDates'][this.selectedPicker.index].dispatchBoardId : this.historyBoardList['pickupDates'][this.selectedPicker.index].truckloadId;
+      const type = this.selectedDriver
+        ? this.historyBoardList['pickupDates'][this.selectedPicker.index]
+            .dispatchBoardId
+        : this.historyBoardList['pickupDates'][this.selectedPicker.index]
+            .truckloadId;
       switch (this.selectedPicker.type) {
-        case "pickupDate":
-          this.historyBoardList['pickupDates'][this.selectedPicker.index].date = selectedDate;
-          this.sendStatusChangeData({startDate: this.pickupChangeDate}, type);
+        case 'pickupDate':
+          this.historyBoardList['pickupDates'][this.selectedPicker.index].date =
+            selectedDate;
+          this.sendStatusChangeData({ startDate: this.pickupChangeDate }, type);
           break;
-        case "pickupTime":
-          this.historyBoardList['pickupTimes'][this.selectedPicker.index].date = selectedDate;
-          this.sendStatusChangeData({startTime: moment(this.pickupChangeDate).format("HH:mm:ss")}, type);
+        case 'pickupTime':
+          this.historyBoardList['pickupTimes'][this.selectedPicker.index].date =
+            selectedDate;
+          this.sendStatusChangeData(
+            { startTime: moment(this.pickupChangeDate).format('HH:mm:ss') },
+            type
+          );
           break;
-        case "deliveryDate":
-          this.historyBoardList['deliveryDates'][this.selectedPicker.index].date = selectedDate;
-          this.sendStatusChangeData({endDate: this.pickupChangeDate}, type);
+        case 'deliveryDate':
+          this.historyBoardList['deliveryDates'][
+            this.selectedPicker.index
+          ].date = selectedDate;
+          this.sendStatusChangeData({ endDate: this.pickupChangeDate }, type);
           break;
         default:
-          this.historyBoardList['deliveryTimes'][this.selectedPicker.index].date = selectedDate;
-          this.sendStatusChangeData({endTime: moment(this.pickupChangeDate).format("HH:mm:ss")}, type);
+          this.historyBoardList['deliveryTimes'][
+            this.selectedPicker.index
+          ].date = selectedDate;
+          this.sendStatusChangeData(
+            { endTime: moment(this.pickupChangeDate).format('HH:mm:ss') },
+            type
+          );
           break;
       }
     }
@@ -261,13 +296,12 @@ export class DispatcherHistoryComponent implements OnInit {
   }
 
   sendStatusChangeData(data: any, statusType): void {
-    this.loadService.setDispatchboardStatus(data, statusType, this.selectedDriver).subscribe(res => {
-      console.log(res);
-    });
+    this.loadService
+      .setDispatchboardStatus(data, statusType, this.selectedDriver)
+      .subscribe((res) => {});
   }
 
   pickupDateTimeChange(e): void {
-    console.log(e);
     //this.pickupChangeDate = e;
   }
 
@@ -282,5 +316,4 @@ export class DispatcherHistoryComponent implements OnInit {
       t2.open();
     });
   }
-
 }

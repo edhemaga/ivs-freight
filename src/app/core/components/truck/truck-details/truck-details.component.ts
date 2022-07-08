@@ -73,7 +73,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             if (this.router.url.includes('details')) {
               this.router.navigate([`/truck/${res.id}/details`]);
             }
-           
+
             this.notificationService.success(
               'Truck successfully changed',
               'Success:'
@@ -209,7 +209,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
   }
 
   public onTrackActions(event: any) {
-    console.log(event);
     switch (event.type) {
       case 'edit': {
         this.modalService.openModal(

@@ -6,11 +6,20 @@ table {
   tbody {
     display: flex;
 
-    .not-pined-border {
-      display: flex;
-      width: 3px;
-      background: #ff6a6a;
-      border: 1px solid #707070;
+    // Borders
+    .not-pined-border-left,
+    .not-pined-border-right {
+      width: 4px;
+      height: 32px;
+      background: white;
+    }
+
+    .not-pined-border-left {
+      background-image: linear-gradient(to right, #eeeeee, #F7F7F700);
+    }
+
+    .not-pined-border-right {
+      background-image: linear-gradient(to right, #F7F7F700, #eeeeee);
     }
 
     .not-pined-tr {
@@ -24,7 +33,7 @@ table {
       }
 
       &::-webkit-scrollbar-thumb {
-        background-color: #ff6a6a;
+        background-color: #CCCCCC;
         border: 6px solid #eeeeee;
         border-radius: 1px;
       }
@@ -72,7 +81,7 @@ table {
       height: 32px;
       background: white;
       display: flex;
-
+      // Columns
       .columns-container {
         width: 100%;
         height: 100%;
@@ -899,6 +908,61 @@ table {
                 background: #6c6c6c20;
               }
             }
+
+            // DROPDOWN
+            .table-dropdown-container {
+              width: 30px;
+              height: 28px;
+              background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown.svg");
+              background-repeat: no-repeat;
+              background-position: center;
+              cursor: pointer;
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown-hover.svg");
+              }
+            }
+
+            // PROGGRESS BAR
+            .table-progress-cotnainer {
+              display: flex;
+              align-items: center;
+
+              .table-progress-bar-container {
+                background: #e5e5e5;
+                border-radius: 3px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                user-select: none;
+                height: 20px;
+                width: 24px;
+                display: flex;
+                overflow: hidden;
+                line-height: 0;
+                font-size: 14px;
+
+                .table-progress-bar {
+                  text-align: left;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  white-space: nowrap;
+                }
+              }
+
+              .table-progress-text {
+                display: flex;
+                margin-left: 4px;
+                font-size: 14px;
+                font-weight: 400;
+                color: #6c6c6c;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
+              }
+            }
           }
         }
       }
@@ -906,7 +970,7 @@ table {
   }
 }
 
-/* Show More */
+// SHOW MORE
 .show-more-container {
   width: 100%;
   height: 18px;
@@ -941,22 +1005,29 @@ table {
   }
 }
 
-/* Global Style */
+// GLOBAL STYLE
 .set-center {
   justify-content: center;
 }
 
-// NG CLASS
-.regular-columns-hover {
-  background: #f7f7f7 !important;
+// PROGRESS COLOR CLASSES
+.bg-progress-muted {
+  background: #b7b7b7;
 }
 
-.border-inactive {
-  border-right: 3px solid white;
-  border-left: 3px solid white;
+.bg-progress-sliver {
+  background: #919191;
 }
 
-/* Action Animations */
+.bg-progress-orange {
+  background: #ffbd4a;
+}
+
+.bg-progress-danger {
+  background: #f87566;
+}
+
+// ACTION ANIMATION
 .add-animation {
   background: green !important;
   transition: 0.4s;
@@ -970,4 +1041,22 @@ table {
 .delete-animation {
   background: red !important;
   transition: 0.4s;
+}
+
+// NG CLASS
+.regular-columns-hover {
+  background: #f7f7f7 !important;
+}
+
+.border-inactive {
+  border-right: 4px solid white;
+  border-left: 4px solid white;
+}
+
+.active-drop {
+  background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select.svg") !important;
+
+  &:hover {
+    background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select-hover.svg") !important;
+  }
 }

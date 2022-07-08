@@ -14,7 +14,9 @@
 export interface CompanyContactLabelResponse { 
     id?: number;
     name?: string | null;
+    colorId?: number;
     color?: string | null;
+    code?: string | null;
     createdAt?: string;
     updatedAt?: string;
 }
