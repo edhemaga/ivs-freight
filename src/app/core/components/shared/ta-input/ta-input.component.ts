@@ -541,6 +541,24 @@ export class TaInputComponent
       return false;
     }
 
+    if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+
+        if (
+          this.getSuperControl.value * 10 + event.charCode - 48 >
+          this.inputConfig.max
+        ) {
+          return false;
+        }
+
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
     if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[A-Za-z .,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
         this.disableConsecutivelySpaces(event);

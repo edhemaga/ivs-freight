@@ -15,6 +15,9 @@ export enum InputSwitchActions {
   PERMIT = 'PERMIT',
   HAZMAT_SPILL = 'HAZMAT-SPILL',
 
+  VALID_HOS = 'isValidHos',
+  VALID_ANOTHER_EMPLOYER = 'isValidAnotherEmployer',
+
   FIRST_DISCLOSURE = 'isFirstDisclosure',
   SECOND_DISCLOSURE = 'isSecondDisclosure',
   THIRD_DISCLOSURE = 'isThirdDisclosure',

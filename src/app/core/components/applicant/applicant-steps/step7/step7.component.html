@@ -1,5 +1,5 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="step-title text-center noselect ta-font-bold">7 Days HOS</h1>
+  <h1 class="m-0 step-title text-center noselect ta-font-bold">7 Days HOS</h1>
 
   <!-- INSTRUCTIONS -->
 
@@ -24,7 +24,7 @@
 
   <!-- FORM SECTION -->
 
-  <div class="d-flex flex-column form-section">
+  <div class="d-flex flex-column justify-content-center form-section">
     <form [formGroup]="sevenDaysHosForm">
       <!-- SEVEN DAYS HOS TABLE -->
 
@@ -46,8 +46,9 @@
                 <div
                   class="d-flex day-box"
                   [ngStyle]="{
+                    width: first ? '35px' : '46px',
                     'justify-content': first ? 'start' : 'center',
-                    'margin-right': last ? '0' : '12px'
+                    'margin-right': first ? '27px' : last ? '0' : '35px'
                   }"
                 >
                   <p class="m-0 ta-font-bold">
@@ -71,8 +72,9 @@
                 <div
                   class="d-flex date-box"
                   [ngStyle]="{
+                    width: first ? '35px' : '46px',
                     'justify-content': first ? 'start' : 'center',
-                    'margin-right': last ? '0' : '12px',
+                    'margin-right': first ? '27px' : last ? '0' : '35px',
                     'font-size': first ? '14px' : '12px'
                   }"
                 >
@@ -98,7 +100,7 @@
                   trackBy: trackByIdentity
                 "
               >
-                <div class="d-flex justify-content-center align-items-center">
+                <div class="d-flex">
                   <div class="hos-input-group" [formGroupName]="i">
                     <app-ta-input
                       formControlName="hos"
@@ -108,7 +110,8 @@
                         hideClear: true,
                         textAlign: 'center',
                         max: 24,
-                        hideErrorMessage: true
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true
                       }"
                       (change)="countTotalHours(i)"
                     ></app-ta-input>
@@ -143,26 +146,38 @@
       <!-- VALID HOS  -->
 
       <div
-        class="d-flex text-center justify-content-center valid-hos-container"
+        class="d-flex flex-column align-items-center justify-content-center valid-hos-container"
       >
         <app-ta-checkbox
           formControlName="isValidHos"
           [name]="'isValidHos'"
           [label]="
-            'I hereby certify that the information given above is correct to the best of my Knowledge and behalf, and that I was released from work on:'
+            'I hereby certify that the information given above is correct to the best of my Knowledge '
           "
+          [customClass]="'bold-12'"
         >
         </app-ta-checkbox>
+        <p
+          class="m-0 text-center ta-font-bold"
+          [ngStyle]="{
+            color: sevenDaysHosForm.get('isValidHos').value
+              ? '#6c6c6c'
+              : '#919191'
+          }"
+          (click)="handleCheckboxParagraphClick('isValidHos')"
+        >
+          and behalf, and that I was released from work on:
+        </p>
       </div>
 
-      <h3 class="step-subtitle noselect text-center ta-font-bold">
+      <h3 class="m-0 step-subtitle noselect text-center ta-font-bold">
         Date released from work and location?
       </h3>
 
       <!-- DATE, LOCATION -->
 
-      <div class="d-flex justify-content-center">
-        <div class="form-label-group date-group">
+      <div class="d-flex date-location-container">
+        <div class="group date-group">
           <app-ta-input
             formControlName="startDate"
             [inputConfig]="{
@@ -175,7 +190,7 @@
             }"
           ></app-ta-input>
         </div>
-        <div class="form-label-group location-group">
+        <div class="group location-group">
           <app-ta-input-address
             formControlName="address"
             [inputConfig]="{
@@ -204,7 +219,7 @@
       <!-- INSTRUCTIONS -->
 
       <div
-        class="d-flex flex-column justify-content-center align-items-center instructions-container"
+        class="d-flex justify-content-center align-items-center instructions-bottom-container"
       >
         <p class="m-0 text-center ta-font-regular">
           <span class="ta-font-bold">Instructions:</span> When employed by motor
@@ -229,7 +244,7 @@
             trackBy: trackByIdentity
           "
         >
-          <div class="title-box">
+          <div [ngClass]="['title-box' + i, 'title-box']">
             <p class="m-0 ta-font-regular">
               {{ question.title }}
               <span class="required-star">*</span>
@@ -258,29 +273,59 @@
       <!-- VALID ANOTHER EMPLOYER  -->
 
       <div
-        class="d-flex justify-content-center valid-another-employer-container"
+        class="d-flex flex-column align-items-center justify-content-center valid-another-employer-container"
       >
         <app-ta-checkbox
           formControlName="isValidAnotherEmployer"
           [name]="'isValidAnotherEmployer'"
           [label]="
-            'I hereby certify that the information given above is true and I understand that once I'
+            'I hereby certify that the information given above is true and I understand that once I begin'
           "
+          [customClass]="'bold-12'"
         >
-          <!--   begin driving for this company, if I begin working for any
-            additional employer(s) for compensation that I must inform this
-            company immediately of such employment activity. -->
         </app-ta-checkbox>
+        <p
+          class="m-0 text-center ta-font-bold"
+          [ngStyle]="{
+            color: sevenDaysHosForm.get('isValidAnotherEmployer').value
+              ? '#6c6c6c'
+              : '#919191'
+          }"
+          (click)="handleCheckboxParagraphClick('isValidAnotherEmployer')"
+        >
+          driving for this company, if I begin working for any additional
+          employer(s) for compensation that
+        </p>
+        <p
+          class="m-0 text-center ta-font-bold"
+          [ngStyle]="{
+            color: sevenDaysHosForm.get('isValidAnotherEmployer').value
+              ? '#6c6c6c'
+              : '#919191'
+          }"
+          (click)="handleCheckboxParagraphClick('isValidAnotherEmployer')"
+        >
+          I must inform this company immediately of such employment activity.
+        </p>
       </div>
-
-      <!-- NEXT, BACK STEP -->
-
-      <app-applicant-next-step
-        (stepEvent)="onStepAction($event)"
-        [isReview]="selectedMode == 'REVIEW_MODE'"
-      ></app-applicant-next-step>
     </form>
   </div>
+</div>
+
+<!-- NEXT BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+</div>
+
+<!-- BACK BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center back-btn-container"
+>
+  <app-applicant-next-back-btn [backStep]="true"></app-applicant-next-back-btn>
 </div>
 
 <!-- CONFIRM ALL REVIEW -->

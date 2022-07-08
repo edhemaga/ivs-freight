@@ -101,7 +101,7 @@
             <div class="radios-box">
               <app-ta-input-radiobuttons
                 [buttons]="question.answerChoices"
-                (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+                (changedValue)="handleInputSelect($event)"
               ></app-ta-input-radiobuttons>
             </div>
           </div>
@@ -380,7 +380,7 @@
               borderRadius="2px"
               fontSize="11px"
               fontWeight="bold"
-              (click)="onDeleteWorkExperience(i)"
+              (click)="onDeleteContact(i)"
             ></svg-icon>
           </div>
         </div>

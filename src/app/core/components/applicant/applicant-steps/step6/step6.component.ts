@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 import { isFormValueEqual } from '../../state/utils/utils';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { Applicant } from '../../state/model/applicant.model';
 import {
@@ -230,25 +229,17 @@ export class Step6Component implements OnInit, OnDestroy {
     });
   }
 
-  public handleInputSelect(event: any, action: string): void {
-    switch (action) {
-      case InputSwitchActions.ANSWER_CHOICE:
-        const selectedCheckbox = event.find(
-          (radio: { checked: boolean }) => radio.checked
-        );
+  public handleInputSelect(event: any): void {
+    const selectedCheckbox = event.find(
+      (radio: { checked: boolean }) => radio.checked
+    );
 
-        const selectedFormControlName =
-          this.questions[selectedCheckbox.index].formControlName;
+    const selectedFormControlName =
+      this.questions[selectedCheckbox.index].formControlName;
 
-        this.educationForm
-          .get(selectedFormControlName)
-          .patchValue(selectedCheckbox.label);
-
-        break;
-
-      default:
-        break;
-    }
+    this.educationForm
+      .get(selectedFormControlName)
+      .patchValue(selectedCheckbox.label);
   }
 
   public onAddContact(): void {
@@ -270,7 +261,7 @@ export class Step6Component implements OnInit, OnDestroy {
     this.inputResetService.resetInputSubject.next(true);
   }
 
-  public onDeleteWorkExperience(index: number): void {
+  public onDeleteContact(index: number): void {
     if (this.isEditing) {
       return;
     }
@@ -417,7 +408,6 @@ export class Step6Component implements OnInit, OnDestroy {
     //         : undefined,
     // });
   }
-
   public onSubmitForm(): void {
     /*  this.shared.clearNotifications();
 
