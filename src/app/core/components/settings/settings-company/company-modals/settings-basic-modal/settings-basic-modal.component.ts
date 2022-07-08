@@ -212,16 +212,17 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     if (this.editData.type === 'new-division') {
     } else {
       if (this.editData.company?.divisions.length) {
+        console.log(this.editData);
         this.companyForm.patchValue({
           // -------------------- Basic Tab
           name: this.editData.company.name,
-          usdot: this.editData.company.usdot,
+          usDot: this.editData.company.usDot,
           ein: this.editData.company.ein,
           mc: this.editData.company.mc,
           phone: this.editData.company.phone,
           email: this.editData.company.email,
           fax: this.editData.company.fax,
-          webURL: this.editData.company.webURL,
+          webUrl: this.editData.company.webUrl,
           address: this.editData.company.address.address,
           addressUnit: this.editData.company.address.addressUnit,
           irp: this.editData.company.irp,
@@ -302,13 +303,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     this.companyForm = this.formBuilder.group({
       // Basic Tab
       name: [null, Validators.required],
-      usdot: [null, Validators.required],
+      usDot: [null, Validators.required],
       ein: [null, einNumberRegex],
       mc: [null, Validators.maxLength(8)],
       phone: [null, phoneRegex],
       email: [null, emailRegex],
       fax: [null],
-      webURL: [null],
+      webUrl: [null],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       irp: [null],

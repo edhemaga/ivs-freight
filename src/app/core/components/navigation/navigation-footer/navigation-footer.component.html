@@ -17,11 +17,11 @@
 
     <div *ngIf="isActiveFooterRoute(item)" class="nav-item-active-box"></div>
 
-    <svg-icon
+    <img
       class="nav-footer-image"
       [ngClass]="{ 'nav-footer-image-user': ind === 2 }"
       src="{{ item.image }}"
-    ></svg-icon>
+    />
     <div
       class="nav-footer-rightSide"
       [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
@@ -37,8 +37,8 @@
         class="nav-footer-user"
         *ngIf="(item.text | userData) && isNavigationHovered"
       >
-        <p class="nav-footer-user-company">IVS FREIGHT INC</p>
-        <p class="nav-footer-user-name">Ivan Stoiljkovic</p>
+        <p class="nav-footer-user-company">{{ item.text.companyName }}</p>
+        <p class="nav-footer-user-name">{{ item.text.userName }}</p>
       </div>
     </div>
     <div
