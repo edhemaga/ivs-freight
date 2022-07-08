@@ -118,7 +118,7 @@ export class TaInputComponent
 
     // Dropdown add mode
     if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
-      this.inputService.dropdownAddModeSubject$
+      this.inputService.dropdownAddMode$
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
           if (action) {
@@ -132,7 +132,6 @@ export class TaInputComponent
       this.inputService.dropDownItemSelectedOnEnter$
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
-          console.log('SELECT ON ENTER');
           if (action) {
             this.dropdownToggler = false;
             this.input.nativeElement.blur();
@@ -370,7 +369,7 @@ export class TaInputComponent
     this.setInputCursorAtTheEnd(this.input.nativeElement);
   }
 
-  public setInputCursorAtTheEnd(input: any): void {
+  public setInputCursorAtTheEnd(input: any, time: number = 120): void {
     const selectionEnd = input.selectionEnd;
     if (input.setSelectionRange) {
       input.setSelectionRange(selectionEnd, selectionEnd);
@@ -378,7 +377,7 @@ export class TaInputComponent
     const timeout = setTimeout(() => {
       input.focus();
       clearTimeout(timeout);
-    }, 120);
+    }, time);
   }
 
   public onKeyUp(event): void {
@@ -507,7 +506,6 @@ export class TaInputComponent
             break;
           }
           case 'cancel': {
-            // this.getSuperControl.patchValue(null);
             this.inputCommandEvent.emit('cancel');
             break;
           }
@@ -874,7 +872,6 @@ export class TaInputComponent
 
   setSpanSelection(element) {
     var range, selection;
-    console.log('seet span selection');
 
     if (window.getSelection && document.createRange) {
       selection = window.getSelection();

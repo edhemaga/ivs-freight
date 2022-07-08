@@ -17,6 +17,7 @@ export interface ReviewResponse {
     id?: number;
     companyUser?: CompanyUserShortResponse;
     entityTypeReview?: EntityTypeReview;
+    ratingFromTheReviewer?: number | null;
     comment?: string | null;
     createdAt?: string;
     updatedAt?: string;

@@ -19,7 +19,7 @@ export class TaInputService {
   public dropDownItemSelectedOnEnter$: Subject<boolean> =
     new Subject<boolean>();
 
-  public dropdownAddModeSubject$: Subject<boolean> = new Subject<boolean>();
+  public dropdownAddMode$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     public notificationService: NotificationService,

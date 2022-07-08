@@ -1,4 +1,3 @@
-
 import { FormControl } from '@angular/forms';
 import {
   Component,
@@ -96,7 +95,6 @@ export class TruckDetailsItemComponent implements OnInit {
   /**Function for toggle page in cards */
   public toggleResizePage(value: number) {
     this.toggler[value] = !this.toggler[value];
-    console.log(this.toggler);
   }
 
   public optionsEvent(any: any, action: string) {

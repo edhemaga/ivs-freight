@@ -22,28 +22,27 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() isVisibleSecondDivider: boolean = true;
 
   @Input('isVisibleNote') set isVisibleNote(value: any) {
-    console.log(this._isVisibleNote);
-      this._isVisibleNote = value ? true : null
+    this._isVisibleNote = value ? true : null;
   }
 
   @Input() isVisibleArrow: boolean = true;
   @Input() minRows: number = 2;
   @Input() maxRows: number = 5;
-  @Input() placeholder: string = "Write a note."
+  @Input() placeholder: string = 'Write a note.';
   @Input() isReadOnly: boolean = false;
   @Input() customClass: string = null;
 
   @ViewChild('note', { static: true }) noteRef: ElementRef;
   @ViewChild('noteBody', { static: true }) noteBody: ElementRef;
 
-  constructor(@Self() public superControl: NgControl, private renderer: Renderer2) {
+  constructor(
+    @Self() public superControl: NgControl,
+    private renderer: Renderer2
+  ) {
     this.superControl.valueAccessor = this;
   }
 
-  ngOnInit() {
-    console.log("--------------------------------------------");
-    console.log(this._isVisibleNote);
-  }
+  ngOnInit() {}
 
   get getSuperControl() {
     return this.superControl.control;
@@ -60,7 +59,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
 
   public registerOnTouched(fn: any): void {}
 
-  public openNote(){
+  public openNote() {
     this._isVisibleNote = !this._isVisibleNote;
   }
 }

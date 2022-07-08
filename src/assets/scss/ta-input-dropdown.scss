@@ -56,7 +56,6 @@
         &.dropdown-option-hovered {
           background-color: #f3f3f3;
           color: #3c3c3c;
-          transition: all 0.2s ease-out;
 
           .svg-template-logo,
           .svg-template-grayscale {
@@ -334,7 +333,7 @@
       &.w-col-details-template-big {
         width: 366px;
       }
-      &.w-col-details-template-big-company{
+      &.w-col-details-template-big-company {
         width: 512px;
       }
       &.w-col-details-template-small {

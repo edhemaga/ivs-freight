@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -8,17 +7,19 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { v4 as uuidv4 } from 'uuid';
 import {
+  AccountColorResponse,
+  CompanyAccountModalResponse,
   CompanyAccountResponse,
   CreateCompanyAccountCommand,
-  GetCompanyAccountLabelListResponse,
+  CreateResponse,
   UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
 import { AccountModalService } from './account-modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { urlRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
@@ -32,12 +33,17 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
 
   public accountForm: FormGroup;
+
   public accountLabels: any[] = [];
-  public selectedAccountLabel: any = {
+  public selectedAccountLabel: any = null;
+  public sendAccountLabelId: any = null;
+
+  public colors: any[] = [];
+  public selectedAccountColor: any = {
     id: 1,
     name: 'No Color',
     color: null,
-    count: null,
+    count: 0,
   };
 
   public isDirty: boolean;
@@ -53,14 +59,14 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    this.getAccountLabels();
     this.companyAccountModal();
+    this.companyAccountColorLabels();
 
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 1,
+        id: 2,
       };
       this.editCompanyAccount(this.editData.id);
     }
@@ -71,7 +77,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required, Validators.maxLength(23)]],
       username: [null, [Validators.required, Validators.maxLength(40)]],
       password: [null, [Validators.required, Validators.maxLength(20)]],
-      url: [null, [Validators.required, ...urlRegex]],
+      url: [null, [Validators.required]],
       companyAccountLabelId: [null],
       note: [null],
     });
@@ -124,24 +130,26 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       .companyAccountModal()
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: (res: any) => {
-          console.log('MODAL');
-          console.log(res);
+        next: (res: CompanyAccountModalResponse) => {
+          this.accountLabels = res.labels;
         },
       });
   }
 
-  private getAccountLabels(): void {
+  private companyAccountColorLabels() {
     this.accountModalService
-      .companyAccountLabelsList()
+      .companyAccountLabelsColorList()
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: (res: GetCompanyAccountLabelListResponse) => {
-          console.log('LISTA');
-          console.log(res.pagination.data);
-          this.accountLabels = res.pagination.data;
+        next: (res: Array<AccountColorResponse>) => {
+          this.colors = res;
         },
-        error: () => {},
+        error: () => {
+          this.notificationService.error(
+            "Can't get account color labels.",
+            'Error:'
+          );
+        },
       });
   }
 
@@ -174,7 +182,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.selectedAccountLabel
+      companyAccountLabelId: this.sendAccountLabelId
+        ? this.sendAccountLabelId
+        : this.selectedAccountLabel
         ? this.selectedAccountLabel.id
         : null,
     };
@@ -203,7 +213,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.selectedAccountLabel
+      companyAccountLabelId: this.sendAccountLabelId
+        ? this.sendAccountLabelId
+        : this.selectedAccountLabel
         ? this.selectedAccountLabel.id
         : null,
     };
@@ -249,14 +261,54 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onSelectColorLabel(event: any): void {
+  public onPickExistLabel(event: any) {
     this.selectedAccountLabel = event;
   }
 
-  public onSaveLabel(event: string) {
-    console.log('ACCOUNT MODAL');
-    console.log(this.accountForm.get('companyAccountLabelId').value);
-    console.log(event, this.selectedAccountLabel);
+  public onSelectColorLabel(event: any): void {
+    this.selectedAccountColor = event;
+  }
+
+  public onSaveLabel(data: { action: string; label: string }) {
+    if (data.action === 'cancel') {
+      this.selectedAccountLabel = {
+        name: data.label,
+        color: this.selectedAccountColor.name,
+        count: this.selectedAccountColor.count,
+        createdAt: null,
+        updatedAt: null,
+      };
+      return;
+    }
+    this.selectedAccountLabel = {
+      id: uuidv4(),
+      name: data.label,
+      color: this.selectedAccountColor.name,
+      count: this.selectedAccountColor.count,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    this.accountLabels = [...this.accountLabels, this.selectedAccountLabel];
+
+    this.accountModalService
+      .addCompanyLabel({
+        name: data.label,
+        colorId: this.selectedAccountColor.id,
+      })
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: CreateResponse) => {
+          this.sendAccountLabelId = res.id;
+          this.notificationService.success(
+            'Successfully add account label.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Can't add account label.", 'Error:');
+        },
+      });
   }
 
   ngOnDestroy(): void {}

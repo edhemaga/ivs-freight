@@ -319,11 +319,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   public createReview(event: any) {
     if (
-      this.reviews.some((item) => item.isNewReview) &&
-      !this.disableOneMoreReview
+      this.reviews.some((item) => item.isNewReview) ||
+      this.disableOneMoreReview
     ) {
       return;
     }
+
     // ------------------------ PRODUCTION MODE -----------------------------
     // this.reviews.unshift({
     //   companyUser: {
@@ -664,8 +665,16 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 : 'assets/svg/common/ic_profile.svg',
             },
             commentContent: item.comment,
-            rating: reasponse.currentCompanyUserRating,
+            rating: item.ratingFromTheReviewer,
           }));
+
+          const reviewIndex = this.reviews.findIndex(
+            (item) => item.companyUser.id === this.editData.id
+          );
+
+          if (reviewIndex !== -1) {
+            this.disableOneMoreReview = true;
+          }
 
           this.taLikeDislikeService.populateLikeDislikeEvent({
             downRatingCount: reasponse.downRatingCount,

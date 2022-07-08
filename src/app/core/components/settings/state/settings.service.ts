@@ -6,21 +6,24 @@ import { SettingsParkingModalComponent } from './../settings-location/location-m
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
 import { SettingsStore } from './settings.store';
 import { SettingsBasicModalComponent } from '../settings-company/company-modals/settings-basic-modal/settings-basic-modal.component';
 import { SettingsInsurancePolicyModalComponent } from '../settings-company/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
 import { SettingsFactoringModalComponent } from '../settings-company/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { CompanyResponse, CompanyService } from 'appcoretruckassist';
+import {
+  CompanyModalResponse,
+  CompanyResponse,
+  CompanyService,
+  UpdateCompanyCommand,
+} from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsStoreService {
   constructor(
     private settingsStore: SettingsStore,
     private modalService: ModalService,
-    private settingCompanyService: CompanyService,
-    private http: HttpClient
+    private settingCompanyService: CompanyService
   ) {}
 
   /**
@@ -29,7 +32,11 @@ export class SettingsStoreService {
    * @param modalName - modal name
    * @param action - type of tab-switcher to be active
    */
-  public onModalAction(data: { modalName: string; action?: string }) {
+  public onModalAction(data: {
+    modalName: string;
+    action?: string;
+    company?: any;
+  }) {
     switch (data.modalName) {
       case 'basic': {
         this.modalService.openModal(
@@ -39,6 +46,7 @@ export class SettingsStoreService {
           },
           {
             type: data.action,
+            company: data.company,
           }
         );
         break;
@@ -84,10 +92,20 @@ export class SettingsStoreService {
     }
   }
 
- 
+  // Main Company
+  public updateCompany(data: UpdateCompanyCommand): Observable<object> {
+    return this.settingCompanyService.apiCompanyPut(data);
+  }
+
   public getCompany(): Observable<CompanyResponse> {
     return this.settingCompanyService.apiCompanyGet();
   }
+
+  public getCompanyModal(): Observable<CompanyModalResponse> {
+    return this.settingCompanyService.apiCompanyModalGet();
+  }
+
+  // Division Company
   public getCompanyDivisionById(id: number): Observable<any> {
     return this.settingCompanyService.apiCompanyDivisionIdGet(id);
   }
