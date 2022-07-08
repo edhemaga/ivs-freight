@@ -170,6 +170,13 @@
             <p
               class="m-0 ta-font-regular d-inline-block text-truncate"
               style="max-width: 123px"
+              [appTooltip]="violation.violationLocation"
+              tooltipColor="#FFFFFF"
+              tooltipBackground="#6C6C6C"
+              position="bottom-right"
+              borderRadius="2px"
+              fontSize="11px"
+              fontWeight="bold"
             >
               {{ violation.violationLocation }}
             </p>

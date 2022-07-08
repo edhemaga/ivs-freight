@@ -48,8 +48,7 @@ export class Step5Component implements OnInit, OnDestroy {
       violationDate: '21/20/19',
       truckType: 'Cargo Van',
       violationLocation: 'Chicago, IL 25002',
-      violationDescription:
-        'Lorem ipsum dolor sit ametblabla Lorem ipsum dolor sit ametblablaLorem ipsum dolor sit ametblablaLorem ipsum dolor sit ametblabla Lorem ipsum dolor sit ametblablaLorem ipsum dolor sit ametblabla',
+      violationDescription: 'Lorem ipsum dolor sit ametblabla',
     },
   ];
 
