@@ -14,6 +14,7 @@
 export interface ContactColorResponse { 
     id?: number;
     name?: string | null;
+    code?: string | null;
     count?: number;
 }
 
