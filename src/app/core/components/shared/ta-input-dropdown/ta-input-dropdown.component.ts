@@ -128,9 +128,9 @@ export class TaInputDropdownComponent
 
     // Search
     this.getSuperControl.valueChanges
-      .pipe(untilDestroyed(this))
-      .subscribe((term) => {
-        this.search(term);
+      .pipe(debounceTime(50), untilDestroyed(this))
+      .subscribe((searchText) => {
+        this.search(searchText);
       });
 
     // Clear Input
@@ -262,21 +262,21 @@ export class TaInputDropdownComponent
       });
   }
 
-  private search(term: string): void {
+  private search(searchText: string): void {
     // Single Dropdown
     if (this.template !== 'groups') {
       if (
-        term?.length &&
+        searchText?.length &&
         this.getSuperControl.value &&
-        this.activeItem?.name !== this.getSuperControl.value
+        this.activeItem.name !== this.getSuperControl.value
       ) {
         this.options = this.originalOptions.filter((item) =>
           item.name
-            ? item.name.toLowerCase().includes(term.toLowerCase())
+            ? item.name.toLowerCase().includes(searchText.toLowerCase())
             : item.code
                 .concat(' - ', item.description)
                 .toLowerCase()
-                .includes(term.toLowerCase())
+                .includes(searchText.toLowerCase())
         );
 
         if (!this.options.length && !this.canAddNew) {
@@ -299,7 +299,7 @@ export class TaInputDropdownComponent
     // Group Dropdown Items
     else {
       if (
-        term?.length &&
+        searchText?.length &&
         this.activeItem?.name !== this.getSuperControl.value
       ) {
         this.options = this.originalOptions
@@ -307,7 +307,7 @@ export class TaInputDropdownComponent
             return {
               ...element,
               groups: element.groups.filter((subElement) =>
-                subElement.name.toLowerCase().includes(term.toLowerCase())
+                subElement.name.toLowerCase().includes(searchText.toLowerCase())
               ),
             };
           })
