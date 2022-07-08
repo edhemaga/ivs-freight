@@ -1,12 +1,23 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+import { Subscription } from 'rxjs';
+
+import { isFormValueEqual } from '../../state/utils/utils';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Applicant } from '../../state/model/applicant.model';
 import { TruckType } from '../../state/model/truck-type.model';
 import { Address } from '../../state/model/address.model';
-import { Violation, ViolationInfo } from '../../state/model/violations.model';
+import {
+  Violation,
+  ViolationInfo,
+  ViolationModel,
+} from '../../state/model/violations.model';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 @Component({
   selector: 'app-step5',
@@ -15,38 +26,58 @@ import { Violation, ViolationInfo } from '../../state/model/violations.model';
 })
 export class Step5Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.APPLICANT;
+
   public applicant: Applicant | undefined;
 
-  public violationsForm: FormGroup;
-  public violationFormArray: Violation[] = [];
-  public violationInfo: ViolationInfo | undefined;
+  private subscription: Subscription;
 
-  public licenseFormArray: any[] = [
+  public trafficViolationsForm: FormGroup;
+  public notBeenConvictedForm: FormGroup;
+  public onlyOneHoldLicenseForm: FormGroup;
+  public certifyForm: FormGroup;
+
+  public violationsForm: FormGroup;
+  public violationsArray: ViolationModel[] = [
     {
-      active: true,
-      license: '234234',
-      country: 'US',
-      state: 'Ohio',
-      classData: 'A',
-      expDate: '19/02/21',
-      endorsments: [],
-      restrictions: [],
+      violationDate: '01/20/19',
+      truckType: 'Cargo Van',
+      violationLocation: 'Chicago, IL 25002',
+      violationDescription: 'Lorem ipsum dolor sit ametblabla',
+    },
+    {
+      violationDate: '21/20/19',
+      truckType: 'Cargo Van',
+      violationLocation: 'Chicago, IL 25002',
+      violationDescription:
+        'Lorem ipsum dolor sit ametblabla Lorem ipsum dolor sit ametblablaLorem ipsum dolor sit ametblablaLorem ipsum dolor sit ametblabla Lorem ipsum dolor sit ametblablaLorem ipsum dolor sit ametblabla',
     },
   ];
 
+  public isEditing: boolean = false;
+  public isViolationEdited: boolean = false;
+
   public truckType: TruckType[] = [];
 
+  public selectedViolationIndex: number;
   public selectedTruckType: any = null;
   public selectedAddress: Address = null;
 
+  //
+
+  /* public violationFormArray: Violation[] = []; */
+
+  public violationInfo: ViolationInfo | undefined;
+
   public editViolation: number = -1;
 
-  public trackByIdentity = (index: number, item: any): number => index;
-
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private inputResetService: TaInputResetService
+  ) {}
 
   ngOnInit(): void {
-    this.formInit();
+    this.createForm();
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -55,17 +86,45 @@ export class Step5Component implements OnInit, OnDestroy {
     }
   }
 
-  public formInit(): void {
+  public trackByIdentity = (index: number, item: any): number => index;
+
+  public createForm(): void {
+    this.trafficViolationsForm = this.formBuilder.group({
+      noViolationsForPastTwelveMonths: [false],
+    });
+
+    this.notBeenConvictedForm = this.formBuilder.group({
+      notBeenConvicted: [false, Validators.required],
+    });
+
+    this.onlyOneHoldLicenseForm = this.formBuilder.group({
+      onlyOneHoldLicense: [false, Validators.required],
+    });
+
+    this.certifyForm = this.formBuilder.group({
+      certify: [false, Validators.required],
+    });
+
     this.violationsForm = this.formBuilder.group({
-      noViolationsForPastTwelveMonths: [false, Validators.requiredTrue],
-      notBeenConvicted: [false, Validators.requiredTrue],
-      onlyOneHoldLicense: [false, Validators.requiredTrue],
       violationDate: [null, Validators.required],
       truckType: [null, Validators.required],
       violationLocation: [null, Validators.required],
       violationDescription: [null, Validators.required],
-      certify: [null, Validators.requiredTrue],
     });
+  }
+
+  public handleCheckboxParagraphClick(type: string) {
+    if (type === 'notBeenConvicted') {
+      this.violationsForm.patchValue({
+        notBeenConvicted: !this.violationsForm.get('notBeenConvicted').value,
+      });
+    }
+
+    if (type === 'certify') {
+      this.violationsForm.patchValue({
+        certify: !this.violationsForm.get('certify').value,
+      });
+    }
   }
 
   public handleInputSelect(event: any, action: string): void {
@@ -90,9 +149,14 @@ export class Step5Component implements OnInit, OnDestroy {
   }
 
   public onAddViolation(): void {
-    /* this.shared.clearNotifications(); */
+    if (this.violationsForm.invalid) {
+      this.inputService.markInvalid(this.violationsForm);
+      return;
+    }
 
-    const violationForm = this.violationsForm.value;
+    this.inputResetService.resetInputSubject.next(true);
+
+    /*  const violationForm = this.violationsForm.value;
     const violation = new Violation();
 
     violation.violationLocation = violationForm.violationLocation;
@@ -105,55 +169,86 @@ export class Step5Component implements OnInit, OnDestroy {
     this.violationFormArray.push(violation);
 
     this.violationsForm.reset();
-    this.editViolation = -1;
-  }
-
-  public onUpdateViolation(): void {
-    /* this.shared.clearNotifications(); */
-
-    if (this.violationFormArray?.length) {
-      const violationForm = this.violationsForm.value;
-      const violation = new Violation(
-        this.violationFormArray[this.editViolation]
-      );
-
-      violation.violationLocation = violationForm.violationLocation;
-      violation.violationDate = violationForm.violationDate;
-      violation.violationDescription = violationForm.violationDescription;
-      violation.truckType = violationForm.truckType;
-
-      violation.isDeleted = false;
-
-      this.violationFormArray[this.editViolation] = violation;
-    }
-
-    this.violationsForm.reset();
-    this.editViolation = -1;
-  }
-
-  public onEditViolation(index: number): void {
-    this.violationsForm.patchValue({
-      violationDate: this.violationFormArray[index].violationDate,
-      truckType: this.violationFormArray[index].truckType,
-      violationLocation: this.violationFormArray[index].violationLocation,
-      violationDescription: this.violationFormArray[index].violationDescription,
-    });
-
-    this.editViolation = index;
+    this.editViolation = -1; */
   }
 
   public onDeleteViolation(index: number): void {
-    if (this.violationFormArray?.length && this.violationFormArray[index]) {
-      if (this.violationFormArray[index].id) {
-        this.violationFormArray[index].isDeleted = true;
-      } else {
-        this.violationFormArray.splice(index, 1);
-      }
+    if (this.isEditing) {
+      return;
     }
+
+    this.violationsArray.splice(index, 1);
+  }
+
+  public onEditViolation(index: number): void {
+    if (this.isEditing) {
+      return;
+    }
+
+    this.isViolationEdited = false;
+
+    this.isEditing = true;
+
+    this.selectedViolationIndex = index;
+
+    const selectedViolation = this.violationsArray[index];
+
+    this.violationsForm.patchValue({
+      violationDate: selectedViolation.violationDate,
+      truckType: selectedViolation.truckType,
+      violationLocation: selectedViolation.violationLocation,
+      violationDescription: selectedViolation.violationDescription,
+    });
+
+    this.subscription = this.violationsForm.valueChanges.subscribe(
+      (newFormValue) => {
+        if (isFormValueEqual(selectedViolation, newFormValue)) {
+          this.isViolationEdited = false;
+        } else {
+          this.isViolationEdited = true;
+        }
+      }
+    );
+  }
+
+  public onSaveEditedViolation(): void {
+    if (this.violationsForm.invalid) {
+      this.inputService.markInvalid(this.violationsForm);
+      return;
+    }
+
+    if (!this.isViolationEdited) {
+      return;
+    }
+
+    this.violationsArray[this.selectedViolationIndex] =
+      this.violationsForm.value;
+
+    this.isEditing = false;
+
+    this.isViolationEdited = false;
+
+    this.violationsForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
+  }
+
+  public onCancelEditAccident(): void {
+    this.isEditing = false;
+
+    this.isViolationEdited = false;
+
+    this.violationsForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
   }
 
   private formFilling(): void {
-    this.violationFormArray = this.violationInfo?.violations
+    /*  this.violationFormArray = this.violationInfo?.violations
       ? this.violationInfo?.violations
       : [];
 
@@ -175,7 +270,7 @@ export class Step5Component implements OnInit, OnDestroy {
       violationLocation: [null, Validators.required],
       violationDescription: [null, Validators.required],
       certify: [this.violationInfo?.certify, Validators.required],
-    });
+    }); */
   }
 
   public onSubmitForm(): void {
@@ -217,8 +312,7 @@ export class Step5Component implements OnInit, OnDestroy {
                 return false;
             }
         } */
-
-    const violationsForm = this.violationsForm.value;
+    /*    const violationsForm = this.violationsForm.value;
     const violationInfo = new ViolationInfo(this.violationInfo);
 
     violationInfo.violations = this.violationFormArray;
@@ -240,7 +334,7 @@ export class Step5Component implements OnInit, OnDestroy {
     violationInfo.certify = violationsForm.noViolationsForPastTwelveMonths
       ? false
       : violationsForm.certify;
-
+ */
     /*  this.apppEntityServices.ViolationService.upsert(
             violationInfo
         ).subscribe(

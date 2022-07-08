@@ -10,228 +10,230 @@
   <!-- FORM SECTION -->
 
   <div class="d-flex flex-column form-section">
-    <form [formGroup]="violationsForm">
-      <!-- PAST TWELVE MONTHS VIOLATIONS -->
+    <!-- PAST TWELVE MONTHS VIOLATIONS -->
+
+    <div
+      [formGroup]="trafficViolationsForm"
+      class="d-flex justify-content-center past-months-violations-container"
+    >
+      <app-ta-checkbox
+        formControlName="noViolationsForPastTwelveMonths"
+        [name]="'noViolationsForPastTwelveMonths'"
+        [label]="'No traffic violations for past 12 months'"
+        [customClass]="'bold-12'"
+      ></app-ta-checkbox>
+    </div>
+
+    <div
+      class="d-flex flex-column align-items-center"
+      *ngIf="
+        !trafficViolationsForm.get('noViolationsForPastTwelveMonths').value
+      "
+    >
+      <!-- NOT BEEN CONVICTED -->
 
       <div
-        class="d-flex justify-content-center past-monts-violations-container"
+        class="d-flex flex-column align-items-center justify-content-center not-been-convicted-container"
+        [formGroup]="notBeenConvictedForm"
       >
         <app-ta-checkbox
-          formControlName="noViolationsForPastTwelveMonths"
-          [name]="'noViolationsForPastTwelveMonths'"
-          [label]="'No traffic violations for past 12 months'"
-        ></app-ta-checkbox>
+          formControlName="notBeenConvicted"
+          [name]="'notBeenConvicted'"
+          [label]="
+            'I certify I have not been convicted or forfeited bond or collateral on account'
+          "
+          [customClass]="'bold-12'"
+        >
+        </app-ta-checkbox>
+        <p
+          class="m-0 ta-font-bold"
+          [ngStyle]="{
+            color: notBeenConvictedForm.get('notBeenConvicted').value
+              ? '#6c6c6c'
+              : '#919191'
+          }"
+          (click)="handleCheckboxParagraphClick('notBeenConvicted')"
+        >
+          of any violation required to be listed during the past 3 years.
+        </p>
       </div>
 
+      <!-- LICENSE -->
+
       <div
-        class="d-flex flex-column align-items-center"
-        *ngIf="!violationsForm.get('noViolationsForPastTwelveMonths').value"
+        class="d-flex flex-column justify-content-center license-view-container"
       >
-        <!-- NOT BEEN CONVICTED -->
-
-        <div class="flex justify-content-center not-been-convicted-container">
-          <app-ta-checkbox
-            formControlName="notBeenConvicted"
-            [name]="'notBeenConvicted'"
-            [label]="'I certify I have not been convicted or forfeited bond '"
-          >
-            <!-- or collateral on account of any violation required to be listed during the past 3 years. -->
-          </app-ta-checkbox>
-        </div>
-
-        <!-- LICENSE -->
-
-        <div class="d-flex flex-column license-view-container">
-          <div
-            class="d-flex-flex-column"
-            *ngFor="
-              let license of licenseFormArray;
-              let i = index;
-              trackBy: trackByIdentity
-            "
-          >
-            <div class="d-flex title-container">
-              <div class="d-flex justify-content-center license-title-box">
-                <p class="m-0 ta-font-bold">LICENSE #</p>
-              </div>
-              <div class="d-flex justify-content-center state-title-box">
-                <p class="m-0 ta-font-bold">STATE</p>
-              </div>
-              <div class="d-flex justify-content-center class-title-box">
-                <p class="m-0 ta-font-bold">CLASS</p>
-              </div>
-              <div class="d-flex justify-content-center date-title-box">
-                <p class="m-0 ta-font-bold">EXP. DATE</p>
-              </div>
-            </div>
-
-            <div class="d-flex justify-content-center license-info-container">
-              <div
-                class="d-flex justify-content-center align-items-center license-box"
-              >
-                <p class="m-0 ta-font-regular">
-                  {{ license.license }}
-                </p>
-              </div>
-              <div
-                class="d-flex justify-content-center align-items-center state-box"
-              >
-                <p class="m-0 ta-font-regular">
-                  {{ license.state }}
-                </p>
-              </div>
-              <div
-                class="d-flex justify-content-center align-items-center class-box"
-              >
-                <p class="m-0 ta-font-regular">
-                  {{ license.classData }}
-                </p>
-              </div>
-              <div
-                class="d-flex justify-content-center align-items-center date-box"
-              >
-                <p class="m-0 ta-font-regular">
-                  {{ license.expDate }}
-                </p>
-              </div>
-            </div>
+        <div class="d-flex align-items-center title-container">
+          <div class="d-flex align-items-center license-title-box">
+            <p class="m-0 ta-font-bold">LICENSE # <span>*</span></p>
+          </div>
+          <div class="d-flex align-items-center state-title-box">
+            <p class="m-0 ta-font-bold">STATE <span>*</span></p>
+          </div>
+          <div class="d-flex align-items-center class-title-box">
+            <p class="m-0 ta-font-bold">CLASS <span>*</span></p>
+          </div>
+          <div class="d-flex align-items-center date-title-box">
+            <p class="m-0 ta-font-bold">EXP. DATE <span>*</span></p>
           </div>
         </div>
 
-        <!-- ONLY LICENSE -->
-
-        <div class="d-flex justify-content-center only-license-container">
-          <app-ta-checkbox
-            formControlName="onlyOneHoldLicense"
-            [name]="'onlyOneHoldLicense'"
-            [label]="
-              'I further certify that the above license is the only one I hold.'
-            "
-          >
-          </app-ta-checkbox>
+        <div class="d-flex align-items-center license-info-container">
+          <div class="d-flex align-items-center license-box">
+            <p class="m-0 ta-font-regular">
+              <!--  {{ license.license }} -->
+              d263-540-92-166-0
+            </p>
+          </div>
+          <div class="d-flex align-items-center state-box">
+            <p class="m-0 ta-font-regular">
+              <!--     {{ license.stateId }} -->
+              al
+            </p>
+          </div>
+          <div class="d-flex align-items-center class-box">
+            <p class="m-0 ta-font-regular">
+              <!-- {{ license.classType }} -->
+              1234
+            </p>
+          </div>
+          <div class="d-flex align-items-center date-box">
+            <p class="m-0 ta-font-regular">
+              <!--    {{ license.expDate }} -->
+              01/19/20
+            </p>
+          </div>
         </div>
+      </div>
 
-        <!-- CREATED VIOLATIONS DATA -->
+      <!-- ONLY LICENSE -->
+
+      <div
+        class="d-flex justify-content-center only-license-container"
+        [formGroup]="onlyOneHoldLicenseForm"
+      >
+        <app-ta-checkbox
+          formControlName="onlyOneHoldLicense"
+          [name]="'onlyOneHoldLicense'"
+          [label]="
+            'I further certify that the above license is the only one I hold.'
+          "
+          [customClass]="'bold-12'"
+        >
+        </app-ta-checkbox>
+      </div>
+
+      <!-- CREATED VIOLATIONS DATA -->
+
+      <div
+        class="d-flex flex-column justify-content-center violations-view-container"
+        *ngIf="violationsArray.length"
+      >
+        <div class="d-flex align-items-center title-container">
+          <div class="d-flex align-items-center date-title-box">
+            <p class="m-0 ta-font-bold">DATE <span>*</span></p>
+          </div>
+          <div class="d-flex align-items-center vehicle-title-box">
+            <p class="m-0 ta-font-bold">VEHICLE TYPE <span>*</span></p>
+          </div>
+          <div class="d-flex align-items-center location-title-box">
+            <p class="m-0 ta-font-bold">LOCATION <span>*</span></p>
+          </div>
+          <div class="d-flex align-items-center description-title-box">
+            <p class="m-0 ta-font-bold">
+              DESCRIPTION OF VIOLATION <span>*</span>
+            </p>
+          </div>
+        </div>
 
         <div
-          class="d-flex flex-column violations-view-container"
-          *ngIf="violationFormArray?.length"
+          class="d-flex align-items-center violation-info-container"
+          *ngFor="
+            let violation of violationsArray;
+            let i = index;
+            trackBy: trackByIdentity
+          "
         >
-          <div class="d-flex flex-column">
-            <div class="d-flex title-container">
-              <div class="d-flex align-items-center date-title-box">
-                <p class="m-0 ta-font-bold">DATE</p>
-              </div>
-              <div class="d-flex align-items-center vehicle-title-box">
-                <p class="m-0 ta-font-bold">VEHICLE TYPE</p>
-              </div>
-              <div class="d-flex align-items-center location-title-box">
-                <p class="m-0 ta-font-bold">LOCATION</p>
-              </div>
-              <div class="d-flex align-items-center description-title-box">
-                <p class="m-0 ta-font-bold">DESCRIPTION OF VIOLATION</p>
-              </div>
-            </div>
+          <div class="d-flex align-items-center date-box">
+            <p class="m-0 ta-font-regular">
+              {{ violation.violationDate }}
+            </p>
+          </div>
 
-            <div
-              class="d-flex align-items-center violation"
-              *ngFor="
-                let violation of violationFormArray | filter: false;
-                let i = index;
-                trackBy: trackByIdentity
-              "
+          <div class="d-flex align-items-center vehicle-box">
+            <p class="m-0 ta-font-regular">
+              {{ violation.truckType }}
+            </p>
+          </div>
+
+          <div class="d-flex align-items-center location-box">
+            <p
+              class="m-0 ta-font-regular d-inline-block text-truncate"
+              style="max-width: 123px"
             >
-              <div class="d-flex align-items-center violation-info-container">
-                <div class="d-flex align-items-center date-box">
-                  <div
-                    class="d-flex justify-content-center align-items-center icon-box"
-                  >
-                    <svg-icon
-                      src="assets/svg/common/ic_date.svg"
-                      [svgStyle]="{
-                        'width.px': '14.17',
-                        'height.px': '16.2'
-                      }"
-                    ></svg-icon>
-                  </div>
+              {{ violation.violationLocation }}
+            </p>
+          </div>
 
-                  <div class="pipe-border"></div>
+          <div class="d-flex align-items-center description-box">
+            <p
+              class="m-0 ta-font-regular d-inline-block text-truncate"
+              style="max-width: 185px"
+              [appTooltip]="violation.violationDescription"
+              tooltipColor="#FFFFFF"
+              tooltipBackground="#6C6C6C"
+              position="bottom-right"
+              borderRadius="2px"
+              fontSize="11px"
+              fontWeight="bold"
+            >
+              {{ violation.violationDescription }}
+            </p>
+          </div>
 
-                  <p class="m-0 ta-font-regular">
-                    {{ violation.violationDate }}
-                  </p>
-                </div>
-                <div class="d-flex align-items-center vehicle-box">
-                  <p class="m-0 ta-font-regular">
-                    {{ violation.truckType }}
-                  </p>
-                </div>
-                <div class="d-flex align-items-center location-box">
-                  <div
-                    class="d-flex justify-content-center align-items-center icon-box"
-                  >
-                    <svg-icon
-                      src="assets/svg/applicant/location.svg"
-                      [svgStyle]="{
-                        'width.px': '14.24',
-                        'height.px': '17.1'
-                      }"
-                    ></svg-icon>
-                  </div>
+          <div class="d-flex align-items-center btn-container">
+            <svg-icon
+              class="edit-icon"
+              src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+              [svgStyle]="{
+                'width.px': 18,
+                'height.px': 18
+              }"
+              appTooltip="Edit"
+              tooltipColor="#FFFFFF"
+              tooltipBackground="#6C6C6C"
+              position="top-middle"
+              borderRadius="2px"
+              fontSize="11px"
+              fontWeight="bold"
+              (click)="onEditViolation(i)"
+            ></svg-icon>
 
-                  <div class="pipe-border"></div>
-
-                  <p class="m-0 ta-font-regular">
-                    {{ violation.violationLocation }}
-                  </p>
-                </div>
-                <div class="d-flex align-items-center description-box">
-                  <p class="m-0 ta-font-regular">
-                    {{ violation.violationDescription }}
-                  </p>
-                </div>
-              </div>
-
-              <div
-                class="d-flex justify-content-center align-items-center edit-delete-box"
-              >
-                <button
-                  type="button"
-                  class="d-flex justify-content-center align-items-center edit-btn"
-                  (click)="onEditViolation(i)"
-                >
-                  <svg-icon
-                    class="edit-icon"
-                    src="assets/svg/common/ic_pen.svg"
-                    [svgStyle]="{
-                      'width.px': 10,
-                      'height.px': 10
-                    }"
-                  ></svg-icon>
-                </button>
-                <button
-                  type="button"
-                  class="d-flex justify-content-center align-items-center delete-btn"
-                  (click)="onDeleteViolation(i)"
-                >
-                  <svg-icon
-                    class="delete-icon"
-                    src="assets/svg/common/ic_trash.svg"
-                    [svgStyle]="{
-                      'width.px': 8,
-                      'height.px': 9
-                    }"
-                  ></svg-icon>
-                </button>
-              </div>
-            </div>
+            <svg-icon
+              class="delete-icon"
+              src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+              [svgStyle]="{
+                'width.px': 18,
+                'height.px': 18
+              }"
+              appTooltip="Delete"
+              tooltipColor="#FFFFFF"
+              tooltipBackground="#EF5350"
+              position="top-middle"
+              borderRadius="2px"
+              fontSize="11px"
+              fontWeight="bold"
+              (click)="onDeleteViolation(i)"
+            ></svg-icon>
           </div>
         </div>
+      </div>
 
-        <!-- DATE, TRUCK TYPE, ADDRESS, DESCRIPTION -->
+      <!-- DATE, VEHICLE TYPE, LOCATION -->
 
+      <form [formGroup]="violationsForm">
         <div class="d-flex">
-          <div class="form-label-group date-group">
+          <div class="group date-group">
             <app-ta-input
               formControlName="violationDate"
               [inputConfig]="{
@@ -244,7 +246,7 @@
               }"
             ></app-ta-input>
           </div>
-          <div class="form-label-group truck-type-group">
+          <div class="group truck-type-group">
             <app-ta-input-dropdown
               formControlName="truckType"
               [template]="'svgtext-template'"
@@ -260,7 +262,7 @@
               (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
             ></app-ta-input-dropdown>
           </div>
-          <div class="form-label-group location-group">
+          <div class="group location-group">
             <app-ta-input-address
               formControlName="violationLocation"
               [inputConfig]="{
@@ -275,75 +277,129 @@
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
             ></app-ta-input-address>
           </div>
-          <div class="form-label-group description-group">
+        </div>
+
+        <div class="d-flex">
+          <div class="description-group">
             <app-ta-input
               formControlName="violationDescription"
               [inputConfig]="{
                 name: 'Description',
                 type: 'text',
-                label: 'Description',
+                label: 'Description of violation',
                 textTransform: 'capitalize',
                 isRequired: true
               }"
             ></app-ta-input>
           </div>
         </div>
+      </form>
 
-        <!-- REVIEW AND FEEDBACK -->
+      <!-- REVIEW AND FEEDBACK -->
 
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-          <app-applicant-review-feedback
-            [index]="0"
-            [reviewFeedbackData]=""
-            (sendReview)="onSubmitReview($event)"
-          ></app-applicant-review-feedback>
-        </div>
+      <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+        <app-applicant-review-feedback
+          [index]="0"
+          [reviewFeedbackData]=""
+          (sendReview)="onSubmitReview($event)"
+        ></app-applicant-review-feedback>
+      </div>
 
-        <!-- ADD ANOTHER VIOLATION -->
+      <!-- ADD ANOTHER VIOLATION -->
+
+      <div
+        class="d-flex justify-content-center align-items-center add-another-violation-container"
+      >
+        <button
+          type="button"
+          class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+          (click)="onAddViolation()"
+          [ngClass]="{
+            disabled: violationsForm.invalid
+          }"
+          *ngIf="!isEditing"
+        >
+          <svg-icon
+            class="plus-icon"
+            src="assets/svg/common/ic_plus.svg
+        "
+            [svgStyle]="{
+              'width.px': 18,
+              'height.px': 18
+            }"
+          ></svg-icon>
+
+          Add Another Violation
+        </button>
 
         <div
-          class="d-flex flex-column align-items-center add-another-violation-container"
+          class="d-flex align-items-center mx-auto justify-content-center"
+          *ngIf="isEditing"
         >
           <button
             type="button"
-            class="add-violation-btn ta-font-semi-bold"
-            (click)="onAddViolation()"
-            *ngIf="editViolation === -1"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+            (click)="onCancelEditAccident()"
           >
-            Add another accident
+            Cancel
           </button>
           <button
             type="button"
-            class="add-violation-btn ta-font-semi-bold"
-            (click)="onUpdateViolation()"
-            *ngIf="editViolation !== -1"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+            [ngClass]="{
+              disabled: !isViolationEdited
+            }"
+            (click)="onSaveEditedViolation()"
           >
-            Save accident
+            Save Changes
           </button>
         </div>
-
-        <!-- CERTIFY -->
-
-        <div class="flex justify-content-center certify-container">
-          <app-ta-checkbox
-            formControlName="certify"
-            [name]="'certify'"
-            [label]="
-              'I certify that the following is a true and complete list of traffic violations (other than parking'
-            "
-          >
-            <!-- tickets) for which I have been convicted or forfeited bond or collateral during the past 3 years. <span>*</span> -->
-          </app-ta-checkbox>
-        </div>
       </div>
-    </form>
 
-    <!-- NEXT, BACK STEP -->
+      <!-- CERTIFY -->
 
-    <app-applicant-next-step
-      (stepEvent)="onStepAction($event)"
-    ></app-applicant-next-step>
+      <div
+        class="d-flex flex-column align-items-center justify-content-center certify-container"
+        [formGroup]="certifyForm"
+      >
+        <app-ta-checkbox
+          formControlName="certify"
+          [name]="'certify'"
+          [label]="
+            'I certify that the following is a true and complete list of traffic violations (other than parking'
+          "
+          [customClass]="'bold-12'"
+        >
+        </app-ta-checkbox>
+        <p
+          class="m-0 ta-font-bold"
+          [ngStyle]="{
+            color: certifyForm.get('certify').value ? '#6c6c6c' : '#919191'
+          }"
+          (click)="handleCheckboxParagraphClick('certify')"
+        >
+          tickets) for which I have been convicted or forfeited bond or
+          collateral during the past 3 years.
+        </p>
+      </div>
+    </div>
   </div>
+</div>
+
+<!-- NEXT BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+</div>
+
+<!-- BACK BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center back-btn-container"
+>
+  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>
 
 <!-- CONFIRM ALL REVIEW -->

@@ -118,7 +118,7 @@
             class="basic-data-svg"
             src="assets/svg/common/ic_fax.svg"
           ></svg-icon>
-          <p class="basic-data-value">{{ companyData?.fax }}</p>
+          <p class="basic-data-value">{{ companyData?.fax | formatPhoneP }}</p>
         </div>
         <div class="basic-data">
           <svg-icon
@@ -171,7 +171,7 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">Time Zone</p>
             <p
-              *ngIf="companyData.timeZone.name"
+              *ngIf="companyData?.timeZone?.name"
               class="additional-template-value"
             >
               {{ timeZoneName }}
@@ -180,7 +180,7 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">Currency</p>
             <p
-              *ngIf="companyData.currency.name"
+              *ngIf="companyData?.currency?.name"
               class="additional-template-value"
             >
               {{
@@ -292,7 +292,7 @@
         [bodyTemplate]="'card'"
         [hasCounter]="companyData?.bankCards?.length"
         [isCardOpen]="true"
-        *ngIf="companyData.bankCards.length"
+        *ngIf="companyData?.bankCards.length"
         [animationsDisabled]="false"
         [textBottomPossiton]="'-1px'"
       >

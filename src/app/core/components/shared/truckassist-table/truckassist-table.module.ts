@@ -16,6 +16,7 @@ import { TaNoteModule } from '../ta-note/ta-note.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.directive';
 import { DirectivesModule } from 'src/app/core/directives/directives.module';
+import { PipesModule } from 'src/app/core/pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -37,8 +38,8 @@ import { DirectivesModule } from 'src/app/core/directives/directives.module';
     DragDropModule,
     DirectivesModule,
     AppNoteModule,
-    ProfileImagesModule
-    
+    ProfileImagesModule,
+    PipesModule
   ],
   exports: [
     TruckassistTableBodyComponent,

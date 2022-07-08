@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
 
 @Component({
@@ -8,6 +8,7 @@ import { SettingsStoreService } from '../../state/settings.service';
   encapsulation: ViewEncapsulation.None
 })
 export class SettingsNodataComponent implements OnInit {
+   @Input() public showComponent:boolean;
   constructor(private settingsService: SettingsStoreService) {}
 
   ngOnInit(): void {
@@ -16,6 +17,7 @@ export class SettingsNodataComponent implements OnInit {
   }
 
   public openModal() {
+    this.showComponent=!this.showComponent
     this.settingsService.onModalAction({
       modalName: 'basic',
       action: 'new',

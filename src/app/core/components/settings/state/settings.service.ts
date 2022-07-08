@@ -20,9 +20,6 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class SettingsStoreService {
-  public isModalActive$: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
-
   constructor(
     private settingsStore: SettingsStore,
     private modalService: ModalService,
@@ -93,7 +90,6 @@ export class SettingsStoreService {
       default:
         break;
     }
-    this.isModalActive$.next(true);
   }
 
   // Main Company
