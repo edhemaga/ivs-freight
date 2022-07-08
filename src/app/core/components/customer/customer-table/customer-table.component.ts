@@ -13,12 +13,15 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BrokerQuery } from '../state/broker-state/broker.query';
 import { BrokerTService } from '../state/broker-state/broker.service';
 import { BrokerState } from '../state/broker-state/broker.store';
-import { ShipperState } from '../state/shipper-state/shipper.store';
+import { ShipperState, ShipperStore } from '../state/shipper-state/shipper.store';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
 import * as AppConst from 'src/app/const';
 import { input_dropdown_animation } from '../../shared/ta-input-dropdown/ta-input-dropdown.animation';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { ShipperListResponse } from 'appcoretruckassist';
+import { Observable, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customer-table',
@@ -50,6 +53,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   public markerSelected: boolean = false;
   public mapLatitude: number = 41.860119;
   public mapLongitude: number = -87.660156;
+  public sortBy: any;
+  public searchValue: string = '';
   private tooltip: any;
 
   constructor(
@@ -62,6 +67,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private ref: ChangeDetectorRef,
     private formBuilder: FormBuilder,
+    private shipperStore: ShipperStore
   ) {}
 
   ngOnInit(): void {
@@ -152,18 +158,24 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       console.log('viewData', this.viewData);
 
       this.sortTypes = [
-        {name: 'Business Name', id: 1},
-        {name: 'Location', id: 2},
-        {name: 'Rating', id: 3},
-        {name: 'Date Added', id: 4},
-        {name: 'Last Used Date', id: 5},
-        {name: 'Pickups', id: 6},
-        {name: 'Deliveries', id: 7},
-        {name: 'Avg. Pickup Time', id: 8},
-        {name: 'Avg. Delivery Time', id: 9}
+        {name: 'Business Name', id: 1, sortName: 'name'},
+        {name: 'Location', id: 2, sortName: 'location'},
+        {name: 'Rating', id: 3, sortName: 'rating'},
+        {name: 'Date Added', id: 4, sortName: 'dateAdded'},
+        {name: 'Last Used Date', id: 5, sortName: 'lastUsedDate'},
+        {name: 'Pickups', id: 6, sortName: 'pickups'},
+        {name: 'Deliveries', id: 7, sortName: 'deliveries'},
+        {name: 'Avg. Pickup Time', id: 8, sortName: 'avgPickupTime'},
+        {name: 'Avg. Delivery Time', id: 9, sortName: 'avgDeliveryTime'}
       ];
 
       this.activeSortType = this.sortTypes[0];
+
+      this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
   
       this.searchForm = this.formBuilder.group({
         search: ''
@@ -330,6 +342,10 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     }
     else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
+      console.log('event.mode', event.mode);
+      if ( event.mode == 'Map' ) {
+        this.sortShippers();
+      }
     }
   }
 
@@ -546,13 +562,29 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
 
-  changeSortDirection() {
-    this.sortDirection = this.sortDirection == 'asc' ? 'desc' : 'asc';
+  changeSortDirection(direction) {
+    this.sortDirection = direction;
+
+    this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
+      
+    this.sortShippers();
   }
   
-  changeSortCategory(item) {
+  changeSortCategory(item, column) {
     console.log('changeSortCategory item', item);
     this.activeSortType = item;
+
+    this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
+      
+    this.sortShippers();
   }
 
   openPopover(t2) {
@@ -565,6 +597,28 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       if (data.isSelected) {
         data.isSelected = false;
       }
+    });
+  }
+
+  sortShippers() {
+    console.log('sortShippers sortBy', this.sortBy);
+
+    this.shipperService
+    .getShippersList(null, null, 1, 25, null, this.sortBy, this.searchValue)
+    .pipe(untilDestroyed(this))
+    .subscribe({
+      next: (res: any) => {
+        console.log('sortShippers', res);
+        this.viewData = res.pagination.data;
+        
+        this.ref.detectChanges();
+      },
+      error: () => {
+        this.notificationService.error(
+          "Shippers can't be sorted",
+          'Error:'
+        );
+      },
     });
   }
 }

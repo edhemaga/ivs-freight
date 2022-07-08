@@ -25,11 +25,11 @@
               (click)="openPopover(t2)">
                 <div class="map-list-sort-category marker-info-text">{{ activeSortType.name }}</div>
             </div>
-            <div class="map-list-sort-arrows" (click)="changeSortDirection()">
+            <div class="map-list-sort-arrows" (click)="changeSortingDirection()">
               <svg-icon
                 src="assets/svg/common/ic_sort_arrows.svg"
                 class="sort-arrows-svg"
-                [ngClass]="{ 'blue-svg': sortDirection == 'desc'}"
+                [ngClass]="{ 'blue-svg': sortDirection == 'asc'}"
               ></svg-icon>
             </div>
           </div>

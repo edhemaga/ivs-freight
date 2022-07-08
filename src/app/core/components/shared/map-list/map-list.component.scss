@@ -116,7 +116,7 @@
                         &:hover {
                             svg {
                                 path {
-                                    fill: #3551B7;
+                                    fill: $ta-blue-2;
                                 }
                             }
                         }
@@ -167,19 +167,10 @@
 .gm-style div[aria-hidden = "true"] {
     width: 90px;
 
-    color:#3551B7 !important;
+    color: $ta-blue-2 !important;
     //color: #F44336 !important;
     margin-left: 120px;
-    text-shadow: 1px 1px 0px #fff, 1px -1px 0px #fff, -1px -1px 0px #fff, -1px 1px 0px #fff;
-    /*text-shadow:
-        -1px -1px 0 #fff,
-        0   -1px 0 #fff,
-        1px -1px 0 #fff,
-        1px  0   0 #fff,
-        1px  1px 0 #fff,
-        0    1px 0 #fff,
-        -1px  1px 0 #fff,
-        -1px  0   0 #fff;*/
+    text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white, -1px 1px 0px $white;
     text-transform: uppercase;
     font-size: 11px !important;
     line-height: 12px;
@@ -218,7 +209,7 @@
         padding: 8px 6px 0px 6px;
         position: relative;
 
-        background: #fff;
+        background: $white;
         border-radius: 3px;
         transition: 0.2s;
         opacity: 0.9;
@@ -292,7 +283,7 @@
     
             &::-webkit-scrollbar-track{
                 width: 4px;
-                background-color: #fff;
+                background-color: $white;
             }
 
             .map-list-card-container {
@@ -320,21 +311,21 @@
                     }
                     
                     .marker-info-text {
-                        color: #3C3C3C;
+                        color: $ta-light-grey-3;
                     }
 
                     .marker-like-text {
-                        color: #3C3C3C;
+                        color: $ta-light-grey-3;
                     }
                     
                     .map-list-card-address {
-                        color: #6C6C6C;
+                        color: $bw6-2;
                     }
 
                     .marker-rating-svg {
                         svg {
                             path {
-                                fill: #B7B7B7;
+                                fill: $bw4;
                             }
                         }
 
@@ -371,7 +362,7 @@
             width: 26px;
             height: 26px;
 
-            background: #fff;
+            background: $white;
 
             cursor: pointer;
             transform: translate(-50%, 50%);
@@ -468,9 +459,17 @@
     svg {
         path:nth-child(2) {
             fill: $bc1;
+
+            &:hover {
+                fill: $ta-blue-2;
+            }
         }
         path:last-child {
             fill: $ta-light-grey-2;
+
+            &:hover {
+                fill: $bw6-2;
+            }
         }
     }
 
@@ -478,22 +477,30 @@
         svg {
             path:nth-child(2) {
                 fill: $ta-light-grey-2;
+
+                &:hover {
+                    fill: $bw6-2;
+                }
             }
             path:last-child {
                 fill: $bc1;
+                
+                &:hover {
+                    fill: $ta-blue-2;
+                }
             }
         }
     }
 }
 
 .sort-dropdown {
-    background: #fff!important;
+    background: $white!important;
 }
 
 .sort-filter-holder{
     width: 169px;
     border-radius: 3px;
-    background-color: #fff;
+    background-color: $white;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -505,7 +512,7 @@
     
     .sort-items-holder{
         width: 100%;
-        background-color: #fff;
+        background-color: $white;
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
@@ -531,7 +538,7 @@
             &:hover{
                 cursor: pointer;
                 background-color: #F7F7F7;
-                color: #3C3C3C !important;
+                color: $ta-light-grey-3 !important;
             }
         }
 
@@ -544,7 +551,7 @@
 
                     svg {
                         path {
-                            fill: #97A8DC;
+                            fill: $ta-light-blue;
                         }
                     }
                 }
