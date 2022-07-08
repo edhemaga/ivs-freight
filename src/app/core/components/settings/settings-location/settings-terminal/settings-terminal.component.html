@@ -16,96 +16,93 @@
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
-        (click)="onAction({ type: true, modalName: 'terminal', action: 'add' })"
+        (click)="onAction({ modalName: 'terminal', type: 'add' })"
       ></svg-icon>
     </div>
   </div>
-  <div
-    class="settings-body"
-    
-  >
-     <app-ta-re-card
-     *ngFor="let item of terminalData; trackBy: identityTerminalData"
-     [settingsIcon]="item.companyOwned"
-     [cardNameCommon]="item.name"
-     [hasFooter]="false"
-     [haveHeaderText]="true"
-     >
-     <div class="settings-body-items">
-      <div *ngIf="item.phone !== ''" class="single-item">
-        <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-        <span>{{ item.phone }}</span>
+  <div class="settings-body">
+    <app-ta-re-card
+      *ngFor="let item of terminalData; trackBy: identityTerminalData"
+      [settingsIcon]="item.companyOwned"
+      [cardNameCommon]="item.name"
+      [hasFooter]="false"
+      [haveHeaderText]="true"
+    >
+      <div class="settings-body-items">
+        <div *ngIf="item.phone !== ''" class="single-item">
+          <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+          <span>{{ item.phone }}</span>
+        </div>
+        <div *ngIf="item.email !== ''" class="single-item">
+          <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+          <span>{{ item.email }}</span>
+        </div>
+        <div *ngIf="item.address !== ''" class="single-item">
+          <svg-icon
+            src="assets/svg/truckassist-table/location-icon.svg"
+          ></svg-icon>
+          <span>{{ item.address }}</span>
+        </div>
       </div>
-      <div *ngIf="item.email !== ''" class="single-item">
-        <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-        <span>{{ item.email }}</span>
-      </div>
-      <div *ngIf="item.address !== ''" class="single-item">
-        <svg-icon
-          src="assets/svg/truckassist-table/location-icon.svg"
-        ></svg-icon>
-        <span>{{ item.address }}</span>
-      </div>
-    </div>
-    <app-ta-custom-card
-    *ngFor="let opt of item.options; trackBy: identityOfficeData"
-    [cardName]="opt.name"
-    [isCardOpen]="true"
-    [bodyTemplate]="'card'"
-    [animationsDisabled]="false"
-    [textBottomPossiton]="'-2px'"
-  >
-  <div class="parking-template-data">
-    <div *ngIf="opt.phone" class="parking-template-item">
-      <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-      <p class="parking-template-text">{{opt.phone}}</p>
-    </div>
-    <div class="parking-template-item">
-    <div *ngIf="opt.phone_ext" class="parking-template-item">
-      <svg-icon src="assets/svg/common/ic_phone-extension.svg"></svg-icon>
-      <p class="parking-template-text">{{opt.phone_ext}}</p>
-    </div>
-  </div>
-    <div *ngIf="opt.email" class="parking-template-item parking-template-email">
-      <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-      <p class="parking-template-text">{{opt.email}}</p>
-    </div>
-    <div *ngIf="opt.parking_slot" class="parking-template-item">
-      <p class="parking-template-number">{{ opt.parking_slot }}</p>
-      <p class="parking-template-text">Parking Slot</p>
-    </div>
-    <div *ngIf="opt.parking_slot_full" class="parking-template-item">
-      <p class="parking-template-number">{{ opt.parking_slot_full }}</p>
-      <p class="parking-template-text">Full Parking Slot</p>
-    </div>
-    <div *ngIf="opt.security_camera" class="parking-template-item">
-      <svg-icon
-        class="parking-template-svg"
-        [ngClass]="{ disabled: !opt.security_camera }"
-        src="assets/svg/common/ic_security-camera.svg"
-      ></svg-icon>
-      <p
-        class="parking-template-text"
-        [ngClass]="{ 'cross-out': !opt.security_camera }"
+      <app-ta-custom-card
+        *ngFor="let opt of item.options; trackBy: identityOfficeData"
+        [cardName]="opt.name"
+        [isCardOpen]="true"
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
       >
-        Security Camera
-      </p>
-    </div>
-    <div *ngIf="opt.gate" class="parking-template-item">
-      <svg-icon
-        class="parking-template-svg"
-        [ngClass]="{ disabled: !opt.gate }"
-        src="assets/svg/common/ic_security-gate.svg"
-      ></svg-icon>
-      <p
-        class="parking-template-text"
-      >
-        Gate
-      </p>
-    </div>
-  </div>
-  </app-ta-custom-card>
-
-     </app-ta-re-card>
+        <div class="parking-template-data">
+          <div *ngIf="opt.phone" class="parking-template-item">
+            <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+            <p class="parking-template-text">{{ opt.phone }}</p>
+          </div>
+          <div class="parking-template-item">
+            <div *ngIf="opt.phone_ext" class="parking-template-item">
+              <svg-icon
+                src="assets/svg/common/ic_phone-extension.svg"
+              ></svg-icon>
+              <p class="parking-template-text">{{ opt.phone_ext }}</p>
+            </div>
+          </div>
+          <div
+            *ngIf="opt.email"
+            class="parking-template-item parking-template-email"
+          >
+            <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+            <p class="parking-template-text">{{ opt.email }}</p>
+          </div>
+          <div *ngIf="opt.parking_slot" class="parking-template-item">
+            <p class="parking-template-number">{{ opt.parking_slot }}</p>
+            <p class="parking-template-text">Parking Slot</p>
+          </div>
+          <div *ngIf="opt.parking_slot_full" class="parking-template-item">
+            <p class="parking-template-number">{{ opt.parking_slot_full }}</p>
+            <p class="parking-template-text">Full Parking Slot</p>
+          </div>
+          <div *ngIf="opt.security_camera" class="parking-template-item">
+            <svg-icon
+              class="parking-template-svg"
+              [ngClass]="{ disabled: !opt.security_camera }"
+              src="assets/svg/common/ic_security-camera.svg"
+            ></svg-icon>
+            <p
+              class="parking-template-text"
+              [ngClass]="{ 'cross-out': !opt.security_camera }"
+            >
+              Security Camera
+            </p>
+          </div>
+          <div *ngIf="opt.gate" class="parking-template-item">
+            <svg-icon
+              class="parking-template-svg"
+              [ngClass]="{ disabled: !opt.gate }"
+              src="assets/svg/common/ic_security-gate.svg"
+            ></svg-icon>
+            <p class="parking-template-text">Gate</p>
+          </div>
+        </div>
+      </app-ta-custom-card>
+    </app-ta-re-card>
   </div>
 </div>

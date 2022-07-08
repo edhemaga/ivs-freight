@@ -7,15 +7,14 @@ import { SettingsStoreService } from '../../state/settings.service';
   styleUrls: ['./settings-payroll.component.scss'],
 })
 export class SettingsPayrollComponent implements OnInit {
- @Input() public payrollData:any;
+  @Input() public payrollData: any;
 
   constructor(private settingsStoreService: SettingsStoreService) {}
-  ngOnInit(): void {      
+  ngOnInit(): void {}
+  public identity(index: number, item: any): number {
+    return item.id;
   }
-  public identity(index:number, item:any):number{
-    return item.id
-  }
-  public onAction(modal: { modalName: string; action: string }) {
+  public onAction(modal: { modalName: string; type: string; company?: any }) {
     this.settingsStoreService.onModalAction(modal);
   }
 }

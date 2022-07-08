@@ -4,7 +4,7 @@ import { SettingsStoreService } from '../../state/settings.service';
 @Component({
   selector: 'app-settings-office',
   templateUrl: './settings-office.component.html',
-  styleUrls: ['./settings-office.component.scss']
+  styleUrls: ['./settings-office.component.scss'],
 })
 export class SettingsOfficeComponent implements OnInit {
   public officeData = [
@@ -14,8 +14,7 @@ export class SettingsOfficeComponent implements OnInit {
       phone: '(123) 456-7890',
       email: 'contact@windsor-brokers.com',
       address: '5462 N East River Rd apt 611 Chicago, IL 60656',
-      companyOwned:
-        'assets/svg/common/ic_company.svg',
+      companyOwned: 'assets/svg/common/ic_company.svg',
       departments: [
         {
           name: 'Accounting Department',
@@ -52,7 +51,7 @@ export class SettingsOfficeComponent implements OnInit {
       companyOwned: '',
       departments: [
         {
-          id:26,
+          id: 26,
           name: 'Accounting Department',
           check: true,
           phone: '(987) 654-3210',
@@ -60,7 +59,7 @@ export class SettingsOfficeComponent implements OnInit {
           email: 'contact@windsor-brokers.com',
         },
         {
-          id:18,
+          id: 18,
           name: 'Dispatch Department',
           check: false,
           phone: '(987) 654-3210',
@@ -68,7 +67,7 @@ export class SettingsOfficeComponent implements OnInit {
           email: 'contact@windsor-brokers.com',
         },
         {
-          id:4,
+          id: 4,
           name: 'Safety Department',
           check: true,
           phone: '(987) 654-3210',
@@ -85,9 +84,9 @@ export class SettingsOfficeComponent implements OnInit {
   constructor(private settingsStoreService: SettingsStoreService) {}
 
   ngOnInit() {}
-  
-  public onAction(data: { type: boolean; modalName: string; action: string }) {
-    this.settingsStoreService.onModalAction(data);
+
+  public onAction(modal: { modalName: string; type: string; company?: any }) {
+    this.settingsStoreService.onModalAction(modal);
   }
 
   public identityOfficeData(index: number, item: any): number {

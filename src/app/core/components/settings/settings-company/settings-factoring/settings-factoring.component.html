@@ -9,9 +9,7 @@
         <svg-icon
           src="assets/svg/common/ic_pen.svg"
           class="settings-edit-button"
-          (click)="
-            onAction({ type: true, modalName: 'factoring', action: 'edit' })
-          "
+          (click)="onAction({ modalName: 'factoring', type: 'edit' })"
         ></svg-icon>
       </div>
       <div class="settings-header-button">
@@ -59,7 +57,7 @@
       >
         <div
           class="notice-template-data-default"
-          [ngClass]="{'notice-template-data-change':changeDefaultNotice }"
+          [ngClass]="{ 'notice-template-data-change': changeDefaultNotice }"
         >
           <div class="notice-template-item">
             <div class="notice-item-value">
@@ -90,7 +88,7 @@
           <div class="notice-change-item">
             <div class="notice-item-middle">
               {{ factoringData.noticeAssigment.param1 }}
-              
+
             </div>
             <div class="bottom-data-notice">{{
               factoringData.noticeAssigment.param3
@@ -98,7 +96,7 @@
           </div>
           <div class="notice-change-item bottom-notice-item">
             <div class="notice-item-bottom">
-              {{ factoringData.noticeAssigment.param2 }} <a href="tel:+{{factoringData.noticeAssigment.phone }}"><span class="phone-notice-item">{{factoringData.noticeAssigment.phone }}</span></a> 
+              {{ factoringData.noticeAssigment.param2 }} <a href="tel:+{{factoringData.noticeAssigment.phone }}"><span class="phone-notice-item">{{factoringData.noticeAssigment.phone }}</span></a>
             </div>
           </div> -->
         </div>

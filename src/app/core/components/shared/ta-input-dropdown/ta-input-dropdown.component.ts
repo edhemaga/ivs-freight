@@ -268,7 +268,7 @@ export class TaInputDropdownComponent
       if (
         searchText?.length &&
         this.getSuperControl.value &&
-        this.activeItem.name !== this.getSuperControl.value
+        this.activeItem?.name !== this.getSuperControl.value
       ) {
         this.options = this.originalOptions.filter((item) =>
           item.name
