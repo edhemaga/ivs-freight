@@ -3,7 +3,6 @@ import { SettingsTerminalModalComponent } from './../settings-location/location-
 import { SettingsRepairshopModalComponent } from './../settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsOfficeModalComponent } from './../settings-location/location-modals/settings-office-modal/settings-office-modal.component';
 import { SettingsParkingModalComponent } from './../settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
-import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import { SettingsStore } from './settings.store';
@@ -15,6 +14,8 @@ import {
   CompanyModalResponse,
   CompanyResponse,
   CompanyService,
+  CreateDivisionCompanyCommand,
+  CreateResponse,
   UpdateCompanyCommand,
 } from 'appcoretruckassist';
 
@@ -34,7 +35,7 @@ export class SettingsStoreService {
    */
   public onModalAction(data: {
     modalName: string;
-    action?: string;
+    type?: string;
     company?: any;
   }) {
     switch (data.modalName) {
@@ -45,7 +46,7 @@ export class SettingsStoreService {
             size: 'medium',
           },
           {
-            type: data.action,
+            type: data.type,
             company: data.company,
           }
         );
@@ -106,7 +107,17 @@ export class SettingsStoreService {
   }
 
   // Division Company
-  public getCompanyDivisionById(id: number): Observable<any> {
+  public addCompanyDivision(
+    data: CreateDivisionCompanyCommand
+  ): Observable<CreateResponse> {
+    return this.settingCompanyService.apiCompanyDivisionPost(data);
+  }
+
+  public getCompanyDivisionById(id: number): Observable<CompanyResponse> {
     return this.settingCompanyService.apiCompanyDivisionIdGet(id);
+  }
+
+  public deleteCompanyDivisionById(id: number): Observable<any> {
+    return this.settingCompanyService.apiCompanyDivisionIdDelete(id);
   }
 }

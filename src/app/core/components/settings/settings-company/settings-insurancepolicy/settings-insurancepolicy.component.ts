@@ -1,4 +1,10 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CompanyResponse } from 'appcoretruckassist';
 import { CompanyQuery } from '../../state/company-state/company-settings.query';
@@ -9,7 +15,7 @@ import { SettingsStoreService } from '../../state/settings.service';
   templateUrl: './settings-insurancepolicy.component.html',
   styleUrls: ['./settings-insurancepolicy.component.scss'],
 })
-export class SettingsInsurancepolicyComponent implements OnInit,OnChanges {
+export class SettingsInsurancepolicyComponent implements OnInit, OnChanges {
   public insuranceData = {
     phone: '(123) 456-7890',
     email: 'peraperic@gmail.com',
@@ -126,15 +132,11 @@ export class SettingsInsurancepolicyComponent implements OnInit,OnChanges {
       ],
     },
   };
- @Input() public insurancePolicyData: any;
-  constructor(
-    private settingsStoreService: SettingsStoreService,
-  ) {}
-  ngOnChanges(changes: SimpleChanges): void {
-  }
-  ngOnInit(): void {  
-  }
-  public onAction(modal: { type: boolean; modalName: string; action: string }) {
+  @Input() public insurancePolicyData: any;
+  constructor(private settingsStoreService: SettingsStoreService) {}
+  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnInit(): void {}
+  public onAction(modal: { modalName: string; type: string; company?: any }) {
     this.settingsStoreService.onModalAction(modal);
   }
 

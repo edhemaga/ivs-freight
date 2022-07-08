@@ -15,7 +15,7 @@
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
-        (click)="onAction({ type: true, modalName: 'parking', action: 'add' })"
+        (click)="onAction({ modalName: 'parking', type: 'add' })"
       ></svg-icon>
     </div>
   </div>
@@ -26,7 +26,6 @@
       [cardNameCommon]="item.name"
       [hasFooter]="false"
       [haveHeaderText]="true"
-
     >
       <div class="settings-body-items">
         <div *ngIf="item.phone" class="single-item">
@@ -51,7 +50,10 @@
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
       >
-        <div class="parking-template-data" [ngClass]="{'no-divider':!item.rent}">
+        <div
+          class="parking-template-data"
+          [ngClass]="{ 'no-divider': !item.rent }"
+        >
           <div class="parking-template-item">
             <p class="parking-template-number">{{ item.parking_slot }}</p>
             <p class="parking-template-text">Parking Slot</p>

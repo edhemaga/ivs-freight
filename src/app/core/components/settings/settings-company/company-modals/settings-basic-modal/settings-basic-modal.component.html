@@ -4,7 +4,7 @@
   "
   [editData]="editData"
   [editName]="null"
-  [disableDelete]="editData.company?.divisions?.length"
+  [disableDelete]="editData.type === 'edit-company'"
   [isModalValid]="editData ? companyForm.valid && isDirty : companyForm.valid"
   [customClass]="'modal-container-M'"
   [dropZoneConfig]="dropZoneConfig"
@@ -13,8 +13,8 @@
   <app-tab-switcher
     (switchClicked)="tabChange($event)"
     [tabs]="
-      editData.type === 'new-division' || !editData.company?.divisions?.length
-        ? tabsDevision
+      editData.type === 'new-division' || editData.type === 'edit-division'
+        ? tabsDivision
         : tabs
     "
   ></app-tab-switcher>
@@ -36,11 +36,9 @@
                 type: 'text',
                 label: 'Company Name',
                 isRequired: editData.type === 'new-division' ? true : false,
-                isDisabled:
-                  editData.type === 'edit-basic' &&
-                  this.editData.company?.divisions?.length,
+                isDisabled: editData.type === 'edit-company',
                 textTransform: 'capitalize',
-                autoFocus: editData?.type === 'edit-basic' ? false : true
+                autoFocus: editData?.type === 'edit-company' ? false : true
               }"
             ></app-ta-input>
           </div>
@@ -66,9 +64,7 @@
                 name: 'EIN',
                 type: 'text',
                 label: 'EIN #',
-                isDisabled:
-                  editData.type === 'edit-basic' &&
-                  this.editData.company?.divisions?.length,
+                isDisabled: editData.type === 'edit-company',
                 mask: '00-0000000'
               }"
             ></app-ta-input>
@@ -107,9 +103,7 @@
                 type: 'text',
                 label: 'Email',
                 isRequired: editData.type === 'new-division' ? true : false,
-                isDisabled:
-                  editData.type === 'edit-basic' &&
-                  this.editData.company?.divisions?.length,
+                isDisabled: editData.type === 'edit-company',
                 placeholderIcon: 'email'
               }"
             ></app-ta-input>
@@ -149,9 +143,7 @@
                 label: 'Address, City, State Zip',
                 isRequired: true,
                 placeholderIcon: 'address',
-                isDisabled:
-                  editData.type === 'edit-basic' &&
-                  this.editData.company?.divisions?.length,
+                isDisabled: editData.type === 'edit-company',
                 textTransform: 'capitalize'
               }"
               (selectedAddress)="onHandleAddress($event)"
@@ -164,9 +156,7 @@
                 name: 'Address Unit',
                 type: 'text',
                 label: 'Unit No.',
-                isDisabled:
-                  editData.type === 'edit-basic' &&
-                  this.editData.company?.divisions?.length,
+                isDisabled: editData.type === 'edit-company',
                 maxLength: 6
               }"
             ></app-ta-input>
@@ -247,13 +237,7 @@
             ></app-ta-input-dropdown>
           </div>
         </div>
-        <div
-          class="row last-row"
-          *ngIf="
-            editData.company?.divisions?.length &&
-            editData.type === 'edit-basic'
-          "
-        >
+        <div class="row last-row" *ngIf="editData.type === 'edit-company'">
           <div class="col-6">
             <app-ta-input-dropdown
               formControlName="companyType"
@@ -283,12 +267,8 @@
             ></app-ta-input>
           </div>
         </div>
-        <app-ta-custom-card
-          [cardName]="'Logo'"
-          (onOpenCard)="isLogoDropZoneVisibile = $event"
-        >
+        <app-ta-custom-card [cardName]="'Logo'" [isCardOpen]="true">
           <app-ta-logo-change
-            *ngIf="isLogoDropZoneVisibile"
             [customClass]="'modal-container-M'"
             [imageUrl]="this.companyForm.get('logo').value"
             (base64ImageEvent)="onUploadImage($event)"
@@ -311,7 +291,7 @@
           (onActionEvent)="addDepartmentContacts($event)"
         >
           <div
-            formArrayName="departmentContact"
+            formArrayName="departmentContacts"
             class="common-fake-table-modal hide-oveflow"
             *ngIf="departmentContacts.length"
           >
@@ -391,7 +371,7 @@
           (onActionEvent)="addBankAccount($event)"
         >
           <div
-            formArrayName="bankAccount"
+            formArrayName="bankAccounts"
             class="common-fake-table-modal common-fake-table-modal-banks hide-oveflow"
             *ngIf="bankAccounts.length"
           >
@@ -417,7 +397,7 @@
                   [options]="[]"
                   [activeItem]="selectedBankAccountFormArray[ind]"
                   (selectedItem)="
-                    onSelectFakeTableData($event, ind, 'bankaccount')
+                    onSelectFakeTableData($event, ind, 'bankaccounts')
                   "
                 ></app-ta-input-dropdown>
                 <app-ta-input
@@ -478,7 +458,7 @@
           (onActionEvent)="addBankCard($event)"
         >
           <div
-            formArrayName="bankCard"
+            formArrayName="bankCards"
             class="common-fake-table-modal common-fake-table-modal-bank-cards hide-oveflow"
             *ngIf="bankCards.length"
           >
@@ -542,7 +522,7 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <div *ngIf="editData.type !== 'new-division'" class="company-part">
+        <div *ngIf="editData.type === 'edit-company'" class="company-part">
           <app-ta-custom-card
             [cardName]="'Load Format and Customer Billing'"
             [isCardOpen]="true"
@@ -686,11 +666,11 @@
           <div class="divider"></div>
           <div
             class="checkbox-card-header"
-            [ngClass]="{ pointer: companyForm.get('useTruckAssist').value }"
-            (click)="useTruckAssist($event)"
+            [ngClass]="{ pointer: companyForm.get('useACHPayout').value }"
+            (click)="useACHPayout($event)"
           >
             <app-ta-checkbox
-              formControlName="useTruckAssist"
+              formControlName="useACHPayout"
               [label]="truckAssistText"
             ></app-ta-checkbox>
             <svg-icon

@@ -32,7 +32,6 @@ export class NavigationUserCompanyComponent implements OnInit {
 
     // ----------------------- DEVELOP MODE ----------------------------
     this.userCompanies = JSON.parse(localStorage.getItem('user')).companies;
-    console.log(this.userCompanies);
   }
 
   public onAction() {

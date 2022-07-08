@@ -9,9 +9,7 @@
       <svg-icon
         src="assets/svg/common/ic_pen.svg"
         class="settings-edit-button"
-        (click)="
-          onAction({ type: true, modalName: 'basic', action: 'payroll-tab' })
-        "
+        (click)="onAction({ modalName: 'basic', type: 'payroll-tab' })"
       ></svg-icon>
     </div>
   </div>
@@ -19,12 +17,11 @@
     <!-- Driver & Owner -->
     <div *ngIf="payrollData.length" class="cards-custom-payroll">
       <app-ta-custom-card
-        *ngFor="let payroll of payrollData; let i =index; trackBy: identity"
+        *ngFor="let payroll of payrollData; let i = index; trackBy: identity"
         [cardName]="payroll?.department?.name"
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
-        
-        [hasDivider]="i>0? true:false"
+        [hasDivider]="i > 0 ? true : false"
         [animationsDisabled]="false"
         [textBottomPossiton]="'-2px'"
         [hasWeeklyStatus]="payroll?.payPeriod?.name"
@@ -129,27 +126,27 @@
         </div>
 
         <div
-        class="payroll-template-data"
-        *ngIf="payroll?.department?.name === 'CoOwner'"
-      >
-        <div class="payroll-template-item">
-          <span class="payroll-name">Salary</span>
-          <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+          class="payroll-template-data"
+          *ngIf="payroll?.department?.name === 'CoOwner'"
+        >
+          <div class="payroll-template-item">
+            <span class="payroll-name">Salary</span>
+            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+          </div>
         </div>
-      </div>
-      <div
-      class="payroll-template-data"
-      *ngIf="payroll?.department?.name === 'Dispatcher'"
-    >
-      <div class="payroll-template-item">
-        <span class="payroll-name">Base</span>
-        <span class="payroll-value">${{ payroll?.defaultBase }}</span>
-      </div>
-      <div class="payroll-template-item">
-        <span class="payroll-name">Load Commison</span>
-        <span class="payroll-value">${{ payroll?.defaultCommission }}</span>
-      </div>
-    </div>
+        <div
+          class="payroll-template-data"
+          *ngIf="payroll?.department?.name === 'Dispatcher'"
+        >
+          <div class="payroll-template-item">
+            <span class="payroll-name">Base</span>
+            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+          </div>
+          <div class="payroll-template-item">
+            <span class="payroll-name">Load Commison</span>
+            <span class="payroll-value">${{ payroll?.defaultCommission }}</span>
+          </div>
+        </div>
         <div
           class="payroll-template-data"
           *ngIf="payroll?.department?.name === 'Manager'"
@@ -164,7 +161,6 @@
           </div>
         </div>
       </app-ta-custom-card>
-      
     </div>
   </div>
 </div>

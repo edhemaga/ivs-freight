@@ -4,7 +4,7 @@ import { SettingsStoreService } from '../../state/settings.service';
 @Component({
   selector: 'app-settings-terminal',
   templateUrl: './settings-terminal.component.html',
-  styleUrls: ['./settings-terminal.component.scss']
+  styleUrls: ['./settings-terminal.component.scss'],
 })
 export class SettingsTerminalComponent implements OnInit {
   public terminalData = [
@@ -14,8 +14,7 @@ export class SettingsTerminalComponent implements OnInit {
       phone: '(123) 456-7890',
       email: 'contact@windsor-brokers.com',
       address: '5462 N East River Rd apt 611 Chicago, IL 60656',
-      companyOwned:
-        'assets/svg/common/ic_company.svg',
+      companyOwned: 'assets/svg/common/ic_company.svg',
       options: [
         {
           id: 1,
@@ -128,8 +127,8 @@ export class SettingsTerminalComponent implements OnInit {
   constructor(private settingsStoreService: SettingsStoreService) {}
 
   ngOnInit() {}
-  public onAction(data: { type: boolean; modalName: string; action: string }) {
-    this.settingsStoreService.onModalAction(data);
+  public onAction(modal: { modalName: string; type: string; company?: any }) {
+    this.settingsStoreService.onModalAction(modal);
   }
 
   public identityTerminalData(index: number, item: any): number {
