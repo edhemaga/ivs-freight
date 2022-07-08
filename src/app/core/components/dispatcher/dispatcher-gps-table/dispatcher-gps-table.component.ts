@@ -1,8 +1,15 @@
-import {takeUntil} from 'rxjs/operators';
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import * as AppConst from 'src/app/const';
-import {animate, style, transition, trigger} from '@angular/animations';
-import {Subject} from 'rxjs';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Subject } from 'rxjs';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { AppDispatchSignalrService } from 'src/app/core/services/dispatchboard/app-dispatchSignalr.service';
 
@@ -13,14 +20,12 @@ import { AppDispatchSignalrService } from 'src/app/core/services/dispatchboard/a
   animations: [
     trigger('mapAnimation', [
       transition(':enter', [
-        style({height: 50}),
-        animate('200ms', style({height: '*'})),
+        style({ height: 50 }),
+        animate('200ms', style({ height: '*' })),
       ]),
-      transition(':leave', [
-        animate('250ms', style({height: 0})),
-      ]),
+      transition(':leave', [animate('250ms', style({ height: 0 }))]),
     ]),
-  ]
+  ],
 })
 export class DispatcherGpsTableComponent implements OnInit, OnDestroy {
   @Input() gpsFlag: any;
@@ -49,7 +54,7 @@ export class DispatcherGpsTableComponent implements OnInit, OnDestroy {
       PointCountry: 'US',
       PointDateTime: '2021-06-14T22:00:00',
       PointMileage: 360,
-      PointMileageTotal: 360
+      PointMileageTotal: 360,
     },
     {
       Id: 545,
@@ -64,7 +69,7 @@ export class DispatcherGpsTableComponent implements OnInit, OnDestroy {
       PointCountry: 'US',
       PointDateTime: '2021-06-21T22:00:00',
       PointMileage: 150,
-      PointMileageTotal: 510
+      PointMileageTotal: 510,
     },
     {
       Id: 546,
@@ -79,7 +84,7 @@ export class DispatcherGpsTableComponent implements OnInit, OnDestroy {
       PointCountry: 'US',
       PointDateTime: '2021-06-15T22:00:00',
       PointMileage: 250,
-      PointMileageTotal: 760
+      PointMileageTotal: 760,
     },
     {
       Id: 547,
@@ -94,8 +99,8 @@ export class DispatcherGpsTableComponent implements OnInit, OnDestroy {
       PointCountry: 'US',
       PointDateTime: '2021-06-28T22:00:00',
       PointMileage: 300,
-      PointMileageTotal: 1060
-    }
+      PointMileageTotal: 1060,
+    },
   ];
   agmMap: any;
   gpsData: any;
@@ -104,13 +109,12 @@ export class DispatcherGpsTableComponent implements OnInit, OnDestroy {
   constructor(
     private sharedService: SharedService,
     private gpsDataService: AppDispatchSignalrService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.sharedService.emitOpenNote
       .pipe(takeUntil(this.destroy$))
-      .subscribe(index => {
+      .subscribe((index) => {
         if (index == this.rowIndex) {
           this.setResizeGpsMain(this.rowIndex);
         }
@@ -122,11 +126,9 @@ export class DispatcherGpsTableComponent implements OnInit, OnDestroy {
         data.filter((d) => {
           if (d.truckId === this.truckId) {
             this.gpsData = d;
-            console.log('Podatak sa gpsa koji se poklapa sa truckId');
-            console.log(this.gpsData);
           }
-        })
-      })
+        });
+      });
 
     this.gpsDataService.currentgpsDataSingleItem
       .pipe(takeUntil(this.destroy$))
@@ -134,7 +136,7 @@ export class DispatcherGpsTableComponent implements OnInit, OnDestroy {
         if (data.truckId === this.truckId) {
           this.gpsData = data;
         }
-      })
+      });
   }
 
   public getMapInstance(map) {
@@ -152,5 +154,4 @@ export class DispatcherGpsTableComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

@@ -201,8 +201,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     this.getModalDropdowns();
     this.validateMiles();
 
-    console.log(this.editData);
-
     if (this.editData?.type === 'payroll-tab') {
       const timeout = setTimeout(() => {
         this.selectedTab = 3;
@@ -296,7 +294,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             );
           }
         }
-        console.log(this.editData.company.companyPayrolls);
       }
     }
   }
@@ -822,8 +819,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     const newData: UpdateCompanyCommand = {
       ...form,
     };
-
-    console.log(newData);
   }
 
   public deleteCompanyDevisionById(id: number) {}

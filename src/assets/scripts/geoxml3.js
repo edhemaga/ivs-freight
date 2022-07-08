@@ -1472,7 +1472,6 @@ geoXML3.getOpacity = function (kmlColor) {
 // Log a message to the debugging console, if one exists
 geoXML3.log = function (msg) {
   if (!!window.console) {
-    console.log(msg);
   } else {
     alert("log:" + msg);
   }

@@ -536,7 +536,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 this.selectedTrailerMake = res.truckMake;
               },
               error: (error: any) => {
-                console.log(error);
                 this.notificationService.error(
                   `Can't get data for that ${value} VIN.`,
                   'Error:'

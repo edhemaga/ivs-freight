@@ -526,7 +526,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.selectedEngineType = res.engineType;
               },
               error: (error: any) => {
-                console.log(error);
                 this.notificationService.error(
                   `Can't get data for that ${value} VIN.`,
                   'Error:'

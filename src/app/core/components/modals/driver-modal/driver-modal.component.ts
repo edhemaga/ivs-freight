@@ -499,14 +499,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.inputService.changeValidators(this.driverForm.get('ein'), false);
       }
     }
-    console.log(this.selectedOwnerTab.id);
-    console.log(
-      this.ownerTabs.findIndex((item) => item.id === this.selectedOwnerTab.id)
-    );
+
     this.tabSwitch.indexSwitch = this.ownerTabs.findIndex(
       (item) => item.id === this.selectedOwnerTab.id
     );
-    console.log('INDEX SWTICH ', this.tabSwitch.indexSwitch);
   }
 
   private isCheckedOwner() {
@@ -533,8 +529,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         untilDestroyed(this)
       )
       .subscribe((value) => {
-        console.log('EIN NUMBER CHANGE ');
-        console.log(value);
         if (value) {
           this.driverTService
             .checkOwnerEinNumber(value)
@@ -903,8 +897,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverStatus = res.status === 1 ? false : true;
 
           if (res.owner) {
-            console.log('IMA OWNER');
-            console.log(this.driverForm.get('ein').value);
             this.driverTService
               .checkOwnerEinNumber(this.driverForm.get('ein').value)
               .pipe(untilDestroyed(this))

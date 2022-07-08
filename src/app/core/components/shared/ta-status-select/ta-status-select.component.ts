@@ -1,4 +1,11 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 import * as AppConst from 'src/app/const';
 import { LoadStatusPipe } from 'src/app/core/pipes/load-status.pipe';
 import { StatusPipePipe } from 'src/app/core/pipes/status-pipe.pipe';
@@ -7,10 +14,9 @@ import { StatusPipePipe } from 'src/app/core/pipes/status-pipe.pipe';
   selector: 'app-ta-status-select',
   templateUrl: './ta-status-select.component.html',
   styleUrls: ['./ta-status-select.component.scss'],
-  providers: [StatusPipePipe, LoadStatusPipe]
+  providers: [StatusPipePipe, LoadStatusPipe],
 })
 export class TaStatusSelectComponent implements OnInit, OnChanges {
-
   @Input() placeholder: string;
   @Input() clearable = true;
   @Input() width: string;
@@ -32,16 +38,20 @@ export class TaStatusSelectComponent implements OnInit, OnChanges {
   tonyRate: any;
   savedTonuStatus: any;
 
-  constructor(private statusPipe: StatusPipePipe) {
-  }
+  constructor(private statusPipe: StatusPipePipe) {}
 
   ngOnInit(): void {
-    this.items = this.statusPipe.transform((this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses), this.value, this.dataType, this.dataItems);
+    this.items = this.statusPipe.transform(
+      this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses,
+      this.value,
+      this.dataType,
+      this.dataItems
+    );
   }
 
   toggleClass(e: any, type: boolean) {
     this.selectOpened = type;
-    console.log(type);
+
     // const select_item = document.querySelectorAll('.ng-select-container');
     // if( select_item ) {
     //      select_item.forEach(element => {
@@ -52,7 +62,12 @@ export class TaStatusSelectComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.items = this.statusPipe.transform((this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses), this.value, this.dataType, this.dataItems);
+    this.items = this.statusPipe.transform(
+      this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses,
+      this.value,
+      this.dataType,
+      this.dataItems
+    );
     this.value = this.dataItems.statusId;
   }
 
@@ -60,11 +75,21 @@ export class TaStatusSelectComponent implements OnInit, OnChanges {
     if (this.dataType == 'load' && event.id == 5) {
       this.savedTonuStatus = event;
       this.addTonyStatusActive = true;
-      this.items = this.statusPipe.transform(this.loadStatuses, this.dataItems.statusId, this.dataType, this.dataItems);
+      this.items = this.statusPipe.transform(
+        this.loadStatuses,
+        this.dataItems.statusId,
+        this.dataType,
+        this.dataItems
+      );
     } else {
       if (this.dataType == 'load') {
         this.dataItems.statusId = event.id;
-        this.items = this.statusPipe.transform(this.loadStatuses, this.dataItems.statusId, this.dataType, this.dataItems);
+        this.items = this.statusPipe.transform(
+          this.loadStatuses,
+          this.dataItems.statusId,
+          this.dataType,
+          this.dataItems
+        );
       }
 
       this.changeVal.emit(event);
@@ -72,12 +97,11 @@ export class TaStatusSelectComponent implements OnInit, OnChanges {
   }
 
   public saveTonuStatus(): void {
-    this.savedTonuStatus["tonyRate"] = this.tonyRate;
+    this.savedTonuStatus['tonyRate'] = this.tonyRate;
     this.changeVal.emit(this.savedTonuStatus);
   }
 
   public closeStatusChane() {
     this.addTonyStatusActive = false;
   }
-
 }

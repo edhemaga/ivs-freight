@@ -1,6 +1,10 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import moment from 'moment';
-
 
 @Component({
   selector: 'app-truckassist-progress-expiration',
@@ -13,7 +17,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
   @Input() status: any;
   @Input() startDate: any;
   @Input() expiresSettings: string = null;
-  @Input() customText: string = "Expires"
+  @Input() customText: string = 'Expires';
   totalDays: any;
   expire: any;
   negative = false;
@@ -28,8 +32,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
   progressbarColor: string;
   calculatedProgress: number;
 
-  constructor() {
-  }
+  constructor() {}
 
   public returnIsEndBefore(start, end) {
     if (moment(end).isBefore(moment(start))) {
@@ -39,9 +42,6 @@ export class TruckassistProgressExpirationComponent implements OnInit {
   }
 
   ngOnInit() {
-     console.log(this.days)
-     console.log('days from progress');
-     
     if (this.expireDate === null || this.expireDate === '') {
       this.negative = true;
     }
@@ -55,7 +55,9 @@ export class TruckassistProgressExpirationComponent implements OnInit {
       this.showProgress = false;
     }
 
-    const currentDate = moment.utc(this.currentD, 'MM-DD-YYYY').format('MM-DD-YYYY');
+    const currentDate = moment
+      .utc(this.currentD, 'MM-DD-YYYY')
+      .format('MM-DD-YYYY');
     const endDate = moment.utc(this.expireDate, 'MM-DD-YYYY');
     const diffDays = endDate.diff(currentDate, 'days');
     this.diffD = diffDays;
@@ -82,7 +84,9 @@ export class TruckassistProgressExpirationComponent implements OnInit {
     this.progressbarColor = this.setProgressbarColor();
     this.calculatedProgress = this.calculateProgress();
 
-    this.progresDay = new Intl.NumberFormat('en-us', {minimumFractionDigits: 0}).format(this.expire);
+    this.progresDay = new Intl.NumberFormat('en-us', {
+      minimumFractionDigits: 0,
+    }).format(this.expire);
   }
 
   calculateProgress() {
