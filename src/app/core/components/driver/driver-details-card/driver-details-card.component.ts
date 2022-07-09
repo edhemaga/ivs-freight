@@ -48,7 +48,7 @@ export class DriverDetailsCardComponent
   public copiedSSN: boolean = false;
   public copiedDriverPhone: boolean = false;
   public copiedDriverEmail: boolean = false;
-  public isAccountVisible: boolean = true;
+  public isAccountVisibleDriver: boolean = false;
   public accountText: string = null;
   public toggler: boolean[] = [];
   public dataTest: any;
@@ -306,27 +306,6 @@ export class DriverDetailsCardComponent
         break;
     }
     this.clipboar.copy(val);
-  }
-
-  public hiddenPassword(value: any, numberOfCharacterToHide: number): string {
-    const lastFourCharaters = value.substring(
-      value.length - numberOfCharacterToHide
-    );
-    let hiddenCharacter = '';
-
-    for (let i = 0; i < numberOfCharacterToHide; i++) {
-      hiddenCharacter += '*';
-    }
-    return hiddenCharacter + lastFourCharaters;
-  }
-
-  public showHideValue(value: string) {
-    this.isAccountVisible = !this.isAccountVisible;
-    if (!this.isAccountVisible) {
-      this.accountText = this.hiddenPassword(value, 4);
-      return;
-    }
-    this.accountText = value;
   }
 
   /**Function retrun id */

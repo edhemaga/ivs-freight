@@ -54,7 +54,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         } else {
           query = this.shopDetailsQuery.selectEntity(id);
         }
-        query.pipe(untilDestroyed(this)).subscribe({
+        this.shopService.getRepairById(id).pipe(untilDestroyed(this)).subscribe({
           next: (res: RepairShopResponse) => {
             this.shopConf(res);
             if (this.router.url.includes('shop-details')) {

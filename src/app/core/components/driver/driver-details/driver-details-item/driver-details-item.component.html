@@ -13,11 +13,12 @@
             *ngFor="let cdl of dataCDl; let i = index; trackBy: identity"
             [options]="dataTest"
             [cardDocumentCounter]="6"
-            (resizePage)="toggleResizePage(i)"
+            (resizePage)="toggleResizePage(i + 32)"
             [cardNameCommon]="cdl?.cdlNumber"
             [expDateClose]="cdl?.expDate | formatDateP"
             [hasCopyIcon]="true"
             [optionsId]="cdl.id"
+            [noteIcons]="cdl.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
             [isDeactivated]="cdl.dateDeactivated"
             [weeklyWidth]="'28'"
             [stateTooltipName]="cdl.state.stateName"
@@ -50,7 +51,7 @@
                   </div>
                 </div>
                 <div
-                  [ngClass]="{ 'card-restriction-endorsment': !toggler[+(+i)] }"
+                  [ngClass]="{ 'card-restriction-endorsment': !toggler[i + 32] }"
                 >
                   <div class="card-restriction">
                     <p class="restriction-name">Restriction</p>
@@ -63,7 +64,7 @@
                         "
                       >
                         <span class="value-name">{{ rest?.code }}</span>
-                        <span class="desc" *ngIf="toggler[+(+i)]"
+                        <span class="desc" *ngIf="toggler[i]"
                           >- {{ rest?.description }}
                         </span>
                       </p>
@@ -90,7 +91,7 @@
                           *ngIf="endors.description && endors.code"
                         >
                           <span class="value-name">{{ endors?.code }}</span>
-                          <span *ngIf="toggler[+(+i)]" class="desc"
+                          <span *ngIf="toggler[i]" class="desc"
                             >- {{ endors?.description }}</span
                           >
                         </span>
@@ -106,7 +107,7 @@
                 </div>
                 <div
                   class="card-row-progress"
-                  [ngClass]="{ 'second-progress': toggler[+(+i)] }"
+                  [ngClass]="{ 'second-progress': toggler[i + 32] }"
                 >
                   <div class="card-details-progress-container">
                     <app-truckassist-progress-expiration
@@ -127,7 +128,7 @@
                   </div>
                 </div>
               </div>
-              <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+              <div [@showHideCardBody]="toggler[i + 32] ? 'true' : 'false'">
                 <div class="divider"></div>
 
                 <div class="details-document-container">
@@ -200,21 +201,22 @@
       <div class="card-width" *ngSwitchCase="'drug-alcohol'">
         <div>
           <app-ta-re-card
-            *ngFor="let test of driverItem.data.tests; trackBy: identity"
+            *ngFor="let test of driverItem.data.tests; let i=index; trackBy: identity"
             [options]="dataTest"
             [cardNameCommon]="test?.testingDate | formatDateP"
-            (resizePage)="toggleResizePage(i)"
+            (resizePage)="toggleResizePage(i + 1)"
             [optionsId]="test.id"
             [cardDocumentCounter]="6"
             [weeklyWidth]="'18'"
+            [noteIcons]="test.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
             [cardSecondName]="test?.testReason.name"
             [shortName]="test.testType.name[0]"
             [stateTooltipName]="test.testType.name + ' Test'"
             (dropActions)="optionsEvent($event, 'edit-drug')"
           >
-            <div [ngClass]="{ 'second-progress': toggler[i] }"></div>
+            <div [ngClass]="{ 'second-progress': toggler[i + 1] }"></div>
             <div class="cards-container">
-              <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+              <div [@showHideCardBody]="toggler[i + 1] ? 'true' : 'false'">
                 <div class="divider"></div>
                 <div class="details-document-container">
                   <div class="icon-counter-wrapper">
@@ -286,19 +288,20 @@
       <div class="card-width" *ngSwitchCase="'medical'">
         <div>
           <app-ta-re-card
-            *ngFor="let med of driverItem.data.medicals; trackBy: identity"
+            *ngFor="let med of driverItem.data.medicals; let i=index; trackBy: identity"
             [options]="dataTest"
             [cardNameCommon]="med?.issueDate | formatDateP"
             [expDateClose]="med?.expDate | formatDateP"
             [optionsId]="med.id"
-            (resizePage)="toggleResizePage(i)"
+            [noteIcons]="med.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
+            (resizePage)="toggleResizePage(i +3)"
             (dropActions)="optionsEvent($event, 'edit-medical')"
           >
             <div class="cards-container">
               <div class="card-body-cdl">
                 <div
                   class="card-row-progress"
-                  [ngClass]="{ 'second-progress': toggler[i] }"
+                  [ngClass]="{ 'second-progress': toggler[i + 3] }"
                 >
                   <div class="card-details-progress-container">
                     <app-truckassist-progress-expiration
@@ -310,7 +313,7 @@
                   </div>
                 </div>
               </div>
-              <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+              <div [@showHideCardBody]="toggler[i + 3] ? 'true' : 'false'">
                 <div class="divider"></div>
                 <div class="details-document-container">
                   <div class="icon-counter-wrapper">
@@ -384,11 +387,13 @@
           <app-ta-re-card
             *ngFor="
               let mvr of driverItem.data.mvrs;
+              let i =index;
               trackBy: identity
             "
             [options]="dataTest"
             [cardDocumentCounter]="6"
-            (resizePage)="toggleResizePage(identity)"
+            [noteIcons]="mvr.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
+            (resizePage)="toggleResizePage(i + 5 )"
             [cardNameCommon]="mvr?.issueDate | formatDateP"
             [expDateClose]="mvr?.issueDate | setFutureYear"
             [optionsId]="mvr.id"
@@ -398,7 +403,7 @@
               <div class="card-body-cdl">
                 <div
                   class="card-row-progress"
-                  [ngClass]="{ 'second-progress': toggler[identity] }"
+                  [ngClass]="{ 'second-progress': toggler[i + 5] }"
                 >
                   <div class="card-details-progress-container">
                     <app-truckassist-progress-expiration
@@ -410,7 +415,7 @@
                   </div>
                 </div>
               </div>
-              <div [@showHideCardBody]="toggler[identity] ? 'true' : 'false'">
+              <div [@showHideCardBody]="toggler[i + 5] ? 'true' : 'false'">
                 <div class="divider"></div>
                 <div class="details-document-container">
                   <div class="icon-counter-wrapper">

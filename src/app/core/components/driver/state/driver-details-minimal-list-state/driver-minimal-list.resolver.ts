@@ -26,9 +26,7 @@ export class DriverMinimalResolver implements Resolve<DriverMinimalListResponse>
   resolve(
     route: ActivatedRouteSnapshot
   ): Observable<DriverMinimalListResponse> | Observable<any> {
-      if(this.driverMinimalList.getValue().ids?.length){
-        return of(true)
-      }else{
+     
       
       return this.driverService.getDriversMinimalList(this.pageIndex,this.pageSize,this.count).pipe(
         catchError((error) => {
@@ -36,9 +34,9 @@ export class DriverMinimalResolver implements Resolve<DriverMinimalListResponse>
         }),
         tap((driverMinimalList: DriverMinimalListResponse) => {
           
-          this.driverMinimalList.set(driverMinimalList.pagination.data);
+           this.driverMinimalList.set(driverMinimalList.pagination.data);
         })
       );
-    }
+    
     }
 }

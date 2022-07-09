@@ -202,6 +202,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.truck.firstChange && changes?.truck) {
       this.noteControl.patchValue(changes.truck.currentValue.note);
+      this.getTruckDropdown()
     }
   }
   ngOnInit(): void {

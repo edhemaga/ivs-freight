@@ -1,9 +1,6 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { CompanyResponse } from 'appcoretruckassist';
-import { CompanyQuery } from '../../state/company-state/company-settings.query';
 import { SettingsStoreService } from '../../state/settings.service';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-settings-insurancepolicy',
   templateUrl: './settings-insurancepolicy.component.html',
@@ -127,8 +124,10 @@ export class SettingsInsurancepolicyComponent implements OnInit,OnChanges {
     },
   };
  @Input() public insurancePolicyData: any;
+ public copyPolicyName:boolean[]=[];
   constructor(
     private settingsStoreService: SettingsStoreService,
+    private clipboar: Clipboard,
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
   }
@@ -140,6 +139,13 @@ export class SettingsInsurancepolicyComponent implements OnInit,OnChanges {
 
   public identity(index: number, item: any): number {
     return item.id;
+  }
+
+   /* To copy any Text */
+  public copyText(val: any, index:number) {
+  
+   this.copyPolicyName[index]=true
+    this.clipboar.copy(val);
   }
   public onShowDetails() {}
 }

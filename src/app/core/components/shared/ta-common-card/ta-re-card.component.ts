@@ -44,6 +44,7 @@ export class TaReCardComponent implements OnInit {
   @Input() public weeklyWidth: string = '';
   @Input() public setPositionDrop:boolean;
   @Input() isDeactivated: any;
+  @Input() noteIcons:string='';
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
   public toggleDropDown: boolean;
@@ -78,6 +79,11 @@ export class TaReCardComponent implements OnInit {
         this.resizePage.emit(this.resPage);
         break;
     }
+  }
+
+  public resizePageFun(val:any){
+    this.resPage=!this.resPage
+   this.resizePage.emit(val)
   }
   /**Function for drop acitons */
   public dropAct(action: any) {

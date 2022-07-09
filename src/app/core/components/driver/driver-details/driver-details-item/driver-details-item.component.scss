@@ -16,118 +16,11 @@
   }
 }
 // DRIVER GENERAL PERSONAL DATA
-app-driver-details-item {
+
   .details-header-wrapper {
     margin-bottom: 12px !important;
   }
-  .driver-container {
-    margin-left: 16px;
-    .driver-personal {
-      display: grid;
-      grid-template-columns: 74px 280px;
-      -moz-column-gap: 22px;
-      column-gap: 22px;
-      margin-top: 12px;
-
-      .driver-avatar {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-
-        .driver-avatar-svg {
-          height: 82px;
-          width: 74px;
-          border-radius: 2px;
-          -o-object-fit: fill;
-          object-fit: fill;
-          user-select: none;
-        }
-
-        .driver-avatar-owner {
-          position: absolute;
-          right: -8px;
-          bottom: 2px;
-        }
-      }
-    }
-
-    .driver-information {
-      display: flex;
-      height: 80px;
-      margin-top: 2px;
-      flex-direction: column;
-
-      // Ovveride email information-item
-      .information-item-email {
-        margin: 7px 0px;
-      }
-
-      .information-item {
-        display: flex;
-        align-items: center;
-        height: 18px;
-        margin-bottom: 12px;
-        cursor: pointer;
-        .card-icon {
-          display: none;
-          position: relative;
-          margin-left: 6px;
-          bottom: 1px;
-          height: 18px;
-          svg {
-            &:hover {
-              path {
-                fill: #6c6c6c;
-              }
-            }
-          }
-        }
-        .information-value {
-          font-size: 14px;
-          font-weight: 400;
-          color: #6c6c6c;
-          line-height: 17px;
-          width: fit-content;
-          &::-moz-selection {
-            color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-          }
-          &::selection {
-            color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-          }
-        }
-        .ssn {
-          font-size: 18px !important;
-        }
-
-        .information-svg {
-          margin-right: 6px;
-          svg {
-            display: flex;
-          }
-        }
-
-        .information-email-value {
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap;
-        }
-
-        .information-address-svg {
-          position: relative;
-          bottom: 11px;
-          left: 2px;
-          margin-right: 10px;
-        }
-        &:hover {
-          .card-icon {
-            display: flex;
-          }
-        }
-      }
-    }
-  }
+ 
   .purchase-template {
     display: grid;
     grid-template-columns: repeat(2, 193px);
@@ -515,4 +408,4 @@ app-driver-details-item {
       background-color: #536bc2;
     }
   }
-}
+

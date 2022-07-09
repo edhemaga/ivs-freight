@@ -343,3 +343,16 @@
     align-items: center;
   }
 }
+.header-svg-bank{
+  margin-left: 12px !important;
+  svg{
+    path{
+      fill: #cccccc;
+    }
+    &:hover{
+      path{
+        fill: #cccccc !important;
+      }
+    }
+  }
+}

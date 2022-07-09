@@ -42,7 +42,11 @@
           </div>
         </div>
         <div
-          *ngFor="let insuranceAdditional of insurance.insurancePolicyAddons"
+          *ngFor="
+            let insuranceAdditional of insurance.insurancePolicyAddons;
+            let i = index;
+            trackBy: identity
+          "
         >
           <app-ta-custom-card
             [cardName]="insuranceAdditional.insurancePolicyAddonType.name"
@@ -62,8 +66,29 @@
                   </div>
                 </div>
               </div>
-              <div class="number-of-policy">
-                {{ insuranceAdditional.policy }}
+              <div
+                class="policy-company-wrapper"
+                [ngClass]="{ copied: copyPolicyName[i] }"
+              >
+                <div class="number-of-policy">
+                  {{ insuranceAdditional.policy }}
+                </div>
+                <span
+                  [tooltipBackground]="
+                    copyPolicyName[i] ? '#536BC2' : '#6c6c6c'
+                  "
+                  ngbTooltip
+                  [mainTooltip]="copyPolicyName[i] ? 'Copied' : 'Copy'"
+                  position="top"
+                  [autoClose]="false"
+                >
+                  <svg-icon
+                    (mouseleave)="copyPolicyName[i] = false"
+                    class="insurance-copy"
+                    (click)="copyText(insuranceAdditional.policy, i)"
+                    src="assets/svg/common/ic_copy.svg"
+                  ></svg-icon>
+                </span>
               </div>
             </div>
             <div
@@ -75,29 +100,41 @@
             >
               <div class="payroll-template-item">
                 <p class="payroll-name">Each Occurrence</p>
-                <p class="payroll-value">${{insuranceAdditional.eachOccurrence}}</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.eachOccurrence }}
+                </p>
               </div>
 
               <div class="payroll-template-item">
                 <p class="payroll-name">Dmg. to Rented Pr.</p>
-                <p class="payroll-value">${{insuranceAdditional.damageToRentedPremises}}</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.damageToRentedPremises }}
+                </p>
               </div>
 
               <div class="payroll-template-item">
                 <p class="payroll-name">Medical Expanses</p>
-                <p class="payroll-value">${{insuranceAdditional.medicalExpanses}}</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.medicalExpanses }}
+                </p>
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Pers. and Adv. Injury</p>
-                <p class="payroll-value">${{insuranceAdditional.personalAndAdvertisingInjury}}</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.personalAndAdvertisingInjury }}
+                </p>
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">General Aggregate</p>
-                <p class="payroll-value">${{insuranceAdditional.generalAggregate}}</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.generalAggregate }}
+                </p>
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Products - Comp / OP</p>
-                <p class="payroll-value">${{insuranceAdditional.productsCompOperAggregate}}</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.productsCompOperAggregate }}
+                </p>
               </div>
             </div>
 
@@ -108,39 +145,51 @@
               "
               class="payroll-template-data"
             >
-            <div class="payroll-template-item">
-              <p class="payroll-name">Combined Single</p>
-              <p class="payroll-value">${{insuranceAdditional.combinedSingleLimit}}</p>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Combined Single</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.combinedSingleLimit }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Property Damage</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.propertyDamage }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Boldly Injury(Person)</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.bodilyInjuryPerson }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Boldly Injury(Accident)</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.bodilyInjuryAccident }}
+                </p>
+              </div>
             </div>
-            <div class="payroll-template-item">
-              <p class="payroll-name">Property Damage</p>
-              <p class="payroll-value">${{insuranceAdditional.propertyDamage}}</p>
-            </div>
-            <div class="payroll-template-item">
-              <p class="payroll-name">Boldly Injury(Person)</p>
-              <p class="payroll-value">${{insuranceAdditional.bodilyInjuryPerson}}</p>
-            </div>
-            <div class="payroll-template-item">
-              <p class="payroll-name">Boldly Injury(Accident)</p>
-              <p class="payroll-value">${{insuranceAdditional.bodilyInjuryAccident}}</p>
-            </div>
-          </div>
 
-          <div
+            <div
               *ngIf="
                 insuranceAdditional.insurancePolicyAddonType.name ===
                 'Motor Truck Cargo / Reefer Breakdown'
               "
               class="payroll-template-data"
             >
-            <div class="payroll-template-item">
-              <p class="payroll-name">Single Conveyance</p>
-              <p class="payroll-value">${{insuranceAdditional.singleConveyance}}</p>
-            </div>
-            <div class="payroll-template-item">
-              <p class="payroll-name">Deductable</p>
-              <p class="payroll-value">${{insuranceAdditional.deductable}}</p>
-            </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Single Conveyance</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.singleConveyance }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Deductable</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.deductable }}
+                </p>
+              </div>
             </div>
 
             <div
@@ -150,14 +199,18 @@
               "
               class="payroll-template-data"
             >
-            <div class="payroll-template-item">
-              <p class="payroll-name">Comprehen. & Collision</p>
-              <p class="payroll-value">${{insuranceAdditional.comprehensiveAndCollision}}</p>
-            </div>
-            <div class="payroll-template-item">
-              <p class="payroll-name">Deductable</p>
-              <p class="payroll-value">${{insuranceAdditional.deductable}}</p>
-            </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Comprehen. & Collision</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.comprehensiveAndCollision }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Deductable</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.deductable }}
+                </p>
+              </div>
             </div>
 
             <div
@@ -167,11 +220,10 @@
               "
               class="payroll-template-data"
             >
-            <div class="payroll-template-item">
-              <p class="payroll-name">Value</p>
-              <p class="payroll-value">${{insuranceAdditional.value}}</p>
-            </div>
-           
+              <div class="payroll-template-item">
+                <p class="payroll-name">Value</p>
+                <p class="payroll-value">${{ insuranceAdditional.value }}</p>
+              </div>
             </div>
           </app-ta-custom-card>
         </div>

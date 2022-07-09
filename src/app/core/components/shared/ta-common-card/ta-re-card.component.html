@@ -102,12 +102,12 @@
       <ng-content></ng-content>
     </div>
   </div>
-  <div class="card-footer-cmp" *ngIf="isCardOpen && hasFooter">
+  <div class="card-footer-cmp" [ngClass]="{'hide-padding':resPage}" *ngIf="isCardOpen && hasFooter">
     <div class="icon-counter">
       <svg-icon
         *ngIf="!resPage"
         class="note-icon"
-        src="assets/svg/truckassist-table/note/Note-hover.svg"
+        src="{{noteIcons}}"
       ></svg-icon>
       <svg-icon
         *ngIf="!resPage && cardDocumentCounter"
@@ -119,7 +119,7 @@
       </p>
     </div>
     <div
-      (click)="onAction('resize', '')"
+      (click)="resizePageFun($event)"
       [ngClass]="{ 'rotate-common': resPage }"
       class="resize-icon"
     >
