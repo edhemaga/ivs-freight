@@ -13,6 +13,7 @@ import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { NavigationService } from '../services/navigation.service';
 import { navigation_route_animation } from '../navigation.animation';
+import { SignInResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-navigation-footer',
@@ -30,6 +31,8 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
 
   public footerData: FooterData[] = footerData;
 
+  public loggedUser: SignInResponse = null;
+
   constructor(
     private router: Router,
     private navigationService: NavigationService
@@ -45,6 +48,35 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     //       this.currentUserStatus = chatUser?.status;
     //     });
     //   });
+
+    // ----------------------- PRODUCSTION MODE ----------------------------
+    // if(this.authQuery.getEntity(1)) {
+    //   const currentUser: SignInResponse = this.authQuery.getEntity(1);
+
+    //   if (currentUser.token) {
+    //     return true;
+    //   }
+    // }
+
+    // ----------------------- DEVELOP MODE ----------------------------
+    this.loggedUser = JSON.parse(localStorage.getItem('user'));
+
+    this.footerData = [
+      ...this.footerData,
+      {
+        id: 34,
+        image: this.loggedUser?.avatar
+          ? this.loggedUser.avatar
+          : 'assets/svg/common/ic_profile.svg',
+        text: {
+          companyName: this.loggedUser.companyName,
+          userName: this.loggedUser.firstName.concat(
+            ' ',
+            this.loggedUser.lastName
+          ),
+        },
+      },
+    ];
   }
 
   public onAction(index: number, action: string) {

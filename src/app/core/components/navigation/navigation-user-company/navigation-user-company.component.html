@@ -8,13 +8,13 @@
   </div>
   <div
     class="user-company-content"
-    *ngFor="let item of userCompanyDummyData; trackBy: identity"
+    *ngFor="let item of userCompanies; trackBy: identity"
   >
     <p
       [ngClass]="{ 'user-company-text-active': item.active }"
       class="user-company-text"
     >
-      {{ item.name }}
+      {{ item.companyName }}
     </p>
   </div>
 </div>

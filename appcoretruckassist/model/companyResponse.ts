@@ -23,14 +23,13 @@ import { AddressEntity } from './addressEntity';
 
 export interface CompanyResponse { 
     name?: string | null;
-    taxNumber?: string | null;
-    usdot?: string | null;
+    usDot?: string | null;
     ein?: string | null;
     mc?: string | null;
     phone?: string | null;
     email?: string | null;
     fax?: string | null;
-    webURL?: string | null;
+    webUrl?: string | null;
     address?: AddressEntity;
     irp?: string | null;
     ifta?: string | null;
@@ -38,6 +37,8 @@ export interface CompanyResponse {
     scac?: string | null;
     timeZone?: EnumValue;
     currency?: EnumValue;
+    companyType?: EnumValue;
+    dateOfIncorporation?: string | null;
     additionalInfo?: CompanyAdditionalInfo;
     factoringCompany?: FactoringCompany;
     departmentContacts?: Array<DepartmentContactResponse> | null;

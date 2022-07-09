@@ -73,7 +73,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  public onAction(modal: { modalName: string; action: string; company?: any }) {
+  public onAction(modal: { modalName: string; type: string; company?: any }) {
     this.settingsStoreService.onModalAction(modal);
   }
 

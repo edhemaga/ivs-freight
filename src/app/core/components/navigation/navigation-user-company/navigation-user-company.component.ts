@@ -1,4 +1,10 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  OnInit,
+} from '@angular/core';
+import { SignInResponse } from 'appcoretruckassist';
 import { NavigationService } from '../services/navigation.service';
 
 @Component({
@@ -7,33 +13,26 @@ import { NavigationService } from '../services/navigation.service';
   styleUrls: ['./navigation-user-company.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavigationUserCompanyComponent {
+export class NavigationUserCompanyComponent implements OnInit {
   @Input() isNavigationHoveredAndPanelOpen: boolean = false;
 
-  public userCompanyDummyData: {}[] = [
-    {
-      id: 1,
-      name: 'IVS FREIGHT, INC',
-      active: true,
-    },
-    {
-      id: 2,
-      name: 'KSKA FREIGHT CO.',
-      active: false,
-    },
-    {
-      id: 3,
-      name: 'UBER FREIGHT CORP',
-      active: false,
-    },
-    {
-      id: 4,
-      name: 'SOME COMPANY',
-      active: false,
-    },
-  ];
+  public userCompanies: any[];
 
   constructor(private navigationService: NavigationService) {}
+
+  ngOnInit(): void {
+    // ----------------------- PRODUCSTION MODE ----------------------------
+    // if(this.authQuery.getEntity(1)) {
+    //   const currentUser: SignInResponse = this.authQuery.getEntity(1);
+
+    //   if (currentUser.token) {
+    //     return true;
+    //   }
+    // }
+
+    // ----------------------- DEVELOP MODE ----------------------------
+    this.userCompanies = JSON.parse(localStorage.getItem('user')).companies;
+  }
 
   public onAction() {
     this.navigationService.onDropdownActivation({

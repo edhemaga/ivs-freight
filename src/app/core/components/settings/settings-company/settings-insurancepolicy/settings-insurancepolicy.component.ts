@@ -6,7 +6,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
   templateUrl: './settings-insurancepolicy.component.html',
   styleUrls: ['./settings-insurancepolicy.component.scss'],
 })
-export class SettingsInsurancepolicyComponent implements OnInit,OnChanges {
+export class SettingsInsurancepolicyComponent implements OnInit, OnChanges {
   public insuranceData = {
     phone: '(123) 456-7890',
     email: 'peraperic@gmail.com',
@@ -133,7 +133,7 @@ export class SettingsInsurancepolicyComponent implements OnInit,OnChanges {
   }
   ngOnInit(): void {  
   }
-  public onAction(modal: { type: boolean; modalName: string; action: string }) {
+  public onAction(modal: { modalName: string; type: string; company?: any }) {
     this.settingsStoreService.onModalAction(modal);
   }
 

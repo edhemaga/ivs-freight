@@ -66,6 +66,12 @@
   .user-company-content {
     padding: 5px 14px 5px 8px;
 
+    .user-company-text {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 18px;
+    }
+
     .user-company-text-active {
       color: $nav-active-lighter !important;
     }

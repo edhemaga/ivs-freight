@@ -21,5 +21,6 @@ export interface CompanyModalResponse {
     endingIns?: Array<EnumValue> | null;
     ratings?: Array<EnumValue> | null;
     insurancePolicyAddonTypes?: Array<EnumValue> | null;
+    companyTypes?: Array<EnumValue> | null;
 }
 
