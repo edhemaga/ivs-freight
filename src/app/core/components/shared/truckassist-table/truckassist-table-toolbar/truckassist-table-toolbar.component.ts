@@ -15,7 +15,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 @Component({
   selector: 'app-truckassist-table-toolbar',
   templateUrl: './truckassist-table-toolbar.component.html',
-  styleUrls: ['./truckassist-table-toolbar.component.scss']
+  styleUrls: ['./truckassist-table-toolbar.component.scss'],
 })
 export class TruckassistTableToolbarComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy
@@ -71,6 +71,7 @@ export class TruckassistTableToolbarComponent
   tableRowsSelected: any[] = [];
   activeTableData: any = {};
   toolbarWidth: string = '';
+  inactiveTimeOutInterval: any;
 
   constructor(private tableService: TruckassistTableService) {}
 
@@ -92,6 +93,10 @@ export class TruckassistTableToolbarComponent
 
             return c;
           });
+
+          if(!this.tableLocked){
+            this.resetInactivityTimer()
+          }
         }
       });
 
@@ -100,6 +105,17 @@ export class TruckassistTableToolbarComponent
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
         this.tableRowsSelected = response;
+      });
+
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(untilDestroyed(this))
+      .subscribe((response: boolean) => {
+        if(response){
+          setTimeout(() => {
+            this.getToolbarWidth();
+          }, 10);
+        }
       });
   }
 
@@ -164,6 +180,10 @@ export class TruckassistTableToolbarComponent
         borderWidth +
         'px';
     }
+
+    if(!this.tableLocked){
+      this.resetInactivityTimer()
+    }
   }
 
   onSelectTab(selectedTabData: any) {
@@ -226,6 +246,14 @@ export class TruckassistTableToolbarComponent
       this.tableService.sendUnlockTable({
         toaggleUnlockTable: true,
       });
+
+      if(!this.tableLocked){
+        this.setInactivityTimer()
+      }else{
+        clearTimeout(this.inactiveTimeOutInterval);
+      }
+
+      
     } else if (action.text === 'Columns') {
       action.active = !action.active;
     } else if (action.text === 'Reset Columns') {
@@ -239,8 +267,29 @@ export class TruckassistTableToolbarComponent
     }
   }
 
+  resetInactivityTimer(){
+    clearTimeout(this.inactiveTimeOutInterval);
+
+    this.setInactivityTimer();
+  }
+
+  setInactivityTimer(){
+    this.inactiveTimeOutInterval = setTimeout(() => {
+      this.tableLocked = true;
+
+      this.optionsPopupContent[0].text = 'Unlock table';
+      this.optionsPopupContent[0].svgPath = 'assets/svg/truckassist-table/lock.svg'
+
+      this.tableService.sendUnlockTable({
+        toaggleUnlockTable: true,
+      });
+    }, 60000)
+  }
+
   onToaggleColumn(column: any, index: number) {
     column.hidden = !column.hidden;
+
+    this.resetInactivityTimer();
 
     this.tableService.sendToaggleColumn({
       column: column,
@@ -252,5 +301,6 @@ export class TruckassistTableToolbarComponent
     this.tableService.sendUnlockTable({});
     this.tableService.sendToaggleColumn(null);
     this.tableService.sendResetColumns(false);
+    clearTimeout(this.inactiveTimeOutInterval);
   }
 }
