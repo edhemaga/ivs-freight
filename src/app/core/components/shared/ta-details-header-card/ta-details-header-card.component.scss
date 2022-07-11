@@ -253,3 +253,20 @@ $border-radius: 3px;
      left: 43px;
   }
 }
+
+.single-data{
+  color: #6c6c6c;
+  background-color: transparent;
+  cursor: default;
+  .current-active-name{
+    color: #6c6c6c !important;
+    &:hover{
+      color: #6c6c6c !important;
+      cursor: default;
+    }
+  }
+  &:hover{
+    
+    background-color: transparent !important;
+  }
+}

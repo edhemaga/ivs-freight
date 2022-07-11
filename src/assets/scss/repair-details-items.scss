@@ -52,7 +52,8 @@ $transition: all 0.3s ease-in-out;
         padding-top: 13px;
         .repair-information-item {
             display: flex;
-            align-items: baseline;
+            align-items: center;
+            padding-bottom: 4px;
             svg {
                 &:hover {
                     path {

@@ -42,7 +42,11 @@
           </div>
         </div>
         <div
-          *ngFor="let insuranceAdditional of insurance.insurancePolicyAddons"
+          *ngFor="
+            let insuranceAdditional of insurance.insurancePolicyAddons;
+            let i = index;
+            trackBy: identity
+          "
         >
           <app-ta-custom-card
             [cardName]="insuranceAdditional.insurancePolicyAddonType.name"
@@ -62,8 +66,29 @@
                   </div>
                 </div>
               </div>
-              <div class="number-of-policy">
-                {{ insuranceAdditional.policy }}
+              <div
+                class="policy-company-wrapper"
+                [ngClass]="{ copied: copyPolicyName[i] }"
+              >
+                <div class="number-of-policy">
+                  {{ insuranceAdditional.policy }}
+                </div>
+                <span
+                  [tooltipBackground]="
+                    copyPolicyName[i] ? '#536BC2' : '#6c6c6c'
+                  "
+                  ngbTooltip
+                  [mainTooltip]="copyPolicyName[i] ? 'Copied' : 'Copy'"
+                  position="top"
+                  [autoClose]="false"
+                >
+                  <svg-icon
+                    (mouseleave)="copyPolicyName[i] = false"
+                    class="insurance-copy"
+                    (click)="copyText(insuranceAdditional.policy, i)"
+                    src="assets/svg/common/ic_copy.svg"
+                  ></svg-icon>
+                </span>
               </div>
             </div>
             <div

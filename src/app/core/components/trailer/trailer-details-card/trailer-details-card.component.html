@@ -152,46 +152,46 @@
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
       >
-        <div *ngIf="trailer.emptyWeight" class="common-template">
-          <div class="common-template-item">
+        <div *ngIf="trailer.emptyWeight || trailer.mileage || trailer.axles || trailer.tireSize.name" class="common-template">
+          <div *ngIf="trailer.emptyWeight" class="common-template-item">
             <div class="common-template-item-name">Empty Weight</div>
             <div class="common-template-item-value">
-              {{ trailer.emptyWeight }}
+              {{ trailer.emptyWeight | taThousandSeparator }} Ibs
             </div>
           </div>
-          <div class="common-template-item">
+          <div *ngIf="trailer.mileage" class="common-template-item">
             <div class="common-template-item-name">Mileage</div>
             <div class="common-template-item-value">
-              {{ trailer.mileage }} mi
+              {{ trailer.mileage | taThousandSeparator }} mi
             </div>
           </div>
-          <div class="common-template-item">
+          <div *ngIf="trailer.axles" class="common-template-item">
             <div class="common-template-item-name">Axles</div>
             <div class="common-template-item-value">
               {{ trailer.axles }}
             </div>
           </div>
-          <div class="common-template-item">
+          <div *ngIf="trailer.tireSize.name" class="common-template-item">
             <div class="common-template-item-name">Tire Size</div>
             <div class="common-template-item-value">
               {{ trailer.tireSize.name }}
             </div>
           </div>
-          <div class="common-template-item">
+          <div *ngIf="trailer.suspension.name"  class="common-template-item">
             <div class="common-template-item-name">Suspension</div>
             <div class="common-template-item-value">
               {{ trailer.suspension.name }}
             </div>
           </div>
 
-          <div class="common-template-item">
+          <div *ngIf="trailer.insurancePolicy" class="common-template-item">
             <div class="common-template-item-name">Insurance Policy</div>
             <div class="common-template-item-value">
               {{ trailer.insurancePolicy }}
             </div>
           </div>
         </div>
-        <div class="no-data-driver-details" *ngIf="!trailer.emptyWeight">
+        <div class="no-data-driver-details" *ngIf="!trailer.emptyWeight && !trailer.mileage && !trailer.axles && !trailer.tireSize.name">
           No Additional Details
         </div>
       </app-ta-custom-card>

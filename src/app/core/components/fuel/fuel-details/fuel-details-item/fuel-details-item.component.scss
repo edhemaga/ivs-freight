@@ -136,28 +136,23 @@ app-fuel-details-item {
       background-color: #e0eaf8 !important;
       margin-top: 2px !important;
       margin-bottom: 2px !important;
-      padding: 4px 0 !important;
+      padding: 4px 4px !important;
       .unit-fuel {
-        padding-left: 4px !important;
         position: relative;
         line-height: 20px;
         // top: -1px;
       }
       .date-fuel {
-        padding-left: 4px;
         position: relative;
         line-height: 20px;
         // top: -1px;
       }
       .cost {
-        padding-left: 4px;
         position: relative;
         line-height: 20px;
         // top: -1px;
       }
-      .ppg-icon-fuel {
-        padding-left: 4px;
-      }
+      
       .dots-vertical {
         left: 4px !important;
       }

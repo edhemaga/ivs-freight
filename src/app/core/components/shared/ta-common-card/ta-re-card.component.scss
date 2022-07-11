@@ -106,7 +106,7 @@
         align-items: flex-start;
         justify-content: space-between;
         background-color: #ffffff;
-        margin-left: 17px;
+        margin-left: 16px;
         margin-right: 10px;
         padding-bottom: 11px;
         padding-top: 11px;
@@ -164,6 +164,7 @@ p {
 }
 
 .rotate-common {
+    transition: all 0.4s ease-in-out;
     svg {
         transform: rotate(180deg);
         transition: all 0.3s ease-in-out;
@@ -228,6 +229,7 @@ p {
 .resize-icon {
     height: 18px;
     cursor: pointer;
+    transition: all 0.4s ease-in-out;
     svg {
         path {
             &:hover {
@@ -328,4 +330,8 @@ p {
     display: flex;
     align-items: flex-end;
     height: 19px;
+}
+.hide-padding{
+    transition: all 0.3s ease-in-out;
+    padding-top: 0 !important;
 }
