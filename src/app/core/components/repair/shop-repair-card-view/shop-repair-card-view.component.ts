@@ -18,7 +18,9 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
   templateUrl: './shop-repair-card-view.component.html',
   styleUrls: ['./shop-repair-card-view.component.scss'],
 })
-export class ShopRepairCardViewComponent implements OnInit, OnChanges,OnDestroy {
+export class ShopRepairCardViewComponent
+  implements OnInit, OnChanges, OnDestroy
+{
   @Input() shopResponse: any;
   @Input() templateCard: boolean;
   public noteControl: FormControl = new FormControl();
@@ -41,9 +43,6 @@ export class ShopRepairCardViewComponent implements OnInit, OnChanges,OnDestroy 
   }
   ngOnInit(): void {
     // this.noteControl.patchValue(this.shopResponse.note);
-    
-    console.log(this.shopQuery.getAll());
-    
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
