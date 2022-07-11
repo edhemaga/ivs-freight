@@ -1,1 +1,139 @@
-<p>broker-details-single works!</p>
+<div class="repair-component">
+  <div *ngFor="let broker of brokerData; trackBy: identity">
+    <div [ngSwitch]="broker?.template">
+      <div *ngSwitchCase="'general'">
+        <app-broker-card-view [broker]="broker?.data"> </app-broker-card-view>
+      </div>
+      <div *ngSwitchCase="'load'" class="load"></div>
+      <div *ngSwitchCase="'contact'">
+        <div class="contact-wrapper">
+          <app-ta-custom-card
+            *ngFor="
+              let brokerContact of broker?.data?.brokerContacts;
+              let i = index;
+              trackBy: identity
+            "
+            [bodyTemplate]="'card'"
+            [animationsDisabled]="false"
+            [hasDivider]="i > 0? true:false"
+            [cardName]="brokerContact.department.name"
+            [isCardOpen]="true"
+            class="shipper-contact-container"
+          >
+            <div *ngIf="brokerContact" class="parking-template-data">
+              <div
+                class="parking-template-item parking-template-email parking-name"
+              >
+                <span class="parking-template-name">{{
+                  brokerContact.contactName
+                }}</span>
+                <div class="svg-wrapper">
+                  <span
+                    ngbTooltip
+                    mainTooltip="Edit"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                  >
+                    <svg-icon
+                      src="assets/svg/common/ic_pen.svg"
+                      class="svg-icon-edit"
+                    ></svg-icon>
+                  </span>
+                  <span
+                    ngbTooltip
+                    mainTooltip="Delete"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                  >
+                    <svg-icon
+                      src="assets/svg/common/ic_trash.svg"
+                      class="svg-icon-trash"
+                    ></svg-icon>
+                  </span>
+                </div>
+              </div>
+              <div class="parking-template-item">
+                <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+                <span class="parking-template-text">{{
+                  brokerContact.phone | formatPhoneP
+                }}</span>
+              </div>
+              <div class="parking-template-item">
+                <div
+                  *ngIf="brokerContact.extensionPhone"
+                  class="parking-template-item"
+                >
+                  <svg-icon
+                    src="assets/svg/common/ic_phone-extension.svg"
+                  ></svg-icon>
+                  <span class="parking-template-text">{{
+                    brokerContact.extensionPhone
+                  }}</span>
+                </div>
+              </div>
+              <div class="parking-template-item parking-template-email">
+                <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+                <span class="parking-template-text">{{
+                  brokerContact.email
+                }}</span>
+              </div>
+            </div>
+            <!-- <div class="divider"></div> -->
+          </app-ta-custom-card>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'review'">
+        <div class="likes-count-container">
+          <div class="likes-item">
+            <div class="ic-counter">
+              <svg-icon
+                class="like"
+                src="assets/svg/common/ic_dislike.svg"
+              ></svg-icon>
+              <app-ta-counter
+                [countBackgroud]="'#F3F3F3'"
+                [countColor]="'#919191'"
+                [countHeight]="'24px'"
+                [countWidth]="'24px'"
+                [count]="
+                  brokerData?.data?.upRatingCount
+                    ? brokerData.data.upRatingCount
+                    : 0
+                "
+              >
+              </app-ta-counter>
+            </div>
+            <div class="border-vertical"></div>
+            <div class="ic-counter">
+              <app-ta-counter
+                [countBackgroud]="'#F3F3F3'"
+                [countColor]="'#919191'"
+                [countHeight]="'24px'"
+                [countWidth]="'24px'"
+                [count]="
+                  brokerData?.data?.downRatingCount
+                    ? brokerData.data.downRatingCount
+                    : 0
+                "
+              >
+              </app-ta-counter>
+              <svg-icon
+                class="dislike"
+                src="assets/svg/common/ic_dislike.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="review-container">
+          <app-ta-user-review
+            *ngIf="reviewsRepair.length"
+            [reviewData]="reviewsRepair"
+            [isNewReview]="reviewsRepair[0].isNewReview"
+            (changeReviewsEvent)="changeReviewsEvent($event)"
+          ></app-ta-user-review>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

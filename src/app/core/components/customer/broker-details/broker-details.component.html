@@ -1,1 +1,23 @@
-<p>broker-details works!</p>
+<div class="repair-details-container">
+    <div *ngFor="let item of brokerConfig; trackBy: identity">
+      <app-ta-details-header
+        [route]="'/customer'"
+        [tooltipHeaderName]="'Back to Broker List'"
+        [headerText]="item.nameDefault"
+        [counterData]="item.length"
+        [hasIcon]="item.icon"
+        [hidePlus]="item.hide"
+        [customText]="item.customText"
+        [statusInactive]="item.hide"
+        [arrayIcons]="item.icons"
+        [hasDateArrow]="item.hasArrow"
+        [hasDateNav]="item.hasCost"
+      >
+      </app-ta-details-header>
+    </div>
+    
+    <app-broker-details-single [brokerData]="brokerConfig">
+
+    </app-broker-details-single>
+  
+  </div>

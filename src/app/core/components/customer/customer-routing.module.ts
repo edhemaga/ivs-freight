@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BrokerCardComponent } from './broker-card/broker-card.component';
 import { CustomerTableComponent } from './customer-table/customer-table.component';
 import { ShipperSingleResolver } from './state/shipper-state/shipper-details-state/shipper-single.resolver';
-
+import { BrokerSingleResolver } from './state/broker-details-state/broker-details.resolver';
 
 const routes: Routes = [
   {
@@ -13,26 +13,35 @@ const routes: Routes = [
     data: { title: 'Customer' },
   },
   {
-    path:':id/shipper-details',
-    loadChildren:()=>
-    import('./shipper-details/shipper-details.module').then(
-      (m) => m.ShipperDetailsModule
-    ),
-    resolve:{
-      shipper:ShipperSingleResolver
+    path: ':id/shipper-details',
+    loadChildren: () =>
+      import('./shipper-details/shipper-details.module').then(
+        (m) => m.ShipperDetailsModule
+      ),
+    resolve: {
+      shipper: ShipperSingleResolver,
     },
-    data:{title:'Shipper details'}
+    data: { title: 'Shipper details' },
+  },
+  {
+    path: ':id/broker-details',
+    loadChildren: () =>
+      import('./broker-details/broker-details.module').then(
+        (m) => m.BrokerDetailsModule
+      ),
+    resolve: {
+      broker: BrokerSingleResolver,
+    },
   },
   {
     path: 'card',
     component: BrokerCardComponent,
-    data: {title: 'Shipper cards'},
-  }
+    data: { title: 'Shipper cards' },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-
 export class CustomerRoutingModule {}
